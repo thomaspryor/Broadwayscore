@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T15:37:50.205Z",
+  "timestamp": "2026-11-17T15:52:02.157Z",
   "stats": {
-    "totalReviews": 82334,
+    "totalReviews": 82336,
     "alreadyFlagged": 22509,
     "dateGuardCatches": 222,
     "directorMismatch": 3726,
-    "tvFilmSignals": 2340,
+    "tvFilmSignals": 2341,
     "londonSignals": 3782,
     "offBroadwaySignals": 760,
     "yearMismatch": 379,
-    "noPublishDate": 8219
+    "noPublishDate": 8221
   },
   "findings": [
     {
@@ -47220,6 +47220,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "nacho-ate-spiderman-regional-2026",
+      "file": "broadwayworld--michelle-kholos-brooks.json",
+      "publishDate": null,
+      "url": "https://stagemag.broadwayworld.com/modern/Nacho-Ate-Spiderman-New-Jersey-Repertory-Company-124231",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
