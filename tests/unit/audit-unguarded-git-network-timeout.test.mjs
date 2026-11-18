@@ -70,7 +70,7 @@ test('the walker still scans a checkout that lives under a tests/ directory (BRO
   try {
     const files = walk(root, [], root).map((f) => path.relative(root, f));
     assert.deepEqual(files, [path.join('scripts', 'a.js')]);
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('push-rescue routes its git wrapper through the guarded helper (the scanner cannot see option spreads)', async () => {
