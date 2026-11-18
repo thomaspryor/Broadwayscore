@@ -2192,5 +2192,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T08:04:59.240Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5823-outlet-hygiene",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5823-outlet-hygiene",
+    "description": "land.yml did not land land/bro-5823-outlet-hygiene: the unit-tests-node gate went red at 7d5017e605. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44260923241",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5823-outlet-hygiene"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7d5017e6056552d3182cf8dd7a4ec34271e7b180"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44260923241"
+      }
+    ],
+    "queuedAt": "2026-11-18T08:08:34.537Z"
   }
 ]
