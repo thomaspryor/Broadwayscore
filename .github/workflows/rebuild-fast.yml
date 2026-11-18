@@ -91,7 +91,7 @@ jobs:
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run vercel-deploy.yml -f wait_for_run="$GITHUB_RUN_ID" || echo "::warning::pre-warm dispatch failed; the post-push dispatch still runs"
+        run: gh workflow run vercel-deploy.yml --ref "$GITHUB_REF_NAME" -f wait_for_run="$GITHUB_RUN_ID" || echo "::warning::pre-warm dispatch failed; the post-push dispatch still runs"
 
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5

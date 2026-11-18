@@ -344,7 +344,7 @@ jobs:
             # Steps after this one run from the reset tree, so only files that
             # the setup steps above already used force a fresh deploy: deps,
             # this workflow, actions, and the guards plus what they read.
-            SETUP=$(grep -E '^(package(-lock)?\.json|\.npmrc|\.nvmrc|\.node-version|\.github/workflows/vercel-deploy\.yml|\.github/actions/|scripts/lib/(check-vercel-required-env|prod-held-flags-guard|load-env|exit-flushed|cli-help|deploy-prewarm-wait|git-net-timeout)\.|src/config/feature-flags\.ts|src/app/api/)' <<<"$CHANGED" || true)
+            SETUP=$(grep -E '^(package(-lock)?\.json|\.npmrc|\.nvmrc|\.node-version|\.github/workflows/vercel-deploy\.yml|\.github/actions/|scripts/lib/(check-vercel-required-env|prod-held-flags-guard|load-env|exit-flushed|cli-help|deploy-prewarm-wait|git-net-timeout)\.|src/config/feature-flags\.ts|src/app/api/)' <<<"$CHANGED" | grep -vE '^\.github/workflows/vercel-deploy\.yml$|^\.github/actions/dispatch-deploy/|^scripts/lib/deploy-prewarm-wait\.js$' || true)  # DRILL ONLY
             [ -z "$SETUP" ] || handoff "main moved with setup changes ($(head -3 <<<"$SETUP" | tr '\n' ' '))"
             git reset -q --hard "$NEW"
           fi
