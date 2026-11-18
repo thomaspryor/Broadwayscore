@@ -150,11 +150,25 @@ async function runSimulatedNight({ keep = false, log = () => {}, only = null } =
   const https0 = { get: httpsMod.get, request: httpsMod.request };
   const watchOut = (mod, orig) => { for (const k of ['get', 'request']) mod[k] = function wrapped(a, ...rest) { const h = typeof a === 'string' ? new URL(a).hostname : a instanceof URL ? a.hostname : (a && (a.hostname || a.host)) || ''; if (!/^(127\.0\.0\.1|localhost)$/.test(String(h).replace(/:\d+$/, ''))) outside.push(`${h}`); return orig[k].call(this, a, ...rest); }; };
   watchOut(http, http0); watchOut(httpsMod, https0);
-  const outlets = await startOutletServer(gd.page);
+  // Every source the lane reads but the fixture does not model (other outlets' feeds, DTLI, Show Score, Talkin'
+  // Broadway...) answers like a quiet real night: a valid, empty page, so the lane's source-health alarm (BRO-7779)
+  // stays silent for it. A URL the fixture serves later (an article before its drop) still 404s until then. One lane
+  // feed is left dead on purpose: the alarm must name it exactly once per show (checked in evaluate).
+  const discovery = require('../opening-night-lane/discovery');
+  const neverServed = (u) => gd.page(u, Number.MAX_SAFE_INTEGER) === undefined;
+  const laneFeedUrls = new Set();
+  for (const show of gd.shows) for (const f of discovery.defaultLaneFeeds(show) || []) if (f && f.url) laneFeedUrls.add(f.url);
+  const deadSource = [...laneFeedUrls].filter(neverServed).sort()[0] || null;
+  const pageOrQuiet = (u, t) => {
+    const html = gd.page(u, t);
+    if (html !== undefined || u === deadSource || !neverServed(u)) return html;
+    return /feed|rss|\.xml\b/i.test(u) ? '<?xml version="1.0"?><rss version="2.0"><channel><title>quiet</title></channel></rss>' : '<html><body><main></main></body></html>';
+  };
+  const outlets = await startOutletServer(pageOrQuiet);
   const capture = await startCaptureServer();
   const publish = require('../opening-night-lane/publish');
   const liveServer = await publish.startStaticServer(liveDir);
-  const report = { night: gd.night, shows: {}, alerts: [], cardComments: [], inbox: [], checks: [], watch: [], coverage: [], foundToLive: [], bylineManualIngest: null };
+  const report = { night: gd.night, deadSource, shows: {}, alerts: [], cardComments: [], inbox: [], checks: [], watch: [], coverage: [], foundToLive: [], bylineManualIngest: null };
   try {
     await withSimShowsJson(gd.shows, async () => {
       const driver = require('../opening-night-lane/driver');
@@ -330,6 +344,16 @@ function evaluate(report, gd, { canonicalUrl }) {
   for (const x of report.foundToLive) if (x.via !== 'bww' && x.pageToLiveMs > FOUND_TO_LIVE_BAR_MS) // bww: only on the roundup, which the fixture posts late on purpose
     report.watch.push({ review: x.review, why: `page-to-live ${Math.round(x.pageToLiveMs / 60000)} min (bar ${FOUND_TO_LIVE_BAR_MS / 60000}); found-to-live ${Math.round(x.ms / 60000)} min` });
   check(report, 'found-to-live: every review goes live within the bar once the lane has it', report.foundToLive.length > 0 && report.foundToLive.every((x) => x.ms <= FOUND_TO_LIVE_BAR_MS), report.foundToLive.filter((x) => x.ms > FOUND_TO_LIVE_BAR_MS));
+  // The deliberately dead feed: the source-health alarm names it exactly once per show (one lane run per show).
+  if (report.deadSource) {
+    const perShow = Object.keys(report.shows).map((id) => [id, alertUrls.filter((t) => t.includes(`Press night ${id} `)).reduce((n, t) => n + t.split('\n').filter((l) => /^SOURCE FAILING \(/.test(l) && l.endsWith(report.deadSource)).length, 0)]);
+    check(report, `source-health: the dead feed alarms exactly once per show (${report.deadSource})`, perShow.every(([, n]) => n === 1), Object.fromEntries(perShow));
+  }
+  // No stray alarms: every alert item names the dead feed or a review in the fixture. A quiet source that alerts, or an
+  // alarm about nothing the night staged, is noise the owner would get on a real night.
+  const known = [report.deadSource, ...gd.reviews.map((r) => r.url)].filter(Boolean);
+  const stray = alertUrls.flatMap((t) => t.split('\n')).filter((l) => /^[A-Z][A-Z' -]{3,} \(/.test(l) && !known.some((u) => l.includes(u)));
+  check(report, 'alerts: no stray alarm (each names the dead feed or a staged review)', stray.length === 0, stray.slice(0, 5));
   check(report, 'alerts: every alert batch reached both channels (Discord stand-in and the coordinator card)', report.alerts.length === report.cardComments.length && report.cardComments.every((c) => c.card === 'BRO-5955'), { discord: report.alerts.length, card: report.cardComments.length });
   check(report, 'manual inbox: every dropped URL ends published', report.inboxFinal.length === report.inbox.length && report.inboxFinal.every((e) => e.status === 'published'), report.inboxFinal);
 }

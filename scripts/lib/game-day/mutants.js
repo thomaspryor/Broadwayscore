@@ -45,6 +45,14 @@ const MUTANTS = [
     expectFail: /exactly one alert names the missed review/,
   },
   {
+    id: 'BRO-7779-source-health-alarm',
+    what: 'the lane stops raising source-health alarms, so a feed dead all night is never reported',
+    source: 'scripts/lib/opening-night-lane/lane-runner.js',
+    from: "kind: 'source-health', items: sourceHealth.alerts(stamp),",
+    to: "kind: 'source-health', items: [],",
+    expectFail: /source-health: the dead feed alarms exactly once per show/,
+  },
+  {
     id: 'BRO-7781-inbox-outlet',
     what: 'a bare manual-inbox URL (no --outlet) gets no outlet and fails',
     source: 'scripts/lib/opening-night-lane/lane-runner.js',
