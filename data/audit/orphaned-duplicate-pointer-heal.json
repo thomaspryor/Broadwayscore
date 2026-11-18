@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-18T19:28:07.466Z",
+  "generated": "2026-11-18T19:54:50.578Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 55,
+  "count": 58,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -88,6 +88,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "downstate-2026",
+      "loserFile": "nytg--unknown.json",
+      "targetFile": "nytg--joe-dziemianowicz.json",
+      "reason": "orphaned-duplicate-heal: nytg--joe-dziemianowicz.json was flagged invalid after nytg--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "end-of-the-rainbow-off-west-end-2026",
       "loserFile": "guardian--unknown.json",
       "targetFile": "guardian--emma-brockes.json",
@@ -134,6 +141,13 @@
       "loserFile": "nysr--unknown.json",
       "targetFile": "nysr--david-finkle.json",
       "reason": "orphaned-duplicate-heal: nysr--david-finkle.json was flagged invalid after nysr--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "here-there-are-blueberries-2026",
+      "loserFile": "nytg--unknown.json",
+      "targetFile": "nytg--kyle-turner.json",
+      "reason": "orphaned-duplicate-heal: nytg--kyle-turner.json was flagged invalid after nytg--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -387,6 +401,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "here-there-are-blueberries-2026",
+      "loserFile": "nytg--unknown.json",
+      "targetFile": "nytg--kyle-turner.json",
+      "reason": "orphaned-duplicate-heal: nytg--kyle-turner.json was flagged invalid after nytg--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

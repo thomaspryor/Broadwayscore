@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T19:33:19.563Z",
+  "timestamp": "2026-11-18T20:00:03.188Z",
   "stats": {
-    "totalReviews": 82669,
-    "alreadyFlagged": 22468,
+    "totalReviews": 82671,
+    "alreadyFlagged": 22469,
     "dateGuardCatches": 220,
-    "directorMismatch": 3759,
+    "directorMismatch": 3760,
     "tvFilmSignals": 2352,
     "londonSignals": 3794,
     "offBroadwaySignals": 761,
     "yearMismatch": 383,
-    "noPublishDate": 8288
+    "noPublishDate": 8285
   },
   "findings": [
     {
@@ -14459,6 +14459,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "come-from-away-noise-regional-2026",
+      "file": "broadwayworld--drew-eberhard.json",
+      "score": null,
+      "publishDate": "2026-10-29",
+      "url": "https://www.broadwayworld.com/tampa/article/Review-COME-FROM-AWAY-at-NEW-TAMPA-PLAYERS-20261029",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher ashley\" from come-from-away-2017"
         }
       ]
     },
