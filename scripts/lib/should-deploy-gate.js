@@ -85,6 +85,7 @@ const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const { DATA_TRACKED_FILES, blobShaMetaKey } = require('./core-data-blob-meta.js');
+const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458
 
 // Tracked data/*.json the site imports from src/ (BRO-4614). Exact paths, not a
 // data/ prefix: data/audit/ churns constantly and never changes the site.
@@ -380,7 +381,7 @@ function compareDataShas(nowShas, baselineBlobShas, files = DATA_TRACKED_FILES) 
 }
 
 function git(args, opts = {}) {
-  return execFileSync('git', args, { encoding: 'utf8', ...opts });
+  return runGitOrThrow(args, { encoding: 'utf8', ...opts }); // BRO-7458: the fetch below has a timeout
 }
 
 function runDiff(baselineSha, headSha) {

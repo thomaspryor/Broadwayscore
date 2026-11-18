@@ -53,6 +53,8 @@ function scanText(text) {
   }
   for (const m of text.matchAll(IDENT_CALL)) {
     const call = text.slice(m.index, closeOf(text, m.index + m[0].indexOf('(')));
+    // Known limit: a timeout that arrives only through an options spread (`{ ...opts }`) is not seen;
+    // flagging every spread wrapper hits ~8 local-only helpers. Network callers go through runGit.
     if (!/\btimeout\b/.test(call)) continue;
     const line = lineOf(text, m.index);
     if (!waived(line)) out.push({ line, call: m[1], snippet: lines[line - 1].trim().slice(0, 140), wrapper: true });
