@@ -575524,47 +575524,47 @@
     "logKeepsSince": "2026-11-17T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-18T23:02:51.128Z",
-    "completedAt": "2026-11-18T23:10:40.787Z",
-    "totalReviews": 83025,
-    "processed": 10,
-    "skipped": 83011,
-    "errors": 1,
+    "startedAt": "2026-11-18T23:19:04.668Z",
+    "completedAt": "2026-11-18T23:19:09.462Z",
+    "totalReviews": 3,
+    "processed": 1,
+    "skipped": 2,
+    "errors": 11,
     "tokensUsed": {
-      "input": 93062,
-      "output": 4205,
-      "cacheRead": 54180,
-      "cacheWrite": 16048,
-      "total": 234615
+      "input": 24826,
+      "output": 767,
+      "cacheRead": 5418,
+      "cacheWrite": 10733,
+      "total": 58381
     },
-    "costUsd": 0.1227578,
-    "runId": "44416645839",
+    "costUsd": 0.08626205,
+    "runId": "44419306129",
     "source": "index",
     "errorDetails": [
       {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
+        "showId": "hamilton-west-end-2021",
+        "outletId": "standard",
+        "error": "resume_input_hash_mismatch"
       }
     ],
     "logKeepsSince": "2026-11-17T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-18T23:10:59.845Z",
-    "completedAt": "2026-11-18T23:14:31.259Z",
-    "totalReviews": 5,
-    "processed": 5,
+    "startedAt": "2026-11-18T23:24:08.069Z",
+    "completedAt": "2026-11-18T23:24:08.071Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 15005,
-      "output": 1104,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 16109
+      "total": 0
     },
-    "costUsd": 0.0199607,
-    "runId": "44416645839",
+    "costUsd": 0,
+    "runId": "44419306129",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-17T00:00:00.000Z"
