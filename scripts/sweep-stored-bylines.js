@@ -11,7 +11,7 @@
  *   node scripts/sweep-stored-bylines.js --tiers=1,2 --per-outlet=8 --out=/tmp/sample.jsonl
  *   node scripts/sweep-stored-bylines.js --report=/tmp/tm.jsonl        (summary of a finished run)
  *
- * Resumable: rows already in --out are skipped. --save-html=<dir> keeps each fetched page
+ * --paid uses the scraper's paid tiers (paywalled outlets). Resumable: rows already in --out are skipped. --save-html=<dir> keeps each fetched page
  * (for building byline fixtures; never commit a full page).
  */
 'use strict';
@@ -107,7 +107,9 @@ async function main() {
   const picked = {};
   const queue = [];
   // Newest first, so a sample sees the current template.
-  const sorted = reviews.filter((r) => r && r.url && outlets.has(r.outletId))
+  // --url-match=<substring>: only reviews whose url contains it (one page, e.g. a known bad row).
+  const urlMatch = typeof args['url-match'] === 'string' ? args['url-match'] : null;
+  const sorted = reviews.filter((r) => r && r.url && outlets.has(r.outletId) && (!urlMatch || r.url.includes(urlMatch)))
     .sort((a, b) => String(b.publishDate || '').localeCompare(String(a.publishDate || '')));
   const seenUrl = new Set();
   for (const r of sorted) {
@@ -140,7 +142,8 @@ async function main() {
         try {
           // --follow-redirects: an old url that redirects to the article's new address (TheaterMania's
           // /broadway/reviews/<slug>_<id>.html) is read there; the page must name the same article.
-          got = await fetchWithArchiveFallback(r.url, { fetchPageFn: (u) => fetchPage(u, { directOnly: true, ...(args['follow-redirects'] ? { skipVerify: true } : {}) }) });
+          // --paid: the scraper's full fallback chain (paid tiers) for paywalled / bot-blocked outlets.
+          got = await fetchWithArchiveFallback(r.url, { fetchPageFn: (u) => fetchPage(u, { ...(args.paid ? {} : { directOnly: true }), ...(args['follow-redirects'] ? { skipVerify: true } : {}) }) });
           if (got && got.html && args['follow-redirects'] && !sameArticle(r.url, got.html)) throw new Error('redirected to a different page');
         } finally { console.log = log; }
         if (!got || !got.html) throw new Error((got && got.error) || 'no html');
