@@ -2,7 +2,8 @@
 // quoted prose or a heredoc body as a write, and must still block real writes.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync, spawnSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { mkdtempSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
@@ -18,7 +19,7 @@ function run(command) {
   const input = JSON.stringify({ tool_name: 'Bash', tool_input: { command } });
   const env = { ...process.env, HOME: home, PLANNING_TIER_MODE: 'off' };
   delete env.WORKTREE_ENFORCE_DISABLE;
-  return spawnSync('bash', [HOOK], { input, cwd: repo, env, encoding: 'utf8' }).status;
+  return spawnSyncStdinFile('bash', [HOOK], { input, cwd: repo, env, encoding: 'utf8' }).status;
 }
 
 const CASES = [
