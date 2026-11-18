@@ -168,7 +168,8 @@ function selectFastTests({ changed, universe, readText, invariants = INVARIANT_T
   // a known-slow one only when the branch changed the test itself (the budget is about a minute).
   for (const c of colocated) {
     if (picked.has(c.file) || ((slow.has(c.file) || skip.has(c.file)) && !changed.includes(c.file))) continue;
-    const gate = gateFor(c.file, universe) || (c.tsx ? GATE_TSX : GATE_NODE);
+    // c.tsx wins: land.js runs a tsx-manifest test under tsx even when it sits in scripts/lib/.
+    const gate = c.tsx ? GATE_TSX : (gateFor(c.file, universe) || GATE_NODE);
     picked.set(c.file, { file: c.file, gate, why: 'colocated test (land.js colocated-tests)', tier: -1 });
   }
   const targeted = [];
@@ -245,7 +246,7 @@ function selectForTree(root, base, tip, { profile = 'ci' } = {}) {
 function colocatedTests(root, changed) {
   try {
     const AC = require(path.join(root, 'scripts/lib/autonomous-checks.js'));
-    const checks = AC.decideChecks(changed, (f) => fs.existsSync(path.join(root, f)), { tier: 1, tsxManifest: AC.readTsxManifest(root) });
+    const checks = AC.decideChecks(changed, (f) => fs.existsSync(path.join(root, f)), { tier: 1, tsxManifest: AC.readTsxRunTests(root) });
     const out = [];
     for (const c of checks) {
       if (c.name !== 'colocated-tests' && c.name !== 'colocated-tests-tsx') continue;

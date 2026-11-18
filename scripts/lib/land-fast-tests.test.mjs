@@ -168,3 +168,15 @@ test('colocatedTests reads the tree with autonomous-checks decideChecks', () => 
     assert.deepEqual(F.colocatedTests(path.join(dir, 'nope'), ['scripts/lib/w.js']), [], 'an older tree without the module selects nothing extra');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+// BRO-7637 ship-check: a tsx-run colocated test must run under tsx even when its path also matches the
+// scripts/lib node gate; and colocatedTests must read the manifests land.js reads (readTsxRunTests).
+test('a tsx colocated test under scripts/lib runs in the tsx gate', () => {
+  const r = sel(['scripts/lib/q.ts'], { colocated: [{ file: 'scripts/lib/q.test.mjs', tsx: true }] });
+  assert.equal(r.files.find((f) => f.file === 'scripts/lib/q.test.mjs')?.gate, 'unit-tests-tsx');
+});
+test('colocatedTests uses the same tsx manifests as land.js', () => {
+  const src = fs.readFileSync(new URL('./land-fast-tests.js', import.meta.url), 'utf8');
+  assert.match(src, /readTsxRunTests\(root\)/);
+  assert.doesNotMatch(src, /readTsxManifest\(root\)/);
+});
