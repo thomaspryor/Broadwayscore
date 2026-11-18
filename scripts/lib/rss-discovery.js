@@ -371,6 +371,7 @@ function itemNamesShow(title, url, showTitle, opts = {}) {
  * play adaptation of 'It's a Wonderful Life'"), so every name is tried.
  */
 function headlineNamesOtherStaging(title, showTitle, opts = {}) {
+  if (require('./show-names').wrongStagingGuardOff()) return false;
   if (!title || !showTitle) return false;
   const names = [showTitle, ...[mainTitleOf(showTitle)].filter(Boolean),
     ...(Array.isArray(opts.akaTitles) ? opts.akaTitles : (opts.pressNames === false ? [] : pressAkaForTitle(showTitle)))];

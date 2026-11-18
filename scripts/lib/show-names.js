@@ -273,7 +273,11 @@ function billingTitleOf(title) {
   }
   return reg.billingMemo.get(k);
 }
+// BRO-7785 rollback: WRONG_STAGING_GUARD_OFF=1 disables every other-staging / other-article check in one place.
+function wrongStagingGuardOff() { return process.env.WRONG_STAGING_GUARD_OFF === '1'; }
+
 function billedTitleOtherProductionCue(text, name, showTitle, opts = {}) {
+  if (wrongStagingGuardOff()) return null;
   // A caller may pass a press title as the title (google-news-rss headlineNamesPressTitle matches each aka on its own):
   // read the venues and markets of the show that bills it, so its own house stays its own.
   showTitle = billingTitleOf(showTitle);
@@ -317,6 +321,7 @@ const SLUG_PLACE_SKIP = new Set(['nyc', 'ny', 'new', 'york', 'london', 'west', '
  * aside. NYC and London shows only (as billedTitleOtherProductionCue). Returns the cue or null.
  */
 function slugOtherStagingCue(url, showTitle) {
+  if (wrongStagingGuardOff()) return null;
   // Only titles billed by NYC/London entries alone: a tour or regional entry with the same title is gathered with this
   // same check (it receives only the title), and its reviews name every city's venue.
   const markets = registry().marketsByTitle.get(normTitle(showTitle));
@@ -373,6 +378,7 @@ const URL_FILLER = new Set(['article', 'articles', 'news', 'story', 'html', 'htm
  * (show-names slugOtherStagingCue) marks another production. Talkin' Broadway pages are reviews by path.
  */
 function urlNamesOtherArticle(url, showTitle) {
+  if (wrongStagingGuardOff()) return false;
   if (/talkinbroadway\.com\/(?:page\/)?world\//i.test(url)) return false;
   if (slugOtherStagingCue(url, showTitle)) return true;
   let path;
@@ -432,5 +438,5 @@ function akaTitlesValueProblem(value, show, shows, prevValue = null) {
 module.exports = {
   akaTitlesValueProblem, normTitle, sigWords, mainTitleSplit, mainTitleIsUnique, showNames,
   pressAkaForTitle, pressVenuesForTitle, registryShowTitles, setPressNameShows, otherProductionCue,
-  billedTitleOtherProductionCue, slugOtherStagingCue, pressPeopleForTitle, urlNamesOtherArticle,
+  billedTitleOtherProductionCue, wrongStagingGuardOff, slugOtherStagingCue, pressPeopleForTitle, urlNamesOtherArticle,
 };

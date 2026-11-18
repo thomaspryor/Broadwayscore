@@ -42,6 +42,8 @@ const OWN = [
   ["Review: It's a Wonderful Life", 'https://www.nytimes.com/2026/11/19/theater/its-a-wonderful-life-review.html'],
   ["Review: It's A Wonderful Life: A Live Radio Play on Broadway", ''],
   ["Lisa Rinna's Broadway debut in It's a Wonderful Life: A Live Radio Play", ''],
+  ["Review: It's A Wonderful Life: A Live Radio Play - The New York Times", ''],
+  ["'It's a Wonderful Life' Review: Megan Hilty and Lisa Rinna at the Broadhurst - Variety", ''],
 ];
 const NIGHT = new Date('2026-11-18T00:00:00Z');
 const feedItem = (title, link) => ({ title, link, pubDate: new Date('2026-11-19T03:00:00Z') });
@@ -84,4 +86,14 @@ test('critics\' decks and regional-only titles are not mistaken for another stag
   // A title billed by a regional entry is gathered for that city, so its own venue is never "another staging".
   assert.equal(rss.titleMatchesShow('Review: A Christmas Carol at Goodman Theatre', 'A Christmas Carol', LANE), true);
   assert.equal(urlLooksLikeReview('https://chicagoreader.com/a-christmas-carol-at-goodman-theatre-review/', 'A Christmas Carol'), true);
+}));
+
+test('WRONG_STAGING_GUARD_OFF=1 restores the old behaviour in one switch', () => withFixture(() => {
+  const [title, link] = OTHER_STAGINGS[0];
+  process.env.WRONG_STAGING_GUARD_OFF = '1';
+  try {
+    assert.equal(rss.itemNamesShow(title, link, IAWL.title, LANE), true);
+    assert.equal(urlLooksLikeReview(VULTURE, IAWL.title), true);
+  } finally { delete process.env.WRONG_STAGING_GUARD_OFF; }
+  assert.equal(rss.itemNamesShow(title, link, IAWL.title, LANE), false);
 }));
