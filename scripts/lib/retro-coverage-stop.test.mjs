@@ -1,4 +1,4 @@
-// BRO-7645: retro-coverage-stop.mjs, pure decision plus the real Stop-hook entry (fail-open, one nudge).
+// BRO-7645: retro-coverage-stop.mjs, pure decision plus the real Stop-hook entry (fail-open, capped nudges).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -14,24 +14,49 @@ const use = (name, input, result = 'ok', isError = false) => { const id = `t${++
 const edit = () => use('Edit', { file_path: '/home/user/Broadwayscore/scripts/x.js' });
 const land = () => use('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }, 'ok');
 const record = (flags, out) => use('Bash', { command: `node scripts/lib/session-retro.js --check --record ${flags}`.trim() }, out);
+const carry = () => use('Bash', { command: 'git add data/audit/session-retro.jsonl && git commit -m "retro row" && git push origin HEAD:refs/heads/land/x' });
 const SAFE = 'SAFE TO ARCHIVE — done';
 const decide = (events, lastMessage = SAFE, env = ENV) => stopHookDecision({ lastMessage, events, env });
 
 test('landed code with no retro run blocks; with a clean retro it allows', () => {
   assert.equal(decide([...edit(), ...land()]).decision, 'block');
   assert.match(decide([...edit(), ...land()]).message, /Retro missing/);
-  assert.equal(decide([...edit(), ...land(), ...record('', 'No retro threshold crossed.')]).decision, 'allow');
+  assert.equal(decide([...edit(), ...land(), ...record('', 'No retro threshold crossed.'), ...carry()]).decision, 'allow');
 });
 
 test('a flagged retro needs --fixes or --no-action', () => {
   const flagged = 'RETRO REQUIRED (25 hook blocks): turn each';
   assert.match(decide([...edit(), ...land(), ...record('', flagged)]).message, /not closed/);
   assert.match(decide([...edit(), ...land(), ...use('Bash', { command: 'node scripts/lib/session-retro.js --check --record' }, flagged, true)]).message, /not closed/, 'exit 10 reported as an error is still a run');
-  assert.equal(decide([...edit(), ...land(), ...record('', flagged), ...record('--fixes=BRO-7652', flagged)]).decision, 'allow');
-  assert.equal(decide([...edit(), ...land(), ...record('--no-action="idle owner time, nothing to fix"', flagged)]).decision, 'allow');
+  assert.equal(decide([...edit(), ...land(), ...record('', flagged), ...record('--fixes=BRO-7652', flagged), ...carry()]).decision, 'allow');
+  assert.equal(decide([...edit(), ...land(), ...record('--no-action="idle owner time, nothing to fix"', flagged), ...carry()]).decision, 'allow');
   assert.equal(decide([...edit(), ...land(), ...record('--fixes=later', flagged)]).decision, 'block', 'a non-id link does not count');
   const refused = use('Bash', { command: 'node scripts/lib/session-retro.js --record --no-action=x' }, 'session-retro: --no-action needs a real reason', true);
   assert.equal(decide([...edit(), ...land(), ...record('', flagged), ...refused]).decision, 'block', 'a record run the recorder refused does not close the loop');
+});
+
+test('BRO-7729: the retro row must ride a land push to main', () => {
+  const clean = 'No retro threshold crossed.';
+  const sh = (command, out = 'ok', err = false) => use('Bash', { command }, out, err);
+  // The 2026-11-17 incident: recorded after the last land, committed to the session branch only.
+  const incident = [...edit(), ...land(), ...record('', clean), ...sh('git add data/audit/session-retro.jsonl && git commit -m "retro"'), ...sh('git push -u origin claude/x')];
+  assert.equal(decide(incident).decision, 'block');
+  assert.match(decide(incident).message, /Retro not on main/);
+  assert.equal(decide([...edit(), ...land(), ...record('', clean)]).decision, 'block', 'recorded after the last land, never committed');
+  assert.equal(decide([...edit(), ...record('', clean), ...land()]).decision, 'block', 'a land push with no ledger commit carries nothing');
+  // Allowed shapes.
+  assert.equal(decide([...edit(), ...record('', clean), ...sh('git add -A'), ...sh('git commit -m "work and retro"'), ...land()]).decision, 'allow', 'record before the final land, add -A');
+  assert.equal(decide([...edit(), ...record('', clean), ...sh('git commit -am "work and retro"'), ...land()]).decision, 'allow', 'commit -am');
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('git -C /w add data/audit && git -C /w commit -m "r"'), ...land()]).decision, 'allow', 'a second land push after the record');
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...use('mcp__github__push_files', { branch: 'land/r', files: [{ path: 'data/audit/session-retro.jsonl' }] })]).decision, 'allow', 'API push of the ledger to land/');
+  // The LAST record run is the one that must land: a linked re-run after the land is not on main.
+  const flagged = 'RETRO REQUIRED (land refusal): turn each';
+  assert.equal(decide([...edit(), ...record('', flagged), ...carry(), ...record('--fixes=BRO-1', flagged)]).decision, 'block', 'the linked re-run never landed');
+  // A refused land push after the commit does not carry it.
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('git commit -am x'), ...sh('git push origin HEAD:refs/heads/land/x', 'rejected', true)]).decision, 'block');
+  // A commit mentioned in a heredoc is not a commit.
+  assert.equal(decide([...edit(), ...record('', clean), ...sh("cat <<'E'\ngit commit -am x\nE"), ...land()]).decision, 'block');
+  assert.equal(decide(incident, `${SAFE}\nNO-RETRO: row deliberately kept off main for a test`).decision, 'allow', 'bypass still works');
 });
 
 test('stays quiet outside its scope', () => {
@@ -49,7 +74,7 @@ test('stays quiet outside its scope', () => {
   assert.equal(decide(null).decision, 'allow');
 });
 
-test('hook entry: blocks once (exit 2), then lets the same transcript through; bad input fails open', () => {
+test('hook entry: blocks up to 3 times (exit 2), then lets the same transcript through; bad input fails open', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rcs-'));
   try {
     const tp = path.join(dir, 't.jsonl');
@@ -65,7 +90,11 @@ test('hook entry: blocks once (exit 2), then lets the same transcript through; b
     const a = run(inp);
     assert.equal(a.status, 2);
     assert.match(a.stderr, /Retro missing/);
-    assert.equal(run(inp).status, 0, 'one nudge per transcript');
+    const b = run(inp);
+    assert.equal(b.status, 2, 'BRO-7729: closing again does not clear it');
+    assert.match(b.stderr, /Repeat 2 of 3/);
+    assert.equal(run(inp).status, 2);
+    assert.equal(run(inp).status, 0, 'capped at 3: it can never loop a session');
     assert.equal(run('not json').status, 0);
     assert.equal(run(JSON.stringify({ transcript_path: '/nope' })).status, 0);
   } finally {

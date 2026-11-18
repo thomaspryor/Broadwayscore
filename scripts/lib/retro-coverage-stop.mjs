@@ -8,8 +8,8 @@
 // It reads the TRANSCRIPT (the record command and its flags), not the ledger file: a session in a
 // worktree writes its row to the worktree's copy, which this hook's checkout cannot see. The ledger
 // stays the data store; the transcript is the witness. It does not judge whether a fix is real
-// (--fixes validates the shape; the weekly rollup counts what recurs). One nudge per transcript
-// (exit 2) plus a log line in .cache/retro-coverage-stop.log so the hit rate is readable.
+// (--fixes validates the shape; the weekly rollup counts what recurs). Up to MAX_NUDGES (3) per transcript per reason
+// (exit 2, BRO-7729) plus a log line in .cache/retro-coverage-stop.log so the hit rate is readable.
 // Cloud only, fails open on any error, kill switch RETRO_COVERAGE_STOP_DISABLE=1.
 // Wired in .claude/hooks/verify-edits.sh as [VE:RETROCOV]; pinned by retro-coverage-stop.test.mjs.
 import { createHash } from 'node:crypto';
@@ -102,18 +102,41 @@ export function editedCode(events) {
     || (e.name === 'Bash' && shellEditsCode(e.input?.command))));
 }
 
-/** PURE. The `--record` commands this session ran that really ran (answered, not an error). */
+/** PURE. The `--record` commands this session ran that really ran (answered, not an error), with their event index. */
 export function recordRuns(events) {
   const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
   return events
-    .filter((e) => e.kind === 'assistant_tool_use' && e.name === 'Bash')
-    .map((e) => ({ command: runShellCode(e.input?.command) || '', result: answers.get(e.id) }))
+    .map((e, i) => ({ e, i }))
+    .filter(({ e }) => e.kind === 'assistant_tool_use' && e.name === 'Bash')
+    .map(({ e, i }) => ({ index: i, command: runShellCode(e.input?.command) || '', result: answers.get(e.id) }))
     // --check exits 10 on a flagged retro, which the harness may report as an error: a flagged run still ran.
     .filter((x) => RECORD_RE.test(x.command) && x.result && (!x.result.isError || /RETRO REQUIRED/.test(String(x.result.content || ''))));
 }
 
+// BRO-7729: a --record row lives in the checkout's data/audit/session-retro.jsonl until a land push carries it to
+// main; the weekly rollup reads main. A session (2026-11-17) recorded, committed the row only to its claude/ branch
+// and closed SAFE TO ARCHIVE: the gate passed and the loop never saw it. So the last record run must be followed by a
+// commit that takes the ledger (git add of it, data/audit, -A, ., --all, or commit -a) and then a land push.
+const LEDGER_COMMIT_RE = /\bgit\s+(?:-C\s+\S+\s+)?(?:add\b[^\n;&|]*(?:session-retro\.jsonl|data\/audit\b|\s(?:-A|--all|\.)(?=\s|$))|commit\b[^\n;&|]*(?:\s-[a-zA-Z]*a[a-zA-Z]*\b|\s--all\b|session-retro\.jsonl))/;
+/** PURE. Index of each event that commits the ledger (a Bash commit, or an API push to land/ that names it). */
+export function ledgerCommitIndices(events) {
+  const out = [];
+  events.forEach((e, i) => {
+    if (e.kind !== 'assistant_tool_use') return;
+    if (e.name === 'Bash' && LEDGER_COMMIT_RE.test(runShellCode(e.input?.command) || '')) out.push(i);
+    else if (/^mcp__github__(?:push_files|create_or_update_file)$/.test(e.name || '') && /session-retro\.jsonl/.test(JSON.stringify(e.input || {}))) out.push(i);
+  });
+  return out;
+}
+/** PURE. Did a land push carry the row of the record run at `recordIndex`? (record, then a ledger commit, then a land push; one command may do the last two.) */
+export function recordReachedLand(events, recordIndex) {
+  const commit = ledgerCommitIndices(events).find((i) => i > recordIndex);
+  return commit !== undefined && landedPushIndices(events).some((i) => i >= commit);
+}
+
 const MSG = {
   norow: 'Retro missing: this session landed code but never ran `node scripts/lib/session-retro.js --check --record`. Run it (it reads the transcript: edit-to-end time, hook blocks by hook, land refusals, bypasses), then turn each finding into a fix now or a card and re-run with `--record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"`). Then close again. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
+  unlanded: 'Retro not on main: the last `session-retro.js --record` row was never carried to main by a land push after it (a row left in a worktree or on a claude/ branch is invisible to the weekly rollup). Commit it and land it: `git add data/audit/session-retro.jsonl && git commit -m "retro: session row"`, then `git push origin HEAD:refs/heads/land/<name>` and follow the Land run. Next time run --record before your final land push so it rides that push. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
   nolink: 'Retro not closed: the retro row crossed a threshold ("RETRO REQUIRED") but links no fix or card. For each finding fix it now (guard, test, hook) or file a card, then re-run `node scripts/lib/session-retro.js --record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"` when the long time or many blocks were idle or expected). A memory note is not a fix. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
 };
 
@@ -130,8 +153,11 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (runs.length === 0) return { decision: 'block', reason: 'landed code, no retro --record run', message: MSG.norow };
   const flagged = runs.some((r) => /RETRO REQUIRED/.test(String(r.result.content || '')));
   if (flagged && !runs.some((r) => LINK_RE.test(r.command))) return { decision: 'block', reason: 'retro crossed a threshold, no --fixes/--no-action', message: MSG.nolink };
+  if (!recordReachedLand(events, runs[runs.length - 1].index)) return { decision: 'block', reason: 'retro row never carried to main by a land push', message: MSG.unlanded };
   return { decision: 'allow', reason: flagged ? 'retro closed with links' : 'retro recorded, no threshold crossed' };
 }
+
+export const MAX_NUDGES = 3;
 
 function logHit(entry) {
   try {
@@ -153,11 +179,15 @@ export function main(argv, { env = process.env } = {}) {
   const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp), env });
   if (d.decision !== 'block') return 0;
   const counter = path.join(os.tmpdir(), `retro-coverage-stop-${createHash('sha1').update(tp + '\u0000' + d.reason).digest('hex').slice(0, 12)}`);
-  const seen = fs.existsSync(counter); // one nudge per transcript per reason: a later, different gap still gets its own
-  logHit({ session: input.session_id || null, blocked: !seen, reason: d.reason });
-  if (seen) return 0; // one nudge per transcript; it can never loop a session
-  try { fs.writeFileSync(counter, '1'); } catch { /* best effort */ }
-  process.stderr.write(d.message + '\n');
+  // BRO-7729: one nudge let a session close again with the gap still open (2026-11-17: a flagged, unlinked retro
+  // closed SAFE TO ARCHIVE). Now up to MAX_NUDGES blocks per transcript per reason, so the way past is the fix or a
+  // logged NO-RETRO reason; the cap still means it can never loop a session forever.
+  let count = 0;
+  try { count = parseInt(fs.readFileSync(counter, 'utf8'), 10) || 0; } catch { /* first time */ }
+  logHit({ session: input.session_id || null, blocked: count < MAX_NUDGES, nudge: count + 1, reason: d.reason });
+  if (count >= MAX_NUDGES) return 0;
+  try { fs.writeFileSync(counter, String(count + 1)); } catch { /* best effort */ }
+  process.stderr.write((count > 0 ? `(Repeat ${count + 1} of ${MAX_NUDGES}: closing again does not clear this. Do the step below, or write NO-RETRO: <reason> in your closing.)\n` : '') + d.message + '\n');
   return 2;
 }
 
