@@ -59,6 +59,12 @@ test('refuses a one-word lead with no corroboration', () => {
   }
 });
 
+test('LEAD_WORD_MATCH_OFF=1 turns the corroborated match off (rollback without a deploy)', () => {
+  process.env.LEAD_WORD_MATCH_OFF = '1';
+  try { assert.equal(judge(TM_HEADLINE).reason, 'switched-off'); } finally { delete process.env.LEAD_WORD_MATCH_OFF; }
+  assert.equal(judge(TM_HEADLINE).admit, true);
+});
+
 test('refuses outside the opening night, off a direct source, off the market, without a review cue', () => {
   assert.equal(judge(TM_HEADLINE, TM_URL, DOLLYGRAM, { ...CTX, night: '2026-11-18' }).reason, 'not-opening-tonight');
   assert.equal(judge(TM_HEADLINE, TM_URL, DOLLYGRAM, { ...CTX, night: undefined }).reason, 'not-opening-tonight');

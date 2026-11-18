@@ -144,6 +144,8 @@ function otherShowNamed(hay, show) {
 function corroboratedLeadWord(item, show, ctx = {}) {
   const no = (reason, word = null) => ({ admit: false, reason, word });
   if (!item || !item.url || !show || !show.title) return no('no-input');
+  // Kill switch: LEAD_WORD_MATCH_OFF=1 in the lane process env puts every one-word lead back to near-miss only.
+  if (process.env.LEAD_WORD_MATCH_OFF === '1') return no('switched-off');
   const word = leadWord(show.title);
   if (!word) return no('no-one-word-lead');
   if (MONTHS.has(word)) return no('lead-word-is-a-month', word);
