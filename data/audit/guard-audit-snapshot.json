@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-17T10:53:12.008Z",
+  "generatedAt": "2026-11-18T10:47:02.288Z",
   "window": {
-    "since": "2026-11-11",
-    "until": "2026-11-17"
+    "since": "2026-11-12",
+    "until": "2026-11-18"
   },
   "bannerText": "Spend guard audit (last 7 days): 0 defect(s), 1 cap drift(s).",
   "items": [
@@ -53,7 +53,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 319,
+        "median14d": 235,
         "drift": false,
         "note": null
       }
@@ -105,11 +105,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 23210,
+        "ceiling": 22917,
         "source": "plan+opening-window-reserve+median-floor",
         "from": "state",
         "currentZero": false,
-        "median14d": 15473,
+        "median14d": 15278,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -136,7 +136,7 @@
         "source": "plan+opening-window-reserve+median-floor",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 15473,
+        "median14d": 15278,
         "drift": false,
         "note": null
       }
@@ -159,27 +159,17 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 283078,
+        "ceiling": 291217,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 71882,
+        "median14d": 72440,
         "drift": false,
         "note": null
       }
     }
   ],
   "spendByDay": {
-    "2026-11-04": {
-      "partial": false,
-      "guards": {
-        "bd-circuit-breaker-web_unlocker2": {
-          "usd": 0.0344,
-          "rows": 335,
-          "unpriced": 0
-        }
-      }
-    },
     "2026-11-05": {
       "partial": false,
       "guards": {
@@ -247,14 +237,18 @@
       "guards": {}
     },
     "2026-11-17": {
+      "partial": false,
+      "guards": {}
+    },
+    "2026-11-18": {
       "partial": true,
       "guards": {}
     }
   },
   "dailyBreakerPattern": {
     "window": {
-      "sinceDay": "2026-11-11",
-      "untilDay": "2026-11-17",
+      "sinceDay": "2026-11-12",
+      "untilDay": "2026-11-18",
       "days": 7
     },
     "providers": {
