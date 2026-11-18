@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-18T06:44:17.988Z",
+  "generatedAt": "2026-11-18T10:26:30.123Z",
   "date": "2026-11-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 251741,
+  "entryCount": 262070,
   "shows": [
     {
       "showId": "kinky-boots-2013",
@@ -2442,7 +2442,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 407018,
-        "scored-to-rebuilt": 434980,
+        "scored-to-rebuilt": 418147,
         "rebuilt-to-deployed": 20958513
       },
       "reviews_over_15min": 15,
@@ -9407,13 +9407,13 @@
     },
     {
       "showId": "our-town-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1234335,
+        "scored-to-rebuilt": 1232798,
         "rebuilt-to-deployed": 41368617
       },
       "reviews_over_15min": 0,
@@ -9587,13 +9587,13 @@
     },
     {
       "showId": "the-kings-critique-off-broadway-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 1480828,
+        "collected-to-scored": 4597800,
+        "scored-to-rebuilt": 954832,
         "rebuilt-to-deployed": 37281775
       },
       "reviews_over_15min": 0,
@@ -9602,13 +9602,13 @@
     },
     {
       "showId": "nacho-ate-spiderman-regional-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1861071,
+        "scored-to-rebuilt": 1205204,
         "rebuilt-to-deployed": 37281778
       },
       "reviews_over_15min": 0,
@@ -9617,13 +9617,13 @@
     },
     {
       "showId": "radio-galaxy-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1820522,
+        "scored-to-rebuilt": 1819347,
         "rebuilt-to-deployed": 37281777
       },
       "reviews_over_15min": 0,
@@ -10267,13 +10267,13 @@
     },
     {
       "showId": "heroes-of-the-fourth-turning-red-regional-2026",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 309614,
-        "scored-to-rebuilt": 501456,
+        "scored-to-rebuilt": 497917,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -10507,13 +10507,13 @@
     },
     {
       "showId": "a-streetcar-named-desire-regional-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 537866,
-        "scored-to-rebuilt": 1069120,
+        "scored-to-rebuilt": 803338,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -10702,13 +10702,13 @@
     },
     {
       "showId": "destiny-of-desire-regional-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1755163,
+        "scored-to-rebuilt": 1300625,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -10919,6 +10919,66 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 781819,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 560723,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-war-of-the-worlds-regional-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1217865,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "slanted-floors-off-broadway-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 26960,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "annie-regional-2026-drury-lane-oakbrook",
+      "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1587830,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
