@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7780-c",
   "planId": "0bb1ef55-ee3b-47f2-bb13-0a2a74b5ce08",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T15:34:42.201Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "are-you-watching-west-end-2026/all-that-dazzles-uk--daz-gale.json: criticName"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T18:16:49.819Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "are-you-watching-west-end-2026/all-that-dazzles-uk--daz-gale.json criticName: \"Daz Gale\" -> \"Seth Wilby\""
+    }
+  ],
+  "executedIn": "ci"
 }
