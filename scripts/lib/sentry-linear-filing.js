@@ -60,7 +60,9 @@ function buildSentryCard(issue, classification, org) {
     `- \`${regressionTestPath(issue.id)}\` exists and passes. It fails with the fix reverted: either it reproduces the error path and asserts the fixed behaviour, or (if this is noise) it feeds this issue's real event shape to classifyIssue() and asserts noise.`,
     '- The Sentry issue is resolved after the fix is live.',
     '',
-    `VERIFY: node --test ${regressionTestPath(issue.id)}`,
+    // tsx runs plain .mjs tests AND ones that import src/ TS through @/ (BRO-7722 review).
+    `VERIFY: npx tsx --test ${regressionTestPath(issue.id)}`,
+    `CREATES: ${regressionTestPath(issue.id)}`,
     '',
     `Classification: ${(classification && classification.reason) || 'unknown'}`,
     markerLine(issue.id),

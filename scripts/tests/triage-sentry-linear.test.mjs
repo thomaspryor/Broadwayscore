@@ -72,7 +72,8 @@ test('every Sentry card carries a safe VERIFY the cloud worker accepts (BRO-7722
   const { evaluateVerifiability } = require('../lib/verify-gate.js');
   const v = evaluateVerifiability(c.description, []);
   assert.equal(v.armed, true, JSON.stringify(v));
-  assert.equal(v.cmd, 'node --test tests/unit/sentry-4567.test.mjs');
+  assert.equal(v.cmd, 'npx tsx --test tests/unit/sentry-4567.test.mjs');
+  assert.match(c.description, /^CREATES: tests\/unit\/sentry-4567\.test\.mjs$/m);
   assert.throws(() => lib.regressionTestPath('abc'));
 });
 
