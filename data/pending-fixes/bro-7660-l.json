@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7660-l",
+  "planId": "e995449f-d586-40fd-935a-5300b55f6d00",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 12 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WS: body reviews the Washington/Gyllenhaal revival",
+      "BRO-7660 CLEAR_WS: body reviews the Washington/Gyllenhaal revival",
+      "BRO-7660 CLEAR_WS: body reviews Pirates! with David Hyde Pierce",
+      "BRO-7660 CLEAR_WS: body reviews Pirates! with David Hyde Pierce",
+      "BRO-7660 KEEP_WS: body is a 404 error page",
+      "BRO-7660 CLEAR_WS: body is a critical review (flawed and also powerful)",
+      "BRO-7660 CLEAR_WS: body is a critical review (flawed and also powerful)",
+      "BRO-7660 CLEAR_WS: body is a critical review (flawed and also powerful)",
+      "BRO-7660 CLEAR_WS: body is a critical review of Graham's play",
+      "BRO-7660 CLEAR_WS: body is a critical review of Graham's play",
+      "BRO-7660 CLEAR_WS: body is a critical review of Graham's play",
+      "BRO-7660 KEEP_WS: body is a short teaser pointing to the full review elsewhere, plus credits",
+      "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman",
+      "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman",
+      "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman",
+      "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman",
+      "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman",
+      "BRO-7660 KEEP_WS: body reviews Ashes & Ink, another show",
+      "BRO-7660 CLEAR_WS: body: Scherzinger as Norma Desmond, this staging",
+      "BRO-7660 CLEAR_WS: body: Scherzinger as Norma Desmond, this staging",
+      "BRO-7660 KEEP_WS: body covers The Light and the Dark and Babe, not Swept Away",
+      "BRO-7660 KEEP_CVWA: body is a cookie-consent page, no review text",
+      "BRO-7660 KEEP_CVWA: body is a cookie-consent page, no review text",
+      "BRO-7660 CLEAR_WS: body reviews the Reeves/Winter Godot (two-Beckett column)",
+      "BRO-7660 CLEAR_WS: body reviews the Reeves/Winter Godot (two-Beckett column)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "othello-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body reviews the Washington/Gyllenhaal revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body reviews the Washington/Gyllenhaal revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pirates-the-penzance-musical-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body reviews Pirates! with David Hyde Pierce"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pirates-the-penzance-musical-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body reviews Pirates! with David Hyde Pierce"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pirates-the-penzance-musical-2025/culturesauce--unknown.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WS: body is a 404 error page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/dailybeast--tim-teeman.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body is a critical review (flawed and also powerful)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/dailybeast--tim-teeman.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body is a critical review (flawed and also powerful)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/dailybeast--tim-teeman.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body is a critical review (flawed and also powerful)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/theatermania--david-gordon.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body is a critical review of Graham's play"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/theatermania--david-gordon.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body is a critical review of Graham's play"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/theatermania--david-gordon.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body is a critical review of Graham's play"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sing-street-off-broadway-2019/front-row-center--stanford-friedman.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WS: body is a short teaser pointing to the full review elsewhere, plus credits"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS+NR: body reviews Old Friends at the Friedman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-2024/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WS: body reviews Ashes & Ink, another show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-west-end-2023/daily-mail--luke-jones.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body: Scherzinger as Norma Desmond, this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-west-end-2023/daily-mail--luke-jones.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body: Scherzinger as Norma Desmond, this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "swept-away-2024/this-week-in-new-york--unknown.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WS: body covers The Light and the Dark and Babe, not Swept Away"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): body is a cookie-consent page, no review text",
+        "description": "BRO-7660 KEEP_CVWA: body is a cookie-consent page, no review text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_CVWA: body is a cookie-consent page, no review text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body reviews the Reeves/Winter Godot (two-Beckett column)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body reviews the Reeves/Winter Godot (two-Beckett column)"
+      }
+    ]
+  }
+}

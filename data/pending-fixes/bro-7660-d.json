@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7660-d",
+  "planId": "99e714f5-471c-4a68-9d22-d83140123aec",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 4 of 16)",
+    "steps": [
+      "BRO-7660 KEEP_WP: body is generic 2023 promotional copy, not a notice of the 2018 staging",
+      "BRO-7660 CLEAR_WP: excerpt: now raising the roof at Second Stage Theatre",
+      "BRO-7660 CLEAR_WP: excerpt: now raising the roof at Second Stage Theatre",
+      "BRO-7660 CLEAR_WP: body: now at the Hayes, the Broadway transfer",
+      "BRO-7660 CLEAR_WP: body: now at the Hayes, the Broadway transfer",
+      "BRO-7660 CLEAR_WP: body: at Second Stage's Helen Hayes Theatre, which is this Broadway production",
+      "BRO-7660 CLEAR_WP: body: at Second Stage's Helen Hayes Theatre, which is this Broadway production",
+      "BRO-7660 CLEAR_WP: excerpt: Michael Mayer staging with Christian Borle, the Westside run",
+      "BRO-7660 CLEAR_WP: excerpt: Michael Mayer staging with Christian Borle, the Westside run",
+      "BRO-7660 KEEP_WP: body reviews the Pasadena Playhouse staging in Los Angeles",
+      "BRO-7660 CLEAR_WP: body: the RSC show has now arrived in the West End; this is the Cambridge Theatre notice",
+      "BRO-7660 CLEAR_WP: body: the RSC show has now arrived in the West End; this is the Cambridge Theatre notice",
+      "BRO-7660 KEEP_WP: body reviews the first UK national tour",
+      "BRO-7660 CLEAR_WP: excerpt reviews this show, published mid-run; NYTW is its only staging",
+      "BRO-7660 CLEAR_WP: excerpt reviews this show, published mid-run; NYTW is its only staging",
+      "BRO-7660 KEEP_WP: body: 2013 original Broadway cast (LeKae, DeBose), not the 2016 return",
+      "BRO-7660 KEEP_WP: body: UK edition, the 2016 West End staging",
+      "BRO-7660 KEEP_WP: body reviews a regional tour stop, not the Nederlander engagement",
+      "BRO-7660 KEEP_WP: body: touring cast at Seattle's Paramount Theatre",
+      "BRO-7660 KEEP_WP: body is a reviews-are-in roundup, not a review",
+      "BRO-7660 KEEP_WP: body is a 2025 social post about the UK tour review",
+      "BRO-7660 KEEP_WP: body is generic 2023 promotional copy, not a notice of the 2017 staging",
+      "BRO-7660 CLEAR_WP: body reviews the Bourne-directed Gielgud revival, published on its opening night",
+      "BRO-7660 CLEAR_WP: body reviews the Bourne-directed Gielgud revival, published on its opening night",
+      "BRO-7660 KEEP_WP: body is a copy of Adam Feldman's Broadway notice filed under the wrong critic; the Feldman file is the original"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "in-the-body-of-the-world-off-broadway-2018/zeal-nyc--diana-mott.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is generic 2023 promotional copy, not a notice of the 2018 staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "invisible-thread-off-broadway-2015/bobs-theater-blog--robert-sholiton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt: now raising the roof at Second Stage Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "invisible-thread-off-broadway-2015/bobs-theater-blog--robert-sholiton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt: now raising the roof at Second Stage Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "job-2024/vulture--jackson-mchenry.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: now at the Hayes, the Broadway transfer"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "job-2024/vulture--jackson-mchenry.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: now at the Hayes, the Broadway transfer"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "linda-vista-2019/theater-pizzazz--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: at Second Stage's Helen Hayes Theatre, which is this Broadway production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "linda-vista-2019/theater-pizzazz--samuel-l-leiter.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: at Second Stage's Helen Hayes Theatre, which is this Broadway production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-shop-of-horrors-off-broadway-2019/thewrap--robert-hofler.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt: Michael Mayer staging with Christian Borle, the Westside run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-shop-of-horrors-off-broadway-2019/thewrap--robert-hofler.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt: Michael Mayer staging with Christian Borle, the Westside run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-shop-of-horrors-off-broadway-2019/stageandcinema--marc-wheeler.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body reviews the Pasadena Playhouse staging in Los Angeles"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: the RSC show has now arrived in the West End; this is the Cambridge Theatre notice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/telegraph--charles-spencer.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: the RSC show has now arrived in the West End; this is the Cambridge Theatre notice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/thestage--mark-shenton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body reviews the first UK national tour"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "merry-me-off-broadway-2023/west-end-best-friend--liz-turner.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews this show, published mid-run; NYTW is its only staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "merry-me-off-broadway-2023/west-end-best-friend--liz-turner.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews this show, published mid-run; NYTW is its only staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "motown-the-musical-2016/amny--matt-windman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: 2013 original Broadway cast (LeKae, DeBose), not the 2016 return"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "motown-the-musical-2016/telegraph--dominic-cavendish.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: UK edition, the 2016 West End staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "motown-the-musical-2016/san-jose-mercury-news--karen-dsouza.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body reviews a regional tour stop, not the Nederlander engagement"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "motown-the-musical-2016/seattle-times--misha-berson.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: touring cast at Seattle's Paramount Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-the-musical-west-end-2021/telegraph--dominic-cavendish.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is a reviews-are-in roundup, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-the-musical-west-end-2021/whatsonstage--sarah-crompton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is a 2025 social post about the UK tour review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "napoli-brooklyn-off-broadway-2017/zeal-nyc--justin-sharon.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is generic 2023 promotional copy, not a notice of the 2017 staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/whatsonstage--sarah-crompton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Bourne-directed Gielgud revival, published on its opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/whatsonstage--sarah-crompton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Bourne-directed Gielgud revival, published on its opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/timeout--holly-williams.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is a copy of Adam Feldman's Broadway notice filed under the wrong critic; the Feldman file is the original"
+      }
+    ]
+  }
+}

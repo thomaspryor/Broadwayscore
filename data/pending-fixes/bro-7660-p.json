@@ -1,0 +1,108 @@
+{
+  "issueNumber": "bro-7660-p",
+  "planId": "a4bd1b36-d90b-4fc1-9408-cfbafb335268",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 16 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: review of this staging; not_a_review rejection was wrong",
+      "BRO-7660 CLEAR_NR: full review of the tour stop",
+      "BRO-7660 CLEAR_NR: full review of the tour stop",
+      "BRO-7660 NR_TO_WP: real review of the earlier Playwrights Horizons run, so wrong production rather than non-review",
+      "BRO-7660 NR_TO_WP: real review of the earlier BAM run, so wrong production rather than non-review"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-black-wolfe-tone-off-broadway-2025/front-row-center--david-walters.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-black-wolfe-tone-off-broadway-2025/front-row-center--david-walters.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-black-wolfe-tone-off-broadway-2025/front-row-center--david-walters.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whirligig-off-broadway-2017/nyt-theater--jonathan-mandell.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whirligig-off-broadway-2017/nyt-theater--jonathan-mandell.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: review of this staging; not_a_review rejection was wrong"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-tour-2025/third-coast-review--emily-werner.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of the tour stop"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-tour-2025/third-coast-review--emily-werner.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of the tour stop"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-off-broadway-2025/talkinbroadway--marc-miller.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 NR_TO_WP: real review of the earlier Playwrights Horizons run, so wrong production rather than non-review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sign-in-sidney-brusteins-window-2023/wsj--charles-isherwood.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 NR_TO_WP: real review of the earlier BAM run, so wrong production rather than non-review"
+      }
+    ]
+  }
+}

@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7660-b",
+  "planId": "9eded12f-1cec-4df2-9ed1-cd90249b3f5f",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 2 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WP: body reviews the Broadway transfer at the Jacobs; London appears only as its origin",
+      "BRO-7660 CLEAR_WP: body reviews the Broadway transfer at the Jacobs; London appears only as its origin",
+      "BRO-7660 CLEAR_WP: body is Cote's Broadway opening review at the O'Neill",
+      "BRO-7660 CLEAR_WP: body is Cote's Broadway opening review at the O'Neill",
+      "BRO-7660 CLEAR_WP: body is Cote's Broadway opening review at the O'Neill",
+      "BRO-7660 KEEP_WP: body reviews the national tour at the Kennedy Center",
+      "BRO-7660 CLEAR_WP: body reviews the Studio 54 run (paired with Angry Alan)",
+      "BRO-7660 CLEAR_WP: body reviews the Studio 54 run (paired with Angry Alan)",
+      "BRO-7660 CLEAR_WP: body: premiering at Second Stage's Tony Kiser Theatre",
+      "BRO-7660 CLEAR_WP: body: premiering at Second Stage's Tony Kiser Theatre",
+      "BRO-7660 CLEAR_WP: body: world premiere at MCC Theater, this production",
+      "BRO-7660 CLEAR_WP: body: world premiere at MCC Theater, this production",
+      "BRO-7660 CLEAR_WP: excerpt reviews the 2016 revival against the original production",
+      "BRO-7660 CLEAR_WP: excerpt reviews the 2016 revival against the original production",
+      "BRO-7660 CLEAR_WP: body: Cats at the Neil Simon Theatre, New York",
+      "BRO-7660 CLEAR_WP: body: Cats at the Neil Simon Theatre, New York",
+      "BRO-7660 KEEP_WP: 2015 feature on a replacement star, not a notice of the 1996 opening",
+      "BRO-7660 CLEAR_WP: body header: Ensemble Arts Philly, North American Tour review",
+      "BRO-7660 CLEAR_WP: body header: Ensemble Arts Philly, North American Tour review",
+      "BRO-7660 CLEAR_WP: body: Wendell Pierce at the Hudson Theatre, this revival",
+      "BRO-7660 CLEAR_WP: body: Wendell Pierce at the Hudson Theatre, this revival",
+      "BRO-7660 CLEAR_WP: body: Roundabout's Broadway revival directed by Scott Ellis",
+      "BRO-7660 CLEAR_WP: body: Roundabout's Broadway revival directed by Scott Ellis",
+      "BRO-7660 CLEAR_WP: body: Todd Haimes Theatre, this revival",
+      "BRO-7660 CLEAR_WP: body: Todd Haimes Theatre, this revival"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2019/nysr--melissa-rose-bernardo.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Broadway transfer at the Jacobs; London appears only as its origin"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2019/nysr--melissa-rose-bernardo.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Broadway transfer at the Jacobs; London appears only as its origin"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "book-of-mormon-2011/timeout--david-cote.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body is Cote's Broadway opening review at the O'Neill"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "book-of-mormon-2011/timeout--david-cote.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body is Cote's Broadway opening review at the O'Neill"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "book-of-mormon-2011/timeout--david-cote.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body is Cote's Broadway opening review at the O'Neill"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "book-of-mormon-2011/washpost--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body reviews the national tour at the Kennedy Center"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "call-me-izzy-2025/washpost--naveen-kumar.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Studio 54 run (paired with Angry Alan)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "call-me-izzy-2025/washpost--naveen-kumar.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Studio 54 run (paired with Angry Alan)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cardinal-off-broadway-2018/cititour--brian-scott-lipton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: premiering at Second Stage's Tony Kiser Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cardinal-off-broadway-2018/cititour--brian-scott-lipton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: premiering at Second Stage's Tony Kiser Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-off-broadway-2026/nysr--frank-scheck.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: world premiere at MCC Theater, this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-off-broadway-2026/nysr--frank-scheck.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: world premiere at MCC Theater, this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/amny--matt-windman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews the 2016 revival against the original production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/amny--matt-windman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews the 2016 revival against the original production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/musical-theatre-review--ron-cohen.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Cats at the Neil Simon Theatre, New York"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/musical-theatre-review--ron-cohen.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Cats at the Neil Simon Theatre, New York"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chicago-1996/hello-beautiful--danielle-young.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: 2015 feature on a replacement star, not a notice of the 1996 opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clue-tour-2025/west-end-best-friend--jamie-flowers.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body header: Ensemble Arts Philly, North American Tour review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clue-tour-2025/west-end-best-friend--jamie-flowers.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body header: Ensemble Arts Philly, North American Tour review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/chicagotribune--chris-jones.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Wendell Pierce at the Hudson Theatre, this revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/chicagotribune--chris-jones.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Wendell Pierce at the Hudson Theatre, this revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "doubt-2024/thestage--lane-williamson.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Roundabout's Broadway revival directed by Scott Ellis"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "doubt-2024/thestage--lane-williamson.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Roundabout's Broadway revival directed by Scott Ellis"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "doubt-2024/observer--david-cote.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Todd Haimes Theatre, this revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "doubt-2024/observer--david-cote.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Todd Haimes Theatre, this revival"
+      }
+    ]
+  }
+}

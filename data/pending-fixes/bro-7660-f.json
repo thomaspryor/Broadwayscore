@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-7660-f",
+  "planId": "d8941b4b-70cd-42ed-afdd-8afe4b7e3558",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 6 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WP: body: Samuel J. Friedman Theatre, this run",
+      "BRO-7660 CLEAR_WP: body: Samuel J. Friedman Theatre, this run",
+      "BRO-7660 CLEAR_WP: excerpt reviews the Daldry/Martin staging, published Dec 2023 (London only then)",
+      "BRO-7660 CLEAR_WP: excerpt reviews the Daldry/Martin staging, published Dec 2023 (London only then)",
+      "BRO-7660 CLEAR_WP: body: Hornsby, Ingram, Broadnax, the 2024 Signature staging this entry holds",
+      "BRO-7660 CLEAR_WP: body: Hornsby, Ingram, Broadnax, the 2024 Signature staging this entry holds",
+      "BRO-7660 CLEAR_WP: body: at the Pershing Square Signature Center, Feb 2024",
+      "BRO-7660 CLEAR_WP: body: at the Pershing Square Signature Center, Feb 2024",
+      "BRO-7660 CLEAR_WP: body: Signature Center, through March 10, this staging",
+      "BRO-7660 CLEAR_WP: body: Signature Center, through March 10, this staging",
+      "BRO-7660 CLEAR_WP: excerpt reviews Nicole Scherzinger's casting, dated the Savoy opening night",
+      "BRO-7660 CLEAR_WP: excerpt reviews Nicole Scherzinger's casting, dated the Savoy opening night",
+      "BRO-7660 CLEAR_WP: body: after Sweat at the Public Theater",
+      "BRO-7660 CLEAR_WP: body: after Sweat at the Public Theater",
+      "BRO-7660 CLEAR_WP: body: Thomas Kail's version now at the Lunt-Fontanne",
+      "BRO-7660 CLEAR_WP: body: Thomas Kail's version now at the Lunt-Fontanne",
+      "BRO-7660 CLEAR_WP: excerpt reviews Leigh Silverman's staging with Bergasse choreography, this New Group run, dated opening night",
+      "BRO-7660 CLEAR_WP: excerpt reviews Leigh Silverman's staging with Bergasse choreography, this New Group run, dated opening night",
+      "BRO-7660 CLEAR_WP: body: the Second Stage revival at the Hayes, this production (it later moved to the Schoenfeld)",
+      "BRO-7660 CLEAR_WP: body: the Second Stage revival at the Hayes, this production (it later moved to the Schoenfeld)",
+      "BRO-7660 CLEAR_WP: excerpt reviews Scott Ellis's 2022 revival, dated opening night; the 206-day date was stale",
+      "BRO-7660 CLEAR_WP: excerpt reviews Scott Ellis's 2022 revival, dated opening night; the 206-day date was stale",
+      "BRO-7660 CLEAR_WP: excerpt: 20 years after the premiere, this 2022 revival, dated opening night",
+      "BRO-7660 CLEAR_WP: excerpt: 20 years after the premiere, this 2022 revival, dated opening night"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/this-week-in-new-york--mark-rifkin.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Samuel J. Friedman Theatre, this run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/this-week-in-new-york--mark-rifkin.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Samuel J. Friedman Theatre, this run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/starburst-magazine--ed-fortune.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews the Daldry/Martin staging, published Dec 2023 (London only then)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/starburst-magazine--ed-fortune.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews the Daldry/Martin staging, published Dec 2023 (London only then)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-baby-off-broadway-2026/nysr--david-finkle.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Hornsby, Ingram, Broadnax, the 2024 Signature staging this entry holds"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-baby-off-broadway-2026/nysr--david-finkle.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Hornsby, Ingram, Broadnax, the 2024 Signature staging this entry holds"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-baby-off-broadway-2026/theater-scene--joseph-pisano.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: at the Pershing Square Signature Center, Feb 2024"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-baby-off-broadway-2026/theater-scene--joseph-pisano.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: at the Pershing Square Signature Center, Feb 2024"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-baby-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Signature Center, through March 10, this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-baby-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Signature Center, through March 10, this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-west-end-2023/washpost--peter-marks.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Nicole Scherzinger's casting, dated the Savoy opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-west-end-2023/washpost--peter-marks.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Nicole Scherzinger's casting, dated the Savoy opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweat-off-broadway-2016/frontmezzjunkies--steven-ross.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: after Sweat at the Public Theater"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweat-off-broadway-2016/frontmezzjunkies--steven-ross.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: after Sweat at the Public Theater"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweeney-todd-2023/cititour--brian-scott-lipton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Thomas Kail's version now at the Lunt-Fontanne"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweeney-todd-2023/cititour--brian-scott-lipton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Thomas Kail's version now at the Lunt-Fontanne"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweet-charity-off-broadway-2016/live-theatre-uk--stephen-collins.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Leigh Silverman's staging with Bergasse choreography, this New Group run, dated opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweet-charity-off-broadway-2016/live-theatre-uk--stephen-collins.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Leigh Silverman's staging with Bergasse choreography, this New Group run, dated opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/vulture--helen-shaw.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: the Second Stage revival at the Hayes, this production (it later moved to the Schoenfeld)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/vulture--helen-shaw.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: the Second Stage revival at the Hayes, this production (it later moved to the Schoenfeld)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/hollywood-reporter--david-rooney.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Scott Ellis's 2022 revival, dated opening night; the 206-day date was stale"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/hollywood-reporter--david-rooney.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Scott Ellis's 2022 revival, dated opening night; the 206-day date was stale"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/amny--matt-windman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt: 20 years after the premiere, this 2022 revival, dated opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/amny--matt-windman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt: 20 years after the premiere, this 2022 revival, dated opening night"
+      }
+    ]
+  }
+}

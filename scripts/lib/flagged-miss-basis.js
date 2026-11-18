@@ -28,6 +28,7 @@ const { hasHumanAssertedFlag } = require('./contradicted-flag-basis');
 const { isHumanRejecter } = require('./stale-automated-text-verdict');
 const { isPriorProductionCitation } = require('./prior-production-citations');
 const { parsePointer } = require('./cross-outlet-cycle');
+const { hasApprovedFlag } = require('./approved-fix-flag');
 
 // Breadcrumb keys a person (or an operator-run triage) writes when asserting an
 // exclusion, e.g. wrongProductionManual / isNonReviewManual. `...ManualClear`
@@ -47,7 +48,25 @@ function hasHumanExclusionAssertion(d) {
   if (d.isNotReview === true) return true;
   if (d.manualContentTier != null) return true;
   if (typeof d.nonReviewMethod === 'string' && /^(manual|human)/i.test(d.nonReviewMethod)) return true;
+  if (isHeldExclusionFlag(d)) return true;
   return Object.keys(d).some(k => MANUAL_SUFFIX.test(k) && d[k] === true);
+}
+
+// BRO-7660: a live exclusion flag a person stands behind. The heuristic clearers
+// already treat these as held (wrong-production-autoclear isWrongProductionHeld /
+// isWrongShowHeld); the audit did not, so a plan that re-read a row and KEPT its
+// flag still left the row in the re-verify residual forever.
+//   - humanReviewedWrongShow (wrongShow's sibling of humanReviewedWrongProduction)
+//   - an approved data plan set the flag, and still binds to the current url + body
+//     (approved-fix-flag; a refetched body unbinds it, so the row re-verifies again)
+//   - isNonReview with the "manual (not a review)" reason review-field-edit
+//     requires before a plan may set it (the CV writes "CV-promoted (not a review)")
+const HELD_FLAG_FIELDS = ['wrongProduction', 'wrongShow', 'isNonReview'];
+function isHeldExclusionFlag(d) {
+  if (d.wrongShow === true && d.humanReviewedWrongShow === true) return true;
+  if (d.isNonReview === true && typeof d.isNonReviewReason === 'string'
+    && /^manual \(not a review\)/i.test(d.isNonReviewReason)) return true;
+  return HELD_FLAG_FIELDS.some(f => d[f] === true && hasApprovedFlag(d, f));
 }
 
 // Raw detector fields, read when the canonical reason is unavailable. Some

@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-7660-g",
+  "planId": "b32f9066-866f-45d9-9c8a-7e15bd3cac67",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 7 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WP: excerpt reviews Scott Ellis's production, dated opening night",
+      "BRO-7660 CLEAR_WP: excerpt reviews Scott Ellis's production, dated opening night",
+      "BRO-7660 CLEAR_WP: excerpt reviews Ellis and this cast, dated opening night",
+      "BRO-7660 CLEAR_WP: excerpt reviews Ellis and this cast, dated opening night",
+      "BRO-7660 CLEAR_WP: body: the Broadway musical at the Palace Theatre",
+      "BRO-7660 CLEAR_WP: body: the Broadway musical at the Palace Theatre",
+      "BRO-7660 KEEP_WP: body posted April 2024, the Playwrights Horizons run (its own show entry), not the New World Stages transfer",
+      "BRO-7660 CLEAR_WP: excerpt reviews Everett Quinton's staging, dated opening night",
+      "BRO-7660 CLEAR_WP: excerpt reviews Everett Quinton's staging, dated opening night",
+      "BRO-7660 CLEAR_WP: body reviews this MCC production during its first preview week",
+      "BRO-7660 CLEAR_WP: body reviews this MCC production during its first preview week",
+      "BRO-7660 CLEAR_WP: body: limited run at Broadway's Golden Theatre through Jan 8",
+      "BRO-7660 CLEAR_WP: body: limited run at Broadway's Golden Theatre through Jan 8",
+      "BRO-7660 CLEAR_WP: body: Golden Theatre listing, this run",
+      "BRO-7660 CLEAR_WP: body: Golden Theatre listing, this run",
+      "BRO-7660 KEEP_WP: body is a sponsored CBD-oil article, not a review",
+      "BRO-7660 CLEAR_WP: body reviews the LCT staging (Barbara Garrick as Lady Bird); truncated but on-production",
+      "BRO-7660 CLEAR_WP: body reviews the LCT staging (Barbara Garrick as Lady Bird); truncated but on-production",
+      "BRO-7660 CLEAR_WP: body: opened last night at the Lyceum Theatre in London, this production's opening notice",
+      "BRO-7660 CLEAR_WP: body: opened last night at the Lyceum Theatre in London, this production's opening notice",
+      "BRO-7660 CLEAR_WP: body: DPAC stop of this North American tour",
+      "BRO-7660 CLEAR_WP: body: DPAC stop of this North American tour",
+      "BRO-7660 CLEAR_WP: body: Chicago stop of this North American tour",
+      "BRO-7660 CLEAR_WP: body: Chicago stop of this North American tour"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/broadwaynews--naveen-kumar.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Scott Ellis's production, dated opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/broadwaynews--naveen-kumar.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Scott Ellis's production, dated opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/thewrap--robert-hofler.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Ellis and this cast, dated opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "take-me-out-2022/thewrap--robert-hofler.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Ellis and this cast, dated opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tammy-faye-2024/dailybeast--tim-teeman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: the Broadway musical at the Palace Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tammy-faye-2024/dailybeast--tim-teeman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: the Broadway musical at the Palace Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "teeth-off-broadway-2024/theater-scene--tony-marinelli.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body posted April 2024, the Playwrights Horizons run (its own show entry), not the New World Stages transfer"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-artificial-jungle-off-broadway-2017/thereviewshub--adrienne-sowers.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Everett Quinton's staging, dated opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-artificial-jungle-off-broadway-2017/thereviewshub--adrienne-sowers.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Everett Quinton's staging, dated opening night"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-connector-off-broadway-2024/pages-on-stages--mason-pilevsky.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews this MCC production during its first preview week"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-connector-off-broadway-2024/pages-on-stages--mason-pilevsky.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews this MCC production during its first preview week"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-encounter-2016/broadway-and-me--janice-c-simpson.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: limited run at Broadway's Golden Theatre through Jan 8"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-encounter-2016/broadway-and-me--janice-c-simpson.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: limited run at Broadway's Golden Theatre through Jan 8"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-encounter-2016/stagezine--scott-harrah.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Golden Theatre listing, this run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-encounter-2016/stagezine--scott-harrah.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Golden Theatre listing, this run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-encounter-2016/woman-around-town--alix-cohen.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is a sponsored CBD-oil article, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-society-2019/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the LCT staging (Barbara Garrick as Lady Bird); truncated but on-production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-society-2019/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the LCT staging (Barbara Garrick as Lady Bird); truncated but on-production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lion-king-west-end-2021/guardian--michael-billington.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: opened last night at the Lyceum Theatre in London, this production's opening notice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lion-king-west-end-2021/guardian--michael-billington.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: opened last night at the Lyceum Theatre in London, this production's opening notice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/the-chronicle--emily-cui.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: DPAC stop of this North American tour"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/the-chronicle--emily-cui.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: DPAC stop of this North American tour"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/chicago-reader--kerry-reid.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Chicago stop of this North American tour"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/chicago-reader--kerry-reid.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Chicago stop of this North American tour"
+      }
+    ]
+  }
+}

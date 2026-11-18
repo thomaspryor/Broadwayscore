@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7660-o",
+  "planId": "677c640d-1767-4443-b1fd-92adc0d9119e",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 15 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_NR: full review of the West End production",
+      "BRO-7660 CLEAR_NR: full review of the West End production",
+      "BRO-7660 CLEAR_NR: full review of the West End production",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this production",
+      "BRO-7660 CLEAR_NR: full review of this production",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of the West End production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of the West End production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of the West End production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023/travel-arts-journal--fern-siegel.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023/travel-arts-journal--fern-siegel.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023/travel-arts-journal--fern-siegel.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nantucket-sleigh-ride-off-broadway-2019/bobs-theater-blog--robert-sholiton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nantucket-sleigh-ride-off-broadway-2019/bobs-theater-blog--robert-sholiton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nantucket-sleigh-ride-off-broadway-2019/bobs-theater-blog--robert-sholiton.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "napoli-brooklyn-off-broadway-2017/thewrap--thom-geier.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "napoli-brooklyn-off-broadway-2017/thewrap--thom-geier.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nice-fish-off-broadway-2016/slantmagazine--henry-stewart.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nice-fish-off-broadway-2016/slantmagazine--henry-stewart.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nice-fish-off-broadway-2016/slantmagazine--henry-stewart.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "people-places-and-things-off-broadway-2017/village-voice--david-cote.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "people-places-and-things-off-broadway-2017/village-voice--david-cote.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "people-places-and-things-off-broadway-2017/village-voice--david-cote.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-2023/cititour--brian-scott-lipton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-2023/cititour--brian-scott-lipton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweetee-off-broadway-2017/stagebuddy--erin-kahn.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweetee-off-broadway-2017/stagebuddy--erin-kahn.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweetee-off-broadway-2017/stagebuddy--erin-kahn.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "swing-state-off-broadway-2023/nytg--allison-considine.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "swing-state-off-broadway-2023/nytg--allison-considine.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "swing-state-off-broadway-2023/nytg--allison-considine.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      }
+    ]
+  }
+}

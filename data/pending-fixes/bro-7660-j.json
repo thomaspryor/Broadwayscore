@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-7660-j",
+  "planId": "496523cc-5edc-4fc6-a8df-e5779bd12931",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 10 of 16)",
+    "steps": [
+      "BRO-7660 KEEP_WP: body: Encores! concert version at City Center through February 4",
+      "BRO-7660 CLEAR_WP: body is Feldman's Broadway notice (3/5); the timeout--unknown file is its url-collision duplicate",
+      "BRO-7660 CLEAR_WP: body is Feldman's Broadway notice (3/5); the timeout--unknown file is its url-collision duplicate",
+      "BRO-7660 CLEAR_WP: body is Feldman's Broadway notice (3/5); the timeout--unknown file is its url-collision duplicate",
+      "BRO-7660 KEEP_WP: body reviews the tour's Los Angeles opening during the Broadway hiatus",
+      "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)",
+      "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)",
+      "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)",
+      "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)",
+      "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)",
+      "BRO-7660 KEEP_WP: body: 2002 revisit of the long-running revival at the Shubert, not an opening notice",
+      "BRO-7660 KEEP_WP: body: 2009 tenth-anniversary revisit, not an opening notice",
+      "BRO-7660 KEEP_WP: body: second viewing after the leading lady was replaced, a later revisit",
+      "BRO-7660 CLEAR_WS: two-show column; a full section reviews A Beautiful Noise (by-the-numbers jukebox bio-musical)",
+      "BRO-7660 CLEAR_WS: two-show column; a full section reviews A Beautiful Noise (by-the-numbers jukebox bio-musical)",
+      "BRO-7660 CLEAR_WS: two-show column; a full section reviews A Beautiful Noise (by-the-numbers jukebox bio-musical)",
+      "BRO-7660 CLEAR_WS: body is a 4-star review of Corden's Broadway Art",
+      "BRO-7660 CLEAR_WS: body is a 4-star review of Corden's Broadway Art",
+      "BRO-7660 CLEAR_WS: body is a 4-star review of Corden's Broadway Art",
+      "BRO-7660 KEEP_WS: body reviews Woman on a Ledge at Theater for the New City, another show",
+      "BRO-7660 CLEAR_CVWA: body: Teeman's review of Cardinal, Jan 30 2018; the CV preview verdict is wrong",
+      "BRO-7660 CLEAR_CVWA: body: Teeman's review of Cardinal, Jan 30 2018; the CV preview verdict is wrong",
+      "BRO-7660 CLEAR_WS: body reviews Elf at the Marquis",
+      "BRO-7660 CLEAR_WS: body reviews Elf at the Marquis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "once-upon-a-mattress-2024/nyt-theater--jonathan-mandell.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: Encores! concert version at City Center through February 4"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/timeout--adam-feldman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body is Feldman's Broadway notice (3/5); the timeout--unknown file is its url-collision duplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/timeout--adam-feldman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body is Feldman's Broadway notice (3/5); the timeout--unknown file is its url-collision duplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/timeout--adam-feldman.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body is Feldman's Broadway notice (3/5); the timeout--unknown file is its url-collision duplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "motown-the-musical-2016/hollywood-reporter--frank-scheck.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body reviews the tour's Los Angeles opening during the Broadway hiatus"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-the-musical-west-end-2024/standard--nick-curtis.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP+WS: body: MJ the Musical at the Prince Edward Theatre review, 27 March 2024 (CV art-exhibition verdict was wrong)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chicago-1996/ap--michael-kuchwara.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: 2002 revisit of the long-running revival at the Shubert, not an opening notice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mamma-mia-west-end-2021/guardian--veronica-lee.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: 2009 tenth-anniversary revisit, not an opening notice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "and-juliet-2022/cititour--brian-scott-lipton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: second viewing after the leading lady was replaced, a later revisit"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: two-show column; a full section reviews A Beautiful Noise (by-the-numbers jukebox bio-musical)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: two-show column; a full section reviews A Beautiful Noise (by-the-numbers jukebox bio-musical)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: two-show column; a full section reviews A Beautiful Noise (by-the-numbers jukebox bio-musical)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-2025/times-uk--susie-goldsbrough.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body is a 4-star review of Corden's Broadway Art"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-2025/times-uk--susie-goldsbrough.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body is a 4-star review of Corden's Broadway Art"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-2025/times-uk--susie-goldsbrough.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body is a 4-star review of Corden's Broadway Art"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "babe-off-broadway-2024/theater-scene--scott-bennett.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WS: body reviews Woman on a Ledge at Theater for the New City, another show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cardinal-off-broadway-2018/dailybeast--tim-teeman.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_CVWA: body: Teeman's review of Cardinal, Jan 30 2018; the CV preview verdict is wrong"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cardinal-off-broadway-2018/dailybeast--tim-teeman.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_CVWA: body: Teeman's review of Cardinal, Jan 30 2018; the CV preview verdict is wrong"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elf-2024/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body reviews Elf at the Marquis"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elf-2024/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body reviews Elf at the Marquis"
+      }
+    ]
+  }
+}

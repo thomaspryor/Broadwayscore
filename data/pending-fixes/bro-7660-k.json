@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7660-k",
+  "planId": "cebe0920-8fdc-4ed2-b2fe-c4ae98396b6e",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 11 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WS: body reviews the Palace Theatre staging, judging performances (Odenkirk, Webber)",
+      "BRO-7660 CLEAR_WS: body reviews the Palace Theatre staging, judging performances (Odenkirk, Webber)",
+      "BRO-7660 CLEAR_WS: body reviews the Palace Theatre staging, judging performances (Odenkirk, Webber)",
+      "BRO-7660 CLEAR_WS: body: Cursed Child arrives at the Lyric on Broadway",
+      "BRO-7660 CLEAR_WS: body: Cursed Child arrives at the Lyric on Broadway",
+      "BRO-7660 CLEAR_WS: body reviews Cursed Child Parts One and Two",
+      "BRO-7660 CLEAR_WS: body reviews Cursed Child Parts One and Two",
+      "BRO-7660 CLEAR_WS: excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body",
+      "BRO-7660 CLEAR_WS: excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body",
+      "BRO-7660 CLEAR_WS: excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body",
+      "BRO-7660 CLEAR_WS: excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body",
+      "BRO-7660 CLEAR_WS: body: TheaterMania's opening-day review of Kenny Leon's revival",
+      "BRO-7660 CLEAR_WS: body: TheaterMania's opening-day review of Kenny Leon's revival",
+      "BRO-7660 CLEAR_WS: body: TheaterMania's opening-day review of Kenny Leon's revival",
+      "BRO-7660 KEEP_WS: body is a sponsored CBD article, not a review",
+      "BRO-7660 KEEP_WS: body is a 3-line teaser pointing to the full review on another site",
+      "BRO-7660 CLEAR_WS+NR: body is a review of Mindplay at the Greenwich House Theater",
+      "BRO-7660 CLEAR_WS+NR: body is a review of Mindplay at the Greenwich House Theater",
+      "BRO-7660 CLEAR_WS+NR: body is a review of Mindplay at the Greenwich House Theater",
+      "BRO-7660 CLEAR_WS+NR: body is a review of Mindplay at the Greenwich House Theater",
+      "BRO-7660 KEEP_WS: body: 2022 Barbican run, not the 2025 Gillian Lynne staging",
+      "BRO-7660 KEEP_WP: body: 2022 Barbican run (same text), not the 2025 staging",
+      "BRO-7660 KEEP_NR: body is a political news feature on the real Pelosi/AOC history, not a review",
+      "BRO-7660 KEEP_NR: body is a political news feature on the real Pelosi/AOC history, not a review",
+      "BRO-7660 CLEAR_CVWA: body reviews D.A. Mindell's play at Signature"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body reviews the Palace Theatre staging, judging performances (Odenkirk, Webber)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body reviews the Palace Theatre staging, judging performances (Odenkirk, Webber)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body reviews the Palace Theatre staging, judging performances (Odenkirk, Webber)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body: Cursed Child arrives at the Lyric on Broadway"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body: Cursed Child arrives at the Lyric on Broadway"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body reviews Cursed Child Parts One and Two"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/wolf-entertainment-guide--william-wolf.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body reviews Cursed Child Parts One and Two"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-7660: stored body read, it reviews this show (excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body)",
+        "description": "BRO-7660 CLEAR_WS: excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-2021/drama-queen-nyc--jonathan-warman.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "home-2024/theatermania--pete-hempstead.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body: TheaterMania's opening-day review of Kenny Leon's revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "home-2024/theatermania--pete-hempstead.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: body: TheaterMania's opening-day review of Kenny Leon's revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "home-2024/theatermania--pete-hempstead.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: body: TheaterMania's opening-day review of Kenny Leon's revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2016/woman-around-town--alix-cohen.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WS: body is a sponsored CBD article, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-lost-off-broadway-2019/front-row-center--david-walters.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WS: body is a 3-line teaser pointing to the full review on another site"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS+NR: body is a review of Mindplay at the Greenwich House Theater"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS+NR: body is a review of Mindplay at the Greenwich House Theater"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS+NR: body is a review of Mindplay at the Greenwich House Theater"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS+NR: body is a review of Mindplay at the Greenwich House Theater"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WS: body: 2022 Barbican run, not the 2025 Gillian Lynne staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-neighbour-totoro-west-end-2025/independent--culture-staff.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: 2022 Barbican run (same text), not the 2025 staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "n-a-off-broadway-2024/washpost--david-freedlander.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): body is a political news feature on the real Pelosi/AOC history, not a review",
+        "description": "BRO-7660 KEEP_NR: body is a political news feature on the real Pelosi/AOC history, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "n-a-off-broadway-2024/washpost--david-freedlander.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: body is a political news feature on the real Pelosi/AOC history, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "on-the-evolutionary-function-of-shame-off-broadway-2025/theatermania--zachary-stewart.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_CVWA: body reviews D.A. Mindell's play at Signature"
+      }
+    ]
+  }
+}

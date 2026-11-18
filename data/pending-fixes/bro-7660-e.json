@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-7660-e",
+  "planId": "8e95d2e3-b8b3-47c3-b6e5-99ec543cc4c4",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 5 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WP: excerpt reviews this musical; dated in the Public run's preview week, the day before opening",
+      "BRO-7660 CLEAR_WP: excerpt reviews this musical; dated in the Public run's preview week, the day before opening",
+      "BRO-7660 CLEAR_WP: body posted Dec 14 2024, reviews the St. Clement's staging",
+      "BRO-7660 CLEAR_WP: body posted Dec 14 2024, reviews the St. Clement's staging",
+      "BRO-7660 CLEAR_WP: body reviews the Friedman Theatre staging",
+      "BRO-7660 CLEAR_WP: body reviews the Friedman Theatre staging",
+      "BRO-7660 CLEAR_WP: body: from the stage of the Samuel J. Friedman Theatre",
+      "BRO-7660 CLEAR_WP: body: from the stage of the Samuel J. Friedman Theatre",
+      "BRO-7660 KEEP_WP: New York critic, dated the Broadway opening night; the London show is the wrong home",
+      "BRO-7660 KEEP_WP: excerpt names Camila Cano-Flavia, of the Broadway cast; not the Apollo staging",
+      "BRO-7660 CLEAR_WP: body: Kristin Chenoweth returns to Broadway in this production",
+      "BRO-7660 CLEAR_WP: body: Kristin Chenoweth returns to Broadway in this production",
+      "BRO-7660 CLEAR_WP: body: now at the Vineyard Theatre",
+      "BRO-7660 CLEAR_WP: body: now at the Vineyard Theatre",
+      "BRO-7660 KEEP_WP: body: EW's review from the earlier Public Theater run, re-posted",
+      "BRO-7660 KEEP_WP: body: same Public Theater-run review (copy)",
+      "BRO-7660 CLEAR_WP: excerpt reviews this production, dated three days after the New World Stages opening",
+      "BRO-7660 CLEAR_WP: excerpt reviews this production, dated three days after the New World Stages opening",
+      "BRO-7660 KEEP_WP: body: 2019 review of a later residency (the company's 1,000th show), not this staging",
+      "BRO-7660 KEEP_WP: excerpt: Soft Power at the Ahmanson, Los Angeles",
+      "BRO-7660 CLEAR_WP: body: at the Sam S. Shubert Theatre, which is this Broadway house; there was no Boston tryout",
+      "BRO-7660 CLEAR_WP: body: at the Sam S. Shubert Theatre, which is this Broadway house; there was no Boston tryout",
+      "BRO-7660 CLEAR_WP: body: exiting the Samuel J. Friedman Theatre, this run",
+      "BRO-7660 CLEAR_WP: body: exiting the Samuel J. Friedman Theatre, this run"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "party-people-off-broadway-2016/frontmezzjunkies--steven-ross.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews this musical; dated in the Public run's preview week, the day before opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "party-people-off-broadway-2016/frontmezzjunkies--steven-ross.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews this musical; dated in the Public run's preview week, the day before opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pen-pals-off-broadway-2025/theater-scene--lydia-singer.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body posted Dec 14 2024, reviews the St. Clement's staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pen-pals-off-broadway-2025/theater-scene--lydia-singer.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body posted Dec 14 2024, reviews the St. Clement's staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/the-recs--randall-david-cook.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Friedman Theatre staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/the-recs--randall-david-cook.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Friedman Theatre staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: from the stage of the Samuel J. Friedman Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: from the stage of the Samuel J. Friedman Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-west-end-2025/dailybeast--tim-teeman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: New York critic, dated the Broadway opening night; the London show is the wrong home"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-west-end-2025/theatermania--david-gordon.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: excerpt names Camila Cano-Flavia, of the Broadway cast; not the Apollo staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queen-versailles-2025/the-recs--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Kristin Chenoweth returns to Broadway in this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queen-versailles-2025/the-recs--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Kristin Chenoweth returns to Broadway in this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scene-partners-off-broadway-2023/cititour--brian-scott-lipton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: now at the Vineyard Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scene-partners-off-broadway-2023/cititour--brian-scott-lipton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: now at the Vineyard Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-a-life-2019/ew--kerensa-cadenas.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: EW's review from the earlier Public Theater run, re-posted"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-a-life-2019/ew--kerensa-cardenas.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: same Public Theater-run review (copy)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shear-madness-off-broadway-2015/thereviewshub--jamie-rosler.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews this production, dated three days after the New World Stages opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shear-madness-off-broadway-2015/thereviewshub--jamie-rosler.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews this production, dated three days after the New World Stages opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "showstopper-the-improvised-musical-west-end-2023/london-theatre--sophie-thomas.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: 2019 review of a later residency (the company's 1,000th show), not this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soft-power-off-broadway-2019/latimes--charles-mcnulty.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: excerpt: Soft Power at the Ahmanson, Los Angeles"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/stagebuddy--elyse-trevers.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: at the Sam S. Shubert Theatre, which is this Broadway house; there was no Boston tryout"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/stagebuddy--elyse-trevers.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: at the Sam S. Shubert Theatre, which is this Broadway house; there was no Boston tryout"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: exiting the Samuel J. Friedman Theatre, this run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/theater-life--samuel-l-leiter.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: exiting the Samuel J. Friedman Theatre, this run"
+      }
+    ]
+  }
+}

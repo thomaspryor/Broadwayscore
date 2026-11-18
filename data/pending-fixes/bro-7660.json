@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7660",
+  "planId": "40ffe898-b27f-460b-81d9-632f2eb2c94f",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 1 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WP: body names the Vineyard Theatre staging; only the late publish date tripped the date guard",
+      "BRO-7660 CLEAR_WP: body names the Vineyard Theatre staging; only the late publish date tripped the date guard",
+      "BRO-7660 CLEAR_WP: body: critic at the Golden Theatre, the Broadway production",
+      "BRO-7660 CLEAR_WP: body: critic at the Golden Theatre, the Broadway production",
+      "BRO-7660 KEEP_WP: body: press opening at the Royal Court, London; not the NYTW staging",
+      "BRO-7660 KEEP_WP: UK outlet, same London press night as the Independent/Times/Artsdesk notices, dated after the NYTW close",
+      "BRO-7660 KEEP_WP: UK outlet, same London press night, dated after the NYTW close",
+      "BRO-7660 KEEP_WP: UK outlet, same London press night, dated after the NYTW close",
+      "BRO-7660 CLEAR_WP: body reviews the Broadway Studio 54 staging; the pre-opening date was a placeholder",
+      "BRO-7660 CLEAR_WP: body reviews the Broadway Studio 54 staging; the pre-opening date was a placeholder",
+      "BRO-7660 CLEAR_WP: body reviews The New Group staging, published the day after opening",
+      "BRO-7660 CLEAR_WP: body reviews The New Group staging, published the day after opening",
+      "BRO-7660 CLEAR_WP: body dated Nov 8 2022, reviews the Broadway run; pre-opening date was a placeholder",
+      "BRO-7660 CLEAR_WP: body dated Nov 8 2022, reviews the Broadway run; pre-opening date was a placeholder",
+      "BRO-7660 CLEAR_WP: body: Benjamin Walker on Broadway at the Schoenfeld; stored date is a re-crawl date",
+      "BRO-7660 CLEAR_WP: body: Benjamin Walker on Broadway at the Schoenfeld; stored date is a re-crawl date",
+      "BRO-7660 KEEP_WP: body is a generic promotional blurb from 2024, not a notice of the 2018 staging",
+      "BRO-7660 KEEP_WP: body describes the Encores! Off-Center staging, not the CSC 2021 production",
+      "BRO-7660 KEEP_WP: body: Oct 2015 Paper Mill Playhouse tryout review",
+      "BRO-7660 CLEAR_WP: body reviews the Broadway staging, comparing it with the Paper Mill tryout",
+      "BRO-7660 CLEAR_WP: body reviews the Broadway staging, comparing it with the Paper Mill tryout",
+      "BRO-7660 CLEAR_WP: body: Bandstand at the Bernard B. Jacobs Theatre, New York",
+      "BRO-7660 CLEAR_WP: body: Bandstand at the Bernard B. Jacobs Theatre, New York",
+      "BRO-7660 CLEAR_WP: excerpt and CV reason both place it at the Winter Garden, opening night of this run",
+      "BRO-7660 CLEAR_WP: excerpt and CV reason both place it at the Winter Garden, opening night of this run"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "300-paintings-off-broadway-2024/theater-scene--victor-gluck.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body names the Vineyard Theatre staging; only the late publish date tripped the date guard"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "300-paintings-off-broadway-2024/theater-scene--victor-gluck.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body names the Vineyard Theatre staging; only the late publish date tripped the date guard"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: critic at the Golden Theatre, the Broadway production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: critic at the Golden Theatre, the Broadway production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-knock-on-the-roof-off-broadway-2025/independent--anya-ryan.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: press opening at the Royal Court, London; not the NYTW staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-knock-on-the-roof-off-broadway-2025/guardian--arifa-akbar.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: UK outlet, same London press night as the Independent/Times/Artsdesk notices, dated after the NYTW close"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-knock-on-the-roof-off-broadway-2025/times-uk--clive-davis.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: UK outlet, same London press night, dated after the NYTW close"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-knock-on-the-roof-off-broadway-2025/artsdesk--aleks-sierz.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: UK outlet, same London press night, dated after the NYTW close"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-wonderful-world-the-louis-armstrong-musical-2024/theatres-leiter-side--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Broadway Studio 54 staging; the pre-opening date was a placeholder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-wonderful-world-the-louis-armstrong-musical-2024/theatres-leiter-side--samuel-l-leiter.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Broadway Studio 54 staging; the pre-opening date was a placeholder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-fine-boys-off-broadway-2017/theater-in-the-now--michael-block.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews The New Group staging, published the day after opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-fine-boys-off-broadway-2017/theater-in-the-now--michael-block.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews The New Group staging, published the day after opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "almost-famous-2022/front-row-center--holli-harms.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body dated Nov 8 2022, reviews the Broadway run; pre-opening date was a placeholder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "almost-famous-2022/front-row-center--holli-harms.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body dated Nov 8 2022, reviews the Broadway run; pre-opening date was a placeholder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-psycho-2016/newsday--linda-winer.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Benjamin Walker on Broadway at the Schoenfeld; stored date is a re-crawl date"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-psycho-2016/newsday--linda-winer.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Benjamin Walker on Broadway at the Schoenfeld; stored date is a re-crawl date"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amy-and-the-orphans-off-broadway-2018/zeal-nyc--jil-picariello.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is a generic promotional blurb from 2024, not a notice of the 2018 staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "assassins-off-broadway-2021/zeal-nyc--jil-picariello.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body describes the Encores! Off-Center staging, not the CSC 2021 production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/amny--matt-windman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: Oct 2015 Paper Mill Playhouse tryout review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/times-square-chronicles--suzanna-bowling.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Broadway staging, comparing it with the Paper Mill tryout"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/times-square-chronicles--suzanna-bowling.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Broadway staging, comparing it with the Paper Mill tryout"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/musical-theatre-review--ron-cohen.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Bandstand at the Bernard B. Jacobs Theatre, New York"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/musical-theatre-review--ron-cohen.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Bandstand at the Bernard B. Jacobs Theatre, New York"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-2019/newsday--barbara-schuler.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt and CV reason both place it at the Winter Garden, opening night of this run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-2019/newsday--barbara-schuler.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt and CV reason both place it at the Winter Garden, opening night of this run"
+      }
+    ]
+  }
+}

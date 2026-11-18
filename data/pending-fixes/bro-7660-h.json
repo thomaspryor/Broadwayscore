@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-7660-h",
+  "planId": "ed674144-931b-4e14-87a5-4a7552be05c2",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 8 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WP: body: returns to Chicago as part of its national tour",
+      "BRO-7660 CLEAR_WP: body: returns to Chicago as part of its national tour",
+      "BRO-7660 CLEAR_WP: body: North American Tour Company at the Nederlander, Chicago",
+      "BRO-7660 CLEAR_WP: body: North American Tour Company at the Nederlander, Chicago",
+      "BRO-7660 CLEAR_WP: body: the transfer to its new Off-Broadway home at New World Stages (Show Score label was relative to the Broadway page)",
+      "BRO-7660 CLEAR_WP: body: the transfer to its new Off-Broadway home at New World Stages (Show Score label was relative to the Broadway page)",
+      "BRO-7660 CLEAR_WP: body: the off-Broadway staging, dated the day after opening",
+      "BRO-7660 CLEAR_WP: body: the off-Broadway staging, dated the day after opening",
+      "BRO-7660 CLEAR_WP: body: re-opened this week at New World Stages",
+      "BRO-7660 CLEAR_WP: body: re-opened this week at New World Stages",
+      "BRO-7660 KEEP_WP: body: Dec 2021 post-shutdown revisit of the long run, not an opening notice",
+      "BRO-7660 KEEP_WP: body is a review of a Love Actually tribute show, wrong article",
+      "BRO-7660 KEEP_WP: body is a review of All My Sons, wrong article",
+      "BRO-7660 KEEP_WP: body: Vulture's BAM-run review republished at the transfer; pre-transfer engagement",
+      "BRO-7660 CLEAR_WP: body adds new comments after seeing it again on Broadway",
+      "BRO-7660 CLEAR_WP: body adds new comments after seeing it again on Broadway",
+      "BRO-7660 CLEAR_WP: body reviews the Studio 54 staging",
+      "BRO-7660 CLEAR_WP: body reviews the Studio 54 staging",
+      "BRO-7660 CLEAR_WP: body: Apr 16 2025, Off-Broadway premiere at TFANA, this run (the Rifkin file is its url-collision duplicate)",
+      "BRO-7660 CLEAR_WP: body: Apr 16 2025, Off-Broadway premiere at TFANA, this run (the Rifkin file is its url-collision duplicate)",
+      "BRO-7660 KEEP_WP: body is a sponsored CBD article, not a review",
+      "BRO-7660 CLEAR_WP: body reviews the Signature Theatre Venus (through June 4, 2017) alongside The Antipodes",
+      "BRO-7660 CLEAR_WP: body reviews the Signature Theatre Venus (through June 4, 2017) alongside The Antipodes",
+      "BRO-7660 CLEAR_WP: body reviews the Signature Theatre Venus (through June 4, 2017) alongside The Antipodes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/third-coast-review--emily-werner.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: returns to Chicago as part of its national tour"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/third-coast-review--emily-werner.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: returns to Chicago as part of its national tour"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/new-city-stage--tristan-bruns.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: North American Tour Company at the Nederlander, Chicago"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/new-city-stage--tristan-bruns.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: North American Tour Company at the Nederlander, Chicago"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/dc-theater-arts--deb-miller.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: the transfer to its new Off-Broadway home at New World Stages (Show Score label was relative to the Broadway page)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/dc-theater-arts--deb-miller.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: the transfer to its new Off-Broadway home at New World Stages (Show Score label was relative to the Broadway page)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/front-row-center--stanford-friedman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: the off-Broadway staging, dated the day after opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/front-row-center--stanford-friedman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: the off-Broadway staging, dated the day after opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/scene-on-stage--philip-dorian.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: re-opened this week at New World Stages"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/scene-on-stage--philip-dorian.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: re-opened this week at New World Stages"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/front-row-center--sarah-downs.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: Dec 2021 post-shutdown revisit of the long run, not an opening notice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is a review of a Love Actually tribute show, wrong article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-west-end-2021/observer--kate-kellaway.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is a review of All My Sons, wrong article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sign-in-sidney-brusteins-window-2023/vulture--helen-shaw.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: Vulture's BAM-run review republished at the transfer; pre-transfer engagement"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sign-in-sidney-brusteins-window-2023/nyt-theater--jonathan-mandell.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body adds new comments after seeing it again on Broadway"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sign-in-sidney-brusteins-window-2023/nyt-theater--jonathan-mandell.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body adds new comments after seeing it again on Broadway"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sound-inside-2019/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Studio 54 staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sound-inside-2019/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Studio 54 staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-swamp-dwellers-off-broadway-2025/this-week-in-new-york--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Apr 16 2025, Off-Broadway premiere at TFANA, this run (the Rifkin file is its url-collision duplicate)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-swamp-dwellers-off-broadway-2025/this-week-in-new-york--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Apr 16 2025, Off-Broadway premiere at TFANA, this run (the Rifkin file is its url-collision duplicate)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tuck-everlasting-2016/woman-around-town--alix-cohen.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is a sponsored CBD article, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "venus-off-broadway-2017/artsfuse--tim-jackson.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Signature Theatre Venus (through June 4, 2017) alongside The Antipodes"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "venus-off-broadway-2017/artsfuse--tim-jackson.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Signature Theatre Venus (through June 4, 2017) alongside The Antipodes"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "venus-off-broadway-2017/artsfuse--tim-jackson.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Signature Theatre Venus (through June 4, 2017) alongside The Antipodes"
+      }
+    ]
+  }
+}

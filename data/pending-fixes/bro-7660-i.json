@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7660-i",
+  "planId": "55e8dc72-77e6-4c90-b218-97178858e6ee",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 9 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WP: body reviews Jessie Mueller's Jenna, the Broadway production",
+      "BRO-7660 CLEAR_WP: body reviews Jessie Mueller's Jenna, the Broadway production",
+      "BRO-7660 CLEAR_WP: body: Brooks Atkinson Theatre listing, this production",
+      "BRO-7660 CLEAR_WP: body: Brooks Atkinson Theatre listing, this production",
+      "BRO-7660 KEEP_WP: body is generic 2023 promotional copy with invented casting, not a review",
+      "BRO-7660 CLEAR_WP: body posted Oct 30 2022, this Music Box run",
+      "BRO-7660 CLEAR_WP: body posted Oct 30 2022, this Music Box run",
+      "BRO-7660 CLEAR_WP: Chicago critic, 2026, now playing at Chicago's Nederlander, a stop of this tour (Broadway played the Imperial)",
+      "BRO-7660 CLEAR_WP: Chicago critic, 2026, now playing at Chicago's Nederlander, a stop of this tour (Broadway played the Imperial)",
+      "BRO-7660 KEEP_WP: body: 2021 revisit of the run going since 2017, not an opening notice",
+      "BRO-7660 KEEP_WP: body reviews the Thorne/Warchus staging at the Lyceum (2019 entry), not the 2022 Nederlander run",
+      "BRO-7660 CLEAR_WP: body: limited engagement at the Golden Theatre, this production",
+      "BRO-7660 CLEAR_WP: body: limited engagement at the Golden Theatre, this production",
+      "BRO-7660 CLEAR_WP: body reviews the Victoria Palace opening with the British cast",
+      "BRO-7660 CLEAR_WP: body reviews the Victoria Palace opening with the British cast",
+      "BRO-7660 CLEAR_WP: body reviews the Victoria Palace opening with the British cast",
+      "BRO-7660 CLEAR_WP: body: Diane Paulus's production, Second Stage Theatre",
+      "BRO-7660 CLEAR_WP: body: Diane Paulus's production, Second Stage Theatre",
+      "BRO-7660 CLEAR_WP: excerpt reviews this musical (pre-cast-album); Second Stage was its only NY staging, posted days after close",
+      "BRO-7660 CLEAR_WP: excerpt reviews this musical (pre-cast-album); Second Stage was its only NY staging, posted days after close",
+      "BRO-7660 CLEAR_WP: body reviews the run at the Hudson Theatre, through August 19",
+      "BRO-7660 CLEAR_WP: body reviews the run at the Hudson Theatre, through August 19",
+      "BRO-7660 CLEAR_WP: body: Roundabout's Broadway revival directed by Anne Kauffman",
+      "BRO-7660 CLEAR_WP: body: Roundabout's Broadway revival directed by Anne Kauffman",
+      "BRO-7660 KEEP_WP: body reviews the City Center Encores! run, not the Hudson transfer"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "waitress-2016/stagebuddy--jose-solis.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews Jessie Mueller's Jenna, the Broadway production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waitress-2016/stagebuddy--jose-solis.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews Jessie Mueller's Jenna, the Broadway production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waitress-2016/stagezine--david-nounou.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Brooks Atkinson Theatre listing, this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waitress-2016/stagezine--david-nounou.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Brooks Atkinson Theatre listing, this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waitress-2016/zeal-nyc--chris-caggiano.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is generic 2023 promotional copy with invented casting, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "walking-with-ghosts-2022/front-row-center--tulis-mccall.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body posted Oct 30 2022, this Music Box run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "walking-with-ghosts-2022/front-row-center--tulis-mccall.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body posted Oct 30 2022, this Music Box run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-tour-2025/chicago-sun-times--graham-meyer.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: Chicago critic, 2026, now playing at Chicago's Nederlander, a stop of this tour (Broadway played the Imperial)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-tour-2025/chicago-sun-times--graham-meyer.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: Chicago critic, 2026, now playing at Chicago's Nederlander, a stop of this tour (Broadway played the Imperial)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "witness-for-the-prosecution-off-west-end-2022/whatsonstage--theo-bosanquet.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: 2021 revisit of the run going since 2017, not an opening notice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-2022/timeout--adam-feldman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body reviews the Thorne/Warchus staging at the Lyceum (2019 entry), not the 2022 Nederlander run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/dc-theater-arts--richard-seff.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: limited engagement at the Golden Theatre, this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/dc-theater-arts--richard-seff.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: limited engagement at the Golden Theatre, this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-west-end-2021/variety--marilyn-stasio.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Victoria Palace opening with the British cast"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-west-end-2021/variety--marilyn-stasio.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Victoria Palace opening with the British cast"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-west-end-2021/variety--marilyn-stasio.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Victoria Palace opening with the British cast"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "invisible-thread-off-broadway-2015/timeout--david-cote.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Diane Paulus's production, Second Stage Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "invisible-thread-off-broadway-2015/timeout--david-cote.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Diane Paulus's production, Second Stage Theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "invisible-thread-off-broadway-2015/as-her-world-turns--erica-meyer.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews this musical (pre-cast-album); Second Stage was its only NY staging, posted days after close"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "invisible-thread-off-broadway-2015/as-her-world-turns--erica-meyer.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews this musical (pre-cast-album); Second Stage was its only NY staging, posted days after close"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-us-2023/theater-pizzazz--alix-cohen.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the run at the Hudson Theatre, through August 19"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-us-2023/theater-pizzazz--alix-cohen.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the run at the Hudson Theatre, through August 19"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marvins-room-2017/variety--marilyn-stasio.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Roundabout's Broadway revival directed by Anne Kauffman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marvins-room-2017/variety--marilyn-stasio.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Roundabout's Broadway revival directed by Anne Kauffman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-upon-a-mattress-2024/vulture--christopher-bonanos.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body reviews the City Center Encores! run, not the Hudson transfer"
+      }
+    ]
+  }
+}

@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7660-c",
+  "planId": "86a66d9f-1c47-4922-99ea-8d02696f9581",
+  "status": "pending",
+  "createdAt": "2026-11-18T07:20:59.951Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 3 of 16)",
+    "steps": [
+      "BRO-7660 CLEAR_WP: body: running at the Marquis Theatre through January 4",
+      "BRO-7660 CLEAR_WP: body: running at the Marquis Theatre through January 4",
+      "BRO-7660 CLEAR_WP: body: new MTC production at the Samuel J. Friedman",
+      "BRO-7660 CLEAR_WP: body: new MTC production at the Samuel J. Friedman",
+      "BRO-7660 CLEAR_WP: body reviews the Belasco run (the Goodman is named as its origin)",
+      "BRO-7660 CLEAR_WP: body reviews the Belasco run (the Goodman is named as its origin)",
+      "BRO-7660 CLEAR_WP: body: Audra McDonald at the Majestic",
+      "BRO-7660 CLEAR_WP: body: Audra McDonald at the Majestic",
+      "BRO-7660 CLEAR_WP: excerpt names Damon Daunno and the onstage band in the round, the NYTW 2016 cast; stored date precedes previews",
+      "BRO-7660 CLEAR_WP: excerpt names Damon Daunno and the onstage band in the round, the NYTW 2016 cast; stored date precedes previews",
+      "BRO-7660 KEEP_WP: body: Alfie Allen and David Threlfall at the Golden Theatre, the 2022 Broadway staging",
+      "BRO-7660 CLEAR_WP: body reviews the 2025 New World Stages cast (Casey Likes, Lorna Courtney)",
+      "BRO-7660 CLEAR_WP: body reviews the 2025 New World Stages cast (Casey Likes, Lorna Courtney)",
+      "BRO-7660 CLEAR_WP: body: Off Broadway review dated July 10 2025 of this run",
+      "BRO-7660 CLEAR_WP: body: Off Broadway review dated July 10 2025 of this run",
+      "BRO-7660 CLEAR_WP: excerpt reviews Imelda Staunton under Dominic Cooke, the Palladium staging",
+      "BRO-7660 CLEAR_WP: excerpt reviews Imelda Staunton under Dominic Cooke, the Palladium staging",
+      "BRO-7660 CLEAR_WP: body: LCT3 production at the Claire Tow Theater",
+      "BRO-7660 CLEAR_WP: body: LCT3 production at the Claire Tow Theater",
+      "BRO-7660 CLEAR_WP: body reviews the Roundabout staging at Studio 54",
+      "BRO-7660 CLEAR_WP: body reviews the Roundabout staging at Studio 54",
+      "BRO-7660 KEEP_WP: body is a sponsored CBD-oil article, not a review",
+      "BRO-7660 KEEP_WP: body is generic 2024 promotional copy, not a notice of the 2017 staging",
+      "BRO-7660 CLEAR_WP: body: world premiere with Danny DeVito, the Roundabout Broadway run",
+      "BRO-7660 CLEAR_WP: body: world premiere with Danny DeVito, the Roundabout Broadway run"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "elf-2024/nytg--caroline-cao.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: running at the Marquis Theatre through January 4"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elf-2024/nytg--caroline-cao.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: running at the Marquis Theatre through January 4"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eureka-day-2024/theatres-leiter-side--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: new MTC production at the Samuel J. Friedman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eureka-day-2024/theatres-leiter-side--samuel-l-leiter.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: new MTC production at the Samuel J. Friedman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-night-oscar-2023/nysr--david-finkle.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Belasco run (the Goodman is named as its origin)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-night-oscar-2023/nysr--david-finkle.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Belasco run (the Goodman is named as its origin)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2024/culturesauce--thom-geier.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Audra McDonald at the Majestic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2024/culturesauce--thom-geier.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Audra McDonald at the Majestic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-off-broadway-2016/timeout--jenna-scherer.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt names Damon Daunno and the onstage band in the round, the NYTW 2016 cast; stored date precedes previews"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-off-broadway-2016/timeout--jenna-scherer.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt names Damon Daunno and the onstage band in the round, the NYTW 2016 cast; stored date precedes previews"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hangmen-off-broadway-2018/theater-scene--david-kaufman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body: Alfie Allen and David Threlfall at the Golden Theatre, the 2022 Broadway staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-broadway-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the 2025 New World Stages cast (Casey Likes, Lorna Courtney)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-broadway-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the 2025 New World Stages cast (Casey Likes, Lorna Courtney)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-broadway-2025/talkinbroadway--howard-miller.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: Off Broadway review dated July 10 2025 of this run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-broadway-2025/talkinbroadway--howard-miller.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: Off Broadway review dated July 10 2025 of this run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hello-dolly-west-end-2024/nysr--david-finkle.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Imelda Staunton under Dominic Cooke, the Palladium staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hello-dolly-west-end-2024/nysr--david-finkle.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: excerpt reviews Imelda Staunton under Dominic Cooke, the Palladium staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "her-requiem-off-broadway-2016/carey-purcell--carey-purcell.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: LCT3 production at the Claire Tow Theater"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "her-requiem-off-broadway-2016/carey-purcell--carey-purcell.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: LCT3 production at the Claire Tow Theater"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holiday-inn-the-new-irving-berlin-musical-2016/edge-new-york--daniel-neiden.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Roundabout staging at Studio 54"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holiday-inn-the-new-irving-berlin-musical-2016/edge-new-york--daniel-neiden.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body reviews the Roundabout staging at Studio 54"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "holiday-inn-the-new-irving-berlin-musical-2016/woman-around-town--alix-cohen.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is a sponsored CBD-oil article, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-to-transcend-a-happy-marriage-off-broadway-2017/zeal-nyc--jil-picariello.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_WP: body is generic 2024 promotional copy, not a notice of the 2017 staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "i-need-that-2023/theater-pizzazz--carole-di-tosti.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WP: body: world premiere with Danny DeVito, the Roundabout Broadway run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "i-need-that-2023/theater-pizzazz--carole-di-tosti.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WP: body: world premiere with Danny DeVito, the Roundabout Broadway run"
+      }
+    ]
+  }
+}
