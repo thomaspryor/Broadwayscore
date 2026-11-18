@@ -8,6 +8,8 @@
 // Use repoDepthArgs() from scripts/lib/shallow-fetch-args.js instead. A fetch
 // that is fine at depth 1 (a data repo reset to FETCH_HEAD, a throwaway CI
 // checkout) carries `depth1-fetch-ok: <reason>` on its line or the line above.
+// Line-based, like unbounded-fetch-guard: it misses `'--depth', '1'` split into
+// two elements, arrays spread over lines, and a branch held in a variable.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -22,7 +24,7 @@ const WAIVER = /depth1-fetch-ok:\s*\S/;
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
-    if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p, out); } else if (EXT.test(e.name) && !/\.test\.|\/tests?\//.test(p)) out.push(p);
+    if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p, out); } else if (EXT.test(e.name) && !/\.test\.|(^|\/)tests?\//.test(path.relative(ROOT, p))) out.push(p);
   }
   return out;
 }
@@ -50,12 +52,15 @@ test('detector: flags a bare depth-1 main fetch, honours the waiver and comments
 
 test('no unwaived depth-1 fetch of main in scripts/ or .claude/hooks/', () => {
   const bad = [];
+  let scanned = 0;
   for (const d of DIRS) {
     const abs = path.join(ROOT, d);
     if (!fs.existsSync(abs)) continue;
     for (const f of walk(abs)) {
+      scanned++;
       for (const n of findDepth1MainFetches(fs.readFileSync(f, 'utf8'))) bad.push(`${path.relative(ROOT, f)}:${n}`);
     }
   }
+  assert.ok(scanned > 100, `walked only ${scanned} files; the scan is not seeing the repo`);
   assert.deepEqual(bad, [], `depth-1 fetch of main (use repoDepthArgs, or waive with depth1-fetch-ok: <reason>):\n${bad.join('\n')}`);
 });
