@@ -32,10 +32,20 @@ function lastSourceTouchMs(buzzRecord, source, attemptField) {
  * True when the source was touched within `hours` of `nowMs`. hours <= 0
  * disables the skip (callers pass 0 to force a re-scrape).
  */
-function isSourceFresh(buzzRecord, source, hours, { attemptField, nowMs = Date.now() } = {}) {
+function isSourceFresh(buzzRecord, source, hours, { attemptField, attemptMaxHours, nowMs = Date.now() } = {}) {
   if (!(hours > 0)) return false;
-  const last = lastSourceTouchMs(buzzRecord, source, attemptField);
-  return last !== null && nowMs - last < hours * 60 * 60 * 1000;
+  const HOUR = 60 * 60 * 1000;
+  const dataMs = lastSourceTouchMs(buzzRecord, source);
+  if (dataMs !== null && nowMs - dataMs < hours * HOUR) return true;
+  // An attempt stamp means a clean scrape found NO data. On opening night that
+  // is the normal state for the first hours, so it may only suppress re-checks
+  // for attemptMaxHours (Blue Man Group 2026-11-17: a 01:06 UTC "no ratings"
+  // stamp hid 5 Show Score ratings for a day under the 20h window).
+  const attemptRaw = attemptField && buzzRecord ? buzzRecord[attemptField] : null;
+  const attemptMs = attemptRaw ? new Date(attemptRaw).getTime() : NaN;
+  if (Number.isNaN(attemptMs)) return false;
+  const window = attemptMaxHours > 0 ? Math.min(hours, attemptMaxHours) : hours;
+  return nowMs - attemptMs < window * HOUR;
 }
 
 module.exports = { lastSourceTouchMs, isSourceFresh };
