@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T15:00:50.477Z",
+  "generatedAt": "2026-11-18T16:14:56.077Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -46,6 +46,11 @@
     {
       "id": "blue-man-group-a-new-holiday-surprise-2026",
       "title": "Blue Man Group “A New Holiday Surprise”",
+      "openingDate": "2026-11-17"
+    },
+    {
+      "id": "a-christmas-story-the-musical-tour-2026",
+      "title": "A Christmas Story The Musical",
       "openingDate": "2026-11-17"
     },
     {
@@ -145,15 +150,7 @@
       "reason": "no data/review-texts directory for this show"
     },
     {
-      "showId": "a-christmas-story-the-musical-tour-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "first-and-last-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "ted-talks-and-talks-regional-2026",
       "reason": "no data/review-texts directory for this show"
     },
     {
@@ -188,15 +185,15 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
+      "outletId": "fringereview",
+      "error": "HTTP 500 for https://fringereview.co.uk/feed/"
     },
     {
-      "outletId": "the-knockturnal",
-      "error": "HTTP 403 for https://theknockturnal.com/feed/"
+      "outletId": "londontheatre1",
+      "error": "All scraping methods failed"
     }
   ],
-  "itemsScanned": 864,
+  "itemsScanned": 845,
   "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [

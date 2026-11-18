@@ -1,78 +1,70 @@
 {
-  "generatedAt": "2026-11-18T15:00:50.043Z",
+  "generatedAt": "2026-11-18T16:14:55.777Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 357,
-  "clean": 353,
-  "defective": 4,
+  "clean": 354,
+  "defective": 3,
   "byType": {
-    "score-drift": 4
+    "unreachable": 2,
+    "missing-from-prod": 1,
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "openingDate": "2026-11-14",
+      "showId": "los-soles-truncos-off-broadway-2025",
+      "title": "Los soles truncos",
+      "openingDate": "2025-02-20",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 49.97 vs local 49.87 (Δ0.1)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-18T15:00:41.351Z"
+      "localCount": 0,
+      "deployedCount": null,
+      "firstDefectAt": "2026-11-18T16:14:50.355Z"
     },
     {
-      "showId": "julius-caesar-globe-off-west-end-2026",
-      "title": "Julius Caesar",
-      "openingDate": "2026-11-06",
+      "showId": "the-magicians-table-off-west-end-2026",
+      "title": "The Magicians Table",
+      "openingDate": null,
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 71.13 vs local 73.8 (Δ2.67)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-18T15:00:41.351Z"
+      "localCount": 0,
+      "deployedCount": null,
+      "firstDefectAt": "2026-11-18T16:14:50.355Z"
     },
     {
-      "showId": "the-bodyguard-tour-2026",
-      "title": "The Bodyguard",
-      "openingDate": "2026-10-15",
+      "showId": "showstopper-the-improvised-musical-west-end-2023",
+      "title": "Showstopper! The Improvised Musical",
+      "openingDate": "2015-09-01",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 78.63 vs local 78.56 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-18T15:00:41.351Z"
-    },
-    {
-      "showId": "clue-tour-2025",
-      "title": "Clue",
-      "openingDate": "2025-10-21",
-      "ok": false,
-      "defects": [
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: north-west-end"
+        },
         {
           "type": "score-drift",
-          "detail": "deployed cs 80.5 vs local 79.53 (Δ0.97)"
+          "detail": "deployed cs 85.43 vs local 85.82 (Δ0.39)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-11-18T15:00:41.351Z"
+      "missingFromProd": [
+        "north-west-end"
+      ],
+      "localCount": 10,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-18T16:14:50.355Z"
     }
   ],
   "persistentDefective": 0,
