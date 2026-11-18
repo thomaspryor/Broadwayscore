@@ -180,7 +180,7 @@ async function main() {
     for (const r of bad) console.log(`  NOT PROVEN ${r.sha.slice(0, 10)} ${r.verdict} ${r.subject}`);
     process.exitCode = bad.length ? 1 : 0;
   }
-  if (dryRun) { console.log(`[landed-proof] dry run: would append ${lib.newRows(readLedger(path.join(ROOT, lib.LEDGER_PATH)), rows).length} row(s), card for ${follow.length} change(s)`); return; }
+  if (dryRun) { (arg("json") ? console.error : console.log)(`[landed-proof] dry run: would append ${lib.newRows(readLedger(path.join(ROOT, lib.LEDGER_PATH)), rows).length} row(s), card for ${follow.length} change(s)`); return; }
 
   if (follow.length && process.env.LINEAR_API_KEY) {
     const id = fileCard(lib.cardBody(follow, { auditDay }), auditDay, follow.length);

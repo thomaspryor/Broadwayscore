@@ -35,7 +35,7 @@ export function sourceOf({ authorName = '', authorEmail = '', body = '' } = {}) 
 }
 
 const EXEMPT_RE = /(?:^|\/)(?:tests?|__tests__|fixtures?|__snapshots__)\/|\.(?:test|spec)\.\w+$|\.(?:md|txt|png|jpe?g|webp|gif|svg|ico|csv)$|^(?:data|public|memory|cloud-memory|docs|\.claude\/commands|\.claude\/skills|review-texts)\//;
-const HOOK_RE = /^\.claude\/(?:hooks|settings)|^\.husky\/|^scripts\/lib\/[\w-]*(?:-stop|-gate|review-gate)\.m?js$|^\.claude\/[\w-]+\.(?:sh|mjs|js|json)$/;
+const HOOK_RE = /^\.claude\/(?:hooks|settings)|^\.husky\/|^scripts\/lib\/[\w-]*(?:-stop|-gate|review-gate|review-coverage|transcript-scan)\.m?js$|^\.claude\/[\w-]+\.(?:sh|mjs|js|json)$/;
 const SRC_RE = /^src\/|^(?:next\.config\.js|tailwind\.config\.\w+|postcss\.config\.\w+|tsconfig\.json|package(?:-lock)?\.json|vercel\.json|middleware\.ts)$/;
 
 /**
@@ -48,8 +48,8 @@ export function classifyPath(file, { index = new Map(), libIndex = new Map() } =
   if (wf) return { kind: 'workflow', workflows: [wf[1]] };
   if (index.has(f)) return { kind: 'script', workflows: index.get(f) };
   if (EXEMPT_RE.test(f)) return { kind: 'exempt', workflows: [] };
-  if (libIndex.has(f)) return { kind: 'lib', workflows: libIndex.get(f) };
   if (HOOK_RE.test(f)) return { kind: 'hook', workflows: [] };
+  if (libIndex.has(f)) return { kind: 'lib', workflows: libIndex.get(f) };
   if (SRC_RE.test(f)) return { kind: 'src', workflows: [] };
   return { kind: 'other', workflows: [] };
 }

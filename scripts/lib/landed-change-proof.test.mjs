@@ -35,6 +35,7 @@ test('classifyPath: workflow, script, lib, src, hook, exempt, other', () => {
   assert.equal(cls('next.config.js').kind, 'src');
   assert.equal(cls('.claude/hooks/verify-edits.sh').kind, 'hook');
   assert.equal(cls('scripts/lib/live-run-stop.mjs').kind, 'hook');
+  assert.equal(classifyPath('scripts/lib/retro-coverage-stop.mjs', { index, libIndex: new Map([['scripts/lib/retro-coverage-stop.mjs', ['x.yml']]]) }).kind, 'hook', 'a Stop hook is a hook even when a workflow script imports it');
   for (const f of ['scripts/lib/x.test.mjs', 'tests/unit/a.test.mjs', 'CLAUDE.md', 'data/shows.json', 'memory/a.md', '.claude/commands/ship-check.md']) assert.equal(cls(f).kind, 'exempt', f);
 });
 
