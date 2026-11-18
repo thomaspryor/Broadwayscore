@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7660-l",
   "planId": "af07fd68-ac09-4852-99fa-18c5964b9dfa",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T07:28:48.800Z",
   "submitter": {
     "name": null,
@@ -221,5 +221,124 @@
         "description": "BRO-7660 CLEAR_WS: body reviews the Reeves/Winter Godot (two-Beckett column)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T11:29:45.345Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-2025/lighting-and-sound-america--david-barbour.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-2025/lighting-and-sound-america--david-barbour.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pirates-the-penzance-musical-2025/lighting-and-sound-america--david-barbour.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pirates-the-penzance-musical-2025/lighting-and-sound-america--david-barbour.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pirates-the-penzance-musical-2025/culturesauce--unknown.json wrongShow: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/dailybeast--tim-teeman.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/dailybeast--tim-teeman.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/dailybeast--tim-teeman.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/theatermania--david-gordon.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/theatermania--david-gordon.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/theatermania--david-gordon.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sing-street-off-broadway-2019/front-row-center--stanford-friedman.json wrongShow: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2024/lighting-and-sound-america--david-barbour.json wrongShow: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-west-end-2023/daily-mail--luke-jones.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-west-end-2023/daily-mail--luke-jones.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "swept-away-2024/this-week-in-new-york--unknown.json wrongShow: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2025/lighting-and-sound-america--david-barbour.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2025/lighting-and-sound-america--david-barbour.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ],
+  "executedIn": "ci"
 }
