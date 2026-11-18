@@ -1661,7 +1661,7 @@ function urlLooksLikeReview(url, showTitle) {
   if (lower.includes('/page/') && !lower.includes('talkinbroadway.com/page/')) return false;
   if (lower.includes('ticket') && !lower.includes('review')) return false;
 
-  if (urlTitleWordsPass(lower, showTitle)) return true;
+  if (urlTitleWordsPass(lower, showTitle)) return !urlNamesOtherArticle(url, showTitle);
 
   // Short-title fallback for comma-subtitled shows ("Beaches, A New Musical" → "Beaches").
   // Outlet URL slugs typically carry only the short title ("/beaches-review-broadway.html").
@@ -1685,10 +1685,43 @@ function urlLooksLikeReview(url, showTitle) {
       .replace(/[^a-z0-9\s-]/g, '')
       .split(/\s+/)
       .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
-    if (shortMeaningfulWords.length > 0 && urlTitleWordsPass(lower, shortTitle)) return true;
+    if (shortMeaningfulWords.length > 0 && urlTitleWordsPass(lower, shortTitle)) return !urlNamesOtherArticle(url, showTitle);
   }
 
   return false;
+}
+
+// BRO-7785: words that mark a slug as a review, and news a show's URL carries instead (casting, tickets, photos).
+const URL_REVIEW_CUE_RE = /(?:^|[^a-z])(reviews?|reviewed|critic|critics|critique|verdict)(?:[^a-z]|$)/;
+const URL_NEWS_CUE_RE = /(?:^|[^a-z])(casting|cast-set|full-cast|to-star|will-star|joins|joining|tickets?|lottery|first-look|photos|video|interview|announce[sd]|set-for|heads-to|to-open|premiere-date|extends|extension)(?:[^a-z]|$)/;
+// Slug words that say nothing about the article (section names, file endings, the city).
+const URL_FILLER = new Set(['article', 'articles', 'news', 'story', 'html', 'htm', 'php', 'amp', 'www', 'com', 'theater', 'theatre', 'arts', 'entertainment', 'culture', 'stage', 'broadway', 'nyc', 'new', 'york', 'on', 'in', 'at', 'the', 'a', 'an', 'and', 'of', 'to', 'for', 'with']);
+/**
+ * BRO-7785: a URL the title words admit that is about something else. Vulture's casting story
+ * (vulture.com/article/its-a-wonderful-life-broadway-lisa-rinna.html) held 3 of the 6 title words of
+ * "It's A Wonderful Life: A Live Radio Play", enough for the 50% word rule. With no review word in the URL, a news word
+ * or a label-like slug (nothing but title words, cast or creative names and filler: a review slug says something,
+ * "jessica-lange-brilliant-in-long-days-journey") marks a news story; a slug naming another staging
+ * (show-names slugOtherStagingCue) marks another production. Talkin' Broadway pages are reviews by path.
+ */
+function urlNamesOtherArticle(url, showTitle) {
+  const { slugOtherStagingCue, pressPeopleForTitle, sigWords } = require('./show-names');
+  if (/talkinbroadway\.com\/(?:page\/)?world\//i.test(url)) return false;
+  if (slugOtherStagingCue(url, showTitle)) return true;
+  let path;
+  try { path = decodeURIComponent(new URL(url).pathname).toLowerCase(); } catch (_) { return false; }
+  if (URL_REVIEW_CUE_RE.test(path)) return false;
+  const toks = path.replace(/['’]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
+  const titleW = new Set(sigWords(showTitle));
+  // A slug with every title word is this show's page whatever else it says; only a partial match (the 50% rule) is
+  // checked for news, so a full title stays as permissive as before.
+  if ([...titleW].every((w) => w.length < 3 || toks.includes(w))) return false;
+  if (URL_NEWS_CUE_RE.test(path)) return true;
+  const people = pressPeopleForTitle(showTitle);
+  const named = toks.filter((w) => w.length > 2 && people.has(w) && !titleW.has(w));
+  if (!named.length) return false;
+  const said = toks.filter((w) => !titleW.has(w) && !people.has(w) && !URL_FILLER.has(w) && !/^\d+$/.test(w) && w.length > 1);
+  return said.length === 0;
 }
 
 /**
@@ -7172,6 +7205,7 @@ function isSyndicatedDuplicateActive(data, filePath) {
 }
 
 module.exports = {
+  urlNamesOtherArticle,
   isSyndicatedDuplicateActive,
   isUrlCorrectedAwaitingFreshScore,
   isRejectedByReasonExclusion,

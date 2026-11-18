@@ -281,7 +281,7 @@ function singleWordTitleIdentity(itemTitle, itemForms, phrase, word) {
 
 // BRO-7739 / BRO-7778: main-title rules live in show-names.js (one show identity for every matcher). mainTitleOf
 // now splits colon and dash subtitles too; a colon/dash main title needs a review cue in the headline (below).
-const { mainTitleSplit, mainTitleIsUnique, pressAkaForTitle, showNames, sigWords: nameSigWords, normTitle, otherProductionCue } = require('./show-names');
+const { mainTitleSplit, mainTitleIsUnique, pressAkaForTitle, showNames, sigWords: nameSigWords, normTitle, otherProductionCue, billedTitleOtherProductionCue } = require('./show-names');
 function mainTitleOf(showTitle) {
   const s = mainTitleSplit(showTitle);
   return s ? s.main : null;
@@ -323,7 +323,9 @@ function akaTitleMatches(itemTitle, aka, opts, showTitle) {
  *   a near match on one show beat an exact match on another.
  */
 function titleMatchesShow(itemTitle, showTitle, opts = {}) {
-  if (titleMatchesFullShowTitle(itemTitle, showTitle, opts)) return true;
+  // BRO-7785: a licensed title is staged everywhere, so a headline naming another staging ("... at Stages Houston",
+  // "Ross Valley Players' ...") is refused whichever name matched; the lane's near-miss alert still reports it.
+  if (titleMatchesFullShowTitle(itemTitle, showTitle, opts)) return !headlineNamesOtherStaging(itemTitle, showTitle, opts);
   // BRO-7778: the other names come from show-names.js showNames, the one show identity every matcher shares: press
   // titles (akaTitles: opts.akaTitles, else the loaded show list) and, with opts.mainTitle, the unique main title.
   const akas = Array.isArray(opts.akaTitles) ? opts.akaTitles : (opts.pressNames === false ? [] : pressAkaForTitle(showTitle));
@@ -344,7 +346,29 @@ function titleMatchesShow(itemTitle, showTitle, opts = {}) {
   const hays = [' ' + f.replace(/'s\b/g, '').replace(/'/g, '') + ' ', ' ' + f.replace(/'/g, '') + ' '];
   // "Blue Man Group's" headline, or the slug "blue-man-groups" (the slug strips the apostrophe): optional s on the last word.
   // A 2+ word contiguous phrase is stronger identity than the word-bag matcher, so no second pass.
-  return hays.some((hay) => hay.includes(' ' + phrase + ' ') || hay.includes(' ' + phrase + 's '));
+  if (!hays.some((hay) => hay.includes(' ' + phrase + ' ') || hay.includes(' ' + phrase + 's '))) return false;
+  return !billedTitleOtherProductionCue(itemTitle, main, showTitle, { main: true });
+}
+
+/**
+ * BRO-7785: does a feed or index item (headline + link) name this show? The headline or the slug must; a headline that
+ * names another staging of the title refuses the item even when its slug matches (a lower-case slug hides the cue).
+ */
+function itemNamesShow(title, url, showTitle, opts = {}) {
+  if (title && headlineNamesOtherStaging(title, showTitle, opts)) return false;
+  return titleMatchesShow(title || '', showTitle, opts) || urlSlugMatchesShow(url, showTitle, opts);
+}
+/**
+ * The headline names the show by one of its names (billed, main before a subtitle, press titles) and points at another
+ * staging next to that name. The word-bag billed match can hold the title only as a shorter name ("Irish Rep's radio
+ * play adaptation of 'It's a Wonderful Life'"), so every name is tried.
+ */
+function headlineNamesOtherStaging(title, showTitle, opts = {}) {
+  if (!title || !showTitle) return false;
+  const names = [showTitle, ...[mainTitleOf(showTitle)].filter(Boolean),
+    ...(Array.isArray(opts.akaTitles) ? opts.akaTitles : (opts.pressNames === false ? [] : pressAkaForTitle(showTitle)))];
+  return names.some((n) => titleMatchesFullShowTitle(title, n, { ...opts, mainTitle: false, akaTitles: [] })
+    && !!billedTitleOtherProductionCue(title, n, showTitle, { main: n !== showTitle }));
 }
 
 function titleMatchesFullShowTitle(itemTitle, showTitle, opts = {}) {
@@ -501,7 +525,7 @@ function pollerMatchOpts() {
 function openingWindowFeedAccepts(item, showTitle, openingDate) {
   if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, OPENING_WINDOW_POST_DAYS)) return false;
   const mo = pollerMatchOpts();
-  if (!titleMatchesShow(item.title, showTitle, mo) && !urlSlugMatchesShow(item.link, showTitle, mo)) return false;
+  if (!itemNamesShow(item.title, item.link, showTitle, mo)) return false;
   if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, REVIEW_FREE_POST_DAYS)) {
     return /review/i.test(`${item.title || ''} ${item.link || ''}`);
   }
@@ -639,4 +663,4 @@ function rssStubIdentityOk(stub, showTitle) {
     || urlSlugMatchesShow(stub.url, showTitle));
 }
 
-module.exports = { rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, mainTitleOf, mainTitleIsUnique, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+module.exports = { rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, itemNamesShow, headlineNamesOtherStaging, mainTitleOf, mainTitleIsUnique, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
