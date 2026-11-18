@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-18T22:18:53.772Z",
+  "timestamp": "2026-11-18T22:36:13.239Z",
   "stats": {
-    "totalReviews": 82680,
+    "totalReviews": 82682,
     "alreadyFlagged": 22467,
     "dateGuardCatches": 220,
     "directorMismatch": 3761,
-    "tvFilmSignals": 2353,
+    "tvFilmSignals": 2354,
     "londonSignals": 3801,
     "offBroadwaySignals": 763,
     "yearMismatch": 383,
@@ -14581,6 +14581,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"marianne elliott\" from company-2021"
+        }
+      ]
+    },
+    {
+      "showId": "confederates-regional-2026-fountain-theatre",
+      "file": "hollywoodprogressive--dick-price.json",
+      "publishDate": "2026-10-31",
+      "url": "https://hollywoodprogressive.com/stage/confederates-at-the-fountain-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
