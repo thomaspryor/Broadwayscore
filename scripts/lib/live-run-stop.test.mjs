@@ -2,7 +2,7 @@
 // must block; a dispatch of its workflow plus a read of the run, or a direct run of the script, must allow.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { workflowScriptIndex, stopHookDecision, blockBudget, loadWorkflows, WAIT_TO_SEE_RE } from './live-run-stop.mjs';
+import { workflowScriptIndex, stopHookDecision, blockBudget, loadWorkflows, defersProof } from './live-run-stop.mjs';
 
 const ENV = { CLAUDE_CODE_REMOTE: 'true' };
 const SAFE = 'Done.\n\nSAFE TO ARCHIVE — all landed';
@@ -112,6 +112,12 @@ const DEFERS = [
   "When tomorrow's run happens we'll see the counts.",
   "I'll know in a few hours if the fix held.",
   'RECHECK-AFTER: 2026-11-20',
+  "We'll know on Friday whether it fired.",
+  "I'll find out in the morning.",
+  'Proof comes with tomorrow\'s 6am run.',
+  "Once the cron runs tonight we'll know.",
+  'This will be verified by tonight\'s scheduled job.',
+  'We will be able to tell tomorrow.',
 ];
 const NOT_DEFERS = [
   'It ran just now and printed 12 rows.',
@@ -120,10 +126,17 @@ const NOT_DEFERS = [
   'Tomorrow is opening night for the show.',
   'KEEP OPEN — waiting on the land run',
   'I will check the docs next week for the API change.',
+  "This should tell the poller to skip tomorrow's shows.",
+  'The script will confirm the venue and then skip shows opening tomorrow.',
+  "I'll see you tomorrow.",
+  'A session that says "we\'ll know tomorrow if it works" is now stopped.',
+  'When the next cron runs it will pick up the new file (dispatched and verified above).',
+  'The card carries a RECHECK-AFTER stamp from an older session.',
+  'Example deferral, quoted:\n```\nWe will know tomorrow.\n```',
 ];
 test('WAIT_TO_SEE_RE: catches "we will know later" phrasings and not plain mentions of time', () => {
-  for (const t of DEFERS) assert.ok(WAIT_TO_SEE_RE.test(t), `should catch: ${t}`);
-  for (const t of NOT_DEFERS) assert.ok(!WAIT_TO_SEE_RE.test(t), `should not catch: ${t}`);
+  for (const t of DEFERS) assert.ok(defersProof(t), `should catch: ${t}`);
+  for (const t of NOT_DEFERS) assert.ok(!defersProof(t), `should not catch: ${t}`);
 });
 
 test('deferring proof to a later run is judged even without SAFE TO ARCHIVE', () => {
@@ -142,4 +155,10 @@ test('a bypass that only says "it runs on a schedule" is refused; a real reason 
     assert.equal(decide(ev, `NO-LIVE-RUN: ${why}\nSAFE TO ARCHIVE — x`).decision, 'block', why);
   }
   assert.equal(decide(ev, 'NO-LIVE-RUN: sends real email to 4,000 readers, no dry-run mode\nSAFE TO ARCHIVE — x').decision, 'allow');
+  for (const why of ['sends the nightly digest email to 4,000 real subscribers', 'spends ~$40 of paid API calls; runs on all 800 reviews', 'scheduled broadcast to the real audience']) {
+    assert.equal(decide(ev, `NO-LIVE-RUN: ${why}\nSAFE TO ARCHIVE — x`).decision, 'allow', `money/email reason with a schedule word: ${why}`);
+  }
+  assert.equal(decide(ev, 'NO-LIVE-RUN: cron-only job, runs at 6am daily\nNO-LIVE-RUN: sends real email to 4,000 readers\nSAFE TO ARCHIVE — x').decision, 'allow', 'a refused bypass does not hide a valid one in the same message');
+  const early = { kind: 'assistant_text', text: 'NO-LIVE-RUN: cron-only job, runs at 6am daily' };
+  assert.equal(decide([...ev, early], 'NO-LIVE-RUN: sends real email to 4,000 readers\nSAFE TO ARCHIVE — x').decision, 'allow', 'nor one in an earlier message');
 });

@@ -12,7 +12,7 @@
 //      (actions_get / get_job_logs / list_workflow_jobs / wait-for-run / wait-for-land), or
 //   2. a run of the edited script itself (`node scripts/x.js …`, `bash scripts/x.sh …`) after its last edit that
 //      finished without error and was not --help / --version / node --check.
-// A plain NO-LIVE-RUN: <15+ chars> line covers a run that would spend moneyor send real email. "It only runs on cron" is refused: dispatch it or dry-run it now.
+// A plain NO-LIVE-RUN: <15+ chars> line covers a run that would spend money or send real email. "It only runs on cron" is refused: dispatch it or dry-run it now.
 // Library files a workflow script imports are not judged (the 2-level closure covers ~90% of scripts/lib, see the
 // BRO-7738 review); /did-it-work still asks for those to be run.
 //
@@ -34,8 +34,20 @@ const EXCLUDED_WORKFLOWS = /^(?:test|land)\.ya?ml$/;
 const SCRIPT_REF_RE = /(?:^|[\s'"=(/])(scripts\/[\w./-]+\.(?:mjs|cjs|js|ts|sh|py))\b/g;
 // Owner 2026-11-18: "we'll know tomorrow if it works" -> "can you just force a dry run now?" -> "good idea!". A message that
 // defers proof to a later scheduled run is judged like a SAFE TO ARCHIVE claim, whatever its verdict line says.
-export const WAIT_TO_SEE_RE = /\b(?:we'?ll|we will|I'?ll|I will|you'?ll|you will|should|will)\s+(?:know|see|find out|confirm|tell|learn)\b[^.\n]{0,80}?\b(?:tomorrow|tonight|overnight|next (?:run|cron|scheduled run|week|day|pass|firing)|in (?:\d+|a few|a couple of|one|two|three) (?:days?|hours?)|after (?:the )?(?:next|nightly|scheduled))\b|\b(?:once|when|after) (?:the |it )?(?:next|nightly|tonight'?s|tomorrow'?s|morning'?s|first scheduled|scheduled) (?:cron|run|job|pass|firing)\b|\bRECHECK-AFTER:/i;
+export const WAIT_TO_SEE_RE = new RegExp([
+  String.raw`\b(?:we'?ll|we will|I'?ll|I will|you'?ll|you will)\s+(?:know|find out|confirm|learn|see(?!\s+you\b)|be able to tell)\b[^.\n]{0,80}?\b(?:tomorrow|tonight|overnight|in the morning|on (?:mon|tues|wednes|thurs|fri|satur|sun)day|next (?:run|cron|scheduled run|week|day|pass|firing)|in (?:\d+|a few|a couple of|one|two|three) (?:days?|hours?)|after (?:the )?(?:next|nightly|scheduled))\b`,
+  String.raw`\bonce (?:the |it )?(?:next|nightly|tonight'?s|tomorrow'?s|morning'?s|first scheduled|scheduled) (?:cron|run|job|pass|firing)\b`,
+  String.raw`\bonce the (?:cron|job|scheduled run) runs\b`,
+  String.raw`\b(?:once|when|after) (?:tomorrow'?s|tonight'?s|the next|the nightly|the scheduled)\b[^.\n]{0,40}\b(?:we'?ll|we will|I'?ll|you'?ll)\s+(?:know|see|find out|confirm)\b`,
+  String.raw`\b(?:proof|confirmation|verification) (?:comes|will come)\b[^.\n]{0,40}\b(?:tomorrow|tonight|next|scheduled|nightly|cron)`,
+  String.raw`\bwill be (?:verified|confirmed|proven|proved) (?:by|in|on|with|after)\b[^.\n]{0,40}\b(?:tomorrow|tonight|next|scheduled|nightly|cron)`,
+  String.raw`^\s*RECHECK-AFTER\b`,
+].join('|'), 'im');
+/** Deferral language outside code fences and quotes (a session quoting the phrase is not deferring). */
+export const defersProof = (text) => WAIT_TO_SEE_RE.test(String(text || '').replace(/```[\s\S]*?```/g, '').replace(/"[^"\n]{1,200}"|“[^”\n]{1,200}”/g, '""'));
 // A bypass whose reason is only "it runs on a schedule" is refused: every scheduled workflow can be dispatched or dry-run now.
+// A schedule word plus a money/email reason is a real reason (CLAUDE.md sections 8 and 17): those must not be dispatched.
+const REAL_COST_REASON_RE = /\b(?:e-?mail|broadcast|subscribers?|readers?|resend|send(?:s|ing)?|\$\d|money|paid|spend\w*|cost\w*|charge\w*|credits?|quota)\b/i;
 const SCHEDULE_ONLY_REASON_RE = /\b(?:cron|schedul\w*|tomorrow|tonight|overnight|next run|nightly|daily run|only runs|runs (?:at|every|on))\b/i;
 const NO_LIVE_RUN_RE = /^[ \t>*_-]*NO-LIVE-RUN(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.{14,})$/im;
 const RESULT_READ_TOOL_RE = /^mcp__github__(?:actions_get|get_job_logs|actions_list)$/;
@@ -137,7 +149,7 @@ export function blockMessage(missing) {
     'Do one of these, then close again:',
     '  1. Run the edited script itself on real data (a --dry-run counts; --help and node --check do not): node <file> …',
     '  2. Dispatch the workflow that runs it, after node scripts/lib/wait-for-land.js land/<name> says it landed (mcp__github__actions_run_trigger, or node scripts/cloud-dispatch.js <workflow> --wait), then read the run result (mcp__github__actions_get / get_job_logs, or the --wait output) and fix what it shows.',
-    'Do not dispatch something that spends real money in bulk or sends real email (CLAUDE.md sections 8 and 17): run it with --dry-run instead, or write NO-LIVE-RUN: <15+ chars on why> (also for a cron-only job), and say plainly it is not yet proven live.',
+    'Do not dispatch something that spends real money in bulk or sends real email (CLAUDE.md sections 8 and 17): run it with --dry-run instead, or write NO-LIVE-RUN: <15+ chars on why>, and say plainly it is not yet proven live.',
     'Waiting for the next scheduled run ("we will know tomorrow") is not proof and not a bypass reason: dispatch it now, or run it with --dry-run now.',
   ].join('\n');
 }
@@ -146,7 +158,7 @@ export function blockMessage(missing) {
 export function stopHookDecision({ lastMessage = '', events = null, env = process.env, index = new Map() }) {
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.LIVE_RUN_STOP_DISABLE === '1') return { decision: 'allow', reason: 'LIVE_RUN_STOP_DISABLE=1' };
-  const defers = WAIT_TO_SEE_RE.test(lastMessage);
+  const defers = defersProof(lastMessage);
   if (!claimsSafeToArchive(lastMessage) && !defers) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE or deferring proof' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   let from = -1;
@@ -154,8 +166,9 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
     const e = events[i];
     if (e.kind === 'assistant_text' && e.text !== lastMessage && claimsSafeToArchive(e.text)) { from = i; break; }
   }
-  const bypass = answerTexts(events.slice(from + 1), lastMessage).map((t) => NO_LIVE_RUN_RE.exec(t)?.[1]).find(Boolean);
-  if (bypass && !SCHEDULE_ONLY_REASON_RE.test(bypass)) return { decision: 'allow', reason: 'NO-LIVE-RUN bypass' };
+  const allBypass = new RegExp(NO_LIVE_RUN_RE.source, 'gim');
+  const accepted = (why) => !SCHEDULE_ONLY_REASON_RE.test(why) || REAL_COST_REASON_RE.test(why);
+  if (answerTexts(events.slice(from + 1), lastMessage).some((t) => [...String(t).matchAll(allBypass)].some((m) => accepted(m[1])))) return { decision: 'allow', reason: 'NO-LIVE-RUN bypass' };
   const landed = landedPushIndices(events).filter((i) => i > from);
   if (!landed.length) return { decision: 'allow', reason: 'nothing landed in this chunk' };
   const lastLand = landed[landed.length - 1];
