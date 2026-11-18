@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T06:42:19.446Z",
+  "generatedAt": "2026-11-18T08:05:17.370Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -164,6 +164,10 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -182,11 +186,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 885,
+  "itemsScanned": 874,
   "matchedGaps": 0,
-  "possibleGaps": 4,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
@@ -205,15 +213,6 @@
       "url": "https://westendwilma.com/after-birth-royal-court-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=after-birth-royal-court-theatre",
       "headline": "After Birth &#8211; the reality of life after birth at Royal Court Theatre",
       "publishDate": "2026-11-12"
-    },
-    {
-      "showId": "annie-regional-2026-drury-lane-oakbrook",
-      "title": "Annie",
-      "level": "possible",
-      "outletId": "chicagotribune",
-      "url": "https://www.chicagotribune.com/2026/11/17/review-annie-drury-lane-theatre/",
-      "headline": "Review: Orphans and holiday cheer in ‘Annie’ at Drury Lane Theatre",
-      "publishDate": "2026-11-17"
     },
     {
       "showId": "much-ado-about-nothing-2026",
