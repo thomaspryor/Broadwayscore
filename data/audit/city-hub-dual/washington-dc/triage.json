@@ -743,6 +743,18 @@
    "status": "",
    "item": "tour:a-beautiful-noise-the-neil-diamond-musical-tour-2026|2027-03-02|National Theatre",
    "reason": "Source page is a stale or earlier-year schedule (dates from a prior tour), so the mismatch is a stale source, not our stop."
+  },
+  "review:sally-and-tom-regional-2026|https://www.washingtonpost.com/entertainment/theater/2026/06/10/play-about-jefferson-hemings-lays-bare-founding-fathers-sins|thomas floyd": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:sally-and-tom-regional-2026|https://www.washingtonpost.com/entertainment/theater/2026/06/10/play-about-jefferson-hemings-lays-bare-founding-fathers-sins|thomas floyd",
+   "reason": "Washington Post review of Sally & Tom at Round House (lead subject, full review with verdict); brief mention of two solo shows is a trailing aside, not a roundup. wrongProduction=false, manually cleared."
+  },
+  "show:les-miserables-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:les-miserables-regional-2026",
+   "reason": "Our regional openingDate is the first review date (openingDateSource tic-first-review); page first-performance date is first preview. Previews are not tracked for regional shows."
   }
  }
 }
