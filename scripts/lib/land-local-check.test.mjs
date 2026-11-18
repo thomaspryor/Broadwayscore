@@ -655,3 +655,106 @@ test('BRO-7431: a stale .next/dev/types is removed before the gates run; a live 
   const main = src.slice(src.indexOf('function main('));
   assert.ok(main.indexOf('clearStaleDevTypes(ROOT)') > 0 && main.indexOf('clearStaleDevTypes(ROOT)') < main.indexOf('land-gauntlet.sh'), 'cleared before the gauntlet');
 });
+
+// ── BRO-7752: alone vs alone, so a timing failure no longer forces a full base gate ──
+const tapOf = (failures, total = failures.length + 1) => ['TAP version 13',
+  ...failures.flatMap(([file, name, type = 'testCodeFailure'], i) => [`not ok ${i + 1} - ${name}`, '  ---', `  location: '${file}:3:1'`, `  failureType: '${type}'`, '  ...']),
+  `ok ${total} - passes`, `# tests ${total}`, `# fail ${failures.length}`, ''].join('\n');
+
+function gateDir(dir, gate, { exit, log, files }) {
+  fs.mkdirSync(dir, { recursive: true });
+  if (!existsSync(join(dir, 'meta.json'))) writeFileSync(join(dir, 'meta.json'), '{}');
+  writeFileSync(join(dir, `${gate}.exit`), String(exit));
+  writeFileSync(join(dir, `${gate}.log`), log);
+  if (files) writeFileSync(join(dir, `${gate}.files`), files.join('\n') + '\n');
+}
+
+const BATCH_FILES = ['tests/unit/a.test.mjs', 'tests/unit/b.test.mjs', 'tests/unit/c.test.mjs'];
+const BATCH_LOG = tapOf([['tests/unit/a.test.mjs', 'slow under load', 'testTimeoutFailure'], ['tests/unit/b.test.mjs', 'red on main too']]);
+
+test('BRO-7752: isolatedRecheckPlan scopes a finished batch with a timing failure; not a killed batch, a tsx gate or too many files', (t) => {
+  const { isolatedRecheckPlan, aloneRunFinished } = require('./land-local-check.js');
+  const dir = mkdtempSync(join(tmpdir(), 'llc-iso-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  gateDir(dir, 'unit-tests-node', { exit: 1, log: BATCH_LOG, files: BATCH_FILES });
+  gateDir(dir, 'unit-tests-tsx', { exit: 1, log: BATCH_LOG, files: BATCH_FILES });
+  assert.deepEqual(isolatedRecheckPlan(['unit-tests-node', 'unit-tests-tsx', 'tsc'], dir),
+    [{ gate: 'unit-tests-node', files: ['tests/unit/a.test.mjs', 'tests/unit/b.test.mjs'] }]);
+  assert.deepEqual(isolatedRecheckPlan(['unit-tests-node'], dir, { maxFiles: 1 }), [], 'over the cap: keep the batch path');
+  gateDir(dir, 'scripts-lib-tests', { exit: 1, log: BATCH_LOG.replace(/# tests \d+\n/, ''), files: BATCH_FILES });
+  assert.deepEqual(isolatedRecheckPlan(['scripts-lib-tests'], dir), [], 'a batch cut short never ran the rest');
+  assert.equal(aloneRunFinished({ exit: 1, text: tapOf([['x.test.mjs', 'y']]) }), true);
+  assert.equal(aloneRunFinished({ exit: 0, text: tapOf([]) }), true);
+  assert.equal(aloneRunFinished({ exit: 1, text: 'killed' }), false);
+  assert.equal(aloneRunFinished({ exit: 143, text: tapOf([]) }), false);
+  assert.equal(aloneRunFinished(null), false);
+});
+
+function runMainWithAlone(t, aloneLog, baseLog = tapOf([['tests/unit/b.test.mjs', 'red on main too']], 2)) {
+  const seen = { aloneEnv: null, baseScope: undefined, baseRan: false };
+  t.mock.method(console, 'log', () => {});
+  t.mock.method(console, 'error', () => {});
+  t.mock.method(R, 'withFileMutex', (_lock, fn) => fn());
+  const readdir = fs.readdirSync;
+  t.mock.method(fs, 'readdirSync', (dir, opts) => (dir === tmpdir() ? [] : readdir(dir, opts)));
+  t.mock.method(fs, 'statfsSync', () => ({ bavail: 10 * 1024 ** 3, bsize: 1 }));
+  const exists = fs.existsSync;
+  t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$|\/node_modules\/.+\/package\.json$/.test(String(p)) || exists(p));
+  const checker = checkerWithRunner(t, (cmd, args, opts) => {
+    const ok = (stdout = '') => ({ status: 0, stdout, stderr: '' });
+    if (cmd === 'pgrep') return ok();
+    if (cmd === 'git') return ok({ 'rev-parse': 'a'.repeat(40), 'merge-base': 'b'.repeat(40), 'rev-list': '0' }[args[0]] || '');
+    if (cmd === 'bash' && args[0] === 'scripts/lib/land-gauntlet.sh' && /branch$/.test(args[1])) {
+      t.after(() => rmSync(join(args[1], '..'), { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+      seen.branchDir = args[1];
+      gateDir(args[1], 'unit-tests-node', { exit: 1, log: BATCH_LOG, files: BATCH_FILES });
+      return ok();
+    }
+    if (cmd === 'bash' && args[0] === 'scripts/lib/land-gauntlet.sh' && /branch-alone$/.test(args[1])) {
+      seen.aloneEnv = { ...opts.env, scopeFiles: readFileSafe(join(opts.env.GAUNTLET_SCOPE_DIR, 'unit-tests-node.files')) };
+      gateDir(args[1], 'unit-tests-node', { exit: /^not ok/m.test(aloneLog) ? 1 : 0, log: aloneLog });
+      return ok();
+    }
+    if (cmd === 'bash') {
+      seen.baseRan = true;
+      seen.baseScope = opts.env.GAUNTLET_SCOPE_DIR ? readFileSafe(join(opts.env.GAUNTLET_SCOPE_DIR, 'unit-tests-node.files')) : null;
+      gateDir(args[1], 'unit-tests-node', { exit: /^not ok/m.test(baseLog) ? 1 : 0, log: baseLog });
+      return ok();
+    }
+    if (cmd === 'node' && args[0] === 'scripts/lib/land-gate-delta.js') return spawnSync(cmd, args, opts);
+    if (cmd === 'node' && args[0] === '--test') return { status: 1, stdout: '', stderr: '' }; // the post-delta re-run: still failing
+    assert.fail(`unexpected command: ${cmd} ${args.join(' ')}`);
+  });
+  seen.code = checker.main(['--gates', 'unit-tests-node']);
+  return seen;
+}
+const readFileSafe = (p) => { try { return fs.readFileSync(p, 'utf8'); } catch { return null; } };
+
+test('BRO-7752: a timing failure re-runs the failing files alone on HEAD and scopes the base to them', (t) => {
+  const seen = runMainWithAlone(t, tapOf([['tests/unit/b.test.mjs', 'red on main too']], 2));
+  assert.equal(seen.aloneEnv.scopeFiles, 'tests/unit/a.test.mjs\ntests/unit/b.test.mjs\n', 'alone run gets only the failing files');
+  assert.equal(seen.aloneEnv.GAUNTLET_GATES, 'unit-tests-node');
+  assert.equal(seen.aloneEnv.GAUNTLET_PARALLEL, undefined);
+  assert.ok(seen.baseRan);
+  assert.equal(seen.baseScope, 'tests/unit/a.test.mjs\ntests/unit/b.test.mjs\n', 'base runs the same files, never the full gate');
+  assert.equal(seen.code, 0, 'b fails alone on both sides: pre-existing');
+  assert.equal(fs.readFileSync(join(seen.branchDir, 'unit-tests-node.batch.log'), 'utf8'), BATCH_LOG, 'the batch log is kept');
+  assert.match(fs.readFileSync(join(seen.branchDir, 'unit-tests-node.log'), 'utf8'), /^# tests 2$/m, 'the alone result is the verdict');
+});
+
+test('BRO-7752: a failure still red alone and green on base is new', (t) => {
+  const seen = runMainWithAlone(t, tapOf([['tests/unit/b.test.mjs', 'red on main too']], 2), tapOf([], 2));
+  assert.equal(seen.code, 1);
+});
+
+test('BRO-7752: failing files that all pass alone need no base run', (t) => {
+  const seen = runMainWithAlone(t, tapOf([], 2));
+  assert.equal(seen.baseRan, false);
+  assert.equal(seen.code, 0);
+});
+
+test('BRO-7752: an alone run that did not finish keeps the batch verdict and its full base', (t) => {
+  const seen = runMainWithAlone(t, 'TAP version 13\nnot ok 1 - b\n');
+  assert.ok(seen.baseRan);
+  assert.equal(seen.baseScope, null, 'the timing failure still forces a full base gate');
+});
