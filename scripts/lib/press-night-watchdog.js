@@ -220,7 +220,9 @@ function findDispatchedRun(runs, { workflow, showId, sinceMs }) {
     if (workflow === 'opening-night-poller.yml') return r.displayTitle === `Opening Night Poller \u2014 ${showId}`;
     if (workflow === 'llm-ensemble-score.yml') return r.displayTitle === `LLM Ensemble Score Reviews \u2014 ${showId}`;
     if (workflow === 'opening-night-orchestrator.yml') return String(r.displayTitle || '').startsWith(`Opening Night Orchestrator targeted ${showId} (`);
-    return workflow === 'rebuild-fast.yml' || workflow === 'vercel-deploy.yml';
+    // BRO-7766: a pre-warm deploy (rebuild-fast dispatches it, it may self-cancel) is not our dispatch.
+    if (workflow === 'vercel-deploy.yml') return !String(r.displayTitle || '').includes('pre-warm');
+    return workflow === 'rebuild-fast.yml';
   };
   return (runs || []).find((r) => r.workflow === workflow && titleMatches(r)
     && Date.parse(r.createdAt) >= sinceMs);

@@ -29,6 +29,13 @@ on:
         description: 'Who asked. "land" = land.yml after a landing (BRO-5670): judged like a scheduled tick, so it builds only when site files or core data changed vs live. Empty = ship now.'
         required: false
         default: ''
+      wait_for_run:
+        description: 'BRO-7766 pre-warm: a rebuild-fast run id. Setup runs now, then the job waits until that run pushes core data and builds from the fresh main. Set by rebuild-fast.yml only.'
+        required: false
+        default: ''
+
+# BRO-7766: rebuild-fast.yml finds its pre-warm run by this title.
+run-name: ${{ inputs.wait_for_run && format('Deploy to Vercel (pre-warm for run {0})', inputs.wait_for_run) || 'Deploy to Vercel' }}
 
 permissions:
   contents: write
@@ -66,15 +73,28 @@ jobs:
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     timeout-minutes: 3
     outputs:
-      proceed: ${{ steps.check.outputs.proceed }}
+      proceed: ${{ steps.check.outputs.proceed || steps.prewarm-gate.outputs.proceed }}
     steps:
+      # BRO-7766: a pre-warm run must start its setup now, while the rebuild runs.
+      # The gate is judged later, inside the deploy job's "Wait for rebuild" step,
+      # once the rebuild has pushed core data.
+      - name: Pre-warm run (gate deferred)
+        id: prewarm-gate
+        if: inputs.wait_for_run != ''
+        env:
+          WAIT_FOR_RUN: ${{ inputs.wait_for_run }}
+        run: |
+          printf '%s' "$WAIT_FOR_RUN" | grep -Eq '^[0-9]{1,20}$' || { echo "::error::wait_for_run must be a run id (digits only)"; exit 1; }
+          echo "proceed=true" >> "$GITHUB_OUTPUT"
       - name: Checkout (shallow — the gate fetches the live baseline commit itself)
+        if: inputs.wait_for_run == ''
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           fetch-depth: 1
       - name: Content-aware deploy gate
         id: check
+        if: inputs.wait_for_run == ''
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           # BRO-3149: single GitHub Contents API call (no clone) to read the
@@ -129,57 +149,16 @@ jobs:
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
 
-      - name: Checkout core data
-        uses: ./.github/actions/checkout-core-data
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-      - name: Validate core data JSON
-        run: |
-          # Defense-in-depth: catch conflict markers or corrupt JSON before build.
-          # Prevents cryptic Node crashes (e.g. compute-gold-lists.js require() failing).
-          # Root cause fix is the pre-commit hook on the private data repo.
-          INVALID=0
-          for f in data/*.json; do
-            if [ ! -f "$f" ]; then continue; fi
-            if grep -qE '(<{7}|={7}|>{7})' "$f" 2>/dev/null; then
-              echo "::error::$f contains merge conflict markers"
-              INVALID=1
-            elif ! node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
-              echo "::error::$f is not valid JSON"
-              INVALID=1
-            fi
-          done
-          if [ "$INVALID" -ne 0 ]; then
-            echo "::error::Core data validation failed — check the private data repo for corrupt files"
-            exit 1
-          fi
-          echo "All data/*.json files valid"
+          node-version: '22'
+          cache: 'npm'
 
-      - name: Compute core data blob SHAs
-        # BRO-3149: stamped onto the Vercel deployment below (`--meta
-        # reviewsBlobSha=... --meta showsBlobSha=...`) so should-deploy-gate.js
-        # can detect core-data-only changes on future ticks. `git hash-object`
-        # computes the exact same value GitHub's Contents API reports as a
-        # file's `sha` (verified live) — no need to reference the private
-        # repo's own clone directory. Both files (not just reviews.json) so a
-        # shows.json-only change (e.g. a status flip) isn't a blind spot.
-        id: data_sha
-        run: |
-          # reviews.json + shows.json are mandatory (a missing one must fail the
-          # job, as before). The other tracked files (BRO-3618) are stamped only
-          # when present; the gate reads an unstamped file as "absent".
-          REVIEWS_SHA=$(git hash-object data/reviews.json)
-          SHOWS_SHA=$(git hash-object data/shows.json)
-          echo "reviews_sha=$REVIEWS_SHA" >> "$GITHUB_OUTPUT"
-          echo "shows_sha=$SHOWS_SHA" >> "$GITHUB_OUTPUT"
-          # BRO-3618: full `<name>BlobSha=<sha>` list, names derived from
-          # scripts/lib/core-data-blob-meta.js (shared with the gate + read-back).
-          # Hashed HERE, before the build, because prebuild can rewrite data/.
-          node scripts/lib/should-deploy-gate.js --meta-args > "$RUNNER_TEMP/core-data-meta-args"
-          echo "Core data blob SHAs:"; cat "$RUNNER_TEMP/core-data-meta-args"
-          # Never deploy unstamped: the mandatory pair must be in the list.
-          grep -q '^reviewsBlobSha=' "$RUNNER_TEMP/core-data-meta-args" && grep -q '^showsBlobSha=' "$RUNNER_TEMP/core-data-meta-args" \
-            || { echo "::error::core-data meta args missing reviews/shows SHAs"; exit 1; }
+      - name: Install dependencies
+        # --prefer-offline uses the restored npm cache; --no-audit/--no-fund skip
+        # post-install registry calls. Matches test.yml:508 pattern. Saves 3-8s.
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: Verify Vercel build guard is active
         env:
@@ -196,20 +175,6 @@ jobs:
               -d '{"commandForIgnoringBuildStep":"exit 0"}'
             echo "::warning::Build guard restored to 'exit 0'. Git-triggered builds were unblocked — check Vercel billing."
           fi
-
-      - name: Setup Node.js
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
-        with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Install dependencies
-        # --prefer-offline uses the restored npm cache; --no-audit/--no-fund skip
-        # post-install registry calls. Matches test.yml:508 pattern. Saves 3-8s.
-        run: npm ci --prefer-offline --no-audit --no-fund
-
-      - name: Pre-deploy data integrity check
-        run: node scripts/pre-deploy-check.js
 
       - name: Pull Vercel Environment
         env:
@@ -326,6 +291,116 @@ jobs:
             nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
             nextjs-cache-${{ runner.os }}-
 
+      # (HEAD is what ships: the watermark step reads it after a pre-warm moved it.)
+      # BRO-7766 pre-warm. rebuild-fast.yml dispatches this run (wait_for_run =
+      # its own run id) when it starts, so everything above ran during the
+      # rebuild. Here the job waits for the rebuild's "Push core data to private
+      # repo" step, the same signal the old post-push dispatch fired on, then
+      # moves to the fresh main and judges the deploy gate exactly as that
+      # dispatch would have. Step name pinned by tests/unit/deploy-prewarm-wait.test.mjs
+      # (rebuild-fast.yml looks it up to skip its own dispatch).
+      # Stops (cancels this run, no deploy): the rebuild never pushed, the gate
+      # dedups. Hands off (dispatches a normal deploy, then cancels): main moved
+      # with anything outside data/ or public/, so npm ci, the guards and the
+      # build-guard check above would be stale.
+      - name: Wait for rebuild
+        id: prewarm
+        if: inputs.wait_for_run != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+          WAIT_FOR_RUN: ${{ inputs.wait_for_run }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
+        run: |
+          stop_here() {
+            echo "go=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::[prewarm] $1. Cancelling this run (no deploy from it)."
+            gh run cancel "$GITHUB_RUN_ID" || { echo "::error::[prewarm] self-cancel failed"; exit 1; }
+            # The cancel lands within seconds; block so no later step can run.
+            sleep 600
+            exit 1
+          }
+          handoff() {
+            gh workflow run vercel-deploy.yml || echo "::error::[prewarm] hand-off dispatch failed"
+            stop_here "$1; handed off to a normal deploy"
+          }
+          RC=0
+          node scripts/lib/deploy-prewarm-wait.js "$WAIT_FOR_RUN" || RC=$?
+          [ "$RC" -eq 0 ] || stop_here "rebuild run $WAIT_FOR_RUN did not push core data (rc=$RC)"
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
+          OLD=$(git rev-parse HEAD)
+          git_net 180 fetch -q --depth=50 origin main || handoff "fetch of main failed"
+          NEW=$(git rev-parse FETCH_HEAD)
+          if [ "$NEW" != "$OLD" ]; then
+            CHANGED=$(git diff --name-only "$OLD" "$NEW") || handoff "cannot diff $OLD..$NEW"
+            OUTSIDE=$(grep -vE '^(data|public)/' <<<"$CHANGED" || true)
+            [ -z "$OUTSIDE" ] || handoff "main moved with non-data changes ($(head -3 <<<"$OUTSIDE" | tr '\n' ' '))"
+            git reset -q --hard "$NEW"
+          fi
+          echo "[prewarm] building $NEW (was $OLD)"
+          # Same gate the old dispatch got (workflow_dispatch lane: deduped only
+          # when HEAD and core data are already live). Fails open like the gate job.
+          GATE_OUT=$(mktemp)
+          GITHUB_OUTPUT="$GATE_OUT" GATE_EVENT_NAME=workflow_dispatch node scripts/lib/should-deploy-gate.js || echo "::warning::[prewarm] gate crashed, deploying"
+          if grep -q '^proceed=false' "$GATE_OUT"; then stop_here "deploy gate: already live"; fi
+          echo "go=true" >> "$GITHUB_OUTPUT"
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Validate core data JSON
+        run: |
+          # Defense-in-depth: catch conflict markers or corrupt JSON before build.
+          # Prevents cryptic Node crashes (e.g. compute-gold-lists.js require() failing).
+          # Root cause fix is the pre-commit hook on the private data repo.
+          INVALID=0
+          for f in data/*.json; do
+            if [ ! -f "$f" ]; then continue; fi
+            if grep -qE '(<{7}|={7}|>{7})' "$f" 2>/dev/null; then
+              echo "::error::$f contains merge conflict markers"
+              INVALID=1
+            elif ! node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
+              echo "::error::$f is not valid JSON"
+              INVALID=1
+            fi
+          done
+          if [ "$INVALID" -ne 0 ]; then
+            echo "::error::Core data validation failed — check the private data repo for corrupt files"
+            exit 1
+          fi
+          echo "All data/*.json files valid"
+
+      - name: Compute core data blob SHAs
+        # BRO-3149: stamped onto the Vercel deployment below (`--meta
+        # reviewsBlobSha=... --meta showsBlobSha=...`) so should-deploy-gate.js
+        # can detect core-data-only changes on future ticks. `git hash-object`
+        # computes the exact same value GitHub's Contents API reports as a
+        # file's `sha` (verified live) — no need to reference the private
+        # repo's own clone directory. Both files (not just reviews.json) so a
+        # shows.json-only change (e.g. a status flip) isn't a blind spot.
+        id: data_sha
+        run: |
+          # reviews.json + shows.json are mandatory (a missing one must fail the
+          # job, as before). The other tracked files (BRO-3618) are stamped only
+          # when present; the gate reads an unstamped file as "absent".
+          REVIEWS_SHA=$(git hash-object data/reviews.json)
+          SHOWS_SHA=$(git hash-object data/shows.json)
+          echo "reviews_sha=$REVIEWS_SHA" >> "$GITHUB_OUTPUT"
+          echo "shows_sha=$SHOWS_SHA" >> "$GITHUB_OUTPUT"
+          # BRO-3618: full `<name>BlobSha=<sha>` list, names derived from
+          # scripts/lib/core-data-blob-meta.js (shared with the gate + read-back).
+          # Hashed HERE, before the build, because prebuild can rewrite data/.
+          node scripts/lib/should-deploy-gate.js --meta-args > "$RUNNER_TEMP/core-data-meta-args"
+          echo "Core data blob SHAs:"; cat "$RUNNER_TEMP/core-data-meta-args"
+          # Never deploy unstamped: the mandatory pair must be in the list.
+          grep -q '^reviewsBlobSha=' "$RUNNER_TEMP/core-data-meta-args" && grep -q '^showsBlobSha=' "$RUNNER_TEMP/core-data-meta-args" \
+            || { echo "::error::core-data meta args missing reviews/shows SHAs"; exit 1; }
+
+      - name: Pre-deploy data integrity check
+        run: node scripts/pre-deploy-check.js
+
       - name: Check if data changed
         id: check-data
         run: |
@@ -420,55 +495,6 @@ jobs:
         continue-on-error: true
         run: node scripts/lib/check-coverage-floor-trace.js .next
 
-      - name: Save Next.js build + prebuild artifacts cache
-        # hygiene-cache-runid-ok: deliberate, see the "Restore" step earlier
-        # in this job for the full BRO-4146 reasoning — the run_id is
-        # required so every deploy saves (a primary-key hit would skip this
-        # step), and the "Prune stale Next.js cache entries" step right after
-        # this one bounds the resulting entry count.
-        # Explicit save (paired with the explicit restore step above), placed
-        # after Build so it captures the same post-build .next/cache and
-        # data/cache contents the old combined actions/cache@v5 action's
-        # post-job save hook used to — nothing after Build writes into either
-        # path. if: always() so a failed build still persists whatever
-        # prebuild artifacts were produced (matches the old action's
-        # behavior, which saved regardless of later step outcomes).
-        if: always()
-        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
-        with:
-          path: |
-            .next/cache
-            data/cache
-          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
-
-      - name: Prune stale Next.js cache entries
-        # BRO-4146: the key above carries github.run_id, so the save step
-        # just above mints a brand-new immutable entry every deploy and never
-        # deletes the old ones on its own — see the incident notes on the
-        # restore step earlier in this job. Runs AFTER the save step (not
-        # before, see that step's comment) so "keep newest 2" is accurate.
-        # Prefix omits the lockfile hash — restore-keys above falls back
-        # across hash families (`nextjs-cache-${{ runner.os }}-`), so a
-        # package-lock.json bump must not strand the old hash's entries
-        # unpruned; this targets the same broader family restore-keys does.
-        # --ref is REQUIRED (ship-check correction, BRO-4146): this prefix is
-        # generic enough to collide with vercel-preview.yml's own (differently
-        # scoped) `nextjs-cache-...` key on the `staging` ref — GH Actions
-        # caches are per-ref, and an unscoped `gh cache list`/`delete` search
-        # all refs. `${{ github.ref }}` pins this to only the ref THIS run
-        # triggered on, never a sibling workflow's branch.
-        # Selection logic is a pure, unit-tested function
-        # (scripts/lib/actions-cache-prune.js); this just wires it to `gh cache`.
-        # if: always() so a failed/skipped build still trims the backlog
-        # rather than compounding it; continue-on-error so a prune failure
-        # never fails a deploy — worst case is a return to today's status
-        # quo, not a regression.
-        if: always()
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: node scripts/prune-github-actions-cache.js "nextjs-cache-${{ runner.os }}-" --ref="${{ github.ref }}" --keep=2
-
       - name: Deploy to Production
         id: deploy
         env:
@@ -557,6 +583,57 @@ jobs:
           fi
           echo "Deployed to production: $URL"
           echo "deployed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+
+      - name: Save Next.js build + prebuild artifacts cache
+        # hygiene-cache-runid-ok: deliberate, see the "Restore" step earlier
+        # in this job for the full BRO-4146 reasoning — the run_id is
+        # required so every deploy saves (a primary-key hit would skip this
+        # step), and the "Prune stale Next.js cache entries" step right after
+        # this one bounds the resulting entry count.
+        # Explicit save (paired with the explicit restore step above), placed
+        # after Build so it captures the same post-build .next/cache and
+        # data/cache contents the old combined actions/cache@v5 action's
+        # post-job save hook used to — nothing after Build writes into either
+        # path. if: always() so a failed build still persists whatever
+        # prebuild artifacts were produced (matches the old action's
+        # behavior, which saved regardless of later step outcomes).
+        # BRO-7766: moved after Deploy so its ~10s is off the path to live, and
+        # skipped for a pre-warm run that stopped without building.
+        if: always() && steps.prewarm.outputs.go != 'false'
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            .next/cache
+            data/cache
+          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
+
+      - name: Prune stale Next.js cache entries
+        # BRO-4146: the key above carries github.run_id, so the save step
+        # just above mints a brand-new immutable entry every deploy and never
+        # deletes the old ones on its own — see the incident notes on the
+        # restore step earlier in this job. Runs AFTER the save step (not
+        # before, see that step's comment) so "keep newest 2" is accurate.
+        # Prefix omits the lockfile hash — restore-keys above falls back
+        # across hash families (`nextjs-cache-${{ runner.os }}-`), so a
+        # package-lock.json bump must not strand the old hash's entries
+        # unpruned; this targets the same broader family restore-keys does.
+        # --ref is REQUIRED (ship-check correction, BRO-4146): this prefix is
+        # generic enough to collide with vercel-preview.yml's own (differently
+        # scoped) `nextjs-cache-...` key on the `staging` ref — GH Actions
+        # caches are per-ref, and an unscoped `gh cache list`/`delete` search
+        # all refs. `${{ github.ref }}` pins this to only the ref THIS run
+        # triggered on, never a sibling workflow's branch.
+        # Selection logic is a pure, unit-tested function
+        # (scripts/lib/actions-cache-prune.js); this just wires it to `gh cache`.
+        # if: always() so a failed/skipped build still trims the backlog
+        # rather than compounding it; continue-on-error so a prune failure
+        # never fails a deploy — worst case is a return to today's status
+        # quo, not a regression.
+        if: always() && steps.prewarm.outputs.go != 'false'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/prune-github-actions-cache.js "nextjs-cache-${{ runner.os }}-" --ref="${{ github.ref }}" --keep=2
 
       - name: Check build duration
         if: always() && steps.build.outputs.build_seconds
@@ -672,7 +749,7 @@ jobs:
           # file's "Check watermark throttle" step.
           gh workflow run update-deploy-watermark.yml \
             -f deployed_at='${{ steps.deploy.outputs.deployed_at }}' \
-            -f deploy_sha='${{ github.sha }}' \
+            -f deploy_sha="$(git rev-parse HEAD)" \
             -f deploy_run_id='${{ github.run_id }}' \
             || echo "::warning::Watermark dispatch failed (non-critical)"
 
@@ -718,8 +795,11 @@ jobs:
               workflow_id: 'vercel-deploy.yml',
               per_page: 10
             });
+            // BRO-7766: a pre-warm run sits in_progress for minutes waiting on a
+            // rebuild; it is not a retry of this deploy, so it must not mute the alert.
             const newerRuns = data.workflow_runs.filter(r =>
               r.id > context.runId && r.status !== 'completed'
+              && !String(r.display_title || '').includes('pre-warm')
             );
             if (newerRuns.length > 0) {
               console.log(`Skipping alert — ${newerRuns.length} newer deploy(s) already queued/running`);
