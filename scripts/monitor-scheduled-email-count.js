@@ -206,7 +206,7 @@ async function main() {
 
   // BRO-6918: resolve count conditions whose violation stopped (live run only; this
   // point is past the DRY_RUN return). Keys filed again below are in `current`.
-  {
+  if (!DRY_RUN) {
     const router = require('./lib/owner-alert-router');
     // countConditionKey and openCountKeys come from the top-level import
     const current = completeViolations.map(({ decision }) => countConditionKey(decision));

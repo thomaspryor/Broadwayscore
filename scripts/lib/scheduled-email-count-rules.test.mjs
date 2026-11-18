@@ -327,3 +327,24 @@ test('openCountKeys lists open count keys that this run does not file again (BRO
   assert.deepEqual(openCountKeys(conditions, ['scheduled-email-count:dup-a']), ['scheduled-email-count:dup-b', 'scheduled-email-count:unexpected-d']);
   assert.deepEqual(openCountKeys(null), []);
 });
+
+test('count keys go through the router quiet window: stale resolves, recent and live stay open (BRO-6918)', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { createRequire } = await import('node:module');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'count-ledger-'));
+  const ledgerPath = path.join(dir, 'alert-ledger.json');
+  const now = Date.parse('2026-11-18T12:00:00Z');
+  const hoursAgo = (h) => new Date(now - h * 3600 * 1000).toISOString();
+  fs.writeFileSync(ledgerPath, JSON.stringify({ conditions: {
+    'scheduled-email-count:dup-stale': { status: 'open', lastSeen: hoursAgo(200) },
+    'scheduled-email-count:dup-recent': { status: 'open', lastSeen: hoursAgo(30) },
+    'scheduled-email-count:dup-live': { status: 'open', lastSeen: hoursAgo(200) },
+  } }));
+  process.env.ALERT_LEDGER_PATH = ledgerPath;
+  const router = createRequire(import.meta.url)('./owner-alert-router.js');
+  const keys = openCountKeys(router.loadLedger().conditions, ['scheduled-email-count:dup-live']);
+  assert.deepEqual(router.resolveQuietConditions(keys, { reason: 't', nowMs: now }), ['scheduled-email-count:dup-stale']);
+  delete process.env.ALERT_LEDGER_PATH;
+});
