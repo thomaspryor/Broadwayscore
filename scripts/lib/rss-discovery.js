@@ -280,13 +280,71 @@ function singleWordTitleIdentity(itemTitle, itemForms, phrase, word) {
 }
 
 /**
+ * BRO-7739: the main title of a show whose title ends in a QUOTED subtitle
+ * ('Blue Man Group “A New Holiday Surprise”' -> 'Blue Man Group'). Colon titles are
+ * deliberately not split ("Death Note: The Musical" would match the anime, "August:
+ * Osage County" is no subtitle). Needs 2+ significant words. Pure, no I/O.
+ */
+function mainTitleOf(showTitle) {
+  const m = String(showTitle || '').match(/^(.+?)\s+[\u201C]([^\u201C\u201D]+)[\u201D]\s*$/);
+  if (!m) return null;
+  const main = m[1].trim();
+  // A possessive main is an author/star credit ("Charles Dickens’ “A Christmas Carol”"): that name alone is not the show.
+  if (/['\u2018\u2019]s?$/.test(main)) return null;
+  const words = main.toLowerCase().replace(/[^a-z0-9' ]/g, ' ').split(/\s+/)
+    .filter(w => w.length > 1 && !['the', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w));
+  return words.length >= 2 ? main : null;
+}
+
+/**
+ * True when no show with a DIFFERENT full title shares the main title (equal, or starting
+ * with it at a word boundary: "Blue Man" must not block "Blue Mantis"). Fails closed when
+ * the show list is missing. Callers pass ALL show titles (closed ones too).
+ */
+const _uniqueMemo = new WeakMap(); // allShowTitles array -> Map(showTitle -> boolean): the scan is 6000 titles, matchers run per feed item
+function mainTitleIsUnique(showTitle, main, allShowTitles) {
+  if (!main || !Array.isArray(allShowTitles) || allShowTitles.length === 0) return false;
+  let memo = _uniqueMemo.get(allShowTitles);
+  if (!memo) { memo = new Map(); _uniqueMemo.set(allShowTitles, memo); }
+  const key = showTitle + '\u0000' + main;
+  if (!memo.has(key)) memo.set(key, mainTitleIsUniqueUncached(showTitle, main, allShowTitles));
+  return memo.get(key);
+}
+function mainTitleIsUniqueUncached(showTitle, main, allShowTitles) {
+  const norm = t => String(t || '').toLowerCase().replace(/[\u2018\u2019']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  const own = norm(showTitle);
+  const m = norm(main);
+  if (!m) return false;
+  return !allShowTitles.some(t => { const n = norm(t); return n && n !== own && (n === m || n.startsWith(m + ' ')); });
+}
+
+/**
  * Check if a title likely contains a review for the given show.
  * Matches show title words (ignoring articles) against RSS item title.
- * @param {{fuzzy?: boolean}} [opts] fuzzy: allow one typo'd word (see above).
+ * @param {{fuzzy?: boolean, mainTitle?: boolean, allShowTitles?: string[]}} [opts] fuzzy: allow one typo'd word (see above).
+ *   mainTitle (BRO-7739, opt-in, needs allShowTitles): a show titled with a quoted subtitle also matches on
+ *   its unique main title.
  *   Off by default: first-match callers (poll-trade-press-rss) must not let a
  *   near match on one show beat an exact match on another.
  */
 function titleMatchesShow(itemTitle, showTitle, opts = {}) {
+  if (titleMatchesFullShowTitle(itemTitle, showTitle, opts)) return true;
+  if (!opts.mainTitle) return false;
+  const main = mainTitleOf(showTitle);
+  if (!main || !mainTitleIsUnique(showTitle, main, opts.allShowTitles)) return false;
+  // The main title must appear as one contiguous phrase, not just as scattered words
+  // ("Man Group earnings beat as Blue chips rally" holds all three words of Blue Man Group).
+  const fold = t => foldDiacritics(String(t || '')).toLowerCase().replace(/[\u2018\u2019\u02BC]/g, "'")
+    .replace(/[-\u2010-\u2015]/g, ' ').replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const phrase = fold(main).replace(/'/g, '');
+  if (!phrase) return false;
+  const hay = ' ' + fold(itemTitle).replace(/'s\b/g, '').replace(/'/g, '') + ' ';
+  // "Blue Man Group's" headline, or the slug "blue-man-groups" (the slug strips the apostrophe): optional s on the last word.
+  // A 2+ word contiguous phrase is stronger identity than the word-bag matcher, so no second pass.
+  return hay.includes(' ' + phrase + ' ') || hay.includes(' ' + phrase + 's ');
+}
+
+function titleMatchesFullShowTitle(itemTitle, showTitle, opts = {}) {
   // Strip articles and punctuation, get significant words.
   // foldDiacritics runs BEFORE the [^a-z0-9' ] filter: without it "Misérables"
   // loses the é entirely and tokenizes to "misrables", which matches nothing.
@@ -568,4 +626,4 @@ function rssStubIdentityOk(stub, showTitle) {
     || urlSlugMatchesShow(stub.url, showTitle));
 }
 
-module.exports = { rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+module.exports = { rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, mainTitleOf, mainTitleIsUnique, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };

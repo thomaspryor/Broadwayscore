@@ -35,6 +35,21 @@ const { resolveOutletFromUrl, URL_HOST_ALIASES } = require('../review-normalizat
 // Old host -> current host for outlets that serve one article on both (BRO-6872: The Independent was scored twice,
 // once per host). Exact hosts only, after www is stripped; shared with normalizeUrl so the two never disagree.
 const HOST_ALIAS = new Map(URL_HOST_ALIASES);
+
+// BRO-7739: opt-in main-title matching for shows titled with a quoted subtitle ('Blue Man Group “A New Holiday
+// Surprise”': TheaterMania's headline names only 'Blue Man Group'). The matcher needs every show title (closed too) to
+// prove the main title is unique; read once per process. Without data/shows.json the fallback stays off.
+let allShowTitlesCache;
+function laneMatchOpts() {
+  if (allShowTitlesCache === undefined) {
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(__dirname, '../../../data/shows.json'), 'utf8'));
+      allShowTitlesCache = (Array.isArray(d) ? d : d.shows || []).map((x) => x && x.title).filter(Boolean);
+    } catch { allShowTitlesCache = null; }
+  }
+  return allShowTitlesCache ? { fuzzy: true, mainTitle: true, allShowTitles: allShowTitlesCache } : { fuzzy: true };
+}
+
 const { isFeatureSectionReviewPath } = require('../domain-filters');
 const { admitLaneCandidate, calendarDateIn } = require('./trust-model');
 const laneSources = require('./lane-sources');
@@ -238,7 +253,7 @@ const REVIEW_WITHOUT_WORD_HOSTS = ['theaterpizzazz.com', 'nystagereview.com', 'o
 /** A review-only outlet's page about this show: its host is in REVIEW_WITHOUT_WORD_HOSTS and the show's title is in the headline or slug. */
 function hostSignalsReview(url, title, showTitle) {
   if (!showTitle || !hostMatches(hostOf(url), REVIEW_WITHOUT_WORD_HOSTS)) return false;
-  return titleMatchesShow(title || '', showTitle, { fuzzy: true }) || urlSlugMatchesShow(url, showTitle, { fuzzy: true });
+  return titleMatchesShow(title || '', showTitle, laneMatchOpts()) || urlSlugMatchesShow(url, showTitle, laneMatchOpts());
 }
 
 /**
@@ -677,7 +692,7 @@ function rssAdapter({ feeds } = {}) {
         for (const it of items) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
-          if (!titleMatchesShow(it.title, show.title, { fuzzy: true }) && !urlSlugMatchesShow(it.link, show.title, { fuzzy: true })) continue;
+          if (!titleMatchesShow(it.title, show.title, laneMatchOpts()) && !urlSlugMatchesShow(it.link, show.title, laneMatchOpts())) continue;
           // The feed's own item: same host, or a host the registry maps to the feed's outlet (Culture Sauce's feed is on
           // culturesauce.net, its reviews on culturesauce.com; Theater Scene's on .net and .com).
           const ownHost = hostOf(it.link) === hostOf(feed.url) || (!!feed.outletId && (resolveOutletFromUrl(it.link) || {}).outletId === feed.outletId);
@@ -728,7 +743,7 @@ function sectionIndexAdapter({ outlets } = {}) {
         }
         for (const a of extractAnchors(indexScope(html), o.indexUrl)) {
           if (hostOf(a.url) !== host || new URL(a.url).pathname === new URL(o.indexUrl).pathname) continue;
-          if (!titleMatchesShow(a.text, show.title, { fuzzy: true }) && !urlSlugMatchesShow(a.url, show.title, { fuzzy: true })) continue;
+          if (!titleMatchesShow(a.text, show.title, laneMatchOpts()) && !urlSlugMatchesShow(a.url, show.title, laneMatchOpts())) continue;
           // Same host as the outlet's own index page: tied to that registry outlet by its source, like a Google News <source url>
           // find. TheaterMania and Time Out file reviews under /news/ ("/news/review-...", "/newyork/news/broadway-review-..."),
           // so without this every TheaterMania index find was refused (309 of 309 2025-26 rows), BRO-6872.
@@ -1126,7 +1141,7 @@ function talkinBroadwayAdapter({
         for (const a of extractAnchors(indexScope(r.html), r.u)) {
           let u; try { u = new URL(a.url); } catch { continue; }
           if (hostOf(a.url) !== 'talkinbroadway.com' || !(TB_REVIEW_PATH.test(u.pathname) || tbNamedReviewPage(u.pathname))) continue;
-          if (!titleMatchesShow(a.text, show.title, { fuzzy: true })) continue;
+          if (!titleMatchesShow(a.text, show.title, laneMatchOpts())) continue;
           out.push({ url: a.url, title: a.text, source: 'outlet-index', publishDate: null, needsDate: true, reviewSignalGiven: true, via: r.u, outletId: 'talkinbroadway' });
         }
       }
@@ -1204,7 +1219,7 @@ function serpAdapter({ search, domainFor, ledgerDir, now = Date.now } = {}) {
         } catch (e) { failures++; lastError = e; continue; }
         for (const r of results || []) {
           if (!r || !r.url || !(hostOf(r.url) === dom || (hostOf(r.url) || '').endsWith(`.${dom}`))) continue;
-          if (!titleMatchesShow(r.title || '', show.title, { fuzzy: true }) && !urlSlugMatchesShow(r.url, show.title, { fuzzy: true })) continue;
+          if (!titleMatchesShow(r.title || '', show.title, laneMatchOpts()) && !urlSlugMatchesShow(r.url, show.title, laneMatchOpts())) continue;
           out.push({ url: r.url, title: r.title || '', source: 'outlet-index', publishDate: null, needsDate: true, via: 'serp', outletId: id.includes('.') ? undefined : id });
         }
       }
