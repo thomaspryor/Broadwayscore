@@ -194,3 +194,66 @@ test('PreToolUse blocks count (is_error only), the land preflight is a hook bloc
   ]);
   assert.deepEqual(both.hookBlocks, { '[VE:RCOV]': 1, 'git-check': 1 }, 'an uncoded git hook in the same message as a coded one still counts');
 });
+
+// BRO-7749: advisory Stop-gate activity reaches the committed row (the gate logs live in a container that is reclaimed).
+import { spawnSync } from 'node:child_process';
+const SR = path.join(path.dirname(new URL(import.meta.url).pathname), 'session-retro.js');
+const rawUse = (id, name, input, t) => JSON.stringify({ sessionId: 'parent-id', type: 'assistant', timestamp: t, message: { content: [{ type: 'tool_use', id, name, input }] } });
+const rawRes = (id, text, t) => JSON.stringify({ sessionId: 'parent-id', type: 'user', timestamp: t, message: { content: [{ type: 'tool_result', tool_use_id: id, content: text }] } });
+// The live-run incident shape on a script a real workflow runs: edit it, land, never run it live.
+const liveRunIncident = [
+  rawUse('a', 'Edit', { file_path: '/home/user/Broadwayscore/.claude/worktrees/x/scripts/account-metrics.js', old_string: 'a', new_string: 'b' }, '2026-11-18T00:00:00Z'),
+  rawRes('a', 'ok', '2026-11-18T00:00:01Z'),
+  rawUse('b', 'Bash', { command: 'git push origin HEAD:refs/heads/land/x' }, '2026-11-18T00:01:00Z'),
+  rawRes('b', 'ok', '2026-11-18T00:01:30Z'),
+  JSON.stringify({ sessionId: 'parent-id', type: 'user', timestamp: '2026-11-18T00:02:00Z', message: { content: 'Stop hook feedback:\n[command hook 2]: Not run live.\n[VE:LIVERUN]' } }),
+];
+
+test('BRO-7749: a session that hit [VE:LIVERUN] ends with a retro row carrying the hit (nudge, over-budget log line, record-time dry run)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sr-gates-'));
+  const tr = path.join(dir, 'child-id.jsonl'); // the hook's session_id is the transcript basename, not the first sessionId row
+  const ledger = path.join(dir, 'ledger.jsonl');
+  const cache = path.join(dir, 'cache');
+  fs.mkdirSync(cache);
+  fs.writeFileSync(tr, liveRunIncident.join('\n') + '\n');
+  fs.writeFileSync(path.join(cache, 'live-run-stop.log'), [
+    { ts: '2026-11-18T00:02:00Z', session: 'child-id', blocked: true, reason: 'not run live: scripts/account-metrics.js' },
+    { ts: '2026-11-18T00:03:00Z', session: 'child-id', blocked: false, reason: 'not run live: scripts/account-metrics.js' },
+    { ts: '2026-11-18T00:03:00Z', session: 'someone-else', blocked: false, reason: 'x' },
+  ].map((o) => JSON.stringify(o)).join('\n') + '\nnot json\n');
+  const env = { ...process.env, SESSION_RETRO_LEDGER: ledger, SESSION_RETRO_CACHE_DIR: cache, CLAUDE_CODE_REMOTE: 'true' };
+  const out = spawnSync('node', [SR, `--transcript=${tr}`, '--record', '--no-action=fixture session for the gate fold'], { env, encoding: 'utf8' });
+  assert.equal(out.status, 0, out.stderr);
+  const row = JSON.parse(fs.readFileSync(ledger, 'utf8').trim().split('\n').pop());
+  const g = row.gates['[VE:LIVERUN]'];
+  assert.equal(g.blocks, 1, 'the nudge in the transcript');
+  assert.equal(g.overBudget, 1, 'the logged hit after the budget ran out; another session\'s line is not ours');
+  assert.equal(g.wouldBlock, true, 'the gate\'s own decision at record time');
+  assert.match(g.reason, /account-metrics\.js/);
+  assert.match(out.stdout, /Stop gate \[VE:LIVERUN\] would block a close now/);
+  // A local session: the gates never run there, so the dry run must not claim a hit either.
+  const local = spawnSync('node', [SR, `--transcript=${tr}`, '--record', '--no-action=fixture session for the gate fold'], { env: { ...env, CLAUDE_CODE_REMOTE: '' }, encoding: 'utf8' });
+  assert.equal(local.status, 0, local.stderr);
+  const lrow = JSON.parse(fs.readFileSync(ledger, 'utf8').trim().split('\n').pop());
+  assert.equal(lrow.gates['[VE:LIVERUN]'].wouldBlock, false);
+});
+
+test('BRO-7749: a clean session records gates {} (measured, nothing hit); rollup prints per-gate counts and only the latest row per session', () => {
+  assert.deepEqual(R.mergeGateActivity({}, {}, {}), {});
+  assert.deepEqual(R.mergeGateActivity({ '[VE:CLEARCLOSE]': 2 }, {}, {}), {}, 'gates outside STOP_GATES are not folded (they already reach signals)');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sr-roll-'));
+  const ledger = path.join(dir, 'l.jsonl');
+  const now = new Date().toISOString();
+  fs.writeFileSync(ledger, [
+    { sessionId: 'a', endAt: now, gates: { '[VE:LIVERUN]': { blocks: 1, overBudget: 0, wouldBlock: true, reason: 'not run live: scripts/x.js' } } },
+    { sessionId: 'b', endAt: now, gates: { '[VE:LIVERUN]': { blocks: 0, overBudget: 2, wouldBlock: false } } },
+    { sessionId: 'b', endAt: now, gates: {} },
+    { sessionId: 'c', endAt: now },
+  ].map((o) => JSON.stringify(o)).join('\n') + '\n');
+  const lines = [];
+  R.rollup(7, false, { ledger, log: (s) => lines.push(s) });
+  const text = lines.join('\n');
+  assert.match(text, /Stop gates \(BRO-7749\): 2 session\(s\) measured/, 'a legacy row without gates is not measured; b counts once (latest row)');
+  assert.match(text, /\[VE:LIVERUN\]: hit in 1 of 2, nudged 1, would block at record 1, over budget 0/);
+  assert.match(text, /e\.g\. not run live: scripts\/x\.js/);
+});
