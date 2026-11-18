@@ -25,7 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseStanddown, tokensMatchShow, standsDown } = require('./standdown');
-const { defaultEmbargoAt, marketEmbargoAt } = require('../press-night-record');
+const { defaultEmbargoAt, marketEmbargoAt, embargoInfo } = require('../press-night-record');
 
 const VARIABLE = 'LANE_ONLY_MARKETS';
 const WINDOW_BEFORE_MIN = 180;
@@ -61,6 +61,15 @@ function embargoForNight(show, night) {
     if (show.openingDate === night) return defaultEmbargoAt(show);
     return marketEmbargoAt({ ...show, openingDate: night });
   } catch { return null; }
+}
+
+/** BRO-7740: {at, assumed} for `night`. assumed is true unless the show's own embargo is set (override) for its opening night. */
+function embargoInfoForNight(show, night) {
+  try {
+    if (show.openingDate === night) { const i = embargoInfo(show); return { at: i.at, assumed: !!i.assumed, source: i.source }; }
+    const at = marketEmbargoAt({ ...show, openingDate: night });
+    return { at, assumed: !!at, source: at ? 'market-default' : null };
+  } catch { return { at: null, assumed: false, source: null }; }
 }
 
 function inPressNightWindow(show, night, nowMs) {
@@ -219,6 +228,6 @@ function createDecider({ findShow, env = process.env, leasesFile, markersDir, no
 module.exports = {
   envInputs, createDecider, readOnlyMarkets, coversShow,
   VARIABLE, WINDOW_BEFORE_MIN, WINDOW_AFTER_MIN, DEFAULT_MARKERS_DIR,
-  parseOnlyMarkets, liveLeaseFor, embargoForNight, inPressNightWindow, markerKey,
+  parseOnlyMarkets, liveLeaseFor, embargoForNight, embargoInfoForNight, inPressNightWindow, markerKey,
   oldPathStandsDown, standDownPage, readMarkers, writeMarker, readLeaseState, pollerSuppress, changedShowIds,
 };

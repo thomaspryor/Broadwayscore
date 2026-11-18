@@ -109,10 +109,17 @@ function embargoOverrideReachWarning(show) {
 function embargoInfo(show) {
   const problem = embargoOverrideProblem(show);
   if (show && show.reviewEmbargoAt != null && !problem) {
-    return { at: new Date(show.reviewEmbargoAt).toISOString(), source: 'override', problem: null };
+    return { at: new Date(show.reviewEmbargoAt).toISOString(), source: 'override', assumed: false, problem: null };
   }
   const at = show ? marketEmbargoAt(show) : null;
-  return { at, source: at ? 'market-default' : null, problem };
+  // BRO-7740: the market hour is a guess, never a fact. Every consumer that times anything off the embargo must
+  // check `assumed` and cover the plausible early-drop range (Blue Man Group's reviews came an hour early).
+  return { at, source: at ? 'market-default' : null, assumed: !!at, problem };
+}
+
+/** True when the show's embargo is only the market hour (nobody set or confirmed it). */
+function embargoAssumed(show) {
+  return !!embargoInfo(show).assumed;
 }
 
 function defaultEmbargoAt(show) {
@@ -1072,7 +1079,7 @@ function probeIncompleteReason(rec) {
 module.exports = {
   probeIncompleteReason, PROBE_FULL_WINDOW_SLACK_MIN,
   SCHEMA_VERSION, OFFSET_HOURS, DEFAULT_GATES, EMBARGO_HOUR_LOCAL, PROBE_LEAD_MIN, LATE_RELEASE_MIN,
-  defaultEmbargoAt, marketEmbargoAt, embargoInfo, embargoOverrideProblem, embargoOverrideReachWarning, classifyEmbargo,
+  defaultEmbargoAt, marketEmbargoAt, embargoInfo, embargoAssumed, embargoOverrideProblem, embargoOverrideReachWarning, classifyEmbargo,
   observedRelease, releaseSourceLabel, observedRecord, observedCoverage2h, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
   runProbe, referenceFrom, evaluateCheck, isNightReview, firstNightLive, laneShadowFrom, coverageAt,
   filterCensus, sameNightCheck, outletLiveMs,

@@ -15,8 +15,9 @@ test('embargo: Downstate opens reviews 2026-11-16T03:00Z, kick is 2h earlier', (
   assert.equal(new Date(e.embargoMs).toISOString(), '2026-11-16T03:00:00.000Z');
   assert.equal(e.kickAtMs, e.embargoMs - 120 * 60000);
   const v = L.embargoVerdict(downstate, NOW);
-  assert.equal(v.status, 'pass');
+  assert.equal(v.status, 'warn', 'BRO-7740: a market-default embargo within 36h is flagged as a guess');
   assert.match(v.detail, /in 6\.0h/);
+  assert.equal(L.embargoVerdict({ ...downstate, reviewEmbargoAt: '2026-11-16T03:00:00Z' }, NOW).status, 'pass');
 });
 
 test('embargo: no opening date warns instead of throwing', () => {

@@ -184,7 +184,7 @@ async function watchdog() {
   let claimFailures = 0;
   let progress = parseProgress(arg('progress'), `${show.id}|${night}`);
   const preembargo = require('./lib/opening-night-lane/preembargo-window').parseFlag(process.env.LANE_PREEMBARGO_DIRECT_ONLY);
-  const times = af.nightTimes(show, night, { preembargo });
+  const times = af.nightTimes(show, night, { preembargo }); // nightTimes also turns the guard on for an assumed embargo (BRO-7740)
   const observe = times && createObserver(show, night, times);
   for (;;) {
     const nowMs = oneTickAt ? Date.parse(oneTickAt) : Date.now();

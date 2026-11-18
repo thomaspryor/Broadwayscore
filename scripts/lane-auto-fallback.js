@@ -85,6 +85,16 @@ function nightWait() {
   return 0;
 }
 
+// BRO-7740: prints on|off for the lane's pre-embargo guard: the owner variable OR a market-default (assumed) embargo.
+function preembargoMode() {
+  const show = findShow(loadShows(), arg('show'));
+  const flagOn = require('./lib/opening-night-lane/preembargo-window').parseFlag(process.env.LANE_PREEMBARGO_DIRECT_ONLY);
+  const m = af.laneGuardMode(show, arg('night'), flagOn);
+  console.error(`preembargo-mode ${arg('show')} ${arg('night')}: ${m.enabled ? 'on' : 'off'} (${m.reason})`);
+  console.log(m.enabled ? 'on' : 'off');
+  return 0;
+}
+
 function holdCheck() {
   const show = findShow(loadShows(), arg('show'));
   const { onlyMarkets, standdown } = readVarsLive();
@@ -99,7 +109,8 @@ async function main() {
   if (cmd === 'start-plan') return startPlan();
   if (cmd === 'night-wait') return nightWait();
   if (cmd === 'hold-check') return holdCheck();
-  console.error('usage: lane-auto-fallback.js start-plan|night-wait|hold-check ...');
+  if (cmd === 'preembargo-mode') return preembargoMode();
+  console.error('usage: lane-auto-fallback.js start-plan|night-wait|preembargo-mode|hold-check ...');
   return 2;
 }
 

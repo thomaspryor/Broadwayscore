@@ -15,7 +15,8 @@ const repo = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../.
 const read = (p) => fs.readFileSync(path.join(repo, p), 'utf8');
 
 // 2026-11-12 Broadway opening: embargo 22:00 New York = 2026-11-13T03:00Z. Lane start 02:30Z, watch end 07:30Z.
-const SHOW = { id: 'bway-show', market: 'broadway', category: 'broadway', openingDate: '2026-11-12' };
+// BRO-7740: a confirmed embargo (same instant as the 22:00 ET market hour) so these tests keep the guard-off timing; a market-default show gets the guard (tests/unit/embargo-assumed.test.mjs).
+const SHOW = { id: 'bway-show', market: 'broadway', category: 'broadway', openingDate: '2026-11-12', reviewEmbargoAt: '2026-11-13T03:00:00Z' };
 const NIGHT = '2026-11-12';
 const KEY = `${SHOW.id}|${NIGHT}`;
 const ON = { ok: true, value: 'broadway' };
