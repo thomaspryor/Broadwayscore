@@ -123,6 +123,9 @@ function bwwRoundupUrl(show) {
 
 /**
  * Every page the night serves, as a function of the virtual clock: page(url, tMs) -> html | undefined (404).
+ * Contract (simulated-opening-night.js): a URL this returns undefined for at EVERY time is treated as an unmodelled
+ * source and answered with an empty page (a quiet night). To stage a dead link, serve it at some time or add it to the
+ * night's dead-source handling there; returning undefined forever is not a dead link.
  * @param {object} args shows, reviews
  */
 function buildPages({ shows, reviews }) {
