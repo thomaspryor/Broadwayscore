@@ -115,7 +115,7 @@ function isTeaserNotAReview(rejection, url, text) {
  *   show {id}, night, ledgerDir, now() -> ms,
  *   fetchPage(url) -> {content: string}            (throws on failure)
  *   extractArticle(html, host) -> string|null      (clean body text)
- *   extractMeta?(html, url) -> {criticName?, publishDate?, outlet?}
+ *   extractMeta?(html, url, {text, outletId}) -> {criticName?, bylineConflict?, publishDate?, outlet?}
  *   extractRating?(html, text, {url, outletId, showTitle}) -> {originalScore, normalizedScore, source}|null
  *                                                  (the printed star rating or grade; the scorer anchors to its band)
  *   aggregatorFor?(candidate) -> {thumb?, stars?, excerpt?, excerpts?}   (default: the excerpts discovery attached to
@@ -137,7 +137,7 @@ function createInlineScoring({
   const shortLen = new Map(); // key -> length of the last under-the-floor extraction
   const usedCarried = new Set(); // keys whose discovery-fetched page was already scored once
   const teaserVerdict = new Map(); // key -> the scorer's not_a_review on a paywall teaser, waiting for an aggregator excerpt
-  const awaitingExcerpt = new Map(); // key -> {why, outlet, criticName, publishDate, rating} of a paywall teaser held for an excerpt or rating
+  const awaitingExcerpt = new Map(); // key -> {why, outlet, criticName, bylineConflict, publishDate, rating} of a paywall teaser held for an excerpt or rating
   /** Hold a teaser for new evidence: recorded once in the failure record (non-terminal), then re-offered for free. */
   const awaitEvidence = (stage, key, why, held) => {
     if (held && !awaitingExcerpt.has(key)) awaitingExcerpt.set(key, held);
@@ -227,7 +227,7 @@ function createInlineScoring({
       if (!canFallBack) awaitEvidence('fetch', key, held.why);
       awaitingExcerpt.delete(key);
       failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'fetch', reason: `${held.why}; ${thumbScore ? 'aggregator score' : 'aggregator excerpt'} arrived, scoring it`, attempt: Math.max(1, (state.get(`fetch:${key}`) || {}).attempts || 0), terminal: false, at: now() });
-      const out = { ...fallback('paywall-teaser-held'), outlet: held.outlet, criticName: held.criticName, publishDate: held.publishDate, ...(held.rating ? { rating: held.rating } : {}) };
+      const out = { ...fallback('paywall-teaser-held'), outlet: held.outlet, criticName: held.criticName, publishDate: held.publishDate, ...(held.bylineConflict ? { bylineConflict: held.bylineConflict } : {}), ...(held.rating ? { rating: held.rating } : {}) };
       fetched.set(key, out);
       return out;
     }
@@ -245,7 +245,7 @@ function createInlineScoring({
       if (!html) throw new Error('fetchPage returned no content');
       const sourceMethod = page.source || page.via || null; // what the old path's paywall rule keys on (SCRAPED_SOURCE_METHODS)
       const text = String(extractArticle(html, hostOf(candidate.url)) || '').trim();
-      const meta = extractMeta(html, candidate.url) || {};
+      const meta = extractMeta(html, candidate.url, { text, outletId: candidate.outletId }) || {};
       // Read off the page whatever text is kept: a rating printed beside a teaser is still the critic's.
       let rating = null;
       try { rating = ratingFields(extractRating(html, text, { url: candidate.url, outletId: candidate.outletId, showTitle: show.title })); } catch { /* no rating is not a failure */ }
@@ -283,7 +283,7 @@ function createInlineScoring({
         const partialOk = !paywallTeaser && text.length >= MIN_SHORT_PARTIAL_CHARS;
         // Retries spent (or the page gives the same length again): a teaser is HELD, never terminal, so an excerpt or rating
         // a roundup prints at +90 minutes still scores it (BRO-7159: the URL went into `seen` and discovery skipped it).
-        if (!partialOk && !canFallBack && paywallTeaser) awaitEvidence('fetch', key, `${why}: a paywall teaser`, { why: `${why}: a paywall teaser`, outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, rating });
+        if (!partialOk && !canFallBack && paywallTeaser) awaitEvidence('fetch', key, `${why}: a paywall teaser`, { why: `${why}: a paywall teaser`, outlet: meta.outlet, criticName: meta.criticName || null, bylineConflict: meta.bylineConflict || null, publishDate: meta.publishDate || null, rating });
         if (!partialOk && !canFallBack) fail('fetch', key, new Error(`${why}, under the ${MIN_SHORT_PARTIAL_CHARS} a partial copy needs, and no aggregator score or paywall excerpt`), true);
         const using = partialOk ? 'scoring it as a partial copy' : (thumbScore ? 'using the aggregator score' : 'scoring the aggregator excerpt');
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'fetch', reason: `${why}; ${using}`, attempt, terminal: false, at: now() });
@@ -308,7 +308,7 @@ function createInlineScoring({
         }
         if (paywallTruncation) contentTier = 'truncated';
       }
-      const out = withExcerpts({ outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, fullText: keepText ? text : '', aggregator, ...(contentTier ? { contentTier } : {}), ...(sourceMethod ? { sourceMethod } : {}), ...(paywallTruncation ? { paywallTruncation } : {}), ...(rating ? { rating } : {}) });
+      const out = withExcerpts({ outlet: meta.outlet, criticName: meta.criticName || null, ...(meta.bylineConflict ? { bylineConflict: meta.bylineConflict } : {}), publishDate: meta.publishDate || null, fullText: keepText ? text : '', aggregator, ...(contentTier ? { contentTier } : {}), ...(sourceMethod ? { sourceMethod } : {}), ...(paywallTruncation ? { paywallTruncation } : {}), ...(rating ? { rating } : {}) });
       fetched.set(key, out);
       return out;
     } catch (e) {
@@ -430,7 +430,7 @@ function ensembleScoreText(scorer) {
  */
 function realFetchPorts({ fetchPage = require('../scraper').fetchPage } = {}) {
   const { extractArticleText, extractPublishDate } = require('../article-extractor');
-  const { extractByline } = require('../byline-extraction');
+  const { readPageByline } = require('../page-byline');
   return {
     // The regular pipeline's regex rating extractor (collect-review-texts.js extractScore, with its no-critic-rating
     // discard). Its LLM extractor is not run: that is a paid call per review on the night's hot path.
@@ -444,12 +444,15 @@ function realFetchPorts({ fetchPage = require('../scraper').fetchPage } = {}) {
     },
     fetchPage: (url) => fetchPage(url),
     extractArticle: (html, host) => extractArticleText(html, host),
-    extractMeta: (html, url) => {
+    // BRO-7780: the same byline reader as ingest (page-byline.js): outlet rules, then the visible byline, then
+    // structured data, with a flag when the page's structured author is not the byline it prints.
+    extractMeta: (html, url, { text = '', outletId } = {}) => {
       let criticName = null;
-      try { criticName = extractByline(html) || null; } catch { /* a missing byline is not a failure */ }
+      let bylineConflict = null;
+      try { ({ criticName, bylineConflict } = readPageByline({ html, text, url, outletId })); } catch { /* a missing byline is not a failure */ }
       let publishDate = null;
       try { publishDate = extractPublishDate(html, url) || null; } catch { /* nor is a missing date */ }
-      return { criticName, publishDate };
+      return { criticName, bylineConflict: bylineConflict || null, publishDate };
     },
   };
 }

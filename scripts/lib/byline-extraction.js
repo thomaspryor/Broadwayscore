@@ -12,7 +12,7 @@
 const { stripBylineSuffixes } = require('./byline-normalization');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { CMS_ADMIN_HANDLE_RE } = require('./byline-recovery');
-const { extractBylineFromText, sameCriticName } = require('./byline-from-text');
+const { extractBylineFromText, printedOutletByline, sameCriticName } = require('./byline-from-text');
 
 function isCmsAccountName(name) {
   return CMS_ADMIN_HANDLE_RE.test(name) || /^(editor|staff|webmaster)$/i.test(name);
@@ -154,6 +154,10 @@ function extractByline(html, { outletId, text } = {}) {
   if (!html) return null;
   const reviewer = extractReviewerLine(html) || extractReviewedByLine(html) || extractSignOffBeforeShare(html);
   if (reviewer) return reviewer;
+  // TheaterMania's visible author tag beats its JSON-LD, which names the account that POSTED the
+  // article (editor David Gordon, BRO-7745/BRO-7780). Read without a url: the id is TM's own.
+  const tmTag = extractTheaterManiaAuthorTag(html);
+  if (tmTag) return tmTag;
   const jsonLd = extractJsonLdAuthor(html);
   if (jsonLd) return jsonLd;
   const candidates = [
@@ -208,7 +212,7 @@ function extractByline(html, { outletId, text } = {}) {
       let name = decodeHtmlEntities(m[1]).trim();
       // Strip Jetpack-style "View all posts by X" prefix that leaks through
       // some <a rel=author> matches.
-      name = name.replace(/^view\s+all\s+posts\s+by\s+/i, '');
+      name = name.replace(/^(?:view\s+all|see\s+all|read\s+more|more)\s+(?:posts|articles|stories|reviews)\s+by\s+/i, '');
       // Strip what rides along with the name at capture time — ", Chief
       // Theatre Critic", "(she/her)", "<br>" / a stray ">" — so the stored
       // criticName is the person (audit S7-T4). Shared with
@@ -293,7 +297,9 @@ function detectBylineConflict({ html, text, url, outletId, chosen } = {}) {
   if (!outlet && url) {
     try { outlet = (require('./review-normalization').resolveOutletFromUrl(url) || {}).outletId; } catch { outlet = null; }
   }
-  const printed = outlet && text ? extractBylineFromText(outlet, text) : null;
+  // Only the outlet's own printed-byline reader (BYLINE_EXTRACTORS), never the generic text-tail
+  // credit: a closing "Photos: Joan Marcus" / quoted-name line is not the byline (BRO-7777).
+  const printed = outlet && text ? printedOutletByline(outlet, text) : null;
   const visible = extractTheaterManiaAuthorTag(html)
     || (printed && printed.known ? printed.name : null)
     || extractReviewerLine(html);
@@ -301,6 +307,17 @@ function detectBylineConflict({ html, text, url, outletId, chosen } = {}) {
   return sameCriticName(visible, chosen) ? null : { structured, visible };
 }
 
+/**
+ * True when a candidate byline is not a person: a URL or domain, a house / publisher / desk name,
+ * or a CMS uploader account. The one filter extractByline applies, exported so page-byline.js
+ * applies the same rules to the generic fallback (BRO-7780).
+ */
+function isNotACriticName(name) {
+  const n = String(name || '').trim();
+  return !n || URL_LIKE_RE.test(n) || DOMAIN_LIKE_RE.test(n) || NOT_A_PERSON_RE.test(n) || PUBLISHER_RE.test(n) || isCmsAccountName(n);
+}
+
 module.exports = {
+  isNotACriticName,
   extractReviewerLine, extractReviewedByLine, extractSignOffBeforeShare, extractByline, extractJsonLdAuthor,
   extractTheaterManiaAuthorTag, detectBylineConflict, decodeEntities: (s) => decodeHtmlEntities(s || '') };

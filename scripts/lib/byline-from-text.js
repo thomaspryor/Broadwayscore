@@ -276,6 +276,12 @@ function printedBylineOverride(outletId, text, url, stored) {
  * @param {{showTitle?: string}} [opts]
  * @returns {{name: string, known: boolean} | null}
  */
+/** The outlet's own printed-byline reader only (no generic text-tail credit), or null. */
+function printedOutletByline(outletId, text) {
+  const extractor = BYLINE_EXTRACTORS[outletId];
+  return extractor && text ? extractor(text) || null : null;
+}
+
 function extractBylineFromText(outletId, text, opts = {}) {
   const extractor = BYLINE_EXTRACTORS[outletId];
   const hit = extractor ? extractor(text) : null;
@@ -325,6 +331,7 @@ module.exports = {
   otherNamedCriticAtOutlet,
   tailCreditBelongsToSibling,
   extractBylineFromText,
+  printedOutletByline,
   printedBylineOverride,
   extractTheaterSceneByline,
   extractPlaysInternationalByline,
