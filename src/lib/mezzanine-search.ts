@@ -24,7 +24,7 @@ export interface MezzanineCandidate {
 
 interface MezzanineSearchResponse {
   ok: boolean;
-  error?: 'invalid_query' | 'unauthorized' | 'rate_limited' | 'upstream_auth' | 'internal';
+  error?: 'invalid_query' | 'unauthorized' | 'rate_limited' | 'upstream_auth' | 'upstream_unavailable' | 'internal';
   candidates?: MezzanineCandidate[];
   truncated?: boolean;
 }
@@ -34,6 +34,7 @@ export const MEZZANINE_SEARCH_ERROR_COPY: Record<string, string> = {
   unauthorized: 'Please sign in again and retry.',
   rate_limited: "You've hit the search limit for now: try again in an hour.",
   upstream_auth: "Can't reach the wider catalog right now.",
+  upstream_unavailable: "Can't reach the wider catalog right now. Try again in a few minutes.",
   internal: 'Something went wrong on our side. Try again in a few minutes.',
 };
 
