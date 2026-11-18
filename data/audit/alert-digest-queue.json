@@ -359,20 +359,6 @@
     "queuedAt": "2026-11-18T15:22:14.469Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-18.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-18T15:22:14.500Z"
-  },
-  {
     "conditionKey": "cookie-renew:stuck-uncertain:nytimes",
     "title": "Cookie renew: nytimes login state unreadable for 12h+",
     "description": "renew-cookies.js has not been able to tell whether nytimes is logged in since 2026-11-17T21:06:18.278Z (last: anonymous control failed: control hit a bot challenge (HTTP 403) (vacuity unverified; not writing cookies)). It will not log in on an uncertain reading. Check: node scripts/verify-cookie-login.js --outlets=nytimes",
@@ -519,6 +505,20 @@
       }
     ],
     "queuedAt": "2026-11-18T16:07:41.226Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-18.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T16:35:35.760Z"
   },
   {
     "conditionKey": "land:land/bro-7779b-source-health",
