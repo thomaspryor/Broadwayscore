@@ -32,7 +32,7 @@ const { tokensMatchShow, standsDown } = require('./standdown');
 const MIN = 60 * 1000;
 const LEASE_TTL_MIN = 30;           // lease.js DEFAULT_TTL_MS
 const LANE_LEAD_MIN = 30;           // the lane starts this long before the embargo
-const LANE_WINDOW_PREEMBARGO_MIN = 275; // the same variable on: lane starts up to 60 min earlier, so the tail ends about 55 min sooner (the 355-min job cap leaves 5 min more window)
+const LANE_WINDOW_PREEMBARGO_MIN = 275; // the same variable on: lane starts up to 60 min earlier (BRO-7786: up to 150 min with an observed early drop, window length unchanged, so the tail then ends at embargo +95), so the tail ends about 55 min sooner (the 355-min job cap leaves 5 min more window)
 const LANE_WINDOW_MIN = 270;        // OPENING_NIGHT_LANE_WINDOW_MIN in opening-night-lane-live.yml (BRO-7740: only a confirmed embargo uses it; a market-default embargo takes the guard's start and 275 min, so the tail ends at embargo +185 instead of +240)
 const START_BEFORE_MIN = 20 * 60;   // starter window opens 20h before the embargo (covers opening day's crons)
 const START_AFTER_MIN = 60;         // and closes 1h after it; later than that the old path keeps the night
@@ -58,11 +58,14 @@ function nightTimes(show, night, { preembargo = false, dropProfiles } = {}) {
   const mode = laneGuardMode(show, night, preembargo);
   // BRO-7786: with the guard on, the start follows the earliest drop observed on recorded nights for the market (embargo-drop-profiles.js);
   // a guess basis (too few nights) keeps the 90-min market default. `drop` says which basis was used, for the lane log and alerts.
-  const drop = mode.enabled ? dropBasisFor(show, night, dropProfiles) : null;
+  // Only for an ASSUMED embargo (the profile offsets are measured from the market hour, which a confirmed reviewEmbargoAt replaces).
+  const drop = mode.enabled && mode.reason === 'assumed-embargo' ? dropBasisFor(show, night, dropProfiles) : null;
   const earliestDropMs = drop && drop.basis === 'observed' ? Date.parse(drop.fromAt) : undefined;
-  const laneStartMs = pw.laneStartMs({ embargoMs, timeZone: mode.enabled ? require('../local-date').tzForMarket(show.category || show.market) : null, enabled: mode.enabled, earliestDropMs });
+  const tz = mode.enabled ? require('../local-date').tzForMarket(show.category || show.market) : null;
+  const defaultLaneStartMs = pw.laneStartMs({ embargoMs, timeZone: tz, enabled: mode.enabled }); // the start before any observed-drop adjustment (coverage windows anchor here)
+  const laneStartMs = pw.laneStartMs({ embargoMs, timeZone: tz, enabled: mode.enabled, earliestDropMs });
   const windowMin = mode.enabled ? LANE_WINDOW_PREEMBARGO_MIN : LANE_WINDOW_MIN;
-  return { embargoMs, laneStartMs, watchEndMs: laneStartMs + (windowMin + LEASE_TTL_MIN) * MIN, guard: mode, drop };
+  return { embargoMs, laneStartMs, defaultLaneStartMs, watchEndMs: laneStartMs + (windowMin + LEASE_TTL_MIN) * MIN, guard: mode, drop };
 }
 
 let _benchProfiles;
@@ -82,9 +85,11 @@ function guardStartText(t) {
   const at = new Date(t.laneStartMs).toISOString();
   const d = t.drop || { basis: 'none' };
   const leadMin = Math.round((t.embargoMs - t.laneStartMs) / MIN);
-  if (d.basis === 'observed' && leadMin >= require('./preembargo-window').MAX_OBSERVED_LEAD_MIN) return `guard opens ${at} (embargo -${leadMin} min), CAPPED at the ${leadMin}-min maximum lead: the earliest of ${d.n} recorded nights (${d.earliestMin} min) would open it earlier`;
-  if (d.basis === 'observed' && leadMin > 90) return `guard opens ${at} (embargo -${leadMin} min), set by the earliest drop in ${d.n} recorded nights (${d.earliestMin} min vs the market hour)`;
-  if (d.basis === 'observed') return `guard opens ${at} (embargo -${leadMin} min), the market default; the earliest of ${d.n} recorded nights (${d.earliestMin} min) is not earlier`;
+  if (d.basis === 'observed' && t.laneStartMs < t.defaultLaneStartMs) {
+    if (leadMin >= require('./preembargo-window').MAX_OBSERVED_LEAD_MIN) return `guard opens ${at} (embargo -${leadMin} min), CAPPED at the ${leadMin}-min maximum lead: the earliest of ${d.n} recorded nights (${d.earliestMin} min) would open it earlier`;
+    return `guard opens ${at} (embargo -${leadMin} min), set by the earliest drop in ${d.n} recorded nights (${d.earliestMin} min vs the market hour)`;
+  }
+  if (d.basis === 'observed') return `guard opens ${at} (embargo -${leadMin} min), the default start; the earliest of ${d.n} recorded nights (${d.earliestMin} min) is not earlier`;
   return `guard opens ${at} (embargo -${leadMin} min), a GUESS: the market default, ${d.n || 0} recorded night(s) for this market`;
 }
 

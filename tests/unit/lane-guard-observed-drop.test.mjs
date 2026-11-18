@@ -53,7 +53,7 @@ test('guardStartText: says CAPPED when the 180-min cap, not the data, set the st
 test('nightTimes: an observed market whose earliest drop is not earlier than the default keeps embargo - 90 and says so', () => {
   const t = af.nightTimes(SHOW, '2026-11-18', { dropProfiles: profilesFor([-60, -30, 0, 0, 10]) });
   assert.equal(t.laneStartMs, MARKET_HOUR - 90 * MIN);
-  assert.match(af.guardStartText(t), /the market default; the earliest of 5 recorded nights/);
+  assert.match(af.guardStartText(t), /the default start; the earliest of 5 recorded nights/);
 });
 
 test('nightTimes: a guess basis (4 nights), no profile or an unreadable profile keeps embargo - 90 and labels it a GUESS', () => {
@@ -107,4 +107,17 @@ test('readiness text: the lane guard start in the readiness check is the lane\'s
   assert.match(out.detail, /guard opens 2026-11-19T00:45:00.000Z/);
   assert.match(out.detail, /set by the earliest drop/);
   assert.doesNotMatch(out.detail, /caught only after it/);
+});
+
+test('a confirmed embargo with the guard flag on ignores the market-hour drop profile (offsets are market-hour relative)', () => {
+  const confirmed = { ...SHOW, reviewEmbargoAt: '2026-11-19T04:00:00Z' };
+  const t = af.nightTimes(confirmed, '2026-11-18', { preembargo: true, dropProfiles: profilesFor([-120, -30, 0, 0, 10, 40]) });
+  assert.equal(t.drop, null);
+  assert.equal(t.laneStartMs, t.defaultLaneStartMs);
+});
+
+test('checkWindow anchors on the default start, so the coverage window does not move with the bench', () => {
+  const cov = require('../../scripts/lib/press-night-coverage.js');
+  const w = cov.checkWindow(af.nightTimes(SHOW, '2026-11-18', { dropProfiles: profilesFor([-120, -30, 0, 0, 10, 40]) }));
+  assert.equal(w.fromMs, MARKET_HOUR - 90 * MIN - cov.BEFORE_LANE_MIN * MIN);
 });

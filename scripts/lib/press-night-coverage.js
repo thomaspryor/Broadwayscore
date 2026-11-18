@@ -86,9 +86,9 @@ function maxGap(intervals, fromMs, toMs) {
   return best;
 }
 
-/** The card's check window for a show-night: [laneStart - 3h, embargo + 6h]. */
+/** The card's check window for a show-night: [default laneStart - 3h, embargo + 6h] (BRO-7786: anchored to the start before the observed-drop adjustment, so the kick schedule it checks does not move with the bench). */
 function checkWindow(times) {
-  return { fromMs: times.laneStartMs - BEFORE_LANE_MIN * MIN, toMs: times.embargoMs + AFTER_EMBARGO_MIN * MIN };
+  return { fromMs: (times.defaultLaneStartMs != null ? times.defaultLaneStartMs : times.laneStartMs) - BEFORE_LANE_MIN * MIN, toMs: times.embargoMs + AFTER_EMBARGO_MIN * MIN };
 }
 
 module.exports = { collectorsFor, maxGap, checkWindow, ORCH_RUN_MIN, SWEEP_RUN_MIN, MAX_GAP_MIN, BEFORE_LANE_MIN, AFTER_EMBARGO_MIN };
