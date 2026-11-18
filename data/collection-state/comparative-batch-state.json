@@ -1,37 +1,25 @@
 {
   "openai": {
     "answers": {
-      "1da909daf1e17f3bc5b6": {
-        "text": "[{\"id\":\"guardian--susannah-clapp.json\",\"score\":68,\"warmthRank\":1},{\"id\":\"observer--susannah-clapp.json\",\"score\":66,\"warmthRank\":2},{\"id\":\"timeout-london--alice-saville.json\",\"score\":55,\"warmthRank\":3}]",
-        "at": "2026-11-18T19:07:14.030Z"
-      },
-      "2eb6de805b412e840f90": {
-        "text": "[{\"id\":\"everything-theatre--alex-sarll.json\",\"score\":86,\"warmthRank\":2},{\"id\":\"londonpubtheatres--paul-maidment.json\",\"score\":89,\"warmthRank\":1}]",
-        "at": "2026-11-18T19:07:14.030Z"
+      "834c75ef0a1c6756d797": {
+        "text": "[{\"id\":\"guardian--michael-billington.json\",\"score\":51,\"warmthRank\":5},{\"id\":\"london-box-office--camille-leadbeater.json\",\"score\":68,\"warmthRank\":2},{\"id\":\"telegraph--claire-allfree.json\",\"score\":66,\"warmthRank\":3},{\"id\":\"thestage--mark-shenton.json\",\"score\":70,\"warmthRank\":1},{\"id\":\"times-uk--libby-purves.json\",\"score\":55,\"warmthRank\":4}]",
+        "at": "2026-11-18T23:13:15.287Z"
       }
     }
   },
   "gemini": {
     "answers": {
-      "1da909daf1e17f3bc5b6": {
-        "text": "[{\"id\":\"observer--susannah-clapp.json\",\"score\":65,\"warmthRank\":1},{\"id\":\"guardian--susannah-clapp.json\",\"score\":60,\"warmthRank\":2},{\"id\":\"timeout-london--alice-saville.json\",\"score\":55,\"warmthRank\":3}]",
-        "at": "2026-11-18T19:08:16.342Z"
-      },
-      "2eb6de805b412e840f90": {
-        "text": "[{\"id\":\"everything-theatre--alex-sarll.json\",\"score\":85,\"warmthRank\":2},{\"id\":\"londonpubtheatres--paul-maidment.json\",\"score\":88,\"warmthRank\":1}]",
-        "at": "2026-11-18T19:08:16.342Z"
+      "834c75ef0a1c6756d797": {
+        "text": "[{\"id\":\"thestage--mark-shenton.json\",\"score\":68,\"warmthRank\":1},{\"id\":\"telegraph--claire-allfree.json\",\"score\":65,\"warmthRank\":2},{\"id\":\"london-box-office--camille-leadbeater.json\",\"score\":60,\"warmthRank\":3},{\"id\":\"guardian--michael-billington.json\",\"score\":55,\"warmthRank\":4},{\"id\":\"times-uk--libby-purves.json\",\"score\":52,\"warmthRank\":5}]",
+        "at": "2026-11-18T23:14:18.149Z"
       }
     }
   },
   "claude": {
     "answers": {
-      "1da909daf1e17f3bc5b6": {
-        "text": "[{\"id\":\"observer--susannah-clapp.json\",\"score\":63,\"warmthRank\":1},{\"id\":\"guardian--susannah-clapp.json\",\"score\":58,\"warmthRank\":2},{\"id\":\"timeout-london--alice-saville.json\",\"score\":54,\"warmthRank\":3}]",
-        "at": "2026-11-18T19:07:14.117Z"
-      },
-      "2eb6de805b412e840f90": {
-        "text": "[{\"id\":\"everything-theatre--alex-sarll.json\",\"score\":88,\"warmthRank\":1},{\"id\":\"londonpubtheatres--paul-maidment.json\",\"score\":79,\"warmthRank\":2}]",
-        "at": "2026-11-18T19:07:14.117Z"
+      "834c75ef0a1c6756d797": {
+        "text": "[{\"id\":\"thestage--mark-shenton.json\",\"score\":67,\"warmthRank\":1},{\"id\":\"telegraph--claire-allfree.json\",\"score\":63,\"warmthRank\":2},{\"id\":\"london-box-office--camille-leadbeater.json\",\"score\":60,\"warmthRank\":3},{\"id\":\"guardian--michael-billington.json\",\"score\":56,\"warmthRank\":4},{\"id\":\"times-uk--libby-purves.json\",\"score\":53,\"warmthRank\":5}]",
+        "at": "2026-11-18T23:13:14.502Z"
       }
     }
   }
