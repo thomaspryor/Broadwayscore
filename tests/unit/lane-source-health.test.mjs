@@ -55,6 +55,12 @@ test('tracker: an expected source not read for 30 minutes is reported stale, onc
   const a = h.alerts();
   assert.deepEqual(a.map((x) => [x.kind, x.url]), [['source-stale', DEAD_FEED]]);
   assert.deepEqual(h.alerts(), [], 'once per idle period');
+  // A source already alerted as failing, then resting (not read), is not alerted a second time as unread.
+  h.expect([WALL_FEED]);
+  for (let i = 0; i < 3; i++) h.record(WALL_FEED, { ok: false, error: 'x' });
+  assert.equal(h.alerts().length, 1);
+  t += 40 * 60000;
+  assert.deepEqual(h.alerts().filter((x) => x.url === WALL_FEED), []);
 });
 
 test('body checks: a bot wall or an HTML page served for a feed is a failed read; an empty real feed is not', () => {

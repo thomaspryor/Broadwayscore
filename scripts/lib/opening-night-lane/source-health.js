@@ -52,7 +52,8 @@ function createSourceHealth({ failAlertAfter = FAIL_ALERT_AFTER, staleAfterMs = 
           out.push({ kind: 'fetch-failing', key: `fetch-failing|${source}|${new Date(s.streakStart).toISOString()}`, url: source, adapter: s.adapter, outletId: s.outletId, fails: s.fails, lastError: s.lastError, lastOkAt: s.lastOk ? new Date(s.lastOk).toISOString() : null });
         }
         const since = s.lastAttempt != null ? s.lastAttempt : s.expectedSince;
-        if (since != null && s.expectedSince != null && at - since >= staleAfterMs && !s.staleAlerted) {
+        // A source already reported failing (and maybe resting after it) is not reported again as merely unread.
+        if (since != null && s.expectedSince != null && at - since >= staleAfterMs && !s.staleAlerted && !s.failAlerted) {
           s.staleAlerted = true;
           out.push({ kind: 'source-stale', key: `source-stale|${source}|${new Date(since).toISOString()}`, url: source, adapter: s.adapter, outletId: s.outletId, idleMin: Math.round((at - since) / 60000), lastAttemptAt: s.lastAttempt ? new Date(s.lastAttempt).toISOString() : null });
         }
