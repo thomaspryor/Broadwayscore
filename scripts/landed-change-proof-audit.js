@@ -18,6 +18,13 @@ const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
+// Local runs: read VERCEL_TOKEN from .env (CI passes it via env). Only keys not already set; nothing printed.
+try {
+  for (const line of fs.readFileSync(path.join(ROOT, '.env'), 'utf8').split('\n')) {
+    const m = line.match(/^\s*(VERCEL_TOKEN)\s*=\s*"?([^"\n]*)"?\s*$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].trim();
+  }
+} catch { /* no .env */ }
 const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 const CARD_TITLE = 'Landed changes without run proof';
 
@@ -186,4 +193,5 @@ async function main() {
   console.log(`[landed-proof] appended ${add.length} row(s) to ${lib.LEDGER_PATH}`);
 }
 
-main().catch((e) => { console.error(`[landed-proof] FAILED: ${e && e.stack || e}`); process.exitCode = 1; });
+// Explicit exit: an imported helper keeps a handle open and the process would otherwise never end (replay 2026-11-18).
+main().then(() => process.exit(process.exitCode || 0), (e) => { console.error(`[landed-proof] FAILED: ${e && e.stack || e}`); process.exit(1); });

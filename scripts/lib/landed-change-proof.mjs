@@ -34,9 +34,9 @@ export function sourceOf({ authorName = '', authorEmail = '', body = '' } = {}) 
   return 'mac';
 }
 
-const EXEMPT_RE = /(?:^|\/)(?:tests?|__tests__|fixtures?|__snapshots__)\/|\.(?:test|spec)\.\w+$|\.(?:md|txt|png|jpe?g|webp|gif|svg|ico|csv)$|^(?:data|memory|cloud-memory|docs|\.claude\/commands|\.claude\/skills|review-texts)\//;
+const EXEMPT_RE = /(?:^|\/)(?:tests?|__tests__|fixtures?|__snapshots__)\/|\.(?:test|spec)\.\w+$|\.(?:md|txt|png|jpe?g|webp|gif|svg|ico|csv)$|^(?:data|public|memory|cloud-memory|docs|\.claude\/commands|\.claude\/skills|review-texts)\//;
 const HOOK_RE = /^\.claude\/(?:hooks|settings)|^\.husky\/|^scripts\/lib\/[\w-]*(?:-stop|-gate|review-gate)\.m?js$|^\.claude\/[\w-]+\.(?:sh|mjs|js|json)$/;
-const SRC_RE = /^(?:src|public)\/|^(?:next\.config\.js|tailwind\.config\.\w+|postcss\.config\.\w+|tsconfig\.json|package(?:-lock)?\.json|vercel\.json|middleware\.ts)$/;
+const SRC_RE = /^src\/|^(?:next\.config\.js|tailwind\.config\.\w+|postcss\.config\.\w+|tsconfig\.json|package(?:-lock)?\.json|vercel\.json|middleware\.ts)$/;
 
 /**
  * PURE. Classify one changed path. -> { kind: 'workflow'|'script'|'lib'|'src'|'hook'|'other'|'exempt', workflows: [] }
