@@ -145,7 +145,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `rebuild-fast.yml`
 - **Runs:** Every 4 hours at :45 UTC (`45 */4 * * *` — safety-net cron) + manual trigger
-- **Does:** Lightweight rebuild: checkout → rebuild reviews.json → push → deploy. No backfill, classification, or flagging steps. ~5 min instead of ~30 min.
+- **Does:** Lightweight rebuild: checkout → rebuild reviews.json → push → deploy. No backfill, classification, or flagging steps. Measured 15.5 min before BRO-7744 (rebuild step ~8 min, npm ci ~2 min, checkouts ~2 min, onboarding ~1.3 min); BRO-7744 brings it to ~11-12 min with a cross-show fingerprint memo restored via actions/cache (`rebuild-fp-memo-v1-*`, saved only when a run computes >=2000 fingerprints) and a parallel onboarding poster scan.
 - **Concurrency:** Shared depth-1 group `rebuild-fast` (BRO-5913): one running + one pending, a newer dispatch replaces the pending run (whole-tree idempotent rebuild, so the survivor covers it). `force_write=true` runs keep a per-run group.
 - **Safety-net role (Notion 362637c5-416f-81ce):** Vercel's static export only re-renders /opera, /broadway, /off-broadway, /west-end when a deploy fires. If `llm-ensemble-score.yml`'s rebuild dispatch silently 403s on GitHub API rate limits, reviews land but pages stay frozen at the last-build snapshot. The 4-hourly cron + dispatch-retry in `llm-ensemble-score.yml` close that gap. Cron runs are byte-identical no-ops via the change-gate commit/deploy step when there's nothing to do.
 - **When to use manually:** Opening-night corrections, manual data fixes, any time you need a fast rebuild without the full pipeline

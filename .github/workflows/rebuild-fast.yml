@@ -153,6 +153,21 @@ jobs:
             echo "count=" >> $GITHUB_OUTPUT
           fi
 
+      # BRO-7744: cross-show fingerprint memo (scripts/lib/fingerprint-memo.js).
+      # Reusing the last run's fingerprints skips ~165s of cleanText work in the
+      # rebuild. The file validates itself (it is discarded unless the cleaning
+      # code, env switches and Node major match), so a stale restore only costs
+      # time, never correctness. Key = cleaning-code hash + review-texts SHA:
+      # no run id (rule m), and restore-keys picks up the newest entry for the
+      # current cleaning code.
+      - name: Restore fingerprint memo
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .cache/rebuild-fp-cache.json
+          key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-${{ steps.review_texts_checkout.outputs.sha }}
+          restore-keys: |
+            rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-
+
       - name: Rebuild reviews.json
         id: rebuild
         env:
@@ -204,6 +219,26 @@ jobs:
           git_net 300 clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
 
           node scripts/rebuild-all-reviews.js $FORCE_FLAG
+
+      # BRO-7744: upload the memo only when this run had to compute a lot of
+      # fingerprints (first run on new cleaning code, or a large text change).
+      # A typical run reuses all but a handful, and re-uploading a near-copy
+      # each time would pile up cache entries (BRO-3887 / BRO-7506 budget).
+      - name: Decide fingerprint memo save
+        id: fp_memo
+        if: always() && steps.rebuild.outcome == 'success'
+        run: |
+          computed=$(node -e "try{console.log(require('./.cache/rebuild-fp-cache.json').computed||0)}catch{console.log(0)}")
+          echo "computed=$computed"
+          if [ "$computed" -ge 2000 ]; then echo "save=true" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Save fingerprint memo
+        if: always() && steps.fp_memo.outputs.save == 'true'
+        continue-on-error: true
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .cache/rebuild-fp-cache.json
+          key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-${{ steps.review_texts_checkout.outputs.sha }}
 
       # BRO-3127: this step (and everything through "Verify all eligible
       # reviews scored" below) is gated on `always() && steps.rebuild.outcome

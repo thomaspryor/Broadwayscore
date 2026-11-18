@@ -84,17 +84,35 @@ function hitsFor(match: (s: Show) => boolean) {
 
 async function main() {
   // Scan every poster once: a blur-padded one never reaches a quiz grid (BRO-6734).
+  // BRO-7744: each file is decoded once, four at a time (serial decoding of ~8.5k
+  // images took ~80s of every rebuild-fast run). A poster string is still judged
+  // with its own show's regional flag, so the result matches the old serial loop.
+  const byFile = new Map<string, { p: string; regional: boolean }[]>();
   for (const s of shows) {
     for (const p of [s.img?.po, s.img?.th]) {
-      if (!p || badPosters.has(p)) continue;
+      if (!p) continue;
       const file = path.join(ROOT, 'public', p.split('?')[0]);
+      byFile.set(file, [...(byFile.get(file) || []), { p, regional: s.cat === 'regional' }]);
+    }
+  }
+  const files = [...byFile.keys()];
+  let next = 0;
+  const worker = async () => {
+    while (next < files.length) {
+      const file = files[next++];
       if (!fs.existsSync(file)) continue;
       try {
         const { data, info } = await sharp(file).greyscale().raw().toBuffer({ resolveWithObject: true });
-        if (isLetterboxed(new Uint8Array(data.buffer, data.byteOffset, data.length), info.width, info.height, s.cat === 'regional')) { badPosters.add(p); badPosters.add(p.split('?')[0]); }
+        const px = new Uint8Array(data.buffer, data.byteOffset, data.length);
+        const verdict = new Map<boolean, boolean>();
+        for (const { p, regional } of byFile.get(file)!) {
+          if (!verdict.has(regional)) verdict.set(regional, isLetterboxed(px, info.width, info.height, regional));
+          if (verdict.get(regional)) { badPosters.add(p); badPosters.add(p.split('?')[0]); }
+        }
       } catch { /* unreadable image: leave it to the existing checks */ }
     }
-  }
+  };
+  await Promise.all(Array.from({ length: 4 }, worker));
   console.log('blur-padded posters left out', badPosters.size);
   const ukRegional: { match: string; city: string; aliases?: string[] }[] = JSON.parse(
     fs.readFileSync(path.join(ROOT, 'data', 'uk-regional-venues.json'), 'utf8'),

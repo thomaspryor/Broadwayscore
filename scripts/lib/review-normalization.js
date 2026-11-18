@@ -503,6 +503,25 @@ const JUNK_BYLINES = new Set([
   'guest', 'guest contributor', 'press release', 'newsdesk', 'news desk',
 ]);
 
+// BRO-7744: alias -> canonical index for normalizeCritic. The old per-call
+// Object.entries(CRITIC_ALIASES) scan cost ~34s of a full rebuild. The first
+// canonical (in key order) that lists an alias wins, matching the old scan.
+// CRITIC_ALIASES is only filled at module load; code that changes it later
+// (tests) must call resetCriticAliasIndex() afterwards.
+let _criticAliasIndex = null;
+function criticAliasIndex() {
+  if (!_criticAliasIndex) {
+    _criticAliasIndex = new Map();
+    for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
+      for (const alias of aliases) {
+        if (!_criticAliasIndex.has(alias)) _criticAliasIndex.set(alias, canonical);
+      }
+    }
+  }
+  return _criticAliasIndex;
+}
+function resetCriticAliasIndex() { _criticAliasIndex = null; }
+
 /**
  * Normalize a critic name to its canonical form.
  * Returns the canonical critic name (lowercase, hyphenated).
@@ -522,17 +541,10 @@ function normalizeCritic(criticName) {
 
   if (JUNK_BYLINES.has(lower.replace(/[:.]+$/, '').trim())) return 'unknown';
 
-  // Check against all aliases
-  for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
-    if (aliases.some(alias => {
-      // Exact match only - no partial/first-name matching
-      // (first-name matching was causing Jesse Oxfeld → jesse-green)
-      if (lower === alias) return true;
-      return false;
-    })) {
-      return canonical;
-    }
-  }
+  // Check against all aliases. Exact match only - no partial/first-name matching
+  // (first-name matching was causing Jesse Oxfeld → jesse-green).
+  const canonical = criticAliasIndex().get(lower);
+  if (canonical !== undefined) return canonical;
 
   // Not found in aliases - create a slug from the full name
   // But first, ensure we have a reasonable name (at least 2 chars)
@@ -3126,6 +3138,7 @@ module.exports = {
   isProfileUrl,
   isSuspiciousOutletId,
   CRITIC_ALIASES,
+  resetCriticAliasIndex,
   JUNK_BYLINES,
   CRITIC_JUNK_PREFIX_RE,
   AGGREGATOR_SCORE_SOURCES,

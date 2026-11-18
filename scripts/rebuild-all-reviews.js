@@ -49,6 +49,7 @@ function parseReviewFileText(raw) {
   }
 }
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
+const { createFingerprintMemo } = require('./lib/fingerprint-memo');
 const { resolveRelativeReviewUrl, reverseCrossMarketExclusion } = require('./lib/recovery-exclusions');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, urlPathOppositeMarketIndicator, urlPathGuardTreatsShowAsUk, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { computeContentFingerprint } = require('./lib/content-quality');
@@ -2622,6 +2623,7 @@ const crossShowFingerprints = new Map();
   if (cvPromoted > 0) console.log(`  CV pre-pass: promoted ${cvPromoted} contentVerification flags`);
 }
 
+const fpMemo = createFingerprintMemo();
 showDirs.forEach(showId => {
   // Skip Broadway shows in previews — they haven't opened yet, all reviews are wrong-production
   // Off-Broadway and West End shows commonly get reviewed during previews, so don't skip them
@@ -5089,9 +5091,9 @@ showDirs.forEach(showId => {
       // fingerprint and the other show's identical, equally-legitimate copy is silently
       // dropped as "cross-show contamination" (2026-07-22, rebuild-regression.json).
       if (data.fullText && data.fullText.length > 200 && !skipCrossShowDupeIds.has(showId) && !data.allowCrossShowDuplicate) {
-        const cleanedForFp = (cleanText(data.fullText) || '').toLowerCase().replace(/\s+/g, '');
-        if (cleanedForFp.length > 200) {
-          const fp = crypto.createHash('sha256').update(cleanedForFp).digest('hex').substring(0, 16);
+        // BRO-7744: memoized across runs (scripts/lib/fingerprint-memo.js); null = too short to fingerprint.
+        const fp = fpMemo.fingerprint(data.fullText);
+        if (fp) {
           const existing = crossShowFingerprints.get(fp);
           if (existing && existing.showId !== showId && !skipCrossShowDupeIds.has(existing.showId)
             && !isJointCombinedCopy(data, showId, existing.copies || [existing], showById[showId])) { // BRO-4305: joint multi-show article copies all count
@@ -5944,6 +5946,7 @@ showDirs.forEach(showId => {
     }
   });
 });
+if (fpMemo.save()) console.log(`  [fp-memo] cross-show fingerprints: ${fpMemo.stats.hits} reused, ${fpMemo.stats.misses} computed (${fpMemo.cachePath})`);
 
 // BRO-925: flush every show's buffered exclusions (populated by logExclusion
 // above) to its own data/audit/rebuild-exclusions-{showId}.json. Runs before
