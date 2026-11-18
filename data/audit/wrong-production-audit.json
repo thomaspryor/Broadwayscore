@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-18T15:05:38.645Z",
+  "timestamp": "2026-11-18T15:19:30.139Z",
   "stats": {
     "totalReviews": 82586,
     "alreadyFlagged": 22457,
     "dateGuardCatches": 220,
-    "directorMismatch": 3741,
-    "tvFilmSignals": 2350,
+    "directorMismatch": 3742,
+    "tvFilmSignals": 2351,
     "londonSignals": 3791,
     "offBroadwaySignals": 761,
     "yearMismatch": 382,
@@ -34602,6 +34602,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-2022",
+      "file": "thestage--siobhan-murphy.json",
+      "publishDate": "2022-08-25",
+      "url": "https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
