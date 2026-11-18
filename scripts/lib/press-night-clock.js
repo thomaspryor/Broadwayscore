@@ -37,6 +37,19 @@ const KINDS = {
   swv: { leadMin: -450, lateMin: 270, categories: ['broadway'] },
 };
 
+/**
+ * BRO-7779: what the clock workflow does when an event of `kind` comes due for a show of `category`.
+ * press-night-clock.yml reads this through the `action` CLI, and scripts/lib/press-night-coverage.js builds its
+ * collector timeline from it, so the coverage test and the workflow cannot disagree.
+ * @returns {{action:'orchestrator'|'probe'|'preflight'|'sweep', market:string|null}}
+ */
+function kindAction(kind, category) {
+  if (/^sw/.test(kind)) return { action: 'sweep', market: null };
+  if (/^pf/.test(kind)) return { action: 'preflight', market: null };
+  if (kind === 'kick' && category === 'broadway') return { action: 'orchestrator', market: 'broadway' };
+  return { action: 'probe', market: null };
+}
+
 function kickKey(showId, night, kind = 'kick') {
   return kind === 'kick' ? `${showId}:${night}` : `${showId}:${night}:${kind}`;
 }
@@ -90,7 +103,7 @@ function confirmKick(shows, nowMs, planned, opts) {
   return next.kickAtMs <= nowMs ? 'kick' : 'replan';
 }
 
-module.exports = { planKicks, nextKick, sleepPlan, confirmKick, kickKey, KINDS, KICK_LEAD_MIN, KICK_LATE_MIN, HORIZON_DAYS, DEFAULT_CATEGORIES };
+module.exports = { kindAction, planKicks, nextKick, sleepPlan, confirmKick, kickKey, KINDS, KICK_LEAD_MIN, KICK_LATE_MIN, HORIZON_DAYS, DEFAULT_CATEGORIES };
 
 if (require.main === module) {
   const arg = (k) => {
@@ -99,7 +112,10 @@ if (require.main === module) {
   };
   const sub = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : 'next';
   const now = arg('now') ? Date.parse(arg('now')) : Date.now();
-  if (sub === 'sleep-plan') {
+  if (sub === 'action') {
+    const a = kindAction(arg('kind'), arg('category'));
+    process.stdout.write(`${a.action} ${a.market || '-'}\n`);
+  } else if (sub === 'sleep-plan') {
     const kickAt = Date.parse(arg('kick-at'));
     if (!Number.isFinite(kickAt)) { console.error('sleep-plan needs --kick-at=ISO'); process.exit(2); }
     const p = sleepPlan(kickAt, now, arg('hop-budget-min') ? Number(arg('hop-budget-min')) : undefined);
