@@ -91,23 +91,30 @@ function showNames(show, allShows) {
 }
 
 // --- registry: the loaded show list, for matchers that only receive show.title ---------------------------------
-let _registry = null; // { akaByTitle: Map, venueByTitle: Map, titles: string[] }
+let _registry = null; // { akaByTitle: Map, venueByTitle: Map, peopleByTitle: Map, titles: string[] }
 function buildRegistry(shows) {
   const akaByTitle = new Map();
   const venueByTitle = new Map();
+  const peopleByTitle = new Map(); // name words of the cast and creative team ("rinna", "rannells")
   const titles = [];
   for (const s of shows || []) {
     if (!s || !s.title) continue;
     titles.push(s.title);
     const k = normTitle(s.title);
     if (typeof s.venue === 'string' && s.venue.trim()) venueByTitle.set(k, [...(venueByTitle.get(k) || []), s.venue]);
+    for (const p of [...(Array.isArray(s.cast) ? s.cast : []), ...(Array.isArray(s.creativeTeam) ? s.creativeTeam : [])]) {
+      const name = typeof p === 'string' ? p : p && p.name;
+      if (typeof name !== 'string') continue;
+      if (!peopleByTitle.has(k)) peopleByTitle.set(k, new Set());
+      for (const w of normTitle(name).split(' ')) if (w.length > 1) peopleByTitle.get(k).add(w);
+    }
     for (const a of Array.isArray(s.akaTitles) ? s.akaTitles : []) {
       if (!usableAka(a, s.title)) continue;
       if (!akaByTitle.has(k)) akaByTitle.set(k, []);
       if (!akaByTitle.get(k).some((x) => normTitle(x) === normTitle(a))) akaByTitle.get(k).push(a.trim());
     }
   }
-  return { akaByTitle, venueByTitle, titles };
+  return { akaByTitle, venueByTitle, peopleByTitle, titles };
 }
 function registry() {
   if (!_registry) {
@@ -153,10 +160,13 @@ function otherProductionCue(text, aka, show) {
   // A company's possessive before the press title ("Rosebud's It's A Wonderful Life", "Studio Tenn's ... IT'S A
   // WONDERFUL LIFE"). The press title's own "It's" is not before the match.
   // A word of the billed title is the show's own ("Billy Crystal's Solo Show 860" for Billy Crystal 860).
-  const billedW = new Set(sigWords((show && show.title) || ''));
+  // A cast or creative member's possessive is the show's own ("Lisa Rinna's Broadway debut in It's a Wonderful Life").
+  const billedW = new Set(sigWords(own));
+  const people = registry().peopleByTitle.get(normTitle(own)) || new Set();
   for (const pos of before.matchAll(/\b([A-Za-z0-9]+)(?:'s|s')(?![a-z])/g)) {
     const w = pos[1].toLowerCase();
-    if (!NOT_COMPANY_POSSESSIVE.has(w) && !billedW.has(normTitle(w))) return `possessive:${pos[1]}`;
+    if (NOT_COMPANY_POSSESSIVE.has(w) || billedW.has(normTitle(w)) || people.has(w) || people.has(`${w}s`)) continue;
+    return `possessive:${pos[1]}`;
   }
   // A company or venue named right after it: ", Reading Rep Theatre", "by American Blues Theater".
   const tail = /^\s*["']?\s*(?:,|\bby\b)\s*([^,|:\u2013\u2014]{0,60})/i.exec(after);
