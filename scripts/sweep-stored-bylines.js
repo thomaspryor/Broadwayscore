@@ -80,6 +80,7 @@ function report(file) {
 }
 
 async function main() {
+  if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) { require('./lib/cli-help').exitOnHelp(module); return; }
   if (args.report) { report(args.report); return; }
   const out = args.out;
   if (!out) { console.error('--out=<file.jsonl> is required'); process.exit(2); }

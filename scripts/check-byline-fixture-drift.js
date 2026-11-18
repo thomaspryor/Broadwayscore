@@ -40,6 +40,7 @@ function classifyDrift(fixture, live) {
 }
 
 async function main() {
+  if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) { require('./lib/cli-help').exitOnHelp(module); return; }
   const args = new Set(process.argv.slice(2));
   const only = (process.argv.find((a) => a.startsWith('--outlets=')) || '').slice('--outlets='.length).split(',').filter(Boolean);
   const dryRun = args.has('--dry-run');

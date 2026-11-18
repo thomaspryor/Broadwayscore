@@ -26,6 +26,7 @@ const OUT = path.join(__dirname, '..', 'tests', 'fixtures', 'byline-outlets');
 function pageFile(outletId, url) { return `${outletId}__${Buffer.from(url).toString('base64url').slice(-60)}.html`; }
 
 function main() {
+  if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) { require('./lib/cli-help').exitOnHelp(module); return; }
   const { readPageByline } = require('./lib/page-byline');
   const { sameCriticName } = require('./lib/byline-from-text');
   const { stripPageForBylineFixture } = require('./lib/byline-fixture-strip');
