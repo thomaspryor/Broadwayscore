@@ -184,3 +184,13 @@ describe('collect-review-texts enrichment uses the shared reader (BRO-7792)', ()
     assert.equal(quietly(() => readPageBylineForShow({ html: html(f), url: f.url, outletId: f.outletId }).criticName), base, 'wrapper must agree with the shared reader when nothing is excluded');
   });
 });
+
+// BRO-7792: the sweep's concurrent workers each saved the CURRENT console.log and restored it, so one
+// worker could save the muted function and swallow every later line (the report) for good. One saved
+// original, restored by every worker.
+test('sweep-stored-bylines restores one saved console.log, never a per-worker copy of the current one', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/sweep-stored-bylines.js'), 'utf8');
+  assert.ok(/const realLog = console\.log;/.test(src), 'realLog not saved once');
+  assert.ok(/console\.log = realLog/.test(src), 'workers must restore realLog');
+  assert.ok(!/const log = console\.log; console\.log = quiet/.test(src), 'a worker saves the current console.log (race)');
+});

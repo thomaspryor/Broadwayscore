@@ -132,6 +132,9 @@ async function main() {
   const saveDir = typeof args['save-html'] === 'string' ? args['save-html'] : null;
   if (saveDir) fs.mkdirSync(saveDir, { recursive: true });
   const quiet = () => {};
+  // BRO-7792: workers share console.log. Each saved the CURRENT one, so with concurrency > 1 a worker saved
+  // `quiet` and restored it: every later line, the final report included, was swallowed. Save the real one once.
+  const realLog = console.log;
   const concurrency = Number(args.concurrency || 4);
   const delayMs = Number(args['delay-ms'] || 0);
   let i = 0;
@@ -143,7 +146,7 @@ async function main() {
       if (delayMs && n > 0) await new Promise((res) => setTimeout(res, delayMs));
       const row = { key, showId: r.showId, outletId: r.outletId, url: r.url, stored: r.criticName || null };
       try {
-        const log = console.log; console.log = quiet;
+        console.log = quiet;
         let got;
         try {
           // --follow-redirects: an old url that redirects to the article's new address (TheaterMania's
@@ -151,7 +154,7 @@ async function main() {
           // --paid: the scraper's full fallback chain (paid tiers) for paywalled / bot-blocked outlets.
           got = await fetchWithArchiveFallback(r.url, { fetchPageFn: (u) => fetchPage(u, { ...(args.paid ? {} : { directOnly: true }), ...(args['follow-redirects'] ? { skipVerify: true } : {}) }) });
           if (got && got.html && args['follow-redirects'] && !sameArticle(r.url, got.html)) throw new Error('redirected to a different page');
-        } finally { console.log = log; }
+        } finally { console.log = realLog; }
         if (!got || !got.html) throw new Error((got && got.error) || 'no html');
         row.via = got.via === 'archive' ? 'archive' : 'live';
         let text = '';
