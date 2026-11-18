@@ -164,3 +164,128 @@ test('fileSentryIssue files a regression card titled as such when the fix did no
   const r2 = await lib.fileSentryIssue({ issue: { ...ISSUE, lastSeen: '2026-11-09T00:00:00Z' }, classification: REAL, org: 'o' }, deps);
   assert.equal(r2.action, 'existing');
 });
+
+// --- BRO-7595: one error split by Sentry into several ids goes on ONE card ---
+// Live shapes from 2026-11-18: BRO-7726/BRO-7727 were filed for the same
+// UGC insert error, differing only in the trailing code; Linear stores the
+// culprit escaped ("\_(chunks/9308)").
+const UGC_A = { id: '7835186801', title: 'UgcError: UGC insert reviews failed (account_gone)', culprit: 'y(chunks/20993)', firstSeen: '2026-11-08T03:03:09Z', count: 5, userCount: 5, permalink: 'https://sentry.io/x/7835186801/' };
+const UGC_B = { ...UGC_A, id: '7835186900', title: 'UgcError: UGC insert reviews failed (23503)', permalink: 'https://sentry.io/x/7835186900/' };
+
+function twinCard(issue, extra = {}) {
+  const built = lib.buildSentryCard(issue, REAL, 'o');
+  return { id: 'uuid-twin', identifier: 'BRO-7726', state: { type: 'unstarted' }, description: `${built.description}\n\nFiled by: sentry-triage (kind: x)`, ...extra };
+}
+
+function groupingStubs({ fresh, getError, updateError } = {}) {
+  const calls = { create: [], get: [], update: [], comment: [] };
+  return {
+    calls,
+    deps: {
+      async listIssuesByProvenance() { return []; },
+      async createLinearIssue(args) { calls.create.push(args); return { issue: { id: `uuid-${calls.create.length}`, identifier: `BRO-90${calls.create.length}` } }; },
+      async getIssue(id) { calls.get.push(id); if (getError) throw getError; return typeof fresh === 'function' ? fresh(id) : fresh; },
+      async updateIssue(id, input) { calls.update.push({ id, input }); if (updateError) throw updateError; },
+      async createComment(id, body) { calls.comment.push({ id, body }); },
+    },
+  };
+}
+
+test('sentryFamily: same error and culprit match across trailing codes; culprit and wording must agree', () => {
+  assert.equal(lib.sentryFamily(UGC_A.title, UGC_A.culprit), lib.sentryFamily(UGC_B.title, UGC_B.culprit));
+  assert.notEqual(lib.sentryFamily(UGC_A.title, UGC_A.culprit), lib.sentryFamily(UGC_A.title, '_(chunks/9308)'));
+  assert.notEqual(lib.sentryFamily(UGC_A.title, UGC_A.culprit), lib.sentryFamily('UgcError: UGC insert watchlist failed (23503)', UGC_A.culprit));
+  // A descriptive parenthetical is part of the error, not a code.
+  assert.notEqual(lib.sentryFamily("TypeError: Cannot read properties of undefined (reading 'a')", 'c'), lib.sentryFamily("TypeError: Cannot read properties of undefined (reading 'b')", 'c'));
+  assert.equal(lib.sentryFamily(UGC_A.title, ''), null);
+  assert.equal(lib.sentryFamily(UGC_A.title, 'Unknown'), null);
+  // Linear's markdown escaping does not change the family.
+  assert.equal(lib.cardFamily('Error: UgcError: UGC auth.callback failed (timeout)\nCulprit: \\_(chunks/9308)'), lib.sentryFamily('UgcError: UGC auth.callback failed (500)', '_(chunks/9308)'));
+});
+
+test('a second Sentry id of an open card\'s error is added to that card, not filed (even past the cap)', async () => {
+  const twin = twinCard(UGC_A);
+  const fresh = { ...twin, description: `${twin.description}\n\nA person's note added after the list read.` };
+  const s = groupingStubs({ fresh });
+  const r = await lib.fileSentryIssue({ issue: UGC_B, classification: REAL, org: 'o', canCreate: false, familyCards: [twin] }, s.deps);
+  assert.equal(r.action, 'grouped');
+  assert.equal(s.calls.create.length, 0);
+  assert.deepEqual(s.calls.get, ['BRO-7726']);
+  const desc = s.calls.update[0].input.description;
+  // Built from the fresh read (the person's note survives), marker on its own line.
+  assert.ok(desc.startsWith(fresh.description.trimEnd()));
+  assert.ok(lib.hasMarker(desc, UGC_B.id));
+  assert.ok(lib.hasMarker(desc, UGC_A.id));
+  const note = s.calls.comment[0].body;
+  assert.match(note, /resolve BOTH Sentry issues: 7835186801 and 7835186900/);
+  assert.match(note, /https:\/\/sentry\.io\/x\/7835186900\//);
+});
+
+test('a parked twin does not absorb a real (dispatchable) error; it does absorb a low-frequency one', async () => {
+  const parked = twinCard(UGC_A, { description: `PARKED: ${lib.LOW_FREQUENCY_PARK}\n\n${twinCard(UGC_A).description}` });
+  const s = groupingStubs({ fresh: parked });
+  const r = await lib.fileSentryIssue({ issue: UGC_B, classification: REAL, org: 'o', familyCards: [parked] }, s.deps);
+  assert.equal(r.action, 'filed');
+  assert.equal(s.calls.update.length, 0);
+  const s2 = groupingStubs({ fresh: parked });
+  const r2 = await lib.fileSentryIssue({ issue: UGC_B, classification: { ...REAL, lowFrequency: true }, org: 'o', familyCards: [parked] }, s2.deps);
+  assert.equal(r2.action, 'grouped');
+});
+
+test('closed, duplicate or different-culprit twins are never grouped into', async () => {
+  for (const extra of [{ state: { type: 'completed' } }, { state: { type: 'canceled' } }, { state: { type: 'duplicate' } }]) {
+    const t = twinCard(UGC_A, extra);
+    const s = groupingStubs({ fresh: t });
+    assert.equal((await lib.fileSentryIssue({ issue: UGC_B, classification: REAL, org: 'o', familyCards: [t] }, s.deps)).action, 'filed');
+  }
+  const t = twinCard(UGC_A);
+  const s = groupingStubs({ fresh: t });
+  const r = await lib.fileSentryIssue({ issue: { ...UGC_B, culprit: '_(chunks/9308)' }, classification: REAL, org: 'o', familyCards: [t] }, s.deps);
+  assert.equal(r.action, 'filed');
+});
+
+test('grouping fails open: a failed re-read or write files a new card', async () => {
+  for (const opts of [{ getError: new Error('Linear 503') }, { updateError: new Error('Linear 500') }]) {
+    const t = twinCard(UGC_A);
+    const s = groupingStubs({ fresh: t, ...opts });
+    const r = await lib.fileSentryIssue({ issue: UGC_B, classification: REAL, org: 'o', familyCards: [t] }, s.deps);
+    assert.equal(r.action, 'filed', JSON.stringify(opts));
+    assert.equal(s.calls.create.length, 1);
+  }
+  // A twin that closed between the list and the re-read is not used.
+  const t = twinCard(UGC_A);
+  const s = groupingStubs({ fresh: { ...t, state: { type: 'completed' } } });
+  assert.equal((await lib.fileSentryIssue({ issue: UGC_B, classification: REAL, org: 'o', familyCards: [t] }, s.deps)).action, 'filed');
+});
+
+test('two ids of one error in the same run make one card (built description kept for the second)', async () => {
+  const familyCards = [];
+  const s = groupingStubs({ fresh: () => ({ ...familyCards[0] }) });
+  const r1 = await lib.fileSentryIssue({ issue: UGC_A, classification: REAL, org: 'o', familyCards }, s.deps);
+  const r2 = await lib.fileSentryIssue({ issue: UGC_B, classification: REAL, org: 'o', familyCards }, s.deps);
+  assert.equal(r1.action, 'filed');
+  assert.equal(r2.action, 'grouped');
+  assert.equal(r2.card.identifier, 'BRO-901');
+  assert.equal(s.calls.create.length, 1);
+});
+
+test('a regression is filed as its own card, never grouped', async () => {
+  const closed = { identifier: 'BRO-1', description: `sentry-issue: sentry-${UGC_B.id}`, state: { type: 'completed' }, completedAt: '2026-11-10T00:00:00Z' };
+  const t = twinCard(UGC_A);
+  const s = groupingStubs({ fresh: t });
+  s.deps.listIssuesByProvenance = async () => [closed];
+  const r = await lib.fileSentryIssue({ issue: { ...UGC_B, lastSeen: '2026-11-12T00:00:00Z' }, classification: REAL, org: 'o', familyCards: [t] }, s.deps);
+  assert.equal(r.action, 'filed');
+  assert.match(s.calls.create[0].title, /^Sentry regression:/);
+});
+
+test('triage-sentry.js reads the family cards once per run and passes them in', async () => {
+  const args = [];
+  await lib.listSentryFamilyCards({ listIssuesByProvenance: async (a) => { args.push(a); return []; } }, Date.parse('2026-11-18T00:00:00Z'));
+  assert.deepEqual(args[0].descriptionMarkers, ['Filed by: sentry-triage']);
+  assert.equal(args[0].since, '2026-08-20T00:00:00.000Z');
+  const script = readFileSync(new URL('../triage-sentry.js', import.meta.url), 'utf8');
+  assert.match(script, /familyCards = await listSentryFamilyCards\(deps\)/);
+  assert.match(script, /canCreate: [^}]*familyCards \}/);
+  assert.match(script, /r\.action === 'grouped'/);
+});

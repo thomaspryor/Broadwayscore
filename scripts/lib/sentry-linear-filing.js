@@ -12,6 +12,16 @@
  * has seen the error AFTER the last one closed, the fix did not hold, so one
  * new "regression" card is filed (it is then the open match). The lookup is fail-closed: a failed search throws, and the caller
  * skips filing rather than risk a duplicate (BRO-5565).
+ *
+ * Family grouping (BRO-7595): Sentry splits one error into several issue ids
+ * when the stack fingerprint differs ("UGC insert reviews failed
+ * (account_gone)" and "... (23503)", or two identical replaceState titles).
+ * Each got its own dispatched card (3 of 10 cards on 2026-11-18). When an OPEN
+ * sentry-triage card has the same family (Error line with a trailing
+ * single-token code and numbers masked, PLUS the same culprit), the new id's
+ * marker is appended to that card and a note says to resolve both Sentry ids.
+ * A parked twin never absorbs a non-low-frequency error (it would hide it from
+ * the worker). Any lookup or write error fails open: a new card is filed.
  */
 
 const MARKER_PREFIX = 'sentry-issue: sentry-';
@@ -84,6 +94,100 @@ async function findExistingSentryCard(sentryId, deps) {
 }
 
 const CLOSED_TYPES = new Set(['completed', 'canceled']);
+// Linear's Duplicate state has its own type; a duplicate card is not a twin to group into.
+const NOT_OPEN_TYPES = new Set(['completed', 'canceled', 'duplicate']);
+const FAMILY_LOOKBACK_DAYS = 90;
+
+// Linear stores card markdown escaped ("\_(chunks/9308)"), so backslashes go.
+function unescapeMd(s) {
+  return String(s || '').replace(/\\/g, '').trim();
+}
+
+/**
+ * Family key of one Sentry error: the error title with a trailing single-token
+ * code ("(account_gone)", "(23503)", "(500)") removed and numbers masked, plus
+ * the culprit verbatim. Returns null when either part is missing, so an
+ * error without a culprit is never grouped.
+ */
+function sentryFamily(title, culprit) {
+  const t = unescapeMd(title).toLowerCase()
+    .replace(/\s*\([\w.-]+\)\s*$/, '')
+    .replace(/\d+/g, '#')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const c = unescapeMd(culprit).toLowerCase();
+  if (!t || !c || c === 'unknown') return null;
+  return `${t} @ ${c}`;
+}
+
+// Family of a filed card, from its full "Error:" and "Culprit:" lines (the
+// card title is cut at 80 characters, so it is never used).
+function cardFamily(description) {
+  const d = String(description || '');
+  const err = /^Error: (.*)$/m.exec(d);
+  const cul = /^Culprit: (.*)$/m.exec(d);
+  return err && cul ? sentryFamily(err[1], cul[1]) : null;
+}
+
+function isParkedCard(card) {
+  if (card && typeof card.parked === 'boolean') return card.parked;
+  return /^\s*PARKED:/m.test(String((card && card.description) || ''));
+}
+
+/**
+ * Pure: the open sentry-triage card that already tracks this error's family,
+ * or null. `lowFrequency` is the new issue's: a parked twin only absorbs
+ * another low-frequency error.
+ */
+function findFamilyCard(cards, issue, { lowFrequency = false } = {}) {
+  const fam = sentryFamily(issue && issue.title, issue && issue.culprit);
+  if (!fam) return null;
+  for (const c of cards || []) {
+    if (!c || NOT_OPEN_TYPES.has(c.state && c.state.type)) continue;
+    if (hasMarker(c.description, issue.id)) continue;
+    if (cardFamily(c.description) !== fam) continue;
+    if (!lowFrequency && isParkedCard(c)) continue;
+    return c;
+  }
+  return null;
+}
+
+function sentryLinkOf(issue, org) {
+  return issue.permalink || `https://sentry.io/organizations/${org}/issues/${issue.id}/`;
+}
+
+function familyNote(issue, org, twinDescription) {
+  const twinIds = [...String(twinDescription || '').matchAll(/^sentry-issue: sentry-(\d+)\s*$/gm)].map((m) => m[1]);
+  return [
+    `Also seen as Sentry issue ${issue.id}: ${sentryLinkOf(issue, org)} (Events: ${issue.count} | Users affected: ${issue.userCount}).`,
+    'Same error and culprit as this card; Sentry split it by stack fingerprint (BRO-7595).',
+    `When this is fixed, resolve BOTH Sentry issues: ${[...twinIds, String(issue.id)].join(' and ')}.`,
+  ].join('\n');
+}
+
+/** All sentry-triage cards touched in the lookback window, fetched once per run. */
+async function listSentryFamilyCards({ listIssuesByProvenance }, nowMs = Date.now()) {
+  const since = new Date(nowMs - FAMILY_LOOKBACK_DAYS * 864e5).toISOString();
+  return (await listIssuesByProvenance({ since, descriptionMarkers: [`Filed by: ${SOURCE}`] })) || [];
+}
+
+// Adds this Sentry id to the twin card. Re-reads the card first so a stale
+// list copy never overwrites newer edits; the marker goes on its own line.
+// Returns the fresh card, or null when the twin no longer qualifies.
+async function groupIntoTwin(twin, issue, org, lowFrequency, { getIssue, updateIssue, createComment }) {
+  const fresh = await getIssue(twin.identifier);
+  if (!fresh) return null;
+  if (hasMarker(fresh.description, issue.id)) return fresh;
+  if (!findFamilyCard([fresh], issue, { lowFrequency })) return null;
+  const description = `${String(fresh.description || '').replace(/\s+$/, '')}\n\n${markerLine(issue.id)}\n`;
+  await updateIssue(fresh.id || twin.identifier, { description });
+  try {
+    await createComment(fresh.id || twin.identifier, familyNote(issue, org, fresh.description));
+  } catch (e) {
+    // The marker is what keeps later runs from refiling; the note is courtesy.
+  }
+  return fresh;
+}
 function closedAtMs(card) {
   const t = Date.parse(card.completedAt || card.canceledAt || '');
   return Number.isFinite(t) ? t : null;
@@ -109,7 +213,8 @@ function regressionOf(cards, issue) {
  * 'skipped' means the issue is NOT tracked (lookup or create failed); the
  * caller must treat it as a failure, never as success.
  */
-async function fileSentryIssue({ issue, classification, org, canCreate = true }, { listIssuesByProvenance, createLinearIssue }) {
+async function fileSentryIssue({ issue, classification, org, canCreate = true, familyCards = null }, deps) {
+  const { listIssuesByProvenance, createLinearIssue } = deps;
   let cards;
   try {
     cards = await findSentryCards(issue.id, { listIssuesByProvenance });
@@ -118,6 +223,22 @@ async function fileSentryIssue({ issue, classification, org, canCreate = true },
   }
   const regressed = regressionOf(cards, issue);
   if (cards.length && !regressed) return { action: 'existing', card: cards[0] };
+  const lowFrequency = !!(classification && classification.lowFrequency);
+  // Family grouping runs before the per-run cap: grouping files no card.
+  if (!regressed && Array.isArray(familyCards) && deps.getIssue && deps.updateIssue && deps.createComment) {
+    const twin = findFamilyCard(familyCards, issue, { lowFrequency });
+    if (twin) {
+      try {
+        const fresh = await groupIntoTwin(twin, issue, org, lowFrequency, deps);
+        if (fresh) {
+          twin.description = `${String(fresh.description || '')}\n${markerLine(issue.id)}`;
+          return { action: 'grouped', card: fresh };
+        }
+      } catch (e) {
+        // Fail open: a failed read or write files a new card below.
+      }
+    }
+  }
   if (!canCreate) return { action: 'deferred', reason: `per-run cap of ${MAX_NEW_CARDS_PER_RUN} new cards reached; filed on a later run` };
   const card = buildSentryCard(issue, classification, org);
   if (regressed) {
@@ -134,10 +255,15 @@ async function fileSentryIssue({ issue, classification, org, canCreate = true },
       // exactly one of dispatch/park/self.
       ...(classification && classification.lowFrequency ? { park: LOW_FREQUENCY_PARK } : { dispatch: true }),
       source: SOURCE, dedupeOptOut: 'sentry-triage' });
+    // Same-run siblings group into this card: keep the built description
+    // (it has the full Error and Culprit lines).
+    if (Array.isArray(familyCards) && created) {
+      familyCards.push({ ...created, description: card.description, state: { type: 'unstarted' }, parked: lowFrequency });
+    }
     return { action: 'filed', card: created };
   } catch (e) {
     return { action: 'skipped', reason: `could not file the Linear card (${e && e.message})` };
   }
 }
 
-module.exports = { regressionOf, LOW_FREQUENCY_PARK, regressionTestPath, MAX_NEW_CARDS_PER_RUN, markerLine, hasMarker, buildSentryCard, findExistingSentryCard, fileSentryIssue, SOURCE };
+module.exports = { sentryFamily, cardFamily, findFamilyCard, familyNote, listSentryFamilyCards, FAMILY_LOOKBACK_DAYS, regressionOf, LOW_FREQUENCY_PARK, regressionTestPath, MAX_NEW_CARDS_PER_RUN, markerLine, hasMarker, buildSentryCard, findExistingSentryCard, fileSentryIssue, SOURCE };
