@@ -43,4 +43,17 @@ function readPageBylineForShow({ html, text = '', url, outletId, excludeNames, p
   return res;
 }
 
-module.exports = { readPageBylineForShow };
+/**
+ * BRO-7798: the shared reader, then the high-confidence meta reader (article:author / JSON-LD Person)
+ * as a fallback, except when an outlet rule said the page names nobody: for that outlet the meta tags
+ * hold the posting editor (TheaterMania credits David Gordon on every review). Returns string|null.
+ */
+function readPageBylineWithMetaFallback({ html, text = '', url, outletId } = {}) {
+  const res = readPageBylineForShow({ html, text, url, outletId });
+  if (res.criticName) return res.criticName;
+  if (res.source === 'outlet-rule-none' || !html) return null;
+  const hc = require('./content-quality').extractHighConfidenceAuthor(html);
+  return hc ? (typeof hc === 'string' ? hc : hc.name || null) : null;
+}
+
+module.exports = { readPageBylineForShow, readPageBylineWithMetaFallback };

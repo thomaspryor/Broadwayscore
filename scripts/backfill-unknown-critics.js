@@ -50,7 +50,9 @@ const outletIdFilter = outletIdArg ? new Set(outletIdArg.split('=')[1].split(','
 
 const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
-const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
+const { isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
+// BRO-7798: the shared byline reader (outlet rules first), never extractAuthorFromHtml directly.
+const { readPageBylineForShow } = require('./lib/page-byline-for-show');
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { isJunkCriticName, nameFromJunkCriticName } = require('./lib/byline-recovery');
@@ -444,7 +446,7 @@ async function phaseB(unknownCritics) {
       const printed = extractBylineFromText(u.outletId, u.data.fullText);
       const fromText = (printed && printed.known && printed.name)
         || (extractCriticFromFullText(u.outletId, u.data.fullText, { showTitle: u.data.showTitle }) || {}).name
-        || extractAuthorFromHtml(u.data.fullText, u.data.fullText, { url: u.url });
+        || readPageBylineForShow({ html: u.data.fullText, text: u.data.fullText, url: u.url, outletId: u.outletId }).criticName;
       if (fromText && !isRejectName(fromText)) stored = { critic: fromText, method: 'stored-text' };
     }
     if (stored) {
@@ -469,7 +471,7 @@ async function phaseB(unknownCritics) {
     consecutiveFetchErrors = 0;
     let text = null;
     try { text = extractArticleTextFromUrl(result.html, u.url) || null; } catch { text = null; }
-    let critic = extractAuthorFromHtml(result.html, text || '', { url: u.url });
+    let critic = readPageBylineForShow({ html: result.html, text: text || '', url: u.url, outletId: u.outletId }).criticName;
     if (critic && isRejectName(critic)) critic = null;
 
     if (!critic) {
