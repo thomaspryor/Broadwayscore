@@ -1,70 +1,62 @@
 {
-  "generatedAt": "2026-11-18T16:14:55.777Z",
+  "generatedAt": "2026-11-18T17:41:27.194Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 357,
-  "clean": 354,
+  "checked": 360,
+  "clean": 357,
   "defective": 3,
   "byType": {
-    "unreachable": 2,
-    "missing-from-prod": 1,
-    "score-drift": 1
+    "score-drift": 3
   },
   "shows": [
     {
-      "showId": "los-soles-truncos-off-broadway-2025",
-      "title": "Los soles truncos",
-      "openingDate": "2025-02-20",
+      "showId": "destiny-of-desire-regional-2026",
+      "title": "Destiny of Desire",
+      "openingDate": "2026-11-16",
       "ok": false,
       "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null,
-      "firstDefectAt": "2026-11-18T16:14:50.355Z"
-    },
-    {
-      "showId": "the-magicians-table-off-west-end-2026",
-      "title": "The Magicians Table",
-      "openingDate": null,
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null,
-      "firstDefectAt": "2026-11-18T16:14:50.355Z"
-    },
-    {
-      "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "title": "Showstopper! The Improvised Musical",
-      "openingDate": "2015-09-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: north-west-end"
-        },
         {
           "type": "score-drift",
-          "detail": "deployed cs 85.43 vs local 85.82 (Δ0.39)"
+          "detail": "deployed cs 82.64 vs local 82 (Δ0.64)"
         }
       ],
-      "missingFromProd": [
-        "north-west-end"
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-18T17:41:22.128Z"
+    },
+    {
+      "showId": "relative-motion-off-west-end-2026",
+      "title": "Relative Motion",
+      "openingDate": "2026-11-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.76 vs local 86.43 (Δ0.33)"
+        }
       ],
-      "localCount": 10,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-11-18T16:14:50.355Z"
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-11-18T17:41:22.128Z"
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "title": "Les Misérables",
+      "openingDate": "1985-12-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.09 vs local 84.78 (Δ0.31)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-11-18T17:41:22.128Z"
     }
   ],
   "persistentDefective": 0,

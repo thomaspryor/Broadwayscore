@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T16:14:56.077Z",
+  "generatedAt": "2026-11-18T17:41:27.682Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -24,6 +24,11 @@
       "openingDate": "2026-11-16"
     },
     {
+      "id": "la-distance-bam-off-broadway-2026",
+      "title": "La Distance",
+      "openingDate": "2026-11-18"
+    },
+    {
       "id": "much-ado-about-nothing-2026",
       "title": "Much Ado About Nothing",
       "openingDate": "2026-11-19"
@@ -46,6 +51,11 @@
     {
       "id": "blue-man-group-a-new-holiday-surprise-2026",
       "title": "Blue Man Group “A New Holiday Surprise”",
+      "openingDate": "2026-11-17"
+    },
+    {
+      "id": "top-gunchained-off-west-end-2026",
+      "title": "Top Gunchained",
       "openingDate": "2026-11-17"
     },
     {
@@ -161,10 +171,6 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -187,14 +193,10 @@
     {
       "outletId": "fringereview",
       "error": "HTTP 500 for https://fringereview.co.uk/feed/"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "All scraping methods failed"
     }
   ],
-  "itemsScanned": 845,
-  "matchedGaps": 4,
+  "itemsScanned": 879,
+  "matchedGaps": 6,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -231,6 +233,24 @@
       "outletId": "british-theatre",
       "url": "https://www.britishtheatreguide.info/reviews/desire-under-th-almeida-theatre-26219",
       "headline": "Desire Under the Elms",
+      "publishDate": "2026-11-18"
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/nov/18/desire-under-the-elms-review-almeida-theatre-london",
+      "headline": "Kelly Gough is simply astounding as Desire Under the Elms reaches the heights of Greek tragedy",
+      "publishDate": "2026-11-18"
+    },
+    {
+      "showId": "top-gunchained-off-west-end-2026",
+      "title": "Top Gunchained",
+      "level": "matched",
+      "outletId": "everything-theatre",
+      "url": "https://everything-theatre.co.uk/2026/11/review-top-gunchained-wiltons-music-hall/",
+      "headline": "Review: Top Gunchained, Wilton’s Music Hall",
       "publishDate": "2026-11-18"
     },
     {

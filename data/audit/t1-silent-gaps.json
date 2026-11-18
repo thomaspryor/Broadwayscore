@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-18T16:14:40.477Z",
+  "generatedAt": "2026-11-18T17:41:04.232Z",
   "windowDays": 45,
-  "showsScanned": 285,
+  "showsScanned": 284,
   "gaps": [
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
@@ -18,13 +18,13 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=desire-under-the-elms-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/desire-under-the-elms-review-almeida-wtcvdfx7r --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-18T13:52:15.886Z",
-      "fileAgeHours": 2.3640455555555557,
+      "fileAgeHours": 3.812895277777778,
       "gapSeenAt": "2026-11-18T16:14:40.476Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 1.4399322222222222,
       "needsManualRecovery": false
     },
     {
@@ -42,34 +42,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 225.1993325,
+      "fileAgeHours": 226.6482275,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 202.6600488888889,
+      "nonTerminalAgeHours": 204.0999811111111,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "downstate-2026",
-      "title": "Downstate",
-      "openingDate": "2026-11-15",
-      "file": "nydailynews--unknown.json",
-      "outletId": "nydailynews",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.nydailynews.com/2026/11/15",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-      },
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=downstate-2026 --url=https://www.nydailynews.com/2026/11/15 --outlet=nydailynews   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-18T13:55:50.444Z",
-      "fileAgeHours": 2.3119430555555556,
-      "gapSeenAt": "2026-11-18T16:14:40.476Z",
-      "nonTerminalAgeHours": 0,
-      "needsManualRecovery": false
     },
     {
       "showId": "rope-off-broadway-2026",
@@ -86,9 +62,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 194.43851083333334,
+      "fileAgeHours": 195.88015055555556,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 193.29560388888888,
+      "nonTerminalAgeHours": 194.73553611111112,
       "needsManualRecovery": true
     },
     {
@@ -109,9 +85,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=nacho-ate-spiderman-regional-2026",
       "firstSeen": "2026-11-17T15:36:45.908Z",
-      "fileAgeHours": 24.630003055555555,
+      "fileAgeHours": 26.071735833333335,
       "gapSeenAt": "2026-11-18T04:03:05.725Z",
-      "nonTerminalAgeHours": 12.192986388888889,
+      "nonTerminalAgeHours": 13.63291861111111,
       "needsManualRecovery": false
     }
   ],
