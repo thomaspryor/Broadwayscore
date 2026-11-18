@@ -121,12 +121,15 @@ function embargoVerdict(show, nowMs) {
   const dw = dropWindowFor(show);
   const history = dw ? ` Drop history: ${dw.text}.` : '';
   if (info.assumed && hrs <= 36 && hrs > 0) {
-    const pw = require('./opening-night-lane/preembargo-window');
-    const guardFromMs = pw.laneStartMs({ embargoMs: e.embargoMs, timeZone: require('./local-date').tzForMarket(show.category || show.market), enabled: true });
+    // BRO-7786: the same start the lane itself uses (nightTimes), so this text can never disagree with the lane.
+    const af = require('./opening-night-lane/auto-fallback');
+    const nt = af.nightTimes(show, show.openingDate, { preembargo: false });
+    const guardFromMs = nt ? nt.laneStartMs : e.embargoMs - 90 * 60000;
     const guardFrom = new Date(guardFromMs).toISOString();
+    const basisText = nt ? ` (${af.guardStartText(nt)})` : '';
     const early = dw && dw.basis === 'observed' && Date.parse(dw.fromAt) < guardFromMs
-      ? ` Recorded nights dropped as early as ${dw.fromAt}, before the guard opens: a review that early is caught only after it.` : '';
-    return { status: 'warn', detail: `Reviews are assumed to open ${e.embargoAt} (${when}), the market default, not a confirmed time. The lane guard (direct-only, no paid spend) opens ${guardFrom} and closes on the first live review; confirm the real time and set reviewEmbargoAt if known. ${kick}.${history}${early}` };
+      ? ` Recorded nights dropped as early as ${dw.fromAt}, before even the guard's earliest start: a review that early is caught only after it.` : '';
+    return { status: 'warn', detail: `Reviews are assumed to open ${e.embargoAt} (${when}), the market default, not a confirmed time. The lane guard (direct-only, no paid spend) opens ${guardFrom}${basisText} and closes on the first live review; confirm the real time and set reviewEmbargoAt if known. ${kick}.${history}${early}` };
   }
   return { status: 'pass', detail: `Reviews open ${e.embargoAt} (${when}${info.assumed ? ', assumed market default' : ''}); ${kick}.${history}` };
 }
