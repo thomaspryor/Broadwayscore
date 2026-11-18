@@ -5209,6 +5209,10 @@ jobs:
         # Advisory first (CLAUDE.md section 19).
         if: ${{ !cancelled() }}
         continue-on-error: true
+        # Hermetic: the night's card comments go to its own report and alerts to a 127.0.0.1 capture endpoint, so no
+        # real key is ever passed. Pinned empty so nothing inherited can reach Linear (and the secret-gap audit sees it).
+        env:
+          LINEAR_API_KEY: ''
         run: |
           set +e
           bash scripts/lib/run-test-batch-bounded.sh "simulated night" 180 /tmp/sim-night.log -- \

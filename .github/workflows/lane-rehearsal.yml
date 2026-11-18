@@ -66,6 +66,10 @@ jobs:
         # lint-allow-swallow: advisory sim; every outcome (pass, fail, crash, kill) is written into the record, which the readiness check reads and warns on
         if: ${{ !cancelled() }}
         continue-on-error: true
+        # Hermetic: the night's card comments go to its own report and alerts to a 127.0.0.1 capture endpoint, so no
+        # real key is ever passed. Pinned empty so nothing inherited can reach Linear (and the secret-gap audit sees it).
+        env:
+          LINEAR_API_KEY: ''
         run: |
           status=0
           # Remove the old record first: a hard kill (timeout 124, OOM 137) writes nothing, and a stale pass must not stand.
