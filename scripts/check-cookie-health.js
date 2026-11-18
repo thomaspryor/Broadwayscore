@@ -48,6 +48,12 @@ const CRITICAL_OUTLETS = {
     authCookies: ['NYT-S', 'nyt-a'],
     minBodyChars: COOKIE_PROBES.nytimes.minBody,
     vacuousControl: true,
+    // BRO-7757: ScrapingBee drops the subscriber session (anonymous page ~2.9k chars), so this live check failed
+    // every run while Layer 2 read the cookies healthy (2026-11-17 run 44185128282: nytimes 2579 chars,
+    // wapo 1168, ft 2312 = the anonymous page; BRO-7717/7718/7719, then again and again). The authoritative
+    // live probe is renew-cookies.js (in-browser profile, every 6h on the Mac, emails the owner when a login
+    // needs a human). Layer 1+2 stay the CI signal. Same call as thetimes.
+    ciLiveUnverifiable: 'no CI route authenticates a NYT session (ScrapingBee serves the logged-out page even with valid cookies). Layer 1+2 are the CI signal; the live probe is node scripts/renew-cookies.js --outlet=nytimes --probe-only',
   },
   wsj: {
     envVar: 'WSJ_COOKIES',
@@ -73,6 +79,12 @@ const CRITICAL_OUTLETS = {
     authCookies: RENEW_OUTLETS.wapo.authCookies,
     minBodyChars: COOKIE_PROBES.wapo.minBody,
     vacuousControl: true,
+    // BRO-7757: ScrapingBee drops the subscriber session (anonymous page ~1.3k chars), so this live check failed
+    // every run while Layer 2 read the cookies healthy (2026-11-17 run 44185128282: nytimes 2579 chars,
+    // wapo 1168, ft 2312 = the anonymous page; BRO-7717/7718/7719, then again and again). The authoritative
+    // live probe is renew-cookies.js (in-browser profile, every 6h on the Mac, emails the owner when a login
+    // needs a human). Layer 1+2 stay the CI signal. Same call as thetimes.
+    ciLiveUnverifiable: 'no CI route authenticates a WaPo session (ScrapingBee serves the logged-out page even with valid cookies). Layer 1+2 are the CI signal; the live probe is node scripts/renew-cookies.js --outlet=wapo --probe-only',
   },
   ft: {
     envVar: 'FT_COOKIES',
@@ -81,6 +93,12 @@ const CRITICAL_OUTLETS = {
     minBodyChars: COOKIE_PROBES.ft.minBody,
     wallMarker: COOKIE_PROBES.ft.wallMarker,
     vacuousControl: true,
+    // BRO-7757: ScrapingBee drops the subscriber session (anonymous page, 2312 chars), so this live check failed
+    // every run while Layer 2 read the cookies healthy (2026-11-17 run 44185128282: nytimes 2579 chars,
+    // wapo 1168, ft 2312 = the anonymous page; BRO-7717/7718/7719, then again and again). The authoritative
+    // live probe is renew-cookies.js (in-browser profile, every 6h on the Mac, emails the owner when a login
+    // needs a human). Layer 1+2 stay the CI signal. Same call as thetimes.
+    ciLiveUnverifiable: 'no CI route authenticates a FT session (ScrapingBee serves the logged-out page even with valid cookies). Layer 1+2 are the CI signal; the live probe is node scripts/renew-cookies.js --outlet=ft --probe-only',
   },
   vulture: {
     envVar: 'VULTURE_COOKIES',
@@ -839,7 +857,7 @@ async function main() {
       if (config.ciLiveUnverifiable) {
         const live = { status: 'warn', message: `Live check unverified: ${config.ciLiveUnverifiable}` };
         console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
-        return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
+        return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true, unverifiable: true };
       }
       if (config.liveRoute === 'cookie-plain') {
         const live = await checkLiveAccessWalledPlain(config.testUrl, config);

@@ -59,7 +59,8 @@ function findCookieFailures(results, authErrorDays) {
 /**
  * PURE. Watched outlets with positive evidence of health this run and no
  * failure: an auth expiry actually read (missing cookies, authDays null, prove
- * nothing) or a passing live check.
+ * nothing), a passing live check, or an outlet whose CI live route is declared
+ * unverifiable (BRO-7757: closes the card the old broken check opened).
  */
 function findCookieHealthy(results, authErrorDays) {
   const failing = new Set(findCookieFailures(results, authErrorDays).map(r => `${r.name}|${r.layer === 3}`));
@@ -68,7 +69,7 @@ function findCookieHealthy(results, authErrorDays) {
     if (!isWatched(r)) continue;
     const live = r.layer === 3;
     if (failing.has(`${r.name}|${live}`)) continue;
-    if ((r.layer === 2 && typeof r.authDays === 'number') || (live && r.status === 'pass' && !r.noCookiesRequired)) {
+    if ((r.layer === 2 && typeof r.authDays === 'number') || (live && r.status === 'pass' && !r.noCookiesRequired) || (live && r.unverifiable === true && r.status !== 'fail')) {
       healthy.set(`${r.name}|${live}`, { name: r.name, live });
     }
   }
