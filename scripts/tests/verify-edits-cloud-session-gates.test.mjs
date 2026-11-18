@@ -881,6 +881,32 @@ test('LANDUNCHECKED: land/** push then SAFE TO ARCHIVE without checking the run 
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
+// BRO-7730: a land push named inside a heredoc body, a quoted string or a test fixture is text, not a push.
+const INERT_LAND_CMDS = {
+  heredoc: "cat > /tmp/fixture.sh <<'EOF'\ngit push origin HEAD:refs/heads/land/fixture-x\nEOF\necho done",
+  heredocPlain: 'cat <<EOF\ngit push origin land/fixture-y\nEOF',
+  echoQuoted: 'echo "git push origin HEAD:refs/heads/land/fixture-z"',
+  nodeE: "node -e 'console.log(\"git push origin land/q\")'",
+};
+for (const [label, command] of Object.entries(INERT_LAND_CMDS)) {
+  test(`BRO-7730: land push inside ${label} is not a real push (no LANDUNCHECKED)`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('land-inert-' + label);
+    const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command }), LINEAR_CLOSEOUT_DONE]);
+    const r = runHook(transcript, 'Wrote a fixture.\n\nSAFE TO ARCHIVE — nothing was pushed.');
+    assert.doesNotMatch(r.stderr, /Land run/i, `an inert land/ string must not demand a Land run, got: ${r.stderr.slice(0, 300)}`);
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  });
+}
+test('BRO-7730: a real land push after a heredoc in the same command still counts', skipNoRepoHook, () => {
+  const dir = makeTmpDir('land-after-heredoc');
+  const command = "cat <<'EOF' > /tmp/n.txt\nnote\nEOF\ngit push origin HEAD:refs/heads/land/fix-real";
+  const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command }), LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, 'Pushed to land.\n\nSAFE TO ARCHIVE — pushed.');
+  assertBlocked(r, 'a real push after a heredoc is still an unchecked land push');
+  assert.match(r.stderr, /Land run/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
 // BRO-7110: the documented land step is the waiter, so a waiter that FINISHED counts.
 const WFL_CMD = 'node scripts/lib/wait-for-land.js land/fix-x 60 --prod';
 const WFL_FG_LANDED = toolUse('Bash', { command: WFL_CMD }, '03:41:07Z LANDED: land/fix-x is gone from origin (land.yml deletes it after the fast-forward)\n03:54:00Z LIVE: abc is LIVE on production.');

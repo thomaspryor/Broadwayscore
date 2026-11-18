@@ -1039,7 +1039,13 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
         _push_seg_re = re.compile(r'\bgit\s+push\b([^\n;&|]*)')
         _refspec_re = re.compile(r'(?:^|\s)[\'"]?(\+?\S*?:)?(?:refs/heads/)?(land/[^\s;&|\'"<>)`]+)')
+        _heredoc_re = re.compile(r"<<-?\s*(['\"]?)(\w+)\1[^\n]*\n.*?^[ \t]*\2[ \t]*$", re.M | re.S)
+        _quoted_push_re = re.compile(r"""'[^']*\bgit\s+push\b[^']*'|"[^"]*\bgit\s+push\b[^"]*\"""")
+        def _live_cmd(cmd):  # BRO-7730: a land push named inside a heredoc body or a quoted string (test fixture, echo, node -e) is text, not a push
+            cmd = _heredoc_re.sub('', cmd or '')
+            return _quoted_push_re.sub('', cmd)
         def _push_land_refs(cmd):  # (refs pushed, refs deleted), every refspec of every push in the command
+            cmd = _live_cmd(cmd)
             _add, _del = set(), set()
             for _seg in _push_seg_re.finditer(cmd):
                 _deleting = bool(re.search(r'(?:^|\s)(--delete|-d)(?=\s|$)', _seg.group(1)))
@@ -1112,7 +1118,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 # "failed to merge …: 405 …" and denials carry no "error" word.
                 if re.search(r'"merged"\s*:\s*true', tool_results_by_id.get(_tid, '') or ''):
                     _merged_pr = True
-            elif _name == 'Bash' and _land_push_re.search(_inp.get('command') or ''):
+            elif _name == 'Bash' and _land_push_re.search(_live_cmd(_inp.get('command') or '')):
                 _add, _del = _push_land_refs(_inp.get('command') or '')
                 _land_unchecked -= _del
                 _land_refused -= _del | _add
