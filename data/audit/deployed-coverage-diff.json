@@ -1,32 +1,62 @@
 {
-  "generatedAt": "2026-11-18T10:54:31.044Z",
+  "generatedAt": "2026-11-18T12:12:08.172Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 357,
-  "clean": 356,
-  "defective": 1,
+  "clean": 354,
+  "defective": 3,
   "byType": {
-    "missing-from-prod": 1
+    "score-drift": 3
   },
   "shows": [
     {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "openingDate": "2026-10-18",
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "openingDate": "2026-11-14",
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: substack-com"
+          "type": "score-drift",
+          "detail": "deployed cs 47.01 vs local 44.57 (Δ2.44)"
         }
       ],
-      "missingFromProd": [
-        "substack-com"
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-18T12:11:57.644Z"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "title": "Harry Potter and the Cursed Child",
+      "openingDate": "2018-04-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.78 vs local 84.87 (Δ0.09)"
+        }
       ],
-      "localCount": 41,
-      "deployedCount": 41,
-      "firstDefectAt": "2026-11-18T10:54:25.167Z"
+      "missingFromProd": [],
+      "localCount": 66,
+      "deployedCount": 67,
+      "firstDefectAt": "2026-11-18T12:11:57.644Z"
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "title": "Matilda The Musical",
+      "openingDate": "2011-11-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 91.53 vs local 91.87 (Δ0.34)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-11-18T12:11:57.644Z"
     }
   ],
   "persistentDefective": 0,
