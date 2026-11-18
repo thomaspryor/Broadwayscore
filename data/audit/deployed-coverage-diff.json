@@ -1,15 +1,47 @@
 {
-  "generatedAt": "2026-11-18T22:23:01.076Z",
+  "generatedAt": "2026-11-18T22:54:38.105Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 360,
-  "clean": 359,
-  "defective": 1,
+  "checked": 361,
+  "clean": 357,
+  "defective": 4,
   "byType": {
-    "score-drift": 1
+    "score-drift": 4
   },
   "shows": [
+    {
+      "showId": "top-gunchained-off-west-end-2026",
+      "title": "Top Gunchained",
+      "openingDate": "2026-11-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.55 vs local 80.77 (Δ1.22)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-18T20:04:14.296Z"
+    },
+    {
+      "showId": "relative-motion-off-west-end-2026",
+      "title": "Relative Motion",
+      "openingDate": "2026-11-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.57 vs local 76.48 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-11-18T21:11:42.890Z"
+    },
     {
       "showId": "now-you-see-me-live-2026",
       "title": "Now You See Me Live",
@@ -18,13 +50,29 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 63.27 vs local 64.39 (Δ1.12)"
+          "detail": "deployed cs 64.39 vs local 63.27 (Δ1.12)"
         }
       ],
       "missingFromProd": [],
       "localCount": 5,
       "deployedCount": 5,
-      "firstDefectAt": "2026-11-18T22:22:55.995Z"
+      "firstDefectAt": "2026-11-18T22:54:34.374Z"
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "title": "Matilda The Musical",
+      "openingDate": "2011-11-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 90.92 vs local 91.53 (Δ0.61)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-11-18T22:54:34.374Z"
     }
   ],
   "persistentDefective": 0,

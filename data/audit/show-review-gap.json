@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-18T22:22:12.641Z",
+  "generatedAt": "2026-11-18T22:53:56.335Z",
   "windowDays": 1095,
-  "targets": 237,
-  "auditedThisRun": 26,
-  "carriedForward": 2754,
+  "targets": 240,
+  "auditedThisRun": 20,
+  "carriedForward": 2760,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 664,
-    "missingCurrentRun": 1384,
+    "missingCurrentRun": 1388,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 882,
     "totalRecoverable": 50,
-    "totalRecovered": 107,
+    "totalRecovered": 108,
     "humanExcluded": 23,
     "automatedExcluded": 972,
     "automatedExcludedListed": 716,
-    "priorProductionCitations": 8513
+    "priorProductionCitations": 8498
   },
   "results": [
     {
@@ -1968,24 +1968,22 @@
       "status": "open",
       "category": "off-broadway",
       "previewsStartDate": "2026-10-20",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-222---a-ghost-story-off-broadway"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
         "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
-        "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
-        "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
         "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
         "https://mashable.com/entertainment/222-ghost-story-review",
-        "https://www.culturednortheast.co.uk/review-222-a-ghost-story-peoples",
-        "https://www.talkinbroadway.com/page/ob/11_05_26.html",
-        "https://theaterscene.com/reviews/222-a-ghost-story",
-        "https://www.theatermania.com/news/review-222-a-ghost-story-a-boozy-dinner-party-becomes-a-late-night-vigil_1859012/",
-        "https://joshatthemovies.com/2026/11/08/theater-review-222-a-ghost-story/",
         "https://theaterscene.com/reviews/222-a-ghost-story/",
+        "https://www.timeout.com/newyork/theater/2-22-a-ghost-story",
+        "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
+        "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
+        "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
+        "https://www.theatermania.com/news/review-222-a-ghost-story-a-boozy-dinner-party-becomes-a-late-night-vigil_1859012/",
+        "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
+        "https://joshatthemovies.com/2026/11/08/theater-review-222-a-ghost-story/",
+        "https://theaterscene.com/reviews/222-a-ghost-story",
         "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-review-ambrose.html",
+        "https://www.culturednortheast.co.uk/review-222-a-ghost-story-peoples",
         "https://www.southernartsreviews.co.uk/review-222-a-ghost-story",
         "https://www.stagesideuk.co.uk/222-a-ghost-story-review",
         "https://alexroytheatre.com/2026/10/21/review-222-a-ghost-story-peoples-theatre",
@@ -2173,6 +2171,10 @@
         {
           "host": "therecs.co.uk",
           "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -2220,7 +2222,7 @@
             "geo": "us",
             "ok": true,
             "results": 3,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -2229,8 +2231,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 2,
+            "results": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -2239,8 +2241,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 1,
+            "results": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -2249,8 +2251,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 1,
+            "results": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -2260,7 +2262,7 @@
             "geo": "us",
             "ok": true,
             "results": 3,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -2269,32 +2271,32 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 1,
+            "results": 4,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 7,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 103,
+        "count": 10,
         "byReason": {
-          "aggregator-internal-nav": 39,
-          "non-review-host": 28,
-          "not-http-url": 20,
-          "aggregator-section-root": 5,
-          "roundup-page": 1,
-          "census-junk-host": 1,
-          "production-database-listing": 5,
-          "non-stage-review": 1,
-          "non-review-path": 2,
-          "ticketing-listing": 1
+          "non-review-host": 10
         }
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/2-22-a-ghost-story",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "nonReviewVerdict": "timeout-listing-blurb",
+          "nonReviewDetail": "unauthored-and-pre-opening"
+        }
+      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
@@ -2537,6 +2539,30 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
+            "outletId": "interestedbystander.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-13T16:57:10.355Z"
+          },
+          {
+            "url": "https://mashable.com/entertainment/222-ghost-story-review",
+            "outletId": "mashable.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://theaterscene.com/reviews/222-a-ghost-story/",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
             "url": "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
             "outletId": "1minutecritic.com",
             "state": "live",
@@ -2564,37 +2590,7 @@
             "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
             "outletId": "wsj.com",
             "state": "live",
-            "firstSeenAt": "2026-11-17T17:45:37.164Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
-            "outletId": "interestedbystander.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-13T16:57:10.355Z"
-          },
-          {
-            "url": "https://mashable.com/entertainment/222-ghost-story-review",
-            "outletId": "mashable.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T20:37:44.785Z"
-          },
-          {
-            "url": "https://www.talkinbroadway.com/page/ob/11_05_26.html",
-            "outletId": "talkinbroadway.com",
-            "state": "live",
             "firstSeenAt": "2026-11-18T22:22:12.641Z"
-          },
-          {
-            "url": "https://theaterscene.com/reviews/222-a-ghost-story",
-            "outletId": "theaterscene.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T20:37:44.785Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-222-a-ghost-story-a-boozy-dinner-party-becomes-a-late-night-vigil_1859012/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-09T22:56:43.163Z"
           },
           {
             "url": "https://joshatthemovies.com/2026/11/08/theater-review-222-a-ghost-story/",
@@ -2603,7 +2599,7 @@
             "firstSeenAt": "2026-11-09T22:56:43.163Z"
           },
           {
-            "url": "https://theaterscene.com/reviews/222-a-ghost-story/",
+            "url": "https://theaterscene.com/reviews/222-a-ghost-story",
             "outletId": "theaterscene.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
@@ -2714,11 +2710,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 12,
-        "candidateCount": 23
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/2-22-a-ghost-story",
+            "host": "timeout.com",
+            "reason": "timeout-listing-blurb"
+          }
+        ],
+        "liveCount": 11,
+        "candidateCount": 22
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "25th-annual-putnam-county-spelling-bee-regional-2024",
@@ -59906,7 +59908,7 @@
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "barriers-birmingham-rep-regional-2025",
@@ -95950,7 +95952,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "clue-tour-2025",
@@ -100564,29 +100566,98 @@
       "openingDate": "2026-11-06",
       "status": "open",
       "category": "regional",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Dominique-Morisseaus-CONFEDERATES-20220328"
+      ],
       "aggregatorListedUrls": [
-        "https://stageraw.com/stage-raw-review-confederates",
-        "https://hollywoodprogressive.com/stage/confederates-at-the-fountain-theatre",
-        "https://www.thecharlotteledger.com/p/review-confederates-civil-war-culture",
-        "https://www.drlewiswrites.com/writing/confederates-mosaic-11132023",
-        "https://larchmontbuzz.com/theater/confederates-uniting-through-time",
-        "https://rvamag.com/art/theatre/review-confederates-doesnt-let-anyone-off-easy.html",
+        "https://www.nytimes.com/2022/03/27/theater/review-confederates.html",
+        "https://www.vulture.com/2022/03/theater-review-dominique-morisseaus-confederates.html",
+        "https://www.thewrap.com/confederates-off-broadway-review-dominique-morisseau/",
+        "http://nystagereview.com/2022/03/27/confederates-black-women-keenly-observed-in-the-ketanji-brown-jackson-era/",
+        "https://newyorktheater.me/2022/03/27/confederates-review-two-black-women-160-years-apart-fight-for-freedom/",
+        "https://ladramacriticscircle.com/confederates-the-fountain-theatre/",
         "https://stageraw.com/stage-raw-review-confederates/",
+        "https://larchmontbuzz.com/theater/confederates-uniting-through-time",
+        "https://rvamag.com/art/theatre/review-confederates-doesnt-let-anyone-off-easy",
+        "https://stageraw.com/stage-raw-review-confederates",
         "https://www.thecharlotteledger.com/review-confederates-civil-war-culture",
         "https://aroundthetownchicago.com/theatre-reviews/confederates-reviewed-by-julia-w-rath/",
         "https://eurweb.com/the-fountain-theatre-presents-confederates-by-dominique-morisseau/",
-        "https://ladramacriticscircle.com/confederates-the-fountain-theatre",
-        "https://ladramacriticscircle.com/confederates-the-fountain-theatre/"
+        "https://ladramacriticscircle.com/confederates-the-fountain-theatre"
       ],
-      "dirFiles": 4,
-      "dirClean": 3,
+      "dirFiles": 5,
+      "dirClean": 4,
       "inReviewsJson": 3,
       "missing": [
         {
-          "url": "https://hollywoodprogressive.com/stage/confederates-at-the-fountain-theatre",
-          "host": "hollywoodprogressive.com",
-          "knownOutletId": "hollywoodprogressive",
+          "url": "https://www.nytimes.com/2022/03/27/theater/review-confederates.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Dominique-Morisseaus-CONFEDERATES-20220328"
+            }
+          ]
+        },
+        {
+          "url": "https://www.vulture.com/2022/03/theater-review-dominique-morisseaus-confederates.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Dominique-Morisseaus-CONFEDERATES-20220328"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/confederates-off-broadway-review-dominique-morisseau/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Dominique-Morisseaus-CONFEDERATES-20220328"
+            }
+          ]
+        },
+        {
+          "url": "http://nystagereview.com/2022/03/27/confederates-black-women-keenly-observed-in-the-ketanji-brown-jackson-era/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Dominique-Morisseaus-CONFEDERATES-20220328"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2022/03/27/confederates-review-two-black-women-160-years-apart-fight-for-freedom/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Dominique-Morisseaus-CONFEDERATES-20220328"
+            }
+          ]
+        },
+        {
+          "url": "https://rvamag.com/art/theatre/review-confederates-doesnt-let-anyone-off-easy",
+          "host": "rvamag.com",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -100634,13 +100705,17 @@
       ],
       "dirOnly": [
         {
+          "host": "hollywoodprogressive.com",
+          "count": 1
+        },
+        {
           "host": "stageandcinema.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre",
+          "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre/",
           "host": "ladramacriticscircle.com",
           "knownOutletId": "la-drama-critics-circle",
           "recoverable": false,
@@ -100669,7 +100744,7 @@
           "reverify": true
         },
         {
-          "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre/",
+          "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre",
           "host": "ladramacriticscircle.com",
           "knownOutletId": "la-drama-critics-circle",
           "recoverable": false,
@@ -100721,8 +100796,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 2,
+            "results": 3,
+            "accepted": 0,
             "error": null
           },
           {
@@ -100731,7 +100806,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 2,
             "accepted": 1,
             "error": null
           },
@@ -100741,7 +100816,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 1,
             "error": null
           },
@@ -100758,48 +100833,72 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 11,
+        "count": 310,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 6,
-          "no-review-evidence": 2,
-          "show-hub": 1
+          "not-http-url": 61,
+          "non-review-host": 25,
+          "aggregator-internal-nav": 215,
+          "aggregator-section-root": 5,
+          "roundup-page": 3,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
+      "priorRunArticles": [
         {
-          "url": "https://www.thecharlotteledger.com/p/review-confederates-civil-war-culture",
-          "host": "thecharlotteledger.com",
-          "knownOutletId": "the-charlotte-ledger",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2024-02-11"
-        },
-        {
-          "url": "https://www.drlewiswrites.com/writing/confederates-mosaic-11132023",
-          "host": "drlewiswrites.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-11-14"
-        },
-        {
-          "url": "https://rvamag.com/art/theatre/review-confederates-doesnt-let-anyone-off-easy.html",
-          "host": "rvamag.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-08-27"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Dominique-Morisseaus-CONFEDERATES-20220328",
+          "publishDate": "2022-03-28"
         }
       ],
       "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.nytimes.com/2022/03/27/theater/review-confederates.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2022/03/theater-review-dominique-morisseaus-confederates.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/confederates-off-broadway-review-dominique-morisseau/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2022/03/27/confederates-black-women-keenly-observed-in-the-ketanji-brown-jackson-era/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2022/03/27/confederates-review-two-black-women-160-years-apart-fight-for-freedom/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://rvamag.com/art/theatre/review-confederates-doesnt-let-anyone-off-easy",
+          "host": "rvamag.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        },
         {
           "url": "https://eurweb.com/the-fountain-theatre-presents-confederates-by-dominique-morisseau/",
           "host": "eurweb.com",
@@ -100846,13 +100945,13 @@
           "provisional": false,
           "ok": false,
           "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "confederates-regional-2026-fountain-theatre: https://aroundthetownchicago.com/theatre-reviews/confederates-reviewed-by-julia-w-rath/ is already owned by confederates-regional-2026 — one of the two is contaminated. Inspect data/review-texts/confederates-regional-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "reason": "confederates-regional-2026-fountain-theatre: https://aroundthetownchicago.com/theatre-reviews/confederates-reviewed-by-julia-w-rath/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
@@ -100860,11 +100959,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "hollywoodprogressive",
-            "outlet": "hollywoodprogressive",
+            "outletId": "rvamag.com",
+            "outlet": "rvamag.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://hollywoodprogressive.com/stage/confederates-at-the-fountain-theatre"
+            "url": "https://rvamag.com/art/theatre/review-confederates-doesnt-let-anyone-off-easy"
           },
           {
             "outletId": "the-charlotte-ledger",
@@ -100892,30 +100991,18 @@
             "outlet": "la-drama-critics-circle",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre"
+            "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre/"
           },
           {
             "outletId": "la-drama-critics-circle",
             "outlet": "la-drama-critics-circle",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre/"
+            "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://stageraw.com/stage-raw-review-confederates",
-            "outletId": "stageraw.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-14T19:48:50.612Z"
-          },
-          {
-            "url": "https://larchmontbuzz.com/theater/confederates-uniting-through-time",
-            "outletId": "larchmontbuzz.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-14T19:48:50.612Z"
-          },
           {
             "url": "https://stageraw.com/stage-raw-review-confederates/",
             "outletId": "stageraw.com",
@@ -100928,6 +101015,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-18T22:22:12.641Z"
+          },
+          {
+            "url": "https://stageraw.com/stage-raw-review-confederates",
+            "outletId": "stageraw.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-14T19:48:50.612Z"
+          },
+          {
+            "url": "https://rvamag.com/art/theatre/review-confederates-doesnt-let-anyone-off-easy",
+            "outletId": "rvamag.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
           },
           {
             "url": "https://www.thecharlotteledger.com/review-confederates-civil-war-culture",
@@ -100951,42 +101051,26 @@
             "firstSeenAt": "2026-11-14T19:48:50.612Z"
           },
           {
-            "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre",
-            "outletId": "la-drama-critics-circle",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-17T16:44:33.888Z"
-          },
-          {
             "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre/",
             "outletId": "la-drama-critics-circle",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-16T12:26:10.838Z"
+          },
+          {
+            "url": "https://ladramacriticscircle.com/confederates-the-fountain-theatre",
+            "outletId": "la-drama-critics-circle",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-17T16:44:33.888Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.thecharlotteledger.com/p/review-confederates-civil-war-culture",
-            "host": "thecharlotteledger.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.drlewiswrites.com/writing/confederates-mosaic-11132023",
-            "host": "drlewiswrites.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://rvamag.com/art/theatre/review-confederates-doesnt-let-anyone-off-easy.html",
-            "host": "rvamag.com",
-            "reason": "page-date-before-run"
-          }
-        ],
+        "excluded": [],
         "liveCount": 2,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "confessions-of-a-shinagawa-monkey-tramway-regional-2025",
@@ -103584,23 +103668,21 @@
       "aggregatorListedUrls": [
         "https://fringereview.co.uk/review/fringereview-uk/2026/cranford-2/",
         "https://www.theguardian.com/cranford-review-orange-tree-theatre-tamsin-greig",
-        "https://theartsdesk.com/theatre/cranford-orange-tree-theatre-review-mrs-gaskells-world-brought-vividly-life",
+        "https://everything-theatre.co.uk/2026/11/review-cranford-orange-tree-theatre/",
         "https://theatreandtonic.co.uk/blog/cranford-orange-tree-theatre-review",
         "https://thespyinthestalls.com/2026/11/cranford/",
-        "https://juliarank.substack.com/p/review-cranford-orange-tree-theatre",
+        "https://www.theguardian.com/stage/2026/nov/15/cranford-review-orange-tree-theatre-tamsin-greig",
+        "https://juliarank.substack.com/review-cranford-orange-tree-theatre",
         "https://www.thestage.co.uk/reviews/cranford-review-orange-tree-theatre-london",
-        "https://www.thetimes.com/culture/theatre-dance/article/cranford-review-genteel-scenes-of-small-town-life-bw7jfmxml",
-        "https://playsinternational.org.uk/cranford-orange-tree-theatre/",
         "https://www.londontheatre1.com/reviews/cranford-orange-tree-theatre",
-        "https://www.westendbestfriend.co.uk/news/review-cranford-orange-tree-theatre",
         "https://www.allthatdazzles.co.uk/post/review-cranford-orange-tree-theatre",
+        "https://playsinternational.org.uk/cranford-orange-tree-theatre",
         "https://fringereview.co.uk/review/fringereview-uk/cranford-2",
-        "https://open.substack.com/pub/juliarank/p/review-cranford-orange-tree-theatre",
+        "https://www.westendbestfriend.co.uk/news/review-cranford-orange-tree-theatre",
+        "https://open.substack.com/pub/juliarank/review-cranford-orange-tree-theatre",
         "https://theatreweekly.com/review-cranford-at-orange-tree-theatre",
         "https://markaspen.com/2026/11/14/cranford/",
-        "https://juliarank.substack.com/review-cranford-orange-tree-theatre",
-        "https://www.theguardian.com/stage/2026/nov/15/cranford-review-orange-tree-theatre-tamsin-greig",
-        "https://everything-theatre.co.uk/2026/11/review-cranford-orange-tree-theatre/",
+        "https://www.thetimes.com/culture/theatre-dance/article/cranford-review-genteel-scenes-of-small-town-life-bw7jfmxml",
         "https://www.whatsonstage.com/news/cranford-with-tamsin-greig-at-orange-tree-theatre-review_1737383/",
         "https://theatreweekly.com/review-cranford-at-orange-tree-theatre/",
         "https://www.thereviewshub.com/cranford-orange-tree-theatre-london/",
@@ -103608,6 +103690,7 @@
         "https://www.broadwayworld.com/westend/article/Review-CRANFORD-Orange-Tree-Theatre-20261113",
         "https://boycottingtrends.blogspot.com/2026/11/theatre-review-cranford-orange-tree.html",
         "https://readaboutstuff.com/2026/11/14/review-cranford-orange-tree-theatre-london/",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/cranford-2/",
         "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-cranford.html",
         "https://www.londonlivinglarge.com/2026/11/cranford-orange-tree-theatre-nov-3-2026.html",
         "https://www.standard.co.uk/culture/theatre/cranford-review-tamsin-greig-b1304996.html",
@@ -103764,7 +103847,7 @@
             "geo": "gb",
             "ok": true,
             "results": 4,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -103773,8 +103856,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 7,
+            "results": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -103783,22 +103866,23 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 5,
+            "results": 7,
             "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 14,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 5,
+        "count": 7,
         "byReason": {
           "non-review-host": 3,
-          "write-path-blocked": 1,
-          "census-junk-host": 1
+          "write-path-blocked": 2,
+          "census-junk-host": 1,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -103841,8 +103925,8 @@
             "firstSeenAt": "2026-11-16T13:30:55.161Z"
           },
           {
-            "url": "https://theartsdesk.com/theatre/cranford-orange-tree-theatre-review-mrs-gaskells-world-brought-vividly-life",
-            "outletId": "theartsdesk.com",
+            "url": "https://everything-theatre.co.uk/2026/11/review-cranford-orange-tree-theatre/",
+            "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-15T03:22:56.516Z"
           },
@@ -103859,8 +103943,8 @@
             "firstSeenAt": "2026-11-16T13:30:55.161Z"
           },
           {
-            "url": "https://juliarank.substack.com/p/review-cranford-orange-tree-theatre",
-            "outletId": "juliarank.substack.com",
+            "url": "https://www.theguardian.com/stage/2026/nov/15/cranford-review-orange-tree-theatre-tamsin-greig",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-11-17T05:17:28.076Z"
           },
@@ -103871,16 +103955,10 @@
             "firstSeenAt": "2026-11-16T13:30:55.161Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/cranford-review-genteel-scenes-of-small-town-life-bw7jfmxml",
-            "outletId": "thetimes.com",
+            "url": "https://www.thestage.co.uk/reviews/cranford-review-orange-tree-theatre-london",
+            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-16T13:30:55.161Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/cranford-orange-tree-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-18T22:22:12.641Z"
           },
           {
             "url": "https://www.londontheatre1.com/reviews/cranford-orange-tree-theatre",
@@ -103889,10 +103967,16 @@
             "firstSeenAt": "2026-11-15T03:22:56.516Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-cranford-orange-tree-theatre",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://www.allthatdazzles.co.uk/post/review-cranford-orange-tree-theatre",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-16T13:30:55.161Z"
+            "firstSeenAt": "2026-11-15T03:22:56.516Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/cranford-orange-tree-theatre",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-cranford-orange-tree-theatre",
@@ -103907,10 +103991,16 @@
             "firstSeenAt": "2026-11-17T05:17:28.076Z"
           },
           {
-            "url": "https://open.substack.com/pub/juliarank/p/review-cranford-orange-tree-theatre",
+            "url": "https://www.westendbestfriend.co.uk/news/review-cranford-orange-tree-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T13:30:55.161Z"
+          },
+          {
+            "url": "https://open.substack.com/pub/juliarank/review-cranford-orange-tree-theatre",
             "outletId": "open.substack.com",
             "state": "live",
-            "firstSeenAt": "2026-11-18T22:22:12.641Z"
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
           },
           {
             "url": "https://theatreweekly.com/review-cranford-at-orange-tree-theatre",
@@ -103925,20 +104015,8 @@
             "firstSeenAt": "2026-11-16T13:30:55.161Z"
           },
           {
-            "url": "https://juliarank.substack.com/review-cranford-orange-tree-theatre",
-            "outletId": "juliarank.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-16T13:30:55.161Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/nov/15/cranford-review-orange-tree-theatre-tamsin-greig",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-16T13:30:55.161Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/11/review-cranford-orange-tree-theatre/",
-            "outletId": "everything-theatre.co.uk",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/cranford-review-genteel-scenes-of-small-town-life-bw7jfmxml",
+            "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-11-16T13:30:55.161Z"
           },
@@ -103981,6 +104059,12 @@
           {
             "url": "https://readaboutstuff.com/2026/11/14/review-cranford-orange-tree-theatre-london/",
             "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T13:30:55.161Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/cranford-2/",
+            "outletId": "fringereview.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-16T13:30:55.161Z"
           },
@@ -104033,7 +104117,7 @@
         "liveCount": 25,
         "candidateCount": 26
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
@@ -126844,7 +126928,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "do-something-pretty-regional-2026",
@@ -130371,6 +130455,7 @@
       "previewsStartDate": "2026-10-22",
       "aggregatorArticles": [
         "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf",
+        "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115",
         "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115",
         "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115",
         "https://playbill.com/article/reviews-what-do-the-critics-think-of-downstate-on-broadway"
@@ -130381,6 +130466,14 @@
         "https://www.dailyherald.com/entlife/20181004/steppenwolfs-provoking-downstate-offers-an-unflinching-look-at-predators",
         "https://www.newcitystage.com/2018/10/03/i-believe-you-bruce-a-review-of-downstate-at-steppenwolf-theatre-company/",
         "https://www.nytimes.com/2018/10/03/theater/downstate-review-bruce-norris-steppenwolf.html",
+        "https://www.nytimes.com/2022/11/15/theater/downstate-review.html",
+        "https://www.vulture.com/2022/11/theater-review-bruce-norris-downstate-playwrights-horizons.html",
+        "https://nystagereview.com/2022/11/15/downstate-bruce-norris-bold-unflinching-look-at-child-abusers/",
+        "https://www.thewrap.com/downstate-off-broadway-review-bruce-norris/",
+        "https://www.thedailybeast.com/why-downstate-is-new-yorks-most-controversial-must-see-play",
+        "https://cititour.com/NYC_Broadway/Downstate/1110",
+        "https://newyorktheater.me/2022/11/15/downstate-review-a-contrarians-play-about-pedophiles-and-punishment/",
+        "https://www.timeout.com/newyork/theater/downstate-review-off-broadway-bruce-norris",
         "https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
         "https://newyorktheater.me/2026/11/15/downstate-broadway-review/",
         "https://www.timeout.com/newyork/news/broadway-review-downstate-brings-monsters-to-life-111626",
@@ -130661,7 +130754,7 @@
           "recoverableFile": "nytimes--unknown.json",
           "recoverableOutletId": "nytimes",
           "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
+          "recoverableCount": 1,
           "dirFlags": [
             {
               "file": "nytimes--unknown.json",
@@ -130723,7 +130816,7 @@
           "recoverableFile": "nytimes--unknown.json",
           "recoverableOutletId": "nytimes",
           "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
+          "recoverableCount": 1,
           "dirFlags": [
             {
               "file": "nytimes--unknown.json",
@@ -130754,9 +130847,9 @@
       "candidatesRejected": {
         "count": 805,
         "byReason": {
-          "aggregator-internal-nav": 530,
-          "non-review-host": 79,
           "not-http-url": 148,
+          "non-review-host": 79,
+          "aggregator-internal-nav": 530,
           "aggregator-section-root": 19,
           "roundup-page": 4,
           "podcast-episode": 2,
@@ -130863,7 +130956,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture",
-          "recoveryCount": 1
+          "recoveryCount": 2
         }
       ],
       "censusVerdict": {
@@ -131057,7 +131150,7 @@
         "liveCount": 17,
         "candidateCount": 20
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
@@ -141244,7 +141337,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "equus-off-west-end-2026",
@@ -184174,9 +184267,9 @@
       "candidatesRejected": {
         "count": 291,
         "byReason": {
-          "aggregator-internal-nav": 220,
-          "non-review-host": 15,
           "not-http-url": 49,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 220,
           "aggregator-section-root": 5,
           "podcast-episode": 1,
           "write-path-blocked": 1
@@ -184592,7 +184685,7 @@
         "liveCount": 31,
         "candidateCount": 34
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "hamlet-off-broadway-2024",
@@ -282808,8 +282901,8 @@
         "http://www.express.co.uk/posts/view/285905/Theatre-review-Matilda-The-Musical-Cambridge-Theatre-London",
         "http://www.whatsonstage.com/reviews/theatre/london/E8831322212171/Matilda.html"
       ],
-      "dirFiles": 75,
-      "dirClean": 14,
+      "dirFiles": 76,
+      "dirClean": 15,
       "inReviewsJson": 20,
       "missing": [
         {
@@ -282863,18 +282956,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/film/roald-dahl-s-matilda-the-musical-review-emma-thompson-tim-minchin-b1030489.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
         }
       ],
       "dirOnly": [
@@ -283030,9 +283111,9 @@
       "candidatesRejected": {
         "count": 265,
         "byReason": {
-          "aggregator-internal-nav": 207,
-          "non-review-host": 15,
           "not-http-url": 36,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 207,
           "aggregator-section-root": 5,
           "roundup-page": 1,
           "podcast-episode": 1
@@ -283085,34 +283166,11 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.standard.co.uk/culture/film/roald-dahl-s-matilda-the-musical-review-emma-thompson-tim-minchin-b1030489.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "standard",
-            "outlet": "standard",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.standard.co.uk/culture/film/roald-dahl-s-matilda-the-musical-review-emma-thompson-tim-minchin-b1030489.html"
-          },
           {
             "outletId": "whatsonstage",
             "outlet": "whatsonstage",
@@ -283154,7 +283212,13 @@
             "firstSeenAt": "2026-10-11T22:49:53.446Z"
           },
           {
-            "url": "https://www.standard.co.uk/go/london/theatre/matilda-the-musical-cambridge-theatre-review-7427774.html",
+            "url": "https://theartsdesk.com/theatre/matilda-musical-cambridge-theatre",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-11T22:49:53.446Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/film/roald-dahl-s-matilda-the-musical-review-emma-thompson-tim-minchin-b1030489.html",
             "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-11T22:49:53.446Z"
@@ -283175,13 +283239,6 @@
             "url": "http://www.express.co.uk/posts/view/285905/Theatre-review-Matilda-The-Musical-Cambridge-Theatre-London",
             "outletId": "express.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-11T22:49:53.446Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/film/roald-dahl-s-matilda-the-musical-review-emma-thompson-tim-minchin-b1030489.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
             "firstSeenAt": "2026-10-11T22:49:53.446Z"
           },
           {
@@ -283211,9 +283268,9 @@
           }
         ],
         "liveCount": 8,
-        "candidateCount": 10
+        "candidateCount": 9
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "maybe-happy-ending-2024",
@@ -308198,7 +308255,7 @@
         "liveCount": 3,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024",
@@ -313821,7 +313878,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "no-excuses-no-limits-off-broadway-2026",
@@ -315349,7 +315406,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "nye-west-end-2024",
@@ -333644,7 +333701,7 @@
         "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "out-here-regional-2026",
@@ -343635,12 +343692,22 @@
       "category": "off-west-end",
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Reimagined-PETER-PAN-National-Tour-Hits-The-Road-20231221"
+        "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
       ],
       "aggregatorListedUrls": [
-        "https://www.twincities.com/2023/12/15/this-updated-peter-pan-will-still-delight-ordway-music-theater-audiences/",
-        "https://www.chicagotribune.com/2024/03/28/review-peter-pan-at-nederlander-theatre-smooths-the-rough-edges-of-neverland/",
-        "https://mdtheatreguide.com/2024/02/theatre-review-peter-pan-at-the-hippodrome-theatre/",
+        "https://www.amny.com/entertainment/broadway/peter-pan-goes-wrong-gets-major-laughs/",
+        "https://cititour.com/NYC_Broadway/Peter-Pan-Goes-Wrong/1141",
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-peter-pan-goes-wrong-review-20230420-bzexsy5yvre2zbyxzfilstupeu-story.html",
+        "https://www.thedailybeast.com/review-peter-pan-goes-wrong-on-broadway-has-such-fun-causing-chaos",
+        "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
+        "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-heap-o-corny-cheesy-mayhem-goes-right/",
+        "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-so-wrong-its-high-flying-right/",
+        "https://nypost.com/2023/04/19/peter-pan-goes-wrong-review-neverland-nincompoops-get-laughs/",
+        "https://observer.com/2023/04/review-peter-pan-goes-wrong-is-a-magical-comedy-disaster/",
+        "https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
+        "https://www.timeout.com/newyork/theater/peter-pan-goes-wrong-broadway-review",
+        "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
+        "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
         "https://www.timeout.com/london/theatre/peter-pan-26",
         "https://www.mummyinthecity.com/review-peter-pan-polka-theatre",
         "https://www.ayoungertheatre.com/review-peter-pan-polka-theatre",
@@ -343660,39 +343727,169 @@
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://www.twincities.com/2023/12/15/this-updated-peter-pan-will-still-delight-ordway-music-theater-audiences/",
-          "host": "twincities.com",
-          "knownOutletId": "pioneer-press",
+          "url": "https://www.amny.com/entertainment/broadway/peter-pan-goes-wrong-gets-major-laughs/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Reimagined-PETER-PAN-National-Tour-Hits-The-Road-20231221"
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.chicagotribune.com/2024/03/28/review-peter-pan-at-nederlander-theatre-smooths-the-rough-edges-of-neverland/",
+          "url": "https://cititour.com/NYC_Broadway/Peter-Pan-Goes-Wrong/1141",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-peter-pan-goes-wrong-review-20230420-bzexsy5yvre2zbyxzfilstupeu-story.html",
           "host": "chicagotribune.com",
           "knownOutletId": "chicagotribune",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Reimagined-PETER-PAN-National-Tour-Hits-The-Road-20231221"
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://mdtheatreguide.com/2024/02/theatre-review-peter-pan-at-the-hippodrome-theatre/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide",
+          "url": "https://www.thedailybeast.com/review-peter-pan-goes-wrong-on-broadway-has-such-fun-causing-chaos",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Reimagined-PETER-PAN-National-Tour-Hits-The-Road-20231221"
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-heap-o-corny-cheesy-mayhem-goes-right/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-so-wrong-its-high-flying-right/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2023/04/19/peter-pan-goes-wrong-review-neverland-nincompoops-get-laughs/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2023/04/review-peter-pan-goes-wrong-is-a-magical-comedy-disaster/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/peter-pan-goes-wrong-broadway-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
             }
           ],
           "priorRun": true,
@@ -343880,22 +344077,23 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 266,
+        "count": 133,
         "byReason": {
-          "aggregator-internal-nav": 198,
-          "non-review-host": 15,
-          "not-http-url": 43,
-          "aggregator-section-root": 5,
-          "roundup-page": 3,
-          "podcast-episode": 1,
-          "unparseable-url": 1
+          "not-http-url": 6,
+          "non-review-host": 24,
+          "aggregator-internal-nav": 61,
+          "aggregator-section-root": 4,
+          "roundup-page": 2,
+          "production-database-listing": 34,
+          "non-stage-review": 1,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Reimagined-PETER-PAN-National-Tour-Hits-The-Road-20231221",
-          "publishDate": "2023-12-21"
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong",
+          "publishDate": "2023-04-19"
         }
       ],
       "nonReviewCandidates": [
@@ -343936,22 +344134,92 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.twincities.com/2023/12/15/this-updated-peter-pan-will-still-delight-ordway-music-theater-audiences/",
-          "host": "twincities.com",
+          "url": "https://www.amny.com/entertainment/broadway/peter-pan-goes-wrong-gets-major-laughs/",
+          "host": "amny.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.chicagotribune.com/2024/03/28/review-peter-pan-at-nederlander-theatre-smooths-the-rough-edges-of-neverland/",
+          "url": "https://cititour.com/NYC_Broadway/Peter-Pan-Goes-Wrong/1141",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-peter-pan-goes-wrong-review-20230420-bzexsy5yvre2zbyxzfilstupeu-story.html",
           "host": "chicagotribune.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://mdtheatreguide.com/2024/02/theatre-review-peter-pan-at-the-hippodrome-theatre/",
-          "host": "mdtheatreguide.com",
+          "url": "https://www.thedailybeast.com/review-peter-pan-goes-wrong-on-broadway-has-such-fun-causing-chaos",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-heap-o-corny-cheesy-mayhem-goes-right/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-so-wrong-its-high-flying-right/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2023/04/19/peter-pan-goes-wrong-review-neverland-nincompoops-get-laughs/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2023/04/review-peter-pan-goes-wrong-is-a-magical-comedy-disaster/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/peter-pan-goes-wrong-broadway-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
+          "host": "thewrap.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -344200,7 +344468,7 @@
         "liveCount": 0,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "peter-panto-and-the-incredible-stinkerbell-tron-regional-2024",
@@ -349653,7 +349921,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "pride-theatre-dorfman-west-end-2026",
@@ -359283,7 +359551,7 @@
         "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "ragtime-2025",
@@ -413556,7 +413824,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026",
@@ -422499,21 +422767,20 @@
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
+        "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-BOOK-OF-MORMON-20130322"
       ],
       "aggregatorListedUrls": [
-        "https://www.chicagoreader.com/chicago/book-of-mormon-broadway-in-chicago-oriental-theatre/Content",
-        "https://www.picturethispost.com/broadway-in-chicago-book-of-mormon-review-hello-again-chicago/",
-        "https://www.chicagotribune.com/entertainment/theater/ct-ent-book-mormon-review-1123-story.html",
-        "https://outandaboutnashville.com/review-the-book-of-mormon-at-tpac/",
-        "https://www.nashvillenoise.com/book-mormon-tpac-review/",
-        "https://buffalotheatreguide.com/2019/05/02/theatre-review-the-book-of-mormon-at-sheas-buffalo-theatre/",
-        "https://buffalonews.com/2019/05/01/anthony-chase-book-of-mormon-is-outrageously-irreverent-fun/",
-        "https://dcmetrotheaterarts.com/2019/04/04/review-the-book-of-mormon-at-the-hippodrome-theatre/",
-        "https://equality365.com/review-the-book-of-mormon-returns-to-seattle/",
-        "https://www.houstoniamag.com/articles/2019/1/17/hobby-center-book-of-mormon-review",
-        "https://www.houstonpress.com/arts/things-to-do-a-review-of-book-of-mormon-at-the-hobby-center-11120156",
-        "https://www.pghcitypaper.com/pittsburgh/the-book-of-mormon-at-heinz-hall-through-april-21/Content",
+        "https://www.standard.co.uk/goingout/theatre/the-book-of-mormon-prince-of-wales-theatre--theatre-review-8500171.html",
+        "http://www.telegraph.co.uk/culture/culturevideo/9947442/The-Book-of-Mormon-is-enormous-fun-but-not-for-the-faint-hearted.html",
+        "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-the-book-of-mormon-merely-flirts-with-blasphemy-but-there-is-something-very-winning-about-it-8543751.html",
+        "http://www.timeout.com/london/theatre/the-book-of-mormon",
+        "http://www.mirror.co.uk/lifestyle/going-out/film/review-book-mormon-prince-wales-1777243",
+        "http://www.express.co.uk/entertainment/theatre/386093/Theatre-Review-The-Book-Of-Mormon",
+        "http://metro.co.uk/2013/03/22/the-book-of-mormon-is-helplessly-funny-and-terrifically-entertaining-3554008/",
+        "http://www.thestage.co.uk/reviews/review.php/38343/the-book-of-mormon",
+        "http://www.guardian.co.uk/stage/2013/mar/21/the-book-of-mormon-review",
+        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/9946475/The-Book-of-Mormon-Prince-of-Wales-Theatre-review.html",
+        "http://www.dailymail.co.uk/tvshowbiz/article-2297303/Cowardly-cynical-satire-I-tired-minutes-Quentin-Letts-reviews-The-Book-Mormon.html",
         "https://www.timeout.com/london/theatre/the-book-of-mormon-review",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-book-of-mormon-prince-of-wales-theatre-review/",
         "https://www.whatsonstage.com/west-end-theatre/reviews/the-book-of-mormon_799.html",
@@ -422528,160 +422795,59 @@
       "inReviewsJson": 21,
       "missing": [
         {
-          "url": "https://www.chicagoreader.com/chicago/book-of-mormon-broadway-in-chicago-oriental-theatre/Content",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
+          "url": "https://www.standard.co.uk/goingout/theatre/the-book-of-mormon-prince-of-wales-theatre--theatre-review-8500171.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-BOOK-OF-MORMON-20130322"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.picturethispost.com/broadway-in-chicago-book-of-mormon-review-hello-again-chicago/",
-          "host": "picturethispost.com",
-          "knownOutletId": "picture-this-post",
+          "url": "http://www.telegraph.co.uk/culture/culturevideo/9947442/The-Book-of-Mormon-is-enormous-fun-but-not-for-the-faint-hearted.html",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-BOOK-OF-MORMON-20130322"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.chicagotribune.com/entertainment/theater/ct-ent-book-mormon-review-1123-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
+          "url": "http://www.express.co.uk/entertainment/theatre/386093/Theatre-Review-The-Book-Of-Mormon",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-BOOK-OF-MORMON-20130322"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://outandaboutnashville.com/review-the-book-of-mormon-at-tpac/",
-          "host": "outandaboutnashville.com",
-          "knownOutletId": null,
+          "url": "http://www.guardian.co.uk/stage/2013/mar/21/the-book-of-mormon-review",
+          "host": "guardian.co.uk",
+          "knownOutletId": "guardian",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-BOOK-OF-MORMON-20130322"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.nashvillenoise.com/book-mormon-tpac-review/",
-          "host": "nashvillenoise.com",
-          "knownOutletId": "nashville-noise",
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2297303/Cowardly-cynical-satire-I-tired-minutes-Quentin-Letts-reviews-The-Book-Mormon.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "mail-on-sunday",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-BOOK-OF-MORMON-20130322"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://buffalotheatreguide.com/2019/05/02/theatre-review-the-book-of-mormon-at-sheas-buffalo-theatre/",
-          "host": "buffalotheatreguide.com",
-          "knownOutletId": "buffalo-theatre-guide",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://buffalonews.com/2019/05/01/anthony-chase-book-of-mormon-is-outrageously-irreverent-fun/",
-          "host": "buffalonews.com",
-          "knownOutletId": "buffalo-news",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://dcmetrotheaterarts.com/2019/04/04/review-the-book-of-mormon-at-the-hippodrome-theatre/",
-          "host": "dcmetrotheaterarts.com",
-          "knownOutletId": "dc-theater-arts",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://equality365.com/review-the-book-of-mormon-returns-to-seattle/",
-          "host": "equality365.com",
-          "knownOutletId": "equality365",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.houstoniamag.com/articles/2019/1/17/hobby-center-book-of-mormon-review",
-          "host": "houstoniamag.com",
-          "knownOutletId": "houstonia",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.houstonpress.com/arts/things-to-do-a-review-of-book-of-mormon-at-the-hobby-center-11120156",
-          "host": "houstonpress.com",
-          "knownOutletId": "houston-press",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.pghcitypaper.com/pittsburgh/the-book-of-mormon-at-heinz-hall-through-april-21/Content",
-          "host": "pghcitypaper.com",
-          "knownOutletId": "pittsburgh-city-paper",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-BOOK-OF-MORMON-on-Tour-What-Did-Critics-Think-20190515"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         }
       ],
       "dirOnly": [
@@ -422698,19 +422864,7 @@
           "count": 1
         },
         {
-          "host": "metro.co.uk",
-          "count": 1
-        },
-        {
-          "host": "mirror.co.uk",
-          "count": 1
-        },
-        {
           "host": "musicaltheatrereview.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
           "count": 1
         }
       ],
@@ -422789,13 +422943,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 338,
+        "count": 349,
         "byReason": {
-          "aggregator-internal-nav": 208,
-          "non-review-host": 15,
-          "not-http-url": 91,
+          "not-http-url": 93,
+          "non-review-host": 21,
+          "aggregator-internal-nav": 216,
           "aggregator-section-root": 5,
-          "roundup-page": 6,
+          "roundup-page": 1,
           "podcast-episode": 12,
           "write-path-blocked": 1
         }
@@ -422809,99 +422963,161 @@
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
+      "ingestResults": [
         {
-          "url": "https://www.chicagoreader.com/chicago/book-of-mormon-broadway-in-chicago-oriental-theatre/Content",
-          "host": "chicagoreader.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
+          "url": "https://www.standard.co.uk/goingout/theatre/the-book-of-mormon-prince-of-wales-theatre--theatre-review-8500171.html",
+          "host": "standard.co.uk",
+          "outletId": "standard",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
-          "url": "https://www.picturethispost.com/broadway-in-chicago-book-of-mormon-review-hello-again-chicago/",
-          "host": "picturethispost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
+          "url": "http://www.telegraph.co.uk/culture/culturevideo/9947442/The-Book-of-Mormon-is-enormous-fun-but-not-for-the-faint-hearted.html",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=telegraph.co.uk): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=telegraph.co.uk): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\""
         },
         {
-          "url": "https://www.chicagotribune.com/entertainment/theater/ct-ent-book-mormon-review-1123-story.html",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
+          "url": "http://www.express.co.uk/entertainment/theatre/386093/Theatre-Review-The-Book-Of-Mormon",
+          "host": "express.co.uk",
+          "outletId": "sunday-express",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
-          "url": "https://outandaboutnashville.com/review-the-book-of-mormon-at-tpac/",
-          "host": "outandaboutnashville.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
+          "url": "http://www.guardian.co.uk/stage/2013/mar/21/the-book-of-mormon-review",
+          "host": "guardian.co.uk",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
-          "url": "https://www.nashvillenoise.com/book-mormon-tpac-review/",
-          "host": "nashvillenoise.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://buffalotheatreguide.com/2019/05/02/theatre-review-the-book-of-mormon-at-sheas-buffalo-theatre/",
-          "host": "buffalotheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://buffalonews.com/2019/05/01/anthony-chase-book-of-mormon-is-outrageously-irreverent-fun/",
-          "host": "buffalonews.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://dcmetrotheaterarts.com/2019/04/04/review-the-book-of-mormon-at-the-hippodrome-theatre/",
-          "host": "dcmetrotheaterarts.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://equality365.com/review-the-book-of-mormon-returns-to-seattle/",
-          "host": "equality365.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.houstoniamag.com/articles/2019/1/17/hobby-center-book-of-mormon-review",
-          "host": "houstoniamag.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.houstonpress.com/arts/things-to-do-a-review-of-book-of-mormon-at-the-hobby-center-11120156",
-          "host": "houstonpress.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.pghcitypaper.com/pittsburgh/the-book-of-mormon-at-heinz-hall-through-april-21/Content",
-          "host": "pghcitypaper.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2297303/Cowardly-cynical-satire-I-tired-minutes-Quentin-Letts-reviews-The-Book-Mormon.html",
+          "host": "dailymail.co.uk",
+          "outletId": "mail-on-sunday",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
-      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.standard.co.uk/goingout/theatre/the-book-of-mormon-prince-of-wales-theatre--theatre-review-8500171.html"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.telegraph.co.uk/culture/culturevideo/9947442/The-Book-of-Mormon-is-enormous-fun-but-not-for-the-faint-hearted.html"
+          },
+          {
+            "outletId": "sunday-express",
+            "outlet": "sunday-express",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.express.co.uk/entertainment/theatre/386093/Theatre-Review-The-Book-Of-Mormon"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.guardian.co.uk/stage/2013/mar/21/the-book-of-mormon-review"
+          },
+          {
+            "outletId": "mail-on-sunday",
+            "outlet": "mail-on-sunday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2297303/Cowardly-cynical-satire-I-tired-minutes-Quentin-Letts-reviews-The-Book-Mormon.html"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-the-book-of-mormon-merely-flirts-with-blasphemy-but-there-is-something-very-winning-about-it-8543751.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
+          {
+            "url": "http://www.timeout.com/london/theatre/the-book-of-mormon",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
+          {
+            "url": "http://www.mirror.co.uk/lifestyle/going-out/film/review-book-mormon-prince-wales-1777243",
+            "outletId": "mirror.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
+          {
+            "url": "http://metro.co.uk/2013/03/22/the-book-of-mormon-is-helplessly-funny-and-terrifically-entertaining-3554008/",
+            "outletId": "metro.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
+          {
+            "url": "http://www.thestage.co.uk/reviews/review.php/38343/the-book-of-mormon",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
+          {
+            "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/9946475/The-Book-of-Mormon-Prince-of-Wales-Theatre-review.html",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
           {
             "url": "https://www.timeout.com/london/theatre/the-book-of-mormon-review",
             "outletId": "timeout.com",
@@ -422937,6 +423153,41 @@
             "outletId": "independent.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-04T01:35:14.329Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/goingout/theatre/the-book-of-mormon-prince-of-wales-theatre--theatre-review-8500171.html",
+            "outletId": "standard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
+          {
+            "url": "http://www.telegraph.co.uk/culture/culturevideo/9947442/The-Book-of-Mormon-is-enormous-fun-but-not-for-the-faint-hearted.html",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
+          {
+            "url": "http://www.express.co.uk/entertainment/theatre/386093/Theatre-Review-The-Book-Of-Mormon",
+            "outletId": "sunday-express",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
+          {
+            "url": "http://www.guardian.co.uk/stage/2013/mar/21/the-book-of-mormon-review",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
+          },
+          {
+            "url": "http://www.dailymail.co.uk/tvshowbiz/article-2297303/Cowardly-cynical-satire-I-tired-minutes-Quentin-Letts-reviews-The-Book-Mormon.html",
+            "outletId": "mail-on-sunday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-18T22:53:56.335Z"
           }
         ],
         "censusSchema": 4,
@@ -422952,10 +423203,10 @@
             "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 5,
-        "candidateCount": 5
+        "liveCount": 8,
+        "candidateCount": 13
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "the-book-of-will-regional-2025",
@@ -458326,7 +458577,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -458336,7 +458587,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -458346,7 +458597,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 4,
             "accepted": 0,
             "error": null
           }
@@ -458357,17 +458608,18 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 320,
+        "count": 321,
         "byReason": {
-          "aggregator-internal-nav": 211,
-          "non-review-host": 22,
           "not-http-url": 73,
+          "non-review-host": 21,
+          "aggregator-internal-nav": 210,
           "aggregator-section-root": 5,
-          "roundup-page": 3,
+          "roundup-page": 5,
           "podcast-episode": 1,
-          "news-roundup-site": 2,
+          "census-junk-host": 1,
+          "news-roundup-site": 1,
           "ticketing-reseller": 1,
-          "tag-index-page": 2
+          "tag-index-page": 3
         }
       },
       "dedupedVariants": [],
@@ -458452,7 +458704,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-18T22:22:12.641Z"
+      "computedAt": "2026-11-18T22:53:56.335Z"
     },
     {
       "showId": "the-knight-of-the-burning-pestle-off-broadway-2023",
@@ -558558,14 +558810,12 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-18T22:22:12.640Z",
+    "at": "2026-11-18T22:53:56.334Z",
     "reserveEvery": 4,
     "reservedAttempted": [
       "confederates-regional-2026-fountain-theatre",
       "cranford-off-west-end-2026",
-      "222-a-ghost-story-off-broadway-2026",
-      "speculations-off-west-end-2026",
-      "king-lear-off-broadway-2026"
+      "222-a-ghost-story-off-broadway-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
@@ -558576,12 +558826,12 @@
     "oldestDueRowAtStart": {
       "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
       "computedAt": "2026-11-03T18:35:27.526Z",
-      "ageHours": 363.4
+      "ageHours": 363.9
     },
     "oldestDueRowAfterRun": {
       "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
       "computedAt": "2026-11-03T18:35:27.526Z",
-      "ageHours": 363.8
+      "ageHours": 364.3
     }
   }
 }
