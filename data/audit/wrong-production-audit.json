@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-18T18:17:17.061Z",
+  "timestamp": "2026-11-18T18:52:13.417Z",
   "stats": {
-    "totalReviews": 82601,
-    "alreadyFlagged": 22459,
+    "totalReviews": 82619,
+    "alreadyFlagged": 22463,
     "dateGuardCatches": 220,
-    "directorMismatch": 3759,
+    "directorMismatch": 3760,
     "tvFilmSignals": 2353,
-    "londonSignals": 3791,
+    "londonSignals": 3794,
     "offBroadwaySignals": 761,
-    "yearMismatch": 382,
+    "yearMismatch": 383,
     "noPublishDate": 8276
   },
   "findings": [
@@ -2132,6 +2132,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-story-the-musical-tour-2026",
+      "file": "metrmag--unknown.json",
+      "publishDate": null,
+      "url": "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-boch-center-wang-theatre-boston-ma-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from a-christmas-story-the-musical-2012"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2012 (3x) more than 2026 (0x). 2012 matches production: a-christmas-story-the-musical-2012"
         }
       ]
     },
@@ -89104,7 +89122,7 @@
       "showId": "a-christmas-carol-west-end-2023",
       "file": "london-theatre--unknown.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "November 23rd, 2023",
       "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-review-old-vic",
       "findings": [
         {
@@ -100693,6 +100711,20 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "broadwayworld--alexander-cohen.json",
+      "score": 80,
+      "publishDate": "2026-11-18",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DESIRE-UNDER-THE-ELMS-Almeida-Theatre-20261118",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "liamodell--unknown.json",
       "score": 40,
       "publishDate": "2026-11-18",
@@ -100739,6 +100771,34 @@
       "score": 55,
       "publishDate": "2026-11-14",
       "url": "https://rolandcat.substack.com/review-desire-under-the-elms-almeida",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "telegraph--claire-allfree.json",
+      "score": 77,
+      "publishDate": "2026-11-18",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/desire-under-the-elms-almeida-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 81,
+      "publishDate": "2026-11-18",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/desire-under-the-elms-review-almeida-wtcvdfx7r",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
