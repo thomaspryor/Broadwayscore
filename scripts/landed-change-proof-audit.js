@@ -18,6 +18,10 @@ const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
+if (require('./lib/cli-help.js').hasHelpFlag(process.argv.slice(2))) {
+  console.log('usage: node scripts/landed-change-proof-audit.js [--date=YYYY-MM-DD] [--days=3] [--dry-run] [--json] [--no-safe-run] [--sha=a,b --expect-proven]\nSee the header comment of this file and scripts/lib/landed-change-proof.mjs for verdict meanings.');
+  process.exit(0);
+}
 // Local runs: read VERCEL_TOKEN from .env (CI passes it via env). Only keys not already set; nothing printed.
 try {
   for (const line of fs.readFileSync(path.join(ROOT, '.env'), 'utf8').split('\n')) {
@@ -116,10 +120,6 @@ function fileCard(body, auditDay, count) {
 }
 
 async function main() {
-  if (require('./lib/cli-help.js').hasHelpFlag(process.argv)) {
-    console.log(fs.readFileSync(__filename, 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(0, 12).map((l) => l.slice(3)).join('\n'));
-    return;
-  }
   const lib = await import('./lib/landed-change-proof.mjs');
   const { loadWorkflows } = await import('./lib/live-run-stop.mjs');
   const dryRun = !!arg('dry-run');
