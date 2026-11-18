@@ -73,7 +73,7 @@ import { removeLocalShow } from '@/lib/local-watchlist';
 import { getWatchlistCtaLabel } from '@/lib/watchlist-cta-label';
 import { usePendingRatingDraft } from '@/hooks/usePendingRatingDraft';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
-import { saveLocalRating } from '@/lib/local-ratings';
+import { saveSignedOutRating } from '@/lib/signed-out-rating';
 import { useLocalRatings } from '@/hooks/useLocalRatings';
 import { LOCAL_RATINGS_MIGRATED_EVENT } from '@/components/user/LocalRatingsMigrator';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
@@ -443,24 +443,7 @@ function Inner({
       // Save first, ask later (BRO-6917): keep the rating on this device so a
       // dismissed sign-in loses nothing, then offer sign-in. LocalRatingsMigrator
       // moves it into the account at sign-in; the one-hour draft is not needed.
-      const next = saveLocalRating({
-        showId: show.id,
-        rating: data.rating,
-        ...(data.reviewText ? { reviewText: data.reviewText } : {}),
-        ...(data.dateSeen ? { dateSeen: data.dateSeen } : {}),
-        ...(data.timeSlot ? { timeSlot: data.timeSlot } : {}),
-        ...(data.curtainTime ? { curtainTime: data.curtainTime } : {}),
-        ...(data.seat ? { seat: data.seat } : {}),
-      });
-      removeLocalShow(show.id); // rated = seen, off the want-to-see list
-      trackUgc('rating_saved_local', {
-        show_id: show.id,
-        source: 'show_page',
-        rating: isRated(data.rating) ? data.rating : null,
-        unrated: !isRated(data.rating),
-        has_review_text: !!data.reviewText,
-        local_count: next.length,
-      });
+      saveSignedOutRating(show.id, data, 'show_page');
       showSignIn('rating', 'show_rating_save');
       return 'saved-local';
     }

@@ -244,10 +244,9 @@ test('welcomeSaveStep: a bookmark never drops the pick; seen shows are not writt
   assert.deepEqual(welcomeSaveStep(unrated, { seen: true, watchlisted: false }), { write: null, clearWatchlist: false });
 });
 
-test('importSourceNames: one list names every import source', () => {
+test('importSourceNames: one list names every import source (My Shows import link)', () => {
   assert.equal(importSourceNames([{ name: 'Show Score' }, { name: 'Mezzanine' }]), 'Show Score or Mezzanine');
   assert.equal(importSourceNames([{ name: 'Show Score' }, { name: 'Mezzanine' }, { name: 'Theatr' }]), 'Show Score, Mezzanine or Theatr');
   assert.equal(importSourceNames([{ name: 'Show Score' }]), 'Show Score');
   assert.equal(importSourceNames(), IMPORT_SOURCES.map(s => s.name).join(' or ').replace(/ or (?=.* or )/g, ', '));
-  assert.ok(IMPORT_SOURCES.every(s => s.id && s.name && s.hint), 'every source has a card hint for the welcome sheet');
 });

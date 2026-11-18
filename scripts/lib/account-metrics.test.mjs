@@ -272,8 +272,8 @@ test('welcome query keeps only devices that saw the welcome screen', () => {
 
 test('summarizeWelcome splits phones from computers and feeds the dashboard and Monday email', () => {
   const rows = [
-    { dev: 'Mobile', shown: 5, picked: 3, skipped_shows: 1, import_tapped: 2, imported: 1, completed: 3, closed_early: 2, searched: 1, switched_market: 0 },
-    { dev: 'Desktop', shown: 2, picked: 1, imported: 0, completed: 1, closed_early: 1 },
+    { dev: 'Mobile', shown: 5, picked: 3, skipped_shows: 1, completed: 3, closed_early: 2, searched: 1, switched_market: 0 },
+    { dev: 'Desktop', shown: 2, picked: 1, completed: 1, closed_early: 1 },
   ];
   const w = m.summarizeWelcome(rows);
   assert.equal(w.mobile.shown, 5);
@@ -285,7 +285,7 @@ test('summarizeWelcome splits phones from computers and feeds the dashboard and 
   const d = m.buildDashboardData({ now: NOW, accounts, ph: { welcome: rows } });
   assert.equal(d.welcome.all.completed, 4);
   assert.ok(m.weeklySummaryLines(d).includes(
-    'Welcome screen, last 30 days: 7 saw it, 4 saved shows from it, 1 finished an import from another app, 4 reached the last step, 3 closed it early.'));
+    'Welcome screen, last 30 days: 7 saw it, 4 saved shows from it, 4 reached the last step, 3 closed it early.'));
   const failed = m.buildDashboardData({ now: NOW, accounts, ph: { welcome: null } });
   assert.equal(failed.welcome, null);
   assert.deepEqual(failed.failed, ['welcome']);

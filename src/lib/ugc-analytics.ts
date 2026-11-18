@@ -137,7 +137,6 @@ const VERCEL_UGC_PROPS = new Map<string, readonly [string, string?]>([
   ['onboarding_step_completed', ['step', 'shows_added']],
   ['onboarding_skipped', ['step', 'via']],
   ['onboarding_market_switch', ['market']],
-  ['onboarding_import_source', ['source']],
   ['cite_score_copied', ['slug']],
 ]);
 

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 // Shape written by scripts/lib/account-metrics.js buildDashboardData (BRO-4615).
 interface Step { shown: number; started: number; completed: number; acted: number }
-type WelcomeStep = Record<'shown' | 'picked' | 'skipped_shows' | 'import_tapped' | 'imported' | 'completed' | 'closed_early' | 'searched' | 'switched_market', number>;
+type WelcomeStep = Record<'shown' | 'picked' | 'skipped_shows' | 'completed' | 'closed_early' | 'searched' | 'switched_market', number>;
 interface SourceRow extends Step { source: string; label: string; device: 'mobile' | 'desktop' | 'other' }
 interface Payload {
   generatedAt: string;
@@ -122,7 +122,6 @@ function WelcomeBars({ step, title }: { step: WelcomeStep; title: string }) {
       rows={[
         ['Saw the welcome screen', step.shown],
         ['Saved shows from it', step.picked],
-        ['Finished an import from another app', step.imported],
         ['Reached the last step', step.completed],
       ]}
     />
@@ -294,7 +293,6 @@ export default function Dashboard() {
             {[
               `${data.welcome.all.closed_early} closed it early`,
               `${data.welcome.all.skipped_shows} skipped picking shows`,
-              `${data.welcome.all.import_tapped} tapped an app to import from`,
               `${data.welcome.all.searched} searched for a show`,
               `${data.welcome.all.switched_market} switched Broadway / West End`,
             ].join(' · ')}

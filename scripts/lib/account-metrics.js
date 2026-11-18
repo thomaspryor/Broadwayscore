@@ -92,7 +92,6 @@ const ACTION_LABELS = {
   onboarding_completed: 'Finished the welcome screen',
   onboarding_search_pick: 'Searched for a show on the welcome screen',
   onboarding_market_switch: 'Switched Broadway / West End on the welcome screen',
-  onboarding_import_source: 'Picked an app to import from on the welcome screen',
 };
 const ACTION_EVENTS = Object.keys(ACTION_LABELS);
 // A sign-up "took" when the person saved something.
@@ -293,8 +292,6 @@ SELECT dev,
   count() AS shown,
   countIf(n_picked > 0) AS picked,
   countIf(n_skipped_shows > 0) AS skipped_shows,
-  countIf(n_import_tapped > 0) AS import_tapped,
-  countIf(n_imported > 0) AS imported,
   countIf(n_completed > 0) AS completed,
   countIf(n_closed > 0) AS closed_early,
   countIf(n_searched > 0) AS searched,
@@ -305,8 +302,6 @@ FROM (
     countIf(event = 'onboarding_shown') AS n_shown,
     countIf(${WELCOME_PICKED}) AS n_picked,
     countIf(event = 'onboarding_skipped' AND toString(properties.step) = 'shows' AND toString(properties.via) = 'skip') AS n_skipped_shows,
-    countIf(event = 'onboarding_import_source') AS n_import_tapped,
-    countIf(event = 'onboarding_step_completed' AND toString(properties.step) = 'import') AS n_imported,
     countIf(event = 'onboarding_completed') AS n_completed,
     countIf(event = 'onboarding_skipped' AND toString(properties.via) = 'close' AND toString(properties.step) != 'done') AS n_closed,
     countIf(event = 'onboarding_search_pick') AS n_searched,
@@ -535,7 +530,7 @@ function summarizeActions(rows) {
     .sort((a, b) => b.last30 - a.last30);
 }
 
-const WELCOME_STEPS = ['shown', 'picked', 'skipped_shows', 'import_tapped', 'imported', 'completed', 'closed_early', 'searched', 'switched_market'];
+const WELCOME_STEPS = ['shown', 'picked', 'skipped_shows', 'completed', 'closed_early', 'searched', 'switched_market'];
 
 /** Welcome rows (per device type) → phone / computer / other / all totals. */
 function summarizeWelcome(rows) {
@@ -662,7 +657,7 @@ function weeklySummaryLines(d) {
   }
   const w = d.welcome && d.welcome.all;
   if (w && w.shown) {
-    lines.push(`Welcome screen, last 30 days: ${w.shown} saw it, ${w.picked} saved shows from it, ${w.imported} finished an import from another app, ${w.completed} reached the last step, ${w.closed_early} closed it early.`);
+    lines.push(`Welcome screen, last 30 days: ${w.shown} saw it, ${w.picked} saved shows from it, ${w.completed} reached the last step, ${w.closed_early} closed it early.`);
   }
   if (d.actions && d.actions.length) {
     // The welcome screen has its own line above; keep this one about what people saved.
