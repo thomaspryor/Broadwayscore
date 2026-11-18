@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "showId": "downstate-2026",
+  "openingDate": "2026-11-15",
+  "detectedAt": "2026-11-18T18:50:55.678Z",
+  "windowDays": 7,
+  "orphans": [
+    {
+      "file": "pages-on-stages--unknown.json",
+      "outletId": "pages-on-stages",
+      "criticName": "Unknown",
+      "url": "https://pagesonstages.com/2026/11/17/other-desert-cities/",
+      "fullTextLen": 296,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    }
+  ],
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
+  "blockBroadcast": true,
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
+}
