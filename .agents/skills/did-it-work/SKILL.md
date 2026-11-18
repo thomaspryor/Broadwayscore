@@ -110,6 +110,7 @@ Actually exercise the thing that was built. Don't just read the code — run it.
 These flows have state — a screenshot can't catch a broken mutation.
 
 **For scripts/pipelines:**
+- **A script a workflow runs:** after it lands, run it for real now (`--dry-run` counts) or dispatch its workflow and read the run. Unit tests are not that, and "the next scheduled run will show it" is not either (cloud Stop gate [VE:LIVERUN], BRO-7738).
 - Run the script on at least 3 real inputs (not `--limit 1` and done — pick diverse cases)
 - Check the output matches expectations for each case
 - Verify output files are written where expected

@@ -162,3 +162,10 @@ test('a bypass that only says "it runs on a schedule" is refused; a real reason 
   const early = { kind: 'assistant_text', text: 'NO-LIVE-RUN: cron-only job, runs at 6am daily' };
   assert.equal(decide([...ev, early], 'NO-LIVE-RUN: sends real email to 4,000 readers\nSAFE TO ARCHIVE — x').decision, 'allow', 'nor one in an earlier message');
 });
+
+test('a shell edit of a live script counts as an edit (sed -i, redirect); a read does not', () => {
+  assert.equal(decide([...bash("sed -i 's/a/b/' scripts/fixture-job.js"), ...landed()]).decision, 'block', 'sed -i');
+  assert.equal(decide([...bash('cat > scripts/fixture-job.js <<EOF\nx\nEOF'), ...landed()]).decision, 'block', 'redirect');
+  assert.equal(decide([...bash("sed -n 1,5p scripts/fixture-job.js"), ...landed()]).decision, 'allow', 'sed -n only reads');
+  assert.equal(decide([...bash("sed -i 's/a/b/' scripts/fixture-job.js"), ...bash('node scripts/fixture-job.js --dry-run'), ...landed()]).decision, 'allow', 'then ran it');
+});

@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-good-thief-off-broadway-2026",
+  "night": "2026-11-17",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-18T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-18T02:30:03.093Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-18T04:55:08.914Z",
+    "lastOkSampleAt": "2026-11-18T04:55:08.914Z"
+  },
+  "firstLiveAt": "2026-11-18T02:30:03.093Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-18T04:40:08.312Z",
+  "liveCount": 3,
+  "liveCountAt": {
+    "1h": 2,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-18T04:00:06.648Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-17",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "theatermania|francisco mendoza",
+      "outlet": "TheaterMania",
+      "critic": "Francisco Mendoza",
+      "tier": 2,
+      "publishAt": "2026-11-17",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-18T02:30:03.093Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|david finkle",
+      "outlet": "New York Stage Review",
+      "critic": "David Finkle",
+      "tier": 2,
+      "publishAt": "2026-11-17",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-18T03:40:05.894Z",
+      "prevOkSampleAt": "2026-11-18T03:35:05.626Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "talkin' broadway|marc miller",
+      "outlet": "Talkin' Broadway",
+      "critic": "Marc Miller",
+      "tier": 2,
+      "publishAt": "2026-11-17",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-18T04:40:08.312Z",
+      "prevOkSampleAt": "2026-11-18T04:35:08.028Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 3,
+      "fetchedAt": "2026-11-18T05:00:22.933Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-18T05:00:23.024Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-18T05:00:26.463Z",
+    "files": [
+      {
+        "file": "nysr--david-finkle.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle",
+        "firstSeenAt": "2026-11-18T03:15:03.588Z",
+        "scoredAt": "2026-11-18T03:19:23.423Z",
+        "publishDate": "2026-11-17",
+        "url": "nystagereview.com/2026/11/17/the-good-thief-boastful-self-incriminating-hero-is-more-than-good",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "talkinbroadway--marc-miller.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "Marc Miller",
+        "firstSeenAt": "2026-11-18T04:07:25.252Z",
+        "scoredAt": "2026-11-18T04:14:24.581Z",
+        "publishDate": "2026-11-17",
+        "url": "talkinbroadway.com/page/ob/11_17_26.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--francisco-mendoza.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Francisco Mendoza",
+        "firstSeenAt": "2026-11-18T01:01:25.544Z",
+        "scoredAt": "2026-11-18T01:30:13.340Z",
+        "publishDate": "2026-11-17",
+        "url": "theatermania.com/news/review-christopher-fitzgerald-delights-the-audience-in-the-good-thief_1859923",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--linda-buchwald.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Linda Buchwald",
+        "firstSeenAt": "2026-11-12T15:48:08.634Z",
+        "scoredAt": null,
+        "publishDate": "2026-07-09",
+        "url": "theatermania.com/news/christopher-fitzgerald-to-star-in-the-good-thief-as-part-of-irish-rep-season_1845279",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}

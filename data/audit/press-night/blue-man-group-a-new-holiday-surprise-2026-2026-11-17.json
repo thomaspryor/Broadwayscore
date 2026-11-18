@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "showId": "blue-man-group-a-new-holiday-surprise-2026",
+  "night": "2026-11-17",
+  "market": "broadway",
+  "embargoAt": "2026-11-18T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-18T02:30:03.852Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-18T04:55:13.677Z",
+    "lastOkSampleAt": "2026-11-18T04:55:13.677Z"
+  },
+  "firstLiveAt": "2026-11-18T02:30:03.852Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-18T04:05:10.289Z",
+  "liveCount": 3,
+  "liveCountAt": {
+    "1h": 2,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-18T04:00:09.873Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-17",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "stage and cinema|paulanne simmons",
+      "outlet": "Stage and Cinema",
+      "critic": "Paulanne Simmons",
+      "tier": 3,
+      "publishAt": "2026-11-18T00:59:02.000Z",
+      "publishPrecision": "exact",
+      "firstLiveAt": "2026-11-18T02:30:03.852Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "1 minute critic|bobby mcguire",
+      "outlet": "1 Minute Critic",
+      "critic": "Bobby McGuire",
+      "tier": 3,
+      "publishAt": "2026-11-18T02:00:00.000Z",
+      "publishPrecision": "exact",
+      "firstLiveAt": "2026-11-18T02:30:03.852Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "theatermania|david gordon",
+      "outlet": "TheaterMania",
+      "critic": "David Gordon",
+      "tier": 2,
+      "publishAt": "2026-11-17",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-18T04:05:10.289Z",
+      "prevOkSampleAt": "2026-11-18T04:00:09.873Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 3,
+      "fetchedAt": "2026-11-18T05:00:27.933Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-18T05:00:28.024Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-18T05:00:31.603Z",
+    "files": [
+      {
+        "file": "nitelifeexchange-com--nitelife-exchange.json",
+        "outletId": "nitelifeexchange-com",
+        "outlet": "Nitelifeexchange Com",
+        "critic": "NiteLife Exchange",
+        "firstSeenAt": "2026-11-17T20:00:57.636Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-25",
+        "url": "nitelifeexchange.com/blue-man-group-returns-a-new-holiday-surprise-begins-its-limited-run-at-the-lunt-fontanne-theater-on-thursday-november-12",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "one-minute-critic--bobby-mcguire--on-2026-11-17.json",
+        "outletId": "one-minute-critic",
+        "outlet": "1 Minute Critic",
+        "critic": "Bobby McGuire",
+        "firstSeenAt": "2026-11-18T02:00:55.971Z",
+        "scoredAt": "2026-11-18T02:01:00.470Z",
+        "publishDate": "2026-11-18T02:00:00.000Z",
+        "url": "1minutecritic.com/blue-man-group-new-holiday-surprise-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "stageandcinema--paulanne-simmons--on-2026-11-17.json",
+        "outletId": "stageandcinema",
+        "outlet": "Stage and Cinema",
+        "critic": "Paulanne Simmons",
+        "firstSeenAt": "2026-11-18T01:35:00.533Z",
+        "scoredAt": "2026-11-18T01:35:04.371Z",
+        "publishDate": "2026-11-18T00:59:02.000Z",
+        "url": "stageandcinema.com/2026/11/17/blue-man-group-a-new-holiday-surprise-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--david-gordon.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Dan Rubins",
+        "firstSeenAt": "2026-11-18T03:34:12.255Z",
+        "scoredAt": "2026-11-18T03:47:38.016Z",
+        "publishDate": "2026-11-17",
+        "url": "theatermania.com/news/review-blue-man-groups-broadway-christmas-show-is-a-lump-of-coal_1860029",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
