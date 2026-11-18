@@ -492,6 +492,11 @@
     "audit-same-title-works.js": {
       "bucket": "b",
       "reason": "BRO-7429 manual audit of same-title groups (writes data/audit/same-title-works.json and docs/audits/same-title-works.md); the leak check runs as a test in scripts/lib/work-identity.test.mjs"
+    },
+    "audit-press-night-near-miss.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-7748 offline dry run of the press-night near-miss detector over recent press nights (hit rate and false alarms); read-only, no fetches; logic covered by tests/unit/lane-near-miss-alarm.test.mjs, which CI runs"
     }
   }
 }
