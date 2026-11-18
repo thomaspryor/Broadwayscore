@@ -1,19 +1,42 @@
 {
-  "updatedAt": "2026-11-18T18:31:23.338Z",
-  "processed": 69,
-  "failed": 41,
-  "successRate": "62.7%",
+  "updatedAt": "2026-11-18T18:40:08.044Z",
+  "processed": 5,
+  "failed": 7,
+  "successRate": "41.7%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 9,
+    "scrapingdog": 0,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 14
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-11-18T18:39:08.618Z",
+      "event": "bb-session",
+      "session": "10ff3513",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-18T18:39:09.434Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-18T18:39:26.893Z",
+      "event": "bb-session",
+      "session": "b7bbc242",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-18T18:39:27.682Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
