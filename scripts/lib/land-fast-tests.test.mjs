@@ -166,7 +166,7 @@ test('colocatedTests reads the tree with autonomous-checks decideChecks', () => 
     const got = F.colocatedTests(dir, ['scripts/lib/w.js', 'scripts/verify-x.test.mjs', 'scripts/gone.test.mjs']).map((c) => c.file).sort();
     assert.deepEqual(got, ['scripts/lib/w.test.mjs', 'scripts/verify-x.test.mjs']);
     assert.deepEqual(F.colocatedTests(path.join(dir, 'nope'), ['scripts/lib/w.js']), [], 'an older tree without the module selects nothing extra');
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 // BRO-7637 ship-check: a tsx-run colocated test must run under tsx even when its path also matches the

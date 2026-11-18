@@ -57,6 +57,6 @@ test('every code audit passes on HEAD as checkWorkflowChecks materializes it', (
       if (nm) fs.symlinkSync(nm, path.join(dir, 'node_modules'), 'dir');
       const r = spawnSync(c.cmd, c.args, { cwd: dir, encoding: 'utf8', timeout: 60000, env: { ...process.env, GH_TOKEN: '', GITHUB_TOKEN: '' } });
       assert.equal(r.status, 0, `${c.name} is red on a clean materialized tree (add what it reads to needs): ${(r.stdout + r.stderr).slice(-400)}`);
-    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
   }
 });
