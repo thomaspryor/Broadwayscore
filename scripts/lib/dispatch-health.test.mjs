@@ -595,3 +595,51 @@ test('stranded job whose tip later landed counts as done; others stay stranded (
   const noSha = computeJobLaneOutcomeRate(strandedRun('s-nosha', '2026-08-05T00:00:00.000Z', undefined), { nowMs: NOW, windowDays: 14, isStrandedShaLanded: () => true });
   assert.equal(noSha.stranded, 1);
 });
+
+// ── BRO-7759: a recovered failure cause must not keep the 14d alarm at 'error' ──
+// Class guard for the recurring "Headless dispatch: success rate" card: old
+// failures stay in the 14d window for 14 days after the fix landed.
+function recentSplit(oldOutcome, recentOutcome) {
+  const entries = [];
+  const iso = (daysAgo, i) => new Date(NOW - daysAgo * 864e5 + i * 60000).toISOString();
+  for (let i = 0; i < 8; i++) entries.push(...headlessRun(`h-old-${i}`, iso(9, i), oldOutcome));
+  for (let i = 0; i < 24; i++) entries.push(...headlessRun(`h-new-${i}`, iso(0.5, i), recentOutcome(i)));
+  return entries;
+}
+
+test('headless digest is a warn "recovering" (not error) when the last 2d is back over the floor', () => {
+  const entries = recentSplit('failed', () => 'done');
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  assert.equal(row.status, 'warn');
+  assert.equal(row.recovering, true);
+  assert.match(row.message, /recovering/);
+});
+
+test('headless digest still errors when the last 2d is also under the floor', () => {
+  const entries = recentSplit('failed', (i) => (i < 12 ? 'done' : 'failed'));
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  assert.equal(row.status, 'error');
+});
+
+test('headless digest still errors when the recent sample is too small to call recovery', () => {
+  const entries = [];
+  const iso = (daysAgo, i) => new Date(NOW - daysAgo * 864e5 + i * 60000).toISOString();
+  for (let i = 0; i < 12; i++) entries.push(...headlessRun(`h-old-${i}`, iso(9, i), 'failed'));
+  for (let i = 0; i < 3; i++) entries.push(...headlessRun(`h-new-${i}`, iso(0.5, i), 'done'));
+  assert.equal(computeHeadlessDispatchDigest({ entries, nowMs: NOW }).status, 'error');
+});
+
+test('headless digest does not call recovery on a borderline recent rate (within the margin)', () => {
+  const entries = recentSplit('failed', (i) => (i < 20 ? 'done' : 'failed')); // 20/24 = 83%, under floor+5pts
+  assert.equal(computeHeadlessDispatchDigest({ entries, nowMs: NOW }).status, 'error');
+  const ok = recentSplit('failed', (i) => (i < 21 ? 'done' : 'failed')); // 21/24 = 88%
+  assert.equal(computeHeadlessDispatchDigest({ entries: ok, nowMs: NOW }).recovering, true);
+});
+
+test('headless digest never calls recovery when the 14d rate is below the recoveringFloor', () => {
+  const entries = [];
+  const iso = (d, i) => new Date(NOW - d * 864e5 + i * 60000).toISOString();
+  for (let i = 0; i < 40; i++) entries.push(...headlessRun(`h-old-${i}`, iso(9, i), 'failed'));
+  for (let i = 0; i < 24; i++) entries.push(...headlessRun(`h-new-${i}`, iso(0.5, i), 'done'));
+  assert.equal(computeHeadlessDispatchDigest({ entries, nowMs: NOW }).status, 'error');
+});

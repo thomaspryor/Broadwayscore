@@ -447,7 +447,17 @@ const HEADLESS_CHECK_NAME = 'Headless dispatch: success rate';
 // dozen genuinely-successful resolved launches can sit next to hundreds of
 // orphaned ones. 30% mirrors this card's own "orphan rate roughly 6x [a
 // healthy] baseline" framing as the alarm threshold, not an arbitrary number.
-const HEADLESS_DEFAULTS = { windowDays: 14, successRateFloor: 0.80, minResolved: 10, orphanRateCeiling: 0.30 };
+// BRO-7759: recentDays/recentMinResolved. A fix to a headless failure cause can
+// only be judged over the 14d window after 14 days, because the pre-fix failures
+// stay in it. Four cards (BRO-5446/6313/6430/7664) were each filed while the fix
+// they needed had already landed, so each "fixed" the same thing again. The
+// 14d floor now only raises 'error' while the trailing recentDays is NOT clearly
+// back over the floor (floor + recentMargin, >= recentMinResolved resolved, so a
+// borderline or small sample cannot flap); otherwise it is a 'warn' "recovering"
+// row. A warn files no card and is not forwarded to the morning digest, so the
+// recovery shows only in the health-check output. recoveringFloor: a 14d rate
+// below it is never called recovering.
+const HEADLESS_DEFAULTS = { windowDays: 14, successRateFloor: 0.80, minResolved: 10, orphanRateCeiling: 0.30, recentDays: 2, recentMinResolved: 20, recentMargin: 0.05, recoveringFloor: 0.60 };
 
 const HEADLESS_HINT = 'Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown of failed launches. '
   + 'Judge any fix by this rate over the window, never by one clean dispatch (same doctrine as the tab-lane dead-launch rate, card #1199).';
@@ -459,6 +469,10 @@ function computeHeadlessDispatchDigest({
   successRateFloor = HEADLESS_DEFAULTS.successRateFloor,
   minResolved = HEADLESS_DEFAULTS.minResolved,
   orphanRateCeiling = HEADLESS_DEFAULTS.orphanRateCeiling,
+  recentDays = HEADLESS_DEFAULTS.recentDays,
+  recentMinResolved = HEADLESS_DEFAULTS.recentMinResolved,
+  recentMargin = HEADLESS_DEFAULTS.recentMargin,
+  recoveringFloor = HEADLESS_DEFAULTS.recoveringFloor,
   lane = JOB_LANE,
   isStrandedShaLanded = null,
 } = {}) {
@@ -529,6 +543,21 @@ function computeHeadlessDispatchDigest({
       hint: HEADLESS_HINT,
       ...stats,
     };
+  }
+
+  // BRO-7759: under the floor over 14d, but is it still happening?
+  if (recentDays > 0 && recentDays < windowDays && stats.successRate >= recoveringFloor) {
+    const recent = computeJobLaneOutcomeRate(entries, { nowMs, windowDays: recentDays, lane, isStrandedShaLanded });
+    if (recent.resolved >= recentMinResolved && recent.successRate >= successRateFloor + recentMargin) {
+      return {
+        name: HEADLESS_CHECK_NAME,
+        status: 'warn',
+        message: `Success rate ${pct}% over ${windowDays}d is under the ${floorPct}% floor, but the last ${recentDays}d is back at ${(recent.successRate * 100).toFixed(0)}% (${recent.done}/${recent.resolved}): recovering, the old failures are still in the window (BRO-7759). ${detail}.`,
+        hint: HEADLESS_HINT,
+        recovering: true,
+        ...stats,
+      };
+    }
   }
 
   return {
