@@ -168,11 +168,7 @@ export function AudienceBuzzTable({ data, sources }: AudienceBuzzTableProps) {
                     )}
                   </td>
                   {sources?.map((src, i) => {
-                    let srcData = buzz?.sources[src.key];
-                    // Per-source minimum-volume gates (mirrors audience-weighting.js).
-                    if (srcData && src.key === 'theatr' && (srcData.reviewCount || 0) < 10) {
-                      srcData = null;
-                    }
+                    const srcData = buzz?.sources[src.key];
                     return (
                       <td key={src.key} className={`py-3 px-4 text-center ${i < 1 ? 'hidden sm:table-cell' : i < 2 ? 'hidden md:table-cell' : 'hidden lg:table-cell'}`}>
                         {srcData ? (
