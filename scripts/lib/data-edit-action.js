@@ -40,7 +40,10 @@ EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'no
   'humanCorrectedOpeningDate',
   // BRO-7080: the "no critic reviews expected" exemption for an open-ended attraction
   // (owner decision 2026-11-07). Plan-only; zero-review-catchup and the show page honor it.
-  'noReviewsExpected', 'noReviewsExpectedReason'];
+  'noReviewsExpected', 'noReviewsExpectedReason',
+  // BRO-7778: press titles critics use ("It's a Wonderful Life" for "...: A Live Radio Play"). Every review
+  // matcher reads them (scripts/lib/show-names.js); plan-only, value-checked below.
+  'akaTitles'];
 
 // BRO-6191: plan-only (owner-approved) commercial.json extras with value checks
 // (cleared-field-guard.js planOnlyValueProblem); not offered to the feedback-plan LLM.
@@ -106,6 +109,12 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       const { castValueProblem } = require('./feedback-pipeline-fields.js');
       const castProblem = castValueProblem(newValue);
       if (castProblem) return { ok: false, reason: castProblem };
+    }
+
+    if (field === 'akaTitles') {
+      const { akaTitlesValueProblem } = require('./show-names.js');
+      const problem = akaTitlesValueProblem(newValue, shows[idx], shows, prevValue);
+      if (problem) return { ok: false, reason: problem };
     }
 
     if (field === 'closingExtensionCount' && !(Number.isInteger(newValue) && newValue >= 0 && newValue < 100)) {
