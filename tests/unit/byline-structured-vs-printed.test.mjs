@@ -41,6 +41,10 @@ describe('TheaterMania: the visible byline beats the JSON-LD editor slug', () =>
   test('an empty author area names nobody: the editor slug is not a byline', () => {
     assert.equal(extractAuthorFromHtml(TM_EMPTY_AREA_PAGE, '', { url: TM_URL, theaterManiaCritics: TM_ROSTER }), null);
   });
+  test('an author-area name in a markup variant (span-wrapped, no tag id) is still read', () => {
+    const variant = TM_PAGE.replace(/<a id="article-author-tag"[^>]*>Dan Rubins<\/a>/, '<a href="https://www.theatermania.com/authors/dan-rubins"><span>Dan Rubins</span></a>');
+    assert.equal(extractAuthorFromHtml(variant, '', { url: TM_URL, theaterManiaCritics: TM_ROSTER }), 'Dan Rubins');
+  });
   test('an old template with no author area still resolves the slug (BRO-171)', () => {
     const old = `<html><head>${TM_JSONLD.replace('dgordon', 'phempstead')}</head><body><h1>x</h1></body></html>`;
     assert.equal(extractAuthorFromHtml(old, '', { url: TM_URL, theaterManiaCritics: TM_ROSTER }), 'Pete Hempstead');

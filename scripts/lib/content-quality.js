@@ -3577,7 +3577,7 @@ function withPrintedCredit(name, text, options = {}) {
   }
   if (!outletId) return name;
   const printed = require('./byline-from-text').printedBylineOverride(outletId, text, options.url, name || undefined);
-  return printed || name;
+  return printed ? (cleanAuthorName(printed) || printed) : name;
 }
 
 // Outlets whose only author markup is a site-wide account (BRO-6518); see the
@@ -3696,7 +3696,14 @@ function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
     if (visible && isValidAuthorName(visible)) return cleanAuthorName(visible);
   }
   if (options && options.url && /(^|\/\/|\.)theatermania\.com/i.test(String(options.url))) {
-    if (/<section\b[^>]*\bclass=["'][^"']*\bauthor-area\b/i.test(html)) return null;
+    // Any name inside the author area (a markup variant the strict tag regex
+    // misses) is the byline; an empty area names nobody, never the poster slug.
+    const area = /<section\b[^>]*\bclass=["'][^"']*\bauthor-area\b[^>]*>([\s\S]*?)<\/section>/i.exec(html);
+    if (area) {
+      const p = /<p\b[^>]*\bclass=["'][^"']*\bauthor-name\b[^>]*>([\s\S]*?)<\/p>/i.exec(area[1]);
+      const name = p ? require('./text-cleaning').decodeHtmlEntities(p[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim() : '';
+      return name && isValidAuthorName(name) ? cleanAuthorName(name) : null;
+    }
     const tm = resolveTheaterManiaByline(html, options.theaterManiaCritics);
     if (tm) return tm;
   }
