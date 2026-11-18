@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T12:12:08.459Z",
+  "generatedAt": "2026-11-18T13:17:04.027Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -164,52 +164,28 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theatre-weekly",
-      "error": "HTTP 403 for https://theatreweekly.com/feed"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "the-recs",
-      "error": "HTTP 403 for https://therecs.co.uk/feed/"
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
     {
-      "outletId": "stageandcinema",
-      "error": "HTTP 403 for https://www.stageandcinema.com/feed/"
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
     },
     {
-      "outletId": "the-spy-in-the-stalls",
-      "error": "HTTP 403 for https://thespyinthestalls.com/feed/"
-    },
-    {
-      "outletId": "plays-to-see",
-      "error": "HTTP 403 for https://playstosee.com/feed/"
-    },
-    {
-      "outletId": "fairypoweredproductions",
-      "error": "HTTP 403 for https://fairypoweredproductions.com/feed/"
-    },
-    {
-      "outletId": "exeunt-magazine",
-      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
-    },
-    {
-      "outletId": "fringereview",
-      "error": "Timeout fetching https://fringereview.co.uk/feed/"
-    },
-    {
-      "outletId": "lighting-and-sound-america",
-      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
       "outletId": "times-square-chronicles",
@@ -218,16 +194,21 @@
     {
       "outletId": "londontheatre1",
       "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
-    },
-    {
-      "outletId": "everything-theatre",
-      "error": "fetchPage returned an unexpected page for https://everything-theatre.co.uk/wp-json/wp/v2/posts?categories=3799&per_page="
     }
   ],
-  "itemsScanned": 662,
-  "matchedGaps": 0,
+  "itemsScanned": 826,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "level": "matched",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-desire-under-the-elms-almeida-theatre",
+      "headline": "Review: Desire Under The Elms (Almeida Theatre)",
+      "publishDate": "2026-11-18"
+    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
