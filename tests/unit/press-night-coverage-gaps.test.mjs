@@ -80,6 +80,21 @@ test('the clock workflow and the orchestrator re-seed plan every lane market', (
   assert.match(yml, /press-night-clock\.js action --kind="\$KIND" --category="\$CATEGORY"/);
 });
 
+test('reviewer blockers stay fixed: watcher not restarted by the early run, watchdog uses the show market, ek ends at the kick', () => {
+  const orch = readFileSync(new URL('../../.github/workflows/opening-night-orchestrator.yml', import.meta.url), 'utf8');
+  const watcher = orch.slice(orch.indexOf('- name: Start aggregator URL watcher loop'));
+  assert.match(watcher.slice(0, 2000), /if: [^\n]*inputs\.role != 'ek'/, 'the early run must not start the 270-min URL watcher loop');
+  assert.match(orch, /DEADLINE=\$\(\( \$\(date \+%s\) \+ LOOP_MIN\*60 \)\)/, 'the loop honours deadline_minutes');
+  const cli = readFileSync(new URL('../../scripts/press-night-watchdog.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(cli, /'market=broadway'/, 'the watchdog must not hardcode the Broadway market');
+  const E = Date.parse('2026-12-04T03:00:00Z');
+  assert.equal(clock.runMinutes('ek', E, E - 270 * MIN), 150);
+  assert.equal(clock.runMinutes('kick', E, E - 120 * MIN), 240);
+  // The on-time kick (created at -2h) never suppresses the tail run; a late kick (created after +10) does.
+  assert.equal(clock.dedupedBy('tk', E + 110 * MIN, [E - 120 * MIN]), false);
+  assert.equal(clock.dedupedBy('tk', E + 110 * MIN, [E + 30 * MIN]), true);
+});
+
 test('maxGap finds the hole', () => {
   const iv = [{ fromMs: 0, toMs: 10 * MIN }, { fromMs: 5 * MIN, toMs: 20 * MIN }, { fromMs: 50 * MIN, toMs: 60 * MIN }];
   assert.deepEqual(cov.maxGap(iv, 0, 60 * MIN), { gapMin: 30, fromMs: 20 * MIN, toMs: 50 * MIN });

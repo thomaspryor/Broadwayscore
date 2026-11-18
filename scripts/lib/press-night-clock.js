@@ -10,6 +10,8 @@
 //                                           -> prints "SLEEP_SECONDS kick|rechain"
 //   node scripts/lib/press-night-clock.js confirm --shows-file=... --show=ID --night=DATE [--kind=K] [--categories=..] [--fired=..] [--now=ISO]
 //                                           -> prints "kick" or "replan" (fresh data, same show+night+kind, due)
+//   node scripts/lib/press-night-clock.js action --kind=K --category=C [--embargo-at=ISO] [--now=ISO]
+//                                           -> prints "ACTION MARKET|- DEDUPE_MIN RUN_MIN" (BRO-7779)
 //
 // BRO-6858: besides the kick, a Broadway night has two preflight events (embargo -24h and -3h) that dispatch
 // press-night-preflight.yml. Each kind has its own key (the kick keeps the bare show:night key so a chain started
@@ -34,13 +36,17 @@ const ORCH_RUN_MIN = 240; // a targeted orchestrator run polls until its loop DE
  */
 const KINDS = {
   // BRO-7779: three targeted orchestrator runs tile the night with no hole, lane or no lane:
-  //   ek  embargo -4h30 .. -0h30   covers lane start -3h (the guarded lane starts no earlier than embargo -90)
+  //   ek  embargo -4h30 .. -2h     covers lane start -3h; its loop ends when the kick starts (runMinutes), so the
+  //                                two never poll side by side, and it skips the URL watcher (the kick's covers E-2h..E+2h30)
   //   kick embargo -2h  .. +2h     also starts the probe, the lane night run and the watchdog, as before
   //   tk  embargo +1h50 .. +5h50   the tail: the BRO-7740 lane ends near +185 and the first sweep is at +255
   // The sweeps (+4h15/+5h15/+6h15) carry it past +6h. tk overlaps the kick run by 10 min so a slow start is no hole.
-  ek: { leadMin: 270, lateMin: 120, categories: null, dedupeMin: 30 }, // until embargo -2h30; later, the kick covers it
+  // dedupeMin: skip when a targeted orchestrator run for the show was created since (event time - dedupeMin). For tk
+  // that is +10 min after the embargo, so the on-time kick (created at -2h) never suppresses it, while a kick that ran
+  // late (created after +10, so polling past +4h10) does.
+  ek: { leadMin: 270, lateMin: 110, categories: null, dedupeMin: 30 }, // until embargo -2h40, before the kick's dedupe window
   kick: { leadMin: KICK_LEAD_MIN, lateMin: KICK_LEAD_MIN + KICK_LATE_MIN, categories: null, dedupeMin: 30 },
-  tk: { leadMin: -110, lateMin: 180, categories: null, dedupeMin: ORCH_RUN_MIN - 10 }, // a late kick run already covers it
+  tk: { leadMin: -110, lateMin: 180, categories: null, dedupeMin: 100 },
   pf24: { leadMin: 24 * 60, lateMin: 20 * 60, categories: null }, // until embargo -4h
   pf3: { leadMin: 180, lateMin: 120, categories: null }, // until embargo -1h
   // BRO-7160 post-lane review sweep (scripts/lib/post-lane-sweep.js SWEEP_SLOTS/VERIFY_SLOT): after the lane releases
@@ -56,7 +62,7 @@ const KINDS = {
  * BRO-7779: what the clock workflow does when an event of `kind` comes due for a show of `category`.
  * press-night-clock.yml reads this through the `action` CLI, and scripts/lib/press-night-coverage.js builds its
  * collector timeline from it, so the coverage test and the workflow cannot disagree.
- * @returns {{action:'orchestrator'|'probe'|'preflight'|'sweep', market:string|null}}
+ * @returns {{action:'orchestrator'|'probe'|'preflight'|'sweep'|'none', market:string|null}}
  */
 function kindAction(kind, category) {
   if (/^sw/.test(kind)) return { action: 'sweep', market: null };
@@ -64,7 +70,21 @@ function kindAction(kind, category) {
   if ((kind === 'kick' || kind === 'ek' || kind === 'tk') && MARKET_FOR[category]) {
     return { action: 'orchestrator', market: MARKET_FOR[category] };
   }
+  if (kind === 'ek' || kind === 'tk') return { action: 'none', market: null }; // only lane markets get the extra runs
   return { action: 'probe', market: null };
+}
+
+/** BRO-7779: how long a targeted orchestrator run for `kind` polls (its loop DEADLINE), dispatched at nowMs. */
+function runMinutes(kind, embargoMs, nowMs) {
+  if (kind !== 'ek') return ORCH_RUN_MIN;
+  const toKick = Math.floor((embargoMs - KICK_LEAD_MIN * MIN - nowMs) / MIN);
+  return Math.min(ORCH_RUN_MIN, Math.max(15, toKick));
+}
+
+/** BRO-7779: true when a run created at one of runStartsMs suppresses this orchestrator event (shared with the model). */
+function dedupedBy(kind, kickAtMs, runStartsMs) {
+  const d = (KINDS[kind] || {}).dedupeMin || 30;
+  return (runStartsMs || []).some((t) => t >= kickAtMs - d * MIN && t <= kickAtMs);
 }
 
 function kickKey(showId, night, kind = 'kick') {
@@ -120,7 +140,7 @@ function confirmKick(shows, nowMs, planned, opts) {
   return next.kickAtMs <= nowMs ? 'kick' : 'replan';
 }
 
-module.exports = { kindAction, MARKET_FOR, ORCH_RUN_MIN, planKicks, nextKick, sleepPlan, confirmKick, kickKey, KINDS, KICK_LEAD_MIN, KICK_LATE_MIN, HORIZON_DAYS, DEFAULT_CATEGORIES };
+module.exports = { runMinutes, dedupedBy, kindAction, MARKET_FOR, ORCH_RUN_MIN, planKicks, nextKick, sleepPlan, confirmKick, kickKey, KINDS, KICK_LEAD_MIN, KICK_LATE_MIN, HORIZON_DAYS, DEFAULT_CATEGORIES };
 
 if (require.main === module) {
   const arg = (k) => {
@@ -131,7 +151,9 @@ if (require.main === module) {
   const now = arg('now') ? Date.parse(arg('now')) : Date.now();
   if (sub === 'action') {
     const a = kindAction(arg('kind'), arg('category'));
-    process.stdout.write(`${a.action} ${a.market || '-'} ${(KINDS[arg('kind')] || {}).dedupeMin || 30}\n`);
+    const emb = Date.parse(arg('embargo-at'));
+    const runMin = Number.isFinite(emb) ? runMinutes(arg('kind'), emb, now) : ORCH_RUN_MIN;
+    process.stdout.write(`${a.action} ${a.market || '-'} ${(KINDS[arg('kind')] || {}).dedupeMin || 30} ${runMin}\n`);
   } else if (sub === 'sleep-plan') {
     const kickAt = Date.parse(arg('kick-at'));
     if (!Number.isFinite(kickAt)) { console.error('sleep-plan needs --kick-at=ISO'); process.exit(2); }
