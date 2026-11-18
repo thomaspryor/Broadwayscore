@@ -38,7 +38,7 @@ on:
         required: false
         default: ''
       max_cost:
-        description: 'Max cumulative token cost in USD before aborting (circuit breaker, --ensemble only; leave empty for unlimited)'
+        description: 'Max token cost in USD per run, and for a chain the whole chain (BRO-7576); leave empty for unlimited'
         required: false
         default: ''
       run_calibration:
@@ -138,6 +138,10 @@ on:
         description: 'Max remaining batches for chaining (decrements each run)'
         required: false
         default: '0'
+      chain_spent_usd:
+        description: 'Set by the chain step: USD the earlier batches of this chain spent (BRO-7576)'
+        required: false
+        default: ''
       shard:
         description: 'Shard index for parallel runs (0-based)'
         required: false
@@ -1095,6 +1099,8 @@ jobs:
           INPUT_TOTAL_SHARDS: ${{ github.event.inputs.total_shards }}
           INPUT_MAX_COST: ${{ github.event.inputs.max_cost }}
           INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
+          INPUT_CHAIN_SPENT: ${{ github.event.inputs.chain_spent_usd }}
+          SCORING_CHAIN_BUDGET_DISABLED: ${{ vars.SCORING_CHAIN_BUDGET_DISABLED }}
         run: |
           BATCHES_LEFT="${INPUT_REMAINING_BATCHES}"
           if [ -z "$BATCHES_LEFT" ] || [ "$BATCHES_LEFT" = "0" ]; then
@@ -1110,6 +1116,17 @@ jobs:
             exit 0
           fi
           NEXT_BATCHES=$((BATCHES_LEFT - 1))
+          # BRO-7576: --max-cost is per process, so a chain of $9 batches never
+          # tripped max-cost=15 (2026-11-12/13: $47.62 and $63.60 days). Check
+          # the chain's running total and the last 24h of scoring spend first.
+          # The script never fails; on any error it answers stop=true.
+          BUDGET_OUT=$(node scripts/scoring-chain-budget.js --run-id="${GITHUB_RUN_ID}" --max-cost="${INPUT_MAX_COST}" --chain-spent="${INPUT_CHAIN_SPENT}")
+          echo "$BUDGET_OUT"
+          if printf '%s\n' "$BUDGET_OUT" | grep -qx 'stop=true'; then
+            echo "::notice::Chain stopped by budget: $(printf '%s\n' "$BUDGET_OUT" | sed -n 's/^reason=//p')"
+            exit 0
+          fi
+          CHAIN_SPENT=$(printf '%s\n' "$BUDGET_OUT" | sed -n 's/^chain_spent=//p')
           LIMIT="${INPUT_LIMIT}"
           LIMIT="${LIMIT:-400}"
           SHARD="${INPUT_SHARD}"
@@ -1125,10 +1142,14 @@ jobs:
           if [ "${{ github.event.inputs.outdated }}" == "true" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f outdated=true"
           fi
-          # Pass through max_cost so a budget cap applies across the whole chain,
-          # not just the first batch
+          # Pass through max_cost unchanged (the run-name prints it and
+          # express-preemption.js keys chains on it) plus the chain's running
+          # spend; scoring-chain-budget.js compares the two before each batch.
           if [ -n "${INPUT_MAX_COST}" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f max_cost=${INPUT_MAX_COST}"
+          fi
+          if [ -n "${CHAIN_SPENT}" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f chain_spent_usd=${CHAIN_SPENT}"
           fi
           # Pass through needs_rescore flag so rescore chains continue
           # Also pass through when scheduled run detected needsRescore backlog
