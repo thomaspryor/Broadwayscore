@@ -156,9 +156,9 @@ async function runSimulatedNight({ keep = false, log = () => {}, only = null } =
   // feed is left dead on purpose: the alarm must name it exactly once per show (checked in evaluate).
   const discovery = require('../opening-night-lane/discovery');
   const neverServed = (u) => gd.page(u, Number.MAX_SAFE_INTEGER) === undefined;
-  const laneFeedUrls = new Set();
-  for (const show of gd.shows) for (const f of discovery.defaultLaneFeeds(show) || []) if (f && f.url) laneFeedUrls.add(f.url);
-  const deadSource = [...laneFeedUrls].filter(neverServed).sort()[0] || null;
+  // The dead feed is one EVERY show's lane reads, so "exactly once per show" holds for each of them.
+  const feedSets = gd.shows.map((show) => new Set((discovery.defaultLaneFeeds(show) || []).map((f) => f && f.url).filter(Boolean)));
+  const deadSource = [...(feedSets[0] || [])].filter((u) => feedSets.every((fs) => fs.has(u)) && neverServed(u)).sort()[0] || null;
   const pageOrQuiet = (u, t) => {
     const html = gd.page(u, t);
     if (html !== undefined || u === deadSource || !neverServed(u)) return html;
@@ -346,13 +346,13 @@ function evaluate(report, gd, { canonicalUrl }) {
   check(report, 'found-to-live: every review goes live within the bar once the lane has it', report.foundToLive.length > 0 && report.foundToLive.every((x) => x.ms <= FOUND_TO_LIVE_BAR_MS), report.foundToLive.filter((x) => x.ms > FOUND_TO_LIVE_BAR_MS));
   // The deliberately dead feed: the source-health alarm names it exactly once per show (one lane run per show).
   if (report.deadSource) {
-    const perShow = Object.keys(report.shows).map((id) => [id, alertUrls.filter((t) => t.includes(`Press night ${id} `)).reduce((n, t) => n + t.split('\n').filter((l) => /^SOURCE FAILING \(/.test(l) && l.endsWith(report.deadSource)).length, 0)]);
-    check(report, `source-health: the dead feed alarms exactly once per show (${report.deadSource})`, perShow.every(([, n]) => n === 1), Object.fromEntries(perShow));
+    const perShow = Object.keys(report.shows).map((id) => [id, report.alerts.filter((a) => a.show === id).map((a) => String(a.content || '')).reduce((n, t) => n + t.split('\n').filter((l) => /^SOURCE FAILING \(/.test(l) && l.endsWith(report.deadSource)).length, 0)]);
+    check(report, `source-health: the dead feed alarms exactly once per show (${report.deadSource})`, perShow.length > 0 && perShow.every(([, n]) => n === 1), Object.fromEntries(perShow));
   }
   // No stray alarms: every alert item names the dead feed or a review in the fixture. A quiet source that alerts, or an
   // alarm about nothing the night staged, is noise the owner would get on a real night.
   const known = [report.deadSource, ...gd.reviews.map((r) => r.url)].filter(Boolean);
-  const stray = alertUrls.flatMap((t) => t.split('\n')).filter((l) => /^[A-Z][A-Z' -]{3,} \(/.test(l) && !known.some((u) => l.includes(u)));
+  const stray = alertUrls.flatMap((t) => t.split('\n')).filter((l) => /^[A-Z][A-Z' -]{2,} \(/.test(l) && !known.some((u) => l.includes(u)));
   check(report, 'alerts: no stray alarm (each names the dead feed or a staged review)', stray.length === 0, stray.slice(0, 5));
   check(report, 'alerts: every alert batch reached both channels (Discord stand-in and the coordinator card)', report.alerts.length === report.cardComments.length && report.cardComments.every((c) => c.card === 'BRO-5955'), { discord: report.alerts.length, card: report.cardComments.length });
   check(report, 'manual inbox: every dropped URL ends published', report.inboxFinal.length === report.inbox.length && report.inboxFinal.every((e) => e.status === 'published'), report.inboxFinal);
