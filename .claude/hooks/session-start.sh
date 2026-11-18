@@ -389,7 +389,7 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ] || [ "$
     }
     if (cloud) { lib.recordHookRegistration(repoDir, ev); lib.trackMainWhenNothingLocal(repoDir); }
     if (cloud && r.behind > 0) {
-      const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead, startBackground: bg });
+      const s = ev === "compact" && lib.backgroundSyncRunning(repoDir) ? { synced: false, reason: "a background catch-up is still running" } : lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead, startBackground: bg });
       const synced = lib.formatCodeCheckoutSyncMessage(s, repoDir);
       if (synced) { console.log(synced); process.exit(0); }
       if (r.message) console.log(`${r.message}\n   (auto-sync skipped: ${s.reason})`);

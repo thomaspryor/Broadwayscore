@@ -884,3 +884,47 @@ test('BRO-7789 trySyncCodeCheckout: a script registered at startup stays protect
   recordHookRegistration(cloneDir, 'resume');
   assert.equal(staleThenSync(cloneDir).synced, true);
 }));
+
+test('BRO-7789 trySyncCodeCheckout: a detached HEAD moved by hand since startup is left alone', () => withTrio(({ seedDir, cloneDir }) => {
+  commitIn(seedDir, 'bro-7789-1.txt', '1', 'more 1'); git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['pull', '-q', '--ff-only', 'origin', 'main']);
+  git(cloneDir, ['checkout', '-q', '--detach', 'HEAD']);
+  recordHookRegistration(cloneDir, 'startup');
+  git(cloneDir, ['checkout', '-q', '--detach', 'HEAD~1']); // inspecting old code mid-session
+  commitIn(seedDir, 'bro-7789-2.txt', '2', 'more 2'); git(seedDir, ['push', '-q', 'origin', 'main']);
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /detached HEAD moved since the session started/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('BRO-7789 trySyncCodeCheckout: a detached checkout keeps syncing across compactions (the recorded HEAD follows each sync)', () => withTrio(({ seedDir, cloneDir }) => {
+  git(cloneDir, ['checkout', '-q', '--detach', 'HEAD']);
+  recordHookRegistration(cloneDir, 'startup');
+  commitIn(seedDir, 'bro-7789-3.txt', '3', 'more 3'); git(seedDir, ['push', '-q', 'origin', 'main']);
+  assert.equal(staleThenSync(cloneDir).synced, true);
+  commitIn(seedDir, 'bro-7789-4.txt', '4', 'more 4'); git(seedDir, ['push', '-q', 'origin', 'main']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, true, s.reason);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), git(cloneDir, ['rev-parse', 'origin/main']));
+}));
+
+test('BRO-7789 session-start.sh: compact stays out of the way of a background catch-up that holds its lock', () => withTrio(({ seedDir, cloneDir }) => {
+  seedLib(seedDir, cloneDir);
+  pushMoreCommits(seedDir, 1);
+  const lock = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-7789-bglock-'));
+  try {
+    const head = git(cloneDir, ['rev-parse', 'HEAD']);
+    const out = runHook(cloneDir, 'compact', { CODE_CHECKOUT_BG_LOCK: lock });
+    assert.match(out, /auto-sync skipped: a background catch-up is still running/);
+    assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+  } finally {
+    fs.rmSync(lock, { recursive: true, force: true });
+  }
+}));
+
+test('BRO-7789 session-start.sh: the sync timeout path also gets the compact no-op background starter', () => {
+  const src = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh'), 'utf8');
+  assert.match(src, /lib\.trySyncCodeCheckout\(\{ repoDir, behind: r\.behind, ahead: r\.ahead, startBackground: bg \}\)/);
+});
