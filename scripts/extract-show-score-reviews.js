@@ -398,10 +398,7 @@ function main() {
         // CI, no archive) can see the mapping still points at that page.
         if (data._wrongProduction) {
           if (!showScoreData._meta.wrongProduction) showScoreData._meta.wrongProduction = {};
-          // archiveCanonical: the page the archive really holds. healUrlMap only unmaps when it
-          // equals the mapped URL, so a stale archive cannot delete a mapping fixed since (BRO-7655).
-          const canon = html.match(/<link rel="canonical" href="([^"]+)"/);
-          showScoreData._meta.wrongProduction[showId] = { url: sourceUrl, reason: data._rejectionReason, archiveCanonical: canon ? canon[1] : null };
+          showScoreData._meta.wrongProduction[showId] = { url: sourceUrl, reason: data._rejectionReason };
         }
         const cause = data._wrongProduction
           ? 'mapped Show Score page is another production\'s (BRO-5866)'

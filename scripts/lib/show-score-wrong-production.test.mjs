@@ -143,7 +143,7 @@ function recordedFixture() {
   return {
     urlData: { shows: { [show.id]: WRONG, 'other-show-2026': 'https://www.show-score.com/broadway-shows/other' } },
     showScoreData: { _meta: { wrongProduction: {
-      [show.id]: { url: `${WRONG}/`, reason: 'wrong-production page: dates', archiveCanonical: WRONG },
+      [show.id]: { url: `${WRONG}/`, reason: 'wrong-production page: dates' },
       'gone-show-2020': { url: null, reason: 'unmapped' },
     } }, shows: {} },
   };
@@ -170,7 +170,7 @@ test('unmapRecordedWrongProduction leaves a show remapped to a different page al
 
 test('unmapRecordedWrongProduction skips a page named for this production\'s venue (exemption)', () => {
   const venueUrl = 'https://www.show-score.com/off-broadway-shows/safe-house-theatre-row';
-  const f = { urlData: { shows: { [show.id]: venueUrl } }, showScoreData: { _meta: { wrongProduction: { [show.id]: { url: venueUrl, reason: 'r', archiveCanonical: venueUrl } } } } };
+  const f = { urlData: { shows: { [show.id]: venueUrl } }, showScoreData: { _meta: { wrongProduction: { [show.id]: { url: venueUrl, reason: 'r' } } } } };
   assert.deepEqual(unmapRecordedWrongProduction({ ...f, showsById }), []);
   assert.equal(f.urlData.shows[show.id], venueUrl);
 });
@@ -204,22 +204,9 @@ test('extractor wiring: main() heals the url map right after writing show-score.
   assert.ok(heal > elseBranch, 'the heal must sit in the non --check branch (--check is read-only)');
 });
 
-test('unmapRecordedWrongProduction keeps a mapping when the archive held a different page (stale archive)', () => {
+test('unmapRecordedWrongProduction heals a mapping even when Show Score redirects it (miles-for-mary shape: archive canonical differs from the mapped URL)', () => {
   const f = recordedFixture();
-  f.showScoreData._meta.wrongProduction[show.id].archiveCanonical = 'https://www.show-score.com/broadway-shows/some-other-page';
-  assert.deepEqual(unmapRecordedWrongProduction({ ...f, showsById }), []);
-  assert.equal(f.urlData.shows[show.id], WRONG);
-});
-
-test('unmapRecordedWrongProduction keeps a mapping when no archive canonical was recorded (no proof)', () => {
-  const f = recordedFixture();
-  delete f.showScoreData._meta.wrongProduction[show.id].archiveCanonical;
-  assert.deepEqual(unmapRecordedWrongProduction({ ...f, showsById }), []);
-  assert.equal(f.urlData.shows[show.id], WRONG);
-});
-
-test('extractor records the archive canonical with each wrong-production finding', async () => {
-  const fs = await import('node:fs');
-  const src = fs.readFileSync(new URL('../extract-show-score-reviews.js', import.meta.url), 'utf8');
-  assert.match(src, /wrongProduction\[showId\] = \{ url: sourceUrl, reason: data\._rejectionReason, archiveCanonical/);
+  f.showScoreData._meta.wrongProduction[show.id].archiveCanonical = 'https://www.show-score.com/off-broadway-shows/some-redirect-target';
+  assert.deepEqual(unmapRecordedWrongProduction({ ...f, showsById }).map((h) => h.showId), [show.id]);
+  assert.equal(f.urlData.shows[show.id], undefined);
 });
