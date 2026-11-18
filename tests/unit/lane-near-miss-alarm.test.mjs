@@ -126,7 +126,7 @@ test('ingest command: the lane inbox when it exists, else the ingest workflow; a
   const it = { url: "https://x.com/it's-a-review/", outletId: 'o' };
   assert.match(nm.ingestCommand('s', it, { inbox: true }).primary, /^node scripts\/opening-night-lane-inbox\.js add --show=s --url='https:\/\/x\.com\/it'\\''s-a-review\/' --outlet=o$/);
   const w = nm.ingestCommand('s', it, { inbox: false });
-  assert.match(w.primary, /^gh workflow run ingest-urls\.yml -f show_id=s -f urls=/);
+  assert.match(w.primary, /^node scripts\/capped-workflow-dispatch\.js --workflow=ingest-urls\.yml --priority -f show_id=s -f urls=/);
   assert.equal(w.fallback, null);
 });
 

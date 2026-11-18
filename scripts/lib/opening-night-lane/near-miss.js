@@ -172,7 +172,8 @@ const INBOX_SCRIPT = path.join(__dirname, '..', '..', 'opening-night-lane-inbox.
 function ingestCommand(showId, item, { inbox = fs.existsSync(INBOX_SCRIPT) } = {}) {
   const q = (v) => `'${String(v).replace(/'/g, `'\\''`)}'`; // copy-paste safe even if the URL holds a quote
   const outlet = item.outletId ? ` --outlet=${item.outletId}` : '';
-  const workflow = `gh workflow run ingest-urls.yml -f show_id=${showId} -f urls=${q(`${item.url}${item.outletId ? ` ${item.outletId}` : ''}`)}`;
+  // Through the queue cap (workflow-queue-cap-coverage); --priority because this is opening-night work.
+  const workflow = `node scripts/capped-workflow-dispatch.js --workflow=ingest-urls.yml --priority -f show_id=${showId} -f urls=${q(`${item.url}${item.outletId ? ` ${item.outletId}` : ''}`)}`;
   if (!inbox) return { primary: workflow, fallback: null };
   return { primary: `node scripts/opening-night-lane-inbox.js add --show=${showId} --url=${q(item.url)}${outlet}`, fallback: workflow };
 }
