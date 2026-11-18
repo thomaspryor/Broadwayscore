@@ -78,6 +78,21 @@ jobs:
           # of main for this 45-min job's final ledger commit; depth-1 aborted when churn outran it.
           fetch-depth: 300
 
+      # BRO-7766: start the deploy now. Its setup (checkout, npm ci, vercel
+      # pull, guards, cache restore, ~2 min) overlaps this rebuild, then it
+      # waits for "Push core data to private repo" below and builds from the
+      # fresh main (vercel-deploy.yml "Wait for rebuild" step). Dispatch-only:
+      # the 4-hourly cron mostly changes nothing, so a pre-warm there would
+      # just cancel itself. If this dispatch fails, "Trigger deploy" below
+      # dispatches a normal deploy as before. Kill switch: repo variable
+      # DEPLOY_PREWARM_DISABLED=true (no pre-warm, so the old dispatch path runs).
+      - name: Pre-warm the deploy
+        if: github.event_name == 'workflow_dispatch' && vars.DEPLOY_PREWARM_DISABLED != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run vercel-deploy.yml -f wait_for_run="$GITHUB_RUN_ID" || echo "::warning::pre-warm dispatch failed; the post-push dispatch still runs"
+
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
@@ -675,6 +690,14 @@ jobs:
           # never shipped (2026-11-18 drill). vercel-deploy.yml's should-deploy gate skips a
           # build when HEAD and core data are already live, and its 5-min cron really fires
           # every 6-9h, so this dispatch is what ships the data.
+          # BRO-7766: the pre-warm run dispatched at the start of this job ships this
+          # push itself when its "Wait for rebuild" step is live; any doubt (lookup
+          # error, run still in setup, too old) prints nothing and we dispatch.
+          PREWARM=$(node scripts/lib/deploy-prewarm-wait.js --find-prewarm "$GITHUB_RUN_ID" || true)
+          if [ -n "$PREWARM" ]; then
+            echo "Pre-warm deploy run $PREWARM is waiting on this push; not dispatching another."
+            exit 0
+          fi
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
 

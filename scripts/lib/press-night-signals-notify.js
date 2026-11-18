@@ -74,17 +74,17 @@ function discordChunks(text, limit = 1900) {
 
 function createPressSignalsNotifier({ env = process.env, log = console.log, discord = postDiscord, comment = commentOnCard, card = coordinatorCard(), runUrl, capMs = CHANNEL_CAP_MS, fetchPage = fetchPageDirect } = {}) {
   const run = runUrl || (env.GITHUB_RUN_ID && env.GITHUB_REPOSITORY ? `https://github.com/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}` : null);
-  return async ({ show, night, nearMisses = [], gaps = [] }) => {
+  return async ({ show, night, nearMisses = [], gaps = [], sourceHealth = [] }) => {
     if (env.PRESS_SIGNALS_OFF === '1') { log('[press-signals] PRESS_SIGNALS_OFF=1: alerts off'); return { discord: false, comment: false, text: null }; }
     for (const n of nearMisses.slice(0, MAX_PAGE_CHECKS)) {
       if (n.pageNamesShow !== undefined) continue;
       try { n.pageNamesShow = pageNamesShow(await capped(Promise.resolve(fetchPage(n.url)), 12000, 'page check'), show); } catch { n.pageNamesShow = null; }
     }
-    const msg = formatPressSignals(show, night, { nearMisses, gaps });
+    const msg = formatPressSignals(show, night, { nearMisses, gaps, sourceHealth });
     if (!msg) return { discord: false, comment: false, text: null };
     const text = `${msg.title}\n${msg.description}${run ? `\nlane run: ${run}` : ''}`;
     log(`[press-signals] ${text}`);
-    console.log(`::warning title=Press-night ${nearMisses.length ? 'near-miss' : 'found-not-live'}::⚠️ ${msg.title} (details in the log above)`);
+    console.log(`::warning title=Press-night ${nearMisses.length ? 'near-miss' : gaps.length ? 'found-not-live' : 'source problem'}::⚠️ ${msg.title} (details in the log above)`);
     const out = { discord: false, comment: false, text };
     if (env.DISCORD_WEBHOOK_ALERTS) {
       // Discord caps a message at 2,000 characters: send whole lines in chunks so no item is cut off (review of BRO-7748).

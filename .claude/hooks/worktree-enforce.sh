@@ -170,12 +170,13 @@ case "$tool_name" in
       }
     )
     [ -z "$targets" ] && exit 0
+    # Relative targets resolve against a leading `cd DIR &&|;` (2026-11-18); dirs normalized so ./scripts/x cannot dodge the scope check.
+    base=$(pwd -P); d=$(printf '%s' "$scan" | sed -nE '1s/^[[:space:]]*cd[[:space:]]+([^[:space:];&|]+)[[:space:]]*(&&|;).*/\1/p' | tr -d "\"'")
+    case "$d" in "~"|"~/"*) d="$HOME${d#\~}" ;; esac
+    [ -n "$d" ] && { base=$(cd "$d" 2>/dev/null && pwd -P) || base=$(pwd -P); }
     while IFS= read -r t; do
-      [ -z "$t" ] && continue
-      case "$t" in
-        /*) abs="$t" ;;
-        *)  abs="$(pwd)/$t" ;;
-      esac
+      case "$t" in "") continue ;; /*) abs="$t" ;; *) abs="$base/$t" ;; esac
+      tdir=$(cd "$(dirname -- "$abs")" 2>/dev/null && pwd -P) && abs="$tdir/$(basename -- "$abs")"
       resolve_and_check "$abs"
       [ "$BLOCK" = "1" ] && break
     done <<EOF

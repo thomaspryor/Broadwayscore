@@ -27,6 +27,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { NOOP_HEALTH, indexBodyProblem, feedBodyProblem } = require('./source-health');
 const { findBWWRoundupLinkOnHomepage } = require('../bww-homepage-scan');
 const { findDTLIShowLinkOnHomepage } = require('../dtli-homepage-scan');
 const { parseFeedItems, titleMatchesShow, urlSlugMatchesShow } = require('../rss-discovery');
@@ -663,12 +664,17 @@ function rssAdapter({ feeds, matchOpts } = {}) {
   let pass = 0; let paidReads = 0;
   return {
     name: 'rss', kind: 'feed', phase: 'cheap',
-    async discover({ show, fetchText, slowFetchText }) {
+    async discover({ show, fetchText, slowFetchText, health = NOOP_HEALTH }) {
       const readDirectFeed = async (url) => {
         try {
           return await fetchText(url, { directOnly: true });
         } catch (e) {
           const p = paid.get(url) || { at: -Infinity, fails: 0 };
+          if (unreachableFromRunner(e) && pass - p.at < PAID_FEED_REST_PASSES && p.fails === 0) {
+            // BRO-7779 ship-check: a direct-only feed served by its paid read (resting between paid reads) is not a failing
+            // source. Recording these would end and restart a failure streak every PAID_FEED_REST_PASSES passes.
+            const rest = new Error(`resting between paid reads: ${(e && e.message) || e}`); rest.paidResting = true; throw rest;
+          }
           if (!unreachableFromRunner(e) || pass - p.at < PAID_FEED_REST_PASSES || p.fails >= PAID_FEED_MAX_FAILS || paidReads >= PAID_FEED_RUN_MAX) throw e;
           p.at = pass; paidReads += 1; paid.set(url, p);
           // Bright Data can take longer than the cheap 15 s cap, and a read cut off there is billed all the same.
@@ -687,6 +693,8 @@ function rssAdapter({ feeds, matchOpts } = {}) {
       pass += 1;
       const resting = (f) => !f.directOnly && (chain.get(f.url)?.restUntil ?? 0) > pass;
       const batch = [...nextRegular(all.filter((f) => !f.directOnly)), ...nextDirect(all.filter((f) => f.directOnly))].filter((f) => !resting(f));
+      // BRO-7779 item 5: every feed is expected tonight; a failed read or an unparseable body is counted, never just skipped.
+      health.expect(all.map((f) => f.url), { adapter: 'rss' });
       const readChainFeed = async (url) => {
         const c = chain.get(url) || { fails: 0, restUntil: 0 };
         try {
@@ -706,9 +714,13 @@ function rssAdapter({ feeds, matchOpts } = {}) {
       const mo = matchOpts || laneMatchOpts();
       const budget = nearMissBudget();
       for (const [i, feed] of batch.entries()) {
-        if (bodies[i].status !== 'fulfilled') continue;
+        const hmeta = { adapter: 'rss', outletId: feed.outletId };
+        if (bodies[i].status !== 'fulfilled' && bodies[i].reason && bodies[i].reason.paidResting) continue;
+        if (bodies[i].status !== 'fulfilled') { health.record(feed.url, { ok: false, error: bodies[i].reason, ...hmeta }); continue; }
         let items;
-        try { items = parseFeedEntries(bodies[i].value); } catch { continue; }
+        try { items = parseFeedEntries(bodies[i].value); } catch (e) { health.record(feed.url, { ok: false, error: `parse: ${(e && e.message) || e}`, ...hmeta }); continue; }
+        const problem = feedBodyProblem(bodies[i].value, items);
+        health.record(feed.url, problem ? { ok: false, error: problem, ...hmeta } : { ok: true, ...hmeta });
         for (const it of items) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
@@ -748,9 +760,10 @@ function sectionIndexAdapter({ outlets, matchOpts } = {}) {
   let nextWindow = null; let slots = null;
   return {
     name: 'section-index', kind: 'outlet-index', phase: 'cheap',
-    async discover({ show, fetchText }) {
+    async discover({ show, fetchText, health = NOOP_HEALTH }) {
       const out = [];
       const all = outlets ?? defaultLaneSectionIndexes(show);
+      health.expect(all.map((o) => o.indexUrl), { adapter: 'section-index' });
       const pinned = all.filter((o) => o.pinned);
       const free = Math.max(1, MAX_SOURCES_PER_ADAPTER - pinned.length);
       if (slots !== free) { slots = free; nextWindow = rotatingWindow(free); }
@@ -759,8 +772,10 @@ function sectionIndexAdapter({ outlets, matchOpts } = {}) {
       const mo = matchOpts || laneMatchOpts();
       const budget = nearMissBudget();
       for (const [i, o] of batch.entries()) {
-        if (pages[i].status !== 'fulfilled') continue;
+        if (pages[i].status !== 'fulfilled') { health.record(o.indexUrl, { ok: false, error: pages[i].reason, adapter: 'section-index', outletId: o.outletId }); continue; }
         const html = pages[i].value;
+        const problem = indexBodyProblem(html);
+        health.record(o.indexUrl, problem ? { ok: false, error: problem, adapter: 'section-index', outletId: o.outletId } : { ok: true, adapter: 'section-index', outletId: o.outletId });
         const host = hostOf(o.indexUrl);
         const parse = SECTION_INDEX_PARSERS[o.outletId];
         if (parse) {
@@ -1378,9 +1393,16 @@ function looksReviewLike(c, show) {
  *   fetchTimeoutMs, deadlineMs
  * @returns {{admitted, rejected, unknownHosts, errors, deferredDateChecks, serpRan, deadlineHit}}
  */
+/** Calendar days between a publish date (in the market's zone) and the night; null when the date cannot be read. */
+function nightDayOffset(publishDate, night, timeZone) {
+  const date = calendarDateIn(publishDate, ...(timeZone ? [timeZone] : []));
+  if (!date) return null;
+  return Math.round((Date.parse(`${date}T00:00:00Z`) - Date.parse(`${night}T00:00:00Z`)) / 86400000);
+}
+
 async function runDiscoveryPass({
   show, night, now = Date.now(), startedAt, fetchText: rawFetch, adapters = [], seen = new Set(), memo = { rejected: {} },
-  timeZone, missingOutlets = [], serpMax = 5, maxDateChecks = DEFAULT_MAX_DATE_CHECKS,
+  timeZone, missingOutlets = [], serpMax = 5, maxDateChecks = DEFAULT_MAX_DATE_CHECKS, sourceHealth = NOOP_HEALTH,
   lateDateCheckStarts = LATE_DATE_CHECK_STARTS, fetchTimeoutMs = DEFAULT_FETCH_TIMEOUT_MS, deadlineMs = DEFAULT_PASS_DEADLINE_MS,
 } = {}) {
   if (!show || !show.title) throw new Error('runDiscoveryPass: show.title is required');
@@ -1436,9 +1458,12 @@ async function runDiscoveryPass({
     const remaining = () => deadlineMs - (Date.now() - startedMs);
     const fetchForAdapter = a.fetchTimeoutMs ? withTimeout(rawFetch, a.fetchTimeoutMs, remaining) : fetchText;
     const slowFetchText = withTimeout(rawFetch, SLOW_AGGREGATOR_TIMEOUT_MS, remaining);
-    return Promise.resolve().then(() => a.discover({ show, night, fetchText: fetchForAdapter, slowFetchText, timeZone, remainingMs: remaining }));
+    return Promise.resolve().then(() => a.discover({ show, night, fetchText: fetchForAdapter, slowFetchText, timeZone, remainingMs: remaining, health: sourceHealth }));
   }));
   settled.forEach((r, i) => {
+    // BRO-7779 item 5 cousin: a whole adapter failing pass after pass (an aggregator down, Google News blocked) alerts
+    // during the night too, not only in the end-of-night summary.
+    sourceHealth.record(`adapter:${cheap[i].name}`, r.status === 'fulfilled' ? { ok: true, adapter: cheap[i].name } : { ok: false, error: r.reason, adapter: cheap[i].name });
     if (r.status === 'fulfilled') collect(r.value, cheap[i].name);
     else errors.push({ adapter: cheap[i].name, error: String((r.reason && r.reason.message) || r.reason).slice(0, 200) });
   });
@@ -1468,13 +1493,15 @@ async function runDiscoveryPass({
     pending.delete(key);
     const verdict = admitLaneCandidate({ source: c.source, aggregatorCited: c.aggregatorCited === true, publishDate, night, ...(timeZone ? { timeZone } : {}) });
     if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason, ...(c.aggregatorDate ? { aggregatorDate: c.aggregatorDate } : {}), ...(c.excerpts ? { excerpts: c.excerpts } : {}), ...(typeof page === 'string' && page ? { [PREFETCHED_PAGE]: page } : {}) });
-    else reject(c, key, verdict.reason);
+    // BRO-7779 item 6: how many days off tonight an outside-window find is dated, so near-miss.js can tell a wrong
+    // openingDate (a review dated days off the night) from an old production's review.
+    else reject(c, key, verdict.reason, verdict.reason === 'outside-night-window' ? nightDayOffset(publishDate, night, timeZone) : null);
   };
-  const reject = (c, key, reason) => {
+  const reject = (c, key, reason, dayOffset = null) => {
     pending.delete(key);
     rejected.push({ url: c.url, adapter: c.adapter, reason });
     const prev = memo.rejected[key] || { attempts: 0 };
-    memo.rejected[key] = { reason, attempts: prev.attempts + 1, ...(prev.dateFails ? { dateFails: prev.dateFails } : {}) };
+    memo.rejected[key] = { reason, attempts: prev.attempts + 1, ...(prev.dateFails ? { dateFails: prev.dateFails } : {}), ...(Number.isFinite(dayOffset) ? { dayOffset } : {}) };
   };
   // A date check that failed or read no date (a challenge page has none) is a strike, and the find stays pending. Date
   // failures have their own count, carried through other rejections, so a find re-judged after a bare-title sighting
@@ -1621,6 +1648,7 @@ async function runDiscoveryPass({
     outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, knownOutlet: !!resolveOutletFromUrl(c.url),
     aggregatorCited: c.aggregatorCited === true, vettedOutlet: c.vettedOutlet === true || c.outletListed === true, reviewLike: looksReviewLike(c, show),
     admitted: admittedKeys.has(key), rejectedFor: (memo.rejected[key] || {}).reason || null,
+    ...(Number.isFinite((memo.rejected[key] || {}).dayOffset) ? { rejectedDayOffset: memo.rejected[key].dayOffset } : {}),
   }));
   return { admitted, rejected, unknownHosts: [...unknownHosts].filter(Boolean).sort(), errors, deferredDateChecks, serpRan, deadlineHit, nearMisses, sightings };
 }

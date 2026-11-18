@@ -701,6 +701,8 @@ jobs:
             echo "::warning::deploy-duration check SKIPPED — run-history query failed (auth/rate-limit/network). This is NOT a statement that deploy durations are healthy."
             exit 0
           fi
+          # BRO-7766: a pre-warm run's duration includes waiting on a rebuild, not deploy time.
+          RUNS=$(echo "$RUNS" | jq '[.[] | select((.displayTitle // "") | contains("pre-warm") | not)]')
           COUNT=$(echo "$RUNS" | jq 'length')
 
           if [ "$COUNT" -eq 0 ]; then

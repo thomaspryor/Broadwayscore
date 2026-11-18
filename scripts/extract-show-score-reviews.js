@@ -27,6 +27,7 @@ const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
 const { isUkPageForShow } = require('./lib/show-score-canonical');
 const { checkShowScoreProduction } = require('./lib/show-score-production-window');
 const { filterToLiveShowIds } = require('./lib/live-show-ids');
+const { unmapRecordedWrongProduction } = require('./lib/show-score-wrong-production');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
@@ -295,6 +296,21 @@ function extractShowData(html, showId, sourceUrl) {
   return result;
 }
 
+// BRO-7655: a page rejected above as another production's is also unmapped
+// from show-score-urls.json (and recorded under _productionMismatch), so the
+// strict URL audit no longer fails until someone runs the purge by hand.
+// Re-reads the file so only the rejected keys change.
+function healUrlMap(showScoreData, { file = urlsPath, byId = showsById } = {}) {
+  const fresh = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const healed = unmapRecordedWrongProduction({ urlData: fresh, showScoreData, showsById: byId });
+  if (healed.length === 0) return healed;
+  fresh._meta = { ...(fresh._meta || {}), lastUpdated: new Date().toISOString() };
+  fs.writeFileSync(file, JSON.stringify(fresh, null, 2) + '\n');
+  for (const h of healed) console.log(`  UNMAPPED ${h.showId}: ${h.url} (another production's page; recorded under _productionMismatch)`);
+  console.log(`Unmapped ${healed.length} wrong-production page(s) in ${file}. Audience data, if any: node scripts/purge-wrong-production-show-score.js --apply`);
+  return healed;
+}
+
 function main() {
   console.log('Extracting Show Score data from archived HTML pages...\n');
 
@@ -435,6 +451,7 @@ function main() {
   } else {
     // Write main output
     fs.writeFileSync(outputPath, JSON.stringify(showScoreData, null, 2));
+    healUrlMap(showScoreData);
 
     // Write extraction-gap audit (always — empty file is a useful signal of "all good")
     fs.mkdirSync(path.dirname(gapsPath), { recursive: true });
@@ -475,7 +492,7 @@ function main() {
 }
 
 // Exported for audit-sibling-misfile-archive.js / unit tests; runs only as a script.
-module.exports = { extractShowData };
+module.exports = { extractShowData, healUrlMap };
 
 if (require.main === module) {
   try {

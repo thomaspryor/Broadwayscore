@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'scripts/check-prod-deploy.js'
       - 'scripts/bww-regional-coverage.js'
       - 'scripts/bww-regional-add-plan.js'
       - 'src/**'

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-18T15:19:29.591Z",
+    "generatedAt": "2026-11-18T17:38:02.147Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -8,400 +8,52 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 6,
-    "exemptCount": 23,
-    "coveredCount": 54,
-    "highChurnTracked": 83
+    "flaggedCount": 0,
+    "exemptCount": 1,
+    "coveredCount": 7,
+    "highChurnTracked": 8
   },
-  "flagged": [
-    {
-      "path": "data/audit/reddit-post-drafts.json",
-      "churn": 128
-    },
-    {
-      "path": "data/audit/indexing-api-usage.json",
-      "churn": 121
-    },
-    {
-      "path": "data/audit/outlet-feed-reconcile.json",
-      "churn": 54
-    },
-    {
-      "path": "data/audit/serp-session-ledger.json",
-      "churn": 53
-    },
-    {
-      "path": "data/audit/lane-rehearsal-recorded.json",
-      "churn": 49
-    },
-    {
-      "path": "data/show-score-candidates.json",
-      "churn": 36
-    }
-  ],
+  "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 543
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 362
-    },
-    {
-      "path": "public/data/admin/critic-coverage.json",
-      "churn": 268
-    },
-    {
-      "path": "public/data/admin/locks.json",
-      "churn": 268
-    },
-    {
-      "path": "public/data/mobile-shows.json",
-      "churn": 268
-    },
-    {
-      "path": "data/audit/alert-digest-queue.json",
-      "churn": 194
-    },
-    {
-      "path": "public/data/stats-reviews.json",
-      "churn": 157
-    },
-    {
-      "path": "public/opening-night-status.json",
-      "churn": 129
-    },
-    {
-      "path": "public/data/shows/the-comedy-about-spies-west-end-2025.json",
-      "churn": 86
-    },
-    {
-      "path": "public/data/shows/translations-west-end-2018.json",
-      "churn": 86
-    },
-    {
-      "path": "public/data/shows/the-fantasticks-2026.json",
-      "churn": 75
-    },
-    {
-      "path": "public/data/shows/downstate-2026.json",
-      "churn": 59
-    },
-    {
-      "path": "data/audit/t1-outlet-breaker.json",
-      "churn": 54
-    },
-    {
-      "path": "data/audit/we-gate-proving.json",
-      "churn": 54
-    },
-    {
-      "path": "public/data/shows/hamlet-hail-to-the-thief-off-west-end-2026.json",
-      "churn": 40
-    },
-    {
-      "path": "public/data/shows/cranford-off-west-end-2026.json",
       "churn": 37
-    },
-    {
-      "path": "public/data/shows/wanted-2022.json",
-      "churn": 36
-    },
-    {
-      "path": "public/data/onboarding-hits.json",
-      "churn": 35
-    },
-    {
-      "path": "public/data/shows/blue-man-group-a-new-holiday-surprise-2026.json",
-      "churn": 35
-    },
-    {
-      "path": "public/data/shows/jenufa-off-broadway-2026.json",
-      "churn": 35
-    },
-    {
-      "path": "public/data/shows/desire-under-the-elms-off-west-end-2026.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/shows/the-good-thief-off-broadway-2026.json",
-      "churn": 31
-    },
-    {
-      "path": "public/data/shows/the-kings-critique-off-broadway-2026.json",
-      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 765,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 620,
+      "churn": 50,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 615,
+      "churn": 42,
       "mergeAttr": "union"
     },
     {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 448,
-      "mergeAttr": "ours"
+      "path": "data/audit/gemini-usage-ledger.jsonl",
+      "churn": 40,
+      "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 436,
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 35,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 436,
+      "churn": 35,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 436,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 397,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 377,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 300,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/landings.jsonl",
-      "churn": 279,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/orphan-unscored-hamlet-hail-to-the-thief-off-west-end-2026.json",
-      "churn": 268,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 268,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 233,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/live-progress.json",
-      "churn": 189,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/progress.json",
-      "churn": 188,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 183,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 129,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 129,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 129,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 129,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/syndicated-duplicates.json",
-      "churn": 129,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/tour-sweep.json",
-      "churn": 129,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/wrong-production-audit.json",
-      "churn": 129,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-nacho-ate-spiderman-regional-2026.json",
-      "churn": 120,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 88,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/bww-roundup-miss-ledger.jsonl",
-      "churn": 86,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 64,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-collision-report.json",
-      "churn": 64,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/validation-baseline.json",
-      "churn": 64,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/autoclear-shadow-report.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/coverage-digest-snapshot.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/deployed-coverage-diff.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/show-review-gap.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/t1-coverage-signals.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/t1-coverage-stats.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/t1-silent-gaps.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/uncollected-live-reviews.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 54,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-mismatch-suspects.json",
-      "churn": 53,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/lane-rehearsal.json",
-      "churn": 49,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/blue-man-group-a-new-holiday-surprise-2026.json",
-      "churn": 49,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/relative-motion-off-west-end-2026.json",
-      "churn": 43,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/orlando-off-west-end-2026.json",
-      "churn": 37,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-fantasticks-2026.json",
-      "churn": 37,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/session-retro.jsonl",
-      "churn": 37,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/poller-backoff/jenufa-off-broadway-2026.json",
-      "churn": 36,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/downstate-2026.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/score-public-since.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/market-misroutes.json",
-      "churn": 33,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-good-thief-off-broadway-2026.json",
-      "churn": 31,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/nine-night-off-west-end-2026.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/west-side-story-west-end-2026.json",
-      "churn": 30,
+      "churn": 35,
       "mergeAttr": "ours"
     }
   ]

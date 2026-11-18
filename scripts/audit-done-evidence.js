@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// BRO-7738 live-gate test marker A
 /**
  * audit-done-evidence.js — re-prove every recently-Done / In Review /
  * In Progress card's CLAIMED evidence against a fresh origin/main, and report

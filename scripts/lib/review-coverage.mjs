@@ -54,7 +54,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import { walkTranscript } from './transcript-scan.mjs';
+import { walkTranscript, isStopHookFeedback } from './transcript-scan.mjs';
 import { linearCommands } from './linear-command.js';
 
 const { stripHeredocBodies } = createRequire(import.meta.url)('./infra-review-scope.js');
@@ -317,6 +317,31 @@ export function claimsSafeToArchive(message) {
   const text = String(message || '').replace(/```[\s\S]*?```/g, '');
   const lines = text.split('\n').map((l) => l.trim().replace(/^[*_>#\s•-]+/, '').replace(/[*_\s]+$/, '')).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
   return lines.length > 0 && /^SAFE TO (?:ARCHIVE|EXIT)\b/.test(lines[lines.length - 1]);
+}
+
+/**
+ * BRO-7738: index of the last SAFE TO ARCHIVE claim that actually ended a turn (no Stop-hook feedback after it before
+ * the next assistant event), or -1. A claim any Stop hook refused (e.g. [VE:ROOTCAUSE], which runs before
+ * [VE:LIVERUN] in verify-edits.sh) did not close the session, so it must not start a new chunk: otherwise every retry
+ * reads "nothing landed in this chunk" and the later gate never fires (live test, 2026-11-18). `lastMessage`, the claim
+ * being judged (it may already be flushed), is skipped, and so is an earlier claim with identical text.
+ * root-cause-stop deliberately differs (its chunkStart re-judges claims with its own gate): for it an answer stated
+ * before a refused claim still counts, and counting every refused claim out collapsed its chunk to the session start.
+ * Here a refused Stop means the owed live run is still owed. With no accepted claim the chunk is the whole session.
+ */
+export function lastAcceptedClaimIndex(events, lastMessage = '') {
+  for (let i = events.length - 1; i >= 0; i--) {
+    const e = events[i];
+    if (e.kind !== 'assistant_text' || e.text === lastMessage || !claimsSafeToArchive(e.text)) continue;
+    let refused = false;
+    for (let j = i + 1; j < events.length; j++) {
+      const f = events[j];
+      if (f.kind === 'assistant_text' || f.kind === 'assistant_tool_use') break;
+      if (isStopHookFeedback(f)) { refused = true; break; }
+    }
+    if (!refused) return i;
+  }
+  return -1;
 }
 
 /**

@@ -35,7 +35,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { walkTranscript } from './transcript-scan.mjs';
-import { landedPushIndices, claimsSafeToArchive, runShellCode } from './review-coverage.mjs';
+import { landedPushIndices, claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex } from './review-coverage.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
 
 const require = createRequire(import.meta.url);
@@ -189,11 +189,8 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   // Chunk: after the previous accepted-looking SAFE TO ARCHIVE claim (the closing message itself is not in `events` yet, or is the same text).
-  let from = -1;
-  for (let i = events.length - 1; i >= 0; i--) {
-    const e = events[i];
-    if (e.kind === 'assistant_text' && e.text !== lastMessage && claimsSafeToArchive(e.text)) { from = i; break; }
-  }
+  // BRO-7738: a claim another Stop hook refused is not a boundary (lastAcceptedClaimIndex).
+  const from = lastAcceptedClaimIndex(events, lastMessage);
   const chunk = events.slice(from + 1);
   const claim = claimsVerified(lastMessage);
   const problems = [];

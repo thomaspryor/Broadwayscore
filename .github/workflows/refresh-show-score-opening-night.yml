@@ -160,6 +160,7 @@ jobs:
           git config user.email "action@github.com"
           git add data/audit/show-score-extraction-gaps.json 2>/dev/null || true
           git add data/show-score.json 2>/dev/null || true
+          git add data/show-score-urls.json 2>/dev/null || true
           git diff --staged --quiet && echo "No changes to commit" && exit 0
           git commit -m "data: Refresh Show Score opening-night extraction"
           bash scripts/lib/push-with-retry.sh

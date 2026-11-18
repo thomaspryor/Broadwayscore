@@ -57,7 +57,8 @@ test('gapCandidates: only vouched, not-admitted, not-intentionally-refused sight
   const firstSeen = new Map();
   const base = { url: 'https://a.com/review/x', knownOutlet: true, aggregatorCited: true, admitted: false };
   const t0 = Date.parse('2026-11-18T02:00:00Z');
-  const s = [base, { ...base, url: 'https://a.com/review/admitted', admitted: true }, { ...base, url: 'https://a.com/review/old', rejectedFor: 'outside-night-window' },
+  const s = [base, { ...base, url: 'https://a.com/review/admitted', admitted: true }, // An earlier production's review on the outlet's own listing (dated a year off): refused on purpose, never an alert.
+    { url: 'https://a.com/review/old', knownOutlet: true, vettedOutlet: true, reviewLike: true, rejectedFor: 'outside-night-window', rejectedDayOffset: -400 },
     { url: 'https://a.com/review/unvouched', knownOutlet: true }, { ...base, url: 'https://unknown.com/r', knownOutlet: false }];
   assert.deepEqual(nm.gapCandidates(s, { firstSeen, now: t0 }), []);
   const later = nm.gapCandidates(s, { firstSeen, now: t0 + 16 * 60000 });

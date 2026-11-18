@@ -359,20 +359,6 @@
     "queuedAt": "2026-11-18T15:22:14.469Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-18.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-18T15:22:14.500Z"
-  },
-  {
     "conditionKey": "cookie-renew:stuck-uncertain:nytimes",
     "title": "Cookie renew: nytimes login state unreadable for 12h+",
     "description": "renew-cookies.js has not been able to tell whether nytimes is logged in since 2026-11-17T21:06:18.278Z (last: anonymous control failed: control hit a bot challenge (HTTP 403) (vacuity unverified; not writing cookies)). It will not log in on an uncertain reading. Check: node scripts/verify-cookie-login.js --outlets=nytimes",
@@ -412,5 +398,245 @@
       }
     ],
     "queuedAt": "2026-11-18T15:24:35.549Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7780-byline",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7780-byline",
+    "description": "land.yml did not land land/bro-7780-byline: the unit-tests-node gate went red at ea6f40e3fe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44337652216",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7780-byline"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ea6f40e3fe732b9a2dc573d0bdd7557021be7199"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44337652216"
+      }
+    ],
+    "queuedAt": "2026-11-18T15:43:46.428Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7781-sim-night",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7781-sim-night",
+    "description": "land.yml did not land land/bro-7781-sim-night: the unit-tests-node gate went red at 58bd1e4b1c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44337921505",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7781-sim-night"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "58bd1e4b1c696b25a0d0932a0753f9707a2354e2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44337921505"
+      }
+    ],
+    "queuedAt": "2026-11-18T15:45:42.462Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7766-r3-prewarm",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7766-r3-prewarm",
+    "description": "land.yml did not land land/bro-7766-r3-prewarm: the unit-tests-node gate went red at 3c9665e993. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44342144909",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7766-r3-prewarm"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3c9665e99371f9fc3a782f8a9ba0218a8650ffdd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44342144909"
+      }
+    ],
+    "queuedAt": "2026-11-18T16:07:41.226Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7779b-source-health",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7779b-source-health",
+    "description": "land.yml did not land land/bro-7779b-source-health: the unit-tests-node gate went red at 9480aac264. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44344411462",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7779b-source-health"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9480aac264be88e5c55120066b32d658432924fb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44344411462"
+      }
+    ],
+    "queuedAt": "2026-11-18T16:17:07.428Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
+    "title": "Live-data test failing: daily synopsis passes reach every flagged open show within a month (tests/unit/enrichment-target-reach-live.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"daily synopsis passes reach every flagged open show within a month\" in tests/unit/enrichment-target-reach-live.test.mjs is red against the live corpus.\n\nthe daily synopsis enricher never reaches 1 of 60 flagged show(s) on any day of the month (BRO-7437: a bare slice() of a file-ordered, mostly-closed candidate list starves exactly the rows the health check reddens over, so the gap count can never fall and the card is refiled forever)\n+ actual - expected\n\n+ [\n+   'ted-talks-and-talks-regional-2026'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
+    "fields": [],
+    "queuedAt": "2026-11-18T16:51:19.144Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-enforce-cd",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-enforce-cd",
+    "description": "land.yml did not land land/worktree-enforce-cd: the unit-tests-node gate went red at 9145d114b6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44351867681",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-enforce-cd"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9145d114b6f46f7afb958f226c3ab3c23ae9235e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44351867681"
+      }
+    ],
+    "queuedAt": "2026-11-18T16:55:23.690Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-18.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T17:41:04.233Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-top-gunchained-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Top Gunchained",
+    "description": "londonpubtheatres/Paul Maidment (londonpubtheatres--paul-maidment.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of Richard Marsh's 'Top Gunchained,' but it is NOT a review of a current Off-West End production  — https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T17:14:21.067Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:top-gunchained-off-west-end-2026",
+    "title": "Content mismatch on Top Gunchained",
+    "description": "thereviewshub/Scott Matthewman (thereviewshub--scott-matthewman.json) SHIPPED but fullText never mentions 'Top Gunchained' (2947 chars): https://www.thereviewshub.com/top-gunchained-wiltons-music-hall-london/\n⚠️  south-london/Michael Holland (south-london--unknown.json) also too short to assess (0 chars): https://southlondon.co.uk/lifestyle/review-top-gunchained-at-wiltons/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T17:14:21.455Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-top-gunchained-off-west-end-2026",
+    "title": "Placeholder synopsis on Top Gunchained",
+    "description": "synopsis for top-gunchained-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T17:14:21.479Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-18.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T17:41:45.898Z"
   }
 ]

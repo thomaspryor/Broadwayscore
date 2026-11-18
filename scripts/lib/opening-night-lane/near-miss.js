@@ -56,6 +56,16 @@ function leadTitle(showTitle) {
   return sig(cut).length >= 2 ? cut : null;
 }
 
+const REVIEW_WORD_RE = / (?:review|reviews|reviewed) /;
+/** The single significant word before a subtitle ("Dolly" in "Dolly: A True Original Musical"), 4+ letters, or null. */
+function leadWord(showTitle) {
+  const t = String(showTitle || '');
+  const cut = t.split(/\s*[“"‘]|\s*:\s+|\s+[-–—]\s+|\s*\(/)[0].trim();
+  if (!cut || cut === t.trim()) return null;
+  const w = sig(cut);
+  return w.length === 1 && w[0].length >= 4 && !/^\d+$/.test(w[0]) ? w[0] : null;
+}
+
 function hasPhrase(hay, phrase) {
   const p = fold(phrase).trim();
   return !!p && (hay.includes(` ${p} `) || hay.includes(` ${p}s `));
@@ -74,6 +84,21 @@ function nearMissSignals(item, show) {
   const base = [];
   const lead = leadTitle(show.title);
   if (lead && hasPhrase(hay, lead)) base.push(`lead-title:${lead}`);
+  // BRO-7778: a one-word lead ("Dolly: A True Original Musical", "Diana: The Untold and Untrue Story") counts beside a
+  // review cue. Such a lead is shared with other shows (Hello, Dolly!; Diana, The Musical), so it is never admitted,
+  // only reported here.
+  const word = leadWord(show.title);
+  const { pressAkaForTitle, registryShowTitles } = require('../show-names');
+  // ...unless the headline names another show that holds the word ("Hello, Dolly! review" is not Dolly's).
+  const otherShowNamed = () => registryShowTitles().some((t) => {
+    const f = fold(t);
+    return f !== fold(show.title) && f.trim().split(' ').length >= 2 && f.split(' ').includes(word) && hasPhrase(hay, t);
+  });
+  if (!lead && word && words.has(word) && REVIEW_WORD_RE.test(hay) && !otherShowNamed()) base.push(`lead-word:${word}`);
+  // Press titles (shows.json akaTitles) count as the lead does.
+  const akas = Array.isArray(show.akaTitles) ? show.akaTitles : pressAkaForTitle(show.title);
+  const aka = akas.find((a) => typeof a === 'string' && sig(a).length >= 1 && hasPhrase(hay, a));
+  if (aka) base.push(`aka:${aka}`);
   const tw = [...new Set(sig(show.title))];
   const hit = tw.filter((w) => words.has(w) || words.has(`${w}s`));
   if (tw.length >= 2 && hit.length >= 2 && hit.length / tw.length >= 0.6) base.push(`title-words:${hit.length}/${tw.length}`);
@@ -93,6 +118,20 @@ function nearMissSignals(item, show) {
   return base.length ? [...base, ...extra] : [];
 }
 
+// A review dated within this many days of the night, but outside the lane's +/-1 day window, points at a wrong
+// openingDate (Blue Man Group-style data slips), not at an earlier production's review (those are months or years off).
+const WINDOW_MISMATCH_MAX_DAYS = 7;
+/**
+ * BRO-7779 item 6: a sighting refused only for its date (outside-night-window) that is still evidence of TONIGHT's
+ * show: an aggregator cites it, or the outlet's own feed / index lists it as a review dated a few days off the night.
+ * INTENDED_REJECTIONS used to drop these silently, so a wrong openingDate hid every real review.
+ */
+function windowMismatch(s) {
+  if (!s || s.rejectedFor !== 'outside-night-window') return false;
+  if (s.aggregatorCited) return true;
+  return !!(s.vettedOutlet && s.reviewLike && Number.isFinite(s.rejectedDayOffset) && Math.abs(s.rejectedDayOffset) <= WINDOW_MISMATCH_MAX_DAYS);
+}
+
 /**
  * Gap candidates among a pass's sightings. `firstSeen` (Map url -> ms) is the caller's, kept across passes; this
  * records first sightings in it. A sighting is eligible when it is from a known outlet, vouched for (aggregator citation,
@@ -104,11 +143,14 @@ function gapCandidates(sightings, { firstSeen, now, afterMs = GAP_AFTER_MS }) {
   for (const s of sightings || []) {
     if (!s || !s.url || s.admitted || !s.knownOutlet) continue;
     if (!(s.aggregatorCited || (s.vettedOutlet && s.reviewLike))) continue;
-    if (s.rejectedFor && INTENDED_REJECTIONS.has(s.rejectedFor)) continue;
+    // BRO-7779 item 6: an aggregator citing a review the lane dated outside tonight's window is the sign of a wrong
+    // openingDate (or a wrong window), not of an old production: aggregators cite tonight's reviews for tonight's show.
+    if (s.rejectedFor && INTENDED_REJECTIONS.has(s.rejectedFor) && !windowMismatch(s)) continue;
     const id = idOf(s);
     if (!firstSeen.has(id)) firstSeen.set(id, now);
     const age = now - firstSeen.get(id);
-    if (age >= afterMs) out.push({ ...s, firstSeenAt: new Date(firstSeen.get(id)).toISOString(), ageMin: Math.round(age / 60000) });
+    // A window mismatch is a deliberate refusal, not a backlog: waiting 15 minutes would only delay the fix.
+    if (age >= (windowMismatch(s) ? 0 : afterMs)) out.push({ ...s, firstSeenAt: new Date(firstSeen.get(id)).toISOString(), ageMin: Math.round(age / 60000) });
   }
   return out;
 }
@@ -179,8 +221,8 @@ function ingestCommand(showId, item, { inbox = fs.existsSync(INBOX_SCRIPT) } = {
 }
 
 /** Alert text for new near-misses and gaps (one message per pass). Null when there is nothing new. */
-function formatPressSignals(show, night, { nearMisses = [], gaps = [] }) {
-  if (!nearMisses.length && !gaps.length) return null;
+function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHealth = [] }) {
+  if (!nearMisses.length && !gaps.length && !sourceHealth.length) return null;
   const lines = [];
   for (const n of nearMisses) {
     const c = ingestCommand(show.id, n);
@@ -189,13 +231,18 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [] }) {
   }
   for (const g of gaps) {
     const c = ingestCommand(show.id, g);
-    lines.push(`GAP (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${g.rejectedFor ? `lane refused it: ${g.rejectedFor}` : 'lane has not dated it yet: backlog or a blocked page'})`, `  add it: \`${c.primary}\``, ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
+    const why = windowMismatch(g) ? `${g.aggregatorCited ? 'an aggregator cites it' : 'the outlet lists it as a review'} but it is dated ${Number.isFinite(g.rejectedDayOffset) ? `${g.rejectedDayOffset > 0 ? '+' : ''}${g.rejectedDayOffset} day(s) from` : 'outside'} tonight: check the show's openingDate${g.rejectedDayOffset < 0 ? ' (or it is a preview-period review or another production)' : ''}` : g.rejectedFor ? `lane refused it: ${g.rejectedFor}` : 'lane has not dated it yet: backlog or a blocked page';
+    lines.push(`${windowMismatch(g) ? 'WINDOW-MISMATCH' : 'GAP'} (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${why})`, `  add it: \`${c.primary}\``, ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
   }
-  const title = `Press night ${show.id} ${night}: ${nearMisses.length} near-miss, ${gaps.length} found-not-live`;
+  for (const h of sourceHealth) {
+    if (h.kind === 'fetch-failing') lines.push(`SOURCE FAILING (${h.adapter || 'lane'}${h.outletId ? `, ${h.outletId}` : ''}): ${h.url}`, `  ${h.fails} reads in a row failed (last: ${h.lastError || 'unknown'}); last good read ${h.lastOkAt || 'never tonight'}. Reviews it lists are not being seen.`);
+    else lines.push(`SOURCE NOT READ (${h.adapter || 'lane'}${h.outletId ? `, ${h.outletId}` : ''}): ${h.url}`, `  not read for ${h.idleMin} min (last try ${h.lastAttemptAt || 'never tonight'}). Reviews it lists are not being seen.`);
+  }
+  const title = `Press night ${show.id} ${night}: ${nearMisses.length} near-miss, ${gaps.length} found-not-live${sourceHealth.length ? `, ${sourceHealth.length} source problem(s)` : ''}`;
   return { title, description: lines.join('\n') };
 }
 
 module.exports = {
-  GAP_AFTER_MS, MAX_NEAR_MISSES_PER_ADAPTER, MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER, INTENDED_REJECTIONS,
-  leadTitle, nearMissSignals, pageNamesShow, gapCandidates, recordNew, signalsPath, ingestCommand, formatPressSignals,
+  GAP_AFTER_MS, WINDOW_MISMATCH_MAX_DAYS, MAX_NEAR_MISSES_PER_ADAPTER, MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER, INTENDED_REJECTIONS,
+  leadTitle, nearMissSignals, windowMismatch, pageNamesShow, gapCandidates, recordNew, signalsPath, ingestCommand, formatPressSignals,
 };

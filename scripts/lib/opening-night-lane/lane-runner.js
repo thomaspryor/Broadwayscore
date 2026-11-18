@@ -255,6 +255,8 @@ async function runLaneNight({
 
   let passes = 0;
   const firstSightings = new Map();
+  // BRO-7779 item 5: per-source read health for the whole night (failure streaks, sources rotation never reaches).
+  const sourceHealth = require('./source-health').createSourceHealth({ now });
   // BRO-7748: firstSightings is url -> first time a pass saw it, for the 15-minute found-not-live check (in memory: a
   // re-dispatched night starts the clock again and re-sends its alerts once; a duplicate beats a silent miss).
   const alerting = new Set(); // press-signal alerts in flight, settled before the night returns, even when a pass throws
@@ -266,7 +268,7 @@ async function runLaneNight({
   try { // the finally clears the mid-pass timer even if a pass throws
   for (; passes < maxPasses && now() - t0 < windowMs; passes++) {
     if (shouldStop()) { stopped = true; break; }
-    const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: serpClockStartMs === undefined ? t0 : serpClockStartMs, adapters, fetchText, seen, memo, timeZone,
+    const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: serpClockStartMs === undefined ? t0 : serpClockStartMs, adapters, fetchText, seen, memo, timeZone, sourceHealth,
       missingOutlets: typeof missingOutlets === 'function' ? missingOutlets({ seen }) : missingOutlets });
     errors.push(...pass.errors);
     const stamp = now();
@@ -279,9 +281,10 @@ async function runLaneNight({
     try {
       const nearMisses = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'near-miss', items: pass.nearMisses || [], now: stamp, perAdapter: nearMiss.MAX_NEAR_MISSES_PER_ADAPTER });
       const gaps = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'gap', items: nearMiss.gapCandidates(pass.sightings || [], { firstSeen: firstSightings, now: stamp }), now: stamp });
+      const health = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'source-health', items: sourceHealth.alerts(stamp), now: stamp });
       // Not awaited here: the admitted reviews below are the lane's job and must not wait on Discord or Linear.
-      if ((nearMisses.length || gaps.length) && onPressSignals) {
-        const p = Promise.resolve().then(() => onPressSignals({ show, night, nearMisses, gaps }))
+      if ((nearMisses.length || gaps.length || health.length) && onPressSignals) {
+        const p = Promise.resolve().then(() => onPressSignals({ show, night, nearMisses, gaps, sourceHealth: health }))
           .catch((e) => errors.push({ adapter: 'press-signals', error: String((e && e.message) || e).slice(0, 150) }))
           .finally(() => alerting.delete(p));
         alerting.add(p);

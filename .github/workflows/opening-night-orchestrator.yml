@@ -72,6 +72,16 @@ on:
         required: false
         type: string
         default: ''
+      role:
+        description: 'BRO-7779 press-night clock role: kick (default), ek (early run before the kick: no URL watcher, no audience refresh) or tk (tail run after the kick: no audience refresh)'
+        required: false
+        type: string
+        default: 'kick'
+      deadline_minutes:
+        description: 'BRO-7779 loop length in minutes (15-240; the early run ends when the kick starts)'
+        required: false
+        type: string
+        default: '240'
 
 permissions:
   # contents: write — the final ledger-commit step pushes to main via push-with-retry.sh; under
@@ -289,7 +299,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          NEXT=$(node scripts/lib/press-night-clock.js next --shows-file=data/shows.json --categories=broadway,off-broadway) \
+          NEXT=$(node scripts/lib/press-night-clock.js next --shows-file=data/shows.json --categories=broadway,off-broadway,west-end,off-west-end) \
             || { echo "::warning::press-night clock plan failed"; exit 0; }
           if [ -z "$NEXT" ]; then echo "No press-night kick planned."; exit 0; fi
           HOPS=$( (gh run list --workflow=press-night-clock.yml --status in_progress --json databaseId --jq '.[].databaseId'; \
@@ -401,7 +411,7 @@ jobs:
         # mid-loop. Warn-only. Gated on a Broadway/Off-Broadway opening TODAY (ET), the only
         # shows the watcher acts on (so West End and look-back ticks dispatch nothing), and
         # skipped when a watcher LOOP run is already queued or running (matched by run title).
-        if: steps.find.outputs.has_shows == 'true'
+        if: steps.find.outputs.has_shows == 'true' && inputs.role != 'ek'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -573,7 +583,7 @@ jobs:
           message: 'data: Enroll commercial stubs for opening-night shows'
 
       - name: Refresh audience data (opening night)
-        if: steps.find.outputs.has_shows == 'true'
+        if: steps.find.outputs.has_shows == 'true' && inputs.role != 'ek' && inputs.role != 'tk'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -641,6 +651,8 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEADLINE_MINUTES: ${{ inputs.deadline_minutes }}  # BRO-7779: empty on cron runs -> 240
+          ORCH_ROLE: ${{ inputs.role }}  # BRO-7779: empty on cron runs (= kick)
           # BRO-6639: GITHUB_TOKEN has no `variables` scope (403). Pause reads/deletes use this PAT.
           VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           # Job-start snapshot of the pause; the fallback when the live read fails (never "unset").
@@ -787,7 +799,13 @@ jobs:
           # with a real reserve for the always() tail steps. It also has to
           # absorb the steps that run BEFORE this one (checkout, npm ci, budget
           # pre-flight), which are not covered by this clock.
+          # BRO-7779: the press-night clock's early run (role ek) passes a shorter loop so it ends when the kick run starts.
+          LOOP_MIN="${DEADLINE_MINUTES:-240}"
+          case "$LOOP_MIN" in ''|*[!0-9]*) LOOP_MIN=240 ;; esac
+          [ "$LOOP_MIN" -ge 15 ] || LOOP_MIN=15
+          [ "$LOOP_MIN" -le 240 ] || LOOP_MIN=240
           DEADLINE=$(( $(date +%s) + 240*60 ))
+          [ "$LOOP_MIN" -lt 240 ] && DEADLINE=$(( $(date +%s) + LOOP_MIN*60 ))
           COMPLETED_ITERATIONS=0
           DEADLINE_EXIT=false
 
@@ -928,6 +946,7 @@ jobs:
             if [ "$PLAN_MODE" = "parallel" ]; then
               # BRO-7198: iterations are minutes, not hours, in parallel mode; keep the old ~120 min SERP deferral.
               [ $(( ($(date +%s) - LOOP_START) / 60 )) -lt 120 ] && SERP_DEFER_NOW=true
+              [ "$ORCH_ROLE" = "ek" ] && SERP_DEFER_NOW=true  # BRO-7779: the early run ends at embargo -2h; no SERP before it
             elif [ "$ITERATION" -le "$SERP_DEFER_ITERATIONS" ]; then
               SERP_DEFER_NOW=true
             fi
