@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7660-n",
   "planId": "e475df12-f18c-493b-bb73-fec9e5bb4dc6",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T07:28:48.800Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,129 @@
         "description": "BRO-7660 CLEAR_NR: full review of this production"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T11:44:40.216Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/amny--matt-windman.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/amny--matt-windman.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/amny--matt-windman.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "i-love-you-so-much-i-could-die-off-broadway-2024/theatre-reviews-limited--david-roberts.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "i-love-you-so-much-i-could-die-off-broadway-2024/theatre-reviews-limited--david-roberts.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023/travel-arts-journal--fern-siegel.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023/travel-arts-journal--fern-siegel.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023/travel-arts-journal--fern-siegel.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nantucket-sleigh-ride-off-broadway-2019/bobs-theater-blog--robert-sholiton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nantucket-sleigh-ride-off-broadway-2019/bobs-theater-blog--robert-sholiton.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nantucket-sleigh-ride-off-broadway-2019/bobs-theater-blog--robert-sholiton.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "napoli-brooklyn-off-broadway-2017/thewrap--thom-geier.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "napoli-brooklyn-off-broadway-2017/thewrap--thom-geier.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nice-fish-off-broadway-2016/slantmagazine--henry-stewart.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nice-fish-off-broadway-2016/slantmagazine--henry-stewart.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nice-fish-off-broadway-2016/slantmagazine--henry-stewart.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "people-places-and-things-off-broadway-2017/village-voice--david-cote.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "people-places-and-things-off-broadway-2017/village-voice--david-cote.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "people-places-and-things-off-broadway-2017/village-voice--david-cote.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purlie-victorious-2023/cititour--brian-scott-lipton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purlie-victorious-2023/cititour--brian-scott-lipton.json isNonReview: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }
