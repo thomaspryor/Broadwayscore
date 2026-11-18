@@ -86,6 +86,67 @@ const daysBetween = (a, b) => Math.round((Date.parse(`${b}T00:00:00Z`) - Date.pa
 const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return null; } };
 
 /**
+ * BRO-7291 (class 1 recurrence, hayward-regional-2026 2026-W47): the run end the producing theatre prints on the
+ * production's OWN page. Listing sites (theatreinchicago) keep the original run after an extension; the theatre's
+ * page and its schema.org Event list move first. Two readings, both tied to THIS production:
+ *   - a printed range "Oct 14 – Nov 22, 2026" whose start is within 45 days of our opening (a season sidebar's
+ *     other shows start elsewhere), and
+ *   - the last schema.org Event performance whose name contains the title.
+ * The latest reading wins. Pure; `html` is the raw page.
+ * @returns {{ date: string, how: 'range'|'jsonld', snippet: string } | null}
+ */
+const RANGE_RE = new RegExp(`${MON}\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+(20\\d\\d))?\\s*(?:[-\u2013\u2014]|to|through|thru)\\s*(?:${MON}\\.?\\s+)?(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(20\\d\\d)`, 'gi');
+const foldTitle = (s) => String(s || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/&amp;/g, '&').replace(/[^a-z0-9]+/g, ' ').trim();
+const monNum = (m) => MONTHS[m.toLowerCase().slice(0, 4)] || MONTHS[m.toLowerCase().slice(0, 3)];
+function pageText(html) {
+  return String(html).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;|&#160;/g, ' ').replace(/&ndash;|&#8211;|&#x2013;/gi, '\u2013').replace(/&mdash;|&#8212;/gi, '\u2014').replace(/&amp;/g, '&').replace(/&#?\w+;/g, ' ').replace(/\s+/g, ' ');
+}
+function jsonLdNodes(html) {
+  const out = [];
+  const walk = (n) => {
+    if (Array.isArray(n)) { n.forEach(walk); return; }
+    if (!n || typeof n !== 'object') return;
+    out.push(n);
+    if (n['@graph']) walk(n['@graph']);
+    if (n.subEvent) walk(n.subEvent);
+  };
+  for (const m of String(html).matchAll(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)) {
+    try { walk(JSON.parse(m[1].trim())); } catch { /* malformed block: skip */ }
+  }
+  return out;
+}
+function runEndFromTheatrePage(html, ctx) {
+  const opening = ctx && ctx.opening;
+  const title = foldTitle(ctx && ctx.title);
+  if (!opening || !title || !html) return null;
+  const hi = new Date(Date.parse(`${opening}T00:00:00Z`) + 200 * 86400000).toISOString().slice(0, 10);
+  const near = (d) => Math.abs(daysBetween(opening, d)) <= 45;
+  const found = [];
+  const text = pageText(html);
+  if (!foldTitle(text).includes(title)) return null; // not this production's page
+  RANGE_RE.lastIndex = 0;
+  let m;
+  while ((m = RANGE_RE.exec(text))) {
+    const sm = monNum(m[1]); const sd = Number(m[2]);
+    const em = m[4] ? monNum(m[4]) : sm; const ed = Number(m[5]); const ey = Number(m[6]);
+    const sy = m[3] ? Number(m[3]) : (sm > em ? ey - 1 : ey);
+    if (!sm || !em || !valid(sy, sm, sd) || !valid(ey, em, ed)) continue;
+    const start = iso(sy, sm, sd); const end = iso(ey, em, ed);
+    if (!near(start) || end < start || end > hi) continue;
+    found.push({ date: end, how: 'range', snippet: m[0] });
+  }
+  for (const n of jsonLdNodes(html)) {
+    const type = [].concat(n['@type'] || []).join(' ');
+    if (!/Event/i.test(type) || !foldTitle(n.name).includes(title)) continue;
+    const d = String(n.endDate || n.startDate || '').slice(0, 10);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d) && d >= opening && d <= hi) found.push({ date: d, how: 'jsonld', snippet: String(n.name).slice(0, 120) });
+  }
+  if (!found.length) return null;
+  return found.sort((a, b) => a.date.localeCompare(b.date)).pop();
+}
+
+/**
  * BRO-7291 (class 1, stale closing dates after extensions): the production's announced run end when it is
  * LATER than `closing`, from its own evidence, else null.
  *   show      { opening, closing }  (closing may be empty: any sourced end is then returned)
@@ -94,7 +155,8 @@ const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); 
  * The listing and the latest "extended through" sentence outrank plain review text (a review keeps quoting the
  * original run after an extension); otherwise pickRunEnd decides. Only moves later, by more than `slackDays`
  * and at most `maxDays`; any text-derived date (extended or plain) needs `minSites` (2) distinct hosts naming the same date; the audit passes 1 so single-host extensions stay visible. An earlier date in a review is almost always the original run, never a shortening.
- * @returns {{ date: string, source: string, kind: 'listing'|'extended'|'text' } | null}
+ *   evidence.theatrePage { date, url } | null: runEndFromTheatrePage() on the producing theatre's own page.
+ * @returns {{ date: string, source: string, kind: 'theatre-page'|'listing'|'extended'|'text' } | null}
  */
 function laterAnnouncedRunEnd(show, evidence, opts = {}) {
   const slack = opts.slackDays == null ? 0 : opts.slackDays;
@@ -106,7 +168,11 @@ function laterAnnouncedRunEnd(show, evidence, opts = {}) {
   ((evidence && evidence.texts) || []).forEach((t, ti) => {
     for (const c of runEndCandidates(String(t.text || ''), { opening, articleDate: t.articleDate || null })) cands.push({ ...c, url: t.url || null, ti });
   });
-  const listing = evidence && evidence.listing && evidence.listing.date && evidence.listing.date >= opening ? evidence.listing : null;
+  const ownPage = (src) => (src && src.date && src.date >= opening ? src : null);
+  // the theatre's own production page (BRO-7291 hayward) stands alone like the listing and outranks it on a tie
+  const theatrePage = ownPage(evidence && evidence.theatrePage);
+  const listingSrc = ownPage(evidence && evidence.listing);
+  const listing = listingSrc || theatrePage; // either one outranks plain review text
   // BRO-7319: one review's "extended through <date>" no longer moves a date. A text-derived date needs
   // `minSites` distinct hosts naming the SAME date (any mix of cues); only the theatre's own listing stands alone.
   // kind is 'extended' only when `minSites` hosts used the extended cue, so a plain mention never force-overwrites
@@ -129,8 +195,12 @@ function laterAnnouncedRunEnd(show, evidence, opts = {}) {
   // plain text only decides when nothing stronger exists: the listing outranks it (a review keeps quoting the original run)
   const pick = extBest ? { d: extBest, kind: 'extended' } : plainBest && !listing ? { d: plainBest, kind: 'text' } : null;
   const text = pick && { date: pick.d[0], urls: pick.d[1].urls, kind: pick.kind };
-  const best = [listing && { date: listing.date, urls: [listing.url], kind: 'listing' }, text]
-    .filter(Boolean).sort((a, b) => a.date.localeCompare(b.date) || (a.kind === 'listing' ? 1 : -1)).pop() || null;
+  const rank = { text: 0, extended: 0, listing: 1, 'theatre-page': 2 };
+  const best = [
+    listingSrc && { date: listingSrc.date, urls: [listingSrc.url], kind: 'listing' },
+    theatrePage && { date: theatrePage.date, urls: [theatrePage.url], kind: 'theatre-page' },
+    text,
+  ].filter(Boolean).sort((a, b) => a.date.localeCompare(b.date) || rank[a.kind] - rank[b.kind]).pop() || null;
   if (!best) return null;
   if (show.closing) {
     const gap = daysBetween(show.closing, best.date);
@@ -138,8 +208,9 @@ function laterAnnouncedRunEnd(show, evidence, opts = {}) {
   }
   const urls = best.urls.filter(Boolean);
   const where = urls.length ? ` (${urls.slice(0, 3).join(' ; ')})` : '';
-  const source = best.kind === 'listing' ? `theatre listing "through ${best.date}"${where}` : `review text "through ${best.date}"${where}`;
+  const source = best.kind === 'theatre-page' ? `theatre's own page "through ${best.date}"${where}`
+    : best.kind === 'listing' ? `theatre listing "through ${best.date}"${where}` : `review text "through ${best.date}"${where}`;
   return { date: best.date, source, kind: best.kind, hosts: [...new Set(urls.map(hostOf).filter(Boolean))] };
 }
 
-module.exports = { runEndCandidates, pickRunEnd, closingFields, laterAnnouncedRunEnd, ESTIMATED_RUN_DAYS };
+module.exports = { runEndCandidates, pickRunEnd, closingFields, laterAnnouncedRunEnd, runEndFromTheatrePage, ESTIMATED_RUN_DAYS };

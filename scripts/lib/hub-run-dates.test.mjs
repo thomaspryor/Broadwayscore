@@ -144,3 +144,50 @@ test('replay hayward-regional-2026: a hand-entered date with no source moves, bu
   applyRunEnd(sourced, r, '2026-11-10');
   assert.equal((sourced.closingExtensions || []).length, 1, 'a sourced date moving later is an extension');
 });
+
+// BRO-7291 recurrence (weekly audit 2026-W47, chicago-il): Hayward extended to Nov 22 on Steppenwolf's own page
+// (header + schema.org Event list) while theatreinchicago still printed "Thru - Nov 15, 2026". Excerpts are the
+// real pages fetched 2026-11-17; the record before the fix had closingDate 2026-11-15, status closed.
+const { runEndFromTheatrePage } = require('./run-end-from-text.js');
+const { theatrePageUrl } = require('../harvest-hub-run-dates.js');
+const STEPPENWOLF_HEADER = `<p class="production-header__tag"><span>The Gift Theatre Presents</span></p>
+<h1 id="page-header__title" class="production-header__title">\t\t\tHayward\t</h1>
+<p class="production-header__subtitle">A World Premiere</p>
+<time datetime="2026-10-14T00:00:00-05:00" class="production-header__date">Oct 14 &ndash; Nov 22, 2026</time>`;
+const STEPPENWOLF_LD = `<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Event","name":"Hayward - Sunday, November 15, 2026 3:00 PM","startDate":"2026-11-15T15:00:00-06:00"},{"@context":"https://schema.org","@type":"Event","name":"Hayward - Sunday, November 22, 2026 3:00 PM","startDate":"2026-11-22T15:00:00-06:00"}]</script>`;
+const HAYWARD = { title: 'Hayward', opening: '2026-10-20' };
+
+test('replay hayward-regional-2026 W47: the theatre page (range + Event list) beats the lagging listing', () => {
+  for (const html of [STEPPENWOLF_HEADER, STEPPENWOLF_LD + STEPPENWOLF_HEADER]) {
+    assert.equal(runEndFromTheatrePage(html, HAYWARD).date, '2026-11-22');
+  }
+  assert.equal(runEndFromTheatrePage(STEPPENWOLF_LD + '<h1>Hayward</h1>', HAYWARD).how, 'jsonld');
+  const d = laterAnnouncedRunEnd({ opening: '2026-10-20', closing: '2026-11-15' }, {
+    texts: [],
+    listing: { date: '2026-11-15', url: 'https://www.theatreinchicago.com/hayward/13552/' },
+    theatrePage: { date: '2026-11-22', url: 'https://www.steppenwolf.org/whats-on/2026-2027/hayward' },
+  });
+  assert.equal(d.date, '2026-11-22');
+  assert.equal(d.kind, 'theatre-page');
+  // without the theatre page the listing alone keeps the stale date (the miss this replays)
+  assert.equal(laterAnnouncedRunEnd({ opening: '2026-10-20', closing: '2026-11-15' }, { texts: [], listing: { date: '2026-11-15', url: 'x' } }), null);
+  // the stale auto-closed record reopens (today 2026-11-17 is before the new end)
+  const show = { id: 'hayward-regional-2026', openingDate: '2026-10-20', closingDate: '2026-11-15', status: 'closed' };
+  assert.equal(applyRunEnd(show, d, '2026-11-17'), 'written');
+  assert.equal(show.closingDate, '2026-11-22');
+  assert.equal(show.status, 'open');
+});
+
+test('theatre page: other productions on the page never supply the date', () => {
+  // a season sidebar lists another show whose run does not start near ours
+  const sidebar = '<h1>Hayward</h1><p>Also this season: Fen, Jan 8 – Feb 22, 2027</p><script type="application/ld+json">{"@type":"Event","name":"Fen","endDate":"2027-02-22"}</script>';
+  assert.equal(runEndFromTheatrePage(sidebar, HAYWARD), null);
+  // a page that never names the production is not its page
+  assert.equal(runEndFromTheatrePage('<h1>Fen</h1><time>Oct 14 – Nov 22, 2026</time>', HAYWARD), null);
+});
+
+test('theatre page url: officialUrl or the venue box-office link, never a reseller or the listing site', () => {
+  assert.equal(theatrePageUrl({ ticketLinks: [{ platform: 'Venue Box Office', url: 'https://www.steppenwolf.org/whats-on/2026-2027/hayward' }] }), 'https://www.steppenwolf.org/whats-on/2026-2027/hayward');
+  assert.equal(theatrePageUrl({ officialUrl: 'https://www.todaytix.com/x', ticketLinks: [{ platform: 'TodayTix', url: 'https://www.todaytix.com/y' }] }), null);
+  assert.equal(theatrePageUrl({ ticketLinks: [{ platform: 'Official site', url: 'https://www.theatreinchicago.com/hayward/13552/' }] }), null);
+});
