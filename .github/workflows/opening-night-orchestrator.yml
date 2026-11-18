@@ -652,6 +652,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEADLINE_MINUTES: ${{ inputs.deadline_minutes }}  # BRO-7779: empty on cron runs -> 240
+          ORCH_ROLE: ${{ inputs.role }}  # BRO-7779: empty on cron runs (= kick)
           # BRO-6639: GITHUB_TOKEN has no `variables` scope (403). Pause reads/deletes use this PAT.
           VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           # Job-start snapshot of the pause; the fallback when the live read fails (never "unset").
@@ -945,6 +946,7 @@ jobs:
             if [ "$PLAN_MODE" = "parallel" ]; then
               # BRO-7198: iterations are minutes, not hours, in parallel mode; keep the old ~120 min SERP deferral.
               [ $(( ($(date +%s) - LOOP_START) / 60 )) -lt 120 ] && SERP_DEFER_NOW=true
+              [ "$ORCH_ROLE" = "ek" ] && SERP_DEFER_NOW=true  # BRO-7779: the early run ends at embargo -2h; no SERP before it
             elif [ "$ITERATION" -le "$SERP_DEFER_ITERATIONS" ]; then
               SERP_DEFER_NOW=true
             fi
