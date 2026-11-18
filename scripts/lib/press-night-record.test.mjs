@@ -651,7 +651,7 @@ test('reviewEmbargoAt: a valid override wins and is normalized to ISO UTC', () =
   assert.equal(lib.defaultEmbargoAt(show), '2026-10-30T02:00:00.000Z');
   assert.equal(lib.defaultEmbargoAt({ ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' }), '2026-10-30T03:00:00.000Z');
   assert.equal(lib.defaultEmbargoAt({ ...show, reviewEmbargoAt: '2026-10-29T23:00:00-04:00' }), '2026-10-30T03:00:00.000Z');
-  assert.deepEqual(lib.embargoInfo({ ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' }), { at: '2026-10-30T03:00:00.000Z', source: 'override', problem: null });
+  assert.deepEqual(lib.embargoInfo({ ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' }), { at: '2026-10-30T03:00:00.000Z', source: 'override', assumed: false, problem: null });
   // West End matinee-ish press release at 17:00 UK is still the opening night
   assert.equal(lib.defaultEmbargoAt({ id: 'w', category: 'west-end', openingDate: '2026-11-03', reviewEmbargoAt: '2026-11-03T17:00:00Z' }), '2026-11-03T17:00:00.000Z');
 });

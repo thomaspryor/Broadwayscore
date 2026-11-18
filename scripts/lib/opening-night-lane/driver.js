@@ -270,7 +270,7 @@ function wireLaneNight({
   let liftedAt = null;
   const onAdmitted = (admitted, stampMs) => {
     if (!pe || liftedAt != null) return;
-    const d = pw.dropEvidence({ admitted, night, onDiskUrls: onDiskUrls instanceof Set ? onDiskUrls : new Set(onDiskUrls || []) });
+    const d = pw.dropEvidence({ admitted, night, floorMs: pe.embargoMs - pw.MAX_LEAD_MIN * 60 * 1000, onDiskUrls: onDiskUrls instanceof Set ? onDiskUrls : new Set(onDiskUrls || []) });
     if (d.lifted) { liftedAt = stampMs; console.log(`::notice::embargo lifted for ${show.id} ${night} at ${new Date(stampMs).toISOString()} (assumed embargo ${new Date(pe.embargoMs).toISOString()}); first live review ${d.evidence.url || d.evidence.key}; pre-embargo guard closed`); }
   };
   const isActive = () => !!pe && liftedAt == null && pw.windowActive({ enabled: true, embargoMs: pe.embargoMs, nowMs: now() });

@@ -108,8 +108,9 @@ function embargoVerdict(show, nowMs) {
   // BRO-7740: a market-default embargo is a guess. The day before opening it is flagged so someone confirms it (reviewEmbargoAt in
   // shows.json, from the press release or office). The lane's guard covers an early release either way.
   const info = embargoInfo(show);
-  if (info.assumed && hrs <= 36 && hrs > -12) {
-    const guardFrom = new Date(e.embargoMs - 90 * MIN).toISOString();
+  if (info.assumed && hrs <= 36 && hrs > 0) {
+    const pw = require('./opening-night-lane/preembargo-window');
+    const guardFrom = new Date(pw.laneStartMs({ embargoMs: e.embargoMs, timeZone: require('./local-date').tzForMarket(show.category || show.market), enabled: true })).toISOString();
     return { status: 'warn', detail: `Reviews are assumed to open ${e.embargoAt} (${when}), the market default, not a confirmed time. The lane guard (direct-only, no paid spend) opens ${guardFrom} and closes on the first live review; confirm the real time and set reviewEmbargoAt if known. ${kick}.` };
   }
   return { status: 'pass', detail: `Reviews open ${e.embargoAt} (${when}${info.assumed ? ', assumed market default' : ''}); ${kick}.` };

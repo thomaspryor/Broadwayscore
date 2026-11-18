@@ -110,7 +110,7 @@ async function main() {
   if (cmd === 'night-wait') return nightWait();
   if (cmd === 'hold-check') return holdCheck();
   if (cmd === 'preembargo-mode') return preembargoMode();
-  console.error('usage: lane-auto-fallback.js start-plan|night-wait|hold-check ...');
+  console.error('usage: lane-auto-fallback.js start-plan|night-wait|preembargo-mode|hold-check ...');
   return 2;
 }
 

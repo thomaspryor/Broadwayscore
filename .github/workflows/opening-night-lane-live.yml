@@ -189,7 +189,8 @@ jobs:
           LANE_PREEMBARGO_DIRECT_ONLY: ${{ vars.LANE_PREEMBARGO_DIRECT_ONLY }}
         run: |
           # BRO-7740: guard on = the owner variable OR a market-default (guessed) embargo; one function (laneGuardMode) decides.
-          echo "preembargo=$(node scripts/lane-auto-fallback.js preembargo-mode "--show=${SHOW}" "--night=${NIGHT}")" >> "$GITHUB_OUTPUT"
+          PRE=$(node scripts/lane-auto-fallback.js preembargo-mode "--show=${SHOW}" "--night=${NIGHT}") || { echo "::error::preembargo-mode failed"; exit 1; }
+          echo "preembargo=${PRE}" >> "$GITHUB_OUTPUT"
           read -r ACTION SLEEP_MIN <<< "$(node scripts/lane-auto-fallback.js night-wait "--show=${SHOW}" "--night=${NIGHT}")"
           echo "night-wait: ${ACTION} ${SLEEP_MIN} min"
           case "$ACTION" in

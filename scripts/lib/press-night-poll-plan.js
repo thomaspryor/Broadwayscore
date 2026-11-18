@@ -3,7 +3,7 @@
  * press-night-poll-plan.js (BRO-6858): how long the opening-night orchestrator sleeps between poller runs.
  *
  * A poller run takes ~58 min (p50 of the last 100 runs, 2026-11-02: inline poll 15, text collection 11, rebuild 8,
- * deploy wait 8), so the orchestrator's own sleep is the only gap it controls. Inside the first 2h after a Broadway
+ * deploy wait 8), so the orchestrator's own sleep is the only gap it controls. BRO-7740: and from 90 min before an assumed (market-default) embargo. Inside the first 2h after a Broadway
  * show's embargo the sleep drops from 15 to 5 min; everywhere else it stays as before. An explicit
  * poll_interval_minutes input always wins. SERP: the orchestrator still sends --skip-serp on iterations 1-8, but
  * for Broadway the poller's hourly SERP sweep (BRO-4272, serp-burst-caps.js) overrides it from the first stored

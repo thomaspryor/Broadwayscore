@@ -19,7 +19,7 @@ const MIN = 60 * 1000;
 const VARIABLE = 'LANE_PREEMBARGO_DIRECT_ONLY';
 const LANE_LEAD_MIN = 30;            // the window closes where the normal lane start is: embargo - 30 min
 const START_LOCAL = '19:30';         // the window opens at this wall-clock time in the show's market zone ...
-const MAX_LEAD_MIN = 90;             // ... but never earlier than embargo - 90 min, so the +240 min tail still fits the 355-min job cap
+const MAX_LEAD_MIN = 90;             // ... but never earlier than embargo - 90 min, so the tail (+185 min) still fits the 355-min job cap (BRO-7740: also the default for a market-default embargo)
 const DEFER_RETRY_MS = 30 * 1000;
 
 /** 'on' (any case, also true/1/yes) -> true. Anything else, unset included, is off. Pure. */
@@ -82,18 +82,21 @@ function guardMode({ flagOn, assumed }) {
 }
 
 /**
- * BRO-7740 detector. The first admitted review that is provably tonight's (a confirmed publish date on or after the
- * night's local date, and not already on disk) proves the embargo has lifted: the guard closes at once and the lane
+ * BRO-7740 detector. The first admitted review that is provably tonight's (a full publish timestamp at or after the
+ * guard's earliest start, and not already on disk) proves the embargo has lifted: the guard closes at once and the lane
  * fetches with the full chain. An aggregator-cited preview link with no date, an older date or an on-disk URL never
- * counts (a stale admit must not open the paid tiers early). Pure.
+ * counts (a stale or date-only admit must not open the paid tiers early). Pure.
  * @param {{admitted:Array<{url?:string,publishDate?:string,key?:string}>, night:string, onDiskUrls?:Set<string>|string[]}} i
  * @returns {{lifted:boolean, evidence?:object}}
  */
-function dropEvidence({ admitted = [], night, onDiskUrls = [] }) {
+function dropEvidence({ admitted = [], night, onDiskUrls = [], floorMs }) {
   const disk = onDiskUrls instanceof Set ? onDiskUrls : new Set(onDiskUrls);
   for (const a of admitted || []) {
-    if (!a || !a.publishDate || !/^\d{4}-\d{2}-\d{2}/.test(String(a.publishDate))) continue;
-    if (String(a.publishDate).slice(0, 10) < night) continue;
+    // A full timestamp at or after floorMs (the guard's earliest start). A bare date, or a zoned date turned into UTC the
+    // evening before, proves nothing about tonight (outlet-index finds are admitted from the day before).
+    if (!a || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(String(a.publishDate || ''))) continue;
+    const ms = Date.parse(a.publishDate);
+    if (!Number.isFinite(ms) || (Number.isFinite(floorMs) ? ms < floorMs : String(a.publishDate).slice(0, 10) < night)) continue;
     if (a.url && disk.has(a.url)) continue;
     return { lifted: true, evidence: { key: a.key || null, url: a.url || null, publishDate: a.publishDate } };
   }

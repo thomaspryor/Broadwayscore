@@ -50,7 +50,10 @@ test('dropEvidence: only a review dated tonight or later lifts the guard; undate
   assert.equal(pw.dropEvidence({ admitted: [{ url: 'u1' }], night }).lifted, false, 'no publish date');
   assert.equal(pw.dropEvidence({ admitted: [{ url: 'u1', publishDate: '2026-11-03' }], night }).lifted, false, 'a preview-period review');
   assert.equal(pw.dropEvidence({ admitted: [{ url: 'u1', publishDate: '2026-11-17' }], night, onDiskUrls: ['u1'] }).lifted, false, 'already on disk');
-  assert.equal(pw.dropEvidence({ admitted: [{ url: 'u1', publishDate: '2026-11-17' }], night }).lifted, true);
+  assert.equal(pw.dropEvidence({ admitted: [{ url: 'u1', publishDate: '2026-11-17' }], night, floorMs: Z('2026-11-18T01:30:00Z') }).lifted, false, 'a bare date proves nothing');
+  const floorMs = Z('2026-11-18T01:30:00Z');
+  assert.equal(pw.dropEvidence({ admitted: [{ url: 'u1', publishDate: '2026-11-18T01:00:00.000Z' }], night, floorMs }).lifted, false, 'the evening before, as UTC');
+  assert.equal(pw.dropEvidence({ admitted: [{ url: 'u1', publishDate: '2026-11-18T02:00:00.000Z' }], night, floorMs }).lifted, true);
   assert.equal(pw.dropEvidence({ admitted: [], night }).lifted, false);
 });
 
@@ -67,7 +70,7 @@ test('Blue Man Group replay: lane running and in post-embargo mode by 02:05Z', a
   const ports = pw.guardPorts({ enabled: true, fetchPage: async (u, o) => { calls.push(o.directOnly === true); return { ok: true }; }, search: async () => 'serp', isActive });
   await ports.fetchPage('https://example.com/a');
   now = dropAt;
-  const d = pw.dropEvidence({ admitted: [{ url: 'https://tm.example/blue-man', publishDate: '2026-11-17' }], night: '2026-11-17' });
+  const d = pw.dropEvidence({ admitted: [{ url: 'https://tm.example/blue-man', publishDate: '2026-11-18T02:00:00.000Z' }], night: '2026-11-17', floorMs: t.embargoMs - pw.MAX_LEAD_MIN * MIN });
   assert.ok(d.lifted); lifted = now;
   now = check;
   await ports.fetchPage('https://example.com/b');
