@@ -76,6 +76,7 @@ function trustPrewarm(run, jobs, rebuildRunId, nowMs) {
 async function ghGet(path, token) {
   const res = await fetch(`https://api.github.com/repos/${path}`, {
     headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+    signal: AbortSignal.timeout(20_000),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
@@ -93,6 +94,7 @@ async function findPrewarm(repo, rebuildRunId, token) {
 async function fetchJobs(repo, runId, token) {
   const res = await fetch(`https://api.github.com/repos/${repo}/actions/runs/${runId}/jobs?per_page=100`, {
     headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+    signal: AbortSignal.timeout(20_000),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return (await res.json()).jobs || [];

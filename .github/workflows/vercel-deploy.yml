@@ -344,7 +344,7 @@ jobs:
             # Steps after this one run from the reset tree, so only files that
             # the setup steps above already used force a fresh deploy: deps,
             # this workflow, actions, and the guards plus what they read.
-            SETUP=$(grep -E '^(package(-lock)?\.json|\.npmrc|\.nvmrc|\.node-version|\.github/workflows/vercel-deploy\.yml|\.github/actions/|scripts/lib/(check-vercel-required-env|prod-held-flags-guard|load-env|exit-flushed|cli-help|deploy-prewarm-wait|git-net-timeout)\.|src/config/feature-flags\.ts|src/app/api/|\.env(\.production)?$)' <<<"$CHANGED" || true)
+            SETUP=$(grep -E '^(package(-lock)?\.json|\.npmrc|\.nvmrc|\.node-version|\.github/workflows/vercel-deploy\.yml|\.github/actions/|scripts/lib/(check-vercel-required-env|prod-held-flags-guard|load-env|exit-flushed|cli-help|deploy-prewarm-wait|git-net-timeout)\.|src/config/feature-flags\.ts|src/app/api/|[.]env([.]production)?$)' <<<"$CHANGED" || true)
             [ -z "$SETUP" ] || handoff "main moved with setup changes ($(head -3 <<<"$SETUP" | tr '\n' ' '))"
             git reset -q --hard "$NEW"
           fi
@@ -352,6 +352,7 @@ jobs:
           # Same gate the old dispatch got (workflow_dispatch lane: deduped only
           # when HEAD and core data are already live). Fails open like the gate job.
           GATE_OUT=$(mktemp)
+          # lint-allow-swallow: fail-open like the gate job; a crashed gate must not block the deploy, and it warns
           GITHUB_OUTPUT="$GATE_OUT" GATE_EVENT_NAME=workflow_dispatch node scripts/lib/should-deploy-gate.js || echo "::warning::[prewarm] gate crashed, deploying"
           # "Already live" seconds after the push may be a stale Contents API read of
           # the core-data blob; a normal deploy re-asks the gate a minute later.
