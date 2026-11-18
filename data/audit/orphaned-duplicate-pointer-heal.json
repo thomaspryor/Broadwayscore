@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-18T21:18:11.105Z",
+  "generated": "2026-11-18T22:12:40.270Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 57,
+  "count": 55,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -235,13 +235,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "now-you-see-me-live-2026",
-      "loserFile": "theatermania--unknown.json",
-      "targetFile": "theatermania--francisco-mendoza.json",
-      "reason": "orphaned-duplicate-heal: theatermania--francisco-mendoza.json was flagged invalid after theatermania--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "proof-2026",
       "loserFile": "nytimes--sarah-bahr.json",
       "targetFile": "nytimes--helen-shaw.json",
@@ -394,13 +387,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "now-you-see-me-live-2026",
-      "loserFile": "theatermania--unknown.json",
-      "targetFile": "theatermania--francisco-mendoza.json",
-      "reason": "orphaned-duplicate-heal: theatermania--francisco-mendoza.json was flagged invalid after theatermania--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
