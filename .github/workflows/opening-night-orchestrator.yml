@@ -803,7 +803,8 @@ jobs:
           case "$LOOP_MIN" in ''|*[!0-9]*) LOOP_MIN=240 ;; esac
           [ "$LOOP_MIN" -ge 15 ] || LOOP_MIN=15
           [ "$LOOP_MIN" -le 240 ] || LOOP_MIN=240
-          DEADLINE=$(( $(date +%s) + LOOP_MIN*60 ))
+          DEADLINE=$(( $(date +%s) + 240*60 ))
+          [ "$LOOP_MIN" -lt 240 ] && DEADLINE=$(( $(date +%s) + LOOP_MIN*60 ))
           COMPLETED_ITERATIONS=0
           DEADLINE_EXIT=false
 
