@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4856",
   "planId": "aeea078f-86f1-424c-aae6-9e5c82c854cf",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T03:18:12.281Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: expecting-off-west-end-2026.synopsis"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T04:30:28.147Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for expecting-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
