@@ -24,22 +24,24 @@ function installRequireMemo() {
   if (String(process.env.REQUIRE_MEMO || '').toLowerCase() === 'off') return false;
   if (proto.require[MARK]) return false;
   const original = proto.require;
-  const resolved = new Map();
+  const resolved = new WeakMap(); // calling Module object -> Map(request -> filename)
   function memoRequire(id) {
-    if (typeof id === 'string' && (id.startsWith('./') || id.startsWith('../')) && this && this.id) {
+    if (typeof id === 'string' && (id.startsWith('./') || id.startsWith('../')) && this && typeof this === 'object') {
       // Keyed per calling MODULE, and the first call for a key always goes through
       // Node's require: that records the parent->child edge in module.children,
       // which fingerprint-memo.js reads to version its cache. Repeat calls from the
       // same module add no edge, so skipping them changes nothing.
-      const key = this.id + '\0' + id;
-      const filename = resolved.get(key);
+      // Keyed by the Module object, so a reloaded copy of a file starts fresh.
+      let perModule = resolved.get(this);
+      if (!perModule) { perModule = new Map(); resolved.set(this, perModule); }
+      const filename = perModule.get(id);
       if (filename !== undefined) {
         const cached = Module._cache[filename];
         if (cached && cached.loaded) return cached.exports;
       }
       const exported = original.call(this, id);
       try {
-        resolved.set(key, Module._resolveFilename(id, this));
+        perModule.set(id, Module._resolveFilename(id, this));
       } catch { /* unresolvable ids keep taking the normal path */ }
       return exported;
     }

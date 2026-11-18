@@ -137,3 +137,11 @@ test('deploy dispatchers never skip on "a deploy started after this run started"
     assert.match(wf(f), /gh workflow run vercel-deploy\.yml/, `${f} still dispatches the deploy`);
   }
 });
+
+test('missing-deps audit counts the background npm ci waiter as an install (BRO-7766)', () => {
+  const { auditWorkflow } = require('../../scripts/lib/missing-deps.js');
+  for (const f of ['rebuild-fast.yml', 'llm-ensemble-score.yml']) {
+    const { findings } = auditWorkflow(wf(f), { root: ROOT });
+    assert.deepEqual(findings.map((x) => x.script), [], `${f}: scripts flagged as running without npm ci`);
+  }
+});
