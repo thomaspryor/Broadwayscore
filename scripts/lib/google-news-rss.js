@@ -60,20 +60,29 @@ function googleNewsRssUrl(show) {
 // never returned it and the headline test would have dropped it anyway. On
 // opening day and the 2 days after, a recency feed on the base title (before
 // any quoted or colon subtitle) surfaces such items; they are kept only for
-// tier-1/2 outlets and dropped when the readable article text never names the show.
+// tier-1/2 outlets and only when the fetched article names the show by its
+// full or aka title. An unreadable page (bot checkpoint, paywall stub) drops
+// the item: ingest has no wrong-show check strong enough to rely on.
 const HEADLINE_FREE_MAX_TIER = 2;
+// At most this many headline-free items are resolved per show per cycle, so
+// off-topic articles can never fill the 12-item batch ahead of real reviews.
+const HEADLINE_FREE_MAX_PER_CYCLE = 3;
+const QUOTE_CHARS = /[\u201C\u201D\u2018\u2019"]/g;
+/** The title before any quoted, colon, dash or paren subtitle, or null when
+ * that is too generic to search on ("August", "Art", "Life", "CATS"). */
 function baseSearchTitle(show) {
   const title = String((show && show.title) || '').trim();
-  const base = title.split(/\s*[\u201C\u201D"\u00AB:\u2013\u2014(]\s*/)[0].trim();
-  return base.length >= 3 ? base : title;
+  const base = title.split(/\s*[\u201C\u201D"\u00AB:\u2013\u2014(]\s*/)[0].replace(QUOTE_CHARS, '').trim();
+  return base.split(/\s+/).length >= 2 && base.length >= 6 ? base : null;
 }
 
+/** Recency feed URL, or null when the show has no distinctive base title. */
 function googleNewsRecencyUrl(show) {
+  const base = baseSearchTitle(show);
+  if (!base) return null;
   const london = isLondonMarket(show.category);
-  const titles = [baseSearchTitle(show), ...searchTitles(show).slice(1)]
-    .filter((t, i, all) => t && all.findIndex((o) => o.toLowerCase() === t.toLowerCase()) === i);
   const params = new URLSearchParams({
-    q: `${titles.map((t) => `"${t}"`).join(' OR ')} when:2d`,
+    q: `"${base}" when:2d`,
     hl: london ? 'en-GB' : 'en-US',
     gl: london ? 'GB' : 'US',
     ceid: london ? 'GB:en' : 'US:en',
@@ -83,20 +92,19 @@ function googleNewsRecencyUrl(show) {
 
 const foldPhrase = (t) => String(t || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
   .replace(/[\u2018\u2019\u02BC']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
-// Below this much page text the fetch hit a bot checkpoint or paywall stub
-// (nysun.com served "Vercel Security Checkpoint" to the scraper, 2026-11-18).
-const MIN_READABLE_ARTICLE_CHARS = 1500;
-/** true/false when the article page text does/doesn't carry the show's base
- * title as one phrase; null when the page is unreadable (checkpoint, stub). */
+/** True when the article (body text, og:title, og:description; nav, aside,
+ * header and footer stripped) names the show by its FULL listing title or an
+ * aka title. A franchise base title ("Blue Man Group") is not enough: it also
+ * matches articles about other productions. */
 function articleNamesShow(content, show) {
-  if (!content) return null;
+  if (!content) return false;
   const $ = cheerio.load(content);
-  $('script, style, noscript').remove();
-  const text = foldPhrase($.root().text());
-  const hay = ` ${text} `;
-  if ([baseSearchTitle(show), ...searchTitles(show)]
-    .map(foldPhrase).filter((p) => p.length >= 3).some((p) => hay.includes(` ${p} `))) return true;
-  return text.length < MIN_READABLE_ARTICLE_CHARS ? null : false;
+  const meta = ['meta[property="og:title"]', 'meta[property="og:description"]', 'meta[name="description"]']
+    .map((sel) => $(sel).attr('content') || '').join(' ');
+  $('script, style, noscript, nav, aside, header, footer').remove();
+  const hay = ` ${foldPhrase(`${meta} ${$('title').text()} ${$.root().text()}`)} `;
+  return searchTitles(show).map(foldPhrase).filter((p) => p.length >= 6 && p.includes(' '))
+    .some((p) => hay.includes(` ${p} `));
 }
 
 function parseGoogleNewsItems(xml) {
@@ -199,19 +207,24 @@ async function discoverGoogleNewsReviews(show, options = {}) {
       && isReviewHeadline(item, show));
     const registry = require('../../data/outlet-registry.json').outlets;
     // Headline-free reviews (see googleNewsRecencyUrl): only inside the review-free window.
-    if (isWithinOpeningWindow(new Date(now), show.openingDate, 0, REVIEW_FREE_POST_DAYS)) {
-      const recencyUrl = googleNewsRecencyUrl(show);
+    // Kill switch without a code revert: GNEWS_HEADLINE_FREE_DISABLED=true.
+    const recencyUrl = googleNewsRecencyUrl(show);
+    if (recencyUrl && process.env.GNEWS_HEADLINE_FREE_DISABLED !== 'true'
+        && isWithinOpeningWindow(new Date(now), show.openingDate, 0, REVIEW_FREE_POST_DAYS)) {
       // Plain HTTP only: this second feed is a supplement, so no browser fallback cost.
       const recencyXml = await feedImpl(recencyUrl).catch(() => null) || '';
       const links = new Set(items.map(item => item.link));
+      let added = 0;
       for (const item of parseGoogleNewsItems(recencyXml)) {
-        if (links.has(item.link) || !inDate(item)) continue;
-        links.add(item.link);
-        if (isReviewHeadline(item, show)) { items.push(item); continue; }
+        if (added >= HEADLINE_FREE_MAX_PER_CYCLE) break;
+        // Headlines that name the show belong to the main "review" query; only
+        // headline-free items are taken from this feed.
+        if (links.has(item.link) || !inDate(item) || !isHeadlineFreeCandidate(item, show)) continue;
         const tier = registry[resolveOutletFromUrl(item.sourceUrl).outletId]?.tier;
-        if (tier && tier <= HEADLINE_FREE_MAX_TIER && isHeadlineFreeCandidate(item, show)) {
-          items.push({ ...item, headlineFree: true });
-        }
+        if (!tier || tier > HEADLINE_FREE_MAX_TIER) continue;
+        links.add(item.link);
+        items.push({ ...item, headlineFree: true });
+        added++;
       }
     }
     // Prioritize nationals and rotate bounded batches across poll cycles so
@@ -277,8 +290,7 @@ async function discoverGoogleNewsReviews(show, options = {}) {
           try { page = await fetchPageImpl(url, { preferPlaywright: true, fast: true }); }
           catch { page = null; } // Keep the resolved URL for the normal byline recovery path.
         }
-        // An unreadable page (null) passes: ingest's wrong-show check reads the real text.
-        if (item.headlineFree && articleNamesShow(page?.content, show) === false) {
+        if (item.headlineFree && !articleNamesShow(page?.content, show)) {
           if (verbose) console.log(`  google-news-rss: headline-free item does not name the show (${item.sourceName})`);
           return;
         }
