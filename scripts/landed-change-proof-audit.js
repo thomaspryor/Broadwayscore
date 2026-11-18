@@ -211,7 +211,7 @@ async function main() {
       dispatchWorkflows.push(e.workflow);
       for (const { sha, file } of e.files) {
         const f = rows.find((r) => r.sha === sha)?.files.find((x) => x.file === file);
-        if (f) f.dispatch = { workflow: e.workflow, requested: !dryRun, wouldDispatch: dryRun || undefined };
+        if (f) f.dispatch = { workflow: e.workflow, requested: !dryRun && !!process.env.GITHUB_OUTPUT, wouldDispatch: dryRun || undefined };
       }
     }
     if (dispatchWorkflows.length) console.log(`[landed-proof] ${dryRun ? 'would dispatch' : 'dispatch requested for'}: ${dispatchWorkflows.join(', ')}`);

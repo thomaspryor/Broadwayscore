@@ -244,7 +244,7 @@ export function safeRunCommand(file, explain, exists = () => false) {
 // When unsure, leave a workflow out. The dispatch job in landed-change-proof.yml repeats this list (it must not trust
 // the audit's output alone); tests/unit/landed-change-proof-allowlist.test.mjs fails when the two drift apart or an
 // entry stops being read-only.
-export const DISPATCH_ALLOWLIST = new Set(['check-cutoff-freshness.yml', 'check-linear-drain-health.yml']);
+export const DISPATCH_ALLOWLIST = new Set(['check-cutoff-freshness.yml']);
 export const DISPATCH_CAP = 3;
 
 /**

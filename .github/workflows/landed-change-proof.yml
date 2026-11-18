@@ -93,9 +93,10 @@ jobs:
       - name: Dispatch allowlisted workflows
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           REQUESTED: ${{ needs.audit.outputs.dispatch_workflows }}
         run: |
-          allow=" check-cutoff-freshness.yml check-linear-drain-health.yml "
+          allow=" check-cutoff-freshness.yml "
           n=0
           for wf in ${REQUESTED//,/ }; do
             case "$allow" in

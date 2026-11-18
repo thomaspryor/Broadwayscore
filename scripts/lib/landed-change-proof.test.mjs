@@ -190,14 +190,15 @@ test('dispatchPlan: allowlisted workflows only, one per workflow, capped, never 
   const { dispatchPlan, DISPATCH_ALLOWLIST } = await import('./landed-change-proof.mjs');
   const row = (sha, file, workflows, verdict = 'not_run') => ({ sha, verdict, files: [{ file, verdict, workflows }] });
   const A = 'check-cutoff-freshness.yml';
-  const B = 'check-linear-drain-health.yml';
-  assert.ok(DISPATCH_ALLOWLIST.has(A) && DISPATCH_ALLOWLIST.has(B));
+  const B = 'other-readonly.yml';
+  assert.ok(DISPATCH_ALLOWLIST.has(A) && !DISPATCH_ALLOWLIST.has('check-linear-drain-health.yml'), 'ops monitors that can legitimately go red stay off the list');
+  const allow = new Set([A, B]);
   const rows = [row('s1', 'scripts/check-cutoff-freshness.js', [A]), row('s2', 'scripts/lib/x.js', [A, 'spend.yml']), row('s3', 'scripts/y.js', ['spend.yml']), row('s4', 'scripts/z.js', [B]), row('s5', 'scripts/q.js', [A], 'failed')];
-  const plan = dispatchPlan(rows, []);
+  const plan = dispatchPlan(rows, [], { allow });
   assert.deepEqual(plan.map((p) => p.workflow), [A, B], 'spend.yml is never planned; failed rows are not re-dispatched');
   assert.deepEqual(plan[0].shas, ['s1', 's2'], 'one dispatch proves both files');
-  assert.equal(dispatchPlan(rows, [{ sha: 's1', files: [{ dispatch: { requested: true } }] }, { sha: 's2', files: [{ dispatch: { requested: true } }] }]).map((p) => p.workflow).join(), B, 'already requested shas are skipped');
-  assert.equal(dispatchPlan(rows, [], { cap: 1 }).length, 1, 'cap');
+  assert.equal(dispatchPlan(rows, [{ sha: 's1', files: [{ dispatch: { requested: true } }] }, { sha: 's2', files: [{ dispatch: { requested: true } }] }], { allow }).map((p) => p.workflow).join(), B, 'already requested shas are skipped');
+  assert.equal(dispatchPlan(rows, [], { cap: 1, allow }).length, 1, 'cap');
   assert.deepEqual(dispatchPlan(rows, [], { allow: new Set() }), [], 'empty allowlist plans nothing');
 });
 

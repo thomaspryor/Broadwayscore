@@ -9,7 +9,7 @@ import { DISPATCH_ALLOWLIST, DISPATCH_CAP } from '../../scripts/lib/landed-chang
 const ROOT = path.resolve(import.meta.dirname, '..', '..');
 const wfText = (n) => fs.readFileSync(path.join(ROOT, '.github/workflows', n), 'utf8');
 // Secrets a read-only check may see. Anything else could spend or send.
-const OK_SECRETS = new Set(['GITHUB_TOKEN', 'LINEAR_API_KEY', 'DISCORD_WEBHOOK_ALERTS']);
+const OK_SECRETS = new Set(['GITHUB_TOKEN', 'DISCORD_WEBHOOK_ALERTS']);
 
 test('every allowlisted workflow is dispatchable, contents: read, no writer step, no spend or email secret', () => {
   assert.ok(DISPATCH_ALLOWLIST.size > 0);
@@ -38,4 +38,6 @@ test('landed-change-proof.yml dispatch job: same list as the code, job-scoped ac
   const audit = y.slice(y.indexOf('\n  audit:'), y.indexOf('\n  dispatch:'));
   assert.doesNotMatch(audit, /actions: write/);
   assert.match(y.slice(y.indexOf('\n  dispatch:')), /permissions:\s*\n\s+actions: write/);
+  // No checkout in this job, so gh needs the repo named explicitly or every dispatch fails (BRO-7796 review).
+  assert.match(y.slice(y.indexOf('\n  dispatch:')), /GH_REPO:\s*\$\{\{ github\.repository \}\}|--repo/);
 });
