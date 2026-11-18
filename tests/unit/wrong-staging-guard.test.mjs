@@ -172,3 +172,34 @@ test('BRO-7793: isHomeHouse reads venues from data, knows the missing companies,
     assert.ok(billedTitleOtherProductionCue(`${title}, Stages Houston Theatre`, title));
   } finally { setPressNameShows(null); }
 });
+
+// BRO-7793 ship-check: data-built houses are whole names, never single venue words (regional theatres stay other stagings).
+test('BRO-7793: venue words from shows.json never exempt regional stagings (real data)', () => {
+  const { isHomeHouse, slugOtherStagingCue } = require(path.join(ROOT, 'scripts/lib/show-names.js'));
+  const raw = require(path.join(ROOT, 'data/shows.json'));
+  const real = Array.isArray(raw) ? raw : raw.shows;
+  setPressNameShows([IAWL, ...real.filter((s) => s.id !== IAWL.id)]);
+  try {
+    for (const t of ['Pasadena Playhouse', 'Hope Repertory Theatre', 'Park Square Theatre', 'National Arts Centre', 'Kennedy Center', 'Stages Houston'])
+      assert.equal(isHomeHouse(t), false, t);
+    assert.ok(slugOtherStagingCue('https://x.com/its-a-wonderful-life-a-live-radio-play-at-pasadena-playhouse', IAWL.title));
+  } finally { setPressNameShows(null); }
+});
+
+test('BRO-7793: Google near-miss honours the night window and offers no wrapper ingest command', async () => {
+  const { googleNewsAdapter } = require(path.join(ROOT, 'scripts/lib/opening-night-lane/discovery.js'));
+  const { formatPressSignals } = require(path.join(ROOT, 'scripts/lib/opening-night-lane/near-miss.js'));
+  const item = (d) => `<item><title>Review: IT'S A WONDERFUL LIFE: A LIVE RADIO PLAY at Stages Houston - BroadwayWorld</title><link>https://news.google.com/rss/articles/CBMi${d}</link><pubDate>${d === 'OLD' ? 'Mon, 02 Nov 2026 12:00:00 GMT' : 'Wed, 18 Nov 2026 22:00:00 GMT'}</pubDate><source url="https://www.broadwayworld.com">x</source></item>`;
+  setPressNameShows(FIXTURE);
+  try {
+    const adapter = googleNewsAdapter({ decodeImpl: async () => null, log: () => {} });
+    const night = '2026-11-18';
+    const out = await adapter.discover({ show: IAWL, fetchText: async () => `<rss><channel>${item('OLD')}${item('NEW')}</channel></rss>`, night, timeZone: 'America/New_York' });
+    const nm = out.filter((c) => c.nearMiss);
+    assert.equal(nm.length, 1, JSON.stringify(nm));
+    assert.match(nm[0].url, /CBMiNEW/);
+    const text = formatPressSignals(IAWL, night, { nearMisses: [{ ...nm[0], adapter: 'google-news', signals: nm[0].nearMiss }] }).description;
+    assert.doesNotMatch(text, /add --show|ingest-urls/);
+    assert.match(text, /NEAR-MISS/);
+  } finally { setPressNameShows(null); }
+});

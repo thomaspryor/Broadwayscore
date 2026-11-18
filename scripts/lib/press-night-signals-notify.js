@@ -10,7 +10,7 @@
  * Each channel is tried on its own; one failing never hides the other, and neither throws into the lane.
  */
 const https = require('https');
-const { formatPressSignals, pageNamesShow } = require('./opening-night-lane/near-miss');
+const { formatPressSignals, pageNamesShow, isGoogleWrapper } = require('./opening-night-lane/near-miss');
 
 function coordinatorCard() {
   const reg = require('./coordinator-registry').REGISTRY || [];
@@ -77,7 +77,7 @@ function createPressSignalsNotifier({ env = process.env, log = console.log, disc
   return async ({ show, night, nearMisses = [], gaps = [], sourceHealth = [] }) => {
     if (env.PRESS_SIGNALS_OFF === '1') { log('[press-signals] PRESS_SIGNALS_OFF=1: alerts off'); return { discord: false, comment: false, text: null }; }
     for (const n of nearMisses.slice(0, MAX_PAGE_CHECKS)) {
-      if (n.pageNamesShow !== undefined) continue;
+      if (n.pageNamesShow !== undefined || isGoogleWrapper(n.url)) continue; // a wrapper page names nothing (BRO-7793)
       try { n.pageNamesShow = pageNamesShow(await capped(Promise.resolve(fetchPage(n.url)), 12000, 'page check'), show); } catch { n.pageNamesShow = null; }
     }
     const msg = formatPressSignals(show, night, { nearMisses, gaps, sourceHealth });

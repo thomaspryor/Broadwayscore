@@ -105,7 +105,9 @@ function buildRegistry(shows) {
     if (HOME_MARKETS.has(String(s.category)) && typeof s.venue === 'string' && s.venue.trim()) {
       for (const v of venueAliases(s.venue)) {
         const n = normTitle(String(v).replace(/'s\b/g, '')).split(' ').filter((w) => w && !VENUE_GENERIC.has(w)).join(' ');
-        if (n.length >= 4) homeVenues.add(n);
+        // Whole names only, two words or more: single words ("hope", "park", "national", "players") exempt regional
+        // theatres from the guard. One-word houses ("Broadhurst") stay in HOME_HOUSES.
+        if (n.split(' ').length >= 2) homeVenues.add(n);
       }
     }
     const k = normTitle(s.title);

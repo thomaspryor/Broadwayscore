@@ -988,6 +988,8 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
           const sourceUrl = ((m[1].match(/<source[^>]*\burl=["']([^"']+)["']/i) || [])[1] || '').trim();
           const outlet = sourceUrl && resolveOutletFromUrl(sourceUrl);
           if (hostOf(link) !== 'news.google.com' || !outlet || seenLinks.has(link)) continue; // unknown publishers are never ingested blind
+          // Window first (BRO-7793): an old production's review headline must not become a near-miss or spend its budget.
+          if (outsideNightWindow(grab('pubDate'), night, timeZone)) continue;
           if (site) {
             if (!hostMatches(hostOf(sourceUrl), [site])) continue; // a site search keeps only that outlet's items
           } else if (!headlineNamesShow(title, show)) {
@@ -1002,7 +1004,6 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
           // passes for a decode. It also stops an old Google date from claiming a URL first: decoded, that find was kept
           // over a later feed or section-index sighting and refused for good as outside-night-window, so the in-window
           // sighting was never judged. Checked before seenLinks, so a skipped copy cannot shadow a same-link copy.
-          if (outsideNightWindow(grab('pubDate'), night, timeZone)) continue;
           seenLinks.add(link);
           items.push({ title, link, sourceUrl, pubDate: grab('pubDate'), tier: outletTier(outlet.outletId), siteQuery: !!site });
         }
