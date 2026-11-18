@@ -174,13 +174,17 @@ test('BRO-7793: isHomeHouse reads venues from data, knows the missing companies,
 });
 
 // BRO-7793 ship-check: data-built houses are whole names, never single venue words (regional theatres stay other stagings).
-test('BRO-7793: venue words from shows.json never exempt regional stagings (real data)', () => {
+test('BRO-7793: venue words from shows.json never exempt regional stagings', () => {
   const { isHomeHouse, slugOtherStagingCue } = require(path.join(ROOT, 'scripts/lib/show-names.js'));
-  const raw = require(path.join(ROOT, 'data/shows.json'));
-  const real = Array.isArray(raw) ? raw : raw.shows;
-  setPressNameShows([IAWL, ...real.filter((s) => s.id !== IAWL.id)]);
+  // Home venues whose single words ("hope", "park", "national", "players", "playhouse") are common regional theatre words.
+  setPressNameShows([IAWL,
+    { id: 'h1', title: 'P1', category: 'off-broadway', venue: 'Hope Street Theatre' },
+    { id: 'h2', title: 'P2', category: 'west-end', venue: 'National Theatre' },
+    { id: 'h3', title: 'P3', category: 'off-broadway', venue: 'Park Avenue Armory' },
+    { id: 'h4', title: 'P4', category: 'off-broadway', venue: 'Players Playhouse' }]);
   try {
-    for (const t of ['Pasadena Playhouse', 'Hope Repertory Theatre', 'Park Square Theatre', 'National Arts Centre', 'Kennedy Center', 'Stages Houston'])
+    assert.equal(isHomeHouse('Hope Street Theatre'), true); // the whole name still counts
+    for (const t of ['Pasadena Playhouse', 'Hope Repertory Theatre', 'Park Square Theatre', 'National Arts Centre', 'Ross Valley Players', 'Stages Houston'])
       assert.equal(isHomeHouse(t), false, t);
     assert.ok(slugOtherStagingCue('https://x.com/its-a-wonderful-life-a-live-radio-play-at-pasadena-playhouse', IAWL.title));
   } finally { setPressNameShows(null); }
