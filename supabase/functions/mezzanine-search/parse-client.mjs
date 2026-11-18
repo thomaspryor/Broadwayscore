@@ -37,7 +37,11 @@ async function queryParse(className, body, appId, sessionToken) {
     err.authFailed = true;
     throw err;
   }
-  if (!res.ok) throw upstreamError(`Mezzanine Parse API HTTP ${res.status}`);
+  if (!res.ok) {
+    const msg = `Mezzanine Parse API HTTP ${res.status}`;
+    if (res.status >= 500 || res.status === 429) throw upstreamError(msg);
+    throw new Error(msg); // other 4xx: our request is malformed, a real bug that must reach Sentry
+  }
   let json;
   try {
     json = await res.json();
@@ -95,7 +99,11 @@ export async function getShow(showObjectId, appId, sessionToken) {
     throw err;
   }
   if (res.status === 404) return null;
-  if (!res.ok) throw upstreamError(`Mezzanine Parse API HTTP ${res.status}`);
+  if (!res.ok) {
+    const msg = `Mezzanine Parse API HTTP ${res.status}`;
+    if (res.status >= 500 || res.status === 429) throw upstreamError(msg);
+    throw new Error(msg); // other 4xx: our request is malformed, a real bug that must reach Sentry
+  }
   try {
     return await res.json();
   } catch (e) {

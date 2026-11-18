@@ -71,3 +71,12 @@ test('the client has user copy for the new upstream_unavailable code', async () 
     Module._load = originalLoad;
   }
 });
+
+// Review follow-up: a Parse 4xx (other than 401/403/429) means OUR request was bad, so it stays a 500.
+test('a Parse 400 is our bug and stays a 500; a 429 is an outage', async t => {
+  const bad = await caughtFrom(t, async () => new Response('{"error":"bad"}', { status: 400 }), () => findShowsByTitle('x', 'app', 'tok'));
+  t.mock.restoreAll();
+  assert.equal(errorOutcome(bad).status, 500);
+  const limited = await caughtFrom(t, async () => new Response('{}', { status: 429 }), () => findShowsByTitle('x', 'app', 'tok'));
+  assert.equal(errorOutcome(limited).status, 200);
+});
