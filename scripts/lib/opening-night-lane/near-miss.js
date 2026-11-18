@@ -244,5 +244,5 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHea
 
 module.exports = {
   GAP_AFTER_MS, WINDOW_MISMATCH_MAX_DAYS, MAX_NEAR_MISSES_PER_ADAPTER, MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER, INTENDED_REJECTIONS,
-  leadTitle, nearMissSignals, windowMismatch, pageNamesShow, gapCandidates, recordNew, signalsPath, ingestCommand, formatPressSignals,
+  leadTitle, leadWord, nearMissSignals, windowMismatch, pageNamesShow, gapCandidates, recordNew, signalsPath, ingestCommand, formatPressSignals,
 };

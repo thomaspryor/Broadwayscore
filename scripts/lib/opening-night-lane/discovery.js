@@ -56,6 +56,7 @@ const { admitLaneCandidate, calendarDateIn } = require('./trust-model');
 const laneSources = require('./lane-sources');
 const ledger = require('./ledger');
 const nearMiss = require('./near-miss');
+const { corroboratedLeadWord } = require('./lead-word-match');
 
 const SERP_AFTER_MS = 3 * 60 * 60 * 1000;
 const SERP_COOLDOWN_MS = 30 * 60 * 1000;
@@ -664,7 +665,7 @@ function rssAdapter({ feeds, matchOpts } = {}) {
   let pass = 0; let paidReads = 0;
   return {
     name: 'rss', kind: 'feed', phase: 'cheap',
-    async discover({ show, fetchText, slowFetchText, health = NOOP_HEALTH }) {
+    async discover({ show, night, fetchText, slowFetchText, health = NOOP_HEALTH }) {
       const readDirectFeed = async (url) => {
         try {
           return await fetchText(url, { directOnly: true });
@@ -724,7 +725,10 @@ function rssAdapter({ feeds, matchOpts } = {}) {
         for (const it of items) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
-          if (!titleMatchesShow(it.title, show.title, mo) && !urlSlugMatchesShow(it.link, show.title, mo)) {
+          // BRO-7791: a one-word lead ("Review: Dollygram Glitters on Broadway") passes only with every corroboration.
+          const leadOk = () => hostOf(it.link) === hostOf(feed.url) && corroboratedLeadWord({ url: it.link, title: it.title }, show,
+            { night, direct: true, outletId: feed.outletId, reviewCue: feed.reviewsOnly === true || hasReviewSignal(it.link, it.title) }).admit;
+          if (!titleMatchesShow(it.title, show.title, mo) && !urlSlugMatchesShow(it.link, show.title, mo) && !leadOk()) {
             const nm = hostOf(it.link) === hostOf(feed.url) && nearMissFind({ url: it.link, title: it.title }, show, budget, { via: feed.name || feed.url, outletId: feed.outletId, reviewSignalGiven: feed.reviewsOnly });
             if (nm) out.push(nm);
             continue;
@@ -760,7 +764,7 @@ function sectionIndexAdapter({ outlets, matchOpts } = {}) {
   let nextWindow = null; let slots = null;
   return {
     name: 'section-index', kind: 'outlet-index', phase: 'cheap',
-    async discover({ show, fetchText, health = NOOP_HEALTH }) {
+    async discover({ show, night, fetchText, health = NOOP_HEALTH }) {
       const out = [];
       const all = outlets ?? defaultLaneSectionIndexes(show);
       health.expect(all.map((o) => o.indexUrl), { adapter: 'section-index' });
@@ -784,7 +788,9 @@ function sectionIndexAdapter({ outlets, matchOpts } = {}) {
         }
         for (const a of extractAnchors(indexScope(html), o.indexUrl)) {
           if (hostOf(a.url) !== host || new URL(a.url).pathname === new URL(o.indexUrl).pathname) continue;
-          if (!titleMatchesShow(a.text, show.title, mo) && !urlSlugMatchesShow(a.url, show.title, mo)) {
+          // BRO-7791: a one-word lead ("Review: Dollygram Glitters on Broadway") passes only with every corroboration.
+          const leadOk = () => corroboratedLeadWord({ url: a.url, title: a.text }, show, { night, direct: true, outletId: o.outletId, reviewCue: hasReviewSignal(a.url, a.text) }).admit;
+          if (!titleMatchesShow(a.text, show.title, mo) && !urlSlugMatchesShow(a.url, show.title, mo) && !leadOk()) {
             const nm = nearMissFind({ url: a.url, title: a.text }, show, budget, { via: o.indexUrl, outletId: o.outletId });
             if (nm) out.push(nm);
             continue;

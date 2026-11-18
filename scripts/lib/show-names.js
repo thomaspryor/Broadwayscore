@@ -97,9 +97,11 @@ function buildRegistry(shows) {
   const venueByTitle = new Map();
   const peopleByTitle = new Map(); // name words of the cast and creative team ("rinna", "rannells")
   const titles = [];
+  const entries = []; // { id, title, status } for every show, closed too (BRO-7791 lead-word corroboration)
   for (const s of shows || []) {
     if (!s || !s.title) continue;
     titles.push(s.title);
+    entries.push({ id: s.id || null, title: s.title, status: typeof s.status === 'string' ? s.status : null });
     const k = normTitle(s.title);
     if (typeof s.venue === 'string' && s.venue.trim()) venueByTitle.set(k, [...(venueByTitle.get(k) || []), s.venue]);
     for (const p of [...(Array.isArray(s.cast) ? s.cast : []), ...(Array.isArray(s.creativeTeam) ? s.creativeTeam : [])]) {
@@ -114,7 +116,7 @@ function buildRegistry(shows) {
       if (!akaByTitle.get(k).some((x) => normTitle(x) === normTitle(a))) akaByTitle.get(k).push(a.trim());
     }
   }
-  return { akaByTitle, venueByTitle, peopleByTitle, titles };
+  return { akaByTitle, venueByTitle, peopleByTitle, titles, entries };
 }
 function registry() {
   if (!_registry) {
@@ -198,6 +200,8 @@ function otherProductionCue(text, aka, show) {
 
 /** Every billed title in the registry (closed shows too), for main-title uniqueness. Empty when unavailable. */
 function registryShowTitles() { return registry().titles; }
+/** Every loaded show as { id, title, status } (status null when the entry has none). */
+function registryShows() { return registry().entries; }
 
 /**
  * Plan value check for shows.json akaTitles (data-edit-action.js): null clears it; otherwise a non-empty array of
@@ -229,5 +233,5 @@ function akaTitlesValueProblem(value, show, shows, prevValue = null) {
 
 module.exports = {
   akaTitlesValueProblem, normTitle, sigWords, mainTitleSplit, mainTitleIsUnique, showNames,
-  pressAkaForTitle, pressVenuesForTitle, registryShowTitles, setPressNameShows, otherProductionCue,
+  pressAkaForTitle, pressVenuesForTitle, registryShowTitles, registryShows, setPressNameShows, otherProductionCue,
 };
