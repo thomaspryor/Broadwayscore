@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7660-o",
   "planId": "97282a27-6138-4e30-815f-d4a9db23911b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T07:28:48.800Z",
   "submitter": {
     "name": null,
@@ -158,5 +158,89 @@
         "description": "BRO-7660 NR_TO_WP: real review of the earlier BAM run, so wrong production rather than non-review"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T11:54:15.125Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweetee-off-broadway-2017/stagebuddy--erin-kahn.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweetee-off-broadway-2017/stagebuddy--erin-kahn.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweetee-off-broadway-2017/stagebuddy--erin-kahn.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "swing-state-off-broadway-2023/nytg--allison-considine.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "swing-state-off-broadway-2023/nytg--allison-considine.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "swing-state-off-broadway-2023/nytg--allison-considine.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-black-wolfe-tone-off-broadway-2025/front-row-center--david-walters.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-black-wolfe-tone-off-broadway-2025/front-row-center--david-walters.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-black-wolfe-tone-off-broadway-2025/front-row-center--david-walters.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whirligig-off-broadway-2017/nyt-theater--jonathan-mandell.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whirligig-off-broadway-2017/nyt-theater--jonathan-mandell.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "water-for-elephants-tour-2025/third-coast-review--emily-werner.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "water-for-elephants-tour-2025/third-coast-review--emily-werner.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-off-broadway-2025/talkinbroadway--marc-miller.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sign-in-sidney-brusteins-window-2023/wsj--charles-isherwood.json wrongProduction: null -> true (retracted _previousWrongProductionClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionClearedNote, wrongProductionManualClear, wrongProductionOverride, wrongProductionOverrideReason, wrongProductionOverrideSetAt, wrongProductionOverrideSetBy)"
+    }
+  ],
+  "executedIn": "ci"
 }
