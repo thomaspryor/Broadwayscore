@@ -2011,20 +2011,6 @@
     "queuedAt": "2026-11-18T04:24:25.559Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-18.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-18T05:38:36.765Z"
-  },
-  {
     "conditionKey": "land:land/bro-7741-lane-inbox",
     "title": "Landing blocked: unit-tests-node red on land/bro-7741-lane-inbox",
     "description": "land.yml did not land land/bro-7741-lane-inbox: the unit-tests-node gate went red at 969738aaa6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44239113634",
@@ -2147,5 +2133,33 @@
       }
     ],
     "queuedAt": "2026-11-18T05:28:30.577Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:top-gunchained-off-west-end-2026",
+    "title": "Review gap — \"Top Gunchained\" missing 1 cited review(s)",
+    "description": "Top Gunchained (top-gunchained-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=top-gunchained-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T06:39:01.213Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-18.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T06:39:25.700Z"
   }
 ]
