@@ -152,7 +152,19 @@ test('hand-off set covers every script the pre-wait deploy steps run', () => {
   const pre = dep.slice(0, dep.indexOf(`- name: ${H.WAIT_STEP}\n`));
   const wait = stepBlock(vd, H.WAIT_STEP);
   const re = new RegExp(/SETUP=\$\(grep -E '([^']+)'/.exec(wait)[1]);
-  for (const f of new Set(pre.match(/scripts\/[\w./-]+\.(?:js|sh|mjs)/g))) assert.ok(re.test(f), `${f} runs before the wait but is not in the hand-off set`);
+  const direct = new Set(pre.match(/scripts\/[\w./-]+\.(?:js|sh|mjs)/g));
+  const all = new Set(direct);
+  for (const f of direct) {
+    // one level of local requires: a guard's helper counts as setup too
+    for (const m of fs.readFileSync(path.join(ROOT, f), 'utf8').matchAll(/require\(['"](\.\.?\/[^'"]+)['"]\)/g)) {
+      let r = path.posix.join(path.posix.dirname(f), m[1]);
+      if (!/\.(js|mjs|json)$/.test(r)) r += '.js';
+      all.add(r);
+    }
+  }
+  for (const f of all) assert.ok(re.test(f), `${f} runs before the wait but is not in the hand-off set`);
+  assert.ok(re.test('.env.production') && re.test('.env'), 'env files the held-flags guard reads');
+  assert.ok(re.test('.github/actions/checkout-core-data/action.yml') && re.test('.nvmrc'));
   for (const f of ['package-lock.json', '.github/workflows/vercel-deploy.yml', 'src/config/feature-flags.ts']) assert.ok(re.test(f), f);
   for (const f of ['src/app/page.tsx', '.github/workflows/llm-ensemble-score.yml', 'data/shows.json']) assert.ok(!re.test(f), f);
 });
