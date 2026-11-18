@@ -228,5 +228,50 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T13:00:30.085Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
+    "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): [\n{\n\"file\": \"wicked-2003/theatermania--david-gordon.json\",\n\"criticName\": \"Peter Filichia\",\n\"defaultCriticOf\": [\n\"broadwayselect\"\n],\n\"source\": \"playbill-verdict\",\n\"url\": \"https://www.theatermania.com/news/wicked-good-or-wicked-bad_4041/\",\n\"mode\": \"fulltext\"\n}\n]\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
+    "fields": [],
+    "queuedAt": "2026-11-18T13:11:44.561Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'review: Bree Samani-McGrath (1) -> Bree Samani (2) [extra words, both pages sizeable]'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "fields": [],
+    "queuedAt": "2026-11-18T13:11:45.385Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)",
+    "title": "Live-data test failing: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) (tests/unit/opening-night-lane-sources.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)\" in tests/unit/opening-night-lane-sources.test.mjs is red against the live corpus.\n\non-time outlets with no lane source:\n2026-10-18  other-desert-cities-2026                          41 outlets   31 polled   7 gaps   3 missing: blogcritics, reclining-standards, showmosexualsguide (ON TIME)\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)",
+    "fields": [],
+    "queuedAt": "2026-11-18T13:11:45.414Z"
   }
 ]

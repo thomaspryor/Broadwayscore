@@ -29490,13 +29490,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-12T18:06:57.835Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T03:32:27.737Z",
+      "lastSeen": "2026-11-18T13:11:45.428Z",
       "lastNotifiedAt": "2026-11-17T13:31:08.704Z",
       "lastSurfacedAt": "2026-11-15T07:37:10.094Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-7503",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -38010,13 +38010,12 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-17T04:47:52.691Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T03:32:27.688Z",
-      "lastNotifiedAt": "2026-11-17T04:47:52.691Z",
-      "lastSurfacedAt": "2026-11-17T04:47:52.691Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-11-18T13:11:45.385Z",
+      "lastNotifiedAt": "2026-11-18T13:11:45.385Z",
+      "lastSurfacedAt": "2026-11-18T13:11:45.385Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7
+      "linearIdentifier": null
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39132,13 +39131,12 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T03:32:27.238Z",
-      "lastNotifiedAt": "2026-11-17T04:47:52.234Z",
+      "lastSeen": "2026-11-18T13:11:44.577Z",
+      "lastNotifiedAt": "2026-11-18T13:11:44.577Z",
       "lastSurfacedAt": "2026-11-15T00:33:12.642Z",
-      "notifyCount": 7,
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": "BRO-7499",
-      "silentRefires": 7
+      "linearIdentifier": "BRO-7499"
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -42342,21 +42340,18 @@
       "linearIdentifier": "BRO-7379"
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) (tests/unit/opening-night-lane-sources.test.mjs)",
       "firstSeen": "2026-11-11T15:05:44.026Z",
-      "incidentOpenedAt": "2026-11-11T15:05:44.026Z",
+      "incidentOpenedAt": "2026-11-18T13:11:45.414Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-12T12:48:20.102Z",
-      "lastNotifiedAt": "2026-11-11T15:05:44.026Z",
-      "lastSurfacedAt": "2026-11-11T15:05:44.026Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-18T13:11:45.414Z",
+      "lastNotifiedAt": "2026-11-18T13:11:45.414Z",
+      "lastSurfacedAt": "2026-11-18T13:11:45.414Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 3,
-      "resolvedAt": "2026-11-12T17:31:14.646Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "land:land/bro-7373-cost": {
       "status": "open",
@@ -45190,12 +45185,13 @@
       "firstSeen": "2026-11-18T03:32:27.712Z",
       "incidentOpenedAt": "2026-11-18T03:32:27.712Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T03:32:27.712Z",
+      "lastSeen": "2026-11-18T13:11:45.399Z",
       "lastNotifiedAt": "2026-11-18T03:32:27.712Z",
       "lastSurfacedAt": "2026-11-18T03:32:27.712Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "pending-unrecoverable:the-good-thief-off-broadway-2026": {
       "status": "resolved",
@@ -45418,6 +45414,20 @@
       "lastSeen": "2026-11-18T11:07:31.074Z",
       "lastNotifiedAt": "2026-11-18T11:07:31.074Z",
       "lastSurfacedAt": "2026-11-18T11:07:31.074Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+      "firstSeen": "2026-11-18T13:11:44.559Z",
+      "incidentOpenedAt": "2026-11-18T13:11:44.559Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-18T13:11:44.559Z",
+      "lastNotifiedAt": "2026-11-18T13:11:44.559Z",
+      "lastSurfacedAt": "2026-11-18T13:11:44.559Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
