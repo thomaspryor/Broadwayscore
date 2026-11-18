@@ -107,9 +107,27 @@ if (!show) {
 }
 // BRO-6648: while the opening-night lane holds this show, the lane writes its reviews; this run writes nothing.
 // This script commits before it pushes, so push-time enforce cannot undo it: the check has to be here.
-if (!require('./lib/opening-night-lane/lease-guard').writableShowIds([showId], { label: 'ingest-urls' }).length) {
-  console.log(`::warning::ingest-urls: ${showId} is held by the opening-night lane; nothing ingested. Re-run after the lane releases it.`);
-  process.exit(0);
+// BRO-7741: a hand dispatch for a leased show goes into the lane's manual inbox instead: the running lane publishes it
+// on its next pass. Anything else (automated caller, unknown lease state, partial-ingest flags) is still refused.
+{
+  const heldBy = require('./lib/opening-night-lane/lease-guard').leaseSkipReason(showId);
+  const route = require('./lib/lane-inbox-routing').ingestRouteDecision({ lease: heldBy, caller: ingestCaller || '', dryRun, noFetch, noRebuild });
+  if (route.action === 'inbox') {
+    if (!urlsFile || !fs.existsSync(urlsFile)) { console.error(`URL file not found: ${urlsFile}`); process.exit(1); }
+    const lines = fs.readFileSync(urlsFile, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')).map((l) => parseIngestLine(l));
+    if (!lines.length) { console.log('No URLs found in file (blank or all comments)'); process.exit(0); }
+    const res = require('./lib/lane-inbox-routing').routeToInbox({ showId, entries: lines, repoDir: path.join(__dirname, '..'), addedBy: process.env.GITHUB_ACTOR ? `ingest-urls:${process.env.GITHUB_ACTOR}` : 'ingest-urls' });
+    if (!res.ok) {
+      console.log(`::error::ingest-urls: ${showId} is held by the opening-night lane and the lane inbox write failed (${res.reason}: ${res.detail || ''}). Nothing was added. Retry this dispatch, or add the URL with: node scripts/opening-night-lane-inbox.js add --show=${showId} --url=<URL>`);
+      process.exit(1);
+    }
+    console.log(`::notice::ingest-urls: ${showId} is held by the opening-night lane, so ${res.added.length} URL(s) went to the lane inbox instead (${res.duplicates.length} already there${res.invalid && res.invalid.length ? `, ${res.invalid.length} invalid` : ''}). The lane fetches, scores and publishes them on its next pass (about 2 minutes). Check with: node scripts/opening-night-lane-inbox.js list --show=${showId}`);
+    process.exit(0);
+  }
+  if (route.action === 'refuse') {
+    console.log(`::warning::ingest-urls: ${showId} is held by the opening-night lane; nothing ingested (${route.why}). To add a missed review tonight, dispatch ingest-urls by hand (no caller, no flags) or run: node scripts/opening-night-lane-inbox.js add --show=${showId} --url=<URL>`);
+    process.exit(0);
+  }
 }
 
 // Read and parse URL file

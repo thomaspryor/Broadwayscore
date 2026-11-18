@@ -446,6 +446,16 @@ jobs:
           if [ "$RC" -eq 3 ]; then echo "::notice::night lease is held by another run; left alone"
           elif [ "$RC" -ne 0 ]; then echo "::warning::night lease release exited ${RC}; the lease expires by TTL"; fi
 
+      # BRO-7741: inbox URLs the lane did not publish (failed, unfinished, added after its last pass) go to ingest-urls.yml,
+      # the regular path, now that the lease is released. Only after a successful release: with the lease still held,
+      # ingest-urls would route them straight back into the inbox.
+      - name: Drain the lane inbox to ingest-urls
+        if: always() && steps.lane.outcome != 'skipped' && steps.push.outcome == 'success' && github.ref == 'refs/heads/main'
+        env:
+          SHOW: ${{ inputs.show }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/opening-night-lane-inbox.js drain "--show=${SHOW}" --dispatch || echo "::warning::lane inbox drain failed; list it with opening-night-lane-inbox.js list --show=${SHOW}"
+
       # The driver pages through routeAlert( digest ) (owner-alert-router.js); its ledger and digest queue live on
       # this runner's disk, so commit them or the cooldown/dedup state resets every run.
       - name: Commit alert ledger
