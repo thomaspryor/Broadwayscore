@@ -31,7 +31,7 @@ function walk(dir, out = []) {
   for (const e of entries) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p, out); }
-    else if (/\.(c?js|mjs|ts)$/.test(e.name) && !SKIP.test(p)) out.push(p);
+    else if (/\.(c?js|mjs|ts)$/.test(e.name) && !SKIP.test(path.relative(ROOT, p))) out.push(p); // relative: a checkout under /tests/ must not skip everything
   }
   return out;
 }

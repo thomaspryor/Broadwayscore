@@ -48,6 +48,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { runGit } = require('./git-proc-guard.js'); // BRO-7458: a timed-out network git must not orphan its index-pack
 const { isReviewFilePath } = require('./review-texts-api-fallback.js');
 
 const RESCUE_PREFIX = 'push-rescue/';
@@ -328,7 +329,7 @@ function settleConflict(mainRaw, rescuedRaw) {
 }
 
 function git(args, opts = {}) {
-  const r = spawnSync('git', args, { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, ...opts });
+  const r = runGit('git', args, { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, ...opts });
   if (r.error) throw r.error;
   return r;
 }
