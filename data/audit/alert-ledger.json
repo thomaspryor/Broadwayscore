@@ -29492,12 +29492,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-12T18:06:57.835Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T15:34:20.364Z",
+      "lastSeen": "2026-11-18T16:51:19.196Z",
       "lastNotifiedAt": "2026-11-18T15:34:20.364Z",
       "lastSurfacedAt": "2026-11-15T07:37:10.094Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": "BRO-7503"
+      "linearIdentifier": "BRO-7503",
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -38012,13 +38013,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-17T04:47:52.691Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T15:34:20.315Z",
+      "lastSeen": "2026-11-18T16:51:19.119Z",
       "lastNotifiedAt": "2026-11-18T13:11:45.385Z",
       "lastSurfacedAt": "2026-11-18T13:11:45.385Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39135,13 +39136,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T15:34:19.905Z",
+      "lastSeen": "2026-11-18T16:51:18.704Z",
       "lastNotifiedAt": "2026-11-18T13:11:44.577Z",
       "lastSurfacedAt": "2026-11-15T00:33:12.642Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": "BRO-7499",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -42353,13 +42354,13 @@
       "firstSeen": "2026-11-11T15:05:44.026Z",
       "incidentOpenedAt": "2026-11-18T13:11:45.414Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T15:34:20.348Z",
+      "lastSeen": "2026-11-18T16:51:19.170Z",
       "lastNotifiedAt": "2026-11-18T13:11:45.414Z",
       "lastSurfacedAt": "2026-11-18T13:11:45.414Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-7373-cost": {
       "status": "open",
@@ -43826,21 +43827,18 @@
       "resolvedAt": "2026-11-15T16:57:02.556Z"
     },
     "live-data-test:tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: daily synopsis passes reach every flagged open show within a month (tests/unit/enrichment-target-reach-live.test.mjs)",
       "firstSeen": "2026-11-15T16:18:25.047Z",
-      "incidentOpenedAt": "2026-11-15T16:18:25.047Z",
+      "incidentOpenedAt": "2026-11-18T16:51:19.143Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-17T13:31:08.679Z",
-      "lastNotifiedAt": "2026-11-16T16:46:27.105Z",
-      "lastSurfacedAt": "2026-11-16T16:46:27.105Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-18T16:51:19.143Z",
+      "lastNotifiedAt": "2026-11-18T16:51:19.143Z",
+      "lastSurfacedAt": "2026-11-18T16:51:19.143Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7,
-      "resolvedAt": "2026-11-17T16:20:35.301Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "land:land/bro-7535-pullquote-negcache": {
       "status": "resolved",
@@ -45191,7 +45189,7 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: open hub shows are not past a sourced closing date (tests/unit/hub-closing-dates-live-data.test.mjs)",
       "firstSeen": "2026-11-18T03:32:27.712Z",
@@ -45203,7 +45201,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-18T16:51:19.548Z",
+      "resolveReason": "live-data test green"
     },
     "pending-unrecoverable:the-good-thief-off-broadway-2026": {
       "status": "resolved",
@@ -45437,13 +45437,13 @@
       "firstSeen": "2026-11-18T13:11:44.559Z",
       "incidentOpenedAt": "2026-11-18T13:11:44.559Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-18T15:34:19.885Z",
+      "lastSeen": "2026-11-18T16:51:18.666Z",
       "lastNotifiedAt": "2026-11-18T13:11:44.559Z",
       "lastSurfacedAt": "2026-11-18T13:11:44.559Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026": {
       "status": "open",
