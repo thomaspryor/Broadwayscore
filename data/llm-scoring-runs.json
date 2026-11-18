@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-11-16T20:08:41.616Z",
-    "completedAt": "2026-11-16T20:08:53.578Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "43935882682",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-15T00:00:00.000Z"
-  },
-  {
     "startedAt": "2026-11-16T20:39:14.660Z",
     "completedAt": "2026-11-16T20:46:18.732Z",
     "totalReviews": 82514,
@@ -209122,6 +209102,52 @@
     },
     "costUsd": 0,
     "runId": "44203579655",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-17T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-18T00:08:59.401Z",
+    "completedAt": "2026-11-18T00:08:59.817Z",
+    "totalReviews": 2,
+    "processed": 0,
+    "skipped": 1,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "44204738484",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "theater-of-the-mind-regional-2026",
+        "outletId": "chicagotribune",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ],
+    "logKeepsSince": "2026-11-17T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-18T00:09:02.030Z",
+    "completedAt": "2026-11-18T00:09:02.032Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "44204738484",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-17T00:00:00.000Z"
