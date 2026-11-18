@@ -165,9 +165,17 @@ async function main() {
   const nowFn = () => (arg('now') ? Date.parse(arg('now')) : Date.now());
   log(`press-night watchdog ${showId} ${night}: embargo ${new Date(embargoMs).toISOString()}, ${dryRun ? 'DRY RUN' : 'live'}, every ${intervalMin} min to +${untilMin} min`);
 
+  // BRO-7779: watch from the lane start (up to 90 min before a guessed embargo), not the embargo, so an early drop with
+  // nothing running gets the orchestrator started. Kept as a lead so an --embargo-at override moves it too.
+  const leadOf = () => {
+    const ws = wd.watchStartMs(show, night);
+    const own = Date.parse(defaultEmbargoAt(show) || '');
+    return Number.isFinite(ws) && Number.isFinite(own) ? Math.max(0, own - ws) : 0;
+  };
+  let watchStartMs = embargoMs - leadOf();
   if (!once) {
-    const wait = embargoMs - nowFn();
-    if (wait > 0) { log(`sleeping ${Math.round(wait / MIN)} min to the embargo`); await new Promise((r) => setTimeout(r, wait)); }
+    const wait = watchStartMs - nowFn();
+    if (wait > 0) { log(`sleeping ${Math.round(wait / MIN)} min to the watch start (embargo -${Math.round((embargoMs - watchStartMs) / MIN)} min)`); await new Promise((r) => setTimeout(r, wait)); }
   }
   const { readReviewFileState } = require('./lib/press-night-review-state');
   const { normalizeOutlet } = require('./lib/review-normalization');
@@ -179,6 +187,7 @@ async function main() {
       const fresh = showsList().find((s) => (s.id || s.slug) === showId);
       if (fresh) show = fresh;
       if (!arg('embargo-at')) { const e = embargoOf(); if (Number.isFinite(e) && e !== embargoMs) { log(`embargo moved to ${new Date(e).toISOString()}`); embargoMs = e; } }
+      watchStartMs = embargoMs - leadOf();
     }
     const nowMs = nowFn();
     let fileState = readReviewFileState(showId, show);
@@ -192,7 +201,7 @@ async function main() {
     const lane = laneD.owns;
     const done = broadcastDone(showId);
     const r = wd.evaluateTick({ showId, embargoMs, nowMs, files: fileState.files, coreRows, liveRows: live.rows, runs,
-      broadcastDone: done, laneOwnsNight: lane, state, normOutlet });
+      broadcastDone: done, laneOwnsNight: lane, state, normOutlet, watchStartMs });
     const prevState = state;
     state = r.state;
     const notes = [];

@@ -36,8 +36,10 @@ test('the clock plans the sweep slots for a Broadway night at +4h15, +5h15, +6h1
   // A late clock still sweeps: sw3 stays plannable to about +12h, then nothing.
   assert.ok(planKicks(shows, E + 700 * M).some((x) => x.kind === 'sw3'));
   assert.ok(!planKicks(shows, E + 725 * M).some((x) => x.kind.startsWith('sw')));
-  // Off-Broadway and West End nights get no sweep (the lane is Broadway only).
-  assert.ok(!planKicks([{ ...shows[0], category: 'off-broadway' }], E, { categories: ['off-broadway'] }).some((x) => x.kind.startsWith('sw')));
+  // BRO-7779: every lane market gets the sweeps (they were Broadway only, and the other markets had no collector after the lane).
+  for (const category of ['off-broadway', 'west-end', 'off-west-end']) {
+    assert.equal(planKicks([{ ...shows[0], category }], E).filter((x) => x.kind.startsWith('sw')).length, 4, category);
+  }
 });
 
 test('a sweep slot waits for the lane, dispatches once it releases, and fails toward collecting', () => {
