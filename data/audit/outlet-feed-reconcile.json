@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T09:10:59.373Z",
+  "generatedAt": "2026-11-18T10:54:31.342Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -165,11 +165,15 @@
   "feedsFailed": [
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "north-west-end",
+      "error": "Timeout fetching https://northwestend.com/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -182,28 +186,20 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 835,
-  "matchedGaps": 0,
+  "itemsScanned": 873,
+  "matchedGaps": 1,
   "possibleGaps": 3,
   "gaps": [
     {
-      "showId": "annie-regional-2026-drury-lane-oakbrook",
-      "title": "Annie",
-      "level": "possible",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/annie-the-brindley/",
-      "headline": "Annie &#8211; The Brindley",
-      "publishDate": "2026-11-17"
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "level": "matched",
+      "outletId": "liamodell",
+      "url": "https://liamodell.com/2026/11/18/desire-under-the-elms-review-almeida-theatre-eugene-oneill-kelly-gough-zackary-momoh/",
+      "headline": "‘Desire Under the Elms’ review &#8211; Tiring farm drama has a Frecknall familiarity",
+      "publishDate": "2026-11-18"
     },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
@@ -213,6 +209,15 @@
       "url": "https://westendwilma.com/after-birth-royal-court-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=after-birth-royal-court-theatre",
       "headline": "After Birth &#8211; the reality of life after birth at Royal Court Theatre",
       "publishDate": "2026-11-12"
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "level": "possible",
+      "outletId": "london-theatre",
+      "url": "https://londontheatre.co.uk/reviews/desire-under-the-elms-review-almeida-theatre",
+      "headline": "'Desire Under the Elms' review — this bold Eugene O’Neill production is striking, visceral theatre",
+      "publishDate": null
     },
     {
       "showId": "much-ado-about-nothing-2026",
