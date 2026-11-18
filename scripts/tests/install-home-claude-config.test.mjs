@@ -338,12 +338,12 @@ test('repo permissions.allow reaches multi-repo sessions, beside the owner\'s ow
   assert.equal(run(['--target', target, '--check']).status, 0, 'no drift after install');
 
   // An owner rule (and a deny rule) survive re-runs; an owner rule we did not write is not recorded as ours.
-  fresh.permissions.allow.push('Bash(ls:*)');
+  fresh.permissions.allow.push('Bash(pwd:*)');
   fresh.permissions.deny = ['Bash(rm:*)'];
   fs.writeFileSync(file, JSON.stringify(fresh));
   assert.equal(run(['--target', target]).status, 0);
   const rerun = JSON.parse(fs.readFileSync(file, 'utf8'));
-  assert.deepEqual(rerun.permissions.allow, [...real.permissions.allow, 'Bash(ls:*)']);
+  assert.deepEqual(rerun.permissions.allow, [...real.permissions.allow, 'Bash(pwd:*)']);
   assert.deepEqual(rerun.permissions.deny, ['Bash(rm:*)']);
   assert.equal(run(['--target', target, '--check']).status, 0, 'no drift after a re-run');
 
@@ -351,7 +351,7 @@ test('repo permissions.allow reaches multi-repo sessions, beside the owner\'s ow
   const recorded = rerun._installedAllow;
   assert.deepEqual(recorded, real.permissions.allow);
   assert.equal(run(['--target', target, '--uninstall']).status, 0);
-  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { permissions: { allow: ['Bash(ls:*)'], deny: ['Bash(rm:*)'] } });
+  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { permissions: { allow: ['Bash(pwd:*)'], deny: ['Bash(rm:*)'] } });
 });
 
 test('an owner rule equal to a repo rule survives uninstall; a malformed allow is left alone (BRO-7526)', () => {
@@ -359,12 +359,12 @@ test('an owner rule equal to a repo rule survives uninstall; a malformed allow i
   const { target } = makeTarget('t-allow-owner');
   const file = path.join(target, '.claude', 'settings.json');
   fs.mkdirSync(path.dirname(file));
-  const original = { permissions: { allow: ['mcp__Linear', 'Bash(ls:*)'] } };
+  const original = { permissions: { allow: ['mcp__Linear', 'Bash(pwd:*)'] } };
   fs.writeFileSync(file, JSON.stringify(original));
   assert.equal(run(['--target', target, '--adopt-hookless-settings']).status, 0);
   run(['--target', target]);
   const s = JSON.parse(fs.readFileSync(file, 'utf8'));
-  assert.deepEqual([...s.permissions.allow].sort(), [...new Set([...real.permissions.allow, 'Bash(ls:*)'])].sort());
+  assert.deepEqual([...s.permissions.allow].sort(), [...new Set([...real.permissions.allow, 'Bash(pwd:*)'])].sort());
   assert.ok(!s._installedAllow.includes('mcp__Linear'), 'the owner rule is not recorded as ours');
   assert.equal(run(['--target', target, '--check']).status, 0);
   run(['--target', target, '--uninstall']);
@@ -375,13 +375,13 @@ test('an owner rule equal to a repo rule survives uninstall; a malformed allow i
   assert.equal(run(['--target', t2]).status, 0);
   const f2 = path.join(t2, '.claude', 'settings.json');
   const g = JSON.parse(fs.readFileSync(f2, 'utf8'));
-  g.permissions.allow.push('mcp__StaleRepoRule', 'Bash(ls:*)');
+  g.permissions.allow.push('mcp__StaleRepoRule', 'Bash(pwd:*)');
   g._installedAllow.push('mcp__StaleRepoRule');
   fs.writeFileSync(f2, JSON.stringify(g));
   assert.equal(run(['--target', t2]).status, 0);
   const h = JSON.parse(fs.readFileSync(f2, 'utf8'));
   assert.ok(!h.permissions.allow.includes('mcp__StaleRepoRule'), 'the dropped repo rule is gone');
-  assert.ok(h.permissions.allow.includes('Bash(ls:*)'), 'the owner rule stays');
+  assert.ok(h.permissions.allow.includes('Bash(pwd:*)'), 'the owner rule stays');
   assert.ok(!h._installedAllow.includes('mcp__StaleRepoRule'));
 
   const odd = makeTarget('t-allow-notobject').target;
@@ -431,4 +431,18 @@ test('liveness probe warns when the runner dedupes every event (BRO-7180)', () =
   const unset = spawnSync('node', [LIVENESS, '--runner', path.join(REPO_ROOT, '.claude', 'hooks', 'lib', 'home-hook-runner.sh')], { encoding: 'utf8', env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: '' } });
   assert.equal(unset.stdout.trim(), '', 'CLAUDE_PROJECT_DIR unset: the runner falls back to cwd, so does the probe (no false warning)');
   assert.equal(probe(path.join(REPO_ROOT, '.claude', 'hooks', 'lib', 'home-hook-runner.sh')).stdout.trim(), '', 'the real runner is alive');
+});
+
+// BRO-7533: owner-approved (2026-11-15, option A) read-only Bash allow rules so Auto mode stops
+// prompting in cloud sessions. Guard: the set stays present, and no rule allows a command that writes.
+test('repo allows the read-only Bash commands and nothing that writes (BRO-7533)', () => {
+  const real = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
+  const allow = real.permissions.allow;
+  const wanted = ['cd', 'grep', 'rg', 'ls', 'cat', 'head', 'tail', 'wc', 'sort',
+    'git status', 'git diff', 'git log', 'git show', 'git fetch'];
+  for (const c of wanted) assert.ok(allow.includes(`Bash(${c}:*)`), `Bash(${c}:*) is allowed`);
+  const bash = allow.filter((r) => r.startsWith('Bash('));
+  const writers = /^Bash\((rm|mv|cp|tee|sed|dd|chmod|chown|curl|wget|node|npm|python3?|bash|sh|git (push|commit|add|reset|checkout|merge|rebase|clean|stash|pull))\b/;
+  assert.deepEqual(bash.filter((r) => writers.test(r)), [], 'no Bash allow rule may write');
+  assert.deepEqual(bash.filter((r) => !wanted.includes(r.slice(5, -3))), [], 'only the approved read-only set');
 });

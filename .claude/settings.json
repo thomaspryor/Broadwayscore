@@ -11,7 +11,21 @@
     "allow": [
       "mcp__claude-code-remote",
       "mcp__Claude_Code_Remote",
-      "mcp__Linear"
+      "mcp__Linear",
+      "Bash(cd:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(sort:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git fetch:*)"
     ]
   },
   "hooks": {
