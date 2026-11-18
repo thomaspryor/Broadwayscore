@@ -511,6 +511,20 @@ export const WORKFLOW_CHECKS = [
   { name: 'audit-push-core-data-audit-gap.js', cmd: 'node', args: ['scripts/audit-push-core-data-audit-gap.js'], fix: 'fix the lines it prints' },
   { name: 'audit-test-yml-manifest-paths.js', cmd: 'node', args: ['scripts/audit-test-yml-manifest-paths.js'], fix: 'fix the lines it prints' },
 ];
+// These lint-workflows gates scan scripts or tests, so a workflow-only path
+// trigger misses the ordinary code changes which caused BRO-7637 refusals.
+export const CODE_AUDIT_CHECKS = [
+  { name: 'audit-unsafe-show-dir-listing.js', cmd: 'node', args: ['scripts/audit-unsafe-show-dir-listing.js'], fix: 'use listShowDirs for show directories' },
+  { name: 'lint-resend-calls.js', cmd: 'node', args: ['scripts/lint-resend-calls.js'], fix: 'fix the direct Resend calls it prints' },
+  { name: 'audit-alert-senders.js --check', cmd: 'node', args: ['scripts/audit-alert-senders.js', '--check'], fix: 'fix the alert sender findings it prints' },
+  { name: 'audit-direct-provider-calls.js --strict', cmd: 'node', args: ['scripts/audit-direct-provider-calls.js', '--strict'], fix: 'fix the direct provider calls it prints' },
+  { name: 'audit-tests-vs-derived-data.js', cmd: 'node', args: ['scripts/audit-tests-vs-derived-data.js'], fix: 'fix the derived-data test findings it prints' },
+];
+export function selectWorkflowChecks(files) {
+  const workflow = files.some((f) => WORKFLOW_PATH_RE.test(f));
+  const code = files.some((f) => /^(src|scripts|tests)\//.test(f));
+  return [...(workflow ? WORKFLOW_CHECKS : []), ...(workflow || code ? CODE_AUDIT_CHECKS : [])];
+}
 /** Nearest node_modules at or above dir (a worktree under .claude/worktrees has none of its own). */
 function findNodeModules(dir) {
   for (let d = dir; ; d = path.dirname(d)) {
@@ -523,7 +537,8 @@ function findNodeModules(dir) {
 export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = spawnSync }) {
   const diff = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`]);
   if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
-  if (!out(diff).split('\n').some((f) => WORKFLOW_PATH_RE.test(f))) return { status: 'clean', reason: 'no workflow files changed' };
+  const checks = selectWorkflowChecks(out(diff).split('\n'));
+  if (!checks.length) return { status: 'clean', reason: 'no workflow, source, script or test files changed' };
   const root = out(git(cwd, ['rev-parse', '--show-toplevel']));
   const nm = findNodeModules(root);
   // js-yaml, acorn and friends live in the checkout's node_modules, not in the exported tree.
@@ -559,7 +574,7 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
   if (!judgeRoot) return { status: 'skip', reason: 'could not materialize the landing tree' };
   try {
     // rc 0 = pass; anything but 1 (124 timeout, 127, crash, never finished) = could not judge: fail open.
-    const failed = runBatch(judgeRoot, WORKFLOW_CHECKS.map((c, i) => ({ ...c, i }))).filter((r) => r.rc === '1');
+    const failed = runBatch(judgeRoot, checks.map((c, i) => ({ ...c, i }))).filter((r) => r.rc === '1');
     if (failed.length === 0) return { status: 'clean' };
     // A check already red on base is not this branch's fault (land.yml judges new failures only).
     let newFailures = failed;
