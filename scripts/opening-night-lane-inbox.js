@@ -123,14 +123,21 @@ function drain() {
     process.exitCode = 3;
     return;
   }
-  send(show, open, lines, 'sent to ingest-urls after the lane ended');
+  send(show, open, lines, 'sent to ingest-urls after the lane ended', { priority: true });
 }
 
-function send(show, open, lines, reason) {
+/**
+ * Dispatch ingest-urls.yml through the bulk-workflow queue cap. The night job's drain is an opening-night dispatch
+ * (priority, never deferred); the hourly sweep defers when the cap is full and leaves the entries for its next pass.
+ */
+function send(show, open, lines, reason, { priority = false } = {}) {
+  const cap = require('./lib/workflow-queue-cap').checkCap({ workflow: 'ingest-urls.yml', priority });
+  if (!cap.ok) { console.log(`::notice::lane inbox: ${show} deferred to the next sweep (${cap.reason})`); return false; }
   require('./lib/rest-dispatch').dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: show, urls: lines.join('\n'), caller: 'lane-inbox-drain' } });
   const res = inbox.markSync({ repoDir: REPO_DIR }, open.map((e) => ({ id: e.id, addedAt: e.addedAt, status: 'drained', reason })));
   if (!res.ok) console.log(`::warning::drained ${open.length} URL(s) to ingest-urls but the inbox status write failed (${res.reason}); a second drain would send them again`);
   console.log(`::notice::lane inbox: sent ${open.length} URL(s) for ${show} to ingest-urls.yml (${reason})`);
+  return true;
 }
 
 /** Hourly (opening-night-checklist.yml): send on whatever the night's drain left behind (see sweepPlan). */
