@@ -13,7 +13,7 @@ const inbox = require('../../scripts/lib/opening-night-lane/manual-inbox.js');
 const { ingestRouteDecision } = require('../../scripts/lib/lane-inbox-routing.js');
 const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
 const trust = require('../../scripts/lib/opening-night-lane/trust-model.js');
-const { drainPlan } = require('../../scripts/opening-night-lane-inbox.js');
+const { drainPlan, drainAllowed, liveLease } = require('../../scripts/opening-night-lane-inbox.js');
 
 const NIGHT = new Date().toISOString().slice(0, 10);
 const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
@@ -66,6 +66,31 @@ test('ingest-urls routing: a hand dispatch for a leased show goes to the inbox; 
   assert.equal(ingestRouteDecision({ lease: { holder: 'gha-1' }, caller: 'lane-inbox-drain' }).action, 'refuse');
   assert.equal(ingestRouteDecision({ lease: { holder: 'gha-1' }, dryRun: true }).action, 'refuse');
   assert.equal(ingestRouteDecision({ lease: { unknown: true } }).action, 'refuse');
+});
+
+test('drain waits while any lease holds the show, the lane\'s own included, read live from the store', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7741-drain-'));
+  try {
+    const bare = path.join(root, 'remote.git'); const work = path.join(root, 'work');
+    execFileSync('git', ['init', '-q', '--bare', bare]);
+    execFileSync('git', ['init', '-q', work]);
+    execFileSync('git', ['remote', 'add', 'origin', bare], { cwd: work });
+    Object.assign(process.env, { GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' });
+    assert.equal(liveLease(SHOW.id, work), null);
+    assert.equal(drainAllowed(liveLease(SHOW.id, work)), true);
+    const store = require('../../scripts/lib/opening-night-lane/lease-store.js');
+    const leaseLib = require('../../scripts/lib/opening-night-lane/lease.js');
+    const holder = 'gha-12345';
+    const prev = process.env.OPENING_NIGHT_LANE_HOLDER; process.env.OPENING_NIGHT_LANE_HOLDER = holder; // the night job sets this
+    try {
+      const res = store.casTransition({ repoDir: work }, (st) => leaseLib.acquire(st, { show: SHOW.id, night: '2026-11-17', holder, now: Date.now() }));
+      assert.equal(res.ok, true, JSON.stringify(res));
+      const held = liveLease(SHOW.id, work);
+      assert.equal(held && held.holder, holder);
+      assert.equal(drainAllowed(held), false);
+    } finally { if (prev === undefined) delete process.env.OPENING_NIGHT_LANE_HOLDER; else process.env.OPENING_NIGHT_LANE_HOLDER = prev; }
+    assert.equal(drainAllowed(liveLease(SHOW.id, path.join(root, 'no-such-repo'))), false, 'an unreadable store holds the drain');
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });
 
 test('drainPlan: only entries the lane did not finish go back to ingest-urls', () => {
