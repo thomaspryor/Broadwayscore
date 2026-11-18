@@ -79,14 +79,14 @@ function startCaptureServer() {
 
 function httpGet(url) {
   return new Promise((resolve, reject) => {
-    http.get(url, (res) => { let b = ''; res.setEncoding('utf8'); res.on('data', (c) => { b += c; }); res.on('end', () => (res.statusCode === 200 ? resolve(b) : reject(new Error(`${res.statusCode} ${url}`)))); }).on('error', reject);
+    http.get(url, { timeout: 15000 }, (res) => { let b = ''; res.setEncoding('utf8'); res.on('data', (c) => { b += c; }); res.on('end', () => (res.statusCode === 200 ? resolve(b) : reject(new Error(`${res.statusCode} ${url}`)))); }).on('timeout', function onTimeout() { this.destroy(new Error(`timeout ${url}`)); }).on('error', reject);
   });
 }
 function httpPost(url, body) {
   return new Promise((resolve, reject) => {
     const u = new URL(url);
-    const req = http.request({ host: u.hostname, port: u.port, path: u.pathname, method: 'POST', headers: { 'content-type': 'application/json' } }, (res) => { res.resume(); res.on('end', () => resolve(res.statusCode < 300)); });
-    req.on('error', reject); req.end(body);
+    const req = http.request({ host: u.hostname, port: u.port, path: u.pathname, method: 'POST', headers: { 'content-type': 'application/json' }, timeout: 15000 }, (res) => { res.resume(); res.on('end', () => resolve(res.statusCode < 300)); });
+    req.on('timeout', () => req.destroy(new Error(`timeout ${url}`))); req.on('error', reject); req.end(body);
   });
 }
 

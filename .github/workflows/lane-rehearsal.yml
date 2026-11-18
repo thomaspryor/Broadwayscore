@@ -63,6 +63,7 @@ jobs:
       # local outlets only (any request off 127.0.0.1 fails it). Writes data/audit/simulated-opening-night.json on pass,
       # fail and crash; check-opening-night-readiness.js reads it. Advisory first (CLAUDE.md section 19).
       - name: Simulated opening night (BRO-7781, advisory)
+        # lint-allow-swallow: advisory sim; every outcome (pass, fail, crash, kill) is written into the record, which the readiness check reads and warns on
         if: ${{ !cancelled() }}
         continue-on-error: true
         run: |
