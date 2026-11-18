@@ -109,6 +109,7 @@ const SITE_DATA_FILES = [
   'data/nyt-critics-picks.json',
   'data/outlet-registry.json',
   'data/related-shows.json',
+  'data/score-gate-overrides.json', // per-show score gate overrides (BRO-7750)
   'data/show-origins.json',
   'data/show-schedule-history.json',
   'data/show-schedules.json',

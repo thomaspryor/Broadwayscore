@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect, startTransition, type ReactNode } from 'r
 import { audienceSortScore } from '@/lib/audience-grade-utils';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { scoreGateArg } from '@/config/scoring';
 import { createSortToggle } from '@/lib/sort-toggle';
 import { compareScore } from '@/lib/browse-sort';
 import { sectionLabelsContiguous } from '@/lib/browse-sections';
@@ -187,7 +187,7 @@ export default function BrowseListClient({
     const getEffectiveScore = (s: BrowseShow): number | null => {
       const reviewCount = s.criticScore?.reviewCount ?? 0;
       const t1t2 = (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0);
-      if (!hasEnoughReviews(reviewCount, s.category, t1t2, CURATED_HISTORICAL_SHOWS.has(s.id))) return null;
+      if (!hasEnoughReviews(reviewCount, s.category, t1t2, scoreGateArg(s.id))) return null;
       return s.criticScore?.score ?? null;
     };
 

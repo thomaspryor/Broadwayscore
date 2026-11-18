@@ -47,4 +47,29 @@ function isCuratedHistoricalShow(showId) {
   return !!showId && _loadCurated().has(showId);
 }
 
-module.exports = { shouldHideReviews, isCuratedHistoricalShow, SCORE_DISPLAY_YEAR_CUTOFF };
+let _gateOverrides = null;
+function _loadGateOverrides() {
+  if (_gateOverrides) return _gateOverrides;
+  try {
+    const data = require(path.join(__dirname, '..', '..', 'data', 'score-gate-overrides.json'));
+    _gateOverrides = (data && data.shows) || {};
+  } catch {
+    _gateOverrides = {};
+  }
+  return _gateOverrides;
+}
+
+/**
+ * The 4th argument for hasEnoughReviews / reviewsRemainingForScore (BRO-7750):
+ * an owner-approved per-show minimum from data/score-gate-overrides.json when one
+ * exists, else whether the show is curated historical. Mirrors scoreGateArg() in
+ * src/config/scoring.ts.
+ * @param {string} showId @returns {boolean|number}
+ */
+function scoreGateArg(showId) {
+  const o = showId ? _loadGateOverrides()[showId] : null;
+  if (o && Number.isFinite(o.minReviews) && o.minReviews >= 1) return o.minReviews;
+  return isCuratedHistoricalShow(showId);
+}
+
+module.exports = { shouldHideReviews, isCuratedHistoricalShow, scoreGateArg, SCORE_DISPLAY_YEAR_CUTOFF };
