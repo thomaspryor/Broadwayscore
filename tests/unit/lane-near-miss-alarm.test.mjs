@@ -17,6 +17,11 @@ const BMG = { id: 'blue-man-group-a-new-holiday-surprise-2026', title: 'Blue Man
 const TM_INDEX = 'https://www.theatermania.com/news/?categories=reviews';
 const TM_URL = 'https://www.theatermania.com/news/review-blue-man-groups-broadway-christmas-show-is-a-lump-of-coal_1860029/';
 const TM_HEADLINE = 'Blue Man Group’s Broadway Christmas Show Is a Lump of Coal';
+// The review page as TheaterMania serves it (trimmed): it names the show and its venue (BRO-7743's corroboration).
+const TM_PAGE = `<html><head><title>${TM_HEADLINE}</title><script>var x = 'Lunt-Fontanne';</script></head><body><article><h1>${TM_HEADLINE}</h1>
+  <p>Blue Man Group: A New Holiday Surprise has arrived at the Lunt-Fontanne Theatre for a limited holiday run, and the three cobalt
+  performers spend ninety minutes drumming, catching marshmallows and painting with gumballs.</p>
+  <p>It is a slight, repetitive evening that mistakes volume for wonder, and the holiday theme is a coat of tinsel at best.</p></article></body></html>`;
 const INDEX_HTML = `<html><body><main>
   <article><a href="${TM_URL}"><h3>Review: ${TM_HEADLINE}</h3></a><time datetime="2026-11-18T02:00:00Z">November 17, 2026</time></article>
   <article><a href="https://www.theatermania.com/news/review-the-fantasticks-returns_1859990/"><h3>Review: The Fantasticks Returns</h3></a></article>
@@ -93,16 +98,47 @@ test('BMG replay: the alert names the URL and the one ingest command, on Discord
   const fresh = nm.recordNew(dir, { showId: BMG.id, night: '2026-11-17', kind: 'near-miss', items: r.nearMisses });
   const sent = { discord: [], comment: [] };
   const notify = createPressSignalsNotifier({
-    env: { DISCORD_WEBHOOK_ALERTS: 'https://discord.invalid/hook', LINEAR_API_KEY: 'x' }, log: () => {}, card: 'BRO-5955',
+    env: { DISCORD_WEBHOOK_ALERTS: 'https://discord.invalid/hook', LINEAR_API_KEY: 'x' }, log: () => {}, card: 'BRO-5955', fetchPage: async () => TM_PAGE,
     discord: async (_w, t) => { sent.discord.push(t); return true; }, comment: async (c, b) => { sent.comment.push([c, b]); return true; },
   });
   const out = await notify({ show: BMG, night: '2026-11-17', nearMisses: fresh, gaps: [] });
   assert.ok(out.discord && out.comment);
+  const cmd = nm.ingestCommand(BMG.id, { url: TM_URL, outletId: 'theatermania' }).primary;
   for (const t of [sent.discord[0], sent.comment[0][1]]) {
     assert.ok(t.includes(TM_URL), t);
-    assert.ok(t.includes(`node scripts/opening-night-lane-inbox.js add --show=${BMG.id} --url='${TM_URL}' --outlet=theatermania`), t);
+    assert.ok(t.includes(`add it: ${cmd}`), t);
   }
   assert.equal(sent.comment[0][0], 'BRO-5955');
+  assert.ok(sent.discord[0].includes('(the page names the show)'), sent.discord[0]);
+});
+
+test('BRO-7743: the page check needs the show AND its venue or cast, outside scripts; it never blocks the alert', async () => {
+  assert.equal(nm.pageNamesShow(TM_PAGE, BMG), true);
+  assert.equal(nm.pageNamesShow(TM_PAGE.replace(/Lunt-Fontanne Theatre/, 'a Broadway house'), BMG), false, 'venue only inside <script> must not count');
+  assert.equal(nm.pageNamesShow('<html>Just a moment...</html>', BMG), null, 'a challenge page is no evidence either way');
+  const notify = createPressSignalsNotifier({ env: { LINEAR_API_KEY: 'x' }, log: () => {}, card: 'BRO-5955', fetchPage: async () => { throw new Error('403'); }, comment: async () => true });
+  const out = await notify({ show: BMG, night: '2026-11-17', nearMisses: [{ url: TM_URL, outletId: 'theatermania', adapter: 'section-index', signals: ['x'] }] });
+  assert.equal(out.comment, true);
+  assert.ok(!/page (names|did not)/.test(out.text));
+});
+
+test('ingest command: the lane inbox when it exists, else the ingest workflow; apostrophes survive the shell', () => {
+  const it = { url: "https://x.com/it's-a-review/", outletId: 'o' };
+  assert.match(nm.ingestCommand('s', it, { inbox: true }).primary, /^node scripts\/opening-night-lane-inbox\.js add --show=s --url='https:\/\/x\.com\/it'\\''s-a-review\/' --outlet=o$/);
+  const w = nm.ingestCommand('s', it, { inbox: false });
+  assert.match(w.primary, /^gh workflow run ingest-urls\.yml -f show_id=s -f urls=/);
+  assert.equal(w.fallback, null);
+});
+
+test('recordNew: the per-adapter cap applies after dedupe, so already-alerted URLs never starve a new one', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'nm-'));
+  const mk = (i, adapter = 'idx') => ({ key: `https://a.com/r${i}`, url: `https://www.a.com/r${i}/`, adapter });
+  const first = nm.recordNew(dir, { showId: 's', night: 'n', kind: 'near-miss', items: [1, 2, 3, 4, 5, 6].map((i) => mk(i)), perAdapter: 5 });
+  assert.equal(first.length, 5);
+  const second = nm.recordNew(dir, { showId: 's', night: 'n', kind: 'near-miss', items: [1, 2, 3, 4, 5, 6, 7].map((i) => mk(i)), perAdapter: 5 });
+  assert.deepEqual(second.map((x) => x.key), ['https://a.com/r6', 'https://a.com/r7']);
+  // the same review under another URL form is the same key: no second alert
+  assert.equal(nm.recordNew(dir, { showId: 's', night: 'n', kind: 'near-miss', items: [{ ...mk(1), url: 'https://a.com/r1' }] }).length, 0);
 });
 
 test('notifier: one failing channel does not hide the other, and nothing new sends nothing', async () => {

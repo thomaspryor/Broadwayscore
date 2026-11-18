@@ -277,7 +277,7 @@ function hasReviewSignal(url, title) {
 /**
  * BRO-7748: a link the strict matcher refused that still partly names the show is reported, never admitted. Only a
  * review-like link (review word, a reviews-only source, or a review-only outlet) on a KNOWN outlet's host, at most
- * nearMiss.MAX_NEAR_MISSES_PER_ADAPTER per adapter per pass. `budget` is the adapter's {left} counter for this pass.
+ * candidates per adapter per pass (nearMiss.MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER, a flood cap; the alert cap applies after dedupe).
  */
 function nearMissFind(item, show, budget, extra = {}) {
   if (!item || !item.url || budget.left <= 0) return null;
@@ -289,7 +289,7 @@ function nearMissFind(item, show, budget, extra = {}) {
   budget.left -= 1;
   return { url: item.url, title: item.title || '', source: 'outlet-index', outletId: extra.outletId || outlet.outletId, via: extra.via, nearMiss: signals };
 }
-const nearMissBudget = () => ({ left: nearMiss.MAX_NEAR_MISSES_PER_ADAPTER });
+const nearMissBudget = () => ({ left: nearMiss.MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER });
 
 // The ensemble refuses selected text under 50 chars (ensemble-scorer.ts prepareScoringInput).
 const EXCERPT_MIN_CHARS = 50;
@@ -1403,7 +1403,7 @@ async function runDiscoveryPass({
       const key = canonicalUrl(c.url);
       if (!key) { if (!c.nearMiss) rejected.push({ url: c.url, adapter: adapterName, reason: 'wrapped-url' }); continue; }
       if (c.nearMiss) {
-        if (!nearMissByKey.has(key)) nearMissByKey.set(key, { url: c.url, title: c.title || '', outletId: c.outletId, adapter: adapterName, via: c.via, signals: c.nearMiss });
+        if (!nearMissByKey.has(key)) nearMissByKey.set(key, { key, url: c.url, title: c.title || '', outletId: c.outletId, adapter: adapterName, via: c.via, signals: c.nearMiss });
         continue;
       }
       const prior = byKey.get(key);

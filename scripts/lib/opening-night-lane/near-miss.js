@@ -22,8 +22,12 @@ const path = require('path');
 const { foldDiacritics } = require('../title-match');
 
 const GAP_AFTER_MS = 15 * 60 * 1000;
-// At most this many near-misses per adapter per pass: a feed that changes shape must not flood the queue.
+// At most this many NEW near-misses per adapter alert per pass (applied after the per-night dedupe, so URLs already
+// alerted never use it up); the rest alert next pass. A feed that changes shape must not flood the channel.
 const MAX_NEAR_MISSES_PER_ADAPTER = 5;
+// A safety cap on what one adapter may hand over per pass, before any dedupe.
+const MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER = 40;
+const idOf = (it) => it.key || it.url; // dedupe and timers use the canonical key; `url` is what the alert shows
 // Refusals that are the lane working as designed: an earlier production's review, a news or gallery page, a homepage, a
 // redirect wrapper, an unknown host. A gap alert for these would be noise.
 const INTENDED_REJECTIONS = new Set(['outside-night-window', 'non-review-path', 'non-review-slug', 'homepage', 'wrapped-url', 'unknown-outlet-host', 'unknown-source']);
@@ -101,50 +105,76 @@ function gapCandidates(sightings, { firstSeen, now, afterMs = GAP_AFTER_MS }) {
     if (!s || !s.url || s.admitted || !s.knownOutlet) continue;
     if (!(s.aggregatorCited || (s.vettedOutlet && s.reviewLike))) continue;
     if (s.rejectedFor && INTENDED_REJECTIONS.has(s.rejectedFor)) continue;
-    if (!firstSeen.has(s.url)) firstSeen.set(s.url, now);
-    const age = now - firstSeen.get(s.url);
-    if (age >= afterMs) out.push({ ...s, firstSeenAt: new Date(firstSeen.get(s.url)).toISOString(), ageMin: Math.round(age / 60000) });
+    const id = idOf(s);
+    if (!firstSeen.has(id)) firstSeen.set(id, now);
+    const age = now - firstSeen.get(id);
+    if (age >= afterMs) out.push({ ...s, firstSeenAt: new Date(firstSeen.get(id)).toISOString(), ageMin: Math.round(age / 60000) });
   }
   return out;
+}
+
+/**
+ * Does an article's own text name the show (BRO-7743)? The title (whole, or its lead before a subtitle) AND the venue or
+ * a cast member. Corroboration only: the alert fires either way, since a page behind a bot wall must not hide a review.
+ * @returns {boolean|null} null when there is no text to judge
+ */
+function pageNamesShow(html, show) {
+  const text = String(html || '').replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ');
+  if (text.replace(/\s+/g, '').length < 200 || !show || !show.title) return null;
+  const hay = fold(text.replace(/&#8217;|&rsquo;/g, "'"));
+  const lead = leadTitle(show.title);
+  const named = hasPhrase(hay, show.title) || (lead && hasPhrase(hay, lead)) || (sig(show.title).length === 1 && hasPhrase(hay, sig(show.title)[0]));
+  if (!named) return false;
+  const venue = String(show.venue || '').replace(/\b(theatre|theater)\b/gi, '').trim();
+  if (venue.length >= 5 && hasPhrase(hay, venue)) return true;
+  return (Array.isArray(show.cast) ? show.cast : []).some((c) => { const n = typeof c === 'string' ? c : c && c.name; return n && sig(n).length >= 2 && hasPhrase(hay, n); });
 }
 
 function signalsPath(ledgerDir, showId, night) {
   return path.join(ledgerDir, showId, `${night}.press-signals.jsonl`);
 }
 
-/** Append the items not already recorded for this night (kind + url); returns only those new ones. */
-function recordNew(ledgerDir, { showId, night, kind, items, now = Date.now() }) {
+/**
+ * Append the items not already recorded for this night (kind + canonical key); returns only those new ones. With
+ * `perAdapter`, at most that many new items per adapter are taken; the rest stay unrecorded and come back next pass.
+ */
+function recordNew(ledgerDir, { showId, night, kind, items, now = Date.now(), perAdapter = Infinity }) {
   if (!items || !items.length) return [];
   const file = signalsPath(ledgerDir, showId, night);
   const done = new Set();
   try {
     for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
       if (!line.trim()) continue;
-      try { const r = JSON.parse(line); done.add(`${r.kind}|${r.url}`); } catch { /* a torn line is skipped */ }
+      try { const r = JSON.parse(line); done.add(`${r.kind}|${r.key || r.url}`); } catch { /* a torn line is skipped */ }
     }
   } catch (e) { if (e.code !== 'ENOENT') throw e; }
   const fresh = [];
+  const taken = new Map();
   for (const it of items) {
-    const k = `${kind}|${it.url}`;
+    const k = `${kind}|${idOf(it)}`;
     if (done.has(k)) continue;
+    const n = taken.get(it.adapter) || 0;
+    if (n >= perAdapter) continue;
+    taken.set(it.adapter, n + 1);
     done.add(k);
     fresh.push(it);
   }
   if (fresh.length) {
     fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.appendFileSync(file, fresh.map((it) => JSON.stringify({ kind, url: it.url, at: new Date(now).toISOString(), outletId: it.outletId || null, adapter: it.adapter || null, signals: it.signals || undefined })).join('\n') + '\n');
+    fs.appendFileSync(file, fresh.map((it) => JSON.stringify({ kind, key: idOf(it), url: it.url, at: new Date(now).toISOString(), outletId: it.outletId || null, adapter: it.adapter || null, signals: it.signals || undefined })).join('\n') + '\n');
   }
   return fresh;
 }
 
 /** The one command that puts a URL in front of the running lane (BRO-7741 inbox), plus the regular-path fallback. */
-function ingestCommand(showId, item) {
+// The BRO-7741 lane inbox, when it is on this checkout; until then the regular ingest workflow is the one command.
+const INBOX_SCRIPT = path.join(__dirname, '..', '..', 'opening-night-lane-inbox.js');
+function ingestCommand(showId, item, { inbox = fs.existsSync(INBOX_SCRIPT) } = {}) {
   const q = (v) => `'${String(v).replace(/'/g, `'\\''`)}'`; // copy-paste safe even if the URL holds a quote
   const outlet = item.outletId ? ` --outlet=${item.outletId}` : '';
-  return {
-    primary: `node scripts/opening-night-lane-inbox.js add --show=${showId} --url=${q(item.url)}${outlet}`,
-    fallback: `gh workflow run ingest-urls.yml -f show_id=${showId} -f urls=${q(`${item.url}${item.outletId ? ` ${item.outletId}` : ''}`)}`,
-  };
+  const workflow = `gh workflow run ingest-urls.yml -f show_id=${showId} -f urls=${q(`${item.url}${item.outletId ? ` ${item.outletId}` : ''}`)}`;
+  if (!inbox) return { primary: workflow, fallback: null };
+  return { primary: `node scripts/opening-night-lane-inbox.js add --show=${showId} --url=${q(item.url)}${outlet}`, fallback: workflow };
 }
 
 /** Alert text for new near-misses and gaps (one message per pass). Null when there is nothing new. */
@@ -153,17 +183,18 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [] }) {
   const lines = [];
   for (const n of nearMisses) {
     const c = ingestCommand(show.id, n);
-    lines.push(`NEAR-MISS (${n.outletId || 'known outlet'}, via ${n.adapter}): ${n.url}`, `  headline: ${n.title || '(none)'}`, `  partial match: ${(n.signals || []).join(', ')}; the strict title matcher refused it`, `  add it: ${c.primary}`, `  or: ${c.fallback}`);
+    const page = n.pageNamesShow === true ? ' (the page names the show)' : n.pageNamesShow === false ? ' (the page did not name the show with its venue or cast)' : '';
+    lines.push(`NEAR-MISS (${n.outletId || 'known outlet'}, via ${n.adapter}): ${n.url}${page}`, `  headline: ${n.title || '(none)'}`, `  partial match: ${(n.signals || []).join(', ')}; the strict title matcher refused it`, `  add it: ${c.primary}`, ...(c.fallback ? [`  or: ${c.fallback}`] : []));
   }
   for (const g of gaps) {
     const c = ingestCommand(show.id, g);
-    lines.push(`GAP (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live${g.rejectedFor ? ` (lane refused it: ${g.rejectedFor})` : ''}`, `  add it: ${c.primary}`, `  or: ${c.fallback}`);
+    lines.push(`GAP (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${g.rejectedFor ? `lane refused it: ${g.rejectedFor}` : 'lane has not dated it yet: backlog or a blocked page'})`, `  add it: ${c.primary}`, ...(c.fallback ? [`  or: ${c.fallback}`] : []));
   }
   const title = `Press night ${show.id} ${night}: ${nearMisses.length} near-miss, ${gaps.length} found-not-live`;
   return { title, description: lines.join('\n') };
 }
 
 module.exports = {
-  GAP_AFTER_MS, MAX_NEAR_MISSES_PER_ADAPTER, INTENDED_REJECTIONS,
-  leadTitle, nearMissSignals, gapCandidates, recordNew, signalsPath, ingestCommand, formatPressSignals,
+  GAP_AFTER_MS, MAX_NEAR_MISSES_PER_ADAPTER, MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER, INTENDED_REJECTIONS,
+  leadTitle, nearMissSignals, pageNamesShow, gapCandidates, recordNew, signalsPath, ingestCommand, formatPressSignals,
 };

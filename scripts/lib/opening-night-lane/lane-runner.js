@@ -181,7 +181,8 @@ async function runLaneNight({
   if (midPassTimer && midPassTimer.unref) midPassTimer.unref();
 
   let passes = 0;
-  const firstSightings = new Map(); // BRO-7748: url -> first time a pass saw it, for the 15-minute found-not-live check
+  const firstSightings = new Map();
+  const alerting = new Set(); // press-signal alerts in flight (BRO-7748), settled before the night returns // BRO-7748: url -> first time a pass saw it, for the 15-minute found-not-live check
   // The lane runs for its whole window, not until a pass finds nothing: reviews keep arriving for hours (late roundup
   // entries, slow outlets), and an idle-stop would walk away from them.
   // shouldStop: the production driver's lease-lost signal. Stop discovering and scoring (they spend credits for rows
@@ -199,9 +200,15 @@ async function runLaneNight({
     // BRO-7748: what the pass saw but did not admit, reported within this pass. Recorded first, so a failed alert is not
     // re-sent every pass; an alert that throws is an error row, never a stopped night.
     try {
-      const nearMisses = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'near-miss', items: pass.nearMisses || [], now: stamp });
+      const nearMisses = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'near-miss', items: pass.nearMisses || [], now: stamp, perAdapter: nearMiss.MAX_NEAR_MISSES_PER_ADAPTER });
       const gaps = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'gap', items: nearMiss.gapCandidates(pass.sightings || [], { firstSeen: firstSightings, now: stamp }), now: stamp });
-      if ((nearMisses.length || gaps.length) && onPressSignals) await onPressSignals({ show, night, nearMisses, gaps });
+      // Not awaited here: the admitted reviews below are the lane's job and must not wait on Discord or Linear.
+      if ((nearMisses.length || gaps.length) && onPressSignals) {
+        const p = Promise.resolve().then(() => onPressSignals({ show, night, nearMisses, gaps }))
+          .catch((e) => errors.push({ adapter: 'press-signals', error: String((e && e.message) || e).slice(0, 150) }))
+          .finally(() => alerting.delete(p));
+        alerting.add(p);
+      }
     } catch (e) { errors.push({ adapter: 'press-signals', error: String((e && e.message) || e).slice(0, 150) }); }
 
     for (const a of pass.admitted) {
@@ -360,6 +367,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
+  await Promise.allSettled([...alerting]);
   return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };
 }
 

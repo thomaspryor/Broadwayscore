@@ -10,7 +10,7 @@
  * Each channel is tried on its own; one failing never hides the other, and neither throws into the lane.
  */
 const https = require('https');
-const { formatPressSignals } = require('./opening-night-lane/near-miss');
+const { formatPressSignals, pageNamesShow } = require('./opening-night-lane/near-miss');
 
 function coordinatorCard() {
   const reg = require('./coordinator-registry').REGISTRY || [];
@@ -39,6 +39,15 @@ function capped(p, ms, what) {
   return Promise.race([p, new Promise((_, rej) => { t = setTimeout(() => rej(new Error(`${what} took over ${ms / 1000}s`)), ms); })]).finally(() => clearTimeout(t));
 }
 
+// BRO-7743: read each new near-miss page once, directly (free, no scraper chain, no paid volume), to say whether it names
+// the show. At most this many per alert; a page that will not load leaves the alert as it was.
+const MAX_PAGE_CHECKS = 3;
+async function fetchPageDirect(url) {
+  const res = await fetch(url, { signal: AbortSignal.timeout(10000), redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0 (compatible; press-night-check)' } });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return (await res.text()).slice(0, 2_000_000);
+}
+
 async function commentOnCard(card, body) {
   const linear = require('./linear-client');
   const issue = await linear.getIssue(card);
@@ -52,13 +61,18 @@ async function commentOnCard(card, body) {
  *   discord(webhook, text) and comment(card, body) are injectable for tests.
  * @returns {(signals: {show, night, nearMisses, gaps}) => Promise<{discord: boolean, comment: boolean, text: string|null}>}
  */
-function createPressSignalsNotifier({ env = process.env, log = console.log, discord = postDiscord, comment = commentOnCard, card = coordinatorCard(), runUrl, capMs = CHANNEL_CAP_MS } = {}) {
+function createPressSignalsNotifier({ env = process.env, log = console.log, discord = postDiscord, comment = commentOnCard, card = coordinatorCard(), runUrl, capMs = CHANNEL_CAP_MS, fetchPage = fetchPageDirect } = {}) {
   const run = runUrl || (env.GITHUB_RUN_ID && env.GITHUB_REPOSITORY ? `https://github.com/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}` : null);
   return async ({ show, night, nearMisses = [], gaps = [] }) => {
+    for (const n of nearMisses.slice(0, MAX_PAGE_CHECKS)) {
+      if (n.pageNamesShow !== undefined) continue;
+      try { n.pageNamesShow = pageNamesShow(await capped(Promise.resolve(fetchPage(n.url)), 12000, 'page check'), show); } catch { n.pageNamesShow = null; }
+    }
     const msg = formatPressSignals(show, night, { nearMisses, gaps });
     if (!msg) return { discord: false, comment: false, text: null };
     const text = `${msg.title}\n${msg.description}${run ? `\nlane run: ${run}` : ''}`;
     log(`[press-signals] ${text}`);
+    console.log(`::warning title=Press-night ${nearMisses.length ? 'near-miss' : 'found-not-live'}::⚠️ ${msg.title} (details in the log above)`);
     const out = { discord: false, comment: false, text };
     if (env.DISCORD_WEBHOOK_ALERTS) {
       try { out.discord = await capped(discord(env.DISCORD_WEBHOOK_ALERTS, text), capMs, 'discord'); } catch (e) { log(`[press-signals] discord failed: ${String(e && e.message).slice(0, 160)}`); }
