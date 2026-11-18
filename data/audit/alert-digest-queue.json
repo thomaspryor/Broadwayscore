@@ -596,5 +596,47 @@
       }
     ],
     "queuedAt": "2026-11-18T16:55:23.690Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-top-gunchained-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Top Gunchained",
+    "description": "londonpubtheatres/Paul Maidment (londonpubtheatres--paul-maidment.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of Richard Marsh's 'Top Gunchained,' but it is NOT a review of a current Off-West End production  — https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T17:14:21.067Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:top-gunchained-off-west-end-2026",
+    "title": "Content mismatch on Top Gunchained",
+    "description": "thereviewshub/Scott Matthewman (thereviewshub--scott-matthewman.json) SHIPPED but fullText never mentions 'Top Gunchained' (2947 chars): https://www.thereviewshub.com/top-gunchained-wiltons-music-hall-london/\n⚠️  south-london/Michael Holland (south-london--unknown.json) also too short to assess (0 chars): https://southlondon.co.uk/lifestyle/review-top-gunchained-at-wiltons/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T17:14:21.455Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-top-gunchained-off-west-end-2026",
+    "title": "Placeholder synopsis on Top Gunchained",
+    "description": "synopsis for top-gunchained-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T17:14:21.479Z"
   }
 ]
