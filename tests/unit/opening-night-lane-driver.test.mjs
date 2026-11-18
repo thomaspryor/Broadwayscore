@@ -121,8 +121,7 @@ test('the production driver persists scored reviews before publishing and skips 
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4835-driver-'));
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   // The temp repo has no git remote, so the BRO-7741 manual inbox read stays off here (lane-manual-inbox.test.mjs covers it).
-  process.env.OPENING_NIGHT_LANE_INBOX_DISABLED = 'true';
-  t.after(() => { delete process.env.OPENING_NIGHT_LANE_INBOX_DISABLED; });
+  // the inbox kill switch rides the env passed in (no inbox branch in this test's repo)
   const show = { ...SHOW, openingDate: NIGHT };
   const url = 'https://www.theguardian.com/stage/2026/oct/20/test-show-review';
   const text = 'The performances and staging make this production a delight. '.repeat(20);
@@ -164,7 +163,7 @@ test('the production driver persists scored reviews before publishing and skips 
   }
   const deps = driver.buildRealLaneDeps({
     show, night: NIGHT, openingDate: NIGHT, holder: 'test', repoDir: dir, coreDir: dir, ledgerDir,
-    env: { ANTHROPIC_API_KEY: 'test', OPENAI_API_KEY: 'test' }, routeAlert: async () => {}, ScorerClass: Scorer,
+    env: { ANTHROPIC_API_KEY: 'test', OPENAI_API_KEY: 'test', OPENING_NIGHT_LANE_INBOX_DISABLED: 'true' }, routeAlert: async () => {}, ScorerClass: Scorer,
   });
   const first = await deps.runNight({ shouldStop: () => false });
   assert.deepEqual(first.errors, []);

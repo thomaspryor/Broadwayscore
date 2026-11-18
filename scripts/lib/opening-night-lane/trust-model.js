@@ -59,6 +59,7 @@ const SEEN_AFTER_DAYS = 3;
 
 /**
  * True only for a review carrying a well-formed provenance block AND the aggregator production stamp, for the show
+ * (manual-inbox rows carry the stamp too, so the lane can publish them; guards use isAggregatorVerifiedLaneReview)
  * the file belongs to (showId is required: a file with no showId cannot prove the stamp is for it).
  * ctx.openingDate (the show's openingDate from shows.json, YYYY-MM-DD) is optional but the guard-wiring callers
  * should always pass it: when given, the stamped night must be that opening night.
@@ -96,7 +97,16 @@ function laneBypasses(review, guard, ctx = {}) {
   // BRO-7593: the publisher's own "not a review" label (Guardian tone/features) is not the classifier verdict the
   // lane stands down for: Two Girls 2026 entered through a BWW roundup and was a Guardian feature.
   if (guard === 'nonReview' && require('../guardian-publication').isPublisherTaggedNonReview(review)) return false;
-  if (review && review[PROVENANCE_KEY] && review[PROVENANCE_KEY].source === MANUAL_SOURCE) return false; // BRO-7741
+  return isAggregatorVerifiedLaneReview(review, ctx);
+}
+
+/**
+ * A lane review whose show match came from an aggregator or the outlet's own index: the evidence the guards stand
+ * down for. A manual-inbox row (BRO-7741) is a lane row for publishing (isLaneReview) but a person picked its URL, so
+ * no guard trusts it. Every guard stand-down outside the lane's own publish path uses this, never isLaneReview.
+ */
+function isAggregatorVerifiedLaneReview(review, ctx = {}) {
+  if (review && review[PROVENANCE_KEY] && review[PROVENANCE_KEY].source === MANUAL_SOURCE) return false;
   return isLaneReview(review, ctx);
 }
 
@@ -245,5 +255,5 @@ function buildLaneReview({
 
 module.exports = {
   PROVENANCE_KEY, PRODUCTION_VERIFIED, SOURCES, MANUAL_SOURCE, LANE_BYPASSED_GUARDS, MIN_FULL_TEXT_CHARS, SEEN_BEFORE_DAYS, SEEN_AFTER_DAYS,
-  buildLaneProvenance, isLaneReview, laneRowSource, laneBypasses, calendarDateIn, admitLaneCandidate, roundupFallbackDate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
+  buildLaneProvenance, isLaneReview, isAggregatorVerifiedLaneReview, laneRowSource, laneBypasses, calendarDateIn, admitLaneCandidate, roundupFallbackDate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
 };

@@ -161,7 +161,7 @@ function createInlineScoring({
   const gate = (stage, key) => {
     const st = state.get(`${stage}:${key}`);
     if (st && st.terminal) throw new LanePermanentError(`${stage} failed for good earlier (see the failure record)`);
-    if (st && now() < st.nextAt) throw new LaneRetryError(`${stage} backing off until ${new Date(st.nextAt).toISOString()}`);
+    if (st && now() < st.nextAt) throw Object.assign(new LaneRetryError(`${stage} backing off until ${new Date(st.nextAt).toISOString()}`), { backoff: true }); // no attempt was made
   };
   /** Record a failed attempt; throws a retry error, or a permanent one when attempts are exhausted or `permanent`. */
   const fail = (stage, key, e, permanent = false) => {

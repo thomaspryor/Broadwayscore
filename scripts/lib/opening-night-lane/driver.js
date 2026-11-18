@@ -181,12 +181,6 @@ function recorderFromEnv(env) {
 }
 
 /**
- * Real dependencies. Checks the scorer keys before anything claims a lease. `routeAlert` and `ScorerClass`
- * (EnsembleReviewScorer, TypeScript, hence `npx tsx`) are passed in by the CLI rather than required here: anything this
- * folder requires joins rehearsal.laneCodeHash, and the alert router alone would pull ~44 Linear/notify files into it,
- * so an unrelated edit there would silently disarm the lane until the next rehearsal.
- */
-/**
  * BRO-7741: the real inbox ports. The read is async (a slow fetch never stalls the publish timers); the status write is
  * a compare-and-swap push, once a pass and only when something changed, and prints a notice per entry for the job log.
  */
@@ -204,6 +198,12 @@ function realManualInbox({ repoDir, show, log = console.log, env = process.env }
   };
 }
 
+/**
+ * Real dependencies. Checks the scorer keys before anything claims a lease. `routeAlert` and `ScorerClass`
+ * (EnsembleReviewScorer, TypeScript, hence `npx tsx`) are passed in by the CLI rather than required here: anything this
+ * folder requires joins rehearsal.laneCodeHash, and the alert router alone would pull ~44 Linear/notify files into it,
+ * so an unrelated edit there would silently disarm the lane until the next rehearsal.
+ */
 function buildRealLaneDeps({
   show, night, openingDate, timeZone, holder, repoDir, coreDir, ledgerDir, recordFile, maxAgeMs, adaptersConfig = {}, env = process.env,
   routeAlert, ScorerClass, settleFor = null,
@@ -246,7 +246,7 @@ function buildRealLaneDeps({
         preembargo,
         search: realSerpSearch(env), decodeImpl: require('../google-news-decode').decodeGoogleNewsLink,
         // BRO-7741: the manual-URL inbox (ingest-urls.yml routes a leased show's URLs there), read every pass.
-        manualInbox: realManualInbox({ repoDir, show }),
+        manualInbox: realManualInbox({ repoDir, show, env }),
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
         windowMs: (() => { const m = Number(preembargo && env.OPENING_NIGHT_LANE_WINDOW_PREEMBARGO_MIN) || Number(env.OPENING_NIGHT_LANE_WINDOW_MIN); return m > 0 ? m * 60 * 1000 : undefined; })(),
       })({ shouldStop, abandonPending });
