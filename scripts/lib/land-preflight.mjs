@@ -255,10 +255,12 @@ export function mergeCommitWarnings({ base, src, cwd }) {
  * of `rev` into a temp dir, so a tree that is not checked out (the base, or
  * the simulated rebased tip) can be judged. -> dir, or null when it fails.
  */
-function materializeTree(cwd, rev) {
+export function materializeTree(cwd, rev, extra = []) {
   const top = git(cwd, ['ls-tree', '--name-only', rev]);
   if (!ok(top)) return null;
   const want = ['tests', 'scripts', '.github'].filter((p) => out(top).split('\n').includes(p));
+  // Single files a check reads outside those dirs (a baseline under data/audit), when the rev has them.
+  for (const f of [...new Set(extra)]) if (ok(git(cwd, ['cat-file', '-e', `${rev}:${f}`]))) want.push(f);
   if (want.length === 0) return null;
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'land-preflight-tree-'));
   const r = spawnSync('bash', ['-c', 'git archive --format=tar "$1" -- "${@:3}" | tar -x -C "$2"', '_', rev, dir, ...want], {
@@ -516,8 +518,10 @@ export const WORKFLOW_CHECKS = [
 export const CODE_AUDIT_CHECKS = [
   { name: 'audit-unsafe-show-dir-listing.js', cmd: 'node', args: ['scripts/audit-unsafe-show-dir-listing.js'], fix: 'use listShowDirs for show directories' },
   { name: 'lint-resend-calls.js', cmd: 'node', args: ['scripts/lint-resend-calls.js'], fix: 'fix the direct Resend calls it prints' },
-  { name: 'audit-alert-senders.js --check', cmd: 'node', args: ['scripts/audit-alert-senders.js', '--check'], fix: 'fix the alert sender findings it prints' },
-  { name: 'audit-direct-provider-calls.js --strict', cmd: 'node', args: ['scripts/audit-direct-provider-calls.js', '--strict'], fix: 'fix the direct provider calls it prints' },
+  { name: 'audit-alert-senders.js --check', cmd: 'node', args: ['scripts/audit-alert-senders.js', '--check'], needs: ['data/audit/alert-sender-inventory.json'], fix: 'fix the alert sender findings it prints' },
+  // `needs`: without its baseline every baselined site reads as new, so the audit was red on base
+  // too and land run 41802620334's new site passed as pre-existing (BRO-7637 replay).
+  { name: 'audit-direct-provider-calls.js --strict', cmd: 'node', args: ['scripts/audit-direct-provider-calls.js', '--strict'], needs: ['data/audit/direct-provider-calls-baseline.json'], fix: 'fix the direct provider calls it prints' },
   { name: 'audit-tests-vs-derived-data.js', cmd: 'node', args: ['scripts/audit-tests-vs-derived-data.js'], fix: 'fix the derived-data test findings it prints' },
 ];
 export function selectWorkflowChecks(files) {
@@ -570,7 +574,8 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
     }
   };
 
-  const judgeRoot = materializeTree(cwd, landedTip || tip);
+  const needs = checks.flatMap((c) => c.needs || []);
+  const judgeRoot = materializeTree(cwd, landedTip || tip, needs);
   if (!judgeRoot) return { status: 'skip', reason: 'could not materialize the landing tree' };
   try {
     // rc 0 = pass; anything but 1 (124 timeout, 127, crash, never finished) = could not judge: fail open.
@@ -578,7 +583,7 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
     if (failed.length === 0) return { status: 'clean' };
     // A check already red on base is not this branch's fault (land.yml judges new failures only).
     let newFailures = failed;
-    const baseRoot = materializeTree(cwd, base);
+    const baseRoot = materializeTree(cwd, base, needs);
     if (baseRoot) {
       try {
         const redOnBase = new Set(runBatch(baseRoot, failed.map((r) => r.c)).filter((r) => r.rc === '1').map((r) => r.c.i));
