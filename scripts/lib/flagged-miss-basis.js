@@ -59,13 +59,12 @@ function hasHumanExclusionAssertion(d) {
 //   - humanReviewedWrongShow (wrongShow's sibling of humanReviewedWrongProduction)
 //   - an approved data plan set the flag, and still binds to the current url + body
 //     (approved-fix-flag; a refetched body unbinds it, so the row re-verifies again)
-//   - isNonReview with the "manual (not a review)" reason review-field-edit
-//     requires before a plan may set it (the CV writes "CV-promoted (not a review)")
+// A "manual (not a review)" isNonReviewReason alone does NOT count: the reason
+// string is not bound to the content it judged, so a refetched real review would
+// stay held. A plan must also (re)set isNonReview, whose stamp is bound.
 const HELD_FLAG_FIELDS = ['wrongProduction', 'wrongShow', 'isNonReview'];
 function isHeldExclusionFlag(d) {
   if (d.wrongShow === true && d.humanReviewedWrongShow === true) return true;
-  if (d.isNonReview === true && typeof d.isNonReviewReason === 'string'
-    && /^manual \(not a review\)/i.test(d.isNonReviewReason)) return true;
   return HELD_FLAG_FIELDS.some(f => d[f] === true && hasApprovedFlag(d, f));
 }
 

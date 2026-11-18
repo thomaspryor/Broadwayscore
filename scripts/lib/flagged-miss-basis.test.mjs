@@ -42,14 +42,20 @@ test('a plan that re-asserts wrongProduction / wrongShow holds the row, through 
   }
 });
 
-test('a plan-written manual non-review verdict holds the row; the CV promotion does not', () => {
+test('a plan-set (bound) non-review verdict holds the row; a reason string alone does not', () => {
   const cv = { ...base, isNonReview: true, isNonReviewReason: 'CV-promoted (not a review): an interview' };
   assert.equal(hasHumanExclusionAssertion(cv), false);
   const r1 = applyReviewFieldEdit(cv, { field: 'isNonReviewReason', oldValue: cv.isNonReviewReason,
     newValue: 'manual (not a review): interview piece, read 2026-11-18' }, stamp);
   assert.equal(r1.ok, true, r1.reason);
-  assert.equal(hasHumanExclusionAssertion(r1.record), true);
-  assert.equal(hasHumanExclusionAssertion({ ...r1.record, isNonReview: false }), false);
+  // the reason is not bound to the content it judged: not held on its own
+  assert.equal(hasHumanExclusionAssertion(r1.record), false);
+  const r1b = applyReviewFieldEdit(r1.record, { field: 'isNonReview', oldValue: true, newValue: true }, stamp);
+  assert.equal(r1b.ok, true, r1b.reason);
+  assert.equal(hasHumanExclusionAssertion(r1b.record), true);
+  // a refetched body unbinds the stamp, even with the manual reason still on file
+  assert.equal(hasHumanExclusionAssertion({ ...r1b.record, fullText: 'A real review body fetched later.' }), false);
+  assert.equal(hasHumanExclusionAssertion({ ...r1b.record, isNonReview: false }), false);
   // set fresh by a plan on a record that had no flag
   const fresh = { ...base, isNonReviewReason: 'manual (not a review): domain-for-sale page' };
   const r2 = applyReviewFieldEdit(fresh, { field: 'isNonReview', oldValue: null, newValue: true }, stamp);

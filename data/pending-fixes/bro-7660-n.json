@@ -1,205 +1,44 @@
 {
   "issueNumber": "bro-7660-n",
-  "planId": "7c445de5-d0e7-4bca-b65a-7eaf8e995a7b",
+  "planId": "e475df12-f18c-493b-bb73-fec9e5bb4dc6",
   "status": "pending",
-  "createdAt": "2026-11-18T07:20:59.951Z",
+  "createdAt": "2026-11-18T07:28:48.800Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 14 of 16)",
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 14 of 15)",
     "steps": [
-      "BRO-7660 KEEP_NR: scraped page is a jewelry article",
-      "BRO-7660 KEEP_NR: scraped page is a jewelry article",
-      "BRO-7660 KEEP_NR: scraped page is a fitness advert",
-      "BRO-7660 KEEP_NR: scraped page is a fitness advert",
-      "BRO-7660 KEEP_NR: page chrome and an unrelated headline, no review body",
-      "BRO-7660 KEEP_NR: page chrome and an unrelated headline, no review body",
-      "BRO-7660 KEEP_NR: actor profile with interview quotes, not a review",
-      "BRO-7660 KEEP_NR: actor profile with interview quotes, not a review",
-      "BRO-7660 CLEAR_NR: full critical review of this staging",
-      "BRO-7660 CLEAR_NR: full critical review of this staging",
-      "BRO-7660 CLEAR_NR: full critical review of this production",
-      "BRO-7660 CLEAR_NR: full critical review of this production",
-      "BRO-7660 CLEAR_NR: full critical review of this production",
-      "BRO-7660 CLEAR_NR: full review of this staging",
-      "BRO-7660 CLEAR_NR: full review of this staging",
-      "BRO-7660 CLEAR_NR: full review of this staging",
-      "BRO-7660 CLEAR_NR: full review of this staging",
-      "BRO-7660 CLEAR_NR: full review of this staging",
-      "BRO-7660 CLEAR_NR: full review of this staging",
-      "BRO-7660 CLEAR_NR: full review of this staging",
       "BRO-7660 CLEAR_NR: review of the Lyric Theatre production",
       "BRO-7660 CLEAR_NR: review of the Lyric Theatre production",
       "BRO-7660 CLEAR_NR: review of the Lyric Theatre production",
       "BRO-7660 CLEAR_NR+REJ: full review; ensemble not_a_review rejection was wrong",
-      "BRO-7660 CLEAR_NR+REJ: full review; ensemble not_a_review rejection was wrong"
+      "BRO-7660 CLEAR_NR+REJ: full review; ensemble not_a_review rejection was wrong",
+      "BRO-7660 CLEAR_NR: full review of the West End production",
+      "BRO-7660 CLEAR_NR: full review of the West End production",
+      "BRO-7660 CLEAR_NR: full review of the West End production",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this production",
+      "BRO-7660 CLEAR_NR: full review of this production"
     ],
     "riskLevel": "low",
     "actions": [
       {
         "type": "review-field-edit",
-        "file": "long-days-journey-into-night-2016/nytg--diandra-rivera.json",
-        "field": "isNonReviewReason",
-        "oldValue": null,
-        "newValue": "manual (not a review): scraped page is a jewelry article",
-        "description": "BRO-7660 KEEP_NR: scraped page is a jewelry article"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "long-days-journey-into-night-2016/nytg--diandra-rivera.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": true,
-        "description": "BRO-7660 KEEP_NR: scraped page is a jewelry article"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "take-me-out-2022/nypost--johnny-oleksinski.json",
-        "field": "isNonReviewReason",
-        "oldValue": null,
-        "newValue": "manual (not a review): scraped page is a fitness advert",
-        "description": "BRO-7660 KEEP_NR: scraped page is a fitness advert"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "take-me-out-2022/nypost--johnny-oleksinski.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": true,
-        "description": "BRO-7660 KEEP_NR: scraped page is a fitness advert"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "cirque-du-soleil-paramour-2016/variety--marilyn-stasio.json",
-        "field": "isNonReviewReason",
-        "oldValue": null,
-        "newValue": "manual (not a review): page chrome and an unrelated headline, no review body",
-        "description": "BRO-7660 KEEP_NR: page chrome and an unrelated headline, no review body"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "cirque-du-soleil-paramour-2016/variety--marilyn-stasio.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": true,
-        "description": "BRO-7660 KEEP_NR: page chrome and an unrelated headline, no review body"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "maybe-happy-ending-2024/observer--rex-reed.json",
-        "field": "isNonReviewReason",
-        "oldValue": null,
-        "newValue": "manual (not a review): actor profile with interview quotes, not a review",
-        "description": "BRO-7660 KEEP_NR: actor profile with interview quotes, not a review"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "maybe-happy-ending-2024/observer--rex-reed.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": true,
-        "description": "BRO-7660 KEEP_NR: actor profile with interview quotes, not a review"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "a-simulacrum-off-broadway-2023/nytg--allison-considine.json",
-        "field": "nonReviewManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-7660 CLEAR_NR: full critical review of this staging"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "a-simulacrum-off-broadway-2023/nytg--allison-considine.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": false,
-        "description": "BRO-7660 CLEAR_NR: full critical review of this staging"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "almost-famous-2022/broadwaynews--brittani-samuel.json",
-        "field": "nonReviewManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-7660 CLEAR_NR: full critical review of this production"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "almost-famous-2022/broadwaynews--brittani-samuel.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": false,
-        "description": "BRO-7660 CLEAR_NR: full critical review of this production"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "almost-famous-2022/broadwaynews--brittani-samuel.json",
-        "field": "wrongArticleManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-7660 CLEAR_NR: full critical review of this production"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "crooked-cross-off-broadway-2025/front-row-center--david-walters.json",
-        "field": "nonReviewManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-7660 CLEAR_NR: full review of this staging"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "crooked-cross-off-broadway-2025/front-row-center--david-walters.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": false,
-        "description": "BRO-7660 CLEAR_NR: full review of this staging"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json",
-        "field": "nonReviewManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-7660 CLEAR_NR: full review of this staging"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": false,
-        "description": "BRO-7660 CLEAR_NR: full review of this staging"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json",
-        "field": "wrongArticleManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-7660 CLEAR_NR: full review of this staging"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "duke-and-roya-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
-        "field": "nonReviewManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-7660 CLEAR_NR: full review of this staging"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "duke-and-roya-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": false,
-        "description": "BRO-7660 CLEAR_NR: full review of this staging"
-      },
-      {
-        "type": "review-field-edit",
         "file": "harry-potter-2021/amny--matt-windman.json",
         "field": "nonReviewManualClear",
         "oldValue": null,
@@ -237,6 +76,158 @@
         "oldValue": true,
         "newValue": false,
         "description": "BRO-7660 CLEAR_NR+REJ: full review; ensemble not_a_review rejection was wrong"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of the West End production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of the West End production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/timeout-london--sam-marlowe.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of the West End production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023/travel-arts-journal--fern-siegel.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023/travel-arts-journal--fern-siegel.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023/travel-arts-journal--fern-siegel.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nantucket-sleigh-ride-off-broadway-2019/bobs-theater-blog--robert-sholiton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nantucket-sleigh-ride-off-broadway-2019/bobs-theater-blog--robert-sholiton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nantucket-sleigh-ride-off-broadway-2019/bobs-theater-blog--robert-sholiton.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "napoli-brooklyn-off-broadway-2017/thewrap--thom-geier.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "napoli-brooklyn-off-broadway-2017/thewrap--thom-geier.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nice-fish-off-broadway-2016/slantmagazine--henry-stewart.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nice-fish-off-broadway-2016/slantmagazine--henry-stewart.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nice-fish-off-broadway-2016/slantmagazine--henry-stewart.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "people-places-and-things-off-broadway-2017/village-voice--david-cote.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "people-places-and-things-off-broadway-2017/village-voice--david-cote.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "people-places-and-things-off-broadway-2017/village-voice--david-cote.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-2023/cititour--brian-scott-lipton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-2023/cititour--brian-scott-lipton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this production"
       }
     ]
   }

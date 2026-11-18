@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-7660-l",
-  "planId": "e995449f-d586-40fd-935a-5300b55f6d00",
+  "planId": "af07fd68-ac09-4852-99fa-18c5964b9dfa",
   "status": "pending",
-  "createdAt": "2026-11-18T07:20:59.951Z",
+  "createdAt": "2026-11-18T07:28:48.800Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 12 of 16)",
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 12 of 15)",
     "steps": [
       "BRO-7660 CLEAR_WS: body reviews the Washington/Gyllenhaal revival",
       "BRO-7660 CLEAR_WS: body reviews the Washington/Gyllenhaal revival",
@@ -31,8 +31,6 @@
       "BRO-7660 CLEAR_WS: body: Scherzinger as Norma Desmond, this staging",
       "BRO-7660 CLEAR_WS: body: Scherzinger as Norma Desmond, this staging",
       "BRO-7660 KEEP_WS: body covers The Light and the Dark and Babe, not Swept Away",
-      "BRO-7660 KEEP_CVWA: body is a cookie-consent page, no review text",
-      "BRO-7660 KEEP_CVWA: body is a cookie-consent page, no review text",
       "BRO-7660 CLEAR_WS: body reviews the Reeves/Winter Godot (two-Beckett column)",
       "BRO-7660 CLEAR_WS: body reviews the Reeves/Winter Godot (two-Beckett column)"
     ],
@@ -205,22 +203,6 @@
         "oldValue": true,
         "newValue": true,
         "description": "BRO-7660 KEEP_WS: body covers The Light and the Dark and Babe, not Swept Away"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json",
-        "field": "isNonReviewReason",
-        "oldValue": null,
-        "newValue": "manual (not a review): body is a cookie-consent page, no review text",
-        "description": "BRO-7660 KEEP_CVWA: body is a cookie-consent page, no review text"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-play-that-goes-wrong-west-end-2021/whatsonstage--michael-coveney.json",
-        "field": "isNonReview",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-7660 KEEP_CVWA: body is a cookie-consent page, no review text"
       },
       {
         "type": "review-field-edit",
