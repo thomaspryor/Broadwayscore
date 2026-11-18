@@ -32,10 +32,9 @@ function marketHourMs(category, openingDate) {
 }
 
 /** The market a recorded night belongs to: Off-Broadway shares Broadway's hour and zone, Off-West End the West End's. */
+const MARKET_OF_CATEGORY = { broadway: 'broadway', 'off-broadway': 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
 function marketOf(category) {
-  if (category === 'broadway' || category === 'off-broadway') return 'broadway';
-  if (category === 'west-end' || category === 'off-west-end') return 'west-end';
-  return category || null;
+  return MARKET_OF_CATEGORY[category] || category || null;
 }
 
 /**

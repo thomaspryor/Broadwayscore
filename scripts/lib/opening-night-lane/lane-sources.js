@@ -94,6 +94,9 @@ const LANE_FEEDS = [
   { url: 'https://w42st.com/feed', outletId: 'w42st', name: 'W42ST' },
   // Same check over 30 openings (older nights), probed 2026-11-09 through fetchPage directOnly: 200 with 20 items.
   { url: 'https://forward.com/culture/theater/feed/', outletId: 'forward', name: 'Forward Theater' },
+  // BRO-7779: on time for Other Desert Cities (2026-11-17) with no lane source; both feeds answer 200 RSS (probed 2026-11-18).
+  { url: 'https://recliningstandards.com/feed/', outletId: 'reclining-standards', name: 'Reclining Standards' },
+  { url: 'https://www.showmosexualsguide.com/feed', outletId: 'showmosexualsguide', name: "The Intelligent Showmosexual's Guide" },
 ];
 
 // On-time outlets the lane cannot poll for free, and what finds them instead. A gap needs a reason a reader can check.
@@ -126,6 +129,7 @@ const LANE_SOURCE_GAPS = {
   // BRO-7415: soz6.com is a general news/dictionary site that reposts UK press reviews at /news/<slug>; its /feed lists /entry/N
   // posts with no theater reviews (checked 2026-11-12), so nothing there can find a review on the night.
   soz6: "general news site that reposts other outlets' reviews; its feed carries no theater reviews (2026-11-12); the original outlet's feed or SERP finds the review",
+  blogcritics: 'blogcritics.org/feed/ and its theatre category feed answer 301 to the home page (no feed, probed 2026-11-18); BWW roundup and SERP',
   nytimes: 'West End shows: the NYT Theater feed is read for Broadway only and nytimes.com/section/theater answers 403 (2026-11-04); Google News and SERP',
 };
 
