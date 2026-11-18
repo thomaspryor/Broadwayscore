@@ -16,9 +16,14 @@
  *     the next batch, estimated at this batch's cost, would take the chain
  *     past max_cost. max_cost itself is left unchanged on purpose: the
  *     run-name prints it and express-preemption.js keys chains on it.
- *  2. Daily brake: stop when scoring spend completed in the last 24h has
- *     reached llmScoringChainDailyUsd. The rest of the backlog is picked up
- *     by the scheduled half-price batch runs and the 04:30 needsRescore drain.
+ *     The scorer also gets only the rest of the cap as its own --max-cost
+ *     (llm-ensemble-score.yml Build CLI args), so a dearer batch is cut off.
+ *  2. Daily brake, for chains with no max_cost (schedule, rebuild catch-up,
+ *     unbudgeted dispatches): stop when scoring spend completed in the last
+ *     24h has reached llmScoringChainDailyUsd. Scheduled runs re-detect
+ *     needsRescore / stale / emergency work; a manual outdated or
+ *     upgrade_ensemble chain must be re-dispatched (the step warns).
+ *     A chain dispatched with max_cost has a budget, so only rule 1 applies.
  * Only chains reach this step; urgent per-show scoring (dispatch-rescore.js,
  * show_id, no chain) never does.
  */
@@ -38,6 +43,13 @@ function toUsd(v) {
   if (v === null || v === undefined || v === '') return null;
   const n = Number(v);
   return Number.isFinite(n) && n >= 0 ? n : null;
+}
+
+/** Like toUsd, but a value that is present and not a USD amount is an error, never $0. */
+function strictUsd(v, name) {
+  const n = toUsd(v);
+  if (n === null && !(v === null || v === undefined || v === '')) throw new Error(`${name} is not a USD amount: ${v}`);
+  return n;
 }
 
 function costOf(r) {
@@ -62,10 +74,10 @@ const round2 = (n) => Math.round(n * 100) / 100;
 function planChainContinuation({ runs, runId, now = new Date(), maxCost, chainSpent, dailyUsd } = {}) {
   const list = Array.isArray(runs) ? runs : [];
   const spentThisRun = round2(sumCostUsdForRun(list, String(runId ?? '')));
-  const prior = toUsd(chainSpent) ?? 0;
+  const prior = strictUsd(chainSpent, 'chain_spent_usd') ?? 0;
   const total = round2(prior + spentThisRun);
   const spent24h = round2(spentInLast24h(list, now));
-  const cap = toUsd(maxCost);
+  const cap = strictUsd(maxCost, 'max_cost');
   const line = toUsd(dailyUsd);
   const base = { nextChainSpent: total.toFixed(2), spentThisRun, spent24h };
 
@@ -75,10 +87,10 @@ function planChainContinuation({ runs, runId, now = new Date(), maxCost, chainSp
       reason: `chain-budget: chain spent $${total.toFixed(2)} of max_cost $${cap}; the next batch (~$${spentThisRun.toFixed(2)}) would pass it`,
     };
   }
-  if (line !== null && line > 0 && spent24h >= line) {
+  if (cap === null && line !== null && line > 0 && spent24h >= line) {
     return {
       ...base, stop: true,
-      reason: `daily-brake: LLM scoring spent $${spent24h.toFixed(2)} in the last 24h, at or over the $${line} ${CHAIN_DAILY_KEY} line; the scheduled batch runs pick up the rest at half price`,
+      reason: `daily-brake: LLM scoring spent $${spent24h.toFixed(2)} in the last 24h, at or over the $${line} ${CHAIN_DAILY_KEY} line; scheduled runs pick up needsRescore/stale work, re-dispatch a manual outdated/upgrade chain with max_cost to go on`,
     };
   }
   return {

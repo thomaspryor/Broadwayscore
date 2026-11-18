@@ -135,3 +135,33 @@ test('llm-ensemble-score.yml Chain next batch step runs the budget check before 
   assert.match(step, /-f chain_spent_usd=/, 'chain spend must be carried to the next batch');
   assert.match(yml, /^      chain_spent_usd:$/m, 'chain_spent_usd input missing');
 });
+
+test('a budgeted chain (max_cost set) answers only to its cap, not the daily brake', () => {
+  const runs = [
+    { runId: 'other', costUsd: 30, completedAt: '2026-11-18T08:00:00Z' },
+    { runId: 'c1', costUsd: 2, completedAt: '2026-11-18T09:00:00Z' },
+  ];
+  const p = planChainContinuation({ runs, runId: 'c1', now: '2026-11-18T09:01:00Z', maxCost: '50', chainSpent: '', dailyUsd: 15 });
+  assert.equal(p.stop, false);
+});
+
+test('a garbled chain_spent or max_cost is an error, never $0', () => {
+  const now = '2026-11-18T09:01:00Z';
+  assert.throws(() => planChainContinuation({ runs: [], runId: 'r', now, maxCost: '15', chainSpent: 'abc' }), /chain_spent_usd/);
+  assert.throws(() => planChainContinuation({ runs: [], runId: 'r', now, maxCost: '-3' }), /max_cost/);
+});
+
+test('CLI: kill switch keeps counting chain spend', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'chain-budget-'));
+  const log = path.join(dir, 'runs.json');
+  fs.writeFileSync(log, JSON.stringify([{ runId: '7', costUsd: 9, completedAt: '2026-11-18T09:00:00Z' }]));
+  const out = runCli(['--run-id=7', '--max-cost=15', '--chain-spent=9', '--now=2026-11-18T09:01:00Z', `--runs-log=${log}`], { SCORING_CHAIN_BUDGET_DISABLED: '1' });
+  assert.match(out, /^stop=false$/m);
+  assert.match(out, /^chain_spent=18\.00$/m);
+});
+
+test('Build CLI args gives a chained batch only what is left of max_cost', () => {
+  const yml = fs.readFileSync(path.join(here, '..', '..', '.github', 'workflows', 'llm-ensemble-score.yml'), 'utf8');
+  assert.match(yml, /INPUT_CHAIN_SPENT_USD: \$\{\{ github\.event\.inputs\.chain_spent_usd \}\}/);
+  assert.match(yml, /MAX_COST=\$\(awk -v c="\$MAX_COST" -v s="\$\{INPUT_CHAIN_SPENT_USD\}"/);
+});

@@ -477,6 +477,7 @@ jobs:
           INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
           INPUT_LIMIT: ${{ github.event.inputs.limit }}
           INPUT_MAX_COST: ${{ github.event.inputs.max_cost }}
+          INPUT_CHAIN_SPENT_USD: ${{ github.event.inputs.chain_spent_usd }}
           INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
           INPUT_SHARD: ${{ github.event.inputs.shard }}
           INPUT_TOTAL_SHARDS: ${{ github.event.inputs.total_shards }}
@@ -514,6 +515,13 @@ jobs:
             if ! [[ "$MAX_COST" =~ ^[0-9]+(\.[0-9]+)?$ ]] || ! awk -v v="$MAX_COST" 'BEGIN { exit !(v > 0) }'; then
               echo "::error::max_cost must be a positive number (got '$MAX_COST')"
               exit 1
+            fi
+            # BRO-7576: a chained batch gets what is left of the chain's cap,
+            # not the full cap again (floor $0.50 so the run still starts; the
+            # chain step already refused batches that would pass the cap).
+            if [[ "${INPUT_CHAIN_SPENT_USD}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+              MAX_COST=$(awk -v c="$MAX_COST" -v s="${INPUT_CHAIN_SPENT_USD}" 'BEGIN { r = c - s; if (r < 0.5) r = 0.5; printf "%.2f", r }')
+              echo "Chain has spent USD ${INPUT_CHAIN_SPENT_USD}; this batch gets --max-cost=${MAX_COST}"
             fi
             ARGS="$ARGS --max-cost=$MAX_COST"
           fi

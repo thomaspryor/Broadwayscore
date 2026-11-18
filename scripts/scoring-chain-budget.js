@@ -9,9 +9,9 @@
  *     [--now=<ISO>] [--runs-log=data/llm-scoring-runs.json]
  *
  * Writes stop=true|false, chain_spent=<usd>, reason=<text> to $GITHUB_OUTPUT
- * (or stdout). Exits 0 either way. Any error decides stop=true: the backlog
- * then waits for the scheduled batch runs, which is cheaper than an
- * unmetered chain. Kill switch: SCORING_CHAIN_BUDGET_DISABLED=1.
+ * (or stdout). Exits 0 either way. Any error (unreadable run log, bad
+ * --chain-spent/--max-cost, missing llmScoringChainDailyUsd) decides
+ * stop=true. Kill switch SCORING_CHAIN_BUDGET_DISABLED=1 still counts spend.
  */
 
 const fs = require('fs');
@@ -32,10 +32,7 @@ function emit(out) {
 
 function main() {
   const prior = arg('chain-spent') || '0';
-  if (process.env.SCORING_CHAIN_BUDGET_DISABLED === '1') {
-    emit({ stop: false, chainSpent: prior, reason: 'SCORING_CHAIN_BUDGET_DISABLED=1, budget check skipped' });
-    return;
-  }
+  const disabled = process.env.SCORING_CHAIN_BUDGET_DISABLED === '1';
   try {
     const runId = arg('run-id') || process.env.GITHUB_RUN_ID;
     if (!runId) throw new Error('no --run-id and no GITHUB_RUN_ID');
@@ -43,15 +40,15 @@ function main() {
     const now = nowArg ? new Date(nowArg) : new Date();
     if (Number.isNaN(now.getTime())) throw new Error(`bad --now ${nowArg}`);
     const runs = readRuns(arg('runs-log') || DEFAULT_RUNS_LOG_PATH);
-    const plan = planChainContinuation({
-      runs, runId, now,
-      maxCost: arg('max-cost'),
-      chainSpent: prior,
-      dailyUsd: loadChainDailyUsd(),
-    });
-    emit({ stop: plan.stop, chainSpent: plan.nextChainSpent, reason: plan.reason });
+    const dailyUsd = loadChainDailyUsd();
+    if (dailyUsd === null) throw new Error('llmScoringChainDailyUsd missing from scripts/config/provider-spend-thresholds.json');
+    const plan = planChainContinuation({ runs, runId, now, maxCost: arg('max-cost'), chainSpent: prior, dailyUsd });
+    // Kill switch: keep counting the chain's spend, only skip the stop.
+    if (disabled) emit({ stop: false, chainSpent: plan.nextChainSpent, reason: `SCORING_CHAIN_BUDGET_DISABLED=1, not enforced (would be: ${plan.reason})` });
+    else emit({ stop: plan.stop, chainSpent: plan.nextChainSpent, reason: plan.reason });
   } catch (e) {
-    emit({ stop: true, chainSpent: prior, reason: `budget check failed (${e.message}); chain stopped, scheduled batch runs pick up the rest` });
+    if (disabled) emit({ stop: false, chainSpent: prior, reason: `SCORING_CHAIN_BUDGET_DISABLED=1, budget check failed (${e.message})` });
+    else emit({ stop: true, chainSpent: prior, reason: `budget check failed (${e.message}); chain stopped` });
   }
 }
 
