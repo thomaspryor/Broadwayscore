@@ -1871,5 +1871,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T00:58:30.872Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-enforce-quotes",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-enforce-quotes",
+    "description": "land.yml did not land land/worktree-enforce-quotes: the unit-tests-node gate went red at d87349142a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44212623694",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-enforce-quotes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d87349142a97981f0760f1716d6ccef2316b9e45"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44212623694"
+      }
+    ],
+    "queuedAt": "2026-11-18T01:24:41.654Z"
   }
 ]
