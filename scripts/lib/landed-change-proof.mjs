@@ -209,14 +209,29 @@ export function digestLine(ledgerRows, { now = new Date() } = {}) {
 }
 
 /**
- * PURE. The command the audit may run itself to prove a not-run script, or null. Only commands the vetted read-only
- * safe-form gate accepts (autonomous-triage-core.js explainUnsafeCheckCommand, re-verified by
- * audit-safe-form-allowlist.js): no word lists, no --dry-run trust (BRO-7790 plan review P0).
+ * PURE. The command the audit may run itself to prove a not-run script, or null. A bare `node <file>` is never
+ * accepted by the vetted read-only safe-form gate (autonomous-triage-core.js explainUnsafeCheckCommand, kind:shape), so
+ * the proof is the file's own unit test: colocated `<name>.test.{mjs,js}`, then `scripts/tests/<name>.test.*`, then
+ * `tests/unit/<name>.test.mjs`, run as `node --test <test>`. Only a test that exists and that the gate accepts is
+ * returned; a script with no test gets null (the card says so). BRO-7796: the old `node <file>` mapping was dead.
+ * exists(path) -> boolean (repo-relative); defaults to "nothing exists" so a missing oracle never invents a command.
  */
-export function safeRunCommand(file, explain) {
-  if (!/^scripts\/[\w./-]+\.(?:m?js|cjs)$/.test(file)) return null;
-  const cmd = `node ${file}`;
-  try { return explain(cmd)?.ok ? cmd : null; } catch { return null; }
+export function safeRunCommand(file, explain, exists = () => false) {
+  const m = /^(scripts\/(?:[\w.-]+\/)*)([\w.-]+?)\.(?:m?js|cjs)$/.exec(file);
+  if (!m || /\.test\.[mc]?js$/.test(file)) return null;
+  const [, dir, base] = m;
+  const candidates = [];
+  for (const ext of ['mjs', 'js']) candidates.push(`${dir}${base}.test.${ext}`);
+  for (const ext of ['mjs', 'js']) candidates.push(`scripts/tests/${base}.test.${ext}`);
+  candidates.push(`tests/unit/${base}.test.mjs`);
+  for (const t of candidates) {
+    let present = false;
+    try { present = !!exists(t); } catch { present = false; }
+    if (!present) continue;
+    const cmd = `node --test ${t}`;
+    try { if (explain(cmd)?.ok) return cmd; } catch { /* gate error: never run anything */ }
+  }
+  return null;
 }
 
 // Workflows the audit may dispatch to prove a change: no spend, no email, no data writes (CLAUDE.md sections 8, 17).

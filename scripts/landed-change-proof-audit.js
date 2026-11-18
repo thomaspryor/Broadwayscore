@@ -193,7 +193,7 @@ async function main() {
   const ran = new Map();
   for (const r of rows.filter((x) => x.verdict === 'not_run')) {
     for (const f of r.files.filter((x) => x.verdict === 'not_run')) {
-      const cmd = lib.safeRunCommand(f.file, explainUnsafeCheckCommand);
+      const cmd = lib.safeRunCommand(f.file, explainUnsafeCheckCommand, exists);
       if (!cmd) continue;
       if (dryRun || arg('no-safe-run')) { f.safeRun = { cmd, wouldRun: true }; continue; }
       if (!ran.has(cmd)) ran.set(cmd, safeRun(cmd, lib.isUsageOnlyOutput));

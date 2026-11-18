@@ -143,12 +143,25 @@ test('cardBody: names cloud-session misses and carries a safe-form VERIFY line',
   assert.match(body, /^VERIFY: node scripts\/landed-change-proof-audit\.js --dry-run --sha=abcdef1234 --expect-proven$/m);
 });
 
-test('safeRunCommand: only what the vetted read-only gate accepts', () => {
-  const gate = (cmd) => ({ ok: cmd === 'node scripts/audit-text-quality.js' });
-  assert.equal(safeRunCommand('scripts/audit-text-quality.js', gate), 'node scripts/audit-text-quality.js');
-  assert.equal(safeRunCommand('scripts/send-broadcast.js', gate), null);
-  assert.equal(safeRunCommand('.github/workflows/x.yml', gate), null);
-  assert.equal(safeRunCommand('scripts/a.js', () => { throw new Error('x'); }), null, 'a gate error never runs anything');
+test('safeRunCommand: maps a script to its own test, accepted by the REAL safe-form gate (BRO-7796)', async () => {
+  const { createRequire } = await import('node:module');
+  const { explainUnsafeCheckCommand } = createRequire(import.meta.url)('./autonomous-triage-core.js');
+  const has = (...paths) => (p) => paths.includes(p);
+  // Colocated test wins over scripts/tests and tests/unit.
+  assert.equal(safeRunCommand('scripts/lib/land-branch.js', explainUnsafeCheckCommand, has('scripts/lib/land-branch.test.mjs', 'tests/unit/land-branch.test.mjs')), 'node --test scripts/lib/land-branch.test.mjs');
+  assert.equal(safeRunCommand('scripts/x.js', explainUnsafeCheckCommand, has('scripts/tests/x.test.mjs')), 'node --test scripts/tests/x.test.mjs');
+  assert.equal(safeRunCommand('scripts/sweep-pending-commercial.js', explainUnsafeCheckCommand, has('tests/unit/sweep-pending-commercial.test.mjs')), 'node --test tests/unit/sweep-pending-commercial.test.mjs');
+  assert.equal(safeRunCommand('scripts/newsletter/generate.mjs', explainUnsafeCheckCommand, has('scripts/newsletter/generate.test.mjs')), 'node --test scripts/newsletter/generate.test.mjs');
+  // No test on disk: nothing to run (never a bare `node <file>`, which the gate rejects and which could mutate).
+  assert.equal(safeRunCommand('scripts/send-feedback-reply.js', explainUnsafeCheckCommand, has()), null);
+  assert.equal(safeRunCommand('scripts/send-feedback-reply.js', explainUnsafeCheckCommand), null, 'default oracle invents nothing');
+  assert.equal(explainUnsafeCheckCommand('node scripts/lib/land-branch.js').ok, false, 'the premise: a bare node <file> is rejected by the gate');
+  // Non-scripts and test files themselves.
+  assert.equal(safeRunCommand('.github/workflows/x.yml', explainUnsafeCheckCommand, () => true), null);
+  assert.equal(safeRunCommand('scripts/lib/a.test.mjs', explainUnsafeCheckCommand, () => true), null);
+  // The gate has the last word, and an error in it runs nothing.
+  assert.equal(safeRunCommand('scripts/a.js', () => ({ ok: false }), () => true), null);
+  assert.equal(safeRunCommand('scripts/a.js', () => { throw new Error('x'); }, () => true), null);
 });
 
 test('isUsageOnlyOutput: a help banner is not a run, a real report is', () => {
