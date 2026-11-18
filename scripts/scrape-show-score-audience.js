@@ -1010,7 +1010,7 @@ async function main() {
         }
         if (shows.length === 0) {
           console.log('All requested shows are fresh — nothing to scrape.');
-          process.exit(0);
+          return; // main() resolves, so the stored-score recalc still runs
         }
       }
       console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
@@ -1325,13 +1325,29 @@ async function main() {
   // Clean up Playwright browser if it was started
   await cleanupPlaywright();
 
+
   console.log(`\nDone! Processed ${processed} shows, ${successful} with Show Score data.`);
   if (metadataEnriched > 0) console.log(`  Metadata enriched: ${metadataEnriched} shows (runtime/synopsis)`);
   console.log(`  Cached URLs: ${Object.keys(urlData.shows || {}).length}`);
   console.log(`  Uncached shows: ${uncachedShows.length}`);
 }
 
-main().catch(err => {
+// Re-run the combined-score formula over every stored show, so a change to
+// the weighting rules (audience-weighting.js) reaches shows this run did not
+// scrape, including runs where every show was fresh. Only the retired Reddit
+// job used to do this, so a formula change left ~290 stored grades stale
+// (BRO-7805). Shards skip it: the merge step owns the shared file there.
+function recalculateStoredScores() {
+  if (dryRun || shardMode) return;
+  try {
+    require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'recalculate-audience-buzz.js')], { stdio: 'inherit' });
+  } catch (err) {
+    console.error(`Recalculating stored audience scores failed: ${err.message}`);
+    process.exitCode = 1;
+  }
+}
+
+main().then(recalculateStoredScores).catch(err => {
   console.error('Fatal error:', err);
   process.exit(1);
 });
