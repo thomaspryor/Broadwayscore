@@ -11,6 +11,20 @@
  */
 
 /**
+ * BRO-7758: a pair silent this long is DORMANT (defunct outlet, or a market it
+ * never really covered), not a fresh extractor break. A real break alerts at
+ * ~45-70d silent (threshold + 2 red weeks), long before this. Pairs only reach
+ * it already-dormant (market-pulse anchoring made them eligible late), and each
+ * one used to cost a "BSC Daily: outlet-heartbeat red flags" card plus a manual
+ * baseline ack (BRO-5435/6698/7447/7656/7667). They are counted, never alerted.
+ */
+const DORMANT_SILENT_DAYS = 365;
+
+function isDormantRow(row) {
+  return Number(row && row.silentDays) >= DORMANT_SILENT_DAYS;
+}
+
+/**
  * Advance the per-(outlet,market) red-streak state by one run.
  * @param {object} prevState { [key]: { redStreak, lastStatus, lastCheckedAt } }
  * @param {Array<{outletId, market, status}>} cadenceRows this run's outlet-cadence.js rows
@@ -29,7 +43,7 @@ function updateHeartbeatState(prevState, cadenceRows, nowIso) {
     const prevEntry = prev[key] || { redStreak: 0 };
     const redStreak = row.status === 'red' ? (prevEntry.redStreak || 0) + 1 : 0;
     next[key] = { redStreak, lastStatus: row.status, lastCheckedAt: nowIso };
-    if (redStreak >= 2 && (prevEntry.redStreak || 0) < 2) {
+    if (redStreak >= 2 && (prevEntry.redStreak || 0) < 2 && !isDormantRow(row)) {
       newlyActionable.push({ ...row, redStreak });
     }
   }
@@ -60,6 +74,7 @@ function getActionableOutletRows(rows, state, baselineKeys) {
   const baseline = baselineKeys || new Set();
   const crossedThreshold = rows.filter((r) => (state[`${r.outletId}::${r.market}`]?.redStreak || 0) >= 2);
   const actionable = crossedThreshold
+    .filter((r) => !isDormantRow(r))
     .filter((r) => !baseline.has(`${r.outletId}::${r.market}`))
     .sort((a, b) => b.silentDays - a.silentDays);
   return {
@@ -69,4 +84,4 @@ function getActionableOutletRows(rows, state, baselineKeys) {
   };
 }
 
-module.exports = { updateHeartbeatState, getActionableOutletRows };
+module.exports = { updateHeartbeatState, getActionableOutletRows, isDormantRow, DORMANT_SILENT_DAYS };
