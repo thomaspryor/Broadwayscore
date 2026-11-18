@@ -22,3 +22,13 @@ test('site components carry no per-source Theatr vote floor', () => {
     assert.doesNotMatch(src, /theatr'\s*&&\s*\([^)]*reviewCount[^)]*\)\s*<\s*10/, `${f} hardcodes a Theatr floor`);
   }
 });
+
+test('the 80% ceiling never hands a tiny source outsized weight', () => {
+  // 1 Theatr vote next to 1,000 Mezzanine reviews: ~0.1% weight, not 20%.
+  const { score, weights } = calculateCombinedScore({ mezzanine: { score: 80, reviewCount: 1000 }, theatr: { score: 0, reviewCount: 1 } }, { category: 'broadway' });
+  assert.ok(weights.theatr <= 1, `theatr weight ${weights.theatr}`);
+  assert.ok(score > 79, `score ${score}`);
+  // A 10+ review source still absorbs the ceiling's excess.
+  const big = calculateCombinedScore({ mezzanine: { score: 80, reviewCount: 1000 }, showScore: { score: 60, reviewCount: 50 } }, { category: 'broadway' });
+  assert.equal(big.weights.mezzanine, 80);
+});
