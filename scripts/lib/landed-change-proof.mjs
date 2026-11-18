@@ -94,7 +94,7 @@ export function libWorkflowIndex(index, readFile, exists = () => true) {
  * (higher = newer). A run contains the commit when its head is at or after the commit on main's linear history.
  * isDeployed(sha) -> true | false | null (null = could not tell).
  */
-export function fileVerdict(file, commitSha, { cls, runs, runsOk = true, incomplete = new Set(), posOf, isDeployed = () => null, ranWork = () => true }) {
+export function fileVerdict(file, commitSha, { cls, runs, runsFor = null, runsOk = true, incomplete = new Set(), posOf, isDeployed = () => null, ranWork = () => true }) {
   const { kind, workflows } = cls;
   if (kind === 'exempt') return { file, kind, verdict: 'exempt' };
   if (kind === 'hook' || kind === 'other') return { file, kind, verdict: 'no_signal' };
@@ -105,8 +105,14 @@ export function fileVerdict(file, commitSha, { cls, runs, runsOk = true, incompl
   if (!runsOk) return { file, kind, verdict: 'unknown', workflows };
   const at = posOf.get(commitSha);
   if (at === undefined) return { file, kind, verdict: 'unknown', workflows };
-  const wfs = new Set(workflows);
-  const mine = (runs || []).filter((r) => wfs.has(r.workflow) && posOf.has(r.headSha) && posOf.get(r.headSha) >= at);
+  // runsFor(workflow) may fetch lazily (the CLI's API budget): stop at the first workflow with a non-cron green run.
+  const listFor = runsFor || ((w) => (runs || []).filter((r) => r.workflow === w));
+  const contains = (r) => posOf.has(r.headSha) && posOf.get(r.headSha) >= at;
+  const mine = [];
+  for (const w of workflows) {
+    mine.push(...listFor(w).filter(contains));
+    if (mine.some((r) => r.conclusion === 'success' && r.event !== 'schedule')) break;
+  }
   // ranWork(run): false when every job of a green run was skipped (an if: or path filter ran nothing). The CLI reads
   // the run's jobs; step-level skips inside a job that ran are not visible to this check.
   // Lazy: ranWork may cost an API call, so stop at the first run that did work.

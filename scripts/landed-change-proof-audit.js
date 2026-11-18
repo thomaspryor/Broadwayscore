@@ -53,7 +53,9 @@ function positions(since) {
   return pos;
 }
 
+let ghCalls = 0; // every GitHub API call this run makes (pages included)
 function ghJson(url) {
+  ghCalls++;
   return JSON.parse(execFileSync('gh', ['api', url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }));
 }
 
@@ -139,15 +141,23 @@ async function main() {
   const posOf = positions(`${lib.dayMinus(auditDay, typeof only === 'string' ? 16 : days + 2)}T00:00:00Z`);
   const runsFrom = typeof only === 'string' ? `${lib.dayMinus(auditDay, 14)}T00:00:00Z` : windowStart;
 
-  const needed = new Set();
-  for (const c of commits) for (const f of c.files) for (const w of lib.classifyPath(f, { index, libIndex }).workflows) needed.add(w);
-  const runs = [];
+  // Runs are fetched per workflow on first use and cached; a lib file stops at its first proving workflow. Hard budget
+  // on list calls (the CI token's hourly quota is shared with every other workflow): past it, a workflow is
+  // 'incomplete' and its files read 'unknown', never 'not_run'.
+  const LIST_BUDGET = Number(process.env.LANDED_PROOF_API_BUDGET || 300);
+  const runCache = new Map();
   const incomplete = new Set();
-  let apiCalls = 0;
-  for (const wf of needed) {
-    try { apiCalls++; const r = workflowRuns(wf, runsFrom, asOf); runs.push(...r.runs.filter((x) => x.createdAt < asOf)); if (!r.complete) incomplete.add(wf); }
-    catch (e) { incomplete.add(wf); console.error(`[landed-proof] WARN runs for ${wf} unreadable: ${String(e.message).split('\n')[0].slice(0, 160)}`); }
-  }
+  const runsFor = (wf) => {
+    if (runCache.has(wf)) return runCache.get(wf);
+    let out = [];
+    if (ghCalls >= LIST_BUDGET) incomplete.add(wf);
+    else {
+      try { const r = workflowRuns(wf, runsFrom, asOf); out = r.runs.filter((x) => x.createdAt < asOf); if (!r.complete) incomplete.add(wf); }
+      catch (e) { incomplete.add(wf); console.error(`[landed-proof] WARN runs for ${wf} unreadable: ${String(e.message).split('\n')[0].slice(0, 160)}`); }
+    }
+    runCache.set(wf, out);
+    return out;
+  };
 
   const deployed = commits.some((c) => c.files.some((f) => lib.classifyPath(f, { index, libIndex }).kind === 'src')) ? prodSha() : null;
   const isDeployed = (sha) => {
@@ -163,14 +173,14 @@ async function main() {
   const ranWork = (run) => {
     if (!run.id) return null;
     if (jobsSeen.has(run.id)) return jobsSeen.get(run.id);
-    if (jobCalls >= 400) return null;
+    if (jobCalls >= Number(process.env.LANDED_PROOF_JOBS_BUDGET || 150)) return null;
     jobCalls++;
     let v = null;
     try { const j = ghJson(`repos/${REPO}/actions/runs/${run.id}/jobs?per_page=100`); v = (j.jobs || []).some((x) => x.conclusion === 'success'); } catch { v = null; }
     jobsSeen.set(run.id, v);
     return v;
   };
-  const rows = commits.map((c) => lib.auditCommit(c, { index, libIndex, auditDay, runs, incomplete, posOf, isDeployed, ranWork }))
+  const rows = commits.map((c) => lib.auditCommit(c, { index, libIndex, auditDay, runsFor, incomplete, posOf, isDeployed, ranWork }))
     .filter((r) => r.verdict !== 'exempt');
 
   // Safe form: run vetted read-only commands for not-run scripts (only those the safe-form gate accepts).
@@ -189,9 +199,9 @@ async function main() {
   const s = lib.summarize(rows);
   const byDay = {};
   for (const r of rows) (byDay[r.landedDay] ||= []).push(r);
-  if (arg('json')) console.log(JSON.stringify({ auditDay, asOf, deployed, apiCalls, incomplete: [...incomplete], summary: s, rows }, null, 2));
+  if (arg('json')) console.log(JSON.stringify({ auditDay, asOf, deployed, ghCalls, jobCalls, incomplete: [...incomplete], summary: s, rows }, null, 2));
   else {
-    console.log(`[landed-proof] audit ${auditDay} (runs before ${asOf}), window ${windowStart}..${windowEnd}, prod ${deployed ? deployed.slice(0, 10) : 'UNKNOWN'}, ${needed.size} workflows queried, ${incomplete.size} incomplete`);
+    console.log(`[landed-proof] audit ${auditDay} (runs before ${asOf}), window ${windowStart}..${windowEnd}, prod ${deployed ? deployed.slice(0, 10) : 'UNKNOWN'}, ${runCache.size} workflows read, ${ghCalls} GitHub API calls (${jobCalls} jobs), ${incomplete.size} incomplete`);
     for (const d of Object.keys(byDay).sort()) {
       const x = lib.summarize(byDay[d]);
       console.log(`  landed ${d}: ${x.total} code commits  verdicts ${JSON.stringify(x.verdicts)}  sources ${JSON.stringify(x.sources)}`);
@@ -214,7 +224,7 @@ async function main() {
     const id = fileCard(lib.cardBody(follow, { auditDay }), auditDay, follow.length);
     for (const r of follow) r.card = id;
   }
-  const add = lib.newRows(existing, [...rows, lib.runMarker(auditDay, { codeCommits: s.total, incomplete: incomplete.size, jobCalls })]);
+  const add = lib.newRows(existing, [...rows, lib.runMarker(auditDay, { codeCommits: s.total, incomplete: incomplete.size, ghCalls })]);
   fs.mkdirSync(path.dirname(ledger), { recursive: true });
   if (add.length) fs.appendFileSync(ledger, add.map((r) => JSON.stringify(r)).join('\n') + '\n');
   console.log(`[landed-proof] appended ${add.length} row(s) to ${lib.LEDGER_PATH}`);
