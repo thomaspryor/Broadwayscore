@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T04:06:19.017Z",
+  "timestamp": "2026-11-18T04:23:43.025Z",
   "stats": {
-    "totalReviews": 82538,
-    "alreadyFlagged": 22548,
-    "dateGuardCatches": 221,
+    "totalReviews": 82541,
+    "alreadyFlagged": 22549,
+    "dateGuardCatches": 222,
     "directorMismatch": 3732,
     "tvFilmSignals": 2346,
-    "londonSignals": 3782,
+    "londonSignals": 3783,
     "offBroadwaySignals": 761,
     "yearMismatch": 382,
-    "noPublishDate": 8280
+    "noPublishDate": 8273
   },
   "findings": [
     {
@@ -48753,6 +48753,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "larchmont-buzz--laura-foti-cohen.json",
+      "score": 91,
       "publishDate": "2026-11-13",
       "url": "https://larchmontbuzz.com/theater/oh-mary-wowie-zowie/",
       "findings": [
@@ -48766,6 +48767,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "latimes--charles-mcnulty.json",
+      "score": 78,
       "publishDate": "2026-11-13",
       "url": "https://www.latimes.com/entertainment-arts/story/2026-11-13/oh-mary-review-cole-esola-alaska-thunder",
       "findings": [
@@ -48893,6 +48895,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "stageandcinema--ernest-kearney.json",
+      "score": 85,
       "publishDate": "2026-11-15",
       "url": "https://stageandcinema.com/2026/11/15/oh-mary-national-tour-review-ahmanson/",
       "findings": [
@@ -48906,6 +48909,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "theatermania--david-gordon.json",
+      "score": 92,
       "publishDate": "2026-11-16",
       "url": "https://www.theatermania.com/news/review-cole-escolas-gloriously-unhinged-oh-mary-brings-its-pandemonium-to-the-ahmanson_1859942/",
       "findings": [
@@ -100225,6 +100229,20 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 37,
+      "publishDate": "2026-11-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/desire-under-the-elms-almeida-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "rolandcat--roviews.json",
       "score": 59,
       "publishDate": "2026-11-14",
@@ -103568,6 +103586,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "frankenstein-leeds-regional-2024",
+      "file": "observer--david-cote.json",
+      "score": null,
+      "publishDate": "2024-02-07",
+      "url": "https://observer.com/2024/02/lisa-frankenstein-review-twisted-horny-and-bloody-fun/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 53d before show (2024-02-07 vs 2024-03-31)"
         }
       ]
     },
