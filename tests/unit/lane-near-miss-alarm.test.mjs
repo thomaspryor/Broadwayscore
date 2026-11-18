@@ -242,6 +242,11 @@ test('nearMissFind: a show-news story (extension, casting) on a known outlet is 
   // An item with its own review word under /news/ is still judged on its signals (TheaterMania files reviews there).
   const tm = d.nearMissFind({ url: TM_URL, title: 'Review: Blue Man Group’s Broadway Christmas Show Is a Lump of Coal' }, show, budget());
   assert.ok(tm && tm.nearMiss.length, 'the BMG TheaterMania review still surfaces');
-  const nysr = d.nearMissFind({ url: 'https://nystagereview.com/2026/11/18/blue-man-group-a-new-holiday-surprise/', title: 'Blue Man Group A New Holiday Surprise' }, show, budget());
-  assert.ok(nysr === null || nysr.nearMiss.length, 'a review-path item is judged on its signals, not refused for its path');
+  // A host-only outlet's dated review path that the strict matcher refuses still surfaces.
+  const nysr = d.nearMissFind({ url: 'https://nystagereview.com/2026/11/18/blue-man-group-a-holiday-spectacular/', title: 'Blue Man Group A Holiday Spectacular' }, show, budget());
+  assert.ok(nysr && nysr.nearMiss.length, 'a review-path item on a host-only outlet still surfaces');
+  // URLs nonReviewReason throws on never throw out of nearMissFind (one throw would drop the adapter's whole pass).
+  for (const url of ['https://nystagereview.com//', 'https://nystagereview.com/2026/%E0%A4%A/blue-man-group-a-holiday-spectacular']) {
+    assert.doesNotThrow(() => d.nearMissFind({ url, title: 'Blue Man Group A Holiday Spectacular' }, show, budget()), url);
+  }
 });

@@ -290,7 +290,13 @@ function nearMissFind(item, show, budget, extra = {}) {
   // reviews: an extension story naming the show ("Blue Man Group ... extends through January", nystagereview
   // /news/extension-news/, BRO-7781 sim night) would page as a missed review. Items with their own review word or a
   // reviews-only feed are not refused here: TheaterMania and WhatsOnStage file real reviews under /news/.
-  if (!ownSignal && nearMiss.INTENDED_REJECTIONS.has(nonReviewReason(item.url, { vettedOutlet: true }))) return null;
+  if (!ownSignal) {
+    // nonReviewReason throws on a "//" path or a malformed %-escape; an index page's nav anchors reach here, and one throw
+    // would discard the whole adapter's pass (Promise.allSettled). On a throw, err toward alerting.
+    let why = null;
+    try { why = nonReviewReason(item.url, { vettedOutlet: true }); } catch { why = null; }
+    if (nearMiss.INTENDED_REJECTIONS.has(why)) return null;
+  }
   const signals = nearMiss.nearMissSignals(item, show);
   if (!signals.length) return null;
   budget.left -= 1;
