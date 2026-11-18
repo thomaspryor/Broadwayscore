@@ -136,7 +136,7 @@ async function main() {
     catch (e) { incomplete.add(wf); console.error(`[landed-proof] WARN runs for ${wf} unreadable: ${String(e.message).split('\n')[0].slice(0, 160)}`); }
   }
 
-  const deployed = prodSha();
+  const deployed = commits.some((c) => c.files.some((f) => lib.classifyPath(f, { index, libIndex }).kind === 'src')) ? prodSha() : null;
   const isDeployed = (sha) => {
     if (!deployed) return null;
     if (posOf.has(deployed) && posOf.has(sha)) return posOf.get(sha) <= posOf.get(deployed);

@@ -249,6 +249,8 @@ on:
       - 'scripts/backfill-wrongproduction-legacy-audit.js'
       # tests/unit/enrich-dtli-thumbs.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/enrich-dtli-thumbs.js'
+      # BRO-7790: landed-change proof audit CLI; scripts/lib/landed-change-proof.test.mjs smoke-runs it.
+      - 'scripts/landed-change-proof-audit.js'
       # BRO-2410: blog-reviews generator + its manifest-registered test (resolver is under scripts/lib/**).
       - 'scripts/generate-blog-reviews-for-scoring.js'
       # scripts/cmux-auth-stall-watchdog.js (BRO-4056) is the I/O wrapper for

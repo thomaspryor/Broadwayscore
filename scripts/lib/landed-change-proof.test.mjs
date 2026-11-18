@@ -137,3 +137,14 @@ test('isUsageOnlyOutput: a help banner is not a run, a real report is', () => {
   assert.equal(isUsageOnlyOutput('usage: x\nWrote 4 rows to data/a.json'), false);
   assert.equal(isUsageOnlyOutput(''), false);
 });
+
+test('CLI smoke: a dry run over no matching commits reads git, writes nothing, exits 0', async (t) => {
+  const { spawnSync } = await import('node:child_process');
+  const { fileURLToPath } = await import('node:url');
+  const root = fileURLToPath(new URL('../..', import.meta.url));
+  if (spawnSync('git', ['rev-parse', '--verify', '-q', 'origin/main'], { cwd: root }).status !== 0) return t.skip('no origin/main in this checkout');
+  const r = spawnSync('node', ['scripts/landed-change-proof-audit.js', '--dry-run', '--days=1', '--sha=ffffffffffff'], { cwd: root, encoding: 'utf8', timeout: 60000, env: { ...process.env, GH_TOKEN: '', VERCEL_TOKEN: '' } });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /all: 0 code commits/);
+  assert.match(r.stdout, /dry run: would append 0 row\(s\), card for 0 change\(s\)/);
+});
