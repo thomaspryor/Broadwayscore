@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7660-m",
   "planId": "fdd772ba-04fb-48b7-9199-a5fd7e588bca",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T07:28:48.800Z",
   "submitter": {
     "name": null,
@@ -221,5 +221,124 @@
         "description": "BRO-7660 CLEAR_NR: full review of this staging"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T11:38:52.661Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/this-week-in-new-york--mark-rifkin.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/this-week-in-new-york--mark-rifkin.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/this-week-in-new-york--mark-rifkin.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json isNonReviewReason: null -> \"manual (not a review): fan fiction, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/woman-around-town--alix-cohen.json isNonReviewReason: null -> \"manual (not a review): interview piece, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/woman-around-town--alix-cohen.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/nytimes--elisabeth-vincentelli.json isNonReviewReason: \"CV-promoted (not a review): This is an interview/profile article published on opening day, not a review. While it names the correct show, venue, and critic, it contains no critical assessment of the production's quality, cast pe\" -> \"manual (not a review): interview feature, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/nytimes--elisabeth-vincentelli.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-2024/observer--rex-reed.json isNonReviewReason: null -> \"manual (not a review): actor profile with interview quotes, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-2024/observer--rex-reed.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-simulacrum-off-broadway-2023/nytg--allison-considine.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-simulacrum-off-broadway-2023/nytg--allison-considine.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/broadwaynews--brittani-samuel.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/broadwaynews--brittani-samuel.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/broadwaynews--brittani-samuel.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crooked-cross-off-broadway-2025/front-row-center--david-walters.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crooked-cross-off-broadway-2025/front-row-center--david-walters.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "duke-and-roya-off-broadway-2025/theatre-reviews-limited--david-roberts.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "duke-and-roya-off-broadway-2025/theatre-reviews-limited--david-roberts.json isNonReview: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }
