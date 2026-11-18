@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T16:14:34.453Z",
+  "timestamp": "2026-11-18T16:38:52.953Z",
   "stats": {
-    "totalReviews": 82590,
+    "totalReviews": 82595,
     "alreadyFlagged": 22457,
     "dateGuardCatches": 220,
-    "directorMismatch": 3742,
+    "directorMismatch": 3761,
     "tvFilmSignals": 2351,
     "londonSignals": 3791,
     "offBroadwaySignals": 761,
     "yearMismatch": 382,
-    "noPublishDate": 8276
+    "noPublishDate": 8278
   },
   "findings": [
     {
@@ -56773,15 +56773,269 @@
     },
     {
       "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "artsfuse--bill-marx.json",
+      "score": 78,
+      "publishDate": "2026-08-25",
+      "url": "https://artsfuse.org/333276/theater-review-john-turturro-resists-the-herd-in-a-r-t-s-rhinoceros/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "baystatebanner--celina-colby.json",
+      "score": 69,
+      "publishDate": "2026-08-13",
+      "url": "https://baystatebanner.com/2026/08/13/rhinoceros-an-absurdist-commentary-on-fascism-barrels-onto-the-stage-at-a-r-t/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "boston-com--samantha-genzer.json",
+      "score": 78,
+      "publishDate": "2026-08-22",
+      "url": "https://www.boston.com/community/entertainment/2026/08/22/theater-review-rhinoceros-explores-conformity-through-an-absurd-rhino-epidemic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "boston-globe--ty-burr.json",
+      "score": 91,
+      "publishDate": "2026-08-22",
+      "url": "https://www.bostonglobe.com/2026/08/22/arts/turturro-giamatti-maslany-rhinoceros-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2026-08-11",
+      "url": "https://www.bostonglobe.com/2026/08/11/arts/john-turturro-diane-paulus-tatiana-maslany-paul-giamatti-rhinoceros/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "boston-theater--unknown.json",
+      "publishDate": null,
+      "url": "https://www.boston-theater.com/shows/american_repertory_theater/rhinoceros",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "broadwayworld--joshua-wright.json",
+      "publishDate": "2026-08-24",
+      "url": "https://www.broadwayworld.com/translate/hi/Review-Roundup-What-Did-Critics-Think-of-RHINOCEROS-at-American-Repertory-Theater-20260824",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "score": 93,
+      "publishDate": "2026-08-24",
+      "url": "https://www.broadwayworld.com/boston/article/Review-A-Breath-taking-RHINOCEROS-at-American-Repertory-Theater-20260824",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "metrmag--kevin-t.json",
+      "score": 89,
+      "publishDate": "2026-08-14",
+      "url": "https://www.metrmag.com/latest-reviews/rhinoceros-by-eug%C3%A8ne-ionesco-american-repertory-theater-cambridge-ma-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "netheatregeek--eugene.json",
+      "score": 82,
+      "publishDate": "2026-08-23",
+      "url": "https://www.netheatregeek.com/2026/08/23/an-infallible-system-of-interpretation-rhinoceros/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "newsbreak--samantha-genzer.json",
+      "score": 78,
+      "publishDate": "2026-08-22",
+      "url": "https://www.newsbreak.com/boston-500265/4843541997616-theater-review-rhinoceros-explores-conformity-through-an-absurd-rhino-epidemic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "nysr--bob-verini.json",
+      "score": 95,
+      "publishDate": "2026-08-23",
+      "url": "https://nystagereview.com/2026/08/23/from-cambridge-rhinoceros-or-welcome-to-zoodystopia/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "one-minute-critic--jerry-portwood.json",
+      "score": 87,
+      "publishDate": "2026-08-24",
+      "url": "https://1minutecritic.com/john-turturro-paul-giamatti-rhinoceros-review-art/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "stageandcinema--emily-brenner.json",
+      "score": 78,
+      "publishDate": "2026-08-23",
+      "url": "https://stageandcinema.com/2026/08/22/rhinoceros-american-repertory-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "theater-mirror--julie-anne-whitney.json",
+      "score": 78,
+      "publishDate": "2026-08-22",
+      "url": "https://www.theatermirror.net/a-rousing-rhinoceros-opens-a-r-t-s-46th-season/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "theater-mirror--mike-hoban.json",
+      "score": 92,
+      "publishDate": "2026-08-24",
+      "url": "https://www.theatermirror.net/a-r-t-s-rhinoceros-is-a-must-see-knockout/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "thepoplarreview--the-poplar-review.json",
+      "score": 90,
+      "publishDate": "2026-08-23",
+      "url": "https://thepoplarreview.substack.com/p/an-absurd-harrowing-triumph-rhinoceros",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
       "file": "wbur--jacquinn-sinclair.json",
       "score": 89,
       "publishDate": "2026-08-25",
       "url": "https://www.wbur.org/news/2026/08/25/american-repertory-theater-rhinoceros-review",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "file": "wsj--by-charles-isherwood.json",
+      "score": 82,
+      "publishDate": "2026-08-26",
+      "url": "https://www.wsj.com/articles/rhinoceros-review-john-turturro-paul-giamatti-and-man-vs-beast-6d9f3114",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from rhinoceros-2027"
         }
       ]
     },
