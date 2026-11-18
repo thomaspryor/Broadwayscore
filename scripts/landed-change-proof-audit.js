@@ -116,6 +116,10 @@ function fileCard(body, auditDay, count) {
 }
 
 async function main() {
+  if (require('./lib/cli-help.js').hasHelpFlag(process.argv)) {
+    console.log(fs.readFileSync(__filename, 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(0, 12).map((l) => l.slice(3)).join('\n'));
+    return;
+  }
   const lib = await import('./lib/landed-change-proof.mjs');
   const { loadWorkflows } = await import('./lib/live-run-stop.mjs');
   const dryRun = !!arg('dry-run');
