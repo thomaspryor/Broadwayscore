@@ -19497,7 +19497,7 @@
       "title": "Roundup gaps: 13 listed review(s) not captured across 6 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-18T14:17:38.627Z",
+      "lastSeen": "2026-11-18T14:59:57.720Z",
       "lastNotifiedAt": "2026-11-18T08:04:14.488Z",
       "lastSurfacedAt": null,
       "notifyCount": 60,
@@ -19513,7 +19513,7 @@
         "its-a-wonderful-life-a-live-radio-play-2026",
         "la-distance-bam-off-broadway-2026"
       ],
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -42333,7 +42333,7 @@
       "linearIdentifier": null
     },
     "backstop:rope-off-broadway-2026/talkinbroadway--unknown.json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "T1/T2 review stuck >24h: Rope — talkinbroadway",
       "firstSeen": "2026-11-11T15:21:21.426Z",
@@ -42343,7 +42343,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7379"
+      "linearIdentifier": "BRO-7379",
+      "resolvedAt": "2026-11-18T15:00:23.900Z",
+      "resolveReason": "BRO-6082: no automated path left; reported on the digest FYI line"
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)": {
       "status": "open",
@@ -44209,12 +44211,13 @@
       "title": "Review gap — \"Downstate\" missing 1 cited review(s)",
       "firstSeen": "2026-11-16T03:22:58.264Z",
       "incidentOpenedAt": "2026-11-16T03:22:58.264Z",
-      "lastSeen": "2026-11-18T14:17:38.544Z",
+      "lastSeen": "2026-11-18T14:59:57.627Z",
       "lastNotifiedAt": "2026-11-18T14:17:38.544Z",
       "lastSurfacedAt": "2026-11-18T14:17:38.544Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/slim-linear-job-checkouts": {
       "status": "resolved",
