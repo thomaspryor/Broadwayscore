@@ -70,7 +70,7 @@ function main() {
   }
   for (const [url, expected] of extra) {
     const r = [...latest.values()].find((x) => x.url === url);
-    if (!r || !take(r, expected, `${r.outletId}-${expected.toLowerCase().replace(/[^a-z]+/g, '-')}`)) manifest.missing.push({ outletId: r ? r.outletId : '?', url, reason: `extra page not read as ${expected}` });
+    if (!r || !take(r, expected, `${r.outletId}-${expected.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]+/g, '-')}`)) manifest.missing.push({ outletId: r ? r.outletId : '?', url, reason: `extra page not read as ${expected}` });
   }
   fs.writeFileSync(path.join(OUT, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
   const bytes = fs.readdirSync(OUT).reduce((n, f) => n + fs.statSync(path.join(OUT, f)).size, 0);
