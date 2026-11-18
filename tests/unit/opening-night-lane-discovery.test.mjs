@@ -1083,6 +1083,8 @@ const LANE_SOURCE_SAMPLE_REVIEW = {
   'the-queer-review': 'https://thequeerreview.com/2026/04/23/theatre-review-the-rocky-horror-show-studio-54-broadway/',
   w42st: 'https://w42st.com/post/michael-musto-reviews-titanique-smigadoon-rocky-horror-show/',
   forward: 'https://forward.com/culture/theater/705688/operation-mincemeat-musical-review-ewen-montagu-jewish/',
+  'reclining-standards': 'https://recliningstandards.com/2026/10/25/ck-reviews-other-desert-cities-at-broadways-hudson-theatre/',
+  showmosexualsguide: 'https://www.showmosexualsguide.com/p/other-desert-cities',
 };
 test('guard: every lane index and feed outlet has a real review URL the path gate admits as its adapter offers it', () => {
   const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
@@ -1113,6 +1115,9 @@ const LANE_FEED_SAMPLE_HEADLINE = {
   'theater-life': ['', 'A Good Day to Me Not to You'],
   'front-row-center': ['', 'Copperfield! The New Musical'],
   'bobs-theater-blog': ['A Few Good Men', 'A Few Good Men'],
+  // BRO-7779: headlines as the feeds carried them (2026-11-18).
+  'reclining-standards': ['CK Reviews Other Desert Cities at Broadway’s Hudson Theatre', 'Other Desert Cities'],
+  showmosexualsguide: ['Other Desert Cities', 'Other Desert Cities'],
   'the-komisar-scoop': ['“A Few Good Men” Is Ironic Label of Immoral Killer Military', 'A Few Good Men'],
 };
 // Feeds kept although most of their reviews carry no review word: each finds the ones that do; the regular gather finds the rest.

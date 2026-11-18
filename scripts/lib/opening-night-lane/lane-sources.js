@@ -95,8 +95,9 @@ const LANE_FEEDS = [
   // Same check over 30 openings (older nights), probed 2026-11-09 through fetchPage directOnly: 200 with 20 items.
   { url: 'https://forward.com/culture/theater/feed/', outletId: 'forward', name: 'Forward Theater' },
   // BRO-7779: on time for Other Desert Cities (2026-11-17) with no lane source; both feeds answer 200 RSS (probed 2026-11-18).
+  // The Guide's headlines are the show title alone ("Other Desert Cities"), as Bob's are: titledReviews.
   { url: 'https://recliningstandards.com/feed/', outletId: 'reclining-standards', name: 'Reclining Standards' },
-  { url: 'https://www.showmosexualsguide.com/feed', outletId: 'showmosexualsguide', name: "The Intelligent Showmosexual's Guide" },
+  { url: 'https://www.showmosexualsguide.com/feed', outletId: 'showmosexualsguide', name: "The Intelligent Showmosexual's Guide", titledReviews: true },
 ];
 
 // On-time outlets the lane cannot poll for free, and what finds them instead. A gap needs a reason a reader can check.
