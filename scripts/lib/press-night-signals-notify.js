@@ -32,6 +32,13 @@ function postDiscord(webhook, content) {
   });
 }
 
+// The lane awaits the alert inside a pass: no channel may hold the pass longer than this, retries included.
+const CHANNEL_CAP_MS = 45 * 1000;
+function capped(p, ms, what) {
+  let t;
+  return Promise.race([p, new Promise((_, rej) => { t = setTimeout(() => rej(new Error(`${what} took over ${ms / 1000}s`)), ms); })]).finally(() => clearTimeout(t));
+}
+
 async function commentOnCard(card, body) {
   const linear = require('./linear-client');
   const issue = await linear.getIssue(card);
@@ -45,7 +52,7 @@ async function commentOnCard(card, body) {
  *   discord(webhook, text) and comment(card, body) are injectable for tests.
  * @returns {(signals: {show, night, nearMisses, gaps}) => Promise<{discord: boolean, comment: boolean, text: string|null}>}
  */
-function createPressSignalsNotifier({ env = process.env, log = console.log, discord = postDiscord, comment = commentOnCard, card = coordinatorCard(), runUrl } = {}) {
+function createPressSignalsNotifier({ env = process.env, log = console.log, discord = postDiscord, comment = commentOnCard, card = coordinatorCard(), runUrl, capMs = CHANNEL_CAP_MS } = {}) {
   const run = runUrl || (env.GITHUB_RUN_ID && env.GITHUB_REPOSITORY ? `https://github.com/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}` : null);
   return async ({ show, night, nearMisses = [], gaps = [] }) => {
     const msg = formatPressSignals(show, night, { nearMisses, gaps });
@@ -54,10 +61,10 @@ function createPressSignalsNotifier({ env = process.env, log = console.log, disc
     log(`[press-signals] ${text}`);
     const out = { discord: false, comment: false, text };
     if (env.DISCORD_WEBHOOK_ALERTS) {
-      try { out.discord = await discord(env.DISCORD_WEBHOOK_ALERTS, text); } catch (e) { log(`[press-signals] discord failed: ${String(e && e.message).slice(0, 160)}`); }
+      try { out.discord = await capped(discord(env.DISCORD_WEBHOOK_ALERTS, text), capMs, 'discord'); } catch (e) { log(`[press-signals] discord failed: ${String(e && e.message).slice(0, 160)}`); }
     } else log('[press-signals] DISCORD_WEBHOOK_ALERTS not set; Discord skipped');
     if (card && env.LINEAR_API_KEY) {
-      try { out.comment = await comment(card, `${text}\n\nPosted by the opening-night lane (BRO-7748). The lane did not admit these; one command above adds each.`); } catch (e) { log(`[press-signals] ${card} comment failed: ${String(e && e.message).slice(0, 160)}`); }
+      try { out.comment = await capped(comment(card, `${text}\n\nPosted by the opening-night lane (BRO-7748). The lane did not admit these; one command above adds each.`), capMs, 'card comment'); } catch (e) { log(`[press-signals] ${card} comment failed: ${String(e && e.message).slice(0, 160)}`); }
     } else log(`[press-signals] no ${card ? 'LINEAR_API_KEY' : 'coordinator card'}; card comment skipped`);
     if (!out.discord && !out.comment) console.error(`::error::press-night alert reached no channel: ${msg.title}`);
     return out;

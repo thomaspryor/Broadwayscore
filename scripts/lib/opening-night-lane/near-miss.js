@@ -139,10 +139,11 @@ function recordNew(ledgerDir, { showId, night, kind, items, now = Date.now() }) 
 
 /** The one command that puts a URL in front of the running lane (BRO-7741 inbox), plus the regular-path fallback. */
 function ingestCommand(showId, item) {
+  const q = (v) => `'${String(v).replace(/'/g, `'\\''`)}'`; // copy-paste safe even if the URL holds a quote
   const outlet = item.outletId ? ` --outlet=${item.outletId}` : '';
   return {
-    primary: `node scripts/opening-night-lane-inbox.js add --show=${showId} --url='${item.url}'${outlet}`,
-    fallback: `gh workflow run ingest-urls.yml -f show_id=${showId} -f urls='${item.url}${item.outletId ? ` ${item.outletId}` : ''}'`,
+    primary: `node scripts/opening-night-lane-inbox.js add --show=${showId} --url=${q(item.url)}${outlet}`,
+    fallback: `gh workflow run ingest-urls.yml -f show_id=${showId} -f urls=${q(`${item.url}${item.outletId ? ` ${item.outletId}` : ''}`)}`,
   };
 }
 

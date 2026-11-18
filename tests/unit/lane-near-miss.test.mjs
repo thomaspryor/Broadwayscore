@@ -114,6 +114,14 @@ test('notifier: one failing channel does not hide the other, and nothing new sen
   assert.equal((await notify({ show: BMG, night: '2026-11-17' })).text, null);
 });
 
+test('notifier: a hung channel is cut off, so an alert never stalls the pass', async () => {
+  const notify = createPressSignalsNotifier({ env: { DISCORD_WEBHOOK_ALERTS: 'https://discord.invalid/h', LINEAR_API_KEY: 'x' }, log: () => {}, card: 'BRO-5955', capMs: 50,
+    discord: () => new Promise(() => {}), comment: async () => true });
+  const t0 = Date.now();
+  const out = await notify({ show: BMG, night: '2026-11-17', nearMisses: [{ url: TM_URL, outletId: 'theatermania', adapter: 'section-index', signals: ['x'] }] });
+  assert.ok(Date.now() - t0 < 2000); assert.equal(out.discord, false); assert.equal(out.comment, true);
+});
+
 test('the coordinator card comes from the registry, not a hardcoded id', () => {
   const reg = require('../../scripts/lib/coordinator-registry.js').REGISTRY;
   const e = reg.find((x) => x.area === 'opening-night');
