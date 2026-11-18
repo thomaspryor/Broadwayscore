@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-18T20:43:24.285Z",
-  "processed": 4,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-18T20:48:00.884Z",
+  "processed": 12,
+  "failed": 9,
+  "successRate": "57.1%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 1,
     "scrapingbee": 0,
@@ -14,6 +14,40 @@
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-18T20:39:51.013Z",
+      "event": "bb-session",
+      "session": "6c267d7d",
+      "url": "https://www.wsj.com/arts-culture/theater/jenufa-review-a-powerfully-grim-opera-a"
+    },
+    {
+      "t": "2026-11-18T20:39:51.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-18T20:41:48.801Z",
+      "event": "bb-session",
+      "session": "79cafd11",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-18T20:41:49.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-18T20:47:02.247Z",
+      "event": "bb-session",
+      "session": "e9bf1480",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-18T20:47:02.714Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }

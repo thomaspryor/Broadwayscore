@@ -1,30 +1,93 @@
 {
   "processed": [
-    "relative-motion-off-west-end-2026/british-theatre--unknown.json",
-    "relative-motion-off-west-end-2026/north-west-end--unknown.json",
-    "relative-motion-off-west-end-2026/rolandcat--unknown.json",
-    "relative-motion-off-west-end-2026/the-spy-in-the-stalls--unknown.json"
+    "ghost-notes-off-broadway-2026/oazis--unknown.json",
+    "blue-man-group-a-new-holiday-surprise-2026/nyt-theater--jonathan-mandell.json",
+    "blue-man-group-a-new-holiday-surprise-2026/nyt-theater--unknown.json",
+    "blue-man-group-a-new-holiday-surprise-2026/nytg--caroline-cao.json",
+    "blue-man-group-a-new-holiday-surprise-2026/nytg--unknown.json",
+    "jenufa-off-broadway-2026/wsj--heidi-waleson.json",
+    "downstate-2026/the-interested-bystander--unknown.json",
+    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+    "the-kings-critique-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "now-you-see-me-live-2026/nytg--unknown.json",
+    "now-you-see-me-live-2026/theatermania--unknown.json",
+    "now-you-see-me-live-2026/culturesauce--thom-geier.json"
   ],
-  "failed": [],
+  "failed": [
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json",
+    "downstate-2026/nydailynews--unknown.json",
+    "downstate-2026/pages-on-stages--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "relative-motion-off-west-end-2026/british-theatre--unknown.json",
-      "relative-motion-off-west-end-2026/north-west-end--unknown.json",
-      "relative-motion-off-west-end-2026/the-spy-in-the-stalls--unknown.json"
+      "ghost-notes-off-broadway-2026/oazis--unknown.json",
+      "blue-man-group-a-new-holiday-surprise-2026/nyt-theater--jonathan-mandell.json",
+      "blue-man-group-a-new-holiday-surprise-2026/nyt-theater--unknown.json",
+      "blue-man-group-a-new-holiday-surprise-2026/nytg--caroline-cao.json",
+      "blue-man-group-a-new-holiday-surprise-2026/nytg--unknown.json",
+      "downstate-2026/the-interested-bystander--unknown.json",
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+      "now-you-see-me-live-2026/nytg--unknown.json",
+      "now-you-see-me-live-2026/theatermania--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--thom-geier.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/jenufa-off-broadway-2026/wsj--heidi-waleson.json",
+      "jenufa-off-broadway-2026/wsj--heidi-waleson.json",
+      "data/review-texts/downstate-2026/nytimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
-      "relative-motion-off-west-end-2026/rolandcat--unknown.json"
+      "the-kings-critique-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-18T20:42:05.403Z",
-  "lastProcessed": "relative-motion-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
-  "log": []
+  "startTime": "2026-11-18T20:38:47.996Z",
+  "lastProcessed": "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+  "log": [
+    {
+      "t": "2026-11-18T20:39:51.013Z",
+      "event": "bb-session",
+      "session": "6c267d7d",
+      "url": "https://www.wsj.com/arts-culture/theater/jenufa-review-a-powerfully-grim-opera-a"
+    },
+    {
+      "t": "2026-11-18T20:39:51.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-18T20:41:48.801Z",
+      "event": "bb-session",
+      "session": "79cafd11",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-18T20:41:49.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-18T20:47:02.247Z",
+      "event": "bb-session",
+      "session": "e9bf1480",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-18T20:47:02.714Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
