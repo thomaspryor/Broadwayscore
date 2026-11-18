@@ -1,18 +1,24 @@
 {
-  "updatedAt": "2026-11-17T11:14:29.323Z",
-  "scanned": 4845,
-  "showsWithViolations": 200,
-  "totalViolations": 229,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-11-18T11:09:21.161Z",
+  "scanned": 4876,
+  "showsWithViolations": 202,
+  "totalViolations": 231,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "les-miserables-regional-2024::https://www.talkinbroadway.com/page/regional/chicago/ch764.html"
+    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026::https://www.dailymail.co.uk/tvshowbiz/article-11733039/Alex-casts-spell-female-Prospero-PATRICK-MARMION-reviews-Tempest.html"
   ],
-  "actionableViolations": 3,
-  "newActionableSinceLastRun": 0,
-  "newActionableKeys": [],
-  "openActionableCount": 0,
-  "actionableOpen": {},
+  "actionableViolations": 4,
+  "newActionableSinceLastRun": 1,
+  "newActionableKeys": [
+    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html"
+  ],
+  "openActionableCount": 1,
+  "actionableOpen": {
+    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html": "2026-11-18T11:09:17.947Z"
+  },
   "actionableKeys": [
+    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
     "translations-regional-2025::https://www.chicagotheatrereview.com/2025/04/the-go-between/",
     "44-the-obama-musical-regional-2025::https://chicago.splashmags.com/index.php/2025/08/44-the-musical-review-leaves-the-audience-in-stitches/",
     "the-christians-regional-2023::https://www.chicagotheatrereview.com/2023/03/no-such-thing-as-hell/"
@@ -107,7 +113,9 @@
     "all-my-sons-west-end-2025::https://www.telegraph.co.uk/theatre/what-to-see/breaking-bads-bryan-cranstonwest-end/",
     "are-you-watching-west-end-2026::https://www.britishtheatreguide.info/reviews/are-you-watchin-royal-court-the-25647",
     "man-and-boy-west-end-2026::https://www.standard.co.uk/culture/theatre/man-boy-review-rattigan-national-theatre-b1270541.html",
+    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
     "cleansed-off-west-end-2026::https://www.telegraph.co.uk/theatre/what-to-see/incest-gore-mutilation-must-see-play-faint-hearted/",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026::https://www.dailymail.co.uk/tvshowbiz/article-11733039/Alex-casts-spell-female-Prospero-PATRICK-MARMION-reviews-Tempest.html",
     "disruption-off-broadway-2026::https://lavocedinewyork.com/en/new-york/2026/08/29/three-off-broadway-plays-to-consider-for-end-of-summer-theater-experiences/",
     "dog-mom-off-west-end-2026::https://firstnightmagazine.com/2026/10/18/review-of-dog-mum-audiences-are-sold-a-pup-in-all-barking-and-no-biting-play/",
     "starstruck-regional-2026::https://www.theatermania.com/news/review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767/",
@@ -1409,6 +1417,21 @@
       ]
     },
     {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
+      "openingDate": "2021-12-12",
+      "message": "Review URL for independent/Annabel Nugent does not mention show slug (checked: cabaret-at-the-kit-kat-club-west-end-2021, cabaret-at-the-kit-kat-club, cabaret-at-the-kit-kat-club-west-end, cabaret, club, cabaretclub, cabaretatthekitkatclub): https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
+      "violations": [
+        {
+          "outletId": "independent",
+          "criticName": "Annabel Nugent",
+          "url": "https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
+          "urlSlug": "independentpremium culture romeo-juliet-winston-churchill-play-school-girls-b 2358284",
+          "namesOtherShow": "Romeo + Juliet"
+        }
+      ]
+    },
+    {
       "showId": "cleansed-off-west-end-2026",
       "title": "Cleansed",
       "openingDate": "2026-07-30",
@@ -1419,6 +1442,21 @@
           "criticName": "Dominic Cavendish",
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/incest-gore-mutilation-must-see-play-faint-hearted/",
           "urlSlug": "theatre what-to-see incest-gore-mutilation-must-see-play-faint-hearted",
+          "namesOtherShow": null
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "title": "My Son’s A Queer (But What Can You Do?)",
+      "openingDate": "2026-09-17",
+      "message": "Review URL for daily-mail/Libby Purves does not mention show slug (checked: my-sons-a-queer-but-what-can-you-do-west-end, my-sons-a-queer-but-what-can-you-do, my-son-s-a-queer-but-what-can-you-do, sons, queer, what, sonsqueerwhat, mysonsaqueerbutwhatcanyoudo): https://www.dailymail.co.uk/tvshowbiz/article-11733039/Alex-casts-spell-female-Prospero-PATRICK-MARMION-reviews-Tempest.html",
+      "violations": [
+        {
+          "outletId": "daily-mail",
+          "criticName": "Libby Purves",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-11733039/Alex-casts-spell-female-Prospero-PATRICK-MARMION-reviews-Tempest.html",
+          "urlSlug": "tvshowbiz article-11733039 alex-casts-spell-female-prospero-patrick-marmion-reviews-tempest",
           "namesOtherShow": null
         }
       ]

@@ -1,19 +1,21 @@
 {
-  "updatedAt": "2026-11-17T11:11:17.673Z",
-  "scanned": 4845,
-  "showsWithViolations": 123,
-  "totalViolations": 152,
-  "newSinceLastRun": 0,
+  "updatedAt": "2026-11-18T11:06:50.378Z",
+  "scanned": 4876,
+  "showsWithViolations": 124,
+  "totalViolations": 153,
+  "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 968,
-    "not-shipped": 62,
+    "temporal-override-low-confidence": 970,
+    "not-shipped": 63,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "self-healed": 72,
     "prior-run-or-tour-leg": 43
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "top-gunchained-off-west-end-2026::londonpubtheatres--paul-maidment.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "hells-kitchen-2024::theater-life--samuel-l-leiter.json",
@@ -107,6 +109,7 @@
     "a-small-and-quiet-light-off-west-end-2026::plays-international--maryam-philpott.json",
     "sylvia-west-end-2023::standard--nick-curtis.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
+    "top-gunchained-off-west-end-2026::londonpubtheatres--paul-maidment.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
     "spamalot-tour-2025::the-moderate-voice--dough-bursch.json",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2024::broadwayworld--jarrod-michael.json",
@@ -860,7 +863,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the 2019 Chichester Festival Theatre production being transferred to the West End, not a review of t — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of a Chichester Festival Theatre production that is transferring to the Aldwych Theatre, not a review o — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -869,10 +872,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a review of the 2019 Chichester Festival Theatre production being transferred to the West End, not a review of t",
+          "cvReasoning": "This is a review of a Chichester Festival Theatre production that is transferring to the Aldwych Theatre, not a review o",
           "cvIssues": [
-            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End Aldwych Theatre run",
-            "Opening sentence states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — this is a preview/announcement of a transfer, not a review of the West End performance"
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End production opening 2026-02-12",
+            "Opening sentence explicitly states: 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych for a limited run'"
           ]
         }
       ]
@@ -1910,6 +1913,27 @@
           "cvIssues": [
             "Review end-date mismatch: review states show 'continues its London run until 23rd September' but expected publish date is 2026-09-29 (6 days after closing)",
             "Content truncated: scraped text ends with incomplete footer fragment ('100% Honest Reviews. All show reviews are written by independent theatregoers, directors')"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "top-gunchained-off-west-end-2026",
+      "title": "Top Gunchained",
+      "openingDate": null,
+      "message": "londonpubtheatres/Paul Maidment (londonpubtheatres--paul-maidment.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of Richard Marsh's 'Top Gunchained,' but it is NOT a review of a current Off-West End production  — https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
+      "violations": [
+        {
+          "filename": "londonpubtheatres--paul-maidment.json",
+          "url": "https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
+          "outletId": "londonpubtheatres",
+          "criticName": "Paul Maidment",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "This is a valid review of Richard Marsh's 'Top Gunchained,' but it is NOT a review of a current Off-West End production ",
+          "cvIssues": [
+            "Review does not name Wilton's Music Hall or any specific Off-West End venue as the performance location",
+            "Reviewer states 'A few years back, for London Pub Theatres, I saw and and reviewed Richard Marsh's...' indicating this is a past review being republished, not a current Off-West End production review"
           ]
         }
       ]
