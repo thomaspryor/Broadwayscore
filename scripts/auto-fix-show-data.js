@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isValidSynopsis, classifyBadSynopsis, cutToLastSentence } = require('./lib/synopsis-validation');
+const { isPlaceholderSynopsis } = require('./lib/opening-night-completeness');
 const { setSynopsis } = require('./lib/synopsis-source');
 const SYNOPSIS_SOURCE_BY_CALLER = { TodayTix: 'todaytix', LLM: 'llm' };
 const { isTourShow } = require('./lib/tour-family');
@@ -448,12 +449,16 @@ function callClaudeAPI(prompt, maxTokens, model = CLAUDE_HAIKU) {
   });
 }
 
+function needsSynopsis(show) {
+  return classifyBadSynopsis(show).bad || isPlaceholderSynopsis(show.synopsis);
+}
+
 // Fix synopsis - fetch from TodayTix or generate
-async function fixSynopsis(show, todayTixIds) {
+async function fixSynopsis(show, todayTixIds, { fetchTodayTix = fetchSynopsisFromTodayTix, generate = generateSynopsisWithLLM } = {}) {
   // Regenerate if the synopsis is missing OR bad (refusal / generic
   // production-history placeholder / stale future-tense / invalid). A 50-char
   // length check alone let the 1536 placeholder survive (2026-06-21).
-  if (!classifyBadSynopsis(show).bad) {
+  if (!needsSynopsis(show)) {
     return null; // Already has a good synopsis
   }
 
@@ -475,8 +480,8 @@ async function fixSynopsis(show, todayTixIds) {
     if (!text || !isValidSynopsis(text)) return false;
     // Same badness test that selected this row (stale future tense etc.), so a
     // saved candidate is not flagged bad again on the next run.
-    if (classifyBadSynopsis({ ...show, synopsis: text }).bad) {
-      console.log(`    ✗ rejected ${source} synopsis (fails classifyBadSynopsis)`);
+    if (needsSynopsis({ ...show, synopsis: text })) {
+      console.log(`    ✗ rejected ${source} synopsis (fails synopsis quality checks)`);
       return false;
     }
     // Award claims must agree with awards.json (LLMs and producer copy both invent them, BRO-4853).
@@ -508,7 +513,7 @@ async function fixSynopsis(show, todayTixIds) {
 
   // Try TodayTix first
   const todayTixInfo = resolveTodayTixInfo(show, todayTixIds);
-  const tt = await fetchSynopsisFromTodayTix(show, todayTixInfo);
+  const tt = await fetchTodayTix(show, todayTixInfo);
   if (await accept(tt.text, 'TodayTix', { trusted: tt.trusted })) {
     return `Fetched synopsis from TodayTix for ${show.title}`;
   }
@@ -516,7 +521,7 @@ async function fixSynopsis(show, todayTixIds) {
   // Try LLM generation
   if (ANTHROPIC_API_KEY) {
     console.log(`    Generating via Claude...`);
-    if (await accept(await generateSynopsisWithLLM(show), 'LLM')) {
+    if (await accept(await generate(show), 'LLM')) {
       return `Generated synopsis via Claude for ${show.title}`;
     }
   }
@@ -758,10 +763,10 @@ function isOpenOrPreviews(s) {
 
 function selectDailyTargets(shows) {
   const byId = new Map((shows || []).map(s => [s.id, s]));
-  const cannotInherit = s => !s.tourOf || !byId.has(s.tourOf) || classifyBadSynopsis(byId.get(s.tourOf)).bad;
+  const cannotInherit = s => !s.tourOf || !byId.has(s.tourOf) || needsSynopsis(byId.get(s.tourOf));
   return (shows || []).filter(s =>
     isOpenOrPreviews(s) ||
-    (isTourShow(s) && s.status !== 'closed' && classifyBadSynopsis(s).bad && cannotInherit(s)));
+    (isTourShow(s) && s.status !== 'closed' && needsSynopsis(s) && cannotInherit(s)));
 }
 
 /**
@@ -791,7 +796,7 @@ function dailyFixBudget(candidateCount, thresholds = STABILITY_THRESHOLDS, budge
 function prioritizeDailyTargets(targets) {
   const bad = [];
   const rest = [];
-  for (const s of targets || []) (classifyBadSynopsis(s).bad ? bad : rest).push(s);
+  for (const s of targets || []) (needsSynopsis(s) ? bad : rest).push(s);
   return bad.concat(rest);
 }
 
@@ -839,7 +844,7 @@ async function main() {
     console.log(`Targeting ${targetShows.length} show(s) by id...\n`);
   } else if (backfillHistorical) {
     // All shows with a missing OR bad synopsis, regardless of status
-    targetShows = data.shows.filter(s => classifyBadSynopsis(s).bad);
+    targetShows = data.shows.filter(needsSynopsis);
     if (limit > 0) {
       targetShows = targetShows.slice(0, limit);
     }
@@ -1011,6 +1016,8 @@ if (require.main === module) {
 // show.creativeTeam; tests exercise that gate directly against a fake
 // serpQuery rather than re-implementing its decision logic.
 module.exports = {
+  fixSynopsis,
+  needsSynopsis,
   fixCreativeTeam,
   verifyCreativeTeamViaSerp,
   generateCreativeTeamWithSerpVerification,
