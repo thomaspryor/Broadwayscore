@@ -38,6 +38,25 @@ function londonSources(show) {
   return [...new Set([...(venue ? [new URL(venue.url).hostname.replace(/^www\./, '')] : []), ...LONDON_LISTINGS])];
 }
 
+// OLT / London Theatre JSON-LD Events carry the FIRST UPCOMING PERFORMANCE as startDate, not the
+// run's opening night (BRO-7737): a show that opened on 2026-10-07 read "2026-11-18" (the day the
+// page was fetched), and a closed 2025 run read "2026-12-20" (next Christmas's return). Such a
+// start can only contradict an opening date that falls AFTER it; an earlier opening is consistent.
+const LISTING_START_MAX_GAP_DAYS = 400;
+function isListingAggregator(url) {
+  try { return LONDON_LISTINGS.includes(new URL(url).hostname.replace(/^www\./, '')); } catch { return false; }
+}
+function dropListingOpeningDateMismatch(mismatches, show, parsed, url) {
+  if (!isListingAggregator(url) || !show.openingDate || !parsed?.dates?.openingDate) return mismatches;
+  if (!parsed.fromJsonLd) return mismatches; // printed run ranges ARE the opening, keep them strict
+  if (show.openingDate > parsed.dates.openingDate) return mismatches;
+  // Only the next performance of THIS run or its annual return is plausible: a start years
+  // later is another production at the same house (reviewer finding, BRO-7737).
+  const gapDays = (Date.parse(parsed.dates.openingDate) - Date.parse(show.openingDate)) / 86400000;
+  if (!(gapDays <= LISTING_START_MAX_GAP_DAYS)) return mismatches;
+  return mismatches.filter(m => m.field !== 'openingDate');
+}
+
 function allowedSource(url, domains) {
   try {
     const u = new URL(url);
@@ -94,7 +113,7 @@ function parseLondonEvidence(html, show) {
         const runEnd = end === start && show.closingDate && show.closingDate !== start ? null : end;
         const locations = Array.isArray(ev.location) ? ev.location : [ev.location];
         const venue = locations.map(l => typeof l === 'string' ? l : l?.name).find(Boolean) || null;
-        events.push(parsedEvidence(ev.name, venue, start, runEnd));
+        events.push({ ...parsedEvidence(ev.name, venue, start, runEnd), fromJsonLd: true });
       }
     }
     // Preserve separate runs; never merge same-title events across years or
@@ -168,6 +187,7 @@ async function validateLondonShow(show, {
       // Empty URL intentionally: compareShow's Playbill URL-year heuristic
       // must never derive London metadata from a URL.
       const comparison = compareShow({ ...show, category: show.category || 'west-end' }, parsed, '');
+      comparison.mismatches = dropListingOpeningDateMismatch(comparison.mismatches, show, parsed, url);
       // Undated provisional rows still name a production year. Read that
       // year from the record ID, and the source year from the actual event
       // date. Numeric titles must not supply the record's production year.
@@ -216,4 +236,4 @@ async function validateLondonShow(show, {
   return fallback || { ...base, result: outOfTime() ? 'budget-exhausted' : fetchFailed ? 'fetch-error' : anyQueryCompleted ? 'no-london-url' : 'serp-error' };
 }
 
-module.exports = { isLondonShow, routeVenueValidation, londonSources, parseLondonEvidence, validateLondonShow };
+module.exports = { dropListingOpeningDateMismatch, isLondonShow, routeVenueValidation, londonSources, parseLondonEvidence, validateLondonShow };
