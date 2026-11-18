@@ -410,6 +410,14 @@ const AUTO_FIX_PLAYBOOK = [
   // Coverage Verdict S1 (#872/#898). Without an explicit entry this would fall
   // through to the generic route and be described as a scored-review-percentage
   // problem, which is not what it measures.
+  // BRO-7779 items 4 and 8 (scripts/lib/press-night-readiness-gaps.js).
+  { match: /^Press night: openings not watched$/, urgency: 'this-week',
+    ownerText: "Some regional or touring shows open soon in places our opening-night watch does not cover, so their reviews will arrive through the daily sweeps instead of within minutes. Nothing is needed from you.",
+    workerInstruction: "The named shows have no embargo hour (scripts/lib/press-night-record.js EMBARGO_HOUR_LOCAL covers only Broadway, Off-Broadway, West End, Off-West End) and no reviewEmbargoAt. If a show is important enough to watch live, set its reviewEmbargoAt from a cited press release; otherwise confirm the daily sweeps (gather-reviews) pick it up the day after." },
+  { match: /^Press night: score gate undecided$/, urgency: 'this-week',
+    ownerText: "A special or short-run show opens within a week and may get too few reviews to show a Critic Score. A decision on whether to show a score with fewer reviews is needed before opening night.",
+    workerInstruction: "For the shows named, put ONE plain-English DECISION NEEDED question to the owner covering the list (docs/owner-email-guidelines.md; run node scripts/lib/owner-decision-recall.js \"score gate\" first): lower the minimum (Blue Man Group got 3, BRO-7750) or keep the market minimum. Record the answer in data/score-gate-overrides.json (minReviews N, or null to keep the minimum) with approvedBy and reason." },
+
   { match: /^Coverage: SERP census recall$/, urgency: 'this-week',
     ownerText: "The review census is finding fewer published reviews than it recently did, so new shows may be going live with reviews missing. Nothing is needed from you.",
     workerInstruction: "Run `node scripts/audit-serp-census-recall.js`, find which census arm dropped, and fix it." },
@@ -5186,6 +5194,20 @@ function checkCardVerifiabilityBacklog() {
     ...ownerJudgmentLimboResults(cvLinear),
   ];
 }
+/** BRO-7779 items 4 and 8: openings with no press-night watch, and special/short runs with no score-gate decision. */
+function checkPressNightReadiness({ nowMs = Date.now() } = {}) {
+  try {
+    const { pressNightReadinessResults } = require('./lib/press-night-readiness-gaps');
+    const { embargoInfo } = require('./lib/press-night-record');
+    const raw = readJSON(path.join(DATA_DIR, 'shows.json'));
+    const shows = Array.isArray(raw) ? raw : (raw.shows || []);
+    const overrides = readJSON(path.join(DATA_DIR, 'score-gate-overrides.json'));
+    return pressNightReadinessResults({ shows, overrides, nowMs, embargoAt: (s) => embargoInfo(s).at });
+  } catch (err) {
+    return [{ name: 'Press night: readiness check', status: 'error', message: `Check crashed: ${err.message}` }];
+  }
+}
+
 function checkCoverageHoles() {
   const report = readAuditJsonOrNull('coverage-holes.json');
   return report ? coverageHolesResults(report) : [];
@@ -6424,6 +6446,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkUncollectedStrands(),
     ...checkCardVerifiabilityBacklog(),
     ...checkCoverageHoles(),
+    ...checkPressNightReadiness(),
     ...checkStarBandDrift(),
     ...checkEarlyPublishDates(),
     ...checkCorpusAudits(),
@@ -6650,4 +6673,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkUncardedDigestRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };
+module.exports = { checkPressNightReadiness, invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkUncardedDigestRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };
