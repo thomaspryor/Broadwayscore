@@ -21,9 +21,12 @@ const on = { fuzzy: true, mainTitle: true, allShowTitles: all };
 let n = 0;
 const t = (name, fn) => { fn(); n++; console.log('ok -', name); };
 
-t('mainTitleOf splits only a quoted subtitle', () => {
+t('mainTitleOf splits quoted, colon and dash subtitles (BRO-7778), never a 1-word main', () => {
   assert.strictEqual(mainTitleOf(BMG), 'Blue Man Group');
-  assert.strictEqual(mainTitleOf('Stranger Things: The First Shadow'), null);
+  assert.strictEqual(mainTitleOf('Stranger Things: The First Shadow'), 'Stranger Things');
+  assert.strictEqual(mainTitleOf('Adriana Mater - English National Opera'), 'Adriana Mater');
+  assert.strictEqual(mainTitleOf('August: Osage County'), null);
+  assert.strictEqual(mainTitleOf('Dolly: A True Original Musical'), null);
   assert.strictEqual(mainTitleOf('Hamilton'), null);
   assert.strictEqual(mainTitleOf('Charles Dickens’ “A Christmas Carol”'), null); // author credit (dry-run false positive)
   assert.strictEqual(mainTitleOf("Julia Sweeney's God Said \"Ha!\""), null);
@@ -52,6 +55,18 @@ t('false positives: TV / anime / person stories never match', () => {
   assert.ok(!titleMatchesShow('Stranger Things finale breaks Netflix records', 'Stranger Things: The First Shadow', on));
   assert.ok(!titleMatchesShow('Derren Brown announces new TV special', 'Derren Brown: Only Human', on));
   assert.ok(!titleMatchesShow('Death Note anime returns', 'Death Note: The Musical', on));
+});
+t('a colon/dash main title is never admitted on its own, only through akaTitles (BRO-7778 ship-check)', () => {
+  const IAWL = 'It’s A Wonderful Life: A Live Radio Play';
+  const all2 = [...all, IAWL];
+  const o = { fuzzy: true, mainTitle: true, allShowTitles: all2, pressNames: false };
+  assert.ok(!titleMatchesShow("Review: It's a Wonderful Life", IAWL, o));
+  assert.ok(!titleMatchesShow('Stranger Things season 5 review', 'Stranger Things: The First Shadow', o));
+  assert.ok(!titleMatchesShow('Bill Bailey review – Thoughtifier tour', 'Bill Bailey: Vaudevillean', { ...o, allShowTitles: [...all2, 'Bill Bailey: Vaudevillean'] }));
+  const a = { ...o, akaTitles: ["It's a Wonderful Life"] };
+  assert.ok(titleMatchesShow("Review: It's a Wonderful Life", IAWL, a));
+  assert.ok(titleMatchesShow('‘It’s a Wonderful Life’ on Broadway, reviewed', IAWL, a));
+  assert.ok(urlSlugMatchesShow('https://www.theatermania.com/news/review-its-a-wonderful-life-broadway_1861000/', IAWL, a));
 });
 t('unrelated headlines still rejected', () => {
   assert.ok(!titleMatchesShow('Review: A Blue Whale Visits Broadway', BMG, on));

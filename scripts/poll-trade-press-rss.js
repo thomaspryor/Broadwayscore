@@ -155,7 +155,7 @@ function diffNewItems(items, lastSeenGuid, windowMs = WINDOW_HOURS * 60 * 60 * 1
 function matchShow(rssTitle, rssDescription, candidates) {
   const haystack = `${rssTitle} ${rssDescription || ''}`;
   for (const show of candidates) {
-    if (titleMatchesShow(haystack, show.title)) return show;
+    if (titleMatchesShow(haystack, show.title, { pressNames: false })) return show; // first-match caller: billed title only (BRO-7778)
   }
   return null;
 }

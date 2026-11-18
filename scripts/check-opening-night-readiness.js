@@ -130,6 +130,23 @@ async function runChecks() {
       `Confirm this is intentional (off-broadway / off-west-end shows don't get the broadcast pipeline).`);
   }
 
+  // 1c. BRO-7778: a review headlined with the short title ("Review: It's a Wonderful Life" for "It's A Wonderful Life:
+  // A Live Radio Play") must be matched, or at least raise the near-miss alert. Within 7 days of opening, a short title
+  // nothing catches fails: add shows.json akaTitles through a fix plan.
+  try {
+    const { shortTitleCoverage } = require('./lib/press-title-coverage');
+    const cov = shortTitleCoverage(show, showsData.shows);
+    const days = show.openingDate ? (Date.parse(show.openingDate) - Date.now()) / 86400000 : Infinity;
+    const addAka = `add "${cov.lead}" to akaTitles with a fix plan (node scripts/new-fix-plan.js)`;
+    if (cov.status === 'no-subtitle') report(PASS, 'Short-title matching', 'billed title has no subtitle');
+    else if (cov.status === 'matched') report(PASS, 'Short-title matching', `reviews titled "${cov.lead}" match on every path`);
+    else if (cov.akaPossible) report(days <= 7 ? FAIL : WARN, 'Short-title matching', `reviews titled only "${cov.lead}" are not admitted (${cov.status === 'near-miss' ? 'they raise the near-miss alert' : 'and raise no alert'}): ${addAka}`);
+    else if (cov.status === 'near-miss') report(WARN, 'Short-title matching', `reviews titled only "${cov.lead}" raise the near-miss alert but cannot be admitted (one word, or another show's name); watch the alert on press night`);
+    else report(days <= 7 ? FAIL : WARN, 'Short-title matching', `reviews titled "${cov.lead}" are not matched and raise no near-miss alert (${cov.missed.slice(0, 2).join('; ')})`);
+  } catch (e) {
+    report(WARN, 'Short-title matching', `could not check: ${e.message}`);
+  }
+
   // 2. Images
   // Trust shows.json's images field (what the site actually renders) rather
   // than hardcoding the .webp filename the standard pipeline produces — the

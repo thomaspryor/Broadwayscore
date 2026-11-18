@@ -56,6 +56,16 @@ function leadTitle(showTitle) {
   return sig(cut).length >= 2 ? cut : null;
 }
 
+const REVIEW_WORD_RE = / (?:review|reviews|reviewed) /;
+/** The single significant word before a subtitle ("Dolly" in "Dolly: A True Original Musical"), 4+ letters, or null. */
+function leadWord(showTitle) {
+  const t = String(showTitle || '');
+  const cut = t.split(/\s*[“"‘]|\s*:\s+|\s+[-–—]\s+|\s*\(/)[0].trim();
+  if (!cut || cut === t.trim()) return null;
+  const w = sig(cut);
+  return w.length === 1 && w[0].length >= 4 && !/^\d+$/.test(w[0]) ? w[0] : null;
+}
+
 function hasPhrase(hay, phrase) {
   const p = fold(phrase).trim();
   return !!p && (hay.includes(` ${p} `) || hay.includes(` ${p}s `));
@@ -74,6 +84,21 @@ function nearMissSignals(item, show) {
   const base = [];
   const lead = leadTitle(show.title);
   if (lead && hasPhrase(hay, lead)) base.push(`lead-title:${lead}`);
+  // BRO-7778: a one-word lead ("Dolly: A True Original Musical", "Diana: The Untold and Untrue Story") counts beside a
+  // review cue. Such a lead is shared with other shows (Hello, Dolly!; Diana, The Musical), so it is never admitted,
+  // only reported here.
+  const word = leadWord(show.title);
+  const { pressAkaForTitle, registryShowTitles } = require('../show-names');
+  // ...unless the headline names another show that holds the word ("Hello, Dolly! review" is not Dolly's).
+  const otherShowNamed = () => registryShowTitles().some((t) => {
+    const f = fold(t);
+    return f !== fold(show.title) && f.trim().split(' ').length >= 2 && f.split(' ').includes(word) && hasPhrase(hay, t);
+  });
+  if (!lead && word && words.has(word) && REVIEW_WORD_RE.test(hay) && !otherShowNamed()) base.push(`lead-word:${word}`);
+  // Press titles (shows.json akaTitles) count as the lead does.
+  const akas = Array.isArray(show.akaTitles) ? show.akaTitles : pressAkaForTitle(show.title);
+  const aka = akas.find((a) => typeof a === 'string' && sig(a).length >= 1 && hasPhrase(hay, a));
+  if (aka) base.push(`aka:${aka}`);
   const tw = [...new Set(sig(show.title))];
   const hit = tw.filter((w) => words.has(w) || words.has(`${w}s`));
   if (tw.length >= 2 && hit.length >= 2 && hit.length / tw.length >= 0.6) base.push(`title-words:${hit.length}/${tw.length}`);

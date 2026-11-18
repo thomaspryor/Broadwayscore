@@ -26,18 +26,28 @@ function searchTitles(show) {
 
 // A headline that matches only a short press title ("860") must also carry a
 // word of the listing title that the press title lacks ("Billy", "Crystal"),
-// or "New Balance 860 v15 Review" passes for Billy Crystal 860.
+// or "New Balance 860 v15 Review" passes for Billy Crystal 860. A press title of
+// 2+ significant words ("It's a Wonderful Life" for "...: A Live Radio Play") is
+// identity on its own (BRO-7778: the extra-word rule dropped "Review: It's a
+// Wonderful Life"). Stopwords never count as the extra word ("The sacrifices we
+// make" passed for SACRIFICES: The Musical on "the").
+const LISTING_STOP = new Set(['the', 'and', 'for', 'with', 'from', 'musical', 'play', 'new']);
 const words = (t) => String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter((w) => w.length >= 3);
 function headlineNamesShow(headline, show) {
-  return titleMatchesShow(headline, show.title, { fuzzy: true }) || headlineNamesPressTitle(headline, show);
+  const { registryShowTitles } = require('./show-names');
+  // akaTitles: [] here: press titles go through headlineNamesPressTitle's own rule below.
+  return titleMatchesShow(headline, show.title, { fuzzy: true, akaTitles: [], mainTitle: true, allShowTitles: registryShowTitles() })
+    || headlineNamesPressTitle(headline, show);
 }
 // The press-title half of headlineNamesShow on its own, for callers whose listing-title test is stricter than this
 // fuzzy one (playbill-verdict-discover.js, BRO-6872).
 function headlineNamesPressTitle(headline, show) {
-  const listing = words(show.title);
+  const { sigWords } = require('./show-names');
+  const listing = words(show.title).filter((w) => !LISTING_STOP.has(w));
   const head = new Set(words(headline));
   return searchTitles(show).slice(1).some((aka) => {
-    if (!titleMatchesShow(headline, aka, { fuzzy: true })) return false;
+    if (!titleMatchesShow(headline, aka, { fuzzy: true, akaTitles: [] })) return false;
+    if (sigWords(aka).filter((w) => w.length >= 3 && /[a-z]/.test(w)).length >= 2) return true;
     const extra = listing.filter((w) => !words(aka).includes(w));
     return extra.length === 0 || extra.some((w) => head.has(w));
   });
