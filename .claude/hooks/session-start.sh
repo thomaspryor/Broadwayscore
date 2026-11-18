@@ -11,8 +11,8 @@ fi
 # Modeled after Superpowers' using-superpowers meta-skill
 
 # Capture event type from stdin (JSON). Fall back to "startup" if stdin is empty
-# or jq isn't available. We gate the staleness check on startup-only so /clear
-# and /compact don't trigger redundant network fetches mid-session.
+# or jq isn't available. Fetching blocks run on startup/resume only, except the code-checkout
+# sync below, which also runs on compact so long sessions pick up hook fixes (BRO-7789).
 SESSION_INPUT=$(cat 2>/dev/null || true)
 if [ -z "$SESSION_INPUT" ]; then
   SESSION_EVENT="startup"
@@ -232,7 +232,7 @@ fi
 #
 # Fires on startup AND resume — resume is actually the higher-value case since
 # long-running sessions that pause + resume are when local drift matters most.
-# Skips /clear and /compact (those fire mid-session and would spam fetches).
+# Skips /clear and /compact (mid-session); only the code-checkout sync runs on compact (BRO-7789).
 # We print to STDOUT (same channel as the CRITICAL RULES banner below) so the
 # warning is surfaced via additionalContext, which is empirically guaranteed
 # to reach the assistant (system reminder at top of every message).
@@ -373,30 +373,30 @@ if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "${CLAUDE_PROJECT_DIR:-}" ]; t
   CODE_DIR="$CLAUDE_PROJECT_DIR"
   CODE_SYNC=yes
 fi
-if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
+if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ] || [ "$SESSION_EVENT" = "compact" ]; } \
    && [ -n "$CODE_DIR" ] && [[ "$CODE_DIR" != *"/.claude/worktrees/"* ]] \
    && [ -f "$CODE_DIR/scripts/lib/code-checkout-staleness.js" ] \
    && command -v node >/dev/null 2>&1; then
   CODE_STALE_MSG=$(node -e '
     const lib = require(process.argv[1]);
     const repoDir = process.argv[2];
-    const cloud = process.argv[3] === "yes";
+    const cloud = process.argv[3] === "yes", ev = process.argv[4], bg = ev === "compact" ? () => null : lib.startBackgroundSync; // BRO-7789: no background job mid-session
     const r = lib.runCodeCheckoutStalenessCheck({ repoDir, fetchTimeoutMs: cloud ? lib.CLOUD_FETCH_TIMEOUT_MS : undefined });
     if (cloud && r.fetched === false) {
       let d = "";
       try { d = require("child_process").execFileSync("git", ["-C", repoDir, "log", "-1", "--format=%cd"], { encoding: "utf8" }).trim(); } catch {}
-      console.log(lib.formatFetchFailedMessage(repoDir, d, lib.startBackgroundSync(repoDir)));
+      console.log(lib.formatFetchFailedMessage(repoDir, d, bg(repoDir)));
     }
-    if (cloud) lib.trackMainWhenNothingLocal(repoDir);
+    if (cloud) { lib.recordHookRegistration(repoDir, ev); lib.trackMainWhenNothingLocal(repoDir); }
     if (cloud && r.behind > 0) {
-      const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead });
+      const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead, startBackground: bg });
       const synced = lib.formatCodeCheckoutSyncMessage(s, repoDir);
       if (synced) { console.log(synced); process.exit(0); }
       if (r.message) console.log(`${r.message}\n   (auto-sync skipped: ${s.reason})`);
       process.exit(0);
     }
     if (r.message) console.log(r.message);
-  ' "$CODE_DIR/scripts/lib/code-checkout-staleness.js" "$CODE_DIR" "$CODE_SYNC" 2>/dev/null || true)
+  ' "$CODE_DIR/scripts/lib/code-checkout-staleness.js" "$CODE_DIR" "$CODE_SYNC" "$SESSION_EVENT" 2>/dev/null || true)
   if [ -n "$CODE_STALE_MSG" ]; then
     echo ""
     echo "$CODE_STALE_MSG"

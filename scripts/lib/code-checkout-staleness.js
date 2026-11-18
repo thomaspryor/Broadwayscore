@@ -51,8 +51,8 @@ function fetchOriginMain(repoDir, execFn = execFileSync, timeoutMs = FETCH_TIMEO
 }
 
 /**
- * How far HEAD is behind/ahead of remoteRef. 0 on any failure (detached HEAD,
- * remote-ref never fetched, not a git repo, etc.) — fail-open, matching
+ * How far HEAD is behind/ahead of remoteRef (a detached HEAD counts too). 0 on any failure
+ * (remote-ref never fetched, not a git repo, etc.) — fail-open, matching
  * fetchOriginMain.
  */
 function getBehindAheadCounts(repoDir, remoteRef = 'refs/remotes/origin/main', execFn = execFileSync) {
@@ -183,7 +183,13 @@ const SYNC_TIMEOUT_MS = 20000;
 const REMOTE_MAIN = 'refs/remotes/origin/main';
 // Already in the session's context, so a change to them needs a re-read.
 const SYNC_WATCHED_FILES = ['CLAUDE.md', '.claude/CLOUD.md', '.claude/settings.json'];
-const IN_PROGRESS_MARKERS = ['MERGE_HEAD', 'REBASE_HEAD', 'CHERRY_PICK_HEAD', 'REVERT_HEAD', 'rebase-merge', 'rebase-apply'];
+// BISECT_START (BRO-7789): a bisect checks out old commits detached with nothing local, which would otherwise read as
+// "detached, behind, safe to fast-forward" once sync also runs mid-session on compact.
+const IN_PROGRESS_MARKERS = ['MERGE_HEAD', 'REBASE_HEAD', 'CHERRY_PICK_HEAD', 'REVERT_HEAD', 'rebase-merge', 'rebase-apply', 'BISECT_START'];
+// BRO-7789: Claude Code snapshots hook REGISTRATION when its process starts (startup/resume); sync also runs on
+// compact, so several syncs can follow one snapshot. The snapshot's settings.json blob is kept here (git dir of the
+// checkout) so a later sync still refuses to delete a script that live snapshot registers.
+const HOOK_REGISTRATION_FILE = 'bsc-hook-registration';
 
 /** Pure: every .claude/hooks/*.sh a settings.json registers. */
 function registeredHookScripts(settingsText) {
@@ -192,6 +198,38 @@ function registeredHookScripts(settingsText) {
     out.add(`.claude/hooks/${m[1]}`);
   }
   return [...out];
+}
+
+function hookRegistrationPath(repoDir, git) {
+  const fs = require('fs');
+  const path = require('path');
+  const p = git(['rev-parse', '--git-path', HOOK_REGISTRATION_FILE]);
+  return { fs, file: path.isAbsolute(p) ? p : path.join(repoDir, p) };
+}
+
+/** Record the settings.json Claude Code just loaded (call on startup/resume only). Fail-open; -> blob sha or null. */
+function recordHookRegistration(repoDir, event, execFn = execFileSync) {
+  if (event !== 'startup' && event !== 'resume') return null;
+  const git = (args) => String(execFn('git', ['-C', repoDir, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })).trim();
+  try {
+    const { fs, file } = hookRegistrationPath(repoDir, git);
+    let blob = '';
+    try { blob = git(['rev-parse', 'HEAD:.claude/settings.json']); } catch { /* no settings.json: nothing registered */ }
+    fs.writeFileSync(file, `${blob}\n`);
+    return blob || null;
+  } catch { return null; }
+}
+
+/** Hook scripts the live session has registered: HEAD's settings.json plus the recorded startup snapshot. */
+function liveRegisteredHookScripts(repoDir, git) {
+  const texts = [];
+  try { texts.push(git(['show', 'HEAD:.claude/settings.json'])); } catch { /* none at HEAD */ }
+  try {
+    const { fs, file } = hookRegistrationPath(repoDir, git);
+    const blob = fs.readFileSync(file, 'utf8').trim();
+    if (/^[0-9a-f]{40,64}$/.test(blob)) texts.push(git(['cat-file', 'blob', blob]));
+  } catch { /* no snapshot (older session, or not recorded): HEAD alone, as before */ }
+  return [...new Set(texts.flatMap((t) => registeredHookScripts(t)))];
 }
 
 /**
@@ -309,18 +347,18 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
   if (env.CODE_SYNC_DISABLED === '1') return no('disabled (CODE_SYNC_DISABLED=1)');
   if (!(behind > 0)) return no('not behind origin/main');
   const alreadyLanded = ahead > 0;
-  let branch;
+  let branch = '';
   try {
     branch = git(['symbolic-ref', '-q', 'HEAD']);
   } catch {
-    return no('detached HEAD');
+    // BRO-7789: cloud main checkouts start detached. With nothing local (ahead 0) a fast-forward moves HEAD along
+    // main and loses nothing; a bisect is refused by its marker below. Local commits on a detached HEAD stay put.
+    if (alreadyLanded) return no('detached HEAD with commits not on origin/main');
   }
   // Hook registration is snapshotted at session start; only script CONTENTS
   // are re-read. If main deleted a script this session still has registered,
-  // its wrapper would exit 2 on every tool call after the sync.
-  let settings = '';
-  try { settings = git(['show', 'HEAD:.claude/settings.json']); } catch { /* none registered */ }
-  const missing = registeredHookScripts(settings).filter((p) => {
+  // its wrapper skips it ("Hook script missing") and that gate is off for the session.
+  const missing = liveRegisteredHookScripts(repoDir, git).filter((p) => {
     try { git(['cat-file', '-e', `${REMOTE_MAIN}:${p}`]); return false; } catch { return true; }
   });
   if (missing.length) return no(`origin/main removes registered hook script(s): ${missing.join(', ')}`);
@@ -582,6 +620,7 @@ module.exports = {
   formatCodeCheckoutStaleMessage,
   runCodeCheckoutStalenessCheck,
   registeredHookScripts,
+  recordHookRegistration,
   reconcileInterruptedFastForward,
   trySyncCodeCheckout,
   trackMainWhenNothingLocal,
