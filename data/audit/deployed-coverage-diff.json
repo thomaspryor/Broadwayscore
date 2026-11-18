@@ -1,13 +1,124 @@
 {
-  "generatedAt": "2026-11-18T08:05:17.055Z",
+  "generatedAt": "2026-11-18T09:10:59.016Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 357,
-  "clean": 357,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 352,
+  "defective": 5,
+  "byType": {
+    "missing-from-prod": 5,
+    "score-drift": 4
+  },
+  "shows": [
+    {
+      "showId": "billy-crystal-860-2026",
+      "title": "Billy Crystal 860",
+      "openingDate": "2026-10-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: theglobalcelebritymeter"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.12 vs local 82.04 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [
+        "theglobalcelebritymeter"
+      ],
+      "localCount": 32,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-11-18T09:10:54.545Z"
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "title": "Hadestown",
+      "openingDate": "2024-10-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: texannews"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.05 vs local 85.13 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [
+        "texannews"
+      ],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-11-18T09:10:54.545Z"
+    },
+    {
+      "showId": "hamilton-tour-2024",
+      "title": "Hamilton",
+      "openingDate": "2024-08-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: withashleyandco"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.44 vs local 86.5 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [
+        "withashleyandco"
+      ],
+      "localCount": 34,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-11-18T09:10:54.545Z"
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "title": "The Book of Mormon",
+      "openingDate": "2022-09-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: wtlgomag"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.98 vs local 83.67 (Δ0.31)"
+        }
+      ],
+      "missingFromProd": [
+        "wtlgomag"
+      ],
+      "localCount": 32,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-11-18T09:10:54.545Z"
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "title": "The Lion King",
+      "openingDate": "2021-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "2 scored outlet(s) absent from the deployed payload: fxbgadvance, wtlgomag"
+        }
+      ],
+      "missingFromProd": [
+        "fxbgadvance",
+        "wtlgomag"
+      ],
+      "localCount": 57,
+      "deployedCount": 57,
+      "firstDefectAt": "2026-11-18T09:10:54.545Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
