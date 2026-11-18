@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-7780",
+  "planId": "33570221-2a4d-4a2f-9e23-77a0744fe620",
+  "status": "pending",
+  "createdAt": "2026-11-18T15:13:22.328Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "TheaterMania byline sweep: 20 rows stored under the posting account or another outlet critic get the printed author; 10 old-URL copies of an already-stored review marked duplicateOf the correctly named file; skylight recoupment news item marked isNonReview; almost-famous utm url stripped (BRO-7777d) (part 1 of 2)",
+    "steps": [
+      "the-ripple-the-wave-that-carried-me-home-off-broadway-2026/theatermania--pete-hempstead.json: criticName",
+      "the-whos-tommy-tour-2026/theatermania--pete-hempstead.json: criticName",
+      "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--zachary-stewart.json: criticName",
+      "suffs-tour-2025/theatermania--pete-hempstead.json: criticName",
+      "weather-girl-off-broadway-2025/theatermania--pete-hempstead.json: criticName",
+      "art-2025/theatermania--zachary-stewart.json: criticName",
+      "eureka-day-2024/theatermania--pete-hempstead.json: criticName",
+      "good-night-oscar-2023/theatermania--jesse-green.json: criticName",
+      "fat-ham-2023/theatermania--adam-feldman.json: criticName",
+      "some-like-it-hot-2022/theatermania--adam-feldman.json: duplicateOf",
+      "aint-no-mo-2022/theatermania--jesse-green.json: duplicateOf",
+      "a-strange-loop-2022/theatermania--jesse-green.json: duplicateOf",
+      "how-i-learned-to-drive-2022/theatermania--andy-propst.json: duplicateOf",
+      "mj-2022/theatermania--jesse-green.json: duplicateOf",
+      "the-great-society-2019/theatermania--henry-stewart.json: criticName",
+      "runboyrun-and-in-old-age-off-broadway-2019/theatermania--henry-stewart.json: criticName",
+      "moulin-rouge-2019/theatermania--jesse-green.json: duplicateOf",
+      "anastasia-2017/theatermania--jesse-green.json: duplicateOf",
+      "allegiance-2015/theatermania--adam-hetrick.json: duplicateOf",
+      "on-your-feet-2015/theatermania--adam-hetrick.json: duplicateOf",
+      "something-rotten-2015/theatermania--charles-isherwood.json: duplicateOf",
+      "skylight-2015/theatermania--charles-isherwood.json: isNonReviewReason",
+      "skylight-2015/theatermania--charles-isherwood.json: isNonReview",
+      "chaplin-2012/theatermania--david-finkle.json: criticName",
+      "god-of-carnage-off-broadway-2023/theatermania--pete-hempstead.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026/theatermania--pete-hempstead.json",
+        "field": "criticName",
+        "oldValue": "Pete Hempstead",
+        "newValue": "Kenji Fujishima",
+        "description": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026/theatermania--pete-hempstead.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-tour-2026/theatermania--pete-hempstead.json",
+        "field": "criticName",
+        "oldValue": "Pete Hempstead",
+        "newValue": "Jonas Schwartz",
+        "description": "the-whos-tommy-tour-2026/theatermania--pete-hempstead.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "criticName",
+        "oldValue": "Zachary Stewart",
+        "newValue": "Francisco Mendoza",
+        "description": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--zachary-stewart.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "suffs-tour-2025/theatermania--pete-hempstead.json",
+        "field": "criticName",
+        "oldValue": "Pete Hempstead",
+        "newValue": "Jonas Schwartz",
+        "description": "suffs-tour-2025/theatermania--pete-hempstead.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "weather-girl-off-broadway-2025/theatermania--pete-hempstead.json",
+        "field": "criticName",
+        "oldValue": "Pete Hempstead",
+        "newValue": "Dan Rubins",
+        "description": "weather-girl-off-broadway-2025/theatermania--pete-hempstead.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-2025/theatermania--zachary-stewart.json",
+        "field": "criticName",
+        "oldValue": "Zachary Stewart",
+        "newValue": "Hayley Levitt",
+        "description": "art-2025/theatermania--zachary-stewart.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eureka-day-2024/theatermania--pete-hempstead.json",
+        "field": "criticName",
+        "oldValue": "Pete Hempstead",
+        "newValue": "Zachary Stewart",
+        "description": "eureka-day-2024/theatermania--pete-hempstead.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-night-oscar-2023/theatermania--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Zachary Stewart",
+        "description": "good-night-oscar-2023/theatermania--jesse-green.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fat-ham-2023/theatermania--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "Zachary Stewart",
+        "description": "fat-ham-2023/theatermania--adam-feldman.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/theatermania--adam-feldman.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--zachary-stewart.json",
+        "description": "some-like-it-hot-2022/theatermania--adam-feldman.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aint-no-mo-2022/theatermania--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--pete-hempstead.json",
+        "description": "aint-no-mo-2022/theatermania--jesse-green.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/theatermania--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--zachary-stewart.json",
+        "description": "a-strange-loop-2022/theatermania--jesse-green.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-i-learned-to-drive-2022/theatermania--andy-propst.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--david-gordon.json",
+        "description": "how-i-learned-to-drive-2022/theatermania--andy-propst.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-2022/theatermania--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--zachary-stewart.json",
+        "description": "mj-2022/theatermania--jesse-green.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-society-2019/theatermania--henry-stewart.json",
+        "field": "criticName",
+        "oldValue": "Henry Stewart",
+        "newValue": "Zachary Stewart",
+        "description": "the-great-society-2019/theatermania--henry-stewart.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "runboyrun-and-in-old-age-off-broadway-2019/theatermania--henry-stewart.json",
+        "field": "criticName",
+        "oldValue": "Henry Stewart",
+        "newValue": "Zachary Stewart",
+        "description": "runboyrun-and-in-old-age-off-broadway-2019/theatermania--henry-stewart.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-2019/theatermania--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--zachary-stewart.json",
+        "description": "moulin-rouge-2019/theatermania--jesse-green.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anastasia-2017/theatermania--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--zachary-stewart.json",
+        "description": "anastasia-2017/theatermania--jesse-green.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "allegiance-2015/theatermania--adam-hetrick.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--zachary-stewart.json",
+        "description": "allegiance-2015/theatermania--adam-hetrick.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "on-your-feet-2015/theatermania--adam-hetrick.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--zachary-stewart.json",
+        "description": "on-your-feet-2015/theatermania--adam-hetrick.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "something-rotten-2015/theatermania--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--zachary-stewart.json",
+        "description": "something-rotten-2015/theatermania--charles-isherwood.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "skylight-2015/theatermania--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): TheaterMania news item about the revival recouping its investment, not a review (BRO-7780)",
+        "description": "skylight-2015/theatermania--charles-isherwood.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "skylight-2015/theatermania--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "skylight-2015/theatermania--charles-isherwood.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chaplin-2012/theatermania--david-finkle.json",
+        "field": "criticName",
+        "oldValue": "David Finkle",
+        "newValue": "Andy Propst",
+        "description": "chaplin-2012/theatermania--david-finkle.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "god-of-carnage-off-broadway-2023/theatermania--pete-hempstead.json",
+        "field": "criticName",
+        "oldValue": "Pete Hempstead",
+        "newValue": "Zachary Stewart",
+        "description": "god-of-carnage-off-broadway-2023/theatermania--pete-hempstead.json: criticName"
+      }
+    ]
+  }
+}
