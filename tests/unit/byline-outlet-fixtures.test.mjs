@@ -177,6 +177,13 @@ describe('collect-review-texts enrichment uses the shared reader (BRO-7792)', ()
   test('the collector passes no outletId rather than the literal unknown', () => {
     assert.ok(/enrichOutlet !== 'unknown' \? enrichOutlet : undefined/.test(block), 'unknown outlet must not reach the reader');
   });
+  test('an all-caps page byline is stored in proper case (new-york-sun fixture), mixed case untouched', () => {
+    const f = manifest.fixtures.find((x) => x.outletId === 'new-york-sun');
+    assert.equal(quietly(() => readPageBylineForShow({ html: html(f), url: f.url, outletId: f.outletId }).criticName), 'Elysa Gardner');
+    const { properCase } = require('../../scripts/lib/page-byline-for-show.js');
+    assert.equal(properCase("MARY O'BRIEN-SMITH"), "Mary O'Brien-Smith");
+    assert.equal(properCase('Jesse Green'), 'Jesse Green');
+  });
   test('excludeNames vetoes a cast name the page credits', () => {
     const f = manifest.fixtures[0];
     const base = quietly(() => readPageByline({ html: html(f), url: f.url, outletId: f.outletId }).criticName);

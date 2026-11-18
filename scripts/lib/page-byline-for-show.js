@@ -43,4 +43,16 @@ function readPageBylineForShow({ html, text = '', url, outletId, excludeNames, p
   return res;
 }
 
-module.exports = { readPageBylineForShow };
+// The shared reader returns a name as the page prints it ("ELYSA GARDNER" on The New York Sun); the old
+// enrichment path stored it in proper case. Only an ALL-CAPS name is changed.
+function properCase(name) {
+  if (!name || name !== name.toUpperCase() || name === name.toLowerCase()) return name;
+  return name.toLowerCase().replace(/(^|[\s'\u2019-])([a-z])/g, (m, a, b) => a + b.toUpperCase());
+}
+
+function readPageBylineForShowCased(args) {
+  const res = readPageBylineForShow(args);
+  return res.criticName ? { ...res, criticName: properCase(res.criticName) } : res;
+}
+
+module.exports = { readPageBylineForShow: readPageBylineForShowCased, properCase };
