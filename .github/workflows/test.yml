@@ -56,6 +56,9 @@ on:
       - 'scripts/lane-recording-import.js'
       # BRO-7167: tests/unit/wanted-method-check.test.mjs
       - 'scripts/wanted-method-check.js'
+      # BRO-7576: scripts/lib/scoring-chain-budget.test.mjs runs this CLI and pins its wiring in the scoring workflow's chain step.
+      - 'scripts/scoring-chain-budget.js'
+      - '.github/workflows/llm-ensemble-score.yml'
       # BRO-7199: tests/unit/opening-night-lane-sources.test.mjs requires its per-show coverage check.
       - 'scripts/lane-on-time-outlets.js'
       # BRO-6620: tests/unit/lane-only-markets.test.mjs runs these and pins the workflow wiring.
