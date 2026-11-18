@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T02:37:13.634Z",
+  "generatedAt": "2026-11-18T04:03:25.121Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -176,10 +176,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "viewfromthegods",
-      "error": "Timeout fetching https://viewfromthegods.co.uk/feed/"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -190,9 +186,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 869,
+  "itemsScanned": 873,
   "matchedGaps": 0,
   "possibleGaps": 4,
   "gaps": [

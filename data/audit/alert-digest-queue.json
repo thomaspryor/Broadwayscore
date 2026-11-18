@@ -1906,20 +1906,6 @@
     "queuedAt": "2026-11-18T01:48:50.472Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-18.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-18T02:36:56.495Z"
-  },
-  {
     "conditionKey": "land:land/toolcheck-tighten",
     "title": "Landing blocked: unit-tests-node red on land/toolcheck-tighten",
     "description": "land.yml did not land land/toolcheck-tighten: the unit-tests-node gate went red at e9d0404748. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44222161231",
@@ -1965,6 +1951,20 @@
     "queuedAt": "2026-11-18T03:14:59.666Z"
   },
   {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Ms. Blakk for President (guardian)). Checked 2026-11-18.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T04:03:05.727Z"
+  },
+  {
     "conditionKey": "live-data-test:tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date",
     "title": "Live-data test failing: open hub shows are not past a sourced closing date (tests/unit/hub-closing-dates-live-data.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"open hub shows are not past a sourced closing date\" in tests/unit/hub-closing-dates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'ted-talks-and-talks-regional-2026'\n+ ]\n- []\n",
@@ -1978,5 +1978,19 @@
     "testId": "tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date",
     "fields": [],
     "queuedAt": "2026-11-18T03:32:27.713Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:the-good-thief-off-broadway-2026",
+    "title": "1 review(s) for the-good-thief-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- talkinbroadway--42761a79.json (talkinbroadway): fetch failed: All scraping methods failed https://www.talkinbroadway.com/page/ob/11_17_26.html",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T04:03:05.145Z"
   }
 ]
