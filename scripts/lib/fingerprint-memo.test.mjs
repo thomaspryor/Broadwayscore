@@ -9,7 +9,7 @@ import crypto from 'node:crypto';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { createFingerprintMemo, computeFingerprint } = require('./fingerprint-memo.js');
+const { createFingerprintMemo, computeFingerprint, versionedSources, versionedEnv } = require('./fingerprint-memo.js');
 const { cleanText } = require('./text-cleaning.js');
 
 // The pre-BRO-7744 inline code from rebuild-all-reviews.js, verbatim.
@@ -107,4 +107,11 @@ test('cachePath null never touches disk', () => {
   const m = createFingerprintMemo({ cachePath: null });
   assert.equal(m.fingerprint(LONG), legacyFingerprint(LONG));
   assert.equal(m.save(), false);
+});
+
+test('the version covers every module and env switch cleanText depends on', () => {
+  const names = versionedSources().map(f => path.basename(f));
+  for (const f of ['text-cleaning.js', 'trailer-signatures.js', 'page-furniture.js', 'fingerprint-memo.js']) assert.ok(names.includes(f), f);
+  const env = versionedEnv(versionedSources());
+  for (const k of ['PAGE_FURNITURE_DISABLED', 'TRAILER_FIXES_DISABLED', 'RUN_INFO_TRAILER_DISABLED']) assert.ok(env.includes(k), k);
 });

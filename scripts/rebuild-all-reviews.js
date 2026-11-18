@@ -5946,7 +5946,8 @@ showDirs.forEach(showId => {
     }
   });
 });
-if (fpMemo.save()) console.log(`  [fp-memo] cross-show fingerprints: ${fpMemo.stats.hits} reused, ${fpMemo.stats.misses} computed (${fpMemo.cachePath})`);
+// A --show= run sees one show's reviews; saving would prune the memo to that subset.
+if (!SHOW_FILTER && fpMemo.save()) console.log(`  [fp-memo] cross-show fingerprints: ${fpMemo.stats.hits} reused, ${fpMemo.stats.misses} computed (${fpMemo.cachePath})`);
 
 // BRO-925: flush every show's buffered exclusions (populated by logExclusion
 // above) to its own data/audit/rebuild-exclusions-{showId}.json. Runs before
