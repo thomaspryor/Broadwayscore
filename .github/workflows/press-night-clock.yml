@@ -72,6 +72,8 @@ jobs:
           retry() { local n; for n in 1 2 3; do "$@" && return 0; sleep 30; done; return 1; }
           [ -z "$FIRED" ] || printf '%s' "$FIRED" | grep -Eq '^[a-z0-9:,-]+$' || { echo "::error::fired must be show:night pairs"; exit 1; }
           printf '%s' "$CATEGORIES" | grep -Eq '^[a-z,-]+$' || { echo "::error::bad categories"; exit 1; }
+          # BRO-7779: a chain seeded before the lane markets were added carries the old default on every hop; upgrade it.
+          [ "$CATEGORIES" != "broadway,off-broadway" ] || CATEGORIES="broadway,off-broadway,west-end,off-west-end"
           END=$(( $(date +%s) + 330 * 60 ))   # stop acting 15 min before the job timeout
           REPLANS=0
           declare -A SWEEP_TRIES
@@ -158,7 +160,13 @@ jobs:
               continue ;;
             esac
             # BRO-7779: what this event does comes from the library (the coverage test reads the same rule).
-            read -r ACTION MARKET DEDUPE RUNMIN <<< "$(node scripts/lib/press-night-clock.js action --kind="$KIND" --category="$CATEGORY" --embargo-at="$EMBARGO")"
+            ACTION=""; MARKET=""; DEDUPE=""; RUNMIN=""
+            read -r ACTION MARKET DEDUPE RUNMIN <<< "$(node scripts/lib/press-night-clock.js action --kind="$KIND" --category="$CATEGORY" --embargo-at="$EMBARGO")" || true
+            if [ -z "$ACTION" ] || [ -z "$DEDUPE" ] || [ -z "$RUNMIN" ]; then
+              # Fail safe, never silent: a Broadway kick still starts its orchestrator exactly as before BRO-7779.
+              echo "::error::press-night-clock.js action gave nothing for $KIND $SHOW ($CATEGORY)"
+              if [ "$KIND" = "kick" ] && [ "$CATEGORY" = "broadway" ]; then ACTION=orchestrator; MARKET=broadway; DEDUPE=30; RUNMIN=240; else exit 1; fi
+            fi
             if [ "$ACTION" = "preflight" ]; then
               # BRO-6858 preflight (-24h / -3h): credits, balances and secrets for the night. Dedupe on its run title.
               DONE=$(gh run list --workflow=press-night-preflight.yml --limit 50 --json displayTitle,createdAt \
