@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-11-18T19:19:08.433Z",
+  "runDate": "2026-11-18T19:46:59.225Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "top-gunchained-off-west-end-2026",
+    "showFilter": "orlando-off-west-end-2026,nutty-nattys-magic-puppet-show-off-broadway-2026,thistles-regional-2026,king-lear-regional-2026,waiting-in-the-wings-regional-2026,summer-1976-regional-2026,bouncers-regional-2026,come-from-away-noise-regional-2026,to-kill-a-mockingbird-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 3,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -22,30 +22,30 @@
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,10 +54,12 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 3,
+    "failed": 0,
     "shows": [
-      "top-gunchained-off-west-end-2026"
+      "bouncers-regional-2026",
+      "come-from-away-noise-regional-2026",
+      "waiting-in-the-wings-regional-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,17 +67,19 @@
       "failed": 0
     }
   },
-  "processed": [],
-  "failed": [
-    "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
-    "top-gunchained-off-west-end-2026/british-theatre--unknown.json"
+  "processed": [
+    "bouncers-regional-2026/broadwayworld--richard-sasanow.json",
+    "waiting-in-the-wings-regional-2026/broadwayworld--richard-sasanow.json",
+    "come-from-away-noise-regional-2026/broadwayworld--richard-sasanow.json"
   ],
+  "failed": [],
   "cumulativeResumedState": {
-    "processed": [],
-    "failed": [
-      "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
-      "top-gunchained-off-west-end-2026/british-theatre--unknown.json"
-    ]
+    "processed": [
+      "bouncers-regional-2026/broadwayworld--richard-sasanow.json",
+      "waiting-in-the-wings-regional-2026/broadwayworld--richard-sasanow.json",
+      "come-from-away-noise-regional-2026/broadwayworld--richard-sasanow.json"
+    ],
+    "failed": []
   },
   "tierDetails": {
     "playwright": [],
@@ -83,10 +87,15 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "come-from-away-noise-regional-2026/broadwayworld--richard-sasanow.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "bouncers-regional-2026/broadwayworld--richard-sasanow.json",
+      "waiting-in-the-wings-regional-2026/broadwayworld--richard-sasanow.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
