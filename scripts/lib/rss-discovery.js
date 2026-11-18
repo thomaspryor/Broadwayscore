@@ -356,6 +356,9 @@ function titleMatchesShow(itemTitle, showTitle, opts = {}) {
  */
 function itemNamesShow(title, url, showTitle, opts = {}) {
   if (title && headlineNamesOtherStaging(title, showTitle, opts)) return false;
+  // The URL can name what the headline does not: another staging ("...-at-stages-houston") or a news story whose slug
+  // holds only part of the title and cast names (vulture.com/article/its-a-wonderful-life-broadway-lisa-rinna.html).
+  if (url && require('./review-guards').urlNamesOtherArticle(url, showTitle)) return false;
   return titleMatchesShow(title || '', showTitle, opts) || urlSlugMatchesShow(url, showTitle, opts);
 }
 /**

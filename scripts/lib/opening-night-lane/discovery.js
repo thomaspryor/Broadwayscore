@@ -30,7 +30,7 @@ const path = require('path');
 const { NOOP_HEALTH, indexBodyProblem, feedBodyProblem } = require('./source-health');
 const { findBWWRoundupLinkOnHomepage } = require('../bww-homepage-scan');
 const { findDTLIShowLinkOnHomepage } = require('../dtli-homepage-scan');
-const { parseFeedItems, titleMatchesShow, urlSlugMatchesShow } = require('../rss-discovery');
+const { parseFeedItems, titleMatchesShow, itemNamesShow } = require('../rss-discovery');
 const { resolveOutletFromUrl, URL_HOST_ALIASES } = require('../review-normalization');
 
 // Old host -> current host for outlets that serve one article on both (BRO-6872: The Independent was scored twice,
@@ -255,7 +255,7 @@ const REVIEW_WITHOUT_WORD_HOSTS = ['theaterpizzazz.com', 'nystagereview.com', 'o
 /** A review-only outlet's page about this show: its host is in REVIEW_WITHOUT_WORD_HOSTS and the show's title is in the headline or slug. */
 function hostSignalsReview(url, title, showTitle) {
   if (!showTitle || !hostMatches(hostOf(url), REVIEW_WITHOUT_WORD_HOSTS)) return false;
-  return titleMatchesShow(title || '', showTitle, laneMatchOpts()) || urlSlugMatchesShow(url, showTitle, laneMatchOpts());
+  return itemNamesShow(title || '', url, showTitle, laneMatchOpts());
 }
 
 /**
@@ -724,7 +724,7 @@ function rssAdapter({ feeds, matchOpts } = {}) {
         for (const it of items) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
-          if (!titleMatchesShow(it.title, show.title, mo) && !urlSlugMatchesShow(it.link, show.title, mo)) {
+          if (!itemNamesShow(it.title, it.link, show.title, mo)) {
             const nm = hostOf(it.link) === hostOf(feed.url) && nearMissFind({ url: it.link, title: it.title }, show, budget, { via: feed.name || feed.url, outletId: feed.outletId, reviewSignalGiven: feed.reviewsOnly });
             if (nm) out.push(nm);
             continue;
@@ -784,7 +784,7 @@ function sectionIndexAdapter({ outlets, matchOpts } = {}) {
         }
         for (const a of extractAnchors(indexScope(html), o.indexUrl)) {
           if (hostOf(a.url) !== host || new URL(a.url).pathname === new URL(o.indexUrl).pathname) continue;
-          if (!titleMatchesShow(a.text, show.title, mo) && !urlSlugMatchesShow(a.url, show.title, mo)) {
+          if (!itemNamesShow(a.text, a.url, show.title, mo)) {
             const nm = nearMissFind({ url: a.url, title: a.text }, show, budget, { via: o.indexUrl, outletId: o.outletId });
             if (nm) out.push(nm);
             continue;
@@ -1271,7 +1271,7 @@ function serpAdapter({ search, domainFor, ledgerDir, now = Date.now } = {}) {
         } catch (e) { failures++; lastError = e; continue; }
         for (const r of results || []) {
           if (!r || !r.url || !(hostOf(r.url) === dom || (hostOf(r.url) || '').endsWith(`.${dom}`))) continue;
-          if (!titleMatchesShow(r.title || '', show.title, laneMatchOpts()) && !urlSlugMatchesShow(r.url, show.title, laneMatchOpts())) {
+          if (!itemNamesShow(r.title || '', r.url, show.title, laneMatchOpts())) {
             const nm = nearMissFind({ url: r.url, title: r.title }, show, budget, { via: 'serp', outletId: id.includes('.') ? undefined : id });
             if (nm) nearMisses.push(nm);
             continue;
