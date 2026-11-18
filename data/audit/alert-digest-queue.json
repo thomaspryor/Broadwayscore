@@ -301,5 +301,47 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T13:38:15.996Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026",
+    "title": "Auto-remediation gave up on the-good-thief-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-good-thief-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T13:51:59.218Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:blue-man-group-a-new-holiday-surprise-2026",
+    "title": "Auto-remediation gave up on blue-man-group-a-new-holiday-surprise-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"blue-man-group-a-new-holiday-surprise-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T13:51:59.240Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:elektra-off-broadway-2026",
+    "title": "Auto-remediation gave up on elektra-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"elektra-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T13:51:59.261Z"
   }
 ]

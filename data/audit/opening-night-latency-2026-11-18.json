@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-18T10:26:30.123Z",
+  "generatedAt": "2026-11-18T13:52:00.001Z",
   "date": "2026-11-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 262070,
+  "entryCount": 275982,
   "shows": [
     {
       "showId": "kinky-boots-2013",
@@ -11,9 +11,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 4858090,
+        "collected-to-scored": 5243207,
         "scored-to-rebuilt": 1017050,
-        "rebuilt-to-deployed": 150995995
+        "rebuilt-to-deployed": 242961995
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -26,9 +26,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 4776385,
+        "collected-to-scored": 6459999,
         "scored-to-rebuilt": 1017039,
-        "rebuilt-to-deployed": 150995994
+        "rebuilt-to-deployed": 242961994
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -43,7 +43,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 4730312,
         "scored-to-rebuilt": 1017035,
-        "rebuilt-to-deployed": 150995995
+        "rebuilt-to-deployed": 242961995
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -51,18 +51,24 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
-      "reviewCount": 3,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "reviewCount": 6,
+      "median_e2e_ms": 34042787,
+      "p90_e2e_ms": 34042787,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 280837,
-        "scored-to-rebuilt": 308767,
-        "rebuilt-to-deployed": 144462332
+        "collected-to-scored": 338486,
+        "scored-to-rebuilt": 298414,
+        "rebuilt-to-deployed": 33717300
       },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 1,
+      "slowest_reviews": [
+        {
+          "reviewKey": "london-box-office:stuart-king:https://www.londonboxoffice.co.uk/news/post/desire-under-the-elms-almeida-theatre-review",
+          "e2e_ms": 34042787,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "cloud-9-west-end-2026",
@@ -73,7 +79,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 341541,
-        "rebuilt-to-deployed": 151938210
+        "rebuilt-to-deployed": 192301811
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -88,7 +94,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 335188,
         "scored-to-rebuilt": 554423,
-        "rebuilt-to-deployed": 107220295
+        "rebuilt-to-deployed": 199186295
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -97,20 +103,20 @@
     {
       "showId": "2-22-a-ghost-story-west-end-2021",
       "reviewCount": 1,
-      "median_e2e_ms": 156807919,
-      "p90_e2e_ms": 156807919,
+      "median_e2e_ms": 248773919,
+      "p90_e2e_ms": 248773919,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": 156162069
+        "rebuilt-to-deployed": 248721750
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "times-uk:quentin-letts:https://www.thetimes.co.uk/article/2-22-a-ghost-story-review-lily-allen-is-no-glenda-jackson-but-shes-no-theatrical-disaster-9q8x7rjht",
-          "e2e_ms": 156807919,
+          "e2e_ms": 248773919,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -118,41 +124,41 @@
     {
       "showId": "lazarus-off-broadway-2015",
       "reviewCount": 36,
-      "median_e2e_ms": 156789232,
-      "p90_e2e_ms": 156789232,
+      "median_e2e_ms": 248755232,
+      "p90_e2e_ms": 248755232,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": 156162044
+        "rebuilt-to-deployed": 248721747
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "abc-news:jennifer-farrar:http://abcnews.go.com/Entertainment/wireStory/review-david-bowie-classics-propel-imaginative-lazarus-35635585",
-          "e2e_ms": 156789232,
+          "e2e_ms": 248755232,
           "stuck_at_stage": "rebuilt"
         }
       ]
     },
     {
       "showId": "marvins-room-2017",
-      "reviewCount": 42,
-      "median_e2e_ms": 156786907,
-      "p90_e2e_ms": 156786907,
+      "reviewCount": 43,
+      "median_e2e_ms": 248752907,
+      "p90_e2e_ms": 248752907,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 6530131,
         "scored-to-rebuilt": 1017056,
-        "rebuilt-to-deployed": 150995995
+        "rebuilt-to-deployed": 242961995
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "wolf-entertainment-guide:william-wolf:http://wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7159",
-          "e2e_ms": 156786907,
+          "e2e_ms": 248752907,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -160,20 +166,20 @@
     {
       "showId": "ruthless-the-musical-off-broadway-2015",
       "reviewCount": 15,
-      "median_e2e_ms": 156779433,
-      "p90_e2e_ms": 156779433,
+      "median_e2e_ms": 248745433,
+      "p90_e2e_ms": 248745433,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": 156162043
+        "rebuilt-to-deployed": 248721746
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "stagezine:scott-harrah:http://www.stagezine.com/ruthless-is-back-with-a-vengeance/",
-          "e2e_ms": 156779433,
+          "e2e_ms": 248745433,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -181,20 +187,20 @@
     {
       "showId": "spring-awakening-2015",
       "reviewCount": 45,
-      "median_e2e_ms": 156777434,
-      "p90_e2e_ms": 156777434,
+      "median_e2e_ms": 248743434,
+      "p90_e2e_ms": 248743434,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": 156162042
+        "rebuilt-to-deployed": 248721746
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "washington-times:mark-kennedy:http://www.washingtontimes.com/news/2015/sep/27/review-new-spring-awakening-opens-its-arms-to-all/",
-          "e2e_ms": 156777434,
+          "e2e_ms": 248743434,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -202,20 +208,20 @@
     {
       "showId": "steve-off-broadway-2015",
       "reviewCount": 27,
-      "median_e2e_ms": 156776881,
-      "p90_e2e_ms": 156776881,
+      "median_e2e_ms": 248742881,
+      "p90_e2e_ms": 248742881,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": 156162042
+        "rebuilt-to-deployed": 248721746
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "abc-news:jennifer-farrar:http://abcnews.go.com/Entertainment/wireStory/review-blithe-approach-middle-aged-gay-angst-steve-35301185",
-          "e2e_ms": 156776881,
+          "e2e_ms": 248742881,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -223,30 +229,30 @@
     {
       "showId": "the-lion-king-1997",
       "reviewCount": 25,
-      "median_e2e_ms": 156771584,
-      "p90_e2e_ms": 156771611,
+      "median_e2e_ms": 248737584,
+      "p90_e2e_ms": 248737611,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 643695,
-        "rebuilt-to-deployed": 156162041
+        "rebuilt-to-deployed": 248721745
       },
       "reviews_over_15min": 3,
       "reviews_over_60min": 3,
       "slowest_reviews": [
         {
           "reviewKey": "jasonraize:frank-scheck:http://www.jasonraize.net/pr_tlk_spt112197.html",
-          "e2e_ms": 156771611,
+          "e2e_ms": 248737611,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "jasonraize:michael-sommers:http://www.jasonraize.net/pr_tlk_njsl111497.html",
-          "e2e_ms": 156771584,
+          "e2e_ms": 248737584,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "jasonraize:michael-kuchwara:http://www.jasonraize.net/pr_tlk_ftu112397.html",
-          "e2e_ms": 156771557,
+          "e2e_ms": 248737557,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -254,20 +260,20 @@
     {
       "showId": "these-paper-bullets-off-broadway-2015",
       "reviewCount": 25,
-      "median_e2e_ms": 156767483,
-      "p90_e2e_ms": 156767483,
+      "median_e2e_ms": 248733483,
+      "p90_e2e_ms": 248733483,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 643695,
-        "rebuilt-to-deployed": 146439528
+        "rebuilt-to-deployed": 238702380
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "westsidetodaycom:bev-cohn:http://westsidetoday.com/2015/09/23/review-these-paper-bullets-places-the-beatles-in-a-shakespearean-60s-fever-dream/",
-          "e2e_ms": 156767483,
+          "e2e_ms": 248733483,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -296,7 +302,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 58255,
-        "rebuilt-to-deployed": 148855756
+        "rebuilt-to-deployed": 240821756
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -326,7 +332,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1017127,
-        "rebuilt-to-deployed": 150995995
+        "rebuilt-to-deployed": 242961995
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -341,7 +347,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1017115,
-        "rebuilt-to-deployed": 150995994
+        "rebuilt-to-deployed": 242961994
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -354,9 +360,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 6448108,
         "scored-to-rebuilt": 1017112,
-        "rebuilt-to-deployed": 150995995
+        "rebuilt-to-deployed": 242961995
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -364,14 +370,14 @@
     },
     {
       "showId": "glengarry-glen-ross-2025",
-      "reviewCount": 41,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 6435869,
         "scored-to-rebuilt": 1017110,
-        "rebuilt-to-deployed": 150995996
+        "rebuilt-to-deployed": 242961996
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -386,7 +392,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1017091,
-        "rebuilt-to-deployed": 150995997
+        "rebuilt-to-deployed": 242961997
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -399,9 +405,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 6314734,
         "scored-to-rebuilt": 1017092,
-        "rebuilt-to-deployed": 150995995
+        "rebuilt-to-deployed": 242961995
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -416,7 +422,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1017089,
-        "rebuilt-to-deployed": 150995996
+        "rebuilt-to-deployed": 242961996
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -429,9 +435,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 6236219,
         "scored-to-rebuilt": 1017089,
-        "rebuilt-to-deployed": 150995994
+        "rebuilt-to-deployed": 242961994
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -444,9 +450,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 6180615,
         "scored-to-rebuilt": 1017084,
-        "rebuilt-to-deployed": 150995996
+        "rebuilt-to-deployed": 242961996
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -459,9 +465,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 5810599,
         "scored-to-rebuilt": 1017073,
-        "rebuilt-to-deployed": 150995996
+        "rebuilt-to-deployed": 242961996
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -476,7 +482,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1017057,
-        "rebuilt-to-deployed": 150995997
+        "rebuilt-to-deployed": 242961997
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -489,9 +495,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 6493054,
         "scored-to-rebuilt": 1017058,
-        "rebuilt-to-deployed": 150995995
+        "rebuilt-to-deployed": 242961995
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -506,7 +512,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1017052,
-        "rebuilt-to-deployed": 150995996
+        "rebuilt-to-deployed": 242961996
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -519,9 +525,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 6564047,
         "scored-to-rebuilt": 1017027,
-        "rebuilt-to-deployed": 150995995
+        "rebuilt-to-deployed": 242961995
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -536,7 +542,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 11662731,
         "scored-to-rebuilt": 1017028,
-        "rebuilt-to-deployed": 135172012
+        "rebuilt-to-deployed": 227138012
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -551,7 +557,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1383272,
-        "rebuilt-to-deployed": 114813696
+        "rebuilt-to-deployed": 206779696
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -566,7 +572,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 559536,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 59464595
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -574,18 +580,24 @@
     },
     {
       "showId": "julius-caesar-globe-off-west-end-2026",
-      "reviewCount": 5,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "reviewCount": 6,
+      "median_e2e_ms": 75513225,
+      "p90_e2e_ms": 75513225,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 543805,
         "scored-to-rebuilt": 250505,
-        "rebuilt-to-deployed": 51592038
+        "rebuilt-to-deployed": 109106854
       },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 1,
+      "slowest_reviews": [
+        {
+          "reviewKey": "london-box-office:shehrazade-zafar-arif:https://www.londonboxoffice.co.uk/news/post/review-julius-caesar-remixed-omnibus-theatre",
+          "e2e_ms": 75513225,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "speculations-off-west-end-2026",
@@ -596,7 +608,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 707567,
         "scored-to-rebuilt": 147855,
-        "rebuilt-to-deployed": 149079577
+        "rebuilt-to-deployed": 241045577
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -626,7 +638,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 355003,
-        "rebuilt-to-deployed": 117338416
+        "rebuilt-to-deployed": 209304416
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -635,34 +647,34 @@
     {
       "showId": "cranford-off-west-end-2026",
       "reviewCount": 25,
-      "median_e2e_ms": 78586225,
-      "p90_e2e_ms": 78586225,
+      "median_e2e_ms": 170552225,
+      "p90_e2e_ms": 170552225,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 463658,
         "scored-to-rebuilt": 548401,
-        "rebuilt-to-deployed": 78631398
+        "rebuilt-to-deployed": 170529071
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "standard:nick-curtis:https://www.standard.co.uk/culture/theatre/cranford-review-tamsin-greig-b1304996.html",
-          "e2e_ms": 78586225,
+          "e2e_ms": 170552225,
           "stuck_at_stage": "rebuilt"
         }
       ]
     },
     {
       "showId": "the-heart-off-broadway-2026",
-      "reviewCount": 23,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 350667,
-        "rebuilt-to-deployed": 148402153
+        "rebuilt-to-deployed": 240368153
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -670,14 +682,14 @@
     },
     {
       "showId": "passing-strange-regional-2026",
-      "reviewCount": 7,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 603816,
-        "rebuilt-to-deployed": 44935557
+        "rebuilt-to-deployed": 136901557
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -692,7 +704,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1113700,
-        "rebuilt-to-deployed": 145484712
+        "rebuilt-to-deployed": 237450712
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -707,7 +719,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 58624266,
         "scored-to-rebuilt": 1749525,
-        "rebuilt-to-deployed": 78631393
+        "rebuilt-to-deployed": 170597393
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -722,7 +734,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 58601656,
         "scored-to-rebuilt": 1749538,
-        "rebuilt-to-deployed": 78631394
+        "rebuilt-to-deployed": 170597394
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -730,14 +742,14 @@
     },
     {
       "showId": "summer-2018",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 58595218,
         "scored-to-rebuilt": 1749538,
-        "rebuilt-to-deployed": 78631394
+        "rebuilt-to-deployed": 170597394
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -752,7 +764,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 1596340,
         "scored-to-rebuilt": 1063945,
-        "rebuilt-to-deployed": 136676774
+        "rebuilt-to-deployed": 62684578
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -797,7 +809,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 238245,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 58679459
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -812,7 +824,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 463050,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 55370437
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -872,7 +884,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 57379200,
         "scored-to-rebuilt": 161488,
-        "rebuilt-to-deployed": 80617042
+        "rebuilt-to-deployed": 172583042
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1037,7 +1049,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749565,
-        "rebuilt-to-deployed": 78631398
+        "rebuilt-to-deployed": 170597398
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1067,7 +1079,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 147249246,
         "scored-to-rebuilt": 443250,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854368
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1217,7 +1229,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 683949,
-        "rebuilt-to-deployed": 136676771
+        "rebuilt-to-deployed": 228642771
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1232,7 +1244,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 683944,
-        "rebuilt-to-deployed": 136676771
+        "rebuilt-to-deployed": 228642771
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1247,7 +1259,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 643691,
-        "rebuilt-to-deployed": 136717023
+        "rebuilt-to-deployed": 228683023
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1262,7 +1274,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063948,
-        "rebuilt-to-deployed": 136676774
+        "rebuilt-to-deployed": 62684578
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1277,7 +1289,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 683937,
-        "rebuilt-to-deployed": 136676772
+        "rebuilt-to-deployed": 228642772
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1292,7 +1304,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 683940,
-        "rebuilt-to-deployed": 136676769
+        "rebuilt-to-deployed": 228642769
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1307,7 +1319,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 683935,
-        "rebuilt-to-deployed": 136676773
+        "rebuilt-to-deployed": 228642773
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1382,7 +1394,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 146655958,
         "scored-to-rebuilt": 443250,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1412,7 +1424,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 112454899,
         "scored-to-rebuilt": 443247,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1577,7 +1589,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 56192250,
         "scored-to-rebuilt": 1749567,
-        "rebuilt-to-deployed": 78631395
+        "rebuilt-to-deployed": 170597395
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1652,7 +1664,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 146034618,
         "scored-to-rebuilt": 443246,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854368
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1697,7 +1709,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749566,
-        "rebuilt-to-deployed": 78631395
+        "rebuilt-to-deployed": 170597395
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1757,7 +1769,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 145749186,
         "scored-to-rebuilt": 443246,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854368
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1765,7 +1777,7 @@
     },
     {
       "showId": "water-for-elephants-tour-2025",
-      "reviewCount": 71,
+      "reviewCount": 73,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1780,7 +1792,7 @@
     },
     {
       "showId": "the-notebook-tour-2025",
-      "reviewCount": 65,
+      "reviewCount": 69,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1832,7 +1844,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 145682005,
         "scored-to-rebuilt": 443242,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854371
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1892,7 +1904,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 55448579,
         "scored-to-rebuilt": 1749565,
-        "rebuilt-to-deployed": 78631395
+        "rebuilt-to-deployed": 170597395
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1967,7 +1979,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 145277313,
         "scored-to-rebuilt": 443241,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854371
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1982,7 +1994,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 55197695,
         "scored-to-rebuilt": 1749561,
-        "rebuilt-to-deployed": 78631399
+        "rebuilt-to-deployed": 170597399
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1997,7 +2009,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 370621,
-        "rebuilt-to-deployed": 80617041
+        "rebuilt-to-deployed": 127955026
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2012,7 +2024,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 547384,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 83327009
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2020,7 +2032,7 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2050,7 +2062,7 @@
     },
     {
       "showId": "harry-potter-2021",
-      "reviewCount": 66,
+      "reviewCount": 70,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2102,7 +2114,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 15572293,
         "scored-to-rebuilt": 101282,
-        "rebuilt-to-deployed": 119348024
+        "rebuilt-to-deployed": 211314024
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2125,7 +2137,7 @@
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
-      "reviewCount": 18,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2207,7 +2219,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 11323602,
         "scored-to-rebuilt": 101266,
-        "rebuilt-to-deployed": 119348026
+        "rebuilt-to-deployed": 211314026
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2222,7 +2234,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 11236910,
         "scored-to-rebuilt": 101265,
-        "rebuilt-to-deployed": 119348027
+        "rebuilt-to-deployed": 211314027
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2237,7 +2249,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 11013316,
         "scored-to-rebuilt": 1725837,
-        "rebuilt-to-deployed": 117723454
+        "rebuilt-to-deployed": 209689454
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2246,40 +2258,40 @@
     {
       "showId": "downstate-2026",
       "reviewCount": 22,
-      "median_e2e_ms": 105972121,
-      "p90_e2e_ms": 105999585,
+      "median_e2e_ms": 197938121,
+      "p90_e2e_ms": 197965585,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 318308,
         "scored-to-rebuilt": 271607,
-        "rebuilt-to-deployed": 105073512
+        "rebuilt-to-deployed": 197039512
       },
       "reviews_over_15min": 14,
       "reviews_over_60min": 14,
       "slowest_reviews": [
         {
           "reviewKey": "nyt-theater:jonathan-mandell:https://newyorktheater.me/2026/11/15/downstate-broadway-review/",
-          "e2e_ms": 124382613,
+          "e2e_ms": 216348613,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "nytimes:helen-shaw:https://www.nytimes.com/2026/11/15/theater/downstate-review-broadway-freeman-sadoski.html",
-          "e2e_ms": 105999585,
+          "e2e_ms": 197965585,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "exeunt-magazine:lane-williamson:https://exeuntnyc.com/reviews/review-downstate-at-the-booth-theatre/",
-          "e2e_ms": 105999109,
+          "e2e_ms": 197965109,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "deadline:greg-evans:https://deadline.com/2026/11/downstate-broadway-review-1237220229/",
-          "e2e_ms": 105998625,
+          "e2e_ms": 197964625,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "wsj:charles-isherwood:https://www.wsj.com/articles/downstate-review-a-disturbingly-human-drama-on-broadway-2d6ef23c?mod=rss_artsculture",
-          "e2e_ms": 105998117,
+          "e2e_ms": 197964117,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -2293,7 +2305,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16921089,
         "scored-to-rebuilt": 147570,
-        "rebuilt-to-deployed": 99982535
+        "rebuilt-to-deployed": 191948535
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2308,7 +2320,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2110890,
-        "rebuilt-to-deployed": 117338415
+        "rebuilt-to-deployed": 209304415
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2316,14 +2328,14 @@
     },
     {
       "showId": "hamlet-hail-to-the-thief-aviva-studios-regional-2025",
-      "reviewCount": 11,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2110890,
-        "rebuilt-to-deployed": 117338415
+        "rebuilt-to-deployed": 209304415
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2338,7 +2350,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2110890,
-        "rebuilt-to-deployed": 117338414
+        "rebuilt-to-deployed": 209304414
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2353,7 +2365,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2110885,
-        "rebuilt-to-deployed": 117338417
+        "rebuilt-to-deployed": 209304417
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2368,7 +2380,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2110887,
-        "rebuilt-to-deployed": 117338415
+        "rebuilt-to-deployed": 209304415
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2383,7 +2395,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2110886,
-        "rebuilt-to-deployed": 117338415
+        "rebuilt-to-deployed": 209304415
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2398,7 +2410,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2110885,
-        "rebuilt-to-deployed": 117338412
+        "rebuilt-to-deployed": 209304412
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2413,7 +2425,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2110879,
-        "rebuilt-to-deployed": 117338417
+        "rebuilt-to-deployed": 209304417
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2428,7 +2440,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2110877,
-        "rebuilt-to-deployed": 117338417
+        "rebuilt-to-deployed": 209304417
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2437,40 +2449,40 @@
     {
       "showId": "the-fantasticks-2026",
       "reviewCount": 25,
-      "median_e2e_ms": 21663467,
-      "p90_e2e_ms": 21690673,
+      "median_e2e_ms": 113629117,
+      "p90_e2e_ms": 113656673,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 407018,
         "scored-to-rebuilt": 418147,
-        "rebuilt-to-deployed": 20958513
+        "rebuilt-to-deployed": 112924513
       },
-      "reviews_over_15min": 15,
-      "reviews_over_60min": 15,
+      "reviews_over_15min": 17,
+      "reviews_over_60min": 17,
       "slowest_reviews": [
         {
           "reviewKey": "one-minute-critic:billy-mcentee:https://1minutecritic.com/the-fantasticks-broadway-review/",
-          "e2e_ms": 21706930,
+          "e2e_ms": 113672930,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "nytimes:elisabeth-vincentelli:https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway.html",
-          "e2e_ms": 21690673,
+          "e2e_ms": 113656673,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "nyt-theater:jonathan-mandell:https://newyorktheater.me/2026/11/16/the-fantasticks-broadway-review/",
-          "e2e_ms": 21690325,
+          "e2e_ms": 113656325,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "deadline:greg-evans:https://deadline.com/2026/11/the-fantasticks-broadway-review-1237223063/",
-          "e2e_ms": 21689969,
+          "e2e_ms": 113655969,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "wsj:charles-isherwood:https://www.wsj.com/articles/the-fantasticks-review-boy-meets-boy-on-broadway-68553e05?mod=rss_artsculture",
-          "e2e_ms": 21689622,
+          "e2e_ms": 113655622,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -2484,7 +2496,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 839836,
-        "rebuilt-to-deployed": 117723451
+        "rebuilt-to-deployed": 134577020
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2499,7 +2511,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 402159,
-        "rebuilt-to-deployed": 115547194
+        "rebuilt-to-deployed": 207513194
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2514,7 +2526,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1310602,
-        "rebuilt-to-deployed": 110834934
+        "rebuilt-to-deployed": 124937067
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2522,14 +2534,14 @@
     },
     {
       "showId": "the-cottage-regional-2026",
-      "reviewCount": 9,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 429198,
-        "rebuilt-to-deployed": 111373088
+        "rebuilt-to-deployed": 203339088
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2544,7 +2556,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 858643,
-        "rebuilt-to-deployed": 103643239
+        "rebuilt-to-deployed": 195609239
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2559,7 +2571,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 17927176,
         "scored-to-rebuilt": 193815,
-        "rebuilt-to-deployed": 80617048
+        "rebuilt-to-deployed": 172583048
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2574,7 +2586,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 17842780,
         "scored-to-rebuilt": 193805,
-        "rebuilt-to-deployed": 80617048
+        "rebuilt-to-deployed": 172583048
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2589,7 +2601,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 17758230,
         "scored-to-rebuilt": 193796,
-        "rebuilt-to-deployed": 80617048
+        "rebuilt-to-deployed": 172583048
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2597,14 +2609,14 @@
     },
     {
       "showId": "adirondack-chair-circle-regional-2026",
-      "reviewCount": 17,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 664465,
-        "rebuilt-to-deployed": 68233794
+        "rebuilt-to-deployed": 160199794
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2619,7 +2631,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16843543,
         "scored-to-rebuilt": 193839,
-        "rebuilt-to-deployed": 80617047
+        "rebuilt-to-deployed": 172583047
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2634,7 +2646,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16745446,
         "scored-to-rebuilt": 193841,
-        "rebuilt-to-deployed": 80617044
+        "rebuilt-to-deployed": 172583044
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2649,7 +2661,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16701963,
         "scored-to-rebuilt": 193830,
-        "rebuilt-to-deployed": 80617045
+        "rebuilt-to-deployed": 172583045
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2664,7 +2676,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16552774,
         "scored-to-rebuilt": 193828,
-        "rebuilt-to-deployed": 80617046
+        "rebuilt-to-deployed": 172583046
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2679,7 +2691,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16494141,
         "scored-to-rebuilt": 193826,
-        "rebuilt-to-deployed": 80617047
+        "rebuilt-to-deployed": 172583047
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2694,7 +2706,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16338893,
         "scored-to-rebuilt": 193826,
-        "rebuilt-to-deployed": 80617044
+        "rebuilt-to-deployed": 172583044
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2709,7 +2721,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16287725,
         "scored-to-rebuilt": 193824,
-        "rebuilt-to-deployed": 80617046
+        "rebuilt-to-deployed": 172583046
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2724,7 +2736,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16225451,
         "scored-to-rebuilt": 193824,
-        "rebuilt-to-deployed": 80617044
+        "rebuilt-to-deployed": 172583044
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2739,7 +2751,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16178856,
         "scored-to-rebuilt": 193819,
-        "rebuilt-to-deployed": 80617047
+        "rebuilt-to-deployed": 172583047
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2754,7 +2766,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16127219,
         "scored-to-rebuilt": 193821,
-        "rebuilt-to-deployed": 80617044
+        "rebuilt-to-deployed": 172583044
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2769,7 +2781,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16074341,
         "scored-to-rebuilt": 193819,
-        "rebuilt-to-deployed": 80617045
+        "rebuilt-to-deployed": 172583045
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2784,7 +2796,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 16011760,
         "scored-to-rebuilt": 193806,
-        "rebuilt-to-deployed": 80617046
+        "rebuilt-to-deployed": 172583046
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2799,7 +2811,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 15930415,
         "scored-to-rebuilt": 193806,
-        "rebuilt-to-deployed": 80617045
+        "rebuilt-to-deployed": 172583045
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2814,7 +2826,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 15864789,
         "scored-to-rebuilt": 193797,
-        "rebuilt-to-deployed": 80617046
+        "rebuilt-to-deployed": 172583046
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2829,7 +2841,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 15815562,
         "scored-to-rebuilt": 193796,
-        "rebuilt-to-deployed": 80617046
+        "rebuilt-to-deployed": 172583046
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2844,7 +2856,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 15272238,
         "scored-to-rebuilt": 193777,
-        "rebuilt-to-deployed": 80617046
+        "rebuilt-to-deployed": 172583046
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2859,7 +2871,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14750086,
         "scored-to-rebuilt": 193860,
-        "rebuilt-to-deployed": 80617042
+        "rebuilt-to-deployed": 172583042
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2874,7 +2886,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14647571,
         "scored-to-rebuilt": 193842,
-        "rebuilt-to-deployed": 80617040
+        "rebuilt-to-deployed": 172583040
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2889,7 +2901,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14577048,
         "scored-to-rebuilt": 193840,
-        "rebuilt-to-deployed": 80617042
+        "rebuilt-to-deployed": 172583042
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2904,7 +2916,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14537606,
         "scored-to-rebuilt": 193829,
-        "rebuilt-to-deployed": 80617042
+        "rebuilt-to-deployed": 172583042
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2919,7 +2931,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14404607,
         "scored-to-rebuilt": 193829,
-        "rebuilt-to-deployed": 80617042
+        "rebuilt-to-deployed": 172583042
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2934,7 +2946,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14333366,
         "scored-to-rebuilt": 193826,
-        "rebuilt-to-deployed": 80617043
+        "rebuilt-to-deployed": 172583043
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2949,7 +2961,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14241893,
         "scored-to-rebuilt": 193827,
-        "rebuilt-to-deployed": 80617040
+        "rebuilt-to-deployed": 172583040
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2964,7 +2976,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14152792,
         "scored-to-rebuilt": 193825,
-        "rebuilt-to-deployed": 80617041
+        "rebuilt-to-deployed": 172583041
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2979,7 +2991,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14097877,
         "scored-to-rebuilt": 193822,
-        "rebuilt-to-deployed": 80617042
+        "rebuilt-to-deployed": 172583042
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -2994,7 +3006,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 13880074,
         "scored-to-rebuilt": 193822,
-        "rebuilt-to-deployed": 80617040
+        "rebuilt-to-deployed": 172583040
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3009,7 +3021,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 13816519,
         "scored-to-rebuilt": 193820,
-        "rebuilt-to-deployed": 80617041
+        "rebuilt-to-deployed": 172583041
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3024,7 +3036,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 13551708,
         "scored-to-rebuilt": 193812,
-        "rebuilt-to-deployed": 80617041
+        "rebuilt-to-deployed": 172583041
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3039,7 +3051,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 13462162,
         "scored-to-rebuilt": 193809,
-        "rebuilt-to-deployed": 80617042
+        "rebuilt-to-deployed": 172583042
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3054,7 +3066,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 13406660,
         "scored-to-rebuilt": 193803,
-        "rebuilt-to-deployed": 80617041
+        "rebuilt-to-deployed": 172583041
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3069,7 +3081,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 13068489,
         "scored-to-rebuilt": 193795,
-        "rebuilt-to-deployed": 80617040
+        "rebuilt-to-deployed": 172583040
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3084,7 +3096,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12998409,
         "scored-to-rebuilt": 193792,
-        "rebuilt-to-deployed": 80617042
+        "rebuilt-to-deployed": 172583042
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3099,7 +3111,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12454584,
         "scored-to-rebuilt": 193834,
-        "rebuilt-to-deployed": 80617039
+        "rebuilt-to-deployed": 172583039
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3114,7 +3126,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12398137,
         "scored-to-rebuilt": 193829,
-        "rebuilt-to-deployed": 80617039
+        "rebuilt-to-deployed": 172583039
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3129,7 +3141,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12363264,
         "scored-to-rebuilt": 193828,
-        "rebuilt-to-deployed": 80617039
+        "rebuilt-to-deployed": 172583039
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3144,7 +3156,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12310566,
         "scored-to-rebuilt": 193824,
-        "rebuilt-to-deployed": 80617039
+        "rebuilt-to-deployed": 172583039
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3159,7 +3171,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12247671,
         "scored-to-rebuilt": 193812,
-        "rebuilt-to-deployed": 80617040
+        "rebuilt-to-deployed": 172583040
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3174,7 +3186,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12183906,
         "scored-to-rebuilt": 193804,
-        "rebuilt-to-deployed": 80617039
+        "rebuilt-to-deployed": 172583039
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3189,7 +3201,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12045430,
         "scored-to-rebuilt": 193794,
-        "rebuilt-to-deployed": 80617040
+        "rebuilt-to-deployed": 172583040
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3204,7 +3216,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12452979,
         "scored-to-rebuilt": 1817864,
-        "rebuilt-to-deployed": 78563072
+        "rebuilt-to-deployed": 170529072
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3219,7 +3231,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 3006292,
-        "rebuilt-to-deployed": 77804530
+        "rebuilt-to-deployed": 169770530
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3234,7 +3246,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12372216,
         "scored-to-rebuilt": 1817861,
-        "rebuilt-to-deployed": 78563072
+        "rebuilt-to-deployed": 170529072
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3249,7 +3261,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 11565387,
         "scored-to-rebuilt": 193825,
-        "rebuilt-to-deployed": 80617047
+        "rebuilt-to-deployed": 172583047
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3324,7 +3336,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 9036723,
         "scored-to-rebuilt": 3006370,
-        "rebuilt-to-deployed": 77804535
+        "rebuilt-to-deployed": 169770535
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3354,7 +3366,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 3006371,
-        "rebuilt-to-deployed": 77804530
+        "rebuilt-to-deployed": 169770530
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3489,7 +3501,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 97109578,
         "scored-to-rebuilt": 443243,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3519,7 +3531,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 97040577,
         "scored-to-rebuilt": 443242,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854370
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3564,7 +3576,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749564,
-        "rebuilt-to-deployed": 78631394
+        "rebuilt-to-deployed": 170597394
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3624,7 +3636,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 344564,
-        "rebuilt-to-deployed": 39347482
+        "rebuilt-to-deployed": 131313482
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3804,7 +3816,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 96373947,
         "scored-to-rebuilt": 443244,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -4194,7 +4206,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 95742371,
         "scored-to-rebuilt": 443244,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -4359,7 +4371,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 620757,
-        "rebuilt-to-deployed": 62287062
+        "rebuilt-to-deployed": 154253062
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -4419,7 +4431,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 95263136,
         "scored-to-rebuilt": 443240,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854371
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -4554,7 +4566,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 94918224,
         "scored-to-rebuilt": 443243,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -5004,7 +5016,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 193834,
-        "rebuilt-to-deployed": 80617040
+        "rebuilt-to-deployed": 172583040
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -5244,7 +5256,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 93400061,
         "scored-to-rebuilt": 443240,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854370
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -5709,7 +5721,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 217634,
-        "rebuilt-to-deployed": 72073171
+        "rebuilt-to-deployed": 164039171
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6009,7 +6021,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 2771119,
         "scored-to-rebuilt": 193841,
-        "rebuilt-to-deployed": 80617045
+        "rebuilt-to-deployed": 172583045
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6024,7 +6036,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 2729020,
         "scored-to-rebuilt": 193842,
-        "rebuilt-to-deployed": 80617039
+        "rebuilt-to-deployed": 172583039
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6039,7 +6051,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 2684413,
         "scored-to-rebuilt": 193830,
-        "rebuilt-to-deployed": 80617045
+        "rebuilt-to-deployed": 172583045
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6054,7 +6066,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 2463331,
         "scored-to-rebuilt": 193811,
-        "rebuilt-to-deployed": 80617043
+        "rebuilt-to-deployed": 172583043
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6069,7 +6081,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 2228031,
         "scored-to-rebuilt": 193793,
-        "rebuilt-to-deployed": 80617045
+        "rebuilt-to-deployed": 172583045
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6084,7 +6096,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 2174644,
         "scored-to-rebuilt": 193790,
-        "rebuilt-to-deployed": 80617047
+        "rebuilt-to-deployed": 172583047
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6099,7 +6111,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 2073655,
         "scored-to-rebuilt": 193796,
-        "rebuilt-to-deployed": 80617041
+        "rebuilt-to-deployed": 172583041
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6114,7 +6126,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 2010765,
         "scored-to-rebuilt": 193792,
-        "rebuilt-to-deployed": 80617044
+        "rebuilt-to-deployed": 172583044
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6129,7 +6141,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 1807006,
         "scored-to-rebuilt": 193787,
-        "rebuilt-to-deployed": 80617049
+        "rebuilt-to-deployed": 172583049
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6144,7 +6156,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 1748896,
         "scored-to-rebuilt": 193795,
-        "rebuilt-to-deployed": 80617040
+        "rebuilt-to-deployed": 172583040
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6159,7 +6171,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 1698178,
         "scored-to-rebuilt": 193792,
-        "rebuilt-to-deployed": 80617043
+        "rebuilt-to-deployed": 172583043
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6204,7 +6216,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 90962717,
         "scored-to-rebuilt": 443238,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854371
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6324,7 +6336,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 90804671,
         "scored-to-rebuilt": 443239,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6444,7 +6456,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 90384506,
         "scored-to-rebuilt": 443240,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6534,7 +6546,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 273078,
         "scored-to-rebuilt": 1749573,
-        "rebuilt-to-deployed": 78631398
+        "rebuilt-to-deployed": 170597398
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6617,7 +6629,7 @@
     },
     {
       "showId": "art-2025",
-      "reviewCount": 33,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6639,7 +6651,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749577,
-        "rebuilt-to-deployed": 78631393
+        "rebuilt-to-deployed": 170597393
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6669,7 +6681,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 90105721,
         "scored-to-rebuilt": 443232,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6789,7 +6801,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 547374,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 83327016
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6849,7 +6861,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817897,
-        "rebuilt-to-deployed": 78563072
+        "rebuilt-to-deployed": 170529072
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7059,7 +7071,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 25824220,
         "scored-to-rebuilt": 1079745,
-        "rebuilt-to-deployed": 52500952
+        "rebuilt-to-deployed": 144466952
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7112,7 +7124,7 @@
     },
     {
       "showId": "stephen-sondheims-old-friends-2025",
-      "reviewCount": 27,
+      "reviewCount": 30,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7134,7 +7146,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817897,
-        "rebuilt-to-deployed": 78563071
+        "rebuilt-to-deployed": 170529071
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7149,7 +7161,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817897,
-        "rebuilt-to-deployed": 78563069
+        "rebuilt-to-deployed": 170529069
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7164,7 +7176,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817892,
-        "rebuilt-to-deployed": 78563072
+        "rebuilt-to-deployed": 170529072
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7179,7 +7191,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817884,
-        "rebuilt-to-deployed": 78563072
+        "rebuilt-to-deployed": 170529072
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7194,7 +7206,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2247792,
-        "rebuilt-to-deployed": 78563070
+        "rebuilt-to-deployed": 170529070
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7209,7 +7221,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817882,
-        "rebuilt-to-deployed": 78563070
+        "rebuilt-to-deployed": 170529070
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7224,7 +7236,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817881,
-        "rebuilt-to-deployed": 78563070
+        "rebuilt-to-deployed": 170529070
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7239,7 +7251,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817880,
-        "rebuilt-to-deployed": 78563070
+        "rebuilt-to-deployed": 170529070
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7254,7 +7266,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817878,
-        "rebuilt-to-deployed": 78563071
+        "rebuilt-to-deployed": 170529071
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7269,7 +7281,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817876,
-        "rebuilt-to-deployed": 78563070
+        "rebuilt-to-deployed": 170529070
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7284,7 +7296,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817876,
-        "rebuilt-to-deployed": 78563070
+        "rebuilt-to-deployed": 170529070
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7299,7 +7311,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817874,
-        "rebuilt-to-deployed": 78563071
+        "rebuilt-to-deployed": 170529071
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7314,7 +7326,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817870,
-        "rebuilt-to-deployed": 78563071
+        "rebuilt-to-deployed": 170529071
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7329,7 +7341,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749545,
-        "rebuilt-to-deployed": 78631392
+        "rebuilt-to-deployed": 170597392
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7344,7 +7356,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817864,
-        "rebuilt-to-deployed": 78563071
+        "rebuilt-to-deployed": 170529071
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7359,7 +7371,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749531,
-        "rebuilt-to-deployed": 78631395
+        "rebuilt-to-deployed": 170597395
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7374,7 +7386,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749530,
-        "rebuilt-to-deployed": 78631395
+        "rebuilt-to-deployed": 170597395
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7389,7 +7401,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749527,
-        "rebuilt-to-deployed": 78631396
+        "rebuilt-to-deployed": 170597396
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7404,7 +7416,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749522,
-        "rebuilt-to-deployed": 78631397
+        "rebuilt-to-deployed": 170597397
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7419,7 +7431,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1749523,
-        "rebuilt-to-deployed": 78631396
+        "rebuilt-to-deployed": 170597396
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7434,7 +7446,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1817845,
-        "rebuilt-to-deployed": 78563072
+        "rebuilt-to-deployed": 170529072
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7449,7 +7461,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 815946,
-        "rebuilt-to-deployed": 78631395
+        "rebuilt-to-deployed": 170597395
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7554,7 +7566,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 25087894,
         "scored-to-rebuilt": 1079744,
-        "rebuilt-to-deployed": 52500952
+        "rebuilt-to-deployed": 144466952
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7629,7 +7641,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 88157431,
         "scored-to-rebuilt": 443231,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7659,7 +7671,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 88133095,
         "scored-to-rebuilt": 443228,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854371
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7689,7 +7701,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 88029995,
         "scored-to-rebuilt": 443229,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854370
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -7914,7 +7926,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443229,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854370
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8154,7 +8166,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 158551,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 63590013
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8169,7 +8181,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 23921193,
         "scored-to-rebuilt": 1079744,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8289,7 +8301,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443251,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8364,7 +8376,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 86740956,
         "scored-to-rebuilt": 443227,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854371
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8379,7 +8391,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 193857,
-        "rebuilt-to-deployed": 80617046
+        "rebuilt-to-deployed": 172583046
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8387,14 +8399,14 @@
     },
     {
       "showId": "jersey-boys-tour-2026",
-      "reviewCount": 8,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 193858,
-        "rebuilt-to-deployed": 80617045
+        "rebuilt-to-deployed": 172583045
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8409,7 +8421,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 3006371,
-        "rebuilt-to-deployed": 77804529
+        "rebuilt-to-deployed": 169770529
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8424,7 +8436,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 3006357,
-        "rebuilt-to-deployed": 77804533
+        "rebuilt-to-deployed": 169770533
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8439,7 +8451,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 370562,
-        "rebuilt-to-deployed": 80617047
+        "rebuilt-to-deployed": 127955033
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8454,7 +8466,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 547339,
-        "rebuilt-to-deployed": 80617044
+        "rebuilt-to-deployed": 83327016
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8469,7 +8481,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 370563,
-        "rebuilt-to-deployed": 80617045
+        "rebuilt-to-deployed": 127955031
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8477,14 +8489,14 @@
     },
     {
       "showId": "moulin-rouge-tour-2022",
-      "reviewCount": 25,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 3006291,
-        "rebuilt-to-deployed": 77804532
+        "rebuilt-to-deployed": 169770532
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8499,7 +8511,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2576425,
-        "rebuilt-to-deployed": 77804529
+        "rebuilt-to-deployed": 169770529
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8514,7 +8526,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 86460582,
         "scored-to-rebuilt": 443229,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854368
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8544,7 +8556,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443230,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8589,7 +8601,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 86341056,
         "scored-to-rebuilt": 443229,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854368
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8709,7 +8721,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 22618911,
         "scored-to-rebuilt": 1079736,
-        "rebuilt-to-deployed": 52500952
+        "rebuilt-to-deployed": 144466952
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8754,7 +8766,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 85820153,
         "scored-to-rebuilt": 443227,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8949,7 +8961,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 20429326,
         "scored-to-rebuilt": 1079751,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8964,7 +8976,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 20333646,
         "scored-to-rebuilt": 1079746,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8979,7 +8991,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 20278438,
         "scored-to-rebuilt": 1079742,
-        "rebuilt-to-deployed": 52500951
+        "rebuilt-to-deployed": 144466951
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8994,7 +9006,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 20227320,
         "scored-to-rebuilt": 1079742,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9009,7 +9021,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 20177494,
         "scored-to-rebuilt": 1079741,
-        "rebuilt-to-deployed": 52500950
+        "rebuilt-to-deployed": 144466950
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9054,7 +9066,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1177854,
-        "rebuilt-to-deployed": 71077678
+        "rebuilt-to-deployed": 163043678
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9069,7 +9081,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 79034654,
         "scored-to-rebuilt": 443217,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854368
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9084,7 +9096,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 79021857,
         "scored-to-rebuilt": 443222,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9129,7 +9141,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12526417,
         "scored-to-rebuilt": 1079725,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9144,7 +9156,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 932189,
-        "rebuilt-to-deployed": 59710141
+        "rebuilt-to-deployed": 151676141
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9159,7 +9171,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1560510,
-        "rebuilt-to-deployed": 59050358
+        "rebuilt-to-deployed": 151016358
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9174,7 +9186,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1079752,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9189,7 +9201,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1079740,
-        "rebuilt-to-deployed": 52500948
+        "rebuilt-to-deployed": 144466948
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9204,7 +9216,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1079738,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9219,7 +9231,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1079739,
-        "rebuilt-to-deployed": 52500948
+        "rebuilt-to-deployed": 144466948
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9234,7 +9246,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1079739,
-        "rebuilt-to-deployed": 52500948
+        "rebuilt-to-deployed": 144466948
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9249,7 +9261,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 813545,
-        "rebuilt-to-deployed": 52500950
+        "rebuilt-to-deployed": 113896982
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9257,14 +9269,14 @@
     },
     {
       "showId": "purlie-victorious-2023",
-      "reviewCount": 34,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1079727,
-        "rebuilt-to-deployed": 52500950
+        "rebuilt-to-deployed": 144466950
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9279,7 +9291,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 547339,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 83327011
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9294,7 +9306,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 813525,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 113896980
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9309,7 +9321,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14241814,
         "scored-to-rebuilt": 619133,
-        "rebuilt-to-deployed": 52500950
+        "rebuilt-to-deployed": 104028482
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9324,7 +9336,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 547321,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 83327013
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9339,7 +9351,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1079721,
-        "rebuilt-to-deployed": 52500950
+        "rebuilt-to-deployed": 144466950
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9354,7 +9366,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 495251,
-        "rebuilt-to-deployed": 52500950
+        "rebuilt-to-deployed": 82590691
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9369,7 +9381,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1079720,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9384,7 +9396,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1079719,
-        "rebuilt-to-deployed": 52500949
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9392,14 +9404,14 @@
     },
     {
       "showId": "the-getaway-driver-central-regional-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1076454,
-        "rebuilt-to-deployed": 52500949
+        "scored-to-rebuilt": 962667,
+        "rebuilt-to-deployed": 144466949
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9414,7 +9426,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1232798,
-        "rebuilt-to-deployed": 41368617
+        "rebuilt-to-deployed": 133334617
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9422,14 +9434,14 @@
     },
     {
       "showId": "confederates-regional-2026-fountain-theatre",
-      "reviewCount": 3,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 185457,
-        "rebuilt-to-deployed": 42203581
+        "rebuilt-to-deployed": 134169581
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9444,7 +9456,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1259558,
-        "rebuilt-to-deployed": 38432498
+        "rebuilt-to-deployed": 130398498
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9459,7 +9471,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1259558,
-        "rebuilt-to-deployed": 38432496
+        "rebuilt-to-deployed": 130398496
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9474,7 +9486,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 344565,
-        "rebuilt-to-deployed": 39347488
+        "rebuilt-to-deployed": 131313488
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9489,7 +9501,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1259545,
-        "rebuilt-to-deployed": 38432503
+        "rebuilt-to-deployed": 130398503
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9504,7 +9516,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1259544,
-        "rebuilt-to-deployed": 38432501
+        "rebuilt-to-deployed": 130398501
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9519,7 +9531,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1259536,
-        "rebuilt-to-deployed": 38432502
+        "rebuilt-to-deployed": 130398502
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9534,7 +9546,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1259537,
-        "rebuilt-to-deployed": 38432500
+        "rebuilt-to-deployed": 130398500
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9549,7 +9561,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1259536,
-        "rebuilt-to-deployed": 38432496
+        "rebuilt-to-deployed": 130398496
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9564,7 +9576,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1259528,
-        "rebuilt-to-deployed": 38432503
+        "rebuilt-to-deployed": 130398503
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9572,14 +9584,14 @@
     },
     {
       "showId": "walking-with-ghosts-2022",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 48650885,
         "scored-to-rebuilt": 443223,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9588,17 +9600,23 @@
     {
       "showId": "the-kings-critique-off-broadway-2026",
       "reviewCount": 7,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "median_e2e_ms": 23830422,
+      "p90_e2e_ms": 23830422,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 4597800,
         "scored-to-rebuilt": 954832,
-        "rebuilt-to-deployed": 37281775
+        "rebuilt-to-deployed": 22736246
       },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 1,
+      "slowest_reviews": [
+        {
+          "reviewKey": "lighting-and-sound-america:david-barbour:http://www.lightingandsoundamerica.com/news/story.asp?ID=KRMC37",
+          "e2e_ms": 23830422,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "nacho-ate-spiderman-regional-2026",
@@ -9609,7 +9627,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1205204,
-        "rebuilt-to-deployed": 37281778
+        "rebuilt-to-deployed": 71477783
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9624,7 +9642,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1819347,
-        "rebuilt-to-deployed": 37281777
+        "rebuilt-to-deployed": 129247777
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9639,7 +9657,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1130470,
-        "rebuilt-to-deployed": 23599694
+        "rebuilt-to-deployed": 115565694
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9663,8 +9681,8 @@
     {
       "showId": "west-side-story-west-end-2026",
       "reviewCount": 1,
-      "median_e2e_ms": 35398708,
-      "p90_e2e_ms": 35398708,
+      "median_e2e_ms": 127364708,
+      "p90_e2e_ms": 127364708,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
@@ -9676,7 +9694,7 @@
       "slowest_reviews": [
         {
           "reviewKey": "theater-news-online:mervyn-rothstein:http://theaternewsonline.com/NYTheaterReviews/NOTTHETIMENOTTHEPLACE.cfm",
-          "e2e_ms": 35398708,
+          "e2e_ms": 127364708,
           "stuck_at_stage": "review-first-seen"
         }
       ]
@@ -9690,7 +9708,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 961268,
-        "rebuilt-to-deployed": 34411411
+        "rebuilt-to-deployed": 126377411
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9705,7 +9723,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 328880,
-        "rebuilt-to-deployed": 33797646
+        "rebuilt-to-deployed": 78636388
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9720,7 +9738,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1537121,
-        "rebuilt-to-deployed": 33797644
+        "rebuilt-to-deployed": 125763644
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9735,7 +9753,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 412812,
         "scored-to-rebuilt": 1552604,
-        "rebuilt-to-deployed": 33797651
+        "rebuilt-to-deployed": 125763651
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9750,7 +9768,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1555259,
-        "rebuilt-to-deployed": 33797651
+        "rebuilt-to-deployed": 125763651
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9759,25 +9777,25 @@
     {
       "showId": "wanted-2022",
       "reviewCount": 28,
-      "median_e2e_ms": 33685635,
-      "p90_e2e_ms": 33685838,
+      "median_e2e_ms": 125651635,
+      "p90_e2e_ms": 125651838,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 22611,
-        "rebuilt-to-deployed": 30835682
+        "rebuilt-to-deployed": 122801682
       },
       "reviews_over_15min": 2,
       "reviews_over_60min": 2,
       "slowest_reviews": [
         {
           "reviewKey": "theater-scene:samuel-l-leiter:https://www.theaterscene.net/musicals/broadway/wanted/samuel-l-leiter/",
-          "e2e_ms": 33685838,
+          "e2e_ms": 125651838,
           "stuck_at_stage": "rebuilt"
         },
         {
           "reviewKey": "pages-on-stages:mason-pilevsky:https://pagesonstages.com/2026/11/14/wanted/",
-          "e2e_ms": 33685431,
+          "e2e_ms": 125651431,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -9785,20 +9803,20 @@
     {
       "showId": "the-visitors-off-broadway-2026",
       "reviewCount": 9,
-      "median_e2e_ms": 31968094,
-      "p90_e2e_ms": 31968094,
+      "median_e2e_ms": 123934094,
+      "p90_e2e_ms": 123934094,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 429505,
         "scored-to-rebuilt": 407284,
-        "rebuilt-to-deployed": 30399464
+        "rebuilt-to-deployed": 122365464
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "exeunt-magazine:loren-noveck:https://exeuntnyc.com/reviews/review-the-visitors-at-pershing-square-signature-center/",
-          "e2e_ms": 31968094,
+          "e2e_ms": 123934094,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -9806,20 +9824,20 @@
     {
       "showId": "the-unbelievers-off-broadway-2026",
       "reviewCount": 18,
-      "median_e2e_ms": 31713829,
-      "p90_e2e_ms": 31713829,
+      "median_e2e_ms": 123679829,
+      "p90_e2e_ms": 123679829,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 440334,
-        "rebuilt-to-deployed": 30399464
+        "rebuilt-to-deployed": 122365464
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "exeunt-magazine:nicole-serratore:https://exeuntnyc.com/reviews/review-the-unbelievers-at-mtc/",
-          "e2e_ms": 31713829,
+          "e2e_ms": 123679829,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -9833,7 +9851,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1001991,
-        "rebuilt-to-deployed": 29834140
+        "rebuilt-to-deployed": 121800140
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9878,7 +9896,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 26764380,
         "scored-to-rebuilt": 1688004,
-        "rebuilt-to-deployed": 22587392
+        "rebuilt-to-deployed": 114553392
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9893,7 +9911,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443239,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854370
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9902,20 +9920,20 @@
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
       "reviewCount": 14,
-      "median_e2e_ms": 6220425,
-      "p90_e2e_ms": 6220425,
+      "median_e2e_ms": 98186425,
+      "p90_e2e_ms": 98186425,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 592441,
-        "rebuilt-to-deployed": 5079480
+        "rebuilt-to-deployed": 97045480
       },
       "reviews_over_15min": 1,
       "reviews_over_60min": 1,
       "slowest_reviews": [
         {
           "reviewKey": "lighting-and-sound-america:david-barbour:http://www.lightingandsoundamerica.com/news/story.asp?ID=2V15JJ",
-          "e2e_ms": 6220425,
+          "e2e_ms": 98186425,
           "stuck_at_stage": "rebuilt"
         }
       ]
@@ -9929,7 +9947,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 3995553,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 79878806
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9944,7 +9962,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 3995514,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 79878799
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9959,7 +9977,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 3995492,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 79878801
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9974,7 +9992,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443252,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -9989,7 +10007,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443249,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10004,7 +10022,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443231,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854370
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10019,7 +10037,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443225,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854371
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10034,7 +10052,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443227,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10049,7 +10067,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443226,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10064,7 +10082,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443225,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854370
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10079,7 +10097,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443226,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10094,7 +10112,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443222,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10109,7 +10127,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443219,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854371
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10124,7 +10142,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443220,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854370
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10139,7 +10157,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443220,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854369
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10154,7 +10172,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443222,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10169,7 +10187,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443221,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10184,7 +10202,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443221,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854367
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10199,7 +10217,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 443218,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 81854368
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10208,17 +10226,23 @@
     {
       "showId": "rope-off-broadway-2026",
       "reviewCount": 17,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "median_e2e_ms": 75492153,
+      "p90_e2e_ms": 75492153,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 568095,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 73294088
       },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 1,
+      "slowest_reviews": [
+        {
+          "reviewKey": "off-off-online:marc-miller:https://www.offoffonline.com/offoffonline/2026/11/13/rope",
+          "e2e_ms": 75492153,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "the-lehman-trilogy-2021",
@@ -10244,7 +10268,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1473006,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 67952417
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10253,17 +10277,28 @@
     {
       "showId": "jenufa-off-broadway-2026",
       "reviewCount": 4,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "median_e2e_ms": 62480622,
+      "p90_e2e_ms": 64619244,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 683887,
         "scored-to-rebuilt": 539441,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 59464593
       },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "reviews_over_15min": 2,
+      "reviews_over_60min": 2,
+      "slowest_reviews": [
+        {
+          "reviewKey": "new-york-classical-review:george-grella:https://newyorkclassicalreview.com/2026/11/grigorians-artistry-fully-equal-to-janaceks-masterful-jenufa-at-the-met/",
+          "e2e_ms": 64619244,
+          "stuck_at_stage": "rebuilt"
+        },
+        {
+          "reviewKey": "broadwayworld:richard-sasanow:https://www.broadwayworld.com/bwwopera/article/Review-Grigorian-and-Stemme-Are-Bold-Bookends-for-the-Mets-New-JENUFA-under-Hanus-20261117",
+          "e2e_ms": 60341999,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "heroes-of-the-fourth-turning-red-regional-2026",
@@ -10274,7 +10309,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 309614,
         "scored-to-rebuilt": 497917,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 48784931
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10289,7 +10324,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1005958,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 63590013
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10297,14 +10332,14 @@
     },
     {
       "showId": "the-wash-regional-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 639220,
-        "scored-to-rebuilt": 1719698,
-        "rebuilt-to-deployed": null
+        "scored-to-rebuilt": 1016219,
+        "rebuilt-to-deployed": 62355935
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10319,7 +10354,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063999,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684575
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10334,7 +10369,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063984,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684578
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10349,7 +10384,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063973,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684577
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10357,14 +10392,14 @@
     },
     {
       "showId": "doubt-2024",
-      "reviewCount": 35,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063970,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684578
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10379,7 +10414,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063968,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684579
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10394,7 +10429,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063968,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684579
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10409,7 +10444,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063959,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684578
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10424,7 +10459,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063950,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684578
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10439,7 +10474,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063946,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684579
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10454,7 +10489,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063947,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684578
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10469,7 +10504,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1063946,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 62684578
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10484,7 +10519,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 637484,
         "scored-to-rebuilt": 1057719,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 61166719
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10499,7 +10534,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14500974,
         "scored-to-rebuilt": 706526,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 47573335
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10514,7 +10549,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 537866,
         "scored-to-rebuilt": 803338,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 41951487
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10529,7 +10564,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14455593,
         "scored-to-rebuilt": 706531,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 47573329
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10544,7 +10579,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14431417,
         "scored-to-rebuilt": 706526,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 47573332
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10559,7 +10594,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 396472,
         "scored-to-rebuilt": 873400,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 59329719
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10567,14 +10602,14 @@
     },
     {
       "showId": "top-gunchained-off-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 1044309,
-        "scored-to-rebuilt": 832085,
-        "rebuilt-to-deployed": null
+        "scored-to-rebuilt": 821676,
+        "rebuilt-to-deployed": 53489528
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10589,7 +10624,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1174254,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 57213162
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10604,7 +10639,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 267258,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 52455809
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10619,7 +10654,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1144365,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 51604136
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10634,7 +10669,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1838734,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 50890753
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10649,7 +10684,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 512750,
         "scored-to-rebuilt": 1385642,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 47858328
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10664,7 +10699,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 843073,
         "scored-to-rebuilt": 603007,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 38202974
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10679,7 +10714,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 798360,
         "scored-to-rebuilt": 80577,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 28832609
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10694,7 +10729,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 15575145,
         "scored-to-rebuilt": 31326,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 33169751
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10709,7 +10744,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1300625,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 48321633
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10724,7 +10759,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1623793,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 47073200
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10739,7 +10774,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1206647,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 47073203
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10754,7 +10789,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 14780984,
         "scored-to-rebuilt": 31321,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 33169752
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10769,7 +10804,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 9751096,
         "scored-to-rebuilt": 31310,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 33169756
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10777,18 +10812,24 @@
     },
     {
       "showId": "the-good-thief-off-broadway-2026",
-      "reviewCount": 3,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "reviewCount": 4,
+      "median_e2e_ms": 35806298,
+      "p90_e2e_ms": 35806298,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 230312,
-        "scored-to-rebuilt": 537751,
-        "rebuilt-to-deployed": null
+        "scored-to-rebuilt": 300781,
+        "rebuilt-to-deployed": 35008754
       },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 1,
+      "slowest_reviews": [
+        {
+          "reviewKey": "nysr:david-finkle:https://nystagereview.com/2026/11/17/the-good-thief-boastful-self-incriminating-hero-is-more-than-good/",
+          "e2e_ms": 35806298,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "hamilton-tour-2024",
@@ -10829,7 +10870,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 971152,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 42821312
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10844,7 +10885,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 7722892,
         "scored-to-rebuilt": 621610,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 32579457
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10868,17 +10909,23 @@
     {
       "showId": "relative-motion-off-west-end-2026",
       "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "median_e2e_ms": 41011473,
+      "p90_e2e_ms": 41011473,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 387621,
         "scored-to-rebuilt": 395387,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 39969937
       },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 1,
+      "slowest_reviews": [
+        {
+          "reviewKey": "london-box-office:eve-jawara:https://www.londonboxoffice.co.uk/news/post/relative-motion-southwark-playhouse-borough-review",
+          "e2e_ms": 41011473,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "blue-man-group-a-new-holiday-surprise-2026",
@@ -10889,7 +10936,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 603725,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 31173821
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10919,7 +10966,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 781819,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 28139922
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10934,7 +10981,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 560723,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 22736245
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10949,7 +10996,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1217865,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 22070432
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10958,17 +11005,23 @@
     {
       "showId": "slanted-floors-off-broadway-2026",
       "reviewCount": 4,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
+      "median_e2e_ms": 23003402,
+      "p90_e2e_ms": 23003402,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 26960,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 18145005
       },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
+      "reviews_over_15min": 1,
+      "reviews_over_60min": 1,
+      "slowest_reviews": [
+        {
+          "reviewKey": "nysr:frank-scheck:https://nystagereview.com/2026/11/17/slanted-floors-living-room-theater-literally/",
+          "e2e_ms": 23003402,
+          "stuck_at_stage": "rebuilt"
+        }
+      ]
     },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
@@ -10979,7 +11032,7 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1587830,
-        "rebuilt-to-deployed": null
+        "rebuilt-to-deployed": 16571566
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
