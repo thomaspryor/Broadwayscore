@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const {
@@ -48,7 +49,7 @@ function ensureFullHistory(repo) {
   if (!isShallow(repo)) return true;
   console.log('review-texts is a shallow clone; fetching full history (git fetch --unshallow)...');
   try {
-    execFileSync('git', ['fetch', '--unshallow', '--quiet'], { cwd: repo, stdio: ['ignore', 'inherit', 'inherit'], timeout: 240000 });
+    runGitOrThrow(['fetch', '--unshallow', '--quiet'], { cwd: repo, stdio: ['ignore', 'inherit', 'inherit'], timeout: 240000 });
   } catch (e) {
     console.error(`git fetch --unshallow failed: ${e.message}`);
   }

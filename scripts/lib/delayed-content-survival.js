@@ -3,6 +3,7 @@
 // Shared by the CI ledger and local delayed merge verifier. Fetches must stay
 // isolated from the caller's checkout, including its refs and shallow boundary.
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: group kill on timeout
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -73,7 +74,7 @@ function gitFetchOrNull(cwd, args) {
     // unbounded-fetch-ok: both callers (fetchShaWithParent, fetchBranchTip)
     // pass a literal --depth=N as args[0] — the guard above this line also
     // enforces it at runtime, so this line can never actually run unbounded.
-    execFileSync('git', ['fetch', ...args], { cwd, encoding: 'utf8', timeout: 30_000 });
+    runGitOrThrow(['fetch', ...args], { cwd, encoding: 'utf8', timeout: 30_000 });
     return execFileSync('git', ['rev-parse', 'FETCH_HEAD'], { cwd, encoding: 'utf8' }).trim();
   } catch {
     return null;

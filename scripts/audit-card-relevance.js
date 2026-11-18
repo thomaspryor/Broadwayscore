@@ -23,6 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
 const { classifyPool } = require('./lib/audit-card-relevance.js');
@@ -128,7 +129,7 @@ function fetchOriginMain(repo) {
   const depthArgs = repoDepthArgs({ repoRoot: repo });
   try {
     // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-    execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    runGitOrThrow(['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
   } catch (e) {
     console.error(`[audit-card-relevance] WARN git fetch origin main failed, commit-ancestry checks may use stale refs: ${e.message.slice(0, 160)}`);
   }

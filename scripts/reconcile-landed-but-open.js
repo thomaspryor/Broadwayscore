@@ -43,6 +43,7 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const linear = require('./lib/linear-client.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -321,7 +322,7 @@ async function main(argv = process.argv.slice(2)) {
     const depthArgs = repoDepthArgs({ repoRoot: REPO });
     // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a
     // spread (same pattern as audit-card-relevance.js's fetchOriginMain).
-    execFileSync('git', ['-C', REPO, 'fetch', ...depthArgs, 'origin', 'main'], { timeout: GIT_TIMEOUT_MS, stdio: 'ignore' });
+    runGitOrThrow(['-C', REPO, 'fetch', ...depthArgs, 'origin', 'main'], { timeout: GIT_TIMEOUT_MS, stdio: 'ignore' });
   } catch { /* best effort */ }
 
   if (!asJson) console.error('[reconcile-landed-but-open] fetching In-Progress issues from Linear...');

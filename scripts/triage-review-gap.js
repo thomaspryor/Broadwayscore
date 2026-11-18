@@ -46,6 +46,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
 
 const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization');
 const { explainExclusion, explainShowLevelExclusion } = require('./lib/review-guards');
@@ -152,7 +153,7 @@ const GIT_TIMEOUT_MS = 15000;
 // treat the verdict as provisional.
 function gitFetchOriginMain(cwd) {
   try {
-    execFileSync('git', ['fetch', 'origin', 'main', '--quiet'],
+    runGitOrThrow(['fetch', 'origin', 'main', '--quiet'],
       { cwd, encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
     return { ok: true };
   } catch (e) {

@@ -22,7 +22,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./git-proc-guard.js');
 
 /** Pure: origin's lines, then local lines origin does not already have (exact line match). */
 function unionLines(originText, localText) {
@@ -41,7 +41,8 @@ function unionLines(originText, localText) {
 }
 
 function gitRunner(repoDir, extraEnv = {}) {
-  return (args, opts = {}) => execFileSync('git', args, {
+  // BRO-7458: runGitOrThrow kills a timed-out fetch's whole process group (no orphan index-pack).
+  return (args, opts = {}) => runGitOrThrow(args, {
     cwd: repoDir,
     encoding: 'utf8',
     env: { ...process.env, ...extraEnv, ...(opts.env || {}) },

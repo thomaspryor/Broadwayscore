@@ -60,6 +60,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./git-proc-guard.js');
 const {
   DISPATCH_AT_FILING_MARKER, PARKED_STATE_TYPES, hasSafeVerifyCommand, issueNumber,
 } = require('./linear-drain-parked.js');
@@ -231,7 +232,8 @@ function readTrackedLedgerFromOrigin() {
       // unbounded-fetch-ok: single-ref fetch from the Mac's FULL clone on the
       // launchd tick (bsc-reconcile) / by-hand CLI only — this function is
       // never invoked from a workflow, let alone a fetch-depth:1 checkout.
-      execFileSync('git', ['-C', REPO, 'fetch', 'origin', '+refs/heads/main:refs/remotes/origin/main', '-q'], {
+      // BRO-7458: runGitOrThrow kills the timed-out fetch's whole process group.
+      runGitOrThrow(['-C', REPO, 'fetch', 'origin', '+refs/heads/main:refs/remotes/origin/main', '-q'], {
         timeout: FETCH_TIMEOUT_MS, stdio: 'ignore',
       });
     } catch { /* stale origin/main ref is still a usable read — fail-open */ }

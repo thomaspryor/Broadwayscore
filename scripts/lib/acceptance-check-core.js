@@ -35,6 +35,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const { shallowFetchArgs } = require('./shallow-fetch-args.js');
+const { runGitOrThrow } = require('./git-proc-guard.js');
 // extractCheckPaths is the SAME path-token extraction isSafeCheckCommand's own
 // SAFE_CHECK_FORMS matches on (CLAUDE.md §15 — one copy, reused here rather
 // than a second regex over the command string).
@@ -86,7 +87,8 @@ function fetchMain(repo) {
   }
   const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
   // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-  execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+  // BRO-7458: runGitOrThrow kills the timed-out fetch's whole process group.
+  runGitOrThrow(['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
 }
 
 /** git's "another process holds this lock" failure (shallow.lock, a ref lock). */
@@ -210,7 +212,7 @@ function makeStandaloneCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-chec
   const wt = path.join(dir, 'main');
   let dataClone = { status: 'skipped' };
   try {
-    execFileSync('git', ['clone', '--quiet', '--depth', '1', '--single-branch', '-b', 'main', url, wt], { timeout: CLONE_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    runGitOrThrow(['clone', '--quiet', '--depth', '1', '--single-branch', '-b', 'main', url, wt], { timeout: CLONE_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
     dataClone = refreshDataClone(repo);
     prepareCheckWorkdir(wt, repo);
   } catch (err) {

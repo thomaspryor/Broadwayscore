@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: group kill on timeout
 const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./review-texts-dir');
 const { repoDepthArgs } = require('./shallow-fetch-args');
 
@@ -81,7 +82,7 @@ function verifyReviewTextsPushed(filePaths, opts = {}) {
     // through a runtime-computed array, same "waiver lives here, not a fake
     // flag on the git line" shape as push-with-retry.sh's git_fetch() wrapper
     // (scripts/lib/push-with-retry.sh ~line 154), the canonical precedent.
-    execFileSync('git', ['fetch', 'origin', 'main', ...extraArgs, '-q'], {
+    runGitOrThrow(['fetch', 'origin', 'main', ...extraArgs, '-q'], {
       cwd: dir,
       stdio: ['ignore', 'ignore', 'pipe'],
       timeout: 30000,

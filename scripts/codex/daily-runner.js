@@ -65,6 +65,7 @@ const DF = require(path.join(ROOT, 'scripts/lib/codex-data-fixes.js'));
 const TL = require(path.join(ROOT, 'scripts/lib/codex-trust-ladder.js'));
 const PF = require(path.join(ROOT, 'scripts/lib/codex-sandbox-preflight.js'));
 const { createSandbox, sandboxUser, judgeLandSandboxed, readSandboxFile, JSON_MARK } = require(path.join(ROOT, 'scripts/lib/codex-sandbox.js'));
+const GPG = require(path.join(ROOT, 'scripts/lib/git-proc-guard.js'));
 
 // BRO-6175: shown to Codex only while the data-fix route is on (CODEX_DATA_FIXES_DISABLED unset).
 const DATA_FIX_RULE = `- Private data (shows.json, commercial.json, review fields) is never edited directly. Fix it with a plan: \`node scripts/new-fix-plan.js --id=<card id lowercase, e.g. bro-1234> --summary="..." --edit='<showId>.<field>=VALUE' --review-edit='<show>/<file>.json:<field>=VALUE'\` (--help for more; shape in scripts/pending-fix-actions.md). Allowed action types: data-edit, review-field-edit, drop-orphan-key, retitle-show, outlet-registry-flag, coverage-expectation-redecide; at most 25 actions. Keep the generated data/pending-fixes/<id>.json in your change (the runner applies it after the landing and checks it). Never put review text or reader contact details in a plan: the file is public. A fix needing anything else (add-show, retire-show, file moves, scraping) is not yours: say it in a REMAINING: line.`;
@@ -159,13 +160,21 @@ function sh(cmd, args, opts = {}) {
   // No git hooks, ever: core.hooksPath (set by npm ci's postinstall) is relative, so a hook
   // would run from the worktree, i.e. the code under review, with this process's env (BRO-5646).
   if (cmd === 'git') args = ['-c', 'core.hooksPath=/dev/null', ...args];
-  const r = spawnSync(cmd, args, { cwd: opts.cwd || ROOT, encoding: 'utf8', timeout: opts.timeoutMs || 600_000, env: opts.env || process.env, input: opts.input, maxBuffer: 64 * 1024 * 1024 });
-  return { code: r.status == null ? -1 : r.status, out: `${r.stdout || ''}${r.stderr || ''}`, stdout: r.stdout || '' };
+  const spawnOpts = { cwd: opts.cwd || ROOT, encoding: 'utf8', timeout: opts.timeoutMs || 600_000, env: opts.env || process.env, input: opts.input, maxBuffer: 64 * 1024 * 1024 };
+  // BRO-7458: network git (fetch|pull|clone) runs in its own process group, and a timeout kills
+  // the whole group: spawnSync alone killed only `git fetch` and left its index-pack writing a
+  // multi-GB tmp_pack under pid 1. codex/claude/npm are deliberately not detached.
+  const r = cmd === 'git' ? GPG.runGit(cmd, args, spawnOpts) : spawnSync(cmd, args, spawnOpts);
+  const timedOut = !!r.error && ['ETIMEDOUT', 'ENOBUFS'].includes(r.error.code);
+  return { code: r.status == null ? -1 : r.status, out: `${r.stdout || ''}${r.stderr || ''}${timedOut ? `\n(${r.error.code})` : ''}`, stdout: r.stdout || '', timedOut };
 }
 function git(args, cwd = WT) {
   let r = sh('git', args, { cwd });
-  // fetch/push go over the network; GitHub answers 503 now and then.
-  for (let i = 0; r.code !== 0 && ['fetch', 'push'].includes(args[0]) && i < 4; i++) {
+  // fetch/push go over the network; GitHub answers 503 now and then. gitSubcommand so
+  // `-c gc.auto=0 fetch` counts too. A timeout is not retried (BRO-7458): a stalled transfer
+  // retried four times is 50 min of a wedged runner, not a 503.
+  const sub = GPG.gitSubcommand(args);
+  for (let i = 0; r.code !== 0 && !r.timedOut && ['fetch', 'push'].includes(sub) && i < 4; i++) {
     Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 2000 * 2 ** i);
     r = sh('git', args, { cwd });
   }
@@ -354,6 +363,9 @@ function logDiskUsage(why) {
   try { for (const n of fs.readdirSync(path.join(ROOT, '.claude/worktrees'))) add(`worktrees/${n}`, path.join(ROOT, '.claude/worktrees', n)); } catch { /* none */ }
   try { for (const n of fs.readdirSync(os.tmpdir())) add(`tmp/${n}`, path.join(os.tmpdir(), n)); } catch { /* none */ }
   add('CODEX_HOME', CODEX_HOME);
+  // BRO-7458: temp packs an orphaned index-pack writes (3.4 GB seen), in the shared git dir.
+  const common = GPG.gitCommonDirOf(ROOT);
+  if (common) rows.push(['git pack temp (objects/pack)', Math.round(GPG.tempPackBytes(common) / 1024)]);
   const top = rows.sort((a, b) => b[1] - a[1]).slice(0, 8).map(([l, k]) => `${l} ${(k / 1e6).toFixed(1)}G`);
   log(`disk usage (${why}): ${top.join(', ') || 'nothing measurable'}`);
 }
@@ -377,6 +389,14 @@ function pruneDisk() {
   const stale = R.staleTmpEntries(entries, Date.now());
   // A test that ignored TMPDIR leaves sandbox-owned entries: EACCES here, never a crash.
   for (const name of stale) { try { fs.rmSync(path.join(tmp, name), { recursive: true, force: true }); } catch (e) { log(`pruneDisk: ${name} kept (${e.code || e.message})`); } }
+  // BRO-7458: kill orphaned git network chains (their parent fetch died) and reap the temp packs
+  // nothing holds. Before pruneClaudeWorktrees, whose own fetch could otherwise fail on a full disk.
+  // Fail closed: an incomplete /proc scan keeps every file and kills nothing.
+  const common = GPG.gitCommonDirOf(ROOT);
+  if (common) {
+    try { log(`pruneDisk: ${GPG.summarizePrune(GPG.pruneGitTempPacks({ gitCommonDir: common }))}`); }
+    catch (e) { log(`pruneDisk: git temp packs: check failed (${e.message})`); }
+  } else log('pruneDisk: git temp packs: no git common dir, skipped');
   // Safe beside a sibling slot's `git worktree add`: git locks a worktree while it initializes.
   sh('git', ['worktree', 'prune'], { cwd: ROOT });
   pruneClaudeWorktrees();

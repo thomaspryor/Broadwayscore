@@ -20,6 +20,7 @@
  */
 
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./git-proc-guard.js');
 const { TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
 const { windowStart, STUCK_AGE_DAYS } = require('./backlog-inflow-ratio.js');
 const { landedPerLane, LANDED_LOG_FORMAT } = require('./codex-runner.js');
@@ -234,7 +235,9 @@ async function fetchInflowBySource({ graphql, now = new Date(), teamKey = TEAM_K
  * Codex vs Claude cards landed on main in the last 24h and 7 days, from ONE git log (the
  * history fetch is the slow part: ~12k commits/week, mostly bots). -> { d1, d7 } or null.
  */
-function readLanded({ cwd = process.cwd(), exec = execFileSync, nowMs = Date.now() } = {}) {
+// BRO-7458: git goes through runGitOrThrow, so a timed-out deepen fetch has its whole process group killed.
+const execGit = (cmd, args, opts) => (cmd === 'git' ? runGitOrThrow(args, opts) : execFileSync(cmd, args, opts));
+function readLanded({ cwd = process.cwd(), exec = execGit, nowMs = Date.now() } = {}) {
   const run = (args, timeout = 30_000) => exec('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout, maxBuffer: 64 * 1024 * 1024 });
   // CI checks out depth 1; deepen to 7 days without blobs. Only when shallow: --shallow-since
   // on a full clone would truncate its history. Fail-soft.

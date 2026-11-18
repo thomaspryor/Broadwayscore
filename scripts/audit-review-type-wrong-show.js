@@ -45,6 +45,7 @@ const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 const { safeWriteReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { verifyReviewTextsPushed } = require('./lib/verify-review-texts-pushed');
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
 const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./lib/review-texts-dir');
 const { repoDepthArgs } = require('./lib/shallow-fetch-args');
 
@@ -158,7 +159,7 @@ function verifyPushed() {
     // unbounded-fetch-ok: bound arrives via the extraArgs spread below, same
     // shape/precedent as scripts/lib/verify-review-texts-pushed.js's own fetch
     // (see that file's identical comment for the full rationale).
-    execFileSync('git', ['fetch', 'origin', 'main', ...extraArgs, '-q'], { cwd: dir, stdio: ['ignore', 'ignore', 'pipe'], timeout: 30000 });
+    runGitOrThrow(['fetch', 'origin', 'main', ...extraArgs, '-q'], { cwd: dir, stdio: ['ignore', 'ignore', 'pipe'], timeout: 30000 });
   } catch (e) {
     console.error(`FAIL: git fetch origin main failed in ${dir}: ${e.message}`);
     process.exit(1);

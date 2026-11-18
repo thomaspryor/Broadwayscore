@@ -56,6 +56,7 @@ import { createRequire } from 'node:module';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
+const { runGitOrThrow } = cjsRequire('../lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
 const { buildFromAddress, buildReplyToAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { shallowFetchArgs } = cjsRequire(path.join(repo, 'scripts/lib/shallow-fetch-args.js'));
 // NOTE: deliberately NO send-lock here. The GitHub-backed send-lock (used by the
@@ -263,7 +264,7 @@ function dataRepoStaleness() {
       : 0;
     const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
     // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-    execFileSync('git', ['-C', dir, 'fetch', ...depthArgs, '--quiet'], { stdio: 'ignore', timeout: 30000 });
+    runGitOrThrow(['-C', dir, 'fetch', ...depthArgs, '--quiet'], { stdio: 'ignore', timeout: 30000 });
     const behind = parseInt(execFileSync('git', ['-C', dir, 'rev-list', '--count', 'HEAD..@{u}'], { encoding: 'utf8' }).trim(), 10);
     return { dir, behind: Number.isFinite(behind) ? behind : null };
   } catch (e) {

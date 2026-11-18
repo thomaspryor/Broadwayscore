@@ -16,7 +16,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./git-proc-guard.js');
 
 const FETCH_TIMEOUT_MS = 30000;
 const GIT_TIMEOUT_MS = 10000;
@@ -24,7 +24,8 @@ const GIT_TIMEOUT_MS = 10000;
 const memo = new Map(); // once per process per clone: recheck batches don't fetch per card
 
 function git(cwd, args, timeout = GIT_TIMEOUT_MS) {
-  return execFileSync('git', args, { cwd, timeout, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  // BRO-7458: runGitOrThrow kills a timed-out fetch's whole process group (no orphan index-pack).
+  return runGitOrThrow(args, { cwd, timeout, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 }
 
 /**

@@ -37,6 +37,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   loadLinearMirrorMapping,
@@ -115,7 +116,7 @@ function listAllWorkBranchNames(repoDir, defaultBranch) {
     // worktree-branch-guard.js's identical `git fetch origin <default> -q`
     // call (listWorkBranchStatuses), which this function's batching is
     // modeled on.
-    execFileSync('git', ['fetch', 'origin', defaultBranch, '-q'], { cwd: repoDir, timeout: 20000 });
+    runGitOrThrow(['fetch', 'origin', defaultBranch, '-q'], { cwd: repoDir, timeout: 20000 });
   } catch { /* offline/timeout — use whatever origin/<defaultBranch> already points at locally */ }
   try {
     const raw = execFileSync('git', ['branch', '--list', 'worktree-*', 'job/*', '--format=%(refname:short)'], { cwd: repoDir, encoding: 'utf8' });

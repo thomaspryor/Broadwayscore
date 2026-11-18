@@ -54,6 +54,7 @@ const { runGhWithFallback, decideLandRetry, MAX_ATTEMPTS } = require('./land-ret
 const { readLatestLandRun } = require('./land-run-identity');
 const { SITE_PATHS } = require('./should-deploy-gate');
 const { repoDepthArgs } = require('./shallow-fetch-args');
+const { runGitOrThrow } = require('./git-proc-guard');
 
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 // BRO-6015: past this, a parked run likely means the sweep itself is down.
@@ -233,7 +234,8 @@ function fetchMain() {
   try {
     const depthArgs = repoDepthArgs({ repoRoot: process.cwd() });
     // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-    execFileSync('git', ['fetch', '-q', ...depthArgs, 'origin', 'main'], { stdio: ['ignore', 'ignore', 'pipe'], timeout: 120_000 });
+    // BRO-7458: runGitOrThrow kills the timed-out fetch's whole process group.
+    runGitOrThrow(['fetch', '-q', ...depthArgs, 'origin', 'main'], { stdio: ['ignore', 'ignore', 'pipe'], timeout: 120_000 });
     return true;
   } catch (err) {
     console.error(`${stamp()} could not fetch origin/main: ${firstLine(err.message || err)}`);

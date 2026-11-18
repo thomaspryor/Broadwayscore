@@ -2959,6 +2959,9 @@ on:
       - 'scripts/lib/gh-api-client.js'
       - 'data/audit/direct-github-api-baseline.json'
       - 'tests/unit/gh-api-wrapper.test.mjs'
+      # Unguarded git network timeout audit (BRO-7458), advisory; walker path-listed so a solo
+      # edit triggers CI (its scanner + test ride scripts/lib/** and tests/**).
+      - 'scripts/audit-unguarded-git-network-timeout.js'
       # Browserbase daily-cap constant (Scraping v2 T13). Its own doc comment
       # names it as THE single edit site for the 250->100->60 step-down, so a
       # solo edit must not get zero CI (feedback_test_yml_push_path_allowlist).
@@ -5111,6 +5114,16 @@ jobs:
         run: |
           node scripts/audit-direct-github-api.js
           timeout -k 10 300 node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
+
+      - name: Unguarded git network timeout audit (BRO-7458, advisory)
+        # Flags a sync git fetch/pull/clone with a timeout that skips
+        # scripts/lib/git-proc-guard.js (runGit/runGitOrThrow): node kills only the
+        # direct child on timeout, and the orphaned index-pack filled the disk with a
+        # 3.4 GB tmp_pack. Advisory first (CLAUDE.md section 19).
+        continue-on-error: true
+        run: |
+          node scripts/audit-unguarded-git-network-timeout.js
+          timeout -k 10 300 node --test --test-timeout 120000 tests/unit/audit-unguarded-git-network-timeout.test.mjs
 
       - name: Page furniture class guard (BRO-7171, advisory)
         # Every outlet extractor, run on saved real pages

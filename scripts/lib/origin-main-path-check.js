@@ -5,6 +5,7 @@
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { repoDepthArgs } = require('./shallow-fetch-args.js');
+const { runGitOrThrow } = require('./git-proc-guard.js');
 
 const REPO = path.join(__dirname, '..', '..');
 
@@ -52,7 +53,8 @@ function fetchOriginMain({ repo = REPO, log = () => {}, attempts = 3, sleepMs = 
   for (let i = 1; i <= attempts; i++) {
     try {
       // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-      execFileSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: repo, timeout: 30000, stdio: 'pipe' });
+      // BRO-7458: runGitOrThrow kills the timed-out fetch's whole process group.
+      runGitOrThrow(['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: repo, timeout: 30000, stdio: 'pipe' });
       return true;
     } catch (err) {
       const text = `${err.message || ''} ${err.stderr || ''}`;

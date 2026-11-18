@@ -24,6 +24,7 @@
 
 const { Client } = require('@notionhq/client');
 const { execSync, spawn } = require('child_process');
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
 const path = require('path');
 const fs = require('fs');
 
@@ -508,7 +509,7 @@ function provisionActionWorktree(card) {
     // invoked by any GH Actions workflow (test.yml only mentions it in a
     // comment), so the shallow-checkout unbounded-fetch hazard the guard
     // warns about does not apply here.
-    execSync('git fetch origin main --quiet', { cwd: REPO_DIR, timeout: 60000, stdio: 'ignore' });
+    runGitOrThrow(['fetch', 'origin', 'main', '--quiet'], { cwd: REPO_DIR, timeout: 60000, stdio: 'ignore' });
     // Idempotent: clear any stale worktree/branch left by a previous run of this card.
     try { execSync(`git worktree remove --force "${wtPath}"`, { cwd: REPO_DIR, stdio: 'ignore' }); } catch {}
     try { execSync(`git branch -D "${branch}"`, { cwd: REPO_DIR, stdio: 'ignore' }); } catch {}

@@ -26,6 +26,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execSync } = require('child_process');
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
 const { classifyDataFreshness } = require('./lib/data-freshness');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -260,7 +261,7 @@ const wantFetch = !process.argv.includes('--no-fetch');
 let refsFetched = false;
 if (wantFetch) {
   try {
-    execSync('git fetch origin main', {
+    runGitOrThrow(['fetch', 'origin', 'main'], {
       cwd: PRIVATE_REPO, stdio: ['ignore', 'ignore', 'ignore'], timeout: 30000,
     });
     refsFetched = true;

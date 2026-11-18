@@ -180,11 +180,12 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
  */
 function makePathsOnMain({ repo = path.join(__dirname, '..', '..'), ref = 'origin/main' } = {}) {
   const { execFileSync } = require('child_process');
+  const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: group kill on timeout
   const { extractCheckPaths } = require('./check-paths.js');
   return function pathsOnMain(cmd) {
     const paths = extractCheckPaths(cmd).filter((p) => p && !p.startsWith('-') && !/[*?]/.test(p));
     if (!paths.length) return { missing: [] };
-    try { execFileSync('git', ['fetch', '-q', '--no-tags', '--depth=1', 'origin', 'main'], { cwd: repo, stdio: 'ignore', timeout: 20000 }); } catch { /* best effort: stale ref only risks an advisory warning */ }
+    try { runGitOrThrow(['fetch', '-q', '--no-tags', '--depth=1', 'origin', 'main'], { cwd: repo, stdio: 'ignore', timeout: 20000 }); } catch { /* best effort: stale ref only risks an advisory warning */ }
     try { execFileSync('git', ['rev-parse', '--verify', '-q', ref], { cwd: repo, stdio: 'ignore', timeout: 10000 }); } catch { return { missing: [] }; }
     const missing = [];
     for (const p of paths) {

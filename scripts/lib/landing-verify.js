@@ -64,12 +64,14 @@
  *   scripts/gc-merged-worktrees.sh:457  rc=2 -> falls through to `git cherry`
  */
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./git-proc-guard.js');
 
 const GIT_NET_TIMEOUT_SEC = Number(process.env.GIT_NET_TIMEOUT_SEC || 90);
 
 function git(args, cwd, timeoutMs = GIT_NET_TIMEOUT_SEC * 1000) {
   try {
-    return execFileSync('git', args, {
+    // BRO-7458: a network git that times out has its whole process group killed.
+    return runGitOrThrow(args, {
       cwd,
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
