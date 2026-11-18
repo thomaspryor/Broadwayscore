@@ -170,27 +170,12 @@ case "$tool_name" in
       }
     )
     [ -z "$targets" ] && exit 0
-    # A relative target after a leading `cd DIR &&` (or `cd DIR;`) resolves
-    # against DIR, not the session cwd: `cd <worktree> && sed -i ... scripts/x.js`
-    # was blocked as a main-checkout write (false positive, 2026-11-18). A later
-    # second cd is not followed (fail-open, like the rest of this hook).
-    base=$(pwd -P)
-    cd_dir=$(printf '%s' "$scan" | sed -nE '1s/^[[:space:]]*cd[[:space:]]+([^[:space:];&|]+)[[:space:]]*(&&|;).*/\1/p')
-    cd_dir="${cd_dir%\"}"; cd_dir="${cd_dir#\"}"; cd_dir="${cd_dir%\'}"; cd_dir="${cd_dir#\'}"
-    case "$cd_dir" in
-      "~"|"~/"*) cd_dir="$HOME${cd_dir#\~}" ;;
-    esac
-    if [ -n "$cd_dir" ]; then
-      base=$(cd "$cd_dir" 2>/dev/null && pwd -P) || base=$(pwd -P)
-    fi
+    # Relative targets resolve against a leading `cd DIR &&|;` (2026-11-18); dirs normalized so ./scripts/x cannot dodge the scope check.
+    base=$(pwd -P); d=$(printf '%s' "$scan" | sed -nE '1s/^[[:space:]]*cd[[:space:]]+([^[:space:];&|]+)[[:space:]]*(&&|;).*/\1/p' | tr -d "\"'")
+    case "$d" in "~"|"~/"*) d="$HOME${d#\~}" ;; esac
+    [ -n "$d" ] && { base=$(cd "$d" 2>/dev/null && pwd -P) || base=$(pwd -P); }
     while IFS= read -r t; do
-      [ -z "$t" ] && continue
-      case "$t" in
-        /*) abs="$t" ;;
-        *)  abs="$base/$t" ;;
-      esac
-      # Normalize the directory (./, ../, //, symlinks) so the text-prefix scope
-      # check in resolve_and_check cannot be dodged by `> ./scripts/x.js`.
+      case "$t" in "") continue ;; /*) abs="$t" ;; *) abs="$base/$t" ;; esac
       tdir=$(cd "$(dirname -- "$abs")" 2>/dev/null && pwd -P) && abs="$tdir/$(basename -- "$abs")"
       resolve_and_check "$abs"
       [ "$BLOCK" = "1" ] && break
