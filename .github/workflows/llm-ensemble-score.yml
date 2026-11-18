@@ -210,6 +210,19 @@ jobs:
           fetch-depth: 0
           filter: blob:none
 
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # BRO-7747: start npm ci now so it overlaps the two data checkouts below
+      # (they use only Node built-ins). "Install dependencies" waits for it.
+      - name: Start npm ci in the background
+        run: |
+          nohup setsid bash -c 'npm ci > "$RUNNER_TEMP/npm-ci.log" 2>&1; echo $? > "$RUNNER_TEMP/npm-ci.exit"' > /dev/null 2>&1 &
+          echo "npm ci started (pid $!)"
+
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
         with:
@@ -222,14 +235,20 @@ jobs:
         uses: ./.github/actions/opening-night-lease-sync
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
-      - name: Setup Node.js
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
-        with:
-          node-version: '22'
-          cache: 'npm'
-
+      # BRO-7747: npm ci (~2 min) was started in the background right after the
+      # repo checkout and ran alongside the core-data / review-texts checkouts
+      # (~75s). Wait for it here; on failure, run it once in the foreground.
       - name: Install dependencies
-        run: npm ci
+        run: |
+          EXIT_FILE="${RUNNER_TEMP}/npm-ci.exit"
+          for _ in $(seq 1 600); do [ -f "$EXIT_FILE" ] && break; sleep 1; done
+          CODE=$(cat "$EXIT_FILE" 2>/dev/null || echo missing)
+          echo "background npm ci exit: $CODE"
+          if [ "$CODE" != "0" ]; then
+            tail -40 "${RUNNER_TEMP}/npm-ci.log" 2>/dev/null || true
+            echo "::warning::background npm ci did not succeed ($CODE); running it in the foreground"
+            npm ci
+          fi
 
       - name: Refresh review-texts before scoring
         env:
@@ -861,6 +880,8 @@ jobs:
         if: ${{ github.event.inputs.chain != 'true' && github.event_name != 'schedule' && github.event.inputs.dry_run != 'true' && steps.check-changes.outputs.has_changes == 'true' && steps.push-review-texts.outputs.pushed == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FAST_REBUILD: ${{ github.event.inputs.fast_rebuild }}
+          SHOW_IDS: ${{ github.event.inputs.show_id }}
         run: |
           # Two rebuild targets:
           #   - rebuild-reviews.yml (default): full ~15 min pipeline. Shared
@@ -886,9 +907,15 @@ jobs:
           # shellcheck source=scripts/lib/dispatch-with-retry.sh
           source scripts/lib/dispatch-with-retry.sh
 
-          if [ "${{ github.event.inputs.fast_rebuild }}" = "true" ]; then
+          # BRO-7747: a press-night show takes the fast lane even when the caller
+          # did not pass fast_rebuild (ingest-urls, watchdog, hand dispatches
+          # all omit it). Fails safe to the old input-only rule.
+          TARGET=$(node scripts/lib/rebuild-target.js 2>/dev/null) || TARGET=""
+          TARGET_WF=$(printf '%s\n' "$TARGET" | sed -n 1p)
+          echo "Rebuild target: ${TARGET_WF:-unknown} ($(printf '%s\n' "$TARGET" | sed -n 2p))"
+          if [ "${{ github.event.inputs.fast_rebuild }}" = "true" ] || [ "$TARGET_WF" = "rebuild-fast.yml" ]; then
             REBUILD_WF="rebuild-fast.yml"
-            REASON="Auto-triggered after LLM scoring (fast path — admin ingest)"
+            REASON="Auto-triggered after LLM scoring (fast path — $(printf '%s\n' "$TARGET" | sed -n 2p))"
             echo "Triggering $REBUILD_WF to incorporate new scores (shared group coalesces; no skip-if-active check)..."
             dispatch_with_retry "$REBUILD_WF" -f reason="$REASON" || true
             exit 0
