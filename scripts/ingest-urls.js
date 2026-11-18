@@ -281,7 +281,7 @@ async function main() {
                 if (datedText && datedText.length >= 200) {
                   fullText = require('./lib/page-furniture').stripPageFurniture(datedText);
                   fetchMethod = dated.source;
-                  try { criticName = extractAuthorFromHtml(dated.content, datedText, { url: ob.url }) || null; } catch { criticName = null; }
+                  try { criticName = readPageByline({ html: dated.content, text: datedText, url: ob.url, outletId }).criticName || null; } catch { criticName = null; }
                   bylineConflict = null;
                   try { publishDate = extractPublishDate(dated.content, ob.url) || null; } catch { publishDate = null; }
                   originalUrl = url;

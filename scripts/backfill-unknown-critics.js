@@ -50,6 +50,7 @@ const outletIdFilter = outletIdArg ? new Set(outletIdArg.split('=')[1].split(','
 
 const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
+const { readPageBylineForShow } = require('./lib/page-byline-for-show');
 const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
@@ -469,7 +470,8 @@ async function phaseB(unknownCritics) {
     consecutiveFetchErrors = 0;
     let text = null;
     try { text = extractArticleTextFromUrl(result.html, u.url) || null; } catch { text = null; }
-    let critic = extractAuthorFromHtml(result.html, text || '', { url: u.url });
+    // BRO-7792: the shared reader (outlet rules, printed credit), not extractAuthorFromHtml directly.
+    let critic = readPageBylineForShow({ html: result.html, text: text || '', url: u.url, outletId: u.outletId && u.outletId !== 'unknown' ? u.outletId : undefined }).criticName;
     if (critic && isRejectName(critic)) critic = null;
 
     if (!critic) {

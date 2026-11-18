@@ -201,3 +201,32 @@ test('sweep-stored-bylines restores one saved console.log, never a per-worker co
   assert.ok(/console\.log = realLog/.test(src), 'workers must restore realLog');
   assert.ok(!/const log = console\.log; console\.log = quiet/.test(src), 'a worker saves the current console.log (race)');
 });
+
+// BRO-7792 class guard: a script that names a critic from a fetched page goes through the shared reader
+// (readPageByline / readPageBylineForShow), not extractAuthorFromHtml directly (which skips the outlet
+// rules: TheaterMania's visible author tag, BRO-7745). New direct callers fail here; the ones below are
+// the known remainder, each with why it is not converted yet.
+test('no script reads a page byline with extractAuthorFromHtml directly (allowlist of known remainder)', () => {
+  const ALLOWED = new Map([
+    ['scripts/sweep-stored-bylines.js', 'diagnostic: records every reader side by side'],
+    ['scripts/lib/game-day/simulated-opening-night.js', 'game-day simulation'],
+    ['scripts/backfill-pv-critics.js', 'Playbill Verdict backfill, own outlet'],
+    ['scripts/backfill-critics-archive-org.js', 'archive.org backfill, no outlet context'],
+    ['scripts/replay-pending-bylines.js', 'replays stored fallbacks'],
+    ['scripts/backfill-unknown-critics.js', 'line reading stored fullText (no html)'],
+    ['scripts/lib/page-byline.js', 'the shared reader itself'],
+    ['scripts/lib/page-byline-for-show.js', 'the shared reader wrapper'],
+  ]);
+  const found = [];
+  const walk = (d) => {
+    for (const e of fs.readdirSync(path.join(ROOT, d), { withFileTypes: true })) {
+      const rel = `${d}/${e.name}`;
+      if (e.isDirectory()) { if (!/node_modules|fixtures/.test(e.name)) walk(rel); continue; }
+      if (!/\.js$/.test(e.name) || /\.test\./.test(e.name) || rel === 'scripts/lib/content-quality.js') continue;
+      if (/\bextractAuthorFromHtml\(/.test(fs.readFileSync(path.join(ROOT, rel), 'utf8'))) found.push(rel);
+    }
+  };
+  walk('scripts');
+  const extra = found.filter((f) => !ALLOWED.has(f));
+  assert.deepEqual(extra, [], `direct extractAuthorFromHtml callers (use readPageByline / readPageBylineForShow): ${extra.join(', ')}`);
+});
