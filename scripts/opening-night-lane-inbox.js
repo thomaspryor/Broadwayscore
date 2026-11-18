@@ -58,6 +58,19 @@ function drainPlan(entries) {
   return { open, lines: open.map((e) => formatIngestLine({ url: e.url, outlet: e.outletId || null, critic: e.critic || null })) };
 }
 
+/** The show's active lease on the remote store (any holder), {unknown:true} when the store cannot be read, else null. */
+function liveLease(show, repoDir = REPO_DIR) {
+  try {
+    const { state } = require('./lib/opening-night-lane/lease-store').readRemote({ repoDir });
+    return require('./lib/opening-night-lane/lease').activeLeaseFor(state, show);
+  } catch (e) {
+    return { holder: `unknown (lease store unreadable: ${String((e && e.message) || e).slice(0, 80)})`, unknown: true };
+  }
+}
+
+/** Pure: drain may dispatch only when no lease (known or unknown) holds the show. */
+function drainAllowed(lease) { return !lease; }
+
 function drain() {
   const show = arg('show');
   if (!show) die('usage: drain --show=SHOW_ID [--dispatch]');
@@ -65,6 +78,16 @@ function drain() {
   if (!open.length) { console.log(`Nothing to drain for ${show}.`); return; }
   console.log(`${open.length} inbox URL(s) the lane did not publish:\n${lines.join('\n')}`);
   if (!flag('dispatch')) { console.log('(dry run: pass --dispatch to send them to ingest-urls.yml)'); return; }
+  // With the lease still held (release failed and only warned), ingest-urls would route these straight back into the
+  // inbox, where an entry already marked drained counts as a duplicate and is dropped. Leave them waiting instead.
+  // A live read of the lease store, never the job's local copy, and counting this run's own lease too (the night job
+  // sets OPENING_NIGHT_LANE_HOLDER, which leaseSkipReason ignores, so a failed release of our own lease would pass).
+  const held = liveLease(show);
+  if (!drainAllowed(held)) {
+    console.log(`::warning::lane inbox: ${show} is still held by the opening-night lane (${held.holder || 'unknown'}); ${open.length} URL(s) left waiting. Drain again once the lease is gone.`);
+    process.exitCode = 3;
+    return;
+  }
   require('./lib/rest-dispatch').dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: show, urls: lines.join('\n'), caller: 'lane-inbox-drain' } });
   const res = inbox.markSync({ repoDir: REPO_DIR }, open.map((e) => ({ id: e.id, status: 'drained', reason: 'sent to ingest-urls after the lane ended' })));
   if (!res.ok) console.log(`::warning::drained ${open.length} URL(s) to ingest-urls but the inbox status write failed (${res.reason}); a second drain would send them again`);
@@ -78,4 +101,4 @@ if (require.main === module) {
   else die('usage: opening-night-lane-inbox.js add|list|drain (see --help)');
 }
 
-module.exports = { drainPlan };
+module.exports = { drainPlan, drainAllowed, liveLease };
