@@ -20,6 +20,9 @@ import { marketLabel, type DiaryShowDetail } from '@/lib/diary-show-types';
 import { formatShowDate } from '@/lib/date-utils';
 import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import { isRated, NOT_RATED_LABEL } from '@/lib/unrated';
+import { saveSignedOutRating } from '@/lib/signed-out-rating';
+import { useLocalRatings } from '@/hooks/useLocalRatings';
+import { LOCAL_RATINGS_MIGRATED_EVENT } from '@/components/user/LocalRatingsMigrator';
 
 const ShowPageWatchlistButton = dynamic(() => import('@/components/user/ShowPageWatchlistButton'), { ssr: false });
 
@@ -53,7 +56,20 @@ function Inner({ show }: { show: DiaryShowDetail }) {
     getReviewsForShow(show.id).finally(() => setReviewsSynced(true));
   }, [isAuthenticated, user, show.id, getReviewsForShow]);
 
+  // A rating saved here while signed out lands in the account after sign-in
+  // (LocalRatingsMigrator); refetch then, as the show page does.
+  useEffect(() => {
+    if (!isAuthenticated || !user) return;
+    const onMigrated = () => { getReviewsForShow(show.id); };
+    document.addEventListener(LOCAL_RATINGS_MIGRATED_EVENT, onMigrated);
+    return () => document.removeEventListener(LOCAL_RATINGS_MIGRATED_EVENT, onMigrated);
+  }, [isAuthenticated, user, show.id, getReviewsForShow]);
+
   const latestReview = reviews[0] || null;
+  // A signed-out rating saved on this device (BRO-7690): shown until sign-in
+  // moves it into the account, so a dismissed sign-in doesn't look like a lost save.
+  const { getLocalRating } = useLocalRatings();
+  const localRating = !isAuthenticated ? getLocalRating(show.id) : null;
 
   // Draft carried across sign-in (rating + typed note + date + target review
   // id) — without this, a signed-out user's typed rating/notes vanish the
@@ -100,9 +116,12 @@ function Inner({ show }: { show: DiaryShowDetail }) {
       if (authLoading) {
         throw new Error('Still restoring your session. Tap Retry in a moment.');
       }
-      saveDraft(data);
+      // Same signed-out save as the show page (BRO-7690): keep the rating on
+      // this device first so a dismissed sign-in loses nothing, then offer
+      // sign-in. LocalRatingsMigrator moves it into the account.
+      saveSignedOutRating(show.id, data, 'diary_page');
       showSignIn('rating', 'diary');
-      return 'auth-gated';
+      return 'saved-local';
     }
     if (data.reviewId) {
       const filters = `id=eq.${data.reviewId}&user_id=eq.${user.id}`;
@@ -129,7 +148,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     }
     await getReviewsForShow(show.id);
-  }, [user, authLoading, show.id, getReviewsForShow, showSignIn, showToast, saveDraft]);
+  }, [user, authLoading, show.id, getReviewsForShow, showSignIn, showToast]);
 
   // My Shows posters no longer carry a delete button (BRO-4558), so the rating
   // editor here is the delete path for diary-only shows, same as the show page.
@@ -230,6 +249,29 @@ function Inner({ show }: { show: DiaryShowDetail }) {
               {latestReview.review_text && <p className="text-xs text-fg-muted mt-1 italic truncate">{latestReview.review_text}</p>}
             </div>
             <button type="button" onClick={handleEditClick} className="text-xs text-gray-400 hover:text-white flex-shrink-0">Edit</button>
+          </div>
+        ) : localRating ? (
+          <div className="flex items-center justify-between gap-3" data-testid="diary-local-rating">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                {isRated(localRating.rating) ? (
+                  <>
+                    <StarRating rating={localRating.rating} onRatingChange={() => {}} size="md" readOnly hideLabel />
+                    <span className="text-white font-bold">{localRating.rating.toFixed(1)}</span>
+                  </>
+                ) : (
+                  <span className="text-fg-muted" data-testid="not-rated">{NOT_RATED_LABEL}</span>
+                )}
+              </div>
+              <p className="text-xs text-gray-400 mt-1">Saved on this device. Sign in to keep it.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => showSignIn('rating', 'diary')}
+              className="btn-primary text-sm whitespace-nowrap flex-shrink-0"
+            >
+              Keep it
+            </button>
           </div>
         ) : (
           <button type="button" onClick={handleRateClick} className="btn-primary text-sm">
