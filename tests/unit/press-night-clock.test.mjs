@@ -101,9 +101,10 @@ test('CLI: sleep-plan and confirm print what the workflow reads', async () => {
   assert.equal(run('confirm', `--shows-file=${f}`, '--show=a-nov8', '--night=2026-11-08', '--now=2026-11-01T00:00:00Z', `--kind=${line[4]}`, '--categories=broadway'), 'replan');
   // BRO-7779: the default plan is every lane market, so the Off-Broadway night comes first; and the action CLI.
   assert.equal(run('next', `--shows-file=${f}`, '--now=2026-11-01T00:00:00Z').split(' ')[0], 'ob-nov4');
-  assert.equal(run('action', '--kind=tk', '--category=off-west-end'), 'orchestrator west-end 230');
-  assert.equal(run('action', '--kind=ek', '--category=off-broadway'), 'orchestrator broadway 30');
-  assert.equal(run('action', '--kind=pf3', '--category=broadway'), 'preflight - 30');
+  assert.equal(run('action', '--kind=tk', '--category=off-west-end'), 'orchestrator west-end 100 240');
+  assert.equal(run('action', '--kind=ek', '--category=broadway', '--embargo-at=2026-11-09T03:00:00Z', '--now=2026-11-08T22:30:00Z'), 'orchestrator broadway 30 150');
+  assert.equal(run('action', '--kind=ek', '--category=off-broadway'), 'orchestrator broadway 30 240');
+  assert.equal(run('action', '--kind=pf3', '--category=broadway'), 'preflight - 30 240');
 });
 
 test('confirmKick: embargo moved earlier kicks at once; another show now first replans; past KICK_LATE replans', () => {
@@ -134,10 +135,10 @@ test('BRO-6858: a Broadway night plans preflights at -24h and -3h, each with its
     ['kick', '2026-11-09T01:00:00.000Z'], ['tk', '2026-11-09T04:50:00.000Z'],
   ]);
   // A fired preflight never suppresses the kick (the reviewer's blocker: one shared key would have).
-  const fired = [kickKey('a-nov8', '2026-11-08', 'pf24'), kickKey('a-nov8', '2026-11-08', 'pf3')];
+  const fired = [kickKey('a-nov8', '2026-11-08', 'pf24'), kickKey('a-nov8', '2026-11-08', 'pf3'), kickKey('a-nov8', '2026-11-08', 'ek')];
   assert.equal(nextKick(SHOWS.slice(1, 2), T('2026-11-09T00:30:00Z'), { fired }).kind, 'kick');
   // A clock re-seeded at -2h does not run the stale -24h preflight, only the -3h one (still inside its bound).
-  // ek is past its bound (-2h30) by then: the kick covers that stretch.
+  // ek is past its bound (-2h40) by then: the kick covers that stretch.
   const late = noSweep(planKicks(SHOWS.slice(1, 2), T('2026-11-09T01:00:00Z'))).map((x) => x.kind);
   assert.deepEqual(late, ['pf3', 'kick', 'tk']);
   assert.deepEqual(noSweep(planKicks(SHOWS.slice(1, 2), T('2026-11-09T02:30:00Z'))).map((x) => x.kind), ['kick', 'tk']);

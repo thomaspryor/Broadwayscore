@@ -121,11 +121,17 @@ function claimAndDispatch(showId, night, stage, holder) {
   });
 }
 
+/** BRO-7779: the orchestrator market for a show (a West End show must not get a Broadway run). */
+function marketFor(showId) {
+  const s = showsList().find((x) => (x.id || x.slug) === showId);
+  return (s && require('./lib/press-night-clock').MARKET_FOR[s.category]) || 'broadway';
+}
+
 function dispatchArgs(stage, showId, night) {
   if (stage === 'score') return ['workflow', 'run', 'llm-ensemble-score.yml', '-f', `show_id=${showId}`];
   if (stage === 'rebuild') return ['workflow', 'run', 'rebuild-fast.yml', '-f', `reason=press-night watchdog ${showId} ${night} (BRO-6858)`];
   if (stage === 'deploy') return ['workflow', 'run', 'vercel-deploy.yml', '-f', 'source=press-night-watchdog'];
-  if (stage === 'orchestrator') return ['workflow', 'run', 'opening-night-orchestrator.yml', '-f', `show_id=${showId}`, '-f', 'market=broadway'];
+  if (stage === 'orchestrator') return ['workflow', 'run', 'opening-night-orchestrator.yml', '-f', `show_id=${showId}`, '-f', `market=${marketFor(showId)}`];
   throw new Error(`unknown stage ${stage}`);
 }
 

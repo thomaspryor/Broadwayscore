@@ -38,7 +38,12 @@ function collectorsFor(show, { preembargo = false, laneRuns = true, categories =
   const intervals = [];
   for (const k of kicks) {
     const a = clock.kindAction(k.kind, k.category);
-    if (a.action === 'orchestrator') intervals.push({ fromMs: k.kickAtMs, toMs: k.kickAtMs + ORCH_RUN_MIN * MIN, who: `orchestrator:${k.kind}` });
+    if (a.action === 'orchestrator') {
+      // The workflow's dedupe and loop length, from the same functions it calls.
+      const starts = intervals.filter((i) => i.who.startsWith('orchestrator:')).map((i) => i.fromMs);
+      if (clock.dedupedBy(k.kind, k.kickAtMs, starts)) continue;
+      intervals.push({ fromMs: k.kickAtMs, toMs: k.kickAtMs + clock.runMinutes(k.kind, t.embargoMs, k.kickAtMs) * MIN, who: `orchestrator:${k.kind}` });
+    }
     else if (a.action === 'sweep') intervals.push({ fromMs: k.kickAtMs, toMs: k.kickAtMs + SWEEP_RUN_MIN * MIN, who: `sweep:${k.kind}` });
   }
   if (laneRuns) {
