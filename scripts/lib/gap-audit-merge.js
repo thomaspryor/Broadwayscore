@@ -333,9 +333,8 @@ function priorCensusUrls(prevRow) {
 
 /**
  * isRiskyChange predicate for blastRadiusCheck({ ... }) over riskStateMap()
- * output: risky iff EITHER count went DOWN, except (BRO-7445) a single live
- * candidate vanishing together with its candidate slot (live-1 AND cand-1, shows
- * with 4+ candidates). A verdict word changing while
+ * output: live losses and a zeroed census are risky; bounded candidate-only
+ * drops are tolerated. A verdict word changing while
  * both counts hold or grow (new gap discovered, or a gap got filled) is the
  * audit doing its job and is never risky.
  *
@@ -354,27 +353,14 @@ function isRiskyGapChange(prevState, nextState) {
   const [prevLive, prevCandidates] = counts(prevState);
   const [nextLive, nextCandidates] = counts(nextState);
   const aged = String(prevState).endsWith(':aged');
+  if (prevCandidates > 0 && nextCandidates === 0) return true;
+  if (nextLive < prevLive) return true;
   if (String(prevState).replace(/:aged$/, '').endsWith(':prior-schema')) return nextLive < prevLive;
-  const tol = candidateDropTolerance(prevCandidates);
-  const liveDrop = prevLive - nextLive;
   const candDrop = prevCandidates - nextCandidates;
-  // BRO-7445: the candidate that vanished (BRO-5516 SERP/aggregator nondeterminism) may
-  // itself have been a LIVE one, so liveCount and candidateCount fall together
-  // (the-great-gatsby-2024 28:29 -> 27:28 quarantined and went red). Tolerate it only when
-  // the live loss is fully explained by the tolerated candidate loss; a live drop with
-  // no matching candidate drop is a review file going missing (partial checkout) = risky.
-  if (liveDrop > 0 && !(liveDrop <= tol && candDrop >= liveDrop)) return true;
-  // BRO-7561: against a baseline older than BASELINE_MAX_AGE_DAYS the SERP/aggregator
-  // census has drifted on its own (BRO-5516 class: baselines from 2026-10-31 with 2 or 4
-  // candidates, zero tolerance, refused the write 2026-11-15). Candidate-only drops are
-  // discounted up to a bound; any live loss was already handled above and stays risky.
-  // Bounded (review finding): a dead SERP provider drops gap candidates while live holds, so
-  // the discount is at most max(1, 25%) of the baseline and never to zero candidates.
-  if (aged) {
-    if (prevCandidates > 0 && nextCandidates === 0) return true;
-    return candDrop > Math.max(1, Math.floor(prevCandidates * 0.25));
-  }
-  return candDrop > tol;
+  // Candidate-only SERP churn also occurs against fresh baselines. Keep the
+  // existing aged bound, but apply it only when live coverage is unchanged.
+  const tolerance = aged || nextLive === prevLive ? Math.max(1, Math.floor(prevCandidates * 0.25)) : candidateDropTolerance(prevCandidates);
+  return candDrop > tolerance;
 }
 
 /** Baselines older than this many days get candidate drops discounted (BRO-7561). */
@@ -384,9 +370,8 @@ const BASELINE_MAX_AGE_DAYS = 7;
  * A SERP census pass is not deterministic: re-running it can return one fewer
  * candidate with no coverage lost (the-bodyguard-tour-2026 2:9 -> 2:8 on
  * 2026-10-24 quarantined it and re-fired the blast-radius alert, BRO-5516).
- * Shows with 4+ candidates tolerate a single-candidate drop; a dead or partial
- * provider zeroes counts (more than one lost on any show this size, and the
- * 5% percentage threshold still applies across shows), and small censuses stay strict.
+ * When live coverage increases, shows with 4+ candidates tolerate a single
+ * candidate drop. Unchanged live coverage uses the wider bounded rule above.
  */
 function candidateDropTolerance(prevCandidates) {
   return prevCandidates >= 4 ? 1 : 0;

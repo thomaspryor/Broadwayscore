@@ -118,10 +118,10 @@ test('blast radius: a candidate drop against an older-rule row is not risky, a l
   assert.strictEqual(isRiskyGapChange('incomplete:4:9', 'incomplete:4:6'), true);
 });
 
-test('blast radius: one live candidate vanishing from the census is tolerated, lost review files are not (BRO-7445)', () => {
+test('blast radius: live candidate losses remain risky even when the census shrinks', () => {
   const { isRiskyGapChange } = require('./gap-audit-merge.js');
-  // the-great-gatsby-2024 2026-11-13: 28:29 -> 27:28 was quarantined and failed the run
-  assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:27:28'), false);
+  // A matching candidate loss cannot prove that a live review was not lost.
+  assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:27:28'), true);
   // live lost without a matching candidate loss = review file gone (partial checkout)
   assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:27:29'), true);
   assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:26:27'), true);
