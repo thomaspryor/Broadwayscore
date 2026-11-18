@@ -50,8 +50,9 @@ const outletIdFilter = outletIdArg ? new Set(outletIdArg.split('=')[1].split(','
 
 const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
+const { isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
+// BRO-7798: the shared byline reader (outlet rules first), never extractAuthorFromHtml directly.
 const { readPageBylineForShow } = require('./lib/page-byline-for-show');
-const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { isJunkCriticName, nameFromJunkCriticName } = require('./lib/byline-recovery');
@@ -445,7 +446,7 @@ async function phaseB(unknownCritics) {
       const printed = extractBylineFromText(u.outletId, u.data.fullText);
       const fromText = (printed && printed.known && printed.name)
         || (extractCriticFromFullText(u.outletId, u.data.fullText, { showTitle: u.data.showTitle }) || {}).name
-        || extractAuthorFromHtml(u.data.fullText, u.data.fullText, { url: u.url });
+        || readPageBylineForShow({ html: u.data.fullText, text: u.data.fullText, url: u.url, outletId: u.outletId && u.outletId !== 'unknown' ? u.outletId : undefined }).criticName;
       if (fromText && !isRejectName(fromText)) stored = { critic: fromText, method: 'stored-text' };
     }
     if (stored) {
