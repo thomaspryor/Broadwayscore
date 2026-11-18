@@ -333,8 +333,8 @@ function priorCensusUrls(prevRow) {
 
 /**
  * isRiskyChange predicate for blastRadiusCheck({ ... }) over riskStateMap()
- * output: live losses and a zeroed census are risky; bounded candidate-only
- * drops are tolerated. A verdict word changing while
+ * output: unexplained live losses and a zeroed census are risky; bounded
+ * candidate churn, including explained live losses, is tolerated. A verdict word changing while
  * both counts hold or grow (new gap discovered, or a gap got filled) is the
  * audit doing its job and is never risky.
  *
@@ -353,13 +353,16 @@ function isRiskyGapChange(prevState, nextState) {
   const [prevLive, prevCandidates] = counts(prevState);
   const [nextLive, nextCandidates] = counts(nextState);
   const aged = String(prevState).endsWith(':aged');
-  if (prevCandidates > 0 && nextCandidates === 0) return true;
-  if (nextLive < prevLive) return true;
   if (String(prevState).replace(/:aged$/, '').endsWith(':prior-schema')) return nextLive < prevLive;
+  if (prevCandidates > 0 && nextCandidates === 0) return true;
+  const liveDrop = prevLive - nextLive;
   const candDrop = prevCandidates - nextCandidates;
+  const baseTolerance = candidateDropTolerance(prevCandidates);
+  // BRO-7445: a bounded candidate loss can account for the same live loss.
+  if (liveDrop > 0 && !(liveDrop <= baseTolerance && candDrop >= liveDrop)) return true;
   // Candidate-only SERP churn also occurs against fresh baselines. Keep the
   // existing aged bound, but apply it only when live coverage is unchanged.
-  const tolerance = aged || nextLive === prevLive ? Math.max(1, Math.floor(prevCandidates * 0.25)) : candidateDropTolerance(prevCandidates);
+  const tolerance = aged || nextLive === prevLive ? Math.max(1, Math.floor(prevCandidates * 0.25)) : baseTolerance;
   return candDrop > tolerance;
 }
 

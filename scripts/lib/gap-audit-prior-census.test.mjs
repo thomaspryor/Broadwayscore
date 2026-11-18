@@ -75,7 +75,8 @@ test('fresh candidate-only churn is bounded and preserves live coverage', () => 
     [row('the-wash-regional-2026', 0, 4), 'complete:2:2', true],
     [row('fresh-churn', 2, 8), 'incomplete:2:6', false],
     [row('fresh-small', 1, 2), 'incomplete:1:1', false],
-    [row('live-loss', 5, 8), 'incomplete:4:7', true],
+    [row('live-loss', 5, 8), 'incomplete:4:7', false],
+    [row('unexplained-live-loss', 5, 8), 'incomplete:4:8', true],
     [row('zero', 0, 1), 'no-census-yet:0:0', true],
   ];
   for (const [previous, next, expected] of cases) {

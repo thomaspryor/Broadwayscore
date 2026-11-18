@@ -115,13 +115,15 @@ test('blast radius: a candidate drop against an older-rule row is not risky, a l
   const prev = 'incomplete:4:9:prior-schema';
   assert.strictEqual(isRiskyGapChange(prev, 'incomplete:4:6'), false);
   assert.strictEqual(isRiskyGapChange(prev, 'incomplete:3:6'), true);
+  assert.strictEqual(isRiskyGapChange('incomplete:0:9:prior-schema', 'no-census-yet:0:0'), false);
+  assert.strictEqual(isRiskyGapChange('incomplete:0:9:prior-schema:aged', 'no-census-yet:0:0'), false);
   assert.strictEqual(isRiskyGapChange('incomplete:4:9', 'incomplete:4:6'), true);
 });
 
-test('blast radius: live candidate losses remain risky even when the census shrinks', () => {
+test('blast radius: bounded live losses explained by candidate churn are tolerated', () => {
   const { isRiskyGapChange } = require('./gap-audit-merge.js');
-  // A matching candidate loss cannot prove that a live review was not lost.
-  assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:27:28'), true);
+  // BRO-7445: one live loss is explained by one tolerated candidate loss.
+  assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:27:28'), false);
   // live lost without a matching candidate loss = review file gone (partial checkout)
   assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:27:29'), true);
   assert.strictEqual(isRiskyGapChange('incomplete:28:29', 'incomplete:26:27'), true);
