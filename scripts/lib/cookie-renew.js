@@ -305,22 +305,12 @@ function resolveProbeMode({ browserOnly, probeStatus }) {
 }
 
 /**
- * The cookie-less control was answered with a bot challenge. Tolerated only
- * for probes that declare controlBlockedIsWalled; otherwise fail closed.
- * Precondition: the in-profile probe already read 'logged-in' (body >= minBody
- * plus auth cookie). Residual risk: a free probe url is undetectable for such
- * outlets; the auth-cookie check is then the only guard (BRO-7765).
- * @returns {'walled'|'unverified'}
- */
-function decideControlBlocked(probe) {
-  return probe && probe.controlBlockedIsWalled ? 'walled' : 'unverified';
-}
-
-/**
  * BRO-7716: what to do with the anonymous control result. Only fallback
  * outlets (fetch probe bot-walled) may tolerate an unreadable control, and
  * only for a read-only probe: with vacuity unverified a real run must not
- * write/push cookies or stamp the outlet healthy.
+ * write/push cookies or stamp the outlet healthy. A bot-blocked control
+ * (BRO-7765, 'control-blocked') is treated the same: blocking proves nothing
+ * about whether the url is free.
  * @returns {'proceed'|'fail'|'probe-only-ok'}
  */
 function decideControlUnverified({ fellBack, probeOnly }) {
@@ -537,7 +527,6 @@ module.exports = {
   planRenewal,
   resolveProbeMode,
   decideControlUnverified,
-  decideControlBlocked,
   authCookiesChanged,
   credentialGate,
   isCredsMissingStop,

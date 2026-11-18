@@ -67,11 +67,9 @@ const COOKIE_PROBES = {
     url: 'https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html',
     minBody: 4500,
     loginWallMarker: /gateway-content|regiwall|lready a subscriber/i,
-    // The cookie-less control gets a DataDome HTTP 403 on every run
-    // (BRO-7765, measured 2026-11-18), so vacuity can never be measured
-    // in-browser. The block is itself evidence the article is not served free
-    // to an anonymous visitor; the in-profile body must still pass minBody.
-    controlBlockedIsWalled: true,
+    // NOTE (BRO-7765): the cookie-less control gets a DataDome HTTP 403 on every
+    // run (measured 2026-11-18), so vacuity is unmeasurable in-browser. That is
+    // reported as 'control-blocked' and fails closed for write runs.
   },
   wapo: {
     url: 'https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/',

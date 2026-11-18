@@ -3,7 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-const { resolveProbeMode, planRenewal, decideControlUnverified, decideControlBlocked, trackUncertain } = createRequire(import.meta.url)('./cookie-renew.js');
+const { resolveProbeMode, planRenewal, decideControlUnverified, trackUncertain } = createRequire(import.meta.url)('./cookie-renew.js');
 
 test('fetch bot wall (error) falls back to in-browser probe, plan proceeds', () => {
   const m = resolveProbeMode({ browserOnly: false, probeStatus: 'error' });
@@ -39,10 +39,15 @@ test('bot-challenged control is named control-blocked, not a generic error', asy
   const r = await classifyWithControl(COOKIE_PROBES.nytimes, OK, { anon: async () => DD });
   assert.equal(r.status, 'control-blocked');
 });
-test('control-blocked is walled only for probes that declare it (nytimes yes, others fail closed)', () => {
-  assert.equal(COOKIE_PROBES.nytimes.controlBlockedIsWalled, true);
-  assert.equal(decideControlBlocked(COOKIE_PROBES.nytimes), 'walled');
-  assert.equal(decideControlBlocked(COOKIE_PROBES.wapo), 'unverified');
+test('a blocked control never proves a wall: no tolerance flag, fails closed for write runs', () => {
+  assert.equal(COOKIE_PROBES.nytimes.controlBlockedIsWalled, undefined);
+  assert.equal(decideControlUnverified({ fellBack: true, probeOnly: false }), 'fail');
+});
+test('a blocked second (slow) control is also control-blocked, not error', async () => {
+  const full = { html: '<html>article</html>', body: 'x'.repeat(6000), httpStatus: 200 };
+  let n = 0;
+  const r = await classifyWithControl(COOKIE_PROBES.nytimes, OK, { anon: async () => (n++ ? DD : full) });
+  assert.equal(r.status, 'control-blocked');
 });
 test('a challenge on the in-profile page is still an error, not control-blocked', async () => {
   const r = await classifyWithControl(COOKIE_PROBES.nytimes, DD, { anon: async () => DD });

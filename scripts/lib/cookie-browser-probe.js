@@ -87,16 +87,16 @@ function classify(probe, withCookies, withoutCookies) {
  * @returns {Promise<{status:string, control:{html:string, body:string}}>}
  */
 async function classifyWithControl(probe, withCookies, { anon = anonymousProbe } = {}) {
+  const blockedOnly = (c) => !!c && isBotChallenge(c.html) && !(withCookies && isBotChallenge(withCookies.html));
   let control = await anon(probe, {});
   // A cookie-less profile that DataDome/Cloudflare answers with a bot
   // challenge (NYT: HTTP 403, every run, BRO-7765) says nothing about whether
-  // the url is free. Name it, so callers can tell it from an unrecognised page.
-  if (control && isBotChallenge(control.html) && !(withCookies && isBotChallenge(withCookies.html))) {
-    return { status: 'control-blocked', control };
-  }
+  // the url is free. Name it so callers can tell it from an unrecognised page.
+  if (blockedOnly(control)) return { status: 'control-blocked', control };
   let status = classify(probe, withCookies, control);
   if (status === 'vacuous') {
     control = await anon(probe, { waitMs: 8000 });
+    if (blockedOnly(control)) return { status: 'control-blocked', control };
     status = classify(probe, withCookies, control);
   }
   return { status, control };
