@@ -36773,7 +36773,7 @@
       "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "scheduled-email-count:dup-opening-digest,dup-reddit-post-ready": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Scheduled sender delivered MORE THAN ONCE in a day: reddit-post-ready, opening-digest",
       "firstSeen": "2026-11-03T20:49:21.806Z",
@@ -36784,7 +36784,9 @@
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-6918",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-18T22:28:23.640Z",
+      "resolveReason": "BRO-6918: no repeat of this scheduled-email count violation"
     },
     "opening-night-cv-wrongproduction-unhandled-the-bridge-off-west-end-2026": {
       "status": "resolved",
