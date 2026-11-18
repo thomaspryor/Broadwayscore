@@ -40618,7 +40618,7 @@
       "resolvedAt": "2026-11-09T18:54:18.217Z"
     },
     "test-yml:data-validation-red:audit-review-contamination": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit review contamination",
       "firstSeen": "2026-11-09T20:22:26.713Z",
@@ -40631,7 +40631,9 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 4,
-      "sweptTracker": "BRO-7500"
+      "sweptTracker": "BRO-7500",
+      "resolvedAt": "2026-11-18T04:41:02.784Z",
+      "resolveReason": "step passed"
     },
     "land:land/bro-7239-hub-closing-guard": {
       "status": "resolved",
