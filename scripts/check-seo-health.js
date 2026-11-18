@@ -27,6 +27,7 @@ const { findCWVFieldAcknowledgment } = require('./lib/seo-cwv-ack');
 const { summarizeBotQueries, botDropExplainsDecline, isBotQueryRow } = require('./lib/seo-bot-query-signature');
 const { annotateFieldScope, scopeChanged } = require('./lib/seo-cwv-field-scope');
 const { sampleShowPages } = require('./lib/sample-show-pages');
+const { sampleIndexCoverageUrls, tallyByCategory } = require('./lib/index-coverage-sample');
 
 const HEALTH_PATH = path.join(__dirname, '../data/audit/seo-health.json');
 const HISTORY_PATH = path.join(__dirname, '../data/audit/seo-performance-history.json');
@@ -308,8 +309,11 @@ async function checkIndexCoverage(token, sampleUrls) {
   let indexed = 0;
   let notIndexed = 0;
   const issues = [];
+  const results = [];
 
-  for (const url of sampleUrls) {
+  for (const entry of sampleUrls) {
+    const url = typeof entry === 'string' ? entry : entry.url;
+    const category = typeof entry === 'string' ? undefined : entry.category;
     try {
       const result = await fetchT(
         'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
@@ -330,11 +334,12 @@ async function checkIndexCoverage(token, sampleUrls) {
       }
       const data = await result.json();
       const verdict = data.inspectionResult?.indexStatusResult?.verdict;
+      results.push({ category, indexed: verdict === 'PASS' });
       if (verdict === 'PASS') {
         indexed++;
       } else {
         notIndexed++;
-        issues.push({ url, verdict, coverageState: data.inspectionResult?.indexStatusResult?.coverageState });
+        issues.push({ url, category, verdict, coverageState: data.inspectionResult?.indexStatusResult?.coverageState });
       }
       // Rate limit: 600/min = 10/sec, stay well under
       await new Promise(r => setTimeout(r, 200));
@@ -351,7 +356,7 @@ async function checkIndexCoverage(token, sampleUrls) {
     issues.forEach(i => console.log(`  Issue: ${i.url} - ${i.verdict || i.error || 'unknown'}`));
   }
 
-  return { indexed, notIndexed, total, rate, issues: issues.slice(0, 20) };
+  return { indexed, notIndexed, total, rate, byCategory: tallyByCategory(results), issues: issues.slice(0, 20) };
 }
 
 // --- Check: Sitemap Status ---
@@ -1479,9 +1484,9 @@ async function main() {
   try {
     const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
     const shows = data.shows || data;
-    const showUrls = shows.map(s => `${SITE_HOST}/show/${s.slug}`);
-    const shuffled = showUrls.sort(() => Math.random() - 0.5);
-    sampleUrls = shuffled.slice(0, 30); // 30, not 50 — each is a sequential urlInspection call; keeps runtime under the job cap
+    // 30 URLs (quotas sum to 30; each is a sequential urlInspection call, keeps runtime under the job cap),
+    // stratified by category so unknown-to-Google regional/West End pages cannot dominate (BRO-7772).
+    sampleUrls = sampleIndexCoverageUrls(shows, SITE_HOST);
   } catch {
     sampleUrls = [`${SITE_HOST}/`, `${SITE_HOST}/show/hamilton`];
   }

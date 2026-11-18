@@ -2543,13 +2543,11 @@ function checkSEO() {
         }
         return { name: 'SEO: health', status: 'warn', message: `${anomalies.length} SEO warning(s): ${anomalies.map(describe).join('; ')}`, hint: 'Check data/audit/seo-health.json for details' };
       }
-      // Check index coverage — only warn if <50% (sample is 50 URLs from 700+ pages,
-      // skewed toward historical shows Google deprioritizes)
-      if (data.indexCoverage) {
-        const { indexed, total } = data.indexCoverage;
-        if (total > 0 && indexed / total < 0.5) {
-          return { name: 'SEO: health', status: 'warn', message: `${((indexed / total) * 100).toFixed(0)}% indexed (${indexed}/${total})` };
-        }
+      // Index coverage (BRO-7772): judged on the core Broadway/Off-Broadway sample only; regional and
+      // West End pages Google has not crawled yet stay in seo-health.json as information.
+      const cov = require('./lib/index-coverage-sample').indexCoverageVerdict(data.indexCoverage);
+      if (cov.warn) {
+        return { name: 'SEO: health', status: 'warn', message: cov.message };
       }
       return { name: 'SEO: health', status: 'pass', message: `Healthy (${formatAge(age)} ago)` };
     }),
