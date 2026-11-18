@@ -159,8 +159,9 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
   const statusFilter = statusParamToFilter[status];
 
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    startTransition(() => setFilters(prev => {
-      const next = { ...prev };
+    // Read the live URL so same-tick actions compose without replayable side effects.
+    startTransition(() => {
+      const next = filtersFromParams(new URLSearchParams(window.location.search));
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
           (next as Record<string, string>)[key] =
@@ -186,10 +187,9 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
       setOrDelete('q', next.q, !next.q);
 
       const paramString = urlParams.toString();
+      setFilters(next);
       replaceLocationSearch(paramString ? `/off-west-end?${paramString}` : '/off-west-end');
-
-      return next;
-    }));
+    });
   }, []);
 
   const clearAllFilters = useCallback(() => {

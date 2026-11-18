@@ -185,8 +185,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
   const statusFilter = statusParamToFilter[status];
 
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    startTransition(() => setFilters(prev => {
-      const next = { ...prev };
+    // Read the live URL so same-tick actions compose without replayable side effects.
+    startTransition(() => {
+      const next = filtersFromParams(new URLSearchParams(window.location.search));
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
           (next as Record<string, string>)[key] =
@@ -214,10 +215,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       setOrDelete('venue', next.venue, next.venue !== 'west-end-only');
 
       const paramString = urlParams.toString();
+      setFilters(next);
       replaceLocationSearch(paramString ? `/west-end?${paramString}` : '/west-end');
-
-      return next;
-    }));
+    });
   }, []);
 
   const clearAllFilters = useCallback(() => {

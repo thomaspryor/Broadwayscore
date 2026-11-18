@@ -69,8 +69,9 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
   const scoreMode: ScoreModeParam = 'critics';
 
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    startTransition(() => setFilters(prev => {
-      const next = { ...prev };
+    // Read the live URL so same-tick actions compose without replayable side effects.
+    startTransition(() => {
+      const next = filtersFromParams(new URLSearchParams(window.location.search));
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
           (next as Record<string, string>)[key] =
@@ -89,10 +90,9 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
       setOrDelete('sort', next.sort, next.sort === DEFAULT_SORT);
 
       const paramString = urlParams.toString();
+      setFilters(next);
       replaceLocationSearch(paramString ? `/opera?${paramString}` : '/opera');
-
-      return next;
-    }));
+    });
   }, []);
 
   // Upcoming shelf: shows not yet open, sorted by openingDate ascending

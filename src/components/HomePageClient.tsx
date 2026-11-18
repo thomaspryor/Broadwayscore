@@ -396,8 +396,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
 
   // Update state + URL without reload
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    startTransition(() => setFilters(prev => {
-      const next = { ...prev };
+    // Read the live URL so same-tick actions compose without replayable side effects.
+    startTransition(() => {
+      const next = filtersFromParams(new URLSearchParams(window.location.search));
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
           (next as Record<string, string>)[key] =
@@ -427,10 +428,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
       setOrDelete('obPicks', next.obPicks, next.obPicks !== 'hidden');
 
       const paramString = urlParams.toString();
+      setFilters(next);
       replaceLocationSearch(paramString ? `/?${paramString}` : '/');
-
-      return next;
-    }));
+    });
   }, []);
 
   // Clear all filters

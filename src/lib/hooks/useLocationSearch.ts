@@ -37,6 +37,8 @@ export function useLocationSearch(): string {
  * Next's HistoryUpdater rewrite this change away later.
  */
 export function replaceLocationSearch(url: string) {
+  // Re-selecting an active filter must not spend Safari's history write quota.
+  if (new URL(url, window.location.href).href === window.location.href) return;
   window.history.replaceState({}, '', url);
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
