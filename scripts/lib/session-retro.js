@@ -186,7 +186,7 @@ function analyze(lines) {
         }
       }
     }
-    if (e.type === 'user') {
+    if (e.type === 'user' && !e.isCompactSummary) { // BRO-7749: a compaction summary quotes earlier blocks; it is not one
       if (/Stop hook feedback|land preflight BLOCK/.test(txt)) {
         const git = /unpushed commit|uncommitted changes/.test(txt) ? ['git-check'] : [];
         const ve = txt.match(/\[VE:[A-Z0-9]+\]/g) || [];

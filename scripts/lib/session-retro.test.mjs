@@ -79,6 +79,8 @@ test('echoes in tool output, heredoc pushes and malformed lines are not signals 
     line({ type: 'assistant', timestamp: ts(3), message: { content: [{ type: 'tool_use', name: 'Bash', input: { command: "python3 - <<'E'\nx='git push # NO-VERIFY: because'\nE" } }] } }),
     line({ type: 'attachment', timestamp: ts(4), attachment: { type: 'hook_blocking_error' } }),
     line({ type: 'user', timestamp: ts(5), message: { content: 'Stop hook feedback: [VE:CLEARCLOSE] fix it' } }),
+    // BRO-7749: a compaction summary quotes earlier blocks ("Stop hook feedback ... [VE:LIVERUN]"); it is not a block.
+    line({ type: 'user', isCompactSummary: true, timestamp: ts(6), message: { content: 'Summary: fixture has a "Stop hook feedback ... [VE:LIVERUN]" message.' } }),
   ];
   const r = R.analyze(lines);
   assert.equal(r.restarts, 0);
