@@ -60,12 +60,13 @@ describe('ToggleBar renders visible click affordance (not a static label)', () =
 describe("homepage 'Broadway' market pill shows its dropdown affordance at every width", () => {
   const src = readFileSync(join(ROOT, 'src/components/MarketNav.tsx'), 'utf8');
 
-  test('market pill is a real button with a click handler and aria-haspopup', () => {
+  test('market pill is a real button with a click handler and expanded state', () => {
     const pillStart = src.indexOf('aria-label="Switch market"');
     assert.ok(pillStart !== -1, 'market pill not found in MarketNav.tsx');
     const pillBlockStart = src.lastIndexOf('<button', pillStart);
     assert.match(src.slice(pillBlockStart, pillStart), /onClick=\{\(\) => setIsOpen\(!isOpen\)\}/);
-    assert.match(src.slice(pillBlockStart, pillStart), /aria-haspopup="listbox"/);
+    assert.match(src.slice(pillBlockStart, pillStart), /aria-expanded=\{isOpen\}/);
+    assert.doesNotMatch(src.slice(pillBlockStart, pillStart), /aria-haspopup="listbox"/);
   });
 
   test('dropdown chevron is never fully hidden — only shrunk on narrow widths', () => {

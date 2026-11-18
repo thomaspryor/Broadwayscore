@@ -192,6 +192,52 @@ test.describe('Post-deploy smoke tests', () => {
     });
   }
 
+  test('market menu opens at the active market and closes on Escape', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 340 });
+    await page.goto('/west-end');
+    const toggle = page.getByRole('button', { name: 'Switch market' });
+    const menu = page.getByTestId('market-menu');
+    await expect(async () => {
+      if (!(await menu.isVisible())) await toggle.click();
+      await expect(menu).toBeVisible();
+    }).toPass({ timeout: 30000 });
+    await expect(toggle).not.toHaveAttribute('aria-haspopup', 'listbox');
+    const active = menu.locator('[aria-current="page"]');
+    await expect(active).toHaveCount(1);
+    const visible = await active.evaluate((row) => {
+      const menuBox = row.parentElement!.getBoundingClientRect();
+      const box = row.getBoundingClientRect();
+      return box.top >= menuBox.top && box.bottom <= menuBox.bottom;
+    });
+    expect(visible).toBe(true);
+    await page.keyboard.press('Escape');
+    await expect(menu).toBeHidden();
+    await expect(toggle).toBeFocused();
+  });
+
+  test('mobile search results remain reachable with a short viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 340 });
+    await page.goto('/');
+    const search = page.getByRole('button', { name: 'Search shows', exact: true });
+    const input = page.locator('.fixed.inset-0 input');
+    await expect(async () => {
+      if (!(await input.isVisible())) await search.click();
+      await expect(input).toBeVisible();
+    }).toPass({ timeout: 30000 });
+    await input.fill('the');
+    const panel = page.locator('.fixed.inset-0 .overflow-y-auto');
+    const rows = panel.locator('button');
+    await expect(rows).toHaveCount(8, { timeout: 30000 });
+    for (const row of await rows.all()) {
+      await row.scrollIntoViewIfNeeded();
+      expect(await row.evaluate((element) => {
+        const box = element.getBoundingClientRect();
+        const hit = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+        return box.top >= 0 && box.bottom <= innerHeight && !!hit && element.contains(hit);
+      })).toBe(true);
+    }
+  });
+
   test('best-of page renders ranked show list', async ({ page }) => {
     await page.goto('/best/musicals');
 

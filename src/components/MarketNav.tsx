@@ -34,6 +34,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const isOperaPage = pathname === '/opera' || pathname.startsWith('/opera/');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   const isUkRegional = marketId === 'uk-regional';
   const activeHub = hubForPath(pathname);
@@ -65,13 +67,28 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const closeDropdown = useCallback(() => setIsOpen(false), []);
   useClickOutside(dropdownRef, closeDropdown, isOpen);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const menu = menuRef.current;
+    const active = menu?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (menu && active) {
+      menu.scrollTop = active.offsetTop - menu.offsetTop;
+    }
+  }, [isOpen]);
+
   // Close on route change
   useEffect(() => {
     setIsOpen(false);
   }, [marketId, activeHub?.slug]);
 
   return (
-    <div className="flex items-center gap-2 sm:gap-3" ref={dropdownRef}>
+    <div className="flex items-center gap-2 sm:gap-3" ref={dropdownRef} onKeyDown={(event) => {
+      if (isOpen && event.key === 'Escape') {
+        event.preventDefault();
+        setIsOpen(false);
+        toggleRef.current?.focus();
+      }
+    }}>
       {/* Logo — changes per market AND per domain (operascorecard.com → Opera).
           Opera-domain swap happens client-side after hydration; SSR renders the
           Broadway default so search engines + first-paint stay consistent across
@@ -93,6 +110,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
 
       {/* Market Pill */}
       <button
+        ref={toggleRef}
         onClick={() => setIsOpen(!isOpen)}
         className={`
           flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold mt-0.5 shrink-0
@@ -115,7 +133,6 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           }
         `}
         aria-expanded={isOpen}
-        aria-haspopup="listbox"
         aria-label="Switch market"
       >
         {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isUkRegional ? 'UK Regional' : isRegional ? 'Regional' : isTour ? 'Tours' : activeHub ? activeHub.hub.cardLabel : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
@@ -140,12 +157,14 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           opens the menu on phone viewports and taps the last row. */}
       {isOpen && (
         <div
+          ref={menuRef}
           data-testid="market-menu"
           className="absolute top-14 left-3 right-3 sm:left-auto sm:right-auto sm:w-72 max-h-[calc(100vh-4.5rem)] supports-[height:100dvh]:max-h-[calc(100dvh-4.5rem)] overflow-y-auto overscroll-contain bg-[#1e1e2a] border border-white/10 rounded-xl p-1.5 shadow-2xl z-50"
         >
           <div className="px-3.5 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">New York</div>
           <Link
             href="/"
+            aria-current={isBroadway ? 'page' : undefined}
             className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
               isBroadway ? 'bg-white/[0.06]' : 'hover:bg-white/[0.04]'
             }`}
@@ -164,6 +183,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           {stats.offBroadway && (
             <Link
               href="/off-broadway"
+              aria-current={isOffBroadway ? 'page' : undefined}
               className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
                 isOffBroadway ? 'bg-purple-500/[0.10]' : 'hover:bg-white/[0.04]'
               }`}
@@ -185,6 +205,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           )}
           <Link
             href="/opera"
+            aria-current={isOpera ? 'page' : undefined}
             className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
               isOpera ? 'bg-[#e0485f]/[0.08]' : 'hover:bg-white/[0.04]'
             }`}
@@ -209,6 +230,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           {featureFlags.regional && (
             <Link
               href="/browse/pre-broadway-out-of-town-shows"
+              aria-current={isRegional ? 'page' : undefined}
               className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
                 isRegional ? 'bg-emerald-500/[0.10]' : 'hover:bg-white/[0.04]'
               }`}
@@ -231,6 +253,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           {featureFlags.tour && (
             <Link
               href="/browse/broadway-national-tours"
+              aria-current={isTour ? 'page' : undefined}
               className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
                 isTour ? 'bg-sky-500/[0.10]' : 'hover:bg-white/[0.04]'
               }`}
@@ -254,6 +277,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">London</div>
           <Link
             href="/west-end"
+            aria-current={isWestEnd && !isUkRegional ? 'page' : undefined}
             className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
               isWestEnd && !isUkRegional ? 'bg-white/[0.06]' : 'hover:bg-white/[0.04]'
             }`}
@@ -272,6 +296,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           {stats.offWestEnd && (
             <Link
               href="/off-west-end"
+              aria-current={isOffWestEnd ? 'page' : undefined}
               className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
                 isOffWestEnd ? 'bg-violet-500/[0.10]' : 'hover:bg-white/[0.04]'
               }`}
@@ -294,6 +319,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           {featureFlags.regional && stats.ukRegional && stats.ukRegional.shows > 0 && (
             <Link
               href="/browse/beyond-london"
+              aria-current={isUkRegional ? 'page' : undefined}
               className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
                 isUkRegional ? 'bg-teal-500/[0.10]' : 'hover:bg-white/[0.04]'
               }`}
@@ -323,6 +349,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">{hub.short}</div>
                 <Link
                   href={`/tours/${slug}`}
+                  aria-current={isHub ? 'page' : undefined}
                   className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
                     isHub ? 'bg-sky-500/[0.10]' : 'hover:bg-white/[0.04]'
                   }`}
