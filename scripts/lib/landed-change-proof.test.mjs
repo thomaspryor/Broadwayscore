@@ -213,3 +213,43 @@ test('needsFollowUp and newRows treat a dispatched or self-run file as in progre
   const ran = { ...plain, files: [{ file: 'scripts/a.js', verdict: 'not_run', safeRun: { ok: true } }] };
   assert.equal(newRows([prev], [ran]).length, 1, 'a safeRun must reach the ledger');
 });
+
+test('failed_preexisting: a workflow already red on main before the commit is not blamed on it (BRO-7804)', () => {
+  const c = cls('scripts/nightly-job.js');
+  const run = (o) => ({ workflow: 'nightly.yml', event: 'push', conclusion: 'failure', headSha: 'c2', createdAt: '2026-11-18T09:00:00Z', ...o });
+  // c0 is before the commit (c1), c2 contains it.
+  const v = (runs, extra = {}) => fileVerdict('scripts/nightly-job.js', 'c1', { cls: c, runs, posOf, ...extra });
+  const before = (o) => run({ headSha: 'c0', createdAt: '2026-11-17T09:00:00Z', ...o });
+  assert.equal(v([run(), before()]).verdict, 'failed_preexisting', 'red before and red after');
+  assert.equal(v([run(), before()]).preRun, null);
+  assert.equal(v([run(), before({ id: 5 })]).preRun, 5);
+  assert.equal(v([run(), before({ conclusion: 'success' })]).verdict, 'failed', 'green before: this commit broke it');
+  assert.equal(v([run()]).verdict, 'failed', 'no earlier run in the window: stay conservative');
+  assert.equal(v([run(), before({ headSha: 'landing-branch-sha' })]).verdict, 'failed', 'a red run off main excuses nothing');
+  assert.equal(v([run(), before({ conclusion: 'cancelled' })]).verdict, 'failed', 'cancelled is not evidence of red');
+  assert.equal(v([run(), before({ conclusion: 'cancelled', createdAt: '2026-11-17T12:00:00Z' }), before({ conclusion: 'success' })]).verdict, 'failed', 'cancelled skipped, the success before it decides');
+  assert.equal(v([run(), before({ conclusion: 'success', createdAt: '2026-11-16T09:00:00Z' }), before({ createdAt: '2026-11-17T09:00:00Z' })]).verdict, 'failed_preexisting', 'latest earlier run decides');
+  assert.equal(v([run({ conclusion: 'success', event: 'workflow_dispatch', id: 8 }), before()]).verdict, 'proven', 'a later green still wins');
+  // Two workflows: each failing one needs its own earlier red run.
+  const two = { kind: 'lib', workflows: ['a.yml', 'b.yml'] };
+  const runs = { 'a.yml': [run({ workflow: 'a.yml' }), before({ workflow: 'a.yml' })], 'b.yml': [run({ workflow: 'b.yml' }), before({ workflow: 'b.yml', conclusion: 'success' })] };
+  assert.equal(fileVerdict('scripts/lib/x.js', 'c1', { cls: two, runsFor: (w) => runs[w], posOf }).verdict, 'failed', 'B newly red is not hidden by A already red');
+  runs['b.yml'][1].conclusion = 'failure';
+  assert.equal(fileVerdict('scripts/lib/x.js', 'c1', { cls: two, runsFor: (w) => runs[w], posOf }).verdict, 'failed_preexisting');
+  // A sibling workflow that never ran is not excused by the other one's old red.
+  assert.equal(fileVerdict('scripts/lib/x.js', 'c1', { cls: two, runsFor: (w) => (w === 'a.yml' ? runs['a.yml'] : []), posOf }).verdict, 'failed');
+  assert.deepEqual(fileVerdict('scripts/lib/x.js', 'c1', { cls: two, runsFor: (w) => runs[w], posOf }).preRuns.length, 2, 'every earlier red run is recorded');
+  // timed_out counts as red; a higher main position beats a later createdAt.
+  assert.equal(v([run(), before({ conclusion: 'timed_out' })]).verdict, 'failed_preexisting');
+  const p0 = new Map([...posOf, ['c0b', 0.5]]);
+  assert.equal(fileVerdict('scripts/nightly-job.js', 'c1', { cls: c, posOf: p0, runs: [run(), before({ headSha: 'c0b', conclusion: 'success', createdAt: '2026-11-10T00:00:00Z' }), before({ createdAt: '2026-11-17T09:00:00Z' })] }).verdict, 'failed', 'position, not timestamp, picks the latest earlier run');
+  // Ranking, digest and carding.
+  assert.equal(worst(['failed_preexisting', 'not_run']), 'not_run');
+  assert.equal(worst(['failed_preexisting', 'proven']), 'failed_preexisting');
+  assert.equal(worst(['failed', 'failed_preexisting']), 'failed');
+  const rows = ['proven', 'failed', 'failed_preexisting', 'failed_preexisting'].map((verdict, i) => ({ sha: `s${i}`, auditDay: '2026-11-18', landedDay: '2026-11-17', verdict, source: 'cloud', files: [{ file: 'f', verdict }] }));
+  assert.equal(digestLine([...rows, runMarker('2026-11-18')], { now: new Date('2026-11-18T11:30:00Z') }),
+    'Yesterday 4 code changes went live: 1 proven running, 1 ran and failed, 2 touched an already-failing check.');
+  const nf = needsFollowUp(rows.map((r) => ({ ...r, landedDay: '2026-11-16' })));
+  assert.deepEqual(nf.map((r) => r.sha), ['s1'], 'only a real failure is carded');
+});

@@ -8,6 +8,8 @@
 //
 // Verdicts, worst first (a commit takes the worst verdict of its non-exempt files):
 //   failed     a run of a workflow that runs the file, containing the commit, failed and none succeeded
+//   failed_preexisting  like failed, but every failing workflow was already red on its own latest earlier main run
+//              (BRO-7804): the commit touched an already-failing check, it did not break it
 //   not_run    a workflow runs the file, and no run containing the commit has finished since it landed
 //   unknown    the evidence could not be read (runs API / deploy lookup failed). Missing data is never 'proven'.
 //   no_signal  code nothing independent runs (hooks, gates, scripts no workflow runs)
@@ -19,7 +21,7 @@ import { workflowScriptIndex } from './live-run-stop.mjs';
 import { isUsageOnlyOutput } from './usage-output.mjs';
 
 export { workflowScriptIndex, isUsageOnlyOutput };
-export const VERDICT_ORDER = ['failed', 'not_run', 'unknown', 'no_signal', 'waiting', 'deployed', 'proven', 'exempt'];
+export const VERDICT_ORDER = ['failed', 'not_run', 'failed_preexisting', 'unknown', 'no_signal', 'waiting', 'deployed', 'proven', 'exempt'];
 export const LEDGER_PATH = 'data/audit/landed-change-proof.jsonl';
 
 /** PURE. Where a commit came from: 'cloud' | 'codex' | 'mac' | 'none'. */
@@ -126,8 +128,30 @@ export function fileVerdict(file, commitSha, { cls, runs, runsFor = null, runsOk
   // A workflow whose run list could not be read in full (API error, or more runs than one query returns) never
   // yields not_run or failed: the missing page might hold the success.
   if (workflows.some((w) => incomplete.has(w))) return { file, kind, verdict: 'unknown', workflows };
-  const bad = mine.find((r) => r.conclusion === 'failure' || r.conclusion === 'timed_out');
-  if (bad) return { file, kind, verdict: 'failed', workflows, run: bad.id ?? null, event: bad.event };
+  const isRed = (r) => r.conclusion === 'failure' || r.conclusion === 'timed_out';
+  const bad = mine.find(isRed);
+  if (bad) {
+    // BRO-7804: red before the commit landed is not this commit's break. "Before" is a position on main's first-parent
+    // line (the exact complement of `contains`), never a timestamp: committer dates are not landing times and runs on
+    // other branches (the landing PR's own red run) must not excuse the failure. Judged per failing workflow: a file two
+    // workflows run is excused only when each failing one was already red on its own latest earlier run.
+    const earlierRed = (w) => {
+      const done = listFor(w).filter((r) => headPos.has(r.headSha) && headPos.get(r.headSha) < at
+        && (r.conclusion === 'success' || isRed(r)));
+      if (!done.length) return null;
+      const key = (r) => [headPos.get(r.headSha), String(r.createdAt || '')];
+      const last = done.reduce((a, r) => { const [ap, ac] = key(a); const [rp, rc] = key(r); return rp > ap || (rp === ap && rc > ac) ? r : a; });
+      return isRed(last) ? last : null;
+    };
+    const failing = [...new Set(mine.filter(isRed).map((r) => r.workflow))];
+    const pre = failing.map(earlierRed);
+    // A workflow of the file with no red run containing the commit (never ran, cancelled) is not covered by another
+    // workflow's old red: stay 'failed' so it is still carded.
+    if (pre.every(Boolean) && workflows.every((w) => failing.includes(w))) {
+      return { file, kind, verdict: 'failed_preexisting', workflows, run: bad.id ?? null, event: bad.event, preRun: pre[0].id ?? null, preRuns: pre.map((r) => r.id ?? null) };
+    }
+    return { file, kind, verdict: 'failed', workflows, run: bad.id ?? null, event: bad.event };
+  }
   return { file, kind, verdict: 'not_run', workflows };
 }
 
@@ -202,6 +226,7 @@ export function digestLine(ledgerRows, { now = new Date() } = {}) {
   const parts = [`${proven} proven running`];
   if (v.waiting) parts.push(`${v.waiting} only ran on their schedule`);
   if (v.failed) parts.push(`${v.failed} ran and failed`);
+  if (v.failed_preexisting) parts.push(`${v.failed_preexisting} touched an already-failing check`);
   const selfRun = ledgerRows.filter((r) => r.auditDay === latest && r.landedDay === day && r.verdict === 'not_run'
     && (r.files || []).some((f) => f.safeRun?.ok)).length;
   if (v.not_run) parts.push(`${v.not_run} not run since landing${selfRun ? ` (${selfRun} run by the check itself and passed)` : ''}`);
