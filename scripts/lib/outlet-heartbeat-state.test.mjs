@@ -151,3 +151,23 @@ describe('dormant pairs (BRO-7758)', () => {
     assert.deepEqual(newlyActionable, []);
   });
 });
+
+describe('dormant pairs: ship-check follow-ups (BRO-7758)', () => {
+  const { isDormantRow } = require('./outlet-heartbeat-state.js');
+  test('dormancy is relative to the pair threshold (slow outlet, thr 400, 500d silent still alerts)', () => {
+    assert.equal(isDormantRow({ silentDays: 500, thresholdDays: 400 }), false);
+    assert.equal(isDormantRow({ silentDays: 770, thresholdDays: 400 }), true);
+  });
+  test('dormant pair that wakes up (still red, silence < dormant line) still fires ACTION once', () => {
+    const prev = { 'a::broadway': { redStreak: 3, dormant: true } };
+    const { newlyActionable } = updateHeartbeatState(
+      prev, [{ outletId: 'a', market: 'broadway', status: 'red', silentDays: 100, thresholdDays: 45 }], 'w');
+    assert.equal(newlyActionable.length, 1);
+  });
+  test('dormantCount is separate from baselinedCount', () => {
+    const rows = [{ outletId: 'x', market: 'broadway', silentDays: 900, thresholdDays: 45 }];
+    const r = getActionableOutletRows(rows, { 'x::broadway': { redStreak: 2 } }, new Set());
+    assert.equal(r.dormantCount, 1);
+    assert.equal(r.baselinedCount, 0);
+  });
+});

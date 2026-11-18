@@ -20,8 +20,13 @@
  */
 const DORMANT_SILENT_DAYS = 365;
 
+// Relative to the pair's own red threshold: slow outlets (threshold 300-436d)
+// only go dormant a full year PAST their threshold, so their first real break
+// still alerts (ship-check 2026-11-18).
 function isDormantRow(row) {
-  return Number(row && row.silentDays) >= DORMANT_SILENT_DAYS;
+  const threshold = Number(row && row.thresholdDays);
+  const floor = Number.isFinite(threshold) ? threshold + DORMANT_SILENT_DAYS : DORMANT_SILENT_DAYS;
+  return Number(row && row.silentDays) >= Math.max(DORMANT_SILENT_DAYS, floor);
 }
 
 /**
@@ -42,8 +47,11 @@ function updateHeartbeatState(prevState, cadenceRows, nowIso) {
     seen.add(key);
     const prevEntry = prev[key] || { redStreak: 0 };
     const redStreak = row.status === 'red' ? (prevEntry.redStreak || 0) + 1 : 0;
-    next[key] = { redStreak, lastStatus: row.status, lastCheckedAt: nowIso };
-    if (redStreak >= 2 && (prevEntry.redStreak || 0) < 2 && !isDormantRow(row)) {
+    const dormant = row.status === 'red' && isDormantRow(row);
+    next[key] = { redStreak, lastStatus: row.status, lastCheckedAt: nowIso, ...(dormant ? { dormant: true } : {}) };
+    // A suppressed-dormant pair that wakes up (silence drops under the dormant
+    // line while still red) must still fire its one ACTION.
+    if (redStreak >= 2 && !dormant && ((prevEntry.redStreak || 0) < 2 || prevEntry.dormant)) {
       newlyActionable.push({ ...row, redStreak });
     }
   }
@@ -77,9 +85,12 @@ function getActionableOutletRows(rows, state, baselineKeys) {
     .filter((r) => !isDormantRow(r))
     .filter((r) => !baseline.has(`${r.outletId}::${r.market}`))
     .sort((a, b) => b.silentDays - a.silentDays);
+  const dormantCount = crossedThreshold.filter(isDormantRow).length;
+  const baselinedCount = crossedThreshold.filter((r) => !isDormantRow(r) && baseline.has(`${r.outletId}::${r.market}`)).length;
   return {
     actionable,
-    baselinedCount: crossedThreshold.length - actionable.length,
+    dormantCount,
+    baselinedCount,
     totalCrossedThreshold: crossedThreshold.length,
   };
 }
