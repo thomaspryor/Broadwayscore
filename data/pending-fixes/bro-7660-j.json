@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7660-j",
   "planId": "67835782-56b6-4076-b3ec-0cb3d973f3de",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T07:28:48.800Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,129 @@
         "description": "BRO-7660 CLEAR_WS: body reviews Elf at the Marquis"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T11:16:41.846Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-mattress-2024/nyt-theater--jonathan-mandell.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/timeout--adam-feldman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/timeout--adam-feldman.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/timeout--adam-feldman.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "motown-the-musical-2016/hollywood-reporter--frank-scheck.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-the-musical-west-end-2024/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-the-musical-west-end-2024/standard--nick-curtis.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-the-musical-west-end-2024/standard--nick-curtis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-the-musical-west-end-2024/standard--nick-curtis.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-the-musical-west-end-2024/standard--nick-curtis.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chicago-1996/ap--michael-kuchwara.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mamma-mia-west-end-2021/guardian--veronica-lee.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "and-juliet-2022/cititour--brian-scott-lipton.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/times-uk--susie-goldsbrough.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/times-uk--susie-goldsbrough.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/times-uk--susie-goldsbrough.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "babe-off-broadway-2024/theater-scene--scott-bennett.json wrongShow: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cardinal-off-broadway-2018/dailybeast--tim-teeman.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cardinal-off-broadway-2018/dailybeast--tim-teeman.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "elf-2024/lighting-and-sound-america--david-barbour.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "elf-2024/lighting-and-sound-america--david-barbour.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ],
+  "executedIn": "ci"
 }
