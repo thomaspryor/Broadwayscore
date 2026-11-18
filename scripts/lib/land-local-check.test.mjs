@@ -675,7 +675,7 @@ const BATCH_LOG = tapOf([['tests/unit/a.test.mjs', 'slow under load', 'testTimeo
 test('BRO-7752: isolatedRecheckPlan scopes a finished batch with a timing failure; not a killed batch, a tsx gate or too many files', (t) => {
   const { isolatedRecheckPlan, aloneRunFinished } = require('./land-local-check.js');
   const dir = mkdtempSync(join(tmpdir(), 'llc-iso-'));
-  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  t.after(() => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   gateDir(dir, 'unit-tests-node', { exit: 1, log: BATCH_LOG, files: BATCH_FILES });
   gateDir(dir, 'unit-tests-tsx', { exit: 1, log: BATCH_LOG, files: BATCH_FILES });
   assert.deepEqual(isolatedRecheckPlan(['unit-tests-node', 'unit-tests-tsx', 'tsc'], dir),
