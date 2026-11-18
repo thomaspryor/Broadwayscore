@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T20:22:56.749Z",
+  "timestamp": "2026-11-18T20:57:02.739Z",
   "stats": {
-    "totalReviews": 82672,
+    "totalReviews": 82679,
     "alreadyFlagged": 22469,
     "dateGuardCatches": 220,
     "directorMismatch": 3760,
-    "tvFilmSignals": 2352,
-    "londonSignals": 3796,
-    "offBroadwaySignals": 761,
+    "tvFilmSignals": 2353,
+    "londonSignals": 3801,
+    "offBroadwaySignals": 762,
     "yearMismatch": 383,
-    "noPublishDate": 8285
+    "noPublishDate": 8282
   },
   "findings": [
     {
@@ -21299,6 +21299,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "score": 88,
+      "publishDate": "2026-11-18",
+      "url": "https://monstagigz.com/2026/11/18/theatre-review-eurotrash-starring-ben-whishaw-and-kathryn-hunter-at-the-young-vic/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -88782,6 +88801,19 @@
     },
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
+      "file": "the-recs--unknown.json",
+      "publishDate": "2026-11-18",
+      "url": "https://therecs.co.uk/222-a-ghost-story-lucille-lortel-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "222-a-ghost-story-off-broadway-2026",
       "file": "theatermania--zachary-stewart.json",
       "score": 75,
       "publishDate": "2026-11-05",
@@ -100710,6 +100742,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
+      "score": 36,
       "publishDate": "2026-11-18",
       "url": "https://www.allthatdazzles.co.uk/post/review-desire-under-the-elms-almeida-theatre",
       "findings": [
@@ -100717,6 +100750,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "score": 62,
+      "publishDate": "2026-11-18",
+      "url": "https://www.britishtheatreguide.info/reviews/desire-under-th-almeida-theatre-26219",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -100737,6 +100784,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "guardian--unknown.json",
+      "score": 80,
       "publishDate": "2026-11-18",
       "url": "https://www.theguardian.com/stage/2026/nov/18/desire-under-the-elms-review-almeida-theatre-london",
       "findings": [
@@ -100819,10 +100867,38 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "the-recs--unknown.json",
+      "score": 97,
+      "publishDate": "2026-11-18",
+      "url": "https://therecs.co.uk/desire-under-the-elms-almeida-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 81,
       "publishDate": "2026-11-18",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/desire-under-the-elms-review-almeida-wtcvdfx7r",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "viewfromthegods--unknown.json",
+      "score": 89,
+      "publishDate": "2026-11-18",
+      "url": "https://viewfromthegods.co.uk/2026/11/18/desire-under-the-elms-almeida-islington/?utm_source=rss&utm_medium=rss&utm_campaign=desire-under-the-elms-almeida-islington",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -120375,6 +120451,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "now-you-see-me-live-2026",
+      "file": "theatermania--unknown.json",
+      "publishDate": "2026-11-18",
+      "url": "https://www.theatermania.com/news/review-now-you-see-me-live-lacks-the-magic-of-broadway_1859999/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },

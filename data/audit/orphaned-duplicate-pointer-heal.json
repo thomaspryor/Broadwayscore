@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-18T20:16:48.068Z",
+  "generated": "2026-11-18T20:50:48.150Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 55,
+  "count": 59,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -151,6 +151,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "loserFile": "british-theatre--unknown.json",
+      "targetFile": "british-theatre--colin-davison.json",
+      "reason": "orphaned-duplicate-heal: british-theatre--colin-davison.json was flagged invalid after british-theatre--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "loserFile": "londonlivinglarge--unknown.json",
       "targetFile": "londonlivinglarge--london-living-large.json",
@@ -232,6 +239,13 @@
       "loserFile": "columbus-dispatch--unknown.json",
       "targetFile": "columbus-dispatch--michael-grossberg.json",
       "reason": "orphaned-duplicate-heal: columbus-dispatch--michael-grossberg.json was flagged invalid after columbus-dispatch--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "now-you-see-me-live-2026",
+      "loserFile": "theatermania--unknown.json",
+      "targetFile": "theatermania--francisco-mendoza.json",
+      "reason": "orphaned-duplicate-heal: theatermania--francisco-mendoza.json was flagged invalid after theatermania--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -387,6 +401,20 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "loserFile": "british-theatre--unknown.json",
+      "targetFile": "british-theatre--colin-davison.json",
+      "reason": "orphaned-duplicate-heal: british-theatre--colin-davison.json was flagged invalid after british-theatre--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
+    },
+    {
+      "showId": "now-you-see-me-live-2026",
+      "loserFile": "theatermania--unknown.json",
+      "targetFile": "theatermania--francisco-mendoza.json",
+      "reason": "orphaned-duplicate-heal: theatermania--francisco-mendoza.json was flagged invalid after theatermania--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
