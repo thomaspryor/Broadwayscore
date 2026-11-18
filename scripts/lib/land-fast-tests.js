@@ -57,6 +57,7 @@ const INVARIANT_TESTS = [
   'scripts/lib/review-text-sidecars.test.mjs',
   'scripts/lib/run-push-audits.test.mjs',
   'scripts/lib/test-yml-manifest-paths.test.mjs',
+  'scripts/lib/workflow-queue-cap-coverage.test.mjs', // scans all of scripts/ for capped dispatches; refused BRO-7741 (land run 44241355564)
   'scripts/tests/global-instructions.test.mjs',
   'scripts/tests/help-flag-safety-guard.test.mjs',
   'scripts/validate-workflow-dependencies.test.mjs',
