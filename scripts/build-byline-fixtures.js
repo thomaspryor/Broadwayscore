@@ -23,7 +23,7 @@ const args = Object.fromEntries(process.argv.slice(2).map((a) => {
 }));
 const OUT = path.join(__dirname, '..', 'tests', 'fixtures', 'byline-outlets');
 
-function pageFile(outletId, url) { return `${outletId}__${Buffer.from(url).toString('base64url').slice(-60)}.html`; }
+function pageFile(outletId, url) { return require('./lib/byline-fixture-strip').savedPageName(outletId, url); }
 
 function main() {
   if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) { require('./lib/cli-help').exitOnHelp(module); return; }

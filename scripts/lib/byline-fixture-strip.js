@@ -106,4 +106,13 @@ function stripPageForBylineFixture(html) {
   return out.replace(/\n\s*\n+/g, '\n').replace(/[ \t]{2,}/g, ' ');
 }
 
-module.exports = { stripPageForBylineFixture };
+/**
+ * File name for a page saved by sweep-stored-bylines.js --save-html and read back by
+ * build-byline-fixtures.js. A hash of the whole URL: the old base64 tail could give two URLs
+ * with the same ending one file, so a fixture would bless the wrong page.
+ */
+function savedPageName(outletId, url) {
+  return `${outletId}__${require('crypto').createHash('sha1').update(String(url)).digest('hex').slice(0, 16)}.html`;
+}
+
+module.exports = { stripPageForBylineFixture, savedPageName };

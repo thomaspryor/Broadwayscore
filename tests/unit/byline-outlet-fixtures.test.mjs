@@ -98,3 +98,22 @@ describe('monthly drift check verdicts (check-byline-fixture-drift.js)', () => {
     assert.equal(classifyDrift({ expected: 'Jonas Schwartz' }, { error: '403' }), 'unreachable');
   });
 });
+
+// BRO-7780 ship-check: saved pages were named by the last 60 base64 chars of the URL, so two
+// URLs with the same tail shared one file and a fixture could bless the wrong page. One name
+// function, used by both the sweep (writer) and the fixture builder (reader).
+test('saved page names: whole-URL hash, one helper for writer and reader', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const fs = req('fs');
+  const { savedPageName } = req('../../scripts/lib/byline-fixture-strip.js');
+  const tail = '/review-' + 'x'.repeat(70) + '_1234/';
+  const a = savedPageName('theatermania', 'https://www.theatermania.com/news' + tail);
+  const b = savedPageName('theatermania', 'https://www.theatermania.com/broadway/reviews' + tail);
+  if (a === b) throw new Error(`two URLs with the same tail share ${a}`);
+  for (const f of ['scripts/sweep-stored-bylines.js', 'scripts/build-byline-fixtures.js']) {
+    const src = fs.readFileSync(new URL('../../' + f, import.meta.url), 'utf8');
+    if (!/savedPageName\(/.test(src)) throw new Error(`${f} does not name saved pages with savedPageName`);
+    if (/base64url'\)\.slice\(-60\)/.test(src)) throw new Error(`${f} still names pages by a base64 tail`);
+  }
+});

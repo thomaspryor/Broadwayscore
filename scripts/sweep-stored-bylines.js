@@ -152,7 +152,7 @@ async function main() {
         let text = '';
         try { text = extractArticleTextFromUrl(got.html, r.url) || ''; } catch { text = ''; }
         Object.assign(row, readSignals(got.html, text, r.url, r.outletId));
-        if (saveDir) fs.writeFileSync(path.join(saveDir, `${r.outletId}__${Buffer.from(r.url).toString('base64url').slice(-60)}.html`), got.html);
+        if (saveDir) fs.writeFileSync(path.join(saveDir, require('./lib/byline-fixture-strip').savedPageName(r.outletId, r.url)), got.html);
       } catch (e) {
         row.fetchError = String(e && e.message || e).slice(0, 120);
       }
