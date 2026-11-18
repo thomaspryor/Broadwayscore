@@ -117,22 +117,45 @@ export function recordRuns(events) {
 // main; the weekly rollup reads main. A session (2026-11-17) recorded, committed the row only to its claude/ branch
 // and closed SAFE TO ARCHIVE: the gate passed and the loop never saw it. So the last record run must be followed by a
 // commit that takes the ledger (git add of it, data/audit, -A, ., --all, or commit -a) and then a land push.
-const LEDGER_COMMIT_RE = /\bgit\s+(?:-C\s+\S+\s+)?(?:add\b[^\n;&|]*(?:session-retro\.jsonl|data\/audit\b|\s(?:-A|--all|\.)(?=\s|$))|commit\b[^\n;&|]*(?:\s-[a-zA-Z]*a[a-zA-Z]*\b|\s--all\b|session-retro\.jsonl))/;
-/** PURE. Index of each event that commits the ledger (a Bash commit, or an API push to land/ that names it). */
-export function ledgerCommitIndices(events) {
+// git with any global options (-C dir, -c k=v, --no-pager) before the subcommand.
+const GIT = String.raw`\bgit\s+(?:(?:-[Cc]\s+\S+|--[\w-]+)\s+)*`;
+// Stages the ledger: add of it, data/audit, -A/--all/-u/., or commit -a/--all/naming it (which also commits).
+const LEDGER_STAGE_RE = new RegExp(`${GIT}(?:add\\b[^\\n;&|]*(?:session-retro\\.jsonl|data\\/audit\\b|\\s(?:-A|--all|-u|--update|\\.)(?=\\s|$))|commit\\b[^\\n;&|]*(?:\\s-[a-zA-Z]*a[a-zA-Z]*\\b|\\s--all\\b|session-retro\\.jsonl))`);
+const COMMIT_RE = new RegExp(`${GIT}commit\\b(?![^\\n;&|]*--dry-run)`);
+const OTHER_REPO_RE = /broadway-scorecard-data|broadway-review-texts|BroadwayScorecard-app/i; // their ledgers are not this one
+/** PURE. [{ index, stages, commits }] for each successful event that stages or commits the ledger (an API write to land/ does both). */
+function ledgerEvents(events) {
+  const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
   const out = [];
   events.forEach((e, i) => {
     if (e.kind !== 'assistant_tool_use') return;
-    if (e.name === 'Bash' && LEDGER_COMMIT_RE.test(runShellCode(e.input?.command) || '')) out.push(i);
-    // An API write only carries the row if it goes to a land/ branch (a claude/ branch is the incident shape).
-    else if (/^mcp__github__(?:push_files|create_or_update_file)$/.test(e.name || '') && String(e.input?.branch || '').startsWith('land/')
-      && /session-retro\.jsonl/.test(JSON.stringify(e.input || {}))) out.push(i);
+    const r = answers.get(e.id);
+    if (!r || r.isError) return; // a failed commit ("nothing to commit") carries nothing
+    if (e.name === 'Bash') {
+      const c = runShellCode(e.input?.command) || '';
+      if (OTHER_REPO_RE.test(c)) return;
+      const stages = LEDGER_STAGE_RE.test(c);
+      const commits = COMMIT_RE.test(c);
+      if (stages || commits) out.push({ index: i, stages, commits });
+    } else if (/^mcp__github__(?:push_files|create_or_update_file)$/.test(e.name || '') && String(e.input?.branch || '').startsWith('land/')
+      && /session-retro\.jsonl/.test(JSON.stringify(e.input || {}))) {
+      // An API write only carries the row if it goes to a land/ branch (a claude/ branch is the incident shape).
+      out.push({ index: i, stages: true, commits: true });
+    }
   });
   return out;
 }
-/** PURE. Did a land push carry the row of the record run at `recordIndex`? (record, then a ledger commit, then a land push; one command may do the last two.) */
+/** PURE. Index of the first commit that carries the ledger staged at or after `from`, or undefined. */
+export function ledgerCommitIndex(events, from) {
+  const ev = ledgerEvents(events).filter((x) => x.index >= from);
+  const stage = ev.find((x) => x.stages);
+  if (!stage) return undefined;
+  return ev.find((x) => x.index >= stage.index && x.commits)?.index;
+}
+/** PURE. Did a land push carry the row of the record run at `recordIndex`? Record, stage, commit, land push, in that
+ *  order; one command may chain any of them (`--record && git commit -am r && git push … land/x`). */
 export function recordReachedLand(events, recordIndex) {
-  const commit = ledgerCommitIndices(events).find((i) => i > recordIndex);
+  const commit = ledgerCommitIndex(events, recordIndex);
   return commit !== undefined && landedPushIndices(events).some((i) => i >= commit);
 }
 

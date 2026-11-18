@@ -50,6 +50,16 @@ test('BRO-7729: the retro row must ride a land push to main', () => {
   assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('git -C /w add data/audit && git -C /w commit -m "r"'), ...land()]).decision, 'allow', 'a second land push after the record');
   assert.equal(decide([...edit(), ...land(), ...record('', clean), ...use('mcp__github__push_files', { branch: 'land/r', files: [{ path: 'data/audit/session-retro.jsonl' }] })]).decision, 'allow', 'API push of the ledger to land/');
   assert.equal(decide([...edit(), ...land(), ...record('', clean), ...use('mcp__github__push_files', { branch: 'claude/x', files: [{ path: 'data/audit/session-retro.jsonl' }] }), ...land()]).decision, 'block', 'API push of the ledger to a claude/ branch carries nothing');
+  // Review findings (ship-check): one chained command, -u, global git options, failed/dry-run commits, staging alone, other repos.
+  const R = 'node scripts/lib/session-retro.js --check --record';
+  assert.equal(decide([...edit(), ...land(), ...sh(`${R} && git add data/audit/session-retro.jsonl && git commit -m r && git push origin HEAD:refs/heads/land/x`)]).decision, 'allow', 'record, commit and land in one command');
+  assert.equal(decide([...edit(), ...land(), ...sh(`${R} && git commit -am r`), ...land()]).decision, 'allow', 'record and commit -am in one command');
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('git add -u && git commit -m r'), ...land()]).decision, 'allow', 'add -u stages the tracked ledger');
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('git -c core.x=1 --no-pager add -A && git commit -m r'), ...land()]).decision, 'allow', 'global git options');
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('git commit -am r', 'nothing to commit', true), ...land()]).decision, 'block', 'a failed commit carries nothing');
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('git commit --dry-run -a'), ...land()]).decision, 'block', 'a dry run carries nothing');
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('git add -A'), ...land()]).decision, 'block', 'staged but never committed');
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('cd ../broadway-scorecard-data && git add -A && git commit -m r'), ...land()]).decision, 'block', 'a commit in another repo');
   // The LAST record run is the one that must land: a linked re-run after the land is not on main.
   const flagged = 'RETRO REQUIRED (land refusal): turn each';
   assert.equal(decide([...edit(), ...record('', flagged), ...carry(), ...record('--fixes=BRO-1', flagged)]).decision, 'block', 'the linked re-run never landed');
