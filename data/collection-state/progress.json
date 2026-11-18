@@ -32,7 +32,10 @@
     "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
     "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
     "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
-    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
+    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+    "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json",
+    "the-lives-of-others-west-end-2026/londontheatredirect--kiki-chang.json"
   ],
   "failed": [
     "king-lear-off-broadway-2026/patch--lauren-traut.json",
@@ -51,7 +54,12 @@
     "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
     "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
     "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
-    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json",
+    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -80,13 +88,15 @@
       "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
       "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
-      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "the-lives-of-others-west-end-2026/londontheatredirect--kiki-chang.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/jenufa-off-broadway-2026/wsj--heidi-waleson.json",
       "jenufa-off-broadway-2026/wsj--heidi-waleson.json",
-      "data/review-texts/downstate-2026/nytimes--unknown.json"
+      "data/review-texts/downstate-2026/nytimes--unknown.json",
+      "data/review-texts/the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -101,11 +111,13 @@
     "archiveToday": [],
     "archive": [
       "speculations-off-west-end-2026/islingtontribune--unknown.json",
-      "speculations-off-west-end-2026/westminsterextra--unknown.json"
+      "speculations-off-west-end-2026/westminsterextra--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+      "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json"
     ]
   },
   "startTime": "2026-11-18T20:38:47.996Z",
-  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+  "lastProcessed": "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
   "log": [
     {
       "t": "2026-11-18T20:39:51.013Z",
@@ -139,6 +151,12 @@
       "t": "2026-11-18T20:47:02.714Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-18T22:46:03.258Z",
+      "event": "bb-session",
+      "session": "1fd38f53",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
     }
   ]
 }
