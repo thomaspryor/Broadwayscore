@@ -80,8 +80,9 @@ test('every show opening in the next 90 days: short title matched or near-missed
 });
 
 test('a press-title match pointing at another production or the film is rejected, the near-miss alert still fires', () => {
-  const cast = [{ name: 'Lisa Rinna' }, { name: 'Andrew Rannells' }, { name: 'Tituss Burgess' }];
-  setPressNameShows([{ ...FIXTURE[0], venue: 'Broadhurst Theatre', cast }, ...FIXTURE.slice(1)]);
+  const cast = [{ name: 'Lisa Rinna' }, { name: 'Andrew Rannells' }, { name: 'Tituss Burgess' }, { name: 'Megan Hilty' }];
+  const creativeTeam = [{ name: 'Joe Landry', role: 'Playwright' }];
+  setPressNameShows([{ ...FIXTURE[0], venue: 'Broadhurst Theatre', cast, creativeTeam }, ...FIXTURE.slice(1)]);
   try {
     const { nearMissSignals } = require(path.join(ROOT, 'scripts/lib/opening-night-lane/near-miss.js'));
     const { headlineNamesShow } = require(path.join(ROOT, 'scripts/lib/google-news-rss.js'));
@@ -106,7 +107,13 @@ test('a press-title match pointing at another production or the film is rejected
     // ship-check: a cast member's possessive is the show's own, not another company's
     for (const h of ["Review: It's a Wonderful Life", "Review: 'It's a Wonderful Life' at the Broadhurst", "Broadway's It's a Wonderful Life is a warm radio play",
       "Lisa Rinna's Broadway debut in 'It's a Wonderful Life', reviewed", "Review: Andrew Rannells' It's a Wonderful Life rings true",
-      "Review: It's a Wonderful Life at the Broadhurst Theatre"]) {
+      "Review: It's a Wonderful Life at the Broadhurst Theatre",
+      // ship-check reviewer: real Broadway headline shapes that must not read as another production
+      "Megan Hilty's It's a Wonderful Life review", "Review: Joe Landry's It's a Wonderful Life lands on Broadway",
+      "Review: It's a Wonderful Life Is Wonderful At Every Turn", "Review: It's a Wonderful Life Rings True At The Holidays",
+      "Review: 'It's a Wonderful Life' brings the beloved film to Broadway", "Review: 'It's a Wonderful Life' is no Capra, and Broadway is better for it",
+      "Review: 'It's a Wonderful Life' - Feldman shines", "It's a Wonderful Life (radio play) review",
+      "Review: It's a Wonderful Life, a radio play staged with care"]) {
       assert.ok(titleMatchesShow(h, show.title, opts), `lane missed: ${h}`);
       assert.ok(headlineNamesShow(h, show), `google news missed: ${h}`);
     }
