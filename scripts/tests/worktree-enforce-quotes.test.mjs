@@ -13,6 +13,12 @@ const HOOK = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '.claude'
 const repo = mkdtempSync(join(tmpdir(), 'wt-enforce-'));
 execFileSync('git', ['init', '-q', repo]);
 mkdirSync(join(repo, 'scripts'));
+// A linked worktree, for the "cd <worktree> && <write>" cases (relative target after a cd).
+const gitEnv = { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' };
+execFileSync('git', ['-C', repo, 'commit', '-q', '--allow-empty', '-m', 'init'], { env: gitEnv });
+const wt = join(repo, '.claude', 'worktrees', 'w');
+execFileSync('git', ['-C', repo, 'worktree', 'add', '-q', wt], { env: gitEnv });
+mkdirSync(join(wt, 'scripts'));
 const home = mkdtempSync(join(tmpdir(), 'wt-home-')); // no ~/.claude/hooks copy -> no self-skip
 
 function run(command) {
@@ -43,6 +49,15 @@ const CASES = [
   ['sh -c single-quoted write', "sh -c 'echo hi > scripts/x.js'", 2],
   ['write inside $( ) in a quoted string', 'echo "$(echo hi > scripts/x.js) ok"', 2],
   ['empty heredoc then a real write', 'cat <<EOF > /tmp/a\nEOF\necho hi > scripts/x.js\ncat <<EOF\nx\nEOF', 2],
+  // A relative target after a leading cd resolves against the cd target, not the session cwd.
+  ['cd into a worktree then sed -i', `cd ${wt} && sed -i 's/a/b/' scripts/x.js`, 0],
+  ['cd into a worktree then redirect', `cd ${wt} && echo hi > scripts/x.js`, 0],
+  ['cd into the main checkout then sed -i', `cd ${repo} && sed -i 's/a/b/' scripts/x.js`, 2],
+  ['cd into a worktree, absolute main-checkout target', `cd ${wt} && echo hi > ${repo}/scripts/x.js`, 2],
+  // Unnormalized paths must not dodge the scope check (review finding, 2026-11-18).
+  ['dot-slash relative target in the main checkout', 'echo hi > ./scripts/x.js', 2],
+  ['cd . then sed -i in the main checkout', "cd . && sed -i 's/a/b/' scripts/x.js", 2],
+  ['cd with an empty quoted path', 'cd "" && echo hi > scripts/x.js', 2],
   ['read-only grep', 'grep -n foo scripts/x.js', 0],
 ];
 
