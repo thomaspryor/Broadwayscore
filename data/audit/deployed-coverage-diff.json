@@ -1,62 +1,30 @@
 {
-  "generatedAt": "2026-11-18T17:41:27.194Z",
+  "generatedAt": "2026-11-18T18:40:36.157Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 360,
-  "clean": 357,
-  "defective": 3,
+  "clean": 359,
+  "defective": 1,
   "byType": {
-    "score-drift": 3
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "destiny-of-desire-regional-2026",
-      "title": "Destiny of Desire",
-      "openingDate": "2026-11-16",
+      "showId": "the-good-thief-off-broadway-2026",
+      "title": "The Good Thief",
+      "openingDate": "2026-11-17",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.64 vs local 82 (Δ0.64)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-11-18T17:41:22.128Z"
-    },
-    {
-      "showId": "relative-motion-off-west-end-2026",
-      "title": "Relative Motion",
-      "openingDate": "2026-11-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 86.76 vs local 86.43 (Δ0.33)"
+          "detail": "deployed cs 82.93 vs local 82.15 (Δ0.78)"
         }
       ],
       "missingFromProd": [],
       "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-18T17:41:22.128Z"
-    },
-    {
-      "showId": "les-miserables-west-end-2021",
-      "title": "Les Misérables",
-      "openingDate": "1985-12-04",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.09 vs local 84.78 (Δ0.31)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-11-18T17:41:22.128Z"
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-18T18:40:30.521Z"
     }
   ],
   "persistentDefective": 0,

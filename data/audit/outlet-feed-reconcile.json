@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T17:41:27.682Z",
+  "generatedAt": "2026-11-18T18:40:36.493Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -57,6 +57,11 @@
       "id": "top-gunchained-off-west-end-2026",
       "title": "Top Gunchained",
       "openingDate": "2026-11-17"
+    },
+    {
+      "id": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "openingDate": "2026-11-18"
     },
     {
       "id": "a-christmas-story-the-musical-tour-2026",
@@ -156,10 +161,6 @@
   ],
   "skipped": [
     {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "first-and-last-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -170,6 +171,10 @@
   ],
   "feedsChecked": 86,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -195,7 +200,7 @@
       "error": "HTTP 500 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 879,
+  "itemsScanned": 874,
   "matchedGaps": 6,
   "possibleGaps": 2,
   "gaps": [
@@ -245,12 +250,12 @@
       "publishDate": "2026-11-18"
     },
     {
-      "showId": "top-gunchained-off-west-end-2026",
-      "title": "Top Gunchained",
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
       "level": "matched",
-      "outletId": "everything-theatre",
-      "url": "https://everything-theatre.co.uk/2026/11/review-top-gunchained-wiltons-music-hall/",
-      "headline": "Review: Top Gunchained, Wilton’s Music Hall",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/desire-under-the-elms-almeida-theatre-london/",
+      "headline": "Desire Under the Elms – Almeida Theatre, London",
       "publishDate": "2026-11-18"
     },
     {
