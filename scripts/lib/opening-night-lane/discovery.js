@@ -282,13 +282,16 @@ function hasReviewSignal(url, title) {
  */
 function nearMissFind(item, show, budget, extra = {}) {
   if (!item || !item.url || budget.left <= 0) return null;
-  const outlet = resolveOutletFromUrl(item.url);
+  // BRO-7793: a Google News item's link is a news.google.com wrapper; extra.outletUrl (the item's <source url>) names the
+  // outlet and carries the review signal, while item.url (the wrapper) is what the alert shows.
+  const basis = extra.outletUrl || item.url;
+  const outlet = resolveOutletFromUrl(basis);
   if (!outlet) return null;
-  if (!(extra.reviewSignalGiven || hasReviewSignal(item.url, item.title) || hostMatches(hostOf(item.url), REVIEW_WITHOUT_WORD_HOSTS))) return null;
-  const signals = nearMiss.nearMissSignals(item, show);
+  if (!(extra.reviewSignalGiven || hasReviewSignal(basis, item.title) || hostMatches(hostOf(basis), REVIEW_WITHOUT_WORD_HOSTS))) return null;
+  const signals = nearMiss.nearMissSignals({ ...item, url: basis }, show);
   if (!signals.length) return null;
   budget.left -= 1;
-  return { url: item.url, title: item.title || '', source: 'outlet-index', outletId: extra.outletId || outlet.outletId, via: extra.via, nearMiss: signals };
+  return { url: item.url, title: item.title || '', source: extra.source || 'outlet-index', outletId: extra.outletId || outlet.outletId, via: extra.via, nearMiss: signals };
 }
 const nearMissBudget = () => ({ left: nearMiss.MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER });
 
@@ -974,6 +977,8 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       // A site search that fails costs only its own outlet this pass; the main search failing still fails the adapter.
       const siteXml = await Promise.all(sites.map(async (host) => (await Promise.all(googleNewsSiteQueries(show, host).map((q) => searchFetch(`https://news.google.com/rss/search?${new URLSearchParams({ q, ...locale })}`).catch(() => '')))).join('\n')));
       const items = [];
+      const nearMisses = []; // reported beside the results, never admitted
+      const nearBudget = nearMissBudget();
       const seenLinks = new Set();
       for (const [feedXml, site] of [[xml, null], ...siteXml.map((x, i) => [x, sites[i]])]) {
         for (const m of String(feedXml).matchAll(/<item[\s>]([\s\S]*?)<\/item>/gi)) {
@@ -985,7 +990,13 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
           if (hostOf(link) !== 'news.google.com' || !outlet || seenLinks.has(link)) continue; // unknown publishers are never ingested blind
           if (site) {
             if (!hostMatches(hostOf(sourceUrl), [site])) continue; // a site search keeps only that outlet's items
-          } else if (!headlineNamesShow(title, show)) continue; // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
+          } else if (!headlineNamesShow(title, show)) {
+            // BRO-7793: a refusal here was silent; a review-like headline from a known outlet that still partly names the
+            // show is reported (never admitted), as the feed and index paths do.
+            const nm = nearMissFind({ url: link, title }, show, nearBudget, { outletUrl: sourceUrl, outletId: outlet.outletId, via: 'google-news', source: 'google-news' });
+            if (nm) nearMisses.push(nm);
+            continue;
+          } // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
           // An item Google dates outside the night window is never opened (BRO-6872). The School Girls replay's New York
           // Sun review sat behind about 40 such items (2017 Variety, 2023 Guardian, unrelated Sun stories) and waited three
           // passes for a decode. It also stops an old Google date from claiming a URL first: decoded, that find was kept
@@ -1055,7 +1066,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       // Wrappers left for the next pass because too little of this one remained are counted apart, so a pass whose searches
       // keep eating the time shows as such instead of as failed unwraps.
       if (decodes || toUnwrap.length) log(`  google-news: decoded ${decoded}/${decodes}, unwrapped ${unwrappedOk}/${toUnwrap.length - lateSkipped} wrapper link(s)${lateSkipped ? `, ${lateSkipped} left for the next pass (under ${Math.round(minUnwrapMs / 1000)} s left)` : ''}`);
-      const out = [];
+      const out = [...nearMisses];
       for (const it of items) {
         const r = resolved.get(it.link);
         if (!r || !r.url) continue;
@@ -1422,7 +1433,8 @@ async function runDiscoveryPass({
   const collect = (candidates, adapterName) => {
     for (const c of candidates || []) {
       if (!c || !c.url) continue;
-      const key = canonicalUrl(c.url);
+      // A near-miss may be a Google News wrapper link (BRO-7793): no canonical form, so the wrapper itself is its key.
+      const key = canonicalUrl(c.url) || (c.nearMiss && c.source === 'google-news' ? String(c.url) : null);
       if (!key) { if (!c.nearMiss) rejected.push({ url: c.url, adapter: adapterName, reason: 'wrapped-url' }); continue; }
       if (c.nearMiss) {
         if (!nearMissByKey.has(key)) nearMissByKey.set(key, { key, url: c.url, title: c.title || '', outletId: c.outletId, adapter: adapterName, via: c.via, signals: c.nearMiss });

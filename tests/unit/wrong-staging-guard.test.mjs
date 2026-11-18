@@ -130,3 +130,45 @@ test('decks naming a company, a film or a season keep the show\'s own review', (
       'https://www.thewrap.com/its-a-wonderful-life-broadway-tituss-burgess-harry-hamlin/', IAWL.title, lane), true);
   } finally { setPressNameShows(null); }
 });
+
+// BRO-7793 (1): a Google News headline the strict matcher refuses raised no near-miss alarm (bare `continue`).
+test('BRO-7793: Google News refusal of a known outlet review headline yields a google-news near-miss', async () => {
+  const { googleNewsAdapter } = require(path.join(ROOT, 'scripts/lib/opening-night-lane/discovery.js'));
+  const item = (title, src, n) => `<item><title>${title}</title><link>https://news.google.com/rss/articles/CBMi${n}</link><pubDate>Wed, 18 Nov 2026 12:00:00 GMT</pubDate><source url="${src}">x</source></item>`;
+  const xml = `<rss><channel>${[
+    item("Review: IT'S A WONDERFUL LIFE: A LIVE RADIO PLAY at Stages Houston - BroadwayWorld", 'https://www.broadwayworld.com', 'AAA'),
+    item("Cast Set for IT'S A WONDERFUL LIFE: A LIVE RADIO PLAY at Stages Houston", 'https://www.broadwayworld.com', 'BBB'), // no review signal
+    item("Review: IT'S A WONDERFUL LIFE: A LIVE RADIO PLAY at Stages Houston", 'https://www.unknown-blog.example', 'CCC'), // unknown outlet
+  ].join('')}</channel></rss>`;
+  setPressNameShows(FIXTURE);
+  try {
+    const adapter = googleNewsAdapter({ decodeImpl: async () => null, log: () => {} });
+    const out = await adapter.discover({ show: IAWL, fetchText: async () => xml, night: null });
+    const nm = out.filter((c) => c.nearMiss);
+    assert.equal(nm.length, 1, JSON.stringify(out));
+    assert.equal(nm[0].source, 'google-news');
+    assert.match(nm[0].url, /^https:\/\/news\.google\.com\/rss\/articles\/CBMiAAA/);
+    assert.equal(nm[0].outletId, 'broadwayworld');
+    assert.ok(nm[0].nearMiss.length > 0);
+  } finally { setPressNameShows(null); }
+});
+
+// BRO-7793 (2): home houses come from shows.json venues, the hand list covers resident companies, and "Sadler's Wells" matches.
+test('BRO-7793: isHomeHouse reads venues from data, knows the missing companies, keeps the possessive', () => {
+  const { isHomeHouse, billedTitleOtherProductionCue } = require(path.join(ROOT, 'scripts/lib/show-names.js'));
+  setPressNameShows([
+    { id: 'a', title: 'Some Play', category: 'off-broadway', venue: 'Zorblax Playhouse Annex' },
+    { id: 'b', title: 'Other Play', category: 'regional', venue: 'Quuxville Opera House' },
+  ]);
+  try {
+    for (const t of ['Theatre for a New Audience', 'Red Bull Theater', 'WP Theater', 'Ma-Yi Theater Company', 'National Black Theatre',
+      'Jamie Lloyd Company', 'Royal Shakespeare Company', 'Nimax', 'Delfont Mackintosh', 'LW Theatres', 'Sheffield Theatres',
+      "Sadler's Wells", 'Sadlers Wells', "Roundabout's", 'the Zorblax Playhouse Annex']) assert.equal(isHomeHouse(t), true, t);
+    assert.equal(isHomeHouse('Quuxville Opera House'), false); // regional venues are other stagings
+    assert.equal(isHomeHouse('Stages Houston'), false);
+    // The cue exempts the home company, still fires on another staging.
+    const title = IAWL.title;
+    assert.equal(billedTitleOtherProductionCue(`${title}, Theatre for a New Audience`, title), null);
+    assert.ok(billedTitleOtherProductionCue(`${title}, Stages Houston Theatre`, title));
+  } finally { setPressNameShows(null); }
+});

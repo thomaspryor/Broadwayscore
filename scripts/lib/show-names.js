@@ -98,9 +98,16 @@ function buildRegistry(shows) {
   const peopleByTitle = new Map(); // name words of the cast and creative team ("rinna", "rannells")
   const marketsByTitle = new Map(); // categories of the shows billed with a title (BRO-7785)
   const titles = [];
+  const homeVenues = new Set(); // BRO-7793: venue + aliases of every NYC/London entry, so a renamed house needs no list edit
   for (const s of shows || []) {
     if (!s || !s.title) continue;
     titles.push(s.title);
+    if (HOME_MARKETS.has(String(s.category)) && typeof s.venue === 'string' && s.venue.trim()) {
+      for (const v of venueAliases(s.venue)) {
+        const n = normTitle(String(v).replace(/'s\b/g, '')).split(' ').filter((w) => w && !VENUE_GENERIC.has(w)).join(' ');
+        if (n.length >= 4) homeVenues.add(n);
+      }
+    }
     const k = normTitle(s.title);
     if (s.category) marketsByTitle.set(k, new Set([...(marketsByTitle.get(k) || []), String(s.category)]));
     if (typeof s.venue === 'string' && s.venue.trim()) venueByTitle.set(k, [...(venueByTitle.get(k) || []), s.venue]);
@@ -116,7 +123,7 @@ function buildRegistry(shows) {
       if (!akaByTitle.get(k).some((x) => normTitle(x) === normTitle(a))) akaByTitle.get(k).push(a.trim());
     }
   }
-  return { akaByTitle, venueByTitle, peopleByTitle, marketsByTitle, titles };
+  return { akaByTitle, venueByTitle, peopleByTitle, marketsByTitle, titles, homeVenues };
 }
 function registry() {
   if (!_registry) {
@@ -350,11 +357,20 @@ const HOME_HOUSES = ['cort', 'james earl jones', 'american airlines', 'todd haim
   'marquis', 'minskoff', 'new amsterdam', 'palace', 'circle in the square', 'helen hayes', 'stephen sondheim', 'mark taper',
   'victoria palace', 'piccadilly', 'phoenix', 'cambridge', 'criterion', 'fortune', 'vaudeville', 'ambassadors', 'st martins',
   'st lukes', 'sadlers wells', 'stratford east', 'pan asian', 'etcetera', 'regents park', 'open air', 'chichester',
-  'savoy', 'palladium', 'jerwood', 'dominion', 'adelphi', 'aldwych', 'novello', 'prince edward', 'prince of wales', 'shaftesbury'];
+  'savoy', 'palladium', 'jerwood', 'dominion', 'adelphi', 'aldwych', 'novello', 'prince edward', 'prince of wales', 'shaftesbury',
+  // BRO-7793: resident companies and producers missing from the first list (second opinion 2026-11-18).
+  'theatre for a new audience', 'theater for a new audience', 'tfana', 'red bull theater', 'wp theater', 'wp theatre', 'ma yi',
+  'national black theatre', 'jamie lloyd company', 'royal shakespeare company', 'rsc', 'nimax', 'delfont mackintosh',
+  'lw theatres', 'sheffield theatres', 'sadler s wells', 'sadlers wells'];
 /** A NYC or London house or resident company ("Roundabout's", "the Donmar"): the show's own, never another staging. */
 function isHomeHouse(text) {
-  const flat = ` ${normTitle(String(text || '').replace(/'s\b/g, '').replace(/[-_]/g, ' '))} `;
-  return HOME_HOUSES.some((h) => flat.includes(` ${h} `));
+  const raw = String(text || '').replace(/[-_]/g, ' ');
+  // Two readings of a possessive: dropped ("Roundabout's" -> roundabout) and kept ("Sadler's Wells" -> sadlers wells).
+  return [raw.replace(/['’]s\b/g, ''), raw].some((t) => namesHomeHouse(` ${normTitle(t)} `));
+}
+/** A flat, space-padded text names a listed house or a venue of a loaded NYC/London show. */
+function namesHomeHouse(flat) {
+  return HOME_HOUSES.some((h) => flat.includes(` ${h} `)) || [...registry().homeVenues].some((h) => flat.includes(` ${h} `));
 }
 const SLUG_COMPANY_RE = /^(theatre|theater|theatres|theaters|theatreworks|theaterworks|rep|repertory|players|playhouse|company|stages|guild|ensemble)$/;
 const SLUG_SKIP = new Set(['as', 'is', 'for', 'to', 'on', 'end', 'review', 'reviews', 'reviewed', 'theater', 'theatre', 'the', 'a', 'an', 'of', 'at', 'by', 'in', 'and', 'with', 'html', 'htm', 'php', 'amp', 'article', 'news', 'stage', 'play', 'musical']);
@@ -377,7 +393,7 @@ function slugOtherStagingCue(url, showTitle) {
   // A home-city slug ("-at-the-cort-theatre-new-york") or a home-city house under any of its names is the show's own
   // city: renamed venues and resident companies are not in shows.json's venue field.
   const flat = ` ${toks.join(' ')} `;
-  if (/ (new york|nyc|manhattan|london|west end|off broadway) /.test(flat) || HOME_HOUSES.some((h) => flat.includes(` ${h} `))) return null;
+  if (/ (new york|nyc|manhattan|london|west end|off broadway) /.test(flat) || namesHomeHouse(flat)) return null;
   const venueW = new Set(pressVenuesForTitle(showTitle).flatMap(venueAliases).flatMap((v) => sigWords(v)).filter((w) => !VENUE_GENERIC.has(w)));
   if (toks.some((t) => venueW.has(t))) return null;
   const titleW = new Set(sigWords(showTitle));
@@ -482,5 +498,5 @@ function akaTitlesValueProblem(value, show, shows, prevValue = null) {
 module.exports = {
   akaTitlesValueProblem, normTitle, sigWords, mainTitleSplit, mainTitleIsUnique, showNames,
   pressAkaForTitle, pressVenuesForTitle, registryShowTitles, setPressNameShows, otherProductionCue,
-  billedTitleOtherProductionCue, wrongStagingGuardOff, textNamesOwnVenue, slugOtherStagingCue, pressPeopleForTitle, urlNamesOtherArticle,
+  billedTitleOtherProductionCue, wrongStagingGuardOff, isHomeHouse, textNamesOwnVenue, slugOtherStagingCue, pressPeopleForTitle, urlNamesOtherArticle,
 };
