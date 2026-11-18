@@ -185,6 +185,11 @@ export function isSyntheticRecord(r, text) {
   return SYNTHETIC_TEXT_RE.test(text || '');
 }
 
+/** BRO-7738: the user turn a blocking Stop hook leaves after a closing message (walkTranscript marks it synthetic).
+ *  A compaction summary that quotes one starts with "This session is being continued", so it does not match. */
+const STOP_HOOK_FEEDBACK_RE = /^\s*Stop hook feedback:/;
+export const isStopHookFeedback = (e) => !!e && e.kind === 'user_text' && e.synthetic === true && STOP_HOOK_FEEDBACK_RE.test(String(e.text || ''));
+
 // Reference-attached detection — Claude Code surfaces user-attached images as:
 //   - tool_result content blocks with type=image
 //   - text blocks containing the marker "[Image #N]" with path "/var/folders/.../clipboard-*.png"

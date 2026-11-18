@@ -25,7 +25,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
-import { landedPushIndices, claimsSafeToArchive, runShellCode } from './review-coverage.mjs';
+import { landedPushIndices, claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex } from './review-coverage.mjs';
 import { shellEditsCode } from './retro-coverage-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
 
@@ -172,11 +172,8 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const defers = defersProof(lastMessage);
   if (!claimsSafeToArchive(lastMessage) && !defers) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE or deferring proof' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
-  let from = -1;
-  for (let i = events.length - 1; i >= 0; i--) {
-    const e = events[i];
-    if (e.kind === 'assistant_text' && e.text !== lastMessage && claimsSafeToArchive(e.text)) { from = i; break; }
-  }
+  // BRO-7738: a claim another Stop hook refused is not a boundary (lastAcceptedClaimIndex).
+  const from = lastAcceptedClaimIndex(events, lastMessage);
   const allBypass = new RegExp(NO_LIVE_RUN_RE.source, 'gim');
   const accepted = (why) => !SCHEDULE_ONLY_REASON_RE.test(why) || REAL_COST_REASON_RE.test(why);
   if (answerTexts(events.slice(from + 1), lastMessage).some((t) => [...String(t).matchAll(allBypass)].some((m) => accepted(m[1])))) return { decision: 'allow', reason: 'NO-LIVE-RUN bypass' };
@@ -186,7 +183,8 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   // Only edits that a land push after them carried count.
   const edits = liveEdits(events, from, index).filter((x) => x.lastEdit < lastLand);
   if (!edits.length) return { decision: 'allow', reason: 'no landed edit to a file a workflow runs' };
-  const missing = edits.filter((x) => !liveRunFor(events, x, lastLand));
+  // A dispatch proves a file from the land that carried its last edit on (BRO-7738 review: a chunk spanning two lands).
+  const missing = edits.filter((x) => !liveRunFor(events, x, landed.find((l) => l > x.lastEdit) ?? lastLand));
   if (!missing.length) return { decision: 'allow', reason: 'every live file was run' };
   return {
     decision: 'block',

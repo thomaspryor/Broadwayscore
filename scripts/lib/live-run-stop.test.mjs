@@ -169,3 +169,51 @@ test('a shell edit of a live script counts as an edit (sed -i, redirect); a read
   assert.equal(decide([...bash("sed -n 1,5p scripts/fixture-job.js"), ...landed()]).decision, 'allow', 'sed -n only reads');
   assert.equal(decide([...bash("sed -i 's/a/b/' scripts/fixture-job.js"), ...bash('node scripts/fixture-job.js --dry-run'), ...landed()]).decision, 'allow', 'then ran it');
 });
+
+// BRO-7738 live test (scenario A, 2026-11-18): the first SAFE TO ARCHIVE was blocked by [VE:ROOTCAUSE], which runs
+// before [VE:LIVERUN] in verify-edits.sh. The blocked claim then counted as the chunk boundary, so every retry read
+// "nothing landed in this chunk" and live-run never fired. A claim a Stop hook blocked must not start a new chunk.
+test('a SAFE TO ARCHIVE claim another Stop hook blocked does not reset the chunk', () => {
+  const feedback = (tag) => ({ kind: 'user_text', text: `Stop hook feedback:\n[command hook 2]: BLOCKED: x\n[VE:${tag}]`, synthetic: true });
+  const claim = (t) => ({ kind: 'assistant_text', text: `${t}\n\nSAFE TO ARCHIVE — comment added and landed, tests pass` });
+  const work = [...edit('scripts/fixture-job.js'), ...landed()];
+  const blockedTwice = [...work, claim('Marker A is on main.'), feedback('ROOTCAUSE'), claim('NO-ROOT-CAUSE: test marker'), feedback('RETROCOV')];
+  const retry = 'NO-ROOT-CAUSE: test marker\nNO-RETRO: gate test\n\nSAFE TO ARCHIVE — comment added and landed, tests pass';
+  assert.equal(decide(blockedTwice, retry).decision, 'block', 'retry after other gates blocked: still judged on the landed edit');
+  assert.equal(decide([...blockedTwice, ...bash('node scripts/fixture-job.js --dry-run')], retry).decision, 'allow', 'then running it clears it');
+  // An accepted claim (no feedback after it, the next turn started) still closes the chunk.
+  const accepted = [...work, claim('Done.'), { kind: 'user_text', text: 'thanks, now look at the homepage' }, ...bash('echo later')];
+  assert.equal(decide(accepted).decision, 'allow', 'an accepted claim still starts a new chunk');
+});
+
+test('BRO-7738 review: the chunk key holds across a refused retry, so the nudge budget is per chunk', () => {
+  const feedback = (tag) => ({ kind: 'user_text', text: `Stop hook feedback:\n[command hook 2]: BLOCKED: x\n[VE:${tag}]`, synthetic: true });
+  const claim = (t) => ({ kind: 'assistant_text', text: `${t}\n\nSAFE TO ARCHIVE — x`, messageId: `m-${t}` });
+  const base = [...edit('scripts/other.js'), ...landed(), claim('accepted'), { kind: 'user_text', text: 'next task please' }, ...edit('scripts/fixture-job.js'), ...landed()];
+  const first = decide(base, 'try1\nSAFE TO ARCHIVE — x');
+  const retry = decide([...base, claim('try1'), feedback('LIVERUN')], 'try2\nSAFE TO ARCHIVE — x');
+  assert.equal(first.decision, 'block');
+  assert.equal(retry.decision, 'block');
+  assert.equal(retry.chunkKey, first.chunkKey, 'same chunk key, so main() sees the spent budget');
+  assert.equal(first.chunkKey, 'm-accepted');
+});
+
+test('BRO-7738 review: feedback text must be the synthetic hook turn; a quoting compaction summary or owner text is not', () => {
+  const claim = { kind: 'assistant_text', text: 'x\n\nSAFE TO ARCHIVE — earlier' };
+  const work = [...edit('scripts/fixture-job.js'), ...landed(), claim];
+  const summary = { kind: 'user_text', text: 'This session is being continued from a previous conversation. Stop hook feedback: [VE:LIVERUN]', synthetic: true };
+  const typed = { kind: 'user_text', text: 'Stop hook feedback: just kidding', synthetic: false };
+  assert.equal(decide([...work, summary]).decision, 'allow', 'a summary is not a refusal: the earlier claim stands');
+  assert.equal(decide([...work, typed]).decision, 'allow', 'owner-typed text cannot forge a refusal');
+  const midTurn = { kind: 'user_text', text: 'also check X', midTurn: true, synthetic: false };
+  const fb = { kind: 'user_text', text: 'Stop hook feedback:\n[VE:ROOTCAUSE]', synthetic: true };
+  assert.equal(decide([...work, midTurn, fb]).decision, 'block', 'a mid-turn owner note before the feedback does not hide it');
+});
+
+test('BRO-7738 review: a dispatch read after the land that carried file A still proves A when file B lands later', () => {
+  const fb = { kind: 'user_text', text: 'Stop hook feedback:\n[VE:ROOTCAUSE]', synthetic: true };
+  const trig = use('mcp__github__actions_run_trigger', { workflow_id: 'sentry-triage.yml' });
+  const read = use('mcp__github__actions_get', { resource_id: '1' });
+  const ev = [...edit('scripts/fixture-job.js'), ...landed(), ...trig, ...read, { kind: 'assistant_text', text: 'SAFE TO ARCHIVE — a' }, fb, ...edit('scripts/lib/some-helper.js'), ...landed()];
+  assert.equal(decide(ev, 'retry\nSAFE TO ARCHIVE — b').decision, 'allow');
+});
