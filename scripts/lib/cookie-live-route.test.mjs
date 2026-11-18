@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { CRITICAL_OUTLETS } = require('../check-cookie-health.js');
+const { CRITICAL_OUTLETS, unverifiableLiveResult } = require('../check-cookie-health.js');
 const { findCookieFailures, buildAlert } = require('./cookie-expiry-alert.js');
 
 const AUTHENTICATING_ROUTES = (c) => c.liveRoute === 'cookie-plain' || c.proxyBlocked === true || !!c.ciLiveUnverifiable;
@@ -23,10 +23,19 @@ test('nytimes, wapo, ft are declared CI-unverifiable (regression: BRO-7717/7718/
   for (const k of ['nytimes', 'wapo', 'ft']) assert.ok(CRITICAL_OUTLETS[k].ciLiveUnverifiable, k);
 });
 
-test('a ciLiveUnverifiable outlet produces a warn, so no card is filed', () => {
-  // mirrors check-cookie-health.js main(): the layer-3 result for such an outlet
-  const r = { name: 'ft', layer: 3, status: 'warn', isCritical: true, message: 'Live check unverified' };
-  assert.deepEqual(findCookieFailures([r], 7), []);
+test('a ciLiveUnverifiable outlet produces a warn, so no card is filed (real builder)', () => {
+  for (const k of ['nytimes', 'wapo', 'ft']) {
+    const r = unverifiableLiveResult(k, CRITICAL_OUTLETS[k]);
+    assert.equal(r.status, 'warn');
+    assert.equal(r.unverifiable, true);
+    assert.deepEqual(findCookieFailures([r], 7), []);
+  }
+});
+
+test('every ciLiveUnverifiable reason names the live probe that replaces it', () => {
+  for (const [k, c] of Object.entries(CRITICAL_OUTLETS)) {
+    if (c.ciLiveUnverifiable) assert.match(c.ciLiveUnverifiable, /renew-cookies|recover-thetimes-browser/, k);
+  }
 });
 
 test('a real live failure still files a card', () => {

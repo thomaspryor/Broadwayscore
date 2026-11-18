@@ -515,6 +515,11 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyCh
   }
 }
 
+/** Layer-3 result for an outlet whose CI live route cannot authenticate (BRO-7757). Pure; unit-tested. */
+function unverifiableLiveResult(fileKey, config) {
+  return { name: fileKey, layer: 3, status: 'warn', message: `Live check unverified: ${config.ciLiveUnverifiable}`, isCritical: true, unverifiable: true };
+}
+
 // --- Layer 3 (walled, production route): cookie-plain + zero-cookie control ---
 // For outlets whose production fetch is the cookies-plain tier and whose
 // ScrapingBee route cannot carry the login (thestage, BRO-5566). Same verdict
@@ -855,9 +860,9 @@ async function main() {
       }
 
       if (config.ciLiveUnverifiable) {
-        const live = { status: 'warn', message: `Live check unverified: ${config.ciLiveUnverifiable}` };
+        const live = unverifiableLiveResult(fileKey, config);
         console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
-        return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true, unverifiable: true };
+        return live;
       }
       if (config.liveRoute === 'cookie-plain') {
         const live = await checkLiveAccessWalledPlain(config.testUrl, config);
@@ -1032,4 +1037,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { CRITICAL_OUTLETS, checkAuthExpiry, walledVerdictToResult, checkLiveAccessWalledPlain, withBodyCheck };
+module.exports = { CRITICAL_OUTLETS, unverifiableLiveResult, checkAuthExpiry, walledVerdictToResult, checkLiveAccessWalledPlain, withBodyCheck };
