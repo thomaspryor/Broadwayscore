@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7745-followup",
   "planId": "ba10c472-0d48-4bc0-9709-4b3a539cd87d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T07:04:46.173Z",
   "submitter": {
     "name": null,
@@ -37,5 +37,24 @@
         "description": "rent-west-end-2026/theatreandtonic--penny-walshe.json: criticName back to Penny Walshe. The stored text credits \"Written by Penny for Theatre and Tonic\" (the live page was later edited to Roby); the rebuild re-reads the stored credit and showed a first name only"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T07:22:18.540Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted clydes-2021/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted jitney-2017/theatermania--david-gordon.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/theatreandtonic--penny-walshe.json criticName: \"Roby\" -> \"Penny Walshe\""
+    }
+  ],
+  "executedIn": "ci"
 }
