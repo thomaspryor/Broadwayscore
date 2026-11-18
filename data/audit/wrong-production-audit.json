@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-18T06:54:09.400Z",
+  "timestamp": "2026-11-18T08:19:55.112Z",
   "stats": {
-    "totalReviews": 82556,
-    "alreadyFlagged": 22554,
+    "totalReviews": 82560,
+    "alreadyFlagged": 22555,
     "dateGuardCatches": 221,
     "directorMismatch": 3732,
     "tvFilmSignals": 2348,
-    "londonSignals": 3786,
+    "londonSignals": 3789,
     "offBroadwaySignals": 761,
     "yearMismatch": 383,
     "noPublishDate": 8254
@@ -94561,6 +94561,20 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
+      "file": "londonlivinglarge--london-living-large.json",
+      "score": null,
+      "publishDate": "2026-10-14",
+      "url": "https://www.londonlivinglarge.com/2026/10/blood-of-my-blood-royal-court-theatre.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
       "file": "loureviews--louise-penn.json",
       "score": 92,
       "publishDate": "2026-10-25",
@@ -139052,6 +139066,20 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "city-am--adam-bloodworth.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.cityam.com/the-producers-london-musical-review-the-west-ends-most-shocking-show/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 82,
       "publishDate": "2024-12-11",
@@ -139111,6 +139139,20 @@
       "score": 82,
       "publishDate": null,
       "url": "https://juliarank.substack.com/p/review-the-producers-garrick-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "liamodell--liam-odell.json",
+      "score": 82,
+      "publishDate": "2025-09-15",
+      "url": "https://liamodell.com/2025/09/15/the-producers-review-west-end-garrick-theatre-london-mel-brooks-film-musical-springtime-for-hitler/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
