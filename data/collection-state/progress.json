@@ -768,27 +768,15 @@
     "act-one-2014/wsj--terry-teachout.json",
     "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
     "the-pass-off-broadway-2026/the-interested-bystander--interested-bystander.json",
-    "hamlet-chichester-festival-regional-2025/susanelkin--unknown.json",
-    "art-2025/broadwaynews--michael-abourizk.json",
-    "consumed-sheffield-regional-2025/thereviewshub--ron-simpson.json",
-    "consumed-sheffield-regional-2025/fairypoweredproductions--heather-chalkley.json",
-    "our-brother-oran-mor-regional-2025/north-west-end--roger-jacobs.json",
-    "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
-    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
-    "meme-girls-oran-mor-regional-2025/herald--neil-cooper.json",
-    "mrs-warrens-profession-west-end-2025/plays-international--maryam-philpott.json",
-    "goodbye-dreamland-bowlarama-oran-mor-regional-2025/herald--neil-cooper.json",
-    "dead-outlaw-2025/vulture--jackson-mchenry.json",
-    "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json",
-    "much-ado-about-nothing-royal-shakespeare-regional-2025/cherylmarkosky--cherylmarkosky.json",
-    "all-the-beauty-in-the-world-off-broadway-2025/the-interested-bystander--cary-wong.json",
-    "the-last-five-years-2025/vulture--sara-holdren.json",
-    "the-last-five-years-2025/thewrap--robert-hofler.json",
-    "the-last-five-years-2025/ctv-canada-am--unknown.json",
-    "the-last-five-years-2025/hypable--unknown.json",
-    "glengarry-glen-ross-2025/usatoday--patrick-ryan.json",
-    "dear-england-west-end-2025/independent--jessie-thompson.json",
-    "pig-heart-boy-crucible-regional-2025/timesbookshop--unknown.json"
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1056,7 +1044,10 @@
       "sumo-off-broadway-2025/timeout--raven-snook.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json",
@@ -1356,13 +1347,52 @@
     ]
   },
   "startTime": "2026-11-17T22:48:02.865Z",
-  "lastProcessed": "dookin-oot-oran-mor-regional-2025/broadwayworld--natalie-odonoghue.json",
+  "lastProcessed": "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-18T00:57:59.250Z",
       "event": "bb-session",
       "session": "fb100b13",
       "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
+    {
+      "t": "2026-11-18T03:58:41.119Z",
+      "event": "bb-session",
+      "session": "4ffdcafc",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
+    {
+      "t": "2026-11-18T05:10:19.980Z",
+      "event": "bb-session",
+      "session": "3d105445",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-18T05:10:20.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-18T05:11:09.816Z",
+      "event": "bb-session",
+      "session": "b0e633d6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-18T05:11:10.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-18T05:11:53.581Z",
+      "event": "bb-session",
+      "session": "f0a90399",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-18T05:11:54.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
