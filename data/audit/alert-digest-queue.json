@@ -2054,5 +2054,67 @@
       }
     ],
     "queuedAt": "2026-11-18T04:49:18.000Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7745-byline",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7745-byline",
+    "description": "land.yml did not land land/bro-7745-byline: the scripts-lib-tests gate went red at 3dcc56bd04. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44243079534",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7745-byline"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "3dcc56bd04aae7540da01cb9b0d8491609f6ba88"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44243079534"
+      }
+    ],
+    "queuedAt": "2026-11-18T05:21:43.585Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7740-embargo",
+    "title": "Landing blocked: toplevel-regression red on land/bro-7740-embargo",
+    "description": "land.yml did not land land/bro-7740-embargo: the toplevel-regression gate went red at c2f4b0c126. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44241022841",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7740-embargo"
+      },
+      {
+        "name": "gate",
+        "value": "toplevel-regression"
+      },
+      {
+        "name": "tip",
+        "value": "c2f4b0c1260bf5589985f6a69bc9adc5d85e48e5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44241022841"
+      }
+    ],
+    "queuedAt": "2026-11-18T05:21:21.021Z"
   }
 ]
