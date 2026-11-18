@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "nacho-ate-spiderman-regional-2026",
   "openingDate": "2026-11-12",
-  "detectedAt": "2026-11-18T09:09:51.916Z",
+  "detectedAt": "2026-11-18T09:24:12.057Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "complete",
       "eligibilityReason": null
+    },
+    {
+      "file": "discoverhollywood--amalisha-hueck.json",
+      "outletId": "discoverhollywood",
+      "criticName": "Amalisha HuEck",
+      "url": "https://www.discoverhollywood.com/nacho-ate-spiderman-ruskin-group-theatre",
+      "fullTextLen": 5544,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }

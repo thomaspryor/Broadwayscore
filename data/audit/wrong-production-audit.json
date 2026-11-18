@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T08:39:34.003Z",
+  "timestamp": "2026-11-18T09:24:32.354Z",
   "stats": {
-    "totalReviews": 82560,
-    "alreadyFlagged": 22555,
+    "totalReviews": 82565,
+    "alreadyFlagged": 22546,
     "dateGuardCatches": 221,
     "directorMismatch": 3732,
-    "tvFilmSignals": 2348,
+    "tvFilmSignals": 2350,
     "londonSignals": 3789,
     "offBroadwaySignals": 761,
     "yearMismatch": 383,
-    "noPublishDate": 8254
+    "noPublishDate": 8258
   },
   "findings": [
     {
@@ -3634,7 +3634,7 @@
     },
     {
       "showId": "afterglow-off-broadway-2017",
-      "file": "beauty-news-nyc--pk-greenfield.json",
+      "file": "beautynewsnycofficial--pk-greenfield.json",
       "score": 74,
       "publishDate": "2017-06-22",
       "url": "http://www.beautynewsnyc.com/city-pulse/theater-afterglow-gay-pride/",
@@ -7690,6 +7690,20 @@
       "score": null,
       "publishDate": null,
       "url": "https://www.manhattantheatreclub.com/shows/24-25-season/bad-kreyol/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "bandstand-2017",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 42,
+      "publishDate": null,
+      "url": "https://t2conline.com/she-says-bandstand-lost-in-translation/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -31739,6 +31753,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: here-we-are-off-broadway-2023"
+        }
+      ]
+    },
+    {
+      "showId": "heroes-of-the-fourth-turning-red-regional-2026",
+      "file": "buzznews--bill-esler.json",
+      "publishDate": "2026-11-10",
+      "url": "https://www.buzznews.net/theatre/theatre-reviews/item/6829-an-incredibly-good-snapshot-of-our-discourse-in-heroes-of-the-fourth-turning.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
