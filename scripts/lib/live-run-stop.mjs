@@ -183,8 +183,9 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   // Only edits that a land push after them carried count.
   const edits = liveEdits(events, from, index).filter((x) => x.lastEdit < lastLand);
   if (!edits.length) return { decision: 'allow', reason: 'no landed edit to a file a workflow runs' };
-  // A dispatch proves a file from the land that carried its last edit on (BRO-7738 review: a chunk spanning two lands).
-  const missing = edits.filter((x) => !liveRunFor(events, x, landed.find((l) => l > x.lastEdit) ?? lastLand));
+  // A dispatch counts only after the LAST land: an earlier land may not have carried an edit committed later
+  // (BRO-7738 ship-check), so a chunk spanning two lands is judged strictly; running the script directly still counts.
+  const missing = edits.filter((x) => !liveRunFor(events, x, lastLand));
   if (!missing.length) return { decision: 'allow', reason: 'every live file was run' };
   return {
     decision: 'block',

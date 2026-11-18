@@ -210,10 +210,11 @@ test('BRO-7738 review: feedback text must be the synthetic hook turn; a quoting 
   assert.equal(decide([...work, midTurn, fb]).decision, 'block', 'a mid-turn owner note before the feedback does not hide it');
 });
 
-test('BRO-7738 review: a dispatch read after the land that carried file A still proves A when file B lands later', () => {
+test('BRO-7738 ship-check: a dispatch read before a later land does not prove the file (that land may carry its edit)', () => {
   const fb = { kind: 'user_text', text: 'Stop hook feedback:\n[VE:ROOTCAUSE]', synthetic: true };
   const trig = use('mcp__github__actions_run_trigger', { workflow_id: 'sentry-triage.yml' });
   const read = use('mcp__github__actions_get', { resource_id: '1' });
   const ev = [...edit('scripts/fixture-job.js'), ...landed(), ...trig, ...read, { kind: 'assistant_text', text: 'SAFE TO ARCHIVE — a' }, fb, ...edit('scripts/lib/some-helper.js'), ...landed()];
-  assert.equal(decide(ev, 'retry\nSAFE TO ARCHIVE — b').decision, 'allow');
+  assert.equal(decide(ev, 'retry\nSAFE TO ARCHIVE — b').decision, 'block', 'strict: re-dispatch after the last land');
+  assert.equal(decide([...ev, ...bash('node scripts/fixture-job.js --dry-run')], 'retry\nSAFE TO ARCHIVE — b').decision, 'allow', 'or run it directly');
 });
