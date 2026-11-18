@@ -37,6 +37,7 @@ const publish = require('./publish');
 const { createLaneReviewWriter } = require('./persist');
 const { getSyndicationPrimaries, criticFileSlug } = require('../syndication-pairs');
 const card = require('../review-completeness');
+const { resolveOutletFromUrl } = require('../review-normalization');
 
 const criticKey = (name) => criticFileSlug(name); // the rebuild's critic match (diacritics, punctuation folded)
 
@@ -150,6 +151,7 @@ async function runLaneNight({
       errors.push({ adapter: 'manual-inbox', error: `status write failed: ${String((e && e.message) || e).slice(0, 150)}` });
     }
   };
+  const outletIdFor = (e) => e.outletId || ((resolveOutletFromUrl(e.url) || {}).outletId) || null;
   const manualCandidates = async () => {
     if (!readInbox) return [];
     let entries;
@@ -168,7 +170,10 @@ async function runLaneNight({
       if (seen.has(key) && !failedNow.has(key)) { noteInbox(e, 'already-in', 'the lane already has this review'); continue; }
       manualByKey.set(key, e);
       out.push({ url: e.url, key, source: trust.MANUAL_SOURCE, adapter: 'manual-inbox', via: 'manual-inbox', publishDate: null,
-        ...(e.outletId ? { outletId: e.outletId } : {}), reason: 'manual-inbox', manualEntry: e });
+        // The outlet comes from the URL when the person did not name one: inline-score's fetchReview never returns one
+        // (every adapter candidate carries its own), so without this a bare inbox URL failed "outletId is required"
+        // (BRO-7781 simulated night).
+        ...(outletIdFor(e) ? { outletId: outletIdFor(e) } : {}), reason: 'manual-inbox', manualEntry: e });
     }
     return out;
   };
