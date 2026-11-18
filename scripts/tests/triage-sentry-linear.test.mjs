@@ -53,9 +53,32 @@ test('a low-frequency real issue is filed but not dispatched (BRO-7722)', async 
   const s = stubs();
   const r = await lib.fileSentryIssue({ issue: ISSUE, classification: { ...REAL, lowFrequency: true }, org: 'o' }, s.deps);
   assert.equal(r.action, 'filed');
-  assert.equal(s.calls.create[0].dispatch, false);
-  assert.equal(s.calls.create[0].priority, 4);
+  const c = s.calls.create[0];
+  assert.ok(!c.dispatch);
+  assert.equal(c.park, lib.LOW_FREQUENCY_PARK);
+  assert.equal(c.priority, 4);
+  // createLinearIssue's real disposition rule must accept it (dispatch:false alone was refused).
+  const { resolveDisposition } = require('../lib/card-disposition.js');
+  assert.equal(resolveDisposition(c).ok, true);
+  const hd = require('../lib/headless-dispatchability.js');
+  assert.equal(hd.isWorkerTakeableParkReason(c.park), false, 'a worker must not pick up a low-frequency park');
 });
+
+test('every Sentry card carries a safe VERIFY the cloud worker accepts (BRO-7722)', async () => {
+  const s = stubs();
+  await lib.fileSentryIssue({ issue: ISSUE, classification: REAL, org: 'o' }, s.deps);
+  const c = s.calls.create[0];
+  assert.equal(resolveDispositionOk(c), true);
+  const { evaluateVerifiability } = require('../lib/verify-gate.js');
+  const v = evaluateVerifiability(c.description, []);
+  assert.equal(v.armed, true, JSON.stringify(v));
+  assert.equal(v.cmd, 'node --test tests/unit/sentry-4567.test.mjs');
+  assert.throws(() => lib.regressionTestPath('abc'));
+});
+
+function resolveDispositionOk(c) {
+  return require('../lib/card-disposition.js').resolveDisposition(c).ok;
+}
 
 test('an existing card (any state) means no new card', async () => {
   const s = stubs({ found: [{ identifier: 'BRO-1', state: { type: 'completed' }, description: 'x\nsentry-issue: sentry-4567\n' }] });

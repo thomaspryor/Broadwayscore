@@ -29,6 +29,17 @@ function hasMarker(description, sentryId) {
   return new RegExp(`^${MARKER_PREFIX}${esc}\\s*$`, 'm').test(String(description || ''));
 }
 
+// The regression test a worker writes for this card; also its VERIFY (BRO-7722:
+// cards without a safe VERIFY are never picked by the cloud worker, so the
+// first Sentry cards sat in Todo). Digits only: Sentry ids are numeric.
+function regressionTestPath(sentryId) {
+  const id = String(sentryId || '').replace(/\D/g, '');
+  if (!id) throw new Error(`sentry-linear-filing: non-numeric Sentry id ${JSON.stringify(sentryId)}`);
+  return `tests/unit/sentry-${id}.test.mjs`;
+}
+
+const LOW_FREQUENCY_PARK = 'Low-frequency Sentry error (1-2 events, 1 user): wait for it to recur before spending a worker session';
+
 function buildSentryCard(issue, classification, org) {
   const sentryLink = issue.permalink || `https://sentry.io/organizations/${org}/issues/${issue.id}/`;
   const lowFrequency = !!(classification && classification.lowFrequency);
@@ -42,6 +53,12 @@ function buildSentryCard(issue, classification, org) {
     `Sentry link: ${sentryLink}`,
     '',
     'What to do: open the Sentry link, find the cause in the code and fix it, then resolve the issue in Sentry. If it is noise (browser extension, injected script, bot), teach scripts/lib/sentry-triage-classify.js to ignore it instead.',
+    '',
+    '## Acceptance criteria',
+    `- \`${regressionTestPath(issue.id)}\` exists and passes. It fails with the fix reverted: either it reproduces the error path and asserts the fixed behaviour, or (if this is noise) it feeds this issue's real event shape to classifyIssue() and asserts noise.`,
+    '- The Sentry issue is resolved after the fix is live.',
+    '',
+    `VERIFY: node --test ${regressionTestPath(issue.id)}`,
     '',
     `Classification: ${(classification && classification.reason) || 'unknown'}`,
     markerLine(issue.id),
@@ -79,9 +96,10 @@ async function fileSentryIssue({ issue, classification, org, canCreate = true },
     // out because distinct Sentry errors share most title words.
     const { issue: created } = await createLinearIssue({
       ...card,
-      // One-off quirks (1-2 events, 1 user) go on the board but do not start a
-      // paid worker session (BRO-7722: real errors now reach this path).
-      dispatch: !(classification && classification.lowFrequency),
+      // One-off quirks (1-2 events, 1 user) go on the board parked, not
+      // dispatched to a paid worker session (BRO-7722). createLinearIssue needs
+      // exactly one of dispatch/park/self.
+      ...(classification && classification.lowFrequency ? { park: LOW_FREQUENCY_PARK } : { dispatch: true }),
       source: SOURCE, dedupeOptOut: 'sentry-triage' });
     return { action: 'filed', card: created };
   } catch (e) {
@@ -89,4 +107,4 @@ async function fileSentryIssue({ issue, classification, org, canCreate = true },
   }
 }
 
-module.exports = { MAX_NEW_CARDS_PER_RUN, markerLine, hasMarker, buildSentryCard, findExistingSentryCard, fileSentryIssue, SOURCE };
+module.exports = { LOW_FREQUENCY_PARK, regressionTestPath, MAX_NEW_CARDS_PER_RUN, markerLine, hasMarker, buildSentryCard, findExistingSentryCard, fileSentryIssue, SOURCE };
