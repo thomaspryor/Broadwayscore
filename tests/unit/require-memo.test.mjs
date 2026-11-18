@@ -51,6 +51,7 @@ test('repeat lazy requires return the live exports; children edges match stock r
 
 test('installRequireMemo is idempotent and only installed by the rebuild entry point', () => {
   assert.equal(run("const m=require('./scripts/lib/require-memo');console.log(m.installRequireMemo(), m.installRequireMemo())").trim(), 'true false');
+  assert.equal(execFileSync(process.execPath, ['-e', "console.log(require('./scripts/lib/require-memo').installRequireMemo())"], { cwd: ROOT, encoding: 'utf8', env: { ...process.env, REQUIRE_MEMO: 'off' } }).trim(), 'false');
   const src = fs.readFileSync(path.join(ROOT, 'scripts/rebuild-all-reviews.js'), 'utf8');
   const guard = src.indexOf('if (require.main !== module) return;');
   const install = src.indexOf("require('./lib/require-memo').installRequireMemo()");

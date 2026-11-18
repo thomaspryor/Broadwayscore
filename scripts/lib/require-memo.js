@@ -20,6 +20,8 @@ const MARK = Symbol.for('broadwayscore.requireMemo');
 
 function installRequireMemo() {
   const proto = Module.prototype;
+  // Kill switch (rollback without a code change): REQUIRE_MEMO=off.
+  if (String(process.env.REQUIRE_MEMO || '').toLowerCase() === 'off') return false;
   if (proto.require[MARK]) return false;
   const original = proto.require;
   const resolved = new Map();
