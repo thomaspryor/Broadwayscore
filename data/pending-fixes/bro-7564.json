@@ -1,0 +1,108 @@
+{
+  "issueNumber": "bro-7564",
+  "planId": "1be07921-a2f0-460e-8a73-e7c78d4e441a",
+  "status": "pending",
+  "createdAt": "2026-11-18T22:56:14.175Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude five reviews assigned to the wrong same-title production",
+    "steps": [
+      "the-play-that-goes-wrong-off-broadway-2019/lighting-and-sound-america--david-barbour.json: wrongProduction",
+      "the-play-that-goes-wrong-off-broadway-2019/lighting-and-sound-america--david-barbour.json: wrongProductionReason",
+      "the-play-that-goes-wrong-off-broadway-2019/times-square-chronicles--unknown.json: wrongProduction",
+      "the-play-that-goes-wrong-off-broadway-2019/times-square-chronicles--unknown.json: wrongProductionReason",
+      "whos-afraid-of-virginia-woolf-2020/exeunt-magazine--unknown.json: wrongProduction",
+      "whos-afraid-of-virginia-woolf-2020/exeunt-magazine--unknown.json: wrongProductionReason",
+      "jesus-christ-superstar-1971/exeunt-magazine--unknown.json: wrongProduction",
+      "jesus-christ-superstar-1971/exeunt-magazine--unknown.json: wrongProductionReason",
+      "la-cage-aux-folles-1983/talkinbroadway--matthew-murray.json: wrongProduction",
+      "la-cage-aux-folles-1983/talkinbroadway--matthew-murray.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-play-that-goes-wrong-off-broadway-2019/lighting-and-sound-america--david-barbour.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review describes the original Broadway cast and production, not the 2019 Off-Broadway run.",
+        "description": "the-play-that-goes-wrong-off-broadway-2019/lighting-and-sound-america--david-barbour.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/times-square-chronicles--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-play-that-goes-wrong-off-broadway-2019/times-square-chronicles--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/times-square-chronicles--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review explicitly describes the Broadway transfer and original company, not the 2019 Off-Broadway run.",
+        "description": "the-play-that-goes-wrong-off-broadway-2019/times-square-chronicles--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-2020/exeunt-magazine--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "whos-afraid-of-virginia-woolf-2020/exeunt-magazine--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-2020/exeunt-magazine--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review describes the 2012 Steppenwolf Broadway revival starring Tracy Letts and Amy Morton.",
+        "description": "whos-afraid-of-virginia-woolf-2020/exeunt-magazine--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-1971/exeunt-magazine--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "jesus-christ-superstar-1971/exeunt-magazine--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-1971/exeunt-magazine--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review describes the Des McAnuff Broadway revival with Paul Nolan, not the 1971 premiere.",
+        "description": "jesus-christ-superstar-1971/exeunt-magazine--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-cage-aux-folles-1983/talkinbroadway--matthew-murray.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "la-cage-aux-folles-1983/talkinbroadway--matthew-murray.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-cage-aux-folles-1983/talkinbroadway--matthew-murray.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review is dated 2004 and describes the Marquis revival starring Gary Beach and Daniel Davis.",
+        "description": "la-cage-aux-folles-1983/talkinbroadway--matthew-murray.json: wrongProductionReason"
+      }
+    ]
+  }
+}
