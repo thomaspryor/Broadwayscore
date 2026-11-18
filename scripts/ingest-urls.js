@@ -29,6 +29,8 @@ const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { unwrapWaybackUrl } = require('./lib/unwrap-wayback-url');
 const { parseIngestLine, chooseIngestByline } = require('./lib/ingest-url-line');
 const { isPlausiblePersonName } = require('./lib/byline-recovery');
+const { detectBylineConflict } = require('./lib/byline-extraction');
+const { sameCriticName } = require('./lib/byline-from-text');
 
 // An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
 function isRegisteredOutletId(id) {
@@ -107,9 +109,31 @@ if (!show) {
 }
 // BRO-6648: while the opening-night lane holds this show, the lane writes its reviews; this run writes nothing.
 // This script commits before it pushes, so push-time enforce cannot undo it: the check has to be here.
-if (!require('./lib/opening-night-lane/lease-guard').writableShowIds([showId], { label: 'ingest-urls' }).length) {
-  console.log(`::warning::ingest-urls: ${showId} is held by the opening-night lane; nothing ingested. Re-run after the lane releases it.`);
-  process.exit(0);
+// BRO-7741: a hand dispatch for a leased show goes into the lane's manual inbox instead: the running lane publishes it
+// on its next pass. Anything else (automated caller, unknown lease state, partial-ingest flags) is still refused.
+{
+  const heldBy = require('./lib/opening-night-lane/lease-guard').leaseSkipReason(showId);
+  const route = require('./lib/lane-inbox-routing').ingestRouteDecision({ lease: heldBy, caller: ingestCaller || '', dryRun, noFetch, noRebuild });
+  if (route.action === 'inbox') {
+    if (!urlsFile || !fs.existsSync(urlsFile)) { console.error(`URL file not found: ${urlsFile}`); process.exit(1); }
+    const lines = fs.readFileSync(urlsFile, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')).map((l) => parseIngestLine(l));
+    if (!lines.length) { console.log('No URLs found in file (blank or all comments)'); process.exit(0); }
+    const res = require('./lib/lane-inbox-routing').routeToInbox({ showId, entries: lines, repoDir: path.join(__dirname, '..'), addedBy: process.env.GITHUB_ACTOR ? `ingest-urls:${process.env.GITHUB_ACTOR}` : 'ingest-urls' });
+    if (!res.ok) {
+      console.log(`::error::ingest-urls: ${showId} is held by the opening-night lane and the lane inbox write failed (${res.reason}: ${res.detail || ''}). Nothing was added. Retry this dispatch, or add the URL with: node scripts/opening-night-lane-inbox.js add --show=${showId} --url=<URL>`);
+      process.exit(1);
+    }
+    const settled = require('./lib/lane-inbox-routing').settleAfterInboxWrite({ showId, ids: res.added, repoDir: path.join(__dirname, '..') });
+    if (!settled.ingestNow) {
+      console.log(`::notice::ingest-urls: ${showId} is held by the opening-night lane, so ${res.added.length} URL(s) went to the lane inbox instead (${res.duplicates.length} already there${res.invalid && res.invalid.length ? `, ${res.invalid.length} invalid` : ''}). The lane fetches, scores and publishes them on its next pass (about 2 minutes). Check with: node scripts/opening-night-lane-inbox.js list --show=${showId}`);
+      process.exit(0);
+    }
+    console.log(`::notice::ingest-urls: the opening-night lane released ${showId} while these URLs were being queued; ingesting them the regular way now.`);
+  }
+  if (route.action === 'refuse') {
+    console.log(`::warning::ingest-urls: ${showId} is held by the opening-night lane; nothing ingested (${route.why}). To add a missed review tonight, dispatch ingest-urls by hand (no caller, no flags) or run: node scripts/opening-night-lane-inbox.js add --show=${showId} --url=<URL>`);
+    process.exit(0);
+  }
 }
 
 // Read and parse URL file
@@ -196,6 +220,7 @@ async function main() {
     let fetchMethod = null;
     let archiveSnapshot = null;
     let criticName = null;
+    let bylineConflict = null;
     let publishDate = null;
     if (fetchPage && !noFetch) {
       try {
@@ -222,6 +247,9 @@ async function main() {
           // ingest as 'Unknown' created an --unknown file that a later rebuild
           // merged into the named sibling and deleted (BRO-4185 follow-up).
           try { criticName = extractAuthorFromHtml(result.content, extracted || '', { url, outletId }) || null; } catch { criticName = null; }
+          // BRO-7745 guard: the page's JSON-LD/meta author was chosen while it prints a different
+          // byline (TheaterMania credited its posting editor on 13+ reviews). Flag it on the record.
+          try { bylineConflict = detectBylineConflict({ html: result.content, text: extracted || '', url, outletId, chosen: criticName }); } catch { bylineConflict = null; }
           // Page metadata date (article:published_time / JSON-LD / <time>),
           // from the HTML already in hand. Without it the file's date came
           // from a later LLM guess, which slipped years and tripped the date
@@ -256,6 +284,7 @@ async function main() {
                   fullText = require('./lib/page-furniture').stripPageFurniture(datedText);
                   fetchMethod = dated.source;
                   try { criticName = extractAuthorFromHtml(dated.content, datedText, { url: ob.url }) || null; } catch { criticName = null; }
+                  bylineConflict = null;
                   try { publishDate = extractPublishDate(dated.content, ob.url) || null; } catch { publishDate = null; }
                   originalUrl = url;
                   url = ob.url;
@@ -265,7 +294,7 @@ async function main() {
               } catch { /* falls through to drop */ }
             }
             if (!resolved) {
-              fullText = null; criticName = null; publishDate = null;
+              fullText = null; criticName = null; publishDate = null; bylineConflict = null;
               results.warnings.push(`TB OB index ${url} not resolved (${ob.reason || 'dated page re-fetch failed'}); stored without text so another show's review is never saved under it`);
             }
           }
@@ -298,6 +327,10 @@ async function main() {
       fields: ingestCaller ? { ingestSource: ingestCaller } : {},
     };
     if (publishDate) input.publishDate = publishDate;
+    if (bylineConflict && !sameCriticName(byline.criticName, bylineConflict.visible)) {
+      input.fields.bylineConflict = bylineConflict;
+      results.warnings.push(`Byline conflict at ${url}: credited "${byline.criticName}" (page structured author ${bylineConflict.structured}) but the page prints "${bylineConflict.visible}"`);
+    }
     // A date read off an archive.org copy is not trusted over a live page date (BRO-7147, as ingest-review-from-url).
     if (publishDate && htmlDateSourceFor(fetchMethod) === 'html-archive') input.fields.dateSource = 'html-archive';
     if (fullText && archiveSnapshot) input.fields.archiveSnapshot = archiveSnapshot;

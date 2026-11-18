@@ -9,3 +9,15 @@ The owner lives in Berlin; US opening-night reviews drop 01:00-03:00 UTC. Anythi
 2. **If a Claude supervisor watch is wanted, schedule every pass while the owner is awake, in one go, and tell them before the prompts appear.** `create_trigger` with `initiation: "human_request"` and `persistent_session_id`. Minimum interval is 1 hour, so a 20-min cadence is three routines: `1 0-5 <day> <month> *`, `21 0-5 …`, `41 0-5 …`, `<day>` = the UTC date reviews land (the day after a New York opening). Avoid minute 0; check `next_run_at`. Add a `run_once_at` morning routine that deletes the three. Every pass prompt says: never call `send_later`/`create_trigger`, never relabel `initiation`. Point frequent passes at a lean `create_session` session.
 3. Never plan a watch that re-arms itself, and never rely on ScheduleWakeup firing. `fire_trigger` doesn't rehearse this: it starts a new session without the repo.
 
+
+## A review is missing on a lane night (BRO-7741)
+
+Do not roll back the lane. Put the URL in the lane's inbox; the running lane reads it every pass (about 2 minutes), fetches, scores and publishes it, and records it as manual (`openingNightLane.source: 'manual'`, no guard bypass).
+
+1. `node scripts/opening-night-lane-inbox.js add --show=SHOW_ID --url=URL [--critic="Name"] [--outlet=ID]`, or dispatch `ingest-urls.yml` by hand with the show and URL: for a leased show it now routes the URL into the inbox and says so in a `::notice::` line instead of reverting it.
+2. `node scripts/opening-night-lane-inbox.js list --show=SHOW_ID` shows what the lane did: published, failed (with why), rejected (with why, e.g. dated outside the night), already-in.
+3. A page whose date is wrong is rejected as outside the night window. Re-add it with `--force`; the running lane picks the re-add up on its next pass.
+4. Whatever the lane did not finish goes to `ingest-urls.yml` after the lane releases its lease (the "Drain the lane inbox" step). If that step is skipped or the show is still held, the hourly sweep in `opening-night-checklist.yml` (`opening-night-lane-inbox.js sweep`) sends anything left open for 6 hours once no lane holds the show, and re-sends a drained or already-in URL still missing from reviews.json after 2 hours (up to 3 times). Entries expire 72 hours after they were added.
+5. `add` refuses (exit 2) when no lane holds the show, because nothing would read the inbox: dispatch `ingest-urls.yml` instead, or pass `--queue-anyway` to queue a URL before tonight's lane starts.
+
+Kill switch: repo variable `OPENING_NIGHT_LANE_INBOX_DISABLED=true` (the lane ignores the inbox; ingest-urls still writes to it, and the drain sends those URLs to ingest-urls after the night).

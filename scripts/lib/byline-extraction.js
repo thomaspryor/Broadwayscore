@@ -12,7 +12,7 @@
 const { stripBylineSuffixes } = require('./byline-normalization');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { CMS_ADMIN_HANDLE_RE } = require('./byline-recovery');
-const { extractBylineFromText } = require('./byline-from-text');
+const { extractBylineFromText, sameCriticName } = require('./byline-from-text');
 
 function isCmsAccountName(name) {
   return CMS_ADMIN_HANDLE_RE.test(name) || /^(editor|staff|webmaster)$/i.test(name);
@@ -242,5 +242,65 @@ function extractByline(html, { outletId, text } = {}) {
   return printed && printed.known ? printed.name : null;
 }
 
+// TheaterMania's visible byline: <a id="article-author-tag" href=".../authors/<slug>">Name</a>
+// inside <p class="author-name">. The id is TheaterMania's own, so this needs no url. Its JSON-LD
+// author is the account that POSTED the article (often editor David Gordon), BRO-7745.
+const TM_AUTHOR_TAG_RE = /<a\b[^>]*\bid=["']article-author-tag["'][^>]*>([^<]+)<\/a>/i;
+function extractTheaterManiaAuthorTag(html) {
+  if (!html) return null;
+  const m = TM_AUTHOR_TAG_RE.exec(String(html));
+  if (!m) return null;
+  const name = stripBylineSuffixes(decodeHtmlEntities(m[1]).replace(/\s+/g, ' ').trim());
+  return name && !NOT_A_PERSON_RE.test(name) ? name : null;
+}
+
+// The structured author the CMS declares: JSON-LD Person, meta author, or (TheaterMania) the
+// WordPress author slug in the JSON-LD @id, returned as "theatermania-slug:<slug>".
+function structuredAuthor(html) {
+  const s = String(html || '');
+  const ld = extractJsonLdAuthor(s);
+  if (ld) return ld;
+  const meta = /<meta\b[^>]*(?:name|property)=["'](?:author|article:author)["'][^>]*>/i.exec(s);
+  const content = meta && /\bcontent=["']([^"']+)["']/i.exec(meta[0]);
+  if (content) {
+    const name = stripBylineSuffixes(decodeHtmlEntities(content[1]).trim());
+    if (name && !URL_LIKE_RE.test(name) && !NOT_A_PERSON_RE.test(name) && !PUBLISHER_RE.test(name) && !isCmsAccountName(name)) return name;
+  }
+  const slug = /"author"\s*:\s*\{\s*"@id"\s*:\s*"[^"]*?\\?\/author\\?\/([a-z0-9-]+)\\?\/?#author"/i.exec(s);
+  return slug ? `theatermania-slug:${slug[1].toLowerCase()}` : null;
+}
+
+function sameAsStructured(chosen, structured) {
+  if (!structured.startsWith('theatermania-slug:')) return sameCriticName(chosen, structured);
+  const slug = structured.slice('theatermania-slug:'.length);
+  const parts = require('./title-match').foldDiacritics(String(chosen)).toLowerCase().replace(/[^a-z ]/g, '').split(/\s+/).filter(Boolean);
+  return parts.length >= 2 && (slug === parts[0][0] + parts[parts.length - 1] || slug === parts[0]);
+}
+
+/**
+ * Ingest guard (BRO-7745): the chosen critic is the page's structured author (JSON-LD / meta /
+ * CMS slug) while the page prints a different per-article byline. That is the shape of the
+ * TheaterMania editor bug: the poster was credited instead of the critic. Returns
+ * {structured, visible} to flag, else null. House-account pages do not flag, because there the
+ * chosen name already differs from the structured one.
+ * @param {{html: string, text?: string, url?: string, outletId?: string, chosen?: string}} p
+ */
+function detectBylineConflict({ html, text, url, outletId, chosen } = {}) {
+  if (!html || !chosen || /^unknown$/i.test(String(chosen).trim())) return null;
+  const structured = structuredAuthor(html);
+  if (!structured || !sameAsStructured(chosen, structured)) return null;
+  let outlet = outletId;
+  if (!outlet && url) {
+    try { outlet = (require('./review-normalization').resolveOutletFromUrl(url) || {}).outletId; } catch { outlet = null; }
+  }
+  const printed = outlet && text ? extractBylineFromText(outlet, text) : null;
+  const visible = extractTheaterManiaAuthorTag(html)
+    || (printed && printed.known ? printed.name : null)
+    || extractReviewerLine(html);
+  if (!visible) return null;
+  return sameCriticName(visible, chosen) ? null : { structured, visible };
+}
+
 module.exports = {
-  extractReviewerLine, extractReviewedByLine, extractSignOffBeforeShare, extractByline, extractJsonLdAuthor, decodeEntities: (s) => decodeHtmlEntities(s || '') };
+  extractReviewerLine, extractReviewedByLine, extractSignOffBeforeShare, extractByline, extractJsonLdAuthor,
+  extractTheaterManiaAuthorTag, detectBylineConflict, decodeEntities: (s) => decodeHtmlEntities(s || '') };

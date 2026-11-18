@@ -379,7 +379,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `GEMINI_API_KEY` | 32 cross-repo writers (of 51 workflows using it) |
 | `GHA_BILLING_PAT` | 1 cross-repo writers (of 1 workflows using it): `opening-night-orchestrator.yml` |
 | `GH_DISPATCH_TOKEN` | 3 cross-repo writers (of 4 workflows using it): `process-feedback.yml`, `process-review-submission.yml`, `rebuild-fast.yml` |
-| `GITHUB_TOKEN` | 99 cross-repo writers (of 156 workflows using it) |
+| `GITHUB_TOKEN` | 100 cross-repo writers (of 157 workflows using it) |
 | `GMAIL_CLIENT_ID` | 1 cross-repo writers (of 4 workflows using it): `reddit-engagement-digest.yml` |
 | `GMAIL_CLIENT_SECRET` | 1 cross-repo writers (of 3 workflows using it): `reddit-engagement-digest.yml` |
 | `GMAIL_REFRESH_TOKEN` | 1 cross-repo writers (of 2 workflows using it): `reddit-engagement-digest.yml` |

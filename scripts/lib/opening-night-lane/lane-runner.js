@@ -43,6 +43,25 @@ const criticKey = (name) => criticFileSlug(name); // the rebuild's critic match 
 /** Review keys a restarted lane must not redo: those that already reached `scored`, plus URLs already on disk. */
 // BRO-7196: passes a review missing outlet name, critic or date is retried before the lane leaves it to the regular pipeline.
 const INCOMPLETE_TRIES = 3;
+const MANUAL_TRIES = 3; // BRO-7741: passes an inbox URL is retried before it is marked failed (and drained to ingest-urls)
+
+/**
+ * BRO-7741: what an inbox entry adds to the row the lane built from the page. The page's date must be tonight's (+/- 1
+ * day) unless the person forced it; an undated page gets the day the URL was added, provisional (dateSource
+ * 'manual-inbox'), so it is not held for a date it will never show. A critic the person named fills a missing byline.
+ * Throws {manualRejected} for a date outside the window: a person's link is not a reason to publish last season's review.
+ */
+function applyManualEntry(row, { entry, night, timeZone }) {
+  const out = { ...row, laneManualInbox: { addedAt: entry.addedAt, addedBy: entry.addedBy || 'unknown' } };
+  if (!out.criticName && entry.critic) out.criticName = entry.critic;
+  const verdict = trust.admitLaneCandidate({ source: trust.MANUAL_SOURCE, publishDate: out.publishDate, night, force: entry.force === true, ...(timeZone ? { timeZone } : {}) });
+  if (!verdict.admit) throw Object.assign(new Error(`manual inbox URL dated outside opening night: ${verdict.reason}; add it again with force if it is tonight's review`), { manualRejected: true, permanent: true });
+  if (!out.publishDate) {
+    const day = trust.calendarDateIn(entry.addedAt, timeZone || undefined);
+    if (day) { out.publishDate = day; out.dateSource = 'manual-inbox'; }
+  }
+  return out;
+}
 
 function loadDone(ledgerDir, show, night, onDiskUrls = []) {
   const done = new Set();
@@ -71,6 +90,7 @@ async function runLaneNight({
   onDiskUrls = [], onDiskRows = [], maxInflight = 2, midPassPublishAfterMs = 5 * 60 * 1000, midPassTickMs = Math.min(midPassPublishAfterMs, 30 * 1000), now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
   startedAt, serpClockStartMs, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [], settleComparative = null, settleMaxRuns = 25,
   onPressSignals = null,
+  readInbox = null, markInbox = null,
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
@@ -106,6 +126,53 @@ async function runLaneNight({
   const livePublished = new Map();
   const stagedRemovals = [];
 
+  // BRO-7741: the manual-URL inbox. readInbox() -> the show's inbox entries (manual-inbox.js), read once a pass;
+  // markInbox(updates) writes each entry's outcome back. Both null (replays, rehearsals): no inbox.
+  const manualByKey = new Map(); // review key -> inbox entry being worked tonight
+  // Keyed by entry generation (id + addedAt): a URL re-added (say with --force after a date rejection) is a new
+  // generation the lane works afresh, and a late status for the old one never lands on it.
+  const gen = (e) => `${e.id}@${e.addedAt || ''}`;
+  const manualTries = new Map(); // entry generation -> passes it was retried
+  const manualClosed = new Set(); // entry generations with a final outcome this run
+  const manualQueued = new Set(); // entry generations scored and waiting for publish
+  const inboxUpdates = [];
+  const failedKeys = () => new Set(failed.map((f) => f.key));
+  const noteInbox = (entry, status, reason) => {
+    if (!entry || manualClosed.has(gen(entry))) return;
+    if (status === 'queued') manualQueued.add(gen(entry)); else manualClosed.add(gen(entry));
+    inboxUpdates.push({ id: entry.id, ...(entry.addedAt ? { addedAt: entry.addedAt } : {}), status, ...(reason ? { reason: String(reason).slice(0, 300) } : {}) });
+  };
+  const flushInbox = async () => {
+    if (!markInbox || !inboxUpdates.length) return;
+    const batch = inboxUpdates.splice(0);
+    try { await markInbox(batch); } catch (e) {
+      inboxUpdates.unshift(...batch); // tried again after the next pass
+      errors.push({ adapter: 'manual-inbox', error: `status write failed: ${String((e && e.message) || e).slice(0, 150)}` });
+    }
+  };
+  const manualCandidates = async () => {
+    if (!readInbox) return [];
+    let entries;
+    try { entries = await readInbox(); } catch (e) {
+      errors.push({ adapter: 'manual-inbox', error: `read failed: ${String((e && e.message) || e).slice(0, 150)}` });
+      return [];
+    }
+    const out = [];
+    const failedNow = failedKeys();
+    for (const e of entries || []) {
+      if (!e || !e.id || manualClosed.has(gen(e)) || (e.status && e.status !== 'queued')) continue;
+      const key = discovery.canonicalUrl(e.url);
+      if (!key) { noteInbox(e, 'rejected', 'not an http(s) URL'); continue; }
+      // Already scored tonight (or on the site before tonight): nothing to add. A key that failed earlier is tried again.
+      if (manualQueued.has(gen(e))) continue; // scored tonight, waiting for its publish
+      if (seen.has(key) && !failedNow.has(key)) { noteInbox(e, 'already-in', 'the lane already has this review'); continue; }
+      manualByKey.set(key, e);
+      out.push({ url: e.url, key, source: trust.MANUAL_SOURCE, adapter: 'manual-inbox', via: 'manual-inbox', publishDate: null,
+        ...(e.outletId ? { outletId: e.outletId } : {}), reason: 'manual-inbox', manualEntry: e });
+    }
+    return out;
+  };
+
   const publishBatch = async (batch, clock) => {
     // Only removals whose original rides in THIS batch: the copy never leaves the site before its original is in.
     const batchKeys = new Set(batch.map((r) => r.key));
@@ -130,6 +197,7 @@ async function runLaneNight({
       // never went live: try again with the next batch. A re-queued row restarts its mid-pass wait, or the 30 s timer
       // below would retry a failing publish every 30 s instead of about once a pass (BRO-7159 review).
       for (const r of batch) if (!missing.has(r.key)) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
+      for (const r of batch) if (!missing.has(r.key) && manualByKey.has(r.key)) noteInbox(manualByKey.get(r.key), 'published', dryRun ? 'dry run' : null);
       pending.push(...batch.filter((r) => missing.has(r.key) && !pending.some((q) => q.key === r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
     } catch (e) {
       errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
@@ -211,7 +279,11 @@ async function runLaneNight({
       }
     } catch (e) { errors.push({ adapter: 'press-signals', error: String((e && e.message) || e).slice(0, 150) }); }
 
-    for (const a of pass.admitted) {
+    // BRO-7741: inbox URLs first, outside discovery (no memo, no title match, no merge): a person already vouched for them.
+    const manual = await manualCandidates();
+    const manualKeys = new Set(manual.map((m) => m.key));
+    for (const a of [...manual, ...pass.admitted.filter((x) => !manualKeys.has(x.key))]) {
+      const entry = a.source === trust.MANUAL_SOURCE ? a.manualEntry : null;
       try {
         if (!awaiting.has(a.key)) await wait(latency.fetchMs || 0); // a held teaser is re-offered without a fetch
         const fetched = await fetchReview(a);
@@ -233,6 +305,7 @@ async function runLaneNight({
         // a byline or date in; holding it would drop the night's biggest reviews, so only its outlet name is required and
         // the gaps are reported on the summary page.
         if (!row.publishDate) { const d = card.cardPublishDate(row); if (d) row.publishDate = d; }
+        if (entry) row = applyManualEntry(row, { entry, night, timeZone });
         // A review a roundup cites whose own page has no date (Cititour): the roundup's date, provisional (BRO-7587). Held
         // for three reads otherwise, then left to the regular pipeline hours later.
         // Not for a show with an earlier run (transfer, revival): its roundup also cites the earlier run's reviews, and a date from
@@ -258,6 +331,7 @@ async function runLaneNight({
           seen.add(a.key);
           awaiting.delete(a.key);
           skipped.push({ key: a.key, reason: `syndicated copy of the ${copyOf} review by ${row.criticName}` });
+          if (entry) { manualByKey.delete(a.key); noteInbox(entry, 'already-in', `syndicated copy of the ${copyOf} review, which the lane has`); }
           continue;
         }
         if (row.assignedScore == null) { await wait(latency.scoreMs || 0); const scored = await scoreReview(row, fetched);
@@ -319,6 +393,7 @@ async function runLaneNight({
           if (!stagedRemovals.some((x) => x.key === live.key)) stagedRemovals.push({ key: live.key, criticName: q.criticName, outletId: q.outletId, primaryKey: a.key, primaryOutlet: row.outletId });
         }
         pending.push({ key: a.key, row, scoredAt: now() });
+        if (entry) noteInbox(entry, 'queued');
         // BRO-7283: siblings whose score the settle just moved ride in this batch: swapped in place when still queued,
         // queued again (marked `rescored`, so publish waits for the new score to be live) when already on the site.
         for (const sib of settled.rescored.splice(0)) {
@@ -339,8 +414,18 @@ async function runLaneNight({
         if (e && e.awaiting) { awaiting.add(a.key); continue; } // held for evidence: not seen, not an error, re-offered next pass
         errors.push({ adapter: a.adapter, error: `${a.key}: ${String((e && e.message) || e).slice(0, 150)}` });
         if (e && e.permanent) { seen.add(a.key); awaiting.delete(a.key); failed.push({ key: a.key, reason: String(e.message).slice(0, 200) }); } // else: retried next pass
+        if (entry) {
+          // A pass where inline-score only waited out its backoff made no attempt: it does not count as a try.
+          const tries = (manualTries.get(gen(entry)) || 0) + (e && e.backoff ? 0 : 1);
+          manualTries.set(gen(entry), tries);
+          if (e && (e.permanent || e.manualRejected || tries >= MANUAL_TRIES)) {
+            manualByKey.delete(a.key);
+            noteInbox(entry, e && e.manualRejected ? 'rejected' : 'failed', String((e && e.message) || e).slice(0, 300));
+          }
+        }
       }
     }
+    await flushInbox();
     await maybePublish();
     await wait(passIntervalMs);
   }
@@ -368,7 +453,9 @@ async function runLaneNight({
     }
   }
   await Promise.allSettled([...alerting]);
-  return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };
+  await flushInbox();
+  return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped,
+    inbox: readInbox ? { worked: [...manualByKey.values()].map((e) => e.id), closed: [...manualClosed].map((g) => g.split('@')[0]), unwritten: inboxUpdates.length } : null, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };
 }
 
-module.exports = { runLaneNight, loadDone };
+module.exports = { runLaneNight, loadDone, applyManualEntry, MANUAL_TRIES };

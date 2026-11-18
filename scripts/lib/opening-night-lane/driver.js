@@ -181,6 +181,24 @@ function recorderFromEnv(env) {
 }
 
 /**
+ * BRO-7741: the real inbox ports. The read is async (a slow fetch never stalls the publish timers); the status write is
+ * a compare-and-swap push, once a pass and only when something changed, and prints a notice per entry for the job log.
+ */
+function realManualInbox({ repoDir, show, log = console.log, env = process.env }) {
+  // Kill switch (repo variable or env): the lane runs without reading the inbox.
+  if (env.OPENING_NIGHT_LANE_INBOX_DISABLED === 'true') { log('::notice::lane manual inbox disabled (OPENING_NIGHT_LANE_INBOX_DISABLED)'); return null; }
+  const inbox = require('./manual-inbox');
+  return {
+    readInbox: () => inbox.readForShow({ repoDir, show: show.id }),
+    markInbox: async (updates) => {
+      const res = inbox.markSync({ repoDir }, updates);
+      if (!res.ok) throw new Error(`inbox status write ${res.reason}: ${res.detail || ''}`);
+      for (const u of updates) log(`::notice::lane inbox: ${u.id} ${u.status}${u.reason ? ` (${u.reason})` : ''}`);
+    },
+  };
+}
+
+/**
  * Real dependencies. Checks the scorer keys before anything claims a lease. `routeAlert` and `ScorerClass`
  * (EnsembleReviewScorer, TypeScript, hence `npx tsx`) are passed in by the CLI rather than required here: anything this
  * folder requires joins rehearsal.laneCodeHash, and the alert router alone would pull ~44 Linear/notify files into it,
@@ -229,6 +247,8 @@ function buildRealLaneDeps({
         // BRO-7280: opt-in pre-embargo direct-only window (off unless LANE_PREEMBARGO_DIRECT_ONLY is on).
         preembargo,
         search: realSerpSearch(env), decodeImpl: require('../google-news-decode').decodeGoogleNewsLink,
+        // BRO-7741: the manual-URL inbox (ingest-urls.yml routes a leased show's URLs there), read every pass.
+        manualInbox: realManualInbox({ repoDir, show, env }),
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
         windowMs: (() => { const m = Number(preembargo && env.OPENING_NIGHT_LANE_WINDOW_PREEMBARGO_MIN) || Number(env.OPENING_NIGHT_LANE_WINDOW_MIN); return m > 0 ? m * 60 * 1000 : undefined; })(),
       })({ shouldStop, abandonPending });
@@ -250,12 +270,14 @@ const TUNING_KEYS = ['passIntervalMs', 'maxPasses', 'startedAt', 'latency', 'pol
  *   (default: the real extractors over laneFetch), publishPorts | makePublishPorts(clock) (+ forkClock), now, wait,
  *   reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards, search (SERP backend), decodeImpl (Google News; null = off),
  *   windowMs?, tuning? (TUNING_KEYS), onPressSignals? (BRO-7748 near-miss / found-not-live alert, built by the CLI)
+ *   manualInbox? {readInbox, markInbox} (BRO-7741; null = no inbox: replays, rehearsals)
  * @returns {({shouldStop?, abandonPending?}) => Promise<runLaneNight result>}
  */
 function wireLaneNight({
   show, night, openingDate, timeZone, ledgerDir, adaptersConfig = {}, laneFetch, recorder = null, scoreText, fetchPorts, publishPorts, makePublishPorts, forkClock,
   now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search: rawSearch, decodeImpl, windowMs, tuning = {}, preembargo = null, settleComparative = null,
   onPressSignals = null,
+  manualInbox = null,
 } = {}) {
   const search = rawSearch;
   const required = { show, night, ledgerDir, laneFetch, scoreText, now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search };
@@ -289,6 +311,7 @@ function wireLaneNight({
       reviewTextsDir,
       ...(settleComparative ? { settleComparative } : {}),
       ...(onPressSignals ? { onPressSignals } : {}),
+      ...(manualInbox ? { readInbox: manualInbox.readInbox, markInbox: manualInbox.markInbox } : {}),
       adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig: guardedAdaptersConfig, search: adapterSearch, decodeImpl, now, ledgerDir }),
       // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.
       missingOutlets: ({ seen }) => discovery.laneMissingOutlets({ show, seen, adaptersConfig }),
@@ -299,4 +322,4 @@ function wireLaneNight({
   };
 }
 
-module.exports = { recorderFromEnv, HEARTBEAT_MS, LEASE_TTL_MS, TUNING_KEYS, runProductionLane, buildRealLaneDeps, wireLaneNight, onDiskUrlsFor, onDiskRowsFor };
+module.exports = { realManualInbox, recorderFromEnv, HEARTBEAT_MS, LEASE_TTL_MS, TUNING_KEYS, runProductionLane, buildRealLaneDeps, wireLaneNight, onDiskUrlsFor, onDiskRowsFor };

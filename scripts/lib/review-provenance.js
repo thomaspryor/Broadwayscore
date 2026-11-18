@@ -15,7 +15,8 @@ const GATING_FIX_FIELDS = new Set(['wrongShow', 'wrongProduction', 'combinedWith
   'contentTier', 'isRoundupArticle', 'publishDate', 'url', 'showId']);
 // ingestSource values that are a person's decision (execute-approved-fix runs
 // an owner-approved digest fix). Every other named caller is a pipeline.
-const HAND_CALLERS = new Set(['execute-approved-fix', 'manual', 'owner']);
+// lane-inbox-drain (BRO-7741): URLs a person put in the opening-night lane inbox, handed on after the lane ended.
+const HAND_CALLERS = new Set(['execute-approved-fix', 'manual', 'owner', 'lane-inbox-drain']);
 // `source` values a person or session triggers without naming a caller: the
 // reader form, a hand dispatch of ingest-urls.yml, a manual entry. With no
 // caller these say nothing about who decided to ingest, so they stay unknown.

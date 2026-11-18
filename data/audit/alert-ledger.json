@@ -19497,7 +19497,7 @@
       "title": "Roundup gaps: 10 listed review(s) not captured across 6 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-18T05:05:20.051Z",
+      "lastSeen": "2026-11-18T05:38:32.005Z",
       "lastNotifiedAt": "2026-11-17T19:09:00.004Z",
       "lastSurfacedAt": null,
       "notifyCount": 59,
@@ -45236,7 +45236,7 @@
       "resolvedAt": "2026-11-18T04:49:30.048Z"
     },
     "land:land/bro-7741-lane-inbox": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-7741-lane-inbox",
       "firstSeen": "2026-11-18T04:49:17.999Z",
@@ -45247,10 +45247,11 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-18T05:57:27.605Z"
     },
     "land:land/bro-7745-byline": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/bro-7745-byline",
       "firstSeen": "2026-11-18T05:21:43.584Z",
@@ -45260,7 +45261,8 @@
       "lastSurfacedAt": "2026-11-18T05:21:43.584Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-18T06:06:57.551Z"
     },
     "land:land/bro-7740-embargo": {
       "status": "open",
@@ -45268,12 +45270,27 @@
       "title": "Landing blocked: toplevel-regression red on land/bro-7740-embargo",
       "firstSeen": "2026-11-18T05:21:21.020Z",
       "incidentOpenedAt": "2026-11-18T05:21:21.020Z",
-      "lastSeen": "2026-11-18T05:21:21.020Z",
+      "lastSeen": "2026-11-18T05:58:28.448Z",
       "lastNotifiedAt": "2026-11-18T05:21:21.020Z",
       "lastSurfacedAt": "2026-11-18T05:21:21.020Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "land:land/bro-7748-near-miss": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7748-near-miss",
+      "firstSeen": "2026-11-18T05:28:30.576Z",
+      "incidentOpenedAt": "2026-11-18T05:28:30.576Z",
+      "lastSeen": "2026-11-18T06:05:49.285Z",
+      "lastNotifiedAt": "2026-11-18T05:28:30.576Z",
+      "lastSurfacedAt": "2026-11-18T05:28:30.576Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 2
     }
   }
 }

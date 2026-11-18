@@ -10,6 +10,8 @@
  * a fix or a card, recorded with --record --fixes=BRO-N,<sha> or --no-action=<reason> (checked by retro-coverage-stop.mjs). --record appends one line to data/audit/session-retro.jsonl for the weekly --rollup, which counts
  * signals across sessions and (with --file-card) files a Linear card for the top recurring friction.
  * A bare --check exits 0 once this session has a ledger row with links or a no-action reason. SESSION_RETRO_LEDGER overrides the ledger path (tests).
+ * BRO-7749: --record also writes `gates`, this session's activity on the advisory Stop gates (see STOP_GATES), and
+ * --rollup prints per-gate counts, so the advisory week before a gate turns blocking leaves a committed record.
  */
 const fs = require('fs');
 const os = require('os');
@@ -21,6 +23,106 @@ const LEDGER = process.env.SESSION_RETRO_LEDGER || path.join(__dirname, '..', '.
 // wall clock minus owner idle gaps over gapMin after the first edit (a long CI wait is friction, not idle); a legacy row has only wall clock.
 const T = { activeHours: 4, hookBlocks: 15, restarts: 1, bypasses: 2, gapMin: 10, repeats: 3 };
 const GENERIC_HOOK = /^(hook|hook:hook|unclassified)$/;
+
+// BRO-7749: the advisory Stop gates log each decision to <hook checkout>/.cache/<log>.log, which a cloud container loses
+// when it is reclaimed, so their advisory week left no data. --record (run in the same container, before it goes) folds
+// three things into the committed row, per gate:
+//   blocks      nudges the transcript shows (a "[VE:X]" Stop block; analyze() already counts these as hookBlocks),
+//   logged      every decision the gate logged for this session (container-local .cache, lost at reclaim),
+//   overBudget  of those, hits after the nudge budget ran out (never in the transcript),
+//   wouldBlock  the gate's own decision run now, as if the session landed and closed "SAFE TO ARCHIVE" right after
+//               --record. wrap-up runs --record BEFORE the final land push and close, so the real hit lands in the
+//               log and transcript too late for the row; the dry run appends a synthetic land push (the one the row
+//               will ride) so a code change not landed yet is judged as landed. It is the state at record time: work
+//               done after --record (a live run) or a bypass token in the final message is not seen.
+// A failure to measure is written as gatesErrors, never as a clean {}.
+const STOP_GATES = [
+  { code: '[VE:LIVERUN]', log: 'live-run-stop', module: './live-run-stop.mjs' },
+  { code: '[VE:EFFECTPENDING]', log: 'effect-pending-stop', module: './effect-pending-stop.mjs' },
+  { code: '[VE:RETROCOV]', log: 'retro-coverage-stop' }, // its own dry run would judge the --record being written
+  { code: '[VE:ROOTCAUSE]', log: 'root-cause-stop' }, // judges the closing message's ROOT-CAUSE block, so no synthetic close
+];
+const DRY_RUN_CLOSE = 'SAFE TO ARCHIVE (session-retro --record dry run)';
+const DRY_RUN_LAND = [
+  { kind: 'assistant_tool_use', name: 'Bash', id: 'session-retro-dry-run-land', input: { command: 'git push origin HEAD:refs/heads/land/session-retro-dry-run' } },
+  { kind: 'tool_result', tool_use_id: 'session-retro-dry-run-land', content: 'ok', isError: false },
+];
+
+/** The .cache the Stop gates write: verify-edits.sh runs them from the main checkout, so from a worktree it is the git
+ *  common dir's parent. SESSION_RETRO_CACHE_DIR overrides (tests). null when it cannot be resolved. */
+function hookCacheDir() {
+  if (process.env.SESSION_RETRO_CACHE_DIR) return process.env.SESSION_RETRO_CACHE_DIR;
+  const root = path.join(__dirname, '..', '..');
+  try {
+    const common = require('child_process').execFileSync('git', ['-C', root, 'rev-parse', '--path-format=absolute', '--git-common-dir'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return path.join(path.dirname(common), '.cache');
+  } catch { return null; }
+}
+
+/** PURE-ish: { [code]: { logged, overBudget } } from the gate logs in `dir` for `sessionKey` (the hook's session_id). */
+function logHits(sessionKey, dir) {
+  const out = {};
+  for (const g of STOP_GATES) {
+    let text = '';
+    try { text = fs.readFileSync(path.join(dir, `${g.log}.log`), 'utf8'); } catch { continue; }
+    for (const l of text.split('\n')) {
+      let e; try { e = JSON.parse(l); } catch { continue; }
+      if (!e || e.session !== sessionKey) continue;
+      const o = (out[g.code] = out[g.code] || { logged: 0, overBudget: 0 });
+      o.logged++;
+      if (e.blocked === false) o.overBudget++;
+    }
+  }
+  return out;
+}
+
+/** { out: { [code]: { wouldBlock, reason } }, errors: [] } from each gate's pure stopHookDecision on this transcript plus
+ *  the synthetic land push. A gate that throws is named in errors (the retro still records). SESSION_RETRO_REPO_ROOT
+ *  overrides where the workflows are read (tests). */
+async function dryRunGates(transcriptPath, env = process.env) {
+  const out = {};
+  const errors = [];
+  let events;
+  try { events = (await import('./transcript-scan.mjs')).walkTranscript(transcriptPath).concat(DRY_RUN_LAND); } catch (e) { return { out, errors: [`transcript: ${e && e.message}`.slice(0, 160)] }; }
+  const root = env.SESSION_RETRO_REPO_ROOT || path.join(__dirname, '..', '..');
+  for (const g of STOP_GATES.filter((x) => x.module)) {
+    try {
+      const m = await import(g.module);
+      const index = m.workflowScriptIndex && m.loadWorkflows ? m.workflowScriptIndex(m.loadWorkflows(root)) : undefined;
+      const d = m.stopHookDecision({ lastMessage: DRY_RUN_CLOSE, events, env, ...(index ? { index } : {}) });
+      if (d.decision === 'block') out[g.code] = { wouldBlock: true, reason: String(d.reason || '').slice(0, 160) };
+    } catch (e) { errors.push(`${g.code}: ${e && e.message}`.slice(0, 160)); }
+  }
+  return { out, errors };
+}
+
+/** PURE. The row's `gates` field: only gates with activity; {} means measured, nothing hit. */
+function mergeGateActivity(hookBlocks, logged, dry) {
+  const out = {};
+  for (const g of STOP_GATES) {
+    const blocks = (hookBlocks || {})[g.code] || 0;
+    const l = (logged || {})[g.code] || {};
+    const d = (dry || {})[g.code] || {};
+    if (!blocks && !l.logged && !d.wouldBlock) continue;
+    out[g.code] = { blocks, logged: l.logged || 0, overBudget: l.overBudget || 0, wouldBlock: !!d.wouldBlock, ...(d.reason ? { reason: d.reason } : {}) };
+  }
+  return out;
+}
+
+/** PURE. Per-gate counts over ledger rows that carry `gates` (latest row per session already chosen by the caller). */
+function gateRollup(rows) {
+  const measured = rows.filter((r) => r.gates && typeof r.gates === 'object');
+  const per = {};
+  for (const r of measured) for (const [code, x] of Object.entries(r.gates)) {
+    const p = (per[code] = per[code] || { sessions: 0, blocked: 0, wouldBlock: 0, overBudget: 0, reasons: [] });
+    p.sessions++;
+    if (x.blocks) p.blocked++;
+    if (x.wouldBlock) p.wouldBlock++;
+    p.overBudget += x.overBudget || 0;
+    if (x.reason && p.reasons.length < 3 && !p.reasons.includes(x.reason)) p.reasons.push(x.reason);
+  }
+  return { measured: measured.length, errors: measured.filter((r) => Array.isArray(r.gatesErrors) && r.gatesErrors.length).length, per };
+}
 
 /**
  * Real hook identity for a block, never free text that merely mentions a script: the [VE:X] code, else the
@@ -84,7 +186,7 @@ function analyze(lines) {
         }
       }
     }
-    if (e.type === 'user') {
+    if (e.type === 'user' && !e.isCompactSummary) { // BRO-7749: a compaction summary quotes earlier blocks; it is not one
       if (/Stop hook feedback|land preflight BLOCK/.test(txt)) {
         const git = /unpushed commit|uncommitted changes/.test(txt) ? ['git-check'] : [];
         const ve = txt.match(/\[VE:[A-Z0-9]+\]/g) || [];
@@ -167,6 +269,7 @@ function report(r) {
   L.push(`Restarts: ${r.restarts}  Compactions: ${r.compactions}`);
   if (r.repeats.length) L.push('Reruns: ' + r.repeats.map((x) => `${x.times}x ${x.command}`).join(' | '));
   if (r.longWaits.length) L.push(`Waits over ${T.gapMin} min: ${r.longWaits.length} (longest ${Math.max(...r.longWaits.map((w) => w.minutes))} min)`);
+  for (const [code, g] of Object.entries(r.gates || {})) if (g.wouldBlock) L.push(`Stop gate ${code} would block a close now: ${g.reason || '?'} (fix it before closing; this is recorded either way)`);
   L.push(r.triggers.length ? `RETRO REQUIRED (${r.triggers.join('; ')}): turn each finding into a fix now or a card, then re-run with --record --fixes=BRO-N,<sha> (or --no-action="<why nothing needs fixing>"). A memory note is not a fix.` : 'No retro threshold crossed.');
   return L.join('\n');
 }
@@ -197,6 +300,12 @@ function rollup(days, fileCard, { ledger = LEDGER, ifDue = false, log = console.
   const top = [...count.entries()].filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).slice(0, 5);
   log(`${rows.length} session(s) in the last ${days} days`);
   for (const [s, n] of top) log(`${n}x ${s}`);
+  const gr = gateRollup(rows);
+  log(`Stop gates (BRO-7749): ${gr.measured} session(s) measured${gr.measured ? '' : ' (rows before 2026-11-18 carry no gate data)'}${gr.errors ? `, ${gr.errors} with a measuring error (gatesErrors)` : ''}`);
+  for (const [code, p] of Object.entries(gr.per)) {
+    log(`  ${code}: active in ${p.sessions} of ${gr.measured} sessions; nudged in ${p.blocked}, would block at record in ${p.wouldBlock}; ${p.overBudget} over-budget hit(s)`);
+    for (const why of p.reasons) log(`    e.g. ${why}`);
+  }
   const mark = () => { if (ifDue) fs.appendFileSync(ledger, JSON.stringify({ rollup: true, recordedAt: new Date().toISOString(), sessions: rows.length, top }) + '\n'); };
   if (fileCard && top.length) {
     const [s, n] = top[0];
@@ -217,7 +326,7 @@ function findTranscript() {
   return all.sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs)[0] || null;
 }
 
-function main(argv) {
+async function main(argv) {
   const opt = Object.fromEntries(argv.filter((a) => a.startsWith('--')).map((a) => { const eq = a.indexOf('='); return eq < 0 ? [a.slice(2), true] : [a.slice(2, eq), a.slice(eq + 1)]; }));
   if (opt.rollup) { rollup(Number(opt.days) || 7, !!opt['file-card'], { ifDue: !!opt['if-due'] }); return 0; }
   const file = opt.transcript || findTranscript();
@@ -226,8 +335,14 @@ function main(argv) {
   if (opt.record) {
     const pl = parseLinks(opt);
     if (pl.error) { console.error(`session-retro: ${pl.error}`); return 1; }
+    // The hook's session_id is the transcript's basename; analyze() keeps the FIRST sessionId row, which can be a parent id.
+    const sessionKey = path.basename(file, '.jsonl');
+    const cacheDir = hookCacheDir();
+    const dry = await dryRunGates(file);
+    r.gates = mergeGateActivity(r.hookBlocks, cacheDir ? logHits(sessionKey, cacheDir) : {}, dry.out);
+    const gatesErrors = [...(cacheDir ? [] : ['cache: could not resolve the hook checkout (git rev-parse failed)']), ...dry.errors];
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
-    fs.appendFileSync(LEDGER, JSON.stringify({ v: 2, sessionId: r.sessionId, endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
+    fs.appendFileSync(LEDGER, JSON.stringify({ v: 2, sessionId: r.sessionId, gates: r.gates, ...(gatesErrors.length ? { gatesErrors } : {}), endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
     r.links = pl.links; r.noAction = pl.noAction;
   }
   console.log(opt.json ? JSON.stringify(r, null, 2) : report(r));
@@ -240,5 +355,7 @@ function main(argv) {
   return opt.check && r.triggers.length && !closed ? 10 : 0;
 }
 
-if (require.main === module) require('./exit-flushed').exitFlushed(main(process.argv.slice(2)));
-module.exports = { rollup, analyze, report, signals, T, hookLabel, triggersFor, parseLinks, retroStatus, readLedger, LEDGER };
+if (require.main === module) {
+  main(process.argv.slice(2)).then((c) => require('./exit-flushed').exitFlushed(c), (e) => { console.error(`session-retro: ${e && e.stack}`); require('./exit-flushed').exitFlushed(1); });
+}
+module.exports = { main, STOP_GATES, logHits, dryRunGates, mergeGateActivity, gateRollup, hookCacheDir, rollup, analyze, report, signals, T, hookLabel, triggersFor, parseLinks, retroStatus, readLedger, LEDGER };

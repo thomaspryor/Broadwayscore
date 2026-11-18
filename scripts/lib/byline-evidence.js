@@ -36,6 +36,10 @@ function extractAuthorSignals(html) {
     for (const n of m[1].matchAll(/"name"\s*:\s*"([^"]+)"/g)) add('jsonld', n[1]);
   }
   for (const m of s.matchAll(/<a[^>]+rel=["']author["'][^>]*>([\s\S]{0,120}?)<\/a>/gi)) add('rel-author', m[1].replace(/<[^>]+>/g, ' '));
+  // TheaterMania's visible byline anchor; its JSON-LD names only the posting account (BRO-7745).
+  for (const m of s.matchAll(/<a\b[^>]*\bid=["']article-author-tag["'][^>]*>([^<]{1,120})<\/a>/gi)) add('visible', m[1]);
+  const slug = /"author"\s*:\s*\{\s*"@id"\s*:\s*"[^"]*?\\?\/author\\?\/([a-z0-9-]+)/i.exec(s);
+  if (slug) add('jsonld-slug', slug[1]);
   const text = pageText(s);
   for (const m of text.matchAll(/\b(?:By|Reviewed by|Reviewer:?)\s+([A-Z][\w'’.-]+(?:\s+[A-Z][\w'’.-]+){1,3})/g)) add('byline', m[0]);
   return out.slice(0, 12);

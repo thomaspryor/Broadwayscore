@@ -542,6 +542,8 @@ async function runChecks() {
     return;
   }
   report(PASS, 'Lane publishes this show', `${applies.reason} (per data/audit/lane-switch.jsonl)`);
+  // BRO-7741: the answer to "a review is missing" on a lane night, printed where the person checking readiness looks.
+  report(PASS, 'If a review is missing', `do not roll back the lane: node scripts/opening-night-lane-inbox.js add --show=${SHOW_ID} --url=URL (or dispatch ingest-urls.yml by hand); the lane publishes it on its next pass, about 2 min. Runbook: docs/cloud-overnight-watch-runbook.md`);
 
   let armed = null;
   try {
