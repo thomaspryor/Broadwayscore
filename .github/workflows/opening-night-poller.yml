@@ -1250,6 +1250,16 @@ jobs:
       # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
       # files pushed by other jobs since this job's checkout (never files
       # this job wrote), and record which shows drifted.
+      - name: Restore fingerprint memo (fast_path)
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true') && (steps.lane_only.outputs.suppress != 'true' || steps.nyt_picks.outputs.picks_added == 'true')
+        continue-on-error: true
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .cache/rebuild-fp-cache.json
+          key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-poller-${{ github.sha }}
+          restore-keys: |
+            rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-
+
       - name: Sync review-texts drift before rebuild
         timeout-minutes: 2
         if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true') && (steps.lane_only.outputs.suppress != 'true' || steps.nyt_picks.outputs.picks_added == 'true')
@@ -1261,16 +1271,6 @@ jobs:
       # minutes on press nights and must not add cache entries. The exact key
       # never matches (github.sha), restore-keys takes the newest memo for the
       # current cleaning code; the memo validates itself, so stale = cold.
-      - name: Restore fingerprint memo (fast_path)
-        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true') && (steps.lane_only.outputs.suppress != 'true' || steps.nyt_picks.outputs.picks_added == 'true')
-        continue-on-error: true
-        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
-        with:
-          path: .cache/rebuild-fp-cache.json
-          key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-poller-${{ github.sha }}
-          restore-keys: |
-            rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-
-
       - name: Rebuild reviews.json (fast_path)
         id: fast_rebuild
         if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true') && (steps.lane_only.outputs.suppress != 'true' || steps.nyt_picks.outputs.picks_added == 'true')
