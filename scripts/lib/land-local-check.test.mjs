@@ -66,7 +66,7 @@ test('BRO-7652: staleRunDecision keeps live runs at any age, reclaims a dead run
 test('BRO-7652: processCwds ignores exited pids, reports unreadable ones and a missing /proc as unknown', (t) => {
   const { processCwds, liveProcessIn, parseWorktreeList } = require('./land-local-check.js');
   const scratch = mkdtempSync(join(tmpdir(), 'llc-proc-'));
-  t.after(() => rmSync(scratch, { recursive: true, force: true }));
+  t.after(() => rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const proc = join(scratch, 'proc');
   const runDir = join(scratch, 'land-local-check-aaaaaaaaaa-ABC123');
   fs.mkdirSync(join(runDir, 'basewt'), { recursive: true });
