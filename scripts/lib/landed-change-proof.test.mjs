@@ -153,8 +153,8 @@ test('safeRunCommand: maps a script to its own test, accepted by the REAL safe-f
   assert.equal(safeRunCommand('scripts/sweep-pending-commercial.js', explainUnsafeCheckCommand, has('tests/unit/sweep-pending-commercial.test.mjs')), 'node --test tests/unit/sweep-pending-commercial.test.mjs');
   assert.equal(safeRunCommand('scripts/newsletter/generate.mjs', explainUnsafeCheckCommand, has('scripts/newsletter/generate.test.mjs')), 'node --test scripts/newsletter/generate.test.mjs');
   // No test on disk: nothing to run (never a bare `node <file>`, which the gate rejects and which could mutate).
-  assert.equal(safeRunCommand('scripts/send-feedback-reply.js', explainUnsafeCheckCommand, has()), null);
-  assert.equal(safeRunCommand('scripts/send-feedback-reply.js', explainUnsafeCheckCommand), null, 'default oracle invents nothing');
+  assert.equal(safeRunCommand('scripts/example-untested-script.js', explainUnsafeCheckCommand, has()), null);
+  assert.equal(safeRunCommand('scripts/example-untested-script.js', explainUnsafeCheckCommand), null, 'default oracle invents nothing');
   assert.equal(explainUnsafeCheckCommand('node scripts/lib/land-branch.js').ok, false, 'the premise: a bare node <file> is rejected by the gate');
   // Non-scripts and test files themselves.
   assert.equal(safeRunCommand('.github/workflows/x.yml', explainUnsafeCheckCommand, () => true), null);
