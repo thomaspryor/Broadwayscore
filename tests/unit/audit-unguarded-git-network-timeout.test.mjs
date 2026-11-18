@@ -56,3 +56,27 @@ test('the live tree is clean and the CLI is advisory (exit 0)', () => {
   assert.equal(r.status, 0, r.stderr);
   assert.deepEqual(JSON.parse(r.stdout), []);
 });
+
+test('the walker still scans a checkout that lives under a tests/ directory (BRO-7458 cross-check)', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const { walk } = require('../../scripts/audit-unguarded-git-network-timeout.js');
+  const base = fs.mkdtempSync(path.join(os.tmpdir(), 'gitnet-'));
+  const root = path.join(base, 'tests', 'repo');
+  fs.mkdirSync(path.join(root, 'scripts'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'scripts', 'a.js'), "execFileSync('git', ['fetch'], { timeout: 1 });\n");
+  fs.mkdirSync(path.join(root, 'tests'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'tests', 'b.js'), '// skipped\n');
+  try {
+    const files = walk(root, [], root).map((f) => path.relative(root, f));
+    assert.deepEqual(files, [path.join('scripts', 'a.js')]);
+  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+});
+
+test('push-rescue routes its git wrapper through the guarded helper (the scanner cannot see option spreads)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/lib/push-rescue.js'), 'utf8');
+  assert.match(src, /require\('\.\/git-proc-guard\.js'\)/);
+  assert.match(src, /function git\(args, opts = \{\}\) \{\s*const r = runGit\('git', args,/);
+  assert.doesNotMatch(src, /spawnSync\('git'/);
+});

@@ -23,15 +23,15 @@ const { exitOnHelp } = require('./lib/cli-help.js');
 const { scanFiles } = require('./lib/unguarded-git-network-scan.js');
 
 const ROOT = path.join(__dirname, '..');
-const SKIP = /(\.test\.[cm]?[jt]s$|[\\/]node_modules[\\/]|[\\/]tests?[\\/]|git-proc-guard\.js$|unguarded-git-network-scan\.js$|audit-unguarded-git-network-timeout\.js$)/;
+const SKIP = /(\.test\.[cm]?[jt]s$|(?:^|[\\/])node_modules[\\/]|(?:^|[\\/])tests?[\\/]|git-proc-guard\.js$|unguarded-git-network-scan\.js$|audit-unguarded-git-network-timeout\.js$)/;
 
-function walk(dir, out = []) {
+function walk(dir, out = [], root = ROOT) {
   let entries = [];
   try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return out; }
   for (const e of entries) {
     const p = path.join(dir, e.name);
-    if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p, out); }
-    else if (/\.(c?js|mjs|ts)$/.test(e.name) && !SKIP.test(path.relative(ROOT, p))) out.push(p); // relative: a checkout under /tests/ must not skip everything
+    if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p, out, root); }
+    else if (/\.(c?js|mjs|ts)$/.test(e.name) && !SKIP.test(path.relative(root, p))) out.push(p); // relative: a checkout under /tests/ must not skip everything
   }
   return out;
 }
@@ -47,6 +47,8 @@ function main() {
   }
   process.exit(args.includes('--strict') && hits.length ? 1 : 0);
 }
+
+module.exports = { walk, SKIP };
 
 if (require.main === module) {
   exitOnHelp(module);
