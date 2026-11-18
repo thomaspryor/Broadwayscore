@@ -13,6 +13,7 @@ const CORE_CATEGORIES = ['broadway', 'off-broadway'];
 // Quotas sum to 30 (each inspection is a sequential API call; see check-seo-health.js).
 const SAMPLE_QUOTAS = { broadway: 12, 'off-broadway': 8, 'west-end': 4, 'off-west-end': 2, regional: 4 };
 const CORE_MIN_RATE = 0.5;
+const LIVE_STATUSES = new Set(['open', 'previews']);
 
 function pickRandom(list, n, rand) {
   const copy = list.slice();
@@ -30,11 +31,18 @@ function sampleIndexCoverageUrls(shows, host, { quotas = SAMPLE_QUOTAS, rand = M
     if (!s || typeof s.slug !== 'string' || !s.slug) continue;
     const cat = typeof s.category === 'string' && s.category ? s.category : 'unknown';
     if (!buckets.has(cat)) buckets.set(cat, []);
-    buckets.get(cat).push(s.slug);
+    buckets.get(cat).push({ slug: s.slug, live: LIVE_STATUSES.has(s.status) });
   }
   const out = [];
   for (const [cat, n] of Object.entries(quotas)) {
-    for (const slug of pickRandom(buckets.get(cat) || [], n, rand)) out.push({ url: `${host}/show/${slug}`, category: cat });
+    let list = buckets.get(cat) || [];
+    // Core pages are the ones that should be indexed: ~2,800 of ~3,000 are closed historical
+    // shows Google deprioritizes. Sample live shows first, top up from the rest.
+    if (CORE_CATEGORIES.includes(cat)) {
+      const live = list.filter((x) => x.live);
+      list = live.length >= n ? live : live.concat(pickRandom(list.filter((x) => !x.live), n - live.length, rand));
+    }
+    for (const { slug } of pickRandom(list, n, rand)) out.push({ url: `${host}/show/${slug}`, category: cat });
   }
   return out;
 }
@@ -65,11 +73,22 @@ function indexCoverageVerdict(cov) {
       indexed += (cov.byCategory[c] || {}).indexed || 0;
       total += (cov.byCategory[c] || {}).total || 0;
     }
-    if (total > 0 && indexed / total < CORE_MIN_RATE) return { warn: true, message: `${pct(indexed, total)} of sampled Broadway/Off-Broadway pages` };
-    return { warn: false };
+    if (total > 0) {
+      return indexed / total < CORE_MIN_RATE ? { warn: true, message: `${pct(indexed, total)} of sampled Broadway/Off-Broadway pages` } : { warn: false };
+    }
+    // No core page was inspected (all failed, or fallback sample): never read that as healthy.
   }
   if (cov.total > 0 && cov.indexed / cov.total < CORE_MIN_RATE) return { warn: true, message: pct(cov.indexed, cov.total) };
   return { warn: false };
 }
 
-module.exports = { CORE_CATEGORIES, SAMPLE_QUOTAS, CORE_MIN_RATE, sampleIndexCoverageUrls, tallyByCategory, indexCoverageVerdict };
+/** One-line summary for Discord/console: overall rate plus the core rate the digest row judges. */
+function describeIndexCoverage(cov) {
+  const all = `${cov.rate}% (${cov.indexed}/${cov.total})`;
+  if (!cov.byCategory) return all;
+  let i = 0, t = 0;
+  for (const c of CORE_CATEGORIES) { i += (cov.byCategory[c] || {}).indexed || 0; t += (cov.byCategory[c] || {}).total || 0; }
+  return t > 0 ? `${all}; Broadway/Off-Broadway ${Math.round((i / t) * 100)}% (${i}/${t})` : all;
+}
+
+module.exports = { describeIndexCoverage, LIVE_STATUSES, CORE_CATEGORIES, SAMPLE_QUOTAS, CORE_MIN_RATE, sampleIndexCoverageUrls, tallyByCategory, indexCoverageVerdict };

@@ -27,7 +27,7 @@ const { findCWVFieldAcknowledgment } = require('./lib/seo-cwv-ack');
 const { summarizeBotQueries, botDropExplainsDecline, isBotQueryRow } = require('./lib/seo-bot-query-signature');
 const { annotateFieldScope, scopeChanged } = require('./lib/seo-cwv-field-scope');
 const { sampleShowPages } = require('./lib/sample-show-pages');
-const { sampleIndexCoverageUrls, tallyByCategory } = require('./lib/index-coverage-sample');
+const { sampleIndexCoverageUrls, tallyByCategory, describeIndexCoverage } = require('./lib/index-coverage-sample');
 
 const HEALTH_PATH = path.join(__dirname, '../data/audit/seo-health.json');
 const HISTORY_PATH = path.join(__dirname, '../data/audit/seo-performance-history.json');
@@ -1324,7 +1324,7 @@ async function sendAlerts(healthData, anomalies) {
     }));
 
     if (healthData.indexCoverage) {
-      fields.push({ name: 'Index Coverage', value: `${healthData.indexCoverage.rate}% (${healthData.indexCoverage.indexed}/${healthData.indexCoverage.total})`, inline: true });
+      fields.push({ name: 'Index Coverage', value: describeIndexCoverage(healthData.indexCoverage), inline: true });
     }
 
     await sendAlert({
@@ -1573,7 +1573,7 @@ async function main() {
   if (reviewIntentRankings && reviewIntentRankings.queries > 0) {
     console.log(`  Review-Intent Rankings (the real signal): avg position ${reviewIntentRankings.avgPosition}, ${reviewIntentRankings.page1Share}% on page 1 across ${reviewIntentRankings.queries} "[show] reviews" queries`);
   }
-  console.log(`  Index Coverage: ${indexCoverage.rate}% (${indexCoverage.indexed}/${indexCoverage.total})`);
+  console.log(`  Index Coverage: ${describeIndexCoverage(indexCoverage)}`);
   console.log(`  Sitemaps: ${sitemapStatus.count}`);
   console.log(`  New Pages: ${newPages.checked} checked, ${newPages.indexed} indexed`);
   console.log(`  Stale Pages: ${stalePages.stale}/${stalePages.sampled} stale, ${stalePages.resubmitted} resubmitted`);

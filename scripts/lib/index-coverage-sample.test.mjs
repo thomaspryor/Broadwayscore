@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { sampleIndexCoverageUrls, tallyByCategory, indexCoverageVerdict, SAMPLE_QUOTAS } = require('./index-coverage-sample.js');
+const { sampleIndexCoverageUrls, tallyByCategory, indexCoverageVerdict, describeIndexCoverage, SAMPLE_QUOTAS } = require('./index-coverage-sample.js');
 const fs = require('fs');
 
 // Shaped like the real catalogue: regional/West End dwarf the NYC categories.
@@ -49,4 +49,38 @@ test('the SEO job uses the stratified sampler (guard: uniform shuffle must not r
   const src = fs.readFileSync(new URL('../check-seo-health.js', import.meta.url), 'utf8');
   assert.match(src, /sampleIndexCoverageUrls\(shows/);
   assert.doesNotMatch(src, /showUrls\.sort\(\(\) => Math\.random\(\) - 0\.5\)/);
+});
+
+test('core sample prefers live shows over closed history', () => {
+  const pool = [...mk('broadway', 100).map((x, i) => ({ ...x, status: i < 20 ? 'open' : 'closed' })), ...mk('off-broadway', 100).map((x, i) => ({ ...x, status: i < 20 ? 'open' : 'closed' }))];
+  const s = sampleIndexCoverageUrls(pool, 'h');
+  const liveSlugs = new Set(pool.filter(x => x.status === 'open').map(x => x.slug));
+  assert.ok(s.every(e => liveSlugs.has(e.url.replace('h/show/', ''))));
+  assert.equal(s.length, 20);
+});
+
+test('core with too few live shows is topped up from closed ones', () => {
+  const pool = [{ slug: 'a', category: 'broadway', status: 'open' }, ...mk('broadway', 30).map(x => ({ ...x, status: 'closed' }))];
+  const s = sampleIndexCoverageUrls(pool, 'h');
+  assert.equal(s.length, 12);
+  assert.ok(s.some(e => e.url === 'h/show/a'));
+});
+
+test('zero core inspected (fallback sample or every call failed) falls back to the overall rule, never healthy', () => {
+  const byCategory = { unknown: { indexed: 0, total: 2 } };
+  assert.equal(indexCoverageVerdict({ indexed: 0, total: 2, byCategory }).warn, true);
+  assert.equal(indexCoverageVerdict({ indexed: 0, total: 0, byCategory: {} }).warn, false);
+});
+
+test('health-check.js row uses the verdict helper (guard against reverting the wiring)', () => {
+  const src = fs.readFileSync(new URL('../health-check.js', import.meta.url), 'utf8');
+  assert.match(src, /indexCoverageVerdict\(data\.indexCoverage\)/);
+  assert.doesNotMatch(src, /indexed \/ total < 0\.5/);
+});
+
+test('describeIndexCoverage shows overall and core rates', () => {
+  const t = describeIndexCoverage({ rate: 13, indexed: 4, total: 30, byCategory: { broadway: { indexed: 4, total: 8 } } });
+  assert.match(t, /13% \(4\/30\)/);
+  assert.match(t, /Broadway\/Off-Broadway 50% \(4\/8\)/);
+  assert.equal(describeIndexCoverage({ rate: 13, indexed: 4, total: 30 }), '13% (4/30)');
 });
