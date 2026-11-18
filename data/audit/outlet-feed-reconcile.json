@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T00:58:55.201Z",
+  "generatedAt": "2026-11-18T02:37:13.634Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -164,6 +164,10 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -188,19 +192,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 875,
-  "matchedGaps": 1,
+  "itemsScanned": 869,
+  "matchedGaps": 0,
   "possibleGaps": 4,
   "gaps": [
-    {
-      "showId": "downstate-2026",
-      "title": "Downstate",
-      "level": "matched",
-      "outletId": "pages-on-stages",
-      "url": "https://pagesonstages.com/2026/11/17/downstate/",
-      "headline": "Power Full",
-      "publishDate": "2026-11-17"
-    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
