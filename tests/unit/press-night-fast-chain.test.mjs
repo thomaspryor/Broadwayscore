@@ -98,7 +98,13 @@ test('llm-ensemble-score.yml: a press-night run that skipped the auto-trigger st
   const step = y.slice(at, y.indexOf('\n      - name:', at + 10));
   assert.match(step, /if: \$\{\{ always\(\) && !cancelled\(\)/);
   assert.match(step, /steps\.auto_rebuild\.outcome != 'success'/);
+  // A dispatch that failed inside the auto-trigger (it does not fail the step) still gets the fallback.
+  assert.match(step, /steps\.auto_rebuild\.outputs\.fast_dispatched != 'true'/);
+  assert.match(y, /echo "fast_dispatched=true" >> "\$GITHUB_OUTPUT"/);
   assert.match(step, /github\.event\.inputs\.show_id != ''/);
+  // A no-op rescore (dispatch-rescore.js always sends fast_rebuild=true) must not start a rebuild.
+  assert.match(step, /github\.event\.inputs\.rescore_reason == ''/);
+  assert.doesNotMatch(step, /^\s+FAST_REBUILD:/m);
   assert.match(step, /node scripts\/lib\/rebuild-target\.js/);
   assert.match(step, /dispatch_with_retry rebuild-fast\.yml/);
   assert.match(y, /- name: Auto-trigger rebuild for non-chain runs\n\s+id: auto_rebuild/);

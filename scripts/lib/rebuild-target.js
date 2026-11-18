@@ -59,8 +59,12 @@ if (require.main === module) {
   const res = pickRebuildTarget({
     fastRebuild: process.env.FAST_REBUILD,
     showIds: process.env.SHOW_IDS,
-    onlyUrgent: process.env.ONLY_URGENT,
-    isUrgent: (id) => isUrgentShowId(id, { log: (m) => console.error(m) }),
+    onlyUrgent: process.env.DISABLE_URGENT_FAST_REBUILD === '1' ? false : process.env.ONLY_URGENT,
+    // Kill switch (repo variable DISABLE_URGENT_FAST_REBUILD=1): back to the
+    // fast_rebuild-input-only rule without a code change.
+    isUrgent: process.env.DISABLE_URGENT_FAST_REBUILD === '1'
+      ? () => false
+      : (id) => isUrgentShowId(id, { log: (m) => console.error(m) }),
   });
   console.log(res.workflow);
   console.log(res.reason);

@@ -220,7 +220,9 @@ jobs:
       # (they use only Node built-ins). "Install dependencies" waits for it.
       - name: Start npm ci in the background
         run: |
-          nohup setsid bash -c 'npm ci > "$RUNNER_TEMP/npm-ci.log" 2>&1; echo $? > "$RUNNER_TEMP/npm-ci.exit"' > /dev/null 2>&1 &
+          # Exit code goes to a temp file and is renamed, so the waiter never reads it half-written.
+          nohup setsid bash -c 'npm ci > "$RUNNER_TEMP/npm-ci.log" 2>&1; echo $? > "$RUNNER_TEMP/npm-ci.exit.tmp"; mv "$RUNNER_TEMP/npm-ci.exit.tmp" "$RUNNER_TEMP/npm-ci.exit"' > /dev/null 2>&1 &
+          echo $! > "$RUNNER_TEMP/npm-ci.pid"
           echo "npm ci started (pid $!)"
 
       - name: Checkout core data
@@ -247,7 +249,9 @@ jobs:
           if [ "$CODE" != "0" ]; then
             tail -40 "${RUNNER_TEMP}/npm-ci.log" 2>/dev/null || true
             # A still-running background install must not race the foreground one.
-            pkill -f "npm ci" 2>/dev/null || true
+            # setsid made the background job its own process group: kill all of it.
+            PGID=$(cat "${RUNNER_TEMP}/npm-ci.pid" 2>/dev/null || true)
+            if [ -n "$PGID" ]; then kill -- "-$PGID" 2>/dev/null || true; fi
             sleep 2
             echo "::warning::background npm ci did not succeed ($CODE); running it in the foreground"
             npm ci
@@ -887,6 +891,7 @@ jobs:
           FAST_REBUILD: ${{ github.event.inputs.fast_rebuild }}
           SHOW_IDS: ${{ github.event.inputs.show_id }}
           ONLY_URGENT: ${{ steps.check-needed.outputs.only_urgent }}
+          DISABLE_URGENT_FAST_REBUILD: ${{ vars.DISABLE_URGENT_FAST_REBUILD }}
         run: |
           # Two rebuild targets:
           #   - rebuild-reviews.yml (default): full ~15 min pipeline. Shared
@@ -922,7 +927,10 @@ jobs:
             REBUILD_WF="rebuild-fast.yml"
             REASON="Auto-triggered after LLM scoring (fast path — $(printf '%s\n' "$TARGET" | sed -n 2p))"
             echo "Triggering $REBUILD_WF to incorporate new scores (shared group coalesces; no skip-if-active check)..."
-            dispatch_with_retry "$REBUILD_WF" -f reason="$REASON" || true
+            # Record success so the fallback step below can retry a dispatch that failed here.
+            if dispatch_with_retry "$REBUILD_WF" -f reason="$REASON"; then
+              echo "fast_dispatched=true" >> "$GITHUB_OUTPUT"
+            fi
             exit 0
           fi
 
@@ -998,14 +1006,17 @@ jobs:
       # auto-trigger above did not run, so the newly ingested review would
       # wait for the 4-hourly rebuild-fast cron. Dispatch rebuild-fast here.
       - name: Fallback fast rebuild for press-night runs
-        if: ${{ always() && !cancelled() && github.event_name == 'workflow_dispatch' && github.event.inputs.chain != 'true' && github.event.inputs.dry_run != 'true' && github.event.inputs.show_id != '' && steps.auto_rebuild.outcome != 'success' }}
+        if: ${{ always() && !cancelled() && github.event_name == 'workflow_dispatch' && github.event.inputs.chain != 'true' && github.event.inputs.dry_run != 'true' && github.event.inputs.show_id != '' && github.event.inputs.rescore_reason == '' && (steps.auto_rebuild.outcome != 'success' || steps.auto_rebuild.outputs.fast_dispatched != 'true') }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FAST_REBUILD: ${{ github.event.inputs.fast_rebuild }}
           SHOW_IDS: ${{ github.event.inputs.show_id }}
           ONLY_URGENT: ${{ steps.check-needed.outputs.only_urgent }}
+          DISABLE_URGENT_FAST_REBUILD: ${{ vars.DISABLE_URGENT_FAST_REBUILD }}
         run: |
+          # Urgency only: the fast_rebuild input (dispatch-rescore.js always sets
+          # it) must not start a rebuild for every no-op rescore, and rescore
+          # runs are excluded above (verify-all-scored loop risk).
           TARGET=$(node scripts/lib/rebuild-target.js 2>/dev/null) || TARGET=""
           if [ "$(printf '%s\n' "$TARGET" | sed -n 1p)" != "rebuild-fast.yml" ]; then
             echo "Not a press-night run; the normal rebuild crons cover it."
