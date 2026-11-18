@@ -131,3 +131,25 @@ test('a one-word lead title (Dollygram) is not matched alone but raises the near
     assert.equal(shortTitleCoverage(show, [show]).status, 'near-miss');
   } finally { setPressNameShows(null); }
 });
+
+test('BRO-7791: on its opening night a corroborated one-word lead goes live through the lane; uncorroborated stays a near-miss', async () => {
+  const night = '2026-11-19';
+  const show = { id: 'sim-dollygram-2026', title: 'Dollygram: An Original Musical', venue: 'Imperial Theatre', category: 'broadway', market: 'broadway', openingDate: night, status: 'previews' };
+  const index = 'https://www.theatermania.com/news/?categories=reviews';
+  const url = 'https://www.theatermania.com/news/review-dollygram-glitters-on-broadway_1234567/';
+  const casting = 'https://www.theatermania.com/news/review-of-the-week-dollygram-casting_1234568/';
+  const html = `<main><article><a href="${url}"><h3>Review: Dollygram Glitters on Broadway</h3></a></article>
+    <article><a href="${casting}"><h3>Review of the week: Dollygram Broadway casting announced</h3></a></article></main>`;
+  setPressNameShows([show]);
+  try {
+    const d = require(path.join(ROOT, 'scripts/lib/opening-night-lane/discovery.js'));
+    const run = (n) => d.sectionIndexAdapter({ outlets: [{ outletId: 'theatermania', indexUrl: index }], matchOpts: { fuzzy: true } })
+      .discover({ show, night: n, fetchText: async () => html });
+    const tonight = await run(night);
+    assert.ok(tonight.some((c) => c.url === url && !c.nearMiss && c.vettedOutlet), JSON.stringify(tonight));
+    assert.ok(!tonight.some((c) => c.url === casting && !c.nearMiss), 'a casting article was admitted');
+    const other = await run('2026-11-18');
+    assert.ok(other.some((c) => c.url === url && c.nearMiss), 'near-miss alarm silent on another night');
+    assert.ok(!other.some((c) => c.url === url && !c.nearMiss), 'admitted on another night');
+  } finally { setPressNameShows(null); }
+});

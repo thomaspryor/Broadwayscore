@@ -76,9 +76,15 @@ test('refuses a shared or generic lead word', () => {
   // two closed shows hold the word: generic ("Othello")
   const othello = { ...DOLLYGRAM, id: 'othello-2026', title: 'Othello: A New Staging' };
   const old = [{ id: 'othello-2016', title: 'Othello', status: 'closed' }, { id: 'othello-2023', title: 'Othello', status: 'closed' }];
-  assert.equal(judge('Review: Othello on Broadway', TM_URL, othello, CTX, [othello, ...old]).reason, 'shared-with-closed-shows');
-  // one closed show is allowed
-  assert.equal(judge('Review: Othello on Broadway', TM_URL, othello, CTX, [othello, old[0]]).admit, true);
+  const generic = [{ id: 'm1', title: 'The Moor: Othello Retold', status: 'closed' }, { id: 'm2', title: 'Desdemona and Othello in Love', status: 'closed' }];
+  assert.equal(judge('Review: Othello on Broadway', TM_URL, othello, CTX, [othello, ...generic]).reason, 'shared-with-closed-shows');
+  // a closed namesake blocks it ("Degenerates" for "Degenerates: Dec & Jan", backtest 2026-11-18)
+  assert.equal(judge('Review: Othello on Broadway', TM_URL, othello, CTX, [othello, old[0]]).reason, 'closed-namesake:othello-2016');
+  const degen = { ...DOLLYGRAM, id: 'degenerates-dec-jan', title: 'Degenerates: Dec & Jan', category: 'off-broadway' };
+  assert.equal(judge('', 'https://www.newyorktheatreguide.com/reviews/degenerates-off-broadway-review', degen, { ...CTX, outletId: 'nytg' },
+    [degen, { id: 'degenerates-off-broadway-2026', title: 'Degenerates', status: 'closed' }]).reason, 'closed-namesake:degenerates-off-broadway-2026');
+  // one closed show holding the word inside a longer title is allowed
+  assert.equal(judge('Review: Othello on Broadway', TM_URL, othello, CTX, [othello, { id: 'moor', title: 'The Moor: Othello Retold Again', status: 'closed' }]).admit, true);
   // a month is never a title word on its own (August: Osage County)
   const aoc = { ...DOLLYGRAM, id: 'aoc', title: 'August: Osage County', market: 'west-end', category: 'west-end' };
   assert.equal(judge('Review: August in the West End', TM_URL, aoc, { ...CTX, outletId: 'artsdesk' }, [aoc]).reason, 'lead-word-is-a-month');

@@ -13,8 +13,8 @@
  *      outlet's own host (the caller says so with ctx.direct / ctx.outletId);
  *   3. a review cue (ctx.reviewCue, discovery.js hasReviewSignal) and a market or venue cue of THIS show's market, and
  *      no cue of another market ("West End" for a Broadway show, bare "Broadway" for an Off-Broadway one);
- *   4. the lead word is distinctive: no other active show in shows.json holds it, at most one closed show does, it is
- *      not a month, and the headline names no other show;
+ *   4. the lead word is distinctive: no other active show in shows.json holds it, no closed show is named by it alone,
+ *      at most one other closed show holds it, it is not a month, and the headline names no other show;
  *   5. the word is used as a title: first after a "Review:"-style prefix, quoted, or followed by "review", in the
  *      headline or the URL slug;
  *   6. nothing says another staging or a non-review: a tryout or tour cue, another named venue, another production's
@@ -114,6 +114,9 @@ function sharedLeadWord(word, show) {
     const t = new Set(tokens(s.title));
     if (!t.has(word) && !t.has(`${word}s`)) continue;
     if (s.status !== 'closed') return `shared-with-active:${s.id || s.title}`;
+    // A closed namesake ("Degenerates" for "Degenerates: Dec & Jan", backtest 2026-11-18) is the same name, not a shared word.
+    const sw = sigWords(s.title);
+    if ((sw.length === 1 && (sw[0] === word || sw[0] === `${word}s`)) || leadWord(s.title) === word) return `closed-namesake:${s.id || s.title}`;
     closed += 1;
     if (closed >= 2) return 'shared-with-closed-shows';
   }
