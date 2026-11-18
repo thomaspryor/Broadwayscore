@@ -159,8 +159,12 @@ jobs:
       # code, env switches and Node major match), so a stale restore only costs
       # time, never correctness. Key = cleaning-code hash + review-texts SHA:
       # no run id (rule m), and restore-keys picks up the newest entry for the
-      # current cleaning code.
+      # current cleaning code. The hashed list is a coarse pre-filter only: the
+      # memo file itself versions every module cleanText really loads
+      # (fingerprint-memo.js versionedSources), so a missed dependency here
+      # means a cold run, never a stale fingerprint.
       - name: Restore fingerprint memo
+        id: fp_memo_restore
         uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: .cache/rebuild-fp-cache.json
@@ -230,10 +234,14 @@ jobs:
         run: |
           computed=$(node -e "try{console.log(require('./.cache/rebuild-fp-cache.json').computed||0)}catch{console.log(0)}")
           echo "computed=$computed"
-          if [ "$computed" -ge 2000 ]; then echo "save=true" >> "$GITHUB_OUTPUT"; fi
+          # Nothing restored = this job started cold, so upload even if a
+          # retry attempt reused the first attempt's memo and computed little.
+          if [ -z "${{ steps.fp_memo_restore.outputs.cache-matched-key }}" ] || [ "$computed" -ge 2000 ]; then
+            echo "save=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Save fingerprint memo
-        if: always() && steps.fp_memo.outputs.save == 'true'
+        if: always() && steps.rebuild.outcome == 'success' && steps.fp_memo.outputs.save == 'true'
         continue-on-error: true
         uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:

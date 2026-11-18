@@ -48,7 +48,7 @@ function parseReviewFileText(raw) {
     throw e;
   }
 }
-const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
+const { decodeHtmlEntities } = require('./lib/text-cleaning');
 const { createFingerprintMemo } = require('./lib/fingerprint-memo');
 const { resolveRelativeReviewUrl, reverseCrossMarketExclusion } = require('./lib/recovery-exclusions');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, urlPathOppositeMarketIndicator, urlPathGuardTreatsShowAsUk, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
