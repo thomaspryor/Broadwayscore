@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7660-k",
   "planId": "723c40b7-4de1-4802-924d-f321d0a1029d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T07:28:48.800Z",
   "submitter": {
     "name": null,
@@ -239,5 +239,134 @@
         "description": "BRO-7660 CLEAR_CVWA: body reviews D.A. Mindell's play at Signature"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T11:22:42.622Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2025/theatre-reviews-limited--david-roberts.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2025/theatre-reviews-limited--david-roberts.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2025/theatre-reviews-limited--david-roberts.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/lighting-and-sound-america--david-barbour.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/lighting-and-sound-america--david-barbour.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/wolf-entertainment-guide--william-wolf.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/wolf-entertainment-guide--william-wolf.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/drama-queen-nyc--jonathan-warman.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/drama-queen-nyc--jonathan-warman.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/drama-queen-nyc--jonathan-warman.json showNotMentionedManualClear: null -> \"BRO-7660: stored body read, it reviews this show (excerpt reviews Cursed Child (Tiffany's staging, Clemmett as Albus); the cross-attribution score ran on an empty body)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/drama-queen-nyc--jonathan-warman.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-2024/theatermania--pete-hempstead.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-2024/theatermania--pete-hempstead.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-2024/theatermania--pete-hempstead.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/woman-around-town--alix-cohen.json wrongShow: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-lost-off-broadway-2019/front-row-center--david-walters.json wrongShow: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mindplay-off-broadway-2025/theater-scene--victor-gluck.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-neighbour-totoro-west-end-2025/independent--annabel-nugent.json wrongShow: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-neighbour-totoro-west-end-2025/independent--culture-staff.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "n-a-off-broadway-2024/washpost--david-freedlander.json isNonReviewReason: null -> \"manual (not a review): body is a political news feature on the real Pelosi/AOC history, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "n-a-off-broadway-2024/washpost--david-freedlander.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-the-evolutionary-function-of-shame-off-broadway-2025/theatermania--zachary-stewart.json wrongArticleManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
