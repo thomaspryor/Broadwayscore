@@ -34,7 +34,12 @@ const EXCLUDED_WORKFLOWS = /^(?:test|land)\.ya?ml$/;
 const SCRIPT_REF_RE = /(?:^|[\s'"=(/])(scripts\/[\w./-]+\.(?:mjs|cjs|js|ts|sh|py))\b/g;
 const NO_LIVE_RUN_RE = /^[ \t>*_-]*NO-LIVE-RUN(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.{14,})$/im;
 const RESULT_READ_TOOL_RE = /^mcp__github__(?:actions_get|get_job_logs|actions_list)$/;
-const RESULT_READ_CMD_RE = /\b(?:wait-for-run\.sh|wait-for-land\.js|gh\s+run\s+view)\b/;
+const RESULT_READ_CMD_RE = /\b(?:wait-for-run\.sh|gh\s+run\s+view)\b|\bcloud-dispatch\.js\b[^\n;&|]*\s--wait\b/;
+// Review P1: a dispatch only runs the new code once the land has merged, so a wait-for-land read must come first.
+const LAND_DONE_CMD_RE = /\bwait-for-land\.js\b/;
+// A command, not text that mentions one (echo/grep of the script name): it must start the command or follow a separator.
+const CMD_START = '(?:^|[;&|(\\n])\\s*';
+const FAILED_OUTPUT_RE = /^\s*(?:\w*Error|Error \[\w+\]):|Traceback \(most recent call last\)|\bUnhandled(?:PromiseRejection)?\b|\b(?:404|422) Not Found|\bNot Found\b/m;
 const NOT_A_RUN_RE = /(?:^|\s)(?:--help|-h|--version)(?:\s|$)/;
 
 /** PURE. Map of repo-relative script path -> [workflow file names] from { name: yamlText }. Comment lines are skipped. */
@@ -84,29 +89,33 @@ export function liveEdits(events, from, index) {
 /** PURE. Was the live file exercised? -> 'dispatch' | 'direct' | null */
 export function liveRunFor(events, edit, lastLand) {
   const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
-  const ok = (e) => { const r = answers.get(e.id); return r && !r.isError; };
+  const text = (r) => (typeof r.content === 'string' ? r.content : JSON.stringify(r.content ?? ''));
+  const ok = (e) => { const r = answers.get(e.id); return !!r && !r.isError && !FAILED_OUTPUT_RE.test(text(r)); };
+  let landDone = false;
   const wfRe = new RegExp(`(?:^|[\\s/'"])(?:${edit.workflows.map((w) => w.replace(/[.]/g, '\\.')).join('|')})\\b`);
   let dispatchAt = -1;
   for (let i = lastLand + 1; i < events.length; i++) {
     const e = events[i];
     if (e.kind !== 'assistant_tool_use' || !ok(e)) continue;
+    if (e.name === 'Bash' && LAND_DONE_CMD_RE.test(runShellCode(e.input?.command) || '')) { landDone = true; continue; }
+    if (!landDone) continue;
     if (e.name === 'mcp__github__actions_run_trigger' && wfRe.test(' ' + String(e.input?.workflow_id || ''))) { dispatchAt = i; continue; }
     if (e.name === 'Bash') {
       const c = runShellCode(e.input?.command) || '';
-      if (/(?:\bgh\s+workflow\s+run|cloud-dispatch\.js)\b/.test(c) && wfRe.test(c)) { dispatchAt = i; if (RESULT_READ_CMD_RE.test(c)) return 'dispatch'; continue; }
+      if (new RegExp(`${CMD_START}(?:gh\\s+workflow\\s+run|node\\s+\\S*cloud-dispatch\\.js)\\b`).test(c) && wfRe.test(c)) { dispatchAt = i; if (RESULT_READ_CMD_RE.test(c)) return 'dispatch'; continue; }
       if (dispatchAt >= 0 && RESULT_READ_CMD_RE.test(c)) return 'dispatch';
     }
-    if (dispatchAt >= 0 && RESULT_READ_TOOL_RE.test(e.name || '')) return 'dispatch';
+    if (dispatchAt >= 0 && RESULT_READ_TOOL_RE.test(e.name || '') && e.input?.method !== 'list_workflows') return 'dispatch';
   }
   if (/\.github\/workflows\//.test(edit.file)) return null;
   const base = edit.file.replace(/[.]/g, '\\.');
-  const runRe = new RegExp(`(?:^|[;&|(\\n]|\\s)(?:node|npx\\s+tsx|tsx|bash|sh|python3?)\\s+(?:-\\S+\\s+)*(?:\\S*/)?${base}(?=\\s|$|[;&|)])([^\\n;&|]*)`);
+  const runRe = new RegExp(`${CMD_START}(?:node|npx\\s+tsx|tsx|bash|sh|python3?)\\s+(?:-\\S+\\s+)*(?:\\S*/)?${base}(?=\\s|$|[;&|)])([^\\n;&|]*)`);
   for (let i = edit.lastEdit + 1; i < events.length; i++) {
     const e = events[i];
     if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash' || !ok(e)) continue;
     const c = runShellCode(e.input?.command) || '';
     const m = runRe.exec(c);
-    if (m && !NOT_A_RUN_RE.test(m[1]) && !/\bnode\s+(?:--check|-c)\b/.test(c)) return 'direct';
+    if (m && !NOT_A_RUN_RE.test(m[1]) && !/\s(?:--check|-c)\s/.test(m[0])) return 'direct';
   }
   return null;
 }
@@ -122,7 +131,7 @@ export function blockMessage(missing) {
     ...lines,
     'Do one of these, then close again:',
     '  1. Run the edited script itself on real data (a --dry-run counts; --help and node --check do not): node <file> …',
-    '  2. Dispatch the workflow that runs it, after the land finished (mcp__github__actions_run_trigger or node scripts/cloud-dispatch.js <workflow>), then read the run result (mcp__github__actions_get / get_job_logs) and fix what it shows.',
+    '  2. Dispatch the workflow that runs it, after node scripts/lib/wait-for-land.js land/<name> says it landed (mcp__github__actions_run_trigger, or node scripts/cloud-dispatch.js <workflow> --wait), then read the run result (mcp__github__actions_get / get_job_logs, or the --wait output) and fix what it shows.',
     'Do not dispatch something that spends real money in bulk or sends real email (CLAUDE.md sections 8 and 17): run it with --dry-run instead, or write NO-LIVE-RUN: <15+ chars on why> (also for a cron-only job), and say plainly it is not yet proven live.',
   ].join('\n');
 }
