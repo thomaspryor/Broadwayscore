@@ -893,7 +893,7 @@ for (const [label, command] of Object.entries(INERT_LAND_CMDS)) {
     const dir = makeTmpDir('land-inert-' + label);
     const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command }), LINEAR_CLOSEOUT_DONE]);
     const r = runHook(transcript, 'Wrote a fixture.\n\nSAFE TO ARCHIVE — nothing was pushed.');
-    assert.doesNotMatch(r.stderr, /Land run/i, `an inert land/ string must not demand a Land run, got: ${r.stderr.slice(0, 300)}`);
+    assert.doesNotMatch(r.stderr, /without checking the Land run of every land push/i, `an inert land/ string must not count as a land push, got: ${r.stderr.slice(0, 300)}`);
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
 }
@@ -903,10 +903,27 @@ test('BRO-7730: a real land push after a heredoc in the same command still count
   const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command }), LINEAR_CLOSEOUT_DONE]);
   const r = runHook(transcript, 'Pushed to land.\n\nSAFE TO ARCHIVE — pushed.');
   assertBlocked(r, 'a real push after a heredoc is still an unchecked land push');
-  assert.match(r.stderr, /Land run/i, `got: ${r.stderr.slice(0, 300)}`);
+  assert.match(r.stderr, /without checking the Land run of every land push/i, `got: ${r.stderr.slice(0, 300)}`);
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
+const REAL_LAND_CMDS = {
+  quotedRefspecAfterQuotedMsg: 'git commit -m "x" && git push origin "HEAD:refs/heads/land/x"',
+  apostrophes: 'git commit -m "don\'t" && git push origin land/x && echo "it\'s done"',
+  bashC: 'bash -c "git push origin HEAD:refs/heads/land/x"',
+  ssh: 'ssh host "cd r && git push origin HEAD:land/x"',
+  heredocSameLine: 'cat <<EOF > f && git push origin land/x\nbody\nEOF',
+};
+for (const [label, command] of Object.entries(REAL_LAND_CMDS)) {
+  test(`BRO-7730: real land push still counts: ${label}`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('land-real-' + label);
+    const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command }), LINEAR_CLOSEOUT_DONE]);
+    const r = runHook(transcript, 'Pushed to land.\n\nSAFE TO ARCHIVE — pushed.');
+    assertBlocked(r, 'a real land push must stay detected');
+    assert.match(r.stderr, /without checking the Land run of every land push/i, `got: ${r.stderr.slice(0, 300)}`);
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  });
+}
 // BRO-7110: the documented land step is the waiter, so a waiter that FINISHED counts.
 const WFL_CMD = 'node scripts/lib/wait-for-land.js land/fix-x 60 --prod';
 const WFL_FG_LANDED = toolUse('Bash', { command: WFL_CMD }, '03:41:07Z LANDED: land/fix-x is gone from origin (land.yml deletes it after the fast-forward)\n03:54:00Z LIVE: abc is LIVE on production.');

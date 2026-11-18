@@ -1039,11 +1039,31 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
         _push_seg_re = re.compile(r'\bgit\s+push\b([^\n;&|]*)')
         _refspec_re = re.compile(r'(?:^|\s)[\'"]?(\+?\S*?:)?(?:refs/heads/)?(land/[^\s;&|\'"<>)`]+)')
-        _heredoc_re = re.compile(r"<<-?\s*(['\"]?)(\w+)\1[^\n]*\n.*?^[ \t]*\2[ \t]*$", re.M | re.S)
-        _quoted_push_re = re.compile(r"""'[^']*\bgit\s+push\b[^']*'|"[^"]*\bgit\s+push\b[^"]*\"""")
+        _heredoc_re = re.compile(r"(<<-?[ \t]*(['\"]?)(\w+)\2[^\n]*)\n.*?^[ \t]*\3[ \t]*$", re.M | re.S)
+        _exec_quote_re = re.compile(r'(?:\b(?:ba|z|da)?sh\s+(?:-\w+\s+)*-\w*c|\bssh\b[^\n;&|]*|\beval|\bxargs[^\n;&|]*)\s*$')
+        def _strip_inert_quotes(cmd):  # left-to-right quote pairing; keep quoted text that is itself run (sh -c, ssh, eval)
+            out, i, n = [], 0, len(cmd)
+            while i < n:
+                c = cmd[i]
+                if c == '\\' and i + 1 < n:
+                    out.append(cmd[i:i + 2]); i += 2; continue
+                if c in '\'"':
+                    j = i + 1
+                    while j < n and cmd[j] != c:
+                        j += 2 if (c == '"' and cmd[j] == '\\') else 1
+                    if j >= n:  # unterminated: leave the rest alone (conservative)
+                        out.append(cmd[i:]); break
+                    body = cmd[i + 1:j]
+                    if re.search(r'\bgit\s+push\b', body) and not _exec_quote_re.search(''.join(out)):
+                        out.append(' ')
+                    else:
+                        out.append(cmd[i:j + 1])
+                    i = j + 1; continue
+                out.append(c); i += 1
+            return ''.join(out)
         def _live_cmd(cmd):  # BRO-7730: a land push named inside a heredoc body or a quoted string (test fixture, echo, node -e) is text, not a push
-            cmd = _heredoc_re.sub('', cmd or '')
-            return _quoted_push_re.sub('', cmd)
+            cmd = _heredoc_re.sub(lambda m: m.group(1), cmd or '')
+            return _strip_inert_quotes(cmd)
         def _push_land_refs(cmd):  # (refs pushed, refs deleted), every refspec of every push in the command
             cmd = _live_cmd(cmd)
             _add, _del = set(), set()
