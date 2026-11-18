@@ -158,8 +158,14 @@ function classifyCastCoverage(show, castFile, now = Date.now()) {
   if (!(eligible && (show.status === 'open' || show.status === 'previews'))) return 'exhausted';
   // Grace only while the daily job is demonstrably retrying: a tombstone older than 48h that is
   // still empty means the job is failing/disabled or IBDB still has nothing, so report it.
+  // The 48h clock starts at the LATER of the scrape and the opening date: a tombstone written
+  // during previews (weeks old by opening night) is not retried until the show opens, so measuring
+  // from the scrape alone reported it as exhausted on opening day, before the daily retry had run
+  // even once (BRO-7665: Blue Man Group, tombstoned 2026-09-24, row fired on its 11-17 opening).
   const at = Date.parse(castFile.scrapedAt);
-  return Number.isFinite(at) && now - at > 48 * 3600e3 ? 'exhausted' : 'retrying';
+  if (!Number.isFinite(at)) return 'retrying';
+  const since = Math.max(at, Date.parse(show.openingDate));
+  return now - since > 48 * 3600e3 ? 'exhausted' : 'retrying';
 }
 
 module.exports = {

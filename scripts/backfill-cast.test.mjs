@@ -116,6 +116,24 @@ test('classifyCastCoverage agrees with backfill default-pass selection (BRO-7504
   assert.strictEqual(classifyCastCoverage(shows[3], null, now), 'pre-opening');
 });
 
+// BRO-7665 shape (without the not-applicable allowlist): an empty tombstone written during
+// previews is weeks old on opening day. The daily retry has not run yet, so the row must not fire
+// until 48h after opening; if it is still empty after that, it must.
+test('classifyCastCoverage: previews-era tombstone gets 48h grace from opening, not from scrape (BRO-7504)', async () => {
+  const { classifyCastCoverage, shouldRetryTombstone } = await import('./lib/cast-tombstone.js').then(m => m.default || m);
+  const show = { id: 'some-new-show-2026', status: 'open', openingDate: '2026-11-17' };
+  const file = { openingNightCast: [], scrapedAt: '2026-09-24T13:56:13Z' };
+  const openingDayMorning = Date.parse('2026-11-17T12:34:00Z');
+  assert.strictEqual(classifyCastCoverage(show, file, openingDayMorning), 'retrying');
+  assert.ok(shouldRetryTombstone(file, show, openingDayMorning), 'the daily pass must pick it up');
+  assert.strictEqual(classifyCastCoverage(show, file, Date.parse('2026-11-18T23:00:00Z')), 'retrying');
+  assert.strictEqual(classifyCastCoverage(show, file, Date.parse('2026-11-19T01:00:00Z')), 'exhausted');
+  // A retry on opening day that came back empty restarts the clock from that scrape.
+  const rescraped = { openingNightCast: [], scrapedAt: '2026-11-18T14:20:00Z' };
+  assert.strictEqual(classifyCastCoverage(show, rescraped, Date.parse('2026-11-19T06:45:00Z')), 'retrying');
+  assert.strictEqual(classifyCastCoverage(show, rescraped, Date.parse('2026-11-20T15:00:00Z')), 'exhausted');
+});
+
 test('health-check cast coverage uses the shared classifier (BRO-7504 guard)', async () => {
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('./health-check.js', import.meta.url), 'utf8');
