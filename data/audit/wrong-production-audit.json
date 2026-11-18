@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T17:53:26.930Z",
+  "timestamp": "2026-11-18T18:04:00.002Z",
   "stats": {
     "totalReviews": 82598,
-    "alreadyFlagged": 22458,
+    "alreadyFlagged": 22459,
     "dateGuardCatches": 220,
     "directorMismatch": 3759,
     "tvFilmSignals": 2353,
     "londonSignals": 3791,
     "offBroadwaySignals": 761,
-    "yearMismatch": 383,
-    "noPublishDate": 8277
+    "yearMismatch": 382,
+    "noPublishDate": 8276
   },
   "findings": [
     {
@@ -6941,19 +6941,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2021 (0x). 2026 matches production: assassins-regional-2026"
-        }
-      ]
-    },
-    {
-      "showId": "assassins-regional-2026",
-      "file": "musical-theatre-review--jeremy-chapman.json",
-      "publishDate": null,
-      "url": "https://musicaltheatrereview.com/city-academy-studio-company-assassins/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2004 (2x) more than 2026 (0x). 2004 matches production: assassins-2004"
         }
       ]
     },
