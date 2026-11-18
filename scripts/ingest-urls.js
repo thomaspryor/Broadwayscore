@@ -29,8 +29,7 @@ const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { unwrapWaybackUrl } = require('./lib/unwrap-wayback-url');
 const { parseIngestLine, chooseIngestByline } = require('./lib/ingest-url-line');
 const { isPlausiblePersonName } = require('./lib/byline-recovery');
-const { detectBylineConflict } = require('./lib/byline-extraction');
-const { sameCriticName } = require('./lib/byline-from-text');
+const { readPageByline, bylineConflictStands } = require('./lib/page-byline');
 
 // An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
 function isRegisteredOutletId(id) {
@@ -246,10 +245,9 @@ async function main() {
           // Name the critic now, the same way the collector does. Leaving every
           // ingest as 'Unknown' created an --unknown file that a later rebuild
           // merged into the named sibling and deleted (BRO-4185 follow-up).
-          try { criticName = extractAuthorFromHtml(result.content, extracted || '', { url, outletId }) || null; } catch { criticName = null; }
-          // BRO-7745 guard: the page's JSON-LD/meta author was chosen while it prints a different
-          // byline (TheaterMania credited its posting editor on 13+ reviews). Flag it on the record.
-          try { bylineConflict = detectBylineConflict({ html: result.content, text: extracted || '', url, outletId, chosen: criticName }); } catch { bylineConflict = null; }
+          // BRO-7780: the same reader as the opening-night lane (page-byline.js). It also returns the
+          // BRO-7745 guard: the page's JSON-LD/meta author was chosen while it prints a different byline.
+          try { ({ criticName, bylineConflict } = readPageByline({ html: result.content, text: extracted || '', url, outletId })); } catch { criticName = null; bylineConflict = null; }
           // Page metadata date (article:published_time / JSON-LD / <time>),
           // from the HTML already in hand. Without it the file's date came
           // from a later LLM guess, which slipped years and tripped the date
@@ -327,7 +325,7 @@ async function main() {
       fields: ingestCaller ? { ingestSource: ingestCaller } : {},
     };
     if (publishDate) input.publishDate = publishDate;
-    if (bylineConflict && !sameCriticName(byline.criticName, bylineConflict.visible)) {
+    if (bylineConflictStands(byline.criticName, bylineConflict)) {
       input.fields.bylineConflict = bylineConflict;
       results.warnings.push(`Byline conflict at ${url}: credited "${byline.criticName}" (page structured author ${bylineConflict.structured}) but the page prints "${bylineConflict.visible}"`);
     }

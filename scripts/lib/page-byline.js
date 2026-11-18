@@ -54,4 +54,21 @@ function readPageByline({ html, text = '', url, outletId } = {}) {
   return { criticName, bylineConflict, source };
 }
 
-module.exports = { readPageByline };
+/**
+ * BRO-7777 (c): does a byline conflict still stand once the name is written? The record writer
+ * stores sanitizeCriticName(name) and keys critics by normalizeCritic (aliases: "Zach Stewart" is
+ * zachary-stewart), so compare the same way, else ingest warns about a conflict the written
+ * record does not have.
+ */
+function bylineConflictStands(writtenName, conflict) {
+  if (!conflict || !conflict.visible) return false;
+  const { sanitizeCriticName } = require('./byline-normalization');
+  const { normalizeCritic } = require('./review-normalization');
+  const { sameCriticName } = require('./byline-from-text');
+  const a = sanitizeCriticName(writtenName) || 'Unknown';
+  const b = sanitizeCriticName(conflict.visible) || conflict.visible;
+  if (/^unknown$/i.test(a)) return false;
+  return normalizeCritic(a) !== normalizeCritic(b) && !sameCriticName(a, b);
+}
+
+module.exports = { readPageByline, bylineConflictStands };
