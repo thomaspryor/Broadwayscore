@@ -124,7 +124,9 @@ export function ledgerCommitIndices(events) {
   events.forEach((e, i) => {
     if (e.kind !== 'assistant_tool_use') return;
     if (e.name === 'Bash' && LEDGER_COMMIT_RE.test(runShellCode(e.input?.command) || '')) out.push(i);
-    else if (/^mcp__github__(?:push_files|create_or_update_file)$/.test(e.name || '') && /session-retro\.jsonl/.test(JSON.stringify(e.input || {}))) out.push(i);
+    // An API write only carries the row if it goes to a land/ branch (a claude/ branch is the incident shape).
+    else if (/^mcp__github__(?:push_files|create_or_update_file)$/.test(e.name || '') && String(e.input?.branch || '').startsWith('land/')
+      && /session-retro\.jsonl/.test(JSON.stringify(e.input || {}))) out.push(i);
   });
   return out;
 }

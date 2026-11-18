@@ -49,6 +49,7 @@ test('BRO-7729: the retro row must ride a land push to main', () => {
   assert.equal(decide([...edit(), ...record('', clean), ...sh('git commit -am "work and retro"'), ...land()]).decision, 'allow', 'commit -am');
   assert.equal(decide([...edit(), ...land(), ...record('', clean), ...sh('git -C /w add data/audit && git -C /w commit -m "r"'), ...land()]).decision, 'allow', 'a second land push after the record');
   assert.equal(decide([...edit(), ...land(), ...record('', clean), ...use('mcp__github__push_files', { branch: 'land/r', files: [{ path: 'data/audit/session-retro.jsonl' }] })]).decision, 'allow', 'API push of the ledger to land/');
+  assert.equal(decide([...edit(), ...land(), ...record('', clean), ...use('mcp__github__push_files', { branch: 'claude/x', files: [{ path: 'data/audit/session-retro.jsonl' }] }), ...land()]).decision, 'block', 'API push of the ledger to a claude/ branch carries nothing');
   // The LAST record run is the one that must land: a linked re-run after the land is not on main.
   const flagged = 'RETRO REQUIRED (land refusal): turn each';
   assert.equal(decide([...edit(), ...record('', flagged), ...carry(), ...record('--fixes=BRO-1', flagged)]).decision, 'block', 'the linked re-run never landed');
