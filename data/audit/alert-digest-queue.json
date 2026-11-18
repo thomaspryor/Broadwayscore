@@ -670,5 +670,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T18:40:17.301Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7794-nearmiss-news",
+    "title": "Landing blocked: rebase red on land/bro-7794-nearmiss-news",
+    "description": "land.yml did not land land/bro-7794-nearmiss-news: the rebase gate went red at 2211ba5bb4. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7794-nearmiss-news @ 2211ba5bb4 (origin/land/bro-7794-nearmiss-news) → origin/main @ 2d7e73f19b REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 2d7e73f19b: Rebasing (1/2) error: could not apply 0e02d86f302... BRO-7794: lane near-miss skips show news when the host is the only review signal hint: Resolve all conflicts manually, mark them as resolved with hint: \"gi Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44377011273",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7794-nearmiss-news"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "2211ba5bb4cf21ddb26d41c7d3d6b8f63ddaba9e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44377011273"
+      }
+    ],
+    "queuedAt": "2026-11-18T19:40:01.562Z"
   }
 ]
