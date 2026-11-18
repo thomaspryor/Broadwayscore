@@ -19497,7 +19497,7 @@
       "title": "Roundup gaps: 10 listed review(s) not captured across 6 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-17T23:39:12.203Z",
+      "lastSeen": "2026-11-18T00:58:07.446Z",
       "lastNotifiedAt": "2026-11-17T19:09:00.004Z",
       "lastSurfacedAt": null,
       "notifyCount": 59,
@@ -19575,7 +19575,7 @@
         "jenufa-off-broadway-2026",
         "the-fantasticks-2026"
       ],
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -44989,7 +44989,7 @@
       "linearIdentifier": "BRO-7707"
     },
     "uncollected-blackout:theater-of-the-mind-regional-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Theater of the Mind",
       "firstSeen": "2026-11-17T20:09:08.796Z",
@@ -45000,7 +45000,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7711",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-18T00:58:35.410Z",
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
     },
     "uncollected-blackout:dear-evan-hansen-la-regional-2026": {
       "status": "resolved",

@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-17T23:42:55.959Z",
+  "generatedAt": "2026-11-18T00:58:54.767Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 356,
-  "clean": 356,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 355,
+  "clean": 353,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "othello-bedlam-off-broadway-2026",
+      "title": "Othello (Bedlam)",
+      "openingDate": "2026-11-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.52 vs local 78.12 (Δ2.6)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-11-18T00:58:47.491Z"
+    },
+    {
+      "showId": "middlemarch-rsc-regional-2026",
+      "title": "Middlemarch",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.76 vs local 78.32 (Δ0.44)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-11-18T00:58:47.491Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
