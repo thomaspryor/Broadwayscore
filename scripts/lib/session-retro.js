@@ -40,6 +40,7 @@ const STOP_GATES = [
   { code: '[VE:LIVERUN]', log: 'live-run-stop', module: './live-run-stop.mjs' },
   { code: '[VE:EFFECTPENDING]', log: 'effect-pending-stop', module: './effect-pending-stop.mjs' },
   { code: '[VE:RETROCOV]', log: 'retro-coverage-stop' }, // its own dry run would judge the --record being written
+  { code: '[VE:ROOTCAUSE]', log: 'root-cause-stop' }, // judges the closing message's ROOT-CAUSE block, so no synthetic close
 ];
 const DRY_RUN_CLOSE = 'SAFE TO ARCHIVE (session-retro --record dry run)';
 const DRY_RUN_LAND = [

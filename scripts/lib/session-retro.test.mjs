@@ -290,3 +290,13 @@ test('BRO-7749: a clean session records gates {} (measured, nothing hit); rollup
   assert.match(text, /\[VE:LIVERUN\]: active in 1 of 2 sessions; nudged in 1, would block at record in 1; 0 over-budget hit\(s\)/);
   assert.match(text, /e\.g\. not run live: scripts\/x\.js/);
 });
+
+test('BRO-7749: every Stop gate that logs to .cache/<x>-stop.log is in STOP_GATES (a new advisory gate cannot be left out)', () => {
+  const dir = path.dirname(new URL(import.meta.url).pathname);
+  const logged = new Set();
+  for (const f of fs.readdirSync(dir).filter((x) => /\.(mjs|js)$/.test(x) && !/\.test\./.test(x))) {
+    for (const m of fs.readFileSync(path.join(dir, f), 'utf8').matchAll(/'([a-z-]+-stop)\.log'/g)) logged.add(m[1]);
+  }
+  assert.ok(logged.size >= 4, 'found the gate logs');
+  assert.deepEqual([...logged].filter((l) => !R.STOP_GATES.some((g) => g.log === l)), []);
+});
