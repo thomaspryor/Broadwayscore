@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-18T02:50:50.265Z",
+  "timestamp": "2026-11-18T04:06:19.017Z",
   "stats": {
-    "totalReviews": 82529,
-    "alreadyFlagged": 22547,
+    "totalReviews": 82538,
+    "alreadyFlagged": 22548,
     "dateGuardCatches": 221,
-    "directorMismatch": 3729,
-    "tvFilmSignals": 2345,
+    "directorMismatch": 3732,
+    "tvFilmSignals": 2346,
     "londonSignals": 3782,
     "offBroadwaySignals": 761,
     "yearMismatch": 382,
@@ -9706,6 +9706,24 @@
       "score": 87,
       "publishDate": "2025-02-07",
       "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-BOOK-OF-MORMON-at-Broadway-In-Thousand-Oaks-20250207",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "broadwayworld--linda-hodges.json",
+      "publishDate": "2022-11-24",
+      "url": "https://www.broadwayworld.com/san-francisco/article/Review-THE-BOOK-OF-MORMON-at-San-Jose-Center-For-The-Performing-Arts-20221124",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45056,6 +45074,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "gephardt-daily--daisy-blake.json",
+      "publishDate": "2022-12-07",
+      "url": "https://gephardtdaily.com/local/kaysville-native-former-byu-cougarette-shines-in-moulin-rouge-the-musical-at-the-eccles-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
