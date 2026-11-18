@@ -160,3 +160,59 @@ test('a review label that is just the capitalized slug (gather-reviews fallback)
   // short real names are unaffected
   assert.deepEqual(deriveOutletDisplayName({ outletId: 'variety', reviewOutletNames: ['Variety'] }), { displayName: 'Variety', inferred: false });
 });
+
+// BRO-5823: staged outlets sat undecided for weeks because their mastheads
+// abbreviate or extend the id instead of spelling it. Real homepage names
+// (fetched 2026-11-18) for the ids the corpus-drift audit kept flagging.
+test('a masthead the id abbreviates is accepted; a name with id leftovers is not', () => {
+  const { idAbbreviatesName } = require('../../scripts/lib/outlet-auto-register.js');
+  const accepted = [
+    ['sflinsider', ['South Florida Insider', 'Home - South Florida Insider', 'Home']],
+    ['sdstageandscreen', ['San Diego Stage and Screen']],
+    ['theorangecurtainrev', ['The Orange Curtain Review', 'The Orange Curtain Review - OCR Orange County Theatre Reviews']],
+    ['withashleyandco', ['With Ashley And Company']],
+    ['theglobalcelebritymeter', ['Global Celebrity Meter']],
+    ['hourdetroit', ['Hour Detroit Magazine', 'HOUR Detroit Magazine | Best Regional Events, Restaurants & Resources']],
+    ['texannews', ['Texan News Service']],
+    ['howlround', ['HowlRound Theatre Commons', 'Welcome to HowlRound | HowlRound Theatre Commons']],
+    ['zanderopper', ['Reviews by Zander Opper']],
+  ];
+  for (const [outletId, siteNames] of accepted) {
+    const r = deriveOutletDisplayName({ outletId, siteNames });
+    assert.equal(r.displayName, siteNames[0], outletId);
+    assert.equal(r.inferred, false, outletId);
+  }
+  // Leftover id characters, a different blog name, or a hijacked domain: stay unresolved.
+  assert.equal(idAbbreviatesName('Global News', 'globalnews2'), false);
+  assert.equal(idAbbreviatesName('Beauty News', 'beauty-news-nyc'), false);
+  assert.equal(idAbbreviatesName('Hot Anal', 'beauty-news-nyc'), false);
+  assert.equal(idAbbreviatesName('When the Lights Go Out', 'wtlgomag'), false);
+  assert.equal(idAbbreviatesName('The Rest of the Moose', 'chrisgrum'), false);
+  assert.equal(idAbbreviatesName('Marissa', 'marissavivian'), false);
+  assert.equal(idAbbreviatesName('Substack', 'marissavivian'), false);
+  assert.equal(idAbbreviatesName('WordPress', 'hackneycitizen'), false);
+  // Short ids never match on an abbreviation.
+  assert.equal(idAbbreviatesName('Theatre Weekly', 'tw'), false);
+  assert.equal(deriveOutletDisplayName({ outletId: 'globalnews2', siteNames: ['Global News'] }).inferred, true);
+});
+
+test('resolveMastheadName retries the www. host when the bare domain fails (BRO-5823)', async () => {
+  const { resolveMastheadName } = require('../../scripts/lib/outlet-auto-register.js');
+  const seen = [];
+  const r = await resolveMastheadName({
+    outletId: 'fxbgadvance',
+    domain: 'fxbgadvance.com',
+    fetchPage: async (url) => {
+      seen.push(url);
+      if (url === 'https://fxbgadvance.com/') throw new Error('ERR_SSL_VERSION_OR_CIPHER_MISMATCH');
+      return { content: '<title>FXBG Advance | Leigh Anne Van Doren | Substack</title>' };
+    },
+  });
+  assert.deepEqual(seen, ['https://fxbgadvance.com/', 'https://www.fxbgadvance.com/']);
+  assert.equal(r.displayName, 'FXBG Advance');
+  // A subdomain host (blogspot, substack) gets no www. retry.
+  const sub = [];
+  const s = await resolveMastheadName({ outletId: 'sdstageandscreen', domain: 'sdstageandscreen.blogspot.com', fetchPage: async (url) => { sub.push(url); throw new Error('down'); } });
+  assert.deepEqual(sub, ['https://sdstageandscreen.blogspot.com/']);
+  assert.match(s.error, /fetch failed: down/);
+});

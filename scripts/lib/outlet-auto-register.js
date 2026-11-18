@@ -137,6 +137,59 @@ function nameSpellsOutlet(name, outletId, domain) {
   return targets.has(compactName(name)) || targets.has(compactNoThe(name));
 }
 
+// BRO-5823: words a masthead may carry around the part the id abbreviates
+// ("Hour Detroit Magazine" for hourdetroit, "Reviews by Zander Opper" for
+// zanderopper). Only skipped at the very start or end of the name.
+const MASTHEAD_LEADING_FILLER = new Set(['the', 'a', 'reviews', 'review', 'by']);
+const MASTHEAD_TRAILING_FILLER = new Set([
+  'magazine', 'mag', 'news', 'service', 'review', 'reviews', 'theatre', 'theater',
+  'commons', 'blog', 'online', 'journal', 'media', 'inc', 'llc', 'co', 'company',
+]);
+
+/**
+ * True when the id reads as an abbreviation of the masthead (BRO-5823): after
+ * dropping filler words at the ends of the name (and a leading "the" on the
+ * id), the id is the name's consecutive words, each cut to a non-empty prefix
+ * ("sflinsider" = S|Fl|Insider in "South Florida Insider", "theorangecurtainrev"
+ * = The|Orange|Curtain|Rev). Every kept word must contribute, so an id with
+ * leftover characters ("globalnews2" vs "Global News", "beautynewsnyc" vs
+ * "Beauty News") never matches. Ids under 6 characters never match.
+ */
+function idAbbreviatesName(name, outletId) {
+  const words = foldDiacritics(String(name || '')).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  const raw = compactName(outletId);
+  if (raw.length < 6 || !words.length || words.length > 12) return false;
+  const ids = new Set([raw]);
+  if (raw.startsWith('the') && raw.length >= 9) ids.add(raw.slice(3));
+  const covers = (id, ws) => {
+    // memoised walk: can id[i..] be spelled by ws[j..] with every word used?
+    const memo = new Map();
+    const go = (i, j) => {
+      if (i === id.length) return j === ws.length;
+      if (j === ws.length) return false;
+      const key = i * 64 + j;
+      if (memo.has(key)) return memo.get(key);
+      let ok = false;
+      const w = ws[j];
+      for (let k = Math.min(w.length, id.length - i); k >= 1 && !ok; k--) {
+        if (id.slice(i, i + k) === w.slice(0, k)) ok = go(i + k, j + 1);
+      }
+      memo.set(key, ok);
+      return ok;
+    };
+    return go(0, 0);
+  };
+  for (let s = 0; s < words.length; s++) {
+    if (s > 0 && !MASTHEAD_LEADING_FILLER.has(words[s - 1])) break;
+    for (let e = words.length; e > s; e--) {
+      if (e < words.length && !MASTHEAD_TRAILING_FILLER.has(words[e])) break;
+      const ws = words.slice(s, e);
+      for (const id of ids) if (covers(id, ws)) return true;
+    }
+  }
+  return false;
+}
+
 /**
  * Display name for a newly auto-registered outlet (BRO-4468). The old writers
  * used the capitalized slug, which is wrong for every compound id
@@ -172,6 +225,14 @@ function deriveOutletDisplayName({ outletId, reviewOutletNames = [], siteNames =
   // london.muddystilettos.co.uk). Domain aliases remain the fallback.
   const masthead = mastheads.find(name => nameSpellsOutlet(name, outletId, null)) || mastheads[0];
   if (masthead) return { displayName: masthead, inferred: false };
+  // BRO-5823: no candidate spells the id outright, so accept one the id
+  // abbreviates ("South Florida Insider" for sflinsider). Page order wins, so
+  // og:site_name beats the <title> segments.
+  for (const raw of siteNames) {
+    const name = String(raw || '').trim();
+    if (name.length < 2 || name.length > 60 || name === name.toLowerCase()) continue;
+    if (idAbbreviatesName(name, outletId)) return { displayName: name, inferred: false };
+  }
   const idCompact = compactName(outletId);
   const counts = new Map();
   for (const raw of reviewOutletNames) {
@@ -203,12 +264,24 @@ function deriveOutletDisplayName({ outletId, reviewOutletNames = [], siteNames =
 async function resolveMastheadName({ outletId, domain, fetchPage }) {
   if (!domain || typeof fetchPage !== 'function') return { displayName: null, siteNames: [], error: 'no domain' };
   let siteNames = [];
-  try {
-    const page = await fetchPage(`https://${domain}/`, { skipVerify: true });
-    siteNames = extractSiteNames(page && page.content);
-  } catch (err) {
-    return { displayName: null, siteNames: [], error: `fetch failed: ${err && err.message}` };
+  // BRO-5823: staging rows keep the domain with www. stripped, and some sites
+  // only answer on www. (fxbgadvance.com fails TLS, inthespotlightinc.org and
+  // withashleyandco.com have no bare DNS record), so a failed bare fetch
+  // retries the www. host before giving up.
+  const hosts = [domain];
+  if (!/^www\./i.test(domain) && domain.split('.').length === 2) hosts.push(`www.${domain}`);
+  let lastErr = null;
+  for (const host of hosts) {
+    try {
+      const page = await fetchPage(`https://${host}/`, { skipVerify: true });
+      siteNames = extractSiteNames(page && page.content);
+      lastErr = null;
+      break;
+    } catch (err) {
+      lastErr = err;
+    }
   }
+  if (lastErr) return { displayName: null, siteNames: [], error: `fetch failed: ${lastErr && lastErr.message}` };
   const { displayName } = deriveOutletDisplayName({ outletId, domain, siteNames });
   // Only a name the page itself offered counts; the slug fallback is not a masthead.
   return { displayName: siteNames.includes(displayName) ? displayName : null, siteNames };
@@ -405,6 +478,7 @@ module.exports = {
   findRunTogetherSlugDisplayNames,
   isRunTogetherSlugDisplayName,
   isUnusableOutletSlug,
+  idAbbreviatesName,
   nameSpellsOutlet,
   resolveMastheadName,
   mergeStagingEntries,

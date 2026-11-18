@@ -107,6 +107,14 @@ const MIGRATIONS = [
     to: 'bobs-theater-blog',
     toName: "Bob's Theater Blog",
   },
+  {
+    id: 'substack-profile-intelligentshowmosexual-to-showmosexualsguide',
+    note: 'Playbill Verdict cited a substack.com/@intelligentshowmosexual/p-<id> profile link, minted as outletId substack-com (other-desert-cities-2026, BRO-5823). The link redirects to www.showmosexualsguide.com (canonical, Substack subdomain showmosexualsguide), Sloan Ciccone\'s registered outlet.',
+    from: ['substack-com'],
+    to: 'showmosexualsguide',
+    toName: "The Intelligent Showmosexual's Guide to Theatergoing",
+    match: (r) => hostOf(r.url) === 'substack.com' && /^\/@intelligentshowmosexual\//i.test((() => { try { return new URL(r.url).pathname; } catch { return ''; } })()),
+  },
 ];
 
 function currentOutletId(record, filename) {

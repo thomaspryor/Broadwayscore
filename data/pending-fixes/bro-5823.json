@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-5823",
+  "planId": "862604ba-8716-48ce-a7d7-e4287abee27e",
+  "status": "pending",
+  "createdAt": "2026-11-18T09:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5823 outlet identity hygiene: remove two BWW roundup parse-garbage rows and a Deadline mirror copy, and move a Playbill Verdict substack.com profile-link row to its registered outlet (showmosexualsguide).",
+    "steps": [
+      "Delete new-york-new-york-2023/new-york-review--new-york.json (BWW roundup parse garbage, no url)",
+      "Delete summer-2018/broadways-summer--david-bowie.json (BWW roundup parse garbage, no url)",
+      "Delete a-few-good-men-2026/globalnews2--unknown.json (globalnews2.xyz copy of Deadline's review; host now blocked)",
+      "Run migrate-outlet-ids.js for the substack-com -> showmosexualsguide rule"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "new-york-new-york-2023/new-york-review--new-york.json",
+        "destinationPath": null,
+        "description": "BWW roundup parse garbage: outletId new-york-review, critic 'New York', no url, excerpt carries JSON-LD fragments. Same class as is-simple (BRO-5823); the id is now in JUNK_OUTLETS."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "summer-2018/broadways-summer--david-bowie.json",
+        "destinationPath": null,
+        "description": "BWW roundup parse garbage: outletId broadways-summer, critic 'David Bowie', no url. The id is now in JUNK_OUTLETS."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-few-good-men-2026/globalnews2--unknown.json",
+        "destinationPath": null,
+        "description": "globalnews2.xyz is a scraped copy of Deadline's A Few Good Men review (0.90 word overlap with deadline--greg-evans.json, which stays). Host added to LOOKALIKE_CONTENT_FARM_DOMAINS, same as harunaenterprisesltd.com."
+      },
+      {
+        "type": "run-script",
+        "script": "migrate-outlet-ids.js",
+        "args": "--apply --rule=substack-profile-intelligentshowmosexual-to-showmosexualsguide",
+        "description": "Move other-desert-cities-2026/substack-com--sloan-ciccone.json to showmosexualsguide: the substack.com/@intelligentshowmosexual link redirects to www.showmosexualsguide.com (Sloan Ciccone's registered outlet)."
+      }
+    ]
+  }
+}

@@ -2327,6 +2327,8 @@ const JUNK_OUTLETS = new Set([
   'buy-tickets', 'click-here',
   'lets-note', 'lets-go-to-the-theater',
   'is-simple', // BWW roundup parse of "...Eugene Pack and Dayle Rayfel, is simple:" (BRO-5823)
+  // BRO-5823: more BWW roundup parse garbage (no url; critic slots read "New York" / "David Bowie").
+  'new-york-review', 'broadways-summer',
   // BRO-3515: Rex Features photo-agency livefeed caption, not a critic
   // outlet — see domain-filters.js REFERENCE_DOMAINS for the write-time block.
   'rexfeatures',
