@@ -11,7 +11,7 @@ import { getServerImageSrcSet } from '@/lib/show-image-srcset.server';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { MustSeeCrown, getScoreColorClass } from '@/components/show-cards/ScoreBadge';
 import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { scoreGateArg } from '@/config/scoring';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
 import ScrollRow from '@/components/ScrollRow';
@@ -38,7 +38,7 @@ function ServerMiniShowCard({ show, priority, eager, caption }: { show: ServerSh
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
-  const score = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id)) ? rawScore : null;
+  const score = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2, scoreGateArg(show.id)) ? rawScore : null;
   const category = show.category ?? 'broadway';
   const imgSrc = show.images?.poster
     ? getOptimizedImageUrl(show.images.poster, 'card')

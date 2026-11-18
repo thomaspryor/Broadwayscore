@@ -6,7 +6,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { getScoreColorClass, MustSeeCrown } from '@/components/show-cards';
 import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { scoreGateArg } from '@/config/scoring';
 import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
@@ -28,7 +28,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager 
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
-  const score = rawScore != null && hasEnoughReviews(reviewCount, category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id)) ? rawScore : null;
+  const score = rawScore != null && hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show.id)) ? rawScore : null;
   const marketLabel = getMarketLabel(category, show.venue);
 
   // For not-yet-open shows there's no score, so the badge slot would just read

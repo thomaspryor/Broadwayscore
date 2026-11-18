@@ -43,7 +43,7 @@ describe('Critic Score: website display == slim cs (every show)', () => {
     // Imported lazily: data-core statically imports data/*.json.
     const { getAllShows } = await import('../../src/lib/data-core');
     const { hasEnoughReviews } = await import('../../src/config/score-buckets');
-    const { CURATED_HISTORICAL_SHOWS } = await import('../../src/config/scoring');
+    const { scoreGateArg } = await import('../../src/config/scoring');
 
     const rawShows: Array<{ id: string }> = JSON.parse(readFileSync(resolve('data/shows.json'), 'utf8')).shows;
     const rawById = new Map(rawShows.map((s) => [s.id, s]));
@@ -63,7 +63,7 @@ describe('Critic Score: website display == slim cs (every show)', () => {
       compared++;
       const c = show.criticScore;
       const siteDisplayed = c && hasEnoughReviews(
-        c.reviewCount, show.category, (c.tier1Count || 0) + (c.tier2Count || 0), CURATED_HISTORICAL_SHOWS.has(show.id),
+        c.reviewCount, show.category, (c.tier1Count || 0) + (c.tier2Count || 0), scoreGateArg(show.id),
       ) ? c.score : null;
       const slim = computeSlimCriticScore(raw, byShow.get(show.id) || [], registry);
       if (slim.cs != null) scored++;

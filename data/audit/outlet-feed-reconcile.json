@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T14:18:36.041Z",
+  "generatedAt": "2026-11-18T15:00:50.477Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -164,6 +164,10 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -182,9 +186,17 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
+    },
+    {
+      "outletId": "the-knockturnal",
+      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 881,
+  "itemsScanned": 864,
   "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [

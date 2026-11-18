@@ -80,6 +80,7 @@ const GLOBAL_INPUT_FILES = [
   'data/outlet-registry.json',          // outlet display names + tier overrides → every review entry
   'data/blog-reviews-for-scoring.json', // unioned with reviews.json via loadReviewsWithBlog
   'data/curated-historical-shows.json', // affects shouldHideReviews for every show
+  'data/score-gate-overrides.json', // per-show minReviews overrides change cs for that show (BRO-7750)
   'src/config/outlet-tiers.json',       // authoritative tier resolution for every outlet
   'data/image-sources.json',            // recorded hero source, checked against rejectedImageUrls
 ];

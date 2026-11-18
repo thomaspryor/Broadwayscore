@@ -24,7 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getMarketMinReviews, hasEnoughReviews } = require('./lib/min-reviews');
-const { isCuratedHistoricalShow } = require('./lib/should-hide-reviews');
+const { scoreGateArg } = require('./lib/should-hide-reviews');
 // Audience gold is a ranking, so it uses the full-confidence review bar (same
 // as the site's ranked lists), not the lower bar for showing a grade.
 const AUDIENCE_GRADE_CONFIG = require('../src/config/audience-grade.json');
@@ -157,7 +157,7 @@ function computeCriticalGoldForMarket(listType, membershipFilter, season, uncapp
     // Same display gate as the site badge (scripts/lib/min-reviews.js, BRO-4312):
     // deduped scored count, +2 when no T1/T2 review, curated-historical carve-out.
     // A gold list ranks by score, so it only includes shows that display one.
-    if (!hasEnoughReviews(scoreResult.rc, show.category, scoreResult.t1 + scoreResult.t2, isCuratedHistoricalShow(show.id))) continue;
+    if (!hasEnoughReviews(scoreResult.rc, show.category, scoreResult.t1 + scoreResult.t2, scoreGateArg(show.id))) continue;
     if (scoreResult.s < cfg.minScore) continue;
 
     const rounded = Math.round(scoreResult.s * 10) / 10;

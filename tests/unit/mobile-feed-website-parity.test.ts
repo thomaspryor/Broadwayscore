@@ -82,7 +82,7 @@ describe('cr.q, cr.pq and cr.l: app feed == website, every show', () => {
     // Imported lazily: data-core statically imports data/*.json.
     const { getAllShows } = await import('../../src/lib/data-core');
     const { hasEnoughReviews, applyCoverageFloor } = await import('../../src/config/score-buckets');
-    const { CURATED_HISTORICAL_SHOWS } = await import('../../src/config/scoring');
+    const { scoreGateArg } = await import('../../src/config/scoring');
 
     type RawShow = { id: string; category?: string; type?: string; status?: string; openingDate?: string };
     const rawShows: RawShow[] = JSON.parse(readFileSync(resolve('data/shows.json'), 'utf8')).shows;
@@ -115,7 +115,7 @@ describe('cr.q, cr.pq and cr.l: app feed == website, every show', () => {
       }
       compared++;
       const siteQ = hasEnoughReviews(
-        cs.reviewCount || 0, show.category, (cs.tier1Count || 0) + (cs.tier2Count || 0), CURATED_HISTORICAL_SHOWS.has(show.id),
+        cs.reviewCount || 0, show.category, (cs.tier1Count || 0) + (cs.tier2Count || 0), scoreGateArg(show.id),
       ) ? 1 : 0;
       if (siteQ === 0) gated++;
       const siteL = getScoreTier(Math.round(cs.score), show.category)?.label;

@@ -52,10 +52,15 @@ function getMarketMinReviews(category) {
  * @param {number} reviewCount - scored reviews counted by the scorer (`rc`)
  * @param {string} [category] - show market category
  * @param {number} [tier1And2Count] - T1 + T2 scored reviews; 0 → T3-only extra
- * @param {boolean} [isCuratedHistorical] - show is in data/curated-historical-shows.json
+ * @param {boolean|number} [isCuratedHistorical] - show is in data/curated-historical-shows.json,
+ *   or a number: an owner-approved per-show minimum from data/score-gate-overrides.json
+ *   (scoreGateArg), which replaces the market minimum and the T3-only extra (BRO-7750).
  * @returns {number}
  */
 function reviewsRemainingForScore(reviewCount, category, tier1And2Count, isCuratedHistorical) {
+  if (typeof isCuratedHistorical === 'number' && Number.isFinite(isCuratedHistorical) && isCuratedHistorical >= 1) {
+    return Math.max(0, isCuratedHistorical - reviewCount);
+  }
   let min = getMarketMinReviews(category);
   // Curated historical override: only applies to Broadway (the bigger threshold)
   // and requires at least 1 T1+T2 review (so we don't accept e.g. 4 random blogs).
@@ -75,7 +80,7 @@ function reviewsRemainingForScore(reviewCount, category, tier1And2Count, isCurat
  * @param {number} reviewCount
  * @param {string} [category]
  * @param {number} [tier1And2Count]
- * @param {boolean} [isCuratedHistorical]
+ * @param {boolean|number} [isCuratedHistorical] - see reviewsRemainingForScore
  * @returns {boolean}
  */
 function hasEnoughReviews(reviewCount, category, tier1And2Count, isCuratedHistorical) {

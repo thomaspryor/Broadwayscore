@@ -1,13 +1,80 @@
 {
-  "generatedAt": "2026-11-18T14:18:35.617Z",
+  "generatedAt": "2026-11-18T15:00:50.043Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 357,
-  "clean": 357,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 353,
+  "defective": 4,
+  "byType": {
+    "score-drift": 4
+  },
+  "shows": [
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "openingDate": "2026-11-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 49.97 vs local 49.87 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-18T15:00:41.351Z"
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "openingDate": "2026-11-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 71.13 vs local 73.8 (Δ2.67)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-18T15:00:41.351Z"
+    },
+    {
+      "showId": "the-bodyguard-tour-2026",
+      "title": "The Bodyguard",
+      "openingDate": "2026-10-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.63 vs local 78.56 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-18T15:00:41.351Z"
+    },
+    {
+      "showId": "clue-tour-2025",
+      "title": "Clue",
+      "openingDate": "2025-10-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.5 vs local 79.53 (Δ0.97)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-18T15:00:41.351Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
