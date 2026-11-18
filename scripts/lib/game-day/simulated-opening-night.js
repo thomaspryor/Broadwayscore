@@ -32,7 +32,7 @@ const http = require('http');
 const { execFileSync } = require('child_process');
 
 const REPO = path.resolve(__dirname, '..', '..', '..');
-const fixtureLib = require('./fixture');
+const fixtureLib = require('./sim-night-fixture');
 
 // Modelled stage costs on the fake clock (assumptions, as rehearsal.js DEFAULT_LATENCY).
 const LATENCY = { passIntervalMs: 2 * 60 * 1000, regenMs: 30 * 1000, deployMs: 8 * 60 * 1000, cdnMs: 2 * 60 * 1000, pollMs: 15 * 1000 };
