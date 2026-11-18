@@ -11,7 +11,7 @@
  *   node scripts/sweep-stored-bylines.js --tiers=1,2 --per-outlet=8 --out=/tmp/sample.jsonl
  *   node scripts/sweep-stored-bylines.js --report=/tmp/tm.jsonl        (summary of a finished run)
  *
- * --paid uses the scraper's paid tiers (paywalled outlets). Resumable: rows already in --out are skipped. --save-html=<dir> keeps each fetched page
+ * --delay-ms=N waits N ms between fetches per worker (slow, rate-limit-safe pace). --paid uses the scraper's paid tiers (paywalled outlets). Resumable: rows already in --out are skipped. --save-html=<dir> keeps each fetched page
  * (for building byline fixtures; never commit a full page).
  */
 'use strict';
@@ -131,11 +131,14 @@ async function main() {
   if (saveDir) fs.mkdirSync(saveDir, { recursive: true });
   const quiet = () => {};
   const concurrency = Number(args.concurrency || 4);
+  const delayMs = Number(args['delay-ms'] || 0);
   let i = 0;
   let n = 0;
   async function worker() {
     while (i < queue.length) {
       const { key, r } = queue[i++];
+      // BRO-7792: --delay-ms=N spaces fetches per worker (TheaterMania rate-limited the full sweep at default speed).
+      if (delayMs && n > 0) await new Promise((res) => setTimeout(res, delayMs));
       const row = { key, showId: r.showId, outletId: r.outletId, url: r.url, stored: r.criticName || null };
       try {
         const log = console.log; console.log = quiet;

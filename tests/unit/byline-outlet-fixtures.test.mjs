@@ -23,6 +23,7 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../.
 const DIR = path.join(ROOT, 'tests/fixtures/byline-outlets');
 const manifest = JSON.parse(fs.readFileSync(path.join(DIR, 'manifest.json'), 'utf8'));
 const { readPageByline } = require('../../scripts/lib/page-byline.js');
+const { readPageBylineForShow } = require('../../scripts/lib/page-byline-for-show.js');
 const { realFetchPorts } = require('../../scripts/lib/opening-night-lane/inline-score.js');
 const { sameCriticName } = require('../../scripts/lib/byline-from-text.js');
 const lane = realFetchPorts({ fetchPage: async () => ({}) });
@@ -129,4 +130,42 @@ test('saved page names: whole-URL hash, one helper for writer and reader', async
     if (!/savedPageName\(/.test(src)) throw new Error(`${f} does not name saved pages with savedPageName`);
     if (/base64url'\)\.slice\(-60\)/.test(src)) throw new Error(`${f} still names pages by a base64 tail`);
   }
+});
+
+// BRO-7792: collect-review-texts' Unknown-critic enrichment (1B-iii) names the critic through the
+// shared readPageByline, the same reader ingest, the sweep and the lane use. It used to call
+// extractAuthorFromHtml directly and skipped the outlet rules (TheaterMania's visible author tag).
+describe('collect-review-texts enrichment uses the shared reader (BRO-7792)', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/collect-review-texts.js'), 'utf8');
+  const start = src.indexOf('1B-iii. AUTHOR ENRICHMENT');
+  const block = src.slice(start, src.indexOf('1B-iv.', start));
+  test('the enrichment block calls readPageByline with excludeNames and publishDate, not extractAuthorFromHtml', () => {
+    assert.ok(start > 0 && block.length > 100, 'enrichment block not found');
+    assert.ok(/readPageBylineForShow\(/.test(block), 'enrichment must call readPageBylineForShow (readPageByline + excludeNames)');
+    assert.ok(/excludeNames:\s*bylineExcludeNames/.test(block), 'excludeNames dropped');
+    assert.ok(/publishDate/.test(block), 'publishDate dropped');
+    assert.ok(!/extractAuthorFromHtml\(/.test(block), 'enrichment reverted to extractAuthorFromHtml');
+  });
+  for (const f of manifest.fixtures) {
+    test(`${f.file}: enrichment path names ${f.expected}`, () => {
+      const out = quietly(() => readPageBylineForShow({ html: html(f), text: '', url: f.url, outletId: f.outletId, excludeNames: ['Some Cast Member'], publishDate: '2026-01-01' }).criticName);
+      assert.ok(out && sameCriticName(out, f.expected), `got ${out}`);
+    });
+  }
+  test('a vetoed name falls back to the article text byline (old extractAuthorFromHtml behaviour)', () => {
+    const page = '<html><head><meta name="author" content="Jane Castmember"></head><body><p>By John Critic</p></body></html>';
+    const out = quietly(() => readPageBylineForShow({ html: page, text: 'By John Critic\n\nThe show opens with a long first paragraph about the production and its cast and many other things. '.repeat(3), url: 'https://example.com/r', excludeNames: ['Jane Castmember'] }));
+    assert.equal(out.criticName, 'John Critic');
+    const none = quietly(() => readPageBylineForShow({ html: page, text: '', url: 'https://example.com/r', excludeNames: ['Jane Castmember'] }));
+    assert.equal(none.criticName, null);
+  });
+  test('the collector passes no outletId rather than the literal unknown', () => {
+    assert.ok(/enrichOutlet !== 'unknown' \? enrichOutlet : undefined/.test(block), 'unknown outlet must not reach the reader');
+  });
+  test('excludeNames vetoes a cast name the page credits', () => {
+    const f = manifest.fixtures[0];
+    const base = quietly(() => readPageByline({ html: html(f), url: f.url, outletId: f.outletId }).criticName);
+    assert.equal(quietly(() => readPageBylineForShow({ html: html(f), url: f.url, outletId: f.outletId, excludeNames: [base] }).criticName), null);
+    assert.equal(quietly(() => readPageBylineForShow({ html: html(f), url: f.url, outletId: f.outletId }).criticName), base, 'wrapper must agree with the shared reader when nothing is excluded');
+  });
 });
