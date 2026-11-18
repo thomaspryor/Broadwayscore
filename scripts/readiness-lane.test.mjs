@@ -180,6 +180,12 @@ test('simulated night (BRO-7781): pass, stale, failed, crashed and missing recor
   const stale = { ...ok, at: new Date(NOW - (L.SIM_NIGHT_MAX_AGE_H + 1) * 3600000).toISOString() };
   assert.equal(L.simulatedNightVerdict(stale, NOW).status, 'warn');
   assert.match(L.simulatedNightVerdict(stale, NOW).detail, /stale/);
+  const future = L.simulatedNightVerdict({ ...ok, at: new Date(NOW + 3 * 3600000).toISOString() }, NOW);
+  assert.equal(future.status, 'warn');
+  assert.match(future.detail, /in the future/);
+  const garbled = L.simulatedNightVerdict({ ...ok, at: 'not-a-date' }, NOW);
+  assert.equal(garbled.status, 'warn');
+  assert.doesNotMatch(garbled.detail, /NaN/);
   const red = { ...ok, pass: false, failed: ['a', 'b', 'c', 'd'] };
   assert.equal(L.simulatedNightVerdict(red, NOW).status, 'warn');
   assert.match(L.simulatedNightVerdict(red, NOW).detail, /failed: a; b; c \(\+1 more\)/);

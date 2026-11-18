@@ -7,13 +7,15 @@
  * Usage: node scripts/lib/game-day/mutants.js [--only=<id>]   exit 0 = every mutant caught, 1 = one escaped, 2 = error
  *
  * Each patch is an exact string swap; a patch whose `from` text is missing fails loudly (the fix moved: update it here).
- * The file is restored in a finally block and verified byte-for-byte afterwards.
+ * The file is restored in a finally block and verified byte-for-byte afterwards; a <file>.mutant-orig backup covers a hard
+ * kill, and the next run restores it before doing anything else.
  */
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
 const REPO = path.resolve(__dirname, '..', '..', '..');
+const BACKUP_SUFFIX = '.mutant-orig';
 
 const MUTANTS = [
   {
@@ -71,16 +73,16 @@ function runMutant(m) {
     mutated = mutated.replace(p.from, p.to);
   }
   let out;
-  // A kill mid-run must not leave a patched lane file behind: restore on SIGINT/SIGTERM too, not only in finally.
-  const restore = () => { try { fs.writeFileSync(file, original); } catch { /* reported by the byte check */ } };
-  const onSignal = (sig) => { restore(); process.exit(sig === 'SIGINT' ? 130 : 143); };
-  process.once('SIGINT', onSignal); process.once('SIGTERM', onSignal);
+  // spawnSync blocks the event loop, so a signal handler cannot restore the file mid-run, and SIGKILL never runs one.
+  // A backup next to the file survives any kill: the next run of this script restores it first (restoreStaleBackups).
+  const backup = file + BACKUP_SUFFIX;
+  fs.writeFileSync(backup, original);
   try {
     fs.writeFileSync(file, mutated);
     out = runNight();
   } finally {
-    restore();
-    process.removeListener('SIGINT', onSignal); process.removeListener('SIGTERM', onSignal);
+    fs.writeFileSync(file, original);
+    fs.rmSync(backup, { force: true });
   }
   if (fs.readFileSync(file, 'utf8') !== original) return { id: m.id, error: `${m.file} was not restored` };
   if (!out.report) return { id: m.id, error: `the night crashed (exit ${out.status}): ${out.stderr}` };
@@ -88,7 +90,22 @@ function runMutant(m) {
   return { id: m.id, what: m.what, nightPassed: out.report.pass, failed, caught: !out.report.pass && failed.some((n) => m.expectFail.test(n)) };
 }
 
+/** Restore any file a killed earlier run left patched (its backup is still on disk). Returns the files restored. */
+function restoreStaleBackups() {
+  const restored = [];
+  for (const rel of new Set(MUTANTS.map((m) => m.file))) {
+    const file = path.join(REPO, rel);
+    if (!fs.existsSync(file + BACKUP_SUFFIX)) continue;
+    fs.writeFileSync(file, fs.readFileSync(file + BACKUP_SUFFIX));
+    fs.rmSync(file + BACKUP_SUFFIX, { force: true });
+    restored.push(rel);
+  }
+  return restored;
+}
+
 function main() {
+  const restored = restoreStaleBackups();
+  if (restored.length) console.error(`restored files a killed earlier run left patched: ${restored.join(', ')}`);
   const only = (process.argv.find((a) => a.startsWith('--only=')) || '').slice(7);
   const results = MUTANTS.filter((m) => !only || m.id === only).map((m) => { const r = runMutant(m); console.log(JSON.stringify(r)); return r; });
   const bad = results.filter((r) => r.error || !r.caught);
@@ -96,5 +113,5 @@ function main() {
   process.exit(results.some((r) => r.error) ? 2 : bad.length ? 1 : 0);
 }
 
-module.exports = { MUTANTS, runMutant };
+module.exports = { MUTANTS, runMutant, restoreStaleBackups, BACKUP_SUFFIX };
 if (require.main === module) main();
