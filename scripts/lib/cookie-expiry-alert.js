@@ -64,12 +64,15 @@ function findCookieFailures(results, authErrorDays) {
  */
 function findCookieHealthy(results, authErrorDays) {
   const failing = new Set(findCookieFailures(results, authErrorDays).map(r => `${r.name}|${r.layer === 3}`));
+  // An unverifiable live route proves nothing by itself: it only retires the old broken-check card
+  // while the outlet has no expiry failure (BRO-7757 adversarial review).
+  const failingOutlets = new Set(findCookieFailures(results, authErrorDays).map(r => r.name));
   const healthy = new Map();
   for (const r of results || []) {
     if (!isWatched(r)) continue;
     const live = r.layer === 3;
     if (failing.has(`${r.name}|${live}`)) continue;
-    if ((r.layer === 2 && typeof r.authDays === 'number') || (live && r.status === 'pass' && !r.noCookiesRequired) || (live && r.unverifiable === true && r.status !== 'fail')) {
+    if ((r.layer === 2 && typeof r.authDays === 'number') || (live && r.status === 'pass' && !r.noCookiesRequired) || (live && r.unverifiable === true && r.status !== 'fail' && !failingOutlets.has(r.name))) {
       healthy.set(`${r.name}|${live}`, { name: r.name, live });
     }
   }

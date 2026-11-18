@@ -40,3 +40,10 @@ test('an unverifiable live result resolves a stale live-access card instead of l
   const r = { name: 'ft', layer: 3, status: 'warn', isCritical: true, unverifiable: true };
   assert.deepEqual(findCookieHealthy([r], 7), [{ name: 'ft', live: true }]);
 });
+
+test('an unverifiable live result does NOT resolve the card while the outlet has a Layer-2 expiry failure', () => {
+  const { findCookieHealthy } = require('./cookie-expiry-alert.js');
+  const expired = { name: 'ft', layer: 2, status: 'fail', isCritical: true, authDays: -1 };
+  const unv = { name: 'ft', layer: 3, status: 'warn', isCritical: true, unverifiable: true };
+  assert.deepEqual(findCookieHealthy([expired, unv], 7).filter(h => h.live), []);
+});
