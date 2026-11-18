@@ -32,3 +32,11 @@ test('the 80% ceiling never hands a tiny source outsized weight', () => {
   const big = calculateCombinedScore({ mezzanine: { score: 80, reviewCount: 1000 }, showScore: { score: 60, reviewCount: 50 } }, { category: 'broadway' });
   assert.equal(big.weights.mezzanine, 80);
 });
+
+test('most-divisive list ranks only shown scores on both sides', () => {
+  const src = readFileSync(new URL('../../src/config/browse-pages.ts', import.meta.url), 'utf8');
+  const start = src.indexOf("'most-divisive-broadway-shows'");
+  const block = src.slice(start, src.indexOf('customSort', start));
+  assert.match(block, /displaysCriticScore\(show\)/, 'critic TBD shows must not rank (Pygmalion, 2 reviews, was #1)');
+  assert.match(block, /hasFullConfidenceAudienceReviews\(buzz\)/, 'audience side needs the full-confidence sample');
+});
