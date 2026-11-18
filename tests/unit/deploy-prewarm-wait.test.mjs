@@ -84,6 +84,7 @@ test('rebuild-fast dispatches the pre-warm early and skips its own dispatch only
   const pre = stepBlock(rf, 'Pre-warm the deploy');
   assert.match(pre, /wait_for_run="\$GITHUB_RUN_ID"/);
   assert.match(pre, /continue-on-error: true/);
+  assert.match(pre, /vars\.DEPLOY_PREWARM_DISABLED != 'true'/, 'kill switch');
   assert.ok(rf.indexOf('- name: Pre-warm the deploy') < rf.indexOf('- name: Rebuild reviews.json'));
   const trig = stepBlock(rf, 'Trigger deploy (core data changed)');
   assert.match(trig, /--find-prewarm "\$GITHUB_RUN_ID" \|\| true/);

@@ -84,9 +84,10 @@ jobs:
       # fresh main (vercel-deploy.yml "Wait for rebuild" step). Dispatch-only:
       # the 4-hourly cron mostly changes nothing, so a pre-warm there would
       # just cancel itself. If this dispatch fails, "Trigger deploy" below
-      # dispatches a normal deploy as before.
+      # dispatches a normal deploy as before. Kill switch: repo variable
+      # DEPLOY_PREWARM_DISABLED=true (no pre-warm, so the old dispatch path runs).
       - name: Pre-warm the deploy
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' && vars.DEPLOY_PREWARM_DISABLED != 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
