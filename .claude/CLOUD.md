@@ -146,4 +146,4 @@ Do what you can from cloud first. Work a Mac session can do alone: `--dispatch -
 
 **Plain backlog** (can wait weeks): a normal card, ending with a `BACKLOG-OK: <why it can wait>` line.
 
-**Cost ledger (BRO-5671, BRO-6504):** a session with `get_session` records itself at wrap-up: `get_session` with no id, save it to a file, `node scripts/record-claude-session-cost.js --from-json=<file> --cards=BRO-N`, commit `data/audit/claude-session-cost.jsonl`.
+**Cost ledger (BRO-5671, BRO-6504):** a session with `get_session` records itself at wrap-up: `get_session` with no id, save it to a file, `node scripts/record-claude-session-cost.js --from-json=<file> --cards=BRO-N`, commit `data/audit/claude-session-cost.jsonl` and land it with the retro row before closing (a `claude/` branch push never reaches main; Stop-checked, BRO-7729).

@@ -120,11 +120,14 @@ export function recordRuns(events) {
 // git with any global options (-C dir, -c k=v, --no-pager) before the subcommand.
 const GIT = String.raw`\bgit\s+(?:(?:-[Cc]\s+\S+|--[\w-]+)\s+)*`;
 // Stages the ledger: add of it, data/audit, -A/--all/-u/., or commit -a/--all/naming it (which also commits).
-const LEDGER_STAGE_RE = new RegExp(`${GIT}(?:add\\b[^\\n;&|]*(?:session-retro\\.jsonl|data\\/audit\\b|\\s(?:-A|--all|-u|--update|\\.)(?=\\s|$))|commit\\b[^\\n;&|]*(?:\\s-[a-zA-Z]*a[a-zA-Z]*\\b|\\s--all\\b|session-retro\\.jsonl))`);
+const stageRe = (file) => new RegExp(`${GIT}(?:add\\b[^\\n;&|]*(?:${file}|data\\/audit\\/?(?=\\s|$)|\\s(?:-A|--all|-u|--update|\\.)(?=\\s|$))|commit\\b[^\\n;&|]*(?:\\s-[a-zA-Z]*a[a-zA-Z]*\\b|\\s--all\\b|${file}))`);
+const RETRO_FILE = String.raw`session-retro\.jsonl`;
+const COST_FILE = String.raw`claude-session-cost\.jsonl`;
 const COMMIT_RE = new RegExp(`${GIT}commit\\b(?![^\\n;&|]*--dry-run)`);
 const OTHER_REPO_RE = /broadway-scorecard-data|broadway-review-texts|BroadwayScorecard-app/i; // their ledgers are not this one
 /** PURE. [{ index, stages, commits }] for each successful event that stages or commits the ledger (an API write to land/ does both). */
-function ledgerEvents(events) {
+function ledgerEvents(events, file) {
+  const STAGE = stageRe(file);
   const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
   const out = [];
   events.forEach((e, i) => {
@@ -134,11 +137,11 @@ function ledgerEvents(events) {
     if (e.name === 'Bash') {
       const c = runShellCode(e.input?.command) || '';
       if (OTHER_REPO_RE.test(c)) return;
-      const stages = LEDGER_STAGE_RE.test(c);
+      const stages = STAGE.test(c);
       const commits = COMMIT_RE.test(c);
       if (stages || commits) out.push({ index: i, stages, commits });
     } else if (/^mcp__github__(?:push_files|create_or_update_file)$/.test(e.name || '') && String(e.input?.branch || '').startsWith('land/')
-      && /session-retro\.jsonl/.test(JSON.stringify(e.input || {}))) {
+      && new RegExp(file).test(JSON.stringify(e.input || {}))) {
       // An API write only carries the row if it goes to a land/ branch (a claude/ branch is the incident shape).
       out.push({ index: i, stages: true, commits: true });
     }
@@ -146,22 +149,40 @@ function ledgerEvents(events) {
   return out;
 }
 /** PURE. Index of the first commit that carries the ledger staged at or after `from`, or undefined. */
-export function ledgerCommitIndex(events, from) {
-  const ev = ledgerEvents(events).filter((x) => x.index >= from);
+export function ledgerCommitIndex(events, from, file = RETRO_FILE) {
+  const ev = ledgerEvents(events, file).filter((x) => x.index >= from);
   const stage = ev.find((x) => x.stages);
   if (!stage) return undefined;
   return ev.find((x) => x.index >= stage.index && x.commits)?.index;
 }
 /** PURE. Did a land push carry the row of the record run at `recordIndex`? Record, stage, commit, land push, in that
  *  order; one command may chain any of them (`--record && git commit -am r && git push … land/x`). */
-export function recordReachedLand(events, recordIndex) {
-  const commit = ledgerCommitIndex(events, recordIndex);
+export function recordReachedLand(events, recordIndex, file = RETRO_FILE) {
+  const commit = ledgerCommitIndex(events, recordIndex, file);
   return commit !== undefined && landedPushIndices(events).some((i) => i >= commit);
+}
+
+// BRO-7729 cousin: the cost row (record-claude-session-cost.js, wrap-up BRO-6504) has the same shape and no gate at all:
+// 5 sessions on main's cost ledger since 2026-11-17 against ~24 code-landing sessions. Same rule: it ran, and a land
+// push after it carried data/audit/claude-session-cost.jsonl.
+const COST_RE = /record-claude-session-cost\.js\b[^\n;&|]*--from-json\b/;
+/** PURE. Event indices of cost-row runs that succeeded. */
+export function costRuns(events) {
+  const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
+  const out = [];
+  events.forEach((e, i) => {
+    if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') return;
+    const r = answers.get(e.id);
+    if (r && !r.isError && COST_RE.test(runShellCode(e.input?.command) || '') && /row\(s\) written/.test(String(r.content || ''))) out.push(i);
+  });
+  return out;
 }
 
 const MSG = {
   norow: 'Retro missing: this session landed code but never ran `node scripts/lib/session-retro.js --check --record`. Run it (it reads the transcript: edit-to-end time, hook blocks by hook, land refusals, bypasses), then turn each finding into a fix now or a card and re-run with `--record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"`). Then close again. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
   unlanded: 'Retro not on main: the last `session-retro.js --record` row was never carried to main by a land push after it (a row left in a worktree or on a claude/ branch is invisible to the weekly rollup). Commit it and land it: `git add data/audit/session-retro.jsonl && git commit -m "retro: session row"`, then `git push origin HEAD:refs/heads/land/<name>` and follow the Land run. Next time run --record before your final land push so it rides that push. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
+  nocost: 'Cost row missing: this session landed code but never recorded its spend. Call get_session with no session_id, save the result to a scratchpad file, run `node scripts/record-claude-session-cost.js --from-json=<file> --cards=BRO-N`, then commit `data/audit/claude-session-cost.jsonl` and land it with the retro row (`git push origin HEAD:refs/heads/land/<name>`). Bypass (own token): NO-RETRO: <reason, 10+ chars>.',
+  costunlanded: 'Cost row not on main: the last `record-claude-session-cost.js` row was never carried to main by a land push after it (a claude/ branch push does not count). Commit `data/audit/claude-session-cost.jsonl` and land it: `git push origin HEAD:refs/heads/land/<name>`. Bypass (own token): NO-RETRO: <reason, 10+ chars>.',
   nolink: 'Retro not closed: the retro row crossed a threshold ("RETRO REQUIRED") but links no fix or card. For each finding fix it now (guard, test, hook) or file a card, then re-run `node scripts/lib/session-retro.js --record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"` when the long time or many blocks were idle or expected). A memory note is not a fix. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
 };
 
@@ -179,6 +200,11 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const flagged = runs.some((r) => /RETRO REQUIRED/.test(String(r.result.content || '')));
   if (flagged && !runs.some((r) => LINK_RE.test(r.command))) return { decision: 'block', reason: 'retro crossed a threshold, no --fixes/--no-action', message: MSG.nolink };
   if (!recordReachedLand(events, runs[runs.length - 1].index)) return { decision: 'block', reason: 'retro row never carried to main by a land push', message: MSG.unlanded };
+  if (env.COST_ROW_GATE !== 'off') {
+    const cost = costRuns(events);
+    if (cost.length === 0) return { decision: 'block', reason: 'landed code, no cost row recorded', message: MSG.nocost };
+    if (!recordReachedLand(events, cost[cost.length - 1], COST_FILE)) return { decision: 'block', reason: 'cost row never carried to main by a land push', message: MSG.costunlanded };
+  }
   return { decision: 'allow', reason: flagged ? 'retro closed with links' : 'retro recorded, no threshold crossed' };
 }
 

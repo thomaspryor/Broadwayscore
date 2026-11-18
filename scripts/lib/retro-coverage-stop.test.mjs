@@ -8,7 +8,7 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { stopHookDecision, shellEditsCode } from './retro-coverage-stop.mjs';
 
-const ENV = { CLAUDE_CODE_REMOTE: 'true' };
+const ENV = { CLAUDE_CODE_REMOTE: 'true', COST_ROW_GATE: 'off' }; // the retro cases; the cost row has its own test
 let n = 0;
 const use = (name, input, result = 'ok', isError = false) => { const id = `t${++n}`; return [{ kind: 'assistant_tool_use', name, input, id }, { kind: 'tool_result', tool_use_id: id, content: result, isError }]; };
 const edit = () => use('Edit', { file_path: '/home/user/Broadwayscore/scripts/x.js' });
@@ -68,6 +68,22 @@ test('BRO-7729: the retro row must ride a land push to main', () => {
   // A commit mentioned in a heredoc is not a commit.
   assert.equal(decide([...edit(), ...record('', clean), ...sh("cat <<'E'\ngit commit -am x\nE"), ...land()]).decision, 'block');
   assert.equal(decide(incident, `${SAFE}\nNO-RETRO: row deliberately kept off main for a test`).decision, 'allow', 'bypass still works');
+});
+
+test('BRO-7729 cousin: the cost row must be recorded and ride a land push', () => {
+  const on = { CLAUDE_CODE_REMOTE: 'true' };
+  const sh = (command, out = 'ok', err = false) => use('Bash', { command }, out, err);
+  const clean = 'No retro threshold crossed.';
+  const cost = (out = 'data/audit/claude-session-cost.jsonl: 1 row(s) written (0 replaced same-day rows), 0 skipped') => sh('node scripts/record-claude-session-cost.js --from-json=/tmp/s.json --cards=BRO-1', out);
+  const base = [...edit(), ...land(), ...record('', clean)];
+  assert.match(decide([...base, ...carry()], SAFE, on).message, /Cost row missing/);
+  // The incident: both rows committed, pushed to the claude/ branch only.
+  assert.match(decide([...base, ...cost(), ...sh('git add data/audit/claude-session-cost.jsonl data/audit/session-retro.jsonl && git commit -m r'), ...sh('git push -u origin claude/x')], SAFE, on).message, /Retro not on main/);
+  assert.equal(decide([...base, ...cost(), ...sh('git add data/audit/claude-session-cost.jsonl data/audit/session-retro.jsonl && git commit -m r && git push origin HEAD:refs/heads/land/x')], SAFE, on).decision, 'allow', 'both rows ride one land push');
+  assert.match(decide([...base, ...cost(), ...carry()], SAFE, on).message, /Cost row not on main/, 'staging only the retro file leaves the cost row behind');
+  assert.match(decide([...base, ...carry(), ...cost()], SAFE, on).message, /Cost row not on main/, 'cost recorded after the last land');
+  assert.match(decide([...base, ...cost('Error: no cost in session json'), ...carry()], SAFE, on).message, /Cost row missing/, 'a failed cost run is not a row');
+  assert.equal(decide([...base, ...cost(), ...sh('git commit -am r'), ...land()], SAFE, on).decision, 'allow', 'commit -a carries both');
 });
 
 test('stays quiet outside its scope', () => {
