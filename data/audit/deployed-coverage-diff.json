@@ -1,30 +1,78 @@
 {
-  "generatedAt": "2026-11-18T18:40:36.157Z",
+  "generatedAt": "2026-11-18T20:04:21.658Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 360,
-  "clean": 359,
-  "defective": 1,
+  "clean": 356,
+  "defective": 4,
   "byType": {
-    "score-drift": 1
+    "score-drift": 4
   },
   "shows": [
     {
-      "showId": "the-good-thief-off-broadway-2026",
-      "title": "The Good Thief",
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "title": "Blue Man Group “A New Holiday Surprise”",
       "openingDate": "2026-11-17",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.93 vs local 82.15 (Δ0.78)"
+          "detail": "deployed cs 47.82 vs local 50.35 (Δ2.53)"
         }
       ],
       "missingFromProd": [],
       "localCount": 4,
       "deployedCount": 5,
-      "firstDefectAt": "2026-11-18T18:40:30.521Z"
+      "firstDefectAt": "2026-11-18T20:04:14.296Z"
+    },
+    {
+      "showId": "top-gunchained-off-west-end-2026",
+      "title": "Top Gunchained",
+      "openingDate": "2026-11-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.06 vs local 80.07 (Δ0.99)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-18T20:04:14.296Z"
+    },
+    {
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "openingDate": "2026-11-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.85 vs local 87.49 (Δ0.64)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-11-18T20:04:14.296Z"
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "openingDate": "2026-11-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 61.78 vs local 61.51 (Δ0.27)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-11-18T20:04:14.296Z"
     }
   ],
   "persistentDefective": 0,
