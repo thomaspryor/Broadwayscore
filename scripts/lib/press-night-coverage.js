@@ -18,7 +18,7 @@ const clock = require('./press-night-clock');
 const af = require('./opening-night-lane/auto-fallback');
 
 const MIN = 60000;
-const ORCH_RUN_MIN = 240; // opening-night-orchestrator.yml loop DEADLINE (start + 240 min)
+const ORCH_RUN_MIN = clock.ORCH_RUN_MIN; // opening-night-orchestrator.yml loop DEADLINE (start + 240 min)
 const SWEEP_RUN_MIN = 10; // one targeted poller run (fast_path)
 const MAX_GAP_MIN = 15;
 const BEFORE_LANE_MIN = 180; // the card's window: laneStart - 3h ...

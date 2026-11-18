@@ -21,20 +21,35 @@ const MIN = 60000;
 const KICK_LEAD_MIN = 120; // kick at embargo -2h: the probe window opens at -2.5h and the lane night run sleeps to -30 min itself
 const KICK_LATE_MIN = 170; // still kick up to embargo +2h50 (probeDue closes at +3h)
 const HORIZON_DAYS = 10;
-const DEFAULT_CATEGORIES = ['broadway'];
+// BRO-7779: every lane market. A show of any other category (tour, regional) has no market embargo hour, so the clock
+// cannot time it; scripts/lib/press-night-coverage.js reports those as not watched.
+const DEFAULT_CATEGORIES = ['broadway', 'off-broadway', 'west-end', 'off-west-end'];
+const MARKET_FOR = { broadway: 'broadway', 'off-broadway': 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
+const ORCH_RUN_MIN = 240; // a targeted orchestrator run polls until its loop DEADLINE, start + 240 min
 
-/** Event kinds: lead (min before embargo), late (min after its own time it may still fire), categories it applies to. */
+/**
+ * Event kinds: lead (min before embargo), late (min after its own time it may still fire), categories it applies to
+ * (null = every category the clock plans), dedupeMin (orchestrator kinds: skip when a targeted orchestrator run for
+ * the show was created this long before the event's time).
+ */
 const KINDS = {
-  kick: { leadMin: KICK_LEAD_MIN, lateMin: KICK_LEAD_MIN + KICK_LATE_MIN, categories: null },
-  pf24: { leadMin: 24 * 60, lateMin: 20 * 60, categories: ['broadway'] }, // until embargo -4h
-  pf3: { leadMin: 180, lateMin: 120, categories: ['broadway'] }, // until embargo -1h
+  // BRO-7779: three targeted orchestrator runs tile the night with no hole, lane or no lane:
+  //   ek  embargo -4h30 .. -0h30   covers lane start -3h (the guarded lane starts no earlier than embargo -90)
+  //   kick embargo -2h  .. +2h     also starts the probe, the lane night run and the watchdog, as before
+  //   tk  embargo +1h50 .. +5h50   the tail: the BRO-7740 lane ends near +185 and the first sweep is at +255
+  // The sweeps (+4h15/+5h15/+6h15) carry it past +6h. tk overlaps the kick run by 10 min so a slow start is no hole.
+  ek: { leadMin: 270, lateMin: 120, categories: null, dedupeMin: 30 }, // until embargo -2h30; later, the kick covers it
+  kick: { leadMin: KICK_LEAD_MIN, lateMin: KICK_LEAD_MIN + KICK_LATE_MIN, categories: null, dedupeMin: 30 },
+  tk: { leadMin: -110, lateMin: 180, categories: null, dedupeMin: ORCH_RUN_MIN - 10 }, // a late kick run already covers it
+  pf24: { leadMin: 24 * 60, lateMin: 20 * 60, categories: null }, // until embargo -4h
+  pf3: { leadMin: 180, lateMin: 120, categories: null }, // until embargo -1h
   // BRO-7160 post-lane review sweep (scripts/lib/post-lane-sweep.js SWEEP_SLOTS/VERIFY_SLOT): after the lane releases
   // at about +4h, one targeted poller run at +4h15, +5h15 and +6h15, then a verify at +7h30. Negative lead = after
   // embargo. Each slot stays fireable until the next one is due; the last sweep and the verify until about +12h.
-  sw1: { leadMin: -255, lateMin: 60, categories: ['broadway'] },
-  sw2: { leadMin: -315, lateMin: 60, categories: ['broadway'] },
-  sw3: { leadMin: -375, lateMin: 345, categories: ['broadway'] },
-  swv: { leadMin: -450, lateMin: 270, categories: ['broadway'] },
+  sw1: { leadMin: -255, lateMin: 60, categories: null },
+  sw2: { leadMin: -315, lateMin: 60, categories: null },
+  sw3: { leadMin: -375, lateMin: 345, categories: null },
+  swv: { leadMin: -450, lateMin: 270, categories: null },
 };
 
 /**
@@ -46,7 +61,9 @@ const KINDS = {
 function kindAction(kind, category) {
   if (/^sw/.test(kind)) return { action: 'sweep', market: null };
   if (/^pf/.test(kind)) return { action: 'preflight', market: null };
-  if (kind === 'kick' && category === 'broadway') return { action: 'orchestrator', market: 'broadway' };
+  if ((kind === 'kick' || kind === 'ek' || kind === 'tk') && MARKET_FOR[category]) {
+    return { action: 'orchestrator', market: MARKET_FOR[category] };
+  }
   return { action: 'probe', market: null };
 }
 
@@ -103,7 +120,7 @@ function confirmKick(shows, nowMs, planned, opts) {
   return next.kickAtMs <= nowMs ? 'kick' : 'replan';
 }
 
-module.exports = { kindAction, planKicks, nextKick, sleepPlan, confirmKick, kickKey, KINDS, KICK_LEAD_MIN, KICK_LATE_MIN, HORIZON_DAYS, DEFAULT_CATEGORIES };
+module.exports = { kindAction, MARKET_FOR, ORCH_RUN_MIN, planKicks, nextKick, sleepPlan, confirmKick, kickKey, KINDS, KICK_LEAD_MIN, KICK_LATE_MIN, HORIZON_DAYS, DEFAULT_CATEGORIES };
 
 if (require.main === module) {
   const arg = (k) => {
@@ -114,7 +131,7 @@ if (require.main === module) {
   const now = arg('now') ? Date.parse(arg('now')) : Date.now();
   if (sub === 'action') {
     const a = kindAction(arg('kind'), arg('category'));
-    process.stdout.write(`${a.action} ${a.market || '-'}\n`);
+    process.stdout.write(`${a.action} ${a.market || '-'} ${(KINDS[arg('kind')] || {}).dedupeMin || 30}\n`);
   } else if (sub === 'sleep-plan') {
     const kickAt = Date.parse(arg('kick-at'));
     if (!Number.isFinite(kickAt)) { console.error('sleep-plan needs --kick-at=ISO'); process.exit(2); }
