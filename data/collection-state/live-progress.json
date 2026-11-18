@@ -1,31 +1,75 @@
 {
-  "updatedAt": "2026-11-18T18:04:17.083Z",
-  "processed": 361,
-  "failed": 181,
-  "successRate": "66.6%",
+  "updatedAt": "2026-11-18T18:15:31.004Z",
+  "processed": 99,
+  "failed": 67,
+  "successRate": "59.6%",
   "tierBreakdown": {
-    "playwright": 195,
-    "amp": 1,
-    "browserbase": 2,
+    "playwright": 61,
+    "amp": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 37,
-    "scrapingbee": 24,
-    "brightdata": 4,
+    "scrapingdog": 12,
+    "scrapingbee": 21,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 113
+    "archive": 19
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-11-18T14:20:42.500Z",
+      "t": "2026-11-18T18:07:36.087Z",
       "event": "bb-session",
-      "session": "0cea02c7",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+      "session": "6500547a",
+      "url": "https://www.nytimes.com/2026/11/18/theater/exhibitionist-good-thief-review-hille"
     },
     {
-      "t": "2026-11-18T14:20:42.961Z",
+      "t": "2026-11-18T18:07:36.784Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-18T18:08:43.034Z",
+      "event": "bb-session",
+      "session": "780f247a",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-18T18:08:43.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-18T18:09:00.693Z",
+      "event": "bb-session",
+      "session": "8f1f45d3",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-18T18:09:01.286Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-18T18:13:16.726Z",
+      "event": "bb-session",
+      "session": "368b0385",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-18T18:13:17.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-18T18:13:50.779Z",
+      "event": "bb-session",
+      "session": "34bf0b2d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-18T18:13:51.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
