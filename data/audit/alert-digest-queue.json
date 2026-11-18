@@ -836,5 +836,19 @@
       }
     ],
     "queuedAt": "2026-11-18T22:31:32.557Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7804",
+    "title": "Watchdog parked #linear:BRO-7804 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Landed-change audit blames commits for workflows that were already red before they landed\" was claimed for redispatch at 2026-11-18T22:28:12.089Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7804), then re-arm with node scripts/linear-next.js --id BRO-7804 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T22:43:58.766Z"
   }
 ]
