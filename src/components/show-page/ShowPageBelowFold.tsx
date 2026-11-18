@@ -124,7 +124,7 @@ export interface ShowPageBelowFoldProps {
   isOpera: boolean;
   isRegional: boolean;
   isTour?: boolean;
-  isCuratedHistoricalShow: boolean;
+  isCuratedHistoricalShow: boolean | number;
   lastUpdated: string | null;
   score: number | undefined;
   /** Computed server-side by getShowFAQs() in page.tsx and passed down so the

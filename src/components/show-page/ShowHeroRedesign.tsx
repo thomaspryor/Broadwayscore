@@ -98,7 +98,7 @@ import type { ShowRanks } from '@/lib/data-show-ranks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
 import { ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { scoreGateArg } from '@/config/scoring';
 import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
 import { isRated, NOT_RATED_LABEL } from '@/lib/unrated';
 
@@ -701,7 +701,7 @@ function Inner({
           {hasEnoughCriticReviews && (
             <div className="hidden lg:flex items-center flex-wrap gap-4 pt-3">
               <a href="#critic-reviews" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
-                <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} tier1And2Count={tier1And2Count} isCuratedHistorical={CURATED_HISTORICAL_SHOWS.has(show.id)} size="lg" showCrown />
+                <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show.id)} size="lg" showCrown />
                 <div>
                   {tier && (
                     <p className="text-2xl font-extrabold leading-tight tracking-tight" style={{ color: tier.color }}>
@@ -742,7 +742,7 @@ function Inner({
       ) : (
         <div className={`lg:hidden grid gap-2.5 ${dualScoreCards ? 'grid-cols-2' : 'grid-cols-1'}`}>
           <a href="#critic-reviews" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
-            <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} tier1And2Count={tier1And2Count} isCuratedHistorical={CURATED_HISTORICAL_SHOWS.has(show.id)} size="lg" showCrown />
+            <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show.id)} size="lg" showCrown />
             <div className={scoreCardTextClass}>
               {tier && (
                 <p className="text-xs sm:text-sm font-bold leading-tight break-normal" style={{ color: tier.color }}>

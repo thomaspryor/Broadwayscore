@@ -17,7 +17,7 @@ import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 import { getTourSection, tourSectionRank, isTourScored } from '@/lib/tour-listing';
 import { formatShowDate, getShowYear } from '@/lib/date-utils';
 import { hasEnoughReviews } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { scoreGateArg } from '@/config/scoring';
 import { FIZZLE_MIN_RETURNED_PCT, isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 import { getSeason } from '@/lib/commercial-metrics';
@@ -872,7 +872,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       // client's getEffectiveScore.
       const cs = show.criticScore;
       const t1t2 = (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0);
-      if (!hasEnoughReviews(cs?.reviewCount ?? 0, show.category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id))) {
+      if (!hasEnoughReviews(cs?.reviewCount ?? 0, show.category, t1t2, scoreGateArg(show.id))) {
         return 'Not Enough Reviews Yet';
       }
       const score = cs?.score ?? 0;

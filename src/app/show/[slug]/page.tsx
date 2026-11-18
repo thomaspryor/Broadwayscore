@@ -50,7 +50,7 @@ import { getVideoReviews } from '@/lib/data-video-reviews';
 import { showsMarketBadge } from '../../../../scripts/lib/market-badge';
 import { StatusBadge, ReviewsSyncingBadge, FormatPill, ProductionPill, CategoryBadge, ScoreBadge, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS, TOP_CRITICS } from '@/config/scoring';
+import { scoreGateArg, TOP_CRITICS } from '@/config/scoring';
 import { getBroadwayDuration, formatShowDate } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, getReviewAgeNote, formatShowDate as formatDate } from '@/lib/show-date-line';
 import TicketLink from '@/components/TicketLink';
@@ -125,7 +125,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // exist; scored shows must clear the per-market minimum-reviews threshold.
   // Without this, a previews show with 2 high-T1 reviews would show "Rave
   // Reviews (84/100)" in OG/Twitter/title while the page itself shows TBD.
-  const isCuratedHistorical = CURATED_HISTORICAL_SHOWS.has(show.id);
+  const isCuratedHistorical = scoreGateArg(show.id);
   const isTBD = applyCoverageFloor(
     !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistorical)
       || show.status === 'previews' || show.status === 'upcoming',
@@ -505,7 +505,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const reviewCount = show.criticScore?.reviewCount || 0;
   const tier1Count = show.criticScore?.tier1Count || 0;
   const tier2Count = show.criticScore?.tier2Count || 0;
-  const isCuratedHistoricalShow = CURATED_HISTORICAL_SHOWS.has(show.id);
+  const isCuratedHistoricalShow = scoreGateArg(show.id);
   const showTBD = applyCoverageFloor(
     !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
       || show.status === 'previews' || show.status === 'upcoming',

@@ -8,7 +8,7 @@ import { getCriticBio } from '@/config/critic-bios';
 import { getPublicCriticProfile } from '@/lib/critic-server';
 import { getAllShows } from '@/lib/data-core';
 import { hasEnoughReviews } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { scoreGateArg } from '@/config/scoring';
 import type { ShowConsensus } from '@/lib/critic-standing';
 import CriticDetailClient from './CriticDetailClient';
 
@@ -24,7 +24,7 @@ function consensusFor(showSlugs: Iterable<string>): Record<string, ShowConsensus
     if (!wanted.has(show.slug) || show.compositeScore == null || !show.criticScore) continue;
     const rc = show.criticScore.reviewCount;
     const t1t2 = (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0);
-    if (!hasEnoughReviews(rc, show.category || 'broadway', t1t2, CURATED_HISTORICAL_SHOWS.has(show.id))) continue;
+    if (!hasEnoughReviews(rc, show.category || 'broadway', t1t2, scoreGateArg(show.id))) continue;
     out[show.slug] = { score: Math.round(show.compositeScore), reviewCount: rc };
   }
   return out;

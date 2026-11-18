@@ -116,7 +116,7 @@ export interface ScoreBadgeProps {
   category?: string;
   tier1And2Count?: number;
   /** Show is in data/curated-historical-shows.json (lower Broadway minimum). */
-  isCuratedHistorical?: boolean;
+  isCuratedHistorical?: boolean | number;
   /** Render a "Not Yet Rated" caption under TBD badges — for pages (guides)
    *  that don't already label the badge the way ShowListCard does. */
   labelTbd?: boolean;

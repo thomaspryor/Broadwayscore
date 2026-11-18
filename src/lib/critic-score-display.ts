@@ -5,7 +5,7 @@
 // curated-historical carve-out, so a page could say TBD while its schema
 // claimed a rating, or the reverse.
 import { hasEnoughReviews } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { scoreGateArg } from '@/config/scoring';
 
 interface ShowWithCriticScore {
   id?: string;
@@ -21,6 +21,6 @@ export function displaysCriticScore(show: ShowWithCriticScore): boolean {
     show.category,
     // Unknown tier counts → undefined (no T3-only penalty), as ScoreBadge does.
     cs.tier1Count === undefined && cs.tier2Count === undefined ? undefined : (cs.tier1Count ?? 0) + (cs.tier2Count ?? 0),
-    !!show.id && CURATED_HISTORICAL_SHOWS.has(show.id),
+    scoreGateArg(show.id),
   );
 }
