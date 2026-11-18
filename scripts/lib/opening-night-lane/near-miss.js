@@ -231,7 +231,7 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHea
   }
   for (const g of gaps) {
     const c = ingestCommand(show.id, g);
-    const why = windowMismatch(g) ? `${g.aggregatorCited ? 'an aggregator cites it' : 'the outlet lists it as a review'} but it is dated ${Number.isFinite(g.rejectedDayOffset) ? `${g.rejectedDayOffset > 0 ? '+' : ''}${g.rejectedDayOffset} day(s) from` : 'outside'} tonight: check the show's openingDate` : g.rejectedFor ? `lane refused it: ${g.rejectedFor}` : 'lane has not dated it yet: backlog or a blocked page';
+    const why = windowMismatch(g) ? `${g.aggregatorCited ? 'an aggregator cites it' : 'the outlet lists it as a review'} but it is dated ${Number.isFinite(g.rejectedDayOffset) ? `${g.rejectedDayOffset > 0 ? '+' : ''}${g.rejectedDayOffset} day(s) from` : 'outside'} tonight: check the show's openingDate${g.rejectedDayOffset < 0 ? ' (or it is a preview-period review or another production)' : ''}` : g.rejectedFor ? `lane refused it: ${g.rejectedFor}` : 'lane has not dated it yet: backlog or a blocked page';
     lines.push(`${windowMismatch(g) ? 'WINDOW-MISMATCH' : 'GAP'} (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${why})`, `  add it: \`${c.primary}\``, ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
   }
   for (const h of sourceHealth) {

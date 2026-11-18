@@ -161,3 +161,23 @@ test('notifier passes source problems through to the alert text', async () => {
   assert.match(sent.join('\n'), /SOURCE NOT READ \(rss\): https:\/\/ok\.example\.com\/feed\/\n {2}not read for 34 min/);
   assert.match(r.text, /1 source problem\(s\)/);
 });
+
+test('ship-check: a direct-only feed served by its paid read every 5th pass never alerts as failing', async () => {
+  let t = Date.parse(`${NIGHT}T23:00:00Z`);
+  const health = sh.createSourceHealth({ now: () => t });
+  const PAID = 'https://paid.example.com/feed/';
+  const blocked = new Error('fetch failed');
+  const fetchText = async (u, opts = {}) => { if (opts.directOnly) throw blocked; return RSS; };
+  const adapters = [d.rssAdapter({ feeds: [{ url: PAID, name: 'paid', directOnly: true }] })];
+  const alerts = [];
+  for (let i = 0; i < 30; i++) {
+    await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: t, startedAt: t, fetchText, slowFetchText: fetchText, adapters, timeZone: 'America/New_York', sourceHealth: health });
+    alerts.push(...health.alerts(t)); t += 150000;
+  }
+  assert.ok(d.unreachableFromRunner(blocked), 'fixture must look unreachable from the runner');
+  assert.deepEqual(alerts, []);
+});
+
+test('ship-check: a feed resting after failures is reported failing before it rests (alert threshold <= rest threshold)', () => {
+  assert.ok(sh.FAIL_ALERT_AFTER <= d.CHAIN_FEED_MAX_FAILS);
+});

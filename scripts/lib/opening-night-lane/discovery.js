@@ -670,6 +670,11 @@ function rssAdapter({ feeds, matchOpts } = {}) {
           return await fetchText(url, { directOnly: true });
         } catch (e) {
           const p = paid.get(url) || { at: -Infinity, fails: 0 };
+          if (unreachableFromRunner(e) && pass - p.at < PAID_FEED_REST_PASSES && p.fails === 0) {
+            // BRO-7779 ship-check: a direct-only feed served by its paid read (resting between paid reads) is not a failing
+            // source. Recording these would end and restart a failure streak every PAID_FEED_REST_PASSES passes.
+            const rest = new Error(`resting between paid reads: ${(e && e.message) || e}`); rest.paidResting = true; throw rest;
+          }
           if (!unreachableFromRunner(e) || pass - p.at < PAID_FEED_REST_PASSES || p.fails >= PAID_FEED_MAX_FAILS || paidReads >= PAID_FEED_RUN_MAX) throw e;
           p.at = pass; paidReads += 1; paid.set(url, p);
           // Bright Data can take longer than the cheap 15 s cap, and a read cut off there is billed all the same.
@@ -710,6 +715,7 @@ function rssAdapter({ feeds, matchOpts } = {}) {
       const budget = nearMissBudget();
       for (const [i, feed] of batch.entries()) {
         const hmeta = { adapter: 'rss', outletId: feed.outletId };
+        if (bodies[i].status !== 'fulfilled' && bodies[i].reason && bodies[i].reason.paidResting) continue;
         if (bodies[i].status !== 'fulfilled') { health.record(feed.url, { ok: false, error: bodies[i].reason, ...hmeta }); continue; }
         let items;
         try { items = parseFeedEntries(bodies[i].value); } catch (e) { health.record(feed.url, { ok: false, error: `parse: ${(e && e.message) || e}`, ...hmeta }); continue; }

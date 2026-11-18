@@ -274,9 +274,11 @@ async function runLaneNight({
     // BRO-7748: what the pass saw but did not admit, reported within this pass. Recorded first, so a failed alert is not
     // re-sent every pass; an alert that throws is an error row, never a stopped night.
     try {
+      // Read first: a throw here must not leave near-miss and gap items marked sent but never delivered (ship-check).
+      const healthAlerts = sourceHealth.alerts(stamp);
       const nearMisses = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'near-miss', items: pass.nearMisses || [], now: stamp, perAdapter: nearMiss.MAX_NEAR_MISSES_PER_ADAPTER });
       const gaps = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'gap', items: nearMiss.gapCandidates(pass.sightings || [], { firstSeen: firstSightings, now: stamp }), now: stamp });
-      const health = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'source-health', items: sourceHealth.alerts(stamp), now: stamp });
+      const health = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'source-health', items: healthAlerts, now: stamp });
       // Not awaited here: the admitted reviews below are the lane's job and must not wait on Discord or Linear.
       if ((nearMisses.length || gaps.length || health.length) && onPressSignals) {
         const p = Promise.resolve().then(() => onPressSignals({ show, night, nearMisses, gaps, sourceHealth: health }))
