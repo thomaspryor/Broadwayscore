@@ -10,6 +10,6 @@ const BANNER_LINE_RE = /^\s*(?:usage\b|options:|flags:|commands:|examples?:|argu
 export function isUsageOnlyOutput(text) {
   const lines = String(text || '').split('\n').filter((l) => l.trim());
   if (!lines.length || lines.length > 60) return false;
-  if (!/^\s*(?:usage\b|\S+\s+-\s+.*\n?$)/i.test(lines[0]) && !/^\s*usage\b/i.test(lines[1] || '')) return false;
+  if (!/^\s*usage\b/i.test(lines[0]) && !/^\s*usage\b/i.test(lines[1] || '')) return false;
   return lines.every((l, i) => (i === 0) || BANNER_LINE_RE.test(l) || /^\s{2,}\S/.test(l) || /^\s*usage\b/i.test(l));
 }

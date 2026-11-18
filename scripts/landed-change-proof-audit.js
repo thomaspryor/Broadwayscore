@@ -45,7 +45,12 @@ function readCommits(since, until) {
 
 function positions(since) {
   const shas = git(['rev-list', '--first-parent', 'origin/main', `--since=${since}`]).split('\n').filter(Boolean).reverse();
-  return new Map(shas.map((s, i) => [s, i]));
+  const pos = new Map(shas.map((s, i) => [s, i]));
+  // Commits a merge brought in sit at the merge's position: any run at or after the merge contains them.
+  for (const m of git(['rev-list', '--first-parent', '--merges', 'origin/main', `--since=${since}`]).split('\n').filter(Boolean)) {
+    for (const c of git(['rev-list', `${m}^1..${m}^2`]).split('\n').filter(Boolean)) if (!pos.has(c)) pos.set(c, pos.get(m));
+  }
+  return pos;
 }
 
 function ghJson(url) {
@@ -95,7 +100,7 @@ function fileCard(body, auditDay, count) {
   const run = (args) => spawnSync('node', [path.join(ROOT, 'scripts/linear-brain.js'), ...args], { cwd: ROOT, encoding: 'utf8', timeout: 120000 });
   let open = null;
   try {
-    const f = JSON.parse(run(['find', CARD_TITLE]).stdout || 'null');
+    const f = JSON.parse(run(['find', CARD_TITLE, '--exact-title']).stdout || 'null');
     if (f && f.title === CARD_TITLE && !['completed', 'canceled'].includes(f.stateType)) open = f.identifier;
   } catch { /* none open */ }
   const r = open
@@ -121,10 +126,18 @@ async function main() {
   const index = lib.workflowScriptIndex(loadWorkflows(ROOT));
   const exists = (p) => fs.existsSync(path.join(ROOT, p));
   const libIndex = lib.libWorkflowIndex(index, (p) => fs.readFileSync(path.join(ROOT, p), 'utf8'), exists);
-  let commits = readCommits(windowStart, windowEnd);
   const only = arg('sha');
-  if (typeof only === 'string') { const ps = only.split(','); commits = commits.filter((c) => ps.some((p) => c.sha.startsWith(p))); }
-  const posOf = positions(`${lib.dayMinus(auditDay, days + 2)}T00:00:00Z`);
+  // --sha (a card's VERIFY line): look the commits up over the last 14 days, whatever --days says, and fail on a
+  // prefix that matches nothing, so a VERIFY over commits outside the window cannot pass by checking zero rows.
+  let commits = readCommits(typeof only === 'string' ? `${lib.dayMinus(auditDay, 14)}T00:00:00Z` : windowStart, typeof only === 'string' ? asOf : windowEnd);
+  if (typeof only === 'string') {
+    const ps = only.split(',').filter(Boolean);
+    commits = commits.filter((c) => ps.some((p) => c.sha.startsWith(p)));
+    const missing = ps.filter((p) => !commits.some((c) => c.sha.startsWith(p)));
+    if (missing.length) { console.log(`[landed-proof] --sha not found on origin/main in the last 14 days: ${missing.join(', ')}`); if (arg('expect-proven')) process.exitCode = 1; }
+  }
+  const posOf = positions(`${lib.dayMinus(auditDay, typeof only === 'string' ? 16 : days + 2)}T00:00:00Z`);
+  const runsFrom = typeof only === 'string' ? `${lib.dayMinus(auditDay, 14)}T00:00:00Z` : windowStart;
 
   const needed = new Set();
   for (const c of commits) for (const f of c.files) for (const w of lib.classifyPath(f, { index, libIndex }).workflows) needed.add(w);
@@ -132,7 +145,7 @@ async function main() {
   const incomplete = new Set();
   let apiCalls = 0;
   for (const wf of needed) {
-    try { apiCalls++; const r = workflowRuns(wf, windowStart, asOf); runs.push(...r.runs.filter((x) => x.createdAt < asOf)); if (!r.complete) incomplete.add(wf); }
+    try { apiCalls++; const r = workflowRuns(wf, runsFrom, asOf); runs.push(...r.runs.filter((x) => x.createdAt < asOf)); if (!r.complete) incomplete.add(wf); }
     catch (e) { incomplete.add(wf); console.error(`[landed-proof] WARN runs for ${wf} unreadable: ${String(e.message).split('\n')[0].slice(0, 160)}`); }
   }
 
@@ -144,7 +157,20 @@ async function main() {
     return r.status === 0 ? true : r.status === 1 ? false : null;
   };
 
-  const rows = commits.map((c) => lib.auditCommit(c, { index, libIndex, auditDay, runs, incomplete, posOf, isDeployed }))
+  // A green run whose jobs were all skipped ran nothing. One jobs call per run, cached, capped (then: unknown = counts).
+  const jobsSeen = new Map();
+  let jobCalls = 0;
+  const ranWork = (run) => {
+    if (!run.id) return null;
+    if (jobsSeen.has(run.id)) return jobsSeen.get(run.id);
+    if (jobCalls >= 400) return null;
+    jobCalls++;
+    let v = null;
+    try { const j = ghJson(`repos/${REPO}/actions/runs/${run.id}/jobs?per_page=100`); v = (j.jobs || []).some((x) => x.conclusion === 'success'); } catch { v = null; }
+    jobsSeen.set(run.id, v);
+    return v;
+  };
+  const rows = commits.map((c) => lib.auditCommit(c, { index, libIndex, auditDay, runs, incomplete, posOf, isDeployed, ranWork }))
     .filter((r) => r.verdict !== 'exempt');
 
   // Safe form: run vetted read-only commands for not-run scripts (only those the safe-form gate accepts).
@@ -154,9 +180,9 @@ async function main() {
     for (const f of r.files.filter((x) => x.verdict === 'not_run')) {
       const cmd = lib.safeRunCommand(f.file, explainUnsafeCheckCommand);
       if (!cmd) continue;
-      if (dryRun || arg('no-safe-run')) { r.safeRun = { cmd, wouldRun: true }; continue; }
+      if (dryRun || arg('no-safe-run')) { f.safeRun = { cmd, wouldRun: true }; continue; }
       if (!ran.has(cmd)) ran.set(cmd, safeRun(cmd, lib.isUsageOnlyOutput));
-      r.safeRun = ran.get(cmd);
+      f.safeRun = ran.get(cmd);
     }
   }
 
@@ -171,23 +197,24 @@ async function main() {
       console.log(`  landed ${d}: ${x.total} code commits  verdicts ${JSON.stringify(x.verdicts)}  sources ${JSON.stringify(x.sources)}`);
     }
     console.log(`  all: ${s.total} code commits  ${JSON.stringify(s.verdicts)}`);
-    console.log(`  digest: ${lib.digestLine(rows.map((r) => r), { now: new Date(`${auditDay}T12:00:00Z`) })}`);
+    console.log(`  digest: ${lib.digestLine([...rows, lib.runMarker(auditDay)], { now: new Date(`${auditDay}T12:00:00Z`) })}`);
   }
 
-  const follow = lib.needsFollowUp(rows);
+  const ledger = path.join(ROOT, lib.LEDGER_PATH);
+  const existing = readLedger(ledger);
+  const follow = lib.needsFollowUp(rows, existing);
   if (arg('expect-proven')) {
     const bad = rows.filter((r) => !['proven', 'deployed', 'waiting'].includes(r.verdict));
     for (const r of bad) console.log(`  NOT PROVEN ${r.sha.slice(0, 10)} ${r.verdict} ${r.subject}`);
-    process.exitCode = bad.length ? 1 : 0;
+    if (bad.length) process.exitCode = 1;
   }
-  if (dryRun) { (arg("json") ? console.error : console.log)(`[landed-proof] dry run: would append ${lib.newRows(readLedger(path.join(ROOT, lib.LEDGER_PATH)), rows).length} row(s), card for ${follow.length} change(s)`); return; }
+  if (dryRun) { (arg("json") ? console.error : console.log)(`[landed-proof] dry run: would append ${lib.newRows(existing, rows).length} row(s) + run marker, card for ${follow.length} change(s)`); return; }
 
   if (follow.length && process.env.LINEAR_API_KEY) {
     const id = fileCard(lib.cardBody(follow, { auditDay }), auditDay, follow.length);
     for (const r of follow) r.card = id;
   }
-  const ledger = path.join(ROOT, lib.LEDGER_PATH);
-  const add = lib.newRows(readLedger(ledger), rows);
+  const add = lib.newRows(existing, [...rows, lib.runMarker(auditDay, { codeCommits: s.total, incomplete: incomplete.size, jobCalls })]);
   fs.mkdirSync(path.dirname(ledger), { recursive: true });
   if (add.length) fs.appendFileSync(ledger, add.map((r) => JSON.stringify(r)).join('\n') + '\n');
   console.log(`[landed-proof] appended ${add.length} row(s) to ${lib.LEDGER_PATH}`);

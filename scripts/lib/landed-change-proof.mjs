@@ -94,7 +94,7 @@ export function libWorkflowIndex(index, readFile, exists = () => true) {
  * (higher = newer). A run contains the commit when its head is at or after the commit on main's linear history.
  * isDeployed(sha) -> true | false | null (null = could not tell).
  */
-export function fileVerdict(file, commitSha, { cls, runs, runsOk = true, incomplete = new Set(), posOf, isDeployed = () => null }) {
+export function fileVerdict(file, commitSha, { cls, runs, runsOk = true, incomplete = new Set(), posOf, isDeployed = () => null, ranWork = () => true }) {
   const { kind, workflows } = cls;
   if (kind === 'exempt') return { file, kind, verdict: 'exempt' };
   if (kind === 'hook' || kind === 'other') return { file, kind, verdict: 'no_signal' };
@@ -107,10 +107,14 @@ export function fileVerdict(file, commitSha, { cls, runs, runsOk = true, incompl
   if (at === undefined) return { file, kind, verdict: 'unknown', workflows };
   const wfs = new Set(workflows);
   const mine = (runs || []).filter((r) => wfs.has(r.workflow) && posOf.has(r.headSha) && posOf.get(r.headSha) >= at);
-  const ok = mine.filter((r) => r.conclusion === 'success');
-  const manual = ok.find((r) => r.event !== 'schedule');
+  // ranWork(run): false when every job of a green run was skipped (an if: or path filter ran nothing). The CLI reads
+  // the run's jobs; step-level skips inside a job that ran are not visible to this check.
+  // Lazy: ranWork may cost an API call, so stop at the first run that did work.
+  const green = mine.filter((r) => r.conclusion === 'success');
+  const manual = green.filter((r) => r.event !== 'schedule').find((r) => ranWork(r) !== false);
   if (manual) return { file, kind, verdict: 'proven', workflows, run: manual.id ?? null, event: manual.event };
-  if (ok.length) return { file, kind, verdict: 'waiting', workflows, run: ok[0].id ?? null, event: 'schedule' };
+  const sched = green.filter((r) => r.event === 'schedule').find((r) => ranWork(r) !== false);
+  if (sched) return { file, kind, verdict: 'waiting', workflows, run: sched.id ?? null, event: 'schedule' };
   // A workflow whose run list could not be read in full (API error, or more runs than one query returns) never
   // yields not_run or failed: the missing page might hold the success.
   if (workflows.some((w) => incomplete.has(w))) return { file, kind, verdict: 'unknown', workflows };
@@ -155,14 +159,18 @@ export function newRows(existing, rows) {
   for (const r of existing) if (!last.has(r.sha) || r.auditDay >= last.get(r.sha).auditDay) last.set(r.sha, r);
   return rows.filter((r) => {
     if (seen.has(`${r.auditDay}|${r.sha}`)) return false;
+    if (r.marker) return true;
     if (r.landedDay === dayMinus(r.auditDay, 1)) return true;
     return !last.has(r.sha) || last.get(r.sha).verdict !== r.verdict;
   });
 }
 
+/** PURE. The row every audit run appends (even with no code commits), so the digest can tell "no changes" from "did not run". */
+export const runMarker = (auditDay, extra = {}) => ({ auditDay, sha: '_run', landedDay: '', verdict: 'exempt', marker: 'audit-ran', ...extra });
+
 /** PURE. Counts by verdict and by source, over code commits (exempt-only commits are not changes that went live). */
 export function summarize(rows) {
-  const code = rows.filter((r) => r.verdict !== 'exempt');
+  const code = rows.filter((r) => r.verdict !== 'exempt' && !r.marker);
   const by = (k) => code.reduce((m, r) => ((m[r[k]] = (m[r[k]] || 0) + 1), m), {});
   return { total: code.length, verdicts: by('verdict'), sources: by('source') };
 }
@@ -171,11 +179,11 @@ export function summarize(rows) {
  * PURE. The owner's one plain line. Reads the latest audit's rows for commits that landed the day before it ran.
  * -> string | null (null when there is no audit to report).
  */
-export function digestLine(ledgerRows, { now = new Date(), maxAgeH = 48 } = {}) {
+export function digestLine(ledgerRows, { now = new Date() } = {}) {
   if (!ledgerRows.length) return null;
   const latest = ledgerRows.reduce((a, r) => (r.auditDay > a ? r.auditDay : a), '');
-  const ageH = (now.getTime() - Date.parse(`${latest}T00:00:00Z`)) / 36e5;
-  if (!(ageH < maxAgeH)) return `Changes proven running: not measured this morning (the check last ran ${latest}).`;
+  // Only today's audit describes "yesterday": an older one would print the day before yesterday as yesterday.
+  if (latest !== now.toISOString().slice(0, 10)) return `Changes proven running: not measured this morning (the check last ran ${latest}).`;
   const day = dayMinus(latest, 1);
   const s = summarize(ledgerRows.filter((r) => r.auditDay === latest && r.landedDay === day));
   if (!s.total) return `Yesterday no code changes went live.`;
@@ -184,7 +192,8 @@ export function digestLine(ledgerRows, { now = new Date(), maxAgeH = 48 } = {}) 
   const parts = [`${proven} proven running`];
   if (v.waiting) parts.push(`${v.waiting} only ran on their schedule`);
   if (v.failed) parts.push(`${v.failed} ran and failed`);
-  const selfRun = ledgerRows.filter((r) => r.auditDay === latest && r.landedDay === day && r.verdict === 'not_run' && r.safeRun?.ok).length;
+  const selfRun = ledgerRows.filter((r) => r.auditDay === latest && r.landedDay === day && r.verdict === 'not_run'
+    && (r.files || []).some((f) => f.safeRun?.ok)).length;
   if (v.not_run) parts.push(`${v.not_run} not run since landing${selfRun ? ` (${selfRun} run by the check itself and passed)` : ''}`);
   if (v.no_signal) parts.push(`${v.no_signal} with nothing that runs them on their own`);
   if (v.unknown) parts.push(`${v.unknown} could not be checked`);
@@ -207,11 +216,17 @@ export function safeRunCommand(file, explain) {
 export const DISPATCH_ALLOWLIST = new Set([]);
 
 /** PURE. Rows that still need someone: failed / not_run code, after the audit's own safe runs. */
-export function needsFollowUp(rows) {
+export function needsFollowUp(rows, existing = []) {
   // Only commits that have had a full day: a daily cron script that landed last evening has not had its run yet
-  // (plan review: timing false misses). Each commit lands in exactly one day's card (landedDay = auditDay - 2).
-  return rows.filter((r) => r.landedDay === dayMinus(r.auditDay, 2)
-    && (r.verdict === 'failed' || r.verdict === 'not_run') && !(r.safeRun && r.safeRun.ok));
+  // (plan review: timing false misses). A commit is carded once: any earlier ledger row with a card skips it, and a
+  // missed audit night is caught up by the next one (landedDay <= auditDay - 2, inside the window).
+  const carded = new Set(existing.filter((r) => r.card).map((r) => r.sha));
+  const selfProven = (r) => {
+    const open = (r.files || []).filter((f) => f.verdict === 'not_run');
+    return r.verdict === 'not_run' && open.length > 0 && open.every((f) => f.safeRun && f.safeRun.ok);
+  };
+  return rows.filter((r) => r.landedDay && r.landedDay <= dayMinus(r.auditDay, 2) && !carded.has(r.sha)
+    && (r.verdict === 'failed' || r.verdict === 'not_run') && !selfProven(r));
 }
 
 /** PURE. Body of the one batched card per day. Cloud-session misses name the session check that should have caught them. */
@@ -231,6 +246,6 @@ export function cardBody(rows, { auditDay }) {
     'For each change: run it for real now (a --dry-run counts, --help does not), or dispatch the workflow that runs it and read the run. If it failed, fix it.',
     '',
     '## Acceptance criteria',
-    `VERIFY: node scripts/landed-change-proof-audit.js --dry-run --days=1 --sha=${rows.map((r) => r.sha.slice(0, 10)).slice(0, 10).join(',')} --expect-proven`,
+    `VERIFY: node scripts/landed-change-proof-audit.js --dry-run --sha=${rows.map((r) => r.sha.slice(0, 10)).slice(0, 10).join(',')} --expect-proven`,
   ].join('\n');
 }

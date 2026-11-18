@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   sourceOf, classifyPath, relativeImports, libWorkflowIndex, fileVerdict, auditCommit, worst, newRows, summarize,
-  digestLine, needsFollowUp, cardBody, safeRunCommand, dayMinus, workflowScriptIndex,
+  digestLine, needsFollowUp, cardBody, safeRunCommand, dayMinus, workflowScriptIndex, runMarker,
 } from './landed-change-proof.mjs';
 import { isUsageOnlyOutput } from './usage-output.mjs';
 
@@ -68,6 +68,9 @@ test('fileVerdict: non-cron success proves, cron-only waits, failure, not_run, m
   assert.equal(v([]), 'not_run');
   assert.equal(v([], { incomplete: new Set(['nightly.yml']) }), 'unknown', 'an incomplete run list is unknown, never not_run');
   assert.equal(v([run()], { runsOk: false }), 'unknown');
+  assert.equal(v([run({ id: 9 })], { ranWork: (r) => r.id !== 9 }), 'not_run', 'a green run whose jobs were all skipped ran nothing');
+  assert.equal(v([run({ id: 9 }), run({ id: 10, event: 'schedule' })], { ranWork: (r) => r.id !== 9 }), 'waiting');
+  assert.equal(v([run({ id: 9 })], { ranWork: () => null }), 'proven', 'jobs unreadable: the green run still counts');
   assert.equal(fileVerdict('scripts/nightly-job.js', 'not-on-main', { cls: c, runs: [run()], posOf }).verdict, 'unknown');
 });
 
@@ -89,29 +92,38 @@ test('auditCommit: a commit takes the worst verdict of its non-exempt files', ()
   assert.deepEqual(row.files.map((f) => f.verdict), ['proven', 'no_signal'], 'exempt files are not stored');
 });
 
-test('newRows: append-only, one row per sha per audit day; older commits only when the verdict changed', () => {
+test('newRows: append-only, one row per sha per audit day; older commits only when the verdict changed; a run marker every day', () => {
   const r = (sha, landedDay, verdict, auditDay = '2026-11-18') => ({ sha, landedDay, verdict, auditDay });
-  const prior = [r('a', '2026-11-16', 'not_run', '2026-11-17'), r('b', '2026-11-16', 'waiting', '2026-11-17')];
-  const out = newRows(prior, [r('a', '2026-11-16', 'proven'), r('b', '2026-11-16', 'waiting'), r('y', '2026-11-17', 'not_run'), r('old', '2026-11-15', 'no_signal')]);
-  assert.deepEqual(out.map((x) => x.sha), ['a', 'y', 'old']);
+  const prior = [r('a', '2026-11-16', 'not_run', '2026-11-17'), r('b', '2026-11-16', 'waiting', '2026-11-17'), runMarker('2026-11-17')];
+  const out = newRows(prior, [r('a', '2026-11-16', 'proven'), r('b', '2026-11-16', 'waiting'), r('y', '2026-11-17', 'not_run'), r('old', '2026-11-15', 'no_signal'), runMarker('2026-11-18')]);
+  assert.deepEqual(out.map((x) => x.sha), ['a', 'y', 'old', '_run']);
   assert.deepEqual(newRows([...prior, ...out], out), [], 'a second run the same day appends nothing');
 });
 
-test('digestLine: one plain line over yesterday, counts add up, stale ledger says so', () => {
+test('digestLine: one plain line over yesterday, counts add up; only today\'s audit counts', () => {
   const rows = [
     ...['proven', 'deployed', 'waiting', 'not_run', 'no_signal'].map((verdict, i) => ({ sha: `s${i}`, auditDay: '2026-11-18', landedDay: '2026-11-17', verdict, source: 'cloud' })),
     { sha: 'older', auditDay: '2026-11-18', landedDay: '2026-11-16', verdict: 'failed', source: 'mac' },
+    runMarker('2026-11-18'),
   ];
-  assert.equal(digestLine(rows, { now: new Date('2026-11-18T11:30:00Z') }),
+  const at = (iso) => ({ now: new Date(iso) });
+  assert.equal(digestLine(rows, at('2026-11-18T11:30:00Z')),
     'Yesterday 5 code changes went live: 2 proven running, 1 only ran on their schedule, 1 not run since landing, 1 with nothing that runs them on their own.');
-  assert.match(digestLine(rows, { now: new Date('2026-11-21T11:30:00Z') }), /not measured this morning/);
+  assert.match(digestLine(rows, at('2026-11-19T11:30:00Z')), /not measured this morning \(the check last ran 2026-11-18\)/, 'yesterday\'s audit is not today\'s');
+  assert.equal(digestLine([runMarker('2026-11-19')], at('2026-11-19T11:30:00Z')), 'Yesterday no code changes went live.', 'the marker tells no changes from no audit');
   assert.equal(digestLine([]), null);
 });
 
-test('needsFollowUp: only commits with a full day behind them, minus ones the audit ran itself', () => {
-  const r = (sha, landedDay, verdict, safeRun) => ({ sha, landedDay, verdict, auditDay: '2026-11-18', safeRun });
-  const out = needsFollowUp([r('a', '2026-11-16', 'not_run'), r('b', '2026-11-17', 'not_run'), r('c', '2026-11-16', 'failed'), r('d', '2026-11-16', 'not_run', { ok: true }), r('e', '2026-11-16', 'no_signal')]);
-  assert.deepEqual(out.map((x) => x.sha), ['a', 'c']);
+test('needsFollowUp: full day behind them, carded once, missed nights caught up, per-file self-runs', () => {
+  const r = (sha, landedDay, verdict, files = [{ file: 'f', verdict }]) => ({ sha, landedDay, verdict, auditDay: '2026-11-18', files });
+  const ok = { ok: true };
+  const out = needsFollowUp([
+    r('a', '2026-11-16', 'not_run'), r('b', '2026-11-17', 'not_run'), r('c', '2026-11-16', 'failed'),
+    r('d', '2026-11-16', 'not_run', [{ file: 'x', verdict: 'not_run', safeRun: ok }]),
+    r('mixed', '2026-11-16', 'not_run', [{ file: 'x', verdict: 'not_run', safeRun: ok }, { file: 'y', verdict: 'not_run' }]),
+    r('e', '2026-11-16', 'no_signal'), r('late', '2026-11-15', 'not_run'), r('done', '2026-11-15', 'not_run'),
+  ], [{ sha: 'done', auditDay: '2026-11-17', card: 'BRO-1' }]);
+  assert.deepEqual(out.map((x) => x.sha), ['a', 'c', 'mixed', 'late']);
   assert.equal(dayMinus('2026-03-01', 1), '2026-02-28');
 });
 
@@ -119,7 +131,7 @@ test('cardBody: names cloud-session misses and carries a safe-form VERIFY line',
   const body = cardBody([{ sha: 'abcdef123456', source: 'cloud', session: 'https://claude.ai/code/session_01X', verdict: 'not_run', subject: 'fix', files: [{ file: 'scripts/nightly-job.js', verdict: 'not_run' }] }], { auditDay: '2026-11-18' });
   assert.match(body, /live-run-stop\.mjs/);
   assert.match(body, /session_01X/);
-  assert.match(body, /^VERIFY: node scripts\/landed-change-proof-audit\.js --dry-run .*--sha=abcdef1234 --expect-proven$/m);
+  assert.match(body, /^VERIFY: node scripts\/landed-change-proof-audit\.js --dry-run --sha=abcdef1234 --expect-proven$/m);
 });
 
 test('safeRunCommand: only what the vetted read-only gate accepts', () => {
@@ -136,6 +148,7 @@ test('isUsageOnlyOutput: a help banner is not a run, a real report is', () => {
   assert.equal(isUsageOnlyOutput('Checked 120 shows\n3 problems found\nusage: none'), false);
   assert.equal(isUsageOnlyOutput('usage: x\nWrote 4 rows to data/a.json'), false);
   assert.equal(isUsageOnlyOutput(''), false);
+  assert.equal(isUsageOnlyOutput('Audit - 3 shows checked\n  hamilton: ok\n  wicked: ok'), false, 'a report titled with a dash is not a banner');
 });
 
 test('CLI smoke: a dry run over no matching commits reads git, writes nothing, exits 0', async (t) => {
@@ -146,5 +159,7 @@ test('CLI smoke: a dry run over no matching commits reads git, writes nothing, e
   const r = spawnSync('node', ['scripts/landed-change-proof-audit.js', '--dry-run', '--days=1', '--sha=ffffffffffff'], { cwd: root, encoding: 'utf8', timeout: 60000, env: { ...process.env, GH_TOKEN: '', VERCEL_TOKEN: '' } });
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /all: 0 code commits/);
-  assert.match(r.stdout, /dry run: would append 0 row\(s\), card for 0 change\(s\)/);
+  assert.match(r.stdout, /dry run: would append 0 row\(s\) \+ run marker, card for 0 change\(s\)/);
+  const v = spawnSync('node', ['scripts/landed-change-proof-audit.js', '--dry-run', '--sha=ffffffffffff', '--expect-proven'], { cwd: root, encoding: 'utf8', timeout: 60000, env: { ...process.env, GH_TOKEN: '', VERCEL_TOKEN: '' } });
+  assert.equal(v.status, 1, 'a card VERIFY over a sha that is not on main must fail, not pass on zero rows');
 });

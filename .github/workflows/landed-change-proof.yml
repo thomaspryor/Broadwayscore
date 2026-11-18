@@ -37,6 +37,7 @@ jobs:
         run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: Audit landed changes (advisory)
+        id: audit
         # lint-allow-swallow: advisory first (CLAUDE.md section 19); a failed night leaves no ledger row for the day,
         # and the digest line then says "not measured this morning".
         continue-on-error: true
@@ -66,7 +67,8 @@ jobs:
           fi
 
       - name: Notify on failure
-        if: failure()
+        # The audit step is continue-on-error (advisory), so failure() alone would never see it.
+        if: failure() || steps.audit.outcome == 'failure'
         uses: ./.github/actions/notify-failure
         with:
           title: 'Landed-change proof audit failed'
