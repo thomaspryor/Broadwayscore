@@ -294,7 +294,7 @@ async function runLaneNight({
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'fetched', at: now() });
         let row = trust.buildLaneReview({
           showId: show.id, night, source: a.source, seenAt: new Date(stamp).toISOString(), outletId: fetched.outletId || a.outletId,
-          outlet: fetched.outlet, criticName: fetched.criticName || null, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
+          outlet: fetched.outlet, criticName: fetched.criticName || null, bylineConflict: fetched.bylineConflict || null, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
           fullText: fetched.fullText, aggregator: fetched.aggregator || {}, excerpts: fetched.excerpts,
         });
         // The printed rating the page carries (inline-score.js ratingFields), as the regular pipeline's review file has

@@ -45,9 +45,12 @@ describe('TheaterMania: the visible byline beats the JSON-LD editor slug', () =>
     const variant = TM_PAGE.replace(/<a id="article-author-tag"[^>]*>Dan Rubins<\/a>/, '<a href="https://www.theatermania.com/authors/dan-rubins"><span>Dan Rubins</span></a>');
     assert.equal(extractAuthorFromHtml(variant, '', { url: TM_URL, theaterManiaCritics: TM_ROSTER }), 'Dan Rubins');
   });
-  test('an old template with no author area still resolves the slug (BRO-171)', () => {
+  // BRO-7777 (a): the @id slug is the POSTING account, so an old template with no author area
+  // never resolves it. A printed "By Name" opening line is read; otherwise nobody.
+  test('an old template with no author area does not trust the JSON-LD slug (BRO-7777)', () => {
     const old = `<html><head>${TM_JSONLD.replace('dgordon', 'phempstead')}</head><body><h1>x</h1></body></html>`;
-    assert.equal(extractAuthorFromHtml(old, '', { url: TM_URL, theaterManiaCritics: TM_ROSTER }), 'Pete Hempstead');
+    assert.equal(extractAuthorFromHtml(old, '', { url: TM_URL, theaterManiaCritics: TM_ROSTER }), null);
+    assert.equal(extractAuthorFromHtml(old, 'By Kenji Fujishima\nThe review opens here.', { url: TM_URL, theaterManiaCritics: TM_ROSTER }), 'Kenji Fujishima');
   });
 });
 

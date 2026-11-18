@@ -220,7 +220,7 @@ function paywallFallbackScore({ thumb, stars } = {}) {
  */
 function buildLaneReview({
   showId, night, source, seenAt, outletId, outlet, criticName, url, publishDate = null, fullText = '',
-  aggregator = {}, excerpts = {},
+  aggregator = {}, excerpts = {}, bylineConflict = null,
 } = {}) {
   if (!url) throw new Error('buildLaneReview: url is required');
   if (!outletId) throw new Error('buildLaneReview: outletId is required');
@@ -232,6 +232,8 @@ function buildLaneReview({
     fullText: text, source: 'opening-night-lane',
     [PROVENANCE_KEY]: provenance, productionVerified: PRODUCTION_VERIFIED,
   };
+  // BRO-7780: the page's structured author is not the byline it prints (the regular pipeline's field, BRO-7745).
+  if (bylineConflict && bylineConflict.structured && bylineConflict.visible) review.bylineConflict = { structured: String(bylineConflict.structured), visible: String(bylineConflict.visible) };
   if (aggregator.excerpt) review.showScoreExcerpt = String(aggregator.excerpt);
   // Each aggregator's quote in its own review-file field (bwwExcerpt, dtliExcerpt ...): what the scorer reads for a
   // paywalled review, and what the regular pipeline keeps for one.
