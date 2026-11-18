@@ -481,7 +481,8 @@
     "waiting-for-godot-2025/new-york-city-theatre--unknown.json",
     "weather-girl-off-broadway-2025/timeout--raven-snook.json",
     "austens-women-lady-susan-york-royal-regional-2025/thereviewshub--ron-simpson.json",
-    "the-weir-west-end-2025/hampstead-highgate-express--charlotte-l-rose.json"
+    "the-weir-west-end-2025/hampstead-highgate-express--charlotte-l-rose.json",
+    "desire-under-the-elms-off-west-end-2026/london-box-office--stuart-king.json"
   ],
   "failed": [
     "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1791987775465.json",
@@ -702,7 +703,17 @@
     "pygmalion-off-broadway-2025/theater-life--ellis-nassour.json",
     "playing-shylock-off-broadway-2025/theater-mirror--shelley-sackett.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
-    "oak-regional-2025/chicago-reader--kerry-reid.json"
+    "oak-regional-2025/chicago-reader--kerry-reid.json",
+    "west-side-story-west-end-2026/theatremonkey--unknown.json",
+    "west-side-story-west-end-2026/west-end-wilma--westendwilma.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -941,10 +952,13 @@
       "beetlejuice-2025/observer--rex-reed.json",
       "lets-love-off-broadway-2026/front-row-center--tulis-mccall.json",
       "weather-girl-off-broadway-2025/timeout--raven-snook.json",
-      "austens-women-lady-susan-york-royal-regional-2025/thereviewshub--ron-simpson.json"
+      "austens-women-lady-susan-york-royal-regional-2025/thereviewshub--ron-simpson.json",
+      "desire-under-the-elms-off-west-end-2026/london-box-office--stuart-king.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json",
@@ -1204,12 +1218,18 @@
     ]
   },
   "startTime": "2026-11-17T22:48:02.865Z",
-  "lastProcessed": "the-weir-west-end-2025/hampstead-highgate-express--charlotte-l-rose.json",
+  "lastProcessed": "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
   "log": [
     {
       "t": "2026-11-18T00:57:59.250Z",
       "event": "bb-session",
       "session": "fb100b13",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    },
+    {
+      "t": "2026-11-18T03:58:41.119Z",
+      "event": "bb-session",
+      "session": "4ffdcafc",
       "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
     }
   ]
