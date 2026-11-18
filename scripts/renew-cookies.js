@@ -338,10 +338,11 @@ async function runOutlet(outlet, all, opts) {
         // control is tolerated for --probe-only (read-only) and fails closed
         // otherwise: no cookie write/push, no healthy stamp.
         const blocked = c.status === 'control-blocked';
-        if (blocked && renew.decideControlBlocked(probe) === 'walled') {
+        const blockedWalled = blocked && renew.decideControlBlocked(probe) === 'walled';
+        if (blockedWalled) {
           console.log(`${outlet}: anonymous control got a bot challenge (HTTP ${c.control && c.control.httpStatus}); treated as walled (controlBlockedIsWalled)`);
         }
-        const unverified = c.error || c.status === 'error' || (blocked && renew.decideControlBlocked(probe) !== 'walled');
+        const unverified = c.error || c.status === 'error' || (blocked && !blockedWalled);
         if (unverified) {
           const d = decideControlUnverified({ fellBack, probeOnly: !!opts.probeOnly });
           const why = c.error ? c.error.split('\n')[0] : blocked ? `control hit a bot challenge (HTTP ${c.control && c.control.httpStatus})` : 'control page not recognised';

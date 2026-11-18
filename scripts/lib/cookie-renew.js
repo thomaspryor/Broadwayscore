@@ -305,21 +305,24 @@ function resolveProbeMode({ browserOnly, probeStatus }) {
 }
 
 /**
- * BRO-7716: what to do with the anonymous control result. Only fallback
- * outlets (fetch probe bot-walled) may tolerate an unreadable control, and
- * only for a read-only probe: with vacuity unverified a real run must not
- * write/push cookies or stamp the outlet healthy.
- * @returns {'proceed'|'fail'|'probe-only-ok'}
- */
-/**
  * The cookie-less control was answered with a bot challenge. Tolerated only
  * for probes that declare controlBlockedIsWalled; otherwise fail closed.
+ * Precondition: the in-profile probe already read 'logged-in' (body >= minBody
+ * plus auth cookie). Residual risk: a free probe url is undetectable for such
+ * outlets; the auth-cookie check is then the only guard (BRO-7765).
  * @returns {'walled'|'unverified'}
  */
 function decideControlBlocked(probe) {
   return probe && probe.controlBlockedIsWalled ? 'walled' : 'unverified';
 }
 
+/**
+ * BRO-7716: what to do with the anonymous control result. Only fallback
+ * outlets (fetch probe bot-walled) may tolerate an unreadable control, and
+ * only for a read-only probe: with vacuity unverified a real run must not
+ * write/push cookies or stamp the outlet healthy.
+ * @returns {'proceed'|'fail'|'probe-only-ok'}
+ */
 function decideControlUnverified({ fellBack, probeOnly }) {
   if (!fellBack) return 'fail';
   return probeOnly ? 'probe-only-ok' : 'fail';
