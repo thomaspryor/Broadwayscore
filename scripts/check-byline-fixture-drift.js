@@ -32,7 +32,11 @@ function classifyDrift(fixture, live) {
   const { sameCriticName } = require('./lib/byline-from-text');
   if (!live || live.error) return 'unreachable';
   if (!live.criticName) return 'drift';
-  return sameCriticName(live.criticName, fixture.expected) ? 'same' : 'drift';
+  // Same key the record writer uses (aliases: "Zach Stewart" is zachary-stewart).
+  const { normalizeCritic } = require('./lib/review-normalization');
+  const same = sameCriticName(live.criticName, fixture.expected)
+    || normalizeCritic(live.criticName) === normalizeCritic(fixture.expected);
+  return same ? 'same' : 'drift';
 }
 
 async function main() {

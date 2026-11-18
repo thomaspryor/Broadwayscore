@@ -870,6 +870,21 @@ jobs:
       # attribution-gap cards filed on 2026-09-29 (BRO-4354/4355) left no
       # alert-ledger entry. The later "Commit alert router state" step still
       # commits the rest of the job's router writes.
+      # BRO-7780: once a month (the 3rd), read each tier-1/2 outlet's byline fixture page live
+      # with the shared byline reader; an outlet whose page no longer names the expected critic
+      # routes one owner alert (byline:fixture-drift). Direct fetch only (free). Advisory.
+      - name: Byline fixture drift (monthly, advisory)
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          if [ "$(date -u +%d)" != "03" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "Not the 3rd; skipping"; exit 0
+          fi
+          timeout 900 node scripts/check-byline-fixture-drift.js || echo "::warning::byline drift check failed"
       - name: Commit provider spend ledger (apiFallbackSafe)
         if: always()
         env:
@@ -904,6 +919,8 @@ jobs:
           git add data/audit/owner-email-log.jsonl 2>/dev/null || true
           # BRO-6947: corpus-derived outlet -> critics cache the collect pipeline reads (names only).
           git add data/audit/outlet-corpus-critics.json 2>/dev/null || true
+          # BRO-7780: monthly byline fixture drift result.
+          git add data/audit/byline-fixture-drift.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No provider spend ledger changes"
           else
