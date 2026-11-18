@@ -88,3 +88,13 @@ describe('TheaterMania editor-vs-author trap', () => {
     assert.equal(quietly(() => lane.extractMeta(page, undefined, {})).criticName, 'Jonas Schwartz');
   });
 });
+
+describe('monthly drift check verdicts (check-byline-fixture-drift.js)', () => {
+  const { classifyDrift } = require('../../scripts/check-byline-fixture-drift.js');
+  test('same name, renamed critic, nobody, unreachable', () => {
+    assert.equal(classifyDrift({ expected: 'Zachary Stewart' }, { criticName: 'Zach Stewart' }), 'same');
+    assert.equal(classifyDrift({ expected: 'Jonas Schwartz' }, { criticName: 'David Gordon' }), 'drift');
+    assert.equal(classifyDrift({ expected: 'Jonas Schwartz' }, { criticName: null }), 'drift');
+    assert.equal(classifyDrift({ expected: 'Jonas Schwartz' }, { error: '403' }), 'unreachable');
+  });
+});
