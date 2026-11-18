@@ -147,10 +147,20 @@ case "$tool_name" in
     # Deliberately conservative -- false negatives (missed writes) fail open
     # per this hook's design; false positives would wedge an unrelated
     # command with no escape hatch beyond WORKTREE_ENFORCE_DISABLE.
+    # BRO-7723: scan a copy with heredoc bodies and multi-word quoted strings
+    # blanked, so prose that mentions a redirect (a --notes "... > scripts/x.js")
+    # is not read as a write. Single-token quotes keep their content: > "x.js".
+    # perl missing or failing -> scan the raw command (old behaviour).
+    scan=$(printf '%s' "$command" | perl -0pe '
+      s/(<<-?[ \t]*["\x27]?(\w+)["\x27]?[^\n]*)\n.*?\n[ \t]*\2[ \t]*(?=\n|$)/$1/gs;
+      s/"((?:[^"\\]|\\.)*)"/ $1 =~ m{\s} ? "\"\"" : $1 /ge;
+      s/\x27([^\x27]*)\x27/ $1 =~ m{\s} ? "\x27\x27" : $1 /ge;
+    ' 2>/dev/null) || scan="$command"
+    [ -z "$scan" ] && scan="$command"
     targets=$(
       {
-        printf '%s' "$command" | grep -oE '(^|[[:space:]])(>>?|tee)[[:space:]]+[^[:space:];&|]+' | awk '{print $NF}'
-        printf '%s' "$command" | grep -oE '(^|[;&|]|&&|\|\|)[[:space:]]*(cp|mv|sed[[:space:]]+-i[a-zA-Z0-9]*)[[:space:]]+[^;&|]+' | awk '{print $NF}'
+        printf '%s' "$scan" | grep -oE '(^|[[:space:]])(>>?|tee)[[:space:]]+[^[:space:];&|]+' | awk '{print $NF}'
+        printf '%s' "$scan" | grep -oE '(^|[;&|]|&&|\|\|)[[:space:]]*(cp|mv|sed[[:space:]]+-i[a-zA-Z0-9]*)[[:space:]]+[^;&|]+' | awk '{print $NF}'
       }
     )
     [ -z "$targets" ] && exit 0

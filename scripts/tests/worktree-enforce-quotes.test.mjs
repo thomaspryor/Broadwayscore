@@ -1,0 +1,41 @@
+// BRO-7723: worktree-enforce.sh must not read a redirect that only appears inside
+// quoted prose or a heredoc body as a write, and must still block real writes.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { mkdtempSync, mkdirSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const HOOK = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '.claude', 'hooks', 'worktree-enforce.sh');
+const repo = mkdtempSync(join(tmpdir(), 'wt-enforce-'));
+execFileSync('git', ['init', '-q', repo]);
+mkdirSync(join(repo, 'scripts'));
+const home = mkdtempSync(join(tmpdir(), 'wt-home-')); // no ~/.claude/hooks copy -> no self-skip
+
+function run(command) {
+  const input = JSON.stringify({ tool_name: 'Bash', tool_input: { command } });
+  const env = { ...process.env, HOME: home, PLANNING_TIER_MODE: 'off' };
+  delete env.WORKTREE_ENFORCE_DISABLE;
+  return spawnSync('bash', [HOOK], { input, cwd: repo, env, encoding: 'utf8' }).status;
+}
+
+const CASES = [
+  // [name, command, expected exit]
+  ['plain redirect into scripts/', 'echo hi > scripts/x.js', 2],
+  ['quoted single-token target', 'echo hi > "scripts/x.js"', 2],
+  ['redirect after quoted prose arg', 'echo "a b" > scripts/x.js', 2],
+  ['sed -i with spaced expression', "sed -i 's/a b/c/' scripts/x.js", 2],
+  ['cp into scripts/', 'cp /tmp/a scripts/x.js', 2],
+  ['heredoc written to scripts/', "cat > scripts/x.js <<'EOF'\nhello\nEOF", 2],
+  ['redirect named in --notes prose', 'node a.js --notes "redirect output > scripts/foo.js was the bug"', 0],
+  ['cp named in single-quoted prose', "node a.js --notes 'then cp a scripts/b.js broke it'", 0],
+  ['redirect inside heredoc body', "python3 - <<'EOF'\nprint('x > scripts/y.js')\nEOF", 0],
+  ['tee inside heredoc body, unquoted marker', 'cat <<EOF\nrun | tee scripts/z.js\nEOF', 0],
+  ['read-only grep', 'grep -n foo scripts/x.js', 0],
+];
+
+for (const [name, cmd, want] of CASES) {
+  test(name, () => assert.equal(run(cmd), want));
+}
