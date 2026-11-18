@@ -32,7 +32,7 @@ test('item 4: a regional or touring opening (no market hour) is named; Broadway,
   assert.equal(u.find((x) => x.id === 'tour').inDays, 2);
 });
 
-test('item 8: special or <=8-week runs inside 7 days need a decision; an override entry (number or null) settles it', () => {
+test('item 8: specials, and Broadway/West End <=8-week runs, inside 7 days need a decision; a lowered or kept decision settles it; a short Off-Broadway run is not asked', () => {
   const shows = [
     show('special', 'off-broadway', '2026-11-19', { type: 'special' }),
     show('short', 'broadway', '2026-11-20', { closingDate: '2026-12-20' }),
@@ -43,16 +43,21 @@ test('item 8: special or <=8-week runs inside 7 days need a decision; an overrid
     show('decided-number', 'broadway', '2026-11-20', { type: 'special' }),
     show('decided-keep', 'broadway', '2026-11-20', { type: 'special' }),
     show('malformed', 'broadway', '2026-11-20', { type: 'special' }),
+    show('ob-short', 'off-broadway', '2026-11-20', { closingDate: '2026-12-20' }),
+    show('ob-special', 'off-broadway', '2026-11-20', { type: 'special' }),
   ];
-  const overrides = { shows: { 'decided-number': { minReviews: 3 }, 'decided-keep': { minReviews: null }, malformed: { minReviews: '3' } } };
+  const overrides = { shows: { 'decided-number': { minReviews: 3 }, malformed: { minReviews: '3' } }, keptMarketMinimum: { 'decided-keep': { approvedBy: 'owner' } } };
   const u = g.scoreGateUndecided(shows, overrides, { nowMs: NOW });
-  assert.deepEqual(u.map((x) => [x.id, x.reason]), [['special', 'special'], ['eight-weeks', 'short run (56 days)'], ['malformed', 'special'], ['short', 'short run (30 days)']]);
+  assert.deepEqual(u.map((x) => [x.id, x.reason]), [['special', 'special'], ['eight-weeks', 'short run (56 days)'], ['malformed', 'special'], ['ob-special', 'special'], ['short', 'short run (30 days)']]);
 });
 
 test('rows: a warn row per gap with the shows named, a same-name pass row when clear', () => {
   const rows = g.pressNightReadinessResults({ shows: [show('tour', 'tour', '2026-11-18'), show('s', 'broadway', '2026-11-18', { type: 'special' })], overrides: { shows: {} }, nowMs: NOW, embargoAt });
   assert.deepEqual(rows.map((r) => [r.name, r.status]), [['Press night: openings not watched', 'warn'], ['Press night: score gate undecided', 'warn']]);
   assert.match(rows[0].message, /tour \(tour, tonight\)/);
+  // 02:15Z on the 19th is still the 18th in New York: a show opening the 19th opens tomorrow, not tonight.
+  const late = g.scoreGateUndecided([show('x', 'broadway', '2026-11-19', { type: 'special' })], {}, { nowMs: Date.parse('2026-11-19T02:15:00Z') });
+  assert.equal(late[0].inDays, 1);
   assert.match(rows[1].message, /s \(special, opens tonight\)/);
   const clear = g.pressNightReadinessResults({ shows: [], overrides: { shows: {} }, nowMs: NOW, embargoAt });
   assert.deepEqual(clear.map((r) => [r.name, r.status]), [['Press night: openings not watched', 'pass'], ['Press night: score gate undecided', 'pass']]);

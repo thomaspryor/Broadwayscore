@@ -1,10 +1,11 @@
 {
-  "_meta": "Per-show minimum scored reviews for showing a Critic Score, overriding the market minimum (and the T3-only extra). Owner-approved exceptions only; each entry names who approved it and why. Read by scoreGateArg() in src/config/scoring.ts and scripts/lib/should-hide-reviews.js (BRO-7750).",
+  "_meta": "Per-show minimum scored reviews for showing a Critic Score, overriding the market minimum (and the T3-only extra). Owner-approved exceptions only; each entry names who approved it and why. Read by scoreGateArg() in src/config/scoring.ts and scripts/lib/should-hide-reviews.js (BRO-7750). keptMarketMinimum records an owner decision to keep the market minimum for a special or short run (no effect on the site; it answers the 'Press night: score gate undecided' health row, BRO-7779).",
   "shows": {
     "blue-man-group-a-new-holiday-surprise-2026": {
       "minReviews": 3,
       "approvedBy": "owner, in chat 2026-11-18",
       "reason": "Short holiday engagement with few critics reviewing"
     }
-  }
+  },
+  "keptMarketMinimum": {}
 }

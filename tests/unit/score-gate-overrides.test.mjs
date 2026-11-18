@@ -37,3 +37,12 @@ test('every override is owner-approved, sane and names a real show id shape', ()
   }
 });
 
+test('every kept-market-minimum decision is owner-approved and never lowers the gate (BRO-7779)', () => {
+  for (const [id, o] of Object.entries(overrides.keptMarketMinimum || {})) {
+    assert.match(id, /^[a-z0-9-]+-\d{4}$/);
+    assert.equal(o.minReviews, undefined, `${id}: a lowered minimum belongs under shows`);
+    assert.match(o.approvedBy || '', /owner/i, `${id} needs approvedBy naming the owner`);
+    assert.ok(!Object.prototype.hasOwnProperty.call(overrides.shows, id), `${id} is both lowered and kept`);
+  }
+});
+

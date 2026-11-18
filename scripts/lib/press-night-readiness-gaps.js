@@ -11,7 +11,9 @@
  * opening and closing), draws few critics, so the market minimum can keep its Critic Score hidden all run
  * (Blue Man Group, 2026-11-17: the gate decision came after the night, BRO-7750). Within SCORE_GATE_LOOKAHEAD_DAYS
  * of opening, such a show with no entry in data/score-gate-overrides.json is named so the call is made before
- * the night. An entry with minReviews null records "keep the market minimum" and silences the row.
+ * the night. A decision to keep the market minimum goes under keptMarketMinimum (outside `shows`, which the site reads,
+ * so it changes nothing there) and also silences the row. Only Broadway and the West End, plus any special, are asked:
+ * a short run is the norm Off-Broadway, Off-West End and regionally, and asking about every one would flood the owner.
  *
  * Pure functions over plain data (CLAUDE.md rule 15); health-check.js reads the files and the clock.
  */
@@ -22,7 +24,9 @@ const SHORT_RUN_DAYS = 56; // 8 weeks
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const isDay = (d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && Number.isFinite(Date.parse(`${d}T00:00:00Z`));
-const dayOf = (ms) => new Date(ms).toISOString().slice(0, 10);
+// Today in New York: the check runs at 02:15Z, still the previous evening there, and a UTC date would call tomorrow tonight.
+const dayOf = (ms, timeZone = 'America/New_York') => new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
+const GATED_SHORT_RUN_CATEGORIES = new Set(['broadway', 'west-end']);
 const daysBetween = (a, b) => Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / DAY_MS);
 
 /** Shows opening in [today, today + days]. A show with no real opening date cannot be planned for and is skipped. */
@@ -48,7 +52,7 @@ function unwatchedOpenings(shows, { nowMs, embargoAt, days = UNWATCHED_LOOKAHEAD
 function scoreGateReason(show) {
   if (!show) return null;
   if (String(show.type || '').toLowerCase() === 'special') return 'special';
-  if (isDay(show.openingDate) && isDay(show.closingDate)) {
+  if (GATED_SHORT_RUN_CATEGORIES.has(show.category) && isDay(show.openingDate) && isDay(show.closingDate)) {
     const run = daysBetween(show.openingDate, show.closingDate);
     if (run >= 0 && run <= SHORT_RUN_DAYS) return `short run (${run} days)`;
   }
@@ -60,13 +64,15 @@ function scoreGateReason(show) {
  * lowers the gate, null keeps the market minimum). Returns [{id, title, openingDate, inDays, reason}].
  */
 function scoreGateUndecided(shows, overrides, { nowMs, days = SCORE_GATE_LOOKAHEAD_DAYS }) {
-  const decided = (overrides && overrides.shows) || {};
-  // A decision is minReviews null (keep the market minimum) or a whole number >= 1 (what scoreGateArg reads). A
-  // malformed entry ({} or "3") changes nothing on the site, so it must not silence the row either (ship-check).
-  const isDecision = (o) => !!o && typeof o === 'object' && (o.minReviews === null || (Number.isInteger(o.minReviews) && o.minReviews >= 1));
+  const lowered = (overrides && overrides.shows) || {};
+  const kept = (overrides && overrides.keptMarketMinimum) || {};
+  // A decision is a lowered minimum the site reads (a whole number >= 1, as scoreGateArg does) or a recorded "keep"
+  // with who approved it. A malformed entry ({} or "3") changes nothing on the site, so it does not silence the row.
+  const has = (o, id) => Object.prototype.hasOwnProperty.call(o, id) && o[id] && typeof o[id] === 'object';
+  const isDecision = (id) => (has(lowered, id) && Number.isInteger(lowered[id].minReviews) && lowered[id].minReviews >= 1) || (has(kept, id) && !!kept[id].approvedBy);
   const today = dayOf(nowMs);
   return upcoming(shows, nowMs, days)
-    .filter((s) => !(Object.prototype.hasOwnProperty.call(decided, s.id) && isDecision(decided[s.id])))
+    .filter((s) => !isDecision(s.id))
     .map((s) => ({ s, reason: scoreGateReason(s) }))
     .filter((x) => x.reason)
     .map(({ s, reason }) => ({ id: s.id, title: s.title || s.id, openingDate: s.openingDate, inDays: daysBetween(today, s.openingDate), reason }))
@@ -89,7 +95,7 @@ function pressNightReadinessResults({ shows, overrides, nowMs, embargoAt }) {
     undecided.length
       ? { name: 'Press night: score gate undecided', status: 'warn', items: undecided,
         message: `${undecided.length} special or short-run show(s) open within ${SCORE_GATE_LOOKAHEAD_DAYS} days with no score-gate decision, so few reviews may keep the Critic Score hidden: ${list(undecided, (u) => `${u.title} (${u.reason}, opens ${when(u.inDays)})`)}`,
-        hint: 'Record the decision in data/score-gate-overrides.json: minReviews N to lower the gate, or minReviews null to keep the market minimum, with approvedBy and reason.' }
+        hint: 'Record the decision in data/score-gate-overrides.json: shows.<id> {minReviews N, approvedBy, reason} to lower the gate, or keptMarketMinimum.<id> {approvedBy, reason} to keep the market minimum.' }
       : { name: 'Press night: score gate undecided', status: 'pass', message: `No special or short-run show opens within ${SCORE_GATE_LOOKAHEAD_DAYS} days without a score-gate decision` },
   ];
 }
