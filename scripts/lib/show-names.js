@@ -91,21 +91,23 @@ function showNames(show, allShows) {
 }
 
 // --- registry: the loaded show list, for matchers that only receive show.title ---------------------------------
-let _registry = null; // { akaByTitle: Map, titles: string[] }
+let _registry = null; // { akaByTitle: Map, venueByTitle: Map, titles: string[] }
 function buildRegistry(shows) {
   const akaByTitle = new Map();
+  const venueByTitle = new Map();
   const titles = [];
   for (const s of shows || []) {
     if (!s || !s.title) continue;
     titles.push(s.title);
     const k = normTitle(s.title);
+    if (typeof s.venue === 'string' && s.venue.trim()) venueByTitle.set(k, [...(venueByTitle.get(k) || []), s.venue]);
     for (const a of Array.isArray(s.akaTitles) ? s.akaTitles : []) {
       if (!usableAka(a, s.title)) continue;
       if (!akaByTitle.has(k)) akaByTitle.set(k, []);
       if (!akaByTitle.get(k).some((x) => normTitle(x) === normTitle(a))) akaByTitle.get(k).push(a.trim());
     }
   }
-  return { akaByTitle, titles };
+  return { akaByTitle, venueByTitle, titles };
 }
 function registry() {
   if (!_registry) {
@@ -120,6 +122,65 @@ function registry() {
 function setPressNameShows(shows) { _registry = shows ? buildRegistry(shows) : null; }
 /** akaTitles for a billed title (union over shows billed the same). Read once per process. */
 function pressAkaForTitle(title) { return registry().akaByTitle.get(normTitle(title)) || []; }
+/** Venues of the shows billed with this title (for otherProductionCue). */
+function pressVenuesForTitle(title) { return registry().venueByTitle.get(normTitle(title)) || []; }
+
+const FILM_CUE_RE = /\b(movie|film|films|cinema|screen|streaming|netflix|blu[- ]?ray|1946|capra|capra['\u2019]s|album|song|episode|tv series)\b/i;
+const NOT_COMPANY_POSSESSIVE = new Set(['broadway', 'review', 'critic', 'critics', 'tonight', 'year', 'season', 'today', 'week', 'nyc', 'london', 'it', 'that', 'what', 'here', 'there', 'who']);
+const COMPANY_WORD_RE = /\b(theatre|theater|rep|repertory|players|playhouse|company|stage|stages|productions?|opera|college|university|school)\b/i;
+const AT_NOT_VENUE = new Set(['its', 'last', 'heart', 'home', 'first', 'times', 'all', 'once', 'least', 'best', 'most', 'christmas', 'holiday', 'night', 'broadway', 'lincoln', 'new']);
+/**
+ * BRO-7778: a headline that names a show only by a press title (akaTitles) can be about another production of the same
+ * work: a regional staging ("Review: Rosebud's It's A Wonderful Life", "'It's A Wonderful Life' is a Wonderful Time at
+ * Hope Repertory"), another version ("It's A Wonderful Life: The Musical") or the film ("It's a Wonderful Life (1946)
+ * Review"). Returns the cue found, or null. Only for press-title matches: the billed title is the show's own name.
+ * @param {string} text headline (or slug text)
+ * @param {string} aka the press title that matched
+ * @param {{title: string, venue?: string}} show the show (venue read from the loaded show list when absent)
+ * @returns {string|null}
+ */
+function otherProductionCue(text, aka, show) {
+  const raw = fold(String(text || '')).replace(/[\u2018\u2019\u02BC`]/g, "'");
+  if (FILM_CUE_RE.test(raw)) return 'film';
+  const akaW = normTitle(aka).split(' ').filter(Boolean);
+  if (!akaW.length) return null;
+  const re = new RegExp(`(^|[^a-z0-9])${akaW.map((w) => w.split('').join("'?")).join("[^a-z0-9]+")}(?![a-z0-9])`, 'i');
+  const m = re.exec(raw);
+  if (!m) return null;
+  const before = raw.slice(0, m.index + m[1].length);
+  const after = raw.slice(m.index + m[0].length);
+  const own = (show && show.title) || '';
+  // A company's possessive before the press title ("Rosebud's It's A Wonderful Life", "Studio Tenn's ... IT'S A
+  // WONDERFUL LIFE"). The press title's own "It's" is not before the match.
+  // A word of the billed title is the show's own ("Billy Crystal's Solo Show 860" for Billy Crystal 860).
+  const billedW = new Set(sigWords((show && show.title) || ''));
+  for (const pos of before.matchAll(/\b([A-Za-z0-9]+)(?:'s|s')(?![a-z])/g)) {
+    const w = pos[1].toLowerCase();
+    if (!NOT_COMPANY_POSSESSIVE.has(w) && !billedW.has(normTitle(w))) return `possessive:${pos[1]}`;
+  }
+  // A company or venue named right after it: ", Reading Rep Theatre", "by American Blues Theater".
+  const tail = /^\s*["']?\s*(?:,|\bby\b)\s*([^,|:\u2013\u2014]{0,60})/i.exec(after);
+  if (tail && COMPANY_WORD_RE.test(tail[1]) && !/\b(reviewed|written|directed)\s*$/i.test(raw.slice(0, raw.length - after.length + 1))) {
+    const own = new Set(sigWords((show && show.venue) || '').concat(...pressVenuesForTitle((show && show.title) || '').map(sigWords)));
+    if (!sigWords(tail[1]).some((w) => own.has(w) && !/^(theatre|theater)$/.test(w))) return `company:${tail[1].trim().slice(0, 40)}`;
+  }
+  // Another subtitle right after the press title ("It's A Wonderful Life: The Musical", "...: Live in Chicago!").
+  const sub = /^\s*["']?\s*([:(\u2013\u2014-])\s*([^)\u2013\u2014:|]*)/.exec(after);
+  if (sub) {
+    const words = sigWords(sub[2]).filter((w) => !/^review(s|ed)?$/.test(w)).slice(0, 3);
+    const ownW = new Set(sigWords(own));
+    if (words.length && words.some((w) => !ownW.has(w))) return `subtitle:${sub[2].trim().slice(0, 40)}`;
+  }
+  // "at <Venue>" naming somewhere other than the show's own venue.
+  const venues = [...(show && show.venue ? [show.venue] : []), ...pressVenuesForTitle(own)];
+  const venueW = new Set(venues.flatMap((v) => sigWords(v)));
+  for (const a of after.matchAll(/\b[Aa][Tt]\s+(?:[Tt][Hh][Ee]\s+)?([A-Z][A-Za-z0-9']*)/g)) {
+    const w = normTitle(a[1]);
+    if (w && !AT_NOT_VENUE.has(w) && !venueW.has(w)) return `venue:${a[1]}`;
+  }
+  return null;
+}
+
 /** Every billed title in the registry (closed shows too), for main-title uniqueness. Empty when unavailable. */
 function registryShowTitles() { return registry().titles; }
 
@@ -153,5 +214,5 @@ function akaTitlesValueProblem(value, show, shows, prevValue = null) {
 
 module.exports = {
   akaTitlesValueProblem, normTitle, sigWords, mainTitleSplit, mainTitleIsUnique, showNames,
-  pressAkaForTitle, registryShowTitles, setPressNameShows,
+  pressAkaForTitle, pressVenuesForTitle, registryShowTitles, setPressNameShows, otherProductionCue,
 };

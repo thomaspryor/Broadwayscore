@@ -42,11 +42,12 @@ function headlineNamesShow(headline, show) {
 // The press-title half of headlineNamesShow on its own, for callers whose listing-title test is stricter than this
 // fuzzy one (playbill-verdict-discover.js, BRO-6872).
 function headlineNamesPressTitle(headline, show) {
-  const { sigWords } = require('./show-names');
+  const { sigWords, otherProductionCue } = require('./show-names');
   const listing = words(show.title).filter((w) => !LISTING_STOP.has(w));
   const head = new Set(words(headline));
   return searchTitles(show).slice(1).some((aka) => {
     if (!titleMatchesShow(headline, aka, { fuzzy: true, akaTitles: [] })) return false;
+    if (otherProductionCue(headline, aka, show)) return false; // another staging or the film (BRO-7778)
     if (sigWords(aka).filter((w) => w.length >= 3 && /[a-z]/.test(w)).length >= 2) return true;
     const extra = listing.filter((w) => !words(aka).includes(w));
     return extra.length === 0 || extra.some((w) => head.has(w));

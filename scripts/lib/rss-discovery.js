@@ -281,7 +281,7 @@ function singleWordTitleIdentity(itemTitle, itemForms, phrase, word) {
 
 // BRO-7739 / BRO-7778: main-title rules live in show-names.js (one show identity for every matcher). mainTitleOf
 // now splits colon and dash subtitles too; a colon/dash main title needs a review cue in the headline (below).
-const { mainTitleSplit, mainTitleIsUnique, pressAkaForTitle, showNames, sigWords: nameSigWords, normTitle } = require('./show-names');
+const { mainTitleSplit, mainTitleIsUnique, pressAkaForTitle, showNames, sigWords: nameSigWords, normTitle, otherProductionCue } = require('./show-names');
 function mainTitleOf(showTitle) {
   const s = mainTitleSplit(showTitle);
   return s ? s.main : null;
@@ -293,11 +293,14 @@ function mainTitleOf(showTitle) {
  * like the billed title. A one-significant-word aka ("Sacrifices") also needs single-word identity: quoted, beside
  * "review", or leading the headline.
  */
-function akaTitleMatches(itemTitle, aka, opts) {
+function akaTitleMatches(itemTitle, aka, opts, showTitle) {
   const sw = nameSigWords(aka);
   if (!sw.length) return false;
   const inner = { ...opts, mainTitle: false, akaTitles: [] };
   if (!titleMatchesFullShowTitle(itemTitle, aka, inner)) return false;
+  // A press title is shared with other productions and the film: reject a headline that points at one (the near-miss
+  // alert still fires on it). Calgary Herald "Review: Rosebud's It's A Wonderful Life" (2026-11-18 dry run).
+  if (otherProductionCue(itemTitle, aka, { title: showTitle })) return false;
   if (sw.length > 1) return true;
   const norm = (t, keep) => {
     const v = foldDiacritics(String(t || '')).toLowerCase().replace(/[\u2018\u2019\u02BC]/g, "'")
@@ -325,7 +328,7 @@ function titleMatchesShow(itemTitle, showTitle, opts = {}) {
   // titles (akaTitles: opts.akaTitles, else the loaded show list) and, with opts.mainTitle, the unique main title.
   const akas = Array.isArray(opts.akaTitles) ? opts.akaTitles : (opts.pressNames === false ? [] : pressAkaForTitle(showTitle));
   const names = showNames({ title: showTitle, akaTitles: akas }, opts.mainTitle ? opts.allShowTitles : null);
-  if (names.some((n) => n.kind === 'aka' && akaTitleMatches(itemTitle, n.name, opts))) return true;
+  if (names.some((n) => n.kind === 'aka' && akaTitleMatches(itemTitle, n.name, opts, showTitle))) return true;
   const split = names.find((n) => n.kind === 'main');
   if (!split) return false;
   const main = split.name;
@@ -437,7 +440,7 @@ function urlSlugMatchesShow(url, showTitle, opts = {}) {
     if (passesGenericTitleIdentity(url, showTitle) && (' ' + normalize(slugText) + ' ').includes(' ' + phrase + ' ')) return true;
     // BRO-7778: the show's press titles (akaTitles) still count for a one-word billed title.
     const akas = Array.isArray(opts.akaTitles) ? opts.akaTitles : (opts.pressNames === false ? [] : pressAkaForTitle(showTitle));
-    return akas.some((a) => typeof a === 'string' && normTitle(a) !== normTitle(showTitle) && akaTitleMatches(slugText, a, opts));
+    return akas.some((a) => typeof a === 'string' && normTitle(a) !== normTitle(showTitle) && akaTitleMatches(slugText, a, opts, showTitle));
   }
   return titleMatchesShow(slugText, showTitle, opts);
 }

@@ -78,3 +78,33 @@ test('every show opening in the next 90 days: short title matched or near-missed
   assert.deepEqual(gaps, [], `short titles nothing catches:\n${gaps.join('\n')}`);
   console.log(`# ${checked} subtitle shows of ${upcoming.length} opening in 90 days: none uncaught`);
 });
+
+test('a press-title match pointing at another production or the film is rejected, the near-miss alert still fires', () => {
+  setPressNameShows([{ ...FIXTURE[0], venue: 'Broadhurst Theatre' }, ...FIXTURE.slice(1)]);
+  try {
+    const { nearMissSignals } = require(path.join(ROOT, 'scripts/lib/opening-night-lane/near-miss.js'));
+    const { headlineNamesShow } = require(path.join(ROOT, 'scripts/lib/google-news-rss.js'));
+    const show = { ...FIXTURE[0], venue: 'Broadhurst Theatre' };
+    const opts = { fuzzy: true, mainTitle: true, allShowTitles: FIXTURE.map((s) => s.title) };
+    // Real Google News headlines for the title, 2026-11-18 (other stagings and the film).
+    const other = [
+      "Review: Rosebud's It's A Wonderful Life a perfect holiday show bursting with nostalgia",
+      "Review: 'It's A Wonderful Life' is a Wonderful Time at Hope Repertory",
+      'It’s a Wonderful Life movie review',
+      '‘It’s a Wonderful Life’ (1946) Review (Published 2018)',
+      'REVIEW | It’s A Wonderful Life, Reading Rep Theatre',
+      'Review: Lovely "It’s a Wonderful Life" by American Blues Theater',
+      'It’s A Wonderful Life: The Musical at Toby’s Dinner Theatre (review)',
+      "Review: Studio Tenn's Emotional and Heartfelt IT'S A WONDERFUL LIFE Brings Magic to the Holiday Season",
+    ];
+    for (const h of other) {
+      assert.ok(!titleMatchesShow(h, show.title, opts), `lane admitted: ${h}`);
+      assert.ok(!headlineNamesShow(h, show), `google news admitted: ${h}`);
+    }
+    assert.ok(nearMissSignals({ title: other[0], url: 'https://calgaryherald.com/x' }, show).length > 0);
+    for (const h of ["Review: It's a Wonderful Life", "Review: 'It's a Wonderful Life' at the Broadhurst", "Broadway's It's a Wonderful Life is a warm radio play"]) {
+      assert.ok(titleMatchesShow(h, show.title, opts), `lane missed: ${h}`);
+      assert.ok(headlineNamesShow(h, show), `google news missed: ${h}`);
+    }
+  } finally { setPressNameShows(null); }
+});
