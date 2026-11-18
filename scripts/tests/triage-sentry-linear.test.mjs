@@ -134,3 +134,32 @@ test('triage-sentry.js and its workflow no longer file GitHub issues', () => {
   assert.match(wf, /LINEAR_API_KEY: \$\{\{ secrets\.LINEAR_API_KEY \}\}/);
   assert.doesNotMatch(wf, /issues: write/);
 });
+
+test('a closed card plus an event after it closed files ONE regression card (BRO-7722)', () => {
+  const closed = { identifier: 'BRO-1', state: { type: 'completed' }, completedAt: '2026-11-10T00:00:00Z' };
+  assert.equal(lib.regressionOf([closed], { lastSeen: '2026-11-12T00:00:00Z' }), closed);
+  // seen before the close: same issue, no refile
+  assert.equal(lib.regressionOf([closed], { lastSeen: '2026-11-09T00:00:00Z' }), null);
+  // an open card (e.g. the regression card itself) stops any further refile
+  assert.equal(lib.regressionOf([closed, { identifier: 'BRO-2', state: { type: 'unstarted' } }], { lastSeen: '2026-11-12T00:00:00Z' }), null);
+  // no close time or no lastSeen: fail closed (no refile)
+  assert.equal(lib.regressionOf([{ ...closed, completedAt: null }], { lastSeen: '2026-11-12T00:00:00Z' }), null);
+  assert.equal(lib.regressionOf([closed], {}), null);
+  assert.equal(lib.regressionOf([], { lastSeen: '2026-11-12T00:00:00Z' }), null);
+});
+
+test('fileSentryIssue files a regression card titled as such when the fix did not hold', async () => {
+  const closed = { identifier: 'BRO-1', description: 'sentry-issue: sentry-4567', state: { type: 'completed' }, completedAt: '2026-11-10T00:00:00Z' };
+  const calls = [];
+  const deps = {
+    listIssuesByProvenance: async () => [closed],
+    createLinearIssue: async (c) => { calls.push(c); return { issue: { identifier: 'BRO-9' } }; },
+  };
+  const r = await lib.fileSentryIssue({ issue: { ...ISSUE, lastSeen: '2026-11-12T00:00:00Z' }, classification: REAL, org: 'o' }, deps);
+  assert.equal(r.action, 'filed');
+  assert.match(calls[0].title, /^Sentry regression:/);
+  assert.match(calls[0].description, /^REGRESSION: BRO-1 /);
+  assert.ok(lib.hasMarker(calls[0].description, '4567'));
+  const r2 = await lib.fileSentryIssue({ issue: { ...ISSUE, lastSeen: '2026-11-09T00:00:00Z' }, classification: REAL, org: 'o' }, deps);
+  assert.equal(r2.action, 'existing');
+});

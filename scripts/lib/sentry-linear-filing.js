@@ -8,7 +8,9 @@
  * Dedupe: every card carries a `sentry-issue: sentry-<id>` line. A card with
  * that line in ANY state (closed and archived too, as the old GitHub search
  * did) means the Sentry issue is already tracked, so it is never refiled every
- * 6 hours. The lookup is fail-closed: a failed search throws, and the caller
+ * 6 hours. Exception (BRO-7722): when every matching card is closed and Sentry
+ * has seen the error AFTER the last one closed, the fix did not hold, so one
+ * new "regression" card is filed (it is then the open match). The lookup is fail-closed: a failed search throws, and the caller
  * skips filing rather than risk a duplicate (BRO-5565).
  */
 
@@ -70,9 +72,33 @@ function buildSentryCard(issue, classification, org) {
   };
 }
 
-async function findExistingSentryCard(sentryId, { listIssuesByProvenance }) {
+async function findSentryCards(sentryId, { listIssuesByProvenance }) {
   const found = await listIssuesByProvenance({ since: LOOKUP_SINCE, descriptionMarkers: [markerLine(sentryId)] });
-  return (found || []).find((i) => hasMarker(i.description, sentryId)) || null;
+  return (found || []).filter((i) => hasMarker(i.description, sentryId));
+}
+
+async function findExistingSentryCard(sentryId, deps) {
+  return (await findSentryCards(sentryId, deps))[0] || null;
+}
+
+const CLOSED_TYPES = new Set(['completed', 'canceled']);
+function closedAtMs(card) {
+  const t = Date.parse(card.completedAt || card.canceledAt || '');
+  return Number.isFinite(t) ? t : null;
+}
+
+// Pure: given the marker-matched cards and the Sentry issue, is this a
+// regression (all closed, event seen after the latest close)? Returns the
+// latest closed card, or null. A closed card with no close time never counts.
+function regressionOf(cards, issue) {
+  if (!cards.length) return null;
+  if (cards.some((c) => !CLOSED_TYPES.has(c.state && c.state.type))) return null;
+  const lastSeen = Date.parse(issue.lastSeen || '');
+  if (!Number.isFinite(lastSeen)) return null;
+  const closes = cards.map((c) => ({ c, t: closedAtMs(c) }));
+  if (closes.some((x) => x.t == null)) return null;
+  const latest = closes.reduce((a, b) => (b.t > a.t ? b : a));
+  return lastSeen > latest.t ? latest.c : null;
 }
 
 /**
@@ -82,15 +108,20 @@ async function findExistingSentryCard(sentryId, { listIssuesByProvenance }) {
  * caller must treat it as a failure, never as success.
  */
 async function fileSentryIssue({ issue, classification, org, canCreate = true }, { listIssuesByProvenance, createLinearIssue }) {
-  let existing;
+  let cards;
   try {
-    existing = await findExistingSentryCard(issue.id, { listIssuesByProvenance });
+    cards = await findSentryCards(issue.id, { listIssuesByProvenance });
   } catch (e) {
     return { action: 'skipped', reason: `could not check for an existing Linear card (${e.message}); not filing a possible duplicate` };
   }
-  if (existing) return { action: 'existing', card: existing };
+  const regressed = regressionOf(cards, issue);
+  if (cards.length && !regressed) return { action: 'existing', card: cards[0] };
   if (!canCreate) return { action: 'deferred', reason: `per-run cap of ${MAX_NEW_CARDS_PER_RUN} new cards reached; filed on a later run` };
   const card = buildSentryCard(issue, classification, org);
+  if (regressed) {
+    card.title = `Sentry regression: ${String(issue.title || 'unknown error').substring(0, 75)}`;
+    card.description = `REGRESSION: ${regressed.identifier} was closed but Sentry saw this error again at ${issue.lastSeen}. The earlier fix did not hold.\n\n${card.description}`;
+  }
   try {
     // Dedupe is the marker lookup above; the title near-match rule is opted
     // out because distinct Sentry errors share most title words.
@@ -107,4 +138,4 @@ async function fileSentryIssue({ issue, classification, org, canCreate = true },
   }
 }
 
-module.exports = { LOW_FREQUENCY_PARK, regressionTestPath, MAX_NEW_CARDS_PER_RUN, markerLine, hasMarker, buildSentryCard, findExistingSentryCard, fileSentryIssue, SOURCE };
+module.exports = { regressionOf, LOW_FREQUENCY_PARK, regressionTestPath, MAX_NEW_CARDS_PER_RUN, markerLine, hasMarker, buildSentryCard, findExistingSentryCard, fileSentryIssue, SOURCE };
