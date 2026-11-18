@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7780-c",
+  "planId": "0bb1ef55-ee3b-47f2-bb13-0a2a74b5ce08",
+  "status": "pending",
+  "createdAt": "2026-11-18T15:34:42.201Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7780 sweep: All That Dazzles 'Are You Watching' review credited to Daz Gale; the page prints 'Review by Seth Wilby'",
+    "steps": [
+      "are-you-watching-west-end-2026/all-that-dazzles-uk--daz-gale.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "are-you-watching-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+        "field": "criticName",
+        "oldValue": "Daz Gale",
+        "newValue": "Seth Wilby",
+        "description": "are-you-watching-west-end-2026/all-that-dazzles-uk--daz-gale.json: criticName"
+      }
+    ]
+  }
+}

@@ -230,6 +230,6 @@ describe('printed credits found by the BRO-7780 sweep', () => {
   });
   test('Theatre and Tonic: "Reviewed by Annie for Theatre and Tonic" as well as "Written by"', () => {
     assert.equal(printedOutletByline('theatreandtonic', 'a lovely show. Reviewed by Annie for Theatre and Tonic Disclaimer: Gifted')?.name, 'Annie');
-    assert.equal(printedOutletByline('theatreandtonic', 'Written by Penny Walshe ... Written by Roby for Theatre and Tonic, October 2026')?.name, 'Roby');
+    assert.equal(printedOutletByline('theatreandtonic', 'Written by Ann Lee ... Written by Bo for Theatre and Tonic, October 2026')?.name, 'Bo');
   });
 });
