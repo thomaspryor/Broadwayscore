@@ -48,7 +48,7 @@ function entryId(show, url) {
 
 /**
  * Add URLs for one show. Pure. A URL already in the inbox for that show is reported as a duplicate, not re-added
- * (unless its earlier entry failed or was rejected: then it is re-queued, so a person can retry with `force`).
+ * (unless its earlier entry failed, was rejected or was drained: then it is re-queued, so a person can retry with `force`).
  * @param lines [{url, outletId?, critic?, force?}]
  * @returns {{ok, state, added: [id], duplicates: [id], invalid: [url]}}
  */
@@ -62,7 +62,8 @@ function addEntries(state, { show, lines = [], addedBy = 'unknown', now, ttlMs =
     const id = entryId(show, line && line.url);
     if (!id) { invalid.push(String((line && line.url) || '')); continue; }
     const prior = next.leases[id];
-    if (prior && !(prior.status === 'failed' || prior.status === 'rejected')) { duplicates.push(id); continue; }
+    // A failed, rejected or drained entry is re-queued (a retry with force; a drained URL whose ingest never landed).
+    if (prior && !(prior.status === 'failed' || prior.status === 'rejected' || prior.status === 'drained')) { duplicates.push(id); continue; }
     next.leases[id] = {
       holder: HOLDER, show, url: String(line.url).trim(),
       ...(line.outletId ? { outletId: String(line.outletId) } : {}),
@@ -91,7 +92,8 @@ function markStatus(state, { updates = [], now } = {}) {
     if (!prior) continue;
     if (u.addedAt && prior.addedAt && u.addedAt !== prior.addedAt) continue; // about an earlier generation (re-added since)
     if (u.status === 'queued' && FINAL_STATUSES.includes(prior.status)) continue;
-    next.leases[u.id] = { ...prior, status: u.status, statusAt: at, ...(u.reason ? { reason: String(u.reason).slice(0, 300) } : {}) };
+    next.leases[u.id] = { ...prior, status: u.status, statusAt: at, ...(u.reason ? { reason: String(u.reason).slice(0, 300) } : {}),
+      ...(u.status === 'drained' ? { drainCount: (prior.drainCount || 0) + 1 } : {}) };
     applied.push(u.id);
   }
   return { ok: true, state: next, applied };

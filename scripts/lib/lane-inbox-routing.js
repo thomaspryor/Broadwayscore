@@ -48,12 +48,19 @@ function liveLease(show, repoDir) {
 /**
  * After an inbox write: if the lane has released the show meanwhile (it ended between the lease check and the write),
  * no lane reads these entries and the end-of-night drain may already have run. Mark them drained and tell the caller
- * to ingest them the regular way. A duplicate ingest is harmless; a stranded URL is a missing review.
+ * to ingest them the regular way (after refreshing the local lease file). A duplicate ingest is harmless; a stranded
+ * URL is a missing review, and the hourly inbox sweep re-sends a drained URL that never reached reviews.json.
  * @returns {{ingestNow: boolean, lease}}
  */
-function settleAfterInboxWrite({ showId, ids, repoDir, readLease = liveLease, mark }) {
+function settleAfterInboxWrite({ showId, ids, repoDir, readLease = liveLease, mark, syncLocal }) {
   const lease = readLease(showId, repoDir);
   if (lease) return { ingestNow: false, lease };
+  // The job's local lease file (written at job start) still says held, and the landing step reverts a held show's
+  // files: refresh it first. If that fails, leave the entries queued for the hourly sweep rather than ingest into a revert.
+  const doSync = syncLocal || (() => require('./opening-night-lane/lease-store').syncLocalFile({ repoDir }, require('./opening-night-lane/lease-guard').leasesFile()));
+  try { doSync(); } catch (e) {
+    return { ingestNow: false, lease: { unknown: true, holder: `local lease refresh failed: ${String((e && e.message) || e).slice(0, 80)}` } };
+  }
   const doMark = mark || ((updates) => require('./opening-night-lane/manual-inbox').markSync({ repoDir }, updates));
   if (ids && ids.length) doMark(ids.map((id) => ({ id, status: 'drained', reason: 'the lane ended while this was queued; ingested directly' })));
   return { ingestNow: true, lease: null };

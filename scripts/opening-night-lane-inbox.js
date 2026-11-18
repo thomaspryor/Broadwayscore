@@ -6,6 +6,7 @@
  *   node scripts/opening-night-lane-inbox.js add --show=SHOW_ID --url=URL [--outlet=ID] [--critic="Name"] [--force] [--queue-anyway]
  *   node scripts/opening-night-lane-inbox.js list [--show=SHOW_ID] [--json]
  *   node scripts/opening-night-lane-inbox.js drain --show=SHOW_ID [--dispatch]
+ *   node scripts/opening-night-lane-inbox.js sweep [--dispatch]
  *
  * add      Queue a URL. The running lane reads the inbox every pass (about 2 minutes), fetches, scores and publishes it.
  *          Refused (exit 2) when no lane holds the show, since nothing would read it; --queue-anyway queues it for a
@@ -14,6 +15,8 @@
  * list     What is in the inbox and what the lane did with each URL (queued, published, failed + why, rejected + why).
  * drain    After the lane ends: entries the lane never finished go to ingest-urls.yml (the regular path) and are
  *          marked drained. Without --dispatch it only prints what it would send. Run by opening-night-lane-live.yml.
+ * sweep    Hourly safety net (opening-night-checklist.yml): any show no lane holds whose entries were left open for 6h,
+ *          or drained / already-in 2h ago and still not in reviews.json (up to 3 sends), goes to ingest-urls.yml.
  */
 require('./lib/cli-help').exitOnHelp(module);
 const path = require('path');
@@ -58,11 +61,43 @@ function list() {
   for (const e of rows) console.log(`${e.show}  ${e.status || 'waiting'}${e.reason ? ` (${e.reason})` : ''}  ${e.url}  added ${e.addedAt} by ${e.addedBy}`);
 }
 
-/** Pure: the ingest-urls lines for entries the lane did not finish. */
+const ingestLines = (entries) => { const { formatIngestLine } = require('./lib/ingest-url-line'); return entries.map((e) => formatIngestLine({ url: e.url, outlet: e.outletId || null, critic: e.critic || null })); };
+
+/**
+ * Pure: the entries the lane did not finish. A date rejection of a URL that came in through a hand dispatch of
+ * ingest-urls goes on too: that dispatch could not pass --force, and before the inbox it ingested whatever the date.
+ */
 function drainPlan(entries) {
-  const { formatIngestLine } = require('./lib/ingest-url-line');
-  const open = entries.filter((e) => !e.status || e.status === 'queued' || e.status === 'failed');
-  return { open, lines: open.map((e) => formatIngestLine({ url: e.url, outlet: e.outletId || null, critic: e.critic || null })) };
+  const open = entries.filter((e) => !e.status || e.status === 'queued' || e.status === 'failed'
+    || (e.status === 'rejected' && /^ingest-urls/.test(String(e.addedBy || ''))));
+  return { open, lines: ingestLines(open) };
+}
+
+const STALE_OPEN_MS = 6 * 60 * 60 * 1000; // an open entry this old with no lane holding the show: the lane is not coming
+const RECHECK_MS = 2 * 60 * 60 * 1000; // a drained or already-in URL still not in reviews.json after this: send it again
+const MAX_DRAINS = 3;
+
+/**
+ * Pure: what the hourly sweep sends to ingest-urls, per show. Catches every way an inbox URL could be left behind: the
+ * night job's drain skipped (push failed, lease never released), a drained ingest-urls run cancelled in GitHub's queue
+ * or failed, an entry marked already-in that never reached the site. `onSite(show, url)` says whether reviews.json has it.
+ * Shows a lease still holds are left alone (the lane, or the night job's own drain, handles them).
+ */
+function sweepPlan(state, { now = Date.now(), onSite, held }) {
+  const byShow = new Map();
+  const age = (t) => now - Date.parse(t || 0);
+  for (const [id, e] of Object.entries((state && state.leases) || {})) {
+    if (!e || e.holder !== inbox.HOLDER || held(e.show)) continue;
+    const entry = { id, ...e };
+    const stillOpen = drainPlan([entry]).open.length > 0;
+    const due = stillOpen ? age(e.addedAt) >= STALE_OPEN_MS
+      : (e.status === 'drained' || e.status === 'already-in') && age(e.statusAt) >= RECHECK_MS
+        && (e.drainCount || 0) < MAX_DRAINS && !onSite(e.show, e.url);
+    if (!due) continue;
+    if (!byShow.has(e.show)) byShow.set(e.show, []);
+    byShow.get(e.show).push(entry);
+  }
+  return [...byShow.entries()].map(([show, open]) => ({ show, open, lines: ingestLines(open) }));
 }
 
 /** The show's active lease on the remote store (any holder), {unknown:true} when the store cannot be read, else null. */
@@ -88,17 +123,48 @@ function drain() {
     process.exitCode = 3;
     return;
   }
+  send(show, open, lines, 'sent to ingest-urls after the lane ended');
+}
+
+function send(show, open, lines, reason) {
   require('./lib/rest-dispatch').dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: show, urls: lines.join('\n'), caller: 'lane-inbox-drain' } });
-  const res = inbox.markSync({ repoDir: REPO_DIR }, open.map((e) => ({ id: e.id, status: 'drained', reason: 'sent to ingest-urls after the lane ended' })));
+  const res = inbox.markSync({ repoDir: REPO_DIR }, open.map((e) => ({ id: e.id, addedAt: e.addedAt, status: 'drained', reason })));
   if (!res.ok) console.log(`::warning::drained ${open.length} URL(s) to ingest-urls but the inbox status write failed (${res.reason}); a second drain would send them again`);
-  console.log(`::notice::lane inbox: sent ${open.length} URL(s) for ${show} to ingest-urls.yml`);
+  console.log(`::notice::lane inbox: sent ${open.length} URL(s) for ${show} to ingest-urls.yml (${reason})`);
+}
+
+/** Hourly (opening-night-checklist.yml): send on whatever the night's drain left behind (see sweepPlan). */
+function sweep() {
+  let urlsByShow = null;
+  const onSite = (show, url) => {
+    if (!urlsByShow) {
+      urlsByShow = new Map();
+      for (const r of require('../data/reviews.json').reviews || []) {
+        const k = r && r.url && inbox.normalizeUrl(r.url);
+        if (!k) continue;
+        if (!urlsByShow.has(r.showId)) urlsByShow.set(r.showId, new Set());
+        urlsByShow.get(r.showId).add(k);
+      }
+    }
+    return !!(urlsByShow.get(show) && urlsByShow.get(show).has(inbox.normalizeUrl(url)));
+  };
+  const leases = new Map();
+  const held = (show) => { if (!leases.has(show)) leases.set(show, liveLease(show)); return !!leases.get(show); };
+  const plan = sweepPlan(inbox.readSync({ repoDir: REPO_DIR }), { onSite, held });
+  if (!plan.length) { console.log('Lane inbox sweep: nothing left behind.'); return; }
+  for (const { show, open, lines } of plan) {
+    console.log(`${show}: ${open.length} inbox URL(s) left behind:\n${lines.join('\n')}`);
+    if (flag('dispatch')) send(show, open, lines, 'sent by the hourly sweep: left behind after the lane night');
+  }
+  if (!flag('dispatch')) console.log('(dry run: pass --dispatch to send them to ingest-urls.yml)');
 }
 
 if (require.main === module) {
   if (cmd === 'add') add();
   else if (cmd === 'list') list();
   else if (cmd === 'drain') drain();
-  else die('usage: opening-night-lane-inbox.js add|list|drain (see --help)');
+  else if (cmd === 'sweep') sweep();
+  else die('usage: opening-night-lane-inbox.js add|list|drain|sweep (see --help)');
 }
 
-module.exports = { drainPlan, drainAllowed, liveLease };
+module.exports = { drainPlan, drainAllowed, liveLease, sweepPlan, STALE_OPEN_MS, RECHECK_MS, MAX_DRAINS };

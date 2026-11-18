@@ -14,7 +14,7 @@ const { ingestRouteDecision, settleAfterInboxWrite } = require('../../scripts/li
 const { PROVISIONAL_DATE_SOURCES, isProvisionalPublishDate } = require('../../scripts/lib/publish-date-provenance.js');
 const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
 const trust = require('../../scripts/lib/opening-night-lane/trust-model.js');
-const { drainPlan, drainAllowed, liveLease } = require('../../scripts/opening-night-lane-inbox.js');
+const { drainPlan, drainAllowed, liveLease, sweepPlan, STALE_OPEN_MS, RECHECK_MS, MAX_DRAINS } = require('../../scripts/opening-night-lane-inbox.js');
 
 const NIGHT = new Date().toISOString().slice(0, 10);
 const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
@@ -73,10 +73,13 @@ test('markStatus: a status for an earlier generation never lands on a re-added e
 
 test('settleAfterInboxWrite: a lane that ended mid-write hands the URLs to the regular ingest', () => {
   const marked = [];
-  const held = settleAfterInboxWrite({ showId: SHOW.id, ids: ['a'], readLease: () => ({ holder: 'gha-1' }), mark: (u) => marked.push(...u) });
-  assert.equal(held.ingestNow, false); assert.equal(marked.length, 0);
-  const gone = settleAfterInboxWrite({ showId: SHOW.id, ids: ['a'], readLease: () => null, mark: (u) => marked.push(...u) });
-  assert.equal(gone.ingestNow, true); assert.deepEqual(marked.map((m) => m.status), ['drained']);
+  let synced = 0; const syncLocal = () => { synced += 1; };
+  const held = settleAfterInboxWrite({ showId: SHOW.id, ids: ['a'], readLease: () => ({ holder: 'gha-1' }), mark: (u) => marked.push(...u), syncLocal });
+  assert.equal(held.ingestNow, false); assert.equal(marked.length, 0); assert.equal(synced, 0);
+  const gone = settleAfterInboxWrite({ showId: SHOW.id, ids: ['a'], readLease: () => null, mark: (u) => marked.push(...u), syncLocal });
+  assert.equal(gone.ingestNow, true); assert.deepEqual(marked.map((m) => m.status), ['drained']); assert.equal(synced, 1, 'local lease file refreshed before ingesting');
+  const noSync = settleAfterInboxWrite({ showId: SHOW.id, ids: ['b'], readLease: () => null, mark: (u) => marked.push(...u), syncLocal: () => { throw new Error('git down'); } });
+  assert.equal(noSync.ingestNow, false, 'a failed refresh leaves the URLs queued'); assert.equal(marked.length, 1);
 });
 
 test('a manual row: its add-day date is provisional and no guard outside the lane trusts it', () => {
@@ -192,4 +195,34 @@ test('a URL re-added with force during the night is worked again on the next pas
   assert.ok(marks.some((m) => m.status === 'rejected' && m.addedAt === first.addedAt), JSON.stringify(marks));
   assert.equal(doc.reviews.length, 1, 'the forced re-add is published: ' + JSON.stringify(marks));
   assert.ok(marks.some((m) => m.status === 'published' && m.addedAt === second.addedAt), JSON.stringify(marks));
+});
+
+test('sweepPlan: sends what the night left behind, re-sends a drained URL that never reached the site, leaves held shows', () => {
+  const now = T0 + 24 * 3600000;
+  const ago = (ms) => new Date(now - ms).toISOString();
+  const e = (url, extra) => ({ holder: inbox.HOLDER, show: SHOW.id, url, addedAt: ago(STALE_OPEN_MS + 1000), ...extra });
+  const state = { leases: {
+    open: e('https://x.com/open'),
+    fresh: e('https://x.com/fresh', { addedAt: ago(60000) }),
+    drainedLost: e('https://x.com/lost', { status: 'drained', statusAt: ago(RECHECK_MS + 1000), drainCount: 1 }),
+    drainedLanded: e('https://x.com/landed', { status: 'drained', statusAt: ago(RECHECK_MS + 1000) }),
+    drainedGiveUp: e('https://x.com/giveup', { status: 'drained', statusAt: ago(RECHECK_MS + 1000), drainCount: MAX_DRAINS }),
+    alreadyNotThere: e('https://x.com/ghost', { status: 'already-in', statusAt: ago(RECHECK_MS + 1000) }),
+    published: e('https://x.com/pub', { status: 'published', statusAt: ago(RECHECK_MS + 1000) }),
+    handRejected: e('https://x.com/hand', { status: 'rejected', addedBy: 'ingest-urls:someone' }),
+    cliRejected: e('https://x.com/cli', { status: 'rejected', addedBy: 'cli' }),
+    otherShow: { ...e('https://x.com/held'), show: 'held-show' },
+  } };
+  const plan = sweepPlan(state, { now, onSite: (s, u) => u.endsWith('/landed') || u.endsWith('/pub'), held: (s) => s === 'held-show' });
+  assert.equal(plan.length, 1);
+  assert.deepEqual(plan[0].open.map((x) => x.id).sort(), ['alreadyNotThere', 'drainedLost', 'handRejected', 'open']);
+});
+
+test('markStatus counts drains; a drained URL can be queued again', () => {
+  const s = inbox.addEntries({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1 }], now: T0 });
+  const id = s.added[0];
+  let st = inbox.markStatus(s.state, { updates: [{ id, status: 'drained' }], now: T0 }).state;
+  st = inbox.markStatus(st, { updates: [{ id, status: 'drained' }], now: T0 }).state;
+  assert.equal(st.leases[id].drainCount, 2);
+  assert.deepEqual(inbox.addEntries(st, { show: SHOW.id, lines: [{ url: URL1 }], now: T0 + 1000 }).added, [id]);
 });
