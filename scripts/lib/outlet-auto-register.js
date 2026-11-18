@@ -145,6 +145,8 @@ const MASTHEAD_TRAILING_FILLER = new Set([
   'magazine', 'mag', 'news', 'service', 'review', 'reviews', 'theatre', 'theater',
   'commons', 'blog', 'online', 'journal', 'media', 'inc', 'llc', 'co', 'company',
 ]);
+// A parked or for-sale domain page names the domain, not a publication.
+const MASTHEAD_PARKED_PAGE = /\b(buy this domain|this domain (is )?(for sale|may be for sale|has expired)|domain (is )?for sale|parked (free|domain)|domain parking|parkeddomain|buythisdomain)\b/i;
 
 /**
  * True when the id reads as an abbreviation of the masthead (BRO-5823): after
@@ -154,30 +156,40 @@ const MASTHEAD_TRAILING_FILLER = new Set([
  * = The|Orange|Curtain|Rev). Every kept word must contribute, so an id with
  * leftover characters ("globalnews2" vs "Global News", "beautynewsnyc" vs
  * "Beauty News") never matches. Ids under 6 characters never match.
+ *
+ * One-letter chunks are what make a random phrase fit ("Slots Fun Lucky
+ * Insider" = S|F|L|Insider), so they are allowed only as a leading initialism
+ * of at most two letters ("SD" in San Diego Stage and Screen, "S" in South
+ * Florida Insider), and at least one chunk must be 3+ letters. Parked-domain
+ * pages never count (MASTHEAD_PARKED_PAGE).
  */
 function idAbbreviatesName(name, outletId) {
+  if (MASTHEAD_PARKED_PAGE.test(String(name || ''))) return false;
   const words = foldDiacritics(String(name || '')).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
   const raw = compactName(outletId);
   if (raw.length < 6 || !words.length || words.length > 12) return false;
   const ids = new Set([raw]);
   if (raw.startsWith('the') && raw.length >= 9) ids.add(raw.slice(3));
   const covers = (id, ws) => {
-    // memoised walk: can id[i..] be spelled by ws[j..] with every word used?
+    // memoised walk: can id[i..] be spelled by ws[j..] with every word used,
+    // one-letter chunks only in a leading run of <= 2, and some chunk >= 3?
     const memo = new Map();
-    const go = (i, j) => {
-      if (i === id.length) return j === ws.length;
+    const go = (i, j, singles, multiSeen, longSeen) => {
+      if (i === id.length) return j === ws.length && longSeen;
       if (j === ws.length) return false;
-      const key = i * 64 + j;
+      const key = `${i}|${j}|${singles}|${multiSeen ? 1 : 0}|${longSeen ? 1 : 0}`;
       if (memo.has(key)) return memo.get(key);
       let ok = false;
       const w = ws[j];
       for (let k = Math.min(w.length, id.length - i); k >= 1 && !ok; k--) {
-        if (id.slice(i, i + k) === w.slice(0, k)) ok = go(i + k, j + 1);
+        if (id.slice(i, i + k) !== w.slice(0, k)) continue;
+        if (k === 1 && (multiSeen || singles >= 2)) continue;
+        ok = go(i + k, j + 1, singles + (k === 1 ? 1 : 0), multiSeen || k >= 2, longSeen || k >= 3);
       }
       memo.set(key, ok);
       return ok;
     };
-    return go(0, 0);
+    return go(0, 0, 0, false, false);
   };
   for (let s = 0; s < words.length; s++) {
     if (s > 0 && !MASTHEAD_LEADING_FILLER.has(words[s - 1])) break;
@@ -218,6 +230,8 @@ function deriveOutletDisplayName({ outletId, reviewOutletNames = [], siteNames =
     const name = String(raw || '').trim();
     if (name.length < 2 || name.length > 60) continue;
     if (name === name.toLowerCase()) continue; // a bare lowercase slug is no masthead
+    if (MASTHEAD_PARKED_PAGE.test(name)) continue; // BRO-5823: a parked page's title is no masthead
+    if (/^(\S\s+){2,}\S$/.test(name)) continue; // letter-spaced ("T H E A T R E") is decoration, not a name
     if (!nameSpellsOutlet(name, outletId, domain)) continue;
     mastheads.push(name);
   }

@@ -191,6 +191,18 @@ test('a masthead the id abbreviates is accepted; a name with id leftovers is not
   assert.equal(idAbbreviatesName('Marissa', 'marissavivian'), false);
   assert.equal(idAbbreviatesName('Substack', 'marissavivian'), false);
   assert.equal(idAbbreviatesName('WordPress', 'hackneycitizen'), false);
+  // One-letter-per-word acronyms and parked-domain pages are not mastheads (review of c15aca28d).
+  for (const [name, id] of [
+    ['Slots Fun Lucky Insider', 'sflinsider'],
+    ['Hot Online Usa Rated Detroit', 'hourdetroit'],
+    ['How Long Round', 'howlround'],
+    ['Buy This Domain', 'buythisdomain'],
+    ['Parked Domain', 'parkeddomain'],
+    ['T H E A T R E', 'theatre'],
+  ]) {
+    assert.equal(idAbbreviatesName(name, id), false, name);
+    assert.equal(deriveOutletDisplayName({ outletId: id, siteNames: [name] }).displayName === name, false, name);
+  }
   // Short ids never match on an abbreviation.
   assert.equal(idAbbreviatesName('Theatre Weekly', 'tw'), false);
   assert.equal(deriveOutletDisplayName({ outletId: 'globalnews2', siteNames: ['Global News'] }).inferred, true);
