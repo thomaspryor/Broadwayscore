@@ -19497,7 +19497,7 @@
       "title": "Roundup gaps: 10 listed review(s) not captured across 6 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-18T04:02:43.869Z",
+      "lastSeen": "2026-11-18T05:05:20.051Z",
       "lastNotifiedAt": "2026-11-17T19:09:00.004Z",
       "lastSurfacedAt": null,
       "notifyCount": 59,
@@ -19575,7 +19575,7 @@
         "jenufa-off-broadway-2026",
         "the-fantasticks-2026"
       ],
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -45206,7 +45206,7 @@
       "linearIdentifier": null
     },
     "pending-unrecoverable:the-good-thief-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for the-good-thief-off-broadway-2026 stuck in _pending with no text and no byline",
@@ -45217,10 +45217,12 @@
       "lastSurfacedAt": "2026-11-18T04:03:05.143Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-18T04:47:18.201Z",
+      "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "land:land/bro-7652-llc-cleanup": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-7652-llc-cleanup",
       "firstSeen": "2026-11-18T04:24:25.558Z",
@@ -45230,7 +45232,22 @@
       "lastSurfacedAt": "2026-11-18T04:24:25.558Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-18T04:49:30.048Z"
+    },
+    "land:land/bro-7741-lane-inbox": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7741-lane-inbox",
+      "firstSeen": "2026-11-18T04:49:17.999Z",
+      "incidentOpenedAt": "2026-11-18T04:49:17.999Z",
+      "lastSeen": "2026-11-18T05:09:01.269Z",
+      "lastNotifiedAt": "2026-11-18T04:49:17.999Z",
+      "lastSurfacedAt": "2026-11-18T04:49:17.999Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
     }
   }
 }

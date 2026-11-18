@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T04:23:43.025Z",
+  "timestamp": "2026-11-18T05:12:16.456Z",
   "stats": {
-    "totalReviews": 82541,
-    "alreadyFlagged": 22549,
-    "dateGuardCatches": 222,
+    "totalReviews": 82542,
+    "alreadyFlagged": 22553,
+    "dateGuardCatches": 221,
     "directorMismatch": 3732,
-    "tvFilmSignals": 2346,
-    "londonSignals": 3783,
+    "tvFilmSignals": 2348,
+    "londonSignals": 3785,
     "offBroadwaySignals": 761,
-    "yearMismatch": 382,
-    "noPublishDate": 8273
+    "yearMismatch": 383,
+    "noPublishDate": 8252
   },
   "findings": [
     {
@@ -19413,6 +19413,20 @@
     },
     {
       "showId": "disgraced-2014",
+      "file": "dctheatrescene--richard-seff.json",
+      "score": null,
+      "publishDate": "2014-11-03",
+      "url": "https://dctheatrescene.com/2014/11/03/pulitzer-prize-winner-disgraced-opens-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "disgraced-2014",
       "file": "newsday--linda-winer.json",
       "score": 74,
       "publishDate": "2014-10-23",
@@ -21045,6 +21059,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2022 (12x) more than 2024 (9x). 2022 matches production: english-off-broadway-2022"
+        }
+      ]
+    },
+    {
+      "showId": "enron-2010",
+      "file": "dctheatrescene--richard-seff.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://dctheatrescene.com/2010/04/28/enron/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -68597,6 +68625,24 @@
       ]
     },
     {
+      "showId": "the-crucible-crucible-regional-2024",
+      "file": "thestage--sam-marlowe.json",
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/long-reviews/the-crucible-review-at-the-national-theatre-london-starring-erin-doherty",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (3x) more than 2024 (0x). 2022 matches production: the-crucible-west-end-2022"
+        }
+      ]
+    },
+    {
       "showId": "the-crucible-west-end-2022",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
@@ -103005,6 +103051,20 @@
       ]
     },
     {
+      "showId": "farinelli-and-the-king-2017",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 69,
+      "publishDate": "2017-12-23",
+      "url": "http://www.theaterscene.net/plays/broadway-plays/farinelli-and-the-king/victor-gluck/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "farinelli-and-the-king-west-end-2015",
       "file": "independent--claudia-pritchard.json",
       "publishDate": "2015-09-11",
@@ -103586,20 +103646,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "frankenstein-leeds-regional-2024",
-      "file": "observer--david-cote.json",
-      "score": null,
-      "publishDate": "2024-02-07",
-      "url": "https://observer.com/2024/02/lisa-frankenstein-review-twisted-horny-and-bloody-fun/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 53d before show (2024-02-07 vs 2024-03-31)"
         }
       ]
     },
