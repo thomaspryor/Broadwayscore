@@ -337,10 +337,14 @@ async function runOutlet(outlet, all, opts) {
         // vacuous (free) probe URL, only this control can. A bot-walled
         // control is tolerated for --probe-only (read-only) and fails closed
         // otherwise: no cookie write/push, no healthy stamp.
-        const unverified = c.error || c.status === 'error';
+        const blocked = c.status === 'control-blocked';
+        if (blocked && renew.decideControlBlocked(probe) === 'walled') {
+          console.log(`${outlet}: anonymous control got a bot challenge (HTTP ${c.control && c.control.httpStatus}); treated as walled (controlBlockedIsWalled)`);
+        }
+        const unverified = c.error || c.status === 'error' || (blocked && renew.decideControlBlocked(probe) !== 'walled');
         if (unverified) {
           const d = decideControlUnverified({ fellBack, probeOnly: !!opts.probeOnly });
-          const why = c.error ? c.error.split('\n')[0] : 'control page not recognised (bot challenge?)';
+          const why = c.error ? c.error.split('\n')[0] : blocked ? `control hit a bot challenge (HTTP ${c.control && c.control.httpStatus})` : 'control page not recognised';
           if (d === 'fail') return done(1, `anonymous control failed: ${why}${fellBack ? ' (vacuity unverified; not writing cookies)' : ''}`);
           console.log(`${outlet}: anonymous control failed (${why}); profile reads logged in, probe-only continues`);
         } else if (c.status === 'vacuous') {
@@ -525,7 +529,7 @@ async function main() {
         all[outlet] = t.state;
         saveState(STATE_PATH, all);
         if (t.alert) {
-          await alertOwner({ outlet, kind: 'stuck-uncertain', title: `Cookie renew: ${outlet} login state unreadable for 24h+`,
+          await alertOwner({ outlet, kind: 'stuck-uncertain', title: `Cookie renew: ${outlet} login state unreadable for 12h+`,
             description: `renew-cookies.js has not been able to tell whether ${outlet} is logged in since ${t.state.uncertainSince} (last: ${r.summary}). It will not log in on an uncertain reading. Check: node scripts/verify-cookie-login.js --outlets=${outlet}`, url: COOKIE_PROBES[outlet].url });
         }
       }

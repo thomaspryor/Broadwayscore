@@ -219,10 +219,10 @@ function hasAuthCookie(cookies, authCookies) {
   return (cookies || []).some((c) => c && names.has(c.name) && c.value);
 }
 
-const UNCERTAIN_ALERT_MS = 24 * 60 * 60 * 1000;
+const UNCERTAIN_ALERT_MS = 12 * 60 * 60 * 1000; // launchd runs every 6h: ~2 consecutive uncertain runs (was 24h, BRO-7765)
 /**
  * Exit code 1 (probe uncertain/error) never logs in. Track how long an
- * outlet has been stuck there and ask for ONE digest alert after 24h.
+ * outlet has been stuck there and ask for ONE digest alert after 12h.
  * @returns {{state:object, alert:boolean}}
  */
 function trackUncertain(state, code, nowMs) {
@@ -311,6 +311,15 @@ function resolveProbeMode({ browserOnly, probeStatus }) {
  * write/push cookies or stamp the outlet healthy.
  * @returns {'proceed'|'fail'|'probe-only-ok'}
  */
+/**
+ * The cookie-less control was answered with a bot challenge. Tolerated only
+ * for probes that declare controlBlockedIsWalled; otherwise fail closed.
+ * @returns {'walled'|'unverified'}
+ */
+function decideControlBlocked(probe) {
+  return probe && probe.controlBlockedIsWalled ? 'walled' : 'unverified';
+}
+
 function decideControlUnverified({ fellBack, probeOnly }) {
   if (!fellBack) return 'fail';
   return probeOnly ? 'probe-only-ok' : 'fail';
@@ -525,6 +534,7 @@ module.exports = {
   planRenewal,
   resolveProbeMode,
   decideControlUnverified,
+  decideControlBlocked,
   authCookiesChanged,
   credentialGate,
   isCredsMissingStop,

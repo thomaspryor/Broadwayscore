@@ -13,7 +13,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { classifyWalledProbe } = require('./cookie-probes');
+const { classifyWalledProbe, isBotChallenge } = require('./cookie-probes');
 
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 
@@ -88,6 +88,12 @@ function classify(probe, withCookies, withoutCookies) {
  */
 async function classifyWithControl(probe, withCookies, { anon = anonymousProbe } = {}) {
   let control = await anon(probe, {});
+  // A cookie-less profile that DataDome/Cloudflare answers with a bot
+  // challenge (NYT: HTTP 403, every run, BRO-7765) says nothing about whether
+  // the url is free. Name it, so callers can tell it from an unrecognised page.
+  if (control && isBotChallenge(control.html) && !(withCookies && isBotChallenge(withCookies.html))) {
+    return { status: 'control-blocked', control };
+  }
   let status = classify(probe, withCookies, control);
   if (status === 'vacuous') {
     control = await anon(probe, { waitMs: 8000 });
