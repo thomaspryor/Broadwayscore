@@ -1,26 +1,31 @@
 {
-  "updatedAt": "2026-11-18T14:21:48.674Z",
-  "processed": 58,
-  "failed": 61,
-  "successRate": "48.7%",
+  "updatedAt": "2026-11-18T14:24:02.708Z",
+  "processed": 116,
+  "failed": 69,
+  "successRate": "62.7%",
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 67,
     "amp": 1,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 5,
+    "scrapingdog": 18,
+    "scrapingbee": 7,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 27
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-11-18T14:21:28.204Z",
+      "t": "2026-11-18T14:20:42.500Z",
       "event": "bb-session",
-      "session": "8a7a4c4f",
-      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+      "session": "0cea02c7",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-18T14:20:42.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
