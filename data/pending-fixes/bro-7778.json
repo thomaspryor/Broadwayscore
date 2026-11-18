@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7778",
   "planId": "5cc7bdcd-7d94-4357-98cf-2767debe6c80",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T14:46:35.990Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,24 @@
         "description": "shows.json: breaking-the-waves-english-national-opera-west-end-2026.akaTitles"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T15:42:39.579Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: akaTitles updated for its-a-wonderful-life-a-live-radio-play-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: akaTitles updated for adriana-mater-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: akaTitles updated for breaking-the-waves-english-national-opera-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
