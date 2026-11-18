@@ -35,6 +35,7 @@ const { touchedRecordProblems } = require('./commercial-record-checks');
 const htmlHandoff = require('./html-handoff');
 const { handoffPlanProblems } = require('./pending-fix-plan-checks');
 const { movePlanWarnings } = require('./move-plan-checks');
+const { criticEditPlanProblems } = require('./critic-edit-plan-checks');
 
 const ROOT = path.join(__dirname, '..', '..');
 
@@ -165,6 +166,8 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
         if (problem) { failed++; log(`  FAIL ${id} ${a.operation} ${a.sourcePath}: ${problem}`); continue; }
         // Advisory (BRO-6488): a move that applies cleanly but leaves the review excluded, or a same-url twin behind.
         for (const w of movePlanWarnings(a, actions, { readJson: readReviewJson, listFolder: listReviewFolder })) log(`  WARN ${id}: ${w}`);
+        // BRO-7745: a criticName edit that makes a same-critic twin, or that the rebuild re-credits from the stored text.
+        for (const p of criticEditPlanProblems(a, actions, { readJson: readReviewJson, listFolder: listReviewFolder })) { failed++; log(`  FAIL ${id}: ${p}`); }
         // Advisory (BRO-5739): nulling images while the files stay on disk is undone by pre-deploy-check.
         for (const f of orphanFilesAfterNulling(a)) log(`  WARN ${id}: ${f} is still on disk; pre-deploy-check re-attaches it, so git rm it in the same land`);
         // The executor refuses an arg shape it cannot run (BRO-5866); say so before the land.
