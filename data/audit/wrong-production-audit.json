@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-18T20:00:03.188Z",
+  "timestamp": "2026-11-18T20:22:56.749Z",
   "stats": {
-    "totalReviews": 82671,
+    "totalReviews": 82672,
     "alreadyFlagged": 22469,
     "dateGuardCatches": 220,
     "directorMismatch": 3760,
     "tvFilmSignals": 2352,
-    "londonSignals": 3794,
+    "londonSignals": 3796,
     "offBroadwaySignals": 761,
     "yearMismatch": 383,
     "noPublishDate": 8285
@@ -100709,10 +100709,36 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "publishDate": "2026-11-18",
+      "url": "https://www.allthatdazzles.co.uk/post/review-desire-under-the-elms-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 80,
       "publishDate": "2026-11-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-DESIRE-UNDER-THE-ELMS-Almeida-Theatre-20261118",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2026-11-18",
+      "url": "https://www.theguardian.com/stage/2026/nov/18/desire-under-the-elms-review-almeida-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
