@@ -273,16 +273,92 @@ function withBaseWorktree(root, sha, dir, fn) {
   }
 }
 
-// Call only while holding CONTAINER_LAND_MUTEX: even an old run may still be active.
+const RUN_DIR_RE = /^land-local-check-[a-f0-9]{10}-[A-Za-z0-9]{6}$/;
+const STALE_RUN_MS = 2 * 3600_000;
+
+/**
+ * BRO-7652: what cleanupStaleRuns does with one temp entry. Pure.
+ * hasLiveProcess: true | false | 'unknown' (no /proc, or a process whose cwd could not be read).
+ * -> 'skip' (not a run dir) | 'keep' | 'remove'
+ * A process working inside the dir keeps it at every age. A dir over maxAgeMs goes (the old
+ * rule). A younger one goes only when it holds a registered, unlocked base worktree and no
+ * process is known to be in it: a killed run's ~1.8 GB checkout, which would otherwise trip the
+ * 4 GB free-disk guard on a re-run inside 2h. Unknown liveness falls back to the age rule.
+ */
+function staleRunDecision({ name, isDirectory, ageMs, hasBaseWorktree, hasLiveProcess }, { maxAgeMs = STALE_RUN_MS } = {}) {
+  if (!isDirectory || !RUN_DIR_RE.test(String(name || ''))) return 'skip';
+  if (hasLiveProcess === true) return 'keep';
+  if (ageMs > maxAgeMs) return 'remove';
+  if (hasBaseWorktree && hasLiveProcess === false) return 'remove';
+  return 'keep';
+}
+
+/** -> { cwds: real cwd paths of running processes, unknown: true when /proc or any cwd was unreadable } */
+function processCwds(procDir = '/proc') {
+  let pids;
+  try { pids = fs.readdirSync(procDir).filter((p) => /^\d+$/.test(p)); } catch { return { cwds: [], unknown: true }; }
+  const cwds = [];
+  let unknown = false;
+  for (const pid of pids) {
+    try { cwds.push(fs.readlinkSync(path.join(procDir, pid, 'cwd'))); } catch (e) {
+      if (e && (e.code === 'ENOENT' || e.code === 'ESRCH')) continue; // exited meanwhile
+      unknown = true; // EACCES/EPERM: it may be working in the dir
+    }
+  }
+  return { cwds, unknown };
+}
+
+const realOr = (p) => { try { return fs.realpathSync(p); } catch { return path.resolve(p); } };
+const within = (p, realDir) => p === realDir || p.startsWith(realDir + path.sep);
+
+/** -> true | false | 'unknown': is any process working inside <dir>? */
+function liveProcessIn(dir, scan) {
+  const realDir = realOr(dir);
+  if (scan.cwds.some((c) => within(realOr(c), realDir))) return true;
+  return scan.unknown ? 'unknown' : false;
+}
+
+/** porcelain `git worktree list` -> Map(real path -> { locked }) */
+function parseWorktreeList(porcelain) {
+  const out = new Map();
+  for (const block of String(porcelain || '').split(/\n\s*\n/)) {
+    const lines = block.split('\n');
+    const wt = lines.find((l) => l.startsWith('worktree '));
+    if (!wt) continue;
+    out.set(realOr(wt.slice('worktree '.length)), { locked: lines.some((l) => l === 'locked' || l.startsWith('locked ')) });
+  }
+  return out;
+}
+
+/** True when <dir>/basewt is a real directory (not a link) registered as an unlocked worktree of root. */
+function hasRegisteredBaseWorktree(dir, worktrees) {
+  const wt = path.join(dir, 'basewt');
+  try { if (!fs.lstatSync(wt).isDirectory()) return false; } catch { return false; }
+  const reg = worktrees.get(realOr(wt));
+  return !!reg && !reg.locked;
+}
+
+// Call only while holding CONTAINER_LAND_MUTEX: every run creates its dir inside it.
 // SIGKILL cannot run a finally handler, so the next run reclaims its checkout before
 // checking free space. Keep recent logs for diagnosis, and never follow directory links.
-function cleanupStaleRuns(root, temp = os.tmpdir(), now = Date.now()) {
+function cleanupStaleRuns(root, temp = os.tmpdir(), now = Date.now(), { procDir = '/proc' } = {}) {
   const removed = [];
+  let scan = null;
+  let worktrees = null;
   for (const entry of fs.readdirSync(temp, { withFileTypes: true })) {
-    if (!entry.isDirectory() || !/^land-local-check-[a-f0-9]{10}-[A-Za-z0-9]{6}$/.test(entry.name)) continue;
+    if (!entry.isDirectory() || !RUN_DIR_RE.test(entry.name)) continue; // staleRunDecision's 'skip', before any /proc scan
     const dir = path.join(temp, entry.name);
     try {
-      if (now - fs.statSync(dir).mtimeMs <= 2 * 3600_000) continue;
+      scan = scan || processCwds(procDir);
+      worktrees = worktrees || parseWorktreeList(run('git', ['worktree', 'list', '--porcelain'], { cwd: root }).stdout);
+      const decision = staleRunDecision({
+        name: entry.name,
+        isDirectory: true,
+        ageMs: now - fs.statSync(dir).mtimeMs,
+        hasBaseWorktree: hasRegisteredBaseWorktree(dir, worktrees),
+        hasLiveProcess: liveProcessIn(dir, scan),
+      });
+      if (decision !== 'remove') continue;
       const wt = path.join(dir, 'basewt');
       if (fs.existsSync(wt)) {
         const result = run('git', ['worktree', 'remove', '--force', wt], { cwd: root });
@@ -425,7 +501,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { cleanupStaleRuns, clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { cleanupStaleRuns, staleRunDecision, processCwds, liveProcessIn, parseWorktreeList,clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.
