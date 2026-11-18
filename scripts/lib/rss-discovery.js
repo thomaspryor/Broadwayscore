@@ -281,7 +281,7 @@ function singleWordTitleIdentity(itemTitle, itemForms, phrase, word) {
 
 // BRO-7739 / BRO-7778: main-title rules live in show-names.js (one show identity for every matcher). mainTitleOf
 // now splits colon and dash subtitles too; a colon/dash main title needs a review cue in the headline (below).
-const { mainTitleSplit, mainTitleIsUnique, pressAkaForTitle, showNames, sigWords: nameSigWords, normTitle, otherProductionCue, billedTitleOtherProductionCue } = require('./show-names');
+const { mainTitleSplit, mainTitleIsUnique, pressAkaForTitle, showNames, sigWords: nameSigWords, normTitle, otherProductionCue, billedTitleOtherProductionCue, slugOtherStagingCue, urlNamesOtherArticle } = require('./show-names');
 function mainTitleOf(showTitle) {
   const s = mainTitleSplit(showTitle);
   return s ? s.main : null;
@@ -358,7 +358,11 @@ function itemNamesShow(title, url, showTitle, opts = {}) {
   if (title && headlineNamesOtherStaging(title, showTitle, opts)) return false;
   // The URL can name what the headline does not: another staging ("...-at-stages-houston") or a news story whose slug
   // holds only part of the title and cast names (vulture.com/article/its-a-wonderful-life-broadway-lisa-rinna.html).
-  if (url && require('./review-guards').urlNamesOtherArticle(url, showTitle)) return false;
+  // A headline that calls itself a review of a name of this show outweighs a news-shaped slug (second-opinion review:
+  // "Review: It's A Wonderful Life: A Live Radio Play, with Megan Hilty" at .../its-a-wonderful-life-hilty-rannells.html).
+  const reviewHeadline = /\breview/i.test(title || '') && titleMatchesShow(title, showTitle, opts);
+  if (url && (reviewHeadline ? slugOtherStagingCue(url, showTitle) : urlNamesOtherArticle(url, showTitle))) return false;
+  if (reviewHeadline) return true;
   return titleMatchesShow(title || '', showTitle, opts) || urlSlugMatchesShow(url, showTitle, opts);
 }
 /**
