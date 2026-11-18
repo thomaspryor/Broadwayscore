@@ -61,11 +61,8 @@ function formatOpeningDate(dateStr: string): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
-function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: NVPOffBroadway[] }) {
-  const initialSearchParams = useSearchParams();
-
-  // Local state for instant updates (no full-page reload)
-  const [filters, setFilters] = useState(() => ({
+function filtersFromParams(initialSearchParams: URLSearchParams) {
+  return {
     status: (['playing', 'all', 'closed'].includes(initialSearchParams.get('status') as string)
       ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
     sort: (['score_desc', 'recent', 'alpha'].includes(initialSearchParams.get('sort') as string)
@@ -74,7 +71,14 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
     scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
-  }));
+  };
+}
+
+function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: NVPOffBroadway[] }) {
+  const initialSearchParams = useSearchParams();
+
+  // Local state for instant updates (no full-page reload)
+  const [filters, setFilters] = useState(() => filtersFromParams(initialSearchParams));
 
   const status = filters.status;
   const sort = filters.sort;
@@ -83,31 +87,30 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
 
   // Update state + URL without reload
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    setFilters(prev => {
-      const next = { ...prev };
-      for (const [key, value] of Object.entries(updates)) {
-        if (value === null) {
-          (next as Record<string, string>)[key] =
-            key === 'status' ? DEFAULT_STATUS :
-            key === 'sort' ? DEFAULT_SORT :
-            key === 'type' ? DEFAULT_TYPE :
-            key === 'scoreMode' ? DEFAULT_SCORE_MODE : '';
-        } else {
-          (next as Record<string, string>)[key] = value;
-        }
+    // Keep history writes outside React updaters, which can be replayed.
+    const next = filtersFromParams(new URLSearchParams(window.location.search));
+    for (const [key, value] of Object.entries(updates)) {
+      if (value === null) {
+        (next as Record<string, string>)[key] =
+          key === 'status' ? DEFAULT_STATUS :
+          key === 'sort' ? DEFAULT_SORT :
+          key === 'type' ? DEFAULT_TYPE :
+          key === 'scoreMode' ? DEFAULT_SCORE_MODE : '';
+      } else {
+        (next as Record<string, string>)[key] = value;
       }
+    }
 
-      const urlParams = new URLSearchParams();
-      if (next.status !== DEFAULT_STATUS) urlParams.set('status', next.status);
-      if (next.sort !== DEFAULT_SORT) urlParams.set('sort', next.sort);
-      if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
-      if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
+    const urlParams = new URLSearchParams();
+    if (next.status !== DEFAULT_STATUS) urlParams.set('status', next.status);
+    if (next.sort !== DEFAULT_SORT) urlParams.set('sort', next.sort);
+    if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
+    if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
 
-      const paramString = urlParams.toString();
-      window.history.replaceState({}, '', paramString ? `/nvp?${paramString}` : '/nvp');
+    const paramString = urlParams.toString();
+    window.history.replaceState({}, '', paramString ? `/nvp?${paramString}` : '/nvp');
 
-      return next;
-    });
+    setFilters(next);
   }, []);
 
   // Filter and sort NVP shows
