@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T13:31:08.503Z",
+  "timestamp": "2026-11-18T14:31:31.891Z",
   "stats": {
-    "totalReviews": 82574,
+    "totalReviews": 82578,
     "alreadyFlagged": 22453,
     "dateGuardCatches": 220,
-    "directorMismatch": 3741,
-    "tvFilmSignals": 2350,
-    "londonSignals": 3791,
-    "offBroadwaySignals": 760,
+    "directorMismatch": 3742,
+    "tvFilmSignals": 2351,
+    "londonSignals": 3792,
+    "offBroadwaySignals": 761,
     "yearMismatch": 383,
-    "noPublishDate": 8277
+    "noPublishDate": 8274
   },
   "findings": [
     {
@@ -65560,6 +65560,20 @@
     },
     {
       "showId": "take-me-out-2022",
+      "file": "amny--matt-windman.json",
+      "score": null,
+      "publishDate": "2022-04-04",
+      "url": "https://www.amny.com/entertainment/theater/review-take-me-out-hits-a-home-run/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from take-me-out-2003"
+        }
+      ]
+    },
+    {
+      "showId": "take-me-out-2022",
       "file": "frontmezzjunkies--unknown.json",
       "score": 89,
       "publishDate": null,
@@ -73425,6 +73439,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2014 (2x) more than 2026 (0x). 2014 matches production: the-last-ship-2014"
+        }
+      ]
+    },
+    {
+      "showId": "the-laugh-track-regional-2026",
+      "file": "discoverhollywood--amalisha-hueck.json",
+      "publishDate": "2026-11-12",
+      "url": "https://www.discoverhollywood.com/the-laugh-track-ict-beverly-oneill-theater/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -100425,6 +100452,20 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "liamodell--unknown.json",
+      "score": 39,
+      "publishDate": "2026-11-18",
+      "url": "https://liamodell.com/2026/11/18/desire-under-the-elms-review-almeida-theatre-eugene-oneill-kelly-gough-zackary-momoh/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 37,
       "publishDate": "2026-11-18",
@@ -117742,6 +117783,20 @@
       "score": 75,
       "publishDate": "2023-11-13",
       "url": "https://theunforgettableline.com/2023/11/13/merry-me/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
+      "showId": "merry-me-off-broadway-2023",
+      "file": "west-end-best-friend--liz-turner.json",
+      "score": null,
+      "publishDate": "2023-11-06",
+      "url": "https://www.westendbestfriend.co.uk/news/review-merry-me-new-york-theatre-workshop",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
