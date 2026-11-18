@@ -330,7 +330,10 @@
     "the-phantom-of-the-opera-west-end-1986/whatsonstage--sarah-crompton.json",
     "evita-2026/thestage--sam-marlowe.json",
     "billy-elliot-the-musical-west-end-2027/telegraph--holly-williams.json",
-    "the-seagull-globe-off-west-end-2026/thestage--sam-marlowe.json"
+    "the-seagull-globe-off-west-end-2026/thestage--sam-marlowe.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -451,7 +454,9 @@
       "the-mousetrap-west-end-2021/standard--jessie-thompson.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--unknown.json",
@@ -544,6 +549,13 @@
     ]
   },
   "startTime": "2026-11-17T22:48:02.865Z",
-  "lastProcessed": "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
-  "log": []
+  "lastProcessed": "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
+  "log": [
+    {
+      "t": "2026-11-18T00:57:59.250Z",
+      "event": "bb-session",
+      "session": "fb100b13",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    }
+  ]
 }
