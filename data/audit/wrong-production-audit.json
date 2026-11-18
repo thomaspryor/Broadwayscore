@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-17T23:25:18.289Z",
+  "timestamp": "2026-11-18T00:00:23.970Z",
   "stats": {
-    "totalReviews": 82514,
-    "alreadyFlagged": 22539,
+    "totalReviews": 82518,
+    "alreadyFlagged": 22543,
     "dateGuardCatches": 221,
     "directorMismatch": 3725,
-    "tvFilmSignals": 2344,
+    "tvFilmSignals": 2345,
     "londonSignals": 3781,
     "offBroadwaySignals": 761,
     "yearMismatch": 382,
-    "noPublishDate": 8289
+    "noPublishDate": 8286
   },
   "findings": [
     {
@@ -22104,7 +22104,7 @@
     {
       "showId": "falsettos-regional-2026",
       "file": "broadwayworld--edmund-whelan.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2026-10-18",
       "url": "https://www.broadwayworld.com/los-angeles/article/Review-FALSETTOS-at-Victory-Theatre-20261018",
       "findings": [
@@ -22126,6 +22126,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 86,
+      "publishDate": "2017-12-17",
+      "url": "http://www.theatermania.com/broadway/reviews/farinelli-and-the-king_83509.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -73481,7 +73495,7 @@
     {
       "showId": "the-light-we-leave-behind-regional-2026",
       "file": "broadwayworld--melissa-heckscher.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2026-10-14",
       "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-LIGHT-WE-LEAVE-BEHIND-Is-a-Dreamlike-Experience-Best-Left-Unexplained-20261014",
       "findings": [
