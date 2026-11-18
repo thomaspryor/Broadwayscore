@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-7778",
+  "planId": "5cc7bdcd-7d94-4357-98cf-2767debe6c80",
+  "status": "pending",
+  "createdAt": "2026-11-18T14:46:35.990Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7778: akaTitles (press short titles) for subtitle-titled shows opening soon, so review matchers find 'Review: It's a Wonderful Life' tonight",
+    "steps": [
+      "shows.json: its-a-wonderful-life-a-live-radio-play-2026.akaTitles",
+      "shows.json: adriana-mater-english-national-opera-west-end-2026.akaTitles",
+      "shows.json: breaking-the-waves-english-national-opera-west-end-2026.akaTitles"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+        "field": "akaTitles",
+        "oldValue": null,
+        "newValue": [
+          "It's a Wonderful Life"
+        ],
+        "description": "shows.json: its-a-wonderful-life-a-live-radio-play-2026.akaTitles"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "adriana-mater-english-national-opera-west-end-2026",
+        "field": "akaTitles",
+        "oldValue": null,
+        "newValue": [
+          "Adriana Mater"
+        ],
+        "description": "shows.json: adriana-mater-english-national-opera-west-end-2026.akaTitles"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "breaking-the-waves-english-national-opera-west-end-2026",
+        "field": "akaTitles",
+        "oldValue": null,
+        "newValue": [
+          "Breaking the Waves"
+        ],
+        "description": "shows.json: breaking-the-waves-english-national-opera-west-end-2026.akaTitles"
+      }
+    ]
+  }
+}
