@@ -233,3 +233,12 @@ describe('printed credits found by the BRO-7780 sweep', () => {
     assert.equal(printedOutletByline('theatreandtonic', 'Written by Ann Lee ... Written by Bo for Theatre and Tonic, October 2026')?.name, 'Bo');
   });
 });
+
+// BRO-7780 land: JSON-LD now goes through scripts/lib/jsonld.js. Pin that an Article inside a
+// @graph wrapper is still read (the hand parse it replaced read it too, via its nested walk).
+test('JSON-LD author inside a @graph wrapper is read', () => {
+  const { extractByline } = require('../../scripts/lib/byline-extraction.js');
+  const ld = { '@context': 'https://schema.org', '@graph': [{ '@type': 'WebPage', name: 'x' }, { '@type': 'NewsArticle', headline: 'Review', author: { '@type': 'Person', name: 'Jane Holloway' } }] };
+  const html = `<html><head><script type="application/ld+json">${JSON.stringify(ld)}</script></head><body><p>text</p></body></html>`;
+  assert.equal(extractByline(html, {}), 'Jane Holloway');
+});

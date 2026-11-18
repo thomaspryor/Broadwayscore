@@ -10,6 +10,7 @@
 'use strict';
 
 const { stripBylineSuffixes } = require('./byline-normalization');
+const { parseJsonLd } = require('./jsonld');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { CMS_ADMIN_HANDLE_RE } = require('./byline-recovery');
 const { extractBylineFromText, printedOutletByline, sameCriticName } = require('./byline-from-text');
@@ -104,19 +105,18 @@ function extractJsonLdAuthor(html) {
   // Unquoted type attribute too: USA Today prints <script type=application/ld+json> (BRO-7780).
   const blocks = String(html).match(/<script[^>]+type=["']?application\/ld\+json["']?[^>]*>[\s\S]*?<\/script>/gi) || [];
   for (const block of blocks) {
-    let doc;
-    try {
-      doc = JSON.parse(block.replace(/^<script[^>]*>/i, '').replace(/<\/script>$/i, ''));
-    } catch { continue; }
+    // Shared parser (scripts/lib/jsonld.js, required by audit-jsonld-graph.test.mjs): top-level
+    // arrays AND @graph nodes, in document order. The walk below also descends into nested
+    // objects, so this is the same answer as the hand parse it replaced.
+    const items = parseJsonLd(block.replace(/^<script[^>]*>/i, '').replace(/<\/script>$/i, ''));
+    if (!items.length) continue;
     // BRO-3414: Yoast's @graph gives the article `"author": {"@id": ...}`
     // and the Person (with its name) as a separate node. Resolve the
     // reference so the article's own author wins over page chrome (a
     // theaterscene "authors" sidebar credited its editor on every review).
     const byId = new Map();
-    for (const n of [].concat(doc && doc['@graph'] ? doc['@graph'] : [])) {
-      if (n && typeof n === 'object' && n['@id']) byId.set(n['@id'], n);
-    }
-    const queue = [doc];
+    for (const n of items) if (n['@id']) byId.set(n['@id'], n);
+    const queue = [...items];
     while (queue.length) {
       const node = queue.shift();
       if (!node || typeof node !== 'object') continue;
