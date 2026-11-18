@@ -537,8 +537,12 @@ jobs:
             echo "Sunday scheduled run — including calibration"
           fi
 
-          # Validation
-          if [ "${{ github.event.inputs.run_validation }}" == "true" ]; then
+          # Validation. BRO-7767: never on a show-scoped run. --validate re-checks
+          # all ~4400 shows (about 4.5 min) BEFORE the push step, so a 3-second
+          # press-night score reached prod 36 min after ingest (Blue Man Group
+          # A New Holiday Surprise, 2026-11-17, bar 30). The default input is
+          # 'true', so ingest/orchestrator per-show dispatches always paid it.
+          if [ "${{ github.event.inputs.run_validation }}" == "true" ] && [ -z "${INPUT_SHOW_ID}" ]; then
             ARGS="$ARGS --validate"
           fi
 

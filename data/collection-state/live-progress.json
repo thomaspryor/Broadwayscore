@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-18T14:54:32.838Z",
-  "processed": 181,
-  "failed": 124,
-  "successRate": "59.3%",
+  "updatedAt": "2026-11-18T15:35:43.202Z",
+  "processed": 208,
+  "failed": 136,
+  "successRate": "60.5%",
   "tierBreakdown": {
-    "playwright": 95,
+    "playwright": 115,
     "amp": 1,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 20,
+    "scrapingdog": 22,
     "scrapingbee": 15,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 51
+    "archive": 54
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
       "t": "2026-11-18T14:20:42.500Z",
@@ -26,6 +26,12 @@
       "t": "2026-11-18T14:20:42.961Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-18T15:26:08.760Z",
+      "event": "bb-session",
+      "session": "56218557",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
     }
   ]
 }

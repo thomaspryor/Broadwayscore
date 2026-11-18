@@ -556,7 +556,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   - **Graceful degradation:** 3→2→1 model fallback if any model fails
   - **2-model mode:** If GEMINI_API_KEY not set, uses Claude + gpt-4o only
   - **OpenAI leg model:** gpt-4o stays the default (task #504, 2026-07-26) — the gpt-5.4-mini A/B (n=24 real reviews) failed the rule-13 gate: Mixed bucket collapsed 29%->0%, max shift 29.2pp (limit 5pp). It polarizes scores away from the middle rather than being a like-for-like cheaper substitute. `--openai-model=gpt-5.4-mini` is wired for re-testing once the V5 prompt is recalibrated for it.
-- **Options:** `show`, `limit`, `run_calibration` (default true), `run_validation`, `dry_run`, `needs_rescore`
+- **Options:** `show`, `limit`, `run_calibration` (default true), `run_validation` (ignored when `show_id` is set, BRO-7767: the global validation pass delayed press-night score pushes ~4.5 min), `dry_run`, `needs_rescore`
 - **Script:** `scripts/llm-scoring/index.ts`
 - **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY
 - **Optional:** GEMINI_API_KEY (enables 3-model mode)
