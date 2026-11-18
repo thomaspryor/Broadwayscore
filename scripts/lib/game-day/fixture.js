@@ -1,4 +1,5 @@
 'use strict';
+const { foldDiacritics } = require('../title-match');
 /**
  * Simulated opening night (game day) fixture (BRO-7781). Six fictional shows on one night, shaped after the Blue Man
  * Group post-mortem (2026-11-17): what each outlet's pages say, when they say it (virtual ms after the night's T0), the
@@ -35,7 +36,7 @@ function articleHtml({ show, headline, byline, publishedIso, n }) {
     // TheaterMania's template: the JSON-LD author is the POSTING account's slug (editor David Gordon = dgordon), the
     // visible author area names the critic (BRO-7745).
     const ld = `<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"NewsArticle","headline":${JSON.stringify(headline)},"datePublished":"${publishedIso}","author":{"@id":"https:\\/\\/www.theatermania.com\\/author\\/${byline.editorSlug || 'dgordon'}\\/#author"},"publisher":{"@id":"https:\\/\\/www.theatermania.com\\/#organization"}}]}</script>`;
-    const slug = byline.name.toLowerCase().replace(/[^a-z]+/g, '-');
+    const slug = foldDiacritics(byline.name).toLowerCase().replace(/[^a-z]+/g, '-');
     const area = `<section class="author-area d-flex align-items-center mb-4">\n    <a href="https://www.theatermania.com/authors/${slug}" rel="noopener noreferrer"><img class="square-image-author" src="x.jpg" alt="${esc(byline.name)}" /></a><p class="author-name mb-0 me-2 text-decoration-none text-blue"><a id="article-author-tag" class="text-decoration-none text-blue" href="https://www.theatermania.com/authors/${slug}" rel="noopener noreferrer">${esc(byline.name)}</a></p>\n    <span class="me-2 text-blue">|</span>\n    <p id="article-date-tag" class="mb-0">November 17, 2026</p>\n</section>`;
     return `<html><head><title>${esc(headline)}</title>${ld}${meta}</head><body><h1>${esc(headline)}</h1>${area}<div class="news-content">${body}</div><section class="featured-in-this-story my-3"><h4>Featured In This Story</h4></section></body></html>`;
   }
@@ -117,7 +118,7 @@ function recordedScores(reviews) {
 }
 
 function bwwRoundupUrl(show) {
-  return `https://www.broadwayworld.com/article/Review-Roundup-${show.title.replace(/[^A-Za-z0-9 ]/g, '').toUpperCase().replace(/ +/g, '-')}-Opens-On-Broadway-20261117`;
+  return `https://www.broadwayworld.com/article/Review-Roundup-${foldDiacritics(show.title).replace(/[^A-Za-z0-9 ]/g, '').toUpperCase().replace(/ +/g, '-')}-Opens-On-Broadway-20261117`;
 }
 
 /**
