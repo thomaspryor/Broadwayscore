@@ -108,3 +108,67 @@ describe('Ingest guard: structured author chosen while a visible byline disagree
     assert.equal(detectBylineConflict({ html: hub, text: '', url: 'https://www.thereviewshub.com/x/', chosen: 'Scott Matthewman' }), null);
   });
 });
+
+// BRO-7777 (b): only the outlet's own printed-byline reader counts as the visible byline. A generic
+// closing credit ("Review: X Photos Y") in an outlet without one used to flag the real critic.
+describe('BRO-7777: detectBylineConflict ignores the generic text-tail credit', () => {
+  const page = '<html><head><script type="application/ld+json">{"@type":"NewsArticle","author":{"@type":"Person","name":"Jane Doe"}}</script></head><body></body></html>';
+  test('a closing credit line in an outlet with no printed-byline reader is not a conflict', () => {
+    const text = 'The production runs through March.\nReview: Emma Foxhall Photos Helen Murray';
+    assert.equal(detectBylineConflict({ html: page, text, outletId: 'broadwayworld', chosen: 'Jane Doe' }), null);
+  });
+  test('the outlet reader still flags (All That Dazzles "Review by Ruth Sealey")', () => {
+    const c = detectBylineConflict({ html: ATD_PAGE, text: ATD_TEXT, url: ATD_URL, outletId: 'all-that-dazzles-uk', chosen: 'Sam Woodward' });
+    assert.deepEqual(c, { structured: 'Sam Woodward', visible: 'Ruth Sealey' });
+  });
+});
+
+// BRO-7777 (c): ingest compared the name before the writer normalizes it, so an alias spelling of
+// the same critic ("Zach Stewart" / "Zachary Stewart") raised a conflict warning.
+describe('BRO-7777: the ingest conflict warning compares names as the writer stores them', () => {
+  const { bylineConflictStands } = require('../../scripts/lib/page-byline.js');
+  test('an alias of the visible byline is not a conflict', () => {
+    assert.equal(bylineConflictStands('Zach Stewart', { structured: 'Zach Stewart', visible: 'Zachary Stewart' }), false);
+  });
+  test('a different person is', () => {
+    assert.equal(bylineConflictStands('David Gordon', { structured: 'David Gordon', visible: 'Jonas Schwartz' }), true);
+  });
+  test('Unknown is never a conflict', () => {
+    assert.equal(bylineConflictStands(null, { structured: 'x', visible: 'Jonas Schwartz' }), false);
+  });
+});
+
+// BRO-7780: one reader for lane and ingest. An outlet rule that says "names nobody" ends the read.
+describe('BRO-7780: readPageByline', () => {
+  const { readPageByline } = require('../../scripts/lib/page-byline.js');
+  const { extractByline } = require('../../scripts/lib/byline-extraction.js');
+  const editorLd = TM_JSONLD.replace('{"@id":"https:\\/\\/www.theatermania.com\\/author\\/dgordon\\/#author"}', '{"@type":"Person","name":"David Gordon"}');
+  test('TheaterMania tag beats a JSON-LD Person editor in the lane reader', () => {
+    const page = `<html><head>${editorLd}</head><body>${TM_AUTHOR_AREA}</body></html>`;
+    assert.equal(extractByline(page), 'Dan Rubins');
+    assert.equal(readPageByline({ html: page, url: TM_URL, outletId: 'theatermania' }).criticName, 'Dan Rubins');
+  });
+  test('TheaterMania empty author area + JSON-LD Person editor names nobody', () => {
+    const page = TM_EMPTY_AREA_PAGE.replace(TM_JSONLD, editorLd);
+    const r = readPageByline({ html: page, url: TM_URL, outletId: 'theatermania' });
+    assert.equal(r.criticName, null);
+    assert.equal(r.source, 'outlet-rule-none');
+  });
+  test('a site-wide account host names nobody (BRO-6518)', () => {
+    const page = '<html><head><meta name="author" content="Jacob Davis"><script type="application/ld+json">{"author":{"@type":"Person","name":"Jacob Davis"}}</script></head><body><span class="byline">By Jacob Davis</span></body></html>';
+    assert.equal(readPageByline({ html: page, url: 'https://aroundthetownchicago.com/theatre-reviews/x/', outletId: 'around-the-town-chicago' }).criticName, null);
+  });
+  test('a publisher meta author loses to the Condé Nast name link', () => {
+    const page = '<html><head><meta name="author" content="Condé Nast"></head><body><span>By </span><a class="byline__name-link button" href="/contributors/helen-shaw">Helen Shaw</a></body></html>';
+    assert.equal(readPageByline({ html: page, url: 'https://www.newyorker.com/magazine/x', outletId: 'new-yorker' }).criticName, 'Helen Shaw');
+  });
+  test('a photo credit at the end of the text is never the byline', () => {
+    const r = readPageByline({ html: '<html><body><h1>x</h1></body></html>', text: 'Body.\nReview: Joan Marcus Photos Helen Murray', url: 'https://www.broadwayworld.com/x', outletId: 'broadwayworld' });
+    assert.equal(r.criticName, null);
+  });
+  test('link labels and a CamelCase house name are cut from the name', () => {
+    assert.equal(cleanAuthorName('Read more articles by Loren Noveck'), 'Loren Noveck');
+    assert.equal(cleanAuthorName('CurtainUp, Dan Rubins'), 'Dan Rubins');
+    assert.equal(cleanAuthorName('McDonald, John Paul'), 'McDonald, John Paul');
+  });
+});
