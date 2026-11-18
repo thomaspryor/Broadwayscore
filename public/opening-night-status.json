@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T04:24:00.046Z",
+  "generatedAt": "2026-11-18T04:48:16.078Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -764,28 +764,27 @@
       "status": "open",
       "slug": "the-good-thief",
       "thumbnail": "/images/shows/the-good-thief-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 82,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 79.33,
+      "liveScore": 79,
+      "scoreDrift": -0.3299999999999983,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 3,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 0,
-      "positive": 2,
+      "positive": 3,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/12 total",
+          "3/12 total",
           "T1:0/3",
-          "T2:2/3",
-          "hi-conf:2/8"
+          "hi-conf:3/8"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1138,6 +1137,18 @@
           "t2": 2,
           "t3": 0,
           "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-18T04:48:16.078Z",
+          "rc": 3,
+          "s": 79.33,
+          "t1": 0,
+          "t2": 3,
+          "t3": 0,
+          "p": 3,
           "m": 0,
           "n": 0,
           "bc": "waiting"
