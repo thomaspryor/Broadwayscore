@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6130",
   "planId": "3bc2da2f-6187-4ff7-b612-3b94e10181d8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T05:29:00.523Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "the-good-thief-off-broadway-2026/theatermania--francisco-mendoza.json: llmPullQuote"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T05:37:25.702Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-good-thief-off-broadway-2026/theatermania--francisco-mendoza.json llmPullQuote: null -> \"Fitzgerald doesn’t try to win you over—he just does.\""
+    }
+  ],
+  "executedIn": "ci"
 }
