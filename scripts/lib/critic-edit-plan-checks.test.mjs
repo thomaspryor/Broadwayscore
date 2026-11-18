@@ -37,6 +37,26 @@ test('a different critic, or a different outlet with the same critic, is not a t
   assert.equal(criticEditPlanProblems(recredit, [recredit], fake(otherOutlet)).length, 1);
 });
 
+test('no twin when the plan flags, moves or renames the other file, or the edit is a no-op', () => {
+  const other = 'jitney-2017/theatermania--zachary-stewart.json';
+  for (const [field, newValue] of [['duplicateOf', 'theatermania--david-gordon.json'], ['wrongProduction', true], ['wrongShow', true]]) {
+    const flag = { type: 'review-field-edit', file: other, field, oldValue: null, newValue };
+    assert.deepEqual(criticEditPlanProblems(recredit, [recredit, flag], fake(jitney)), [], field);
+  }
+  for (const operation of ['move', 'rename']) {
+    const mv = { type: 'review-file-op', operation, sourcePath: other, destPath: 'jitney-revival/theatermania--zachary-stewart.json' };
+    assert.deepEqual(criticEditPlanProblems(recredit, [recredit, mv], fake(jitney)), [], operation);
+  }
+  const noop = { ...recredit, file: other, oldValue: 'Zachary Stewart', newValue: 'Zachary Stewart' };
+  const pre = { ...jitney, 'jitney-2017/theatermania--david-gordon.json': { ...jitney['jitney-2017/theatermania--david-gordon.json'], criticName: 'Zachary Stewart' } };
+  assert.deepEqual(criticEditPlanProblems(noop, [noop], fake(pre)), []);
+});
+
+test('no flag when the edited file itself is being excluded', () => {
+  const self = { type: 'review-field-edit', file: recredit.file, field: 'wrongProduction', oldValue: null, newValue: true };
+  assert.deepEqual(criticEditPlanProblems(recredit, [recredit, self], fake(jitney)), []);
+});
+
 // bro-7745-cousins shape 2 (rent-west-end-2026): the stored text prints a different credit than the new name.
 const rentFile = 'rent-west-end-2026/theatreandtonic--penny-walshe.json';
 const rent = (credit) => ({ [rentFile]: { outletId: 'theatreandtonic', criticName: 'Penny Walshe', url: 'https://theatreandtonic.co.uk/blog/rent-at-tom-stoppard-theatre-review', fullText: `Written by Penny Walshe It has been a long time. Written by ${credit} for Theatre and Tonic, October 2026.` } });
@@ -50,6 +70,12 @@ test('flags a credit the rebuild will undo from the stored text', () => {
 
 test('no flag when the stored text prints the new name', () => {
   assert.deepEqual(criticEditPlanProblems(toRoby, [toRoby], fake(rent('Roby'))), []);
+});
+
+test('no printed-credit flag when the plan refreshes the stored text (url edit or run-script)', () => {
+  const url = { type: 'review-field-edit', file: rentFile, field: 'url', oldValue: 'x', newValue: 'https://theatreandtonic.co.uk/blog/rent-review-2' };
+  assert.deepEqual(criticEditPlanProblems(toRoby, [toRoby, url], fake(rent('Penny'))), []);
+  assert.deepEqual(criticEditPlanProblems(toRoby, [toRoby, { type: 'run-script', script: 'scripts/x.js' }], fake(rent('Penny'))), []);
 });
 
 test('preflight() fails the bro-7745-cousins jitney shape against a real tree', async () => {

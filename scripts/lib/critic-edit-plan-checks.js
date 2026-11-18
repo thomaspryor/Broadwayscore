@@ -35,24 +35,41 @@ function criticEditPlanProblems(a, actions, { readJson, listFolder }) {
   const out = [];
   const outlet = normalizeOutlet(data.outletId || data.outlet || '');
 
-  const printed = printedBylineOverride(outlet, data.fullText, data.url, a.newValue);
+  // Plan-level facts: files the plan removes (delete, or move/rename source), and fields it edits.
+  const removed = new Set(actions.filter((x) => x && x.type === 'review-file-op' && ['delete', 'move', 'rename'].includes(x.operation) && x.sourcePath).map((x) => norm(x.sourcePath)));
+  const fieldEdits = new Map();
+  for (const x of actions) {
+    if (!x || x.type !== 'review-field-edit' || !x.file || !x.field) continue;
+    const k = norm(x.file);
+    if (!fieldEdits.has(k)) fieldEdits.set(k, {});
+    fieldEdits.get(k)[x.field] = x.newValue;
+  }
+  // A file as it will be after this plan's field edits.
+  const after = (rel, d) => ({ ...d, ...(fieldEdits.get(rel) || {}) });
+  const excluded = (d) => Boolean(d.duplicateOf) || d.wrongProduction === true || d.wrongShow === true;
+  const self = after(file, data);
+  if (excluded(self) || removed.has(file)) return [];
+
+  // The stored text is refetched when the plan changes the url or runs a script; the old text's
+  // credit then says nothing about what the rebuild will read.
+  const textRefreshed = (fieldEdits.get(file) || {}).url !== undefined || actions.some((x) => x && x.type === 'run-script');
+  const printed = textRefreshed ? null : printedBylineOverride(outlet, data.fullText, data.url, a.newValue);
   if (printed) {
     out.push(`${file}: criticName "${a.newValue}" will be undone by the rebuild, which re-reads the stored text's printed credit "${printed}"; refresh the stored text first or keep the name the text prints`);
   }
 
   const want = criticKey(a.newValue);
-  if (want) {
-    const deleted = new Set(actions.filter((x) => x && x.type === 'review-file-op' && x.operation === 'delete' && x.sourcePath).map((x) => norm(x.sourcePath)));
-    const edits = new Map(actions.filter((x) => x && x.type === 'review-field-edit' && x.field === 'criticName' && x.file).map((x) => [norm(x.file), x.newValue]));
+  // A no-op edit (same critic as now) creates no new twin; a pre-existing one is not this plan's doing.
+  if (want && criticKey(data.criticName) !== want) {
     const folder = file.split('/')[0];
     for (const f of listFolder(folder)) {
       const rel = `${folder}/${f}`;
-      if (rel === file || deleted.has(rel) || path.extname(f) !== '.json') continue;
-      const other = readJson(rel);
-      if (!other || normalizeOutlet(other.outletId || other.outlet || '') !== outlet) continue;
-      if (other.duplicateOf || other.wrongProduction === true || other.wrongShow === true) continue;
-      const name = edits.has(rel) ? edits.get(rel) : other.criticName;
-      if (criticKey(name) === want) out.push(`${file}: criticName "${a.newValue}" makes it a twin of ${rel} (same outlet, same critic); delete one of them in this plan`);
+      if (rel === file || removed.has(rel) || path.extname(f) !== '.json') continue;
+      const raw = readJson(rel);
+      if (!raw) continue;
+      const other = after(rel, raw);
+      if (normalizeOutlet(other.outletId || other.outlet || '') !== outlet || excluded(other)) continue;
+      if (criticKey(other.criticName) === want) out.push(`${file}: criticName "${a.newValue}" makes it a twin of ${rel} (same outlet, same critic); delete one of them in this plan`);
     }
   }
   return out;
