@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import fs, { mkdtempSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { spawnSync, execFileSync } from 'node:child_process';
+import { spawn, spawnSync, execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const { parseArgs, newFailureFiles, DEFAULT_GATES, LOCAL_SKIPPED_GATES } = require('./land-local-check.js');
@@ -42,6 +42,93 @@ test('BRO-7652: stale runs remove registered base worktrees and logs, preserving
   for (const dir of [fresh, locked, unrelated, link, join(root, 'tracked')]) assert.ok(existsSync(dir), dir);
   assert.ok(!g('worktree', 'list', '--porcelain').includes(stale), 'registration removed before pruning');
   assert.deepEqual(cleanupStaleRuns(root, temp, now), [], 'repeat cleanup is harmless');
+});
+
+test('BRO-7652: staleRunDecision keeps live runs at any age, reclaims a dead run\'s checkout at any age', () => {
+  const { staleRunDecision } = require('./land-local-check.js');
+  const name = 'land-local-check-aaaaaaaaaa-ABC123';
+  const h = 3600_000;
+  const d = (o) => staleRunDecision({ name, isDirectory: true, ageMs: 0, hasBaseWorktree: false, hasLiveProcess: false, ...o });
+  assert.equal(d({ name: 'unrelated' }), 'skip');
+  assert.equal(d({ isDirectory: false, ageMs: 3 * h }), 'skip', 'a link or file is never followed');
+  assert.equal(d({ ageMs: 3 * h }), 'remove', 'old logs go (the 2h rule)');
+  assert.equal(d({ ageMs: h }), 'keep', 'recent logs stay for diagnosis');
+  assert.equal(d({ ageMs: h, hasBaseWorktree: true }), 'remove', 'a dead run\'s fresh checkout goes before the disk guard');
+  assert.equal(d({ ageMs: h, hasBaseWorktree: true, hasLiveProcess: true }), 'keep', 'a process inside: live');
+  assert.equal(d({ ageMs: 3 * h, hasBaseWorktree: true, hasLiveProcess: true }), 'keep', 'live at every age');
+  assert.equal(d({ ageMs: 3 * h, hasLiveProcess: true }), 'keep');
+  assert.equal(d({ ageMs: h, hasBaseWorktree: true, hasLiveProcess: 'unknown' }), 'keep', 'no /proc: fall back to the age rule');
+  assert.equal(d({ ageMs: 3 * h, hasBaseWorktree: true, hasLiveProcess: 'unknown' }), 'remove');
+  assert.equal(d({ ageMs: 1.5 * h, hasBaseWorktree: true }), 'remove');
+  assert.equal(staleRunDecision({ name, isDirectory: true, ageMs: 10, hasLiveProcess: false }, { maxAgeMs: 5 }), 'remove');
+});
+
+test('BRO-7652: processCwds ignores exited pids, reports unreadable ones and a missing /proc as unknown', (t) => {
+  const { processCwds, liveProcessIn, parseWorktreeList } = require('./land-local-check.js');
+  const scratch = mkdtempSync(join(tmpdir(), 'llc-proc-'));
+  t.after(() => rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const proc = join(scratch, 'proc');
+  const runDir = join(scratch, 'land-local-check-aaaaaaaaaa-ABC123');
+  fs.mkdirSync(join(runDir, 'basewt'), { recursive: true });
+  for (const pid of ['1', '2']) fs.mkdirSync(join(proc, pid), { recursive: true });
+  fs.mkdirSync(join(proc, 'self'));
+  fs.symlinkSync(join(runDir, 'basewt'), join(proc, '1', 'cwd'));
+  // pid 2 has no cwd entry: exited between readdir and readlink (ENOENT)
+  const scan = processCwds(proc);
+  assert.equal(scan.unknown, false);
+  assert.equal(liveProcessIn(runDir, scan), true);
+  assert.equal(liveProcessIn(runDir + '-sibling', scan), false, 'a prefix-sharing sibling is not inside');
+  assert.equal(liveProcessIn(runDir, processCwds(join(scratch, 'none'))), 'unknown');
+  const readlink = fs.readlinkSync;
+  t.mock.method(fs, 'readlinkSync', (p) => {
+    if (String(p) === join(proc, '2', 'cwd')) throw Object.assign(new Error('denied'), { code: 'EACCES' });
+    return readlink(p);
+  });
+  assert.equal(liveProcessIn(join(scratch, 'elsewhere'), processCwds(proc)), 'unknown', 'EACCES: possibly live');
+  const wts = parseWorktreeList(`worktree ${scratch}\nHEAD abc\nbranch refs/heads/x\n\nworktree ${join(runDir, 'basewt')}\nHEAD abc\ndetached\nlocked\n`);
+  assert.deepEqual(wts.get(fs.realpathSync(join(runDir, 'basewt'))), { locked: true });
+  assert.deepEqual(wts.get(fs.realpathSync(scratch)), { locked: false });
+});
+
+test('BRO-7652: a recent dead run\'s registered base worktree is reclaimed; locked, linked or live ones are not', (t) => {
+  const { cleanupStaleRuns } = require('./land-local-check.js');
+  const scratch = fs.realpathSync(mkdtempSync(join(tmpdir(), 'llc-fresh-')));
+  const children = [];
+  t.after(() => { for (const c of children) c.kill('SIGKILL'); rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); });
+  const root = join(scratch, 'repo');
+  const temp = join(scratch, 'tmp');
+  const noProcs = join(scratch, 'proc');
+  fs.mkdirSync(root); fs.mkdirSync(temp); fs.mkdirSync(noProcs);
+  const g = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  g('init', '-q'); g('config', 'user.name', 'test'); g('config', 'user.email', 'test@example.com');
+  writeFileSync(join(root, 'tracked'), 'base'); g('add', '.'); g('commit', '-qm', 'base');
+  const dead = join(temp, 'land-local-check-aaaaaaaaaa-ABC123');
+  const locked = join(temp, 'land-local-check-bbbbbbbbbb-DEF456');
+  const linked = join(temp, 'land-local-check-cccccccccc-GHI789');
+  const unregistered = join(temp, 'land-local-check-dddddddddd-JKL012');
+  for (const dir of [dead, locked, linked, unregistered]) fs.mkdirSync(dir);
+  g('worktree', 'add', '--detach', join(dead, 'basewt'), 'HEAD');
+  g('worktree', 'add', '--detach', join(locked, 'basewt'), 'HEAD');
+  g('worktree', 'lock', join(locked, 'basewt'));
+  fs.symlinkSync(join(locked, 'basewt'), join(linked, 'basewt'));
+  fs.mkdirSync(join(unregistered, 'basewt'));
+  const now = Date.now();
+  assert.deepEqual(cleanupStaleRuns(root, temp, now, { procDir: join(scratch, 'no-proc') }), [], 'no /proc: recent dirs fall back to the 2h rule');
+  assert.deepEqual(cleanupStaleRuns(root, temp, now, { procDir: noProcs }), [dead]);
+  assert.ok(!existsSync(dead));
+  assert.ok(!g('worktree', 'list', '--porcelain').includes(dead), 'registration removed');
+  for (const dir of [locked, join(locked, 'basewt', 'tracked'), linked, unregistered]) assert.ok(existsSync(dir), dir);
+
+  if (!existsSync('/proc')) { t.diagnostic('no /proc: live-cwd case skipped'); return; }
+  const live = join(temp, 'land-local-check-eeeeeeeeee-MNO345');
+  fs.mkdirSync(live);
+  g('worktree', 'add', '--detach', join(live, 'basewt'), 'HEAD');
+  const child = spawn('sleep', ['60'], { cwd: join(live, 'basewt'), stdio: 'ignore' });
+  children.push(child);
+  const old = new Date(now - 3 * 3600_000);
+  fs.utimesSync(live, old, old);
+  assert.ok(!cleanupStaleRuns(root, temp, now).includes(live), 'a process working in the checkout keeps it, even when old');
+  assert.ok(existsSync(join(live, 'basewt', 'tracked')));
 });
 
 test('parseArgs: default gates are real gauntlet gates; --all, --gates and bad input', () => {

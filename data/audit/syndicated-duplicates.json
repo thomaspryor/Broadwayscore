@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-18T04:14:03.969Z",
+  "generatedAt": "2026-11-18T04:42:17.527Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 56,
+    "avgScoreDiff": 14
   },
   "syndicationPairs": [
     {
@@ -162,7 +162,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Michael Kuchwara",
+      "showId": "enron-2010",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "abc-news",
+      "primaryFile": "ap--michael-kuchwara.json",
+      "secondaryFile": "abc-news--michael-kuchwara.json",
+      "similarity": 56,
+      "primaryScore": 58,
+      "secondaryScore": 44,
+      "scoreDiff": 14
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
