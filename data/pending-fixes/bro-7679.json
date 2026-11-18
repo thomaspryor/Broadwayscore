@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7679",
   "planId": "5ce6ef67-5f6e-48eb-b3d0-4e60179fc8bc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T14:33:13.585Z",
   "submitter": {
     "name": null,
@@ -68,5 +68,39 @@
         "description": "barefoot-in-the-park-regional-2026/fandango--unknown.json: wrongProductionReason"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T14:48:45.888Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "barefoot-in-the-park-regional-2026/curtainup--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "barefoot-in-the-park-regional-2026/curtainup--unknown.json wrongProductionReason: null -> \"Reviews the 2006 Broadway revival (Amanda Peet Broadway debut), not the Whitmore-Lindley LA production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-women-regional-2026/rachelsreviewstheatre--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-women-regional-2026/rachelsreviewstheatre--unknown.json wrongProductionReason: null -> \"Reviews Centerpoint Legacy Theatre (Utah), not Carpenter PAC Long Beach\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "barefoot-in-the-park-regional-2026/fandango--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "barefoot-in-the-park-regional-2026/fandango--unknown.json wrongProductionReason: null -> \"Fandango movie page for the film, not a stage review\""
+    }
+  ],
+  "executedIn": "ci"
 }
