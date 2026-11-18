@@ -138,6 +138,7 @@ const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { chooseArticleBody, SHORT_JSONLD_MAX: JSONLD_TEASER_MAX } = require('./lib/jsonld-body-choice');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
+const { detectBylineConflict } = require('./lib/byline-extraction');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { discardNoRatingOutletScore } = require('./lib/no-rating-outlet-score');
 const { runScoreExtractorPrePass } = require('./lib/score-extractor-prepass');
@@ -5412,7 +5413,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   if (html && !data.criticNameManual) {
     const hcAuthor = extractHighConfidenceAuthor(html);
     const storedCritic = data.criticName || review.critic || '';
+    // BRO-7745: JSON-LD names whoever POSTED the article (All That Dazzles' "Sam Woodward",
+    // TheaterMania's editor). When the page prints a different byline, the JSON-LD is not the critic.
+    let hcPrintedConflict = null;
+    if (hcAuthor) {
+      try { hcPrintedConflict = detectBylineConflict({ html, text: cleanedText, url: data.url, outletId: data.outletId, chosen: hcAuthor.name }); } catch { hcPrintedConflict = null; }
+      if (hcPrintedConflict) console.log(`    → HC author override skipped: JSON-LD "${hcAuthor.name}" but the page prints "${hcPrintedConflict.visible}"`);
+    }
     if (hcAuthor &&
+        !hcPrintedConflict &&
         storedCritic &&
         storedCritic !== 'Unknown' &&
         !matchesCritic(hcAuthor.name, storedCritic)) {
@@ -5525,6 +5534,21 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // data.duplicateOf on conflict and validate-review-texts skips the file.
       // Removing the merge eliminates the line-5069 corruption surface.
       renameReviewFileForCriticOverride(review, data, extractedAuthor);
+    }
+  }
+
+  // 1B-iv. STRUCTURED-AUTHOR CONFLICT (BRO-7745). The credited critic is the page's JSON-LD/meta
+  // author while the page prints a different byline: TheaterMania's JSON-LD names the editor who
+  // posted the review, so 13+ reviews were credited to him. Flag only; the printed-credit step
+  // below and fix plans do the re-crediting.
+  if (html && data.criticName && data.criticName !== 'Unknown') {
+    let conflict = null;
+    try { conflict = detectBylineConflict({ html, text: cleanedText, url: data.url, outletId: data.outletId, chosen: data.criticName }); } catch { conflict = null; }
+    if (conflict) {
+      console.log(`    ⚠️  Byline conflict: credited "${data.criticName}" = page structured author ${conflict.structured}, but the page prints "${conflict.visible}"`);
+      data.bylineConflict = conflict;
+    } else if (data.bylineConflict) {
+      delete data.bylineConflict;
     }
   }
 

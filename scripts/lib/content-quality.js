@@ -3419,6 +3419,9 @@ function isValidAuthorName(name) {
 
 function cleanAuthorName(name) {
   let cleaned = name.trim();
+  // ", Editor-in-Chief" / ", Chief Theatre Critic" ride along in meta authors
+  // (Theater Scene, BRO-7745): one implementation, byline-normalization's.
+  cleaned = require('./byline-normalization').stripBylineSuffixes(cleaned) || cleaned;
   // Strip any residual HTML tags (e.g., "Lisa Martland<br>")
   cleaned = cleaned.replace(/<[^>]+>/g, '').trim();
   // Strip HTML entities
@@ -3544,7 +3547,7 @@ function extractCultureSauceInlineAuthor(text) {
  * byline, which can still find the real critic.
  */
 function extractAuthorFromHtml(html, text, options = {}) {
-  const name = extractAuthorFromHtmlUnfiltered(html, text, options);
+  const name = withPrintedCredit(extractAuthorFromHtmlUnfiltered(html, text, options), text, options);
   const excluded = options && Array.isArray(options.excludeNames)
     ? new Set(options.excludeNames.map(normalizeName).filter(Boolean))
     : null;
@@ -3556,6 +3559,25 @@ function extractAuthorFromHtml(html, text, options = {}) {
     return cleanAuthorName(bylineResult.name);
   }
   return null;
+}
+
+/**
+ * BRO-7745: outlets in byline-from-text's PRINTED_BYLINE_OVERRIDES print the
+ * critic in the article ("Review by Ruth Sealey", "Written by Roby for Theatre
+ * and Tonic") while their meta/JSON-LD/CMS author is the account that posted it.
+ * The record writer already applies that credit on write, but this extractor is
+ * what ingest and the collector read first, and it returned the poster. Same
+ * rule as the writer: a credit naming the same person keeps the fuller name.
+ */
+function withPrintedCredit(name, text, options = {}) {
+  if (!text || !options) return name;
+  let outletId = options.outletId || null;
+  if (!outletId && options.url) {
+    try { outletId = (require('./review-normalization').resolveOutletFromUrl(options.url) || {}).outletId || null; } catch { outletId = null; }
+  }
+  if (!outletId) return name;
+  const printed = require('./byline-from-text').printedBylineOverride(outletId, text, options.url, name || undefined);
+  return printed || name;
 }
 
 // Outlets whose only author markup is a site-wide account (BRO-6518); see the
@@ -3662,8 +3684,20 @@ function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
   // else is left unresolved rather than guessed — a wrong default critic
   // previously misattributed 30/31 Plays International reviews (2026-08-03).
   // BRO-171.
+  //
+  // BRO-7745: that JSON-LD author is whoever POSTED the article (often editor
+  // David Gordon), not the critic. The visible byline
+  // <a id="article-author-tag" href="/authors/<slug>">Name</a> names the critic,
+  // so it wins; it is TheaterMania's own markup, so it is read without a url.
+  // A current-template page whose author area is empty names nobody, and the
+  // slug is only trusted on the old template that has no author area at all.
+  {
+    const visible = require('./byline-extraction').extractTheaterManiaAuthorTag(html);
+    if (visible && isValidAuthorName(visible)) return cleanAuthorName(visible);
+  }
   if (options && options.url && /(^|\/\/|\.)theatermania\.com/i.test(String(options.url))) {
-    const tm = resolveTheaterManiaByline(html);
+    if (/<section\b[^>]*\bclass=["'][^"']*\bauthor-area\b/i.test(html)) return null;
+    const tm = resolveTheaterManiaByline(html, options.theaterManiaCritics);
     if (tm) return tm;
   }
 
@@ -3716,7 +3750,8 @@ function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
     /rel="author"[^>]*>([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
     // class="author" or class="foo author" — matches Theatrely, other CMS sites
     // Does NOT match class="author-area" or class="authors-box" (hyphen/plural after "author")
-    /class="(?:[^"]*\s)?author"[^>]*>(?:\s*<[^>]+>)*\s*(?:By\s+)?([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
+    // "Written by <a>Name</a>" (Squarespace) used to capture "Written by" itself (BRO-7745).
+    /class="(?:[^"]*\s)?author"[^>]*>(?:\s*<[^>]+>)*\s*(?:(?:Written\s+)?By\s+(?:<[^>]+>\s*)*)?(?!Written\s+by\b)([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
     // class="author-name" — matches WhatsOnStage, DCTheatreScene
     /class="[^"]*author-name[^"]*"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
     // WordPress author vcard microformat
@@ -3852,13 +3887,14 @@ function resolveSingleCriticOutletByline(outletId) {
  * @param {string} html live-fetched article HTML
  * @returns {string | null}
  */
-function resolveTheaterManiaByline(html) {
+function resolveTheaterManiaByline(html, critics) {
   const idMatch = /"author"\s*:\s*\{\s*"@id"\s*:\s*"([^"]+)#author"\s*\}/.exec(html);
   if (!idMatch) return null;
   const authorUrl = idMatch[1].replace(/\\\//g, '/');
   const slugMatch = /\/author\/([a-z0-9-]+)\/?$/i.exec(authorUrl);
   if (!slugMatch) return null;
-  return matchTheaterManiaSlug(slugMatch[1].toLowerCase(), loadTheaterManiaCritics());
+  // `critics`: roster override (tests); defaults to data/critic-registry.json.
+  return matchTheaterManiaSlug(slugMatch[1].toLowerCase(), Array.isArray(critics) ? critics : loadTheaterManiaCritics());
 }
 
 /**

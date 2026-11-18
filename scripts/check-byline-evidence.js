@@ -13,6 +13,9 @@
  *   node scripts/check-byline-evidence.js '<url>|<expect regex>' ['<url>|<regex>' ...] [--scrape] [--year=YYYY]
  *   --scrape  also try the paid fetchPage() chain when live and Wayback both fail
  *   --year    Wayback timestamp hint (default: the 4-digit year in the url, else 2015)
+ *   --prefer-wayback  read the snapshot first: for pages whose current template
+ *             dropped the byline (old TheaterMania reviews, BRO-7745), the live
+ *             page names nobody and would otherwise win.
  * Output: one JSON line per url {url, via, snapshot, authors, matches}.
  */
 'use strict';
@@ -74,6 +77,7 @@ async function checkOne(spec, opts) {
     }
   }
   // Prefer the first source that matches the expectation; else the first one read.
+  if (opts.preferWayback) tries.sort((a, b) => (b.via === 'wayback') - (a.via === 'wayback'));
   const pick = tries.find((t) => expect && matchContexts(t.body, expect).length) || tries[0];
   if (!pick) return { ...out, via: 'none' };
   out.via = pick.via;
@@ -91,7 +95,7 @@ async function main() {
     return specs.length === 0 ? 1 : 0;
   }
   const yearArg = argv.find((a) => a.startsWith('--year='));
-  const opts = { scrape: argv.includes('--scrape'), year: yearArg ? yearArg.slice(7) : null };
+  const opts = { scrape: argv.includes('--scrape'), preferWayback: argv.includes('--prefer-wayback'), year: yearArg ? yearArg.slice(7) : null };
   let found = 0;
   for (const s of specs) {
     const r = await checkOne(s, opts);
