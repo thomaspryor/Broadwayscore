@@ -58,7 +58,7 @@ test('git store: add and mark by compare-and-swap, read by the lane, missing bra
     assert.equal(inbox.markSync({ repoDir: work }, [{ id: rows[0].id, status: 'published' }]).ok, true);
     assert.equal((await inbox.readForShow({ repoDir: work, show: SHOW.id }))[0].status, 'published');
     assert.deepEqual(await inbox.readForShow({ repoDir: work, show: 'other-show' }), []);
-  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('markStatus: a status for an earlier generation never lands on a re-added entry', () => {
@@ -121,7 +121,7 @@ test('drain waits while any lease holds the show, the lane\'s own included, read
       assert.equal(drainAllowed(held), false);
     } finally { if (prev === undefined) delete process.env.OPENING_NIGHT_LANE_HOLDER; else process.env.OPENING_NIGHT_LANE_HOLDER = prev; }
     assert.equal(drainAllowed(liveLease(SHOW.id, path.join(root, 'no-such-repo'))), false, 'an unreadable store holds the drain');
-  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('drainPlan: only entries the lane did not finish go back to ingest-urls', () => {
@@ -153,7 +153,7 @@ function laneNight({ entries, fetchDate, maxPasses = 1 }) {
     },
     now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
   });
-  return run.then((res) => ({ res, doc, marks })).finally(() => fs.rmSync(dir, { recursive: true, force: true }));
+  return run.then((res) => ({ res, doc, marks })).finally(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 }
 
 const entry = (extra = {}) => ({ id: `${SHOW.id}|abc`, holder: 'manual-inbox', show: SHOW.id, url: URL1, critic: 'A Critic', addedAt: new Date().toISOString(), addedBy: 'test', ...extra });
