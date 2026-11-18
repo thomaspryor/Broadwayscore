@@ -177,6 +177,14 @@ function corroboratedLeadWord(item, show, ctx = {}) {
   const venueRe = core ? new RegExp(`(?:\\bthe\\s+)?${core}(?:\\s+(?:theatre|theater))?`, 'gi') : /(?!)/g;
   const cue = otherProductionCue(raw.replace(/\b(?:off[-\s]+)?broadway\b/gi, ' ').replace(venueRe, ' '), word, show);
   if (cue) return no(`other-production:${cue}`, word);
+  // BRO-7785's wrong-staging guard (show-names.js), the same check every other lane match passes.
+  const sn = require('../show-names');
+  if (typeof sn.billedTitleOtherProductionCue === 'function' && !(typeof sn.wrongStagingGuardOff === 'function' && sn.wrongStagingGuardOff())) {
+    const staged = sn.billedTitleOtherProductionCue(raw, word, show.title, { main: true });
+    if (staged) return no(`wrong-staging:${staged}`, word);
+    const slug = typeof sn.slugOtherStagingCue === 'function' && sn.slugOtherStagingCue(item.url, show.title);
+    if (slug) return no(`wrong-staging-slug:${slug}`, word);
+  }
   // 5. the word is used as a title
   if (!titlePosition(raw, word) && !titlePosition(slugOf(item.url), word) && !quoted(raw, word)) return no('lead-word-not-in-title-position', word);
   return { admit: true, reason: 'lead-word-corroborated', word };
