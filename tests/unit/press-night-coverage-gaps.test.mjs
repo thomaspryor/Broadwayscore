@@ -84,7 +84,7 @@ test('reviewer blockers stay fixed: watcher not restarted by the early run, watc
   const orch = readFileSync(new URL('../../.github/workflows/opening-night-orchestrator.yml', import.meta.url), 'utf8');
   const watcher = orch.slice(orch.indexOf('- name: Start aggregator URL watcher loop'));
   assert.match(watcher.slice(0, 2000), /if: [^\n]*inputs\.role != 'ek'/, 'the early run must not start the 270-min URL watcher loop');
-  assert.match(orch, /DEADLINE=\$\(\( \$\(date \+%s\) \+ LOOP_MIN\*60 \)\)/, 'the loop honours deadline_minutes');
+  assert.match(orch, /\[ "\$LOOP_MIN" -lt 240 \] && DEADLINE=\$\(\( \$\(date \+%s\) \+ LOOP_MIN\*60 \)\)/, 'the loop honours deadline_minutes');
   const cli = readFileSync(new URL('../../scripts/press-night-watchdog.js', import.meta.url), 'utf8');
   assert.doesNotMatch(cli, /'market=broadway'/, 'the watchdog must not hardcode the Broadway market');
   const E = Date.parse('2026-12-04T03:00:00Z');
