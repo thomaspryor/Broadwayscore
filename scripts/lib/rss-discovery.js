@@ -354,13 +354,22 @@ function titleMatchesShow(itemTitle, showTitle, opts = {}) {
  * BRO-7785: does a feed or index item (headline + link) name this show? The headline or the slug must; a headline that
  * names another staging of the title refuses the item even when its slug matches (a lower-case slug hides the cue).
  */
+function lastSlugSegment(url) {
+  try { return new URL(url).pathname.split('/').filter(Boolean).pop() || ''; } catch { return ''; }
+}
 function itemNamesShow(title, url, showTitle, opts = {}) {
+  // A review URL that names this show and no other staging outweighs a company named in the headline, which is as often
+  // the show's own ("Tectonic Theater Project's 'Here There Are Blueberries'" at .../here-there-are-blueberries-review).
+  if (url && /review/i.test(url) && urlSlugMatchesShow(url, showTitle, opts) && !slugOtherStagingCue(url, showTitle)
+    && !require('./show-names').urlNamesOtherArticle(url, showTitle) && /review/i.test(lastSlugSegment(url))) return true;
   if (title && headlineNamesOtherStaging(title, showTitle, opts)) return false;
   // The URL can name what the headline does not: another staging ("...-at-stages-houston") or a news story whose slug
   // holds only part of the title and cast names (vulture.com/article/its-a-wonderful-life-broadway-lisa-rinna.html).
   // A headline that calls itself a review of a name of this show outweighs a news-shaped slug (second-opinion review:
   // "Review: It's A Wonderful Life: A Live Radio Play, with Megan Hilty" at .../its-a-wonderful-life-hilty-rannells.html).
-  const reviewHeadline = /\breview/i.test(title || '') && titleMatchesShow(title, showTitle, opts);
+  // So does a headline naming this show and its own house ("It's a Wonderful Life: A Live Radio Play (Broadhurst Theatre)").
+  const reviewHeadline = titleMatchesShow(title || '', showTitle, opts)
+    && (/\breview/i.test(title) || require('./show-names').textNamesOwnVenue(title, showTitle));
   if (url && (reviewHeadline ? slugOtherStagingCue(url, showTitle) : urlNamesOtherArticle(url, showTitle))) return false;
   if (reviewHeadline) return true;
   return titleMatchesShow(title || '', showTitle, opts) || urlSlugMatchesShow(url, showTitle, opts);

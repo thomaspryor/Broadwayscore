@@ -97,3 +97,36 @@ test('WRONG_STAGING_GUARD_OFF=1 restores the old behaviour in one switch', () =>
   } finally { delete process.env.WRONG_STAGING_GUARD_OFF; }
   assert.equal(rss.itemNamesShow(title, link, IAWL.title, LANE), false);
 }));
+
+// Ship-check 2026-11-18: critics' decks on real home-market reviews that an earlier draft refused.
+test('decks naming a company, a film or a season keep the show\'s own review', () => {
+  const shows = [
+    IAWL,
+    { id: 'blue', title: 'Here There Are Blueberries', category: 'off-broadway', venue: 'New York Theatre Workshop' },
+    { id: 'down', title: 'Downstate', category: 'off-broadway', venue: 'Playwrights Horizons' },
+    { id: 'bj', title: 'Beetlejuice', category: 'broadway', venue: 'Marquis Theatre' },
+    { id: 'bj-tour', title: 'Beetlejuice', category: 'tour', venue: 'Fox Theatre' },
+    { id: 'wanted', title: 'Wanted', category: 'off-broadway', venue: 'Pershing Square Signature Center', akaTitles: ['Gun & Powder'] },
+    { id: 'cind', title: 'Cinderella', category: 'west-end', venue: 'London Palladium' },
+    { id: 'imit', title: 'Imitation of Life', category: 'off-broadway', venue: 'Vineyard Theatre' },
+  ];
+  const lane = { fuzzy: true, mainTitle: true, allShowTitles: shows.map((s) => s.title) };
+  setPressNameShows(shows);
+  try {
+    for (const [h, t] of [
+      ['‘It’s a Wonderful Life’ review: the movie becomes a radio play', IAWL.title],
+      ['Review: ‘It’s a Wonderful Life,’ the 1946 classic, as a radio play', IAWL.title],
+      ['‘Downstate’ Review: Bruce Norris’s Play, From Steppenwolf Theatre Company, Arrives', 'Downstate'],
+      ['Review: ‘Beetlejuice’ at the Fox Theatre is a ghoulish delight', 'Beetlejuice'],
+      ['Wanted (Gun & Powder) review', 'Wanted'],
+      ['Cinderella: panto season is back with a bang', 'Cinderella'],
+      ['Imitation of Life: a remix of the Sirk film', 'Imitation of Life'],
+    ]) assert.equal(rss.titleMatchesShow(h, t, lane), true, `refused: ${h}`);
+    // A review URL naming the show and no other staging outweighs a company named in the headline.
+    assert.equal(rss.itemNamesShow('Tectonic Theater Project\'s \'Here There Are Blueberries\' is a haunting act of witness',
+      'https://www.timeout.com/newyork/theater/here-there-are-blueberries-review', 'Here There Are Blueberries', lane), true);
+    // A headline naming the show's own house outweighs a casting-shaped slug.
+    assert.equal(rss.itemNamesShow('It\'s a Wonderful Life: A Live Radio Play (Broadhurst Theatre)',
+      'https://www.thewrap.com/its-a-wonderful-life-broadway-tituss-burgess-harry-hamlin/', IAWL.title, lane), true);
+  } finally { setPressNameShows(null); }
+});
