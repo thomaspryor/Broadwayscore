@@ -121,13 +121,16 @@ test('a rescore chain run still counts as unscoped, so Express cancels it', () =
 test('contract: llm-ensemble-score.yml run-name suffix renders a title the parser reads', () => {
   const y = fs.readFileSync(new URL('../../.github/workflows/llm-ensemble-score.yml', import.meta.url), 'utf8');
   const runName = y.split('\n').find(l => l.startsWith('run-name:'));
-  const m = runName.match(/format\('( \(rescore chain, \{0\} left, limit \{1\}, max-cost \{2\}\))'/);
+  const m = runName.match(/format\('( \(rescore chain, \{0\} left, limit \{1\}, max-cost \{2\}\{3\}\{4\}\))'/);
   assert.ok(m, 'run-name must carry the rescore chain suffix');
-  const rendered = 'LLM Ensemble Score Reviews' + m[1].replace('{0}', '3').replace('{1}', '400').replace('{2}', '15');
-  assert.match(rendered, RESCORE_CHAIN_RE);
+  const render = (a, b, c, d, e) => 'LLM Ensemble Score Reviews' + m[1].replace('{0}', a).replace('{1}', b).replace('{2}', c).replace('{3}', d).replace('{4}', e);
+  assert.match(render('3', '400', '15', '', ''), RESCORE_CHAIN_RE);
+  // BRO-7576: chain_spent_usd renders as ", spent X" and is read back.
+  const spent = render('3', '400', '15', ', spent ', '9.30');
+  assert.equal(spent.match(RESCORE_CHAIN_RE)[4], '9.30');
   // Empty inputs render as empty strings and must still parse (no cap restored).
-  assert.match('LLM Ensemble Score Reviews' + m[1].replace('{0}', '3').replace('{1}', '').replace('{2}', ''), RESCORE_CHAIN_RE);
-  assert.ok(/inputs\.remaining_batches, inputs\.limit, inputs\.max_cost\)/.test(runName), 'limit/max_cost must render raw (no word sentinel)');
+  assert.match(render('3', '', '', '', ''), RESCORE_CHAIN_RE);
+  assert.ok(/inputs\.remaining_batches, inputs\.limit, inputs\.max_cost, inputs\.chain_spent_usd && ', spent ' \|\| '', inputs\.chain_spent_usd\)/.test(runName), 'limit/max_cost/spent must render raw (no word sentinel)');
   // Only plain chains get the suffix: inputs the parser cannot restore must exclude it.
   for (const k of ['!inputs.rescore_reason', '!inputs.shard', "inputs.outdated != 'true'", "inputs.stale_scores != 'true'", "inputs.upgrade_ensemble != 'true'", "inputs.retry_emergency != 'true'", "inputs.dry_run != 'true'", "inputs.rescore != 'true'", '!inputs.show_id']) {
     assert.ok(runName.includes(k), `run-name suffix guard missing ${k}`);

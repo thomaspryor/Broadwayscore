@@ -1,8 +1,9 @@
 name: LLM Ensemble Score Reviews
 # BRO-5890: show-scoped runs carry the show id so Opening Night Express can
 # leave other shows' scoring alone (scripts/lib/express-preemption.js).
-run-name: LLM Ensemble Score Reviews${{ inputs.show_id && format(' — {0}', inputs.show_id) || '' }}${{ (inputs.chain == 'true' && inputs.needs_rescore == 'true' && !inputs.show_id && !inputs.rescore_reason && !inputs.shard && inputs.outdated != 'true' && inputs.stale_scores != 'true' && inputs.upgrade_ensemble != 'true' && inputs.retry_emergency != 'true' && inputs.dry_run != 'true' && inputs.rescore != 'true') && format(' (rescore chain, {0} left, limit {1}, max-cost {2})', inputs.remaining_batches, inputs.limit, inputs.max_cost) || '' }} # workflow-line-length-ok: run-name must be one expression (BRO-7419)
+run-name: LLM Ensemble Score Reviews${{ inputs.show_id && format(' — {0}', inputs.show_id) || '' }}${{ (inputs.chain == 'true' && inputs.needs_rescore == 'true' && !inputs.show_id && !inputs.rescore_reason && !inputs.shard && inputs.outdated != 'true' && inputs.stale_scores != 'true' && inputs.upgrade_ensemble != 'true' && inputs.retry_emergency != 'true' && inputs.dry_run != 'true' && inputs.rescore != 'true') && format(' (rescore chain, {0} left, limit {1}, max-cost {2}{3}{4})', inputs.remaining_batches, inputs.limit, inputs.max_cost, inputs.chain_spent_usd && ', spent ' || '', inputs.chain_spent_usd) || '' }} # workflow-line-length-ok: run-name must be one expression (BRO-7419)
 # The "(rescore chain, …)" suffix is read back by scripts/lib/express-preemption.js planRedispatch so an
+# (BRO-7576: ", spent X" carries chain_spent_usd so a restored chain keeps its running total)
 # opening-night Express that cancels a plain needs_rescore chain batch can re-dispatch it (BRO-7419);
 # run inputs are not readable from the runs API. Format pinned by express-preemption.test.mjs.
 
@@ -519,9 +520,9 @@ jobs:
             # BRO-7576: a chained batch gets what is left of the chain's cap,
             # not the full cap again (floor $0.50 so the run still starts; the
             # chain step already refused batches that would pass the cap).
-            if [[ "${INPUT_CHAIN_SPENT_USD}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
-              MAX_COST=$(awk -v c="$MAX_COST" -v s="${INPUT_CHAIN_SPENT_USD}" 'BEGIN { r = c - s; if (r < 0.5) r = 0.5; printf "%.2f", r }')
-              echo "Chain has spent USD ${INPUT_CHAIN_SPENT_USD}; this batch gets --max-cost=${MAX_COST}"
+            if [[ "${INPUT_CHAIN_SPENT_USD:-}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+              MAX_COST=$(awk -v c="$MAX_COST" -v s="${INPUT_CHAIN_SPENT_USD:-}" 'BEGIN { r = c - s; if (r < 0.5) r = 0.5; printf "%.2f", r }')
+              echo "Chain has spent USD ${INPUT_CHAIN_SPENT_USD:-}; this batch gets --max-cost=${MAX_COST}"
             fi
             ARGS="$ARGS --max-cost=$MAX_COST"
           fi

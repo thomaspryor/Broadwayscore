@@ -20,7 +20,7 @@ const SCORING = 'llm-ensemble-score.yml';
 // Must match the run-name suffix in .github/workflows/llm-ensemble-score.yml (BRO-7419).
 // Empty limit/max-cost render as nothing (not a word a user could also type), so
 // an invalid typed value fails to parse instead of coming back uncapped.
-const RESCORE_CHAIN_RE = /\(rescore chain, (\d+) left, limit (\d*), max-cost (\d+(?:\.\d+)?)?\)\s*$/;
+const RESCORE_CHAIN_RE = /\(rescore chain, (\d+) left, limit (\d*), max-cost (\d+(?:\.\d+)?)?(?:, spent (\d+(?:\.\d+)?))?\)\s*$/;
 
 // BRO-5890: Express for one show cancelled a Benjamin Button scoring run and
 // would cancel every targeted poller for every other show tonight. Runs scoped
@@ -81,6 +81,8 @@ function planRedispatch(workflow, displayTitle) {
     const fields = { needs_rescore: 'true', chain: 'true', remaining_batches: m[1], run_calibration: 'false', run_validation: 'false' };
     if (m[2]) fields.limit = m[2];
     if (m[3]) fields.max_cost = m[3];
+    // BRO-7576: keep the chain's running spend so a restore does not hand it a fresh max_cost.
+    if (m[4]) fields.chain_spent_usd = m[4];
     return { workflow, fields };
   }
   return null;

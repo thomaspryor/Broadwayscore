@@ -89,7 +89,9 @@ test('rows older than 24h, unparseable times and bad costs do not count', () => 
     null,
   ];
   assert.equal(spentInLast24h(runs, now), 2);
-  assert.equal(planChainContinuation({ runs: [], runId: 'r', now, maxCost: '15', dailyUsd: 15 }).stop, false);
+  const none = planChainContinuation({ runs: [], runId: 'r', now, maxCost: '15', dailyUsd: 15 });
+  assert.equal(none.stop, true, 'no cost row for this run = unknown spend = stop');
+  assert.match(none.reason, /^no-cost-recorded:/);
 });
 
 test('the enforcement line is configured and separate from the $10 alarm line', () => {
@@ -163,5 +165,15 @@ test('CLI: kill switch keeps counting chain spend', () => {
 test('Build CLI args gives a chained batch only what is left of max_cost', () => {
   const yml = fs.readFileSync(path.join(here, '..', '..', '.github', 'workflows', 'llm-ensemble-score.yml'), 'utf8');
   assert.match(yml, /INPUT_CHAIN_SPENT_USD: \$\{\{ github\.event\.inputs\.chain_spent_usd \}\}/);
-  assert.match(yml, /MAX_COST=\$\(awk -v c="\$MAX_COST" -v s="\$\{INPUT_CHAIN_SPENT_USD\}"/);
+  assert.match(yml, /MAX_COST=\$\(awk -v c="\$MAX_COST" -v s="\$\{INPUT_CHAIN_SPENT_USD:-\}"/);
+});
+
+test('run-name carries chain spend and express-preemption restores it', () => {
+  const yml = fs.readFileSync(path.join(here, '..', '..', '.github', 'workflows', 'llm-ensemble-score.yml'), 'utf8');
+  assert.match(yml.split('\n')[3], /inputs\.chain_spent_usd && ', spent '/);
+  const { planRedispatch, SCORING } = require('./express-preemption.js');
+  const p = planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 3 left, limit 400, max-cost 15, spent 9.30)');
+  assert.equal(p.fields.chain_spent_usd, '9.30');
+  assert.equal(p.fields.max_cost, '15');
+  assert.equal(planRedispatch(SCORING, 'LLM Ensemble Score Reviews (rescore chain, 3 left, limit 400, max-cost 15)').fields.chain_spent_usd, undefined);
 });

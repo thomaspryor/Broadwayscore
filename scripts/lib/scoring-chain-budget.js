@@ -81,6 +81,12 @@ function planChainContinuation({ runs, runId, now = new Date(), maxCost, chainSp
   const line = toUsd(dailyUsd);
   const base = { nextChainSpent: total.toFixed(2), spentThisRun, spent24h };
 
+  // The chain step runs only after this batch scored reviews, which always
+  // costs money: no cost row for this run means its spend is unknown, not $0.
+  if (spentThisRun <= 0) {
+    return { ...base, stop: true, reason: `no-cost-recorded: no costUsd for run ${runId} in the run log, so the chain's spend is unknown` };
+  }
+
   if (cap !== null && cap > 0 && total + spentThisRun > cap) {
     return {
       ...base, stop: true,
