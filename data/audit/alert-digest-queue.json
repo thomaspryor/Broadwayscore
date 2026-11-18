@@ -1932,5 +1932,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T02:36:56.495Z"
+  },
+  {
+    "conditionKey": "land:land/toolcheck-tighten",
+    "title": "Landing blocked: unit-tests-node red on land/toolcheck-tighten",
+    "description": "land.yml did not land land/toolcheck-tighten: the unit-tests-node gate went red at e9d0404748. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44222161231",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/toolcheck-tighten"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e9d04047486db66112de3c91c82d27c6800bb256"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44222161231"
+      }
+    ],
+    "queuedAt": "2026-11-18T02:48:25.999Z"
   }
 ]
