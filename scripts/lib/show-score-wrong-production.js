@@ -125,4 +125,41 @@ function applyWrongProductionPurge(plan, { urlData, showScoreData, audienceBuzz,
   return plan.map((p) => ({ ...p, ...removeWrongProductionShowScore({ showId: p.showId, url: p.url, urlData, showScoreData, audienceBuzz, show: showsById[p.showId] }) }));
 }
 
-module.exports = { removeWrongProductionShowScore, findWrongProductionMappings, planWrongProductionPurge, applyWrongProductionPurge };
+/**
+ * BRO-7655: unmap every page the extractor just rejected as another
+ * production's (show-score.json _meta.wrongProduction[showId].url still equal
+ * to the live mapping), and record it under _productionMismatch so no writer
+ * maps it straight back.
+ *
+ * Before this, the extractor only RECORDED the finding in show-score.json and
+ * left the mapping in show-score-urls.json. audit-show-score-urls.js --strict
+ * then failed ("ANOTHER PRODUCTION'S PAGE") until someone ran
+ * purge-wrong-production-show-score.js by hand, which is why the corpus-drift
+ * card "one Show Score URL mapped to 2+ showIds" was filed 3 times in 30 days
+ * (BRO-6434, BRO-6825, BRO-7610; miles-for-mary-off-broadway-2026 was the
+ * live case on 2026-11-18). Only the public url map is touched: the extractor
+ * already wrote no show-score.json entry for the page, and the private
+ * audience-buzz.json is left to the purge script, which picks the show up
+ * from _productionMismatch (planWrongProductionPurge).
+ *
+ * Pure: mutates only urlData.
+ * @returns {{showId: string, url: string, reason: string}[]} the mappings removed
+ */
+function unmapRecordedWrongProduction({ urlData, showScoreData, showsById = {}, now = Date.now() }) {
+  const recorded = (showScoreData && showScoreData._meta && showScoreData._meta.wrongProduction) || {};
+  const healed = [];
+  if (!urlData || !urlData.shows) return healed;
+  for (const [showId, rec] of Object.entries(recorded)) {
+    if (!rec || !rec.url) continue;
+    const current = urlData.shows[showId];
+    if (!current || normalizeCacheValue(current) !== normalizeCacheValue(rec.url)) continue;
+    const show = showsById[showId];
+    if (show && exemptionFor(show, current)) continue;
+    recordProductionMismatch(urlData, showId, current, now);
+    delete urlData.shows[showId];
+    healed.push({ showId, url: current, reason: rec.reason || 'recorded as another production\'s page' });
+  }
+  return healed;
+}
+
+module.exports = { removeWrongProductionShowScore, findWrongProductionMappings, planWrongProductionPurge, applyWrongProductionPurge, unmapRecordedWrongProduction };
