@@ -106,6 +106,21 @@ describe('monthly drift check verdicts (check-byline-fixture-drift.js)', () => {
     assert.equal(classifyDrift({ expected: 'Chris Omaweng' }, { criticName: null, textLength: 4000 }), 'drift');
     assert.equal(classifyDrift({ expected: 'Chris Omaweng' }, { criticName: 'Chris Omaweng', textLength: 0 }), 'same');
   });
+  // Cousin: the stored-byline sweep had the same hole (a captcha page read as 'no-page-byline',
+  // which is the list that keeps a stored name). Both tools use one rule from page-byline.js.
+  test('sweep: a page with no article text is fetch-failed, not no-page-byline', () => {
+    const { classify } = require('../../scripts/sweep-stored-bylines.js');
+    assert.equal(classify('David Gordon', { pageByline: null, textLength: 0 }), 'fetch-failed');
+    assert.equal(classify('David Gordon', { pageByline: null, textLength: 4000 }), 'no-page-byline');
+    assert.equal(classify('David Gordon', { pageByline: 'David Gordon', textLength: 0 }), 'match');
+  });
+  test('sweep and drift check share articleWasRead', async () => {
+    const fs = await import('node:fs');
+    for (const f of ['scripts/sweep-stored-bylines.js', 'scripts/check-byline-fixture-drift.js']) {
+      const src = fs.readFileSync(new URL('../../' + f, import.meta.url), 'utf8');
+      assert.match(src, /articleWasRead\(/, `${f} must use page-byline articleWasRead`);
+    }
+  });
   test('the drift run records the article text length it read', async () => {
     const fs = await import('node:fs');
     const src = fs.readFileSync(new URL('../../scripts/check-byline-fixture-drift.js', import.meta.url), 'utf8');

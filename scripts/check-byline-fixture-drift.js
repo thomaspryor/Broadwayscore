@@ -28,14 +28,12 @@ const OUT = path.join(ROOT, 'data', 'audit', 'byline-fixture-drift.json');
  * @param {{error?: string, criticName?: string|null}} live
  * @returns {'same'|'drift'|'unreachable'}
  */
-const MIN_ARTICLE_CHARS = 500;
-
 function classifyDrift(fixture, live) {
   const { sameCriticName } = require('./lib/byline-from-text');
   if (!live || live.error) return 'unreachable';
   // No name AND no article text: the fetch got an interstitial (captcha, bot wall, consent page),
   // not the article, so the page was not read. Only a page we read and found nobody on is drift.
-  if (!live.criticName && live.textLength != null && live.textLength < MIN_ARTICLE_CHARS) return 'unreachable';
+  if (!live.criticName && !require('./lib/page-byline').articleWasRead(live.textLength)) return 'unreachable';
   if (!live.criticName) return 'drift';
   // Same key the record writer uses (aliases: "Zach Stewart" is zachary-stewart).
   const { normalizeCritic } = require('./lib/review-normalization');

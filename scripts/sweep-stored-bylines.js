@@ -29,6 +29,8 @@ function classify(stored, page) {
   const { sameCriticName } = require('./lib/byline-from-text');
   if (page.fetchError) return 'fetch-failed';
   const name = page.pageByline;
+  // An interstitial (captcha, bot wall) has no article text: not read, so not "no byline".
+  if (!name && !require('./lib/page-byline').articleWasRead(page.textLength)) return 'fetch-failed';
   if (!name) return 'no-page-byline';
   if (!stored || /^unknown$/i.test(String(stored).trim())) return 'stored-missing';
   return sameCriticName(stored, name) ? 'match' : 'mismatch';
@@ -154,6 +156,7 @@ async function main() {
         row.via = got.via === 'archive' ? 'archive' : 'live';
         let text = '';
         try { text = extractArticleTextFromUrl(got.html, r.url) || ''; } catch { text = ''; }
+        row.textLength = text.length;
         Object.assign(row, readSignals(got.html, text, r.url, r.outletId));
         if (saveDir) fs.writeFileSync(path.join(saveDir, require('./lib/byline-fixture-strip').savedPageName(r.outletId, r.url)), got.html);
       } catch (e) {
