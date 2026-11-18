@@ -71,11 +71,16 @@ function runMutant(m) {
     mutated = mutated.replace(p.from, p.to);
   }
   let out;
+  // A kill mid-run must not leave a patched lane file behind: restore on SIGINT/SIGTERM too, not only in finally.
+  const restore = () => { try { fs.writeFileSync(file, original); } catch { /* reported by the byte check */ } };
+  const onSignal = (sig) => { restore(); process.exit(sig === 'SIGINT' ? 130 : 143); };
+  process.once('SIGINT', onSignal); process.once('SIGTERM', onSignal);
   try {
     fs.writeFileSync(file, mutated);
     out = runNight();
   } finally {
-    fs.writeFileSync(file, original);
+    restore();
+    process.removeListener('SIGINT', onSignal); process.removeListener('SIGTERM', onSignal);
   }
   if (fs.readFileSync(file, 'utf8') !== original) return { id: m.id, error: `${m.file} was not restored` };
   if (!out.report) return { id: m.id, error: `the night crashed (exit ${out.status}): ${out.stderr}` };

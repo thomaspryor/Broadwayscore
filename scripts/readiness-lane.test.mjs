@@ -2,6 +2,7 @@
 // and recent pipeline changes. Requires the real functions (CLAUDE.md §15).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const L = require('./lib/readiness-lane.js');
@@ -101,7 +102,6 @@ test('nightOver: false before and during the night, true 12h after embargo, fals
 
 // Class guard: the readiness script must actually call the lane checks. Reverting the wiring (the BRO-7548 gap:
 // a verdict blind to the lane) fails this.
-import fs from 'node:fs';
 test('check-opening-night-readiness.js is wired to the lane checks', () => {
   const src = fs.readFileSync(new URL('./check-opening-night-readiness.js', import.meta.url), 'utf8');
   for (const needle of ["require('./lib/readiness-lane')", 'RL.armVerdict', 'RL.laneRunVerdict', 'RL.changesVerdict', 'RL.embargoVerdict', 'opening-night-lane-live.yml', 'opening-night-lane-watchdog.yml', '--arm-check']) {
@@ -170,4 +170,20 @@ test('laneAppliesTo: only covered, non-stood-down shows; West End and off-Broadw
   assert.equal(L.laneAppliesTo(vars, { category: 'west-end', market: 'west-end' }).applies, false);
   assert.equal(L.laneAppliesTo({ onlyMarkets: '', standdown: '' }, { category: 'broadway' }).applies, false);
   assert.equal(L.laneAppliesTo({ onlyMarkets: 'broadway', standdown: 'all' }, { category: 'broadway' }).applies, false);
+});
+
+test('simulated night (BRO-7781): pass, stale, failed, crashed and missing records; never fails readiness', () => {
+  const at = new Date(NOW - 3 * 3600000).toISOString();
+  const ok = { at, pass: true, checks: 23, failed: [], foundToLiveMedianMin: 11, reviews: 13 };
+  assert.equal(L.simulatedNightVerdict(ok, NOW).status, 'pass');
+  assert.match(L.simulatedNightVerdict(ok, NOW).detail, /23 checks/);
+  const stale = { ...ok, at: new Date(NOW - (L.SIM_NIGHT_MAX_AGE_H + 1) * 3600000).toISOString() };
+  assert.equal(L.simulatedNightVerdict(stale, NOW).status, 'warn');
+  assert.match(L.simulatedNightVerdict(stale, NOW).detail, /stale/);
+  const red = { ...ok, pass: false, failed: ['a', 'b', 'c', 'd'] };
+  assert.equal(L.simulatedNightVerdict(red, NOW).status, 'warn');
+  assert.match(L.simulatedNightVerdict(red, NOW).detail, /failed: a; b; c \(\+1 more\)/);
+  assert.match(L.simulatedNightVerdict({ at, pass: false, error: 'boom' }, NOW).detail, /crashed: boom/);
+  assert.equal(L.simulatedNightVerdict(null, NOW).status, 'warn');
+  assert.equal(L.simulatedNightVerdict({ at: new Date(NOW + 3600000).toISOString(), pass: true }, NOW).status, 'warn');
 });
