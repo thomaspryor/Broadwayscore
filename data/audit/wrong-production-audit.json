@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T02:34:39.660Z",
+  "timestamp": "2026-11-18T02:50:50.265Z",
   "stats": {
-    "totalReviews": 82526,
+    "totalReviews": 82529,
     "alreadyFlagged": 22547,
     "dateGuardCatches": 221,
     "directorMismatch": 3729,
     "tvFilmSignals": 2345,
-    "londonSignals": 3781,
+    "londonSignals": 3782,
     "offBroadwaySignals": 761,
     "yearMismatch": 382,
-    "noPublishDate": 8279
+    "noPublishDate": 8280
   },
   "findings": [
     {
@@ -97455,7 +97455,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 72,
+      "score": 77,
       "publishDate": "2026-11-11",
       "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
       "findings": [
@@ -97469,7 +97469,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 72,
+      "score": 77,
       "publishDate": "2026-11-11",
       "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
       "findings": [
@@ -97483,7 +97483,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2026-11-13",
       "url": "https://theartsdesk.com/theatre/cloud-9-national-theatre-review-dazzlingly-successful-revival",
       "findings": [
@@ -97817,7 +97817,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2026-11-12",
       "url": "https://theatreandtonic.co.uk/blog/cloud-9-lyttelton-national-theatre-london-review",
       "findings": [
@@ -98558,7 +98558,7 @@
     {
       "showId": "cranford-off-west-end-2026",
       "file": "theatreandtonic--becky.json",
-      "score": 87,
+      "score": 89,
       "publishDate": "2026-11-15",
       "url": "https://theatreandtonic.co.uk/blog/cranford-orange-tree-theatre-review",
       "findings": [
@@ -140440,6 +140440,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-ugly-one-off-west-end-2026",
+      "file": "ikonlondonmagazine--elena-leo.json",
+      "publishDate": "2026-11-04",
+      "url": "https://www.ikonlondonmagazine.com/the-ugly-one-arcola-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
