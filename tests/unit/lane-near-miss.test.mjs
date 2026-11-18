@@ -40,6 +40,14 @@ test('nearMissSignals: the BMG TheaterMania headline and slug name the show; unr
   assert.ok(nm.nearMissSignals({ title: 'Jane Q Actor shines at the Lunt-Fontanne', url: 'https://x.com/review/jane' }, venueShow).includes('venue+cast'));
 });
 
+test('nearMissSignals: one-word and run-together titles (The Fantasticks dry-run misses, 2026-11-16)', () => {
+  const F = { id: 'the-fantasticks-2026', title: 'The Fantasticks', venue: 'Some Theatre', cast: [] };
+  assert.ok(nm.nearMissSignals({ url: 'https://www.jkstheatrescene.com/2026/11/review-fantasticks.html' }, F).includes('title-word:fantasticks'));
+  assert.ok(nm.nearMissSignals({ url: 'https://www.talkinbroadway.com/page/world/TheFantasticks.html' }, F).length);
+  // a short one-word title is not distinctive enough
+  assert.deepEqual(nm.nearMissSignals({ url: 'https://x.com/review-chess-club' }, { title: 'Chess' }), []);
+});
+
 test('gapCandidates: only vouched, not-admitted, not-intentionally-refused sightings past 15 minutes', () => {
   const firstSeen = new Map();
   const base = { url: 'https://a.com/review/x', knownOutlet: true, aggregatorCited: true, admitted: false };

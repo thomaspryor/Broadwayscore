@@ -73,6 +73,11 @@ function nearMissSignals(item, show) {
   const tw = [...new Set(sig(show.title))];
   const hit = tw.filter((w) => words.has(w) || words.has(`${w}s`));
   if (tw.length >= 2 && hit.length >= 2 && hit.length / tw.length >= 0.6) base.push(`title-words:${hit.length}/${tw.length}`);
+  // A one-word title ("The Fantasticks" -> fantasticks) counts when that word is distinctive (6+ letters); a run-together
+  // slug (Talkin' Broadway's TheFantasticks.html) counts when it holds the whole title squashed (8+ letters).
+  if (tw.length === 1 && tw[0].length >= 6 && hit.length === 1) base.push(`title-word:${tw[0]}`);
+  const squashed = fold(show.title).replace(/ /g, '');
+  if (!base.length && squashed.length >= 8 && hay.replace(/ /g, '').includes(squashed)) base.push('title-run-together');
   const extra = [];
   const venue = String(show.venue || '').replace(/\b(theatre|theater)\b/gi, '').trim();
   if (sig(venue).length >= 1 && venue.length >= 5 && hasPhrase(hay, venue)) extra.push(`venue:${venue}`);
