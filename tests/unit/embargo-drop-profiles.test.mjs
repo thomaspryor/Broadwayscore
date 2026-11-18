@@ -56,3 +56,12 @@ test('the real test bench builds a Broadway profile, and the readiness verdict s
   const we = RL.embargoVerdict({ id: 'y-2026', category: 'west-end', openingDate: '2026-11-20' }, Date.parse('2026-11-19T12:00:00Z'));
   assert.match(we.detail, /Drop history: guess:/);
 });
+
+test('marketOf: Off markets fold into their parent; other categories, and object prototype names, pass through as text', () => {
+  const p = require('../../scripts/lib/embargo-drop-profiles.js');
+  assert.equal(p.marketOf('off-broadway'), 'broadway');
+  assert.equal(p.marketOf('off-west-end'), 'west-end');
+  assert.equal(p.marketOf('regional'), 'regional');
+  assert.equal(p.marketOf('constructor'), 'constructor');
+  assert.equal(p.marketOf(undefined), null);
+});

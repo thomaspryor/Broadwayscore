@@ -34,7 +34,7 @@ function marketHourMs(category, openingDate) {
 /** The market a recorded night belongs to: Off-Broadway shares Broadway's hour and zone, Off-West End the West End's. */
 const MARKET_OF_CATEGORY = { broadway: 'broadway', 'off-broadway': 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
 function marketOf(category) {
-  return MARKET_OF_CATEGORY[category] || category || null;
+  return (Object.prototype.hasOwnProperty.call(MARKET_OF_CATEGORY, category) && MARKET_OF_CATEGORY[category]) || category || null;
 }
 
 /**

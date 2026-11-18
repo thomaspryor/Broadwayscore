@@ -94,7 +94,8 @@ const LANE_FEEDS = [
   { url: 'https://w42st.com/feed', outletId: 'w42st', name: 'W42ST' },
   // Same check over 30 openings (older nights), probed 2026-11-09 through fetchPage directOnly: 200 with 20 items.
   { url: 'https://forward.com/culture/theater/feed/', outletId: 'forward', name: 'Forward Theater' },
-  // BRO-7779: on time for Other Desert Cities (2026-11-17) with no lane source; both feeds answer 200 RSS (probed 2026-11-18).
+  // BRO-7779: Other Desert Cities (opened 2026-10-18) had reviews from both with no lane source (the Guide's on 10-19, Reclining
+  // Standards' on 10-25); both feeds answer 200 RSS (probed 2026-11-18).
   // The Guide's headlines are the show title alone ("Other Desert Cities"), as Bob's are: titledReviews.
   { url: 'https://recliningstandards.com/feed/', outletId: 'reclining-standards', name: 'Reclining Standards' },
   { url: 'https://www.showmosexualsguide.com/feed', outletId: 'showmosexualsguide', name: "The Intelligent Showmosexual's Guide", titledReviews: true },
