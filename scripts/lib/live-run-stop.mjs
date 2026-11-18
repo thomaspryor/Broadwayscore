@@ -12,7 +12,7 @@
 //      (actions_get / get_job_logs / list_workflow_jobs / wait-for-run / wait-for-land), or
 //   2. a run of the edited script itself (`node scripts/x.js …`, `bash scripts/x.sh …`) after its last edit that
 //      finished without error and was not --help / --version / node --check.
-// A plain NO-LIVE-RUN: <15+ chars> line covers a run that would spend money, send real email or can only run on cron.
+// A plain NO-LIVE-RUN: <15+ chars> line covers a run that would spend moneyor send real email. "It only runs on cron" is refused: dispatch it or dry-run it now.
 // Library files a workflow script imports are not judged (the 2-level closure covers ~90% of scripts/lib, see the
 // BRO-7738 review); /did-it-work still asks for those to be run.
 //
@@ -32,6 +32,11 @@ export const LIVE_RUN_BLOCKING_FROM = '2026-11-25';
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'MultiEdit']);
 const EXCLUDED_WORKFLOWS = /^(?:test|land)\.ya?ml$/;
 const SCRIPT_REF_RE = /(?:^|[\s'"=(/])(scripts\/[\w./-]+\.(?:mjs|cjs|js|ts|sh|py))\b/g;
+// Owner 2026-11-18: "we'll know tomorrow if it works" -> "can you just force a dry run now?" -> "good idea!". A message that
+// defers proof to a later scheduled run is judged like a SAFE TO ARCHIVE claim, whatever its verdict line says.
+export const WAIT_TO_SEE_RE = /\b(?:we'?ll|we will|I'?ll|I will|you'?ll|you will|should|will)\s+(?:know|see|find out|confirm|tell|learn)\b[^.\n]{0,80}?\b(?:tomorrow|tonight|overnight|next (?:run|cron|scheduled run|week|day|pass|firing)|in (?:\d+|a few|a couple of|one|two|three) (?:days?|hours?)|after (?:the )?(?:next|nightly|scheduled))\b|\b(?:once|when|after) (?:the |it )?(?:next|nightly|tonight'?s|tomorrow'?s|morning'?s|first scheduled|scheduled) (?:cron|run|job|pass|firing)\b|\bRECHECK-AFTER:/i;
+// A bypass whose reason is only "it runs on a schedule" is refused: every scheduled workflow can be dispatched or dry-run now.
+const SCHEDULE_ONLY_REASON_RE = /\b(?:cron|schedul\w*|tomorrow|tonight|overnight|next run|nightly|daily run|only runs|runs (?:at|every|on))\b/i;
 const NO_LIVE_RUN_RE = /^[ \t>*_-]*NO-LIVE-RUN(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.{14,})$/im;
 const RESULT_READ_TOOL_RE = /^mcp__github__(?:actions_get|get_job_logs|actions_list)$/;
 const RESULT_READ_CMD_RE = /\b(?:wait-for-run\.sh|gh\s+run\s+view)\b|\bcloud-dispatch\.js\b[^\n;&|]*\s--wait\b/;
@@ -133,6 +138,7 @@ export function blockMessage(missing) {
     '  1. Run the edited script itself on real data (a --dry-run counts; --help and node --check do not): node <file> …',
     '  2. Dispatch the workflow that runs it, after node scripts/lib/wait-for-land.js land/<name> says it landed (mcp__github__actions_run_trigger, or node scripts/cloud-dispatch.js <workflow> --wait), then read the run result (mcp__github__actions_get / get_job_logs, or the --wait output) and fix what it shows.',
     'Do not dispatch something that spends real money in bulk or sends real email (CLAUDE.md sections 8 and 17): run it with --dry-run instead, or write NO-LIVE-RUN: <15+ chars on why> (also for a cron-only job), and say plainly it is not yet proven live.',
+    'Waiting for the next scheduled run ("we will know tomorrow") is not proof and not a bypass reason: dispatch it now, or run it with --dry-run now.',
   ].join('\n');
 }
 
@@ -140,14 +146,16 @@ export function blockMessage(missing) {
 export function stopHookDecision({ lastMessage = '', events = null, env = process.env, index = new Map() }) {
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.LIVE_RUN_STOP_DISABLE === '1') return { decision: 'allow', reason: 'LIVE_RUN_STOP_DISABLE=1' };
-  if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
+  const defers = WAIT_TO_SEE_RE.test(lastMessage);
+  if (!claimsSafeToArchive(lastMessage) && !defers) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE or deferring proof' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   let from = -1;
   for (let i = events.length - 1; i >= 0; i--) {
     const e = events[i];
     if (e.kind === 'assistant_text' && e.text !== lastMessage && claimsSafeToArchive(e.text)) { from = i; break; }
   }
-  if (answerTexts(events.slice(from + 1), lastMessage).some((t) => NO_LIVE_RUN_RE.test(t))) return { decision: 'allow', reason: 'NO-LIVE-RUN bypass' };
+  const bypass = answerTexts(events.slice(from + 1), lastMessage).map((t) => NO_LIVE_RUN_RE.exec(t)?.[1]).find(Boolean);
+  if (bypass && !SCHEDULE_ONLY_REASON_RE.test(bypass)) return { decision: 'allow', reason: 'NO-LIVE-RUN bypass' };
   const landed = landedPushIndices(events).filter((i) => i > from);
   if (!landed.length) return { decision: 'allow', reason: 'nothing landed in this chunk' };
   const lastLand = landed[landed.length - 1];

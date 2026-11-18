@@ -2,7 +2,7 @@
 // must block; a dispatch of its workflow plus a read of the run, or a direct run of the script, must allow.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { workflowScriptIndex, stopHookDecision, blockBudget, loadWorkflows } from './live-run-stop.mjs';
+import { workflowScriptIndex, stopHookDecision, blockBudget, loadWorkflows, WAIT_TO_SEE_RE } from './live-run-stop.mjs';
 
 const ENV = { CLAUDE_CODE_REMOTE: 'true' };
 const SAFE = 'Done.\n\nSAFE TO ARCHIVE — all landed';
@@ -98,4 +98,48 @@ test('the real repo: triage-sentry.js is indexed under sentry-triage.yml', () =>
   const idx = workflowScriptIndex(loadWorkflows(new URL('../..', import.meta.url).pathname));
   const real = ['scripts', 'triage-sentry.js'].join('/'); // built, so the land preflight does not read it as a test of that script
   assert.ok(idx.get(real)?.includes('sentry-triage.yml'));
+});
+
+// Owner 2026-11-18: sessions say "we'll know tomorrow if it works" instead of forcing a dry run now.
+const DEFERS = [
+  "We'll know tomorrow if it works.",
+  'We will know in 2 days whether the digest fires.',
+  "I'll confirm after the next scheduled run.",
+  "You'll see it in tomorrow's email.",
+  'It should show up once the nightly cron runs.',
+  "We'll find out tonight when the job fires.",
+  'Once the next run fires, the new card format will appear.',
+  "When tomorrow's run happens we'll see the counts.",
+  "I'll know in a few hours if the fix held.",
+  'RECHECK-AFTER: 2026-11-20',
+];
+const NOT_DEFERS = [
+  'It ran just now and printed 12 rows.',
+  'We know it works: the dispatched run succeeded.',
+  'The cron runs every 30 minutes; I dispatched it and read the log.',
+  'Tomorrow is opening night for the show.',
+  'KEEP OPEN — waiting on the land run',
+  'I will check the docs next week for the API change.',
+];
+test('WAIT_TO_SEE_RE: catches "we will know later" phrasings and not plain mentions of time', () => {
+  for (const t of DEFERS) assert.ok(WAIT_TO_SEE_RE.test(t), `should catch: ${t}`);
+  for (const t of NOT_DEFERS) assert.ok(!WAIT_TO_SEE_RE.test(t), `should not catch: ${t}`);
+});
+
+test('deferring proof to a later run is judged even without SAFE TO ARCHIVE', () => {
+  const ev = [...edit('scripts/fixture-job.js'), ...landed()];
+  assert.equal(decide(ev, "Landed. We'll know tomorrow if it works.\n\nKEEP OPEN — waiting on tomorrow's run").decision, 'block');
+  assert.match(decide(ev, "We'll know tomorrow.\nKEEP OPEN — x").message, /dry-run now/);
+  const ran = [...ev, ...bash('node scripts/fixture-job.js --dry-run')];
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...bash('node scripts/fixture-job.js --dry-run'), ...landed()], "We'll also see it in tomorrow's run.\nKEEP OPEN — x").decision, 'allow', 'ran it now: a later mention is fine');
+  assert.ok(ran.length);
+  assert.equal(decide([...edit('scripts/lib/some-helper.js'), ...landed()], "We'll know tomorrow.\nKEEP OPEN — x").decision, 'allow', 'nothing a workflow runs was landed');
+});
+
+test('a bypass that only says "it runs on a schedule" is refused; a real reason is accepted', () => {
+  const ev = [...edit('scripts/fixture-job.js'), ...landed()];
+  for (const why of ['cron-only job, runs at 6am', 'scheduled workflow, will run tomorrow', 'only runs nightly on the schedule', 'next run will exercise it']) {
+    assert.equal(decide(ev, `NO-LIVE-RUN: ${why}\nSAFE TO ARCHIVE — x`).decision, 'block', why);
+  }
+  assert.equal(decide(ev, 'NO-LIVE-RUN: sends real email to 4,000 readers, no dry-run mode\nSAFE TO ARCHIVE — x').decision, 'allow');
 });
