@@ -132,7 +132,9 @@ jobs:
     # widens the window before a genuinely hung run is caught.
     # BRO-2067: 35->45. Worst case is now (upload 240s + wait 480s) + 2x(240+240)
     # + 30s backoff = ~28.5 min, plus Build's 720s. Normal runs take ~9 min.
-    timeout-minutes: 45
+    # BRO-7766: a pre-warm run also waits up to 25 min for the rebuild (CAP_MIN in
+    # scripts/lib/deploy-prewarm-wait.js) before the 45-min budget above applies.
+    timeout-minutes: ${{ inputs.wait_for_run && 75 || 45 }}
     concurrency:
       # per-run group intended: GH concurrency queue depth is 1, so a shared
       # "vercel-production-deploy" group cancelled 5+ queued deploys on Beaches
@@ -323,12 +325,16 @@ jobs:
             exit 1
           }
           handoff() {
-            gh workflow run vercel-deploy.yml || echo "::error::[prewarm] hand-off dispatch failed"
+            # A failed hand-off must fail this job (alerts), never cancel it quietly.
+            gh workflow run vercel-deploy.yml || { echo "::error::[prewarm] $1, and the hand-off dispatch failed"; exit 1; }
             stop_here "$1; handed off to a normal deploy"
           }
           RC=0
           node scripts/lib/deploy-prewarm-wait.js "$WAIT_FOR_RUN" || RC=$?
-          [ "$RC" -eq 0 ] || stop_here "rebuild run $WAIT_FOR_RUN did not push core data (rc=$RC)"
+          # 10 = the rebuild ended without pushing core data. Anything else (wait cap,
+          # API errors) is doubt: a normal deploy decides, as the old path did.
+          if [ "$RC" -eq 10 ]; then stop_here "rebuild run $WAIT_FOR_RUN did not push core data"; fi
+          [ "$RC" -eq 0 ] || handoff "wait for rebuild run $WAIT_FOR_RUN gave up (rc=$RC)"
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
           OLD=$(git rev-parse HEAD)
           git_net 180 fetch -q --depth=50 origin main || handoff "fetch of main failed"
@@ -344,7 +350,9 @@ jobs:
           # when HEAD and core data are already live). Fails open like the gate job.
           GATE_OUT=$(mktemp)
           GITHUB_OUTPUT="$GATE_OUT" GATE_EVENT_NAME=workflow_dispatch node scripts/lib/should-deploy-gate.js || echo "::warning::[prewarm] gate crashed, deploying"
-          if grep -q '^proceed=false' "$GATE_OUT"; then stop_here "deploy gate: already live"; fi
+          # "Already live" seconds after the push may be a stale Contents API read of
+          # the core-data blob; a normal deploy re-asks the gate a minute later.
+          if grep -q '^proceed=false' "$GATE_OUT"; then handoff "deploy gate says already live"; fi
           echo "go=true" >> "$GITHUB_OUTPUT"
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
