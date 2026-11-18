@@ -159,8 +159,10 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
   const statusFilter = statusParamToFilter[status];
 
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    startTransition(() => setFilters(prev => {
-      const next = { ...prev };
+    startTransition(() => {
+      // History writes belong to this event, not a replayable React updater.
+      // Read the live URL so batched actions preserve earlier filter changes.
+      const next = filtersFromParams(new URLSearchParams(window.location.search));
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
           (next as Record<string, string>)[key] =
@@ -188,8 +190,8 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
       const paramString = urlParams.toString();
       replaceLocationSearch(paramString ? `/off-west-end?${paramString}` : '/off-west-end');
 
-      return next;
-    }));
+      setFilters(next);
+    });
   }, []);
 
   const clearAllFilters = useCallback(() => {
