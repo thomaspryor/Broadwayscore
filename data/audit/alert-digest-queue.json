@@ -2161,5 +2161,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T06:39:25.700Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7748-near-miss-v2",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7748-near-miss-v2",
+    "description": "land.yml did not land land/bro-7748-near-miss-v2: the scripts-lib-tests gate went red at 547226c65b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44250034533",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7748-near-miss-v2"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "547226c65bad2d8dacabc7fcc62f29ad4d3118c4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44250034533"
+      }
+    ],
+    "queuedAt": "2026-11-18T06:47:47.445Z"
   }
 ]
