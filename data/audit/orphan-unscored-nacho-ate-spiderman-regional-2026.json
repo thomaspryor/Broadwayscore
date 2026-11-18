@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "nacho-ate-spiderman-regional-2026",
   "openingDate": "2026-11-12",
-  "detectedAt": "2026-11-18T17:39:25.478Z",
+  "detectedAt": "2026-11-18T17:53:09.052Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "complete",
       "eligibilityReason": null
+    },
+    {
+      "file": "theatreinla--unknown.json",
+      "outletId": "theatreinla",
+      "criticName": "Unknown",
+      "url": "https://www.theatreinla.com/nacho-ate-spiderman",
+      "fullTextLen": 424,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }

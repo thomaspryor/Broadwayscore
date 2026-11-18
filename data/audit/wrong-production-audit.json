@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T16:38:52.953Z",
+  "timestamp": "2026-11-18T17:53:26.930Z",
   "stats": {
-    "totalReviews": 82595,
-    "alreadyFlagged": 22457,
+    "totalReviews": 82598,
+    "alreadyFlagged": 22458,
     "dateGuardCatches": 220,
-    "directorMismatch": 3761,
-    "tvFilmSignals": 2351,
+    "directorMismatch": 3759,
+    "tvFilmSignals": 2353,
     "londonSignals": 3791,
     "offBroadwaySignals": 761,
-    "yearMismatch": 382,
-    "noPublishDate": 8278
+    "yearMismatch": 383,
+    "noPublishDate": 8277
   },
   "findings": [
     {
@@ -6941,6 +6941,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2021 (0x). 2026 matches production: assassins-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "assassins-regional-2026",
+      "file": "musical-theatre-review--jeremy-chapman.json",
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/city-academy-studio-company-assassins/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2004 (2x) more than 2026 (0x). 2004 matches production: assassins-2004"
         }
       ]
     },
@@ -15687,6 +15700,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "dames-at-sea-2015",
+      "file": "guardian--david-jays.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/dance-blog/2015/nov/24/dancers-diaries-broadway-star-mara-davi-dames-at-sea",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -67098,25 +67125,6 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
-      "file": "guardian--arifa-akbar.json",
-      "score": 40,
-      "publishDate": "2025-08-12",
-      "url": "https://www.theguardian.com/stage/2013/mar/24/book-of-mormon-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
-        }
-      ]
-    },
-    {
-      "showId": "the-book-of-mormon-west-end-2024",
       "file": "guardian--euan-ferguson.json",
       "score": 95,
       "publishDate": "2013-03-24",
@@ -77272,6 +77280,19 @@
       ]
     },
     {
+      "showId": "the-peterson-show-regional-2026",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2026-09-23",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-09-23/peterson-show-theater-review-janine-nabers",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "broadwaywithaj--aj-jaffari.json",
       "score": 92,
@@ -81099,7 +81120,7 @@
     },
     {
       "showId": "the-years-west-end-2025",
-      "file": "guardian--arifa-akbar.json",
+      "file": "observer--arifa-akbar.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2025/jan/19/theatre-director-eline-arbo-the-years-annie-ernaux",
