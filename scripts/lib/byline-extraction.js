@@ -101,7 +101,8 @@ const DOMAIN_LIKE_RE = /\.(?:com|co\.uk|org|net)\b/i;
  * a URL, domain, organisation or house name (NOT_A_PERSON_RE).
  */
 function extractJsonLdAuthor(html) {
-  const blocks = String(html).match(/<script[^>]+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [];
+  // Unquoted type attribute too: USA Today prints <script type=application/ld+json> (BRO-7780).
+  const blocks = String(html).match(/<script[^>]+type=["']?application\/ld\+json["']?[^>]*>[\s\S]*?<\/script>/gi) || [];
   for (const block of blocks) {
     let doc;
     try {
