@@ -357,5 +357,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T15:00:23.877Z"
+  },
+  {
+    "conditionKey": "cookie-renew:stuck-uncertain:nytimes",
+    "title": "Cookie renew: nytimes login state unreadable for 12h+",
+    "description": "renew-cookies.js has not been able to tell whether nytimes is logged in since 2026-11-17T21:06:18.278Z (last: anonymous control failed: control hit a bot challenge (HTTP 403) (vacuity unverified; not writing cookies)). It will not log in on an uncertain reading. Check: node scripts/verify-cookie-login.js --outlets=nytimes",
+    "severity": "error",
+    "url": "https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T15:09:21.041Z"
   }
 ]
