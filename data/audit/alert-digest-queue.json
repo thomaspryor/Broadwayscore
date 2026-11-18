@@ -658,20 +658,6 @@
     "queuedAt": "2026-11-18T17:48:17.144Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-18.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-18T20:00:46.760Z"
-  },
-  {
     "conditionKey": "land:land/bro-7794-nearmiss-news",
     "title": "Landing blocked: rebase red on land/bro-7794-nearmiss-news",
     "description": "land.yml did not land land/bro-7794-nearmiss-news: the rebase gate went red at 2211ba5bb4. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7794-nearmiss-news @ 2211ba5bb4 (origin/land/bro-7794-nearmiss-news) → origin/main @ 2d7e73f19b REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 2d7e73f19b: Rebasing (1/2) error: could not apply 0e02d86f302... BRO-7794: lane near-miss skips show news when the host is the only review signal hint: Resolve all conflicts manually, mark them as resolved with hint: \"gi Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44377011273",
@@ -729,5 +715,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T20:23:27.045Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-18.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-18T21:11:27.172Z"
   }
 ]
