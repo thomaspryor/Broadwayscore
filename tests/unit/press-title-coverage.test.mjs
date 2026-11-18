@@ -122,12 +122,12 @@ test('a press-title match pointing at another production or the film is rejected
 
 test('a one-word lead title (Dollygram) is not matched alone but raises the near-miss alarm (BRO-7781 simulated night)', () => {
   const show = { id: 'sim-dollygram-2026', title: 'Dollygram: An Original Musical', venue: 'Imperial Theatre' };
-  setPressNameShows([show, { id: 'hello-dolly', title: 'Hello, Dolly!' }]);
+  setPressNameShows([show]);
   try {
     const { nearMissSignals } = require(path.join(ROOT, 'scripts/lib/opening-night-lane/near-miss.js'));
     const h = 'Review: Dollygram Glitters on Broadway';
     const url = 'https://www.theatermania.com/news/review-dollygram-glitters-on-broadway_1234567/';
-    assert.ok(nearMissSignals({ title: h, url }, show).length > 0, 'near-miss alarm silent for a one-word lead');
+    assert.ok(nearMissSignals({ title: h, url }, show).includes('lead-word:dollygram'), 'near-miss alarm silent for a one-word lead');
     assert.equal(shortTitleCoverage(show, [show]).status, 'near-miss');
   } finally { setPressNameShows(null); }
 });
