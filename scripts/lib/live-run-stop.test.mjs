@@ -218,3 +218,28 @@ test('BRO-7738 ship-check: a dispatch read before a later land does not prove th
   assert.equal(decide(ev, 'retry\nSAFE TO ARCHIVE — b').decision, 'block', 'strict: re-dispatch after the last land');
   assert.equal(decide([...ev, ...bash('node scripts/fixture-job.js --dry-run')], 'retry\nSAFE TO ARCHIVE — b').decision, 'allow', 'or run it directly');
 });
+
+// BRO-7790: two session-side gaps the daily landed-change proof audit's reviews named.
+const index2 = workflowScriptIndex({ 'a.yml': 'run: node scripts/fixture-job.js\n', 'b.yml': 'run: node scripts/mailer-job.js\n' });
+const decide2 = (events, lastMessage = SAFE) => stopHookDecision({ lastMessage, events, env: ENV, index: index2 });
+
+test('BRO-7790: a run whose whole output is a usage banner is not a run', () => {
+  const E = () => edit('scripts/fixture-job.js');
+  assert.equal(decide([...E(), ...bash('node scripts/fixture-job.js', 'usage: fixture-job.js --show=ID [--dry-run]\n'), ...land()]).decision, 'block', 'usage banner only');
+  assert.equal(decide([...E(), ...bash('node scripts/fixture-job.js', 'Usage:\n  node scripts/fixture-job.js --show=ID\n\nOptions:\n  --dry-run  print only\n'), ...land()]).decision, 'block', 'multi-line help');
+  assert.equal(decide([...E(), ...bash('node scripts/fixture-job.js --show=x', 'Checked 12 shows, 0 problems'), ...land()]).decision, 'allow', 'a real report');
+});
+
+test('BRO-7790: NO-LIVE-RUN is per file; a bare one covers only a single-file chunk', () => {
+  const ev = [...edit('scripts/fixture-job.js'), ...edit('scripts/mailer-job.js'), ...land()];
+  const bare = 'NO-LIVE-RUN: sends real email to 4,000 readers\nSAFE TO ARCHIVE — x';
+  assert.equal(decide2(ev, bare).decision, 'block', 'a bare bypass no longer excuses a second live file');
+  const one = 'NO-LIVE-RUN: scripts/mailer-job.js: sends real email to 4,000 readers\nSAFE TO ARCHIVE — x';
+  const d = decide2(ev, one);
+  assert.equal(d.decision, 'block', 'the other file still needs a run');
+  assert.match(d.reason, /fixture-job\.js/);
+  assert.doesNotMatch(d.reason, /mailer-job\.js/);
+  assert.equal(decide2([...ev, ...bash('node scripts/fixture-job.js --dry-run', 'Checked 3 rows')], one).decision, 'allow', 'bypass for one file + a run of the other');
+  assert.equal(decide2(ev, 'NO-LIVE-RUN: scripts/mailer-job.js: runs on cron at 6am daily\nNO-LIVE-RUN: scripts/fixture-job.js: sends real email to readers\nSAFE TO ARCHIVE — x').decision, 'block', 'a schedule-only per-file reason is refused');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...land()], bare).decision, 'allow', 'single live file: bare bypass still works');
+});

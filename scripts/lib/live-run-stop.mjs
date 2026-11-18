@@ -12,7 +12,8 @@
 //      (actions_get / get_job_logs / list_workflow_jobs / wait-for-run / wait-for-land), or
 //   2. a run of the edited script itself (`node scripts/x.js …`, `bash scripts/x.sh …`) after its last edit that
 //      finished without error and was not --help / --version / node --check.
-// A plain NO-LIVE-RUN: <15+ chars> line covers a run that would spend money or send real email. "It only runs on cron" is refused: dispatch it or dry-run it now.
+// A NO-LIVE-RUN: <file>: <15+ chars> line covers that file when running it would spend money or send real email (BRO-7790;
+// a bare NO-LIVE-RUN: <reason> still covers a chunk with a single live file). "It only runs on cron" is refused: dispatch it or dry-run it now.
 // Library files a workflow script imports are not judged (the 2-level closure covers ~90% of scripts/lib, see the
 // BRO-7738 review); /did-it-work still asks for those to be run.
 //
@@ -28,6 +29,7 @@ import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex } from './review-coverage.mjs';
 import { shellEditsCode } from './retro-coverage-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
+import { isUsageOnlyOutput } from './usage-output.mjs';
 
 export const LIVE_RUN_BLOCKING_FROM = '2026-11-25';
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'MultiEdit']);
@@ -143,7 +145,8 @@ export function liveRunFor(events, edit, lastLand) {
     if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash' || !ok(e)) continue;
     const c = runShellCode(e.input?.command) || '';
     const m = runRe.exec(c);
-    if (m && !NOT_A_RUN_RE.test(m[1]) && !/\s(?:--check|-c)\s/.test(m[0])) return 'direct';
+    // BRO-7790: a run whose whole output is a usage/help banner (wrong flag, missing argument) ran nothing.
+    if (m && !NOT_A_RUN_RE.test(m[1]) && !/\s(?:--check|-c)\s/.test(m[0]) && !isUsageOnlyOutput(text(answers.get(e.id)))) return 'direct';
   }
   return null;
 }
@@ -160,7 +163,7 @@ export function blockMessage(missing) {
     'Do one of these, then close again:',
     '  1. Run the edited script itself on real data (a --dry-run counts; --help and node --check do not): node <file> …',
     '  2. Dispatch the workflow that runs it, after node scripts/lib/wait-for-land.js land/<name> says it landed (mcp__github__actions_run_trigger, or node scripts/cloud-dispatch.js <workflow> --wait), then read the run result (mcp__github__actions_get / get_job_logs, or the --wait output) and fix what it shows.',
-    'Do not dispatch something that spends real money in bulk or sends real email (CLAUDE.md sections 8 and 17): run it with --dry-run instead, or write NO-LIVE-RUN: <15+ chars on why>, and say plainly it is not yet proven live.',
+    'Do not dispatch something that spends real money in bulk or sends real email (CLAUDE.md sections 8 and 17): run it with --dry-run instead, or write NO-LIVE-RUN: <file>: <15+ chars on why> (one line per file), and say plainly it is not yet proven live.',
     'Waiting for the next scheduled run ("we will know tomorrow") is not proof and not a bypass reason: dispatch it now, or run it with --dry-run now.',
   ].join('\n');
 }
@@ -176,16 +179,26 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const from = lastAcceptedClaimIndex(events, lastMessage);
   const allBypass = new RegExp(NO_LIVE_RUN_RE.source, 'gim');
   const accepted = (why) => !SCHEDULE_ONLY_REASON_RE.test(why) || REAL_COST_REASON_RE.test(why);
-  if (answerTexts(events.slice(from + 1), lastMessage).some((t) => [...String(t).matchAll(allBypass)].some((m) => accepted(m[1])))) return { decision: 'allow', reason: 'NO-LIVE-RUN bypass' };
+  // BRO-7790: a bypass names the file it covers ("NO-LIVE-RUN: scripts/x.js: <reason>"). A bare bypass still covers a
+  // chunk with ONE live file; with two or more it covers none, so one email script cannot excuse its neighbours.
+  const fileBypass = new Set();
+  let bareBypass = false;
+  for (const t of answerTexts(events.slice(from + 1), lastMessage)) {
+    for (const m of String(t).matchAll(allBypass)) {
+      const scoped = m[1].match(/^`?((?:scripts|\.github)\/[\w./-]+)`?\s*[:—–-]\s*(.{15,})$/);
+      if (scoped) { if (accepted(scoped[2])) fileBypass.add(scoped[1]); } else if (accepted(m[1])) bareBypass = true;
+    }
+  }
   const landed = landedPushIndices(events).filter((i) => i > from);
-  if (!landed.length) return { decision: 'allow', reason: 'nothing landed in this chunk' };
+  if (!landed.length) return { decision: 'allow', reason: bareBypass ? 'NO-LIVE-RUN bypass' : 'nothing landed in this chunk' };
   const lastLand = landed[landed.length - 1];
   // Only edits that a land push after them carried count.
   const edits = liveEdits(events, from, index).filter((x) => x.lastEdit < lastLand);
   if (!edits.length) return { decision: 'allow', reason: 'no landed edit to a file a workflow runs' };
+  if (bareBypass && edits.length === 1) return { decision: 'allow', reason: 'NO-LIVE-RUN bypass' };
   // A dispatch counts only after the LAST land: an earlier land may not have carried an edit committed later
   // (BRO-7738 ship-check), so a chunk spanning two lands is judged strictly; running the script directly still counts.
-  const missing = edits.filter((x) => !liveRunFor(events, x, lastLand));
+  const missing = edits.filter((x) => !fileBypass.has(x.file) && !liveRunFor(events, x, lastLand));
   if (!missing.length) return { decision: 'allow', reason: 'every live file was run' };
   return {
     decision: 'block',
