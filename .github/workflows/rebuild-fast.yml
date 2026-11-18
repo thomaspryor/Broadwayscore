@@ -78,6 +78,23 @@ jobs:
           # of main for this 45-min job's final ledger commit; depth-1 aborted when churn outran it.
           fetch-depth: 300
 
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # BRO-7766: start npm ci (~90s) now so it overlaps the core-data and
+      # review-texts checkouts and the lease sync below, which use only Node
+      # built-ins (same pattern as llm-ensemble-score.yml, BRO-7747).
+      # "Install dependencies" waits for it.
+      - name: Start npm ci in the background
+        run: |
+          # Exit code goes to a temp file and is renamed, so the waiter never reads it half-written.
+          nohup setsid bash -c 'npm ci > "$RUNNER_TEMP/npm-ci.log" 2>&1; echo $? > "$RUNNER_TEMP/npm-ci.exit.tmp"; mv "$RUNNER_TEMP/npm-ci.exit.tmp" "$RUNNER_TEMP/npm-ci.exit"' > /dev/null 2>&1 &
+          echo $! > "$RUNNER_TEMP/npm-ci.pid"
+          echo "npm ci started (pid $!)"
+
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
         with:
@@ -102,7 +119,23 @@ jobs:
         id: review_texts_checkout
         run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - uses: ./.github/actions/setup-node
+      # BRO-7766: wait for the background npm ci started after the repo checkout;
+      # on failure, run it once in the foreground.
+      - name: Install dependencies
+        run: |
+          EXIT_FILE="${RUNNER_TEMP}/npm-ci.exit"
+          for _ in $(seq 1 600); do [ -f "$EXIT_FILE" ] && break; sleep 1; done
+          CODE=$(cat "$EXIT_FILE" 2>/dev/null || echo missing)
+          echo "background npm ci exit: $CODE"
+          if [ "$CODE" != "0" ]; then
+            tail -40 "${RUNNER_TEMP}/npm-ci.log" 2>/dev/null || true
+            # setsid made the background job its own process group: kill all of it.
+            PGID=$(cat "${RUNNER_TEMP}/npm-ci.pid" 2>/dev/null || true)
+            if [ -n "$PGID" ]; then kill -- "-$PGID" 2>/dev/null || true; fi
+            sleep 2
+            echo "::warning::background npm ci did not succeed ($CODE); running it in the foreground"
+            npm ci
+          fi
 
       # Opening-night contamination guard (Notion 386637c5-416f-81b9): during
       # opening-night windows the rapid fast-rebuilds (and the post-scoring

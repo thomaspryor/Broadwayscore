@@ -1402,6 +1402,10 @@ module.exports = {
 };
 if (require.main !== module) return;
 
+// BRO-7766: resolve lazy relative require()s once per calling module (~14s of a
+// full rebuild). Below the guard so importers of this file keep the stock require.
+require('./lib/require-memo').installRequireMemo();
+
 // BRO-7296 grandfather set: built here, below the require guard, so importing this file for its
 // helpers stays cheap (BRO-7523: building it at import cost ~7s and timed out the BRO-5428 tests).
 // Still runs before anything in the pipeline rewrites reviews.json.

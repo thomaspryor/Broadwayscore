@@ -74,6 +74,18 @@ test('llm-ensemble-score.yml starts npm ci before the data checkouts and waits f
   assert.ok(y.indexOf('- name: Setup Node.js') < start);
 });
 
+test('rebuild-fast.yml starts npm ci before the data checkouts and waits for it before any script runs (BRO-7766)', () => {
+  const y = wf('rebuild-fast.yml');
+  const start = y.indexOf('- name: Start npm ci in the background');
+  assert.ok(start > 0);
+  assert.ok(y.indexOf('- name: Setup Node.js') < start);
+  assert.ok(start < y.indexOf('- name: Checkout core data'));
+  const wait = y.indexOf('- name: Install dependencies');
+  assert.ok(wait > y.indexOf('- name: Record review-texts checkout SHA'));
+  assert.ok(wait < y.indexOf('- name: Flag wrong-production by date'));
+  assert.doesNotMatch(y, /uses: \.\/\.github\/actions\/setup-node/);
+});
+
 test('rebuild-reviews.yml and the poller fast_path restore the fingerprint memo before rebuilding', () => {
   const r = wf('rebuild-reviews.yml');
   assert.ok(r.indexOf('- name: Restore fingerprint memo') > 0);
