@@ -42,10 +42,11 @@ test('item 8: special or <=8-week runs inside 7 days need a decision; an overrid
     show('later', 'broadway', '2026-12-01', { type: 'special' }),
     show('decided-number', 'broadway', '2026-11-20', { type: 'special' }),
     show('decided-keep', 'broadway', '2026-11-20', { type: 'special' }),
+    show('malformed', 'broadway', '2026-11-20', { type: 'special' }),
   ];
-  const overrides = { shows: { 'decided-number': { minReviews: 3 }, 'decided-keep': { minReviews: null } } };
+  const overrides = { shows: { 'decided-number': { minReviews: 3 }, 'decided-keep': { minReviews: null }, malformed: { minReviews: '3' } } };
   const u = g.scoreGateUndecided(shows, overrides, { nowMs: NOW });
-  assert.deepEqual(u.map((x) => [x.id, x.reason]), [['special', 'special'], ['eight-weeks', 'short run (56 days)'], ['short', 'short run (30 days)']]);
+  assert.deepEqual(u.map((x) => [x.id, x.reason]), [['special', 'special'], ['eight-weeks', 'short run (56 days)'], ['malformed', 'special'], ['short', 'short run (30 days)']]);
 });
 
 test('rows: a warn row per gap with the shows named, a same-name pass row when clear', () => {

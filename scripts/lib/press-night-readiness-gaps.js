@@ -61,9 +61,12 @@ function scoreGateReason(show) {
  */
 function scoreGateUndecided(shows, overrides, { nowMs, days = SCORE_GATE_LOOKAHEAD_DAYS }) {
   const decided = (overrides && overrides.shows) || {};
+  // A decision is minReviews null (keep the market minimum) or a whole number >= 1 (what scoreGateArg reads). A
+  // malformed entry ({} or "3") changes nothing on the site, so it must not silence the row either (ship-check).
+  const isDecision = (o) => !!o && typeof o === 'object' && (o.minReviews === null || (Number.isInteger(o.minReviews) && o.minReviews >= 1));
   const today = dayOf(nowMs);
   return upcoming(shows, nowMs, days)
-    .filter((s) => !Object.prototype.hasOwnProperty.call(decided, s.id))
+    .filter((s) => !(Object.prototype.hasOwnProperty.call(decided, s.id) && isDecision(decided[s.id])))
     .map((s) => ({ s, reason: scoreGateReason(s) }))
     .filter((x) => x.reason)
     .map(({ s, reason }) => ({ id: s.id, title: s.title || s.id, openingDate: s.openingDate, inDays: daysBetween(today, s.openingDate), reason }))
