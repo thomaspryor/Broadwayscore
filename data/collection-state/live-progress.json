@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-18T14:54:32.838Z",
-  "processed": 181,
-  "failed": 124,
-  "successRate": "59.3%",
+  "updatedAt": "2026-11-18T15:26:17.266Z",
+  "processed": 185,
+  "failed": 134,
+  "successRate": "58.0%",
   "tierBreakdown": {
-    "playwright": 95,
+    "playwright": 99,
     "amp": 1,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 20,
     "scrapingbee": 15,
@@ -26,6 +26,12 @@
       "t": "2026-11-18T14:20:42.961Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-18T15:26:08.760Z",
+      "event": "bb-session",
+      "session": "56218557",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
     }
   ]
 }
