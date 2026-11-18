@@ -30,25 +30,32 @@ const GENERIC_HOOK = /^(hook|hook:hook|unclassified)$/;
 //   blocks      nudges the transcript shows (a "[VE:X]" Stop block; analyze() already counts these as hookBlocks),
 //   logged      every decision the gate logged for this session (container-local .cache, lost at reclaim),
 //   overBudget  of those, hits after the nudge budget ran out (never in the transcript),
-//   wouldBlock  the gate's own decision run now, as if the session closed "SAFE TO ARCHIVE" at --record time. The gates
-//               mostly fire on the final close, which comes after --record, so this is how that hit reaches the row.
-//               It sees only what happened before --record (a land push after it is not judged).
+//   wouldBlock  the gate's own decision run now, as if the session landed and closed "SAFE TO ARCHIVE" right after
+//               --record. wrap-up runs --record BEFORE the final land push and close, so the real hit lands in the
+//               log and transcript too late for the row; the dry run appends a synthetic land push (the one the row
+//               will ride) so a code change not landed yet is judged as landed. It is the state at record time: work
+//               done after --record (a live run) or a bypass token in the final message is not seen.
+// A failure to measure is written as gatesErrors, never as a clean {}.
 const STOP_GATES = [
   { code: '[VE:LIVERUN]', log: 'live-run-stop', module: './live-run-stop.mjs' },
   { code: '[VE:EFFECTPENDING]', log: 'effect-pending-stop', module: './effect-pending-stop.mjs' },
   { code: '[VE:RETROCOV]', log: 'retro-coverage-stop' }, // its own dry run would judge the --record being written
 ];
 const DRY_RUN_CLOSE = 'SAFE TO ARCHIVE (session-retro --record dry run)';
+const DRY_RUN_LAND = [
+  { kind: 'assistant_tool_use', name: 'Bash', id: 'session-retro-dry-run-land', input: { command: 'git push origin HEAD:refs/heads/land/session-retro-dry-run' } },
+  { kind: 'tool_result', tool_use_id: 'session-retro-dry-run-land', content: 'ok', isError: false },
+];
 
 /** The .cache the Stop gates write: verify-edits.sh runs them from the main checkout, so from a worktree it is the git
- *  common dir's parent. SESSION_RETRO_CACHE_DIR overrides (tests). */
+ *  common dir's parent. SESSION_RETRO_CACHE_DIR overrides (tests). null when it cannot be resolved. */
 function hookCacheDir() {
   if (process.env.SESSION_RETRO_CACHE_DIR) return process.env.SESSION_RETRO_CACHE_DIR;
   const root = path.join(__dirname, '..', '..');
   try {
     const common = require('child_process').execFileSync('git', ['-C', root, 'rev-parse', '--path-format=absolute', '--git-common-dir'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
     return path.join(path.dirname(common), '.cache');
-  } catch { return path.join(root, '.cache'); }
+  } catch { return null; }
 }
 
 /** PURE-ish: { [code]: { logged, overBudget } } from the gate logs in `dir` for `sessionKey` (the hook's session_id). */
@@ -68,21 +75,24 @@ function logHits(sessionKey, dir) {
   return out;
 }
 
-/** { [code]: { wouldBlock, reason } } from each gate's pure stopHookDecision on this transcript. Fails open per gate. */
+/** { out: { [code]: { wouldBlock, reason } }, errors: [] } from each gate's pure stopHookDecision on this transcript plus
+ *  the synthetic land push. A gate that throws is named in errors (the retro still records). SESSION_RETRO_REPO_ROOT
+ *  overrides where the workflows are read (tests). */
 async function dryRunGates(transcriptPath, env = process.env) {
   const out = {};
+  const errors = [];
   let events;
-  try { events = (await import('./transcript-scan.mjs')).walkTranscript(transcriptPath); } catch { return out; }
-  const root = path.join(__dirname, '..', '..');
+  try { events = (await import('./transcript-scan.mjs')).walkTranscript(transcriptPath).concat(DRY_RUN_LAND); } catch (e) { return { out, errors: [`transcript: ${e && e.message}`.slice(0, 160)] }; }
+  const root = env.SESSION_RETRO_REPO_ROOT || path.join(__dirname, '..', '..');
   for (const g of STOP_GATES.filter((x) => x.module)) {
     try {
       const m = await import(g.module);
       const index = m.workflowScriptIndex && m.loadWorkflows ? m.workflowScriptIndex(m.loadWorkflows(root)) : undefined;
       const d = m.stopHookDecision({ lastMessage: DRY_RUN_CLOSE, events, env, ...(index ? { index } : {}) });
       if (d.decision === 'block') out[g.code] = { wouldBlock: true, reason: String(d.reason || '').slice(0, 160) };
-    } catch { /* fail open: a broken gate must not stop the retro */ }
+    } catch (e) { errors.push(`${g.code}: ${e && e.message}`.slice(0, 160)); }
   }
-  return out;
+  return { out, errors };
 }
 
 /** PURE. The row's `gates` field: only gates with activity; {} means measured, nothing hit. */
@@ -110,7 +120,7 @@ function gateRollup(rows) {
     p.overBudget += x.overBudget || 0;
     if (x.reason && p.reasons.length < 3 && !p.reasons.includes(x.reason)) p.reasons.push(x.reason);
   }
-  return { measured: measured.length, per };
+  return { measured: measured.length, errors: measured.filter((r) => Array.isArray(r.gatesErrors) && r.gatesErrors.length).length, per };
 }
 
 /**
@@ -290,9 +300,9 @@ function rollup(days, fileCard, { ledger = LEDGER, ifDue = false, log = console.
   log(`${rows.length} session(s) in the last ${days} days`);
   for (const [s, n] of top) log(`${n}x ${s}`);
   const gr = gateRollup(rows);
-  log(`Stop gates (BRO-7749): ${gr.measured} session(s) measured${gr.measured ? '' : ' (rows before 2026-11-18 carry no gate data)'}`);
+  log(`Stop gates (BRO-7749): ${gr.measured} session(s) measured${gr.measured ? '' : ' (rows before 2026-11-18 carry no gate data)'}${gr.errors ? `, ${gr.errors} with a measuring error (gatesErrors)` : ''}`);
   for (const [code, p] of Object.entries(gr.per)) {
-    log(`  ${code}: hit in ${p.sessions} of ${gr.measured}, nudged ${p.blocked}, would block at record ${p.wouldBlock}, over budget ${p.overBudget}`);
+    log(`  ${code}: active in ${p.sessions} of ${gr.measured} sessions; nudged in ${p.blocked}, would block at record in ${p.wouldBlock}; ${p.overBudget} over-budget hit(s)`);
     for (const why of p.reasons) log(`    e.g. ${why}`);
   }
   const mark = () => { if (ifDue) fs.appendFileSync(ledger, JSON.stringify({ rollup: true, recordedAt: new Date().toISOString(), sessions: rows.length, top }) + '\n'); };
@@ -326,9 +336,12 @@ async function main(argv) {
     if (pl.error) { console.error(`session-retro: ${pl.error}`); return 1; }
     // The hook's session_id is the transcript's basename; analyze() keeps the FIRST sessionId row, which can be a parent id.
     const sessionKey = path.basename(file, '.jsonl');
-    r.gates = mergeGateActivity(r.hookBlocks, logHits(sessionKey, hookCacheDir()), await dryRunGates(file));
+    const cacheDir = hookCacheDir();
+    const dry = await dryRunGates(file);
+    r.gates = mergeGateActivity(r.hookBlocks, cacheDir ? logHits(sessionKey, cacheDir) : {}, dry.out);
+    const gatesErrors = [...(cacheDir ? [] : ['cache: could not resolve the hook checkout (git rev-parse failed)']), ...dry.errors];
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
-    fs.appendFileSync(LEDGER, JSON.stringify({ v: 2, sessionId: r.sessionId, gates: r.gates, endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
+    fs.appendFileSync(LEDGER, JSON.stringify({ v: 2, sessionId: r.sessionId, gates: r.gates, ...(gatesErrors.length ? { gatesErrors } : {}), endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
     r.links = pl.links; r.noAction = pl.noAction;
   }
   console.log(opt.json ? JSON.stringify(r, null, 2) : report(r));

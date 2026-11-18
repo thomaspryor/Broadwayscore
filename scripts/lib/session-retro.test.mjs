@@ -200,7 +200,14 @@ import { spawnSync } from 'node:child_process';
 const SR = path.join(path.dirname(new URL(import.meta.url).pathname), 'session-retro.js');
 const rawUse = (id, name, input, t) => JSON.stringify({ sessionId: 'parent-id', type: 'assistant', timestamp: t, message: { content: [{ type: 'tool_use', id, name, input }] } });
 const rawRes = (id, text, t) => JSON.stringify({ sessionId: 'parent-id', type: 'user', timestamp: t, message: { content: [{ type: 'tool_result', tool_use_id: id, content: text }] } });
-// The live-run incident shape on a script a real workflow runs: edit it, land, never run it live.
+// The live-run incident shape: edit a script a workflow runs, land, never run it live. The workflows come from a fixture
+// root (SESSION_RETRO_REPO_ROOT) so a rename in the real .github/workflows cannot turn this red.
+const fixtureRoot = () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sr-root-'));
+  fs.mkdirSync(path.join(root, '.github', 'workflows'), { recursive: true });
+  fs.writeFileSync(path.join(root, '.github', 'workflows', 'metrics.yml'), 'jobs:\n  m:\n    steps:\n      - run: node scripts/account-metrics.js\n');
+  return root;
+};
 const liveRunIncident = [
   rawUse('a', 'Edit', { file_path: '/home/user/Broadwayscore/.claude/worktrees/x/scripts/account-metrics.js', old_string: 'a', new_string: 'b' }, '2026-11-18T00:00:00Z'),
   rawRes('a', 'ok', '2026-11-18T00:00:01Z'),
@@ -221,7 +228,7 @@ test('BRO-7749: a session that hit [VE:LIVERUN] ends with a retro row carrying t
     { ts: '2026-11-18T00:03:00Z', session: 'child-id', blocked: false, reason: 'not run live: scripts/account-metrics.js' },
     { ts: '2026-11-18T00:03:00Z', session: 'someone-else', blocked: false, reason: 'x' },
   ].map((o) => JSON.stringify(o)).join('\n') + '\nnot json\n');
-  const env = { ...process.env, SESSION_RETRO_LEDGER: ledger, SESSION_RETRO_CACHE_DIR: cache, CLAUDE_CODE_REMOTE: 'true' };
+  const env = { ...process.env, SESSION_RETRO_LEDGER: ledger, SESSION_RETRO_CACHE_DIR: cache, SESSION_RETRO_REPO_ROOT: fixtureRoot(), CLAUDE_CODE_REMOTE: 'true' };
   const out = spawnSync('node', [SR, `--transcript=${tr}`, '--record', '--no-action=fixture session for the gate fold'], { env, encoding: 'utf8' });
   assert.equal(out.status, 0, out.stderr);
   const row = JSON.parse(fs.readFileSync(ledger, 'utf8').trim().split('\n').pop());
@@ -237,6 +244,31 @@ test('BRO-7749: a session that hit [VE:LIVERUN] ends with a retro row carrying t
   assert.equal(local.status, 0, local.stderr);
   const lrow = JSON.parse(fs.readFileSync(ledger, 'utf8').trim().split('\n').pop());
   assert.equal(lrow.gates['[VE:LIVERUN]'].wouldBlock, false);
+  assert.equal(lrow.gatesErrors, undefined, 'a clean measurement carries no gatesErrors');
+});
+
+test('BRO-7749: wrap-up order (--record BEFORE the final land push): the dry run still judges the change as landed', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sr-order-'));
+  const tr = path.join(dir, 'sess.jsonl');
+  const ledger = path.join(dir, 'l.jsonl');
+  fs.writeFileSync(tr, liveRunIncident.slice(0, 2).join('\n') + '\n'); // edited, not landed yet, no nudge yet
+  const env = { ...process.env, SESSION_RETRO_LEDGER: ledger, SESSION_RETRO_CACHE_DIR: path.join(dir, 'none'), SESSION_RETRO_REPO_ROOT: fixtureRoot(), CLAUDE_CODE_REMOTE: 'true' };
+  const out = spawnSync('node', [SR, `--transcript=${tr}`, '--record', '--no-action=fixture session for the gate fold'], { env, encoding: 'utf8' });
+  assert.equal(out.status, 0, out.stderr);
+  const g = JSON.parse(fs.readFileSync(ledger, 'utf8').trim()).gates['[VE:LIVERUN]'];
+  assert.deepEqual({ blocks: g.blocks, logged: g.logged, wouldBlock: g.wouldBlock }, { blocks: 0, logged: 0, wouldBlock: true });
+});
+
+test('BRO-7749: a gate that cannot be measured is recorded as gatesErrors, not as clean', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sr-err-'));
+  const tr = path.join(dir, 'sess.jsonl');
+  const ledger = path.join(dir, 'l.jsonl');
+  fs.writeFileSync(tr, liveRunIncident.slice(0, 2).join('\n') + '\n');
+  const env = { ...process.env, SESSION_RETRO_LEDGER: ledger, SESSION_RETRO_CACHE_DIR: dir, SESSION_RETRO_REPO_ROOT: path.join(dir, 'no-such-root'), CLAUDE_CODE_REMOTE: 'true' };
+  const out = spawnSync('node', [SR, `--transcript=${tr}`, '--record', '--no-action=fixture session for the gate fold'], { env, encoding: 'utf8' });
+  assert.equal(out.status, 0, 'a measuring error never fails the retro');
+  const row = JSON.parse(fs.readFileSync(ledger, 'utf8').trim());
+  assert.match(row.gatesErrors.join(' '), /\[VE:LIVERUN\]/);
 });
 
 test('BRO-7749: a clean session records gates {} (measured, nothing hit); rollup prints per-gate counts and only the latest row per session', () => {
@@ -255,6 +287,6 @@ test('BRO-7749: a clean session records gates {} (measured, nothing hit); rollup
   R.rollup(7, false, { ledger, log: (s) => lines.push(s) });
   const text = lines.join('\n');
   assert.match(text, /Stop gates \(BRO-7749\): 2 session\(s\) measured/, 'a legacy row without gates is not measured; b counts once (latest row)');
-  assert.match(text, /\[VE:LIVERUN\]: hit in 1 of 2, nudged 1, would block at record 1, over budget 0/);
+  assert.match(text, /\[VE:LIVERUN\]: active in 1 of 2 sessions; nudged in 1, would block at record in 1; 0 over-budget hit\(s\)/);
   assert.match(text, /e\.g\. not run live: scripts\/x\.js/);
 });
