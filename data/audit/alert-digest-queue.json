@@ -443,5 +443,36 @@
       }
     ],
     "queuedAt": "2026-11-18T15:43:46.428Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7781-sim-night",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7781-sim-night",
+    "description": "land.yml did not land land/bro-7781-sim-night: the unit-tests-node gate went red at 58bd1e4b1c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44337921505",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7781-sim-night"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "58bd1e4b1c696b25a0d0932a0753f9707a2354e2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44337921505"
+      }
+    ],
+    "queuedAt": "2026-11-18T15:45:42.462Z"
   }
 ]
