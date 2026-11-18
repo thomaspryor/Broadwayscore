@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: sweep/cleanup dry-runs read data/shows.json + data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7802: smoke tests for scripts the landed-change audit found never run.
 // Safe modes only: no email, no spend, no writes. Each spawns the real script.
 import { test } from 'node:test';
@@ -5,6 +6,7 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
@@ -33,7 +35,8 @@ test('sweep-pending-commercial --dry-run prints a plan and writes nothing', () =
   assert.match(r.stdout, /Sweep plan/);
 });
 
-test('cleanup-stale-multishow-flags --dry-run reports counts', () => {
+test('cleanup-stale-multishow-flags --dry-run reports counts', (t) => {
+  if (!existsSync(path.join(ROOT, 'data', 'review-texts'))) return t.skip('no data/review-texts here');
   const r = run('cleanup-stale-multishow-flags.js', ['--dry-run']);
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /DRY RUN/);
