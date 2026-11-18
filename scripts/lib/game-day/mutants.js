@@ -21,7 +21,7 @@ const MUTANTS = [
   {
     id: 'BRO-7739-subtitle-matcher',
     what: 'the lane matcher loses main-title matching for quoted-subtitle shows',
-    file: 'scripts/lib/opening-night-lane/discovery.js',
+    source: 'scripts/lib/opening-night-lane/discovery.js',
     from: 'return allShowTitlesCache ? { fuzzy: true, mainTitle: true, allShowTitles: allShowTitlesCache } : { fuzzy: true };',
     to: 'return { fuzzy: true };',
     expectFail: /live with the right critic and score: sim-blue-man-group-holiday-2026 theatermania/,
@@ -29,7 +29,7 @@ const MUTANTS = [
   {
     id: 'BRO-7745-theatermania-byline',
     what: 'manual ingest reads the TheaterMania JSON-LD poster again instead of the visible author tag',
-    file: 'scripts/lib/content-quality.js',
+    source: 'scripts/lib/content-quality.js',
     patches: [
       { from: "const visible = require('./byline-extraction').extractTheaterManiaAuthorTag(html);", to: 'const visible = null;' },
       { from: "const area = /<section\\b[^>]*\\bclass=[\"'][^\"']*\\bauthor-area\\b[^>]*>([\\s\\S]*?)<\\/section>/i.exec(html);", to: 'const area = null;' },
@@ -39,7 +39,7 @@ const MUTANTS = [
   {
     id: 'BRO-7748-near-miss-alarm',
     what: 'the lane stops recording near-misses, so a headline that names the show but fails the matcher raises nothing',
-    file: 'scripts/lib/opening-night-lane/lane-runner.js',
+    source: 'scripts/lib/opening-night-lane/lane-runner.js',
     from: "kind: 'near-miss', items: pass.nearMisses || [],",
     to: "kind: 'near-miss', items: [],",
     expectFail: /exactly one alert names the missed review/,
@@ -47,7 +47,7 @@ const MUTANTS = [
   {
     id: 'BRO-7781-inbox-outlet',
     what: 'a bare manual-inbox URL (no --outlet) gets no outlet and fails',
-    file: 'scripts/lib/opening-night-lane/lane-runner.js',
+    source: 'scripts/lib/opening-night-lane/lane-runner.js',
     from: 'const outletIdFor = (e) => e.outletId || ((resolveOutletFromUrl(e.url) || {}).outletId) || null;',
     to: 'const outletIdFor = (e) => e.outletId || null;',
     expectFail: /manual inbox: every dropped URL ends published/,
@@ -64,12 +64,12 @@ function runNight() {
 }
 
 function runMutant(m) {
-  const file = path.join(REPO, m.file);
+  const file = path.join(REPO, m.source);
   const original = fs.readFileSync(file, 'utf8');
   const patches = m.patches || [{ from: m.from, to: m.to }];
   let mutated = original;
   for (const p of patches) {
-    if (!mutated.includes(p.from)) return { id: m.id, error: `patch text not found in ${m.file}: ${p.from.slice(0, 80)}` };
+    if (!mutated.includes(p.from)) return { id: m.id, error: `patch text not found in ${m.source}: ${p.from.slice(0, 80)}` };
     mutated = mutated.replace(p.from, p.to);
   }
   let out;
@@ -84,7 +84,7 @@ function runMutant(m) {
     fs.writeFileSync(file, original);
     fs.rmSync(backup, { force: true });
   }
-  if (fs.readFileSync(file, 'utf8') !== original) return { id: m.id, error: `${m.file} was not restored` };
+  if (fs.readFileSync(file, 'utf8') !== original) return { id: m.id, error: `${m.source} was not restored` };
   if (!out.report) return { id: m.id, error: `the night crashed (exit ${out.status}): ${out.stderr}` };
   const failed = out.report.checks.filter((c) => !c.ok).map((c) => c.name);
   return { id: m.id, what: m.what, nightPassed: out.report.pass, failed, caught: !out.report.pass && failed.some((n) => m.expectFail.test(n)) };
@@ -93,7 +93,7 @@ function runMutant(m) {
 /** Restore any file a killed earlier run left patched (its backup is still on disk). Returns the files restored. */
 function restoreStaleBackups() {
   const restored = [];
-  for (const rel of new Set(MUTANTS.map((m) => m.file))) {
+  for (const rel of new Set(MUTANTS.map((m) => m.source))) {
     const file = path.join(REPO, rel);
     if (!fs.existsSync(file + BACKUP_SUFFIX)) continue;
     fs.writeFileSync(file, fs.readFileSync(file + BACKUP_SUFFIX));
