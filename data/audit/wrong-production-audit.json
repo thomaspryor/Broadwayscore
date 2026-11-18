@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T09:40:55.366Z",
+  "timestamp": "2026-11-18T11:08:18.433Z",
   "stats": {
     "totalReviews": 82565,
-    "alreadyFlagged": 22546,
+    "alreadyFlagged": 22485,
     "dateGuardCatches": 221,
-    "directorMismatch": 3732,
+    "directorMismatch": 3739,
     "tvFilmSignals": 2350,
-    "londonSignals": 3789,
+    "londonSignals": 3791,
     "offBroadwaySignals": 761,
     "yearMismatch": 383,
-    "noPublishDate": 8258
+    "noPublishDate": 8271
   },
   "findings": [
     {
@@ -8887,6 +8887,20 @@
     },
     {
       "showId": "betrayal-2019",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": 88,
+      "publishDate": "2019-09-05T20:16:16",
+      "url": "https://nystagereview.com/2019/09/05/betrayal-less-is-more-in-this-london-born-revival/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"peter hall\" from betrayal-1980"
+        }
+      ]
+    },
+    {
+      "showId": "betrayal-2019",
       "file": "nysr--steven-suskin.json",
       "score": 85,
       "publishDate": "2019-09-05T20:15:22",
@@ -9536,6 +9550,20 @@
       "score": 77,
       "publishDate": "March 25, 2011",
       "url": "http://www.talkinbroadway.com/world/BookofMormon.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw and trey parker\" from the-book-of-mormon-west-end-2024"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "timeout--david-cote.json",
+      "score": 89,
+      "publishDate": "January 8th, 2015",
+      "url": "http://www.timeout.com/newyork/theater/the-book-of-mormon-on-broadway-tickets-reviews-and-video",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31216,6 +31244,20 @@
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 57,
+      "publishDate": "July 10th, 2025",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
       "file": "mashable--kristy-puchko.json",
       "score": 91,
       "publishDate": "2025-07-11",
@@ -31407,6 +31449,20 @@
       "score": 66,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/heathers-the-musical",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 88,
+      "publishDate": "July 10th, 2025",
+      "url": "https://www.talkinbroadway.com/page/ob/07_10_25.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -64332,6 +64388,20 @@
     },
     {
       "showId": "sweat-off-broadway-2016",
+      "file": "frontmezzjunkies--steven-ross.json",
+      "score": null,
+      "publishDate": "2016-12-13",
+      "url": "https://frontmezzjunkies.com/2016/12/13/sweat/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
       "file": "guardian--alexis-soloski.json",
       "score": 79,
       "publishDate": "2016-11-04",
@@ -74699,6 +74769,25 @@
       "score": 87,
       "publishDate": "2025-10-09",
       "url": "https://www.buffalorising.com/2025/10/a-love-that-endures-the-notebook-opens-at-sheas/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "chicago-reader--kerry-reid.json",
+      "score": 80,
+      "publishDate": "2026-08-06",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/notebook-broadway-in-chicago/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -121182,6 +121271,20 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 87,
+      "publishDate": "January 14th, 2025",
+      "url": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "whatsonstage--tom-millward.json",
       "publishDate": "2025-01-15",
       "url": "https://www.whatsonstage.com/news/cameron-mackintosh-matthew-bourne-and-more-on-reimagining-oliver-in-2025_1660735/",
@@ -127874,6 +127977,20 @@
       "score": 54,
       "publishDate": "2025-04-09",
       "url": "https://1minutecritic.com/sondheims-old-friends-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "file": "this-week-in-new-york--mark-rifkin.json",
+      "score": 38,
+      "publishDate": "May 10th, 2025",
+      "url": "https://twi-ny.com/2025/05/10/stephen-sondheim-old-friends-on-broadway/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
