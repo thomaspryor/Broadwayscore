@@ -11,8 +11,11 @@
  * by hand. Now a run whose show list holds an urgent show (in or near its
  * opening-night window, scoring-lane.js) takes the fast lane on its own.
  *
- * Pure: the caller injects isUrgent. Unknown or empty show list = not urgent
- * (a corpus-wide catch-up run keeps the full rebuild).
+ * Pure: the caller injects isUrgent. An empty show list is not urgent (a
+ * corpus-wide catch-up run keeps the full rebuild), except a plain backlog
+ * dispatch, which scores ONLY urgent shows (onlyUrgent, scoring-lane.js).
+ * "Urgent" is broad on purpose: it errs toward urgent (72h look-ahead, fresh
+ * review evidence), so some non-press-night shows take the fast lane too.
  */
 
 function parseShowIds(raw) {
@@ -29,7 +32,7 @@ function parseShowIds(raw) {
  * @param {(id: string) => boolean} [p.isUrgent]
  * @returns {{ workflow: 'rebuild-fast.yml'|'rebuild-reviews.yml', reason: string, urgentShows: string[] }}
  */
-function pickRebuildTarget({ fastRebuild, showIds, isUrgent = () => false } = {}) {
+function pickRebuildTarget({ fastRebuild, showIds, onlyUrgent, isUrgent = () => false } = {}) {
   if (fastRebuild === true || fastRebuild === 'true') {
     return { workflow: 'rebuild-fast.yml', reason: 'fast_rebuild input', urgentShows: [] };
   }
@@ -37,6 +40,9 @@ function pickRebuildTarget({ fastRebuild, showIds, isUrgent = () => false } = {}
   const urgentShows = ids.filter((id) => {
     try { return Boolean(isUrgent(id)); } catch { return false; }
   });
+  if (!ids.length && (onlyUrgent === true || onlyUrgent === 'true')) {
+    return { workflow: 'rebuild-fast.yml', reason: 'plain backlog run (urgent shows only)', urgentShows: [] };
+  }
   if (urgentShows.length) {
     return { workflow: 'rebuild-fast.yml', reason: `press-night show(s): ${urgentShows.join(',')}`, urgentShows };
   }
@@ -46,13 +52,14 @@ function pickRebuildTarget({ fastRebuild, showIds, isUrgent = () => false } = {}
 module.exports = { pickRebuildTarget, parseShowIds };
 
 // CLI for llm-ensemble-score.yml: prints the workflow file on stdout line 1 and
-// the reason on line 2. Reads FAST_REBUILD and SHOW_IDS from the env.
+// the reason on line 2. Reads FAST_REBUILD, SHOW_IDS and ONLY_URGENT from the env.
 if (require.main === module) {
   require('./cli-help').exitOnHelp(module);
   const { isUrgentShowId } = require('./scoring-lane');
   const res = pickRebuildTarget({
     fastRebuild: process.env.FAST_REBUILD,
     showIds: process.env.SHOW_IDS,
+    onlyUrgent: process.env.ONLY_URGENT,
     isUrgent: (id) => isUrgentShowId(id, { log: (m) => console.error(m) }),
   });
   console.log(res.workflow);

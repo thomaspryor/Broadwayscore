@@ -11,7 +11,10 @@
  * parallel slow rebuild started before the review was scored, so it could not
  * show the new score, and it held the shared rebuild-reviews group for ~15
  * minutes (2026-11-17, Blue Man Group: cancelled by hand). Scoring's own
- * auto-trigger then runs rebuild-fast.yml, which vercel-deploy follows.
+ * auto-trigger then runs rebuild-fast.yml, which vercel-deploy follows; if
+ * scoring fails or writes nothing, its fallback step still runs rebuild-fast.
+ * "Urgent" (scoring-lane.js) errs broad, so a few non-press-night shows skip
+ * the full rebuild too and are picked up by the rebuild-reviews crons.
  */
 function downstreamWorkflows(showId, newReviews, { urgent = false } = {}) {
   if (urgent) {

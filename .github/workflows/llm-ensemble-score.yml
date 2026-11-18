@@ -246,6 +246,9 @@ jobs:
           echo "background npm ci exit: $CODE"
           if [ "$CODE" != "0" ]; then
             tail -40 "${RUNNER_TEMP}/npm-ci.log" 2>/dev/null || true
+            # A still-running background install must not race the foreground one.
+            pkill -f "npm ci" 2>/dev/null || true
+            sleep 2
             echo "::warning::background npm ci did not succeed ($CODE); running it in the foreground"
             npm ci
           fi
@@ -877,11 +880,13 @@ jobs:
       # changes reach the site only through that push, so it is the exact
       # "a rebuild is needed" signal for every writer in this job.
       - name: Auto-trigger rebuild for non-chain runs
+        id: auto_rebuild
         if: ${{ github.event.inputs.chain != 'true' && github.event_name != 'schedule' && github.event.inputs.dry_run != 'true' && steps.check-changes.outputs.has_changes == 'true' && steps.push-review-texts.outputs.pushed == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FAST_REBUILD: ${{ github.event.inputs.fast_rebuild }}
           SHOW_IDS: ${{ github.event.inputs.show_id }}
+          ONLY_URGENT: ${{ steps.check-needed.outputs.only_urgent }}
         run: |
           # Two rebuild targets:
           #   - rebuild-reviews.yml (default): full ~15 min pipeline. Shared
@@ -986,6 +991,30 @@ jobs:
 
           echo "Triggering $REBUILD_WF to incorporate new scores..."
           dispatch_with_retry "$REBUILD_WF" -f reason="$REASON" || true
+
+      # BRO-7747: for a press-night show this scoring run is the only thing
+      # that starts a rebuild (ingest no longer dispatches a parallel slow
+      # one). If scoring failed, or wrote nothing (stub, already scored), the
+      # auto-trigger above did not run, so the newly ingested review would
+      # wait for the 4-hourly rebuild-fast cron. Dispatch rebuild-fast here.
+      - name: Fallback fast rebuild for press-night runs
+        if: ${{ always() && !cancelled() && github.event_name == 'workflow_dispatch' && github.event.inputs.chain != 'true' && github.event.inputs.dry_run != 'true' && github.event.inputs.show_id != '' && steps.auto_rebuild.outcome != 'success' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FAST_REBUILD: ${{ github.event.inputs.fast_rebuild }}
+          SHOW_IDS: ${{ github.event.inputs.show_id }}
+          ONLY_URGENT: ${{ steps.check-needed.outputs.only_urgent }}
+        run: |
+          TARGET=$(node scripts/lib/rebuild-target.js 2>/dev/null) || TARGET=""
+          if [ "$(printf '%s\n' "$TARGET" | sed -n 1p)" != "rebuild-fast.yml" ]; then
+            echo "Not a press-night run; the normal rebuild crons cover it."
+            exit 0
+          fi
+          # shellcheck source=scripts/lib/dispatch-with-retry.sh
+          source scripts/lib/dispatch-with-retry.sh
+          echo "Auto-trigger did not run (${{ steps.auto_rebuild.outcome }}); dispatching rebuild-fast.yml"
+          dispatch_with_retry rebuild-fast.yml -f reason="Fallback after LLM scoring (no auto-trigger; $(printf '%s\n' "$TARGET" | sed -n 2p))" || true
 
       - name: Count remaining unscored reviews
         if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true')

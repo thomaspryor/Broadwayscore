@@ -85,3 +85,21 @@ test('rebuild-reviews.yml and the poller fast_path restore the fingerprint memo 
   assert.doesNotMatch(p, /actions\/cache\/save@[^\n]*\n[^\n]*\n\s*path: \.cache\/rebuild-fp-cache\.json/);
   for (const y of [r, p]) assert.match(y, /rebuild-fp-memo-v1-\$\{\{ hashFiles\('scripts\/lib\/text-cleaning\.js'/);
 });
+
+test('pickRebuildTarget: a plain backlog run (urgent shows only) takes the fast lane', () => {
+  assert.equal(pickRebuildTarget({ showIds: '', onlyUrgent: 'true' }).workflow, 'rebuild-fast.yml');
+  assert.equal(pickRebuildTarget({ showIds: '', onlyUrgent: 'false' }).workflow, 'rebuild-reviews.yml');
+});
+
+test('llm-ensemble-score.yml: a press-night run that skipped the auto-trigger still dispatches rebuild-fast (always())', () => {
+  const y = wf('llm-ensemble-score.yml');
+  const at = y.indexOf('- name: Fallback fast rebuild for press-night runs');
+  assert.ok(at > y.indexOf('- name: Auto-trigger rebuild for non-chain runs'));
+  const step = y.slice(at, y.indexOf('\n      - name:', at + 10));
+  assert.match(step, /if: \$\{\{ always\(\) && !cancelled\(\)/);
+  assert.match(step, /steps\.auto_rebuild\.outcome != 'success'/);
+  assert.match(step, /github\.event\.inputs\.show_id != ''/);
+  assert.match(step, /node scripts\/lib\/rebuild-target\.js/);
+  assert.match(step, /dispatch_with_retry rebuild-fast\.yml/);
+  assert.match(y, /- name: Auto-trigger rebuild for non-chain runs\n\s+id: auto_rebuild/);
+});
