@@ -98,6 +98,7 @@ function ownPgrp() {
  * -> { ok, killed: [pids], survived: [pids] }
  */
 function sweepOrphanedHelpers({ sinceTicks = null, pgrp = ownPgrp(), scan = () => readProcRecords(), kill = process.kill, readState, readStartTicks, timeoutMs = EXIT_POLL_MS, pollMs = 100 } = {}) {
+  if (process.env.GIT_PROC_GUARD_DISABLED === '1') return { ok: true, killed: [], survived: [], disabled: true }; // kill switch
   const s = scan();
   // Kill only what we could read in full; an unreadable entry is left alone.
   const targets = (s.records || []).filter((r) => r.readable && r.ppid === 1 && !(Array.isArray(r.nspid) && r.nspid.length > 1)
@@ -383,6 +384,7 @@ function pruneGitTempPacks({
   orphanAgeMs = ORPHAN_NETWORK_GIT_AGE_MS, exitTimeoutMs = EXIT_POLL_MS, pollMs = 100, unlink = fs.unlinkSync,
 } = {}) {
   const res = { ok: true, dryRun, chains: [], killed: [], survived: [], reaped: [], kept: [], bytes: 0, subreaperChains: 0, nestedSkipped: 0 };
+  if (process.env.GIT_PROC_GUARD_DISABLED === '1') return { ...res, disabled: true }; // kill switch: no kills, no deletes
   const commonDir = path.resolve(gitCommonDir);
   const packDir = path.join(commonDir, 'objects', 'pack');
   let names = [];

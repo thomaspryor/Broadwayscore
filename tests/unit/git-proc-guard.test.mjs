@@ -371,3 +371,18 @@ test('runGitOrThrow: execFileSync-shaped (returns stdout, throws with status/std
       (e) => e.status === 128 && /not a git repository/i.test(e.stderr));
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('GIT_PROC_GUARD_DISABLED=1 turns the sweep and the prune into no-ops (kill switch)', async () => {
+  const G = await import('../../scripts/lib/git-proc-guard.js');
+  const g = G.default || G;
+  const old = process.env.GIT_PROC_GUARD_DISABLED;
+  process.env.GIT_PROC_GUARD_DISABLED = '1';
+  try {
+    let scans = 0;
+    const sw = g.sweepOrphanedHelpers({ scan: () => { scans++; return { ok: true, records: [] }; } });
+    const pr = g.pruneGitTempPacks({ gitCommonDir: '/nonexistent', scan: () => { scans++; return { ok: true, records: [] }; } });
+    assert.equal(sw.disabled, true);
+    assert.equal(pr.disabled, true);
+    assert.equal(scans, 0);
+  } finally { if (old === undefined) delete process.env.GIT_PROC_GUARD_DISABLED; else process.env.GIT_PROC_GUARD_DISABLED = old; }
+});
