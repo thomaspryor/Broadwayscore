@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-18T20:50:48.150Z",
+  "generated": "2026-11-18T21:18:11.105Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 59,
+  "count": 57,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -148,13 +148,6 @@
       "loserFile": "britishtheatrecom--unknown.json",
       "targetFile": "britishtheatrecom--british-theatre.json",
       "reason": "orphaned-duplicate-heal: britishtheatrecom--british-theatre.json was flagged invalid after britishtheatrecom--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "julius-caesar-globe-off-west-end-2026",
-      "loserFile": "british-theatre--unknown.json",
-      "targetFile": "british-theatre--colin-davison.json",
-      "reason": "orphaned-duplicate-heal: british-theatre--colin-davison.json was flagged invalid after british-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -401,13 +394,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "julius-caesar-globe-off-west-end-2026",
-      "loserFile": "british-theatre--unknown.json",
-      "targetFile": "british-theatre--colin-davison.json",
-      "reason": "orphaned-duplicate-heal: british-theatre--colin-davison.json was flagged invalid after british-theatre--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     },
     {
       "showId": "now-you-see-me-live-2026",
