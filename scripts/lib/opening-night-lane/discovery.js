@@ -54,6 +54,7 @@ const { isFeatureSectionReviewPath } = require('../domain-filters');
 const { admitLaneCandidate, calendarDateIn } = require('./trust-model');
 const laneSources = require('./lane-sources');
 const ledger = require('./ledger');
+const nearMiss = require('./near-miss');
 
 const SERP_AFTER_MS = 3 * 60 * 60 * 1000;
 const SERP_COOLDOWN_MS = 30 * 60 * 1000;
@@ -272,6 +273,23 @@ function headlineIsShowTitle(headline, showTitle) {
 function hasReviewSignal(url, title) {
   return REVIEW_SIGNAL.test(`${title || ''} ${(() => { try { return decodeURIComponent(new URL(url).pathname); } catch { return ''; } })()}`.replace(/[-_]+/g, ' '));
 }
+
+/**
+ * BRO-7748: a link the strict matcher refused that still partly names the show is reported, never admitted. Only a
+ * review-like link (review word, a reviews-only source, or a review-only outlet) on a KNOWN outlet's host, at most
+ * nearMiss.MAX_NEAR_MISSES_PER_ADAPTER per adapter per pass. `budget` is the adapter's {left} counter for this pass.
+ */
+function nearMissFind(item, show, budget, extra = {}) {
+  if (!item || !item.url || budget.left <= 0) return null;
+  const outlet = resolveOutletFromUrl(item.url);
+  if (!outlet) return null;
+  if (!(extra.reviewSignalGiven || hasReviewSignal(item.url, item.title) || hostMatches(hostOf(item.url), REVIEW_WITHOUT_WORD_HOSTS))) return null;
+  const signals = nearMiss.nearMissSignals(item, show);
+  if (!signals.length) return null;
+  budget.left -= 1;
+  return { url: item.url, title: item.title || '', source: 'outlet-index', outletId: extra.outletId || outlet.outletId, via: extra.via, nearMiss: signals };
+}
+const nearMissBudget = () => ({ left: nearMiss.MAX_NEAR_MISSES_PER_ADAPTER });
 
 // The ensemble refuses selected text under 50 chars (ensemble-scorer.ts prepareScoringInput).
 const EXCERPT_MIN_CHARS = 50;
@@ -637,7 +655,7 @@ function laneMissingOutlets({ show, seen, adaptersConfig = {} }) {
  * `feeds` omitted: defaultLaneFeeds(show). Regular and direct-only feeds each rotate in their own window of
  * MAX_FEEDS_PER_PASS and MAX_DIRECT_FEEDS_PER_PASS, so every feed is read within ceil(n / window) passes of its kind.
  */
-function rssAdapter({ feeds } = {}) {
+function rssAdapter({ feeds, matchOpts } = {}) {
   const nextRegular = rotatingWindow(MAX_FEEDS_PER_PASS);
   const nextDirect = rotatingWindow(MAX_DIRECT_FEEDS_PER_PASS);
   const paid = new Map(); // feed url -> { at: pass of its last paid read, fails: paid reads failed in a row }
@@ -685,6 +703,8 @@ function rssAdapter({ feeds } = {}) {
       // Side by side: one after another, a dozen slow feeds could use up the pass deadline and starve the date checks that
       // run after the adapters (ship-check). A dead feed never hides the others.
       const bodies = await Promise.allSettled(batch.map((feed) => (feed.directOnly ? readDirectFeed(feed.url) : readChainFeed(feed.url))));
+      const mo = matchOpts || laneMatchOpts();
+      const budget = nearMissBudget();
       for (const [i, feed] of batch.entries()) {
         if (bodies[i].status !== 'fulfilled') continue;
         let items;
@@ -692,7 +712,11 @@ function rssAdapter({ feeds } = {}) {
         for (const it of items) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
-          if (!titleMatchesShow(it.title, show.title, laneMatchOpts()) && !urlSlugMatchesShow(it.link, show.title, laneMatchOpts())) continue;
+          if (!titleMatchesShow(it.title, show.title, mo) && !urlSlugMatchesShow(it.link, show.title, mo)) {
+            const nm = hostOf(it.link) === hostOf(feed.url) && nearMissFind({ url: it.link, title: it.title }, show, budget, { via: feed.name || feed.url, outletId: feed.outletId, reviewSignalGiven: feed.reviewsOnly });
+            if (nm) out.push(nm);
+            continue;
+          }
           // The feed's own item: same host, or a host the registry maps to the feed's outlet (Culture Sauce's feed is on
           // culturesauce.net, its reviews on culturesauce.com; Theater Scene's on .net and .com).
           const ownHost = hostOf(it.link) === hostOf(feed.url) || (!!feed.outletId && (resolveOutletFromUrl(it.link) || {}).outletId === feed.outletId);
@@ -720,7 +744,7 @@ const SECTION_INDEX_PARSERS = {
     .map((r) => ({ url: r.url, title: `Theatre in Review: ${show.title}`, publishDate: r.publishDate })),
 };
 
-function sectionIndexAdapter({ outlets } = {}) {
+function sectionIndexAdapter({ outlets, matchOpts } = {}) {
   let nextWindow = null; let slots = null;
   return {
     name: 'section-index', kind: 'outlet-index', phase: 'cheap',
@@ -732,6 +756,8 @@ function sectionIndexAdapter({ outlets } = {}) {
       if (slots !== free) { slots = free; nextWindow = rotatingWindow(free); }
       const batch = [...pinned, ...nextWindow(all.filter((o) => !o.pinned))];
       const pages = await Promise.allSettled(batch.map((o) => fetchText(o.indexUrl, { directOnly: true })));
+      const mo = matchOpts || laneMatchOpts();
+      const budget = nearMissBudget();
       for (const [i, o] of batch.entries()) {
         if (pages[i].status !== 'fulfilled') continue;
         const html = pages[i].value;
@@ -743,7 +769,11 @@ function sectionIndexAdapter({ outlets } = {}) {
         }
         for (const a of extractAnchors(indexScope(html), o.indexUrl)) {
           if (hostOf(a.url) !== host || new URL(a.url).pathname === new URL(o.indexUrl).pathname) continue;
-          if (!titleMatchesShow(a.text, show.title, laneMatchOpts()) && !urlSlugMatchesShow(a.url, show.title, laneMatchOpts())) continue;
+          if (!titleMatchesShow(a.text, show.title, mo) && !urlSlugMatchesShow(a.url, show.title, mo)) {
+            const nm = nearMissFind({ url: a.url, title: a.text }, show, budget, { via: o.indexUrl, outletId: o.outletId });
+            if (nm) out.push(nm);
+            continue;
+          }
           // Same host as the outlet's own index page: tied to that registry outlet by its source, like a Google News <source url>
           // find. TheaterMania and Time Out file reviews under /news/ ("/news/review-...", "/newyork/news/broadway-review-..."),
           // so without this every TheaterMania index find was refused (309 of 309 2025-26 rows), BRO-6872.
@@ -1136,12 +1166,17 @@ function talkinBroadwayAdapter({
         Promise.all(indexUrls.slice(0, MAX_SOURCES_PER_ADAPTER).map((u) => fetchText(u).then((html) => ({ u, html }), () => { failures++; return null; }))),
         probeNamedPages(show, fetchText).catch(() => []),
       ]);
+      const budget = nearMissBudget();
       for (const r of indexResults) {
         if (!r) continue;
         for (const a of extractAnchors(indexScope(r.html), r.u)) {
           let u; try { u = new URL(a.url); } catch { continue; }
           if (hostOf(a.url) !== 'talkinbroadway.com' || !(TB_REVIEW_PATH.test(u.pathname) || tbNamedReviewPage(u.pathname))) continue;
-          if (!titleMatchesShow(a.text, show.title, laneMatchOpts())) continue;
+          if (!titleMatchesShow(a.text, show.title, laneMatchOpts())) {
+            const nm = nearMissFind({ url: a.url, title: a.text }, show, budget, { via: r.u, outletId: 'talkinbroadway', reviewSignalGiven: true });
+            if (nm) out.push(nm);
+            continue;
+          }
           out.push({ url: a.url, title: a.text, source: 'outlet-index', publishDate: null, needsDate: true, reviewSignalGiven: true, via: r.u, outletId: 'talkinbroadway' });
         }
       }
@@ -1205,6 +1240,8 @@ function serpAdapter({ search, domainFor, ledgerDir, now = Date.now } = {}) {
     async discover({ show, night = show.openingDate || new Date(now()).toISOString().slice(0, 10), missingOutlets = [], limit = 5 }) {
       const out = [];
       let searches = 0; let failures = 0; let lastError = null;
+      const budget = nearMissBudget();
+      const nearMisses = []; // reported beside the results, never counted against `limit`
       for (const id of missingOutlets) {
         if (searches >= limit || out.length >= limit) break;
         const dom = domain(id);
@@ -1219,12 +1256,16 @@ function serpAdapter({ search, domainFor, ledgerDir, now = Date.now } = {}) {
         } catch (e) { failures++; lastError = e; continue; }
         for (const r of results || []) {
           if (!r || !r.url || !(hostOf(r.url) === dom || (hostOf(r.url) || '').endsWith(`.${dom}`))) continue;
-          if (!titleMatchesShow(r.title || '', show.title, laneMatchOpts()) && !urlSlugMatchesShow(r.url, show.title, laneMatchOpts())) continue;
+          if (!titleMatchesShow(r.title || '', show.title, laneMatchOpts()) && !urlSlugMatchesShow(r.url, show.title, laneMatchOpts())) {
+            const nm = nearMissFind({ url: r.url, title: r.title }, show, budget, { via: 'serp', outletId: id.includes('.') ? undefined : id });
+            if (nm) nearMisses.push(nm);
+            continue;
+          }
           out.push({ url: r.url, title: r.title || '', source: 'outlet-index', publishDate: null, needsDate: true, via: 'serp', outletId: id.includes('.') ? undefined : id });
         }
       }
       if (searches && failures === searches) throw lastError;
-      return out.slice(0, limit);
+      return [...out.slice(0, limit), ...nearMisses];
     },
   };
 }
@@ -1353,13 +1394,18 @@ async function runDiscoveryPass({
   const byKey = new Map();
   const rejected = [];
   const unknownHosts = new Set();
+  const nearMissByKey = new Map(); // BRO-7748: partial matches the strict matcher refused; reported, never judged
   let deadlineHit = false;
 
   const collect = (candidates, adapterName) => {
     for (const c of candidates || []) {
       if (!c || !c.url) continue;
       const key = canonicalUrl(c.url);
-      if (!key) { rejected.push({ url: c.url, adapter: adapterName, reason: 'wrapped-url' }); continue; }
+      if (!key) { if (!c.nearMiss) rejected.push({ url: c.url, adapter: adapterName, reason: 'wrapped-url' }); continue; }
+      if (c.nearMiss) {
+        if (!nearMissByKey.has(key)) nearMissByKey.set(key, { url: c.url, title: c.title || '', outletId: c.outletId, adapter: adapterName, via: c.via, signals: c.nearMiss });
+        continue;
+      }
       const prior = byKey.get(key);
       const next = { ...c, url: key, fetchUrl: c.fetchUrl || c.url, adapter: adapterName }; // fetch the URL as the outlet published it; dedupe on the canonical form
       // The same article from several sources keeps the strongest claim: an aggregator citation beats an index sighting.
@@ -1403,7 +1449,8 @@ async function runDiscoveryPass({
       if (overDeadline()) { deadlineHit = true; break; }
       try {
         // `limit` goes to the adapter so it can cap the SEARCHES it runs, not just trim what came back.
-        collect((await a.discover({ show, night, fetchText, missingOutlets, limit: serpMax }) || []).slice(0, serpMax), a.name);
+        const got = (await a.discover({ show, night, fetchText, missingOutlets, limit: serpMax })) || [];
+        collect([...got.filter((c) => !(c && c.nearMiss)).slice(0, serpMax), ...got.filter((c) => c && c.nearMiss)], a.name);
         serpRan = true;
       } catch (e) { errors.push({ adapter: a.name, error: String((e && e.message) || e).slice(0, 200) }); }
     }
@@ -1563,7 +1610,19 @@ async function runDiscoveryPass({
     // next pass, no strike.
     for (const key of limitDateCheck.dropQueued()) inFlight.delete(key);
   }
-  return { admitted, rejected, unknownHosts: [...unknownHosts].filter(Boolean).sort(), errors, deferredDateChecks, serpRan, deadlineHit };
+  // BRO-7748: near-misses another source admitted, or already on disk / in the ledger, are not reported. Sightings are every
+  // candidate this pass judged, for the found-vs-live gap check (near-miss.gapCandidates); nothing here fetches.
+  const admittedKeys = new Set(admitted.map((x) => x.key));
+  const nearMisses = [...nearMissByKey.entries()].filter(([key]) => !byKey.has(key) && !seen.has(key) && !admittedKeys.has(key)).map(([, n]) => n);
+  // Reported URLs are as the outlet published them (the canonical key drops www and the trailing slash, which some
+  // outlets then refuse); dedupe stays on the key.
+  const sightings = [...byKey.entries()].filter(([key]) => !seen.has(key)).map(([key, c]) => ({
+    url: c.fetchUrl || key, key, title: c.title || '', adapter: c.adapter, via: c.via, source: c.source,
+    outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, knownOutlet: !!resolveOutletFromUrl(c.url),
+    aggregatorCited: c.aggregatorCited === true, vettedOutlet: c.vettedOutlet === true || c.outletListed === true, reviewLike: looksReviewLike(c, show),
+    admitted: admittedKeys.has(key), rejectedFor: (memo.rejected[key] || {}).reason || null,
+  }));
+  return { admitted, rejected, unknownHosts: [...unknownHosts].filter(Boolean).sort(), errors, deferredDateChecks, serpRan, deadlineHit, nearMisses, sightings };
 }
 
 /**
