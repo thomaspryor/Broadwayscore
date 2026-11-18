@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T00:00:23.970Z",
+  "timestamp": "2026-11-18T01:03:43.385Z",
   "stats": {
-    "totalReviews": 82518,
-    "alreadyFlagged": 22543,
+    "totalReviews": 82521,
+    "alreadyFlagged": 22544,
     "dateGuardCatches": 221,
-    "directorMismatch": 3725,
+    "directorMismatch": 3729,
     "tvFilmSignals": 2345,
     "londonSignals": 3781,
     "offBroadwaySignals": 761,
     "yearMismatch": 382,
-    "noPublishDate": 8286
+    "noPublishDate": 8284
   },
   "findings": [
     {
@@ -40004,7 +40004,7 @@
     },
     {
       "showId": "les-miserables-tour-2022",
-      "file": "hotchka--unknown.json",
+      "file": "hotchka--chuck-duncan.json",
       "score": 93,
       "publishDate": "2023-02-08",
       "url": "https://hotchka.com/les-miserables-tour-review",
@@ -48716,6 +48716,32 @@
     },
     {
       "showId": "oh-mary-tour-2026",
+      "file": "larchmont-buzz--laura-foti-cohen.json",
+      "publishDate": "2026-11-13",
+      "url": "https://larchmontbuzz.com/theater/oh-mary-wowie-zowie/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2026-11-13",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-11-13/oh-mary-review-cole-esola-alaska-thunder",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
       "file": "latimes--jenelle-riley.json",
       "publishDate": "2026-11-03",
       "url": "https://www.latimes.com/entertainment-arts/story/2026-11-03/creatives-behind-oh-mary-address-hype-prior-to-la-run",
@@ -48820,6 +48846,32 @@
       "score": 90,
       "publishDate": "2026-11-13",
       "url": "https://splashmags.com/2026/11/oh-mary-a-totally-unauthorized-biography/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "stageandcinema--ernest-kearney.json",
+      "publishDate": "2026-11-15",
+      "url": "https://stageandcinema.com/2026/11/15/oh-mary-national-tour-review-ahmanson/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "theatermania--david-gordon.json",
+      "publishDate": "2026-11-16",
+      "url": "https://www.theatermania.com/news/review-cole-escolas-gloriously-unhinged-oh-mary-brings-its-pandemonium-to-the-ahmanson_1859942/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55497,7 +55549,7 @@
     },
     {
       "showId": "private-lives-2011",
-      "file": "huffpost--unknown.json",
+      "file": "huffpost--michael-giltz.json",
       "score": 46,
       "publishDate": "2011-11-19",
       "url": "https://www.huffpost.com/entry/private-lives-broadway-review_b_1102882",
@@ -56033,7 +56085,7 @@
     },
     {
       "showId": "purpose-2025",
-      "file": "latimes--unknown.json",
+      "file": "latimes--charles-mcnulty.json",
       "score": null,
       "publishDate": "2025-06-09",
       "url": "https://www.latimes.com/entertainment-arts/story/2025-06-09/tony-awards-hollywood-a-listers-broadway-fearless-stage-actors-maybe-happy-ending-purpose",
@@ -65890,7 +65942,7 @@
     },
     {
       "showId": "the-adding-machine-off-broadway-2026",
-      "file": "frontmezzjunkies--unknown.json",
+      "file": "frontmezzjunkies--ross-that.json",
       "score": 81,
       "publishDate": "2026-04-14",
       "url": "https://frontmezzjunkies.com/2026/04/14/counting-the-cost-the-adding-machine-and-the-machinery-of-living/",
@@ -97626,7 +97678,7 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--neil-dowden.json",
       "score": 81,
       "publishDate": "2026-11-17",
       "url": "https://playsinternational.org.uk/cloud-9-lyttelton-national-theatre/",
