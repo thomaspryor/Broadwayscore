@@ -82,6 +82,7 @@ function guardStartText(t) {
   const at = new Date(t.laneStartMs).toISOString();
   const d = t.drop || { basis: 'none' };
   const leadMin = Math.round((t.embargoMs - t.laneStartMs) / MIN);
+  if (d.basis === 'observed' && leadMin >= require('./preembargo-window').MAX_OBSERVED_LEAD_MIN) return `guard opens ${at} (embargo -${leadMin} min), CAPPED at the ${leadMin}-min maximum lead: the earliest of ${d.n} recorded nights (${d.earliestMin} min) would open it earlier`;
   if (d.basis === 'observed' && leadMin > 90) return `guard opens ${at} (embargo -${leadMin} min), set by the earliest drop in ${d.n} recorded nights (${d.earliestMin} min vs the market hour)`;
   if (d.basis === 'observed') return `guard opens ${at} (embargo -${leadMin} min), the market default; the earliest of ${d.n} recorded nights (${d.earliestMin} min) is not earlier`;
   return `guard opens ${at} (embargo -${leadMin} min), a GUESS: the market default, ${d.n || 0} recorded night(s) for this market`;

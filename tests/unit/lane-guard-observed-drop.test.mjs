@@ -44,6 +44,12 @@ test('nightTimes: >=5 observed nights start the guard at the earliest drop minus
   assert.ok(t.laneStartMs <= Z('2026-11-19T01:00:00Z'), 'open at or before the earliest recorded drop (the It\'s A Wonderful Life readiness case)');
 });
 
+test('guardStartText: says CAPPED when the 180-min cap, not the data, set the start', () => {
+  const t = af.nightTimes(SHOW, '2026-11-18', { dropProfiles: profilesFor([-400, -30, 0, 0, 10, 40]) });
+  assert.equal(t.laneStartMs, MARKET_HOUR - 180 * MIN);
+  assert.match(af.guardStartText(t), /CAPPED/);
+});
+
 test('nightTimes: an observed market whose earliest drop is not earlier than the default keeps embargo - 90 and says so', () => {
   const t = af.nightTimes(SHOW, '2026-11-18', { dropProfiles: profilesFor([-60, -30, 0, 0, 10]) });
   assert.equal(t.laneStartMs, MARKET_HOUR - 90 * MIN);
