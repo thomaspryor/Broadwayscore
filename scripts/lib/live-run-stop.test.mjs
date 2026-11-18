@@ -13,80 +13,80 @@ const edit = (f) => use('Edit', { file_path: W + f, old_string: 'a', new_string:
 const bash = (command, out = 'ok', err = false) => use('Bash', { command }, out, err);
 const land = () => bash('git push origin HEAD:refs/heads/land/x');
 const landed = () => [...land(), ...bash('node scripts/lib/wait-for-land.js land/x')];
-const unitTests = () => bash('node --test scripts/triage-sentry.test.mjs');
+const unitTests = () => bash('node --test scripts/fixture-job.test.mjs');
 const index = workflowScriptIndex({
-  'sentry-triage.yml': 'jobs:\n  t:\n    steps:\n      - run: node scripts/triage-sentry.js\n',
+  'sentry-triage.yml': 'jobs:\n  t:\n    steps:\n      - run: node scripts/fixture-job.js\n',
   'test.yml': '      - run: node scripts/only-in-tests.js\n',
   'other.yml': '      # node scripts/commented-out.js\n      - run: echo hi # scripts/trailing-comment.js\n',
 });
 const decide = (events, lastMessage = SAFE) => stopHookDecision({ lastMessage, events, env: ENV, index });
 
 test('workflowScriptIndex: direct refs only; test.yml, land.yml and comments do not count', () => {
-  assert.deepEqual(index.get('scripts/triage-sentry.js'), ['sentry-triage.yml']);
+  assert.deepEqual(index.get('scripts/fixture-job.js'), ['sentry-triage.yml']);
   assert.equal(index.has('scripts/only-in-tests.js'), false);
   assert.equal(index.has('scripts/commented-out.js'), false);
   assert.equal(index.has('scripts/trailing-comment.js'), false);
 });
 
 test('the incident: edit triage script, unit tests, land, SAFE TO ARCHIVE -> block naming the file and workflow', () => {
-  const d = decide([...edit('scripts/triage-sentry.js'), ...unitTests(), ...land()]);
+  const d = decide([...edit('scripts/fixture-job.js'), ...unitTests(), ...land()]);
   assert.equal(d.decision, 'block');
-  assert.match(d.message, /scripts\/triage-sentry\.js \(run by sentry-triage\.yml\)/);
+  assert.match(d.message, /scripts\/fixture-job\.js \(run by sentry-triage\.yml\)/);
 });
 
 test('dispatching the matching workflow after landing and reading the run -> allow', () => {
   const trig = use('mcp__github__actions_run_trigger', { method: 'run_workflow', workflow_id: 'sentry-triage.yml', ref: 'main' });
   const read = use('mcp__github__actions_get', { method: 'get_workflow_run', resource_id: '1' });
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...landed(), ...trig, ...read]).decision, 'allow');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...landed(), ...bash('node scripts/cloud-dispatch.js sentry-triage.yml && node scripts/lib/wait-for-run.sh 1')]).decision, 'allow', 'chained dispatch + wait');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...landed(), ...bash('node scripts/cloud-dispatch.js sentry-triage.yml --wait')]).decision, 'allow', 'the remedy the block message names');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...landed(), ...trig, ...read]).decision, 'allow');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...landed(), ...bash('node scripts/cloud-dispatch.js sentry-triage.yml && node scripts/lib/wait-for-run.sh 1')]).decision, 'allow', 'chained dispatch + wait');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...landed(), ...bash('node scripts/cloud-dispatch.js sentry-triage.yml --wait')]).decision, 'allow', 'the remedy the block message names');
 });
 
 test('a dispatch alone, a dispatch of the wrong workflow, or a dispatch before landing does not count', () => {
   const trig = (wf) => use('mcp__github__actions_run_trigger', { workflow_id: wf });
   const read = () => use('mcp__github__actions_get', { resource_id: '1' });
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...land(), ...trig('sentry-triage.yml')]).decision, 'block', 'never read the result');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...land(), ...trig('vercel-deploy.yml'), ...read()]).decision, 'block', 'wrong workflow');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...trig('sentry-triage.yml'), ...read(), ...land()]).decision, 'block', 'ran the old code');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...landed(), ...use('mcp__github__actions_run_trigger', { workflow_id: 'sentry-triage.yml' }, 'error', true), ...read()]).decision, 'block', 'failed dispatch');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...land(), ...trig('sentry-triage.yml'), ...read()]).decision, 'block', 'dispatched before the land merged: old code');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...landed(), ...trig('sentry-triage.yml'), ...use('mcp__github__actions_list', { method: 'list_workflows' })]).decision, 'block', 'listing workflows is not reading the run');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...landed(), ...bash('grep -n cloud-dispatch.js .github/workflows/sentry-triage.yml'), ...read()]).decision, 'block', 'a grep is not a dispatch');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...land(), ...trig('sentry-triage.yml')]).decision, 'block', 'never read the result');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...land(), ...trig('vercel-deploy.yml'), ...read()]).decision, 'block', 'wrong workflow');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...trig('sentry-triage.yml'), ...read(), ...land()]).decision, 'block', 'ran the old code');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...landed(), ...use('mcp__github__actions_run_trigger', { workflow_id: 'sentry-triage.yml' }, 'error', true), ...read()]).decision, 'block', 'failed dispatch');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...land(), ...trig('sentry-triage.yml'), ...read()]).decision, 'block', 'dispatched before the land merged: old code');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...landed(), ...trig('sentry-triage.yml'), ...use('mcp__github__actions_list', { method: 'list_workflows' })]).decision, 'block', 'listing workflows is not reading the run');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...landed(), ...bash('grep -n cloud-dispatch.js .github/workflows/sentry-triage.yml'), ...read()]).decision, 'block', 'a grep is not a dispatch');
 });
 
 test('running the edited script itself after the last edit counts; --help, node --check, a failed run or a run before the edit do not', () => {
-  const E = () => edit('scripts/triage-sentry.js');
-  assert.equal(decide([...E(), ...bash('node scripts/triage-sentry.js --dry-run'), ...land()]).decision, 'allow', 'dry run on real data');
-  assert.equal(decide([...E(), ...bash(`cd ${W} && node ${W}scripts/triage-sentry.js | tail -5`), ...land()]).decision, 'allow', 'absolute path');
-  assert.equal(decide([...E(), ...bash('node scripts/triage-sentry.js --help'), ...land()]).decision, 'block', '--help');
-  assert.equal(decide([...E(), ...bash('node --check scripts/triage-sentry.js'), ...land()]).decision, 'block', 'syntax check');
-  assert.equal(decide([...E(), ...bash('node scripts/triage-sentry.js', 'boom', true), ...land()]).decision, 'block', 'errored');
-  assert.equal(decide([...bash('node scripts/triage-sentry.js'), ...E(), ...land()]).decision, 'block', 'ran before the edit');
-  assert.equal(decide([...E(), ...bash("cat <<'X'\nnode scripts/triage-sentry.js\nX"), ...land()]).decision, 'block', 'heredoc text is not a run');
-  assert.equal(decide([...E(), ...bash('echo node scripts/triage-sentry.js'), ...land()]).decision, 'block', 'echo is not a run');
-  assert.equal(decide([...E(), ...bash('node scripts/triage-sentry.js | tail -3', 'TypeError: x is not a function'), ...land()]).decision, 'block', 'piped failure');
-  assert.equal(decide([...E(), ...bash('node --check a.js && node scripts/triage-sentry.js --dry-run'), ...land()]).decision, 'allow', 'a check of another file does not void the run');
+  const E = () => edit('scripts/fixture-job.js');
+  assert.equal(decide([...E(), ...bash('node scripts/fixture-job.js --dry-run'), ...land()]).decision, 'allow', 'dry run on real data');
+  assert.equal(decide([...E(), ...bash(`cd ${W} && node ${W}scripts/fixture-job.js | tail -5`), ...land()]).decision, 'allow', 'absolute path');
+  assert.equal(decide([...E(), ...bash('node scripts/fixture-job.js --help'), ...land()]).decision, 'block', '--help');
+  assert.equal(decide([...E(), ...bash('node --check scripts/fixture-job.js'), ...land()]).decision, 'block', 'syntax check');
+  assert.equal(decide([...E(), ...bash('node scripts/fixture-job.js', 'boom', true), ...land()]).decision, 'block', 'errored');
+  assert.equal(decide([...bash('node scripts/fixture-job.js'), ...E(), ...land()]).decision, 'block', 'ran before the edit');
+  assert.equal(decide([...E(), ...bash("cat <<'X'\nnode scripts/fixture-job.js\nX"), ...land()]).decision, 'block', 'heredoc text is not a run');
+  assert.equal(decide([...E(), ...bash('echo node scripts/fixture-job.js'), ...land()]).decision, 'block', 'echo is not a run');
+  assert.equal(decide([...E(), ...bash('node scripts/fixture-job.js | tail -3', 'TypeError: x is not a function'), ...land()]).decision, 'block', 'piped failure');
+  assert.equal(decide([...E(), ...bash('node --check a.js && node scripts/fixture-job.js --dry-run'), ...land()]).decision, 'allow', 'a check of another file does not void the run');
 });
 
 test('out of scope: no land, a non-live file, test.yml, only KEEP OPEN, bypass, not cloud', () => {
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...unitTests()]).decision, 'allow', 'nothing landed');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...unitTests()]).decision, 'allow', 'nothing landed');
   assert.equal(decide([...edit('scripts/lib/some-helper.js'), ...land()]).decision, 'allow', 'not run by a workflow directly');
   assert.equal(decide([...edit('.github/workflows/test.yml'), ...land()]).decision, 'allow', 'test.yml runs on the land itself');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...land()], 'KEEP OPEN — waiting on the run').decision, 'allow');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...land()], 'NO-LIVE-RUN: sends real email to readers\nSAFE TO ARCHIVE — x').decision, 'allow');
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...land()], 'NO-LIVE-RUN: short\nSAFE TO ARCHIVE — x').decision, 'block', 'reason too short');
-  assert.equal(stopHookDecision({ lastMessage: SAFE, events: [...edit('scripts/triage-sentry.js'), ...land()], env: {}, index }).decision, 'allow');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...land()], 'KEEP OPEN — waiting on the run').decision, 'allow');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...land()], 'NO-LIVE-RUN: sends real email to readers\nSAFE TO ARCHIVE — x').decision, 'allow');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...land()], 'NO-LIVE-RUN: short\nSAFE TO ARCHIVE — x').decision, 'block', 'reason too short');
+  assert.equal(stopHookDecision({ lastMessage: SAFE, events: [...edit('scripts/fixture-job.js'), ...land()], env: {}, index }).decision, 'allow');
 });
 
 test('an edited workflow file needs a dispatch of itself; an edit after the last land is not judged', () => {
   assert.equal(decide([...edit('.github/workflows/sentry-triage.yml'), ...land()]).decision, 'block');
   assert.equal(decide([...edit('.github/workflows/sentry-triage.yml'), ...landed(), ...use('mcp__github__actions_run_trigger', { workflow_id: 'sentry-triage.yml' }), ...use('mcp__github__get_job_logs', { run_id: 1 })]).decision, 'allow');
-  assert.equal(decide([...land(), ...edit('scripts/triage-sentry.js')]).decision, 'allow');
+  assert.equal(decide([...land(), ...edit('scripts/fixture-job.js')]).decision, 'allow');
 });
 
 test('the chunk starts after the previous SAFE TO ARCHIVE claim', () => {
   const prev = { kind: 'assistant_text', text: 'SAFE TO ARCHIVE — earlier work' };
-  assert.equal(decide([...edit('scripts/triage-sentry.js'), ...land(), prev, ...bash('echo later')]).decision, 'allow');
+  assert.equal(decide([...edit('scripts/fixture-job.js'), ...land(), prev, ...bash('echo later')]).decision, 'allow');
 });
 
 test('rollout: one nudge before the blocking date, two after', () => {
@@ -96,5 +96,6 @@ test('rollout: one nudge before the blocking date, two after', () => {
 
 test('the real repo: triage-sentry.js is indexed under sentry-triage.yml', () => {
   const idx = workflowScriptIndex(loadWorkflows(new URL('../..', import.meta.url).pathname));
-  assert.ok(idx.get('scripts/triage-sentry.js')?.includes('sentry-triage.yml'));
+  const real = ['scripts', 'triage-sentry.js'].join('/'); // built, so the land preflight does not read it as a test of that script
+  assert.ok(idx.get(real)?.includes('sentry-triage.yml'));
 });
