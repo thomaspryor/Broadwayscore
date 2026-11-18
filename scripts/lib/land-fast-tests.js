@@ -121,9 +121,18 @@ function gateFor(file, { nodeSet, tsxSet }) {
   return null;
 }
 
+// Sources a generator mirrors into a committed copy, and the test that compares the two. The test reads
+// its sources through the generator (path.join(root, '.claude', 'commands')), so name matching never
+// links them: BRO-7729's land was refused 20 minutes in for a wrap-up.md edit without the sync.
+const MIRRORED_SOURCES = [
+  [/^\.claude\/(?:commands|skills)\//, 'tests/unit/codex-parity.test.mjs', 'mirrored to .agents/skills (run scripts/codex/sync-skills.js)'],
+];
+
 /** Which tier a changed file pulls a test in at (lower is stronger), or null. */
 function matchTier(changedFile, testFile, text) {
   if (changedFile === testFile) return { tier: 0, why: 'changed test' };
+  const mirror = MIRRORED_SOURCES.find(([re, t]) => t === testFile && re.test(changedFile));
+  if (mirror) return { tier: 1, why: mirror[2] };
   if (text.includes(changedFile)) return { tier: 1, why: `names ${changedFile}` };
   const bn = path.basename(changedFile);
   if (bn.length >= 6 && text.includes(bn)) return { tier: 2, why: `names ${bn}` };
@@ -433,6 +442,6 @@ async function main(argv = process.argv.slice(2)) {
   return res.status === 'fail' ? 1 : res.status === 'skip' ? 3 : 0;
 }
 
-module.exports = { MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, MAX_STRONG, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
+module.exports = { MIRRORED_SOURCES, MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, MAX_STRONG, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
 
 if (require.main === module) { hookTerm(); main().then((code) => { process.exitCode = code; }); }

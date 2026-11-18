@@ -120,7 +120,7 @@ export function recordRuns(events) {
 // git with any global options (-C dir, -c k=v, --no-pager) before the subcommand.
 const GIT = String.raw`\bgit\s+(?:(?:-[Cc]\s+\S+|--[\w-]+)\s+)*`;
 // Stages the ledger: add of it, data/audit, -A/--all/-u/., or commit -a/--all/naming it (which also commits).
-const stageRe = (file) => new RegExp(`${GIT}(?:add\\b[^\\n;&|]*(?:${file}|data\\/audit\\/?(?=\\s|$)|\\s(?:-A|--all|-u|--update|\\.)(?=\\s|$))|commit\\b[^\\n;&|]*(?:\\s-[a-zA-Z]*a[a-zA-Z]*\\b|\\s--all\\b|${file}))`);
+const stageRe = (file) => new RegExp(`${GIT}(?:add\\b[^\\n;&|]*(?:${file}|data\\/audit\\/?(?:\\*(?:\\.jsonl)?)?(?=[\"'\\s;&|]|$)|\\s(?:-A|--all|-u|--update|\\.)(?=\\s|$))|commit\\b[^\\n;&|]*(?:\\s-[a-zA-Z]*a[a-zA-Z]*\\b|\\s--all\\b|${file}))`);
 const RETRO_FILE = String.raw`session-retro\.jsonl`;
 const COST_FILE = String.raw`claude-session-cost\.jsonl`;
 const COMMIT_RE = new RegExp(`${GIT}commit\\b(?![^\\n;&|]*--dry-run)`);
@@ -173,7 +173,7 @@ export function costRuns(events) {
   events.forEach((e, i) => {
     if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') return;
     const r = answers.get(e.id);
-    if (r && !r.isError && COST_RE.test(runShellCode(e.input?.command) || '') && /row\(s\) written/.test(String(r.content || ''))) out.push(i);
+    if (r && !r.isError && COST_RE.test(runShellCode(e.input?.command) || '') && /\b[1-9]\d* row\(s\) written/.test(String(r.content || ''))) out.push(i);
   });
   return out;
 }
@@ -181,8 +181,8 @@ export function costRuns(events) {
 const MSG = {
   norow: 'Retro missing: this session landed code but never ran `node scripts/lib/session-retro.js --check --record`. Run it (it reads the transcript: edit-to-end time, hook blocks by hook, land refusals, bypasses), then turn each finding into a fix now or a card and re-run with `--record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"`). Then close again. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
   unlanded: 'Retro not on main: the last `session-retro.js --record` row was never carried to main by a land push after it (a row left in a worktree or on a claude/ branch is invisible to the weekly rollup). Commit it and land it: `git add data/audit/session-retro.jsonl && git commit -m "retro: session row"`, then `git push origin HEAD:refs/heads/land/<name>` and follow the Land run. Next time run --record before your final land push so it rides that push. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
-  nocost: 'Cost row missing: this session landed code but never recorded its spend. Call get_session with no session_id, save the result to a scratchpad file, run `node scripts/record-claude-session-cost.js --from-json=<file> --cards=BRO-N`, then commit `data/audit/claude-session-cost.jsonl` and land it with the retro row (`git push origin HEAD:refs/heads/land/<name>`). Bypass (own token): NO-RETRO: <reason, 10+ chars>.',
-  costunlanded: 'Cost row not on main: the last `record-claude-session-cost.js` row was never carried to main by a land push after it (a claude/ branch push does not count). Commit `data/audit/claude-session-cost.jsonl` and land it: `git push origin HEAD:refs/heads/land/<name>`. Bypass (own token): NO-RETRO: <reason, 10+ chars>.',
+  nocost: 'Cost row missing: this session landed code but never recorded its spend. Call get_session with no session_id, save the result to a scratchpad file, run `node scripts/record-claude-session-cost.js --from-json=<file> --cards=BRO-N`, then commit `data/audit/claude-session-cost.jsonl` and land it with the retro row (`git push origin HEAD:refs/heads/land/<name>`). Bypass (the same NO-RETRO token as the retro check): NO-RETRO: <reason, 10+ chars>.',
+  costunlanded: 'Cost row not on main: the last `record-claude-session-cost.js` row was never carried to main by a land push after it (a claude/ branch push does not count). Commit `data/audit/claude-session-cost.jsonl` and land it: `git push origin HEAD:refs/heads/land/<name>`. Bypass (the same NO-RETRO token as the retro check): NO-RETRO: <reason, 10+ chars>.',
   nolink: 'Retro not closed: the retro row crossed a threshold ("RETRO REQUIRED") but links no fix or card. For each finding fix it now (guard, test, hook) or file a card, then re-run `node scripts/lib/session-retro.js --record --fixes=BRO-N,<sha>` (or `--no-action="<why nothing needs a fix>"` when the long time or many blocks were idle or expected). A memory note is not a fix. Bypass (own token, not shared with other gates): NO-RETRO: <reason, 10+ chars>.',
 };
 
@@ -211,6 +211,20 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
 
 export const MAX_NUDGES = 3;
 
+const GET_SESSION = 'mcp__claude-code-remote__get_session';
+/** PURE. True when the session was offered `name` (a prompt_snapshot / tool-listing attachment names it) or called it.
+ *  A plain substring scan is wrong: a session that only read or grepped this file would carry the name too. */
+export function transcriptHasTool(text, name) {
+  for (const line of String(text).split('\n')) {
+    if (!line.includes(name)) continue;
+    let d; try { d = JSON.parse(line); } catch { continue; }
+    if (d.type === 'attachment' && /^(prompt_snapshot|deferred_tools)/.test(String(d.attachment?.type || ''))) return true;
+    const content = d.type === 'assistant' ? d.message?.content : null;
+    if (Array.isArray(content) && content.some((c) => c?.type === 'tool_use' && c.name === name)) return true;
+  }
+  return false;
+}
+
 function logHit(entry) {
   try {
     const dir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '.cache');
@@ -228,8 +242,8 @@ export function main(argv, { env = process.env } = {}) {
   try { input = JSON.parse(fs.readFileSync(0, 'utf8') || '{}'); } catch { return 0; }
   const tp = input.transcript_path;
   if (!tp || !fs.existsSync(tp)) return 0;
-  let hasGetSession = false; // the transcript's tool listings name it when the session had it; unknown -> skip the cost check
-  try { hasGetSession = fs.readFileSync(tp, 'utf8').includes('mcp__claude-code-remote__get_session'); } catch { /* fail open */ }
+  let hasGetSession = false; // unknown -> skip the cost check
+  try { hasGetSession = transcriptHasTool(fs.readFileSync(tp, 'utf8'), GET_SESSION); } catch { /* fail open */ }
   const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp), env, hasGetSession });
   if (d.decision !== 'block') return 0;
   const counter = path.join(os.tmpdir(), `retro-coverage-stop-${createHash('sha1').update(tp + '\u0000' + d.reason).digest('hex').slice(0, 12)}`);

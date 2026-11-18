@@ -53,6 +53,11 @@ test('a changed test runs even when slow; a dir literal pulls in tests that scan
 
 test('broad dirs and the cap keep the set small, strongest matches first', () => {
   assert.equal(F.matchTier('scripts/lib/zz.js', 'q', "'scripts/lib'"), null);
+  // BRO-7729: a skill or command edit must pull in the parity test that compares the committed mirror.
+  assert.equal(F.matchTier('.claude/commands/wrap-up.md', 'tests/unit/codex-parity.test.mjs', "join(ROOT, '.claude', 'settings.json')")?.tier, 1);
+  assert.equal(F.matchTier('.claude/skills/x/SKILL.md', 'tests/unit/codex-parity.test.mjs', '')?.tier, 1);
+  assert.equal(F.matchTier('.claude/hooks/a.sh', 'tests/unit/codex-parity.test.mjs', ''), null);
+  for (const [, testFile] of F.MIRRORED_SOURCES) assert.ok(fs.existsSync(testFile), `${testFile} exists`);
   const r = sel(['scripts/lib/widget-maker.js'], { maxTargeted: 1 });
   // a names the full path (tier 1, never capped); the cap of 1 keeps one weaker match (x, basename) and drops t (stem).
   assert.deepEqual(r.files.map((f) => f.file), ['tests/unit/inv.test.mjs', 'tests/unit/a.test.mjs', 'scripts/lib/x.test.mjs']);

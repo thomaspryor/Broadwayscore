@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { stopHookDecision, shellEditsCode } from './retro-coverage-stop.mjs';
+import { stopHookDecision, shellEditsCode, transcriptHasTool } from './retro-coverage-stop.mjs';
 
 const ENV = { CLAUDE_CODE_REMOTE: 'true', COST_ROW_GATE: 'off' }; // the retro cases; the cost row has its own test
 let n = 0;
@@ -85,7 +85,29 @@ test('BRO-7729 cousin: the cost row must be recorded and ride a land push', () =
   assert.match(decide([...base, ...cost('Error: no cost in session json'), ...carry()], SAFE, on).message, /Cost row missing/, 'a failed cost run is not a row');
   assert.equal(decide([...base, ...cost(), ...sh('git commit -am r'), ...land()], SAFE, on).decision, 'allow', 'commit -a carries both');
   assert.equal(decide([...base, ...carry()], SAFE, on, false).decision, 'allow', 'no get_session tool: the cost row is skipped (wrap-up)');
-  assert.equal(decide([...base, ...cost('data/audit/claude-session-cost.jsonl: 0 row(s) written (1 replaced same-day rows), 0 skipped'), ...sh('git commit -am r'), ...land()], SAFE, on).decision, 'allow', 'a same-day replace is a run');
+  // Review findings (cost increment).
+  assert.match(decide([...base, ...cost('data/audit/claude-session-cost.jsonl: 0 row(s) written (0 replaced same-day rows), 0 skipped'), ...sh('git commit -am r'), ...land()], SAFE, on).message, /Cost row missing/, 'an empty input writes no row');
+  assert.match(decide([...base, ...sh('node scripts/record-claude-session-cost.js --from-json=/tmp/s.json', '1 row(s) written (0 replaced same-day rows), 0 skipped', true), ...sh('git commit -am r'), ...land()], SAFE, on).message, /Cost row missing/, 'an errored run is not a row');
+  const W = '1 row(s) written (0 replaced same-day rows), 0 skipped';
+  assert.equal(decide([...base, ...sh(`node scripts/record-claude-session-cost.js --from-json=/tmp/s.json && git add data/audit && git commit -m r && git push origin HEAD:refs/heads/land/x`, W)], SAFE, on).decision, 'allow', 'cost, commit and land in one command');
+  assert.equal(decide([...base, ...cost(), ...use('mcp__github__push_files', { branch: 'land/r', files: [{ path: 'data/audit/claude-session-cost.jsonl' }, { path: 'data/audit/session-retro.jsonl' }] })], SAFE, on).decision, 'allow', 'API push of both ledgers to land/');
+  assert.match(decide([...base, ...carry(), ...cost(), ...use('mcp__github__push_files', { branch: 'claude/x', files: [{ path: 'data/audit/claude-session-cost.jsonl' }] }), ...land()], SAFE, on).message, /Cost row not on main/, 'API push of the cost ledger to claude/ carries nothing');
+  for (const add of ['git add "data/audit"', 'git add data/audit/*.jsonl', "git add 'data/audit/'"]) {
+    assert.equal(decide([...base, ...cost(), ...sh(`${add} && git commit -m r`), ...land()], SAFE, on).decision, 'allow', add);
+  }
+  assert.equal(decide([...base, ...cost(), ...sh('git add data/audit;git commit -m r'), ...land()], SAFE, on).decision, 'allow', 'add data/audit;commit');
+  assert.match(decide([...base, ...cost(), ...sh('git add data/audit/session-retro.jsonl data/audit/other.json && git commit -m r'), ...land()], SAFE, on).message, /Cost row not on main/, 'a named other file under data/audit is not the folder');
+  assert.equal(decide([...base, ...cost('data/audit/claude-session-cost.jsonl: 1 row(s) written (1 replaced same-day rows), 0 skipped'), ...sh('git commit -am r'), ...land()], SAFE, on).decision, 'allow', 'a same-day replace is a run');
+});
+
+test('transcriptHasTool: offered or called counts; only reading the name does not', () => {
+  const G = 'mcp__claude-code-remote__get_session';
+  const L = (o) => JSON.stringify(o);
+  assert.equal(transcriptHasTool(L({ type: 'attachment', attachment: { type: 'prompt_snapshot', tools: [G] } }), G), true, 'tool list');
+  assert.equal(transcriptHasTool(L({ type: 'assistant', message: { content: [{ type: 'tool_use', name: G, input: {} }] } }), G), true, 'called');
+  assert.equal(transcriptHasTool(L({ type: 'user', message: { content: [{ type: 'tool_result', content: `const X = '${G}'` }] } }), G), false, 'grep or Read output');
+  assert.equal(transcriptHasTool(L({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Bash', input: { command: `grep ${G} x` } }] } }), G), false, 'a command mentioning it');
+  assert.equal(transcriptHasTool('not json ' + G, G), false);
 });
 
 test('stays quiet outside its scope', () => {
