@@ -101,7 +101,9 @@ function articleNamesShow(content, show) {
   const $ = cheerio.load(content);
   const meta = ['meta[property="og:title"]', 'meta[property="og:description"]', 'meta[name="description"]']
     .map((sel) => $(sel).attr('content') || '').join(' ');
-  $('script, style, noscript, nav, aside, header, footer').remove();
+  // Link text is dropped too: TheaterMania's casting news names other shows
+  // only in its "related articles" link cards (2026-11-18 dry run).
+  $('script, style, noscript, nav, aside, header, footer, a').remove();
   const hay = ` ${foldPhrase(`${meta} ${$('title').text()} ${$.root().text()}`)} `;
   return searchTitles(show).map(foldPhrase).filter((p) => p.length >= 6 && p.includes(' '))
     .some((p) => hay.includes(` ${p} `));
@@ -140,8 +142,13 @@ function isReviewHeadline(item, show) {
 // A recency-feed item whose headline does not name the show: a review shape,
 // published opening day to +2 days. The article-body check happens after
 // the publisher URL resolves.
+// Feature, casting and photo shapes that a headline-free item must not have
+// (2026-11-18 dry run: "An Exclusive Look at ... Opening-Night Ensemble",
+// "Zach Grenier Will Star in ...", "... Hitting The Road With a Concert Tour").
+const HEADLINE_FREE_FEATURE = /\b(look at|opening[- ]night|red carpet|will star|to star|stars? in|joins?|cast|casting|tour|concert|announce[sd]?|exclusive|video|watch|listen|podcast|q&a|in conversation)\b/i;
 function isHeadlineFreeCandidate(item, show) {
   return !headlineNamesShow(item.title, show) && !NON_REVIEW_HEADLINE.test(item.title)
+    && !HEADLINE_FREE_FEATURE.test(item.title)
     && isWithinOpeningWindow(item.pubDate, show.openingDate, 0, REVIEW_FREE_POST_DAYS);
 }
 

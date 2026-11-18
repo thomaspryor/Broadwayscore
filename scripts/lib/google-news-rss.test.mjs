@@ -370,6 +370,12 @@ test('headline-free review: recency feed on the base title, kept only when the a
   const og = await discoverGoogleNewsReviews(bmg, { now: new Date('2026-11-18T05:00:00Z'), feedImpl: async (url) => (/when%3A2d/.test(url) ? feed(pun('https://www.nysun.com')) : feed()), decodeImpl: async () => sunUrl,
     fetchPageImpl: async (url) => ({ content: `<link rel="canonical" href="${url}"><meta property="og:title" content="Blue Man Group: A New Holiday Surprise review"><p>Subscribe to read.</p>`, finalUrl: url }) });
   assert.equal(og.length, 1);
+  // A show named only in a related-articles link card does not count (TheaterMania casting news, 2026-11-18).
+  assert.equal((await run(feed(pun('https://www.nysun.com')), '<a href="/x">Blue Man Group: A New Holiday Surprise</a> Other news.')).results.length, 0);
+  // Casting, tour and opening-night feature headlines are never taken as headline-free reviews.
+  for (const headline of ['Zach Grenier Will Star in a New Play', 'Lea Michele and Aaron Tveit Are Hitting The Road With a Concert Tour', 'An Exclusive Look at the Opening-Night Ensemble']) {
+    assert.equal((await run(feed(pun('https://www.nysun.com', headline)), 'Blue Man Group: A New Holiday Surprise')).resolved.length, 0, headline);
+  }
   // Headlines that name the show are left to the main review query.
   assert.equal((await run(feed(pun('https://www.nysun.com', 'Blue Man Group: A New Holiday Surprise opens tonight')), 'Blue Man Group: A New Holiday Surprise')).resolved.length, 0);
   // At most three headline-free items are resolved per cycle.
