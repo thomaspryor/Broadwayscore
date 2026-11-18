@@ -17,6 +17,7 @@ import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 import { getTourSection, tourSectionRank, isTourScored } from '@/lib/tour-listing';
 import { formatShowDate, getShowYear } from '@/lib/date-utils';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { hasFullConfidenceAudienceReviews } from '@/lib/audience-grade-utils';
 import { scoreGateArg } from '@/config/scoring';
 import { FIZZLE_MIN_RETURNED_PCT, isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { displaysCriticScore } from '@/lib/critic-score-display';
@@ -892,9 +893,13 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaDescription: 'Broadway shows where critics and audiences disagree most. The biggest gaps between CriticScore and audience ratings, ranked by controversy.',
     intro: 'These are the Broadway shows where critics and audiences see things very differently. We measure the gap between our aggregated CriticScore (from professional reviews) and audience ratings (from ShowScore, Mezzanine, and Reddit). A large gap means one group loved a show the other didn\'t, whether it\'s a crowd-pleaser critics panned or a critical darling audiences shrugged at. Sorted by the size of the disagreement, these shows spark the most heated debates about what makes great theater.',
     dataFilter: (show, ctx) => {
-      if ((show.criticScore?.score ?? 0) === 0) return false;
+      // Both sides must be a shown score: a critic "TBD" (Pygmalion, 2 reviews)
+      // was #1 on this list (BRO-7805).
+      if ((show.criticScore?.score ?? 0) === 0 || !displaysCriticScore(show)) return false;
       const buzz = ctx.getAudienceBuzz(show.id);
-      if (!buzz?.combinedScore) return false;
+      // A ranked list: the audience side needs the full-confidence sample, so a
+      // 1-vote source can't put a show on "most divisive" (BRO-7805).
+      if (!buzz?.combinedScore || !hasFullConfidenceAudienceReviews(buzz)) return false;
       const gap = Math.abs(show.criticScore!.score - buzz.combinedScore);
       return gap >= 15;
     },
