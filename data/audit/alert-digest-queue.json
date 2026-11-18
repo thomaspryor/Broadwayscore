@@ -2254,5 +2254,36 @@
       }
     ],
     "queuedAt": "2026-11-18T08:48:02.504Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7747-golive",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7747-golive",
+    "description": "land.yml did not land land/bro-7747-golive: the unit-tests-node gate went red at fac82311b1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44267408327",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7747-golive"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fac82311b11533b4f34f8d000e747dfbe580f535"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44267408327"
+      }
+    ],
+    "queuedAt": "2026-11-18T08:53:14.264Z"
   }
 ]
