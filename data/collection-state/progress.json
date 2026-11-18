@@ -79,7 +79,10 @@
     "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
     "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
     "billy-crystal-860-2026/the-100-word-review--unknown.json",
-    "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json"
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json",
+    "nine-night-off-west-end-2026/thestage--chris-bartlett.json",
+    "tosca-english-national-opera-west-end-2026/artsdesk--boyd-tonkin.json",
+    "tosca-english-national-opera-west-end-2026/artsdesk--stuart-begley.json"
   ],
   "failed": [
     "king-lear-off-broadway-2026/patch--lauren-traut.json",
@@ -149,7 +152,11 @@
     "girls-off-west-end-2026/londontheatre1--unknown.json",
     "i-became-we-off-broadway-2026/theater-life--paulanne-simmons.json",
     "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
-    "the-pianist-off-west-end-2026/soundsandstage--unknown.json"
+    "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
+    "the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -206,7 +213,10 @@
       "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
       "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
       "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
-      "billy-crystal-860-2026/the-100-word-review--unknown.json"
+      "billy-crystal-860-2026/the-100-word-review--unknown.json",
+      "nine-night-off-west-end-2026/thestage--chris-bartlett.json",
+      "tosca-english-national-opera-west-end-2026/artsdesk--boyd-tonkin.json",
+      "tosca-english-national-opera-west-end-2026/artsdesk--stuart-begley.json"
     ],
     "amp": [],
     "browserbase": [
@@ -215,7 +225,8 @@
       "data/review-texts/downstate-2026/nytimes--unknown.json",
       "data/review-texts/the-visit-1973/nytimes--maya-phillips.json",
       "the-visit-1973/nytimes--maya-phillips.json",
-      "data/review-texts/tosca-off-broadway-2026/wsj--heidi-waleson.json"
+      "data/review-texts/tosca-off-broadway-2026/wsj--heidi-waleson.json",
+      "data/review-texts/the-lives-of-others-west-end-2026/littlelondonwhispers--little-london-whispers.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -258,7 +269,7 @@
     ]
   },
   "startTime": "2026-11-18T20:38:47.996Z",
-  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json",
+  "lastProcessed": "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
   "log": [
     {
       "t": "2026-11-18T20:39:51.013Z",
@@ -314,6 +325,12 @@
       "t": "2026-11-18T23:02:32.958Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-18T23:39:03.006Z",
+      "event": "bb-session",
+      "session": "f79f79d1",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
     }
   ]
 }
