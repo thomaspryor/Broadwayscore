@@ -88,6 +88,7 @@ test('reviewer blockers stay fixed: watcher not restarted by the early run, watc
   assert.match(orch, /\[ "\$ORCH_ROLE" = "ek" \] && SERP_DEFER_NOW=true/, 'the early run defers SERP');
   const clk = readFileSync(new URL('../../.github/workflows/press-night-clock.yml', import.meta.url), 'utf8');
   assert.match(clk, /if \[ "\$KIND" = "kick" \] && \[ "\$CATEGORY" = "broadway" \]; then ACTION=orchestrator/, 'an empty action never silently drops the Broadway kick');
+  assert.doesNotMatch(clk.slice(clk.indexOf('action gave nothing'), clk.indexOf('action gave nothing') + 400), /exit 1/, 'a bad action line never stops the clock');
   assert.match(clk, /\[ "\$CATEGORIES" != "broadway,off-broadway" \] \|\| CATEGORIES=/, 'an old-default chain is upgraded');
   const cli = readFileSync(new URL('../../scripts/press-night-watchdog.js', import.meta.url), 'utf8');
   assert.doesNotMatch(cli, /'market=broadway'/, 'the watchdog must not hardcode the Broadway market');

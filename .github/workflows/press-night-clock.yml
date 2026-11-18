@@ -165,7 +165,8 @@ jobs:
             if [ -z "$ACTION" ] || [ -z "$DEDUPE" ] || [ -z "$RUNMIN" ]; then
               # Fail safe, never silent: a Broadway kick still starts its orchestrator exactly as before BRO-7779.
               echo "::error::press-night-clock.js action gave nothing for $KIND $SHOW ($CATEGORY)"
-              if [ "$KIND" = "kick" ] && [ "$CATEGORY" = "broadway" ]; then ACTION=orchestrator; MARKET=broadway; DEDUPE=30; RUNMIN=240; else exit 1; fi
+              if [ "$KIND" = "kick" ] && [ "$CATEGORY" = "broadway" ]; then ACTION=orchestrator; MARKET=broadway; DEDUPE=30; RUNMIN=240
+              else FIRED="${FIRED:+$FIRED,}$KEY"; continue; fi  # never stop the clock: later events (the kick) must still fire
             fi
             if [ "$ACTION" = "preflight" ]; then
               # BRO-6858 preflight (-24h / -3h): credits, balances and secrets for the night. Dedupe on its run title.
