@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-7565-b",
+  "planId": "a480ef15-3cb8-4314-94a1-58576ba51806",
+  "status": "pending",
+  "createdAt": "2026-11-18T23:31:04.008Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct 39 review publishDates stored one day late by UTC truncation (permalink date evidence) (part 2 of 4)",
+    "steps": [
+      "dear-evan-hansen-la-regional-2026/stageandcinema--tony-frankel.json: publishDate",
+      "dear-evan-hansen-la-regional-2026/stageandcinema--tony-frankel.json: dateSource",
+      "deep-history-off-broadway-2024/nyt-theater--jonathan-mandell.json: publishDate",
+      "deep-history-off-broadway-2024/nyt-theater--jonathan-mandell.json: dateSource",
+      "dog-day-afternoon-2026/ny1--adolfo-mena-cejas.json: publishDate",
+      "dog-day-afternoon-2026/ny1--adolfo-mena-cejas.json: dateSource",
+      "eclipsed-2016/ny1--david-cote-time-out-new-york.json: publishDate",
+      "eclipsed-2016/ny1--david-cote-time-out-new-york.json: dateSource",
+      "everythings-fine-off-broadway-2022/stageandcinema--kevin-vavasseur.json: publishDate",
+      "everythings-fine-off-broadway-2022/stageandcinema--kevin-vavasseur.json: dateSource",
+      "evita-west-end-2017/live-theatre-uk--tim-hochstrasser.json: publishDate",
+      "evita-west-end-2017/live-theatre-uk--tim-hochstrasser.json: dateSource",
+      "evita-west-end-2017/live-theatre-uk--unknown.json: publishDate",
+      "evita-west-end-2017/live-theatre-uk--unknown.json: dateSource",
+      "funny-girl-2022/stageandcinema--kevin-vavasseur.json: publishDate",
+      "funny-girl-2022/stageandcinema--kevin-vavasseur.json: dateSource",
+      "hamilton-tour-2024/stageandcinema--lynne-weiss.json: publishDate",
+      "hamilton-tour-2024/stageandcinema--lynne-weiss.json: dateSource",
+      "king-hedley-ii-regional-2026/stageandcinema--cj-fernandes.json: publishDate",
+      "king-hedley-ii-regional-2026/stageandcinema--cj-fernandes.json: dateSource",
+      "kiss-me-kate-2019/washpost--peter-marks.json: publishDate",
+      "kiss-me-kate-2019/washpost--peter-marks.json: dateSource",
+      "life-of-pi-2023/stageandcinema--tony-frankel.json: publishDate",
+      "life-of-pi-2023/stageandcinema--tony-frankel.json: dateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "dear-evan-hansen-la-regional-2026/stageandcinema--tony-frankel.json",
+        "field": "publishDate",
+        "oldValue": "2026-11-11",
+        "newValue": "2026-11-10",
+        "description": "dear-evan-hansen-la-regional-2026/stageandcinema--tony-frankel.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dear-evan-hansen-la-regional-2026/stageandcinema--tony-frankel.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "dear-evan-hansen-la-regional-2026/stageandcinema--tony-frankel.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deep-history-off-broadway-2024/nyt-theater--jonathan-mandell.json",
+        "field": "publishDate",
+        "oldValue": "2024-10-11",
+        "newValue": "2024-10-10",
+        "description": "deep-history-off-broadway-2024/nyt-theater--jonathan-mandell.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deep-history-off-broadway-2024/nyt-theater--jonathan-mandell.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "deep-history-off-broadway-2024/nyt-theater--jonathan-mandell.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dog-day-afternoon-2026/ny1--adolfo-mena-cejas.json",
+        "field": "publishDate",
+        "oldValue": "2026-03-20",
+        "newValue": "2026-03-19",
+        "description": "dog-day-afternoon-2026/ny1--adolfo-mena-cejas.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dog-day-afternoon-2026/ny1--adolfo-mena-cejas.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "dog-day-afternoon-2026/ny1--adolfo-mena-cejas.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eclipsed-2016/ny1--david-cote-time-out-new-york.json",
+        "field": "publishDate",
+        "oldValue": "2016-03-11",
+        "newValue": "2016-03-10",
+        "description": "eclipsed-2016/ny1--david-cote-time-out-new-york.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eclipsed-2016/ny1--david-cote-time-out-new-york.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "eclipsed-2016/ny1--david-cote-time-out-new-york.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "everythings-fine-off-broadway-2022/stageandcinema--kevin-vavasseur.json",
+        "field": "publishDate",
+        "oldValue": "2022-10-18",
+        "newValue": "2022-10-17",
+        "description": "everythings-fine-off-broadway-2022/stageandcinema--kevin-vavasseur.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "everythings-fine-off-broadway-2022/stageandcinema--kevin-vavasseur.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "everythings-fine-off-broadway-2022/stageandcinema--kevin-vavasseur.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2017/live-theatre-uk--tim-hochstrasser.json",
+        "field": "publishDate",
+        "oldValue": "2017-08-04",
+        "newValue": "2017-08-03",
+        "description": "evita-west-end-2017/live-theatre-uk--tim-hochstrasser.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2017/live-theatre-uk--tim-hochstrasser.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "evita-west-end-2017/live-theatre-uk--tim-hochstrasser.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2017/live-theatre-uk--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2017-08-04",
+        "newValue": "2017-08-03",
+        "description": "evita-west-end-2017/live-theatre-uk--unknown.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2017/live-theatre-uk--unknown.json",
+        "field": "dateSource",
+        "oldValue": "html-archive",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "evita-west-end-2017/live-theatre-uk--unknown.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/stageandcinema--kevin-vavasseur.json",
+        "field": "publishDate",
+        "oldValue": "2022-05-01",
+        "newValue": "2022-04-30",
+        "description": "funny-girl-2022/stageandcinema--kevin-vavasseur.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/stageandcinema--kevin-vavasseur.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "funny-girl-2022/stageandcinema--kevin-vavasseur.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-tour-2024/stageandcinema--lynne-weiss.json",
+        "field": "publishDate",
+        "oldValue": "2025-09-26",
+        "newValue": "2025-09-25",
+        "description": "hamilton-tour-2024/stageandcinema--lynne-weiss.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-tour-2024/stageandcinema--lynne-weiss.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "hamilton-tour-2024/stageandcinema--lynne-weiss.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-hedley-ii-regional-2026/stageandcinema--cj-fernandes.json",
+        "field": "publishDate",
+        "oldValue": "2026-11-03",
+        "newValue": "2026-11-02",
+        "description": "king-hedley-ii-regional-2026/stageandcinema--cj-fernandes.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-hedley-ii-regional-2026/stageandcinema--cj-fernandes.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "king-hedley-ii-regional-2026/stageandcinema--cj-fernandes.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kiss-me-kate-2019/washpost--peter-marks.json",
+        "field": "publishDate",
+        "oldValue": "2019-03-15",
+        "newValue": "2019-03-14",
+        "description": "kiss-me-kate-2019/washpost--peter-marks.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kiss-me-kate-2019/washpost--peter-marks.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "kiss-me-kate-2019/washpost--peter-marks.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-2023/stageandcinema--tony-frankel.json",
+        "field": "publishDate",
+        "oldValue": "2023-04-18",
+        "newValue": "2023-04-17",
+        "description": "life-of-pi-2023/stageandcinema--tony-frankel.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-2023/stageandcinema--tony-frankel.json",
+        "field": "dateSource",
+        "oldValue": "html-archive",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "life-of-pi-2023/stageandcinema--tony-frankel.json: dateSource"
+      }
+    ]
+  }
+}

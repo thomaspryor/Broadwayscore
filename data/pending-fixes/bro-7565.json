@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-7565",
+  "planId": "c27e8f5e-b671-4cc9-b8c1-baf6b4ff8a4b",
+  "status": "pending",
+  "createdAt": "2026-11-18T23:31:04.008Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct 39 review publishDates stored one day late by UTC truncation (permalink date evidence) (part 1 of 4)",
+    "steps": [
+      "a-beautiful-noise-the-neil-diamond-musical-2022/washpost--peter-marks.json: publishDate",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/washpost--peter-marks.json: dateSource",
+      "a-beautiful-noise-the-neil-diamond-musical-tour-2024/stageandcinema--milo-shapiro.json: publishDate",
+      "a-beautiful-noise-the-neil-diamond-musical-tour-2024/stageandcinema--milo-shapiro.json: dateSource",
+      "adirondack-chair-circle-regional-2026/stageandcinema--cj-fernandes.json: publishDate",
+      "adirondack-chair-circle-regional-2026/stageandcinema--cj-fernandes.json: dateSource",
+      "aftermath-art-new-york-off-broadway-2026/stageandcinema--paulanne-simmons.json: publishDate",
+      "aftermath-art-new-york-off-broadway-2026/stageandcinema--paulanne-simmons.json: dateSource",
+      "all-the-beauty-in-the-world-off-broadway-2025/stageandcinema--paola-bellu.json: publishDate",
+      "all-the-beauty-in-the-world-off-broadway-2025/stageandcinema--paola-bellu.json: dateSource",
+      "all-the-worlds-a-stage-regional-2026/stageandcinema--barbara-papendorp.json: publishDate",
+      "all-the-worlds-a-stage-regional-2026/stageandcinema--barbara-papendorp.json: dateSource",
+      "angry-fags-regional-2025/stageandcinema--cj-fernandes.json: publishDate",
+      "angry-fags-regional-2025/stageandcinema--cj-fernandes.json: dateSource",
+      "annie-west-end-2017/live-theatre-uk--tim-hochstrasser.json: publishDate",
+      "annie-west-end-2017/live-theatre-uk--tim-hochstrasser.json: dateSource",
+      "annie-west-end-2017/live-theatre-uk--unknown.json: publishDate",
+      "annie-west-end-2017/live-theatre-uk--unknown.json: dateSource",
+      "big-fish-2013/nypost--elisabeth-vincentelli.json: publishDate",
+      "big-fish-2013/nypost--elisabeth-vincentelli.json: dateSource",
+      "carousel-west-end-2017/live-theatre-uk--stephen-collins.json: publishDate",
+      "carousel-west-end-2017/live-theatre-uk--stephen-collins.json: dateSource",
+      "carousel-west-end-2017/live-theatre-uk--unknown.json: publishDate",
+      "carousel-west-end-2017/live-theatre-uk--unknown.json: dateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-2022/washpost--peter-marks.json",
+        "field": "publishDate",
+        "oldValue": "2022-12-05",
+        "newValue": "2022-12-04",
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022/washpost--peter-marks.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-2022/washpost--peter-marks.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022/washpost--peter-marks.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/stageandcinema--milo-shapiro.json",
+        "field": "publishDate",
+        "oldValue": "2025-05-29",
+        "newValue": "2025-05-28",
+        "description": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/stageandcinema--milo-shapiro.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/stageandcinema--milo-shapiro.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/stageandcinema--milo-shapiro.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "adirondack-chair-circle-regional-2026/stageandcinema--cj-fernandes.json",
+        "field": "publishDate",
+        "oldValue": "2026-11-13",
+        "newValue": "2026-11-12",
+        "description": "adirondack-chair-circle-regional-2026/stageandcinema--cj-fernandes.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "adirondack-chair-circle-regional-2026/stageandcinema--cj-fernandes.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "adirondack-chair-circle-regional-2026/stageandcinema--cj-fernandes.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aftermath-art-new-york-off-broadway-2026/stageandcinema--paulanne-simmons.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-27",
+        "newValue": "2026-10-26",
+        "description": "aftermath-art-new-york-off-broadway-2026/stageandcinema--paulanne-simmons.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aftermath-art-new-york-off-broadway-2026/stageandcinema--paulanne-simmons.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "aftermath-art-new-york-off-broadway-2026/stageandcinema--paulanne-simmons.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-beauty-in-the-world-off-broadway-2025/stageandcinema--paola-bellu.json",
+        "field": "publishDate",
+        "oldValue": "2025-05-04",
+        "newValue": "2025-05-03",
+        "description": "all-the-beauty-in-the-world-off-broadway-2025/stageandcinema--paola-bellu.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-beauty-in-the-world-off-broadway-2025/stageandcinema--paola-bellu.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "all-the-beauty-in-the-world-off-broadway-2025/stageandcinema--paola-bellu.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-worlds-a-stage-regional-2026/stageandcinema--barbara-papendorp.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-31",
+        "newValue": "2026-10-30",
+        "description": "all-the-worlds-a-stage-regional-2026/stageandcinema--barbara-papendorp.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-worlds-a-stage-regional-2026/stageandcinema--barbara-papendorp.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "all-the-worlds-a-stage-regional-2026/stageandcinema--barbara-papendorp.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angry-fags-regional-2025/stageandcinema--cj-fernandes.json",
+        "field": "publishDate",
+        "oldValue": "2025-11-13",
+        "newValue": "2025-11-12",
+        "description": "angry-fags-regional-2025/stageandcinema--cj-fernandes.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angry-fags-regional-2025/stageandcinema--cj-fernandes.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "angry-fags-regional-2025/stageandcinema--cj-fernandes.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "annie-west-end-2017/live-theatre-uk--tim-hochstrasser.json",
+        "field": "publishDate",
+        "oldValue": "2017-07-28",
+        "newValue": "2017-07-27",
+        "description": "annie-west-end-2017/live-theatre-uk--tim-hochstrasser.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "annie-west-end-2017/live-theatre-uk--tim-hochstrasser.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "annie-west-end-2017/live-theatre-uk--tim-hochstrasser.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "annie-west-end-2017/live-theatre-uk--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2017-07-28",
+        "newValue": "2017-07-27",
+        "description": "annie-west-end-2017/live-theatre-uk--unknown.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "annie-west-end-2017/live-theatre-uk--unknown.json",
+        "field": "dateSource",
+        "oldValue": "html-archive",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "annie-west-end-2017/live-theatre-uk--unknown.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "big-fish-2013/nypost--elisabeth-vincentelli.json",
+        "field": "publishDate",
+        "oldValue": "2013-10-07",
+        "newValue": "2013-10-06",
+        "description": "big-fish-2013/nypost--elisabeth-vincentelli.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "big-fish-2013/nypost--elisabeth-vincentelli.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "big-fish-2013/nypost--elisabeth-vincentelli.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "carousel-west-end-2017/live-theatre-uk--stephen-collins.json",
+        "field": "publishDate",
+        "oldValue": "2017-04-12",
+        "newValue": "2017-04-11",
+        "description": "carousel-west-end-2017/live-theatre-uk--stephen-collins.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "carousel-west-end-2017/live-theatre-uk--stephen-collins.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "carousel-west-end-2017/live-theatre-uk--stephen-collins.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "carousel-west-end-2017/live-theatre-uk--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2017-04-12",
+        "newValue": "2017-04-11",
+        "description": "carousel-west-end-2017/live-theatre-uk--unknown.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "carousel-west-end-2017/live-theatre-uk--unknown.json",
+        "field": "dateSource",
+        "oldValue": "html-archive",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "carousel-west-end-2017/live-theatre-uk--unknown.json: dateSource"
+      }
+    ]
+  }
+}

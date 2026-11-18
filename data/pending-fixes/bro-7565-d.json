@@ -1,0 +1,72 @@
+{
+  "issueNumber": "bro-7565-d",
+  "planId": "d7e753b1-fe67-4de1-9a5f-dba57b7b4db3",
+  "status": "pending",
+  "createdAt": "2026-11-18T23:31:04.008Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct 39 review publishDates stored one day late by UTC truncation (permalink date evidence) (part 4 of 4)",
+    "steps": [
+      "the-cottage-regional-2026/stageandcinema--milo-shapiro.json: publishDate",
+      "the-cottage-regional-2026/stageandcinema--milo-shapiro.json: dateSource",
+      "the-imaginary-invalid-2026/stageandcinema--paola-bellu.json: publishDate",
+      "the-imaginary-invalid-2026/stageandcinema--paola-bellu.json: dateSource",
+      "the-outsiders-tour-2025/stageandcinema--michael-m-landman-karny.json: publishDate",
+      "the-outsiders-tour-2025/stageandcinema--michael-m-landman-karny.json: dateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/stageandcinema--milo-shapiro.json",
+        "field": "publishDate",
+        "oldValue": "2026-11-04",
+        "newValue": "2026-11-03",
+        "description": "the-cottage-regional-2026/stageandcinema--milo-shapiro.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/stageandcinema--milo-shapiro.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "the-cottage-regional-2026/stageandcinema--milo-shapiro.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-imaginary-invalid-2026/stageandcinema--paola-bellu.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-31",
+        "newValue": "2026-10-30",
+        "description": "the-imaginary-invalid-2026/stageandcinema--paola-bellu.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-imaginary-invalid-2026/stageandcinema--paola-bellu.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "the-imaginary-invalid-2026/stageandcinema--paola-bellu.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-tour-2025/stageandcinema--michael-m-landman-karny.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-23",
+        "newValue": "2026-10-22",
+        "description": "the-outsiders-tour-2025/stageandcinema--michael-m-landman-karny.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-tour-2025/stageandcinema--michael-m-landman-karny.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "the-outsiders-tour-2025/stageandcinema--michael-m-landman-karny.json: dateSource"
+      }
+    ]
+  }
+}

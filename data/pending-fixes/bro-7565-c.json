@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-7565-c",
+  "planId": "31e3579c-43f5-442f-80a5-3e9a564262ac",
+  "status": "pending",
+  "createdAt": "2026-11-18T23:31:04.008Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct 39 review publishDates stored one day late by UTC truncation (permalink date evidence) (part 3 of 4)",
+    "steps": [
+      "life-of-pi-tour-2024/washpost--chris-klimek.json: publishDate",
+      "life-of-pi-tour-2024/washpost--chris-klimek.json: dateSource",
+      "mexodus-tour-2026/stageandcinema--emma-s-rund.json: publishDate",
+      "mexodus-tour-2026/stageandcinema--emma-s-rund.json: dateSource",
+      "mexodus-tour-2026/stageandcinema--unknown.json: publishDate",
+      "mexodus-tour-2026/stageandcinema--unknown.json: dateSource",
+      "moulin-rouge-2019/washpost--peter-marks.json: publishDate",
+      "moulin-rouge-2019/washpost--peter-marks.json: dateSource",
+      "msblackforpresident-off-broadway-2026/pages-on-stages--mason-pilevsky.json: publishDate",
+      "msblackforpresident-off-broadway-2026/pages-on-stages--mason-pilevsky.json: dateSource",
+      "msblackforpresident-off-broadway-2026/stageandcinema--alex-simmons.json: publishDate",
+      "msblackforpresident-off-broadway-2026/stageandcinema--alex-simmons.json: dateSource",
+      "other-desert-cities-2026/chicagotribune--chris-jones.json: publishDate",
+      "other-desert-cities-2026/chicagotribune--chris-jones.json: dateSource",
+      "parade-2023/ny1--frank-dilella.json: publishDate",
+      "parade-2023/ny1--frank-dilella.json: dateSource",
+      "passing-strange-regional-2026/stageandcinema--christopher-lloyd-bratten.json: publishDate",
+      "passing-strange-regional-2026/stageandcinema--christopher-lloyd-bratten.json: dateSource",
+      "priscilla-queen-of-the-desert-off-broadway-2026/stageandcinema--stan-jenson.json: publishDate",
+      "priscilla-queen-of-the-desert-off-broadway-2026/stageandcinema--stan-jenson.json: dateSource",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--alex-simmons.json: publishDate",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--alex-simmons.json: dateSource",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--unknown.json: publishDate",
+      "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--unknown.json: dateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-tour-2024/washpost--chris-klimek.json",
+        "field": "publishDate",
+        "oldValue": "2024-12-24",
+        "newValue": "2024-12-23",
+        "description": "life-of-pi-tour-2024/washpost--chris-klimek.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-tour-2024/washpost--chris-klimek.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "life-of-pi-tour-2024/washpost--chris-klimek.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mexodus-tour-2026/stageandcinema--emma-s-rund.json",
+        "field": "publishDate",
+        "oldValue": "2026-11-09",
+        "newValue": "2026-11-08",
+        "description": "mexodus-tour-2026/stageandcinema--emma-s-rund.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mexodus-tour-2026/stageandcinema--emma-s-rund.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "mexodus-tour-2026/stageandcinema--emma-s-rund.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mexodus-tour-2026/stageandcinema--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2026-11-09",
+        "newValue": "2026-11-08",
+        "description": "mexodus-tour-2026/stageandcinema--unknown.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mexodus-tour-2026/stageandcinema--unknown.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "mexodus-tour-2026/stageandcinema--unknown.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-2019/washpost--peter-marks.json",
+        "field": "publishDate",
+        "oldValue": "2019-07-26",
+        "newValue": "2019-07-25",
+        "description": "moulin-rouge-2019/washpost--peter-marks.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-2019/washpost--peter-marks.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "moulin-rouge-2019/washpost--peter-marks.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "msblackforpresident-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "field": "publishDate",
+        "oldValue": "2026-11-09",
+        "newValue": "2026-11-08",
+        "description": "msblackforpresident-off-broadway-2026/pages-on-stages--mason-pilevsky.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "msblackforpresident-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "msblackforpresident-off-broadway-2026/pages-on-stages--mason-pilevsky.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "msblackforpresident-off-broadway-2026/stageandcinema--alex-simmons.json",
+        "field": "publishDate",
+        "oldValue": "2026-11-12",
+        "newValue": "2026-11-11",
+        "description": "msblackforpresident-off-broadway-2026/stageandcinema--alex-simmons.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "msblackforpresident-off-broadway-2026/stageandcinema--alex-simmons.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "msblackforpresident-off-broadway-2026/stageandcinema--alex-simmons.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "other-desert-cities-2026/chicagotribune--chris-jones.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-19",
+        "newValue": "2026-10-18",
+        "description": "other-desert-cities-2026/chicagotribune--chris-jones.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "other-desert-cities-2026/chicagotribune--chris-jones.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "other-desert-cities-2026/chicagotribune--chris-jones.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/ny1--frank-dilella.json",
+        "field": "publishDate",
+        "oldValue": "2023-08-04",
+        "newValue": "2023-08-03",
+        "description": "parade-2023/ny1--frank-dilella.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/ny1--frank-dilella.json",
+        "field": "dateSource",
+        "oldValue": "html-archive",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "parade-2023/ny1--frank-dilella.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-regional-2026/stageandcinema--christopher-lloyd-bratten.json",
+        "field": "publishDate",
+        "oldValue": "2026-11-11",
+        "newValue": "2026-11-10",
+        "description": "passing-strange-regional-2026/stageandcinema--christopher-lloyd-bratten.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-regional-2026/stageandcinema--christopher-lloyd-bratten.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "passing-strange-regional-2026/stageandcinema--christopher-lloyd-bratten.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "priscilla-queen-of-the-desert-off-broadway-2026/stageandcinema--stan-jenson.json",
+        "field": "publishDate",
+        "oldValue": "2025-10-27",
+        "newValue": "2025-10-26",
+        "description": "priscilla-queen-of-the-desert-off-broadway-2026/stageandcinema--stan-jenson.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "priscilla-queen-of-the-desert-off-broadway-2026/stageandcinema--stan-jenson.json",
+        "field": "dateSource",
+        "oldValue": "html-archive",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "priscilla-queen-of-the-desert-off-broadway-2026/stageandcinema--stan-jenson.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--alex-simmons.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-28",
+        "newValue": "2026-10-27",
+        "description": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--alex-simmons.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--alex-simmons.json",
+        "field": "dateSource",
+        "oldValue": "html-page",
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--alex-simmons.json: dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-28",
+        "newValue": "2026-10-27",
+        "description": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--unknown.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--unknown.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "permalink-corrected-utc-shift",
+        "description": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/stageandcinema--unknown.json: dateSource"
+      }
+    ]
+  }
+}
