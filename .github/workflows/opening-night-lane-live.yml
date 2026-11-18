@@ -244,6 +244,7 @@ jobs:
       # `opening-night-lease.js enforce` reverts writes under leased shows unless the lease is this holder's, which it
       # still is: the lane keeps its lease until "Release night lease" runs after the push (BRO-6618).
       OPENING_NIGHT_LANE_HOLDER: gha-${{ github.run_id }}
+      OPENING_NIGHT_LANE_INBOX_DISABLED: ${{ vars.OPENING_NIGHT_LANE_INBOX_DISABLED }}  # BRO-7741 kill switch: true = lane ignores the manual inbox
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
