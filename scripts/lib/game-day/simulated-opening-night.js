@@ -23,7 +23,7 @@
  * It lives outside scripts/lib/opening-night-lane/ on purpose: the lane's arm hash covers that folder, and a test
  * harness must not disarm the lane.
  *
- * Usage: node scripts/lib/game-day/simulated-opening-night.js [--json] [--keep]
+ * Usage: node scripts/lib/game-day/simulated-opening-night.js [--json] [--keep] [--out=<full report json>] [--record=<compact record json, read by check-opening-night-readiness.js>]
  */
 const fs = require('fs');
 const os = require('os');
@@ -345,14 +345,40 @@ function formatReport(report) {
   return lines.join('\n');
 }
 
-module.exports = { runSimulatedNight, formatReport, LATENCY, FOUND_TO_LIVE_BAR_MS };
+/**
+ * The small committed record (data/audit/simulated-opening-night.json) that check-opening-night-readiness.js reads, so
+ * readiness never runs the night itself. Written on pass, fail AND crash: an old pass can never stand in for a broken run.
+ */
+function recordFrom(report, { at = new Date().toISOString(), sha = null, error = null } = {}) {
+  if (!report) return { at, sha, pass: false, error: String(error || 'the night crashed'), failed: [], checks: 0 };
+  const f = (report.foundToLive || []).map((x) => x.ms).sort((a, b) => a - b);
+  return {
+    at, sha, pass: !!report.pass,
+    checks: report.checks.length,
+    failed: report.checks.filter((c) => !c.ok).map((c) => c.name),
+    watch: (report.watch || []).length,
+    foundToLiveMedianMin: f.length ? Math.round(f[Math.floor(f.length / 2)] / 60000) : null,
+    reviews: f.length,
+  };
+}
+
+module.exports = { runSimulatedNight, formatReport, recordFrom, LATENCY, FOUND_TO_LIVE_BAR_MS };
 
 if (require.main === module) {
+  const recordPath = (process.argv.find((a) => a.startsWith('--record=')) || '').slice(9);
+  const writeRecord = (r, error) => {
+    if (!recordPath) return;
+    let sha = process.env.GITHUB_SHA || null;
+    if (!sha) { try { sha = require('child_process').execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim(); } catch { /* no git */ } }
+    fs.mkdirSync(path.dirname(recordPath), { recursive: true });
+    fs.writeFileSync(recordPath, JSON.stringify(recordFrom(r, { sha, error }), null, 2) + '\n');
+  };
   const json = process.argv.includes('--json');
   runSimulatedNight({ keep: process.argv.includes('--keep'), only: process.env.GAME_DAY_ONLY ? process.env.GAME_DAY_ONLY.split(',') : null, log: json ? () => {} : (l) => console.error(l) }).then((r) => {
     const out = (process.argv.find((a) => a.startsWith('--out=')) || '').slice(6);
     if (out) fs.writeFileSync(out, JSON.stringify(r, null, 2)); // stdout also carries the lane's own log lines
+    writeRecord(r, null);
     console.log(json ? JSON.stringify(r, null, 2) : formatReport(r));
     process.exit(r.pass ? 0 : 1);
-  }, (e) => { console.error(e && e.stack || e); process.exit(2); });
+  }, (e) => { console.error(e && e.stack || e); writeRecord(null, e && e.message || e); process.exit(2); });
 }

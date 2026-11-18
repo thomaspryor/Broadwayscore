@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { runSimulatedNight, formatReport } = require('../../scripts/lib/game-day/simulated-opening-night.js');
 
-test('the simulated opening night publishes every expected review, alarms each deliberate miss once, and stays hermetic', { timeout: 10 * 60 * 1000 }, async () => {
+test('the simulated opening night publishes every expected review, alarms each deliberate miss once, and stays hermetic', { timeout: 160 * 1000 }, async () => {
   const report = await runSimulatedNight({ log: () => {} });
   const text = formatReport(report);
   console.log(text);

@@ -218,7 +218,29 @@ function mergeCommitResponses(responses, paths) {
   return [...seen.values()];
 }
 
+const SIM_NIGHT_MAX_AGE_H = 8 * 24;
+
+/**
+ * BRO-7781: the latest simulated opening night (data/audit/simulated-opening-night.json, written by lane-rehearsal.yml).
+ * The night is a fixed synthetic one, so readiness reads its record instead of running it per show. Advisory: never
+ * 'fail', so a red simulation warns on the readiness report without paging an unrelated show's night.
+ */
+function simulatedNightVerdict(record, nowMs) {
+  const where = 'Re-run: lane-rehearsal.yml, or locally node scripts/lib/game-day/simulated-opening-night.js';
+  if (!record || typeof record.pass !== 'boolean' || !record.at) return { status: 'warn', detail: `No simulated-night record. ${where}` };
+  const ageH = (nowMs - Date.parse(record.at)) / 3600000;
+  const age = `${Math.round(ageH)}h ago`;
+  if (!(ageH >= 0) || ageH > SIM_NIGHT_MAX_AGE_H) return { status: 'warn', detail: `Simulated night is stale (${age}, older than ${SIM_NIGHT_MAX_AGE_H / 24} days). ${where}` };
+  if (!record.pass) {
+    const why = record.error ? `crashed: ${record.error}` : `failed: ${(record.failed || []).slice(0, 3).join('; ')}${(record.failed || []).length > 3 ? ` (+${record.failed.length - 3} more)` : ''}`;
+    return { status: 'warn', detail: `Simulated night ${why} (${age}). ${where}` };
+  }
+  return { status: 'pass', detail: `Simulated night passed ${age}: ${record.checks} checks, found-to-live median ${record.foundToLiveMedianMin} min over ${record.reviews} reviews.` };
+}
+
 module.exports = {
+  SIM_NIGHT_MAX_AGE_H,
+  simulatedNightVerdict,
   PIPELINE_PATHS,
   KICK_LEAD_MIN,
   embargoFor,

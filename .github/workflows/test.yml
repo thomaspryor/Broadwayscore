@@ -5202,6 +5202,21 @@ jobs:
         continue-on-error: true
         run: node scripts/audit-cross-show-url.js --source=reviews.json --strict --max=92
 
+      - name: Simulated opening night (BRO-7781, advisory)
+        # A whole synthetic press night through the real lane code on a fake clock, local outlets only (~15s). Runs on
+        # every lane/rss-discovery/near-miss/byline/press-night change (scripts/lib/**) and on the daily 06:00 UTC run.
+        # Mutation proof that it still guards BRO-7739/7745/7748: node scripts/lib/game-day/mutants.js.
+        # Advisory first (CLAUDE.md section 19).
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: |
+          set +e
+          bash scripts/lib/run-test-batch-bounded.sh "simulated night" 180 /tmp/sim-night.log -- \
+            node --test --test-timeout 170000 tests/integration/simulated-opening-night.test.mjs
+          rc=$?
+          bash scripts/lib/summarize-failing-tests.sh "simulated night" /tmp/sim-night.log "$rc" warning
+          exit "$rc"
+
       - name: Repeat file-lock race test 20x (stale-break regression guard)
         # scripts/lib/file-lock.test.mjs's 'racing stale-lock breakers' test
         # spawns 6 real child processes; the mutual-exclusion violation it

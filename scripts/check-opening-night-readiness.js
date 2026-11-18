@@ -573,6 +573,12 @@ async function runChecks() {
     emit('Lane armed', RL.armVerdict(null));
   }
 
+  // BRO-7781: the latest simulated opening night (lane-rehearsal.yml writes the record). Read, never run here: the night is
+  // synthetic and show-independent, and this script runs with live scraper and model keys in its env.
+  let simRecord = null;
+  try { simRecord = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'data', 'audit', 'simulated-opening-night.json'), 'utf8')); } catch { /* none yet */ }
+  emit('Simulated opening night', RL.simulatedNightVerdict(simRecord, nowMs));
+
   const emb = RL.embargoFor(show);
   if (!ghToken) {
     report(SKIP, 'Lane night run / watchdog / recent changes', 'GH_TOKEN not set');
