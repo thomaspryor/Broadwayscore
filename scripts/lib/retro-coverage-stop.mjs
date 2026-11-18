@@ -187,7 +187,7 @@ const MSG = {
 };
 
 /** PURE Stop-hook decision. -> { decision: 'allow'|'block', reason, message? } */
-export function stopHookDecision({ lastMessage = '', events = null, env = process.env }) {
+export function stopHookDecision({ lastMessage = '', events = null, env = process.env, hasGetSession = false }) {
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.RETRO_COVERAGE_STOP_DISABLE === '1') return { decision: 'allow', reason: 'RETRO_COVERAGE_STOP_DISABLE=1' };
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
@@ -200,7 +200,8 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const flagged = runs.some((r) => /RETRO REQUIRED/.test(String(r.result.content || '')));
   if (flagged && !runs.some((r) => LINK_RE.test(r.command))) return { decision: 'block', reason: 'retro crossed a threshold, no --fixes/--no-action', message: MSG.nolink };
   if (!recordReachedLand(events, runs[runs.length - 1].index)) return { decision: 'block', reason: 'retro row never carried to main by a land push', message: MSG.unlanded };
-  if (env.COST_ROW_GATE !== 'off') {
+  // Only a session that had the get_session tool can record its cost (wrap-up: "No get_session tool: skip").
+  if (hasGetSession && env.COST_ROW_GATE !== 'off') {
     const cost = costRuns(events);
     if (cost.length === 0) return { decision: 'block', reason: 'landed code, no cost row recorded', message: MSG.nocost };
     if (!recordReachedLand(events, cost[cost.length - 1], COST_FILE)) return { decision: 'block', reason: 'cost row never carried to main by a land push', message: MSG.costunlanded };
@@ -227,7 +228,9 @@ export function main(argv, { env = process.env } = {}) {
   try { input = JSON.parse(fs.readFileSync(0, 'utf8') || '{}'); } catch { return 0; }
   const tp = input.transcript_path;
   if (!tp || !fs.existsSync(tp)) return 0;
-  const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp), env });
+  let hasGetSession = false; // the transcript's tool listings name it when the session had it; unknown -> skip the cost check
+  try { hasGetSession = fs.readFileSync(tp, 'utf8').includes('mcp__claude-code-remote__get_session'); } catch { /* fail open */ }
+  const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp), env, hasGetSession });
   if (d.decision !== 'block') return 0;
   const counter = path.join(os.tmpdir(), `retro-coverage-stop-${createHash('sha1').update(tp + '\u0000' + d.reason).digest('hex').slice(0, 12)}`);
   // BRO-7729: one nudge let a session close again with the gap still open (2026-11-17: a flagged, unlinked retro

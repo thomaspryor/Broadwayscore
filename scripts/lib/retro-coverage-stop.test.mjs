@@ -16,7 +16,7 @@ const land = () => use('Bash', { command: 'git push origin HEAD:refs/heads/land/
 const record = (flags, out) => use('Bash', { command: `node scripts/lib/session-retro.js --check --record ${flags}`.trim() }, out);
 const carry = () => use('Bash', { command: 'git add data/audit/session-retro.jsonl && git commit -m "retro row" && git push origin HEAD:refs/heads/land/x' });
 const SAFE = 'SAFE TO ARCHIVE — done';
-const decide = (events, lastMessage = SAFE, env = ENV) => stopHookDecision({ lastMessage, events, env });
+const decide = (events, lastMessage = SAFE, env = ENV, hasGetSession = true) => stopHookDecision({ lastMessage, events, env, hasGetSession });
 
 test('landed code with no retro run blocks; with a clean retro it allows', () => {
   assert.equal(decide([...edit(), ...land()]).decision, 'block');
@@ -84,6 +84,8 @@ test('BRO-7729 cousin: the cost row must be recorded and ride a land push', () =
   assert.match(decide([...base, ...carry(), ...cost()], SAFE, on).message, /Cost row not on main/, 'cost recorded after the last land');
   assert.match(decide([...base, ...cost('Error: no cost in session json'), ...carry()], SAFE, on).message, /Cost row missing/, 'a failed cost run is not a row');
   assert.equal(decide([...base, ...cost(), ...sh('git commit -am r'), ...land()], SAFE, on).decision, 'allow', 'commit -a carries both');
+  assert.equal(decide([...base, ...carry()], SAFE, on, false).decision, 'allow', 'no get_session tool: the cost row is skipped (wrap-up)');
+  assert.equal(decide([...base, ...cost('data/audit/claude-session-cost.jsonl: 0 row(s) written (1 replaced same-day rows), 0 skipped'), ...sh('git commit -am r'), ...land()], SAFE, on).decision, 'allow', 'a same-day replace is a run');
 });
 
 test('stays quiet outside its scope', () => {
