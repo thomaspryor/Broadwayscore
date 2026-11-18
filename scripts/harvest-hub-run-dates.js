@@ -14,7 +14,7 @@
  *   - with --fetch, review URLs for shows that have no stored text yet (the BRO-7239 harvest path).
  * laterAnnouncedRunEnd (scripts/lib/run-end-from-text.js) picks an announced end LATER than ours; --apply writes it
  * through writeClosingDate, which records the extension. A human pin (humanCorrectedClosingDate) is only moved by
- * the listing page or an "extended through" sentence (an extension supersedes the hand fix, it does not contradict
+ * the listing page or an "extended through" sentence (never the theatre page alone) (an extension supersedes the hand fix, it does not contradict
  * it); a plain review-text date never overrides a pin and is reported instead.
  * Writes the report to --out. Wired into scrape-new-aggregators.yml (advisory).
  */
@@ -77,7 +77,8 @@ function storedTexts(showId, dir = path.join(ROOT, 'data', 'review-texts')) {
 function applyRunEnd(show, decision, todayStr, log = () => {}) {
   if (!decision) return 'unchanged';
   if (show.humanCorrectedClosingDate) {
-    if (decision.kind === 'text') return 'pinned';
+    // one scraped page never beats a hand fix: the theatre page alone is reported, like plain review text (BRO-7291 ship-check)
+    if (decision.kind === 'text' || decision.kind === 'theatre-page') return 'pinned';
     // An extension past a hand-fixed date: record it, move the date, keep the pin on the new value.
     recordClosingExtension(show, decision.date, decision.source, todayStr);
     writeClosingDate(show, decision.date, decision.source, { force: true, recordExtension: false, todayStr, log });
@@ -121,7 +122,7 @@ async function main() {
     if (flag('listing') && own && (only || inScope(s, launched, today))) {
       // BRO-7291: the theatre's own page moves first after an extension; the listing site can lag (hayward-regional-2026)
       try {
-        const r = runEndFromTheatrePage((await net.fetchPage(own, { skipVerify: true })).content, { title: s.title, opening: s.previewsStartDate || s.openingDate });
+        const r = runEndFromTheatrePage((await net.fetchPage(own, { skipVerify: true })).content, { title: s.title, firstPerformance: s.previewsStartDate || s.openingDate });
         if (r) { theatrePage = { date: r.date, url: own }; report.theatrePages[s.id] = { ...theatrePage, how: r.how }; }
       } catch (e) { console.log(`::warning::theatre page fetch failed for ${s.id}: ${e.message}`); }
     }

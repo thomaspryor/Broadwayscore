@@ -155,7 +155,7 @@ const STEPPENWOLF_HEADER = `<p class="production-header__tag"><span>The Gift The
 <p class="production-header__subtitle">A World Premiere</p>
 <time datetime="2026-10-14T00:00:00-05:00" class="production-header__date">Oct 14 &ndash; Nov 22, 2026</time>`;
 const STEPPENWOLF_LD = `<script type="application/ld+json">[{"@context":"https://schema.org","@type":"Event","name":"Hayward - Sunday, November 15, 2026 3:00 PM","startDate":"2026-11-15T15:00:00-06:00"},{"@context":"https://schema.org","@type":"Event","name":"Hayward - Sunday, November 22, 2026 3:00 PM","startDate":"2026-11-22T15:00:00-06:00"}]</script>`;
-const HAYWARD = { title: 'Hayward', opening: '2026-10-20' };
+const HAYWARD = { title: 'Hayward', firstPerformance: '2026-10-14' };
 
 test('replay hayward-regional-2026 W47: the theatre page (range + Event list) beats the lagging listing', () => {
   for (const html of [STEPPENWOLF_HEADER, STEPPENWOLF_LD + STEPPENWOLF_HEADER]) {
@@ -190,4 +190,32 @@ test('theatre page url: officialUrl or the venue box-office link, never a resell
   assert.equal(theatrePageUrl({ ticketLinks: [{ platform: 'Venue Box Office', url: 'https://www.steppenwolf.org/whats-on/2026-2027/hayward' }] }), 'https://www.steppenwolf.org/whats-on/2026-2027/hayward');
   assert.equal(theatrePageUrl({ officialUrl: 'https://www.todaytix.com/x', ticketLinks: [{ platform: 'TodayTix', url: 'https://www.todaytix.com/y' }] }), null);
   assert.equal(theatrePageUrl({ ticketLinks: [{ platform: 'Official site', url: 'https://www.theatreinchicago.com/hayward/13552/' }] }), null);
+});
+
+// Failing inputs from the ship-check reviewers (Claude + Codex): each would have moved a date wrongly.
+test('theatre page: an "Up next" range starting inside the window is not our run', () => {
+  const html = '<h1>Hayward</h1><time>Oct 14 &ndash; Nov 15, 2026</time><aside>Up next: Fen Nov 1 &ndash; Dec 20, 2026</aside><aside>Up next: A Christmas Carol Nov 27 &ndash; Dec 28, 2026</aside>';
+  assert.equal(runEndFromTheatrePage(html, HAYWARD).date, '2026-11-15');
+});
+test('theatre page: EventSeries, cancelled performances and substring titles are ignored', () => {
+  const ld = (o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`;
+  assert.equal(runEndFromTheatrePage('<h1>Hayward</h1>' + ld({ '@type': 'EventSeries', name: '2026-27 Season: Hayward, Fen and more', startDate: '2026-09-01', endDate: '2027-04-30' }), HAYWARD), null);
+  assert.equal(runEndFromTheatrePage('<h1>Hayward</h1>' + ld({ '@type': 'TheaterEvent', name: 'Hayward', startDate: '2026-11-22T15:00:00-06:00', eventStatus: 'https://schema.org/EventCancelled' }), HAYWARD), null);
+  assert.equal(runEndFromTheatrePage('<h1>Fences</h1><time>Oct 14 &ndash; Nov 22, 2026</time>', { title: 'Fen', firstPerformance: '2026-10-14' }), null);
+  // ItemList nesting is read (schema the shared ob-listing-platforms reader also handles)
+  const list = ld({ '@type': 'ItemList', itemListElement: [{ '@type': 'ListItem', item: { '@type': 'TheaterEvent', name: 'Hayward', startDate: '2026-11-22T15:00:00-06:00' } }] });
+  assert.equal(runEndFromTheatrePage('<h1>Hayward</h1>' + list, HAYWARD).date, '2026-11-22');
+});
+test('theatre page: a UTC evening timestamp is the US local day', () => {
+  const html = '<h1>Hayward</h1><script type="application/ld+json">{"@type":"TheaterEvent","name":"Hayward","startDate":"2026-11-16T01:30:00Z"}</script>';
+  assert.equal(runEndFromTheatrePage(html, HAYWARD).date, '2026-11-15');
+});
+test('theatre page never overrides a hand-pinned date alone, and a stale one never hides two agreeing reviews', () => {
+  const pinned = { openingDate: '2026-10-20', closingDate: '2026-11-15', humanCorrectedClosingDate: '2026-11-15', status: 'open' };
+  const d = laterAnnouncedRunEnd({ opening: '2026-10-20', closing: '2026-11-15' }, { texts: [], theatrePage: { date: '2026-11-22', url: 'https://www.steppenwolf.org/x' } });
+  assert.equal(applyRunEnd(pinned, d, '2026-11-17'), 'pinned');
+  assert.equal(pinned.closingDate, '2026-11-15');
+  const two = [T('a.com', 'Hayward runs through December 20, 2026.'), T('b.com', 'Hayward runs through December 20, 2026.')];
+  const r = laterAnnouncedRunEnd({ opening: '2026-10-20', closing: '2026-11-15' }, { texts: two, theatrePage: { date: '2026-11-15', url: 'x' } });
+  assert.equal(r && r.date, '2026-12-20');
 });

@@ -89,45 +89,71 @@ const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); 
  * BRO-7291 (class 1 recurrence, hayward-regional-2026 2026-W47): the run end the producing theatre prints on the
  * production's OWN page. Listing sites (theatreinchicago) keep the original run after an extension; the theatre's
  * page and its schema.org Event list move first. Two readings, both tied to THIS production:
- *   - a printed range "Oct 14 – Nov 22, 2026" whose start is within 45 days of our opening (a season sidebar's
- *     other shows start elsewhere), and
- *   - the last schema.org Event performance whose name contains the title.
- * The latest reading wins. Pure; `html` is the raw page.
+ *   - the first printed range "Oct 14 – Nov 22, 2026" within 200 characters after a whole-word title mention, starting
+ *     within 21 days of our first performance (an "Up next" sidebar names its own title and starts later), and
+ *   - the last schema.org *Event (not EventSeries / EventVenue) whose name carries the title as whole words,
+ *     that is not cancelled/postponed, and whose own start is in this run.
+ * The latest reading wins. Pure; `html` is the raw page; ctx.firstPerformance = previews start (or opening).
  * @returns {{ date: string, how: 'range'|'jsonld', snippet: string } | null}
  */
-const RANGE_RE = new RegExp(`${MON}\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+(20\\d\\d))?\\s*(?:[-\u2013\u2014]|to|through|thru)\\s*(?:${MON}\\.?\\s+)?(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(20\\d\\d)`, 'gi');
-const foldTitle = (s) => String(s || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/&amp;/g, '&').replace(/[^a-z0-9]+/g, ' ').trim();
+const RANGE_RE = new RegExp(`${MON}\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+(20\\d\\d))?\\s*(?:[-–—]|to|through|thru)\\s*(?:${MON}\\.?\\s+)?(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(20\\d\\d)`, 'gi');
+const foldTitle = (s) => ` ${String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/&amp;/g, '&').replace(/[^a-z0-9]+/g, ' ').trim()} `;
 const monNum = (m) => MONTHS[m.toLowerCase().slice(0, 4)] || MONTHS[m.toLowerCase().slice(0, 3)];
+const RANGE_NEAR_DAYS = 21;
+const TITLE_WINDOW = 200;
 function pageText(html) {
   return String(html).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;|&#160;/g, ' ').replace(/&ndash;|&#8211;|&#x2013;/gi, '\u2013').replace(/&mdash;|&#8212;/gi, '\u2014').replace(/&amp;/g, '&').replace(/&#?\w+;/g, ' ').replace(/\s+/g, ' ');
+    .replace(/&nbsp;|&#160;/g, ' ').replace(/&ndash;|&#8211;|&#x2013;/gi, '–').replace(/&mdash;|&#8212;/gi, '—').replace(/&amp;/g, '&').replace(/&#?\w+;/g, ' ').replace(/\s+/g, ' ');
 }
-function jsonLdNodes(html) {
+/** Event-typed nodes, through @graph (jsonld.js), ItemList items, a venue's `event` and an Event's subEvent. */
+function theatreEventNodes(html) {
+  const { parseJsonLd } = require('./jsonld');
   const out = [];
-  const walk = (n) => {
-    if (Array.isArray(n)) { n.forEach(walk); return; }
-    if (!n || typeof n !== 'object') return;
-    out.push(n);
-    if (n['@graph']) walk(n['@graph']);
-    if (n.subEvent) walk(n.subEvent);
+  const visit = (n, depth) => {
+    if (!n || typeof n !== 'object' || depth > 5) return;
+    if (Array.isArray(n)) { n.forEach((x) => visit(x, depth + 1)); return; }
+    const types = [].concat(n['@type'] || []).map(String);
+    if (types.some((t) => /Event$/.test(t))) out.push(n);
+    if (Array.isArray(n.itemListElement)) n.itemListElement.forEach((li) => visit(li && li.item ? li.item : li, depth + 1));
+    if (n.event) visit(n.event, depth + 1);
+    if (n.subEvent) visit(n.subEvent, depth + 1);
   };
   for (const m of String(html).matchAll(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)) {
-    try { walk(JSON.parse(m[1].trim())); } catch { /* malformed block: skip */ }
+    for (const node of parseJsonLd(m[1])) visit(node, 0);
   }
   return out;
 }
+/** Local calendar day of a schema.org date. A UTC stamp ("...T01:30:00Z") is read as US local time (hubs are UTC-4..-8). */
+function localDay(v) {
+  const s = String(v || '');
+  if (!/^\d{4}-\d{2}-\d{2}/.test(s)) return null;
+  if (/T\d{2}:\d{2}/.test(s) && /(?:Z|[+-]00:?00)$/.test(s)) {
+    const t = Date.parse(s);
+    return Number.isNaN(t) ? null : new Date(t - 8 * 3600000).toISOString().slice(0, 10);
+  }
+  return s.slice(0, 10);
+}
 function runEndFromTheatrePage(html, ctx) {
-  const opening = ctx && ctx.opening;
+  const first = ctx && (ctx.firstPerformance || ctx.opening);
   const title = foldTitle(ctx && ctx.title);
-  if (!opening || !title || !html) return null;
-  const hi = new Date(Date.parse(`${opening}T00:00:00Z`) + 200 * 86400000).toISOString().slice(0, 10);
-  const near = (d) => Math.abs(daysBetween(opening, d)) <= 45;
+  if (!first || title.trim() === '' || !html) return null;
+  const hi = new Date(Date.parse(`${first}T00:00:00Z`) + 200 * 86400000).toISOString().slice(0, 10);
+  const lo = new Date(Date.parse(`${first}T00:00:00Z`) - RANGE_NEAR_DAYS * 86400000).toISOString().slice(0, 10);
+  const near = (d) => Math.abs(daysBetween(first, d)) <= RANGE_NEAR_DAYS;
   const found = [];
   const text = pageText(html);
-  if (!foldTitle(text).includes(title)) return null; // not this production's page
+  // title mention offsets in the raw text (whole words, case/diacritic-folded on both sides)
+  const tWords = title.trim().split(' ').map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  const titleRe = new RegExp(`(?:^|[^a-z0-9])${tWords.join('[^a-z0-9]+')}(?![a-z0-9])`, 'gi');
+  const folded = text.normalize('NFKD').replace(/[̀-ͯ]/g, '');
+  const mentions = [...folded.matchAll(titleRe)].map((m) => m.index + m[0].length);
+  if (!mentions.length) return null; // not this production's page
   RANGE_RE.lastIndex = 0;
-  let m;
-  while ((m = RANGE_RE.exec(text))) {
+  const ranges = [...folded.matchAll(RANGE_RE)];
+  // per title mention, only the FIRST range that follows it (within TITLE_WINDOW) is this production's run;
+  // a later range in the same stretch belongs to whatever the page names next ("Up next: Fen Nov 1 - Dec 20")
+  const ours = new Set(mentions.map((e) => ranges.find((r) => r.index >= e)).filter((r) => r && r.index - mentions.filter((e) => e <= r.index).pop() <= TITLE_WINDOW));
+  for (const m of ours) {
     const sm = monNum(m[1]); const sd = Number(m[2]);
     const em = m[4] ? monNum(m[4]) : sm; const ed = Number(m[5]); const ey = Number(m[6]);
     const sy = m[3] ? Number(m[3]) : (sm > em ? ey - 1 : ey);
@@ -136,11 +162,13 @@ function runEndFromTheatrePage(html, ctx) {
     if (!near(start) || end < start || end > hi) continue;
     found.push({ date: end, how: 'range', snippet: m[0] });
   }
-  for (const n of jsonLdNodes(html)) {
-    const type = [].concat(n['@type'] || []).join(' ');
-    if (!/Event/i.test(type) || !foldTitle(n.name).includes(title)) continue;
-    const d = String(n.endDate || n.startDate || '').slice(0, 10);
-    if (/^\d{4}-\d{2}-\d{2}$/.test(d) && d >= opening && d <= hi) found.push({ date: d, how: 'jsonld', snippet: String(n.name).slice(0, 120) });
+  for (const n of theatreEventNodes(html)) {
+    if (!foldTitle(n.name).includes(title)) continue;
+    if (/Cancel|Postpon|Rescheduled|MovedOnline/i.test(String(n.eventStatus || ''))) continue;
+    const start = localDay(n.startDate);
+    const d = localDay(n.endDate) || start;
+    if (!d || !start || start < lo || start > hi || d > hi) continue; // the node's own start must be in this run
+    found.push({ date: d, how: 'jsonld', snippet: String(n.name).slice(0, 120) });
   }
   if (!found.length) return null;
   return found.sort((a, b) => a.date.localeCompare(b.date)).pop();
@@ -169,10 +197,11 @@ function laterAnnouncedRunEnd(show, evidence, opts = {}) {
     for (const c of runEndCandidates(String(t.text || ''), { opening, articleDate: t.articleDate || null })) cands.push({ ...c, url: t.url || null, ti });
   });
   const ownPage = (src) => (src && src.date && src.date >= opening ? src : null);
-  // the theatre's own production page (BRO-7291 hayward) stands alone like the listing and outranks it on a tie
+  // the theatre's own production page (BRO-7291 hayward) stands alone like the listing and outranks it on a tie;
+  // the latest of listing / theatre page / review text wins
   const theatrePage = ownPage(evidence && evidence.theatrePage);
   const listingSrc = ownPage(evidence && evidence.listing);
-  const listing = listingSrc || theatrePage; // either one outranks plain review text
+  const listing = listingSrc; // only the listing suppresses agreeing review text (a stale theatre page must not hide an extension)
   // BRO-7319: one review's "extended through <date>" no longer moves a date. A text-derived date needs
   // `minSites` distinct hosts naming the SAME date (any mix of cues); only the theatre's own listing stands alone.
   // kind is 'extended' only when `minSites` hosts used the extended cue, so a plain mention never force-overwrites
