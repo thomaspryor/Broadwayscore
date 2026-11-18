@@ -358,3 +358,25 @@ test('staleOpenGapKeys: only open keys whose file is gone from an existing show 
   assert.deepEqual(staleOpenGapKeys(ledger, io), ['gap:a/gone.json', 'backstop:a/gone.json']);
   assert.deepEqual(staleOpenGapKeys(null, io), []);
 });
+
+// BRO-7773: a Talkin' Broadway forum stub whose forum-link budget is spent must read
+// recoverable=false. The generic same-URL check reads true for it (its own counter is 0),
+// which kept the real rope-off-broadway-2026 stub "recoverable" and the digest row firing.
+const FORUM_STUB_BASE = {
+  url: 'https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466',
+  outletId: 'talkinbroadway', fullText: null, contentTier: 'stub', contentTierReason: 'No text content',
+  incompleteReason: 'bot_blocked', fetchDiscoveryAbandoned: true, needsTextRetry: true,
+};
+test('BRO-7773: forum stub with spent forum budget is not recoverable', () => {
+  const g = classify({ ...FORUM_STUB_BASE, forumLinkRecoveryCount: 10, forumLinkRecoveryAt: '2026-07-18T02:00:00Z' }, { tier: 2 });
+  assert.equal(g.type, 'empty-body');
+  assert.equal(g.recoverable, false);
+});
+test('BRO-7773: forum stub with budget left stays recoverable', () => {
+  const g = classify({ ...FORUM_STUB_BASE, forumLinkRecoveryCount: 1, forumLinkRecoveryAt: '2026-07-18T02:00:00Z' }, { tier: 2 });
+  assert.equal(g.recoverable, true);
+});
+test('BRO-7773: non-forum empty stub keeps the generic recoverable rule', () => {
+  const g = classify({ url: 'https://www.thetimes.com/x-review', fullText: '', contentTier: 'stub' }, { tier: 2 });
+  assert.equal(g.recoverable, true);
+});
