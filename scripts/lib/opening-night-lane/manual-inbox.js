@@ -79,7 +79,7 @@ function addEntries(state, { show, lines = [], addedBy = 'unknown', now, ttlMs =
 /**
  * Record what happened to entries. Pure. Unknown ids are ignored (the entry expired or was never there). A final
  * status is never overwritten by 'queued' (a slow write must not reopen a published entry).
- * @param updates [{id, status, reason?}]
+ * @param updates [{id, addedAt?, status, reason?}]: with addedAt, applied only to that generation of the entry
  */
 function markStatus(state, { updates = [], now } = {}) {
   const next = { ...state, leases: { ...((state && state.leases) || {}) } };
@@ -89,6 +89,7 @@ function markStatus(state, { updates = [], now } = {}) {
     if (!u || !STATUSES.includes(u.status)) continue;
     const prior = next.leases[u.id];
     if (!prior) continue;
+    if (u.addedAt && prior.addedAt && u.addedAt !== prior.addedAt) continue; // about an earlier generation (re-added since)
     if (u.status === 'queued' && FINAL_STATUSES.includes(prior.status)) continue;
     next.leases[u.id] = { ...prior, status: u.status, statusAt: at, ...(u.reason ? { reason: String(u.reason).slice(0, 300) } : {}) };
     applied.push(u.id);

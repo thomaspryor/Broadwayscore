@@ -455,7 +455,14 @@ jobs:
         env:
           SHOW: ${{ inputs.show }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/opening-night-lane-inbox.js drain "--show=${SHOW}" --dispatch || echo "::warning::lane inbox drain failed; list it with opening-night-lane-inbox.js list --show=${SHOW}"
+        # Exit 3 = the lease still reads as held (a slow or failed release): wait and try again before giving up.
+        run: |
+          for i in 1 2 3; do
+            rc=0; node scripts/opening-night-lane-inbox.js drain "--show=${SHOW}" --dispatch || rc=$?
+            [ "$rc" -ne 3 ] && break
+            [ "$i" -lt 3 ] && sleep 60
+          done
+          [ "$rc" -eq 0 ] || echo "::warning::lane inbox drain did not finish (exit $rc); run opening-night-lane-inbox.js drain --show=${SHOW} --dispatch once the lease is gone"
 
       # The driver pages through routeAlert( digest ) (owner-alert-router.js); its ledger and digest queue live on
       # this runner's disk, so commit them or the cooldown/dedup state resets every run.

@@ -121,8 +121,12 @@ if (!show) {
       console.log(`::error::ingest-urls: ${showId} is held by the opening-night lane and the lane inbox write failed (${res.reason}: ${res.detail || ''}). Nothing was added. Retry this dispatch, or add the URL with: node scripts/opening-night-lane-inbox.js add --show=${showId} --url=<URL>`);
       process.exit(1);
     }
-    console.log(`::notice::ingest-urls: ${showId} is held by the opening-night lane, so ${res.added.length} URL(s) went to the lane inbox instead (${res.duplicates.length} already there${res.invalid && res.invalid.length ? `, ${res.invalid.length} invalid` : ''}). The lane fetches, scores and publishes them on its next pass (about 2 minutes). Check with: node scripts/opening-night-lane-inbox.js list --show=${showId}`);
-    process.exit(0);
+    const settled = require('./lib/lane-inbox-routing').settleAfterInboxWrite({ showId, ids: res.added, repoDir: path.join(__dirname, '..') });
+    if (!settled.ingestNow) {
+      console.log(`::notice::ingest-urls: ${showId} is held by the opening-night lane, so ${res.added.length} URL(s) went to the lane inbox instead (${res.duplicates.length} already there${res.invalid && res.invalid.length ? `, ${res.invalid.length} invalid` : ''}). The lane fetches, scores and publishes them on its next pass (about 2 minutes). Check with: node scripts/opening-night-lane-inbox.js list --show=${showId}`);
+      process.exit(0);
+    }
+    console.log(`::notice::ingest-urls: the opening-night lane released ${showId} while these URLs were being queued; ingesting them the regular way now.`);
   }
   if (route.action === 'refuse') {
     console.log(`::warning::ingest-urls: ${showId} is held by the opening-night lane; nothing ingested (${route.why}). To add a missed review tonight, dispatch ingest-urls by hand (no caller, no flags) or run: node scripts/opening-night-lane-inbox.js add --show=${showId} --url=<URL>`);

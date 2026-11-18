@@ -3,12 +3,13 @@
 /**
  * The opening-night lane's manual-URL inbox (BRO-7741). The fast path when a review is missing on a lane night:
  *
- *   node scripts/opening-night-lane-inbox.js add --show=SHOW_ID --url=URL [--outlet=ID] [--critic="Name"] [--force]
+ *   node scripts/opening-night-lane-inbox.js add --show=SHOW_ID --url=URL [--outlet=ID] [--critic="Name"] [--force] [--queue-anyway]
  *   node scripts/opening-night-lane-inbox.js list [--show=SHOW_ID] [--json]
  *   node scripts/opening-night-lane-inbox.js drain --show=SHOW_ID [--dispatch]
  *
  * add      Queue a URL. The running lane reads the inbox every pass (about 2 minutes), fetches, scores and publishes it.
- *          --force skips the night-date check (the page carries a wrong date). Dispatching ingest-urls.yml by hand
+ *          Refused (exit 2) when no lane holds the show, since nothing would read it; --queue-anyway queues it for a
+ *          lane that has not started yet. --force skips the night-date check (the page carries a wrong date). Dispatching ingest-urls.yml by hand
  *          for a leased show does the same thing.
  * list     What is in the inbox and what the lane did with each URL (queued, published, failed + why, rejected + why).
  * drain    After the lane ends: entries the lane never finished go to ingest-urls.yml (the regular path) and are
@@ -29,9 +30,15 @@ function die(msg, code = 1) { console.error(msg); process.exit(code); }
 function add() {
   const show = arg('show');
   const url = arg('url');
-  if (!show || !url) die('usage: add --show=SHOW_ID --url=URL [--outlet=ID] [--critic="Name"] [--force]');
+  if (!show || !url) die('usage: add --show=SHOW_ID --url=URL [--outlet=ID] [--critic="Name"] [--force] [--queue-anyway]');
   const shows = require('../data/shows.json').shows || [];
   if (!shows.some((s) => s.id === show)) die(`Show not found: ${show}`);
+  // Only a running lane reads the inbox. With no lease on the show the URL would sit unread and expire, so it goes
+  // through ingest-urls.yml instead. --queue-anyway is for queuing tonight's URL before the lane has started.
+  const held = liveLease(show);
+  if (!held && !flag('queue-anyway')) {
+    die(`No opening-night lane holds ${show} right now, so nothing would read the inbox. Add the URL the regular way (dispatch ingest-urls.yml with show_id=${show}), or pass --queue-anyway if the lane starts later tonight.`, 2);
+  }
   const res = inbox.addSync({ repoDir: REPO_DIR }, {
     show, addedBy: process.env.GITHUB_ACTOR ? `cli:${process.env.GITHUB_ACTOR}` : 'cli',
     lines: [{ url, ...(arg('outlet') ? { outletId: arg('outlet') } : {}), ...(arg('critic') ? { critic: arg('critic') } : {}), ...(flag('force') ? { force: true } : {}) }],
@@ -59,14 +66,7 @@ function drainPlan(entries) {
 }
 
 /** The show's active lease on the remote store (any holder), {unknown:true} when the store cannot be read, else null. */
-function liveLease(show, repoDir = REPO_DIR) {
-  try {
-    const { state } = require('./lib/opening-night-lane/lease-store').readRemote({ repoDir });
-    return require('./lib/opening-night-lane/lease').activeLeaseFor(state, show);
-  } catch (e) {
-    return { holder: `unknown (lease store unreadable: ${String((e && e.message) || e).slice(0, 80)})`, unknown: true };
-  }
-}
+function liveLease(show, repoDir = REPO_DIR) { return require('./lib/lane-inbox-routing').liveLease(show, repoDir); }
 
 /** Pure: drain may dispatch only when no lease (known or unknown) holds the show. */
 function drainAllowed(lease) { return !lease; }

@@ -32,4 +32,31 @@ function routeToInbox({ showId, entries, repoDir, addedBy = 'ingest-urls', now }
   return inbox.addSync({ repoDir, ...(now !== undefined ? { now } : {}) }, { show: showId, lines, addedBy });
 }
 
-module.exports = { ingestRouteDecision, routeToInbox };
+/**
+ * The show's active lease read live from the remote lease store (any holder, the caller's own included), never the
+ * job's local copy. {unknown:true, holder} when the store cannot be read, else the lease or null.
+ */
+function liveLease(show, repoDir) {
+  try {
+    const { state } = require('./opening-night-lane/lease-store').readRemote({ repoDir });
+    return require('./opening-night-lane/lease').activeLeaseFor(state, show);
+  } catch (e) {
+    return { holder: `unknown (lease store unreadable: ${String((e && e.message) || e).slice(0, 80)})`, unknown: true };
+  }
+}
+
+/**
+ * After an inbox write: if the lane has released the show meanwhile (it ended between the lease check and the write),
+ * no lane reads these entries and the end-of-night drain may already have run. Mark them drained and tell the caller
+ * to ingest them the regular way. A duplicate ingest is harmless; a stranded URL is a missing review.
+ * @returns {{ingestNow: boolean, lease}}
+ */
+function settleAfterInboxWrite({ showId, ids, repoDir, readLease = liveLease, mark }) {
+  const lease = readLease(showId, repoDir);
+  if (lease) return { ingestNow: false, lease };
+  const doMark = mark || ((updates) => require('./opening-night-lane/manual-inbox').markSync({ repoDir }, updates));
+  if (ids && ids.length) doMark(ids.map((id) => ({ id, status: 'drained', reason: 'the lane ended while this was queued; ingested directly' })));
+  return { ingestNow: true, lease: null };
+}
+
+module.exports = { ingestRouteDecision, routeToInbox, liveLease, settleAfterInboxWrite };

@@ -126,15 +126,18 @@ async function runLaneNight({
   // BRO-7741: the manual-URL inbox. readInbox() -> the show's inbox entries (manual-inbox.js), read once a pass;
   // markInbox(updates) writes each entry's outcome back. Both null (replays, rehearsals): no inbox.
   const manualByKey = new Map(); // review key -> inbox entry being worked tonight
-  const manualTries = new Map(); // entry id -> passes it was retried
-  const manualClosed = new Set(); // entry ids with a final outcome this run
-  const manualQueued = new Set(); // entry ids scored and waiting for publish
+  // Keyed by entry generation (id + addedAt): a URL re-added (say with --force after a date rejection) is a new
+  // generation the lane works afresh, and a late status for the old one never lands on it.
+  const gen = (e) => `${e.id}@${e.addedAt || ''}`;
+  const manualTries = new Map(); // entry generation -> passes it was retried
+  const manualClosed = new Set(); // entry generations with a final outcome this run
+  const manualQueued = new Set(); // entry generations scored and waiting for publish
   const inboxUpdates = [];
   const failedKeys = () => new Set(failed.map((f) => f.key));
   const noteInbox = (entry, status, reason) => {
-    if (!entry || manualClosed.has(entry.id)) return;
-    if (status === 'queued') manualQueued.add(entry.id); else manualClosed.add(entry.id);
-    inboxUpdates.push({ id: entry.id, status, ...(reason ? { reason: String(reason).slice(0, 300) } : {}) });
+    if (!entry || manualClosed.has(gen(entry))) return;
+    if (status === 'queued') manualQueued.add(gen(entry)); else manualClosed.add(gen(entry));
+    inboxUpdates.push({ id: entry.id, ...(entry.addedAt ? { addedAt: entry.addedAt } : {}), status, ...(reason ? { reason: String(reason).slice(0, 300) } : {}) });
   };
   const flushInbox = async () => {
     if (!markInbox || !inboxUpdates.length) return;
@@ -154,11 +157,11 @@ async function runLaneNight({
     const out = [];
     const failedNow = failedKeys();
     for (const e of entries || []) {
-      if (!e || !e.id || manualClosed.has(e.id) || (e.status && e.status !== 'queued')) continue;
+      if (!e || !e.id || manualClosed.has(gen(e)) || (e.status && e.status !== 'queued')) continue;
       const key = discovery.canonicalUrl(e.url);
       if (!key) { noteInbox(e, 'rejected', 'not an http(s) URL'); continue; }
       // Already scored tonight (or on the site before tonight): nothing to add. A key that failed earlier is tried again.
-      if (manualQueued.has(e.id)) continue; // scored tonight, waiting for its publish
+      if (manualQueued.has(gen(e))) continue; // scored tonight, waiting for its publish
       if (seen.has(key) && !failedNow.has(key)) { noteInbox(e, 'already-in', 'the lane already has this review'); continue; }
       manualByKey.set(key, e);
       out.push({ url: e.url, key, source: trust.MANUAL_SOURCE, adapter: 'manual-inbox', via: 'manual-inbox', publishDate: null,
@@ -394,8 +397,9 @@ async function runLaneNight({
         errors.push({ adapter: a.adapter, error: `${a.key}: ${String((e && e.message) || e).slice(0, 150)}` });
         if (e && e.permanent) { seen.add(a.key); awaiting.delete(a.key); failed.push({ key: a.key, reason: String(e.message).slice(0, 200) }); } // else: retried next pass
         if (entry) {
-          const tries = (manualTries.get(entry.id) || 0) + 1;
-          manualTries.set(entry.id, tries);
+          // A pass where inline-score only waited out its backoff made no attempt: it does not count as a try.
+          const tries = (manualTries.get(gen(entry)) || 0) + (e && e.backoff ? 0 : 1);
+          manualTries.set(gen(entry), tries);
           if (e && (e.permanent || e.manualRejected || tries >= MANUAL_TRIES)) {
             manualByKey.delete(a.key);
             noteInbox(entry, e && e.manualRejected ? 'rejected' : 'failed', String((e && e.message) || e).slice(0, 300));
@@ -432,7 +436,7 @@ async function runLaneNight({
   }
   await flushInbox();
   return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped,
-    inbox: readInbox ? { worked: [...manualByKey.values()].map((e) => e.id), closed: [...manualClosed], unwritten: inboxUpdates.length } : null, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };
+    inbox: readInbox ? { worked: [...manualByKey.values()].map((e) => e.id), closed: [...manualClosed].map((g) => g.split('@')[0]), unwritten: inboxUpdates.length } : null, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };
 }
 
 module.exports = { runLaneNight, loadDone, applyManualEntry, MANUAL_TRIES };
