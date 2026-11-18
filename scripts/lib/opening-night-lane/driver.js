@@ -190,7 +190,9 @@ function recorderFromEnv(env) {
  * BRO-7741: the real inbox ports. The read is async (a slow fetch never stalls the publish timers); the status write is
  * a compare-and-swap push, once a pass and only when something changed, and prints a notice per entry for the job log.
  */
-function realManualInbox({ repoDir, show, log = console.log }) {
+function realManualInbox({ repoDir, show, log = console.log, env = process.env }) {
+  // Kill switch (repo variable or env): the lane runs without reading the inbox.
+  if (env.OPENING_NIGHT_LANE_INBOX_DISABLED === 'true') { log('::notice::lane manual inbox disabled (OPENING_NIGHT_LANE_INBOX_DISABLED)'); return null; }
   const inbox = require('./manual-inbox');
   return {
     readInbox: () => inbox.readForShow({ repoDir, show: show.id }),

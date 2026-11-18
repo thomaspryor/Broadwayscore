@@ -1,0 +1,132 @@
+// BRO-7741: a review missing on an opening night is added through the lane's manual inbox, which the running lane
+// reads every pass, instead of a full lane rollback. These tests fail with the change reverted.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const inbox = require('../../scripts/lib/opening-night-lane/manual-inbox.js');
+const { ingestRouteDecision } = require('../../scripts/lib/lane-inbox-routing.js');
+const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
+const trust = require('../../scripts/lib/opening-night-lane/trust-model.js');
+const { drainPlan } = require('../../scripts/opening-night-lane-inbox.js');
+
+const NIGHT = new Date().toISOString().slice(0, 10);
+const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
+const URL1 = 'https://www.theatermania.com/news/reviews/blue-review_99999/';
+const T0 = Date.parse(`${NIGHT}T12:00:00Z`);
+
+test('addEntries: dedupes by normalized URL, re-queues only a failed or rejected entry', () => {
+  let r = inbox.addEntries({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1, critic: 'A Critic' }, { url: 'nope' }], addedBy: 't', now: T0 });
+  assert.equal(r.ok, true); assert.equal(r.added.length, 1); assert.deepEqual(r.invalid, ['nope']);
+  const id = r.added[0];
+  r = inbox.addEntries(r.state, { show: SHOW.id, lines: [{ url: URL1.replace('www.', '').replace(/\/$/, '') + '#x' }], now: T0 });
+  assert.deepEqual(r.duplicates, [id], 'same page, different spelling');
+  const failed = inbox.markStatus(r.state, { updates: [{ id, status: 'failed', reason: 'fetch 403' }], now: T0 }).state;
+  r = inbox.addEntries(failed, { show: SHOW.id, lines: [{ url: URL1, force: true }], now: T0 });
+  assert.deepEqual(r.added, [id]); assert.equal(r.state.leases[id].status, undefined); assert.equal(r.state.leases[id].force, true);
+  assert.equal(inbox.addEntries({ leases: {} }, { show: 'Bad Id', lines: [{ url: URL1 }] }).ok, false);
+});
+
+test('markStatus: a late "queued" never reopens a published entry', () => {
+  const s = inbox.addEntries({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1 }], now: T0 });
+  const id = s.added[0];
+  const pub = inbox.markStatus(s.state, { updates: [{ id, status: 'published' }], now: T0 }).state;
+  const again = inbox.markStatus(pub, { updates: [{ id, status: 'queued' }, { id: 'gone', status: 'failed' }], now: T0 });
+  assert.equal(again.state.leases[id].status, 'published'); assert.deepEqual(again.applied, []);
+});
+
+test('git store: add and mark by compare-and-swap, read by the lane, missing branch reads empty', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7741-inbox-'));
+  try {
+    const bare = path.join(root, 'remote.git'); const work = path.join(root, 'work');
+    execFileSync('git', ['init', '-q', '--bare', bare]);
+    execFileSync('git', ['init', '-q', work]);
+    execFileSync('git', ['remote', 'add', 'origin', bare], { cwd: work });
+    const env = { GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' };
+    Object.assign(process.env, env);
+    assert.deepEqual(await inbox.readForShow({ repoDir: work, show: SHOW.id }), []);
+    const add = inbox.addSync({ repoDir: work }, { show: SHOW.id, lines: [{ url: URL1 }], addedBy: 'test' });
+    assert.equal(add.ok, true, JSON.stringify(add));
+    const rows = await inbox.readForShow({ repoDir: work, show: SHOW.id });
+    assert.equal(rows.length, 1); assert.equal(rows[0].url, URL1);
+    assert.equal(inbox.markSync({ repoDir: work }, [{ id: rows[0].id, status: 'published' }]).ok, true);
+    assert.equal((await inbox.readForShow({ repoDir: work, show: SHOW.id }))[0].status, 'published');
+    assert.deepEqual(await inbox.readForShow({ repoDir: work, show: 'other-show' }), []);
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+test('ingest-urls routing: a hand dispatch for a leased show goes to the inbox; automation and partial runs do not', () => {
+  assert.equal(ingestRouteDecision({ lease: null }).action, 'ingest');
+  assert.equal(ingestRouteDecision({ lease: { holder: 'gha-1' } }).action, 'inbox');
+  assert.equal(ingestRouteDecision({ lease: { holder: 'gha-1' }, caller: 'lane-inbox-drain' }).action, 'refuse');
+  assert.equal(ingestRouteDecision({ lease: { holder: 'gha-1' }, dryRun: true }).action, 'refuse');
+  assert.equal(ingestRouteDecision({ lease: { unknown: true } }).action, 'refuse');
+});
+
+test('drainPlan: only entries the lane did not finish go back to ingest-urls', () => {
+  const { open, lines } = drainPlan([
+    { id: 'a', url: URL1, critic: 'A Critic' }, { id: 'b', url: 'https://x.com/b', status: 'failed' },
+    { id: 'c', url: 'https://x.com/c', status: 'published' }, { id: 'd', url: 'https://x.com/d', status: 'rejected' },
+  ]);
+  assert.deepEqual(open.map((e) => e.id), ['a', 'b']);
+  assert.equal(lines.length, 2); assert.ok(lines[0].includes(URL1));
+});
+
+function laneNight({ entries, fetchDate }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7741-night-'));
+  let doc = { reviews: [] };
+  const marks = [];
+  const run = runLaneNight({
+    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses: 1, passIntervalMs: 0,
+    adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => [] }],
+    fetchText: async () => '',
+    fetchReview: async () => ({ outletId: 'theatermania', outlet: 'TheaterMania', criticName: '', fullText: 'A full review of the production. '.repeat(40), publishDate: fetchDate }),
+    scoreReview: async () => 72,
+    readInbox: async () => entries,
+    markInbox: async (updates) => { marks.push(...updates); },
+    publishPorts: {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; return out; },
+      regenShow: async () => ({}),
+      deploy: async () => {},
+      fetchLiveShow: async () => ({ rv: doc.reviews.map((r) => ({ u: r.url })) }),
+    },
+    now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+  });
+  return run.then((res) => ({ res, doc, marks })).finally(() => fs.rmSync(dir, { recursive: true, force: true }));
+}
+
+const entry = (extra = {}) => ({ id: `${SHOW.id}|abc`, holder: 'manual-inbox', show: SHOW.id, url: URL1, critic: 'A Critic', addedAt: new Date().toISOString(), addedBy: 'test', ...extra });
+
+test('the lane publishes an inbox URL no adapter found, stamped manual, and marks it published', async () => {
+  const { doc, marks, res } = await laneNight({ entries: [entry()], fetchDate: NIGHT });
+  const row = doc.reviews.find((r) => r.url === URL1);
+  assert.ok(row, 'manual URL published: ' + JSON.stringify({ marks, n: doc.reviews.length, res: { p: res.published, u: res.unpublished, inbox: res.inbox, rej: res.rejected } }).slice(0, 1500));
+  assert.equal(row.criticName, 'A Critic', 'critic from the inbox entry');
+  assert.equal(row[trust.PROVENANCE_KEY].source, 'manual');
+  assert.ok(row.laneManualInbox && row.laneManualInbox.addedBy === 'test');
+  assert.equal(trust.isLaneReview(row, { openingDate: NIGHT }), true, 'publish.js accepts it');
+  for (const g of trust.LANE_BYPASSED_GUARDS) assert.equal(trust.laneBypasses(row, g, { openingDate: NIGHT }), false, `no ${g} bypass for a manual row`);
+  assert.ok(marks.some((m) => m.id === entry().id && m.status === 'published'), JSON.stringify(marks));
+});
+
+test('an inbox URL dated far from the night is rejected and recorded, not published', async () => {
+  const { doc, marks } = await laneNight({ entries: [entry()], fetchDate: '2019-03-01' });
+  assert.equal(doc.reviews.length, 0);
+  const m = marks.find((x) => x.status === 'rejected');
+  assert.ok(m && /night-window/.test(m.reason), JSON.stringify(marks));
+});
+
+test('force publishes an off-date page; an undated page takes the inbox add date', async () => {
+  const forced = await laneNight({ entries: [entry({ force: true })], fetchDate: '2019-03-01' });
+  assert.equal(forced.doc.reviews.length, 1, JSON.stringify({ m: forced.marks, u: forced.res.unpublished, i: forced.res.inbox }));
+  const undated = await laneNight({ entries: [entry()], fetchDate: null });
+  const row = undated.doc.reviews[0];
+  assert.ok(row, JSON.stringify(undated.marks));
+  // The add date in the show's time zone (New York), so it can be the UTC day before.
+  assert.ok(Math.abs(Date.parse(row.publishDate) - Date.parse(NIGHT)) <= 86400000, row.publishDate);
+});
