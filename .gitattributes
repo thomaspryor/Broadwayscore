@@ -548,3 +548,5 @@ data/audit/gap-recovery-nightly.jsonl merge=union
 # can neither resurrect a pruned row nor disturb a reader. Landed without an attribute,
 # which failed audit-ledger-merge-attrs.test.mjs's repo-wide check (BRO-7263).
 data/audit/discovery-slot-collisions.jsonl merge=union
+# BRO-7790: append-only landed-change proof ledger (scripts/landed-change-proof-audit.js); union keeps both sides of a race.
+data/audit/landed-change-proof.jsonl merge=union
