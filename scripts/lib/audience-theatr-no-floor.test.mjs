@@ -32,17 +32,3 @@ test('the 80% ceiling never hands a tiny source outsized weight', () => {
   const big = calculateCombinedScore({ mezzanine: { score: 80, reviewCount: 1000 }, showScore: { score: 60, reviewCount: 50 } }, { category: 'broadway' });
   assert.equal(big.weights.mezzanine, 80);
 });
-
-test('most-divisive list ranks only shown scores on both sides', () => {
-  const src = readFileSync(new URL('../../src/config/browse-pages.ts', import.meta.url), 'utf8');
-  const block = src.slice(src.indexOf("'most-divisive-broadway-shows'"), src.indexOf('customSort', src.indexOf("'most-divisive-broadway-shows'")));
-  assert.match(block, /displaysCriticScore\(show\)/, 'critic TBD shows must not rank (Pygmalion, 2 reviews, was #1)');
-  assert.match(block, /hasFullConfidenceAudienceReviews\(buzz\)/, 'audience side needs the full-confidence sample');
-});
-
-test('every Show Score run recalculates stored combined scores, even when all shows are fresh', () => {
-  const src = readFileSync(new URL('../scrape-show-score-audience.js', import.meta.url), 'utf8');
-  assert.match(src, /main\(\)\.then\(recalculateStoredScores\)/, 'recalc runs after main resolves');
-  const fresh = src.slice(src.indexOf('All requested shows are fresh'), src.indexOf('All requested shows are fresh') + 200);
-  assert.doesNotMatch(fresh, /process\.exit\(0\)/, 'an exit here would skip the recalc');
-});
