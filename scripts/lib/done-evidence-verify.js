@@ -43,6 +43,7 @@
 'use strict';
 
 const { execFileSync } = require('node:child_process');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 
 const COMMIT_URL_RE = /https?:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/commit\/([0-9a-f]{7,40})\b/gi;
 const PR_URL_RE = /https?:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/pull\/(\d+)\b/gi;
@@ -340,7 +341,7 @@ function makeMentionsIssue({ cwd = process.cwd(), originRepo = null, timeoutMs =
   // subjects read "Merge branch 'job/linear-BRO-3431-mu34ri7q'" and
   // "worktree-bro-3429-watchdog-park" — the id follows a hyphen.
   const idRe = (id) => new RegExp(`(^|[^A-Za-z0-9])${String(id).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![0-9])`, 'i');
-  const git = (args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout: timeoutMs });
+  const git = (args) => gitGuard.runGitOrThrow(args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout: timeoutMs });
   return function mentionsIssue({ sha, prNumber, issueIdentifier }) {
     const re = idRe(issueIdentifier);
     let msg = null;
@@ -422,7 +423,7 @@ function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {}, remote = null
 function makeLocalIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
   const { isAncestor, isShallowRepo } = require('./landing-verify.js');
   const { fetchOriginMain } = require('./card-premises-auditor.js');
-  const git = (args, timeout = 15000) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout }).trim();
+  const git = (args, timeout = 15000) => gitGuard.runGitOrThrow(args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout }).trim();
   // Decided ONCE per factory: a shallow clone can neither confirm nor deny
   // ancestry (merge-base is fooled by the graft — landing-verify.js header),
   // and unshallowing is a multi-GB fetch that has no place inside a CLI gate.

@@ -20,9 +20,9 @@
  */
 
 const fs = require('fs');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const os = require('os');
 const path = require('path');
-const { execFileSync } = require('child_process');
 
 const sessionId = (env = process.env) => String(env.CLAUDE_CODE_SESSION_ID || 'nosession').replace(/[^\w-]/g, '');
 const waitsFile = (env = process.env) => path.join(env.RESTART_RECOVERY_DIR || os.tmpdir(), `bsc-pending-waits-${sessionId(env)}.jsonl`);
@@ -79,7 +79,7 @@ function worktreeStates(root) {
   for (const n of names) {
     const p = path.join(base, n);
     try {
-      const run = (a) => execFileSync('git', a, { cwd: p, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000 }).trim();
+      const run = (a) => gitGuard.runGitOrThrow(a, { cwd: p, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000 }).trim();
       const dirty = run(['status', '--porcelain']).split('\n').filter(Boolean).length;
       let ahead = 0;
       try { ahead = Number(run(['rev-list', '--count', '@{upstream}..HEAD'])) || 0; } catch { ahead = Number(run(['rev-list', '--count', 'origin/main..HEAD'])) || 0; }

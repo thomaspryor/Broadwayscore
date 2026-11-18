@@ -234,7 +234,7 @@ function fetchMain() {
   try {
     const depthArgs = repoDepthArgs({ repoRoot: process.cwd() });
     // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-    // BRO-7458: runGitOrThrow kills the timed-out fetch's whole process group.
+    // BRO-7458: runGitOrThrow kills the timed-out fetch's orphaned helpers.
     runGitOrThrow(['fetch', '-q', ...depthArgs, 'origin', 'main'], { stdio: ['ignore', 'ignore', 'pipe'], timeout: 120_000 });
     return true;
   } catch (err) {

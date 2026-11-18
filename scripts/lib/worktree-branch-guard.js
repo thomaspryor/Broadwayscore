@@ -38,6 +38,7 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const { matchesTaskWorkBranch } = require('./dispatch-guards.js');
 const { runGitOrThrow } = require('./git-proc-guard.js');
 
@@ -50,7 +51,7 @@ const { runGitOrThrow } = require('./git-proc-guard.js');
  */
 function classifyJobBranch(branch, repoDir, defaultBranch = 'main') {
   const upstream = `origin/${defaultBranch}`;
-  const git = (args) => execFileSync('git', args, {
+  const git = (args) => gitGuard.runGitOrThrow(args, {
     cwd: repoDir, encoding: 'utf8', timeout: 15000,
     stdio: ['ignore', 'pipe', 'ignore'],
   }).trim();
@@ -136,7 +137,7 @@ function listWorkBranchStatuses(taskId, { repoDir, defaultBranch = 'main' } = {}
     // dispatch-guards.js (which this file's matchesTaskWorkBranch feeds) is
     // required by bsc-next.test.mjs, which some shallow-checkout workflow runs;
     // the git-fetch code path here is never actually invoked during tests.
-    runGitOrThrow(['fetch', 'origin', defaultBranch, '-q'], { cwd: repoDir, timeout: 20000 }); // BRO-7458: group kill on timeout
+    runGitOrThrow(['fetch', 'origin', defaultBranch, '-q'], { cwd: repoDir, timeout: 20000 }); // BRO-7458: orphaned helpers killed on timeout
   } catch {
     // offline/timeout — use cached origin ref
   }

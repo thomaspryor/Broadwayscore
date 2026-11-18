@@ -56,7 +56,7 @@ import { createRequire } from 'node:module';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
-const { runGitOrThrow } = cjsRequire('../lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
+const { runGitOrThrow } = cjsRequire('../lib/git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
 const { buildFromAddress, buildReplyToAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { shallowFetchArgs } = cjsRequire(path.join(repo, 'scripts/lib/shallow-fetch-args.js'));
 // NOTE: deliberately NO send-lock here. The GitHub-backed send-lock (used by the

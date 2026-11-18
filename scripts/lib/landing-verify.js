@@ -70,7 +70,7 @@ const GIT_NET_TIMEOUT_SEC = Number(process.env.GIT_NET_TIMEOUT_SEC || 90);
 
 function git(args, cwd, timeoutMs = GIT_NET_TIMEOUT_SEC * 1000) {
   try {
-    // BRO-7458: a network git that times out has its whole process group killed.
+    // BRO-7458: a network git that times out has its orphaned helpers killed.
     return runGitOrThrow(args, {
       cwd,
       encoding: 'utf8',

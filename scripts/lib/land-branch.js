@@ -71,6 +71,7 @@
 'use strict';
 
 const fs = require('fs');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -470,7 +471,7 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
   if (!/^[0-9a-f]{40}$/.test(String(verifiedBase || ''))) throw new Error(`makeVerifiedBaseChecks: verifiedBase must be a full 40-hex sha (got ${JSON.stringify(verifiedBase)})`);
   const run = git || ((args, cwd) => {
     try {
-      return execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: GIT_NET_TIMEOUT_MS }).trim();
+      return gitGuard.runGitOrThrow(args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: GIT_NET_TIMEOUT_MS }).trim();
     } catch { return null; }
   });
   return function verifiedBaseChecks(o) {
@@ -836,7 +837,7 @@ function landBranch(o) {
     // old path is listed and main's copy of it is fetched for the merge.
     const quiet = (args, timeout = PREFETCH_TIMEOUT_MS) => {
       try {
-        execFileSync('git', args, { cwd: workdir, stdio: ['ignore', 'ignore', 'ignore'], timeout });
+        gitGuard.runGitOrThrow(args, { cwd: workdir, stdio: ['ignore', 'ignore', 'ignore'], timeout });
         return true;
       } catch { return false; }
     };

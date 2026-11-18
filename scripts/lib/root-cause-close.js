@@ -29,6 +29,7 @@
  * landings ledger, fails soft to null = unknown).
  */
 'use strict';
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 
 const ROOT_CAUSE_CLOSE_BLOCKING_FROM = '2026-12-22';
 // BRO-7138: EFFECT is newer, so a close missing ONLY EFFECT gets its own,
@@ -246,8 +247,7 @@ function rootCauseCloseSummary(identifier, result, blocking) {
  * { commits: string[], run } or null when git could not be read.
  */
 function ownCommitsForCard(identifier, { cwd = process.cwd(), landingsText = null, exec = null, allowFetch = true, timeoutMs = 60000 } = {}) {
-  const { execFileSync } = require('child_process');
-  const run = exec || ((args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 }));
+  const run = exec || ((args) => gitGuard.runGitOrThrow(args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 }));
   const sc = require('./stuck-card-closer.js');
   let text = landingsText;
   if (text === null) {

@@ -43,7 +43,7 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
-const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const linear = require('./lib/linear-client.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');

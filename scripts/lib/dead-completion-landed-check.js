@@ -37,7 +37,7 @@
  */
 
 const path = require('path');
-const { spawnSync } = require('child_process');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 
 const DEFAULT_REF = 'origin/main';
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -228,7 +228,7 @@ function safeCall(fn) {
  */
 function makeGitProbe({ ref = DEFAULT_REF, cwd = REPO_ROOT, run } = {}) {
   const exec = run || ((args) => {
-    const r = spawnSync('git', args, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, timeout: 30_000 });
+    const r = gitGuard.runGit('git', args, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, timeout: 30_000 });
     return { status: r.status, stdout: r.stdout || '' };
   });
   const cache = new Map();

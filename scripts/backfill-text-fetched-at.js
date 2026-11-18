@@ -20,7 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const {

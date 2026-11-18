@@ -22,6 +22,7 @@
 'use strict';
 
 const path = require('path');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const fs = require('fs');
@@ -89,7 +90,7 @@ function cwdRepo() {
 function trainMarkerVerdict({ tip, repoDir, remote = 'origin', git = null }) {
   const run = git || ((args) => {
     try {
-      return execFileSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 90000 }).trim();
+      return gitGuard.runGitOrThrow(args, { cwd: repoDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 90000 }).trim();
     } catch { return null; }
   });
   const ls = run(['ls-remote', remote, markerRef(tip)]);

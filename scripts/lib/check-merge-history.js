@@ -24,7 +24,7 @@
 
 'use strict';
 
-const { execFileSync } = require('child_process');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 
 // BRO-3320 sibling. ensureFullHistory() below runs `git fetch --unshallow`,
 // and this wrapper carried NO timeout — an unbounded hang if it ever fired.
@@ -40,7 +40,7 @@ const { execFileSync } = require('child_process');
 const GIT_NET_TIMEOUT_SEC = Number(process.env.GIT_NET_TIMEOUT_SEC || 90);
 
 function runGit(args, cwd) {
-  return execFileSync('git', args, {
+  return gitGuard.runGitOrThrow(args, {
     cwd,
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],

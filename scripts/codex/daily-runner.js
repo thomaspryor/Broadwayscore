@@ -161,9 +161,9 @@ function sh(cmd, args, opts = {}) {
   // would run from the worktree, i.e. the code under review, with this process's env (BRO-5646).
   if (cmd === 'git') args = ['-c', 'core.hooksPath=/dev/null', ...args];
   const spawnOpts = { cwd: opts.cwd || ROOT, encoding: 'utf8', timeout: opts.timeoutMs || 600_000, env: opts.env || process.env, input: opts.input, maxBuffer: 64 * 1024 * 1024 };
-  // BRO-7458: network git (fetch|pull|clone) runs in its own process group, and a timeout kills
-  // the whole group: spawnSync alone killed only `git fetch` and left its index-pack writing a
-  // multi-GB tmp_pack under pid 1. codex/claude/npm are deliberately not detached.
+  // BRO-7458: on timeout spawnSync kills only `git fetch`, which left its index-pack writing a
+  // multi-GB tmp_pack under pid 1. runGit sweeps those orphaned helpers after a timeout. Nothing is
+  // detached: Ctrl-C / SIGTERM to the runner's group still reaches fetch.
   const r = cmd === 'git' ? GPG.runGit(cmd, args, spawnOpts) : spawnSync(cmd, args, spawnOpts);
   const timedOut = !!r.error && ['ETIMEDOUT', 'ENOBUFS'].includes(r.error.code);
   return { code: r.status == null ? -1 : r.status, out: `${r.stdout || ''}${r.stderr || ''}${timedOut ? `\n(${r.error.code})` : ''}`, stdout: r.stdout || '', timedOut };

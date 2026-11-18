@@ -11,6 +11,9 @@
 
 const NET = /^(fetch|pull|clone)$/;
 const CALL = /\b(spawnSync|execFileSync)\(\s*['"`]git['"`]\s*,\s*\[/g;
+// A wrapper passing its args through (`execFileSync('git', args, { timeout })`): it cannot be told
+// whether a caller hands it a fetch, so it must route through runGit/runGitOrThrow or be waived.
+const IDENT_CALL = /\b(spawnSync|execFileSync)\(\s*['"`]git['"`]\s*,\s*(?:\.\.\.)?[A-Za-z_$][\w$.]*\s*[,)]/g;
 const SHELL_CALL = /\bexecSync\(\s*['"`]git\s+(?:-\S+\s+(?:\S+\s+)?)*?(fetch|pull|clone)\b/g;
 const WAIVER = /git-net-timeout-ok:/;
 
@@ -47,6 +50,12 @@ function scanText(text) {
     if (!/\btimeout\b/.test(call.slice(arr.length))) continue;
     const line = lineOf(text, m.index);
     if (!waived(line)) out.push({ line, call: m[1], snippet: lines[line - 1].trim().slice(0, 140) });
+  }
+  for (const m of text.matchAll(IDENT_CALL)) {
+    const call = text.slice(m.index, closeOf(text, m.index + m[0].indexOf('(')));
+    if (!/\btimeout\b/.test(call)) continue;
+    const line = lineOf(text, m.index);
+    if (!waived(line)) out.push({ line, call: m[1], snippet: lines[line - 1].trim().slice(0, 140), wrapper: true });
   }
   for (const m of text.matchAll(SHELL_CALL)) {
     const callOpen = m.index + m[0].indexOf('(');

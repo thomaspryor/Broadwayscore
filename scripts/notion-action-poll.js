@@ -24,7 +24,7 @@
 
 const { Client } = require('@notionhq/client');
 const { execSync, spawn } = require('child_process');
-const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
 const path = require('path');
 const fs = require('fs');
 

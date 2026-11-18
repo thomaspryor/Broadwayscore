@@ -17,6 +17,7 @@
  */
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const path = require('path');
 const { execFileSync, execSync } = require('child_process');
 const wd = require('./lib/press-night-watchdog');
@@ -78,7 +79,7 @@ function readVar(name) {
 /** The lane's stood-down markers as committed on origin/main (the lane-live job pushes them mid-night). null = unreadable. */
 function readMainMarkers() {
   const ref = 'refs/press-night-watchdog/main';
-  const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', timeout: 60000, stdio: ['ignore', 'pipe', 'pipe'] });
+  const git = (args) => gitGuard.runGitOrThrow(args, { cwd: ROOT, encoding: 'utf8', timeout: 60000, stdio: ['ignore', 'pipe', 'pipe'] });
   try {
     git(['fetch', '--no-tags', '--quiet', 'origin', `+refs/heads/main:${ref}`]);
     const out = {};

@@ -24,7 +24,7 @@ const GIT_TIMEOUT_MS = 10000;
 const memo = new Map(); // once per process per clone: recheck batches don't fetch per card
 
 function git(cwd, args, timeout = GIT_TIMEOUT_MS) {
-  // BRO-7458: runGitOrThrow kills a timed-out fetch's whole process group (no orphan index-pack).
+  // BRO-7458: runGitOrThrow kills a timed-out fetch's orphaned helpers (no runaway index-pack).
   return runGitOrThrow(args, { cwd, timeout, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 }
 

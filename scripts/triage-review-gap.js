@@ -46,7 +46,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
 
 const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization');
 const { explainExclusion, explainShowLevelExclusion } = require('./lib/review-guards');

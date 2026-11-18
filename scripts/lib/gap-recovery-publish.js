@@ -41,7 +41,7 @@ function unionLines(originText, localText) {
 }
 
 function gitRunner(repoDir, extraEnv = {}) {
-  // BRO-7458: runGitOrThrow kills a timed-out fetch's whole process group (no orphan index-pack).
+  // BRO-7458: runGitOrThrow kills a timed-out fetch's orphaned helpers (no runaway index-pack).
   return (args, opts = {}) => runGitOrThrow(args, {
     cwd: repoDir,
     encoding: 'utf8',

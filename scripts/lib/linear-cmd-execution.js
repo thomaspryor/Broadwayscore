@@ -180,7 +180,7 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
  */
 function makePathsOnMain({ repo = path.join(__dirname, '..', '..'), ref = 'origin/main' } = {}) {
   const { execFileSync } = require('child_process');
-  const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: group kill on timeout
+  const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
   const { extractCheckPaths } = require('./check-paths.js');
   return function pathsOnMain(cmd) {
     const paths = extractCheckPaths(cmd).filter((p) => p && !p.startsWith('-') && !/[*?]/.test(p));

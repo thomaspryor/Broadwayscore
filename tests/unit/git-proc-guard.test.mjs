@@ -268,36 +268,95 @@ test('dry run kills nothing and unlinks nothing, but reports the orphan and the 
 
 // ---------------------------------------------------------------- real runGit
 
-test('runGit: a timed-out network git has its whole process group killed (grandchild too)', { skip: process.platform === 'win32' }, () => {
+test('runGit: a timed-out network git has its orphaned helper swept (grandchild dies, child not detached)', { skip: process.platform !== 'linux' }, () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rungit-'));
+  let gpid = null;
   try {
     const pidFile = path.join(dir, 'grandchild.pid');
     const argsFile = path.join(dir, 'args.json');
     const fake = path.join(dir, 'git');
+    // The fake git starts a helper that looks like git-remote-https (argv0) and hangs; when the
+    // timeout kills the fake, the helper is reparented exactly like the real orphaned index-pack.
     fs.writeFileSync(fake, `#!${process.execPath}
 const cp = require('child_process');
-require('fs').writeFileSync(${JSON.stringify(argsFile)}, JSON.stringify(process.argv.slice(2)));
-const g = cp.spawn(${JSON.stringify(process.execPath)}, ['-e', 'setInterval(() => {}, 1000)'], { stdio: 'ignore' });
+require('fs').writeFileSync(${JSON.stringify(argsFile)}, JSON.stringify({ argv: process.argv.slice(2), env: Object.fromEntries(Object.entries(process.env).filter(([k]) => k.startsWith('GIT_CONFIG_'))) }));
+const g = cp.spawn(${JSON.stringify(process.execPath)}, ['-e', 'setInterval(() => {}, 1000)'], { stdio: 'ignore', argv0: 'git-remote-https' });
 require('fs').writeFileSync(${JSON.stringify(pidFile)}, String(g.pid));
 setInterval(() => {}, 1000);
 `, { mode: 0o755 });
+    // The sweep reads only our own grandchild's /proc entry (never pid 1 or other processes).
+    const scan = () => {
+      const rec = G.readProcEntry('/proc', Number(fs.readFileSync(pidFile, 'utf8')), {});
+      return { ok: true, records: rec ? [rec] : [] };
+    };
     const t0 = Date.now();
-    const r = G.runGit(fake, ['-c', 'core.hooksPath=/dev/null', 'fetch', 'origin'], { timeout: 1500, encoding: 'utf8' });
-    assert.ok(Date.now() - t0 < 10_000);
+    const r = G.runGit(fake, ['-c', 'core.hooksPath=/dev/null', 'fetch', 'origin'], { timeout: 5000, encoding: 'utf8' }, { scan, pollMs: 20 });
+    assert.ok(Date.now() - t0 < 20_000);
     assert.equal(r.timedOut, true);
-    const gpid = Number(fs.readFileSync(pidFile, 'utf8'));
+    for (let i = 0; i < 100 && !fs.existsSync(pidFile); i++) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 50);
+    assert.ok(fs.existsSync(pidFile), `fake git never wrote ${pidFile}: the grandchild was not started within the 5 s timeout`);
+    gpid = Number(fs.readFileSync(pidFile, 'utf8'));
     // Poll (never one signal-0 check): gone or zombie.
     let alive = true;
     for (let i = 0; i < 100 && alive; i++) {
       alive = G.pidAlive(gpid);
       if (alive) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 50);
     }
-    assert.equal(alive, false, `grandchild ${gpid} survived`);
-    assert.deepEqual(JSON.parse(fs.readFileSync(argsFile, 'utf8')).slice(0, 4), G.LOW_SPEED_ARGS);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    assert.equal(alive, false, `grandchild ${gpid} survived (swept: ${JSON.stringify(r.swept)})`);
+    assert.ok(r.swept, 'runGit did not sweep after the timeout');
+    const seen = JSON.parse(fs.readFileSync(argsFile, 'utf8'));
+    assert.deepEqual(seen.argv, ['-c', 'core.hooksPath=/dev/null', 'fetch', 'origin'], 'argv is passed through untouched');
+    // Appended after whatever GIT_CONFIG_* the environment already carries.
+    const n = Number(seen.env.GIT_CONFIG_COUNT);
+    assert.equal(seen.env[`GIT_CONFIG_KEY_${n - 2}`], 'http.lowSpeedLimit');
+    assert.equal(seen.env[`GIT_CONFIG_VALUE_${n - 2}`], '1');
+    assert.equal(seen.env[`GIT_CONFIG_KEY_${n - 1}`], 'http.lowSpeedTime');
+  } finally {
+    if (gpid) { try { process.kill(gpid, 'SIGKILL'); } catch { /* gone */ } }
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
 
-test('runGit: non-network git is a plain spawnSync (no low-speed args, not detached)', () => {
+test('sweepOrphanedHelpers: only ppid-1 killable helpers in our group or started after the spawn', () => {
+  const sent = [];
+  const kill = (p, s) => { if (s) sent.push(p); return true; };
+  const recs = [
+    indexPack(1, 1, { pgrp: 77, startTicks: 10 }), // ours by group
+    indexPack(2, 1, { pgrp: 5, startTicks: 500 }), // started after the spawn
+    indexPack(3, 1, { pgrp: 5, startTicks: 10 }), // someone else's, older
+    indexPack(4, 99, { pgrp: 77, startTicks: 500 }), // parent still alive
+    proc(5, 1, ['git', 'push', 'origin'], { pgrp: 77, startTicks: 500 }), // not a helper
+    indexPack(6, 1, { pgrp: 77, startTicks: 500, nspid: [6, 1] }), // nested pid ns
+  ];
+  const r = G.sweepOrphanedHelpers({ sinceTicks: 100, pgrp: 77, scan: () => ({ ok: true, records: recs }), kill, readState: () => 'Z', readStartTicks: (p) => recs.find((x) => x.pid === p).startTicks, timeoutMs: 50, pollMs: 5 });
+  assert.deepEqual(sent.sort(), [1, 2]);
+  assert.deepEqual(r.killed.sort(), [1, 2]);
+});
+
+test('killChain re-reads start time before signalling and skips a reused pid', () => {
+  const sent = [];
+  const r = G.killChain([50, 51], { kill: (p, s) => { if (s) sent.push([p, s]); return true; }, readState: () => 'Z', startTicks: new Map([[50, 100], [51, 200]]), readStartTicks: (p) => (p === 50 ? 999 : 200), timeoutMs: 50, pollMs: 5 });
+  assert.deepEqual(sent, [[51, 'SIGTERM']]);
+  assert.deepEqual(r.exited.sort(), [50, 51]);
+});
+
+test('a live git push -> git-remote-https under ppid 1 is never killed', () => {
+  const recs = [proc(600, 1, ['git', 'push', 'origin', 'HEAD:refs/heads/x'], { fdTargets: [`${COMMON}/refs`] }), proc(601, 600, ['git-remote-https', 'origin', 'https://x'], { fdTargets: [`${COMMON}/x`] })];
+  const r = G.findOrphanGitChains(recs, { gitCommonDir: COMMON });
+  assert.equal(r.chains.length, 0);
+  // and a ppid-1 non-helper git (e.g. `git gc`) is never a chain top
+  assert.equal(G.findOrphanGitChains([proc(602, 1, ['git', 'gc'], { fdTargets: [`${PACK}/tmp_pack_q`] })], { gitCommonDir: COMMON }).chains.length, 0);
+});
+
+test('low-speed config: 1 byte/s for 60 s, appended after caller GIT_CONFIG_* entries', () => {
+  assert.deepEqual(G.LOW_SPEED_ARGS, ['-c', 'http.lowSpeedLimit=1', '-c', 'http.lowSpeedTime=60']);
+  const e = G.withLowSpeedEnv({ PATH: '/bin', GIT_CONFIG_COUNT: '1', GIT_CONFIG_KEY_0: 'core.hooksPath', GIT_CONFIG_VALUE_0: '/dev/null' });
+  assert.equal(e.GIT_CONFIG_COUNT, '3');
+  assert.deepEqual([e.GIT_CONFIG_KEY_0, e.GIT_CONFIG_KEY_1, e.GIT_CONFIG_VALUE_1, e.GIT_CONFIG_KEY_2, e.GIT_CONFIG_VALUE_2], ['core.hooksPath', 'http.lowSpeedLimit', '1', 'http.lowSpeedTime', '60']);
+  assert.equal(G.withLowSpeedEnv({}).GIT_CONFIG_COUNT, '2');
+});
+
+test('runGit: non-network git is a plain spawnSync (no low-speed args, no sweep)', () => {
   const r = G.runGit('git', ['--version'], { encoding: 'utf8' });
   assert.equal(r.status, 0);
   assert.match(r.stdout, /git version/);

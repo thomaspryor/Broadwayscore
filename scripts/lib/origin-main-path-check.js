@@ -53,7 +53,7 @@ function fetchOriginMain({ repo = REPO, log = () => {}, attempts = 3, sleepMs = 
   for (let i = 1; i <= attempts; i++) {
     try {
       // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-      // BRO-7458: runGitOrThrow kills the timed-out fetch's whole process group.
+      // BRO-7458: runGitOrThrow kills the timed-out fetch's orphaned helpers.
       runGitOrThrow(['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: repo, timeout: 30000, stdio: 'pipe' });
       return true;
     } catch (err) {

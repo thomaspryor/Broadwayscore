@@ -45,7 +45,7 @@ const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 const { safeWriteReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { verifyReviewTextsPushed } = require('./lib/verify-review-texts-pushed');
 const { execFileSync } = require('child_process');
-const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: group kill on timeout
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
 const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./lib/review-texts-dir');
 const { repoDepthArgs } = require('./lib/shallow-fetch-args');
 

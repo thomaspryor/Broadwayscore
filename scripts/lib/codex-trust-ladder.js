@@ -21,6 +21,7 @@
 // committed edit (relock is always on).
 
 const fs = require('fs');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const path = require('path');
 
 const HOUR = 3600_000;
@@ -132,7 +133,7 @@ function ladderAccess({ root = path.resolve(__dirname, '..', '..'), env = proces
   if (killed(null, env)) return { ...access({ env }), mode: 'killed', ref: 'env' };
   const hit = accessCache.get(root);
   if (hit && nowMs - hit.at < ACCESS_TTL_MS) return hit.value;
-  const run = git || ((args) => require('child_process').execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 15_000 }));
+  const run = git || ((args) => gitGuard.runGitOrThrow(args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 15_000 }));
   let value;
   try {
     let sha = null;

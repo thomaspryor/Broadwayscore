@@ -8,13 +8,15 @@
  * on 2026-11-18), which filled the disk and crashed the Codex lane.
  *
  * Two halves:
- *   1. Prevention (runGit / runGitOrThrow): network git (fetch|pull|clone) runs in its own process
- *      group (detached: true) and, when spawnSync returns on a timeout (ETIMEDOUT), a buffer
- *      overflow (ENOBUFS) or any signal, the WHOLE group is killed (SIGTERM, SIGKILL after ~2 s).
- *      It also passes `-c http.lowSpeedLimit=1000 -c http.lowSpeedTime=60`, so a stalled HTTPS
- *      transfer aborts by itself. Those settings cover HTTPS only: an SSH remote that stalls relies
- *      on the reaper's ppid-1 age rule below. Only network git is detached on purpose: a detached
- *      child no longer gets the terminal's Ctrl-C, and codex/claude/npm children are left as they are.
+ *   1. Prevention (runGit / runGitOrThrow): network git (fetch|pull|clone) gets
+ *      http.lowSpeedLimit=1 / http.lowSpeedTime=60 (via GIT_CONFIG_COUNT env), so an HTTPS transfer that moves nothing
+ *      for 60 s aborts by itself. When spawnSync comes back timed out (ETIMEDOUT), overflowed
+ *      (ENOBUFS) or signalled, runGit sweeps /proc for git helpers (index-pack, unpack-objects,
+ *      fetch-pack, git-remote-http[s]) now reparented to pid 1 that are in this process's group or
+ *      started after the spawn, and kills them (SIGTERM, then SIGKILL; start time rechecked first).
+ *      The child is NOT detached: Ctrl-C / SIGTERM to the runner's process group must still reach
+ *      fetch. http.lowSpeed* covers HTTPS only; a stalled SSH fetch relies on the timeout plus the
+ *      sweep, and on the reaper's ppid-1 age rule below.
  *   2. Cleanup (pruneGitTempPacks): find orphaned git network chains from the real process tree
  *      (/proc/<pid>/stat ppid links), kill them, and unlink temp pack files no live process holds.
  *      Fails closed: an unreadable /proc or an unreadable git-looking pid keeps every file.
@@ -34,9 +36,26 @@ const { spawnSync, execFileSync } = require('child_process');
 // git global options that take their value as the NEXT token.
 const VALUE_OPTIONS = new Set(['-c', '-C', '--git-dir', '--work-tree', '--namespace', '--super-prefix', '--config-env']);
 const NETWORK_SUBCOMMANDS = new Set(['fetch', 'pull', 'clone']); // push, ls-remote excluded on purpose (no index-pack)
-// Children a fetch leaves behind: what we look for under a dead parent.
-const HELPER_SUBCOMMANDS = new Set(['index-pack', 'unpack-objects', 'fetch-pack', 'remote-https', 'remote-http', 'remote-ftp', 'remote-ftps', 'http-fetch']);
-const LOW_SPEED_ARGS = ['-c', 'http.lowSpeedLimit=1000', '-c', 'http.lowSpeedTime=60'];
+// Network git that is never ours to kill: a helper under one of these is a live push / ls-remote's.
+const LIVE_TOP_SUBCOMMANDS = new Set(['push', 'ls-remote', 'send-pack']);
+// Children a fetch leaves behind, and the only helpers ever killed.
+const HELPER_SUBCOMMANDS = new Set(['index-pack', 'unpack-objects', 'fetch-pack', 'remote-https', 'remote-http']);
+// lowSpeedLimit=1 byte/s, not more: a deepen/negotiation fetch can be legitimately quiet for long
+// stretches (server counting objects, keepalive sideband packets only), and any byte proves the
+// transfer is alive. Only a transfer moving nothing at all for 60 s is aborted.
+const LOW_SPEED_ARGS = ['-c', 'http.lowSpeedLimit=1', '-c', 'http.lowSpeedTime=60'];
+// Passed through GIT_CONFIG_COUNT/KEY/VALUE (git >= 2.31), not argv: argv stays exactly what the
+// caller wrote, so fake-git test doubles that switch on "$1" and argv-reading hooks keep working.
+const LOW_SPEED_CONFIG = [['http.lowSpeedLimit', '1'], ['http.lowSpeedTime', '60']];
+/** env plus LOW_SPEED_CONFIG appended after any GIT_CONFIG_* entries the caller already set. */
+function withLowSpeedEnv(env) {
+  const out = { ...(env || process.env) };
+  let n = Number.parseInt(out.GIT_CONFIG_COUNT, 10);
+  if (!Number.isFinite(n) || n < 0) n = 0;
+  for (const [k, v] of LOW_SPEED_CONFIG) { out[`GIT_CONFIG_KEY_${n}`] = k; out[`GIT_CONFIG_VALUE_${n}`] = v; n++; }
+  out.GIT_CONFIG_COUNT = String(n);
+  return out;
+}
 
 /** Largest timeout runGit allows a network git; larger asks are clamped. */
 const MAX_NETWORK_GIT_TIMEOUT_MS = 20 * 60_000;
@@ -44,7 +63,6 @@ const MAX_NETWORK_GIT_TIMEOUT_MS = 20 * 60_000;
 const ORPHAN_NETWORK_GIT_AGE_MS = MAX_NETWORK_GIT_TIMEOUT_MS + 10 * 60_000;
 /** A temp pack file this old with no live holder is reapable even if we killed nothing. */
 const TEMP_PACK_MIN_AGE_MS = 30 * 60_000;
-const KILL_GRACE_MS = 2_000;
 const EXIT_POLL_MS = 5_000;
 
 const sleepSync = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
@@ -66,31 +84,44 @@ const isGitCmd = (cmd) => path.basename(String(cmd || '')) === 'git';
 
 function errCode(e) { return e && e.code; }
 
-/** Kill process group `pgid`: SIGTERM, then SIGKILL if any member remains after graceMs. */
-function killProcessGroup(pgid, { kill = process.kill, graceMs = KILL_GRACE_MS } = {}) {
-  if (!pgid || pgid <= 1) return false;
-  try { kill(-pgid, 'SIGTERM'); } catch (e) { if (errCode(e) === 'ESRCH') return false; throw e; }
-  const deadline = Date.now() + graceMs;
-  while (Date.now() < deadline) {
-    try { kill(-pgid, 0); } catch (e) { if (errCode(e) === 'ESRCH') return true; }
-    sleepSync(50);
-  }
-  try { kill(-pgid, 'SIGKILL'); } catch (e) { if (errCode(e) !== 'ESRCH') throw e; }
-  return true;
+/** Kernel clock ticks since boot (the unit of /proc/<pid>/stat starttime), or null. */
+function uptimeTicks(procRoot = '/proc') {
+  try { return Math.floor(Number(fs.readFileSync(path.join(procRoot, 'uptime'), 'utf8').split(/\s+/)[0]) * clockTicks()); } catch { return null; }
+}
+function ownPgrp() {
+  try { return parseStat(fs.readFileSync('/proc/self/stat', 'utf8')).pgrp; } catch { return null; }
 }
 
 /**
- * spawnSync, but a network git gets its own process group, HTTPS low-speed aborts and, when it
- * comes back timed out / overflowed / signalled, its whole group killed. Same return shape as
- * spawnSync (plus `timedOut`).
+ * After a network git came back timed out / signalled: helpers reparented to pid 1 that are in our
+ * process group or started after `sinceTicks` are what that git left running. Kill them.
+ * -> { ok, killed: [pids], survived: [pids] }
  */
-function runGit(cmd, args, opts = {}, { kill = process.kill } = {}) {
+function sweepOrphanedHelpers({ sinceTicks = null, pgrp = ownPgrp(), scan = () => readProcRecords(), kill = process.kill, readState, readStartTicks, timeoutMs = EXIT_POLL_MS, pollMs = 100 } = {}) {
+  const s = scan();
+  // Kill only what we could read in full; an unreadable entry is left alone.
+  const targets = (s.records || []).filter((r) => r.readable && r.ppid === 1 && !(Array.isArray(r.nspid) && r.nspid.length > 1)
+    && procRole(r) === 'helper' && ((pgrp != null && r.pgrp === pgrp) || (sinceTicks != null && Number.isFinite(r.startTicks) && r.startTicks >= sinceTicks)));
+  if (!targets.length) return { ok: s.ok, killed: [], survived: [] };
+  const k = killChain(targets.map((r) => r.pid), { kill, readState, readStartTicks, timeoutMs, pollMs, startTicks: new Map(targets.map((r) => [r.pid, r.startTicks])) });
+  return { ok: s.ok, killed: k.exited, survived: k.survived };
+}
+
+/**
+ * spawnSync plus, for a network git: HTTPS low-speed aborts, a 20 min timeout cap and, when it comes
+ * back timed out / overflowed / signalled, the sweep above. Same return shape as spawnSync (plus
+ * `timedOut`, `swept`). `inject` ({ kill, scan, readState, readStartTicks }) is for tests.
+ */
+function runGit(cmd, args, opts = {}, inject = {}) {
   const network = isGitCmd(cmd) && isNetworkGit(args);
   if (!network) return spawnSync(cmd, args, opts);
   const timeout = opts.timeout ? Math.min(opts.timeout, MAX_NETWORK_GIT_TIMEOUT_MS) : MAX_NETWORK_GIT_TIMEOUT_MS;
-  const r = spawnSync(cmd, [...LOW_SPEED_ARGS, ...args], { ...opts, timeout, detached: true });
+  const since = uptimeTicks();
+  const r = spawnSync(cmd, args, { ...opts, timeout, env: withLowSpeedEnv(opts.env) });
   r.timedOut = errCode(r.error) === 'ETIMEDOUT';
-  if (r.pid && (r.error || r.signal)) { try { killProcessGroup(r.pid, { kill }); } catch { /* best effort */ } }
+  if (r.error || r.signal) {
+    try { r.swept = sweepOrphanedHelpers({ sinceTicks: since == null ? null : since - 1, ...inject }); } catch { /* best effort */ }
+  }
   return r;
 }
 
@@ -145,7 +176,7 @@ function readProcEntry(procRoot, pid, { uptimeMs = null } = {}) {
   }
   if (!st) return { pid: Number(pid), readable: false, gitLooking: true, why: 'stat unparsable' };
   const rec = {
-    pid: Number(pid), ppid: st.ppid, pgrp: st.pgrp, state: st.state, comm,
+    pid: Number(pid), ppid: st.ppid, pgrp: st.pgrp, state: st.state, comm, startTicks: st.startTicks,
     gitLooking: isGitLookingComm(comm), readable: true, cmdline: [], fdTargets: [], cwd: null, nspid: [Number(pid)],
     ageMs: uptimeMs != null && Number.isFinite(st.startTicks) ? Math.max(0, uptimeMs - (st.startTicks * 1000) / clockTicks()) : null,
   };
@@ -171,6 +202,8 @@ function readProcEntry(procRoot, pid, { uptimeMs = null } = {}) {
 /**
  * Snapshot every process -> { ok, records, why? }. ok:false when /proc cannot be listed or any
  * git-looking process could not be read: the caller then keeps every file and kills nothing.
+ * Fail closed by design: a git process of ANOTHER uid whose fds/cwd we may not read (a non-root
+ * runner beside a sandbox user's git) makes the whole scan incomplete, so every temp file is kept.
  */
 function readProcRecords({ procRoot = '/proc' } = {}) {
   let names;
@@ -190,7 +223,10 @@ function readProcRecords({ procRoot = '/proc' } = {}) {
 
 // ---------------------------------------------------------------- pure decisions
 
-/** Role of a process record: 'network' (fetch|pull|clone), 'helper', 'git' (other git), or null. */
+/**
+ * Role of a process record: 'network' (fetch|pull|clone), 'live-top' (push|ls-remote|send-pack:
+ * never killed, nor anything under it), 'helper' (a killable fetch helper), 'git' (other git), or null.
+ */
 function procRole(rec) {
   const argv = rec.cmdline || [];
   if (!argv.length) return rec.gitLooking ? 'git' : null;
@@ -200,6 +236,7 @@ function procRole(rec) {
   else if (base.startsWith('git-')) sub = base.slice(4);
   else return rec.gitLooking ? 'git' : null;
   if (NETWORK_SUBCOMMANDS.has(sub)) return 'network';
+  if (LIVE_TOP_SUBCOMMANDS.has(sub)) return 'live-top';
   if (HELPER_SUBCOMMANDS.has(sub)) return 'helper';
   return 'git';
 }
@@ -250,12 +287,15 @@ function findOrphanGitChains(records, { gitCommonDir, orphanAgeMs = ORPHAN_NETWO
         const parent = byPid.get(cur.ppid);
         if (!parent) break;
         const pr = procRole(parent);
-        if (pr === 'network') { owned = true; break; }
+        // A live fetch owns it; a push / ls-remote is a live top we never kill under.
+        if (pr === 'network' || pr === 'live-top') { owned = true; break; }
         if (!pr) break; // non-git parent
         top = parent; cur = parent;
       }
       if (owned) continue; // a live fetch owns it; the age rule below judges that fetch
-      if (top.ppid === 1) addChain(top, `${procRole(top) === 'helper' ? 'helper' : 'git'} reparented to pid 1`);
+      // Only a killable helper may top a killed chain (never some other git command).
+      if (top.ppid === 1 && procRole(top) === 'helper') addChain(top, 'helper reparented to pid 1');
+      else if (top.ppid === 1) continue;
       else if (!byPid.get(top.ppid) || !isGit(byPid.get(top.ppid))) {
         // Tops out at a non-git, non-init parent: a subreaper, or a person running it by hand.
         if (touchesRepo(r, gitCommonDir)) out.subreaperChains++;
@@ -271,6 +311,9 @@ function findOrphanGitChains(records, { gitCommonDir, orphanAgeMs = ORPHAN_NETWO
 function pidAlive(pid, { kill = process.kill, readState = defaultReadState } = {}) {
   try { kill(pid, 0); } catch (e) { if (errCode(e) === 'ESRCH') return false; /* EPERM (or anything else): exists */ }
   return readState(pid) !== 'Z';
+}
+function defaultReadStartTicks(pid) {
+  try { return parseStat(fs.readFileSync(`/proc/${pid}/stat`, 'utf8'))?.startTicks ?? null; } catch { return null; }
 }
 function defaultReadState(pid) {
   try { return parseStat(fs.readFileSync(`/proc/${pid}/stat`, 'utf8'))?.state || null; } catch { return null; }
@@ -288,11 +331,15 @@ function waitForExit(pids, { timeoutMs = EXIT_POLL_MS, pollMs = 100, ...probe } 
 }
 
 /** SIGTERM a chain, wait, SIGKILL survivors, wait -> { exited: [pids], survived: [pids] }. */
-function killChain(pids, { kill = process.kill, readState = defaultReadState, timeoutMs = EXIT_POLL_MS, pollMs = 100 } = {}) {
+function killChain(pids, { kill = process.kill, readState = defaultReadState, timeoutMs = EXIT_POLL_MS, pollMs = 100, startTicks = new Map(), readStartTicks = defaultReadStartTicks } = {}) {
+  const reused = new Set();
+  // Re-read starttime right before each signal: a pid whose start changed is a new process that
+  // reused the number (ours already exited), so it is skipped and never signalled.
+  const same = (p) => { const want = startTicks.get(p); if (want == null) return true; const now = readStartTicks(p); if (now === want) return true; reused.add(p); return false; };
   // ESRCH: already gone; EPERM: not ours to kill (waitForExit then reports it as a survivor).
-  const send = (sig, list) => { for (const p of list) { try { kill(p, sig); } catch { /* see above */ } } };
+  const send = (sig, list) => { for (const p of list) { if (reused.has(p) || !same(p)) continue; try { kill(p, sig); } catch { /* see above */ } } };
   send('SIGTERM', pids);
-  let alive = waitForExit(pids, { kill, readState, timeoutMs, pollMs });
+  let alive = waitForExit(pids.filter((p) => !reused.has(p)), { kill, readState, timeoutMs, pollMs });
   if (alive.size) {
     send('SIGKILL', [...alive]);
     alive = waitForExit([...alive], { kill, readState, timeoutMs, pollMs });
@@ -331,7 +378,7 @@ function tempPackBytes(gitCommonDir) {
  * -> { ok, why?, chains, killed, survived, reaped: [{name, bytes}], kept: [{name, why}], bytes, subreaperChains, nestedSkipped }
  */
 function pruneGitTempPacks({
-  gitCommonDir, dryRun = false, kill = process.kill, readState = defaultReadState,
+  gitCommonDir, dryRun = false, kill = process.kill, readState = defaultReadState, readStartTicks = defaultReadStartTicks,
   scan = () => readProcRecords(), now = () => Date.now(), minAgeMs = TEMP_PACK_MIN_AGE_MS,
   orphanAgeMs = ORPHAN_NETWORK_GIT_AGE_MS, exitTimeoutMs = EXIT_POLL_MS, pollMs = 100, unlink = fs.unlinkSync,
 } = {}) {
@@ -346,13 +393,14 @@ function pruneGitTempPacks({
   const found = findOrphanGitChains(first.records, { gitCommonDir: commonDir, orphanAgeMs });
   Object.assign(res, { chains: found.chains, subreaperChains: found.subreaperChains, nestedSkipped: found.nestedSkipped });
   const orphanPids = new Set(found.chains.flatMap((c) => c.pids));
+  const byPidStart = new Map(first.records.map((r) => [r.pid, r.startTicks]));
   const probe = { kill, readState };
 
   let exited = new Set();
   if (dryRun) exited = new Set(orphanPids); // as if every kill succeeded
   else {
     for (const c of found.chains) {
-      const k = killChain(c.pids, { ...probe, timeoutMs: exitTimeoutMs, pollMs });
+      const k = killChain(c.pids, { ...probe, timeoutMs: exitTimeoutMs, pollMs, readStartTicks, startTicks: new Map(c.pids.map((p) => [p, byPidStart.get(p)])) });
       res.killed.push(...k.exited);
       res.survived.push(...k.survived);
       for (const p of k.exited) exited.add(p);
@@ -412,10 +460,10 @@ function gitCommonDirOf(cwd) {
 }
 
 module.exports = {
-  gitSubcommand, isNetworkGit, runGit, runGitOrThrow, killProcessGroup,
+  gitSubcommand, isNetworkGit, runGit, runGitOrThrow, sweepOrphanedHelpers,
   parseStat, readProcEntry, readProcRecords, procRole, findOrphanGitChains,
   pidAlive, waitForExit, killChain, isTempPackName, tempPackBytes, pruneGitTempPacks, summarizePrune, gitCommonDirOf,
-  LOW_SPEED_ARGS, MAX_NETWORK_GIT_TIMEOUT_MS, ORPHAN_NETWORK_GIT_AGE_MS, TEMP_PACK_MIN_AGE_MS,
+  LOW_SPEED_ARGS, LOW_SPEED_CONFIG, withLowSpeedEnv, MAX_NETWORK_GIT_TIMEOUT_MS, ORPHAN_NETWORK_GIT_AGE_MS, TEMP_PACK_MIN_AGE_MS,
 };
 
 if (require.main === module) {

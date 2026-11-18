@@ -3,7 +3,7 @@
 // Shared by the CI ledger and local delayed merge verifier. Fetches must stay
 // isolated from the caller's checkout, including its refs and shallow boundary.
 const { execFileSync } = require('child_process');
-const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: group kill on timeout
+const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
 const fs = require('fs');
 const os = require('os');
 const path = require('path');

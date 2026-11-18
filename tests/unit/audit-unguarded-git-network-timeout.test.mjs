@@ -33,6 +33,19 @@ test('ignores guarded calls, non-network git, no timeout, and waived lines', () 
   assert.deepEqual(scanText(src), []);
 });
 
+test('flags git wrappers that pass an args variable with a timeout (BRO-7458 review)', () => {
+  const src = [
+    "const git = (args) => execFileSync('git', args, { cwd, timeout: 60000 });",
+    "function g(a) { return spawnSync('git', a, { encoding: 'utf8', timeout }); }",
+    "const run = (...a) => execFileSync('git', a, {\n  cwd,\n  timeout: 5000,\n});",
+    "execFileSync('git', args, { cwd });", // no timeout: not flagged
+    '// git-net-timeout-ok: local-only wrapper',
+    "const local = (args) => execFileSync('git', args, { timeout: 1 });",
+    "const ok = (args) => gitGuard.runGitOrThrow(args, { timeout: 1 });",
+  ].join('\n');
+  assert.deepEqual(scanText(src).map((h) => [h.line, !!h.wrapper]), [[1, true], [2, true], [3, true]]);
+});
+
 test('scanFiles tags the file', () => {
   const hits = scanFiles([{ file: 'scripts/x.js', text: "execFileSync('git', ['fetch'], { timeout: 1 });" }]);
   assert.deepEqual(hits.map((h) => `${h.file}:${h.line}`), ['scripts/x.js:1']);

@@ -23,10 +23,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
-import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { isMainModule } from './is-main-module.mjs';
 import { canonicalRoot, readLedger } from './hook-replay.mjs';
+const gitGuard = createRequire(import.meta.url)('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 
 export const LEDGER = '.claude/rule-trials.jsonl';
 export const MIN_WORDS = 80; // about one whole new rule; 10 of 29 guidance commits in the 30 days to 2026-11-11 reached it, 18 reached 40
@@ -47,7 +47,7 @@ export function isGuidance(file) {
 }
 
 function git(cwd, args, timeout = 30000) {
-  const r = spawnSync('git', args, { cwd, encoding: 'utf8', timeout, maxBuffer: 64 * 1024 * 1024 });
+  const r = gitGuard.runGit('git', args, { cwd, encoding: 'utf8', timeout, maxBuffer: 64 * 1024 * 1024 });
   return r.status === 0 ? r.stdout : null;
 }
 

@@ -235,7 +235,7 @@ async function fetchInflowBySource({ graphql, now = new Date(), teamKey = TEAM_K
  * Codex vs Claude cards landed on main in the last 24h and 7 days, from ONE git log (the
  * history fetch is the slow part: ~12k commits/week, mostly bots). -> { d1, d7 } or null.
  */
-// BRO-7458: git goes through runGitOrThrow, so a timed-out deepen fetch has its whole process group killed.
+// BRO-7458: git goes through runGitOrThrow, so a timed-out deepen fetch has its orphaned helpers killed.
 const execGit = (cmd, args, opts) => (cmd === 'git' ? runGitOrThrow(args, opts) : execFileSync(cmd, args, opts));
 function readLanded({ cwd = process.cwd(), exec = execGit, nowMs = Date.now() } = {}) {
   const run = (args, timeout = 30_000) => exec('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout, maxBuffer: 64 * 1024 * 1024 });

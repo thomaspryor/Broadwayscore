@@ -87,7 +87,7 @@ function fetchMain(repo) {
   }
   const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
   // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-  // BRO-7458: runGitOrThrow kills the timed-out fetch's whole process group.
+  // BRO-7458: runGitOrThrow kills the timed-out fetch's orphaned helpers.
   runGitOrThrow(['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
 }
 

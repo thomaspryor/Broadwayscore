@@ -14,6 +14,7 @@
 // Usage: node scripts/checkout-sync-post.js [--dry-run] [--no-heartbeat]
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage: node scripts/checkout-sync-post.js [--dry-run] [--no-heartbeat]\nRuns after a successful checkout-sync: retires launchd jobs in config/mac-retired.json, posts the applied-sha heartbeat.');
   process.exit(0);
@@ -57,7 +58,7 @@ function reconcile() {
 
 function postStatus(context, state, description) {
   try {
-    const git = (...a) => execFileSync('git', a, { cwd: ROOT, encoding: 'utf8', timeout: 15000 }).trim();
+    const git = (...a) => gitGuard.runGitOrThrow(a, { cwd: ROOT, encoding: 'utf8', timeout: 15000 }).trim();
     const sha = git('rev-parse', 'origin/main');
     execFileSync('gh', ['api', '-X', 'POST', `repos/${REPO}/statuses/${sha}`, '-f', `state=${state}`, '-f', `context=${context}`, '-f', `description=${description}`], { stdio: 'pipe', timeout: 20000 });
     log(`[checkout-sync-post] posted ${context}=${state} on ${sha.slice(0, 10)}`);
@@ -67,7 +68,7 @@ function postStatus(context, state, description) {
 }
 
 function heartbeat() {
-  const git = (...a) => execFileSync('git', a, { cwd: ROOT, encoding: 'utf8', timeout: 15000 }).trim();
+  const git = (...a) => gitGuard.runGitOrThrow(a, { cwd: ROOT, encoding: 'utf8', timeout: 15000 }).trim();
   // origin/main, not HEAD: two success paths in sync-audit-checkout.sh leave
   // HEAD on a local-only ledger commit GitHub has never seen (a status POST
   // on it 422s). Applied = origin/main is contained in HEAD.

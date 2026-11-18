@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: group kill on timeout
+const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
 const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./review-texts-dir');
 const { repoDepthArgs } = require('./shallow-fetch-args');
 

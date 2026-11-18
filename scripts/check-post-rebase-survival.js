@@ -41,7 +41,7 @@
 
 'use strict';
 
-const { execFileSync } = require('child_process');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 
 function arg(name) {
   const a = process.argv.slice(2).find((x) => x.startsWith(`--${name}=`));
@@ -58,7 +58,7 @@ function gitDiffAddedFiles(fromSha, toRef, pathPrefix) {
   try {
     // 30s timeout — a hung git op in CI should fail the check, not stall the
     // workflow indefinitely (Claude P3 ship-check finding).
-    const out = execFileSync('git', args, { encoding: 'utf8', timeout: 30_000 });
+    const out = gitGuard.runGitOrThrow(args, { encoding: 'utf8', timeout: 30_000 });
     return out.split('\n').map((s) => s.trim()).filter(Boolean);
   } catch (e) {
     console.error(`[post-rebase-check] git diff failed: ${e.message}`);
@@ -69,7 +69,7 @@ function gitDiffAddedFiles(fromSha, toRef, pathPrefix) {
 // Best-effort, never-throws git helper for diagnostics only.
 function gitTry(args) {
   try {
-    return execFileSync('git', args, { encoding: 'utf8', timeout: 30_000 }).trim();
+    return gitGuard.runGitOrThrow(args, { encoding: 'utf8', timeout: 30_000 }).trim();
   } catch {
     return null;
   }

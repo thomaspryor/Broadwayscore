@@ -16,7 +16,7 @@
 // Decision logic lives in scripts/lib/stranded-reviewed-branches.js and is tested
 // against fixtures; this file only gathers inputs and formats output.
 
-const { execFileSync } = require('child_process');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const fs = require('fs');
 const path = require('path');
 const {
@@ -86,7 +86,7 @@ const PRECISE = argv.includes('--precise');
 const GIT_TIMEOUT_MS = 20000;
 
 function git(args, cwd = REPO) {
-  return execFileSync('git', args, {
+  return gitGuard.runGitOrThrow(args, {
     cwd, encoding: 'utf8', maxBuffer: 1 << 26, timeout: GIT_TIMEOUT_MS,
   }).trim();
 }

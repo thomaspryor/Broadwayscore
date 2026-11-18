@@ -5,7 +5,9 @@
  *
  * Why: on timeout node kills only the direct child. The fetch's `git index-pack` is reparented to
  * pid 1 and keeps writing .git/objects/pack/tmp_pack_* (3.4 GB seen 2026-11-18), filling the disk.
- * runGit runs network git in its own process group and kills the whole group on timeout.
+ * runGit sweeps and kills the helpers a timed-out network git left reparented to pid 1.
+ * A wrapper passing an args variable (`execFileSync('git', args, { timeout })`) is flagged too:
+ * it cannot know whether a caller hands it a fetch.
  *
  * Fix a hit: use runGitOrThrow(args, opts) (execFileSync-shaped) or runGit('git', args, opts)
  * (spawnSync-shaped). Reviewed false positive: `git-net-timeout-ok: <reason>` on the line or above.

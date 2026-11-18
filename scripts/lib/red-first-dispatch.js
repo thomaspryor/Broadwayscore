@@ -232,7 +232,7 @@ function readTrackedLedgerFromOrigin() {
       // unbounded-fetch-ok: single-ref fetch from the Mac's FULL clone on the
       // launchd tick (bsc-reconcile) / by-hand CLI only — this function is
       // never invoked from a workflow, let alone a fetch-depth:1 checkout.
-      // BRO-7458: runGitOrThrow kills the timed-out fetch's whole process group.
+      // BRO-7458: runGitOrThrow kills the timed-out fetch's orphaned helpers.
       runGitOrThrow(['-C', REPO, 'fetch', 'origin', '+refs/heads/main:refs/remotes/origin/main', '-q'], {
         timeout: FETCH_TIMEOUT_MS, stdio: 'ignore',
       });
