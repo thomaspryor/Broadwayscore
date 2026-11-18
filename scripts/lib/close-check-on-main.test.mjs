@@ -55,3 +55,32 @@ test('a close whose recorded check exists on main is untouched; no verifier wire
   const none = checkLinearDoneTransition(prClose(NEVER_LANDED[0], { nowMs: AFTER }));
   assert.equal(none.allowed, true, 'existing callers that pass no pathsOnMain behave exactly as before');
 });
+
+// BRO-7789 cousin: makePathsOnMain's fetch ran `--depth=1 origin main` in the
+// main checkout. In a full (or deeper) clone that grafts the new origin/main
+// tip as a parentless root, so HEAD and origin/main share no history and every
+// later fast-forward fails ("refusing to merge unrelated histories").
+test('makePathsOnMain fetch keeps a full clone full and origin/main connected to HEAD', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const g = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'paths-on-main-'));
+  try {
+    const seed = path.join(root, 'seed');
+    fs.mkdirSync(seed);
+    g(seed, 'init', '-q', '-b', 'main');
+    g(seed, 'config', 'user.email', 't@t'); g(seed, 'config', 'user.name', 't');
+    const commit = (n) => { fs.writeFileSync(path.join(seed, `f${n}.txt`), String(n)); g(seed, 'add', '.'); g(seed, 'commit', '-q', '-m', `c${n}`); };
+    commit(1); commit(2);
+    const clone = path.join(root, 'clone');
+    g(root, 'clone', '-q', `file://${seed}`, clone);
+    commit(3); commit(4);
+    assert.deepEqual(makePathsOnMain({ repo: clone })('test -f f4.txt').missing, [], 'the fetched origin/main has the new file');
+    assert.equal(g(clone, 'rev-parse', '--is-shallow-repository'), 'false', 'the fetch must not shallow a full clone');
+    g(clone, 'merge-base', '--is-ancestor', 'HEAD', 'origin/main'); // throws when the histories are disconnected
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});

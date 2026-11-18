@@ -504,6 +504,7 @@ function prunable(manifest, blobOnMain) {
 function cliPrune(args) {
   const manifestPath = (args.find((a) => a.startsWith('--manifest=')) || '').slice('--manifest='.length);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  // depth1-fetch-ok: CI-only (replay-push-rescue.yml), a throwaway checkout (BRO-7789)
   retryFetch(['--no-tags', '--depth=1', 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 2 });
   const ok = prunable(manifest, (p) => blobAt('origin/main', p));
   for (const r of ok) {
