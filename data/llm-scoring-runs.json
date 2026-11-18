@@ -522931,34 +522931,28 @@
     "logKeepsSince": "2026-11-17T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-18T18:43:21.302Z",
-    "completedAt": "2026-11-18T18:43:21.703Z",
-    "totalReviews": 36,
+    "startedAt": "2026-11-18T18:42:45.191Z",
+    "completedAt": "2026-11-18T18:42:49.621Z",
+    "totalReviews": 3,
     "processed": 0,
-    "skipped": 35,
-    "errors": 1,
+    "skipped": 1,
+    "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
+      "input": 11626,
+      "output": 344,
+      "cacheRead": 5418,
+      "cacheWrite": 5418,
+      "total": 32008
     },
-    "costUsd": 0,
-    "runId": "44372183101",
+    "costUsd": 0.0394433,
+    "runId": "44372189970",
     "source": "index",
-    "errorDetails": [
-      {
-        "showId": "downstate-2026",
-        "outletId": "pages-on-stages",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ],
+    "errorDetails": [],
     "logKeepsSince": "2026-11-17T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-18T18:43:23.897Z",
-    "completedAt": "2026-11-18T18:43:23.947Z",
+    "startedAt": "2026-11-18T18:47:49.155Z",
+    "completedAt": "2026-11-18T18:47:49.157Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -522971,7 +522965,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "44372183101",
+    "runId": "44372189970",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-17T00:00:00.000Z"
