@@ -141,3 +141,30 @@ test('a very wide diff skips name matching: invariants plus the changed tests on
   assert.equal(r.skipped.wideDiff, 2);
   assert.equal(sel(['scripts/lib/widget-maker.js']).skipped.wideDiff, 0);
 });
+
+// BRO-7637: land run 39741371743 (land/bro-5887-probe) was refused by land.js colocated-tests on
+// scripts/verify-reddit-review-check.test.mjs, a changed test no CI gate collects, so name matching
+// never picked it. colocatedTests() is decideChecks' own list; selectFastTests runs those regardless.
+test('colocated tests outside every CI gate still run (land.js colocated-tests parity)', () => {
+  const colocated = [{ file: 'scripts/verify-probe.test.mjs', tsx: false }, { file: 'scripts/lib/q.test.ts', tsx: true }, { file: 'tests/unit/a.test.mjs', tsx: false }];
+  const r = sel(['scripts/verify-probe.test.mjs', 'scripts/lib/q.ts', 'scripts/lib/widget-maker.js'], { colocated });
+  const by = Object.fromEntries(r.files.map((f) => [f.file, f]));
+  assert.equal(by['scripts/verify-probe.test.mjs'].gate, 'unit-tests-node');
+  assert.equal(by['scripts/lib/q.test.ts'].gate, 'unit-tests-tsx');
+  assert.equal(by['tests/unit/a.test.mjs'].gate, 'unit-tests-node', 'a collected one keeps its own gate');
+  assert.ok(!sel(['scripts/lib/q.ts']).files.some((f) => f.file === 'scripts/lib/q.test.ts'), 'without the list it is missed');
+  const slow = sel(['scripts/lib/widget-maker.js'], { colocated: [{ file: 'tests/unit/slow.test.mjs', tsx: false }] });
+  assert.ok(!slow.files.some((f) => f.file === 'tests/unit/slow.test.mjs'), 'a slow colocated test of an unchanged test file stays with the full gauntlet');
+});
+
+test('colocatedTests reads the tree with autonomous-checks decideChecks', () => {
+  const dir = fs.mkdtempSync(path.join(fs.realpathSync(process.env.TMPDIR || '/tmp'), 'lft-colo-'));
+  try {
+    fs.mkdirSync(path.join(dir, 'scripts/lib'), { recursive: true });
+    fs.copyFileSync(path.join(ROOT, 'scripts/lib/autonomous-checks.js'), path.join(dir, 'scripts/lib/autonomous-checks.js'));
+    for (const f of ['scripts/lib/w.js', 'scripts/lib/w.test.mjs', 'scripts/verify-x.test.mjs']) fs.writeFileSync(path.join(dir, f), '');
+    const got = F.colocatedTests(dir, ['scripts/lib/w.js', 'scripts/verify-x.test.mjs', 'scripts/gone.test.mjs']).map((c) => c.file).sort();
+    assert.deepEqual(got, ['scripts/lib/w.test.mjs', 'scripts/verify-x.test.mjs']);
+    assert.deepEqual(F.colocatedTests(path.join(dir, 'nope'), ['scripts/lib/w.js']), [], 'an older tree without the module selects nothing extra');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
