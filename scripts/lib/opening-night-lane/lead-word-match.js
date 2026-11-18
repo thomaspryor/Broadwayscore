@@ -30,8 +30,10 @@ const MONTHS = new Set(['january', 'february', 'march', 'april', 'june', 'july',
 // Tokens a headline may put before the title ("Review:", "Broadway Review -", "Critic's Pick: ", "4 stars: ").
 const PREFIX = new Set(['review', 'reviews', 'reviewed', 'broadway', 'off', 'west', 'end', 'london', 'nyc', 'theater', 'theatre', 'critic', 'critics',
   's', 'pick', 'star', 'stars', 'one', 'two', 'three', 'four', 'five', 'first', 'night', 'opening', 'stage']);
-const NON_REVIEW_RE = /\b(cast(?:ing)?|casts|announce[sd]?|announcement|tickets?|lottery|rush|first look|photos?|gallery|video|trailer|interview|rehearsals?|sneak peek|extends?|extension|closing|cast album|recording|sets? (?:dates?|opening)|will open|to open)\b/;
-const OTHER_STAGING_RE = /\b(tryout|pre broadway|before broadway|broadway bound|bound for broadway|on tour|touring|national tour|uk tour|regional|out of town|concert version|in concert|staged reading|reading of|workshop|summer stock|high school|community theat(?:re|er)|film|movie|netflix)\b/;
+const NON_REVIEW_RE = /\b(round ?ups?|what (?:the )?critics (?:are )?say(?:ing)?|red carpet|party|arrivals|gala|celebrat\w*|cast(?:ing)?|casts|announce[sd]?|announcement|tickets?|lottery|rush|first look|photos?|gallery|video|trailer|interview|rehearsals?|sneak peek|extends?|extension|closing|cast album|recording|sets? (?:dates?|opening)|will open|to open)\b/;
+const OTHER_STAGING_RE = /\b(tryout|pre broadway|before broadway|broadway bound|bound for broadway|on tour|touring|national tour|uk tour|regional|out of town|concert version|in concert|staged reading|reading of|workshop|summer stock|high school|community theat(?:re|er)|film|movie|netflix|eyes broadway|heads to broadway|aims for broadway|broadway ready|kennedy center|arena stage|goodspeed|signature|paper mill|toronto|washington|chicago|boston|san francisco|los angeles|la jolla|seattle|philadelphia|atlanta|minneapolis|denver|cleveland|houston|baltimore|new haven|princeton|edinburgh|manchester|chichester)\b/;
+// A word right after the lead word that makes it a different name: a sequel or spin-off ("Dollygram 2", "Dollygram Jr.").
+const SEQUEL_RE = /^(?:\d+|ii|iii|iv|jr\.?|junior|live!?|returns|reloaded|redux|sequel)$/i;
 const VENUE_WORD_RE = /\b(?:at|At|AT)\s+(?:(?:the|The|THE)\s+)?([A-Z][A-Za-z0-9'.&]*(?:\s+[A-Z][A-Za-z0-9'.&]*){0,4}\s+(?:Theatre|Theater|Playhouse|Rep|Repertory|Center|Centre|Stage|Hall|Opera House|Arts))\b/g;
 
 let outletsCache;
@@ -68,6 +70,28 @@ function quoted(raw, word) {
   return new RegExp(`[“"‘']\\s*${word}(?![a-z0-9])`).test(r);
 }
 
+/**
+ * The lead word continues into another name in the headline: a sequel token, or, in a sentence-case headline, a
+ * capitalized word right after it ("Off-Broadway review: Empire Records musical is a blast" for "Empire: The Musical").
+ * Title-case headlines capitalize every word, so there a capitalized follower says nothing ("Dollygram Glitters on").
+ */
+function continuesName(raw, word, show) {
+  const words = String(raw || '').split(/\s+/).filter(Boolean);
+  const bare = (w) => foldDiacritics(w).toLowerCase().replace(/[^a-z0-9]/g, '');
+  const i = words.findIndex((w) => { const b = bare(w); return b === word || b === `${word}s`; });
+  if (i < 0) return null;
+  // Punctuation right after the word (a colon, comma, possessive, closing quote) ends the name.
+  if (/(?:[:,;!?"”’)]|[’']s)$/.test(words[i])) return null;
+  const next = words[i + 1];
+  if (!next) return null;
+  if (SEQUEL_RE.test(next.replace(/[,:;]+$/, ''))) return `sequel:${next}`;
+  const nb = bare(next);
+  if (!/^[A-Z]/.test(next) || PREFIX.has(nb) || /^(off|broadway|reviews?|reviewed)$/.test(nb)) return null;
+  if (tokens(show.title).includes(nb)) return null;
+  const lowerLong = words.filter((w, j) => j !== i + 1 && /^[a-z][a-z'’-]{3,}$/.test(w.replace(/[,:;.!?]+$/, ''))).length;
+  return lowerLong >= 2 ? `name:${next}` : null;
+}
+
 /** This show's market cue, and whether the text carries a cue of another market. */
 function marketCues(hay, show) {
   const cat = String((show && show.category) || '').toLowerCase();
@@ -78,11 +102,11 @@ function marketCues(hay, show) {
   let own; let other;
   if (laneMarket(show) === 'west-end') {
     own = cat.startsWith('off') ? (offWe || we) : we;
-    other = bway || offBway;
+    other = bway || offBway || / new york | nyc /.test(hay);
   } else if (cat === 'off-broadway' || cat === 'off-off-broadway') {
-    own = offBway; other = bway || we || offWe;
+    own = offBway; other = bway || we || offWe || / london /.test(hay);
   } else {
-    own = bway; other = offBway || we || offWe;
+    own = bway; other = offBway || we || offWe || / london /.test(hay);
   }
   return { own, other };
 }
@@ -95,7 +119,10 @@ function venueCue(hay, show) {
 /** Another named venue in the headline ("at the Paper Mill Playhouse") that is not the show's own. */
 function otherVenueNamed(raw, show) {
   const own = fold(String((show && show.venue) || '').replace(/\b(theatre|theater)\b/gi, '')).trim();
-  for (const m of String(raw || '').matchAll(VENUE_WORD_RE)) {
+  // An all-caps headline is matched in title case ("AT THE PAPER MILL PLAYHOUSE").
+  let text = String(raw || '');
+  if (/[A-Z]/.test(text) && text === text.toUpperCase()) text = text.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase());
+  for (const m of text.matchAll(VENUE_WORD_RE)) {
     const v = fold(m[1].replace(/\b(theatre|theater)\b/gi, '')).trim();
     if (!v) continue;
     if (own && (` ${v} `.includes(` ${own} `) || ` ${own} `.includes(` ${v} `))) continue;
@@ -170,7 +197,10 @@ function corroboratedLeadWord(item, show, ctx = {}) {
   if (other) return no(`other-show-named:${other}`, word);
   // 6. another staging, a non-review article, another venue, another production
   if (NON_REVIEW_RE.test(hay)) return no('non-review-article', word);
-  if (OTHER_STAGING_RE.test(hay)) return no('other-staging-cue', word);
+  // The lead word itself is taken out first: a show named for a city ("Chicago") is not a tryout cue.
+  if (OTHER_STAGING_RE.test(hay.split(` ${word} `).join(' '))) return no('other-staging-cue', word);
+  const named = continuesName(raw, word, show);
+  if (named) return no(`lead-word-continues-${named}`, word);
   const venue = otherVenueNamed(raw, show);
   if (venue) return no(`other-venue:${venue}`, word);
   // otherProductionCue trusts any headline naming Broadway or the venue; here those cues are what admitted the link, so
@@ -179,7 +209,8 @@ function corroboratedLeadWord(item, show, ctx = {}) {
   const venueRe = core ? new RegExp(`(?:\\bthe\\s+)?${core}(?:\\s+(?:theatre|theater))?`, 'gi') : /(?!)/g;
   const cue = otherProductionCue(raw.replace(/\b(?:off[-\s]+)?broadway\b/gi, ' ').replace(venueRe, ' '), word, show);
   if (cue) return no(`other-production:${cue}`, word);
-  // BRO-7785's wrong-staging guard (show-names.js), the same check every other lane match passes.
+  // BRO-7785's wrong-staging guard (show-names.js). It runs once BRO-7785 is on main; before that the functions do not
+  // exist and the checks above stand alone (pinned by the 'BRO-7785 guard runs when present' test).
   const sn = require('../show-names');
   if (typeof sn.billedTitleOtherProductionCue === 'function' && !(typeof sn.wrongStagingGuardOff === 'function' && sn.wrongStagingGuardOff())) {
     const staged = sn.billedTitleOtherProductionCue(raw, word, show.title, { main: true });

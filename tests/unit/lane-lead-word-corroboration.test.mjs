@@ -47,8 +47,8 @@ test('refuses a one-word lead with no corroboration', () => {
     ['no market or venue cue', 'Review: Dollygram Glitters', 'no-market-or-venue-cue', 'https://www.theatermania.com/news/review-dollygram-glitters_1/'],
     ['casting article', 'Dollygram Broadway casting announced: review the full company', 'non-review-article'],
     ['another staging (tryout)', 'Review: Dollygram glitters in its pre-Broadway tryout', 'other-staging-cue'],
-    ['another staging (venue)', 'Review: Dollygram at the Paper Mill Playhouse is Broadway-ready', 'other-venue:Paper Mill Playhouse'],
-    ['another staging (company possessive)', "Review: Goodspeed's Dollygram eyes Broadway", 'other-production:possessive:Goodspeed'],
+    ['another staging (venue)', 'Review: Dollygram at the Lyric Playhouse is a Broadway delight', 'other-venue:Lyric Playhouse'],
+    ['another staging (company possessive)', "Review: Goodspeed's Dollygram eyes Broadway", 'other-staging-cue'],
     ['word not used as a title', 'Review: Hamlet on Broadway is a dollygram of grief', 'lead-word-not-in-title-position', 'https://www.theatermania.com/news/review-hamlet_1/'],
     ['a roundup naming another show', 'Review: Dollygram and The Outsiders on Broadway', 'other-show-named:the-outsiders'],
   ];
@@ -73,6 +73,51 @@ test('refuses outside the opening night, off a direct source, off the market, wi
   assert.equal(judge(TM_HEADLINE, TM_URL, DOLLYGRAM, { ...CTX, outletId: 'artsdesk' }).reason, 'outlet-off-market'); // London-only outlet
   assert.equal(judge(TM_HEADLINE, TM_URL, DOLLYGRAM, { ...CTX, outletId: 'no-such-outlet' }).reason, 'unknown-outlet');
   assert.equal(judge(TM_HEADLINE, TM_URL, DOLLYGRAM, { ...CTX, reviewCue: false }).reason, 'no-review-cue');
+});
+
+test('ship-check review: lookalike headlines stay near-misses', () => {
+  const empire = { ...DOLLYGRAM, id: 'empire-the-musical', title: 'Empire: The Musical', venue: 'New World Stages', category: 'off-broadway' };
+  const U = 'https://www.theatermania.com/news/x_1/';
+  const cases = [
+    // an everyday lead word that is the start of another name
+    ['Off-Broadway review: Empire Records musical is a blast', empire, /^lead-word-continues-name:Records/],
+    ['Review: Empire State of Mind, an Off-Broadway solo show', empire, /^lead-word-continues-name:State/],
+    // roundups and red-carpet pieces
+    ['Review: Dollygram Broadway Review Roundup', DOLLYGRAM, /^non-review-article$/],
+    ["Dollygram's Broadway review roundup: what critics said", DOLLYGRAM, /^non-review-article$/],
+    ['Opening Night: Dollygram red carpet on Broadway', DOLLYGRAM, /^non-review-article$/],
+    // another market or a tryout city
+    ["'Dollygram' review: the Broadway hit lands in London", DOLLYGRAM, /^other-market-cue$/],
+    ['Review: Dollygram in Toronto, Broadway-ready', DOLLYGRAM, /^other-staging-cue$/],
+    ['Review: Dollygram, which played the Kennedy Center, finally hits Broadway', DOLLYGRAM, /^other-staging-cue$/],
+    ['Review: Dollygram at Signature eyes Broadway', DOLLYGRAM, /^other-staging-cue$/],
+    // an all-caps headline naming another venue
+    ['DOLLYGRAM REVIEW: AT THE LYRIC PLAYHOUSE, BROADWAY BECKONS', DOLLYGRAM, /^other-venue:/],
+    // sequels and spin-offs
+    ['Review: Dollygram 2: The Sequel on Broadway', DOLLYGRAM, /^lead-word-continues-sequel:2/],
+    ['Review: Dollygram Jr. on Broadway', DOLLYGRAM, /^lead-word-continues-sequel:Jr/],
+  ];
+  for (const [h, show, reason] of cases) {
+    const v = judge(h, U, show, CTX, [...SHOWS, empire]);
+    assert.equal(v.admit, false, `admitted "${h}"`);
+    assert.match(v.reason, reason, `${h}: ${JSON.stringify(v)}`);
+  }
+  // the lead word as its own name still passes, in sentence case and title case
+  assert.equal(judge('Off-Broadway review: Empire is a blast at New World Stages', U, empire, CTX, [...SHOWS, empire]).admit, true);
+  assert.equal(judge('Review: Dollygram Glitters on Broadway', U).admit, true);
+  assert.equal(judge('Review: Dollygram glitters on Broadway, a sweet new musical', U).admit, true);
+  // a show named for a city is not a tryout cue
+  const chi = { ...DOLLYGRAM, id: 'chicago-x', title: 'Chicago: The Concert Edition' };
+  assert.equal(judge('Review: Chicago Sizzles on Broadway', U, chi, CTX, [chi]).reason, 'lead-word-corroborated');
+});
+
+test('BRO-7785 guard runs when present', () => {
+  const sn = require('../../scripts/lib/show-names.js');
+  const had = Object.prototype.hasOwnProperty.call(sn, 'billedTitleOtherProductionCue');
+  const prev = sn.billedTitleOtherProductionCue;
+  sn.billedTitleOtherProductionCue = () => 'tour';
+  try { assert.equal(judge(TM_HEADLINE).reason, 'wrong-staging:tour'); } finally { if (had) sn.billedTitleOtherProductionCue = prev; else delete sn.billedTitleOtherProductionCue; }
+  assert.equal(judge(TM_HEADLINE).admit, true);
 });
 
 test('refuses a shared or generic lead word', () => {
