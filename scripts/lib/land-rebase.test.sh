@@ -60,16 +60,16 @@ mkrepo r2; run 2 "$PROM"
 
 echo "case 3: promisor failure never clears"
 mkrepo r3; run 99 "$PROM"
-[ $RC -eq 3 ] && grep -q 'NOT a merge conflict' <<<"$OUT" && ! grep -q 'resolve the conflict' <<<"$OUT" && ok "exit 3, classified as infra" || bad "rc=$RC $OUT"
+[ $RC -eq 3 ] && grep -q 'NOT a merge conflict' <<<"$OUT" && ! grep -q 'NEW land ref' <<<"$OUT" && ok "exit 3, classified as infra" || bad "rc=$RC $OUT"
 
 echo "case 4: real conflict is not retried"
 mkrepo r4 a.txt; run 0 ""
-[ $RC -eq 1 ] && grep -q 'resolve the conflict' <<<"$OUT" && ! grep -q 'lazy-fetch' <<<"$OUT" && ok "exit 1, conflict message" || bad "rc=$RC $OUT"
+[ $RC -eq 1 ] && grep -q 'NEW land ref' <<<"$OUT" && ! grep -q 'lazy-fetch' <<<"$OUT" && ok "exit 1, conflict message" || bad "rc=$RC $OUT"
 [ ! -d .git/rebase-merge ] && ok "aborted cleanly" || bad "rebase-merge left"
 
 echo "case 5: promisor text alongside CONFLICT stays a conflict"
 mkrepo r5; run 1 "$PROM"$'\nCONFLICT (content): Merge conflict in a.txt'
-[ $RC -eq 1 ] && grep -q 'resolve the conflict' <<<"$OUT" && ok "conflict wins" || bad "rc=$RC $OUT"
+[ $RC -eq 1 ] && grep -q 'NEW land ref' <<<"$OUT" && ok "conflict wins" || bad "rc=$RC $OUT"
 
 echo "case 6: a stale DEPENDENCIES.md is regenerated into the last branch commit (BRO-7150)"
 mkrepo r6
