@@ -48,6 +48,9 @@ on:
       - 'scripts/review-forecast-v2-earlier-audience-sweep.js'
       # BRO-7780: tests/unit/byline-outlet-fixtures.test.mjs requires it.
       - 'scripts/check-byline-fixture-drift.js'
+      # BRO-7780: tests/unit/byline-outlet-fixtures.test.mjs pins their shared saved-page naming.
+      - 'scripts/build-byline-fixtures.js'
+      - 'scripts/sweep-stored-bylines.js'
       # BRO-7291: scripts/lib/hub-run-dates.test.mjs and manual-entry-provenance.test.mjs require these.
       - 'scripts/harvest-hub-run-dates.js'
       - 'scripts/check-manual-entry-provenance.js'

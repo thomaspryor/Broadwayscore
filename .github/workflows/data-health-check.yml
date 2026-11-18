@@ -817,6 +817,28 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/guard-audit.js
 
+      # BRO-7780: once a month (the 3rd), read each tier-1/2 outlet's byline fixture page live
+      # with the shared byline reader; an outlet whose page no longer names the expected critic
+      # routes one owner alert (byline:fixture-drift). Direct fetch only (free). Advisory.
+      # Its output file is committed by "Commit provider spend ledger (apiFallbackSafe)" below
+      # (it runs before the reconciliation so nothing sits between that write and its
+      # commit, BRO-3317) and is registered apiFallbackSafe in core-data-merge-registry.js.
+      - name: Byline fixture drift (monthly, advisory)
+        # No continue-on-error: every later step is if: always(), so a crash blocks no commit;
+        # it turns the job red once a month instead of hiding (second-opinion BRO-7780).
+        if: always()
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          # The 3rd only: a manual dispatch or the cron redispatch on another day skips too
+          # (15 min of live fetches and a possible owner alert, ship-check BRO-7780).
+          if [ "$(date -u +%d)" != "03" ]; then
+            echo "Not the 3rd; skipping"; exit 0
+          fi
+          timeout 900 node scripts/check-byline-fixture-drift.js
+
       # Scraping Cost System v2 truth layer (owner-approved 2026-07-30):
       # daily billing-API reconciliation. continue-on-error because a crash
       # here must not block the health snapshot commit below — a stuck
@@ -849,25 +871,6 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/check-provider-spend.js
 
-      # BRO-7780: once a month (the 3rd), read each tier-1/2 outlet's byline fixture page live
-      # with the shared byline reader; an outlet whose page no longer names the expected critic
-      # routes one owner alert (byline:fixture-drift). Direct fetch only (free). Advisory.
-      # Its output file is committed by "Commit provider spend ledger (apiFallbackSafe)" below and
-      # is registered apiFallbackSafe in core-data-merge-registry.js.
-      - name: Byline fixture drift (monthly, advisory)
-        if: always()
-        continue-on-error: true
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: |
-          # The 3rd only: a manual dispatch or the cron redispatch on another day skips too
-          # (15 min of live fetches and a possible owner alert, ship-check BRO-7780).
-          if [ "$(date -u +%d)" != "03" ]; then
-            echo "Not the 3rd; skipping"; exit 0
-          fi
-          timeout 900 node scripts/check-byline-fixture-drift.js || echo "::warning::byline drift check failed"
       # BRO-3317: the write above (fs.writeFileSync in check-provider-spend.js)
       # lands in the working tree UNCOMMITTED. Every later commit checkpoint
       # in this job — starting with "Commit acceptance recheck ledger" right
