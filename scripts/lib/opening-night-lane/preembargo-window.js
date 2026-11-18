@@ -15,6 +15,7 @@
  * Scope: scraper credits (the ledger rows lane-spend-window.js counts). LLM scoring is a separate bill and is not
  * changed by the window.
  */
+const { toDateMs } = require('../date-utils');
 const MIN = 60 * 1000;
 const VARIABLE = 'LANE_PREEMBARGO_DIRECT_ONLY';
 const LANE_LEAD_MIN = 30;            // the window closes where the normal lane start is: embargo - 30 min
@@ -95,7 +96,7 @@ function dropEvidence({ admitted = [], night, onDiskUrls = [], floorMs }) {
     // A full timestamp at or after floorMs (the guard's earliest start). A bare date, or a zoned date turned into UTC the
     // evening before, proves nothing about tonight (outlet-index finds are admitted from the day before).
     if (!a || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(String(a.publishDate || ''))) continue;
-    const ms = Date.parse(a.publishDate);
+    const ms = toDateMs(a.publishDate);
     if (!Number.isFinite(ms) || (Number.isFinite(floorMs) ? ms < floorMs : String(a.publishDate).slice(0, 10) < night)) continue;
     if (a.url && disk.has(a.url)) continue;
     return { lifted: true, evidence: { key: a.key || null, url: a.url || null, publishDate: a.publishDate } };
