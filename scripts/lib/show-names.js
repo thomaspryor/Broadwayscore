@@ -258,7 +258,15 @@ function otherProductionCue(text, aka, show, opts = {}) {
  */
 const HOME_MARKETS = new Set(['broadway', 'off-broadway', 'west-end', 'off-west-end']);
 function billedTitleOtherProductionCue(text, name, showTitle, opts = {}) {
-  const markets = registry().marketsByTitle.get(normTitle(showTitle));
+  // A caller may pass a press title as the title (google-news-rss headlineNamesPressTitle matches each aka on its own):
+  // read the venues and markets of the show that bills it, so its own house stays its own.
+  const reg = registry();
+  if (!reg.titles.some((t) => normTitle(t) === normTitle(showTitle))) {
+    for (const [billed, akas] of reg.akaByTitle) {
+      if (akas.some((a) => normTitle(a) === normTitle(showTitle))) { showTitle = reg.titles.find((t) => normTitle(t) === billed) || showTitle; break; }
+    }
+  }
+  const markets = reg.marketsByTitle.get(normTitle(showTitle));
   if (markets && ![...markets].some((m) => HOME_MARKETS.has(m))) return null;
   return otherProductionCue(text, name, { title: showTitle }, { film: !!opts.main, billed: true });
 }
