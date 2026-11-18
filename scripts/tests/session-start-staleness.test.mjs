@@ -920,7 +920,7 @@ test('BRO-7789 session-start.sh: compact stays out of the way of a background ca
     assert.match(out, /auto-sync skipped: a background catch-up is still running/);
     assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
   } finally {
-    fs.rmSync(lock, { recursive: true, force: true });
+    fs.rmSync(lock, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 }));
 
