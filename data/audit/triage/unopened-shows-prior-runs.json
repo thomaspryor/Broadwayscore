@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-17T11:11:54.543Z",
+  "generatedAt": "2026-11-18T11:07:32.905Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 6026,
-  "flaggedShows": 47,
-  "flaggedFiles": 168,
+  "scannedShows": 6082,
+  "flaggedShows": 48,
+  "flaggedFiles": 160,
   "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
@@ -18,7 +18,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 27,
-    "needs-human-review": 20
+    "needs-human-review": 21
   },
   "shows": [
     {
@@ -638,172 +638,6 @@
           "criticName": "Sarah Crompton",
           "publishDate": "2025-03-06",
           "url": "https://www.whatsonstage.com/news/the-seagull-review-cate-blanchett-leads-an-all-star-production-with-vaping-and-rock-songs_1668200/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "orlando-off-west-end-2026",
-      "title": "Orlando: A Pornobiography",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "New Diorama Theatre",
-      "previewsStartDate": "2026-11-10",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 11,
-        "distinctYears": [
-          2022
-        ],
-        "spanDays": 0,
-        "flaggedCount": 11,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "daily-mail--georgina-brown.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "daily-mail",
-          "criticName": "Georgina Brown",
-          "publishDate": "2022-12-07",
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-11510075/Emma-Corrin-perfect-frisky-ode-freedom-GEORGINA-BROWNs-four-star-review-Orlando.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "financialtimes--sarah-hemming.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "financialtimes",
-          "criticName": "Sarah Hemming",
-          "publishDate": "2022-12-07",
-          "url": "https://www.ft.com/content/35ee4846-61de-488d-9d61-d8906630e9e9",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--david-jays.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "David Jays",
-          "publishDate": "2022-12-07",
-          "url": "https://www.theguardian.com/stage/2022/dec/05/orlando-review-emma-corrin-garrick-theatre-virginia-woolf",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--jessie-thompson.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Jessie Thompson",
-          "publishDate": "2022-12-07",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/orlando-review-emma-corrin-b2239076.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "observer--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "observer",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2022-12-07",
-          "url": "https://www.theguardian.com/stage/2022/dec/11/orlando-review-garrick-emma-corrin-neil-bartlett-michael-grandage-deborah-findlay-hex-olivier-national-rufus-norris",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2022-12-07",
-          "url": "https://www.standard.co.uk/culture/theatre/orlando-garrick-theatre-review-emma-corrin-west-end-b1044944.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "sunday-times--quentin-letts.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "sunday-times",
-          "criticName": "Quentin Letts",
-          "publishDate": "2022-12-07",
-          "url": "https://www.thetimes.co.uk/article/c3081868-759a-11ed-b756-a5744446c41f",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2022-12-07",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/orlando-garrick-theatre-review-emma-corrin-has-naked-star-quality/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2022-12-07",
-          "url": "https://www.thestage.co.uk/reviews/orlando-review-garrick-theatre-london-emma-corrin-deborah-findlay-neil-bartlett-michael-grandage-virginia-woolf",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout-london",
-          "criticName": "Andrzej Lukowski",
-          "publishDate": "2022-12-07",
-          "url": "https://www.timeout.com/london/theatre/orlando-review-1",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2022-12-07",
-          "url": "https://www.thetimes.co.uk/article/orlando-review-nudges-winks-and-a-pack-of-woolfs-make-orlando-bloom-gqlpz8h7c",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2540,6 +2374,55 @@
       ]
     },
     {
+      "showId": "west-side-story-west-end-2026",
+      "title": "West Side Story",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": "2026-11-12",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 2,
+        "distinctYears": [
+          2021
+        ],
+        "spanDays": 0,
+        "flaggedCount": 2,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "sunday-times--kevin-maher.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "sunday-times",
+          "criticName": "Kevin Maher",
+          "publishDate": "2021-12-10",
+          "url": "https://www.thetimes.com/culture/film/article/west-side-story-review-spielberg-buoyantly-reboots-bernsteins-classic-n99n9xhff",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        },
+        {
+          "file": "sunday-times--unknown.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "sunday-times",
+          "criticName": "Kevin Maher",
+          "publishDate": "2021-12-10",
+          "url": "https://www.thetimes.com/culture/film/article/west-side-story-review-spielberg-buoyantly-reboots-bernsteins-classic-n99n9xhff",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "nutcracker-west-end-2026",
       "title": "Nutcracker",
       "market": "west-end",
@@ -2809,7 +2692,7 @@
       "showId": "one-day-the-musical-west-end-2026",
       "title": "One Day – The Musical",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "Garrick Theatre",
       "previewsStartDate": "2026-11-17",
       "openingDate": null,
@@ -3051,6 +2934,42 @@
           "criticName": "Phil Willmott",
           "publishDate": "2015-07-16",
           "url": "https://www.londonboxoffice.co.uk/news/post/railway-children-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "goblin-off-west-end-2026",
+      "title": "Goblin",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "Park Theatre",
+      "previewsStartDate": "2026-11-17",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Park Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2024
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "the-skinny--unknown.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "the-skinny",
+          "criticName": "Unknown",
+          "publishDate": "2024-08-23",
+          "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/comedy/derek-mitchell-goblin-pleasance",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

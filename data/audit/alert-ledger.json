@@ -784,12 +784,13 @@
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
       "incidentOpenedAt": "2026-10-27T08:11:38.216Z",
-      "lastSeen": "2026-11-17T11:15:25.761Z",
+      "lastSeen": "2026-11-18T11:09:46.748Z",
       "lastNotifiedAt": "2026-11-17T11:15:25.761Z",
       "lastSurfacedAt": "2026-11-17T11:15:25.761Z",
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-7661"
+      "linearIdentifier": "BRO-7661",
+      "silentRefires": 1
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -26118,10 +26119,10 @@
       "title": "NYC Theatre roundups: archive coverage 52% in 2025Q4+2026Q2 vs 76% baseline (2024Q2+2024Q4+2025Q1+2025Q2)",
       "firstSeen": "2026-10-24T07:38:57.677Z",
       "incidentOpenedAt": "2026-10-24T07:38:57.677Z",
-      "lastSeen": "2026-11-17T11:11:52.362Z",
-      "lastNotifiedAt": "2026-11-17T11:11:52.362Z",
+      "lastSeen": "2026-11-18T11:07:31.102Z",
+      "lastNotifiedAt": "2026-11-18T11:07:31.102Z",
       "lastSurfacedAt": "2026-11-14T09:39:55.725Z",
-      "notifyCount": 25,
+      "notifyCount": 26,
       "cardId": null,
       "linearIdentifier": "BRO-7065"
     },
@@ -40327,10 +40328,10 @@
       "title": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
       "firstSeen": "2026-11-09T10:44:27.716Z",
       "incidentOpenedAt": "2026-11-09T10:44:27.716Z",
-      "lastSeen": "2026-11-17T11:11:52.612Z",
-      "lastNotifiedAt": "2026-11-17T11:11:52.612Z",
-      "lastSurfacedAt": "2026-11-17T11:11:52.612Z",
-      "notifyCount": 9,
+      "lastSeen": "2026-11-18T11:07:31.891Z",
+      "lastNotifiedAt": "2026-11-18T11:07:31.891Z",
+      "lastSurfacedAt": "2026-11-18T11:07:31.891Z",
+      "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -42584,13 +42585,13 @@
     "aggregator-health:bww-roundups:workflow-stale:scrape-bww-reviews.yml": {
       "status": "open",
       "disposition": "digest",
-      "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 29 days ago",
+      "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 30 days ago",
       "firstSeen": "2026-11-12T00:19:02.490Z",
       "incidentOpenedAt": "2026-11-12T00:19:02.490Z",
-      "lastSeen": "2026-11-17T11:11:52.337Z",
-      "lastNotifiedAt": "2026-11-17T11:11:52.337Z",
-      "lastSurfacedAt": "2026-11-17T11:11:52.337Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-11-18T11:07:31.088Z",
+      "lastNotifiedAt": "2026-11-18T11:07:31.088Z",
+      "lastSurfacedAt": "2026-11-18T11:07:31.088Z",
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -43168,7 +43169,7 @@
       "resolveReason": "finding cleared"
     },
     "broadcast:never-sent:cloud-9-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "human",
       "title": "Opening Night Email Never Reached Subscribers — Cloud 9",
       "firstSeen": "2026-11-13T10:03:34.733Z",
@@ -43179,7 +43180,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-11-18T11:09:41.256Z"
     },
     "express-retry-still-thin:heart-of-a-dog-off-broadway-2026": {
       "status": "open",
@@ -45392,6 +45394,19 @@
       "lastSeen": "2026-11-18T10:59:18.671Z",
       "lastNotifiedAt": "2026-11-18T10:59:18.671Z",
       "lastSurfacedAt": "2026-11-18T10:59:18.671Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "aggregator-health:thestage-roundups:coverage-drop": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 58% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
+      "firstSeen": "2026-11-18T11:07:31.074Z",
+      "incidentOpenedAt": "2026-11-18T11:07:31.074Z",
+      "lastSeen": "2026-11-18T11:07:31.074Z",
+      "lastNotifiedAt": "2026-11-18T11:07:31.074Z",
+      "lastSurfacedAt": "2026-11-18T11:07:31.074Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

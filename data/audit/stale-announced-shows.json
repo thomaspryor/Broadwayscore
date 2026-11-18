@@ -1,9 +1,52 @@
 {
-  "generatedAt": "2026-11-17T11:15:19.514Z",
+  "generatedAt": "2026-11-18T11:09:41.386Z",
   "staleDaysThreshold": 30,
   "reviewTextsAvailable": true,
-  "flaggedCount": 0,
-  "flagged": [],
+  "flaggedCount": 3,
+  "flagged": [
+    {
+      "id": "relative-motion-off-west-end-2026",
+      "title": "Relative Motion",
+      "venue": "Southwark Playhouse",
+      "category": "off-west-end",
+      "status": "previews",
+      "previewsStartDate": "2026-11-11",
+      "openingDate": null,
+      "todaytixId": null,
+      "reasons": [
+        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
+      ],
+      "firstFlaggedAt": "2026-11-18T11:09:41.386Z"
+    },
+    {
+      "id": "top-gunchained-off-west-end-2026",
+      "title": "Top Gunchained",
+      "venue": "Wilton's Music Hall",
+      "category": "off-west-end",
+      "status": "previews",
+      "previewsStartDate": "2026-11-16",
+      "openingDate": null,
+      "todaytixId": null,
+      "reasons": [
+        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
+      ],
+      "firstFlaggedAt": "2026-11-18T11:09:41.386Z"
+    },
+    {
+      "id": "santas-first-christmas-off-west-end-2026",
+      "title": "Santa's First Christmas",
+      "venue": "Unicorn Theatre",
+      "category": "off-west-end",
+      "status": "previews",
+      "previewsStartDate": "2026-11-14",
+      "openingDate": null,
+      "todaytixId": 48418,
+      "reasons": [
+        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
+      ],
+      "firstFlaggedAt": "2026-11-18T11:09:41.386Z"
+    }
+  ],
   "firstFlaggedHistory": {
     "julius-caesar-globe-off-west-end-2026": {
       "firstFlaggedAt": "2026-11-12T00:21:54.154Z",
@@ -26,7 +69,7 @@
   "postponed": [],
   "orphanAckCount": 0,
   "orphanAcks": [],
-  "silencedByContaminationCount": 11,
+  "silencedByContaminationCount": 12,
   "silencedByContamination": [
     {
       "id": "dreamgirls-2026",
@@ -91,6 +134,12 @@
     {
       "id": "death-of-a-salesman-west-end-2026",
       "title": "Death of a Salesman",
+      "reviewFiles": 1,
+      "excludedFiles": 1
+    },
+    {
+      "id": "the-humans-west-end-2027",
+      "title": "The Humans",
       "reviewFiles": 1,
       "excludedFiles": 1
     }
