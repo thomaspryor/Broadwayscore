@@ -315,6 +315,10 @@ function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent, showTitle) 
   for (const f of reviewFiles || []) {
     const u = f && typeof f.bwwRoundupUrl === 'string' ? f.bwwRoundupUrl : '';
     if (!/^https?:\/\/[^ ]*review-roundup/i.test(u)) continue;
+    // A file excluded as another production/show/URL carries THAT production's roundup, not this one's
+    // (2026-11-18: two 2023 Bad Cinderella reviews, wrongProduction on the Lyric Hammersmith "Cinderella",
+    // raised CENSUS ARCHIVE MISSING for a show that had not opened). Only live files can prove a roundup.
+    if (f.wrongProduction || f.wrongShow || f.wrongUrl || f.duplicateOf) continue;
     // A roundup URL copied onto another show's file (cross-show misroute) must not raise a gap: the slug has to
     // carry a distinctive word of THIS show's title (e.g. "unbelievers"), when a title is known.
     if (showTitle) {
