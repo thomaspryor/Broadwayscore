@@ -94,6 +94,14 @@ test('discovery pass: a dead feed, a bot-walled feed and a bot-walled index each
   assert.match(a.find((x) => x.url === DEAD_FEED).lastError, /503/);
 });
 
+test('discovery pass: an adapter that throws every pass (an aggregator down) alerts after 3 passes', async () => {
+  let t = Date.parse(`${NIGHT}T23:00:00Z`);
+  const health = sh.createSourceHealth({ now: () => t });
+  const adapters = [{ name: 'bww-roundup', phase: 'cheap', discover: async () => { throw new Error('HTTP 503 from broadwayworld'); } }];
+  for (let i = 0; i < 3; i++) { await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: t, startedAt: t, fetchText: async () => '', adapters, sourceHealth: health }); t += 150000; }
+  assert.deepEqual(health.alerts().map((x) => [x.kind, x.url, x.adapter]), [['fetch-failing', 'adapter:bww-roundup', 'bww-roundup']]);
+});
+
 test('window mismatch: an own-outlet review dated +3 days alerts at once; an old production (a year off) never does', async () => {
   const REVIEW = 'https://www.theguardian.com/stage/2026/nov/20/test-show-review-broadway';
   const OLD = 'https://www.theguardian.com/stage/2025/nov/10/test-show-review-broadway';

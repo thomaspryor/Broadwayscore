@@ -1455,6 +1455,9 @@ async function runDiscoveryPass({
     return Promise.resolve().then(() => a.discover({ show, night, fetchText: fetchForAdapter, slowFetchText, timeZone, remainingMs: remaining, health: sourceHealth }));
   }));
   settled.forEach((r, i) => {
+    // BRO-7779 item 5 cousin: a whole adapter failing pass after pass (an aggregator down, Google News blocked) alerts
+    // during the night too, not only in the end-of-night summary.
+    sourceHealth.record(`adapter:${cheap[i].name}`, r.status === 'fulfilled' ? { ok: true, adapter: cheap[i].name } : { ok: false, error: r.reason, adapter: cheap[i].name });
     if (r.status === 'fulfilled') collect(r.value, cheap[i].name);
     else errors.push({ adapter: cheap[i].name, error: String((r.reason && r.reason.message) || r.reason).slice(0, 200) });
   });
