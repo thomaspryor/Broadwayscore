@@ -196,3 +196,13 @@ test('BRO-7319: a failed create for one hub does not stop the next hub', async (
   }
   assert.deepEqual(filed, ['boston-ma']);
 });
+
+test('showRunEndFinding sees the theatre own page (replay hayward-regional-2026 2026-W47: listing Nov 15, Steppenwolf Nov 22)', () => {
+  const show = { openingDate: '2026-10-20', closingDate: '2026-11-15' };
+  const listing = { date: '2026-11-15', url: 'https://www.theatreinchicago.com/hayward/13552/' };
+  assert.equal(A.showRunEndFinding(show, [], listing), null); // the miss: the listing alone never disagreed
+  const r = A.showRunEndFinding(show, [], listing, { date: '2026-11-22', url: 'https://www.steppenwolf.org/whats-on/2026-2027/hayward' });
+  assert.equal(r.date, '2026-11-22');
+  assert.equal(r.kind, 'theatre-page');
+  assert.ok(!r.unconfirmed); // deterministic: the weekly driver auto-plans it
+});

@@ -421,10 +421,10 @@ function computeFlags(L) {
   }
   // BRO-7291 class 1: the same decision the daily writer (scripts/harvest-hub-run-dates.js) makes, so a finding here
   // means the writer would move the date too (or it is a pinned conflict). Listing dates come from its report.
-  let listings = {};
-  try { listings = readJson('data/audit/hub-run-dates.json').listings || {}; } catch { /* no report yet: texts only */ }
+  let listings = {}; let theatrePages = {};
+  try { ({ listings = {}, theatrePages = {} } = readJson('data/audit/hub-run-dates.json')); } catch { /* no report yet: texts only */ }
   for (const s of L.shows) {
-    const r = A.showRunEndFinding(s, runEndTexts.get(s.id) || [], listings[s.id] || null);
+    const r = A.showRunEndFinding(s, runEndTexts.get(s.id) || [], listings[s.id] || null, theatrePages[s.id] || null);
     if (r && r.unconfirmed) add('show', s.id, s.title, 'local', [{ code: 'review-text-later-closing-unconfirmed', detail: `ours ${s.closingDate} / one site says ${r.source} (the writer needs a second host or the theatre listing)` }]);
     else if (r) add('show', s.id, s.title, 'local', [{ code: 'review-text-later-closing', detail: `ours ${s.closingDate} / ${r.source}`, fix: { field: 'closingDate', value: r.date, sourceField: 'closingDateSource', source: r.source } }]);
   }
