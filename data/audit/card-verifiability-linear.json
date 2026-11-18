@@ -1,61 +1,85 @@
 {
-  "generatedAt": "2026-11-17T14:50:42.012Z",
-  "total": 402,
-  "armedCount": 368,
-  "refusedCount": 34,
+  "generatedAt": "2026-11-18T14:26:18.891Z",
+  "total": 423,
+  "armedCount": 396,
+  "refusedCount": 27,
   "byKind": {
-    "shape": 28,
-    "no-section": 4,
-    "no-command": 1,
+    "shape": 20,
+    "no-command": 3,
+    "no-section": 3,
     "basename": 1
   },
   "refused": [
+    {
+      "id": "BRO-7769",
+      "name": "Stub review slot accepts unrelated same-outlet news URLs (Good Thief TheaterMania/Linda Buchwald)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7769/stub-review-slot-accepts-unrelated-same-outlet-news-urls-good-thief",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const r=require('/home/user/Broadwayscore/data/review-texts/the-good-thief-off-broadway-2026/theatermania--lind)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7754",
+      "name": "Feedback autopilot requeues items already fixed on main forever",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7754/feedback-autopilot-requeues-items-already-fixed-on-main-forever",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7753",
+      "name": "Older-years audit residuals: unfetchable blocked-host rows and a-few-good-men-2026 TheaterMania stale-merge refusal",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7753/older-years-audit-residuals-unfetchable-blocked-host-rows-and-a-few",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7751",
+      "name": "Before Stop gates flip to blocking (effect-pending 11-22, live-run 11-25): read the gate rollup and move the dates if false positives",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7751/before-stop-gates-flip-to-blocking-effect-pending-11-22-live-run-11-25",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/lib/session-retro.js --rollup --days=7)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7721",
+      "name": "iOS 1.1.0 App Store rejection (submission 99077a80, Nov 16): find reason and fix plan",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7721/ios-110-app-store-rejection-submission-99077a80-nov-16-find-reason-and",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7720",
+      "name": "App push: closing-date alert only for dates within 60 days",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7720/app-push-closing-date-alert-only-for-dates-within-60-days",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: cd \\~/BroadwayScorecard-app && npm test (alerts-registry: 'a date more than 60 days out never pushes' passes; red with g)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7702",
+      "name": "Lift outlet full-text rates to 95%+ (WSJ/Times/Standard/WaPo ~100%): metric fix, dedupe, re-URL, nightly queue priority, floor guard",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7702/lift-outlet-full-text-rates-to-95percent-wsjtimesstandardwapo",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/report-outlet-fulltext-gaps.js)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7698",
+      "name": "NOSTATUSLINE and CLEARCLOSE Stop gates fire on mid-session Stops (7 and 6 of 9 sessions)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7698/nostatusline-and-clearclose-stop-gates-fire-on-mid-session-stops-7-and",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/lib/session-retro.js --rollup --days=7)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-7684",
       "name": "Bylineless aggregator-quote ghosts stay live up to a week: run excerpt-containment at ingest/rebuild, not only in the weekly audit",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7684/bylineless-aggregator-quote-ghosts-stay-live-up-to-a-week-run-excerpt",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/tests/cross-outlet-excerpt-containment.test.mjs)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7683",
-      "name": "US regional coverage gaps: Nixon in China (WNO, DC) missing; audit every US regional review vs shows.json",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7683/us-regional-coverage-gaps-nixon-in-china-wno-dc-missing-audit-every-us",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const s=require('./data/shows.json');const a=Array.isArray(s)?s:s.shows;process.exit(a.some(x=>/nixon-in-china/)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7682",
-      "name": "City hub audit boston-ma 2026-W47: 1 new finding(s)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7682/city-hub-audit-boston-ma-2026-w47-1-new-findings",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=boston-ma --no-llm --dry-run --open)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7681",
-      "name": "City hub audit san-diego-ca 2026-W47: 1 new finding(s)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7681/city-hub-audit-san-diego-ca-2026-w47-1-new-findings",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=san-diego-ca --no-llm --dry-run --open)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7679",
-      "name": "City hub audit los-angeles-ca 2026-W47: 3 new finding(s)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7679/city-hub-audit-los-angeles-ca-2026-w47-3-new-findings",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=los-angeles-ca --no-llm --dry-run --open)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7678",
-      "name": "City hub audit washington-dc 2026-W47: 2 new finding(s)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7678/city-hub-audit-washington-dc-2026-w47-2-new-findings",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=washington-dc --no-llm --dry-run --open)",
       "kind": "shape"
     },
     {
@@ -75,46 +99,6 @@
       "kind": "no-section"
     },
     {
-      "id": "BRO-7660",
-      "name": "Older-years audit: 120 FAILs are pipeline-excluded reviews (wrongProduction/wrongShow/nonReview) needing review-text reads",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7660/older-years-audit-120-fails-are-pipeline-excluded-reviews",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-never-audited-backlog.js --max=100)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7659",
-      "name": "Older-years audit: 78 FAILs from blocked-host fetch failures (talkinbroadway, nydailynews, theatermania, lightingandsoundamerica)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7659/older-years-audit-78-fails-from-blocked-host-fetch-failures",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-never-audited-backlog.js --max=100)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7645",
-      "name": "Recurring session friction: hook:hook",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7645/recurring-session-friction-hookhook",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/lib/session-retro.js --rollup --days=7)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7644",
-      "name": "Let a manual create_draft dispatch bypass the 7 AM ET broadcast time gate",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7644/let-a-manual-create-draft-dispatch-bypass-the-7-am-et-broadcast-time",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-broadcast-draft.js the-fantasticks-2026)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7643",
-      "name": "iOS E2E: no Maestro flow walks the short onboarding quiz that new installs actually get",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7643/ios-e2e-no-maestro-flow-walks-the-short-onboarding-quiz-that-new",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -l 'kind=short' .maestro/onboarding/\\*.yaml)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-7620",
       "name": "Missing show: Shakespeare's Cousin",
       "priority": null,
@@ -129,38 +113,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7619/missing-show-freestyle-love-supreme",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
-    },
-    {
-      "id": "BRO-7618",
-      "name": "Missing show: Bellringers",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7618/missing-show-bellringers",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-7617",
-      "name": "Search zero-results rate at 3% with no user feedback loop",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7617/search-zero-results-rate-at-3percent-with-no-user-feedback-loop",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-7477",
-      "name": "The Recs bylines land as Unknown: extractor rejects 'The Recs RDC - Name' author meta",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7477/the-recs-bylines-land-as-unknown-extractor-rejects-the-recs-rdc-name",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/test-the-recs-byline.js)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7463",
-      "name": "Weekly Friday Predict the Score count email, runs in GitHub Actions",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7463/weekly-friday-predict-the-score-count-email-runs-in-github-actions",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/predict-the-score-weekly.test.mjs)",
-      "kind": "shape"
     },
     {
       "id": "BRO-7418",
@@ -192,14 +144,6 @@
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7381/off-broadway-cast-backfill-is-unscheduled-46-of-130-nyc-previewopen",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -q 'schedule:' .github/workflows/backfill-cast-web.yml)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7321",
-      "name": "City hub audit boston-ma 2026-W46: 3 new finding(s)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7321/city-hub-audit-boston-ma-2026-w46-3-new-findings",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=boston-ma --no-llm --dry-run --open)",
       "kind": "shape"
     },
     {
@@ -284,10 +228,17 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 269,
-    "checked": 269,
+    "total": 290,
+    "checked": 290,
     "complete": true,
     "cards": [
+      {
+        "id": "BRO-7691",
+        "name": "Paid ads test at iOS app public launch (~$400 over 3 weeks)",
+        "priority": 3,
+        "url": "https://linear.app/broadway-scorecard/issue/BRO-7691/paid-ads-test-at-ios-app-public-launch-dollar400-over-3-weeks",
+        "source": "description"
+      },
       {
         "id": "BRO-7563",
         "name": "Cloud 9 West End newsletter draft is stuck in Resend: send or delete it",
@@ -299,21 +250,138 @@
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-7680",
-      "name": "Mobile market dropdown cut off: Chicago and later items unreachable on phones",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7680/mobile-market-dropdown-cut-off-chicago-and-later-items-unreachable-on",
-      "cmd": "node --test tests/unit/market-nav-viewport.test.mjs",
+      "id": "BRO-7767",
+      "name": "P1: Opening night miss: Blue Man Group “A New Holiday Surprise” (2026-11-17)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7767/p1-opening-night-miss-blue-man-group-a-new-holiday-surprise-2026-11-17",
+      "cmd": "node --test scripts/lib/press-night-review-timing.test.mjs",
       "missingPaths": [
-        "tests/unit/market-nav-viewport.test.mjs"
+        "scripts/lib/press-night-review-timing.test.mjs"
       ]
     },
     {
-      "id": "BRO-7676",
-      "name": "Opening-night Resend draft: create automatically as soon as reviews are ready, keep it updated; stop lane twin files blocking it",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7676/opening-night-resend-draft-create-automatically-as-soon-as-reviews-are",
-      "cmd": "node --test tests/unit/review-count-match-url.test.mjs",
+      "id": "BRO-7750",
+      "name": "Per-show score gate override: Blue Man Group shows score at 3 reviews",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7750/per-show-score-gate-override-blue-man-group-shows-score-at-3-reviews",
+      "cmd": "node --test tests/unit/score-gate-overrides.test.mjs",
       "missingPaths": [
-        "tests/unit/review-count-match-url.test.mjs"
+        "tests/unit/score-gate-overrides.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7736",
+      "name": "Sentry error: UgcError: UGC insert unmatched_imports failed (42501)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7736/sentry-error-ugcerror-ugc-insert-unmatched-imports-failed-42501",
+      "cmd": "npx tsx --test tests/unit/sentry-7801266960.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7801266960.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7735",
+      "name": "Sentry error: UgcError: UGC auth.callback failed (timeout)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7735/sentry-error-ugcerror-ugc-authcallback-failed-timeout",
+      "cmd": "npx tsx --test tests/unit/sentry-7810618279.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7810618279.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7734",
+      "name": "Sentry error: SyntaxError: Invalid regular expression: invalid group specifier name",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7734/sentry-error-syntaxerror-invalid-regular-expression-invalid-group",
+      "cmd": "npx tsx --test tests/unit/sentry-7812256534.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7812256534.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7733",
+      "name": "Sentry error: UgcError: UGC functions mezzanine-search failed (500)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7733/sentry-error-ugcerror-ugc-functions-mezzanine-search-failed-500",
+      "cmd": "npx tsx --test tests/unit/sentry-7815060800.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7815060800.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7732",
+      "name": "Sentry error: UgcError: UGC insert watchlist failed (23503)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7732/sentry-error-ugcerror-ugc-insert-watchlist-failed-23503",
+      "cmd": "npx tsx --test tests/unit/sentry-7799170551.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7799170551.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7728",
+      "name": "Sentry error: UgcError: UGC insert watchlist failed (account_gone)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7728/sentry-error-ugcerror-ugc-insert-watchlist-failed-account-gone",
+      "cmd": "npx tsx --test tests/unit/sentry-7815055841.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7815055841.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7727",
+      "name": "Sentry error: UgcError: UGC insert reviews failed (23503)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7727/sentry-error-ugcerror-ugc-insert-reviews-failed-23503",
+      "cmd": "npx tsx --test tests/unit/sentry-7835186822.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7835186822.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7725",
+      "name": "Sentry error: SecurityError: Attempt to use history.replaceState() more than 100 times per 10",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7725/sentry-error-securityerror-attempt-to-use-historyreplacestate-more",
+      "cmd": "npx tsx --test tests/unit/sentry-7834294511.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7834294511.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7724",
+      "name": "Sentry error: SecurityError: Attempt to use history.replaceState() more than 100 times per 10",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7724/sentry-error-securityerror-attempt-to-use-historyreplacestate-more",
+      "cmd": "npx tsx --test tests/unit/sentry-7834294498.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7834294498.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7704",
+      "name": "Money welcome email: send within ~5 min of sign-up (event trigger + hourly backstop)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7704/money-welcome-email-send-within-5-min-of-sign-up-event-trigger-hourly",
+      "cmd": "node --test tests/unit/money-welcome-kick.test.mjs",
+      "missingPaths": [
+        "tests/unit/money-welcome-kick.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7696",
+      "name": "Account-capture housekeeping: dead pop-up paths, mislabelled sign-in events, follow banner shown to signed-in users",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7696/account-capture-housekeeping-dead-pop-up-paths-mislabelled-sign-in",
+      "cmd": "node --test tests/unit/account-capture-housekeeping.test.mjs",
+      "missingPaths": [
+        "tests/unit/account-capture-housekeeping.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7695",
+      "name": "Profitability Scorecard unlock: offer one-tap account sign-in alongside the email form",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7695/profitability-scorecard-unlock-offer-one-tap-account-sign-in-alongside",
+      "cmd": "node --test tests/unit/biz-gate-unlock.test.mjs",
+      "missingPaths": [
+        "tests/unit/biz-gate-unlock.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7617",
+      "name": "Search zero-results rate at 3% with no user feedback loop",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7617/search-zero-results-rate-at-3percent-with-no-user-feedback-loop",
+      "cmd": "node --test tests/unit/zero-results-feedback.test.mjs",
+      "missingPaths": [
+        "tests/unit/zero-results-feedback.test.mjs"
       ]
     },
     {
@@ -506,15 +574,6 @@
       ]
     },
     {
-      "id": "BRO-6449",
-      "name": "Video templates: apply puzzle-open + closing-question rule to versus/duo/verdict/top5 compositions (BRO-6417 follow-on)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6449/video-templates-apply-puzzle-open-closing-question-rule-to",
-      "cmd": "node --test scripts/test-versus-duo-verdict-top5-script.test.mjs",
-      "missingPaths": [
-        "scripts/test-versus-duo-verdict-top5-script.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6414",
       "name": "Social autopost: Tony season post types (frontrunners, close races) from site predictions",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6414/social-autopost-tony-season-post-types-frontrunners-close-races-from",
@@ -557,15 +616,6 @@
       "cmd": "node --test scripts/search-index-quality.test.mjs",
       "missingPaths": [
         "scripts/search-index-quality.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6309",
-      "name": "Money Scorecard welcome email for new sign-ups (ready, ship on owner go)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6309/money-scorecard-welcome-email-for-new-sign-ups-ready-ship-on-owner-go",
-      "cmd": "node --test scripts/send-money-welcome.test.mjs",
-      "missingPaths": [
-        "scripts/send-money-welcome.test.mjs"
       ]
     },
     {
