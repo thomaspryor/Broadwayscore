@@ -101,7 +101,8 @@ test('vercel-deploy: gate deferred for pre-warm, wait step before core data, cac
   assert.match(wait, /gh run cancel "\$GITHUB_RUN_ID"/);
   assert.match(wait, /sleep \d+/, 'self-cancel must block so no later step runs');
   assert.match(wait, /GATE_EVENT_NAME=workflow_dispatch node scripts\/lib\/should-deploy-gate\.js/);
-  assert.match(wait, /grep -vE '\^\(data\|public\)\/'/);
+  assert.match(wait, /SETUP=\$\(grep -E '\^\(package/);
+  assert.match(wait, /\[ -z "\$SETUP" \] \|\| handoff/);
   const order = ['Install dependencies', 'Restore Next.js build + prebuild artifacts cache', H.WAIT_STEP, 'Checkout core data', 'Build', 'Deploy to Production', 'Save Next.js build + prebuild artifacts cache']
     .map((n) => vd.indexOf(`- name: ${n}\n`));
   assert.deepEqual([...order].sort((a, b) => a - b), order, 'deploy job step order');
@@ -143,4 +144,15 @@ test('consumers that read vercel-deploy runs ignore pre-warm runs', () => {
   assert.match(rd('scripts/deploy-heartbeat.sh'), /includes\('pre-warm'\)/);
   assert.match(rd('scripts/check-prod-deploy.js'), /includes\('pre-warm'\)\) continue/);
   assert.match(rd('scripts/lib/gh-runs-query.sh'), /displayTitle: \.display_title/);
+});
+
+test('hand-off set covers every script the pre-wait deploy steps run', () => {
+  const vd = wf('vercel-deploy.yml');
+  const dep = vd.slice(vd.indexOf('\n  deploy:\n'));
+  const pre = dep.slice(0, dep.indexOf(`- name: ${H.WAIT_STEP}\n`));
+  const wait = stepBlock(vd, H.WAIT_STEP);
+  const re = new RegExp(/SETUP=\$\(grep -E '([^']+)'/.exec(wait)[1]);
+  for (const f of new Set(pre.match(/scripts\/[\w./-]+\.(?:js|sh|mjs)/g))) assert.ok(re.test(f), `${f} runs before the wait but is not in the hand-off set`);
+  for (const f of ['package-lock.json', '.github/workflows/vercel-deploy.yml', 'src/config/feature-flags.ts']) assert.ok(re.test(f), f);
+  for (const f of ['src/app/page.tsx', '.github/workflows/llm-ensemble-score.yml', 'data/shows.json']) assert.ok(!re.test(f), f);
 });
