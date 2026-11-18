@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-7682",
+  "planId": "49194de7-511a-4abf-afd2-77b250838db7",
+  "status": "pending",
+  "createdAt": "2026-11-18T14:39:42.978Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7682: boston-ma W47 Delirium run dates. openingDate 2026-06-12 was a census-earliest-review-date guess; Calderwood Pavilion (BCA) page says run 6/18-7/2 (gemini+openai agree, reviews dated 06-25+). Venue is Calderwood Pavilion at the BCA.",
+    "steps": [
+      "shows.json: delirium-regional-2026.openingDate",
+      "shows.json: delirium-regional-2026.openingDateSource",
+      "shows.json: delirium-regional-2026.venue"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "delirium-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-06-12",
+        "newValue": "2026-06-18",
+        "description": "shows.json: delirium-regional-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "delirium-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "city-hub-audit: producer page run start June 18 2026 (BRO-7682)",
+        "description": "shows.json: delirium-regional-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "delirium-regional-2026",
+        "field": "venue",
+        "oldValue": "Arlekin Players Theatre, Boston, MA",
+        "newValue": "Calderwood Pavilion, Boston Center for the Arts, Boston, MA",
+        "description": "shows.json: delirium-regional-2026.venue"
+      }
+    ]
+  }
+}
