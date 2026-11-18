@@ -542,7 +542,16 @@
     "the-invention-of-love-off-broadway-2026/whatsonstage--miriam-sallon.json",
     "come-from-away-fords-regional-2026/nytimes--unknown.json",
     "man-to-man-west-end-2026/deadline--katie-campione.json",
-    "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json"
+    "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -948,7 +957,7 @@
     ]
   },
   "startTime": "2026-11-17T22:48:02.865Z",
-  "lastProcessed": "the-good-thief-off-broadway-2026/nysr--david-finkle.json",
+  "lastProcessed": "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-18T02:30:02.443Z",
@@ -991,6 +1000,39 @@
     },
     {
       "t": "2026-11-18T02:34:33.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-18T03:35:44.876Z",
+      "event": "bb-session",
+      "session": "b6288a6e",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-18T03:35:45.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-18T03:36:30.960Z",
+      "event": "bb-session",
+      "session": "0c157f6c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-18T03:36:31.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-18T03:38:36.880Z",
+      "event": "bb-session",
+      "session": "9481f532",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-18T03:38:37.341Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }

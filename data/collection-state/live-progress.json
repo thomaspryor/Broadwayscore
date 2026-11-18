@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-18T03:18:09.381Z",
+  "updatedAt": "2026-11-18T03:40:51.448Z",
   "processed": 409,
-  "failed": 132,
-  "successRate": "75.6%",
+  "failed": 141,
+  "successRate": "74.4%",
   "tierBreakdown": {
     "playwright": 214,
     "amp": 0,
@@ -14,7 +14,7 @@
     "archiveToday": 0,
     "archive": 128
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-11-18T02:30:02.443Z",
@@ -57,6 +57,39 @@
     },
     {
       "t": "2026-11-18T02:34:33.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-18T03:35:44.876Z",
+      "event": "bb-session",
+      "session": "b6288a6e",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-18T03:35:45.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-18T03:36:30.960Z",
+      "event": "bb-session",
+      "session": "0c157f6c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-18T03:36:31.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-18T03:38:36.880Z",
+      "event": "bb-session",
+      "session": "9481f532",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-18T03:38:37.341Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
