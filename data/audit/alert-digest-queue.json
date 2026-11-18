@@ -1902,5 +1902,36 @@
       }
     ],
     "queuedAt": "2026-11-18T01:24:41.654Z"
+  },
+  {
+    "conditionKey": "land:land/retro-row-lands",
+    "title": "Landing blocked: unit-tests-node red on land/retro-row-lands",
+    "description": "land.yml did not land land/retro-row-lands: the unit-tests-node gate went red at 8a9cdcafce. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44213120131",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/retro-row-lands"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8a9cdcafce146ec314948bae8bde08396fb39223"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44213120131"
+      }
+    ],
+    "queuedAt": "2026-11-18T01:28:12.484Z"
   }
 ]
