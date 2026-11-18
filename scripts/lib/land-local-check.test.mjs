@@ -745,6 +745,9 @@ test('BRO-7752: a timing failure re-runs the failing files alone on HEAD and sco
 test('BRO-7752: a failure still red alone and green on base is new', (t) => {
   const seen = runMainWithAlone(t, tapOf([['tests/unit/b.test.mjs', 'red on main too']], 2), tapOf([], 2));
   assert.equal(seen.code, 1);
+  assert.ok(seen.aloneEnv, 'BRO-7752: the failing files re-ran alone on HEAD (fails if the isolated re-run is reverted)');
+  assert.equal(seen.aloneEnv.scopeFiles, 'tests/unit/a.test.mjs\ntests/unit/b.test.mjs\n');
+  assert.equal(seen.baseScope, 'tests/unit/a.test.mjs\ntests/unit/b.test.mjs\n', 'base re-runs only the failing files');
 });
 
 test('BRO-7752: failing files that all pass alone need no base run', (t) => {
