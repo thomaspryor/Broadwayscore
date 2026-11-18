@@ -279,69 +279,74 @@ function singleWordTitleIdentity(itemTitle, itemForms, phrase, word) {
   return itemForms.some(h => beside.test(h) || (leads.test(h) && theatreCue.test(h)));
 }
 
-/**
- * BRO-7739: the main title of a show whose title ends in a QUOTED subtitle
- * ('Blue Man Group “A New Holiday Surprise”' -> 'Blue Man Group'). Colon titles are
- * deliberately not split ("Death Note: The Musical" would match the anime, "August:
- * Osage County" is no subtitle). Needs 2+ significant words. Pure, no I/O.
- */
+// BRO-7739 / BRO-7778: main-title rules live in show-names.js (one show identity for every matcher). mainTitleOf
+// now splits colon and dash subtitles too; a colon/dash main title needs a review cue in the headline (below).
+const { mainTitleSplit, mainTitleIsUnique, pressAkaForTitle, showNames, sigWords: nameSigWords, normTitle } = require('./show-names');
 function mainTitleOf(showTitle) {
-  const m = String(showTitle || '').match(/^(.+?)\s+[\u201C]([^\u201C\u201D]+)[\u201D]\s*$/);
-  if (!m) return null;
-  const main = m[1].trim();
-  // A possessive main is an author/star credit ("Charles Dickens’ “A Christmas Carol”"): that name alone is not the show.
-  if (/['\u2018\u2019]s?$/.test(main)) return null;
-  const words = main.toLowerCase().replace(/[^a-z0-9' ]/g, ' ').split(/\s+/)
-    .filter(w => w.length > 1 && !['the', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w));
-  return words.length >= 2 ? main : null;
+  const s = mainTitleSplit(showTitle);
+  return s ? s.main : null;
 }
 
+// A colon/dash subtitle is often part of the work's own name elsewhere ("Stranger Things: The First Shadow" vs the TV
+// series), so its main title alone counts only beside a review cue: "Review: It's a Wonderful Life" yes, "Stranger
+// Things finale breaks records" no. A quoted subtitle (Blue Man Group “...”) is a billing label and needs none.
+const REVIEW_CUE_RE = /(?:^|[^a-z])(?:review|reviews|reviewed|reviewing)(?:[^a-z]|$)/i;
+
 /**
- * True when no show with a DIFFERENT full title shares the main title (equal, or starting
- * with it at a word boundary: "Blue Man" must not block "Blue Mantis"). Fails closed when
- * the show list is missing. Callers pass ALL show titles (closed ones too).
+ * BRO-7778: does a headline (or slug text) name a show by one of its press titles (shows.json akaTitles)? Matched
+ * like the billed title. A one-significant-word aka ("Sacrifices") also needs single-word identity: quoted, beside
+ * "review", or leading the headline.
  */
-const _uniqueMemo = new WeakMap(); // allShowTitles array -> Map(showTitle -> boolean): the scan is 6000 titles, matchers run per feed item
-function mainTitleIsUnique(showTitle, main, allShowTitles) {
-  if (!main || !Array.isArray(allShowTitles) || allShowTitles.length === 0) return false;
-  let memo = _uniqueMemo.get(allShowTitles);
-  if (!memo) { memo = new Map(); _uniqueMemo.set(allShowTitles, memo); }
-  const key = showTitle + '\u0000' + main;
-  if (!memo.has(key)) memo.set(key, mainTitleIsUniqueUncached(showTitle, main, allShowTitles));
-  return memo.get(key);
-}
-function mainTitleIsUniqueUncached(showTitle, main, allShowTitles) {
-  const norm = t => String(t || '').toLowerCase().replace(/[\u2018\u2019']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
-  const own = norm(showTitle);
-  const m = norm(main);
-  if (!m) return false;
-  return !allShowTitles.some(t => { const n = norm(t); return n && n !== own && (n === m || n.startsWith(m + ' ')); });
+function akaTitleMatches(itemTitle, aka, opts) {
+  const sw = nameSigWords(aka);
+  if (!sw.length) return false;
+  const inner = { ...opts, mainTitle: false, akaTitles: [] };
+  if (!titleMatchesFullShowTitle(itemTitle, aka, inner)) return false;
+  if (sw.length > 1) return true;
+  const norm = (t, keep) => {
+    const v = foldDiacritics(String(t || '')).toLowerCase().replace(/[\u2018\u2019\u02BC]/g, "'")
+      .replace(/[-\u2010-\u2015]/g, ' ').replace(/[^a-z0-9' ]/g, '').replace(/\s+/g, ' ').trim();
+    return keep ? v : v.replace(/'/g, '');
+  };
+  const forms = [...new Set([norm(itemTitle, true), norm(itemTitle, false)])];
+  return singleWordTitleIdentity(itemTitle, forms, norm(aka, false), sw[0]);
 }
 
 /**
  * Check if a title likely contains a review for the given show.
- * Matches show title words (ignoring articles) against RSS item title.
- * @param {{fuzzy?: boolean, mainTitle?: boolean, allShowTitles?: string[]}} [opts] fuzzy: allow one typo'd word (see above).
- *   mainTitle (BRO-7739, opt-in, needs allShowTitles): a show titled with a quoted subtitle also matches on
- *   its unique main title.
- *   Off by default: first-match callers (poll-trade-press-rss) must not let a
- *   near match on one show beat an exact match on another.
+ * Matches show title words (ignoring articles) against RSS item title, then the show's press titles (BRO-7778).
+ * @param {{fuzzy?: boolean, mainTitle?: boolean, allShowTitles?: string[], akaTitles?: string[], pressNames?: boolean}} [opts]
+ *   fuzzy: allow one typo'd word (see above).
+ *   akaTitles: the show's press titles. Omitted: read from the loaded shows.json (show-names pressAkaForTitle), so an
+ *   aka added in data reaches every caller that only passes show.title. pressNames:false turns that lookup off.
+ *   mainTitle (BRO-7739, opt-in, needs allShowTitles): a subtitled show also matches on its unique main title (a
+ *   colon/dash one only beside a review cue). Off by default: first-match callers (poll-trade-press-rss) must not let
+ *   a near match on one show beat an exact match on another.
  */
 function titleMatchesShow(itemTitle, showTitle, opts = {}) {
   if (titleMatchesFullShowTitle(itemTitle, showTitle, opts)) return true;
-  if (!opts.mainTitle) return false;
-  const main = mainTitleOf(showTitle);
-  if (!main || !mainTitleIsUnique(showTitle, main, opts.allShowTitles)) return false;
+  // BRO-7778: the other names come from show-names.js showNames, the one show identity every matcher shares: press
+  // titles (akaTitles: opts.akaTitles, else the loaded show list) and, with opts.mainTitle, the unique main title.
+  const akas = Array.isArray(opts.akaTitles) ? opts.akaTitles : (opts.pressNames === false ? [] : pressAkaForTitle(showTitle));
+  const names = showNames({ title: showTitle, akaTitles: akas }, opts.mainTitle ? opts.allShowTitles : null);
+  if (names.some((n) => n.kind === 'aka' && akaTitleMatches(itemTitle, n.name, opts))) return true;
+  const split = names.find((n) => n.kind === 'main');
+  if (!split) return false;
+  if (split.form !== 'quoted' && !REVIEW_CUE_RE.test(String(itemTitle || ''))) return false;
+  const main = split.name;
   // The main title must appear as one contiguous phrase, not just as scattered words
   // ("Man Group earnings beat as Blue chips rally" holds all three words of Blue Man Group).
   const fold = t => foldDiacritics(String(t || '')).toLowerCase().replace(/[\u2018\u2019\u02BC]/g, "'")
     .replace(/[-\u2010-\u2015]/g, ' ').replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ').trim();
   const phrase = fold(main).replace(/'/g, '');
   if (!phrase) return false;
-  const hay = ' ' + fold(itemTitle).replace(/'s\b/g, '').replace(/'/g, '') + ' ';
+  // Two readings of the headline: possessive dropped ("Blue Man Group's" -> "blue man group") and apostrophe dropped
+  // ("It's a Wonderful Life" -> "its a wonderful life": the main title itself can hold an apostrophe).
+  const f = fold(itemTitle);
+  const hays = [' ' + f.replace(/'s\b/g, '').replace(/'/g, '') + ' ', ' ' + f.replace(/'/g, '') + ' '];
   // "Blue Man Group's" headline, or the slug "blue-man-groups" (the slug strips the apostrophe): optional s on the last word.
   // A 2+ word contiguous phrase is stronger identity than the word-bag matcher, so no second pass.
-  return hay.includes(' ' + phrase + ' ') || hay.includes(' ' + phrase + 's ');
+  return hays.some((hay) => hay.includes(' ' + phrase + ' ') || hay.includes(' ' + phrase + 's '));
 }
 
 function titleMatchesFullShowTitle(itemTitle, showTitle, opts = {}) {
@@ -434,8 +439,10 @@ function urlSlugMatchesShow(url, showTitle, opts = {}) {
     const phrase = normalize(showTitle);
     if (!phrase) return false;
     // BRO-6321: bare generic titles ("Baby") need more than the word in the slug.
-    if (!passesGenericTitleIdentity(url, showTitle)) return false;
-    return (' ' + normalize(slugText) + ' ').includes(' ' + phrase + ' ');
+    if (passesGenericTitleIdentity(url, showTitle) && (' ' + normalize(slugText) + ' ').includes(' ' + phrase + ' ')) return true;
+    // BRO-7778: the show's press titles (akaTitles) still count for a one-word billed title.
+    const akas = Array.isArray(opts.akaTitles) ? opts.akaTitles : (opts.pressNames === false ? [] : pressAkaForTitle(showTitle));
+    return akas.some((a) => typeof a === 'string' && normTitle(a) !== normTitle(showTitle) && akaTitleMatches(slugText, a, opts));
   }
   return titleMatchesShow(slugText, showTitle, opts);
 }
@@ -486,9 +493,17 @@ const REVIEW_FREE_POST_DAYS = 2;
  * item's title OR URL slug must mention the show. titleMatchesShow is word-boundary +
  * diacritic-folded, so short titles ("The Pass") match safely.
  */
+// BRO-7778: the old poller (opening-night-poller Layer 2, post-lane sweeps) matches like the lane: press titles
+// (akaTitles, by default) and the unique main title before a subtitle. Each checkRSSFeeds call is for one show, so the
+// first-match concern behind mainTitle's opt-in (poll-trade-press-rss) does not apply here.
+function pollerMatchOpts() {
+  return { mainTitle: true, allShowTitles: require('./show-names').registryShowTitles() };
+}
+
 function openingWindowFeedAccepts(item, showTitle, openingDate) {
   if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, OPENING_WINDOW_POST_DAYS)) return false;
-  if (!titleMatchesShow(item.title, showTitle) && !urlSlugMatchesShow(item.link, showTitle)) return false;
+  const mo = pollerMatchOpts();
+  if (!titleMatchesShow(item.title, showTitle, mo) && !urlSlugMatchesShow(item.link, showTitle, mo)) return false;
   if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, REVIEW_FREE_POST_DAYS)) {
     return /review/i.test(`${item.title || ''} ${item.link || ''}`);
   }
@@ -546,14 +561,14 @@ async function checkRSSFeeds(showTitle, options = {}) {
 
         if (feed.needsFilter) {
           // Entertainment feeds (THR, Deadline): always title-match — they cover everything
-          if (!titleMatchesShow(item.title, showTitle)) continue;
+          if (!titleMatchesShow(item.title, showTitle, pollerMatchOpts())) continue;
         } else if (feed.openingWindow && openingDate) {
           // Narrow Broadway-specific feeds (NYT Theater, Variety Legit): date window AND
           // identity match (task #1073), see openingWindowFeedAccepts.
           if (!openingWindowFeedAccepts(item, showTitle, openingDate)) continue;
         } else {
           // All other feeds (WE feeds, Broadway feeds without openingDate): title-match
-          if (!titleMatchesShow(item.title, showTitle)) continue;
+          if (!titleMatchesShow(item.title, showTitle, pollerMatchOpts())) continue;
         }
 
         // Reject non-review content: interviews, box office, cast news, photos, prep essays, roundups.
@@ -626,4 +641,4 @@ function rssStubIdentityOk(stub, showTitle) {
     || urlSlugMatchesShow(stub.url, showTitle));
 }
 
-module.exports = { rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, mainTitleOf, mainTitleIsUnique, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+module.exports = { REVIEW_CUE_RE, rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, mainTitleOf, mainTitleIsUnique, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };

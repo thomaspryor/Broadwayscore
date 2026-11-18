@@ -63,7 +63,11 @@ function safeSubtitlePrefix(showTitle) {
 
 function titleMatchesShowOrPrimary(itemTitle, showTitle) {
   if (!itemTitle || !showTitle) return false;
-  if (titleMatchesShow(itemTitle, showTitle)) return true;
+  // BRO-7778: press titles (akaTitles) and the unique main title before a quoted/colon/dash subtitle, the same
+  // show identity every matcher uses (show-names.js). TheaterMania headlined Blue Man Group's review without its
+  // subtitle (2026-11-17).
+  const { registryShowTitles } = require('./show-names');
+  if (titleMatchesShow(itemTitle, showTitle, { mainTitle: true, allShowTitles: registryShowTitles() })) return true;
   const primary = safeSubtitlePrefix(showTitle);
   if (primary) return titleMatchesShow(itemTitle, primary);
   return false;
