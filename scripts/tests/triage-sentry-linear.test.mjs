@@ -289,3 +289,22 @@ test('triage-sentry.js reads the family cards once per run and passes them in', 
   assert.match(script, /canCreate: [^}]*familyCards \}/);
   assert.match(script, /r\.action === 'grouped'/);
 });
+
+test('numbers inside the error text keep errors apart; the real split pairs still group (BRO-7595 review)', () => {
+  assert.notEqual(lib.sentryFamily('Error: Minified React error #418; visit https://react.dev/errors/418', 'c'), lib.sentryFamily('Error: Minified React error #423; visit https://react.dev/errors/423', 'c'));
+  assert.notEqual(lib.sentryFamily('Error: Request failed with status code 404', 'c'), lib.sentryFamily('Error: Request failed with status code 500', 'c'));
+  const pairs = [
+    ['SecurityError: Attempt to use history.replaceState() more than 100 times per 10 seconds', 'SecurityError: Attempt to use history.replaceState() more than 100 times per 10 seconds', '?(chunks/b468fba8)'],
+    ['UgcError: UGC insert reviews failed (account_gone)', 'UgcError: UGC insert reviews failed (23503)', 'y(chunks/20993)'],
+    ['UgcError: UGC insert watchlist failed (account_gone)', 'UgcError: UGC insert watchlist failed (23503)', 'y(chunks/20993)'],
+  ];
+  for (const [a, b, c] of pairs) assert.equal(lib.sentryFamily(a, c), lib.sentryFamily(b, c), a);
+});
+
+test('a Backlog twin counts as parked: it does not absorb a dispatchable error', async () => {
+  const t = twinCard(UGC_A, { state: { type: 'backlog' } });
+  const s = groupingStubs({ fresh: t });
+  assert.equal((await lib.fileSentryIssue({ issue: UGC_B, classification: REAL, org: 'o', familyCards: [t] }, s.deps)).action, 'filed');
+  const s2 = groupingStubs({ fresh: t });
+  assert.equal((await lib.fileSentryIssue({ issue: UGC_B, classification: { ...REAL, lowFrequency: true }, org: 'o', familyCards: [t] }, s2.deps)).action, 'grouped');
+});

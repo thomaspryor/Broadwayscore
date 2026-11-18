@@ -105,14 +105,14 @@ function unescapeMd(s) {
 
 /**
  * Family key of one Sentry error: the error title with a trailing single-token
- * code ("(account_gone)", "(23503)", "(500)") removed and numbers masked, plus
- * the culprit verbatim. Returns null when either part is missing, so an
+ * code ("(account_gone)", "(23503)", "(500)") removed, plus the culprit
+ * verbatim. Other numbers stay: "Minified React error #418" vs "#423" and
+ * "status code 404" vs "500" are different errors. Returns null when either part is missing, so an
  * error without a culprit is never grouped.
  */
 function sentryFamily(title, culprit) {
   const t = unescapeMd(title).toLowerCase()
     .replace(/\s*\([\w.-]+\)\s*$/, '')
-    .replace(/\d+/g, '#')
     .replace(/\s+/g, ' ')
     .trim();
   const c = unescapeMd(culprit).toLowerCase();
@@ -129,8 +129,11 @@ function cardFamily(description) {
   return err && cul ? sentryFamily(err[1], cul[1]) : null;
 }
 
+// Parked = a PARKED: line, or Backlog (linear-issue-create.js twinServes
+// treats a backlog twin as parked the same way).
 function isParkedCard(card) {
   if (card && typeof card.parked === 'boolean') return card.parked;
+  if (card && card.state && card.state.type === 'backlog') return true;
   return /^\s*PARKED:/m.test(String((card && card.description) || ''));
 }
 
