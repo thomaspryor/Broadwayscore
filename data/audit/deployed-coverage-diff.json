@@ -1,190 +1,30 @@
 {
-  "generatedAt": "2026-11-18T21:11:53.187Z",
+  "generatedAt": "2026-11-18T22:23:01.076Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 360,
-  "clean": 349,
-  "defective": 11,
+  "clean": 359,
+  "defective": 1,
   "byType": {
-    "score-drift": 11
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "blue-man-group-a-new-holiday-surprise-2026",
-      "title": "Blue Man Group “A New Holiday Surprise”",
-      "openingDate": "2026-11-17",
+      "showId": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "openingDate": "2026-11-11",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 49.28 vs local 47.82 (Δ1.46)"
+          "detail": "deployed cs 63.27 vs local 64.39 (Δ1.12)"
         }
       ],
       "missingFromProd": [],
       "localCount": 5,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-18T20:04:14.296Z"
-    },
-    {
-      "showId": "top-gunchained-off-west-end-2026",
-      "title": "Top Gunchained",
-      "openingDate": "2026-11-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.77 vs local 81.06 (Δ0.29)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-18T20:04:14.296Z"
-    },
-    {
-      "showId": "jenufa-off-broadway-2026",
-      "title": "Jenůfa",
-      "openingDate": "2026-11-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.4 vs local 76.75 (Δ1.65)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
       "deployedCount": 5,
-      "firstDefectAt": "2026-11-18T21:11:42.890Z"
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "openingDate": "2026-11-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 66.52 vs local 64.96 (Δ1.56)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 16,
-      "firstDefectAt": "2026-11-18T20:04:14.296Z"
-    },
-    {
-      "showId": "the-kings-critique-off-broadway-2026",
-      "title": "The King's Critique",
-      "openingDate": "2026-11-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 54.33 vs local 54.65 (Δ0.32)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-18T21:11:42.890Z"
-    },
-    {
-      "showId": "relative-motion-off-west-end-2026",
-      "title": "Relative Motion",
-      "openingDate": "2026-11-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.48 vs local 78.57 (Δ2.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-11-18T21:11:42.890Z"
-    },
-    {
-      "showId": "act-of-god-off-west-end-2026",
-      "title": "Act of God",
-      "openingDate": "2026-11-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 68.01 vs local 68.12 (Δ0.11)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-18T21:11:42.890Z"
-    },
-    {
-      "showId": "julius-caesar-globe-off-west-end-2026",
-      "title": "Julius Caesar",
-      "openingDate": "2026-11-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 71.91 vs local 70.44 (Δ1.47)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-11-18T21:11:42.890Z"
-    },
-    {
-      "showId": "the-verge-off-broadway-2026",
-      "title": "The Verge",
-      "openingDate": "2026-11-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 56.75 vs local 56.5 (Δ0.25)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-11-18T21:11:42.890Z"
-    },
-    {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "openingDate": "2026-11-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 62.77 vs local 61.13 (Δ1.64)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-11-18T21:11:42.890Z"
-    },
-    {
-      "showId": "rope-off-broadway-2026",
-      "title": "Rope",
-      "openingDate": "2026-11-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 62.17 vs local 61.57 (Δ0.6)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 16,
-      "firstDefectAt": "2026-11-18T21:11:42.890Z"
+      "firstDefectAt": "2026-11-18T22:22:55.995Z"
     }
   ],
   "persistentDefective": 0,

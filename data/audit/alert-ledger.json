@@ -373,13 +373,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-18T21:11:53.366Z",
+      "lastSeen": "2026-11-18T22:23:01.277Z",
       "lastNotifiedAt": "2026-11-18T04:03:24.361Z",
       "lastSurfacedAt": "2026-11-17T03:05:41.603Z",
       "notifyCount": 84,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -19491,7 +19491,7 @@
       "title": "Roundup gaps: 18 listed review(s) not captured across 8 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-18T21:11:05.591Z",
+      "lastSeen": "2026-11-18T22:22:13.407Z",
       "lastNotifiedAt": "2026-11-18T21:11:05.591Z",
       "lastSurfacedAt": null,
       "notifyCount": 61,
@@ -19506,7 +19506,8 @@
         "the-unbelievers-off-broadway-2026",
         "its-a-wonderful-life-a-live-radio-play-2026",
         "la-distance-bam-off-broadway-2026"
-      ]
+      ],
+      "silentRefires": 1
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -36772,7 +36773,7 @@
       "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "scheduled-email-count:dup-opening-digest,dup-reddit-post-ready": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Scheduled sender delivered MORE THAN ONCE in a day: reddit-post-ready, opening-digest",
       "firstSeen": "2026-11-03T20:49:21.806Z",
@@ -36783,7 +36784,9 @@
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-6918",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-18T22:28:23.640Z",
+      "resolveReason": "BRO-6918: no repeat of this scheduled-email count violation"
     },
     "opening-night-cv-wrongproduction-unhandled-the-bridge-off-west-end-2026": {
       "status": "resolved",
@@ -45649,13 +45652,13 @@
       "title": "Live show has ZERO critic reviews on site: Menopause The Musical",
       "firstSeen": "2026-11-18T20:03:57.153Z",
       "incidentOpenedAt": "2026-11-18T20:03:57.153Z",
-      "lastSeen": "2026-11-18T21:11:31.978Z",
+      "lastSeen": "2026-11-18T22:22:43.021Z",
       "lastNotifiedAt": "2026-11-18T20:03:57.153Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7795",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-7794-nearmiss-news": {
       "status": "open",
@@ -45679,6 +45682,32 @@
       "lastSeen": "2026-11-18T21:29:11.491Z",
       "lastNotifiedAt": "2026-11-18T21:29:11.491Z",
       "lastSurfacedAt": "2026-11-18T21:29:11.491Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-7798-v2": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/bro-7798-v2",
+      "firstSeen": "2026-11-18T22:14:46.756Z",
+      "incidentOpenedAt": "2026-11-18T22:14:46.756Z",
+      "lastSeen": "2026-11-18T22:14:46.756Z",
+      "lastNotifiedAt": "2026-11-18T22:14:46.756Z",
+      "lastSurfacedAt": "2026-11-18T22:14:46.756Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-7802-mwmnsczp": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7802-mwmnsczp",
+      "firstSeen": "2026-11-18T22:31:32.557Z",
+      "incidentOpenedAt": "2026-11-18T22:31:32.557Z",
+      "lastSeen": "2026-11-18T22:31:32.557Z",
+      "lastNotifiedAt": "2026-11-18T22:31:32.557Z",
+      "lastSurfacedAt": "2026-11-18T22:31:32.557Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
