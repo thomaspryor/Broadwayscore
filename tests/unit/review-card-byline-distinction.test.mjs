@@ -1,6 +1,6 @@
 // BRO-7024: the critic byline must stay visually distinct from the pull quote.
 // Compact layout (owner pick 2026-11-06): the byline runs in at the end of the
-// quote as muted, smaller "— Name", and Full Review is an icon link in the
+// quote as a muted, smaller name, and Full Review is an icon link in the
 // header row. This guards the structure so a refactor cannot put the byline
 // back on its own full-size row under the quote.
 import { test } from 'node:test';
@@ -16,8 +16,7 @@ test('byline is a muted, smaller run-in span', () => {
   assert.match(m[1], /text-fg-muted/, 'muted color, not the quote color');
 });
 
-test('the dash is decorative and the name keeps a screen-reader "By"', () => {
-  assert.match(src, /<span aria-hidden="true">&mdash; <\/span>/);
+test('the name keeps a screen-reader "By"', () => {
   assert.match(src, /<span className="sr-only">By <\/span>/);
 });
 

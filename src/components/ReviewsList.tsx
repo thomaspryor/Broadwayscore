@@ -349,7 +349,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
     </span>
   ) : null;
   // Compact layout (owner pick 2026-11-06): the byline runs in at the end of the
-  // quote ("... precision." — Name), phones add the date after it, and Full
+  // quote ("... precision." Name), phones add the date after it, and Full
   // Review shrinks to an arrow beside the date in the header row.
   // The published rating (owner pick 2026-11-08) rides with the date instead of
   // hanging under the score badge: "4/5 stars · Nov 7, 2026" on the header row
@@ -378,7 +378,6 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
     <span className="text-xs sm:text-sm text-fg-muted">
       {' '}
       <span className="whitespace-nowrap">
-        <span aria-hidden="true">&mdash; </span>
         {hasCritic ? (
           <>
             <span className="sr-only">By </span>

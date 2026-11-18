@@ -66,6 +66,16 @@ for (const content of [{ quote: 'A review quote.' }, { summary: 'A review summar
   });
 }
 
+test('attributions have no decorative em dash, with or without review text', () => {
+  for (const content of [{ quote: 'A review quote.' }, {}]) {
+    const { dom, card } = render(content);
+    try {
+      assert.doesNotMatch(card.querySelector('p').textContent, /\u2014/);
+      assert.match(card.querySelector('p').textContent, /Test Critic/);
+    } finally { dom.window.close(); }
+  }
+});
+
 test('tour phone date line retains both the stop and the published rating', () => {
   const { dom, card } = render({ stopLabel: 'Chicago, IL' });
   try {
