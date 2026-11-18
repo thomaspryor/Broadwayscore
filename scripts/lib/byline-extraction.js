@@ -129,7 +129,7 @@ function extractJsonLdAuthor(html) {
           if (typeof raw !== 'string') continue;
           const name = stripBylineSuffixes(decodeHtmlEntities(raw).trim());
           if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
-          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name) || PUBLISHER_RE.test(name) || isCmsAccountName(name)) continue;
+          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name) || PUBLISHER_RE.test(name) || isPublicationName(name) || isCmsAccountName(name)) continue;
           return name;
         }
       }
@@ -226,7 +226,7 @@ function extractByline(html, { outletId, text } = {}) {
       if (URL_LIKE_RE.test(name)) continue;
       // A publisher or house byline is not a critic (New Yorker meta author
       // "Condé Nast", house byline "The New Yorker", BRO-3414); fall through.
-      if (PUBLISHER_RE.test(name)) continue;
+      if (PUBLISHER_RE.test(name) || isPublicationName(name)) continue;
       // A bare "By" preamble span read as the name (BRO-3414).
       if (/^by:?$/i.test(name)) continue;
       if (re === INLINE_BY_RE) {
@@ -269,7 +269,7 @@ function structuredAuthor(html) {
   const content = meta && /\bcontent=["']([^"']+)["']/i.exec(meta[0]);
   if (content) {
     const name = stripBylineSuffixes(decodeHtmlEntities(content[1]).trim());
-    if (name && !URL_LIKE_RE.test(name) && !NOT_A_PERSON_RE.test(name) && !PUBLISHER_RE.test(name) && !isCmsAccountName(name)) return name;
+    if (name && !URL_LIKE_RE.test(name) && !NOT_A_PERSON_RE.test(name) && !PUBLISHER_RE.test(name) && !isPublicationName(name) && !isCmsAccountName(name)) return name;
   }
   const slug = /"author"\s*:\s*\{\s*"@id"\s*:\s*"[^"]*?\\?\/author\\?\/([a-z0-9-]+)\\?\/?#author"/i.exec(s);
   return slug ? `theatermania-slug:${slug[1].toLowerCase()}` : null;
@@ -315,10 +315,37 @@ function detectBylineConflict({ html, text, url, outletId, chosen } = {}) {
  */
 function isNotACriticName(name) {
   const n = String(name || '').trim();
-  return !n || URL_LIKE_RE.test(n) || DOMAIN_LIKE_RE.test(n) || NOT_A_PERSON_RE.test(n) || PUBLISHER_RE.test(n) || isCmsAccountName(n);
+  return !n || URL_LIKE_RE.test(n) || DOMAIN_LIKE_RE.test(n) || NOT_A_PERSON_RE.test(n) || PUBLISHER_RE.test(n) || isCmsAccountName(n) || isPublicationName(n);
+}
+
+/**
+ * BRO-7780: a tier 1-2 outlet's own name ("USA TODAY", "Variety", "New York Post") is the
+ * publisher, never the critic. JSON-LD / meta author on wire and syndicated pages often names the
+ * paper. Only tier 1-2 displayNames (publications, never one-person blogs: lower-tier personal
+ * blogs are named after their critic, e.g. "Liam O'Dell") and never registry aliases (aliases list
+ * critic names). Names shorter than 3 letters ("i", the i paper) are ignored.
+ */
+let PUBLICATION_NAMES = null;
+const pubKey = (s) => String(s || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+function loadPublicationNames(registry) {
+  const set = new Set();
+  const outlets = (registry && (registry.outlets || registry)) || {};
+  for (const e of Object.values(outlets)) {
+    if (!e || typeof e !== 'object' || !(Number(e.tier) <= 2) || !e.displayName) continue;
+    const k = pubKey(e.displayName);
+    if (k.length >= 3) set.add(k);
+  }
+  return set;
+}
+function isPublicationName(name, registry) {
+  if (registry) return loadPublicationNames(registry).has(pubKey(name));
+  if (!PUBLICATION_NAMES) {
+    try { PUBLICATION_NAMES = loadPublicationNames(require('../../data/outlet-registry.json')); } catch { PUBLICATION_NAMES = new Set(); }
+  }
+  return PUBLICATION_NAMES.has(pubKey(name));
 }
 
 module.exports = {
-  isNotACriticName,
+  isNotACriticName, isPublicationName,
   extractReviewerLine, extractReviewedByLine, extractSignOffBeforeShare, extractByline, extractJsonLdAuthor,
   extractTheaterManiaAuthorTag, detectBylineConflict, decodeEntities: (s) => decodeHtmlEntities(s || '') };

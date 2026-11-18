@@ -172,3 +172,36 @@ describe('BRO-7780: readPageByline', () => {
     assert.equal(cleanAuthorName('McDonald, John Paul'), 'McDonald, John Paul');
   });
 });
+
+// BRO-7780: a tier 1-2 outlet's own name in JSON-LD / meta author is the publisher, not the
+// critic. The sweep found the reader returning "USA TODAY" for a USA Today review.
+describe('publication names are never a critic (BRO-7780)', () => {
+  const { readPageByline } = require('../../scripts/lib/page-byline.js');
+  const { isNotACriticName, isPublicationName } = require('../../scripts/lib/byline-extraction.js');
+  const ld = (author) => `<html><head><script type="application/ld+json">${JSON.stringify({ '@type': 'NewsArticle', author })}</script></head><body><p>x</p></body></html>`;
+  const REG = { outlets: {
+    usatoday: { displayName: 'USA Today', tier: 2 }, nypost: { displayName: 'New York Post', tier: 2 },
+    liamodell: { displayName: "Liam O'Dell", tier: 4 }, ipaper: { displayName: 'i', tier: 2 },
+  } };
+
+  test('JSON-LD Person named "USA TODAY" reads as nobody', () => {
+    assert.equal(readPageByline({ html: ld({ '@type': 'Person', name: 'USA TODAY' }), outletId: 'usatoday' }).criticName, null);
+  });
+  test('meta author "New York Post" reads as nobody', () => {
+    assert.equal(readPageByline({ html: '<html><head><meta name="author" content="New York Post"></head><body></body></html>', outletId: 'nypost' }).criticName, null);
+  });
+  test('publisher listed first, critic second: the critic wins', () => {
+    assert.equal(readPageByline({ html: ld([{ '@type': 'Person', name: 'USA TODAY' }, { '@type': 'Person', name: 'Patrick Ryan' }]), outletId: 'usatoday' }).criticName, 'Patrick Ryan');
+  });
+  test('a personal blog named after its critic still credits the critic', () => {
+    assert.equal(readPageByline({ html: ld({ '@type': 'Person', name: "Liam O'Dell" }), outletId: 'liamodell' }).criticName, "Liam O'Dell");
+  });
+  test('only tier 1-2 display names count; short names are ignored', () => {
+    assert.equal(isPublicationName('USA TODAY', REG), true);
+    assert.equal(isPublicationName('The New York Post', REG), true);
+    assert.equal(isPublicationName("Liam O'Dell", REG), false);
+    assert.equal(isPublicationName('I', REG), false);
+    assert.equal(isNotACriticName('USA TODAY'), true);
+    assert.equal(isNotACriticName('Patrick Ryan'), false);
+  });
+});
