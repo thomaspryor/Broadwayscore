@@ -1963,5 +1963,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-18T03:14:59.666Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date",
+    "title": "Live-data test failing: open hub shows are not past a sourced closing date (tests/unit/hub-closing-dates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"open hub shows are not past a sourced closing date\" in tests/unit/hub-closing-dates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'ted-talks-and-talks-regional-2026'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date",
+    "fields": [],
+    "queuedAt": "2026-11-18T03:32:27.713Z"
   }
 ]

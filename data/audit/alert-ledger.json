@@ -29553,13 +29553,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-12T18:06:57.835Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-17T19:55:42.771Z",
+      "lastSeen": "2026-11-18T03:32:27.737Z",
       "lastNotifiedAt": "2026-11-17T13:31:08.704Z",
       "lastSurfacedAt": "2026-11-15T07:37:10.094Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-7503",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -38072,13 +38072,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-17T04:47:52.691Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-17T19:55:42.752Z",
+      "lastSeen": "2026-11-18T03:32:27.688Z",
       "lastNotifiedAt": "2026-11-17T04:47:52.691Z",
       "lastSurfacedAt": "2026-11-17T04:47:52.691Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39192,13 +39192,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-17T19:55:42.098Z",
+      "lastSeen": "2026-11-18T03:32:27.238Z",
       "lastNotifiedAt": "2026-11-17T04:47:52.234Z",
       "lastSurfacedAt": "2026-11-15T00:33:12.642Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-7499",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -45190,8 +45190,21 @@
       "lastSurfacedAt": "2026-11-18T02:48:25.998Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-18T03:19:39.335Z"
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/hub-closing-dates-live-data.test.mjs::open hub shows are not past a sourced closing date": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: open hub shows are not past a sourced closing date (tests/unit/hub-closing-dates-live-data.test.mjs)",
+      "firstSeen": "2026-11-18T03:32:27.712Z",
+      "incidentOpenedAt": "2026-11-18T03:32:27.712Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-18T03:32:27.712Z",
+      "lastNotifiedAt": "2026-11-18T03:32:27.712Z",
+      "lastSurfacedAt": "2026-11-18T03:32:27.712Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
