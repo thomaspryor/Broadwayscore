@@ -65,6 +65,30 @@ function loadLLMScoredReviews(): ScoredReviewFile[] {
 // THUMBS CALCULATION
 // ========================================
 
+// BRO-7766: runValidation used to filter the whole review list once per show
+// (4,400 shows x ~50k reviews x a regex each = 4m40s of every show-scoped
+// press-night scoring run). Same match rule as before (exact showId, or equal
+// once a trailing -YYYY is dropped; exact equality implies the latter), same
+// order (input order within each bucket), so the report is byte-identical.
+// The index is built once per input array and reused for every show.
+const stripYear = (id: string): string => id.replace(/-\d{4}$/, '');
+const showIndexCache = new WeakMap<object, Map<string, unknown[]>>();
+function reviewsForShow<T extends { showId?: string }>(reviews: T[], showId: string): T[] {
+  let index = showIndexCache.get(reviews) as Map<string, T[]> | undefined;
+  if (!index) {
+    index = new Map<string, T[]>();
+    for (const r of reviews) {
+      if (!r.showId) continue;
+      const key = stripYear(r.showId);
+      const bucket = index.get(key);
+      if (bucket) bucket.push(r);
+      else index.set(key, [r]);
+    }
+    showIndexCache.set(reviews, index as Map<string, unknown[]>);
+  }
+  return index.get(stripYear(showId)) || [];
+}
+
 /**
  * Calculate thumbs distribution from LLM scores
  */
@@ -72,9 +96,7 @@ function calculateLLMThumbsDistribution(
   reviews: ScoredReviewFile[],
   showId: string
 ): ThumbsDistribution {
-  const showReviews = reviews.filter(r =>
-    r.showId && (r.showId === showId || r.showId.replace(/-\d{4}$/, '') === showId.replace(/-\d{4}$/, ''))
-  );
+  const showReviews = reviewsForShow(reviews, showId);
 
   const distribution: ThumbsDistribution = { up: 0, flat: 0, down: 0, total: 0 };
 
@@ -106,9 +128,7 @@ function extractAggregatorThumbs(
   reviews: ReviewEntry[],
   showId: string
 ): { dtli: ThumbsDistribution | null; bww: ThumbsDistribution | null } {
-  const showReviews = reviews.filter(r =>
-    r.showId && (r.showId === showId || r.showId.replace(/-\d{4}$/, '') === showId.replace(/-\d{4}$/, ''))
-  );
+  const showReviews = reviewsForShow(reviews, showId);
 
   const dtli: ThumbsDistribution = { up: 0, flat: 0, down: 0, total: 0 };
   const bww: ThumbsDistribution = { up: 0, flat: 0, down: 0, total: 0 };
