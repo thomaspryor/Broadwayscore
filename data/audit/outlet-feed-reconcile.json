@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T13:17:04.027Z",
+  "generatedAt": "2026-11-18T14:18:36.041Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -164,12 +164,8 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -186,20 +182,30 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 826,
-  "matchedGaps": 1,
+  "itemsScanned": 881,
+  "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/desire-under-the-elms-almeida-theatre/",
+      "headline": "Desire Under The Elms &#8211; Almeida Theatre ★★★★★",
+      "publishDate": "2026-11-18"
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "level": "matched",
+      "outletId": "viewfromthegods",
+      "url": "https://viewfromthegods.co.uk/2026/11/18/desire-under-the-elms-almeida-islington/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=desire-under-the-elms-almeida-islington",
+      "headline": "&#8220;Desire Under the Elms&#8221; Almeida Theatre, Islington",
+      "publishDate": "2026-11-18"
+    },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "title": "Desire Under the Elms",
@@ -207,6 +213,15 @@
       "outletId": "all-that-dazzles-uk",
       "url": "https://www.allthatdazzles.co.uk/post/review-desire-under-the-elms-almeida-theatre",
       "headline": "Review: Desire Under The Elms (Almeida Theatre)",
+      "publishDate": "2026-11-18"
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/desire-under-th-almeida-theatre-26219",
+      "headline": "Desire Under the Elms",
       "publishDate": "2026-11-18"
     },
     {
