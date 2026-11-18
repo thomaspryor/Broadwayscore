@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7792",
   "planId": "5eefb326-1612-4357-a7a5-a4b3e9004ba9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T20:20:00.000Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "paranormal-activity-2026/theatermania--zachary-stewart.json: criticName"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T20:33:58.477Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sound-inside-2019/theatermania--unknown.json criticName: \"Unknown\" -> \"David Gordon\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "time-and-the-conways-2017/theatermania--unknown.json criticName: \"Unknown\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-2026/theatermania--zachary-stewart.json criticName: \"Editorial Staff\" -> \"Zachary Stewart\""
+    }
+  ],
+  "executedIn": "ci"
 }
