@@ -103,7 +103,10 @@ test('BRO-7729 cousin: the cost row must be recorded and ride a land push', () =
 test('transcriptHasTool: offered or called counts; only reading the name does not', () => {
   const G = 'mcp__claude-code-remote__get_session';
   const L = (o) => JSON.stringify(o);
-  assert.equal(transcriptHasTool(L({ type: 'attachment', attachment: { type: 'prompt_snapshot', tools: [G] } }), G), true, 'tool list');
+  assert.equal(transcriptHasTool(L({ type: 'attachment', attachment: { type: 'prompt_snapshot', tools: [{ name: G }] } }), G), true, 'tool list (real shape)');
+  assert.equal(transcriptHasTool(L({ type: 'attachment', attachment: { type: 'deferred_tools_delta', addedNames: [G] } }), G), true, 'deferred and added');
+  assert.equal(transcriptHasTool(L({ type: 'attachment', attachment: { type: 'deferred_tools_delta', addedNames: [], removedNames: [G] } }), G), false, 'removed is not offered');
+  assert.equal(transcriptHasTool(L({ type: 'attachment', attachment: { type: 'prompt_snapshot', systemPrompt: `use ${G}`, tools: [{ name: `${G}_cost` }] } }), G), false, 'prompt mention or sibling name');
   assert.equal(transcriptHasTool(L({ type: 'assistant', message: { content: [{ type: 'tool_use', name: G, input: {} }] } }), G), true, 'called');
   assert.equal(transcriptHasTool(L({ type: 'user', message: { content: [{ type: 'tool_result', content: `const X = '${G}'` }] } }), G), false, 'grep or Read output');
   assert.equal(transcriptHasTool(L({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Bash', input: { command: `grep ${G} x` } }] } }), G), false, 'a command mentioning it');

@@ -218,7 +218,11 @@ export function transcriptHasTool(text, name) {
   for (const line of String(text).split('\n')) {
     if (!line.includes(name)) continue;
     let d; try { d = JSON.parse(line); } catch { continue; }
-    if (d.type === 'attachment' && /^(prompt_snapshot|deferred_tools)/.test(String(d.attachment?.type || ''))) return true;
+    // Only a real tool-list entry counts (ship-check P2): a name in removedNames, a system-prompt mention or a
+    // longer sibling name (…get_session_cost) must not switch the cost gate on.
+    const a = d.type === 'attachment' ? d.attachment || {} : null;
+    if (a && a.type === 'prompt_snapshot' && Array.isArray(a.tools) && a.tools.some((t) => t?.name === name)) return true;
+    if (a && /^deferred_tools/.test(String(a.type || '')) && [a.addedNames, a.readdedNames].some((l) => Array.isArray(l) && l.includes(name))) return true;
     const content = d.type === 'assistant' ? d.message?.content : null;
     if (Array.isArray(content) && content.some((c) => c?.type === 'tool_use' && c.name === name)) return true;
   }
