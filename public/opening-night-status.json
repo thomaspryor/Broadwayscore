@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T18:52:28.190Z",
+  "generatedAt": "2026-11-18T19:04:51.631Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1778,27 +1778,27 @@
       "slug": "a-christmas-story-the-musical-tour-2026",
       "thumbnail": "/images/shows/a-christmas-story-the-musical-tour-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 80,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 6,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2140,6 +2140,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-18T19:04:51.631Z",
+          "rc": 1,
+          "s": 80,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
