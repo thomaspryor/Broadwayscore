@@ -109,3 +109,19 @@ test('llm-ensemble-score.yml: a press-night run that skipped the auto-trigger st
   assert.match(step, /dispatch_with_retry rebuild-fast\.yml/);
   assert.match(y, /- name: Auto-trigger rebuild for non-chain runs\n\s+id: auto_rebuild/);
 });
+
+test('deploy dispatchers never skip on "a deploy started after this run started" (BRO-7747 drill)', () => {
+  // On 2026-11-18 rebuild-fast pushed at 09:53 but skipped its deploy because a
+  // deploy had been created at 09:48 (after the run began, before its push);
+  // that deploy built the older data and the review never went live.
+  const dir = path.join(ROOT, '.github/workflows');
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.yml'))) {
+    const y = fs.readFileSync(path.join(dir, f), 'utf8');
+    if (!/gh workflow run vercel-deploy\.yml/.test(y)) continue;
+    assert.doesNotMatch(y, /OUR_RUN_START[\s\S]{0,600}workflow=vercel-deploy\.yml/, `${f}: time-based deploy skip`);
+    assert.doesNotMatch(y, /workflow=vercel-deploy\.yml[\s\S]{0,900}"\$RECENT_TS" -gt "\$OUR_TS"/, `${f}: time-based deploy skip`);
+  }
+  for (const f of ['rebuild-fast.yml', 'rebuild-reviews.yml', 'gather-reviews.yml', 'opening-night-broadcast.yml']) {
+    assert.match(wf(f), /gh workflow run vercel-deploy\.yml/, `${f} still dispatches the deploy`);
+  }
+});

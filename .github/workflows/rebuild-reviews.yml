@@ -934,18 +934,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
-          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
-            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
-            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
-            NOW_TS=$(date +%s)
-            DIFF=$((NOW_TS - RECENT_TS))
-            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
-              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
-              exit 0
-            fi
-          fi
+          # BRO-7747: no caller-side dedup. The old skip ("a deploy started after this run
+          # started") dropped a deploy that began BEFORE this run pushed, so the new data
+          # never shipped (2026-11-18 drill). vercel-deploy.yml's should-deploy gate skips a
+          # build when HEAD and core data are already live, and its 5-min cron really fires
+          # every 6-9h, so this dispatch is what ships the data.
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
 
