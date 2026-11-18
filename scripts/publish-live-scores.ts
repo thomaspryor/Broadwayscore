@@ -17,6 +17,7 @@ import { buildScoreRegionView } from '../src/lib/live-score/view';
 const { makeStorage, DEFAULT_BUCKET } = require('./lib/live-score/storage');
 const { publish, purge } = require('./lib/live-score/publish');
 const { selectHotShows, SCHEMA } = require('./lib/live-score/core');
+const { PUBLISHER_ENABLED } = require('./lib/live-score/config');
 
 const args = process.argv.slice(2);
 const flag = (n: string) => args.includes(`--${n}`);
@@ -38,6 +39,7 @@ async function main() {
   }
   if (val('purge')) { console.log(JSON.stringify(await purge({ storage, showId: val('purge'), rev: Date.now() }))); return; }
 
+  if (!PUBLISHER_ENABLED) { console.log('live-score publisher disabled in scripts/lib/live-score/config.js; nothing published'); return; }
   const all = getAllShows();
   const only = val('show');
   const flaggedFile = val('flagged-file');

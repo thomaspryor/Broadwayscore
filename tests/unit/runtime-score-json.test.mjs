@@ -256,3 +256,17 @@ describe('7b. concurrent publishers do not drop each other', () => {
     assert.ok(ptr.shows['a-2026'] && ptr.shows['b-2026']);
   });
 });
+
+describe('master switch and game-day wiring (BRO-7803)', () => {
+  const read = (p) => fs.readFileSync(new URL('../../' + p, import.meta.url), 'utf8');
+  test('config enables the publisher by default', () => {
+    assert.equal(require('../../scripts/lib/live-score/config').PUBLISHER_ENABLED, true);
+  });
+  test('the CLI and the simulated night both read the same switch', () => {
+    assert.match(read('scripts/publish-live-scores.ts'), /PUBLISHER_ENABLED/);
+    assert.match(read('scripts/lib/game-day/simulated-opening-night.js'), /liveScoreCfg\.PUBLISHER_ENABLED/);
+  });
+  test('a mutant exists that turns the night red when the switch is off', () => {
+    assert.match(read('scripts/lib/game-day/mutants.js'), /BRO-7803-runtime-score-path/);
+  });
+});
