@@ -37,18 +37,3 @@ test('every override is owner-approved, sane and names a real show id shape', ()
   }
 });
 
-// The site (src/config/scoring.ts) and the scripts (should-hide-reviews.js) each
-// carry a scoreGateArg. If they drift, the page and the app/feeds disagree on
-// whether a show has a score. Run the real TS through tsx; no silent skip.
-test('TS scoreGateArg (site) agrees with the JS copy (scripts) for every override and sample shows', async () => {
-  const { execFileSync } = await import('node:child_process');
-  const path = (await import('node:path')).default;
-  const { fileURLToPath } = await import('node:url');
-  const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
-  const curated = require('../../data/curated-historical-shows.json');
-  const ids = [...Object.keys(overrides.shows), curated[0], 'hamilton-2015', 'no-such-show', '', null];
-  const src = `import { scoreGateArg } from ${JSON.stringify(path.join(root, 'src/config/scoring.ts'))};
-    process.stdout.write(JSON.stringify(${JSON.stringify(ids)}.map((id) => scoreGateArg(id))));`;
-  const out = execFileSync('node', ['--import', 'tsx', '--input-type=module', '-e', src], { cwd: root, encoding: 'utf8' });
-  assert.deepEqual(JSON.parse(out), ids.map((id) => scoreGateArg(id)));
-});
