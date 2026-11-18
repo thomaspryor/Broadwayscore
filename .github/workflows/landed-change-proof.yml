@@ -23,6 +23,8 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    outputs:
+      dispatch_workflows: ${{ steps.audit.outputs.dispatch_workflows }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
@@ -73,3 +75,34 @@ jobs:
         with:
           title: 'Landed-change proof audit failed'
           severity: 'warning'
+
+  # BRO-7796: dispatch the vetted no-spend workflows that prove not-run changes. Its own job so `actions: write` (which
+  # could dispatch or cancel any workflow) never sits beside the audit's contents: write, npm install and repo scripts.
+  # No checkout, no npm. The names come from the audit job's output but are re-checked against this list, which must
+  # equal DISPATCH_ALLOWLIST in scripts/lib/landed-change-proof.mjs (pinned by tests/unit/landed-change-proof-allowlist.test.mjs).
+  dispatch:
+    needs: audit
+    if: always() && needs.audit.outputs.dispatch_workflows != ''
+    runs-on: ubuntu-latest
+    # No checkout, so no local notify-failure action here: a failed dispatch is a ::warning:: and the commit simply
+    # reads not_run again the next night (the audit job above carries the workflow's notify-failure).
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Dispatch allowlisted workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED: ${{ needs.audit.outputs.dispatch_workflows }}
+        run: |
+          allow=" check-cutoff-freshness.yml check-linear-drain-health.yml "
+          n=0
+          for wf in ${REQUESTED//,/ }; do
+            case "$allow" in
+              *" $wf "*) ;;
+              *) echo "::warning::refusing to dispatch $wf: not on the allowlist"; continue ;;
+            esac
+            [ "$n" -ge 3 ] && { echo "::warning::dispatch cap reached"; break; }
+            n=$((n+1))
+            gh workflow run "$wf" --ref main && echo "dispatched $wf" || echo "::warning::dispatch of $wf failed"
+          done

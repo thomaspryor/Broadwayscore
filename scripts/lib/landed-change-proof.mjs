@@ -168,6 +168,8 @@ export function newRows(existing, rows) {
   return rows.filter((r) => {
     if (seen.has(`${r.auditDay}|${r.sha}`)) return false;
     if (r.marker || r.card) return true; // a carded row must reach the ledger, or the next night cards it again
+    // A safe run or dispatch is the point of this audit and the dedupe for the next one: it must reach the ledger.
+    if ((r.files || []).some((f) => f.safeRun || f.dispatch)) return true;
     if (r.landedDay === dayMinus(r.auditDay, 1)) return true;
     return !last.has(r.sha) || last.get(r.sha).verdict !== r.verdict;
   });
@@ -235,8 +237,39 @@ export function safeRunCommand(file, explain, exists = () => false) {
 }
 
 // Workflows the audit may dispatch to prove a change: no spend, no email, no data writes (CLAUDE.md sections 8, 17).
-// Empty until each entry is checked by hand.
-export const DISPATCH_ALLOWLIST = new Set([]);
+// Each entry was read by hand (BRO-7796, second-opinion reviewed): contents: read only, no push step, no secret that
+// spends or emails (notify-failure at severity warning posts nothing but a step summary), last 6 runs green.
+//   check-cutoff-freshness.yml    node scripts/check-cutoff-freshness.js: tsc into a tmp dir, reads files
+//   check-linear-drain-health.yml linear-drain-parked.js --dry-run (no ledger, no dispatch) + a read-only Linear query
+// When unsure, leave a workflow out. The dispatch job in landed-change-proof.yml repeats this list (it must not trust
+// the audit's output alone); tests/unit/landed-change-proof-allowlist.test.mjs fails when the two drift apart or an
+// entry stops being read-only.
+export const DISPATCH_ALLOWLIST = new Set(['check-cutoff-freshness.yml', 'check-linear-drain-health.yml']);
+export const DISPATCH_CAP = 3;
+
+/**
+ * PURE. Which allowlisted workflows to dispatch tonight to prove not-run files. rows: this night's audit rows;
+ * existing: ledger rows. One dispatch per workflow per night (any green non-cron run of it proves every file it runs),
+ * never for a sha that an earlier ledger row already requested, at most `cap`.
+ * -> [{ workflow, shas: [sha], files: [{ sha, file }] }]
+ */
+export function dispatchPlan(rows, existing = [], { cap = DISPATCH_CAP, allow = DISPATCH_ALLOWLIST } = {}) {
+  const asked = new Set(existing.filter((r) => (r.files || []).some((f) => f.dispatch?.requested)).map((r) => r.sha));
+  const plan = new Map();
+  for (const r of rows) {
+    if (r.verdict !== 'not_run' || asked.has(r.sha)) continue;
+    for (const f of (r.files || []).filter((x) => x.verdict === 'not_run')) {
+      const wf = (f.workflows || []).find((w) => allow.has(w));
+      if (!wf) continue;
+      if (!plan.has(wf) && plan.size >= cap) continue;
+      const e = plan.get(wf) || { workflow: wf, shas: [], files: [] };
+      if (!e.shas.includes(r.sha)) e.shas.push(r.sha);
+      e.files.push({ sha: r.sha, file: f.file });
+      plan.set(wf, e);
+    }
+  }
+  return [...plan.values()];
+}
 
 /** PURE. Rows that still need someone: failed / not_run code, after the audit's own safe runs. */
 export function needsFollowUp(rows, existing = []) {
@@ -245,8 +278,10 @@ export function needsFollowUp(rows, existing = []) {
   // missed audit night is caught up by the next one (landedDay <= auditDay - 2, inside the window).
   const carded = new Set(existing.filter((r) => r.card).map((r) => r.sha));
   const selfProven = (r) => {
+    // A file the audit ran itself and passed, or whose proving workflow it dispatched tonight, is not a miss yet:
+    // the next night reads the run (a dispatch that never lands shows up again as not_run and is carded then).
     const open = (r.files || []).filter((f) => f.verdict === 'not_run');
-    return r.verdict === 'not_run' && open.length > 0 && open.every((f) => f.safeRun && f.safeRun.ok);
+    return r.verdict === 'not_run' && open.length > 0 && open.every((f) => (f.safeRun && f.safeRun.ok) || f.dispatch?.requested);
   };
   return rows.filter((r) => r.landedDay && r.landedDay <= dayMinus(r.auditDay, 2) && !carded.has(r.sha)
     && (r.verdict === 'failed' || r.verdict === 'not_run') && !selfProven(r));

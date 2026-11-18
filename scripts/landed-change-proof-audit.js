@@ -2,7 +2,7 @@
 // BRO-7790: daily landed-change proof audit (CLI). Pure logic + verdict meanings: scripts/lib/landed-change-proof.mjs.
 //
 // Usage:
-//   node scripts/landed-change-proof-audit.js [--date=YYYY-MM-DD] [--days=3] [--dry-run] [--json] [--no-safe-run]
+//   node scripts/landed-change-proof-audit.js [--date=YYYY-MM-DD] [--days=3] [--dry-run] [--json] [--no-safe-run] [--no-dispatch]
 //   --date      audit day (default: today UTC). Replays use runs created before <date>T09:00Z (when the cron lands).
 //   --days      window of landed days before the audit day (default 3: D-1..D-3)
 //   --dry-run   print only: no ledger write, no Linear card, no safe runs (prints what it would run)
@@ -199,6 +199,23 @@ async function main() {
       if (!ran.has(cmd)) ran.set(cmd, safeRun(cmd, lib.isUsageOnlyOutput));
       f.safeRun = ran.get(cmd);
     }
+  }
+
+  // Dispatch (BRO-7796): a not-run file whose proving workflow is on the vetted no-spend allowlist gets that workflow
+  // dispatched by the `dispatch` job of landed-change-proof.yml (job-scoped actions: write). This step only plans it and
+  // marks the files, so the ledger dedupes and the follow-up card waits a night for the run. Nothing is dispatched here.
+  const dispatchWorkflows = [];
+  if (!arg('no-dispatch')) {
+    const plan = lib.dispatchPlan(rows, readLedger(path.join(ROOT, lib.LEDGER_PATH)));
+    for (const e of plan) {
+      dispatchWorkflows.push(e.workflow);
+      for (const { sha, file } of e.files) {
+        const f = rows.find((r) => r.sha === sha)?.files.find((x) => x.file === file);
+        if (f) f.dispatch = { workflow: e.workflow, requested: !dryRun, wouldDispatch: dryRun || undefined };
+      }
+    }
+    if (dispatchWorkflows.length) console.log(`[landed-proof] ${dryRun ? 'would dispatch' : 'dispatch requested for'}: ${dispatchWorkflows.join(', ')}`);
+    if (!dryRun && process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `dispatch_workflows=${dispatchWorkflows.join(',')}\n`);
   }
 
   const s = lib.summarize(rows);

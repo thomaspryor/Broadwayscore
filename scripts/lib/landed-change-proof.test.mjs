@@ -185,3 +185,30 @@ test('CLI smoke: a dry run over no matching commits reads git, writes nothing, e
   const v = spawnSync('node', ['scripts/landed-change-proof-audit.js', '--dry-run', '--sha=ffffffffffff', '--expect-proven'], { cwd: root, encoding: 'utf8', timeout: 60000, env: { ...process.env, GH_TOKEN: '', VERCEL_TOKEN: '' } });
   assert.equal(v.status, 1, 'a card VERIFY over a sha that is not on main must fail, not pass on zero rows');
 });
+
+test('dispatchPlan: allowlisted workflows only, one per workflow, capped, never twice for a sha (BRO-7796)', async () => {
+  const { dispatchPlan, DISPATCH_ALLOWLIST } = await import('./landed-change-proof.mjs');
+  const row = (sha, file, workflows, verdict = 'not_run') => ({ sha, verdict, files: [{ file, verdict, workflows }] });
+  const A = 'check-cutoff-freshness.yml';
+  const B = 'check-linear-drain-health.yml';
+  assert.ok(DISPATCH_ALLOWLIST.has(A) && DISPATCH_ALLOWLIST.has(B));
+  const rows = [row('s1', 'scripts/check-cutoff-freshness.js', [A]), row('s2', 'scripts/lib/x.js', [A, 'spend.yml']), row('s3', 'scripts/y.js', ['spend.yml']), row('s4', 'scripts/z.js', [B]), row('s5', 'scripts/q.js', [A], 'failed')];
+  const plan = dispatchPlan(rows, []);
+  assert.deepEqual(plan.map((p) => p.workflow), [A, B], 'spend.yml is never planned; failed rows are not re-dispatched');
+  assert.deepEqual(plan[0].shas, ['s1', 's2'], 'one dispatch proves both files');
+  assert.equal(dispatchPlan(rows, [{ sha: 's1', files: [{ dispatch: { requested: true } }] }, { sha: 's2', files: [{ dispatch: { requested: true } }] }]).map((p) => p.workflow).join(), B, 'already requested shas are skipped');
+  assert.equal(dispatchPlan(rows, [], { cap: 1 }).length, 1, 'cap');
+  assert.deepEqual(dispatchPlan(rows, [], { allow: new Set() }), [], 'empty allowlist plans nothing');
+});
+
+test('needsFollowUp and newRows treat a dispatched or self-run file as in progress and keep it in the ledger (BRO-7796)', () => {
+  const r = { auditDay: '2026-11-18', sha: 'aaa', landedDay: '2026-11-15', verdict: 'not_run', files: [{ file: 'scripts/a.js', verdict: 'not_run', dispatch: { workflow: 'w.yml', requested: true } }] };
+  assert.equal(needsFollowUp([r], []).length, 0, 'dispatched tonight: not carded yet');
+  const plain = { ...r, files: [{ file: 'scripts/a.js', verdict: 'not_run' }] };
+  assert.equal(needsFollowUp([plain], []).length, 1);
+  const prev = { auditDay: '2026-11-17', sha: 'aaa', landedDay: '2026-11-15', verdict: 'not_run', files: [] };
+  assert.equal(newRows([prev], [r]).length, 1, 'unchanged verdict, but a dispatch must reach the ledger');
+  assert.equal(newRows([prev], [plain]).length, 0);
+  const ran = { ...plain, files: [{ file: 'scripts/a.js', verdict: 'not_run', safeRun: { ok: true } }] };
+  assert.equal(newRows([prev], [ran]).length, 1, 'a safeRun must reach the ledger');
+});
