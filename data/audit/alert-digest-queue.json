@@ -565,5 +565,36 @@
     "testId": "tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
     "fields": [],
     "queuedAt": "2026-11-18T16:51:19.144Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-enforce-cd",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-enforce-cd",
+    "description": "land.yml did not land land/worktree-enforce-cd: the unit-tests-node gate went red at 9145d114b6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44351867681",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-enforce-cd"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9145d114b6f46f7afb958f226c3ab3c23ae9235e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44351867681"
+      }
+    ],
+    "queuedAt": "2026-11-18T16:55:23.690Z"
   }
 ]
