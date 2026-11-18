@@ -324,6 +324,10 @@ async function waitForProd({ siteFiles, prodMin }) {
 // re-lands under new names. land.yml rebases onto main itself.
 function refusedMessage(ref, why, url, { rebaseConflict = false } = {}) {
   const head = `REFUSED: ${ref} ${why}${url ? ` ${url}` : ''}\n`;
+  if (rebaseConflict === 'unknown') {
+    return head +
+      `  next: could not read why Land refused. Read the run's failure annotation. If it says "does not rebase cleanly", merging main in will not help (land replays each commit and drops merges): squash onto fresh origin/main and push a NEW land ref (${nextRef(ref)}). Otherwise fix on top of the refused commit and push the same ref ${ref} (do not rebase, squash or reset).`;
+  }
   if (rebaseConflict) {
     // BRO-7755: land.yml replays each commit with a plain rebase and drops
     // merge commits, so merging origin/main into the branch changes nothing
@@ -332,7 +336,7 @@ function refusedMessage(ref, why, url, { rebaseConflict = false } = {}) {
     return head +
       `  next: ${ref} does not rebase onto origin/main, and merging main into it will not help (land replays each commit and drops merges). ` +
       `Make a worktree at fresh origin/main, \`git merge --squash\` the branch, resolve, commit once, and push to a NEW land ref (${nextRef(ref)}). ` +
-      `The old ref stays on origin (deleting it is refused); it is not a second landing.`;
+      `The old ref stays on origin (the cloud proxy refuses deleting it); it is not a second landing.`;
   }
   return head +
     `  next: fix on top of the refused commit (do not rebase, squash or reset: land.yml rebases, and a rewritten re-push is refused as non-fast-forward), then push the same ref ${ref}`;
@@ -348,17 +352,21 @@ function nextRef(ref) {
 // classifier on the failing job's annotations. Best effort: any read error
 // returns false and the caller keeps the default advice.
 function readRefusalCause(run, { read = readGhJson } = {}) {
+  if (!run || run.conclusion !== 'failure') return false;
   try {
-    if (!run || run.conclusion !== 'failure') return false;
     const attempt = run.run_attempt || 1;
     const jobs = read(`repos/${repo}/actions/runs/${run.id}/attempts/${attempt}/jobs?per_page=50`).jobs;
-    if (!Array.isArray(jobs)) return false;
+    if (!Array.isArray(jobs)) return 'unknown';
     const failed = jobs.find((j) => /^(Checks|Land)$/.test(j.name) && j.conclusion === 'failure');
     const annotations = failed ? read(`repos/${repo}/check-runs/${failed.id}/annotations?per_page=100`) : [];
-    const rec = summarizeRun({ ...run, status: 'completed' }, jobs, Array.isArray(annotations) ? annotations : []);
+    if (!Array.isArray(annotations)) return 'unknown';
+    // land-rebase.sh exit 3 (partial-clone fetch failure) is infrastructure,
+    // not a conflict, even though its failing step is "Rebase onto ...".
+    if (annotations.some((a) => /NOT a merge conflict/.test(a.message || ''))) return false;
+    const rec = summarizeRun({ ...run, status: 'completed' }, jobs, annotations);
     return rec.causes.some((c) => /^rebase conflict/.test(c));
   } catch {
-    return false;
+    return 'unknown';
   }
 }
 

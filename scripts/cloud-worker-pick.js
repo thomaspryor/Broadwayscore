@@ -60,7 +60,7 @@ const RESUME_INSTRUCTIONS = (ref, run, kind) => [
   ] : [
   `Check it out: git worktree remove --force .claude/worktrees/resume 2>/dev/null; git fetch origin ${ref} && git worktree add --detach .claude/worktrees/resume FETCH_HEAD.`,
   `Read why Land refused run ${run.id}${run.url ? ` (${run.url})` : ''}: list its failed jobs (gh api repos/${REPO}/actions/runs/${run.id}/jobs --jq '.jobs[] | select(.conclusion=="failure") | .id'), then each job's annotations (gh api repos/${REPO}/check-runs/<job id>/annotations) or log (gh api repos/${REPO}/actions/jobs/<job id>/logs; if gh says the response contains terminal escape sequences, add --allow-escape-sequences).`,
-  'Fix it there (merge origin/main first if it conflicts), then push to the SAME ref:',
+  'Fix it there (merge origin/main first if it conflicts), then push to the SAME ref. EXCEPTION: If the failure is "does not rebase cleanly" (a rebase conflict), merging main in will not help (land replays each commit and drops merges): squash the branch onto fresh origin/main as one commit and push it to a NEW land ref (-v2 suffix) instead. Otherwise push to the SAME ref:',
   `git push origin HEAD:refs/heads/${ref}`,
   ]),
   'Follow that Land run to its verdict in this same turn: wait until the ref disappears (landed) or the run fails (fix and push again). Never end the turn while it runs.',

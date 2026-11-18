@@ -443,6 +443,9 @@ test('BRO-7755: readRefusalCause detects rebase conflicts from annotations, step
   assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), true);
   t = mk(fail('lint gate failed: foo'));
   assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), false);
-  assert.equal(waitForLand.readRefusalCause(run, { read: () => { throw new Error('api'); } }), false);
+  t = mk(fail('land/x: rebase onto abc failed 3 retries with a partial-clone lazy-fetch error. This is NOT a merge conflict'), [{ name: 'Rebase onto origin/main', conclusion: 'failure' }]);
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), false);
+  assert.equal(waitForLand.readRefusalCause(run, { read: () => { throw new Error('api'); } }), 'unknown');
+  assert.match(waitForLand.refusedMessage('land/x', 'w', null, { rebaseConflict: 'unknown' }), /could not read why[\s\S]*land\/x-v2[\s\S]*same ref land\/x/);
   assert.equal(waitForLand.readRefusalCause({ ...run, conclusion: 'cancelled' }, { read: t.read }), false);
 });
