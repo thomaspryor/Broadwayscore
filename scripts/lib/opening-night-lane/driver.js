@@ -206,7 +206,7 @@ function realManualInbox({ repoDir, show, log = console.log, env = process.env }
  */
 function buildRealLaneDeps({
   show, night, openingDate, timeZone, holder, repoDir, coreDir, ledgerDir, recordFile, maxAgeMs, adaptersConfig = {}, env = process.env,
-  routeAlert, ScorerClass, settleFor = null,
+  routeAlert, ScorerClass, settleFor = null, notifyPressSignals = null,
 }) {
   const missing = ['ANTHROPIC_API_KEY', 'OPENAI_API_KEY'].filter((k) => !env[k]);
   if (missing.length) throw new Error(`driver: missing scorer keys ${missing.join(', ')}`);
@@ -241,6 +241,8 @@ function buildRealLaneDeps({
         reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
         // BRO-7283: the comparative within-band pass, run at score time (built by the CLI: it is TypeScript).
         settleComparative: settleFor ? settleFor({ show, reviewTextsDir: path.join(repoDir, 'data', 'review-texts') }) : null,
+        // BRO-7748: built by the CLI (Discord + coordinator-card comment) so its Linear/notify files stay out of laneCodeHash.
+        onPressSignals: notifyPressSignals,
         onDiskUrls: onDiskUrlsFor(reviewsFile, show.id), onDiskRows: onDiskRowsFor(reviewsFile, show.id),
         showScoreGuards: showScoreGuards(repoDir),
         // BRO-7280: opt-in pre-embargo direct-only window (off unless LANE_PREEMBARGO_DIRECT_ONLY is on).
@@ -268,12 +270,14 @@ const TUNING_KEYS = ['passIntervalMs', 'maxPasses', 'startedAt', 'latency', 'pol
  *   laneFetch {fetchPage(url, opts), close()}, recorder? (fetch-recording.js: wraps the discovery fetchText only), scoreText(text, meta), fetchPorts? {extractArticle, extractMeta}
  *   (default: the real extractors over laneFetch), publishPorts | makePublishPorts(clock) (+ forkClock), now, wait,
  *   reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards, search (SERP backend), decodeImpl (Google News; null = off),
- *   windowMs?, tuning? (TUNING_KEYS), manualInbox? {readInbox, markInbox} (BRO-7741; null = no inbox: replays, rehearsals)
+ *   windowMs?, tuning? (TUNING_KEYS), onPressSignals? (BRO-7748 near-miss / found-not-live alert, built by the CLI)
+ *   manualInbox? {readInbox, markInbox} (BRO-7741; null = no inbox: replays, rehearsals)
  * @returns {({shouldStop?, abandonPending?}) => Promise<runLaneNight result>}
  */
 function wireLaneNight({
   show, night, openingDate, timeZone, ledgerDir, adaptersConfig = {}, laneFetch, recorder = null, scoreText, fetchPorts, publishPorts, makePublishPorts, forkClock,
   now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search: rawSearch, decodeImpl, windowMs, tuning = {}, preembargo = null, settleComparative = null,
+  onPressSignals = null,
   manualInbox = null,
 } = {}) {
   const search = rawSearch;
@@ -314,6 +318,7 @@ function wireLaneNight({
       ...tuning,
       reviewTextsDir,
       ...(settleComparative ? { settleComparative } : {}),
+      ...(onPressSignals ? { onPressSignals } : {}),
       ...(manualInbox ? { readInbox: manualInbox.readInbox, markInbox: manualInbox.markInbox } : {}),
       adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig: guardedAdaptersConfig, search: adapterSearch, decodeImpl, now, ledgerDir }),
       // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.

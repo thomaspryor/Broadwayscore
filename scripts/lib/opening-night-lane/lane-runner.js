@@ -31,6 +31,7 @@
  */
 const ledger = require('./ledger');
 const discovery = require('./discovery');
+const nearMiss = require('./near-miss');
 const trust = require('./trust-model');
 const publish = require('./publish');
 const { createLaneReviewWriter } = require('./persist');
@@ -79,6 +80,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
  *   dryRun?, onDiskUrls?, onDiskRows? ([{criticName, outletId}] of this show already in reviews.json), now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait}, midPassTickMs? (real mode's mid-pass timer; default min(bar, 30 s)),
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, serpClockStartMs? (BRO-7280: SERP's +3h clock starts here instead of at startedAt), publishTimeoutMs, pollMs,
+ *   onPressSignals?({nearMisses, gaps}) (BRO-7748: new near-misses and found-not-live gaps after a pass; its failure never stops the night),
  *   shouldStop?() (stop discovering and scoring), abandonPending?() (LANE_STANDDOWN: publish nothing new, only let in-flight batches finish;
  *   queued rows are already in review-texts, so the regular pipeline publishes them)
  * @returns {Promise<{passes, admitted, published, errors, failed, skipped, removedCopies, unpublished, awaiting, stopped}>}
@@ -87,6 +89,7 @@ async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], onDiskRows = [], maxInflight = 2, midPassPublishAfterMs = 5 * 60 * 1000, midPassTickMs = Math.min(midPassPublishAfterMs, 30 * 1000), now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
   startedAt, serpClockStartMs, onAdmitted, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [], settleComparative = null, settleMaxRuns = 25,
+  onPressSignals = null,
   readInbox = null, markInbox = null,
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
@@ -246,6 +249,8 @@ async function runLaneNight({
   if (midPassTimer && midPassTimer.unref) midPassTimer.unref();
 
   let passes = 0;
+  const firstSightings = new Map();
+  const alerting = new Set(); // press-signal alerts in flight (BRO-7748), settled before the night returns // BRO-7748: url -> first time a pass saw it, for the 15-minute found-not-live check
   // The lane runs for its whole window, not until a pass finds nothing: reviews keep arriving for hours (late roundup
   // entries, slow outlets), and an idle-stop would walk away from them.
   // shouldStop: the production driver's lease-lost signal. Stop discovering and scoring (they spend credits for rows
@@ -262,6 +267,19 @@ async function runLaneNight({
     // BRO-7740: the driver watches admitted reviews to learn the embargo has lifted. Never lets a hook error stop the lane.
     if (typeof onAdmitted === 'function' && pass.admitted.length) { try { onAdmitted(pass.admitted, stamp); } catch (e) { errors.push({ adapter: 'onAdmitted', error: String((e && e.message) || e).slice(0, 150) }); } }
     try { discovery.saveMemo(ledgerDir, show.id, night, memo); } catch (e) { errors.push({ adapter: 'memo', error: String((e && e.message) || e).slice(0, 150) }); }
+    // BRO-7748: what the pass saw but did not admit, reported within this pass. Recorded first, so a failed alert is not
+    // re-sent every pass; an alert that throws is an error row, never a stopped night.
+    try {
+      const nearMisses = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'near-miss', items: pass.nearMisses || [], now: stamp, perAdapter: nearMiss.MAX_NEAR_MISSES_PER_ADAPTER });
+      const gaps = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'gap', items: nearMiss.gapCandidates(pass.sightings || [], { firstSeen: firstSightings, now: stamp }), now: stamp });
+      // Not awaited here: the admitted reviews below are the lane's job and must not wait on Discord or Linear.
+      if ((nearMisses.length || gaps.length) && onPressSignals) {
+        const p = Promise.resolve().then(() => onPressSignals({ show, night, nearMisses, gaps }))
+          .catch((e) => errors.push({ adapter: 'press-signals', error: String((e && e.message) || e).slice(0, 150) }))
+          .finally(() => alerting.delete(p));
+        alerting.add(p);
+      }
+    } catch (e) { errors.push({ adapter: 'press-signals', error: String((e && e.message) || e).slice(0, 150) }); }
 
     // BRO-7741: inbox URLs first, outside discovery (no memo, no title match, no merge): a person already vouched for them.
     const manual = await manualCandidates();
@@ -436,6 +454,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
+  await Promise.allSettled([...alerting]);
   await flushInbox();
   return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped,
     inbox: readInbox ? { worked: [...manualByKey.values()].map((e) => e.id), closed: [...manualClosed].map((g) => g.split('@')[0]), unwritten: inboxUpdates.length } : null, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };

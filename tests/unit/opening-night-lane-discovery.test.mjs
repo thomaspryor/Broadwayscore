@@ -445,7 +445,7 @@ test('DTLI adapter: homepage to show page to cited links, known outlets only', a
 test('a show that no source mentions yields an empty, error-free pass', async () => {
   const quiet = { id: 'quiet-2026', title: 'Quiet Little Thing', openingDate: NIGHT };
   const r = await d.runDiscoveryPass({ show: quiet, night: NIGHT, now: T0, startedAt: T0, adapters: allAdapters(), ...pages(baseMap()) });
-  assert.deepEqual(r, { admitted: [], rejected: [], unknownHosts: [], errors: [], deferredDateChecks: [], serpRan: false, deadlineHit: false });
+  assert.deepEqual(r, { admitted: [], rejected: [], unknownHosts: [], errors: [], deferredDateChecks: [], serpRan: false, deadlineHit: false, nearMisses: [], sightings: [] });
 });
 
 test('runDiscoveryPass: refuses a missing title or fetch instead of silently finding nothing', async () => {

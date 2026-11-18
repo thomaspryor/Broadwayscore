@@ -347,6 +347,8 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-7748: near-miss / found-not-live alerts post here during the night (and comment on the coordinator card).
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           # LANE_STANDDOWN (BRO-6617): the owner's switch. The driver re-reads it live at every heartbeat with this token
           # (the PAT Express uses for ORCHESTRATOR_PAUSED); this job-start value is the fallback if that read fails.
           LANE_STANDDOWN: ${{ vars.LANE_STANDDOWN }}

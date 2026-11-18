@@ -38,6 +38,8 @@ async function main() {
     maxAgeMs: hours > 0 ? hours * 60 * 60 * 1000 : undefined,
     adaptersConfig: arg('adapters') ? JSON.parse(fs.readFileSync(arg('adapters'), 'utf8')) : {},
     routeAlert: require('./lib/owner-alert-router').routeAlert,
+    // BRO-7748: near-miss and found-not-live alerts during the night (Discord + coordinator card).
+    notifyPressSignals: require('./lib/press-night-signals-notify').createPressSignalsNotifier(),
     ScorerClass: require('./llm-scoring/ensemble-scorer.ts').EnsembleReviewScorer,
     // BRO-7283: the same within-band comparative pass the regular pipeline runs (comparative-core.ts), run at score time so the
     // published score is the settled one. <2 models = nothing moves, the isolated scores publish as they always did.
