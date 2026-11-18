@@ -65,6 +65,8 @@ jobs:
             # BRO-5884: daily encrypted Supabase export (accounts, reviews, lists, watchlists, fantasy) to R2.
             # 36h = daily cadence + 12h cron-lag cushion.
             "supabase-backup.yml|36|Supabase Backup to R2"
+            # BRO-7708: image sweep failed on every scheduled run 2026-11-02..17 while exempt as "self-healing"; a missing sm/ variant is a user-visible 404 thumbnail. 36h = daily cadence + cushion.
+            "sweep-image-variants.yml|36|Sweep Image Variants"
             # BRO-5963: monthly restore drill (2nd of month). 756h = 31 days (744h) + 12h cushion;
             # the coverage audit only simulates 60 days so it would accept 684h, which would
             # false-alarm before most monthly runs.
