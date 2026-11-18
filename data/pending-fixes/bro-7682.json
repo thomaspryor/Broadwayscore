@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7682",
   "planId": "49194de7-511a-4abf-afd2-77b250838db7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T14:39:42.978Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "shows.json: delirium-regional-2026.venue"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T14:52:57.366Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for delirium-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for delirium-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for delirium-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
