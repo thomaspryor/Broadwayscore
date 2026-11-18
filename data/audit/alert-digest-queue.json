@@ -2116,5 +2116,36 @@
       }
     ],
     "queuedAt": "2026-11-18T05:21:21.021Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7748-near-miss",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7748-near-miss",
+    "description": "land.yml did not land land/bro-7748-near-miss: the unit-tests-node gate went red at c5471de7cc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44244000168",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7748-near-miss"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c5471de7cc7b273de532d748ce3b281dc5b68b47"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44244000168"
+      }
+    ],
+    "queuedAt": "2026-11-18T05:28:30.577Z"
   }
 ]
