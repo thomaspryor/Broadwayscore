@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-18T14:31:31.891Z",
+  "timestamp": "2026-11-18T15:05:38.645Z",
   "stats": {
-    "totalReviews": 82578,
-    "alreadyFlagged": 22453,
+    "totalReviews": 82586,
+    "alreadyFlagged": 22457,
     "dateGuardCatches": 220,
-    "directorMismatch": 3742,
-    "tvFilmSignals": 2351,
-    "londonSignals": 3792,
+    "directorMismatch": 3741,
+    "tvFilmSignals": 2350,
+    "londonSignals": 3791,
     "offBroadwaySignals": 761,
-    "yearMismatch": 383,
-    "noPublishDate": 8274
+    "yearMismatch": 382,
+    "noPublishDate": 8275
   },
   "findings": [
     {
@@ -6988,25 +6988,6 @@
     },
     {
       "showId": "avenue-q-west-end-2026",
-      "file": "britishtheatrecom--susan-novak.json",
-      "score": 78,
-      "publishDate": "2026-04-18",
-      "url": "https://www.britishtheatre.com/da/posts/avenue-q-review-the-puppets-are-onto-something",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 82,
       "publishDate": "2026-04-17",
@@ -7924,20 +7905,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "barefoot-in-the-park-regional-2026",
-      "file": "curtainup--unknown.json",
-      "score": 44,
-      "publishDate": null,
-      "url": "http://curtainup.com/barefootinthepark.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"scott elliott\" from barefoot-in-the-park-2006"
         }
       ]
     },
@@ -9561,8 +9528,8 @@
     {
       "showId": "book-of-mormon-2011",
       "file": "timeout--david-cote.json",
-      "score": 89,
-      "publishDate": "January 8th, 2015",
+      "score": 94,
+      "publishDate": "2016-03-07",
       "url": "http://www.timeout.com/newyork/theater/the-book-of-mormon-on-broadway-tickets-reviews-and-video",
       "findings": [
         {
@@ -9764,6 +9731,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "broadwayworld--linda-hodges.json",
+      "score": 92,
       "publishDate": "2022-11-24",
       "url": "https://www.broadwayworld.com/san-francisco/article/Review-THE-BOOK-OF-MORMON-at-San-Jose-Center-For-The-Performing-Arts-20221124",
       "findings": [
@@ -18232,7 +18200,7 @@
     {
       "showId": "death-of-england-closing-time-west-end-2023",
       "file": "london-theatre--matt-wolf.json",
-      "score": 79,
+      "score": 67,
       "publishDate": "2023-10-10",
       "url": "https://www.londontheatre.co.uk/reviews/death-of-england-closing-time-review-national-theatre",
       "findings": [
@@ -18293,7 +18261,7 @@
     {
       "showId": "death-of-england-closing-time-west-end-2023",
       "file": "telegraph--marianka-swain.json",
-      "score": 65,
+      "score": 62,
       "publishDate": "2023-10-10",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-of-england-closing-time-national-theatre-review/",
       "findings": [
@@ -18335,7 +18303,7 @@
     {
       "showId": "death-of-england-closing-time-west-end-2023",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 64,
+      "score": 58,
       "publishDate": "2023-10-12",
       "url": "https://www.timeout.com/london/theatre/death-of-england-review",
       "findings": [
@@ -19456,7 +19424,7 @@
     {
       "showId": "disgraced-2014",
       "file": "dctheatrescene--richard-seff.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2014-11-03",
       "url": "https://dctheatrescene.com/2014/11/03/pulitzer-prize-winner-disgraced-opens-broadway/",
       "findings": [
@@ -21107,7 +21075,7 @@
     {
       "showId": "enron-2010",
       "file": "dctheatrescene--richard-seff.json",
-      "score": null,
+      "score": 51,
       "publishDate": null,
       "url": "https://dctheatrescene.com/2010/04/28/enron/",
       "findings": [
@@ -22220,7 +22188,7 @@
     {
       "showId": "farinelli-and-the-king-2017",
       "file": "theatermania--zachary-stewart.json",
-      "score": 86,
+      "score": 76,
       "publishDate": "2017-12-17",
       "url": "http://www.theatermania.com/broadway/reviews/farinelli-and-the-king_83509.html",
       "findings": [
@@ -33685,7 +33653,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 76,
+      "score": 73,
       "publishDate": "2025-07-27",
       "url": "https://www.theartsdesk.com/theatre/inter-alia-national-theatre-review-dazzling-performance-questionable-writing",
       "findings": [
@@ -33770,7 +33738,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2025-07-24",
       "url": "https://www.ft.com/content/dc12b61b-1ecb-4f3c-bbe1-819c2b4cd817?syn-25a6b1a6=1",
       "findings": [
@@ -33784,7 +33752,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "guardian--emma-john.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2025-07-10",
       "url": "https://www.theguardian.com/stage/2025/jul/24/inter-alia-review-lyttelton-theatre-london-rosamund-pike-suzie-miller",
       "findings": [
@@ -33841,7 +33809,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "london-theatre--marianka-swain.json",
-      "score": 82,
+      "score": 88,
       "publishDate": "2025-07-24",
       "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-national-theatre",
       "findings": [
@@ -41628,6 +41596,20 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
+      "file": "thewrap--robert-hofler.json",
+      "score": 64,
+      "publishDate": "2019-10-18",
+      "url": "https://www.thewrap.com/little-shop-of-horrors-theater-review-once-christian-borle-jonathan-groff-tammy-blanchard/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "variety--ad-amorosi.json",
       "score": 88,
       "publishDate": "2019-10-18",
@@ -46164,7 +46146,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2022",
       "file": "whatsonstage--mickey-jo-boucher.json",
-      "score": 48,
+      "score": 53,
       "publishDate": "2022-07-19",
       "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-at-the-national-theatre-review_56950/",
       "findings": [
@@ -52557,7 +52539,7 @@
     {
       "showId": "patriots-2024",
       "file": "ew--kristen-baldwin.json",
-      "score": 42,
+      "score": 54,
       "publishDate": "April 23, 2024",
       "url": "https://ew.com/patriots-review-broadway-8637303?srsltid=AfmBOoryi-3RI9IQ6TzsZ4WfoMi9X8sMAb3IdeIuoiFAZxKPrInacuom",
       "findings": [
@@ -64389,7 +64371,7 @@
     {
       "showId": "sweat-off-broadway-2016",
       "file": "frontmezzjunkies--steven-ross.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2016-12-13",
       "url": "https://frontmezzjunkies.com/2016/12/13/sweat/",
       "findings": [
@@ -65561,7 +65543,7 @@
     {
       "showId": "take-me-out-2022",
       "file": "amny--matt-windman.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2022-04-04",
       "url": "https://www.amny.com/entertainment/theater/review-take-me-out-hits-a-home-run/",
       "findings": [
@@ -68733,24 +68715,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-crucible-crucible-regional-2024",
-      "file": "thestage--sam-marlowe.json",
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/long-reviews/the-crucible-review-at-the-national-theatre-london-starring-erin-doherty",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2022 (3x) more than 2024 (0x). 2022 matches production: the-crucible-west-end-2022"
         }
       ]
     },
@@ -73445,6 +73409,7 @@
     {
       "showId": "the-laugh-track-regional-2026",
       "file": "discoverhollywood--amalisha-hueck.json",
+      "score": 87,
       "publishDate": "2026-11-12",
       "url": "https://www.discoverhollywood.com/the-laugh-track-ict-beverly-oneill-theater/",
       "findings": [
@@ -74812,7 +74777,7 @@
     {
       "showId": "the-notebook-tour-2025",
       "file": "chicago-reader--kerry-reid.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-08-06",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/notebook-broadway-in-chicago/",
       "findings": [
@@ -75073,7 +75038,7 @@
     {
       "showId": "the-notebook-tour-2025",
       "file": "new-city-stage--tristan-bruns.json",
-      "score": 86,
+      "score": 87,
       "publishDate": "2026-08-10",
       "url": "https://www.newcitystage.com/2026/08/10/broadway-in-chicagos-the-notebook-shows-love-through-the-ages/",
       "findings": [
@@ -79169,24 +79134,6 @@
       ]
     },
     {
-      "showId": "the-smile-of-her-off-west-end-2026",
-      "file": "britishtheatrecom--susan-novak.json",
-      "publishDate": "2026-07-16",
-      "url": "https://www.britishtheatre.com/zh/posts/the-smile-of-her-first-production-images-released-for-christine-lahti-s-acclaime",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-snow-goose-regional-2026",
       "file": "hartford-courant--christopher-arnott.json",
       "score": 45,
@@ -79435,7 +79382,7 @@
     {
       "showId": "the-thanksgiving-play-2023",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "April 20th, 2023",
       "url": "https://newyorktheater.me/2023/04/20/the-thanksgiving-play-broadway-review/",
       "findings": [
@@ -93064,6 +93011,20 @@
     },
     {
       "showId": "avenue-q-west-end-2026",
+      "file": "britishtheatrecom--susan-novak.json",
+      "score": 78,
+      "publishDate": "2026-04-18",
+      "url": "https://www.britishtheatre.com/da/posts/avenue-q-review-the-puppets-are-onto-something",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
       "score": 77,
       "publishDate": "2026-04-17",
@@ -94725,7 +94686,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": null,
+      "score": 57,
       "publishDate": "2026-10-14",
       "url": "https://www.londonlivinglarge.com/2026/10/blood-of-my-blood-royal-court-theatre.html",
       "findings": [
@@ -100453,7 +100414,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "liamodell--unknown.json",
-      "score": 39,
+      "score": 40,
       "publishDate": "2026-11-18",
       "url": "https://liamodell.com/2026/11/18/desire-under-the-elms-review-almeida-theatre-eugene-oneill-kelly-gough-zackary-momoh/",
       "findings": [
@@ -102764,7 +102725,7 @@
     {
       "showId": "exit-the-king-west-end-2018",
       "file": "artsdesk--rachel-hilliburton.json",
-      "score": 64,
+      "score": 58,
       "publishDate": "2018-07-30T12:54:09-04:00",
       "url": "https://theartsdesk.com/theatre/exit-king-national-theatre-review-vivid-brilliant-production-somehow-leaves-you-feeling",
       "findings": [
@@ -102820,7 +102781,7 @@
     {
       "showId": "exit-the-king-west-end-2018",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 65,
+      "score": 62,
       "publishDate": "2018-07-25",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/exit-king-review-national-theatre-rhys-ifans-drives-chilling/",
       "findings": [
@@ -103244,7 +103205,7 @@
     {
       "showId": "farinelli-and-the-king-2017",
       "file": "theater-scene--victor-gluck.json",
-      "score": 69,
+      "score": 77,
       "publishDate": "2017-12-23",
       "url": "http://www.theaterscene.net/plays/broadway-plays/farinelli-and-the-king/victor-gluck/",
       "findings": [
@@ -113231,7 +113192,7 @@
     {
       "showId": "king-charles-iii-2015",
       "file": "huffpost--michael-giltz.json",
-      "score": 91,
+      "score": 81,
       "publishDate": "2015-11-09",
       "url": "https://www.huffpost.com/michael-giltz/theater-king-charles-iii_b_8508852.html",
       "findings": [
@@ -117794,7 +117755,7 @@
     {
       "showId": "merry-me-off-broadway-2023",
       "file": "west-end-best-friend--liz-turner.json",
-      "score": null,
+      "score": 85,
       "publishDate": "2023-11-06",
       "url": "https://www.westendbestfriend.co.uk/news/review-merry-me-new-york-theatre-workshop",
       "findings": [
@@ -121085,7 +121046,7 @@
     {
       "showId": "old-times-2015",
       "file": "huffpost--michael-glitz.json",
-      "score": 48,
+      "score": 51,
       "publishDate": "October 10th, 2015",
       "url": "http://www.huffingtonpost.com/michael-giltz/theater-solid-shepard-hal_b_8272662.html",
       "findings": [
@@ -135964,7 +135925,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 57,
+      "score": 62,
       "publishDate": "2025-09-21",
       "url": "https://www.theguardian.com/stage/2025/sep/19/the-land-of-the-living-review-juliet-stevenson-dorfman-theatre",
       "findings": [
@@ -135978,7 +135939,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "independent--ella-duggan.json",
-      "score": 59,
+      "score": 62,
       "publishDate": "2025-09-19",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/land-of-the-living-juliet-stevenson-b2829840.html",
       "findings": [
@@ -135992,7 +135953,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "2025-09-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-land-of-the-living-nt-review",
       "findings": [
@@ -136006,7 +135967,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "london-theatre--theo-bosanquet.json",
-      "score": 61,
+      "score": 64,
       "publishDate": "2025-09-19",
       "url": "https://www.londontheatre.co.uk/reviews/the-land-of-the-living-review-juliet-stevenson-gives-a-powerhouse",
       "findings": [
@@ -136020,7 +135981,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "standard--anya-ryan.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "2025-09-19",
       "url": "https://www.standard.co.uk/culture/theatre/the-land-of-the-living-national-theatre-review-juliet-stevenson-b1248614.html",
       "findings": [
@@ -136396,7 +136357,7 @@
     {
       "showId": "the-lehman-trilogy-2021",
       "file": "variety--marilyn-stasio.json",
-      "score": 89,
+      "score": 93,
       "publishDate": "2021-10-15",
       "url": "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235088743/",
       "findings": [
@@ -139273,7 +139234,7 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "city-am--adam-bloodworth.json",
-      "score": null,
+      "score": 77,
       "publishDate": null,
       "url": "https://www.cityam.com/the-producers-london-musical-review-the-west-ends-most-shocking-show/",
       "findings": [
@@ -139356,7 +139317,7 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "liamodell--liam-odell.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2025-09-15",
       "url": "https://liamodell.com/2025/09/15/the-producers-review-west-end-garrick-theatre-london-mel-brooks-film-musical-springtime-for-hitler/",
       "findings": [
@@ -139976,6 +139937,19 @@
       "score": 43,
       "publishDate": "March 27, 2002",
       "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9906e0dd133bf934a15750c0a9649c8b63&scp=2&sq=%22smell%20of%20the%20kill%22&st=cse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-smile-of-her-off-west-end-2026",
+      "file": "britishtheatrecom--susan-novak.json",
+      "publishDate": "2026-07-16",
+      "url": "https://www.britishtheatre.com/zh/posts/the-smile-of-her-first-production-images-released-for-christine-lahti-s-acclaime",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
