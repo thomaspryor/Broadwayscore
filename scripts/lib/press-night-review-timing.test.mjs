@@ -12,10 +12,10 @@ const require = createRequire(import.meta.url);
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const wf = fs.readFileSync(path.join(root, '.github/workflows/llm-ensemble-score.yml'), 'utf8');
 
-test('scoring workflow: --validate is gated on an empty show_id', () => {
+test('scoring workflow: --validate is gated on an empty show_id (via env, never spliced into shell source, BRO-5254)', () => {
   const m = wf.match(/if \[ "\$\{\{ github\.event\.inputs\.run_validation \}\}" == "true" \]([^\n]*)\n\s*ARGS="\$ARGS --validate"/);
   assert.ok(m, 'validate step present');
-  assert.match(m[1], /-z "\$\{\{ github\.event\.inputs\.show_id \}\}"/, 'show-scoped runs must skip --validate');
+  assert.match(m[1], /-z "\$\{INPUT_SHOW_ID\}"/, 'show-scoped runs must skip --validate');
 });
 
 test('record check still fails on the original NY Sun lateness (history not rewritten)', () => {
