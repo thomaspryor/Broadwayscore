@@ -94,7 +94,7 @@ export function libWorkflowIndex(index, readFile, exists = () => true) {
  * (higher = newer). A run contains the commit when its head is at or after the commit on main's linear history.
  * isDeployed(sha) -> true | false | null (null = could not tell).
  */
-export function fileVerdict(file, commitSha, { cls, runs, runsFor = null, runsOk = true, incomplete = new Set(), posOf, isDeployed = () => null, ranWork = () => true }) {
+export function fileVerdict(file, commitSha, { cls, runs, runsFor = null, runsOk = true, incomplete = new Set(), posOf, headPos = posOf, isDeployed = () => null, ranWork = () => true }) {
   const { kind, workflows } = cls;
   if (kind === 'exempt') return { file, kind, verdict: 'exempt' };
   if (kind === 'hook' || kind === 'other') return { file, kind, verdict: 'no_signal' };
@@ -107,11 +107,13 @@ export function fileVerdict(file, commitSha, { cls, runs, runsFor = null, runsOk
   if (at === undefined) return { file, kind, verdict: 'unknown', workflows };
   // runsFor(workflow) may fetch lazily (the CLI's API budget): stop at the first workflow with a non-cron green run.
   const listFor = runsFor || ((w) => (runs || []).filter((r) => r.workflow === w));
-  const contains = (r) => posOf.has(r.headSha) && posOf.get(r.headSha) >= at;
+  // Run heads must be on main's first-parent line (headPos): a side commit a merge brought in shares the merge's
+  // position, so a run on one branch commit would otherwise 'contain' a later commit of the same branch.
+  const contains = (r) => headPos.has(r.headSha) && headPos.get(r.headSha) >= at;
   const mine = [];
   for (const w of workflows) {
     mine.push(...listFor(w).filter(contains));
-    if (mine.some((r) => r.conclusion === 'success' && r.event !== 'schedule')) break;
+    if (mine.some((r) => r.conclusion === 'success' && r.event !== 'schedule' && ranWork(r) !== false)) break;
   }
   // ranWork(run): false when every job of a green run was skipped (an if: or path filter ran nothing). The CLI reads
   // the run's jobs; step-level skips inside a job that ran are not visible to this check.
@@ -165,7 +167,7 @@ export function newRows(existing, rows) {
   for (const r of existing) if (!last.has(r.sha) || r.auditDay >= last.get(r.sha).auditDay) last.set(r.sha, r);
   return rows.filter((r) => {
     if (seen.has(`${r.auditDay}|${r.sha}`)) return false;
-    if (r.marker) return true;
+    if (r.marker || r.card) return true; // a carded row must reach the ledger, or the next night cards it again
     if (r.landedDay === dayMinus(r.auditDay, 1)) return true;
     return !last.has(r.sha) || last.get(r.sha).verdict !== r.verdict;
   });

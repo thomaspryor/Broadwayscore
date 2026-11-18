@@ -71,6 +71,14 @@ test('fileVerdict: non-cron success proves, cron-only waits, failure, not_run, m
   assert.equal(v([run({ id: 9 })], { ranWork: (r) => r.id !== 9 }), 'not_run', 'a green run whose jobs were all skipped ran nothing');
   assert.equal(v([run({ id: 9 }), run({ id: 10, event: 'schedule' })], { ranWork: (r) => r.id !== 9 }), 'waiting');
   assert.equal(v([run({ id: 9 })], { ranWork: () => null }), 'proven', 'jobs unreadable: the green run still counts');
+  // Lazy reads: a skipped-jobs green run on the first workflow must not stop the search before the second.
+  const two = { kind: 'lib', workflows: ['a.yml', 'b.yml'] };
+  const runsByWf = { 'a.yml': [run({ id: 1, workflow: 'a.yml' })], 'b.yml': [run({ id: 2, workflow: 'b.yml' })] };
+  assert.equal(fileVerdict('scripts/lib/x.js', 'c1', { cls: two, runsFor: (w) => runsByWf[w], posOf, ranWork: (r) => r.id !== 1 }).verdict, 'proven');
+  // A merge's side commits share its position; a run on one of them must not prove a later one.
+  const side = new Map([...posOf, ['s1', 2], ['s2', 2]]);
+  assert.equal(fileVerdict('scripts/nightly-job.js', 's2', { cls: c, runs: [run({ headSha: 's1' })], posOf: side, headPos: posOf }).verdict, 'not_run');
+  assert.equal(fileVerdict('scripts/nightly-job.js', 's2', { cls: c, runs: [run({ headSha: 'c2' })], posOf: side, headPos: posOf }).verdict, 'proven', 'the merge commit run contains it');
   assert.equal(fileVerdict('scripts/nightly-job.js', 'not-on-main', { cls: c, runs: [run()], posOf }).verdict, 'unknown');
 });
 
@@ -98,6 +106,7 @@ test('newRows: append-only, one row per sha per audit day; older commits only wh
   const out = newRows(prior, [r('a', '2026-11-16', 'proven'), r('b', '2026-11-16', 'waiting'), r('y', '2026-11-17', 'not_run'), r('old', '2026-11-15', 'no_signal'), runMarker('2026-11-18')]);
   assert.deepEqual(out.map((x) => x.sha), ['a', 'y', 'old', '_run']);
   assert.deepEqual(newRows([...prior, ...out], out), [], 'a second run the same day appends nothing');
+  assert.deepEqual(newRows(prior, [{ ...r('b', '2026-11-16', 'waiting'), card: 'BRO-9' }]).map((x) => x.sha), ['b'], 'a carded row is kept even when its verdict did not change');
 });
 
 test('digestLine: one plain line over yesterday, counts add up; only today\'s audit counts', () => {

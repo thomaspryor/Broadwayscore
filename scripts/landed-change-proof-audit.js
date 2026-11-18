@@ -45,12 +45,13 @@ function readCommits(since, until) {
 
 function positions(since) {
   const shas = git(['rev-list', '--first-parent', 'origin/main', `--since=${since}`]).split('\n').filter(Boolean).reverse();
-  const pos = new Map(shas.map((s, i) => [s, i]));
+  const firstParent = new Map(shas.map((s, i) => [s, i]));
+  const pos = new Map(firstParent);
   // Commits a merge brought in sit at the merge's position: any run at or after the merge contains them.
   for (const m of git(['rev-list', '--first-parent', '--merges', 'origin/main', `--since=${since}`]).split('\n').filter(Boolean)) {
     for (const c of git(['rev-list', `${m}^1..${m}^2`]).split('\n').filter(Boolean)) if (!pos.has(c)) pos.set(c, pos.get(m));
   }
-  return pos;
+  return { pos, firstParent };
 }
 
 let ghCalls = 0; // every GitHub API call this run makes (pages included)
@@ -138,7 +139,7 @@ async function main() {
     const missing = ps.filter((p) => !commits.some((c) => c.sha.startsWith(p)));
     if (missing.length) { console.log(`[landed-proof] --sha not found on origin/main in the last 14 days: ${missing.join(', ')}`); if (arg('expect-proven')) process.exitCode = 1; }
   }
-  const posOf = positions(`${lib.dayMinus(auditDay, typeof only === 'string' ? 16 : days + 2)}T00:00:00Z`);
+  const { pos: posOf, firstParent: headPos } = positions(`${lib.dayMinus(auditDay, typeof only === 'string' ? 16 : days + 2)}T00:00:00Z`);
   const runsFrom = typeof only === 'string' ? `${lib.dayMinus(auditDay, 14)}T00:00:00Z` : windowStart;
 
   // Runs are fetched per workflow on first use and cached; a lib file stops at its first proving workflow. Hard budget
@@ -180,7 +181,7 @@ async function main() {
     jobsSeen.set(run.id, v);
     return v;
   };
-  const rows = commits.map((c) => lib.auditCommit(c, { index, libIndex, auditDay, runsFor, incomplete, posOf, isDeployed, ranWork }))
+  const rows = commits.map((c) => lib.auditCommit(c, { index, libIndex, auditDay, runsFor, incomplete, posOf, headPos, isDeployed, ranWork }))
     .filter((r) => r.verdict !== 'exempt');
 
   // Safe form: run vetted read-only commands for not-run scripts (only those the safe-form gate accepts).
