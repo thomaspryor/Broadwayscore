@@ -284,7 +284,13 @@ function nearMissFind(item, show, budget, extra = {}) {
   if (!item || !item.url || budget.left <= 0) return null;
   const outlet = resolveOutletFromUrl(item.url);
   if (!outlet) return null;
-  if (!(extra.reviewSignalGiven || hasReviewSignal(item.url, item.title) || hostMatches(hostOf(item.url), REVIEW_WITHOUT_WORD_HOSTS))) return null;
+  const ownSignal = extra.reviewSignalGiven || hasReviewSignal(item.url, item.title);
+  if (!(ownSignal || hostMatches(hostOf(item.url), REVIEW_WITHOUT_WORD_HOSTS))) return null;
+  // When the review signal is the host alone (a review-without-word outlet), its news, gallery or homepage URLs are not
+  // reviews: an extension story naming the show ("Blue Man Group ... extends through January", nystagereview
+  // /news/extension-news/, BRO-7781 sim night) would page as a missed review. Items with their own review word or a
+  // reviews-only feed are not refused here: TheaterMania and WhatsOnStage file real reviews under /news/.
+  if (!ownSignal && nearMiss.INTENDED_REJECTIONS.has(nonReviewReason(item.url, { vettedOutlet: true }))) return null;
   const signals = nearMiss.nearMissSignals(item, show);
   if (!signals.length) return null;
   budget.left -= 1;
@@ -1692,7 +1698,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate, roundupPageDate, MAX_FEEDS_PER_PASS, MAX_DIRECT_FEEDS_PER_PASS, looksReviewLike,
-  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, googleNewsSiteQueries, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, nearMissFind, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, googleNewsSiteQueries, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, LATE_DATE_CHECK_STARTS, loadSeen, recordDiscovered, PREFETCHED_PAGE,
 };
