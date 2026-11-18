@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-17T10:48:55.955Z",
+  "lastChecked": "2026-11-18T10:17:10.373Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,12 +19,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.3% scored (51030/51930)"
+      "message": "98.3% scored (50941/51841)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "29 audit(s) drifting, each reported on its own card or the digest FYI line (6h ago)"
+      "message": "30 audit(s) drifting, each reported on its own card or the digest FYI line (7h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -38,8 +38,8 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "pass",
-      "message": "No probable domain moves in 381 unregistered host(s)"
+      "status": "warn",
+      "message": "1 unregistered host(s) name-match a registered outlet (e.g. curtain-up.com → curtainup) — probable domain move dropping reviews via domain-mismatch"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1889 outlet(s), 82282 review(s)"
+      "message": "No broken-extractor signature in 1890 outlet(s), 82524 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1889 outlet(s), 82282 review(s)"
+      "message": "No broken-extractor signature in 1890 outlet(s), 82524 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -64,7 +64,7 @@
     {
       "name": "Quality: expected critics missing",
       "status": "pass",
-      "message": "Every usual critic has reviewed (or is acked) for openings 4-42 days old (10 more still being searched for automatically)"
+      "message": "Every usual critic has reviewed (or is acked) for openings 4-42 days old (9 more still being searched for automatically)"
     },
     {
       "name": "Quality: coverageExpectation drift",
@@ -73,8 +73,8 @@
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
-      "status": "warn",
-      "message": "4 NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: slate/off-broadway, 3993d silent vs 236d threshold; 43 known/baselined)"
+      "status": "pass",
+      "message": "150 outlet×market rows checked, none NEW silent 2+ consecutive weeks (47 known/baselined, 2d ago)"
     },
     {
       "name": "Quality: outlet feed staleness",

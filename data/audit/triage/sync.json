@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "warn",
-  "lastChecked": "2026-11-17T10:48:55.955Z",
+  "status": "pass",
+  "lastChecked": "2026-11-18T10:17:10.372Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "82610 files, 51030 reviews (surplus: 31580)"
+      "message": "82856 files, 50941 reviews (surplus: 31915)"
     },
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "33 open shows all have reviews and grosses"
+      "message": "34 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: phantom show detection",
@@ -23,18 +23,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "warn",
-      "message": "1 empty cast: Blue Man Group “A New Holiday Surprise”"
+      "status": "pass",
+      "message": "38 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "6026 shows, 313 open, 51030 reviews (all at or above baseline)"
+      "message": "6082 shows, 340 open, 51162 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 11/8/2026 (9d ago)"
+      "message": "weekEnding 11/15/2026 (3d ago)"
     }
   ]
 }

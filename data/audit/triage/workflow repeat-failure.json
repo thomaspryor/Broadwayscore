@@ -1,20 +1,15 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-11-17T10:48:55.959Z",
+  "status": "error",
+  "lastChecked": "2026-11-18T10:17:10.378Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Test Suite / E2E Tests / Run E2E tests",
-      "status": "warn",
-      "message": "Test Suite / E2E Tests / Run E2E tests failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
-    },
-    {
-      "name": "Workflow repeat-failure: Test Suite / Test Summary / Check results",
-      "status": "warn",
-      "message": "Test Suite / Test Summary / Check results failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "name": "Workflow repeat-failure: execute-approved-fix bro-7660 [apply] / execute / Update GitHub issue",
+      "status": "error",
+      "message": "execute-approved-fix bro-7660 [apply] / execute / Update GitHub issue failed 12 times in the last 24h — likely broken, not transient."
     }
   ]
 }
