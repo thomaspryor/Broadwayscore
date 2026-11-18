@@ -2111,6 +2111,7 @@ on:
       - 'scripts/opening-night-checklist.js'
       # BRO-6619: lane entries tested by tests/unit/lane-arm-decision.test.mjs (it reads and hashes them).
       - 'scripts/opening-night-lane.js'
+      - 'scripts/opening-night-lane-inbox.js'
       - 'scripts/opening-night-lane-rehearse.js'
       - 'scripts/opening-night-lane-shadow.js'
       # BRO-6648: the lease CLI and its alert script, exercised by tests/unit/opening-night-lane-lease-wiring.test.mjs
