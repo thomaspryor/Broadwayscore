@@ -230,7 +230,9 @@ function simulatedNightVerdict(record, nowMs) {
   if (!record || typeof record.pass !== 'boolean' || !record.at) return { status: 'warn', detail: `No simulated-night record. ${where}` };
   const ageH = (nowMs - Date.parse(record.at)) / 3600000;
   const age = `${Math.round(ageH)}h ago`;
-  if (!(ageH >= 0) || ageH > SIM_NIGHT_MAX_AGE_H) return { status: 'warn', detail: `Simulated night is stale (${age}, older than ${SIM_NIGHT_MAX_AGE_H / 24} days). ${where}` };
+  if (!Number.isFinite(ageH)) return { status: 'warn', detail: `Simulated-night record has an unreadable time (${record.at}). ${where}` };
+  if (ageH < 0) return { status: 'warn', detail: `Simulated-night record is dated in the future (${record.at}). ${where}` };
+  if (ageH > SIM_NIGHT_MAX_AGE_H) return { status: 'warn', detail: `Simulated night is stale (${age}, older than ${SIM_NIGHT_MAX_AGE_H / 24} days). ${where}` };
   if (!record.pass) {
     const why = record.error ? `crashed: ${record.error}` : `failed: ${(record.failed || []).slice(0, 3).join('; ')}${(record.failed || []).length > 3 ? ` (+${record.failed.length - 3} more)` : ''}`;
     return { status: 'warn', detail: `Simulated night ${why} (${age}). ${where}` };

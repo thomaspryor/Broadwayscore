@@ -321,7 +321,7 @@ function evaluate(report, gd, { canonicalUrl }) {
     const times = autoFallback.nightTimes(show, gd.night, { preembargo: report.shows[r.show].times.guard !== 'off' });
     const inLane = r.at >= times.laneStartMs && r.at <= times.watchEndMs;
     const before = r.at < times.laneStartMs; // a page already up when the lane starts is read on its first pass
-    const sweep = (kicks || []).filter((k) => (k.showId || k.show || (k.show && k.show.id)) === r.show && Date.parse(k.at || k.atIso || 0) >= r.at).map((k) => k.kind);
+    const sweep = (kicks || []).filter((k) => (k.showId || k.show || (k.show && k.show.id)) === r.show && (Number.isFinite(k.kickAtMs) ? k.kickAtMs : Date.parse(k.at || k.atIso || 0)) >= r.at).map((k) => k.kind);
     report.coverage.push({ review: `${r.show} ${r.outletId}`, drop: new Date(r.at).toISOString(), collector: inLane ? 'lane' : before ? 'lane (first pass)' : sweep.length ? `sweep ${sweep[0]}` : 'NONE' });
   }
   check(report, 'collector coverage: every review drop has a collector', report.coverage.every((c) => c.collector !== 'NONE'), report.coverage.filter((c) => c.collector === 'NONE'));
@@ -332,7 +332,6 @@ function evaluate(report, gd, { canonicalUrl }) {
   check(report, 'found-to-live: every review goes live within the bar once the lane has it', report.foundToLive.length > 0 && report.foundToLive.every((x) => x.ms <= FOUND_TO_LIVE_BAR_MS), report.foundToLive.filter((x) => x.ms > FOUND_TO_LIVE_BAR_MS));
   check(report, 'alerts: every alert batch reached both channels (Discord stand-in and the coordinator card)', report.alerts.length === report.cardComments.length && report.cardComments.every((c) => c.card === 'BRO-5955'), { discord: report.alerts.length, card: report.cardComments.length });
   check(report, 'manual inbox: every dropped URL ends published', report.inboxFinal.length === report.inbox.length && report.inboxFinal.every((e) => e.status === 'published'), report.inboxFinal);
-  void bmg;
 }
 
 function formatReport(report) {
@@ -366,6 +365,8 @@ module.exports = { runSimulatedNight, formatReport, recordFrom, LATENCY, FOUND_T
 
 if (require.main === module) {
   const recordPath = (process.argv.find((a) => a.startsWith('--record=')) || '').slice(9);
+  // A partial night (GAME_DAY_ONLY) skips most checks, so its pass must never stand in as the readiness record.
+  if (recordPath && process.env.GAME_DAY_ONLY) { console.error('--record refused with GAME_DAY_ONLY set: a partial night is not a full pass'); process.exit(2); }
   const writeRecord = (r, error) => {
     if (!recordPath) return;
     let sha = process.env.GITHUB_SHA || null;

@@ -63,13 +63,15 @@ jobs:
       # local outlets only (any request off 127.0.0.1 fails it). Writes data/audit/simulated-opening-night.json on pass,
       # fail and crash; check-opening-night-readiness.js reads it. Advisory first (CLAUDE.md section 19).
       - name: Simulated opening night (BRO-7781, advisory)
-        if: always()
+        if: ${{ !cancelled() }}
         continue-on-error: true
         run: |
           status=0
+          # Remove the old record first: a hard kill (timeout 124, OOM 137) writes nothing, and a stale pass must not stand.
+          rm -f data/audit/simulated-opening-night.json
           timeout 300 node scripts/lib/game-day/simulated-opening-night.js --record=data/audit/simulated-opening-night.json || status=$?
-          if [ "$status" -eq 124 ]; then
-            node -e 'require("fs").writeFileSync("data/audit/simulated-opening-night.json", JSON.stringify({ at: new Date().toISOString(), sha: process.env.GITHUB_SHA, pass: false, error: "timed out after 300s", failed: [], checks: 0 }, null, 2) + "\n")'
+          if [ ! -f data/audit/simulated-opening-night.json ]; then
+            STATUS="$status" node -e 'require("fs").writeFileSync("data/audit/simulated-opening-night.json", JSON.stringify({ at: new Date().toISOString(), sha: process.env.GITHUB_SHA, pass: false, error: process.env.STATUS === "124" ? "timed out after 300s" : "exited " + process.env.STATUS + " without a record", failed: [], checks: 0 }, null, 2) + "\n")'
           fi
           exit "$status"
 
