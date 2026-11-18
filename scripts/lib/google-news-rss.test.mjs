@@ -331,3 +331,41 @@ test('BRO-6589: an empty feed over HTTP returns no candidates and never opens th
   assert.deepEqual(results, []);
   assert.equal(pageCalls, 0);
 });
+
+// 2026-11-17: The New York Sun headlined its Blue Man Group review "A Blue Streak
+// of Staleness". The title-quoted query never returned it and the headline test
+// would have dropped it; only a recency feed on the base title surfaced it.
+test('headline-free review: recency feed on the base title, kept only when the article names the show', async () => {
+  const { baseSearchTitle, googleNewsRecencyUrl } = require('./google-news-rss');
+  const bmg = { id: 'blue-man-group-a-new-holiday-surprise-2026', title: 'Blue Man Group “A New Holiday Surprise”', category: 'broadway', openingDate: '2026-11-17', previewsStartDate: '2026-11-12' };
+  assert.equal(baseSearchTitle(bmg), 'Blue Man Group');
+  assert.equal(baseSearchTitle({ title: 'The Good Thief' }), 'The Good Thief');
+  assert.equal(new URL(googleNewsRecencyUrl(bmg)).searchParams.get('q'), '"Blue Man Group" when:2d');
+  const sunUrl = 'https://www.nysun.com/article/a-blue-streak-of-staleness';
+  const pun = (source, title = 'A Blue Streak of Staleness') => `<item><title>${title}</title><link>https://news.google.com/rss/articles/${encodeURIComponent(title + source)}</link><pubDate>Wed, 18 Nov 2026 03:00:00 GMT</pubDate><source url="${source}">Pub</source></item>`;
+  const run = (recencyXml, body, decoded = sunUrl) => {
+    const resolved = [];
+    return discoverGoogleNewsReviews(bmg, {
+      now: new Date('2026-11-18T05:00:00Z'),
+      feedImpl: async (url) => (/when%3A2d/.test(url) ? recencyXml : feed()),
+      decodeImpl: async () => decoded,
+      fetchPageImpl: async (url) => { resolved.push(url); return { content: `<link rel="canonical" href="${url}"><p>${body}</p>`, finalUrl: url }; },
+    }).then(results => ({ results, resolved }));
+  };
+  const named = await run(feed(pun('https://www.nysun.com')), 'Blue Man Group: A New Holiday Surprise opened this week.');
+  assert.equal(named.results.length, 1);
+  assert.equal(named.results[0].outletId, 'new-york-sun');
+  assert.equal(named.results[0].url, sunUrl);
+  // Same pun headline, a readable article about something else: dropped after resolution.
+  assert.equal((await run(feed(pun('https://www.nysun.com')), 'A column about the markets. '.repeat(80))).results.length, 0);
+  // Bot checkpoint (unreadable page): kept for ingest's own wrong-show check.
+  assert.equal((await run(feed(pun('https://www.nysun.com')), 'Vercel Security Checkpoint')).results.length, 1);
+  // Tier-3 outlet with a pun headline: never resolved.
+  const t3 = await run(feed(pun('https://1minutecritic.com')), 'Blue Man Group', 'https://1minutecritic.com/x/');
+  assert.equal(t3.results.length, 0);
+  assert.equal(t3.resolved.length, 0);
+  // Outside opening day to +2 the recency feed is not read at all.
+  let recencyReads = 0;
+  await discoverGoogleNewsReviews({ ...bmg, openingDate: '2026-11-10' }, { now: new Date('2026-11-18T05:00:00Z'), feedImpl: async (url) => { if (/when%3A2d/.test(url)) recencyReads++; return feed(); }, decodeImpl: async () => null, fetchPageImpl: async () => ({ content: '' }) });
+  assert.equal(recencyReads, 0);
+});

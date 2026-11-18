@@ -55,6 +55,50 @@ function googleNewsRssUrl(show) {
   return `https://news.google.com/rss/search?${params}`;
 }
 
+// Pun headlines name no show: The New York Sun headlined its Blue Man Group
+// review "A Blue Streak of Staleness" (2026-11-17), so the title-quoted query
+// never returned it and the headline test would have dropped it anyway. On
+// opening day and the 2 days after, a recency feed on the base title (before
+// any quoted or colon subtitle) surfaces such items; they are kept only for
+// tier-1/2 outlets and dropped when the readable article text never names the show.
+const HEADLINE_FREE_MAX_TIER = 2;
+function baseSearchTitle(show) {
+  const title = String((show && show.title) || '').trim();
+  const base = title.split(/\s*[\u201C\u201D"\u00AB:\u2013\u2014(]\s*/)[0].trim();
+  return base.length >= 3 ? base : title;
+}
+
+function googleNewsRecencyUrl(show) {
+  const london = isLondonMarket(show.category);
+  const titles = [baseSearchTitle(show), ...searchTitles(show).slice(1)]
+    .filter((t, i, all) => t && all.findIndex((o) => o.toLowerCase() === t.toLowerCase()) === i);
+  const params = new URLSearchParams({
+    q: `${titles.map((t) => `"${t}"`).join(' OR ')} when:2d`,
+    hl: london ? 'en-GB' : 'en-US',
+    gl: london ? 'GB' : 'US',
+    ceid: london ? 'GB:en' : 'US:en',
+  });
+  return `https://news.google.com/rss/search?${params}`;
+}
+
+const foldPhrase = (t) => String(t || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  .replace(/[\u2018\u2019\u02BC']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+// Below this much page text the fetch hit a bot checkpoint or paywall stub
+// (nysun.com served "Vercel Security Checkpoint" to the scraper, 2026-11-18).
+const MIN_READABLE_ARTICLE_CHARS = 1500;
+/** true/false when the article page text does/doesn't carry the show's base
+ * title as one phrase; null when the page is unreadable (checkpoint, stub). */
+function articleNamesShow(content, show) {
+  if (!content) return null;
+  const $ = cheerio.load(content);
+  $('script, style, noscript').remove();
+  const text = foldPhrase($.root().text());
+  const hay = ` ${text} `;
+  if ([baseSearchTitle(show), ...searchTitles(show)]
+    .map(foldPhrase).filter((p) => p.length >= 3).some((p) => hay.includes(` ${p} `))) return true;
+  return text.length < MIN_READABLE_ARTICLE_CHARS ? null : false;
+}
+
 function parseGoogleNewsItems(xml) {
   const $ = cheerio.load(xml, { xmlMode: true });
   return $('item').map((_, node) => {
@@ -83,6 +127,14 @@ function isReviewHeadline(item, show) {
   if (NON_REVIEW_HEADLINE.test(item.title)) return false;
   if (/\breview\b/i.test(item.title)) return true;
   return isWithinOpeningWindow(item.pubDate, show.openingDate, 0, REVIEW_FREE_POST_DAYS);
+}
+
+// A recency-feed item whose headline does not name the show: a review shape,
+// published opening day to +2 days. The article-body check happens after
+// the publisher URL resolves.
+function isHeadlineFreeCandidate(item, show) {
+  return !headlineNamesShow(item.title, show) && !NON_REVIEW_HEADLINE.test(item.title)
+    && isWithinOpeningWindow(item.pubDate, show.openingDate, 0, REVIEW_FREE_POST_DAYS);
 }
 
 function outletMatchesMarket(info, show) {
@@ -138,16 +190,32 @@ async function discoverGoogleNewsReviews(show, options = {}) {
     const feedXml = await feedImpl(googleNewsRssUrl(show)).catch(() => null)
       || (await fetchPageImpl(googleNewsRssUrl(show), { skipVerify: true, preferPlaywright: true, fast: true }))?.content || '';
     if (verbose && !feedXml) console.log('  google-news-rss: feed fetch returned nothing');
-    let items = parseGoogleNewsItems(feedXml).filter(item =>
-      Number.isFinite(item.pubDate.getTime()) && item.pubDate.getTime() >= since
+    const inDate = item => Number.isFinite(item.pubDate.getTime()) && item.pubDate.getTime() >= since
       && item.pubDate.getTime() <= new Date(now).getTime()
+      && item.link && item.sourceName && resolveOutletFromUrl(item.sourceUrl);
+    let items = parseGoogleNewsItems(feedXml).filter(item => inDate(item)
       // fuzzy title match: the outlet may misspell the title (CATERINA, BRO-4001);
       // the feed is already scoped to this one show, so a near match can't steal another's.
-      && isReviewHeadline(item, show)
-      && item.link && item.sourceName && resolveOutletFromUrl(item.sourceUrl));
+      && isReviewHeadline(item, show));
+    const registry = require('../../data/outlet-registry.json').outlets;
+    // Headline-free reviews (see googleNewsRecencyUrl): only inside the review-free window.
+    if (isWithinOpeningWindow(new Date(now), show.openingDate, 0, REVIEW_FREE_POST_DAYS)) {
+      const recencyUrl = googleNewsRecencyUrl(show);
+      // Plain HTTP only: this second feed is a supplement, so no browser fallback cost.
+      const recencyXml = await feedImpl(recencyUrl).catch(() => null) || '';
+      const links = new Set(items.map(item => item.link));
+      for (const item of parseGoogleNewsItems(recencyXml)) {
+        if (links.has(item.link) || !inDate(item)) continue;
+        links.add(item.link);
+        if (isReviewHeadline(item, show)) { items.push(item); continue; }
+        const tier = registry[resolveOutletFromUrl(item.sourceUrl).outletId]?.tier;
+        if (tier && tier <= HEADLINE_FREE_MAX_TIER && isHeadlineFreeCandidate(item, show)) {
+          items.push({ ...item, headlineFree: true });
+        }
+      }
+    }
     // Prioritize nationals and rotate bounded batches across poll cycles so
     // already-known links cannot permanently starve the remaining publishers.
-    const registry = require('../../data/outlet-registry.json').outlets;
     items.sort((a, b) => (registry[resolveOutletFromUrl(a.sourceUrl).outletId]?.tier || 3)
       - (registry[resolveOutletFromUrl(b.sourceUrl).outletId]?.tier || 3));
     const wrappers = new Set();
@@ -209,6 +277,11 @@ async function discoverGoogleNewsReviews(show, options = {}) {
           try { page = await fetchPageImpl(url, { preferPlaywright: true, fast: true }); }
           catch { page = null; } // Keep the resolved URL for the normal byline recovery path.
         }
+        // An unreadable page (null) passes: ingest's wrong-show check reads the real text.
+        if (item.headlineFree && articleNamesShow(page?.content, show) === false) {
+          if (verbose) console.log(`  google-news-rss: headline-free item does not name the show (${item.sourceName})`);
+          return;
+        }
         found[i] = {
           showId: show.id, url, outletId: outlet.outletId,
           outlet: outlet.displayName || item.sourceName,
@@ -237,4 +310,4 @@ async function discoverGoogleNewsReviews(show, options = {}) {
   return results;
 }
 
-module.exports = { searchTitles, headlineNamesShow, headlineNamesPressTitle, discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };
+module.exports = { baseSearchTitle, googleNewsRecencyUrl, articleNamesShow, isHeadlineFreeCandidate, searchTitles, headlineNamesShow, headlineNamesPressTitle, discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };
