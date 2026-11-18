@@ -1,19 +1,26 @@
 {
-  "updatedAt": "2026-11-18T02:18:52.414Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-18T02:29:27.822Z",
+  "processed": 401,
+  "failed": 231,
+  "successRate": "63.4%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 212,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 40,
+    "scrapingbee": 21,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 126
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-11-18T00:57:59.250Z",
+      "event": "bb-session",
+      "session": "fb100b13",
+      "url": "https://littlelondonwhispers.substack.com/p/the-lives-of-others"
+    }
+  ]
 }
