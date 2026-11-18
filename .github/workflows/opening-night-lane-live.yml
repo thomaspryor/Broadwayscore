@@ -578,6 +578,9 @@ jobs:
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           # BRO-6651: encrypted page recording lands in $RUNNER_TEMP/shadow/recording, uploaded with the report below.
           LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY }}
+          # BRO-7748: near-miss / found-not-live alerts on shadow nights too (Discord + coordinator card).
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           # BRO-6988: opt-in CPU profile for event-loop freeze hunting. npx, the tsx parent and the lane child each write
           # one; the lane's is the largest. Written on exit, including the SIGTERM handler's process.exit.

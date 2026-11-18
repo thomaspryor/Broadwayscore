@@ -250,7 +250,9 @@ async function runLaneNight({
 
   let passes = 0;
   const firstSightings = new Map();
-  const alerting = new Set(); // press-signal alerts in flight (BRO-7748), settled before the night returns // BRO-7748: url -> first time a pass saw it, for the 15-minute found-not-live check
+  // BRO-7748: firstSightings is url -> first time a pass saw it, for the 15-minute found-not-live check (in memory: a
+  // re-dispatched night starts the clock again and re-sends its alerts once; a duplicate beats a silent miss).
+  const alerting = new Set(); // press-signal alerts in flight, settled before the night returns, even when a pass throws
   // The lane runs for its whole window, not until a pass finds nothing: reviews keep arriving for hours (late roundup
   // entries, slow outlets), and an idle-stop would walk away from them.
   // shouldStop: the production driver's lease-lost signal. Stop discovering and scoring (they spend credits for rows
@@ -431,7 +433,7 @@ async function runLaneNight({
     await maybePublish();
     await wait(passIntervalMs);
   }
-  } finally { if (midPassTimer) clearInterval(midPassTimer); }
+  } finally { if (midPassTimer) clearInterval(midPassTimer); await Promise.allSettled([...alerting]); }
 
   // Window over: flush what is queued and let the in-flight batch finish, so nothing scored is left unpublished.
   // A stand-down skips the queue and only waits for in-flight batches, so the lease is released quickly.

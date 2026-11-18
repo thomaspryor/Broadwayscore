@@ -185,11 +185,11 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [] }) {
   for (const n of nearMisses) {
     const c = ingestCommand(show.id, n);
     const page = n.pageNamesShow === true ? ' (the page names the show)' : n.pageNamesShow === false ? ' (the page did not name the show with its venue or cast)' : '';
-    lines.push(`NEAR-MISS (${n.outletId || 'known outlet'}, via ${n.adapter}): ${n.url}${page}`, `  headline: ${n.title || '(none)'}`, `  partial match: ${(n.signals || []).join(', ')}; the strict title matcher refused it`, `  add it: ${c.primary}`, ...(c.fallback ? [`  or: ${c.fallback}`] : []));
+    lines.push(`NEAR-MISS (${n.outletId || 'known outlet'}, via ${n.adapter}): ${n.url}${page}`, `  headline: ${n.title || '(none)'}`, `  partial match: ${(n.signals || []).join(', ')}; the strict title matcher refused it`, `  add it: \`${c.primary}\``, ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
   }
   for (const g of gaps) {
     const c = ingestCommand(show.id, g);
-    lines.push(`GAP (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${g.rejectedFor ? `lane refused it: ${g.rejectedFor}` : 'lane has not dated it yet: backlog or a blocked page'})`, `  add it: ${c.primary}`, ...(c.fallback ? [`  or: ${c.fallback}`] : []));
+    lines.push(`GAP (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${g.rejectedFor ? `lane refused it: ${g.rejectedFor}` : 'lane has not dated it yet: backlog or a blocked page'})`, `  add it: \`${c.primary}\``, ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
   }
   const title = `Press night ${show.id} ${night}: ${nearMisses.length} near-miss, ${gaps.length} found-not-live`;
   return { title, description: lines.join('\n') };

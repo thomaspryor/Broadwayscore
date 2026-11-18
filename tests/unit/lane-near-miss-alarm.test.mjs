@@ -106,7 +106,7 @@ test('BMG replay: the alert names the URL and the one ingest command, on Discord
   const cmd = nm.ingestCommand(BMG.id, { url: TM_URL, outletId: 'theatermania' }).primary;
   for (const t of [sent.discord[0], sent.comment[0][1]]) {
     assert.ok(t.includes(TM_URL), t);
-    assert.ok(t.includes(`add it: ${cmd}`), t);
+    assert.ok(t.includes(`add it: \`${cmd}\``), t);
   }
   assert.equal(sent.comment[0][0], 'BRO-5955');
   assert.ok(sent.discord[0].includes('(the page names the show)'), sent.discord[0]);
@@ -190,4 +190,44 @@ test('lane runner: near-miss alerts in the pass that sees it, a stuck known-outl
   assert.deepEqual(near, [NEAR], JSON.stringify(calls));
   assert.deepEqual(gaps, [STUCK], JSON.stringify(calls));
   assert.equal(calls[0].near.length, 1, 'the near-miss must alert in the first pass');
+});
+
+// Review of BRO-7748 (post-land ship-check): Discord cut-off, copy-safe commands, kill switch, shadow wiring.
+test('discordChunks keeps every line, each message under the Discord cap', async () => {
+  const { discordChunks } = require('../../scripts/lib/press-night-signals-notify.js');
+  const lines = Array.from({ length: 60 }, (_, i) => `line ${i} ${'x'.repeat(80)}`);
+  const parts = discordChunks(lines.join('\n'));
+  assert.ok(parts.length > 1);
+  for (const p of parts) assert.ok(p.length <= 1900, `chunk ${p.length}`);
+  assert.deepEqual(parts.join('\n').split('\n'), lines);
+});
+
+test('a long alert reaches Discord whole, in several messages', async () => {
+  const { createPressSignalsNotifier } = require('../../scripts/lib/press-night-signals-notify.js');
+  const sent = [];
+  const notify = createPressSignalsNotifier({ env: { DISCORD_WEBHOOK_ALERTS: 'https://discord.invalid/x' }, log: () => {}, discord: async (_w, t) => { sent.push(t); return true; }, card: null, fetchPage: async () => '' });
+  const nearMisses = Array.from({ length: 20 }, (_, i) => ({ url: `https://www.theatermania.com/news/r-${i}`, outletId: 'theatermania', adapter: 'rss', title: `Review ${i}`, signals: ['lead-title:X'], pageNamesShow: null }));
+  const r = await notify({ show: { id: 's', title: 'S' }, night: '2026-11-17', nearMisses, gaps: [] });
+  assert.equal(r.discord, true);
+  assert.ok(sent.length > 1);
+  for (let i = 0; i < 20; i++) assert.ok(sent.join('\n').includes(`https://www.theatermania.com/news/r-${i}`));
+});
+
+test('alert commands are in backticks so Discord shows them copy-safe', () => {
+  const nm = require('../../scripts/lib/opening-night-lane/near-miss.js');
+  const msg = nm.formatPressSignals({ id: 's' }, '2026-11-17', { nearMisses: [{ url: "https://x.example/a'b", outletId: 'o', adapter: 'rss', signals: ['t'] }], gaps: [] });
+  assert.match(msg.description, /add it: `node scripts\/[^`]+`/);
+});
+
+test('PRESS_SIGNALS_OFF=1 silences the notifier', async () => {
+  const { createPressSignalsNotifier } = require('../../scripts/lib/press-night-signals-notify.js');
+  let sent = 0;
+  const notify = createPressSignalsNotifier({ env: { PRESS_SIGNALS_OFF: '1', DISCORD_WEBHOOK_ALERTS: 'https://discord.invalid/x' }, log: () => {}, discord: async () => { sent++; return true; }, card: null });
+  const r = await notify({ show: { id: 's' }, night: '2026-11-17', nearMisses: [{ url: 'https://x.example/a', signals: ['t'] }], gaps: [] });
+  assert.equal(sent, 0); assert.equal(r.text, null);
+});
+
+test('the shadow lane wires the press-night alarm (not on replays)', () => {
+  const src = fs.readFileSync(require.resolve('../../scripts/opening-night-lane-shadow.js'), 'utf8');
+  assert.match(src, /onPressSignals: replay \? null : require\('\.\/lib\/press-night-signals-notify'\)\.createPressSignalsNotifier\(\)/);
 });

@@ -20,7 +20,7 @@ function coordinatorCard() {
 
 function postDiscord(webhook, content) {
   return new Promise((resolve, reject) => {
-    const body = JSON.stringify({ content: content.slice(0, 1990) });
+    const body = JSON.stringify({ content });
     const u = new URL(webhook);
     const req = https.request({ hostname: u.hostname, path: u.pathname + u.search, method: 'POST', headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }, timeout: 15000 }, (res) => {
       res.resume();
@@ -61,9 +61,21 @@ async function commentOnCard(card, body) {
  *   discord(webhook, text) and comment(card, body) are injectable for tests.
  * @returns {(signals: {show, night, nearMisses, gaps}) => Promise<{discord: boolean, comment: boolean, text: string|null}>}
  */
+/** Split text into <=limit-char messages on line boundaries; a single over-long line is hard-cut. */
+function discordChunks(text, limit = 1900) {
+  const out = []; let cur = '';
+  for (const line of String(text).split('\n')) {
+    const l = line.length > limit ? line.slice(0, limit) : line;
+    if (cur && cur.length + 1 + l.length > limit) { out.push(cur); cur = l; } else cur = cur ? `${cur}\n${l}` : l;
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+
 function createPressSignalsNotifier({ env = process.env, log = console.log, discord = postDiscord, comment = commentOnCard, card = coordinatorCard(), runUrl, capMs = CHANNEL_CAP_MS, fetchPage = fetchPageDirect } = {}) {
   const run = runUrl || (env.GITHUB_RUN_ID && env.GITHUB_REPOSITORY ? `https://github.com/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}` : null);
   return async ({ show, night, nearMisses = [], gaps = [] }) => {
+    if (env.PRESS_SIGNALS_OFF === '1') { log('[press-signals] PRESS_SIGNALS_OFF=1: alerts off'); return { discord: false, comment: false, text: null }; }
     for (const n of nearMisses.slice(0, MAX_PAGE_CHECKS)) {
       if (n.pageNamesShow !== undefined) continue;
       try { n.pageNamesShow = pageNamesShow(await capped(Promise.resolve(fetchPage(n.url)), 12000, 'page check'), show); } catch { n.pageNamesShow = null; }
@@ -75,7 +87,8 @@ function createPressSignalsNotifier({ env = process.env, log = console.log, disc
     console.log(`::warning title=Press-night ${nearMisses.length ? 'near-miss' : 'found-not-live'}::⚠️ ${msg.title} (details in the log above)`);
     const out = { discord: false, comment: false, text };
     if (env.DISCORD_WEBHOOK_ALERTS) {
-      try { out.discord = await capped(discord(env.DISCORD_WEBHOOK_ALERTS, text), capMs, 'discord'); } catch (e) { log(`[press-signals] discord failed: ${String(e && e.message).slice(0, 160)}`); }
+      // Discord caps a message at 2,000 characters: send whole lines in chunks so no item is cut off (review of BRO-7748).
+      try { for (const part of discordChunks(text)) out.discord = (await capped(discord(env.DISCORD_WEBHOOK_ALERTS, part), capMs, 'discord')) || out.discord; } catch (e) { log(`[press-signals] discord failed: ${String(e && e.message).slice(0, 160)}`); }
     } else log('[press-signals] DISCORD_WEBHOOK_ALERTS not set; Discord skipped');
     if (card && env.LINEAR_API_KEY) {
       try { out.comment = await capped(comment(card, `${text}\n\nPosted by the opening-night lane (BRO-7748). The lane did not admit these; one command above adds each.`), capMs, 'card comment'); } catch (e) { log(`[press-signals] ${card} comment failed: ${String(e && e.message).slice(0, 160)}`); }
@@ -85,4 +98,4 @@ function createPressSignalsNotifier({ env = process.env, log = console.log, disc
   };
 }
 
-module.exports = { createPressSignalsNotifier, coordinatorCard };
+module.exports = { createPressSignalsNotifier, coordinatorCard, discordChunks };
