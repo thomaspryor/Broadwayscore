@@ -119,3 +119,28 @@ test('watchdog: a pre-warm run is not mistaken for its own deploy dispatch', () 
   runs.push({ workflow: 'vercel-deploy.yml', displayTitle: 'Deploy to Vercel', createdAt: '2026-11-18T16:02:00Z' });
   assert.equal(wd.findDispatchedRun(runs, { workflow: 'vercel-deploy.yml', showId: 'x', sinceMs: since }).displayTitle, 'Deploy to Vercel');
 });
+
+test('a pre-warm run gets the wait cap on top of the normal 45-min job budget', () => {
+  const vd = wf('vercel-deploy.yml');
+  const m = /timeout-minutes: \$\{\{ inputs\.wait_for_run && (\d+) \|\| 45 \}\}/.exec(vd);
+  assert.ok(m, 'deploy job timeout must depend on wait_for_run');
+  assert.ok(Number(m[1]) >= 45 + H.CAP_MIN + 3, 'setup (~3 min) + wait cap + the old budget');
+});
+
+test('only a definite "no push" stops quietly; doubt hands off, a failed hand-off fails loudly', () => {
+  const wait = stepBlock(wf('vercel-deploy.yml'), H.WAIT_STEP);
+  assert.match(wait, /if \[ "\$RC" -eq 10 \]; then stop_here/);
+  assert.match(wait, /\[ "\$RC" -eq 0 \] \|\| handoff/);
+  assert.match(wait, /proceed=false' "\$GATE_OUT"; then handoff/);
+  assert.match(wait, /gh workflow run vercel-deploy\.yml \|\| \{ echo "::error::[^}]*exit 1; \}/);
+  assert.match(fs.readFileSync(path.join(ROOT, 'scripts/lib/deploy-prewarm-wait.js'), 'utf8'), /gave up after \$\{CAP_MIN\} min`\); process\.exit\(11\)/);
+});
+
+test('consumers that read vercel-deploy runs ignore pre-warm runs', () => {
+  const rd = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
+  assert.match(rd('.github/workflows/check-cron-health.yml'), /contains\("pre-warm"\) \| not/);
+  assert.match(rd('.github/actions/dispatch-deploy/action.yml'), /contains\("pre-warm"\) \| not/);
+  assert.match(rd('scripts/deploy-heartbeat.sh'), /includes\('pre-warm'\)/);
+  assert.match(rd('scripts/check-prod-deploy.js'), /includes\('pre-warm'\)\) continue/);
+  assert.match(rd('scripts/lib/gh-runs-query.sh'), /displayTitle: \.display_title/);
+});

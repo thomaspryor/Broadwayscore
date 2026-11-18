@@ -16,7 +16,9 @@
  * CLI: node scripts/lib/deploy-prewarm-wait.js <run-id>
  *   exit 0 = proceed (push step succeeded)
  *   exit 10 = do not deploy (push step skipped/failed, job ended without it,
- *             run cancelled, or the wait cap passed)
+ *             run cancelled)
+ *   exit 11 = gave up at the wait cap (API errors or a slow rebuild): the
+ *             workflow hands off to a normal deploy
  *
  * CLI: node scripts/lib/deploy-prewarm-wait.js --find-prewarm <rebuild-run-id>
  *   (rebuild-fast.yml's "Trigger deploy" step) prints the id of a pre-warm run
@@ -128,7 +130,7 @@ async function main() {
     if (line !== last) { console.log(`[prewarm] ${new Date().toISOString()} ${line}`); last = line; }
     if (verdict.state === 'proceed') process.exit(0);
     if (verdict.state === 'skip') process.exit(10);
-    if (Date.now() >= deadline) { console.log(`[prewarm] gave up after ${CAP_MIN} min`); process.exit(10); }
+    if (Date.now() >= deadline) { console.log(`[prewarm] gave up after ${CAP_MIN} min`); process.exit(11); }
     await new Promise(r => setTimeout(r, POLL_MS));
   }
 }
