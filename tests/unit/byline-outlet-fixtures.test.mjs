@@ -8,7 +8,8 @@
  *
  * Rebuild: node scripts/sweep-stored-bylines.js ... --save-html=<dir>, then
  *          node scripts/build-byline-fixtures.js --pages=<dir> --rows=<jsonl...>
- * Refreshed monthly against the live pages by .github/workflows/byline-fixture-drift.yml.
+ * Checked monthly against the live pages by scripts/check-byline-fixture-drift.js (data-health-check.yml,
+ * the 3rd of each month).
  */
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';

@@ -205,3 +205,31 @@ describe('publication names are never a critic (BRO-7780)', () => {
     assert.equal(isNotACriticName('Patrick Ryan'), false);
   });
 });
+
+// BRO-7780 ship-check: the shared reader called the generic reader with no text, so an outlet whose
+// only byline is in the article text (CultureSauce "Date: ... Author: X") came back with nobody.
+test('text-only bylines still read through the shared reader (CultureSauce)', () => {
+  const { readPageByline } = require('../../scripts/lib/page-byline.js');
+  const html = '<html><head><title>Review</title></head><body><article><p>Date: March 3, 2026 Author: Slam Frank</p><p>The show.</p></article></body></html>';
+  const got = readPageByline({ html, text: 'Date: March 3, 2026 Author: Slam Frank\nThe show was a riot.', url: 'https://culturesauce.com/2026/03/03/review-x/', outletId: 'culturesauce' });
+  assert.equal(got.criticName, 'Slam Frank');
+});
+
+// BRO-7780 sweep (All That Dazzles / Theatre and Tonic): two printed-credit shapes the readers missed.
+describe('printed credits found by the BRO-7780 sweep', () => {
+  const { printedOutletByline } = require('../../scripts/lib/byline-from-text.js');
+  test('All That Dazzles pre-star posts: "N min read [Updated: ...] Review by First Last <sentence>"', () => {
+    const t = "Review: The Pillowman (Duke Of York's Theatre) All That Dazzles Jun 21, 2023 5 min read Updated: Jun 22, 2023 Review by Daz Gale If you walk the streets of LDN";
+    assert.equal(printedOutletByline('all-that-dazzles-uk', t)?.name, 'Daz Gale');
+    const t2 = 'Review: Operation Mincemeat (Fortune Theatre) All That Dazzles May 10, 2023 5 min read Review by Daz Gale Every now and then';
+    assert.equal(printedOutletByline('all-that-dazzles-uk', t2)?.name, 'Daz Gale');
+  });
+  test('All That Dazzles: star posts still read; prose "reviewed by" away from the header does not', () => {
+    assert.equal(printedOutletByline('all-that-dazzles-uk', 'Sam Woodward Oct 27 5 min read Review by Ruth Sealey ⭐️⭐️⭐️⭐️⭐️ Virtual')?.name, 'Ruth Sealey');
+    assert.equal(printedOutletByline('all-that-dazzles-uk', 'A show first reviewed by Daz Gale In the body later on'), null);
+  });
+  test('Theatre and Tonic: "Reviewed by Annie for Theatre and Tonic" as well as "Written by"', () => {
+    assert.equal(printedOutletByline('theatreandtonic', 'a lovely show. Reviewed by Annie for Theatre and Tonic Disclaimer: Gifted')?.name, 'Annie');
+    assert.equal(printedOutletByline('theatreandtonic', 'Written by Penny Walshe ... Written by Roby for Theatre and Tonic, October 2026')?.name, 'Roby');
+  });
+});

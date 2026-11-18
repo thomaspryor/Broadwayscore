@@ -106,9 +106,15 @@ function extractSouthLondonByline(text) {
 // All That Dazzles prints "Review by Daz Gale ⭐⭐⭐⭐⭐" under the headline; the page's own author is the
 // shared site account ("Sam - Admin"), and scraped files were filed as "Unknown" or "All That Dazzles".
 const ATD_REVIEW_BY_RE = new RegExp(String.raw`\bReview(?:ed)? by\s+(${PRINTED_NAME}?)\s*(?:⭐|🌟|★|\n|$)`, "u");
+// Older posts (before star ratings) print no stars after the name, and the extracted text runs
+// straight into the first sentence: "5 min read Updated: Jun 22, 2023 Review by Daz Gale If you walk".
+// Only right after Wix's "N min read" header, and only a First Last pair, so the opening sentence's
+// first word is not read as a surname (BRO-7780: 5 Daz Gale reviews read as "All That Dazzles").
+const ATD_HEADER_REVIEW_BY_RE = /\bmin read\s+(?:Updated:\s+[A-Z][a-z]{2,8}\s+\d{1,2},\s+\d{4}\s+)?Review(?:ed)? by\s+(\p{Lu}[\p{L}'’-]+\s+\p{Lu}[\p{L}'’-]+)(?=\s)/u;
 function extractAllThatDazzlesByline(text) {
   if (!text) return null;
-  const m = ATD_REVIEW_BY_RE.exec(String(text).slice(0, 400));
+  const head = String(text).slice(0, 400);
+  const m = ATD_REVIEW_BY_RE.exec(head) || ATD_HEADER_REVIEW_BY_RE.exec(head.replace(/\s+/g, " "));
   const name = m && printedPerson(m[1]);
   return name ? { name, known: true } : null;
 }
@@ -144,9 +150,9 @@ function extractTimeOutByline(text) {
 }
 
 // Theatre and Tonic (Squarespace): the CMS author is the account holder ("Emmie Newitt" on ~50 reviews)
-// while each review ends "Written by Annie for Theatre and Tonic, October 2026." The writer is credited
+// while each review ends "Written by Annie for Theatre and Tonic, October 2026." (or "Reviewed by", BRO-7780) The writer is credited
 // by first name (sometimes first name and initial or a full name), so a single capitalised word counts.
-const TT_WRITTEN_BY_RE = new RegExp(String.raw`Written by\s+(\p{Lu}[\p{L}'’-]*\.?(?:\s+\p{Lu}[\p{L}'’-]*\.?){0,2})\s+for Theatre (?:and|&) Tonic`, "gu");
+const TT_WRITTEN_BY_RE = new RegExp(String.raw`(?:Written|Reviewed) by\s+(\p{Lu}[\p{L}'’-]*\.?(?:\s+\p{Lu}[\p{L}'’-]*\.?){0,2})\s+for Theatre (?:and|&) Tonic`, "gu");
 function extractTheatreAndTonicByline(text) {
   if (!text) return null;
   let last = null;
@@ -270,18 +276,18 @@ function printedBylineOverride(outletId, text, url, stored) {
   return slug && String(url || "").toLowerCase().includes("/" + slug) ? hit.name : null;
 }
 
-/**
- * @param {string} outletId canonical outlet id
- * @param {string} text review fullText
- * @param {{showTitle?: string}} [opts]
- * @returns {{name: string, known: boolean} | null}
- */
 /** The outlet's own printed-byline reader only (no generic text-tail credit), or null. */
 function printedOutletByline(outletId, text) {
   const extractor = BYLINE_EXTRACTORS[outletId];
   return extractor && text ? extractor(text) || null : null;
 }
 
+/**
+ * @param {string} outletId canonical outlet id
+ * @param {string} text review fullText
+ * @param {{showTitle?: string}} [opts]
+ * @returns {{name: string, known: boolean} | null}
+ */
 function extractBylineFromText(outletId, text, opts = {}) {
   const extractor = BYLINE_EXTRACTORS[outletId];
   const hit = extractor ? extractor(text) : null;

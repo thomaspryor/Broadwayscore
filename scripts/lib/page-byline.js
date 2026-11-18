@@ -11,8 +11,10 @@
  *     meta, byline CSS, Condé Nast name link, sign-offs. It filters publishers, house names,
  *     desks and CMS accounts. No article text, so no text-tail credit (a photo credit is not a
  *     byline).
- *  3. content-quality extractAuthorFromHtml with NO text (its meta / JSON-LD / byline-CSS chain),
- *     through the same isNotACriticName filter. A rejected answer is null, never a retry.
+ *  3. content-quality extractAuthorFromHtml WITH the article text, as ingest called it before this
+ *     reader existed: its text paths (CultureSauce's inline "Date: ... Author: X", the generic
+ *     "By X" line) are the only byline some outlets print (ship-check: passing '' lost Slam Frank).
+ *     Through the same isNotACriticName filter. A rejected answer is null, never a retry.
  *  4. The outlet's printed credit (PRINTED_BYLINE_OVERRIDES outlets: "Review by X" in the
  *     article), which beats the CMS author on those outlets, as the record writer does.
  *
@@ -40,7 +42,7 @@ function readPageByline({ html, text = '', url, outletId } = {}) {
     if (criticName) source = 'markup';
     else {
       let generic = null;
-      try { generic = cq.extractAuthorFromHtml(html, '', opts) || null; } catch { generic = null; }
+      try { generic = cq.extractAuthorFromHtml(html, text || '', opts) || null; } catch { generic = null; }
       if (generic && !bx.isNotACriticName(generic)) { criticName = generic; source = 'generic'; }
     }
   }
