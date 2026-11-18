@@ -123,10 +123,10 @@ const SOURCE_LABELS = {
 };
 
 // ugc_error codes that are not failures worth an alert: offline / killed
-// requests, a save with no session, a duplicate insert (already saved), and
+// requests, a save with no session, handled account recovery, a duplicate insert, and
 // PostgREST's 0-rows answer. Mirrors QUIET_CODES / IGNORED_CODES in
 // src/lib/ugc-analytics.ts.
-const QUIET_ERROR_CODES = ['network', 'no_session', '23505', 'PGRST116'];
+const QUIET_ERROR_CODES = ['network', 'no_session', 'account_gone', '23505', 'PGRST116'];
 
 // Alert thresholds over the last 24 hours. Small on purpose: with a handful
 // of sign-ups a day, three people starting and nobody finishing is already a

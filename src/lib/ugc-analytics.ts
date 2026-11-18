@@ -176,7 +176,9 @@ export function ignoredUgcError(op: string, info: UgcErrorInfo): boolean {
   return op === 'auth logout' && info.status != null && LOGOUT_DONE_STATUSES.has(info.status);
 }
 // Reported to PostHog (counted) but not Sentry: user-side or already handled.
-const QUIET_CODES = new Set(['network', 'no_session', '23505']);
+// account_gone is the REST helper's handled sign-out/re-auth outcome. Keep
+// the raw database error (e.g. 23503) visible if one triggered the recovery.
+const QUIET_CODES = new Set(['network', 'no_session', 'account_gone', '23505']);
 const SENTRY_THROTTLE_MS = 60_000;
 const lastSentry = new Map<string, number>();
 
