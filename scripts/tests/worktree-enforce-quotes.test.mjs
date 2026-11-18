@@ -33,6 +33,15 @@ const CASES = [
   ['cp named in single-quoted prose', "node a.js --notes 'then cp a scripts/b.js broke it'", 0],
   ['redirect inside heredoc body', "python3 - <<'EOF'\nprint('x > scripts/y.js')\nEOF", 0],
   ['tee inside heredoc body, unquoted marker', 'cat <<EOF\nrun | tee scripts/z.js\nEOF', 0],
+  // ship-check findings: mixed quote kinds, quoted code, empty heredoc body
+  ['apostrophe inside double quotes', "echo \"don't\" > scripts/a.js; echo 'x'", 2],
+  ['commit message with apostrophe', "git commit -m \"don't\" && echo hi > scripts/a.js && echo 'ok'", 2],
+  ['stray double quote inside single quotes', 'echo \'he said "hi\' > scripts/x.js; echo "a b"', 2],
+  ['sed expression with a double quote', 'sed -i \'s/"//g\' scripts/x.js && echo "done now"', 2],
+  ['bash -c with a write', 'bash -c "echo hi > scripts/x.js"', 2],
+  ['sh -c single-quoted write', "sh -c 'echo hi > scripts/x.js'", 2],
+  ['write inside $( ) in a quoted string', 'echo "$(echo hi > scripts/x.js) ok"', 2],
+  ['empty heredoc then a real write', 'cat <<EOF > /tmp/a\nEOF\necho hi > scripts/x.js\ncat <<EOF\nx\nEOF', 2],
   ['read-only grep', 'grep -n foo scripts/x.js', 0],
 ];
 

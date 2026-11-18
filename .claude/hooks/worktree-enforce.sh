@@ -150,11 +150,17 @@ case "$tool_name" in
     # BRO-7723: scan a copy with heredoc bodies and multi-word quoted strings
     # blanked, so prose that mentions a redirect (a --notes "... > scripts/x.js")
     # is not read as a write. Single-token quotes keep their content: > "x.js".
+    # One left-to-right pass over both quote kinds, so an apostrophe inside "..."
+    # (or a " inside '...') never pairs with a later quote. Quoted code stays:
+    # a string after -c or eval, or one holding $( or a backtick, is kept whole.
+    # Known gap: a << inside quoted prose is read as a heredoc opener.
     # perl missing or failing -> scan the raw command (old behaviour).
     scan=$(printf '%s' "$command" | perl -0pe '
-      s/(<<-?[ \t]*["\x27]?(\w+)["\x27]?[^\n]*)\n.*?\n[ \t]*\2[ \t]*(?=\n|$)/$1/gs;
-      s/"((?:[^"\\]|\\.)*)"/ $1 =~ m{\s} ? "\"\"" : $1 /ge;
-      s/\x27([^\x27]*)\x27/ $1 =~ m{\s} ? "\x27\x27" : $1 /ge;
+      s/(<<-?[ \t]*["\x27]?(\w+)["\x27]?[^\n]*)\n(?:.*?\n)??[ \t]*\2[ \t]*(?=\n|$)/$1/gs;
+      s{((?<![\w-])(?:-c|eval)[ \t]+)?(?:"((?:[^"\\]|\\.)*)"|\x27([^\x27]*)\x27)}{
+        my ($all, $pre, $c) = ($&, $1, defined $2 ? $2 : $3);
+        (defined $pre || $c =~ m{\$\(|`}) ? $all : ($c =~ m{\s} ? "\"\"" : $c)
+      }ge;
     ' 2>/dev/null) || scan="$command"
     [ -z "$scan" ] && scan="$command"
     targets=$(
