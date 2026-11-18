@@ -310,6 +310,9 @@ function unionCensus(perSource, opts = {}) {
  * Pure: pass the review-text JSON objects and the census' sourcesPresent.
  * @returns {{missing:boolean, url:string|null}}
  */
+// Flags meaning a review file is about ANOTHER production/show/article, so its roundup URL is that one's.
+const OTHER_PRODUCTION_FLAGS = ['wrongProduction', 'wrongShow', 'wrongUrl'];
+
 function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent, showTitle) {
   if ((sourcesPresent || []).includes('bww-roundup')) return { missing: false, url: null };
   for (const f of reviewFiles || []) {
@@ -317,8 +320,9 @@ function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent, showTitle) 
     if (!/^https?:\/\/[^ ]*review-roundup/i.test(u)) continue;
     // A file excluded as another production/show/URL carries THAT production's roundup, not this one's
     // (2026-11-18: two 2023 Bad Cinderella reviews, wrongProduction on the Lyric Hammersmith "Cinderella",
-    // raised CENSUS ARCHIVE MISSING for a show that had not opened). Only live files can prove a roundup.
-    if (f.wrongProduction || f.wrongShow || f.wrongUrl || f.duplicateOf) continue;
+    // raised CENSUS ARCHIVE MISSING for a show that had not opened). duplicateOf is NOT in the list: a
+    // duplicate is the same production, and can be the only carrier (avenue-q-west-end-2026/times-uk--clive-davis).
+    if (OTHER_PRODUCTION_FLAGS.some((k) => f[k])) continue;
     // A roundup URL copied onto another show's file (cross-show misroute) must not raise a gap: the slug has to
     // carry a distinctive word of THIS show's title (e.g. "unbelievers"), when a title is known.
     if (showTitle) {
