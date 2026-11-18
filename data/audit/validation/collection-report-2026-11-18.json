@@ -1,68 +1,62 @@
 {
-  "runDate": "2026-11-18T18:41:14.725Z",
+  "runDate": "2026-11-18T19:19:08.433Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-good-thief-off-broadway-2026,jenufa-off-broadway-2026,the-fantasticks-2026,downstate-2026,blue-man-group-a-new-holiday-surprise-2026,top-gunchained-off-west-end-2026,a-christmas-story-the-musical-tour-2026,our-town-regional-2026,nixon-in-china-regional-2026,entre-dos-sombras-regional-2026,takes-all-kinds-regional-2026,my-english-persian-kitchen-regional-2026,destiny-of-desire-regional-2026",
+    "showFilter": "top-gunchained-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 7,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "41.7%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 7,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 4,
-    "tier3Attempts": 2,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 6,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 7,
-    "scrapingBeePageCredits": 14,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.2,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 5,
-    "failed": 7,
+    "processed": 0,
+    "failed": 2,
     "shows": [
-      "a-christmas-story-the-musical-tour-2026",
-      "downstate-2026",
-      "entre-dos-sombras-regional-2026",
-      "my-english-persian-kitchen-regional-2026",
-      "the-fantasticks-2026",
-      "the-good-thief-off-broadway-2026",
       "top-gunchained-off-west-end-2026"
     ],
     "outOfScopeShows": [],
@@ -71,72 +65,29 @@
       "failed": 0
     }
   },
-  "processed": [
-    "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
-    "top-gunchained-off-west-end-2026/everything-theatre--alex-sarll.json",
-    "top-gunchained-off-west-end-2026/south-london--unknown.json",
-    "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-    "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json"
-  ],
+  "processed": [],
   "failed": [
-    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
     "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
-    "top-gunchained-off-west-end-2026/british-theatre--unknown.json",
-    "my-english-persian-kitchen-regional-2026/the-list--unknown.json",
-    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
-    "downstate-2026/nytimes--unknown.json",
-    "downstate-2026/nydailynews--unknown.json"
+    "top-gunchained-off-west-end-2026/british-theatre--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
-      "top-gunchained-off-west-end-2026/everything-theatre--alex-sarll.json",
-      "top-gunchained-off-west-end-2026/south-london--unknown.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json"
-    ],
+    "processed": [],
     "failed": [
-      "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
       "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
-      "top-gunchained-off-west-end-2026/british-theatre--unknown.json",
-      "my-english-persian-kitchen-regional-2026/the-list--unknown.json",
-      "the-fantasticks-2026/bobs-theater-blog--unknown.json",
-      "downstate-2026/nytimes--unknown.json",
-      "downstate-2026/nydailynews--unknown.json"
+      "top-gunchained-off-west-end-2026/british-theatre--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "top-gunchained-off-west-end-2026/everything-theatre--alex-sarll.json",
-      "top-gunchained-off-west-end-2026/south-london--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "The List": {
-      "count": 1,
-      "domain": "list.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "my-english-persian-kitchen-regional-2026/the-list--unknown.json",
-      "oldUrl": "https://list.co.uk/event/my-english-persian-kitchen-670656",
-      "newUrl": "https://list.co.uk/event/my-english-persian-kitchen-694621?venue=Phoenix%20Theatre%20and%20Arts%20Centre"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
