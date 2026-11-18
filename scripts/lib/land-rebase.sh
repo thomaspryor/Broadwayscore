@@ -105,6 +105,6 @@ while :; do
     echo "::warning::land rebase hit a partial-clone lazy-fetch failure ($(git --version 2>/dev/null || echo 'git ?')) — retry $attempt/$RETRIES (BRO-4165): $(tail -c 400 "$out" | tr '\n' ' ')"
     continue
   fi
-  echo "::error::$LABEL does not rebase cleanly onto origin/main @ ${BASE:0:10} — resolve the conflict on the branch and push again"
+  echo "::error::$LABEL does not rebase cleanly onto origin/main @ ${BASE:0:10} — merging main into the branch will not help (land replays each commit and drops merges); squash the branch onto fresh origin/main as one commit and push it to a NEW land ref (-v2 suffix)"
   exit 1
 done

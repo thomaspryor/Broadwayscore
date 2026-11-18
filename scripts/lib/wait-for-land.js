@@ -72,6 +72,7 @@ const PROD_MAX_ERRORS = 3;
 const { firstLine } = require('./log-lines');
 const { landedOnMain } = require('./land-check-resources');
 const { LANDINGS_REL, parseLandings, landedShaForTip } = require('./landings-ledger');
+const { summarizeRun } = require('./land-timing-report');
 
 // check-prod-deploy prints its verdict last. Preserve that line without
 // splitting all of stdout/stderr, and bound unusually long verdicts too.
@@ -217,7 +218,7 @@ function readLatestRun(ref, { read = readGhJson, readText = readGhText, cache = 
       cache.set(key, cancellation);
     }
   }
-  return { id: r.id, head_sha: r.head_sha, identityPending: r.identityPending, status: r.status, conclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, cancellation };
+  return { id: r.id, head_sha: r.head_sha, identityPending: r.identityPending, status: r.status, conclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, run_attempt: r.run_attempt, cancellation };
 }
 
 function remoteSha(ref) {
@@ -321,9 +322,44 @@ async function waitForProd({ siteFiles, prodMin }) {
 // Rebasing a refused land/ branch makes the re-push non-fast-forward, and the
 // cloud git proxy refuses that (and refuses deleting the ref), which stranded
 // re-lands under new names. land.yml rebases onto main itself.
-function refusedMessage(ref, why, url) {
-  return `REFUSED: ${ref} ${why}${url ? ` ${url}` : ''}\n` +
+function refusedMessage(ref, why, url, { rebaseConflict = false } = {}) {
+  const head = `REFUSED: ${ref} ${why}${url ? ` ${url}` : ''}\n`;
+  if (rebaseConflict) {
+    // BRO-7755: land.yml replays each commit with a plain rebase and drops
+    // merge commits, so merging origin/main into the branch changes nothing
+    // when an early commit conflicts. Only one squashed commit on fresh main
+    // gets through, and it needs a NEW ref (the old one cannot be rewritten).
+    return head +
+      `  next: ${ref} does not rebase onto origin/main, and merging main into it will not help (land replays each commit and drops merges). ` +
+      `Make a worktree at fresh origin/main, \`git merge --squash\` the branch, resolve, commit once, and push to a NEW land ref (${nextRef(ref)}). ` +
+      `The old ref stays on origin (deleting it is refused); it is not a second landing.`;
+  }
+  return head +
     `  next: fix on top of the refused commit (do not rebase, squash or reset: land.yml rebases, and a rewritten re-push is refused as non-fast-forward), then push the same ref ${ref}`;
+}
+
+// land/x -> land/x-v2, land/x-v2 -> land/x-v3.
+function nextRef(ref) {
+  const m = /^(.*)-v(\d+)$/.exec(ref);
+  return m ? `${m[1]}-v${Number(m[2]) + 1}` : `${ref}-v2`;
+}
+
+// Is a failed land run a rebase conflict? Reuses land-timing-report's
+// classifier on the failing job's annotations. Best effort: any read error
+// returns false and the caller keeps the default advice.
+function readRefusalCause(run, { read = readGhJson } = {}) {
+  try {
+    if (!run || run.conclusion !== 'failure') return false;
+    const attempt = run.run_attempt || 1;
+    const jobs = read(`repos/${repo}/actions/runs/${run.id}/attempts/${attempt}/jobs?per_page=50`).jobs;
+    if (!Array.isArray(jobs)) return false;
+    const failed = jobs.find((j) => /^(Checks|Land)$/.test(j.name) && j.conclusion === 'failure');
+    const annotations = failed ? read(`repos/${repo}/check-runs/${failed.id}/annotations?per_page=100`) : [];
+    const rec = summarizeRun({ ...run, status: 'completed' }, jobs, Array.isArray(annotations) ? annotations : []);
+    return rec.causes.some((c) => /^rebase conflict/.test(c));
+  } catch {
+    return false;
+  }
 }
 
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -444,7 +480,7 @@ async function waitLoop(args, deadline) {
         return 3;
       }
       if (v.verdict === 'refused') {
-        console.log(`${stamp()} ${refusedMessage(args.ref, v.why, run && run.url)}`);
+        console.log(`${stamp()} ${refusedMessage(args.ref, v.why, run && run.url, { rebaseConflict: readRefusalCause(run) })}`);
         return 1;
       }
       const line = `waiting: ${v.why}`;
@@ -470,4 +506,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { refusedMessage, prodDetail, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };
+module.exports = { refusedMessage, nextRef, readRefusalCause, prodDetail, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };

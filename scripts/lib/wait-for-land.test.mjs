@@ -409,3 +409,40 @@ test('BRO-7110: an unsure prod check keeps its stderr reason; a sure one shows s
   assert.equal(prodDetail({ stdout: '⏳ not live\n', stderr: 'noise\n' }, 1), '⏳ not live');
   assert.equal(prodDetail({ stdout: '', stderr: 'only stderr\n' }, 2), 'only stderr');
 });
+
+test('BRO-7755: a rebase-conflict refusal says squash onto fresh main and push a NEW ref', () => {
+  const msg = waitForLand.refusedMessage('land/x', 'run 1 failure', null, { rebaseConflict: true });
+  assert.match(msg, /merge --squash/);
+  assert.match(msg, /NEW land ref \(land\/x-v2\)/);
+  assert.match(msg, /drops merges/);
+  assert.doesNotMatch(msg, /push the same ref/);
+  assert.match(waitForLand.refusedMessage('land/x-v2', 'w', null, { rebaseConflict: true }), /land\/x-v3/);
+  // other refusals keep the fix-on-top advice
+  assert.match(waitForLand.refusedMessage('land/x', 'w', null, { rebaseConflict: false }), /fix on top of the refused commit/);
+  assert.match(waitForLand.refusedMessage('land/x', 'w', null), /push the same ref land\/x$/);
+});
+
+test('BRO-7755: readRefusalCause detects rebase conflicts from annotations, step names; else false', () => {
+  const run = { id: 9, conclusion: 'failure', run_attempt: 2, head_branch: 'land/x', created_at: '2026-01-01T00:00:00Z' };
+  const mk = (annotations, steps = []) => {
+    const calls = [];
+    const read = (ep) => {
+      calls.push(ep);
+      if (ep.includes('/jobs')) return { jobs: [{ id: 5, name: 'Checks', conclusion: 'failure', completed_at: '2026-01-01T00:05:00Z', steps }] };
+      return annotations;
+    };
+    return { read, calls };
+  };
+  const fail = (message) => [{ annotation_level: 'failure', message }];
+  let t = mk(fail('land/x does not rebase cleanly onto origin/main @ abc — resolve'));
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), true);
+  assert.ok(t.calls[0].includes('/attempts/2/jobs'), t.calls[0]);
+  t = mk(fail('x: was NOT landed — rebase: conflict'));
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), true);
+  t = mk([], [{ name: 'Rebase onto origin/main', conclusion: 'failure' }]);
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), true);
+  t = mk(fail('lint gate failed: foo'));
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), false);
+  assert.equal(waitForLand.readRefusalCause(run, { read: () => { throw new Error('api'); } }), false);
+  assert.equal(waitForLand.readRefusalCause({ ...run, conclusion: 'cancelled' }, { read: t.read }), false);
+});
