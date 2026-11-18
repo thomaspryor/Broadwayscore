@@ -311,17 +311,17 @@ test('hasAuthCookie: a metered free read without the auth cookie is not a sessio
   assert.equal(renew.hasAuthCookie([], []), true, 'no auth list = not checked');
 });
 
-test('trackUncertain: one digest alert after 24h stuck on an uncertain probe, reset on any other result', () => {
+test('trackUncertain: one digest alert after 12h stuck (BRO-7765) on an uncertain probe, reset on any other result', () => {
   const t0 = Date.parse('2026-11-17T00:00:00Z');
   let r = renew.trackUncertain({}, 1, t0);
   assert.equal(r.alert, false);
-  r = renew.trackUncertain(r.state, 1, t0 + 23 * 3600e3);
+  r = renew.trackUncertain(r.state, 1, t0 + 11 * 3600e3);
   assert.equal(r.alert, false);
-  r = renew.trackUncertain(r.state, 1, t0 + 25 * 3600e3);
+  r = renew.trackUncertain(r.state, 1, t0 + 13 * 3600e3);
   assert.equal(r.alert, true);
-  r = renew.trackUncertain(r.state, 1, t0 + 49 * 3600e3);
+  r = renew.trackUncertain(r.state, 1, t0 + 25 * 3600e3);
   assert.equal(r.alert, false, 'only once');
-  r = renew.trackUncertain(r.state, 0, t0 + 50 * 3600e3);
+  r = renew.trackUncertain(r.state, 0, t0 + 26 * 3600e3);
   assert.equal(r.state.uncertainSince, null);
   assert.equal(r.state.uncertainAlerted, false);
 });

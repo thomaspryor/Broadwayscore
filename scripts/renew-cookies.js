@@ -520,7 +520,7 @@ async function main() {
       results[outlet] = r;
       console.log(`${outlet}: ${r.summary}`);
       // An outlet stuck on an uncertain probe never logs in (by design), so
-      // it would otherwise fail quietly forever: one digest alert after 24h.
+      // it would otherwise fail quietly forever: one digest alert after 12h.
       if (!opts.probeOnly && !opts.reset) {
         const t = renew.trackUncertain(all[outlet], r.code, Date.now());
         all[outlet] = t.state;
