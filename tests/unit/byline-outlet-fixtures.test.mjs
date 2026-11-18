@@ -98,6 +98,18 @@ describe('monthly drift check verdicts (check-byline-fixture-drift.js)', () => {
     assert.equal(classifyDrift({ expected: 'Jonas Schwartz' }, { criticName: null }), 'drift');
     assert.equal(classifyDrift({ expected: 'Jonas Schwartz' }, { error: '403' }), 'unreachable');
   });
+  // 2026-11-18 live run: londontheatre1 answered a 200-byte SiteGround captcha (meta refresh to
+  // /.well-known/sgcaptcha/) and was reported as drift. A page with no article text was not read.
+  test('a challenge page with no article text is unreachable, not drift', () => {
+    assert.equal(classifyDrift({ expected: 'Chris Omaweng' }, { criticName: null, textLength: 0 }), 'unreachable');
+    assert.equal(classifyDrift({ expected: 'Chris Omaweng' }, { criticName: null, textLength: 4000 }), 'drift');
+    assert.equal(classifyDrift({ expected: 'Chris Omaweng' }, { criticName: 'Chris Omaweng', textLength: 0 }), 'same');
+  });
+  test('the drift run records the article text length it read', async () => {
+    const fs = await import('node:fs');
+    const src = fs.readFileSync(new URL('../../scripts/check-byline-fixture-drift.js', import.meta.url), 'utf8');
+    assert.match(src, /live\.textLength\s*=/, 'check-byline-fixture-drift.js must set live.textLength for classifyDrift');
+  });
 });
 
 // BRO-7780 ship-check: saved pages were named by the last 60 base64 chars of the URL, so two
