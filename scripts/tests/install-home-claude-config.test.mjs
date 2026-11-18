@@ -438,11 +438,13 @@ test('liveness probe warns when the runner dedupes every event (BRO-7180)', () =
 test('repo allows the read-only Bash commands and nothing that writes (BRO-7533)', () => {
   const real = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
   const allow = real.permissions.allow;
-  const wanted = ['cd', 'grep', 'rg', 'ls', 'cat', 'head', 'tail', 'wc', 'sort',
-    'git status', 'git diff', 'git log', 'git show', 'git fetch'];
+  // Dropped after review: rg (--pre execs), sort (-o writes), git fetch (--upload-pack execs), git diff/log/show
+  // (--output=<file> writes arbitrary content). A prefix rule cannot forbid those flags.
+  const wanted = ['cd', 'grep', 'ls', 'cat', 'head', 'tail', 'wc', 'git status'];
+  for (const c of ['rg', 'sort', 'git fetch', 'git diff', 'git log', 'git show']) assert.ok(!allow.includes(`Bash(${c}:*)`), `${c} stays out: it can exec or write`);
   for (const c of wanted) assert.ok(allow.includes(`Bash(${c}:*)`), `Bash(${c}:*) is allowed`);
   const bash = allow.filter((r) => r.startsWith('Bash('));
   const writers = /^Bash\((rm|mv|cp|tee|sed|dd|chmod|chown|curl|wget|node|npm|python3?|bash|sh|git (push|commit|add|reset|checkout|merge|rebase|clean|stash|pull))\b/;
-  assert.deepEqual(bash.filter((r) => writers.test(r)), [], 'no Bash allow rule may write');
+  assert.deepEqual(bash.filter((r) => writers.test(r)), [], 'no allowed command name may write');
   assert.deepEqual(bash.filter((r) => !wanted.includes(r.slice(5, -3))), [], 'only the approved read-only set');
 });
