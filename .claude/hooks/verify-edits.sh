@@ -116,6 +116,11 @@ fi
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${RETRO_COVERAGE_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/retro-coverage-stop.mjs" ] && command -v node >/dev/null 2>&1; then
   _rcv_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/retro-coverage-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:RETROCOV]\n' "$_rcv_err" >&2; exit 2; fi; _ve_pre_died retro-coverage-stop.mjs $_ve_s
 fi
+# BRO-7738: a landed edit to a script a workflow runs needs a real run (the script itself, or its workflow dispatched and read) before
+# SAFE TO ARCHIVE; logic in live-run-stop.mjs, one nudge per chunk until its blocking date, kill LIVE_RUN_STOP_DISABLE=1.
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${LIVE_RUN_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/live-run-stop.mjs" ] && command -v node >/dev/null 2>&1; then
+  _lrs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/live-run-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:LIVERUN]\n' "$_lrs_err" >&2; exit 2; fi; _ve_pre_died live-run-stop.mjs $_ve_s
+fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
 
