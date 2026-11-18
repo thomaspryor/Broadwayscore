@@ -57,3 +57,43 @@ test('installRequireMemo is idempotent and only installed by the rebuild entry p
   const install = src.indexOf("require('./lib/require-memo').installRequireMemo()");
   assert.ok(guard > 0 && install > guard, 'memo must be installed below the require.main guard');
 });
+
+test('bare builtin and package ids are memoized too, returning the same objects (BRO-7766 round 2)', () => {
+  // Round 1 only covered './x' ids; the profile still showed ~11s of trySelf
+  // package.json stats from hot-path require('path') / require('fs') calls.
+  // The counter wraps _resolveFilename BEFORE install (a later hook disables the memo).
+  const body = (install) => `
+    const M = require('module'); let n = 0; const o = M._resolveFilename;
+    M._resolveFilename = function (...a) { n++; return o.apply(this, a); };
+    ${install ? "require('./scripts/lib/require-memo').installRequireMemo();" : ''}
+    module.require('path'); module.require('fs'); module.require('semver'); // warm: first loads resolve normally
+    n = 0;
+    const same = [];
+    for (let i = 0; i < 500; i++) {
+      same.push(module.require('path') === require('node:path'), module.require('fs') === require('fs'));
+      module.require('semver');
+    }
+    console.log(JSON.stringify({ n, allSame: same.every((v) => v === true), pkg: typeof module.require('semver').valid }));`;
+  const memo = JSON.parse(run(body(true)));
+  const plain = JSON.parse(run(body(false)));
+  assert.equal(memo.allSame, true);
+  assert.equal(memo.pkg, plain.pkg);
+  assert.ok(plain.n >= 500, `stock require resolves every repeat call (${plain.n})`);
+  assert.equal(memo.n, 0, `memo must not re-resolve a warm id, got ${memo.n}`);
+});
+
+test('memo matches stock require for a require.cache builtin override and steps aside for a later _load hook', () => {
+  const body = `
+    require('os');
+    require.cache.os = { exports: { fake: 1 }, loaded: true };
+    const a = require('os').fake;
+    delete require.cache.os;
+    const b = typeof require('os').cpus;
+    const M = require('module'); const o = M._load;
+    M._load = function (r, ...x) { return r === 'path' ? { hooked: true } : o.call(this, r, ...x); };
+    const c = require('path').hooked === true;
+    console.log(JSON.stringify([a, b, c]));`;
+  const plain = run(body);
+  const [a, , c] = JSON.parse(plain); assert.deepEqual([a, c], [1, true]);
+  assert.equal(run(`require('./scripts/lib/require-memo').installRequireMemo(); require('path'); ${body}`), plain);
+});
