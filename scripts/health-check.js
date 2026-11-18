@@ -5204,7 +5204,7 @@ function checkPressNightReadiness({ nowMs = Date.now() } = {}) {
     const overrides = readJSON(path.join(DATA_DIR, 'score-gate-overrides.json'));
     return pressNightReadinessResults({ shows, overrides, nowMs, embargoAt: (s) => embargoInfo(s).at });
   } catch (err) {
-    return [{ name: 'Press night: readiness check', status: 'error', message: `Check crashed: ${err.message}` }];
+    return ['Press night: openings not watched', 'Press night: score gate undecided'].map((name) => ({ name, status: 'error', message: `Check crashed: ${err.message}` }));
   }
 }
 
