@@ -187,6 +187,8 @@ function otherProductionCue(text, aka, show, opts = {}) {
   const textW = new Set(normTitle(raw).split(' '));
   if (textW.has('broadway') || textW.has('broadways') || [...venueW].some((w) => textW.has(w))) return null;
   if (opts.film !== false && FILM_CUE_RE.test(raw)) return 'film';
+  // Billed: only an explicit film review ("Paranormal Activity: Film Review"), never a deck's "the movie becomes".
+  if (billed && /\b(film|movie)\s+review/i.test(raw)) return 'film';
   const akaW = normTitle(aka).split(' ').filter(Boolean);
   if (!akaW.length) return null;
   const re = new RegExp(`(^|[^a-z0-9])${akaW.map((w) => w.split('').join("'?")).join("[^a-z0-9]+")}(?![a-z0-9])`, 'i');
@@ -215,10 +217,10 @@ function otherProductionCue(text, aka, show, opts = {}) {
     if (ap && COMPANY_WORD_RE.test(ap[1]) && !ORIGIN_RE.test(after.slice(0, ap.index))) return `possessive:${ap[1]}`;
   }
   // A company or venue named right after it: ", Reading Rep Theatre", "by American Blues Theater".
-  const tail = /^\s*["']?\s*(?:,|\bby\b)\s*([^,|:–—]{0,60})/i.exec(after);
+  const tail = /^\s*["'“”]?\s*(?:,|\bby\b)\s*([^,|:–—]{0,60})/i.exec(after);
   // Billed title: only the possessive, "at <venue>" next to the title, a place and a parenthetical count. Decks name the
   // show's own company or origin ("Tectonic Theater Project Confronts", "From Steppenwolf", "panto season").
-  if (tail && /^[A-Z]/.test(tail[1]) && COMPANY_WORD_RE.test(tail[1]) && (!billed || /^\s*["']?\s*by\b/i.test(after))) return `company:${tail[1].trim().slice(0, 40)}`;
+  if (tail && /^[A-Z]/.test(tail[1]) && COMPANY_WORD_RE.test(tail[1]) && (!billed || /^\s*["'“”]?\s*by\b/i.test(after) || !isHomeHouse(tail[1]))) return `company:${tail[1].trim().slice(0, 40)}`;
   // Another version's subtitle after a colon ("It's A Wonderful Life: The Musical", "...: Live in Chicago!"). Dash
   // decks and parentheticals are a critic's own words ("- Feldman shines", "(radio play)").
   const sub = /^\s*["']?\s*:\s*([^:|]*)/.exec(after);
@@ -229,7 +231,8 @@ function otherProductionCue(text, aka, show, opts = {}) {
     // Billed: a year or a version word ("The 1946 Live Radio Play", "A Live Radio Program"); not a critic's "panto
     // season is back" or "the movie becomes a radio play" (ship-check 2026-11-18).
     // Billed: a subtitle is title-cased; a lower-case deck is the critic's ("a remix of the Sirk film").
-    if (fresh.length && (!billed || (/^[A-Z0-9]/.test(sub[1].trim()) && fresh.some((w) => /^(1[89]|20)\d\d$/.test(w) || (VERSION_WORD_RE.test(w) && !BILLED_DECK_WORD_RE.test(w)))))) return `subtitle:${sub[1].trim().slice(0, 40)}`;
+    const titleCase = sub[1].trim().split(/\s+/).filter((w) => sigWords(w).length).every((w) => /^[A-Z0-9]/.test(w));
+    if (fresh.length && (!billed || (titleCase && fresh.some((w) => /^(1[89]|20)\d\d$/.test(w) || (VERSION_WORD_RE.test(w) && !BILLED_DECK_WORD_RE.test(w)))))) return `subtitle:${sub[1].trim().slice(0, 40)}`;
   }
   // A parenthetical right after the title naming somewhere else ("It's A Wonderful Life" the Live Radio Show ( Citadel)):
   // a capitalised word that is not the show's own, a review word or a star rating (BRO-7785).
@@ -309,8 +312,10 @@ function billedTitleOtherProductionCue(text, name, showTitle, opts = {}) {
   // read the venues and markets of the show that bills it, so its own house stays its own.
   showTitle = billingTitleOf(showTitle);
   const markets = registry().marketsByTitle.get(normTitle(showTitle));
-  // A title also billed by a tour or regional entry is gathered for those stagings too ("Beetlejuice" at the Fox).
-  if (markets && [...markets].some((m) => !HOME_MARKETS.has(m))) return null;
+  // A title also billed by a tour is gathered for its stops too ("Beetlejuice" at the Fox Theatre); a regional entry's
+  // own venue is already among the title's venues, which return null below.
+  if (markets && [...markets].some((m) => !HOME_MARKETS.has(m) && m !== 'regional')) return null;
+  if (markets && ![...markets].some((m) => HOME_MARKETS.has(m))) return null;
   // A transfer names where it came from ("Chichester Festival Theatre transfer", "transfers from the Almeida").
   if (/\btransfer(s|red|ring)?\b/i.test(String(text || ''))) return null;
   const cue = otherProductionCue(text, name, { title: showTitle }, { film: false, billed: true });
@@ -345,7 +350,7 @@ const HOME_HOUSES = ['cort', 'james earl jones', 'american airlines', 'todd haim
   'marquis', 'minskoff', 'new amsterdam', 'palace', 'circle in the square', 'helen hayes', 'stephen sondheim', 'mark taper',
   'victoria palace', 'piccadilly', 'phoenix', 'cambridge', 'criterion', 'fortune', 'vaudeville', 'ambassadors', 'st martins',
   'st lukes', 'sadlers wells', 'stratford east', 'pan asian', 'etcetera', 'regents park', 'open air', 'chichester',
-  'savoy', 'palladium', 'dominion', 'adelphi', 'aldwych', 'novello', 'prince edward', 'prince of wales', 'shaftesbury'];
+  'savoy', 'palladium', 'jerwood', 'dominion', 'adelphi', 'aldwych', 'novello', 'prince edward', 'prince of wales', 'shaftesbury'];
 /** A NYC or London house or resident company ("Roundabout's", "the Donmar"): the show's own, never another staging. */
 function isHomeHouse(text) {
   const flat = ` ${normTitle(String(text || '').replace(/'s\b/g, '').replace(/[-_]/g, ' '))} `;
