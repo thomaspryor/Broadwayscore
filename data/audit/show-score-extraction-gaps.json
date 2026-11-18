@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-18T12:17:49.471Z",
+    "generatedAt": "2026-11-18T17:50:29.383Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 376,
-  "errorSeverity": 262,
+  "totalGaps": 377,
+  "errorSeverity": 263,
   "warningSeverity": 114,
   "gaps": [
     {
@@ -32,6 +32,15 @@
       "extracted": 8,
       "gap": 13,
       "ratio": 0.38,
+      "severity": "error"
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "category": "west-end",
+      "expected": 37,
+      "extracted": 8,
+      "gap": 29,
+      "ratio": 0.22,
       "severity": "error"
     },
     {
