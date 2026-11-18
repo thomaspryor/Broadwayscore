@@ -1028,3 +1028,70 @@ test('compareShow: a season page still flags a year outside its season, and sing
   assert.deepEqual(urlYears('https://playbill.com/production/a-sherlock-carol-off-broadway-new-world-stages-stage-3-2021'), [2021]);
   assert.deepEqual(urlYears('https://playbill.com/production/1984-hudson-theatre-2024'), [2024]);
 });
+
+test('BRO-7737: venueVariantMatch handles complex/room, "at house", Y/YMCA, renames and sub-stages', async () => {
+  const { venueVariantMatch } = await import('./venue-date-compare.js');
+  // Complex vs one of its rooms (plural house word on the show side).
+  assert.ok(venueVariantMatch('59E59 Theaters', '59E59 Theater A', 'off-broadway'));
+  assert.ok(venueVariantMatch('59E59 Theaters', '59E59 Theater C', 'off-broadway'));
+  assert.ok(!venueVariantMatch('59E59 Theaters', 'Theater A', 'off-broadway'));
+  assert.ok(!venueVariantMatch('59E59 Theaters', 'Theatre Row Theater A', 'off-broadway'));
+  // "<show> at <house>" label vs the bare house.
+  assert.ok(venueVariantMatch('The Night Egg at the Culture Club', 'The Culture Club', 'off-broadway'));
+  assert.ok(!venueVariantMatch('The Night Egg at the Culture Club', 'The Public Theater', 'off-broadway'));
+  // Long vs short form of the same YMCA house.
+  assert.ok(venueVariantMatch('The Marjorie S. Deane Little Theater at The West Side YMCA', 'Marjorie S. Deane Little Theater @ The West Side Y', 'off-broadway'));
+  // Renamed house, same region only.
+  assert.ok(venueVariantMatch('Foxwoods Theatre', 'Lyric Theatre', 'broadway'));
+  assert.ok(!venueVariantMatch('Foxwoods Theatre', 'Lyric Theatre', 'west-end'));
+  assert.ok(!venueVariantMatch('Foxwoods Theatre', 'Lyric Theatre', 'regional'));
+  // A building vs its own studio, never another house's.
+  assert.ok(venueVariantMatch('Young Vic', 'The Maria Theatre', 'off-west-end'));
+  assert.ok(!venueVariantMatch('Almeida Theatre', 'The Maria Theatre', 'off-west-end'));
+});
+
+test('BRO-7737: wrongProductionPage flags another run, not a wrong date on the right page', async () => {
+  const { wrongProductionPage, compareShow } = await import('./venue-date-compare.js');
+  const cinderella = compareShow(
+    { id: 'cinderella-the-musical-off-broadway-2027', category: 'off-broadway', venue: 'The Players Theatre', status: 'upcoming', openingDate: null },
+    { titleParse: { venue: 'Broadway Theatre', market: 'Broadway', year: 2013 }, dates: {}, tagLine: { revivalStatus: 'unknown' } },
+    'https://playbill.com/production/cinderella-broadway-theatre-vault-0000013978');
+  assert.equal(wrongProductionPage(cinderella), 'market');
+  const animal = compareShow(
+    { id: 'animal-farm-leeds-regional-2025', category: 'regional', venue: 'Leeds Playhouse, Leeds', status: 'closed', openingDate: '2025-03-14' },
+    { titleParse: { venue: 'A Noise Within Repertory Company', market: 'Regional', year: 2022 }, dates: { openingDate: '2022-09-03' }, tagLine: { revivalStatus: 'unknown' } },
+    'https://playbill.com/production/animal-farm-regional-a-noise-within-repertory-company-2022');
+  assert.equal(wrongProductionPage(animal), 'year');
+  // Right venue, dates 60 days off: a real data defect, stays a mismatch.
+  const dates = compareShow(
+    { id: 'x-off-broadway-2026', category: 'off-broadway', venue: 'Soho Playhouse', status: 'open', openingDate: '2026-03-01' },
+    { titleParse: { venue: 'Soho Playhouse', market: 'Off-Broadway', year: 2026 }, dates: { openingDate: '2026-05-01' }, tagLine: { revivalStatus: 'unknown' } },
+    'https://playbill.com/production/x-off-broadway-soho-playhouse-2026');
+  assert.ok(dates.mismatches.length > 0);
+  assert.equal(wrongProductionPage(dates), null);
+  // Right venue, wrong year by 3: still a mismatch (venue agrees, so the page is plausibly this show).
+  const yr = compareShow(
+    { id: 'y-off-broadway-2026', category: 'off-broadway', venue: 'Soho Playhouse', status: 'open', openingDate: '2026-03-01' },
+    { titleParse: { venue: 'Soho Playhouse', market: 'Off-Broadway', year: 2023 }, dates: {}, tagLine: { revivalStatus: 'unknown' } },
+    'https://playbill.com/production/y-off-broadway-soho-playhouse-2023');
+  assert.equal(wrongProductionPage(yr), null);
+});
+
+test('BRO-7737 review: generic or look-alike names never match', async () => {
+  const { venueVariantMatch, wrongProductionPage, compareShow } = await import('./venue-date-compare.js');
+  const no = (a, b, c = 'off-broadway') => assert.ok(!venueVariantMatch(a, b, c), `${a} | ${b}`);
+  no('Soho Playhouse', 'Soho Theatre');
+  no('Hudson Theatre', 'Hudson Playhouse', 'broadway');
+  no('Studio Theatre', 'Studio Theater 2');
+  no('The Theater at Madison Square Garden', 'The Theater at Ace Hotel');
+  no('Main Stage at Theatre Row', 'Main Stage at The Flea');
+  no('Main Stage at the Vineyard', 'Main Stage');
+  no('Little Theatre at the 92nd Street Y', 'Little Theater @ The West Side Y');
+  no('Lyttelton Theatre', 'Olivier Theatre', 'off-west-end');
+  no('Park Theatre', 'Park Playhouse', 'off-west-end');
+  // wrongProductionPage: a 1-year gap, or a venue that agrees, stays a mismatch.
+  const base = { id: 'z-off-broadway-2026', category: 'off-broadway', venue: 'Soho Playhouse', status: 'open', openingDate: '2026-03-01' };
+  const parsed = (venue, year, open) => ({ titleParse: { venue, market: 'Off-Broadway', year }, dates: { openingDate: open }, tagLine: { revivalStatus: 'unknown' } });
+  assert.equal(wrongProductionPage(compareShow(base, parsed('Cherry Lane Theatre', 2025, '2025-03-01'), 'https://playbill.com/production/z-off-broadway-cherry-lane-theatre-2025')), null);
+  assert.equal(wrongProductionPage(compareShow(base, parsed('Cherry Lane Theatre', 2026, '2024-12-01'), 'https://playbill.com/production/z-off-broadway-cherry-lane-theatre-2026')), 'date');
+});
