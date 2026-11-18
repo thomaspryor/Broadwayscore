@@ -10,7 +10,7 @@
 //
 // Statuses are the strings the readiness script prints: 'pass' | 'warn' | 'fail' | 'skip'.
 
-const { defaultEmbargoAt } = require('./press-night-record.js');
+const { defaultEmbargoAt, embargoInfo } = require('./press-night-record.js');
 const { coversShow } = require('./opening-night-lane/lane-only-markets');
 const { standsDown } = require('./opening-night-lane/standdown');
 
@@ -104,7 +104,15 @@ function embargoVerdict(show, nowMs) {
   if (!e) return { status: 'warn', detail: 'No embargo could be computed for this show, so the press-night clock will not plan it.' };
   const hrs = (e.embargoMs - nowMs) / HOUR;
   const when = hrs >= 0 ? `in ${hrs.toFixed(1)}h` : `${Math.abs(hrs).toFixed(1)}h ago`;
-  return { status: 'pass', detail: `Reviews open ${e.embargoAt} (${when}); the clock kicks the night at ${new Date(e.kickAtMs).toISOString()}.` };
+  const kick = `the clock kicks the night at ${new Date(e.kickAtMs).toISOString()}`;
+  // BRO-7740: a market-default embargo is a guess. The day before opening it is flagged so someone confirms it (reviewEmbargoAt in
+  // shows.json, from the press release or office). The lane's guard covers an early release either way.
+  const info = embargoInfo(show);
+  if (info.assumed && hrs <= 36 && hrs > -12) {
+    const guardFrom = new Date(e.embargoMs - 90 * MIN).toISOString();
+    return { status: 'warn', detail: `Reviews are assumed to open ${e.embargoAt} (${when}), the market default, not a confirmed time. The lane guard (direct-only, no paid spend) opens ${guardFrom} and closes on the first live review; confirm the real time and set reviewEmbargoAt if known. ${kick}.` };
+  }
+  return { status: 'pass', detail: `Reviews open ${e.embargoAt} (${when}${info.assumed ? ', assumed market default' : ''}); ${kick}.` };
 }
 
 /** `node scripts/opening-night-lane-rehearse.js --arm-check` prints {"arm":bool,"reason":str}. */

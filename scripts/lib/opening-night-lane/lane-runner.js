@@ -67,7 +67,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], onDiskRows = [], maxInflight = 2, midPassPublishAfterMs = 5 * 60 * 1000, midPassTickMs = Math.min(midPassPublishAfterMs, 30 * 1000), now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
-  startedAt, serpClockStartMs, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [], settleComparative = null, settleMaxRuns = 25,
+  startedAt, serpClockStartMs, onAdmitted, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [], settleComparative = null, settleMaxRuns = 25,
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
@@ -191,6 +191,8 @@ async function runLaneNight({
     errors.push(...pass.errors);
     const stamp = now();
     discovery.recordDiscovered(ledgerDir, { show: show.id, night, admitted: pass.admitted, now: stamp });
+    // BRO-7740: the driver watches admitted reviews to learn the embargo has lifted. Never lets a hook error stop the lane.
+    if (typeof onAdmitted === 'function' && pass.admitted.length) { try { onAdmitted(pass.admitted, stamp); } catch (e) { errors.push({ adapter: 'onAdmitted', error: String((e && e.message) || e).slice(0, 150) }); } }
     try { discovery.saveMemo(ledgerDir, show.id, night, memo); } catch (e) { errors.push({ adapter: 'memo', error: String((e && e.message) || e).slice(0, 150) }); }
 
     for (const a of pass.admitted) {

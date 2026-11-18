@@ -211,7 +211,8 @@ function buildRealLaneDeps({
       const laneFetch = require('./browserbase-fetch').createLaneFetch({ env });
       const scorer = new ScorerClass(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY, env.OPENROUTER_API_KEY);
       const reviewsFile = path.join(repoDir, 'data', 'reviews.json');
-      const preembargo = (() => { const pw = require('./preembargo-window'); const on = pw.parseFlag(env[pw.VARIABLE]); const at = Date.parse(require('./lane-only-markets').embargoForNight(show, night) || ''); return on && Number.isFinite(at) ? { enabled: true, embargoMs: at } : null; })();
+      // BRO-7740: the guard is on for the owner variable OR a market-default (guessed) embargo (auto-fallback.laneGuardMode).
+      const preembargo = (() => { const pw = require('./preembargo-window'); const mode = require('./auto-fallback').laneGuardMode(show, night, pw.parseFlag(env[pw.VARIABLE])); const at = Date.parse(require('./lane-only-markets').embargoForNight(show, night) || ''); return mode.enabled && Number.isFinite(at) ? { enabled: true, embargoMs: at, reason: mode.reason } : null; })();
       return wireLaneNight({
         show, night, openingDate, timeZone, ledgerDir, adaptersConfig, laneFetch,
         recorder: recorderFromEnv(env),
@@ -265,7 +266,14 @@ function wireLaneNight({
   // BRO-7280: opt-in pre-embargo window. Whole-object wrap so discovery, inline fetch/score and the SERP all see it.
   const pw = require('./preembargo-window');
   const pe = preembargo && preembargo.enabled && Number.isFinite(preembargo.embargoMs) ? preembargo : null;
-  const isActive = () => !!pe && pw.windowActive({ enabled: true, embargoMs: pe.embargoMs, nowMs: now() });
+  // BRO-7740: the first admitted review that is provably tonight's lifts the guard at once (full fetch chain from then on).
+  let liftedAt = null;
+  const onAdmitted = (admitted, stampMs) => {
+    if (!pe || liftedAt != null) return;
+    const d = pw.dropEvidence({ admitted, night, onDiskUrls: onDiskUrls instanceof Set ? onDiskUrls : new Set(onDiskUrls || []) });
+    if (d.lifted) { liftedAt = stampMs; console.log(`::notice::embargo lifted for ${show.id} ${night} at ${new Date(stampMs).toISOString()} (assumed embargo ${new Date(pe.embargoMs).toISOString()}); first live review ${d.evidence.url || d.evidence.key}; pre-embargo guard closed`); }
+  };
+  const isActive = () => !!pe && liftedAt == null && pw.windowActive({ enabled: true, embargoMs: pe.embargoMs, nowMs: now() });
   const guarded = pw.guardPorts({ enabled: !!pe, fetchPage: laneFetch.fetchPage, search: rawSearch, isActive });
   const guardedFetch = pe ? { fetchPage: guarded.fetchPage, close: () => laneFetch.close() } : laneFetch;
   const adapterSearch = guarded.search;
@@ -281,7 +289,7 @@ function wireLaneNight({
     return Promise.resolve().then(() => runLaneNight({
       show, night, openingDate, timeZone, ledgerDir, fetchText: recorder ? recorder.wrapFetchText(discovery.fetchTextFrom(guardedFetch.fetchPage)) : discovery.fetchTextFrom(guardedFetch.fetchPage), shouldStop, abandonPending,
       ...(windowMs > 0 ? { windowMs } : {}),
-      ...(pe ? { serpClockStartMs: pe.embargoMs - pw.LANE_LEAD_MIN * 60 * 1000 } : {}),
+      ...(pe ? { serpClockStartMs: pe.embargoMs - pw.LANE_LEAD_MIN * 60 * 1000, onAdmitted } : {}),
       ...tuning,
       reviewTextsDir,
       ...(settleComparative ? { settleComparative } : {}),

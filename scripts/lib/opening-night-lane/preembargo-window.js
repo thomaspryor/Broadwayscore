@@ -68,6 +68,38 @@ function laneStartMs({ embargoMs, timeZone, enabled }) {
   return Math.min(normal, Math.max(local, embargoMs - MAX_LEAD_MIN * MIN));
 }
 
+/**
+ * BRO-7740: is the pre-embargo guard on for this night? On when the owner's LANE_PREEMBARGO_DIRECT_ONLY is on, OR when the
+ * embargo is only the market-default guess. The guard is direct-only (no paid scraper tier, no SERP), so turning it on for
+ * a guessed embargo costs nothing; it exists so the lane is already running when an early release lands. The variable and
+ * its default are untouched (an owner money call). Pure.
+ * @returns {{enabled:boolean, reason:'flag'|'assumed-embargo'|'off'}}
+ */
+function guardMode({ flagOn, assumed }) {
+  if (flagOn) return { enabled: true, reason: 'flag' };
+  if (assumed) return { enabled: true, reason: 'assumed-embargo' };
+  return { enabled: false, reason: 'off' };
+}
+
+/**
+ * BRO-7740 detector. The first admitted review that is provably tonight's (a confirmed publish date on or after the
+ * night's local date, and not already on disk) proves the embargo has lifted: the guard closes at once and the lane
+ * fetches with the full chain. An aggregator-cited preview link with no date, an older date or an on-disk URL never
+ * counts (a stale admit must not open the paid tiers early). Pure.
+ * @param {{admitted:Array<{url?:string,publishDate?:string,key?:string}>, night:string, onDiskUrls?:Set<string>|string[]}} i
+ * @returns {{lifted:boolean, evidence?:object}}
+ */
+function dropEvidence({ admitted = [], night, onDiskUrls = [] }) {
+  const disk = onDiskUrls instanceof Set ? onDiskUrls : new Set(onDiskUrls);
+  for (const a of admitted || []) {
+    if (!a || !a.publishDate || !/^\d{4}-\d{2}-\d{2}/.test(String(a.publishDate))) continue;
+    if (String(a.publishDate).slice(0, 10) < night) continue;
+    if (a.url && disk.has(a.url)) continue;
+    return { lifted: true, evidence: { key: a.key || null, url: a.url || null, publishDate: a.publishDate } };
+  }
+  return { lifted: false };
+}
+
 /** Tag an error as caused by the window withholding the paid tiers (not by the page). */
 function deferred(err, why) {
   const e = err instanceof Error ? err : new Error(String(err));
@@ -96,4 +128,4 @@ function guardPorts({ enabled, fetchPage, search, isActive }) {
   };
 }
 
-module.exports = { VARIABLE, LANE_LEAD_MIN, START_LOCAL, MAX_LEAD_MIN, DEFER_RETRY_MS, parseFlag, windowActive, localWallClockMs, laneStartMs, deferred, isDeferred, guardPorts };
+module.exports = { guardMode, dropEvidence, VARIABLE, LANE_LEAD_MIN, START_LOCAL, MAX_LEAD_MIN, DEFER_RETRY_MS, parseFlag, windowActive, localWallClockMs, laneStartMs, deferred, isDeferred, guardPorts };

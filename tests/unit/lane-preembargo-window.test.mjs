@@ -144,7 +144,7 @@ test('inline scoring: a failure caused by the window is not an attempt, so it ne
 });
 
 test('nightTimes: default unchanged; on starts earlier and runs the longer window', () => {
-  const show = { id: 'x-2026', category: 'broadway', openingDate: '2026-11-11' };
+  const show = { id: 'x-2026', category: 'broadway', openingDate: '2026-11-11', reviewEmbargoAt: '2026-11-12T03:00:00Z' }; // confirmed embargo (BRO-7740: a market default turns the guard on)
   const off = af.nightTimes(show, '2026-11-11');
   assert.equal(off.laneStartMs, CLOSE);
   assert.equal(off.watchEndMs, CLOSE + (af.LANE_WINDOW_MIN + af.LEASE_TTL_MIN) * MIN);

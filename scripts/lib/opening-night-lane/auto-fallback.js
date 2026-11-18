@@ -26,7 +26,7 @@
  *
  * Pure decision functions plus runWatchdogTick with injected ports; scripts/lane-auto-fallback.js (starter, night-wait) and scripts/lane-watchdog.js are the CLIs.
  */
-const { liveLeaseFor, embargoForNight, parseOnlyMarkets } = require('./lane-only-markets');
+const { liveLeaseFor, embargoForNight, embargoInfoForNight, parseOnlyMarkets } = require('./lane-only-markets');
 const { tokensMatchShow, standsDown } = require('./standdown');
 
 const MIN = 60 * 1000;
@@ -51,12 +51,20 @@ const toMs = (t) => (t === undefined ? Date.now() : new Date(t).getTime());
 function nightTimes(show, night, { preembargo = false } = {}) {
   const embargoMs = Date.parse(embargoForNight(show, night) || '');
   if (!Number.isFinite(embargoMs)) return null;
-  // BRO-7280: with the opt-in pre-embargo window the lane starts earlier (never before embargo - 90 min) and runs a
-  // longer window (LANE_WINDOW_PREEMBARGO_MIN, the live workflow's value when the variable is on). Off = unchanged.
+  // BRO-7280: with the pre-embargo guard the lane starts earlier (never before embargo - 90 min) and runs a longer window
+  // (LANE_WINDOW_PREEMBARGO_MIN, the live workflow's value when the guard is on). BRO-7740: the guard is also on whenever the
+  // embargo is only the market-default guess, so every caller (starter, night-wait, watchdog, driver) gets the same times.
   const pw = require('./preembargo-window');
-  const laneStartMs = pw.laneStartMs({ embargoMs, timeZone: preembargo ? require('../local-date').tzForMarket(show.category || show.market) : null, enabled: !!preembargo });
-  const windowMin = preembargo ? LANE_WINDOW_PREEMBARGO_MIN : LANE_WINDOW_MIN;
-  return { embargoMs, laneStartMs, watchEndMs: laneStartMs + (windowMin + LEASE_TTL_MIN) * MIN };
+  const mode = laneGuardMode(show, night, preembargo);
+  const laneStartMs = pw.laneStartMs({ embargoMs, timeZone: mode.enabled ? require('../local-date').tzForMarket(show.category || show.market) : null, enabled: mode.enabled });
+  const windowMin = mode.enabled ? LANE_WINDOW_PREEMBARGO_MIN : LANE_WINDOW_MIN;
+  return { embargoMs, laneStartMs, watchEndMs: laneStartMs + (windowMin + LEASE_TTL_MIN) * MIN, guard: mode };
+}
+
+/** BRO-7740: the one place that decides whether the pre-embargo guard is on for a show-night. flagOn = the owner variable. */
+function laneGuardMode(show, night, flagOn = false) {
+  const info = show ? embargoInfoForNight(show, night) : { assumed: false };
+  return require('./preembargo-window').guardMode({ flagOn: !!flagOn, assumed: !!info.assumed });
 }
 
 /** Does a read LANE_ONLY_MARKETS ({ok, value}) cover the show? Unread, unset or a typo = no. Pure. */
@@ -394,6 +402,7 @@ function runWatchdogTick(input, ports) {
 }
 
 module.exports = {
+  laneGuardMode,
   LANE_WINDOW_PREEMBARGO_MIN, LEASE_TTL_MIN, LANE_LEAD_MIN, LANE_WINDOW_MIN, START_BEFORE_MIN, START_AFTER_MIN, WAIT_JOB_BUDGET_MIN, TICK_MIN,
   nightRunTitle, watchdogRunTitle, nightTimes, laneOnlyCovers, planNightStart, planNightWait, decideWatchdog,
   releaseDeadLease, runWatchdogTick, FALLBACK_BRANCH,
