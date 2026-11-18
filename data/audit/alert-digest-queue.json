@@ -1854,5 +1854,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-17T22:58:49.404Z"
+  },
+  {
+    "conditionKey": "land:land/land-follow-per-ref",
+    "title": "Landing blocked: unit-tests-node red on land/land-follow-per-ref",
+    "description": "land.yml did not land land/land-follow-per-ref: the unit-tests-node gate went red at df02578cfd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44204907050",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/land-follow-per-ref"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "df02578cfd84930279f6b047dcb0fde65646a26e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44204907050"
+      }
+    ],
+    "queuedAt": "2026-11-18T00:11:52.801Z"
   }
 ]
