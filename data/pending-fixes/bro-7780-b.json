@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7780-b",
   "planId": "3d13a5f6-27ca-4098-8b25-e1f6c1177be7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-18T15:13:22.328Z",
   "submitter": {
     "name": null,
@@ -77,5 +77,44 @@
         "description": "almost-famous-2022/theatermania--kenji-fujishima.json: url"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-18T18:11:24.322Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lone-star-off-broadway-2023/theatermania--pete-hempstead.json criticName: \"Pete Hempstead\" -> \"David Gordon\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "teeth-off-broadway-2024/theatermania--pete-hempstead.json criticName: \"Pete Hempstead\" -> \"David Gordon\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "teeth-playwrights-horizons-off-broadway-2024/theatermania--pete-hempstead.json criticName: \"Pete Hempstead\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-wedding-march-off-broadway-2026/theatermania--pete-hempstead.json criticName: \"Pete Hempstead\" -> \"Sandy MacDonald\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-weir-off-broadway-2025/theatermania--pete-hempstead.json criticName: \"Pete Hempstead\" -> \"Kenji Fujishima\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "you-dont-have-to-do-anything-off-broadway-2024/theatermania--pete-hempstead.json criticName: \"Pete Hempstead\" -> \"Amelia Merrill\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/theatermania--kenji-fujishima.json url: \"https://www.theatermania.com/news/review-almost-famous-musical-broadway_94514.html?utm_source=twitter&utm_medium=social&utm_campaign=03nov2022\" -> \"https://www.theatermania.com/news/review-almost-famous-musical-broadway_94514.html\""
+    }
+  ],
+  "executedIn": "ci"
 }
