@@ -47,7 +47,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { fetchOwnerEmailsSince: fetchOwnerEmailsSinceShared } = require('./lib/resend-owner-emails.js');
-const { buildDailyReport, decideDayViolation, dayKeyET } = require('./lib/scheduled-email-count-rules');
+const { buildDailyReport, decideDayViolation, dayKeyET, countConditionKey, openCountKeys } = require('./lib/scheduled-email-count-rules');
 const { compareToBaseline } = require('./audit-alert-senders.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
@@ -208,10 +208,10 @@ async function main() {
   // point is past the DRY_RUN return). Keys filed again below are in `current`.
   {
     const router = require('./lib/owner-alert-router');
-    const { quietCountKeys } = require('./lib/scheduled-email-count-rules');
-    const current = completeViolations.map(({ decision }) => `scheduled-email-count:${[...(decision.unexpectedKeys || []).map((k) => `unexpected-${k}`), ...(decision.duplicateKeys || []).map((k) => `dup-${k}`)].sort().join(',')}`);
-    for (const q of quietCountKeys(router.loadLedger().conditions, current)) {
-      if (router.resolveCondition(q.key, { reason: `BRO-6918: no repeat since ${q.lastSeen}` })) console.log(`resolved ${q.key} (quiet since ${q.lastSeen})`);
+    // countConditionKey and openCountKeys come from the top-level import
+    const current = completeViolations.map(({ decision }) => countConditionKey(decision));
+    for (const key of router.resolveQuietConditions(openCountKeys(router.loadLedger().conditions, current), { reason: 'BRO-6918: no repeat of this scheduled-email count violation' })) {
+      console.log(`resolved ${key} (quiet)`);
     }
   }
 
@@ -262,7 +262,7 @@ async function main() {
       // card every day the same sender misbehaved (8 open twins on
       // 2026-10-10). The day goes in the description; repeats within the
       // cooldown stay on one ledger entry and its card.
-      conditionKey: `scheduled-email-count:${[...(decision.unexpectedKeys || []).map((k) => `unexpected-${k}`), ...(decision.duplicateKeys || []).map((k) => `dup-${k}`)].sort().join(',')}`,
+      conditionKey: countConditionKey(decision),
       title: [
         (decision.unexpectedKeys || []).length ? `Unexpected scheduled digest sender fired: ${decision.unexpectedKeys.join(', ')}` : null,
         (decision.duplicateKeys || []).length ? `Scheduled sender delivered MORE THAN ONCE in a day: ${decision.duplicateKeys.join(', ')}` : null,

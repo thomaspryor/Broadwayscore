@@ -7,7 +7,8 @@ import {
   decideDayViolation,
   decideDayMissing,
   recoveredMissingKeys,
-  quietCountKeys,
+  countConditionKey,
+  openCountKeys,
 } from './scheduled-email-count-rules.js';
 
 test('classifySubject matches each known scheduled sender', () => {
@@ -306,23 +307,23 @@ test('recoveredMissingKeys never clears the day this run judges, resolved rows, 
   assert.deepEqual(recoveredMissingKeys(conditions, null), []);
 });
 
-test('quietCountKeys resolves an open count key that stopped refiring (BRO-6918)', () => {
-  const now = Date.parse('2026-11-17T12:00:00Z');
-  const conditions = {
-    'scheduled-email-count:dup-opening-digest,dup-reddit-post-ready': { status: 'open', lastSeen: '2026-11-06T20:41:24.951Z' },
-  };
-  assert.deepEqual(quietCountKeys(conditions, [], { now }).map((r) => r.key), ['scheduled-email-count:dup-opening-digest,dup-reddit-post-ready']);
+test('countConditionKey builds the sorted per-sender key the router files (BRO-6918)', () => {
+  assert.equal(
+    countConditionKey({ unexpectedKeys: [], duplicateKeys: ['reddit-post-ready', 'opening-digest'] }),
+    'scheduled-email-count:dup-opening-digest,dup-reddit-post-ready'
+  );
+  assert.equal(countConditionKey({ unexpectedKeys: ['x'], duplicateKeys: ['a'] }), 'scheduled-email-count:dup-a,unexpected-x');
 });
 
-test('quietCountKeys keeps a key that is current, recent, resolved, unparseable, or another family', () => {
-  const now = Date.parse('2026-11-17T12:00:00Z');
+test('openCountKeys lists open count keys that this run does not file again (BRO-6918)', () => {
   const conditions = {
-    'scheduled-email-count:dup-a': { status: 'open', lastSeen: '2026-11-01T00:00:00Z' },
-    'scheduled-email-count:dup-b': { status: 'open', lastSeen: '2026-11-17T00:00:00Z' },
-    'scheduled-email-count:dup-c': { status: 'resolved', lastSeen: '2026-11-01T00:00:00Z' },
-    'scheduled-email-count:dup-d': { status: 'open', lastSeen: 'garbage' },
-    'scheduled-email-missing:opening-digest:2026-11-01': { status: 'open', lastSeen: '2026-11-01T00:00:00Z' },
-    'scheduled-email-count:2026-11-01': { status: 'open', lastSeen: '2026-11-01T00:00:00Z' },
+    'scheduled-email-count:dup-a': { status: 'open' },
+    'scheduled-email-count:dup-b': { status: 'open' },
+    'scheduled-email-count:dup-c': { status: 'resolved' },
+    'scheduled-email-count:unexpected-d': { status: 'open' },
+    'scheduled-email-count:2026-11-01': { status: 'open' },
+    'scheduled-email-missing:opening-digest:2026-11-01': { status: 'open' },
   };
-  assert.deepEqual(quietCountKeys(conditions, ['scheduled-email-count:dup-a'], { now }), []);
+  assert.deepEqual(openCountKeys(conditions, ['scheduled-email-count:dup-a']), ['scheduled-email-count:dup-b', 'scheduled-email-count:unexpected-d']);
+  assert.deepEqual(openCountKeys(null), []);
 });

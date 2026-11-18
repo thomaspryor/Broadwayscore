@@ -236,21 +236,24 @@ function recoveredMissingKeys(conditions, days, { judgedDay = null } = {}) {
 // BRO-6918: a per-sender count condition (`scheduled-email-count:dup-x,unexpected-y`)
 // was only ever opened. When the violation stopped nothing resolved it, so its
 // card sat open for good and the alert-absent check read "quiet" as "cannot
-// tell". An open count key that is not in this run's current violation set and
-// has not refired for QUIET_HOURS (96h, the router incident gap; the live
-// monitor looks back 2 days) is resolved. Returns [{ key, lastSeen }].
+// tell". The monitor now hands the open count keys that this run does not file
+// again to router.resolveQuietConditions (default quiet window = the router's
+// incident gap, so a 3-day repeat never splits one incident).
 const COUNT_KEY_RE = /^scheduled-email-count:(?:unexpected|dup)-/;
-const COUNT_QUIET_HOURS = 96; // = router INCIDENT_GAP_RESET_HOURS: resolving sooner makes a 3-day repeat cancel and refile its card
-function quietCountKeys(conditions, currentKeys = [], { now = Date.now(), quietHours = COUNT_QUIET_HOURS } = {}) {
-  const live = new Set(currentKeys);
-  const out = [];
-  for (const [key, row] of Object.entries(conditions || {})) {
-    if (!row || row.status !== 'open' || !COUNT_KEY_RE.test(key) || live.has(key)) continue;
-    const seen = Date.parse(row.lastSeen || row.firstSeen || '');
-    if (!Number.isFinite(seen)) continue;
-    if (now - seen >= quietHours * 3600 * 1000) out.push({ key, lastSeen: row.lastSeen || row.firstSeen });
-  }
-  return out;
+
+// The ONE place the per-sender count conditionKey is built: the monitor files
+// with it and builds its live set with it, so the two cannot drift.
+function countConditionKey(decision) {
+  const parts = [...(decision.unexpectedKeys || []).map((k) => `unexpected-${k}`), ...(decision.duplicateKeys || []).map((k) => `dup-${k}`)].sort();
+  return `scheduled-email-count:${parts.join(',')}`;
 }
 
-module.exports = { quietCountKeys, COUNT_QUIET_HOURS, SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
+// Open count keys that are not in this run's live violation set.
+function openCountKeys(conditions, currentKeys = []) {
+  const live = new Set(currentKeys);
+  return Object.entries(conditions || {})
+    .filter(([key, row]) => row && row.status === 'open' && COUNT_KEY_RE.test(key) && !live.has(key))
+    .map(([key]) => key);
+}
+
+module.exports = { countConditionKey, openCountKeys, SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
