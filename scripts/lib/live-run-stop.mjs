@@ -26,6 +26,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive, runShellCode } from './review-coverage.mjs';
+import { shellEditsCode } from './retro-coverage-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
 
 export const LIVE_RUN_BLOCKING_FROM = '2026-11-25';
@@ -91,16 +92,26 @@ export function repoRelative(p) {
 export function liveEdits(events, from, index) {
   const out = new Map();
   events.forEach((e, i) => {
-    if (i <= from || e.kind !== 'assistant_tool_use' || !EDIT_TOOLS.has(e.name)) return;
-    const rel = repoRelative(e.input?.file_path);
+    if (i <= from || e.kind !== 'assistant_tool_use') return;
+    let paths = [];
+    if (EDIT_TOOLS.has(e.name)) paths = [e.input?.file_path];
+    // Edits made in the shell (sed -i, > redirect, python writes): every live path the editing command names (what-else gap).
+    else if (e.name === 'Bash' && shellEditsCode(e.input?.command)) {
+      const c = String(e.input?.command || '');
+      paths = [...c.matchAll(/(?:^|[\s'"=(/])((?:\.github\/workflows\/[\w.-]+\.ya?ml)|(?:scripts\/[\w./-]+\.(?:mjs|cjs|js|ts|sh|py)))\b/g)].map((m) => m[1]);
+    }
+    for (const p of paths) add(p, i);
+  });
+  return [...out.values()];
+  function add(path, i) {
+    const rel = repoRelative(path) || (/^(?:scripts|\.github)\//.test(String(path)) ? String(path) : null);
     if (!rel) return;
     let workflows = null;
     const wf = rel.match(/^\.github\/workflows\/([^/]+\.ya?ml)$/);
     if (wf) workflows = EXCLUDED_WORKFLOWS.test(wf[1]) ? null : [wf[1]];
     else if (index.has(rel)) workflows = index.get(rel);
     if (workflows) out.set(rel, { file: rel, workflows, lastEdit: i });
-  });
-  return [...out.values()];
+  }
 }
 
 /** PURE. Was the live file exercised? -> 'dispatch' | 'direct' | null */
