@@ -227,6 +227,7 @@ test('BRO-7749: a session that hit [VE:LIVERUN] ends with a retro row carrying t
   const row = JSON.parse(fs.readFileSync(ledger, 'utf8').trim().split('\n').pop());
   const g = row.gates['[VE:LIVERUN]'];
   assert.equal(g.blocks, 1, 'the nudge in the transcript');
+  assert.equal(g.logged, 2, 'both of this session\'s log lines');
   assert.equal(g.overBudget, 1, 'the logged hit after the budget ran out; another session\'s line is not ours');
   assert.equal(g.wouldBlock, true, 'the gate\'s own decision at record time');
   assert.match(g.reason, /account-metrics\.js/);

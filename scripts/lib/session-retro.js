@@ -28,7 +28,8 @@ const GENERIC_HOOK = /^(hook|hook:hook|unclassified)$/;
 // when it is reclaimed, so their advisory week left no data. --record (run in the same container, before it goes) folds
 // three things into the committed row, per gate:
 //   blocks      nudges the transcript shows (a "[VE:X]" Stop block; analyze() already counts these as hookBlocks),
-//   overBudget  hits after the nudge budget ran out (logged only, never in the transcript),
+//   logged      every decision the gate logged for this session (container-local .cache, lost at reclaim),
+//   overBudget  of those, hits after the nudge budget ran out (never in the transcript),
 //   wouldBlock  the gate's own decision run now, as if the session closed "SAFE TO ARCHIVE" at --record time. The gates
 //               mostly fire on the final close, which comes after --record, so this is how that hit reaches the row.
 //               It sees only what happened before --record (a land push after it is not judged).
@@ -92,7 +93,7 @@ function mergeGateActivity(hookBlocks, logged, dry) {
     const l = (logged || {})[g.code] || {};
     const d = (dry || {})[g.code] || {};
     if (!blocks && !l.logged && !d.wouldBlock) continue;
-    out[g.code] = { blocks, overBudget: l.overBudget || 0, wouldBlock: !!d.wouldBlock, ...(d.reason ? { reason: d.reason } : {}) };
+    out[g.code] = { blocks, logged: l.logged || 0, overBudget: l.overBudget || 0, wouldBlock: !!d.wouldBlock, ...(d.reason ? { reason: d.reason } : {}) };
   }
   return out;
 }
