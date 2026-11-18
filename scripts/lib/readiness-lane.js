@@ -99,6 +99,15 @@ function nightOver(show, nowMs) {
   return !!e && nowMs > e.embargoMs + NIGHT_OVER_AFTER_H * HOUR;
 }
 
+let _profiles;
+function dropWindowFor(show) {
+  try {
+    const dp = require('./embargo-drop-profiles');
+    if (_profiles === undefined) _profiles = dp.loadBenchProfiles();
+    return dp.dropWindow(show, _profiles);
+  } catch { return null; }
+}
+
 function embargoVerdict(show, nowMs) {
   const e = embargoFor(show);
   if (!e) return { status: 'warn', detail: 'No embargo could be computed for this show, so the press-night clock will not plan it.' };
@@ -108,12 +117,18 @@ function embargoVerdict(show, nowMs) {
   // BRO-7740: a market-default embargo is a guess. The day before opening it is flagged so someone confirms it (reviewEmbargoAt in
   // shows.json, from the press release or office). The lane's guard covers an early release either way.
   const info = embargoInfo(show);
+  // BRO-7779 item 7: what recorded nights say about the real drop, labelled observed or guess.
+  const dw = dropWindowFor(show);
+  const history = dw ? ` Drop history: ${dw.text}.` : '';
   if (info.assumed && hrs <= 36 && hrs > 0) {
     const pw = require('./opening-night-lane/preembargo-window');
-    const guardFrom = new Date(pw.laneStartMs({ embargoMs: e.embargoMs, timeZone: require('./local-date').tzForMarket(show.category || show.market), enabled: true })).toISOString();
-    return { status: 'warn', detail: `Reviews are assumed to open ${e.embargoAt} (${when}), the market default, not a confirmed time. The lane guard (direct-only, no paid spend) opens ${guardFrom} and closes on the first live review; confirm the real time and set reviewEmbargoAt if known. ${kick}.` };
+    const guardFromMs = pw.laneStartMs({ embargoMs: e.embargoMs, timeZone: require('./local-date').tzForMarket(show.category || show.market), enabled: true });
+    const guardFrom = new Date(guardFromMs).toISOString();
+    const early = dw && dw.basis === 'observed' && Date.parse(dw.fromAt) < guardFromMs
+      ? ` Recorded nights dropped as early as ${dw.fromAt}, before the guard opens: a review that early is caught only after it.` : '';
+    return { status: 'warn', detail: `Reviews are assumed to open ${e.embargoAt} (${when}), the market default, not a confirmed time. The lane guard (direct-only, no paid spend) opens ${guardFrom} and closes on the first live review; confirm the real time and set reviewEmbargoAt if known. ${kick}.${history}${early}` };
   }
-  return { status: 'pass', detail: `Reviews open ${e.embargoAt} (${when}${info.assumed ? ', assumed market default' : ''}); ${kick}.` };
+  return { status: 'pass', detail: `Reviews open ${e.embargoAt} (${when}${info.assumed ? ', assumed market default' : ''}); ${kick}.${history}` };
 }
 
 /** `node scripts/opening-night-lane-rehearse.js --arm-check` prints {"arm":bool,"reason":str}. */

@@ -87,7 +87,20 @@ function dropWindow(show, profiles) {
   }
   const sign = (x) => (x > 0 ? `+${x}` : `${x}`);
   return { basis: 'observed', n: m.n, marketHourAt: iso(hourMs), fromAt: iso(hourMs + m.earliestMin * MIN), toAt: iso(hourMs + m.latestMin * MIN), earliestMin: m.earliestMin,
-    text: `observed over ${m.n} recorded nights: reviews dropped from ${sign(m.earliestMin)} to ${sign(m.latestMin)} min around the market hour (median ${sign(m.medianMin)}, early on ${m.earlyNights}), so ${iso(hourMs + m.earliestMin * MIN)} to ${iso(hourMs + m.latestMin * MIN)} tonight` };
+    text: `observed over ${m.n} recorded nights: reviews dropped from ${sign(m.earliestMin)} to ${sign(m.latestMin)} min around the market hour (median ${sign(m.medianMin)}, early on ${m.earlyNights}), so ${iso(hourMs + m.earliestMin * MIN)} to ${iso(hourMs + m.latestMin * MIN)} on this night` };
 }
 
-module.exports = { buildProfiles, dropWindow, marketOf, MIN_NIGHTS_FOR_OBSERVED, EARLY_POST_MIN };
+/** Profiles from the tracked test bench (data/audit/test-bench). Null when the bench is missing. */
+function loadBenchProfiles(dataDir = require('path').join(__dirname, '..', '..', 'data')) {
+  const fs = require('fs'); const path = require('path');
+  const dir = path.join(dataDir, 'audit', 'test-bench');
+  let bench;
+  try { bench = JSON.parse(fs.readFileSync(path.join(dir, 'nights.json'), 'utf8')); } catch { return null; }
+  const publishTimes = {};
+  for (const id of Object.keys(bench.nights || {})) {
+    try { publishTimes[id] = JSON.parse(fs.readFileSync(path.join(dir, 'publish-times', `${id}.json`), 'utf8')); } catch { /* night without rows */ }
+  }
+  return buildProfiles(bench, publishTimes);
+}
+
+module.exports = { loadBenchProfiles, buildProfiles, dropWindow, marketOf, MIN_NIGHTS_FOR_OBSERVED, EARLY_POST_MIN };
