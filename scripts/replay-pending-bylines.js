@@ -10,7 +10,7 @@
  * This replay script:
  *   1. Walks _pending/{showId}/ for each opera show (or all shows with --all)
  *   2. Fetches the URL via fetchPage
- *   3. Extracts byline via existing extractAuthorFromHtml
+ *   3. Extracts byline via the shared readPageByline (BRO-7798)
  *   4. If byline found: rename file to {outlet}--{critic-slug}.json, move to
  *      data/review-texts/{showId}/, remove from _pending
  *   5. If not found: leave in _pending, log
@@ -34,7 +34,8 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
-const { extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
+// BRO-7798: the shared byline reader (outlet rules first), never extractAuthorFromHtml directly.
+const { readPageBylineWithMetaFallback } = require('./lib/page-byline-for-show');
 const { normalizeCritic } = require('./lib/review-normalization');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
@@ -550,12 +551,9 @@ async function processShow(showId, deps = {}) {
         kept++;
         continue;
       }
-      // extractHighConfidenceAuthor returns string|null; extractAuthorFromHtml returns
-      // { name, source } | null. Normalize to plain string.
-      const hcRaw = extractHighConfidenceAuthor(html);
-      const fallbackRaw = hcRaw ? null : extractAuthorFromHtml(html, '', { outletId: data.outletId });
-      const raw = hcRaw || fallbackRaw;
-      byline = raw ? (typeof raw === 'string' ? raw : raw.name || null) : null;
+      // BRO-7798: shared reader first, meta fallback unless an outlet rule said "nobody" (the meta
+      // tags hold the posting editor there).
+      byline = readPageBylineWithMetaFallback({ html, url: data.url, outletId: data.outletId });
     } catch (e) {
       const msg = String((e && e.message) || e).slice(0, 80);
       console.log(`  [${file}] fetch failed: ${msg} — keep`);

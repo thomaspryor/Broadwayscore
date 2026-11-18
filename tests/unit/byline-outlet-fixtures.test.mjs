@@ -205,15 +205,11 @@ test('sweep-stored-bylines restores one saved console.log, never a per-worker co
 // BRO-7792 class guard: a script that names a critic from a fetched page goes through the shared reader
 // (readPageByline / readPageBylineForShow), not extractAuthorFromHtml directly (which skips the outlet
 // rules: TheaterMania's visible author tag, BRO-7745). New direct callers fail here; the ones below are
-// the known remainder, each with why it is not converted yet.
+// the known remainder, each with why it is not converted yet. BRO-7798 converted the four backfill/replay scripts.
 test('no script reads a page byline with extractAuthorFromHtml directly (allowlist of known remainder)', () => {
   const ALLOWED = new Map([
     ['scripts/sweep-stored-bylines.js', 'diagnostic: records every reader side by side'],
     ['scripts/lib/game-day/simulated-opening-night.js', 'game-day simulation'],
-    ['scripts/backfill-pv-critics.js', 'Playbill Verdict backfill, own outlet'],
-    ['scripts/backfill-critics-archive-org.js', 'archive.org backfill, no outlet context'],
-    ['scripts/replay-pending-bylines.js', 'replays stored fallbacks'],
-    ['scripts/backfill-unknown-critics.js', 'line reading stored fullText (no html)'],
     ['scripts/lib/page-byline.js', 'the shared reader itself'],
     ['scripts/lib/page-byline-for-show.js', 'the shared reader wrapper'],
   ]);
@@ -223,7 +219,9 @@ test('no script reads a page byline with extractAuthorFromHtml directly (allowli
       const rel = `${d}/${e.name}`;
       if (e.isDirectory()) { if (!/node_modules|fixtures/.test(e.name)) walk(rel); continue; }
       if (!/\.js$/.test(e.name) || /\.test\./.test(e.name) || rel === 'scripts/lib/content-quality.js') continue;
-      if (/\bextractAuthorFromHtml\(/.test(fs.readFileSync(path.join(ROOT, rel), 'utf8'))) found.push(rel);
+      const src = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+      // BRO-7798: a call, or an import / alias of it (`{ extractAuthorFromHtml: x } = require(...)`).
+      if (/\bextractAuthorFromHtml\(/.test(src) || /\{[^}]*\bextractAuthorFromHtml\b[^}]*\}\s*=\s*require\(/.test(src)) found.push(rel);
     }
   };
   walk('scripts');

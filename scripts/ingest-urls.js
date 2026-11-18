@@ -25,7 +25,6 @@ const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout')
 const { resolveOutletFromUrl, findExistingReviewFile } = require('./lib/review-normalization');
 const { findStaleFieldsAfterUpdate } = require('./lib/stale-merge-check');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
-const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { unwrapWaybackUrl } = require('./lib/unwrap-wayback-url');
 const { parseIngestLine, chooseIngestByline } = require('./lib/ingest-url-line');
 const { isPlausiblePersonName } = require('./lib/byline-recovery');
