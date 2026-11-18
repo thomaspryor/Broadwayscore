@@ -153,6 +153,9 @@ function unmapRecordedWrongProduction({ urlData, showScoreData, showsById = {}, 
     if (!rec || !rec.url) continue;
     const current = urlData.shows[showId];
     if (!current || normalizeCacheValue(current) !== normalizeCacheValue(rec.url)) continue;
+    // The archive must be the page the mapping points at; a stale archive of some other page says
+    // nothing about the current mapping. No canonical recorded means no proof: leave it mapped.
+    if (!rec.archiveCanonical || normalizeCacheValue(rec.archiveCanonical) !== normalizeCacheValue(current)) continue;
     const show = showsById[showId];
     if (show && exemptionFor(show, current)) continue;
     recordProductionMismatch(urlData, showId, current, now);
