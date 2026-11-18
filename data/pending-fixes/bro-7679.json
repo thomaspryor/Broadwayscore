@@ -1,0 +1,72 @@
+{
+  "issueNumber": "bro-7679",
+  "planId": "5ce6ef67-5f6e-48eb-b3d0-4e60179fc8bc",
+  "status": "pending",
+  "createdAt": "2026-11-18T14:33:13.585Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7679: city-hub los-angeles-ca W47 wrong-production reviews. CurtainUp = 2006 Broadway revival (Amanda Peet debut), Rachel's Reviews = Centerpoint Legacy (Utah) Little Women, Fandango = 1967 film page.",
+    "steps": [
+      "barefoot-in-the-park-regional-2026/curtainup--unknown.json: wrongProduction",
+      "barefoot-in-the-park-regional-2026/curtainup--unknown.json: wrongProductionReason",
+      "little-women-regional-2026/rachelsreviewstheatre--unknown.json: wrongProduction",
+      "little-women-regional-2026/rachelsreviewstheatre--unknown.json: wrongProductionReason",
+      "barefoot-in-the-park-regional-2026/fandango--unknown.json: wrongProduction",
+      "barefoot-in-the-park-regional-2026/fandango--unknown.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "barefoot-in-the-park-regional-2026/curtainup--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "barefoot-in-the-park-regional-2026/curtainup--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "barefoot-in-the-park-regional-2026/curtainup--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Reviews the 2006 Broadway revival (Amanda Peet Broadway debut), not the Whitmore-Lindley LA production",
+        "description": "barefoot-in-the-park-regional-2026/curtainup--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-women-regional-2026/rachelsreviewstheatre--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "little-women-regional-2026/rachelsreviewstheatre--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-women-regional-2026/rachelsreviewstheatre--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Reviews Centerpoint Legacy Theatre (Utah), not Carpenter PAC Long Beach",
+        "description": "little-women-regional-2026/rachelsreviewstheatre--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "barefoot-in-the-park-regional-2026/fandango--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "barefoot-in-the-park-regional-2026/fandango--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "barefoot-in-the-park-regional-2026/fandango--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Fandango movie page for the film, not a stage review",
+        "description": "barefoot-in-the-park-regional-2026/fandango--unknown.json: wrongProductionReason"
+      }
+    ]
+  }
+}

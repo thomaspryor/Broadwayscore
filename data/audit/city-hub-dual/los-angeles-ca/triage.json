@@ -827,6 +827,24 @@
       "status": "fixed",
       "reason": "Same row as the wrong-production finding; excluded by wrongProduction. BRO-7319.",
       "item": "review:a-number-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|:non-review:roundup"
+    },
+    "show:confederates-regional-2026-fountain-theatre": {
+      "verdict": "false-positive",
+      "status": "",
+      "item": "show:confederates-regional-2026-fountain-theatre",
+      "reason": "Our regional openingDate is the first review date (openingDateSource tic-first-review); page 2026-10-30 is first preview. Previews are not tracked for regional shows."
+    },
+    "review:barefoot-in-the-park-regional-2026|http://curtainup.com/barefootinthepark.html|": {
+      "verdict": "confirmed",
+      "status": "fixed",
+      "item": "review:barefoot-in-the-park-regional-2026|http://curtainup.com/barefootinthepark.html|",
+      "reason": "Source text contradicts our record; wrongProduction flag set via fix plan bro-7679."
+    },
+    "review:little-women-regional-2026|https://rachelsreviewstheatre.com/2026/11/11/little-women-at-centerpoint-has-astonishing-talent-review|": {
+      "verdict": "confirmed",
+      "status": "fixed",
+      "item": "review:little-women-regional-2026|https://rachelsreviewstheatre.com/2026/11/11/little-women-at-centerpoint-has-astonishing-talent-review|",
+      "reason": "Source text contradicts our record; wrongProduction flag set via fix plan bro-7679."
     }
   }
 }
