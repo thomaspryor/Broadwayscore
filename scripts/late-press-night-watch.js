@@ -13,6 +13,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+require('./lib/cli-help').exitOnHelp(module);
 const LPN = require('./lib/late-press-night');
 
 const ROOT = path.join(__dirname, '..');
