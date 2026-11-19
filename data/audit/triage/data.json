@@ -1,7 +1,7 @@
 {
   "system": "data",
-  "status": "warn",
-  "lastChecked": "2026-11-18T10:17:10.372Z",
+  "status": "error",
+  "lastChecked": "2026-11-19T10:27:03.027Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -68,13 +68,8 @@
     },
     {
       "name": "Data: live show with zero critic reviews on site",
-      "status": "pass",
-      "message": "No live show is missing every discovered critic review"
-    },
-    {
-      "name": "Data: uncollected live review strands",
-      "status": "warn",
-      "message": "1 discovered review URL(s) across 1 live show(s) were never fetched. First: little-shop-of-horrors-hope-mill-regional-2026 (1 stranded)"
+      "status": "error",
+      "message": "1 live show(s) have discovered review URL(s) but NOTHING collected. First: menopause-the-musical-tour-2026"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -84,42 +79,42 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "34 of 402 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7684 Bylineless aggregator-quote ghosts stay live up to a week: run excerpt-containment at ingest/rebuild, not only in the weekly audit"
+      "message": "27 of 423 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7769 Stub review slot accepts unrelated same-outlet news URLs (Good Thief TheaterMania/Linda Buchwald)"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-17"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-18"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "76 review(s) with no usable text, 65 rejected although verified as a review, 22 never scored, 37 with a blocked URL (0 published on the site), across 694 current shows"
+      "message": "80 review(s) with no usable text, 69 rejected although verified as a review, 22 never scored, 38 with a blocked URL (0 published on the site), across 740 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (49148 checked)"
+      "message": "No published review score contradicts the critic's rating (49302 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "6 early publish date(s) awaiting recheck (limit 40); 210 already attempted and not yet confirmed"
+      "message": "11 early publish date(s) awaiting recheck (limit 40); 212 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3531 files with approvals"
+      "message": "0 unexplained approved-fix drift(s) across 3797 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
-      "status": "warn",
-      "message": "scripts/audit-duplicate-flag-inheritance.js failed: Found 9 live duplicate-of-inherited-flag leak(s) (floor: 8)."
+      "status": "pass",
+      "message": "duplicate-flag inheritance audit is within its committed floor"
     },
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 551 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 554 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
@@ -129,12 +124,7 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "1 discovered review(s) not reaching the composite score (0 T1). Oldest: rope-off-broadway-2026 — talkinbroadway (empty-body); 1 newer still in flight"
-    },
-    {
-      "name": "Data: BWW roundup discovery misses near opening",
-      "status": "warn",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: blue-man-group-a-new-holiday-surprise-2026 (28 misses, last 2026-11-18T09:56:59.777Z)."
+      "message": "1 discovered review(s) not reaching the composite score (0 T1). Oldest: nacho-ate-spiderman-regional-2026 — broadwayworld (unscored)"
     }
   ]
 }

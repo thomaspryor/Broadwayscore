@@ -1,15 +1,15 @@
 {
   "system": "stuck pipeline items",
-  "status": "warn",
-  "lastChecked": "2026-11-18T10:17:10.377Z",
+  "status": "pass",
+  "lastChecked": "2026-11-19T10:27:03.028Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Stuck pipeline items",
-      "status": "warn",
-      "message": "1 pipeline signal(s) flagged possibly-stuck by the overnight digest. Shows losing scored reviews: purlie-victorious-2023: 37→34 reviews (scored files exist but being dropped)"
+      "status": "pass",
+      "message": "Skipped: Mac-only stuck sources are unavailable on this machine; cannot confirm the pipeline is clear."
     }
   ]
 }

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-18T11:07:32.905Z",
+  "generatedAt": "2026-11-19T11:27:10.536Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 6082,
+  "scannedShows": 6087,
   "flaggedShows": 48,
-  "flaggedFiles": 160,
+  "flaggedFiles": 163,
   "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
@@ -785,6 +785,148 @@
       ]
     },
     {
+      "showId": "peter-pan-off-west-end-2026",
+      "title": "Peter Pan",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "Polka Theatre",
+      "previewsStartDate": "2026-11-14",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "9/9 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 9,
+        "distinctYears": [
+          2019,
+          2023,
+          2025
+        ],
+        "spanDays": 2286,
+        "flaggedCount": 9,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "i-paper--anya-ryan.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "i-paper",
+          "criticName": "Anya Ryan",
+          "publishDate": "2023-12-14",
+          "url": "https://inews.co.uk/culture/arts/peter-pan-london-palladium-review-2808480",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "i-paper--unknown.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "i-paper",
+          "criticName": "Anya Ryan",
+          "publishDate": "2023-12-14",
+          "url": "https://inews.co.uk/culture/arts/peter-pan-london-palladium-review-2808480",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--isabella-james.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Isabella James",
+          "publishDate": "2019-07-27",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-peter-pan-troubadour",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2025-10-29",
+          "url": "https://www.londonboxoffice.co.uk/news/post/wendy-and-peter-pan-barbican-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--bruce-dessau.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Bruce Dessau",
+          "publishDate": "2023-12-14",
+          "url": "https://www.standard.co.uk/culture/theatre/peter-pan-london-palladium-review-julian-clary-jennifer-saunders-b1126799.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--unknown.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Bruce Dessau",
+          "publishDate": "2023-12-14",
+          "url": "https://www.standard.co.uk/culture/theatre/peter-pan-london-palladium-review-julian-clary-jennifer-saunders-b1126799.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--marianka-swain.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Marianka Swain",
+          "publishDate": "2023-12-14",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/julian-clary-peter-pan-london-palladium-review/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--paul-vale.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Paul Vale",
+          "publishDate": "2023-12-14",
+          "url": "https://www.thestage.co.uk/reviews/peter-pan-review-london-palladium-jennifer-saunders-julian-clary-paul-zerdin-nigel-havers-gary-willmot-crossroads",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--tom-millward.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "whatsonstage",
+          "criticName": "Tom Millward",
+          "publishDate": "2023-12-14",
+          "url": "https://www.whatsonstage.com/news/peter-pan-at-the-london-palladium-review-high-flying-adored-pantomime_1558291/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "billy-elliot-the-musical-west-end-2027",
       "title": "Billy Elliot the Musical",
       "market": "west-end",
@@ -1007,122 +1149,6 @@
           "criticName": "Dominic Maxwell",
           "publishDate": "2025-11-26",
           "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-review-old-vic-2gv5gqs7k",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "peter-pan-off-west-end-2026",
-      "title": "Peter Pan",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Polka Theatre",
-      "previewsStartDate": "2026-11-14",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 7,
-        "distinctYears": [
-          2019,
-          2023,
-          2025
-        ],
-        "spanDays": 2286,
-        "flaggedCount": 7,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "i-paper--anya-ryan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Anya Ryan",
-          "publishDate": "2023-12-14",
-          "url": "https://inews.co.uk/culture/arts/peter-pan-london-palladium-review-2808480",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--isabella-james.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Isabella James",
-          "publishDate": "2019-07-27",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-peter-pan-troubadour",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-10-29",
-          "url": "https://www.londonboxoffice.co.uk/news/post/wendy-and-peter-pan-barbican-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--bruce-dessau.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Bruce Dessau",
-          "publishDate": "2023-12-14",
-          "url": "https://www.standard.co.uk/culture/theatre/peter-pan-london-palladium-review-julian-clary-jennifer-saunders-b1126799.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--marianka-swain.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Marianka Swain",
-          "publishDate": "2023-12-14",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/julian-clary-peter-pan-london-palladium-review/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--paul-vale.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Paul Vale",
-          "publishDate": "2023-12-14",
-          "url": "https://www.thestage.co.uk/reviews/peter-pan-review-london-palladium-jennifer-saunders-julian-clary-paul-zerdin-nigel-havers-gary-willmot-crossroads",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--tom-millward.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Tom Millward",
-          "publishDate": "2023-12-14",
-          "url": "https://www.whatsonstage.com/news/peter-pan-at-the-london-palladium-review-high-flying-adored-pantomime_1558291/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2015,6 +2041,69 @@
       ]
     },
     {
+      "showId": "nine-night-off-west-end-2026",
+      "title": "Nine Night",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "Kiln Theatre",
+      "previewsStartDate": "2026-11-12",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 3,
+        "distinctYears": [
+          2018,
+          2022
+        ],
+        "spanDays": 1617,
+        "flaggedCount": 3,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--nastazja-domaradzka.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Nastazja Domaradzka",
+          "publishDate": "2018-05-07",
+          "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--phil-willmott.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Phil Willmott",
+          "publishDate": "2018-06-23",
+          "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-west-end-transfer",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--chris-bartlett.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Chris Bartlett",
+          "publishDate": "2022-10-10",
+          "url": "https://www.thestage.co.uk/reviews/nine-night-review-at-leeds-playhouse",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "romeo-and-juliet-west-end-2027",
       "title": "Romeo & Juliet",
       "market": "west-end",
@@ -2318,55 +2407,6 @@
           "criticName": "Claire Allfree",
           "publishDate": "2023-11-16",
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/feeling-afraid-as-if-something-terrible-is-going-to-happen/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "nine-night-off-west-end-2026",
-      "title": "Nine Night",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Kiln Theatre",
-      "previewsStartDate": "2026-11-12",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 2,
-        "distinctYears": [
-          2018
-        ],
-        "spanDays": 47,
-        "flaggedCount": 2,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--nastazja-domaradzka.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Nastazja Domaradzka",
-          "publishDate": "2018-05-07",
-          "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--phil-willmott.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Phil Willmott",
-          "publishDate": "2018-06-23",
-          "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-west-end-transfer",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2683,42 +2723,6 @@
           "publishDate": "2025-01-14",
           "url": "https://www.londonboxoffice.co.uk/news/post/firebird-kings-head-review",
           "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "one-day-the-musical-west-end-2026",
-      "title": "One Day – The Musical",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Garrick Theatre",
-      "previewsStartDate": "2026-11-17",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Garrick Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2026
-        ],
-        "spanDays": 0,
-        "flaggedCount": 0,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--shehrazade-zafar-arif.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "bodylessAggregatorScoreUncorroborated",
-          "outletId": "london-box-office",
-          "criticName": "Shehrazade Zafar-Arif",
-          "publishDate": "2026-06-18",
-          "url": "https://www.londonboxoffice.co.uk/news/post/one-day-the-musical-to-transfer-to-west-end",
-          "wrongProduction": false,
           "wrongShow": false,
           "evaluationError": null
         }
@@ -3078,6 +3082,42 @@
           "criticName": "Phil Willmott",
           "publishDate": "2019-10-09",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-gentlemen-prefer-blondes",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "club-nvrlnd-off-west-end-2026",
+      "title": "Club NVRLND",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "The Vaults Theatre",
+      "previewsStartDate": "2026-11-14",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"The Vaults Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2025
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "thestage--lyn-gardner.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Lyn Gardner",
+          "publishDate": "2025-08-05",
+          "url": "https://www.thestage.co.uk/reviews/club-nvrlnd-review-assembly-checkpoint-edinburgh-le-fil-jack-holden",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
