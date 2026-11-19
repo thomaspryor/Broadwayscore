@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-19T01:38:33.302Z",
+  "timestamp": "2026-11-19T02:07:34.622Z",
   "stats": {
     "totalReviews": 82707,
     "alreadyFlagged": 22493,
     "dateGuardCatches": 220,
-    "directorMismatch": 3763,
+    "directorMismatch": 3761,
     "tvFilmSignals": 2356,
-    "londonSignals": 3801,
+    "londonSignals": 3800,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
     "noPublishDate": 8266
@@ -21200,30 +21200,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john dexter\" from equus-1974"
-        }
-      ]
-    },
-    {
-      "showId": "equus-off-west-end-2026",
-      "file": "londontheatrehub--peter-shaffer.json",
-      "score": null,
-      "publishDate": "2026-05-07",
-      "url": "https://londontheatrehub.co.uk/shows/equus/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thea sharrock\" from equus-2008"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john dexter\" from equus-1974"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
