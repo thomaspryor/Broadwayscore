@@ -72,6 +72,7 @@ function classify(probe, withCookies, withoutCookies) {
   return classifyWalledProbe({
     withCookies, withoutCookies,
     minBody: probe.minBody, wallMarker: probe.wallMarker, gateMarker: probe.gateMarker,
+    subscriberMarker: probe.subscriberMarker,
   });
 }
 

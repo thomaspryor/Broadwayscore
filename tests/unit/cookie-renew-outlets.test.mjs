@@ -232,9 +232,11 @@ test('a bot challenge is never logged-out or vacuous, on either side of the prob
 
 test('classifyWithControl: one anonymous full read is not enough to call the probe vacuous', async () => {
   const p = COOKIE_PROBES.telegraph;
-  const sub = { html: '<p>article</p>', body: 'x'.repeat(2556) };
+  // Subscriber pages carry is-subscriber--true (subscriberMarker); `full` is a
+  // control that is ALSO marked subscriber, i.e. a meaningless probe.
+  const sub = { html: '<div class="is-subscriber--true"><p>article</p>', body: 'x'.repeat(2556) };
   const walled = { html: '<div class="martech-paywall__blur">', body: 'x'.repeat(168) };
-  const full = { html: '<p>article</p>', body: 'x'.repeat(2556) };
+  const full = { html: '<div class="is-subscriber--true"><p>article</p>', body: 'x'.repeat(2556) };
   const calls = [];
   const flaky = async (_p, o) => { calls.push(o.waitMs || 0); return calls.length === 1 ? full : walled; };
   const r = await bprobe.classifyWithControl(p, sub, { anon: flaky });
@@ -401,4 +403,32 @@ test('pickNewestCode takes the newest message: subject first, then its body', ()
   const mixed = 'uid=30 | Your FT.com access code\nuid=31 | Your FT weekly digest';
   assert.equal(pickNewestCode(mixed, ft, (u) => (u === '30' ? bodies[20] : 'news')), '333333');
   assert.equal(pickNewestCode('no matches', ft, () => ''), null);
+});
+
+// Metered outlets (live renewal 2026-11-19 read 'vacuous' for both): a fresh
+// anonymous browser can get a full free read. The page still names the reader,
+// so the control counts as walled. Shapes below are the measured markers.
+test('metered free reads in the control are not vacuous (Telegraph subscriber class, New Yorker meter bar)', async () => {
+  const full = (n) => 'x'.repeat(n);
+  const tg = COOKIE_PROBES.telegraph;
+  const tgSub = { html: '<div class="articleRendererHTML logged-in--true is-subscriber--true">', body: full(2556) };
+  const tgFree = { html: '<div class="articleRendererHTML logged-in--false is-subscriber--false">', body: full(2556) };
+  const tgWalled = { html: '<div class="is-subscriber--false"><div class="martech-paywall__blur">', body: full(168) };
+  assert.equal(bprobe.classify(tg, tgSub, tgFree), 'logged-in', 'free read with is-subscriber--false is not vacuous');
+  assert.equal(bprobe.classify(tg, tgSub, tgWalled), 'logged-in');
+  assert.equal(bprobe.classify(tg, tgFree), 'logged-out', 'a full body without the subscriber class is not a login');
+  assert.equal((await bprobe.classifyWithControl(tg, tgSub, { anon: async () => tgFree })).status, 'logged-in');
+  assert.equal(bprobe.classify(tg, tgSub, tgSub), 'vacuous', 'control also marked subscriber -> vacuous');
+
+  const ny = COOKIE_PROBES.newyorker;
+  const bundle = '"DualOfferInContentBarrier.subscriptionOffersLabel"';
+  const nySub = { html: `<p class="paywall">${bundle}`, body: full(8474) };
+  const nyFree = { html: `<div class="PaywallBarThinWrapper-iTSHA" data-testid="paywall-bar-thin">${bundle}`, body: full(8474) };
+  assert.equal(bprobe.classify(ny, nySub, nyFree), 'logged-in', 'meter bar marks the free read as walled');
+  assert.equal(bprobe.classify(ny, nyFree), 'logged-out');
+  assert.equal(bprobe.classify(ny, nySub, nySub), 'vacuous', 'no bar on the control either -> vacuous');
+  assert.ok(!ny.loginWallMarker.test(nySub.html), 'bundle string alone is not a wall');
+  assert.ok(ny.loginWallMarker.test(nyFree.html));
+  assert.ok(bprobe.confirmWall({ status: 'logged-out', page: { html: nyFree.html, httpStatus: 200 }, hasAuthCookie: true }, ny).ok);
+  assert.ok(!bprobe.confirmWall({ status: 'logged-out', page: { html: nySub.html, httpStatus: 200 }, hasAuthCookie: true }, ny).ok);
 });
