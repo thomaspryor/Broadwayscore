@@ -682,6 +682,12 @@ for (const file of files.sort()) {
   const filePath = path.join(dtliDir, file);
   const showId = file.replace('.html', '');
   const content = fs.readFileSync(filePath, 'utf-8');
+  const dateCheck = require('./lib/dtli-ingest-guards').dtliPagePredatesProduction(content, _getShowById().get(showId));
+  if (dateCheck.skip) {
+    console.log(`${showId}: skipped DTLI page with old review dates (${dateCheck.old}/${dateCheck.dated})`);
+    if (aggregatorSummary.dtli) delete aggregatorSummary.dtli[showId];
+    continue;
+  }
 
   const reviews = extractReviewsFromDTLI(content, showId);
 

@@ -37,6 +37,18 @@ function newRowPredatesProduction({ publishDate, show }) {
   return { skip: false };
 }
 
+// Page-level guard also protects undated domain-supplement rows and summary
+// thumbs. Only DTLI review datelines count, never dates in navigation or URLs.
+function dtliPagePredatesProduction(html, show) {
+  const $ = require('cheerio').load(html || '');
+  const dates = $('.review-item-date').map((_, el) => $(el).text().trim()).get()
+    .map(value => Date.parse(value))
+    .filter(Number.isFinite)
+    .map(value => new Date(value).toISOString().slice(0, 10));
+  const old = dates.filter(publishDate => newRowPredatesProduction({ publishDate, show }).skip).length;
+  return { skip: old > 0 && old * 2 >= dates.length, old, dated: dates.length };
+}
+
 // Gap 3: the file at the canonical path already names a different real
 // critic. DTLI's critic column is an aggregator guess; the stored byline came
 // from the review page or a human fix, so it is never overwritten from here.
@@ -44,4 +56,4 @@ function canonicalSlotNamesOtherCritic(incomingCritic, onDisk) {
   return !!onDisk && storedCriticConflicts(incomingCritic, onDisk);
 }
 
-module.exports = { newRowPredatesProduction, canonicalSlotNamesOtherCritic };
+module.exports = { newRowPredatesProduction, canonicalSlotNamesOtherCritic, dtliPagePredatesProduction };

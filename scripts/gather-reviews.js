@@ -4487,6 +4487,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   console.log('\n  === Did They Like It ===');
   let dtliResult = await searchDTLI(show);
   if (dtliResult && dtliResult.html) {
+    const dtliDateCheck = require('./lib/dtli-ingest-guards').dtliPagePredatesProduction(dtliResult.html, show);
+    if (dtliDateCheck.skip) {
+      console.log(`    ✗ DTLI review dates predate production (${dtliDateCheck.old}/${dtliDateCheck.dated})`);
+      dtliResult = null;
+    }
+  }
+  if (dtliResult && dtliResult.html) {
     const dtliValidation = await validatePageMatchesShow(dtliResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
     // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow
     // (not instead of it) — year/LLM checks catch a same-title stale revival
