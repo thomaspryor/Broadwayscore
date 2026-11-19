@@ -367,3 +367,21 @@ jobs:
             ];
             await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number, body: lines.join('\n') });
             await github.rest.issues.update({ owner: context.repo.owner, repo: context.repo.repo, issue_number, state: 'closed', state_reason: 'completed' });
+
+      # BRO-7847: persist the proposal cap + SLA ledger (issue numbers and
+      # timestamps only, no reader data). Last step on purpose: it is a
+      # soft-fail commit and must not strand the all-safe commit steps above.
+      - name: Commit proposal ledger
+        if: always() && steps.plan.outputs.proposal_sent == 'true'
+        continue-on-error: true
+        run: |
+          git add data/audit/feedback-proposals.json
+          if git diff --staged --quiet; then
+            echo "No proposal ledger change to commit"
+          else
+            git commit -m "chore: Record owner proposal for #${{ steps.issue.outputs.number }} [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi

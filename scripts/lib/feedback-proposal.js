@@ -22,7 +22,7 @@ const { detectCombinedRoles } = require('./systematic-fix-detection.js');
 const { foldDiacritics } = require('./url-slug');
 
 const BASE_URL = 'https://broadwayscorecard.com';
-const LEDGER_PATH = path.join(__dirname, '../../data/pending-fixes/_proposals/ledger.json');
+const LEDGER_PATH = path.join(__dirname, '../../data/audit/feedback-proposals.json');
 const DAILY_CAP = 10;
 const LIVE_STATUSES = new Set(['open', 'previews']);
 
@@ -234,7 +234,9 @@ function buildRootCauseUrl({ issueNumber, rootCause, secret, now = Date.now(), b
 
 function buildReaderReplyDraft({ reader, show, url }) {
   const r = reader || {};
-  const reply = buildReplyText('fixed', r.name, show || r.show, { url });
+  // Issue titles look like "Show - note about it"; the reader only needs the show name.
+  const showName = String(show || r.show || '').split(/\s+-\s+/)[0].replace(/\s+/g, ' ').trim();
+  const reply = buildReplyText('fixed', r.name, showName, { url });
   const to = r.email || '';
   const mailto = to
     ? `mailto:${encodeURIComponent(to).replace(/%40/g, '@')}?subject=${encodeURIComponent(reply.subject)}&body=${encodeURIComponent(reply.text)}`
