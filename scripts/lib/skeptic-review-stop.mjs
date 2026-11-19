@@ -287,7 +287,7 @@ export function shipCheckReport(r) {
   const minor = r.gaps.filter((g) => g.severity !== 'material');
   const fmt = (g, i) => `${i + 1}. ${g.what}${g.why ? ` (${g.why})` : ''}\n   check: ${g.check || '(name one)'}`;
   return [
-    material.length ? `SKEPTIC REVIEW: ${material.length} material gap(s). Before recording the ship-check, answer EACH gap on its own line: "GAP <n>: ran <the command>" (it must have run and passed), "GAP <n>: cannot run here: <concrete reason>", or "GAP <n>: not a gap: <why>". review-coverage --record refuses a pass while any gap is unanswered (BRO-7872).` : 'SKEPTIC REVIEW: no material gaps.',
+    material.length ? `SKEPTIC REVIEW: ${material.length} material gap(s). Before recording the ship-check, answer EACH gap as "GAP <n>: ran <the command>" (it must have run and passed), "GAP <n>: cannot run here: <concrete reason>", or "GAP <n>: not a gap: <why>", passed to the record command: node scripts/lib/review-coverage.mjs --record --answer='GAP 1: ...' (chat text can be missing from the transcript). --record refuses a pass while any gap is unanswered (BRO-7872).` : 'SKEPTIC REVIEW: no material gaps.',
     ...material.map(fmt),
     ...(minor.length ? ['Minor (optional):', ...minor.map(fmt)] : []),
   ].join('\n');

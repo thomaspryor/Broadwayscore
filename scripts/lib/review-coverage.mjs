@@ -555,7 +555,9 @@ async function main(argv) {
     process.stderr.write('review-coverage: transcript not found\n');
     return 2;
   }
-  const cov = evaluateCoverage(walkTranscript(transcript));
+  // BRO-7872: answers given on this command line count even before this call is written to the transcript.
+  const answers = argv.filter((a) => a.startsWith('--answer=')).map((a) => a.slice('--answer='.length)).join('\n');
+  const cov = evaluateCoverage(walkTranscript(transcript), { lastMessage: answers });
   if (argv.includes('--json')) process.stdout.write(JSON.stringify(cov) + '\n');
   if (record) {
     if (!cov.complete) {

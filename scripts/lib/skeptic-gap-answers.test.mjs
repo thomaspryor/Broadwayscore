@@ -83,3 +83,18 @@ test('ship-check review: reading a file or a failing run is not "ran"; natural a
   assert.deepEqual(kinds('1. GAP 2: not a gap: because reasons here ok'), ['not-a-gap']);
   assert.deepEqual(kinds('GAP 3 — cannot run here: sends real email to subscribers'), ['cannot']);
 });
+
+test('answers passed to review-coverage --record --answer count (chat text can be missing from the transcript)', () => {
+  const { answerArgs, evaluateGapAnswers } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
+  assert.deepEqual(answerArgs(`node scripts/lib/review-coverage.mjs --record --answer='GAP 1: not a gap: the report is the final run' --answer="GAP 2: cannot run here: sends \\"real\\" email"`),
+    ['GAP 1: not a gap: the report is the final run', 'GAP 2: cannot run here: sends "real" email']);
+  assert.deepEqual(answerArgs(`echo --answer='GAP 1: not a gap: an echo is not the record command'`), [], 'only the record command counts');
+  const report = 'SKEPTIC REVIEW: 1 material gap(s).\n1. a (b)\n   check: node scripts/q.js';
+  const events = [
+    { kind: 'assistant_tool_use', name: 'Bash', id: 's', input: { command: 'node scripts/lib/skeptic-review-stop.mjs --ship-check' } },
+    { kind: 'tool_result', tool_use_id: 's', content: report, isError: false },
+    { kind: 'assistant_tool_use', name: 'Bash', id: 'r', input: { command: `node scripts/lib/review-coverage.mjs --record --answer='GAP 1: cannot run here: it sends real email to subscribers'` } },
+  ];
+  assert.deepEqual(evaluateGapAnswers(events, { firstIdx: 0, lastIdx: 0, reportText: report }).answered, [1], 'read from the persisted record command');
+  assert.deepEqual(evaluateGapAnswers(events.slice(0, 2), { firstIdx: 0, lastIdx: 0, reportText: report }).answered, [], 'nothing answered without it');
+});

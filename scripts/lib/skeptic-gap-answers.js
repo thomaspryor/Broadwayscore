@@ -67,6 +67,15 @@ const RAN_RE = /^ran\b[ \t]*[:\u2014-]?[ \t]*(.+)$/i;
 const CANNOT_RE = /^(?:cannot|can't|can not) run(?: here)?[ \t]*[:—-][ \t]*(.+)$/i;
 const NOT_GAP_RE = /^not a gap[ \t]*[:—-][ \t]*(.+)$/i;
 
+const RECORD_CMD_RE = /review-coverage\.mjs\b[^\n]*--record\b/;
+const ANSWER_ARG_RE = /--answer[= ](?:"((?:[^"\\]|\\.)*)"|'([^']*)')/g;
+/** PURE. The `--answer=` values of a `review-coverage.mjs --record` command (others: none). */
+function answerArgs(cmd) {
+  const c = String(cmd || '');
+  if (!RECORD_CMD_RE.test(c)) return [];
+  return [...c.matchAll(ANSWER_ARG_RE)].map((m) => (m[1] != null ? m[1].replace(/\\(.)/g, '$1') : m[2]));
+}
+
 /** PURE. Every `GAP n: ...` line in these texts, last answer per gap wins. -> Map<n, { kind, body, raw }> */
 function answerLines(texts) {
   const out = new Map();
@@ -139,7 +148,13 @@ function verifyRan(claimed, gap, events, from) {
 function evaluateGapAnswers(events, { firstIdx, lastIdx, reportText, lastMessage = '' }) {
   const report = parseSkepticReport(reportText);
   if (report.verdict !== 'gaps') return { report, answered: [], unanswered: [] };
-  const texts = events.slice(lastIdx + 1).filter((e) => e.kind === 'assistant_text').map((e) => e.text);
+  const texts = [];
+  for (const e of events.slice(lastIdx + 1)) {
+    if (e.kind === 'assistant_text') texts.push(e.text);
+    // Answers passed to `review-coverage.mjs --record --answer='GAP n: ...'`. Chat text can be missing from the session
+    // transcript (BRO-7872's own answers never reached it); a tool command always does.
+    else if (e.kind === 'assistant_tool_use' && e.name === 'Bash') texts.push(...answerArgs(e.input?.command));
+  }
   texts.push(String(lastMessage || ''));
   const answers = answerLines(texts);
   const answered = [];
@@ -160,7 +175,9 @@ function evaluateGapAnswers(events, { firstIdx, lastIdx, reportText, lastMessage
 function answerInstructions(unanswered) {
   return [
     ...unanswered.map((g) => `  - gap ${g.n}: ${g.what.slice(0, 160)}${g.check ? `\n      check: ${g.check.slice(0, 200)}` : ''}\n      (${g.why})`),
-    'Answer each one with a line in your chat, after the skeptic report:',
+    'Answer each one after the skeptic report, as an argument to the record command (chat text can be missing from the transcript):',
+    '  node scripts/lib/review-coverage.mjs --record --answer=\'GAP 1: ...\' --answer=\'GAP 2: ...\'',
+    'Each answer is one of:',
     '  GAP <n>: ran <the command you ran>             (it must have succeeded and name a file the check names)',
     '  GAP <n>: cannot run here: <concrete reason>    (real email, real money, the owner\'s device; not "next cron run")',
     '  GAP <n>: not a gap: <why the reviewer is wrong>',
@@ -198,5 +215,5 @@ function skepticStats(events, { isSkepticCall, lastMessage = '' } = {}) {
 
 module.exports = {
   SCHEDULE_ONLY_REASON_RE, REAL_COST_REASON_RE, concreteReason,
-  parseSkepticReport, answerLines, verifyRan, evaluateGapAnswers, answerInstructions, skepticStats,
+  parseSkepticReport, answerLines, answerArgs, verifyRan, evaluateGapAnswers, answerInstructions, skepticStats,
 };
