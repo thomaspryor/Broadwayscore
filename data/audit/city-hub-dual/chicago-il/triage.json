@@ -41,6 +41,18 @@
    "status": "",
    "item": "review:25th-annual-putnam-county-spelling-bee-regional-2024|https://aroundthetownchicago.com/theatre-reviews/the-25th-annual-putnam-county-spelling-bee-reviewed-by-julia-w-rath|julia w rath:byline",
    "reason": "Live page checked 2026-11-10: headline credits Julia W. Rath, the body opens with the site author box Alan Bresloff 3 years ago. The outlet prints both; the body is the outlet review of this production, so the score stands and our byline follows the headline credit. BRO-7319."
+  },
+  "show:hayward-regional-2026:venue": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:hayward-regional-2026:venue",
+   "reason": "The 1700 Theater is the Steppenwolf Theatre Company 1700 N Halsted building space (Steppenwolf Theatre Company, Chicago); our venue Steppenwolf Theatre is the producing venue and the theatre own page (steppenwolf.org/whats-on/2026-2027/hayward) matches. BRO-7677."
+  },
+  "show:hayward-regional-2026:closing-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:hayward-regional-2026:closing-date",
+   "reason": "Already corrected before triage: shows.json closingDate is 2026-11-22 (closingDateUpdatedAt 2026-11-18, sourced from steppenwolf.org), matching the page; the audit saw the stale 2026-11-15 snapshot. BRO-7677."
   }
  }
 }
