@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T07:48:40.841Z",
+  "generatedAt": "2026-11-19T09:20:38.397Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -158,45 +158,25 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+      "outletId": "musical-theatre-review",
+      "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
     {
       "outletId": "fringereview",
       "error": "HTTP 500 for https://fringereview.co.uk/feed/"
     },
     {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 833,
+  "itemsScanned": 898,
   "matchedGaps": 0,
-  "possibleGaps": 2,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
@@ -215,6 +195,15 @@
       "url": "https://standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "headline": "Much Ado About Nothing review: A deliciously detailed take",
       "publishDate": null
+    },
+    {
+      "showId": "potus-off-broadway-2026",
+      "title": "POTUS",
+      "level": "possible",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/nov/19/donald-review-trump-ustinov-studio-bath",
+      "headline": "Is Donald Trump beyond caricature? Not at all – here’s his hilarious origin story",
+      "publishDate": "2026-11-19"
     }
   ]
 }
