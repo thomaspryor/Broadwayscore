@@ -121,6 +121,12 @@ fi
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${LIVE_RUN_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/live-run-stop.mjs" ] && command -v node >/dev/null 2>&1; then
   _lrs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/live-run-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:LIVERUN]\n' "$_lrs_err" >&2; exit 2; fi; _ve_pre_died live-run-stop.mjs $_ve_s
 fi
+# BRO-7839: an independent reviewer asks the owner's "is this fully tested?" at SAFE TO ARCHIVE after code edits and the session must
+# close the gaps it names (skeptic-review-stop.mjs: cloud only, one LLM call capped at 25s, fails open, one block per chunk until its
+# blocking date, kill SKEPTIC_REVIEW_STOP_DISABLE=1). Last of the pre-gates so a chunk another gate refuses costs no reviewer call.
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SKEPTIC_REVIEW_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/skeptic-review-stop.mjs" ] && command -v node >/dev/null 2>&1; then
+  _skr_err=$(printf '%s' "$input" | timeout 35 node "$VE_REPO_ROOT/scripts/lib/skeptic-review-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:SKEPTIC]\n' "$_skr_err" >&2; exit 2; fi; _ve_pre_died skeptic-review-stop.mjs $_ve_s
+fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex, subprocess
 
