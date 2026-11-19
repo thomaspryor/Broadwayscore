@@ -1,12 +1,16 @@
 {
   "outletId": "new-york-sun",
-  "generatedAt": "2026-10-28T20:45:32.719Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:50:10.363Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "yearly article sitemaps (/news/articles/sitemap/YYYY/N.xml, 500 URLs a page, about 10 pages a year) read through the proxy chain, but the index lists only page 0 per year and URLs (/article/<slug>) carry no section",
     "notes": [
-      "unreadable: site answers HTTP 429/503/202 challenge pages to the census client"
+      "unreadable: yearly article sitemaps (/news/articles/sitemap/YYYY/N.xml, 500 URLs a page, about 10 pages a year) read through the proxy chain, but the index lists only page 0 per year and URLs (/article/<slug>) carry no section"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,15 +23,22 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 168,
-    "notEnumerated": 167,
-    "noUrl": 1,
+    "rowsInWindow": 198,
+    "notEnumerated": 198,
+    "noUrl": 0,
     "samples": [
       {
         "showId": "1776-2022",
         "url": "https://www.nysun.com/article/1776-revisited-at-once-progressive-and-thrillingly-patriotic",
         "publishDate": "2022-10-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "222-a-ghost-story-off-broadway-2026",
+        "url": "https://www.nysun.com/article/222-a-ghost-story-not-quite-a-screaming-good-time",
+        "publishDate": "2026-11-06",
         "why": "not-enumerated"
       },
       {
@@ -37,15 +48,27 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "a-few-good-men-2026",
+        "url": "https://www.nysun.com/article/aaron-sorkin-once-again-handles-the-truth-in-timely-a-few-good-men",
+        "publishDate": "2026-10-29",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "a-knock-on-the-roof-off-broadway-2025",
         "url": "https://www.nysun.com/article/in-khawla-ibraheems-a-knock-on-the-roof-humor-is-a-constant-salve-amid-the-horrors-of-war",
         "publishDate": "2025-01-27",
         "why": "not-enumerated"
       },
       {
+        "showId": "a-man-of-no-importance-off-broadway-2022",
+        "url": "https://www.nysun.com/article/a-man-of-no-importance-rises-on-its-sweetly-haunting-music",
+        "publishDate": "2022-10-31",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "a-strange-loop-2022",
         "url": "https://www.nysun.com/article/although-beguiling-and-funny-this-meta-exercise-has-aged-a-bit-since-2019",
-        "publishDate": null,
+        "publishDate": "2022-04-26",
         "why": "not-enumerated"
       },
       {
@@ -133,6 +156,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "blue-man-group-a-new-holiday-surprise-2026",
+        "url": "https://www.nysun.com/article/a-blue-streak-of-staleness",
+        "publishDate": "2026-11-17",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "bob-fosses-dancin-2023",
         "url": "https://www.nysun.com/article/revival-of-bob-fosses-1978-revue-runs-more-like-an-homage",
         "publishDate": "2023-03-20",
@@ -175,6 +204,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "cornelia-street-off-broadway-2023",
+        "url": "https://www.nysun.com/article/despite-a-most-promising-recipe-cornelia-street-fails-to-rise-on-this-occasion",
+        "publishDate": "2023-02-14",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "cost-of-living-2022",
         "url": "https://www.nysun.com/article/as-tallied-by-martyna-majok-cost-of-living-is-high-but-worth-every-effort",
         "publishDate": "2022-10-04",
@@ -184,6 +219,12 @@
         "showId": "covenant-off-broadway-2023",
         "url": "https://www.nysun.com/article/covenant-offers-briskly-entertaining-food-for-thought-about-the-demons-that-haunt-us-all",
         "publishDate": "2023-10-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "crumbs-from-the-table-of-joy-off-broadway-2023",
+        "url": "https://www.nysun.com/article/excellent-early-crumbs-from-lynn-nottage",
+        "publishDate": "2023-03-07",
         "why": "not-enumerated"
       },
       {
@@ -199,6 +240,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "danny-and-the-deep-blue-sea-off-broadway-2023",
+        "url": "https://www.nysun.com/article/aubrey-plaza-nails-her-stage-debut-in-danny-and-the-deep-blue-sea",
+        "publishDate": "2023-11-14",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "data-off-broadway-2026",
         "url": "https://www.nysun.com/article/timely-data-sheds-light-on-dark-potential-of-ai",
         "publishDate": "2026-01-25",
@@ -211,57 +258,15 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "dead-outlaw-off-broadway-2024",
+        "url": "https://www.nysun.com/article/dead-outlaw-find-humor-while-tracing-a-most-unusual-morose-story",
+        "publishDate": "2024-03-11",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "death-of-a-salesman-2022",
         "url": "https://www.nysun.com/article/even-with-race-in-the-mix-this-salesman-delivers",
         "publishDate": "2022-10-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2026",
-        "url": "https://www.nysun.com/article/nathan-lane-and-laurie-metcalf-breathe-new-life-into-death-of-a-salesman",
-        "publishDate": "2026-04-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "dog-day-afternoon-2026",
-        "url": "https://www.nysun.com/article/dog-day-afternoon-unleashes-on-broadway-with-a-loud-contemporary-bark",
-        "publishDate": "2026-03-31",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "dracula-a-comedy-of-terrors-off-broadway-2023",
-        "url": "https://www.nysun.com/article/dracula-as-comedy-achieved-with-an-effortlessness-that-belies-its-sophistication",
-        "publishDate": "2023-09-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "duke-and-roya-off-broadway-2025",
-        "url": "https://www.nysun.com/article/despite-an-intriguing-premise-the-off-broadway-play-duke-roya-offers-little-beyond-the-obvious",
-        "publishDate": "2025-06-24",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "elf-2024",
-        "url": "https://www.nysun.com/article/for-those-who-need-a-little-sparklejollytwinklejingley-in-their-lives-broadways-elf-is-just-the-tonic",
-        "publishDate": "2024-11-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "eureka-day-2024",
-        "url": "https://www.nysun.com/article/tumult-over-vaccination-bedevils-a-well-heeled-private-school-in-the-whip-smart-eureka-day",
-        "publishDate": "2024-12-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "every-brilliant-thing-2026",
-        "url": "https://www.nysun.com/article/daniel-radcliffe-returns-to-broadway-exploring-depression-while-celebrating-life-in-every-brilliant-thing?gift=eyJhbGciOiJIUzI1NiJ9.eyJnaWZ0RnJvbSI6Im5kdWQ0bDIwenYxbCIsImlhdCI6MTc3MzM3MDY2OCwiZXhwIjoxNzc1OTYyNjY4fQ.PxH_k",
-        "publishDate": "2026-03-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "fallen-angels-2026",
-        "url": "https://www.nysun.com/article/timeless-star-quality-ensures-noel-cowards-1925-comedy-fallen-angels-soars-on-broadway",
-        "publishDate": "2026-04-20",
         "why": "not-enumerated"
       }
     ]
@@ -272,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

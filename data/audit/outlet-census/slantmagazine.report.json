@@ -1,7 +1,7 @@
 {
   "outletId": "slantmagazine",
   "market": "nyc",
-  "generatedAt": "2026-11-19T03:51:25.222Z",
+  "generatedAt": "2026-11-19T10:41:49.582Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
@@ -10,83 +10,37 @@
     "incomplete": false,
     "enumerated": 193,
     "inWindow": 193,
-    "undated": 0,
+    "undated": 193,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
       "not-review": 81,
-      "out-of-window": 26,
-      "catalog-gap": 8,
-      "held-unmatched": 20,
-      "held": 44,
-      "gap": 10,
-      "held-alt-url": 3,
-      "ambiguous": 1
-    },
-    "viaTitleVariant": {
-      "held": 5,
-      "held-alt-url": 2,
-      "gap": 1
-    },
-    "recall": 0.825,
-    "recallWithCatalog": 0.723
-  },
-  "seasons": {
-    "2020-21": {
-      "not-review": 7,
-      "out-of-window": 1
-    },
-    "2021-22": {
-      "not-review": 8,
-      "catalog-gap": 1,
-      "held-unmatched": 1
-    },
-    "2022-23": {
-      "not-review": 32,
-      "held": 4,
-      "gap": 3,
-      "out-of-window": 5,
-      "held-unmatched": 2,
-      "catalog-gap": 4,
+      "ambiguous": 14,
+      "catalog-gap": 10,
+      "held": 66,
+      "gap": 15,
+      "held-unmatched": 6,
       "held-alt-url": 1
     },
-    "2023-24": {
-      "catalog-gap": 1,
-      "held": 10,
-      "not-review": 15,
-      "gap": 2,
-      "out-of-window": 5,
-      "held-unmatched": 4,
-      "held-alt-url": 1,
-      "ambiguous": 1
-    },
-    "2024-25": {
-      "out-of-window": 8,
-      "held": 9,
-      "held-unmatched": 7,
-      "not-review": 6,
-      "gap": 3
-    },
-    "2025-26": {
-      "held": 14,
-      "out-of-window": 4,
-      "catalog-gap": 2,
-      "held-alt-url": 1,
-      "not-review": 1,
-      "held-unmatched": 1
-    },
-    "2026-27": {
-      "held": 7,
-      "not-review": 12,
-      "out-of-window": 3,
-      "held-unmatched": 5,
-      "gap": 2
+    "viaTitleVariant": {},
+    "recall": 0.817,
+    "recallWithCatalog": 0.728
+  },
+  "seasons": {
+    "undated": {
+      "not-review": 81,
+      "ambiguous": 14,
+      "catalog-gap": 10,
+      "held": 66,
+      "gap": 15,
+      "held-unmatched": 6,
+      "held-alt-url": 1
     }
   },
   "corpusSide": {
-    "rowsInWindow": 72,
+    "rowsInWindow": 82,
     "notEnumerated": 3,
     "noUrl": 0,
     "samples": [
@@ -112,274 +66,193 @@
   },
   "gaps": [
     {
-      "url": "https://www.slantmagazine.com/theater/into-the-woods-review-new-york-city-center/",
-      "headline": "into the woods review new york city center",
-      "publishDate": "2022-09-06",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/review-american-moor-richly-illuminates-the-experience-of-acting-while-black/",
+      "headline": "review american moor richly illuminates the experience of acting while black",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "into-the-woods-2022"
-      ],
-      "outOfWindow": [
-        "into-the-woods-2002",
-        "into-the-woods-1997",
-        "into-the-woods-1987"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/once-upon-a-one-more-time-review-britney-spears/",
-      "headline": "once upon a one more time review britney spears",
-      "publishDate": "2023-06-23",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "once-upon-a-one-more-time-2023"
+        "american-moor-off-broadway-2019"
       ],
       "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/back-to-the-future-the-musical-broadway-review/",
-      "headline": "back to the future the musical broadway review",
-      "publishDate": "2023-08-04",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/review-if-then-at-the-richard-rodgers-theatre/",
+      "headline": "review if then at the richard rodgers theatre",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "back-to-the-future-2023"
+        "ifthen-2014"
       ],
       "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/review-hamlet-at-st-anns-warehouse-is-a-triumph-of-production-over-performance/",
-      "headline": "review hamlet at st anns warehouse is a triumph of production over performance",
-      "publishDate": "2024-01-06",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/review-cirque-du-soleils-kurios-cabinet-of-curiosities-at-randalls-island/",
+      "headline": "review cirque du soleils kurios cabinet of curiosities at randalls island",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "hamlet-greenwich-house-off-broadway-2024"
-      ],
-      "outOfWindow": [
-        "hamlet-2009",
-        "hamlet-1995",
-        "hamlet-1975",
-        "hamlet-off-broadway-2026",
-        "triumph-off-broadway-2026",
-        "hamlet-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/the-welkin-review-sandra-oh/",
-      "headline": "the welkin review sandra oh",
-      "publishDate": "2024-06-16",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-welkin-off-broadway-2024"
-      ],
-      "outOfWindow": [
-        "sandra-off-broadway-2022"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/call-me-izzy-review-jean-smart/",
-      "headline": "call me izzy review jean smart",
-      "publishDate": "2025-06-13",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "call-me-izzy-2025"
+        "the-island-1974"
       ],
       "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/prince-faggot-review-jordan-tannahill/",
-      "headline": "prince faggot review jordan tannahill",
-      "publishDate": "2025-06-17",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/review-the-beauty-queen-of-leenane-at-bam/",
+      "headline": "review the beauty queen of leenane at bam",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "prince-faggot-playwrights-horizons-off-broadway-2025"
+        "the-beauty-queen-of-leenane-1998"
       ],
-      "outOfWindow": [
-        "prince-faggot-off-broadway-2025"
-      ]
+      "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/mamma-mia-review-broadway-2025/",
-      "headline": "mamma mia review broadway 2025",
-      "publishDate": "2025-08-15",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/theater-review-measure-for-measure-at-the-polonsky-shakespeare-center/",
+      "headline": "theater review measure for measure at the polonsky shakespeare center",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "mamma-mia-2025"
+        "measure-for-measure-1973"
       ],
-      "outOfWindow": [
-        "mamma-mia-2001"
-      ]
+      "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/macbeth-an-undoing-review/",
-      "headline": "macbeth an undoing review",
-      "publishDate": "2026-11-06",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/on-sugarland-review-aleshea-harris/",
+      "headline": "on sugarland review aleshea harris",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "macbeth-off-broadway-2026"
+        "on-sugarland-off-broadway-2022"
       ],
-      "outOfWindow": [
-        "macbeth-2022",
-        "macbeth-2013",
-        "macbeth-2008",
-        "macbeth-1988",
-        "macbeth-1981",
-        "macbeth-2000",
-        "macbeth-1982",
-        "macbeth-an-undoing-off-broadway-2024"
-      ]
+      "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/romeo-and-juliet-review-rachel-zegler-kit-connor/",
-      "headline": "romeo and juliet review rachel zegler kit connor",
-      "publishDate": "2026-11-06",
-      "dateSoft": true,
-      "via": "title-variant",
+      "url": "https://www.slantmagazine.com/theater/review-broadbend-arkansas-and-soft-power-are-a-mixed-bag-of-one-acts/",
+      "headline": "review broadbend arkansas and soft power are a mixed bag of one acts",
+      "via": "poller-matcher",
       "held": [],
       "matched": [
-        "and-juliet-2022"
+        "soft-power-off-broadway-2019"
       ],
-      "outOfWindow": [
-        "romeo-and-juliet-2013",
-        "romeo-and-juliet-1986",
-        "romeo-and-juliet-1977",
-        "romeo-and-juliet-off-broadway-2026"
-      ]
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/review-the-wrong-man-suggests-a-concept-album-propped-up-on-two-legs/",
+      "headline": "review the wrong man suggests a concept album propped up on two legs",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-wrong-man-off-broadway-2019"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/slave-play-review-jeremy-o-harris/",
+      "headline": "slave play review jeremy o harris",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "slave-play-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/the-inheritance-review-broadway-matthew-lopez/",
+      "headline": "the inheritance review broadway matthew lopez",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-inheritance-2019"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/review-the-lightning-thief-struggles-to-summon-epic-scale-spectacle/",
+      "headline": "review the lightning thief struggles to summon epic scale spectacle",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-lightning-thief-2019"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/review-its-only-a-play-at-the-gerald-schoenfeld-theatre/",
+      "headline": "review its only a play at the gerald schoenfeld theatre",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "its-only-a-play-2014"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/some-like-it-hot-review-broadway-musical/",
+      "headline": "some like it hot review broadway musical",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "some-like-it-hot-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/hells-kitchen-review-alicia-keys/",
+      "headline": "hells kitchen review alicia keys",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hells-kitchen-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/fruma-sarah-waiting-in-the-wings-review-jackie-hoffman/",
+      "headline": "fruma sarah waiting in the wings review jackie hoffman",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "waiting-in-the-wings-1999"
+      ],
+      "outOfWindow": []
     }
   ],
   "heldAltUrl": [
     {
-      "url": "https://www.slantmagazine.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban/",
-      "headline": "sweeney todd the demon barber of fleet street review josh groban",
-      "publishDate": "2023-03-27",
+      "url": "https://www.slantmagazine.com/theater/review-every-brilliant-thing-at-the-barrow-street-theatre/",
+      "headline": "review every brilliant thing at the barrow street theatre",
       "matched": [
-        "sweeney-todd-2023"
+        "every-brilliant-thing-2026"
       ],
       "heldUrls": [
-        "https://www.slantmagazine.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-em-review-josh-groban/"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/theater-review-edward-albees-at-home-at-the-zoo-at-the-signature-theatre/",
-      "headline": "theater review edward albees at home at the zoo at the signature theatre",
-      "publishDate": "2024-04-27",
-      "matched": [
-        "home-2024"
-      ],
-      "heldUrls": [
-        "https://www.slantmagazine.com/theater/home-what-becomes-of-us-review/"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/beaches-broadway-review/",
-      "headline": "beaches broadway review",
-      "publishDate": "2026-06-10",
-      "matched": [
-        "beaches-2026"
-      ],
-      "heldUrls": [
-        "https://www.slantmagazine.com/theater/beaches-review/"
+        "https://www.slantmagazine.com/theater/every-brilliant-thing-review-daniel-radcliffe/"
       ]
     }
   ],
   "misfiles": [],
   "heldUnmatched": [
     {
-      "url": "https://www.slantmagazine.com/theater/betrayal-review-tom-hiddleston/",
-      "headline": "betrayal review tom hiddleston",
-      "publishDate": "2022-04-14",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/the-wiz-broadway-revival-review/",
+      "headline": "the wiz broadway revival review",
       "via": null,
       "held": [
-        "betrayal-2019"
+        "the-wiz-2024"
       ],
       "matched": [],
-      "outOfWindow": [
-        "betrayal-2019",
-        "betrayal-2013",
-        "betrayal-1980",
-        "betrayal-2000"
-      ]
+      "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/theater-review-joshua-jackson-soars-in-children-of-a-lesser-god-at-studio-54/",
-      "headline": "theater review joshua jackson soars in children of a lesser god at studio 54",
-      "publishDate": "2022-12-27",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/home-what-becomes-of-us-review/",
+      "headline": "home what becomes of us review",
       "via": null,
       "held": [
-        "children-of-a-lesser-god-2018"
+        "home-2024"
       ],
       "matched": [],
-      "outOfWindow": [
-        "children-of-a-lesser-god-2018",
-        "children-of-a-lesser-god-1980"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/the-harder-they-come-review-suzan-lori-parks/",
-      "headline": "the harder they come review suzan lori parks",
-      "publishDate": "2023-06-26",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "the-harder-they-come-off-broadway-2023"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "the-harder-they-come-off-broadway-2023"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/natasha-pierre-and-the-great-comet-of-1812-review-josh-groban/",
-      "headline": "natasha pierre and the great comet of 1812 review josh groban",
-      "publishDate": "2024-04-14",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "natasha-pierre-and-the-great-comet-of-1812-2016"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "natasha-pierre-and-the-great-comet-of-1812-2016"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/take-me-out-review/",
-      "headline": "take me out review",
-      "publishDate": "2024-04-29",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "take-me-out-2022"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "take-me-out-2022",
-        "take-me-out-2003"
-      ]
+      "outOfWindow": []
     },
     {
       "url": "https://www.slantmagazine.com/theater/job-review-max-wolf-friedlich/",
       "headline": "job review max wolf friedlich",
-      "publishDate": "2024-07-31",
-      "dateSoft": true,
       "via": null,
       "held": [
         "job-2024"
@@ -388,237 +261,238 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/spamalot-review/",
-      "headline": "spamalot review",
-      "publishDate": "2024-08-12",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/boop-the-musical-review/",
+      "headline": "boop the musical review",
       "via": null,
       "held": [
-        "spamalot-2023"
+        "boop-2025"
       ],
       "matched": [],
-      "outOfWindow": [
-        "spamalot-2023",
-        "spamalot-2005"
-      ]
+      "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/purlie-victorious-a-non-confederate-romp-through-the-cotton-patch-review/",
-      "headline": "purlie victorious a non confederate romp through the cotton patch review",
-      "publishDate": "2024-10-10",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/mj-the-musical-review-michael-jackson-broadway/",
+      "headline": "mj the musical review michael jackson broadway",
       "via": null,
       "held": [
-        "purlie-victorious-2023"
+        "mj-2022"
       ],
       "matched": [],
-      "outOfWindow": [
-        "purlie-victorious-2023"
-      ]
+      "outOfWindow": []
     },
     {
-      "url": "https://www.slantmagazine.com/theater/fat-ham-review-james-ijames-broadway/",
-      "headline": "fat ham review james ijames broadway",
-      "publishDate": "2024-10-10",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/wanted-review-broadway-musical/",
+      "headline": "wanted review broadway musical",
       "via": null,
       "held": [
-        "fat-ham-2023"
+        "wanted-2022"
       ],
       "matched": [],
-      "outOfWindow": [
-        "fat-ham-2023"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/how-i-learned-to-drive-review-mary-louise-parker/",
-      "headline": "how i learned to drive review mary louise parker",
-      "publishDate": "2024-12-29",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "how-i-learned-to-drive-2022"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "how-i-learned-to-drive-2022"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/illinoise-review-sufjan-stevens-justin-peck/",
-      "headline": "illinoise review sufjan stevens justin peck",
-      "publishDate": "2025-01-26",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "illinoise-2024"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "illinoise-2024",
-        "illinoise-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/birthday-candles-review-debra-messing/",
-      "headline": "birthday candles review debra messing",
-      "publishDate": "2025-02-21",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "birthday-candles-2022"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "birthday-candles-2022"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/here-we-are-review-stephen-sondheim/",
-      "headline": "here we are review stephen sondheim",
-      "publishDate": "2025-02-28",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "here-we-are-off-broadway-2023"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "here-we-are-off-broadway-2023"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/prima-facie-review-jodie-comer/",
-      "headline": "prima facie review jodie comer",
-      "publishDate": "2025-04-22",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "prima-facie-2023"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "prima-facie-2023"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/lempicka-broadway-review/",
-      "headline": "lempicka broadway review",
-      "publishDate": "2026-07-10",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "lempicka-2024"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "lempicka-2024"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/the-roommate-review-mia-farrow-patti-lupone/",
-      "headline": "the roommate review mia farrow patti lupone",
-      "publishDate": "2026-11-06",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "the-roommate-2024"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "the-roommate-2024"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/an-enemy-of-the-people-review-jeremy-strong/",
-      "headline": "an enemy of the people review jeremy strong",
-      "publishDate": "2026-11-06",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "an-enemy-of-the-people-2024"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "an-enemy-of-the-people-2024",
-        "an-enemy-of-the-people-2012",
-        "an-enemy-of-the-people-1971"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/the-hills-of-california-our-town-review/",
-      "headline": "the hills of california our town review",
-      "publishDate": "2026-11-06",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "our-town-2024",
-        "the-hills-of-california-2024"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "our-town-2024",
-        "the-hills-of-california-2024",
-        "our-town-2002",
-        "our-town-1988"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/the-queen-of-versailles-review-kristin-chenoweth/",
-      "headline": "the queen of versailles review kristin chenoweth",
-      "publishDate": "2026-11-06",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "queen-versailles-2025"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "queen-versailles-2025"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/the-music-man-review-hugh-jackman/",
-      "headline": "the music man review hugh jackman",
-      "publishDate": "2026-11-06",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "the-music-man-2022"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "the-music-man-2022",
-        "the-music-man-2000"
-      ]
+      "outOfWindow": []
     }
   ],
   "ambiguous": [
     {
-      "url": "https://www.slantmagazine.com/theater/hamlet-review-thomas-ostermeier/",
-      "headline": "hamlet review thomas ostermeier",
-      "publishDate": "2024-04-29",
-      "dateSoft": true,
+      "url": "https://www.slantmagazine.com/theater/review-macbeth-at-park-avenue-armory/",
+      "headline": "review macbeth at park avenue armory",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "hamlet-off-broadway-2024",
-        "hamlet-greenwich-house-off-broadway-2024"
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026"
       ],
       "outOfWindow": [
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/into-the-woods-review-new-york-city-center/",
+      "headline": "into the woods review new york city center",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/west-side-story-review-ivo-van-hove/",
+      "headline": "west side story review ivo van hove",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "west-side-story-2020",
+        "west-side-story-2009",
+        "west-side-story-1980"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/review-side-show-at-the-st-james-theatre/",
+      "headline": "review side show at the st james theatre",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "side-show-2014",
+        "side-show-1997"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban/",
+      "headline": "sweeney todd the demon barber of fleet street review josh groban",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "sweeney-todd-2023",
+        "sweeney-todd-2005",
+        "sweeney-todd-1989",
+        "sweeney-todd-1979"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/review-hamlet-at-st-anns-warehouse-is-a-triumph-of-production-over-performance/",
+      "headline": "review hamlet at st anns warehouse is a triumph of production over performance",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
         "hamlet-2009",
         "hamlet-1995",
         "hamlet-1975",
-        "hamlet-off-broadway-2026"
+        "hamlet-off-broadway-2026",
+        "triumph-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/macbeth-review-corey-stoll/",
+      "headline": "macbeth review corey stoll",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "macbeth-an-undoing-off-broadway-2024"
       ]
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/hamlet-review-thomas-ostermeier/",
+      "headline": "hamlet review thomas ostermeier",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/cyrano-de-bergerac-review-james-mcavoy/",
+      "headline": "cyrano de bergerac review james mcavoy",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cyrano-de-bergerac-2012",
+        "cyrano-de-bergerac-2007",
+        "cyrano-de-bergerac-1984"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/richard-iii-shakespeare-in-the-park-hamlet-park-avenue-armory-review/",
+      "headline": "richard iii shakespeare in the park hamlet park avenue armory review",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "richard-iii-2013",
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/a-streetcar-named-desire-review-paul-mescal/",
+      "headline": "a streetcar named desire review paul mescal",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/review-the-visit/",
+      "headline": "review the visit",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-visit-2015",
+        "the-visit-1973"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/long-days-journey-into-night-review-elizabeth-marvel/",
+      "headline": "long days journey into night review elizabeth marvel",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "long-days-journey-into-night-2016",
+        "long-days-journey-into-night-2003",
+        "long-days-journey-into-night-1986",
+        "long-days-journey-into-night-1988",
+        "long-days-journey-into-night-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/review-public-works-hercules-wrestles-more-with-heroism-than-with-female-liberation/",
+      "headline": "review public works hercules wrestles more with heroism than with female liberation",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "liberation-2025",
+        "liberation-off-broadway-2025"
+      ],
+      "outOfWindow": []
     }
   ],
   "catalogGaps": [
     {
       "url": "https://www.slantmagazine.com/theater/the-visitor-review-public-theater/",
       "headline": "the visitor review public theater",
-      "publishDate": "2021-11-04",
-      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -627,8 +501,6 @@
     {
       "url": "https://www.slantmagazine.com/theater/review-caryl-churchills-love-and-information-at-new-york-theatre-workshop/",
       "headline": "review caryl churchills love and information at new york theatre workshop",
-      "publishDate": "2022-12-27",
-      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -637,8 +509,6 @@
     {
       "url": "https://www.slantmagazine.com/theater/review-american-hero-at-second-stage/",
       "headline": "review american hero at second stage",
-      "publishDate": "2022-12-27",
-      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -647,8 +517,6 @@
     {
       "url": "https://www.slantmagazine.com/theater/review-generations-at-soho-rep/",
       "headline": "review generations at soho rep",
-      "publishDate": "2022-12-27",
-      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -657,8 +525,6 @@
     {
       "url": "https://www.slantmagazine.com/theater/review-the-killer-at-polonsky-shakespeare-center/",
       "headline": "review the killer at polonsky shakespeare center",
-      "publishDate": "2023-04-25",
-      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -667,8 +533,14 @@
     {
       "url": "https://www.slantmagazine.com/theater/sanctuary-city-review-martyna-majok-nytw/",
       "headline": "sanctuary city review martyna majok nytw",
-      "publishDate": "2023-09-12",
-      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/theater-review-edward-albees-at-home-at-the-zoo-at-the-signature-theatre/",
+      "headline": "theater review edward albees at home at the zoo at the signature theatre",
       "via": null,
       "held": [],
       "matched": [],
@@ -677,8 +549,14 @@
     {
       "url": "https://www.slantmagazine.com/theater/scotland-pa-roundabout-review/",
       "headline": "scotland pa roundabout review",
-      "publishDate": "2026-04-22",
-      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.slantmagazine.com/theater/beaches-broadway-review/",
+      "headline": "beaches broadway review",
       "via": null,
       "held": [],
       "matched": [],
@@ -687,8 +565,6 @@
     {
       "url": "https://www.slantmagazine.com/theater/review-mr-burns-at-playwrights-horizons/",
       "headline": "review mr burns at playwrights horizons",
-      "publishDate": "2026-06-29",
-      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -696,355 +572,5 @@
     }
   ],
   "otherMarketReviews": [],
-  "outOfWindow": [
-    {
-      "url": "https://www.slantmagazine.com/theater/review-macbeth-at-park-avenue-armory/",
-      "headline": "review macbeth at park avenue armory",
-      "publishDate": "2021-07-04",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "macbeth-2022",
-        "macbeth-2013",
-        "macbeth-2008",
-        "macbeth-1988",
-        "macbeth-1981",
-        "macbeth-2000",
-        "macbeth-1982",
-        "macbeth-off-broadway-2026",
-        "macbeth-an-undoing-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/west-side-story-review-ivo-van-hove/",
-      "headline": "west side story review ivo van hove",
-      "publishDate": "2022-10-22",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "west-side-story-2020",
-        "west-side-story-2009",
-        "west-side-story-1980"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-american-moor-richly-illuminates-the-experience-of-acting-while-black/",
-      "headline": "review american moor richly illuminates the experience of acting while black",
-      "publishDate": "2022-12-26",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "american-moor-off-broadway-2019"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-if-then-at-the-richard-rodgers-theatre/",
-      "headline": "review if then at the richard rodgers theatre",
-      "publishDate": "2022-12-27",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "ifthen-2014"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-side-show-at-the-st-james-theatre/",
-      "headline": "review side show at the st james theatre",
-      "publishDate": "2022-12-27",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "side-show-2014",
-        "side-show-1997"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-cirque-du-soleils-kurios-cabinet-of-curiosities-at-randalls-island/",
-      "headline": "review cirque du soleils kurios cabinet of curiosities at randalls island",
-      "publishDate": "2023-04-19",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-island-1974"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/macbeth-review-corey-stoll/",
-      "headline": "macbeth review corey stoll",
-      "publishDate": "2024-02-26",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "macbeth-2022",
-        "macbeth-2013",
-        "macbeth-2008",
-        "macbeth-1988",
-        "macbeth-1981",
-        "macbeth-2000",
-        "macbeth-1982",
-        "macbeth-off-broadway-2026",
-        "macbeth-an-undoing-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-every-brilliant-thing-at-the-barrow-street-theatre/",
-      "headline": "review every brilliant thing at the barrow street theatre",
-      "publishDate": "2024-04-28",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "every-brilliant-thing-2026"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-the-beauty-queen-of-leenane-at-bam/",
-      "headline": "review the beauty queen of leenane at bam",
-      "publishDate": "2024-04-28",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-beauty-queen-of-leenane-1998"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/theater-review-measure-for-measure-at-the-polonsky-shakespeare-center/",
-      "headline": "theater review measure for measure at the polonsky shakespeare center",
-      "publishDate": "2024-04-29",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "measure-for-measure-1973"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/on-sugarland-review-aleshea-harris/",
-      "headline": "on sugarland review aleshea harris",
-      "publishDate": "2024-07-06",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "on-sugarland-off-broadway-2022"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-broadbend-arkansas-and-soft-power-are-a-mixed-bag-of-one-acts/",
-      "headline": "review broadbend arkansas and soft power are a mixed bag of one acts",
-      "publishDate": "2024-09-27",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "soft-power-off-broadway-2019"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-the-wrong-man-suggests-a-concept-album-propped-up-on-two-legs/",
-      "headline": "review the wrong man suggests a concept album propped up on two legs",
-      "publishDate": "2024-09-29",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-wrong-man-off-broadway-2019"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/cyrano-de-bergerac-review-james-mcavoy/",
-      "headline": "cyrano de bergerac review james mcavoy",
-      "publishDate": "2024-10-21",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "cyrano-de-bergerac-2012",
-        "cyrano-de-bergerac-2007",
-        "cyrano-de-bergerac-1984"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/richard-iii-shakespeare-in-the-park-hamlet-park-avenue-armory-review/",
-      "headline": "richard iii shakespeare in the park hamlet park avenue armory review",
-      "publishDate": "2024-11-22",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "richard-iii-2013",
-        "hamlet-2009",
-        "hamlet-1995",
-        "hamlet-1975",
-        "hamlet-off-broadway-2026",
-        "hamlet-off-broadway-2024",
-        "hamlet-greenwich-house-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/slave-play-review-jeremy-o-harris/",
-      "headline": "slave play review jeremy o harris",
-      "publishDate": "2025-02-22",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "slave-play-2021"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/the-inheritance-review-broadway-matthew-lopez/",
-      "headline": "the inheritance review broadway matthew lopez",
-      "publishDate": "2025-04-22",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-inheritance-2019"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/a-streetcar-named-desire-review-paul-mescal/",
-      "headline": "a streetcar named desire review paul mescal",
-      "publishDate": "2025-06-17",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-streetcar-named-desire-2012",
-        "a-streetcar-named-desire-1992",
-        "a-streetcar-named-desire-1988",
-        "a-streetcar-named-desire-1973",
-        "a-streetcar-named-desire-2005"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-the-lightning-thief-struggles-to-summon-epic-scale-spectacle/",
-      "headline": "review the lightning thief struggles to summon epic scale spectacle",
-      "publishDate": "2025-08-15",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-lightning-thief-2019"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-the-visit/",
-      "headline": "review the visit",
-      "publishDate": "2025-09-29",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-visit-2015",
-        "the-visit-1973"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-its-only-a-play-at-the-gerald-schoenfeld-theatre/",
-      "headline": "review its only a play at the gerald schoenfeld theatre",
-      "publishDate": "2025-09-29",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "its-only-a-play-2014"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/some-like-it-hot-review-broadway-musical/",
-      "headline": "some like it hot review broadway musical",
-      "publishDate": "2026-04-22",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "some-like-it-hot-2022"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/hells-kitchen-review-alicia-keys/",
-      "headline": "hells kitchen review alicia keys",
-      "publishDate": "2026-04-26",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "hells-kitchen-2024"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/long-days-journey-into-night-review-elizabeth-marvel/",
-      "headline": "long days journey into night review elizabeth marvel",
-      "publishDate": "2026-11-05",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "long-days-journey-into-night-2016",
-        "long-days-journey-into-night-2003",
-        "long-days-journey-into-night-1986",
-        "long-days-journey-into-night-1988",
-        "long-days-journey-into-night-off-broadway-2022"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/fruma-sarah-waiting-in-the-wings-review-jackie-hoffman/",
-      "headline": "fruma sarah waiting in the wings review jackie hoffman",
-      "publishDate": "2026-11-06",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "waiting-in-the-wings-1999"
-      ]
-    },
-    {
-      "url": "https://www.slantmagazine.com/theater/review-public-works-hercules-wrestles-more-with-heroism-than-with-female-liberation/",
-      "headline": "review public works hercules wrestles more with heroism than with female liberation",
-      "publishDate": "2026-11-06",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "liberation-2025",
-        "liberation-off-broadway-2025"
-      ]
-    }
-  ]
+  "outOfWindow": []
 }

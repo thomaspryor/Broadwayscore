@@ -1,40 +1,92 @@
 {
   "outletId": "deadline",
-  "generatedAt": "2026-10-28T20:39:56.555Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:32:29.757Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
+    "status": "complete",
     "notes": [],
-    "enumerated": 1835,
-    "inWindow": 1835,
+    "incomplete": false,
+    "enumerated": 1867,
+    "inWindow": 1867,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 1732,
-      "held": 81,
+      "not-review": 1759,
+      "held": 96,
       "ambiguous": 2,
-      "held-unmatched": 10,
       "out-of-window": 2,
-      "gap": 3,
-      "catalog-gap": 4,
+      "gap": 1,
+      "catalog-gap": 2,
+      "held-unmatched": 3,
+      "held-alt-url": 2
+    },
+    "viaTitleVariant": {
+      "held": 8
+    },
+    "recall": 0.99,
+    "recallWithCatalog": 0.97
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 123,
+      "held": 9
+    },
+    "2025-26": {
+      "not-review": 516,
+      "held": 23,
+      "ambiguous": 1,
+      "out-of-window": 1
+    },
+    "2024-25": {
+      "not-review": 524,
+      "held": 34,
+      "gap": 1,
+      "catalog-gap": 1,
+      "held-unmatched": 1
+    },
+    "2023-24": {
+      "not-review": 420,
+      "held": 16,
+      "out-of-window": 1,
+      "ambiguous": 1,
       "held-alt-url": 1
     },
-    "viaTitleVariant": {},
-    "recall": 0.965,
-    "recallWithCatalog": 0.921
+    "2022-23": {
+      "not-review": 16,
+      "held": 2,
+      "held-alt-url": 1
+    },
+    "2021-22": {
+      "not-review": 125,
+      "held": 10,
+      "held-unmatched": 2
+    },
+    "2020-21": {
+      "not-review": 35,
+      "held": 2,
+      "catalog-gap": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 325,
+    "rowsInWindow": 380,
     "notEnumerated": 63,
-    "noUrl": 2,
+    "noUrl": 3,
     "samples": [
       {
         "showId": "1776-2022",
         "url": "https://deadline.com/2022/10/1776-broadway-review-1235136437/",
         "publishDate": "2022-10-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "url": "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/",
+        "publishDate": "2022-12-04",
         "why": "not-enumerated"
       },
       {
@@ -71,6 +123,12 @@
         "showId": "and-juliet-2022",
         "url": "https://deadline.com/2022/11/and-juliet-broadway-review-max-martin-1235173880/",
         "publishDate": "2022-11-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "appropriate-2023",
+        "url": "https://deadline.com/2023/12/appropriate-broadway-review-1235671187/",
+        "publishDate": "2023-12-18",
         "why": "not-enumerated"
       },
       {
@@ -258,33 +316,10 @@
         "url": "https://deadline.com/2022/04/paradise-square-broadway-review-garth-drabinsky-1234993076/",
         "publishDate": "2022-04-03",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "peter-pan-goes-wrong-2023",
-        "url": "https://deadline.com/2023/04/peter-pan-goes-wrong-broadway-review-deadline-neil-patrick-harris-1235330328/",
-        "publishDate": "2023-04-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "pictures-from-home-2023",
-        "url": "https://deadline.com/2023/02/pictures-from-home-broadway-review-nathan-lane-1235253772/",
-        "publishDate": "2023-02-09",
-        "why": "not-enumerated"
       }
     ]
   },
   "gaps": [
-    {
-      "url": "https://deadline.com/2025/09/punch-broadway-review-1236564771/",
-      "headline": "‘Punch’ Broadway Review: When Violence Meets Forgiveness",
-      "publishDate": "2025-09-29",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "punch-2025"
-      ],
-      "outOfWindow": []
-    },
     {
       "url": "https://deadline.com/2025/06/jean-smart-call-me-izzy-broadway-review-1236427982/",
       "headline": "Jean Smart Welcomes In The New Broadway Season With The Remarkable ‘Call Me Izzy’ – Review",
@@ -295,20 +330,20 @@
         "call-me-izzy-2025"
       ],
       "outOfWindow": []
-    },
+    }
+  ],
+  "heldAltUrl": [
     {
       "url": "https://deadline.com/2024/03/appropriate-broadway-review-1235671187/",
       "headline": "‘Appropriate’ Broadway Review: Sarah Paulson Rattles The Rafters Of History In Powerhouse Production",
       "publishDate": "2024-03-25",
-      "via": "poller-matcher",
-      "held": [],
       "matched": [
         "appropriate-2023"
       ],
-      "outOfWindow": []
-    }
-  ],
-  "heldAltUrl": [
+      "heldUrls": [
+        "https://deadline.com/2023/12/appropriate-broadway-review-1235671187/"
+      ]
+    },
     {
       "url": "https://deadline.com/2022/10/funny-girl-lea-michele-broadway-review-1235133156/",
       "headline": "Lea Michele: A Spectacular ‘Funny Girl’, At Last – Broadway Review",
@@ -324,91 +359,12 @@
   "misfiles": [],
   "heldUnmatched": [
     {
-      "url": "https://deadline.com/2026/04/beaches-musical-broadway-review-1236866946/",
-      "headline": "‘Beaches’ Broadway Review: ’80s Tearjerker Washes Out As Stage Musical",
-      "publishDate": "2026-04-22",
-      "via": null,
-      "held": [
-        "beaches-2026"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://deadline.com/2026/03/john-lithgow-giant-broadway-review-1236761578/",
-      "headline": "‘Giant’ Broadway Review: John Lithgow Delivers A Towering Performance As A Less-Than-Peachy Roald Dahl",
-      "publishDate": "2026-03-23",
-      "via": null,
-      "held": [
-        "giant-2026"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://deadline.com/2025/04/just-in-time-broadway-review-jonathan-groff-1236377062/",
-      "headline": "‘Just In Time’ Broadway Review: Jonathan Groff Plays Bobby Darin – And Two Stars Ignite",
-      "publishDate": "2025-04-26",
-      "via": null,
-      "held": [
-        "just-in-time-2025"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://deadline.com/2025/01/english-broadway-review-1236262749/",
-      "headline": "‘English’ Broadway Review: Pulitzer Winner Lives Up To Expectations In Superb Production",
-      "publishDate": "2025-01-23",
-      "via": null,
-      "held": [
-        "english-2025"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://deadline.com/2024/11/elf-the-musical-broadway-review-ho-ho-etc-1236178027/",
       "headline": "‘Elf The Musical’ Broadway Review: Ho Ho Etc.",
       "publishDate": "2024-11-17",
       "via": null,
       "held": [
         "elf-2024"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://deadline.com/2024/11/wonderful-world-louis-armstrong-musical-broadway-review-1236171156/",
-      "headline": "‘A Wonderful World’ Broadway Review: James Monroe Iglehart Brings Louis Armstrong Back To Swingin’ Live",
-      "publishDate": "2024-11-11",
-      "via": null,
-      "held": [
-        "a-wonderful-world-the-louis-armstrong-musical-2024"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://deadline.com/2024/06/home-broadway-review-1235958976/",
-      "headline": "‘Home’ Review: Broadway Stages A Loving And Captivating Tribute To The Late Samm-Art Williams In A Terrific Revival Of His Signature Work",
-      "publishDate": "2024-06-05",
-      "via": null,
-      "held": [
-        "home-2024"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "tribute-1978"
-      ]
-    },
-    {
-      "url": "https://deadline.com/2024/03/doubt-broadway-review-1235847662/",
-      "headline": "‘Doubt’ Broadway Review: Amy Ryan & Liev Schreiber Resurrect A Modern Classic",
-      "publishDate": "2024-03-07",
-      "via": null,
-      "held": [
-        "doubt-2024"
       ],
       "matched": [],
       "outOfWindow": []
@@ -475,15 +431,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://deadline.com/2021/11/trevor-the-musical-review-off-broadway-1234870928/",
-      "headline": "‘Trevor The Musical’ Off Broadway Review: Stage Adaptation Gives Joyous Voice To Oscar-Winning Short",
-      "publishDate": "2021-11-10",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://deadline.com/2021/08/jacob-ming-trent-merry-wives-shakespeare-in-the-park-review-1234810526/",
       "headline": "Jacob Ming-Trent Leads Delightful ‘Merry Wives’ In Central Park Celebration – Review",
       "publishDate": "2021-08-09",
@@ -491,17 +438,9 @@
       "held": [],
       "matched": [],
       "outOfWindow": []
-    },
-    {
-      "url": "https://deadline.com/2021/06/bruce-springsteen-on-broadway-review-opening-night-1234782184/",
-      "headline": "‘Springsteen On Broadway’ Review: The Boss Rouses A City Hungry For Life",
-      "publishDate": "2021-06-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
     }
   ],
+  "otherMarketReviews": [],
   "outOfWindow": [
     {
       "url": "https://deadline.com/2025/12/merrily-we-roll-along-review-film-version-broadway-musical-1236636276/",

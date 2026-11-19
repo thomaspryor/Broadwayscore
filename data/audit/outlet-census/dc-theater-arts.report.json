@@ -1,33 +1,74 @@
 {
   "outletId": "dc-theater-arts",
-  "generatedAt": "2026-10-28T20:43:56.724Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:36:00.761Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
+    "status": "complete",
     "notes": [],
-    "enumerated": 1748,
-    "inWindow": 1748,
+    "incomplete": false,
+    "enumerated": 1767,
+    "inWindow": 1767,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "out-of-window": 608,
-      "not-review": 1076,
-      "held-other-market": 27,
-      "catalog-gap": 35,
+      "out-of-window": 642,
+      "not-review": 1033,
+      "held-other-market": 56,
+      "catalog-gap": 34,
       "gap": 2
     },
     "viaTitleVariant": {
-      "not-review": 26
+      "not-review": 20
     },
     "recall": 0,
     "recallWithCatalog": 0
   },
+  "seasons": {
+    "2026-27": {
+      "out-of-window": 26,
+      "not-review": 33,
+      "held-other-market": 18,
+      "catalog-gap": 1
+    },
+    "2025-26": {
+      "not-review": 167,
+      "held-other-market": 27,
+      "out-of-window": 127,
+      "catalog-gap": 6
+    },
+    "2024-25": {
+      "not-review": 205,
+      "out-of-window": 129,
+      "held-other-market": 10,
+      "catalog-gap": 5,
+      "gap": 1
+    },
+    "2023-24": {
+      "not-review": 234,
+      "out-of-window": 146,
+      "catalog-gap": 10,
+      "held-other-market": 1
+    },
+    "2022-23": {
+      "not-review": 238,
+      "out-of-window": 138,
+      "catalog-gap": 8,
+      "gap": 1
+    },
+    "2021-22": {
+      "out-of-window": 76,
+      "not-review": 156,
+      "catalog-gap": 4
+    }
+  },
   "corpusSide": {
-    "rowsInWindow": 94,
-    "notEnumerated": 27,
+    "rowsInWindow": 128,
+    "notEnumerated": 37,
     "noUrl": 0,
     "samples": [
       {
@@ -37,9 +78,21 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "a-simulacrum-off-broadway-2023",
+        "url": "https://dctheaterarts.org/2023/06/14/thoughts-behind-the-magic-in-a-simulacrum-at-nycs-atlantic-stage-2/",
+        "publishDate": "2023-06-14",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "a-woman-among-women-off-broadway-2026",
         "url": "https://dctheaterarts.org/2026/06/04/rise-and-fall-of-a-community-leader-in-a-woman-among-women-off-broadway-at-lincoln-center/",
         "publishDate": "2026-06-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "chinese-republicans-off-broadway-2026",
+        "url": "https://dctheaterarts.org/2026/02/26/women-climbing-the-ladder-of-corporate-finance-in-chinese-republicans-off-broadway-at-roundabout-theatre-company/",
+        "publishDate": "2026-02-26",
         "why": "not-enumerated"
       },
       {
@@ -85,6 +138,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
+        "url": "https://dctheaterarts.org/2026/02/05/devastating-and-timely-historical-account-of-the-rise-of-tyranny-in-hans-litten-the-jew-who-cross-examined-hitler-at-nycs-theatre-row/",
+        "publishDate": "2026-02-05",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "home-2024",
         "url": "https://dctheaterarts.org/2024/06/05/roundabouts-superlative-revival-of-home-opens-at-broadways-todd-haimes-theatre/",
         "publishDate": "2024-06-05",
@@ -109,6 +168,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "marcel-on-the-train-off-broadway-2026",
+        "url": "https://dctheaterarts.org/2026/02/22/courageous-backstory-of-the-worlds-greatest-mime-in-marcel-on-the-train-off-broadway-at-classic-stage-company/",
+        "publishDate": "2026-02-22",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "merry-me-off-broadway-2023",
         "url": "https://dctheaterarts.org/2023/10/31/madcap-sapphic-comedy-shatters-cisgender-hetero-paradigms-in-merry-me-at-the-new-york-theatre-workshop/",
         "publishDate": "2023-10-31",
@@ -127,9 +192,21 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "night-side-songs-off-broadway-2026",
+        "url": "https://dctheaterarts.org/2026/03/01/healing-through-connection-in-night-side-songs-off-broadway-at-lincoln-center/",
+        "publishDate": "2026-03-01",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "ragtime-2025",
         "url": "https://dctheaterarts.org/2025/10/16/an-epic-ragtime-for-the-ages-at-broadways-lincoln-center-theater/",
         "publishDate": "2025-10-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "someone-spectacular-off-broadway-2024",
+        "url": "https://dctheaterarts.org/2024/08/14/processing-grief-in-someone-spectacular-at-off-broadways-pershing-square-signature-center/",
+        "publishDate": "2024-08-14",
         "why": "not-enumerated"
       },
       {
@@ -142,6 +219,24 @@
         "showId": "the-adding-machine-off-broadway-2026",
         "url": "https://dctheaterarts.org/2026/04/14/the-new-groups-darkly-satiric-and-deeply-disturbing-revival-of-the-adding-machine-off-broadway-at-the-theater-at-st-clements/",
         "publishDate": "2026-04-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-alchemist-off-broadway-2021",
+        "url": "https://dcmetrotheaterarts.com/2021/11/21/red-bulls-world-premiere-off-broadway-adaptation-of-the-alchemist-delivers-the-laughs-and-the-lessons/",
+        "publishDate": "2021-11-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-bakers-wife-off-broadway-2025",
+        "url": "https://dctheaterarts.org/2025/11/11/fresh-bread-brings-concord-to-a-french-village-in-the-bakers-wife-at-off-broadways-classic-stage-company/",
+        "publishDate": "2025-11-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-balusters-2026",
+        "url": "https://dctheaterarts.org/2026/04/21/its-neighbor-against-neighbor-in-mtcs-wildly-funny-and-incisive-comedy-the-balusters-at-broadways-friedman-theatre/",
+        "publishDate": "2026-04-21",
         "why": "not-enumerated"
       },
       {
@@ -190,6 +285,12 @@
         "showId": "the-welkin-off-broadway-2024",
         "url": "https://dctheaterarts.org/2024/06/12/atlantic-theater-companys-off-broadway-premiere-of-the-welkin-is-loud-long-and-loaded-with-anachronisms/",
         "publishDate": "2024-06-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "titus-andronicus-off-broadway-2026",
+        "url": "https://dctheaterarts.org/2026/03/29/red-bull-offers-a-pan-temporal-view-of-shakespeares-titus-andronicus-off-broadway-at-pershing-square-signature-center/",
+        "publishDate": "2026-03-29",
         "why": "not-enumerated"
       }
     ]
@@ -276,15 +377,6 @@
       "url": "https://dctheaterarts.org/2026/06/24/sleeping-beauty-the-time-traveler-has-a-neat-twist-at-adventure-theatre-mtc/",
       "headline": "“Sleeping Beauty: The Time Traveler” has a neat twist at Adventure Theatre MTC",
       "publishDate": "2026-06-24",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://dctheaterarts.org/2026/05/23/theres-magic-at-play-in-signature-theatres-dazzling-pippin/",
-      "headline": "There’s magic at play in Signature Theatre’s dazzling ‘Pippin’",
-      "publishDate": "2026-05-23",
       "via": null,
       "held": [],
       "matched": [],
@@ -462,6 +554,15 @@
       "outOfWindow": []
     },
     {
+      "url": "https://dctheaterarts.org/2023/03/02/heart-wrenching-selling-kabul-is-all-too-real-at-signature-theatre/",
+      "headline": "Heart-wrenching ‘Selling Kabul’ is all too real at Signature Theatre",
+      "publishDate": "2023-03-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://dctheaterarts.org/2023/02/19/black-broadway-a-proud-history-a-limitless-future-to-air-february-28/",
       "headline": "‘Black Broadway: A Proud History, A Limitless Future’ to air February 28",
       "publishDate": "2023-02-19",
@@ -474,15 +575,6 @@
       "url": "https://dctheaterarts.org/2023/02/19/broadways-jessica-vosk-lights-up-dc-for-valentines-day/",
       "headline": "Broadway’s Jessica Vosk lights up DC for Valentine’s Day",
       "publishDate": "2023-02-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://dctheaterarts.org/2023/02/03/broadway-legend-mandy-patinkin-exhaults-humanity-on-tour-at-strathmore/",
-      "headline": "Broadway legend Mandy Patinkin exalts humanity on tour at Strathmore",
-      "publishDate": "2023-02-03",
       "via": null,
       "held": [],
       "matched": [],
@@ -543,7 +635,92 @@
       "outOfWindow": []
     }
   ],
+  "otherMarketReviews": [],
   "outOfWindow": [
+    {
+      "url": "https://dctheaterarts.org/2026/11/17/bravo-to-young-artists-of-americas-titanic-the-musical-at-strathmore/",
+      "headline": "Bravo to Young Artists of America’s ‘Titanic: The Musical’ at Strathmore",
+      "publishDate": "2026-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2026/11/15/in-takes-all-kinds-dan-hoyle-shares-a-secret-for-saving-democracy/",
+      "headline": "In ‘Takes All Kinds,’ Dan Hoyle shares a secret for saving democracy",
+      "publishDate": "2026-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "democracy-2004"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2026/11/09/wno-reinvigorates-madama-butterfly-at-dar-constitution-hall/",
+      "headline": "WNO reinvigorates ‘Madama Butterfly’ at DAR Constitution Hall",
+      "publishDate": "2026-11-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "madama-butterfly-off-broadway-2026",
+        "madama-butterfly-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2026/11/07/go-hear-the-people-sing-in-olneys-stirring-new-les-miserables/",
+      "headline": "Go hear the people sing in Olney’s stirring new ‘Les Misérables’",
+      "publishDate": "2026-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "les-miserables-2014",
+        "les-miserables-2006",
+        "les-miserables-1987"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2026/10/29/in-signatures-all-the-worlds-a-stage-the-joy-of-living-truthfully/",
+      "headline": "In Signature’s ‘All the World’s a Stage,’ the joy of living truthfully",
+      "publishDate": "2026-10-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "all-the-worlds-a-stage-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2026/10/29/queens-reign-in-exhilarating-six-on-tour-at-the-hippodrome/",
+      "headline": "Queens reign in exhilarating ‘SIX’ on tour at the Hippodrome",
+      "publishDate": "2026-10-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "queens-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2026/10/28/triunes-kid-friendly-musical-finding-neverland-tells-backstory-of-peter-pan/",
+      "headline": "Triune’s kid-friendly musical ‘Finding Neverland’ tells backstory of Peter Pan",
+      "publishDate": "2026-10-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "finding-neverland-2015",
+        "peter-pan-1991",
+        "peter-pan-1998",
+        "peter-pan-1999",
+        "peter-pan-1979"
+      ]
+    },
     {
       "url": "https://dctheaterarts.org/2026/10/27/mary-shelleys-frankenstein-thrills-and-chills-at-american-shakespeare-center/",
       "headline": "‘Mary Shelley’s Frankenstein’ thrills and chills at American Shakespeare Center",
@@ -552,7 +729,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "frankenstein-1981"
+        "mary-shelleys-frankenstein-off-broadway-2017"
       ]
     },
     {
@@ -575,17 +752,6 @@
       "matched": [],
       "outOfWindow": [
         "the-children-2017"
-      ]
-    },
-    {
-      "url": "https://dctheaterarts.org/2026/10/25/arena-stages-riveting-are-you-now-or-have-you-ever-been-has-timely-vibe/",
-      "headline": "Arena Stage’s riveting ‘Are You Now or Have You Ever Been?’ has timely vibe",
-      "publishDate": "2026-10-25",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "are-you-now-or-have-you-ever-been-off-broadway-2026"
       ]
     },
     {
@@ -612,28 +778,6 @@
       ]
     },
     {
-      "url": "https://dctheaterarts.org/2026/10/20/handle-with-care-and-oedipus-in-seattle-two-post-pandemic-delights/",
-      "headline": "‘Handle With Care’ and ‘Oedipus in Seattle’: two post-pandemic delights",
-      "publishDate": "2026-10-20",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "oedipus-2025"
-      ]
-    },
-    {
-      "url": "https://dctheaterarts.org/2026/10/14/youth-go-goth-in-monsters-of-the-villa-diodati-at-creative-cauldron/",
-      "headline": "Youth go goth in ‘Monsters of the Villa Diodati’ at Creative Cauldron",
-      "publishDate": "2026-10-14",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-monsters-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://dctheaterarts.org/2026/10/11/spookiness-with-significance-in-mary-shelleys-frankenstein-at-csc/",
       "headline": "Spookiness with significance in ‘Mary Shelley’s Frankenstein’ at CSC",
       "publishDate": "2026-10-11",
@@ -641,7 +785,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "frankenstein-1981"
+        "mary-shelleys-frankenstein-off-broadway-2017"
       ]
     },
     {
@@ -684,18 +828,6 @@
       ]
     },
     {
-      "url": "https://dctheaterarts.org/2026/09/30/theatre-prometheus-premieres-a-magical-where-dead-women-go-to-dance/",
-      "headline": "Theatre Prometheus premieres a magical ‘Where Dead Women Go to Dance’",
-      "publishDate": "2026-09-30",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-women-2001",
-        "the-women-1973"
-      ]
-    },
-    {
       "url": "https://dctheaterarts.org/2026/09/29/folger-theatres-measure-for-measure-turns-a-problem-play-into-a-revolution/",
       "headline": "Folger Theatre’s ‘Measure for Measure’ turns a problem play into a revolution",
       "publishDate": "2026-09-29",
@@ -715,17 +847,6 @@
       "matched": [],
       "outOfWindow": [
         "chicka-chicka-boom-boom-the-musical-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://dctheaterarts.org/2026/09/26/a-sizzling-some-like-it-hot-reopens-olneys-bernard-family-theatre/",
-      "headline": "A sizzling ‘Some Like It Hot’ reopens Olney’s Bernard Family Theatre",
-      "publishDate": "2026-09-26",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "some-like-it-hot-2022"
       ]
     },
     {
@@ -763,21 +884,6 @@
         "youre-a-good-man-charlie-brown-1971",
         "youre-a-good-man-charlie-brown-off-broadway-2026",
         "youre-a-good-man-charlie-brown-off-broadway-2027"
-      ]
-    },
-    {
-      "url": "https://dctheaterarts.org/2026/09/16/in-ma-raineys-black-bottom-the-blues-come-with-a-price/",
-      "headline": "In ‘Ma Rainey’s Black Bottom,’ the blues come with a price",
-      "publishDate": "2026-09-16",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-price-2017",
-        "ma-raineys-black-bottom-2003",
-        "ma-raineys-black-bottom-1984",
-        "the-price-1999",
-        "the-price-off-broadway-2025"
       ]
     },
     {
@@ -844,17 +950,6 @@
       ]
     },
     {
-      "url": "https://dctheaterarts.org/2026/08/30/girl-power-goes-anti-fascist-in-taffety-punks-first-rate-freddie-a-girl/",
-      "headline": "Girl power goes anti-fascist in Taffety Punk’s first-rate ‘Freddie: A Girl’",
-      "publishDate": "2026-08-30",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-first-1981"
-      ]
-    },
-    {
       "url": "https://dctheaterarts.org/2026/08/24/outdoor-fun-in-much-ado-about-nothing-from-ardeo-theatre-company/",
       "headline": "Outdoor fun in ‘Much Ado About Nothing’ from Ardeo Theatre Company",
       "publishDate": "2026-08-24",
@@ -876,17 +971,6 @@
       "matched": [],
       "outOfWindow": [
         "the-notebook-2024"
-      ]
-    },
-    {
-      "url": "https://dctheaterarts.org/2026/08/18/friendship-and-heartbreak-in-gruesome-playground-injuries-at-keegan-theatre/",
-      "headline": "Friendship and heartbreak in ‘Gruesome Playground Injuries’ at Keegan Theatre",
-      "publishDate": "2026-08-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "gruesome-playground-injuries-off-broadway-2025"
       ]
     },
     {
@@ -1049,6 +1133,17 @@
       ]
     },
     {
+      "url": "https://dctheaterarts.org/2026/06/23/a-heartfelt-and-emotional-tick-tick-boom-from-triune-entertainment/",
+      "headline": "A heartfelt and emotional ‘Tick, Tick… Boom!’ from Triune Entertainment",
+      "publishDate": "2026-06-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tick-tick-boom-off-broadway-2016"
+      ]
+    },
+    {
       "url": "https://dctheaterarts.org/2026/06/23/a-perfectly-delightful-into-the-woods-at-montgomery-college-summer-dinner-theatre/",
       "headline": "A perfectly delightful ‘Into the Woods’ at Montgomery College Summer Dinner Theatre",
       "publishDate": "2026-06-23",
@@ -1060,6 +1155,17 @@
         "into-the-woods-2002",
         "into-the-woods-1997",
         "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2026/06/21/the-goofy-charm-of-evil-librarian-from-landless-theatre-company/",
+      "headline": "The goofy charm of ‘Evil Librarian’ from Landless Theatre Company",
+      "publishDate": "2026-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "charm-off-broadway-2017"
       ]
     },
     {
@@ -1094,7 +1200,6 @@
       "matched": [],
       "outOfWindow": [
         "indecent-2017",
-        "wings-1979",
         "waiting-in-the-wings-1999"
       ]
     },
@@ -1171,6 +1276,17 @@
       ]
     },
     {
+      "url": "https://dctheaterarts.org/2026/05/21/camp-and-joy-for-the-entire-family-in-the-spongebob-musical-at-workhouse-arts-center/",
+      "headline": "Camp and joy for the entire family in ‘The SpongeBob Musical’ at Workhouse Arts Center",
+      "publishDate": "2026-05-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-spongebob-musical-off-broadway-2027"
+      ]
+    },
+    {
       "url": "https://dctheaterarts.org/2026/05/21/with-guys-and-dolls-riverside-center-rolls-a-winner/",
       "headline": "With ‘Guys and Dolls,’ Riverside Center rolls a winner",
       "publishDate": "2026-05-21",
@@ -1191,8 +1307,6 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "the-women-2001",
-        "the-women-1973",
         "little-women-2005",
         "little-women-the-musical-off-broadway-2026"
       ]
@@ -1288,7 +1402,8 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "kimberly-akimbo-2022"
+        "kimberly-akimbo-2022",
+        "kimberly-akimbo-off-broadway-2021"
       ]
     },
     {
@@ -1310,7 +1425,8 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "caesar-and-cleopatra-1977"
+        "caesar-and-cleopatra-1977",
+        "caesar-and-cleopatra-off-broadway-2019"
       ]
     },
     {
@@ -1396,8 +1512,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "the-minutes-2022",
-        "small-off-broadway-2026"
+        "the-minutes-2022"
       ]
     },
     {
@@ -1408,8 +1523,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "vanya-and-sonia-and-masha-and-spike-2013",
-        "vanya-off-broadway-2025"
+        "vanya-and-sonia-and-masha-and-spike-2013"
       ]
     },
     {
@@ -1578,6 +1692,17 @@
       ]
     },
     {
+      "url": "https://dctheaterarts.org/2026/02/19/an-epic-family-drama-in-joseph-god-meant-it-for-good-at-museum-of-the-bible/",
+      "headline": "An epic family drama in ‘Joseph: God Meant It for Good’ at Museum of the Bible",
+      "publishDate": "2026-02-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "joseph-off-broadway-2027"
+      ]
+    },
+    {
       "url": "https://dctheaterarts.org/2026/02/17/a-lot-goes-without-saying-in-small-mouth-sounds-at-maryland-ensemble-theatre/",
       "headline": "A lot goes without saying in ‘Small Mouth Sounds’ at Maryland Ensemble Theatre",
       "publishDate": "2026-02-17",
@@ -1585,7 +1710,6 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "small-off-broadway-2026",
         "small-mouth-sounds-2027"
       ]
     },
@@ -1657,8 +1781,6 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "dracula-1977",
-        "dracula-the-musical-2004",
         "dracula-a-comedy-of-terrors-off-broadway-2023"
       ]
     },
@@ -1670,7 +1792,8 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "rock-of-ages-2009"
+        "rock-of-ages-2009",
+        "rock-of-ages-off-broadway-2019"
       ]
     },
     {
@@ -1762,6 +1885,2350 @@
         "a-christmas-carol-1991",
         "a-christmas-carol-off-broadway-2026",
         "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/12/12/a-joyful-and-holy-night-in-santa-claus-is-comin-a-motown-christmas-revue/",
+      "headline": "A joyful and holy night in ‘Santa Claus Is Comin’: A Motown Christmas Revue’",
+      "publishDate": "2025-12-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "motown-the-musical-2016",
+        "motown-the-musical-2013"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/12/09/at-stc-an-elegant-and-earthy-guys-and-dolls-for-a-generation-of-bros-and-queens/",
+      "headline": "At STC, an elegant and earthy ‘Guys and Dolls’ for a generation of bros and queens",
+      "publishDate": "2025-12-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/12/09/a-profoundly-affecting-lifetime-lights-up-birthday-candles-at-1st-stage/",
+      "headline": "A profoundly affecting lifetime lights up ‘Birthday Candles’ at 1st Stage",
+      "publishDate": "2025-12-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "birthday-candles-2022"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/12/07/a-christmas-carol-for-edgar-allan-poe-is-thrilling-and-first-rate/",
+      "headline": "‘A Christmas Carol for Edgar Allan Poe’ is thrilling and first-rate",
+      "publishDate": "2025-12-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/12/07/a-joyful-christmas-carol-for-all-ages-at-little-theatre-of-alexandria/",
+      "headline": "A joyful ‘Christmas Carol’ for all ages at Little Theatre of Alexandria",
+      "publishDate": "2025-12-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "alexandria-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/12/03/tensions-rise-at-dark-horse-theatre-in-electrically-charged-god-of-carnage/",
+      "headline": "Tensions rise at Dark Horse Theatre in electrically charged ‘God of Carnage’",
+      "publishDate": "2025-12-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "god-of-carnage-2009",
+        "god-of-carnage-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/30/a-christmas-carol-feels-fresh-at-chesapeake-shakespeare-company/",
+      "headline": "‘A Christmas Carol’ feels fresh at Chesapeake Shakespeare Company",
+      "publishDate": "2025-11-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/25/voices-festival-productions-november-4-sets-a-political-assassination-to-music/",
+      "headline": "Voices Festival Productions’ ‘November 4’ sets a political assassination to music",
+      "publishDate": "2025-11-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "voices-1972"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/25/irving-berlins-white-christmas-serves-up-nostalgia-and-warmth-at-riverside-center-for-the-performing-arts/",
+      "headline": "Irving Berlin’s ‘White Christmas’ serves up nostalgia and warmth at Riverside Center for the Performing Arts",
+      "publishDate": "2025-11-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "irving-berlins-white-christmas-2009"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/20/a-hello-dolly-with-star-power-celebrates-us-all-at-olney-theatre/",
+      "headline": "A ‘Hello, Dolly!’ with star power celebrates us all at Olney Theatre",
+      "publishDate": "2025-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hello-dolly-2017",
+        "hello-dolly-1995",
+        "hello-dolly-1978",
+        "hello-dolly-1975"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/18/uncommon-buddies-build-a-case-for-the-existence-of-god-at-mosaic-theater/",
+      "headline": "Uncommon buddies build ‘A Case for the Existence of God’ at Mosaic Theater",
+      "publishDate": "2025-11-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-case-for-the-existence-of-god-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/18/gay-siblings-and-a-flawed-mom-make-do-in-the-mother-play-at-studio-theatre/",
+      "headline": "Gay siblings and a flawed mom make do in ‘The Mother Play’ at Studio Theatre",
+      "publishDate": "2025-11-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mother-play-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/18/orlando-takes-a-gender-trip-through-time-at-georgetown-university/",
+      "headline": "‘Orlando’ takes a gender trip through time at Georgetown University",
+      "publishDate": "2025-11-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "orlando-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/17/washington-national-opera-presents-a-magical-marriage-of-figaro/",
+      "headline": "Washington National Opera presents a magical ‘Marriage of Figaro’",
+      "publishDate": "2025-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-marriage-of-figaro-1985"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/14/emotionally-real-family-tensions-in-the-humans-by-mask-and-bauble-at-georgetown-university/",
+      "headline": "Emotionally real family tensions in ‘The Humans’ by Mask and Bauble at Georgetown University",
+      "publishDate": "2025-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-humans-2016"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/13/signature-theatre-stages-a-magnificent-fiddler-on-the-roof-in-the-round/",
+      "headline": "Signature Theatre stages a magnificent ‘Fiddler on the Roof’ in the round",
+      "publishDate": "2025-11-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fiddler-on-the-roof-2015",
+        "fiddler-on-the-roof-1990",
+        "fiddler-on-the-roof-2004",
+        "fiddler-on-the-roof-1976"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/10/magical-bilingual-peter-pan-and-wendy-takes-flight-at-creative-cauldron/",
+      "headline": "Magical, bilingual ‘Peter Pan and Wendy’ takes flight at Creative Cauldron",
+      "publishDate": "2025-11-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-1991",
+        "peter-pan-1998",
+        "peter-pan-1999",
+        "peter-pan-1979",
+        "flight-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/09/in-triune-entertainments-annie-a-world-where-hope-and-heart-matter/",
+      "headline": "In Triune Entertainment’s ‘Annie,’ a world where hope and heart matter",
+      "publishDate": "2025-11-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/05/the-high-cost-of-truth-telling-in-theatre-js-urgent-an-enemy-of-the-people/",
+      "headline": "The high cost of truth-telling in Theater J’s urgent ‘An Enemy of the People’",
+      "publishDate": "2025-11-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "an-enemy-of-the-people-2024",
+        "an-enemy-of-the-people-2012",
+        "an-enemy-of-the-people-1971"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/05/soul-baring-last-five-years-plays-superbly-at-nextstop-theatre/",
+      "headline": "Soul-baring ‘Last Five Years’ plays superbly at NextStop Theatre",
+      "publishDate": "2025-11-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-last-five-years-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/04/love-and-liberation-in-furloughs-paradise-at-theater-alliance/",
+      "headline": "Love and liberation in ‘Furlough’s Paradise’ at Theater Alliance",
+      "publishDate": "2025-11-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "liberation-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/03/synetic-creates-powerful-frankenstein-or-the-modern-prometheus/",
+      "headline": "Synetic creates powerful ‘Frankenstein; or, the Modern Prometheus’",
+      "publishDate": "2025-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frankenstein-1981"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/03/gmu-has-a-victory-in-innovative-natasha-pierre-the-great-comet-of-1812/",
+      "headline": "GMU has a victory in innovative ‘Natasha, Pierre & The Great Comet of 1812’",
+      "publishDate": "2025-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "natasha-pierre-and-the-great-comet-of-1812-2016"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/03/frightful-fun-with-edgar-allan-poe-in-a-midnight-dreary-by-we-happy-few/",
+      "headline": "Frightful fun with Edgar Allan Poe in ‘A Midnight Dreary’ by We Happy Few",
+      "publishDate": "2025-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "midnight-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/11/02/the-rocky-horror-show-more-than-delivers-at-maryland-ensemble-theatre/",
+      "headline": "‘The Rocky Horror Show’ more than delivers at Maryland Ensemble Theatre",
+      "publishDate": "2025-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-rocky-horror-show-2026",
+        "the-rocky-horror-show-1975",
+        "the-rocky-horror-show-2000"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/31/twelfth-night-turns-up-in-a-1980s-high-school-at-george-washington-university/",
+      "headline": "‘Twelfth Night’ turns up in a 1980s high school at George Washington University",
+      "publishDate": "2025-10-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/27/great-dramatic-moments-triumph-in-aida-at-kennedy-center/",
+      "headline": "Great dramatic moments triumph in ‘Aida’ at Kennedy Center",
+      "publishDate": "2025-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "triumph-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/24/flying-vs-smart-and-savvy-doctor-moloch-asks-how-human-can-ai-get/",
+      "headline": "Flying V’s smart and savvy ‘Doctor Moloch’ asks: How human can AI get?",
+      "publishDate": "2025-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-doctor-off-broadway-2023",
+        "human-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/22/a-unique-perspective-on-u-s-prisons-in-powerful-peculiar-patriot-at-baltimore-center-stage/",
+      "headline": "A unique perspective on U.S. prisons, in powerful ‘Peculiar Patriot’ at Baltimore Center Stage",
+      "publishDate": "2025-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-peculiar-patriot-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/09/rorschach-theatre-bravely-ventures-into-the-unknown-with-so-late-into-the-night/",
+      "headline": "Rorschach Theatre bravely ventures into the unknown with ‘So Late Into the Night’",
+      "publishDate": "2025-10-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-unknown-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/07/wit-farce-and-charm-in-the-importance-of-being-earnest-at-classic-theatre-of-maryland/",
+      "headline": "Wit and charm in ‘Importance of Being Earnest’ at Classic Theatre of Maryland",
+      "publishDate": "2025-10-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-importance-of-being-earnest-2011",
+        "the-importance-of-being-earnest-1977",
+        "charm-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/06/whimsy-and-heart-enliven-the-one-good-thing-at-washington-stage-guild/",
+      "headline": "Whimsy and heart enliven ‘The One Good Thing” at Washington Stage Guild",
+      "publishDate": "2025-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/02/signatures-strategic-love-play-hopes-to-make-a-match/",
+      "headline": "Signature’s ‘Strategic Love Play’ hopes to make a match",
+      "publishDate": "2025-10-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "match-2004",
+        "strategic-love-play-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/02/two-gentlemen-of-verona-at-american-shakespeare-center-is-doggone-good/",
+      "headline": "‘Two Gentlemen of Verona’ at American Shakespeare Center is doggone good",
+      "publishDate": "2025-10-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "two-gentlemen-of-verona-1971"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/01/a-heartwarming-look-at-immigration-in-the-1970s-in-the-heart-sellers-at-studio/",
+      "headline": "A heartwarming look at immigration in the 1970s, in ‘The Heart Sellers’ at Studio",
+      "publishDate": "2025-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-sellers-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/10/01/in-unforgettable-cyrano-at-taffety-punk-he-is-a-she/",
+      "headline": "In unforgettable ‘Cyrano’ at Taffety Punk, he is a she",
+      "publishDate": "2025-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyrano-the-musical-1993",
+        "cyrano-1973"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/26/a-galvanizing-triumph-at-fords-theatre-in-the-american-five/",
+      "headline": "A galvanizing triumph at Ford’s Theatre in ‘The American Five’",
+      "publishDate": "2025-09-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "triumph-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/24/thrilling-and-awe-inspiring-the-inheritance-now-at-round-house/",
+      "headline": "Thrilling and awe-inspiring ‘The Inheritance’ now at Round House",
+      "publishDate": "2025-09-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-inheritance-2019"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/23/haunting-site-specific-ambiguity-in-mary-shelleys-monsters/",
+      "headline": "Haunting site-specific ambiguity in ‘Mary Shelley’s Monsters’",
+      "publishDate": "2025-09-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-monsters-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/22/very-hungry-caterpillar-show-returns-to-imagination-stage-by-popular-demand/",
+      "headline": "‘Very Hungry Caterpillar Show’ returns to Imagination Stage by popular demand",
+      "publishDate": "2025-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-very-hungry-caterpillar-show-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/22/this-years-logan-festival-of-solo-performances-impresses-at-1st-stage/",
+      "headline": "This year’s ‘Logan Festival of Solo Performances’ impresses at 1st Stage",
+      "publishDate": "2025-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/22/mark-twain-tonight-on-tour-at-the-national-tells-of-ourselves-today/",
+      "headline": "‘Mark Twain Tonight!’ on tour at the National tells of ourselves today",
+      "publishDate": "2025-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mark-twain-tonight-2005",
+        "mark-twain-tonight-1977"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/21/electrifying-damn-yankees-at-arena-stage-hits-it-out-of-the-park/",
+      "headline": "Electrifying ‘Damn Yankees’ at Arena Stage hits it out of the park",
+      "publishDate": "2025-09-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "damn-yankees-1994",
+        "damn-yankees-2027"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/16/this-one-act-dramedy-imagines-the-spats-behind-the-scenes-during-the-making-of-jaws/",
+      "headline": "‘The Shark Is Broken’ at Maryland Ensemble Theatre lacks bite",
+      "publishDate": "2025-09-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-shark-is-broken-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/15/timeless-sound-of-music-on-tour-at-kennedy-center-climbs-every-mountain/",
+      "headline": "Timeless ‘Sound of Music’ on tour at Kennedy Center climbs every mountain",
+      "publishDate": "2025-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sound-of-music-1998",
+        "the-sound-of-music-2027"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/09/ancient-greek-tragedy-antigone-feels-alarmingly-prescient/",
+      "headline": "Ancient Greek tragedy ‘Antigone’ feels alarmingly prescient",
+      "publishDate": "2025-09-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "antigone-1971",
+        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/09/in-dodi-diana-at-mosaic-a-beguiling-amalgam-of-astrology-and-erotica-verite/",
+      "headline": "In ‘Dodi & Diana’ at Mosaic, a beguiling amalgam of astrology and erotica verité",
+      "publishDate": "2025-09-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "diana-the-musical-2021"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/08/august-wilsons-the-piano-lesson-electrifies-at-everyman-theatre/",
+      "headline": "August Wilson’s ‘The Piano Lesson’ electrifies at Everyman Theatre",
+      "publishDate": "2025-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-piano-lesson-2022",
+        "the-piano-lesson-1990"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/07/an-emotive-and-intimate-kiss-of-the-spider-woman-at-gala/",
+      "headline": "An emotive and intimate ‘Kiss of the Spider Woman’ at GALA",
+      "publishDate": "2025-09-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kiss-of-the-spider-woman-1993",
+        "kiss-of-the-spider-woman-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/09/07/saturday-night-fever-at-tobys-dinner-theater-scores-points/",
+      "headline": "‘Saturday Night Fever’ at Toby’s Dinner Theatre scores points",
+      "publishDate": "2025-09-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "saturday-night-fever-1999"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/08/27/a-gorgeous-new-sound-of-music-at-riverside-center-for-the-performing-arts/",
+      "headline": "A gorgeous new ‘Sound of Music’ at Riverside Center for the Performing Arts",
+      "publishDate": "2025-08-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sound-of-music-1998",
+        "the-sound-of-music-2027"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/08/21/performers-dazzle-in-play-on-at-signature-but-the-plays-the-thing/",
+      "headline": "Performers dazzle in ‘Play On!’ at Signature — but the play’s the thing",
+      "publishDate": "2025-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-performers-2012",
+        "play-on-1997",
+        "the-plays-the-thing-1973"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/08/17/hedwig-and-the-angry-inch-exactly-as-it-was-meant-to-be-at-maryland-ensemble-theatre/",
+      "headline": "‘Hedwig and the Angry Inch’ exactly as it was meant to be, at Maryland Ensemble Theatre",
+      "publishDate": "2025-08-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hedwig-and-the-angry-inch-2014"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/08/15/sassy-fear-and-misery-in-the-third-reich-attacks-trumps-autocracy/",
+      "headline": "Sassy ‘Fear and Misery in the Third Reich’ attacks Trump’s autocracy",
+      "publishDate": "2025-08-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "misery-2015"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/08/12/a-visit-to-an-open-air-seagull-in-pittsburgh-thats-as-visceral-as-it-is-new/",
+      "headline": "A visit to an open-air ‘Seagull’ in Pittsburgh that’s as visceral as it is new",
+      "publishDate": "2025-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-visit-2015",
+        "the-seagull-2008",
+        "the-seagull-1992",
+        "the-visit-1973"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/07/28/with-a-deaf-protagonist-a-strange-loop-finds-more-resonance-and-dissonance/",
+      "headline": "With a Deaf protagonist, ‘A Strange Loop’ finds more resonance and dissonance",
+      "publishDate": "2025-07-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-strange-loop-2022"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/07/23/2025-glimmerglass-festival-review-sunday-in-the-park-with-george-and-the-house-on-mango-street/",
+      "headline": "2025 Glimmerglass Festival Review: ‘Sunday in the Park with George’ and ‘The House on Mango Street’",
+      "publishDate": "2025-07-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sunday-in-the-park-with-george-2017",
+        "sunday-in-the-park-with-george-2008",
+        "sunday-in-the-park-with-george-1994",
+        "sunday-in-the-park-with-george-1984"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/07/23/faction-of-fools-sticks-it-to-lawmaking-in-comedy-how-the-sausage-gets-made/",
+      "headline": "Faction of Fools sticks it to lawmaking in comedy ‘How the Sausage Gets Made’",
+      "publishDate": "2025-07-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/07/21/a-joy-for-generations-in-sesame-street-the-musical-at-kennedy-center/",
+      "headline": "A joy for generations in ‘Sesame Street the Musical’ at Kennedy Center",
+      "publishDate": "2025-07-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sesame-street-the-musical-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/07/15/kevin-kling-unraveled-at-contemporary-american-theater-festival/",
+      "headline": "‘Kevin Kling: Unraveled’ at Contemporary American Theater Festival",
+      "publishDate": "2025-07-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kevin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/07/13/bite-and-delight-in-much-ado-about-nothing-at-classic-theatre-of-maryland/",
+      "headline": "Bite and delight in ‘Much Ado About Nothing’ at Classic Theatre of Maryland",
+      "publishDate": "2025-07-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "much-ado-about-nothing-1984",
+        "much-ado-about-nothing-1972",
+        "much-ado-about-nothing-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/07/11/the-lightning-thief-at-atmtc-crackles-with-energy-and-excitement/",
+      "headline": "‘The Lightning Thief’ at ATMTC crackles with energy and excitement",
+      "publishDate": "2025-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-lightning-thief-2019"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/07/06/raw-emotional-musical-next-to-normal-grabs-you-at-riverside-center-for-the-performing-arts/",
+      "headline": "Raw, emotional musical ‘Next to Normal’ grabs you at Riverside Center for the Performing Arts",
+      "publishDate": "2025-07-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "next-to-normal-2009"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/06/21/a-powerhouse-production-of-august-wilsons-piano-lesson-plays-at-1st-stage/",
+      "headline": "A powerhouse production of August Wilson’s ‘Piano Lesson’ plays at 1st Stage",
+      "publishDate": "2025-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-piano-lesson-2022",
+        "the-piano-lesson-1990"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/06/20/a-memorably-brilliant-the-winters-tale-at-american-shakespeare-center/",
+      "headline": "A memorably brilliant ‘The Winter’s Tale’ at American Shakespeare Center",
+      "publishDate": "2025-06-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-winters-tale-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/06/15/a-wondrous-little-mermaid-to-fall-in-love-with-at-tobys-dinner-theatre/",
+      "headline": "A wondrous ‘Little Mermaid’ to fall in love with at Toby’s Dinner Theatre",
+      "publishDate": "2025-06-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-little-mermaid-2008",
+        "the-little-mermaid-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/06/14/rocky-horror-show-at-iron-crow-theatre-is-perfect-for-celebrating-pride-month/",
+      "headline": "‘Rocky Horror Show’ at Iron Crow Theatre is perfect for celebrating Pride",
+      "publishDate": "2025-06-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-rocky-horror-show-2026",
+        "the-rocky-horror-show-1975",
+        "the-rocky-horror-show-2000"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/06/11/exceptional-talent-blesses-jesus-christ-superstar-at-workhouse-art-center/",
+      "headline": "Exceptional talent blesses ‘Jesus Christ Superstar’ at Workhouse Art Center",
+      "publishDate": "2025-06-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jesus-christ-superstar-2012",
+        "jesus-christ-superstar-1977",
+        "jesus-christ-superstar-2000",
+        "jesus-christ-superstar-1971"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/06/06/a-hilarious-imaginary-invalid-in-a-beer-garden-by-classic-theatre-of-maryland/",
+      "headline": "A hilarious ‘Imaginary Invalid’ in a beer garden by Classic Theatre of Maryland",
+      "publishDate": "2025-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-imaginary-invalid-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/06/03/an-unsettling-new-frankenstein-comes-to-uncertain-life-at-stc/",
+      "headline": "An unsettling new ‘Frankenstein’ comes to uncertain life at STC",
+      "publishDate": "2025-06-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frankenstein-1981"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/26/wnos-porgy-and-bess-at-kennedy-center-is-filled-with-uplifting-life/",
+      "headline": "WNO’s ‘Porgy and Bess’ at Kennedy Center is filled with uplifting life",
+      "publishDate": "2025-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "porgy-and-bess-1976",
+        "porgy-and-bess-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/24/vibrant-and-fun-footloose-cuts-loose-at-nextstop-theatre-company/",
+      "headline": "Vibrant and fun ‘Footloose’ at NextStop Theatre Company",
+      "publishDate": "2025-05-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "footloose-1998"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/23/quirky-hit-kimberly-akimbo-at-the-national-is-hilarious-and-heartbreaking/",
+      "headline": "Quirky hit ‘Kimberly Akimbo’ at the National is hilarious and heartbreaking",
+      "publishDate": "2025-05-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kimberly-akimbo-2022",
+        "kimberly-akimbo-off-broadway-2021"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/20/twelfth-night-at-folger-is-a-glorious-endorsement-of-sexuality-and-love/",
+      "headline": "‘Twelfth Night’ at Folger is a glorious endorsement of sexuality and love",
+      "publishDate": "2025-05-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/17/a-nervy-new-envisioning-of-the-tragedy-of-hamlet-from-avant-bard/",
+      "headline": "A nervy new envisioning of ‘The Tragedy of Hamlet’ from Avant Bard",
+      "publishDate": "2025-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/14/keegan-theatres-irresistible-falsettos-is-pitch-perfect-for-worldpride/",
+      "headline": "Keegan Theatre’s irresistible ‘Falsettos’ is pitch-perfect for WorldPride",
+      "publishDate": "2025-05-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "falsettos-2016",
+        "falsettos-1992"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/11/modern-warrior-live-a-story-that-marches-straight-to-the-heart/",
+      "headline": "‘Modern Warrior LIVE’: A story that marches straight to the heart",
+      "publishDate": "2025-05-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026",
+        "straight-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/08/classic-theatre-of-marylands-anything-goes-is-a-romp-of-a-good-time/",
+      "headline": "Classic Theatre of Maryland’s ‘Anything Goes’ is a romp of a good time",
+      "publishDate": "2025-05-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "anything-goes-2011",
+        "anything-goes-2002",
+        "anything-goes-1987"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/08/joy-love-and-hilarity-abound-in-head-over-heels-at-constellation-theatre/",
+      "headline": "Joy, love, and hilarity abound in ‘Head Over Heels’ at Constellation Theatre",
+      "publishDate": "2025-05-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "head-over-heels-2018"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/06/haunting-and-thrilling-paradise-blue-engulfs-you-at-studio-theatre/",
+      "headline": "Haunting and thrilling ‘Paradise Blue’ engulfs you at Studio Theatre",
+      "publishDate": "2025-05-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "paradise-blue-off-broadway-2018"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/05/04/wnos-revolution-of-steve-jobs-at-kennedy-center-shows-his-warts-and-all/",
+      "headline": "WNO’s ‘(R)evolution of Steve Jobs’ at Kennedy Center shows his warts and all",
+      "publishDate": "2025-05-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "steve-off-broadway-2015"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/04/26/a-riveting-mary-stuart-for-right-now-at-chesapeake-shakespeare-company/",
+      "headline": "A riveting ‘Mary Stuart’ for right now at Chesapeake Shakespeare Company",
+      "publishDate": "2025-04-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mary-stuart-2009",
+        "mary-stuart-1971"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/04/26/bluegrass-musical-bright-star-shines-at-catholic-university/",
+      "headline": "Bluegrass musical ‘Bright Star’ shines at Catholic University",
+      "publishDate": "2025-04-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "bright-star-2016"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/04/25/signature-celebrates-glam-punk-hard-rock-hedwig-and-the-angry-inch/",
+      "headline": "Signature celebrates glam-punk, hard-rock ‘Hedwig and the Angry Inch’",
+      "publishDate": "2025-04-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hedwig-and-the-angry-inch-2014"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/04/20/artscentrics-ma-raineys-black-bottom-is-a-must-see-to-celebrate/",
+      "headline": "ArtsCentric’s ‘Ma Rainey’s Black Bottom’ is a must-see to celebrate",
+      "publishDate": "2025-04-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ma-raineys-black-bottom-2003",
+        "ma-raineys-black-bottom-1984"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/04/13/throuples-rule-in-how-to-transcend-a-happy-marriage-at-iron-crow-theatre/",
+      "headline": "Throuples rule in ‘How to Transcend a Happy Marriage’ at Iron Crow Theatre",
+      "publishDate": "2025-04-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "how-to-transcend-a-happy-marriage-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/04/07/a-fresh-and-energetic-must-see-music-man-at-tobys-dinner-theatre/",
+      "headline": "A fresh and energetic must-see ‘Music Man’ at Toby’s Dinner Theatre",
+      "publishDate": "2025-04-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-music-man-2022",
+        "the-music-man-2000"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/04/03/georgetown-universitys-take-on-sweeney-todd-is-a-bloody-good-show/",
+      "headline": "Georgetown University’s take on ‘Sweeney Todd’ is a bloody good show",
+      "publishDate": "2025-04-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sweeney-todd-2023",
+        "sweeney-todd-2005",
+        "sweeney-todd-1989",
+        "sweeney-todd-1979"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/04/03/the-bard-gets-comeuppance-in-jane-anger-at-maryland-ensemble-theatre/",
+      "headline": "The Bard gets comeuppance in ‘Jane Anger’ at Maryland Ensemble Theatre",
+      "publishDate": "2025-04-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-comeuppance-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/04/01/dolly-partons-9-to-5-the-musical-at-american-university-was-a-blast/",
+      "headline": "Dolly Parton’s ‘9 to 5 The Musical’ at American University was a blast",
+      "publishDate": "2025-04-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "9-to-5-2009"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/27/clydes-is-served-with-humor-and-heart-at-workhouse-arts-center/",
+      "headline": "‘Clyde’s’ is served with humor and heart at Workhouse Arts Center",
+      "publishDate": "2025-03-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "clydes-2021",
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/24/scena-theatre-finds-the-absurd-wonder-in-becketts-waiting-for-godot/",
+      "headline": "Scena Theatre finds the absurd wonder in Beckett’s ‘Waiting for Godot’",
+      "publishDate": "2025-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "waiting-for-godot-2025",
+        "waiting-for-godot-2013",
+        "waiting-for-godot-2009",
+        "waiting-for-godot-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/24/mr-and-mrs-frankenstein-go-to-battle-over-ai-in-stc-mock-trial/",
+      "headline": "Mr. and Mrs. Frankenstein go to battle over AI in STC Mock Trial",
+      "publishDate": "2025-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frankenstein-1981"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/22/all-theatrical-disciplines-shine-in-julius-caesar-at-american-university/",
+      "headline": "All theatrical disciplines shine in ‘Julius Caesar’ at American University",
+      "publishDate": "2025-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "julius-caesar-2005",
+        "julius-caesar-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/20/sister-act-at-fords-theatre-is-silly-fun-and-joyful/",
+      "headline": "‘Sister Act’ at Ford’s Theatre is silly, fun, and joyful",
+      "publishDate": "2025-03-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sister-act-2011"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/20/jesus-christ-superstar-triumphs-at-riverside-center-for-the-performing-arts/",
+      "headline": "‘Jesus Christ Superstar’ triumphs at Riverside Center for the Performing Arts",
+      "publishDate": "2025-03-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jesus-christ-superstar-2012",
+        "jesus-christ-superstar-1977",
+        "jesus-christ-superstar-2000",
+        "jesus-christ-superstar-1971"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/19/best-medicine-reps-blame-it-on-beckett-pokes-hilarious-fun-at-the-playscript-biz/",
+      "headline": "Best Medicine Rep’s ‘Blame It on Beckett’ pokes hilarious fun at the playscript biz",
+      "publishDate": "2025-03-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "on-beckett-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/19/a-survivor-stands-in-her-power-in-spellbinding-hang-at-1st-stage/",
+      "headline": "A survivor stands in her power in spellbinding ‘hang’ at 1st Stage",
+      "publishDate": "2025-03-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-survivor-1981"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/17/laughter-to-warm-your-soul-in-chicken-biscuits-at-nextstop-theatre-company/",
+      "headline": "Laughter to warm your soul in ‘Chicken & Biscuits’ at NextStop Theatre Company",
+      "publishDate": "2025-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "chicken-and-biscuits-2021"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/16/a-fierce-and-ferocious-hedwig-and-the-angry-inch-from-iron-crow-theatre/",
+      "headline": "A fierce and ferocious ‘Hedwig and the Angry Inch’ from Iron Crow Theatre",
+      "publishDate": "2025-03-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hedwig-and-the-angry-inch-2014"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/16/night-mother-at-the-theatre-lab-left-us-in-tears/",
+      "headline": "‘’night Mother’ at The Theatre Lab left us in tears",
+      "publishDate": "2025-03-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "night-mother-2004",
+        "night-mother-1983"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/15/annapolis-opera-mounts-a-passionate-and-colorful-la-traviata/",
+      "headline": "Annapolis Opera mounts a passionate and colorful ‘La Traviata’",
+      "publishDate": "2025-03-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-traviata-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/12/life-lessons-of-cute-small-critters-in-wombat-drool-by-david-s-kessler/",
+      "headline": "Life lessons of cute small critters in ‘Wombat Drool’ by David S. Kessler",
+      "publishDate": "2025-03-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/10/the-women-of-hamlet-own-our-hearts-in-a-room-in-the-castle-at-folger-theatre/",
+      "headline": "The women of ‘Hamlet’ own our hearts in ‘A Room in the Castle’ at Folger Theatre",
+      "publishDate": "2025-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "the-women-2001",
+        "hamlet-1995",
+        "hamlet-1975",
+        "the-women-1973",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/08/a-vivid-portrait-of-stiffling-high-society-in-the-age-of-innocence-at-arena-stage/",
+      "headline": "A vivid portrait of stifling high society in ‘The Age of Innocence’ at Arena Stage",
+      "publishDate": "2025-03-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "high-society-1998",
+        "innocence-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/03/05/classic-theatre-of-marylands-timely-crucible-exposes-religious-zealotry/",
+      "headline": "Classic Theatre of Maryland’s timely ‘Crucible’ exposes religious zealotry",
+      "publishDate": "2025-03-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-crucible-2016",
+        "the-crucible-2002",
+        "the-crucible-1991",
+        "the-crucible-1972"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/24/a-king-lear-both-upbeat-and-dark-at-american-shakespeare-center/",
+      "headline": "A ‘King Lear’ both upbeat and dark at American Shakespeare Center",
+      "publishDate": "2025-02-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "king-lear-2019",
+        "king-lear-2004",
+        "king-lear-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/24/triunes-joseph-soars-with-dreamy-vocals-and-a-fresh-take-on-a-beloved-musical/",
+      "headline": "Triune’s ‘Joseph’ soars with dreamy vocals and a fresh take on a beloved musical",
+      "publishDate": "2025-02-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "joseph-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/23/everything-that-never-happened-rethinks-merchant-of-venice-at-baltimore-center-stage/",
+      "headline": "‘Everything That Never Happened’ rethinks ‘Merchant of Venice’ at Baltimore Center Stage",
+      "publishDate": "2025-02-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/23/in-the-heights-at-signature-theatre-pulses-with-unrestrained-joy/",
+      "headline": "‘In the Heights’ at Signature Theatre pulses with unrestrained joy",
+      "publishDate": "2025-02-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "in-the-heights-2008",
+        "in-the-heights-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/22/captiviting-writing-in-new-play-primary-trust-at-everyman-theatre/",
+      "headline": "Captivating writing in new play ‘Primary Trust’ at Everyman Theatre",
+      "publishDate": "2025-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "primary-trust-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/22/the-rivals-brings-a-19th-century-rom-com-to-the-stage-at-catholic-university/",
+      "headline": "‘The Rivals’ brings a 19th-century rom-com to the stage at Catholic University",
+      "publishDate": "2025-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-rivals-2004"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/19/waitress-at-olney-theatre-center-serves-huge-helpings-of-heart-and-happiness/",
+      "headline": "‘Waitress’ at Olney Theatre Center serves huge helpings of heart and happiness",
+      "publishDate": "2025-02-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "waitress-2021",
+        "waitress-2016",
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/18/found-sisterhood-finds-a-new-home-in-steel-magnolias-at-creative-cauldron/",
+      "headline": "Found sisterhood finds a new home in ‘Steel Magnolias’ at Creative Cauldron",
+      "publishDate": "2025-02-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "steel-magnolias-2005"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/17/good-news-about-good-dudes-in-love-and-vinyl-at-byrdland-records/",
+      "headline": "Good news about good dudes in ‘Love and Vinyl’ at Byrdland Records",
+      "publishDate": "2025-02-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "good-news-1974"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/15/mask-and-baubles-one-act-festival-opens-with-heart-at-georgetown-university/",
+      "headline": "Mask and Bauble’s one-act festival opens with heart at Georgetown University",
+      "publishDate": "2025-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/15/sarah-silvermans-hilarious-and-poignant-the-bedwetter-opens-at-arena-stage/",
+      "headline": "Sarah Silverman’s hilarious and poignant ‘The Bedwetter’ opens at Arena Stage",
+      "publishDate": "2025-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bedwetter-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/14/little-women-at-american-shakespeare-center-is-a-heartfelt-story-for-us-all/",
+      "headline": "‘Little Women’ at American Shakespeare Center is a heartfelt story for us all",
+      "publishDate": "2025-02-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "little-women-2005",
+        "little-women-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/11/constellations-at-constellation-theatre-looks-for-love-among-the-stars/",
+      "headline": "‘Constellations’ at Constellation Theatre looks for love among the stars",
+      "publishDate": "2025-02-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "constellations-2015"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/11/dark-humor-and-tragedy-meet-in-the-beauty-queen-of-leenane-at-met/",
+      "headline": "Dark humor and tragedy meet in ‘The Beauty Queen of Leenane’ at MET",
+      "publishDate": "2025-02-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-beauty-queen-of-leenane-1998"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/10/family-secrets-and-strife-bristle-in-rajiv-josephs-lake-effect-at-1st-stage/",
+      "headline": "Family secrets and strife bristle in Rajiv Joseph’s ‘Lake Effect’ at 1st Stage",
+      "publishDate": "2025-02-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-effect-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/10/hand-to-god-at-keegan-theatre-flips-the-bird-at-religion-and-repression/",
+      "headline": "‘Hand to God’ at Keegan Theatre flips the bird at religion and repression",
+      "publishDate": "2025-02-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hand-to-god-2015"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/08/a-fizzy-and-funny-9-to-5-the-musical-at-tobys-dinner-theatre/",
+      "headline": "A fizzy and funny ‘9 to 5 The Musical’ at Toby’s Dinner Theatre",
+      "publishDate": "2025-02-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "9-to-5-2009"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/05/welcome-tunes-of-optimism-and-joy-in-schmigadoon-at-kennedy-center/",
+      "headline": "Welcome tunes of optimism and joy in ‘Schmigadoon!’ at Kennedy Center",
+      "publishDate": "2025-02-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "schmigadoon-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/02/04/13th-annual-mason-cabaret-lifts-up-the-broadway-hits-of-hal-prince/",
+      "headline": "13th annual Mason Cabaret lifts up the Broadway hits of Hal Prince",
+      "publishDate": "2025-02-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/01/25/heartbreak-hotel-looks-inside-elvis-at-riverside-center-for-the-performing-arts/",
+      "headline": "‘Heartbreak Hotel’ looks inside Elvis at Riverside Center for the Performing Arts",
+      "publishDate": "2025-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "heartbreak-hotel-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/01/23/excellent-and-on-time-what-the-constitution-means-to-me-opens-at-round-house-theatre/",
+      "headline": "Excellent and on time, ‘What the Constitution Means to Me’ opens at Round House Theatre",
+      "publishDate": "2025-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "what-the-constitution-means-to-me-2019"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/01/20/prize-winning-play-proof-is-well-worth-watching-at-compass-rose-theater/",
+      "headline": "Prize-winning play ‘Proof’ is well worth watching at Compass Rose Theater",
+      "publishDate": "2025-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "proof-2026",
+        "proof-2000"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/01/14/at-home-with-sex-offenders-in-brilliant-and-disturbing-downstate-at-studio/",
+      "headline": "At home with sex offenders in brilliant and disturbing ‘Downstate’ at Studio",
+      "publishDate": "2025-01-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2025/01/13/iron-crow-theatres-an-act-of-god-is-downright-divine-comedy/",
+      "headline": "Iron Crow Theatre’s ‘An Act of God’ is downright divine comedy",
+      "publishDate": "2025-01-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "an-act-of-god-2016"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/12/19/petite-rouge-a-cajun-red-riding-hood-lets-the-good-times-roll/",
+      "headline": "‘Petite Rouge: A Cajun Red Riding Hood’ lets the good times roll",
+      "publishDate": "2024-12-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "red-riding-hood-off-broadway-2026",
+        "petite-rouge-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/12/14/michael-russotto-is-a-triumph-in-a-christmas-carol-at-olney-theatre/",
+      "headline": "Michael Russotto is a triumph in ‘A Christmas Carol’ at Olney Theatre",
+      "publishDate": "2024-12-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026",
+        "triumph-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/12/13/bayla-whitten-opens-creative-cauldrons-holiday-cabaret-series-with-tribute-to-her-beloved-grandmother/",
+      "headline": "Bayla Whitten opens Creative Cauldron’s 2024 ‘Holiday Cabaret Series’ with tribute to her beloved grandmother",
+      "publishDate": "2024-12-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987",
+        "tribute-1978"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/12/07/in-leopoldstadt-at-shakespeare-theatre-the-sorrow-of-unspeakable-loss/",
+      "headline": "In ‘Leopoldstadt’ at Shakespeare Theatre, the sorrow of unspeakable loss",
+      "publishDate": "2024-12-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "leopoldstadt-2022"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/12/06/the-thrills-are-alive-in-the-sound-of-music-at-tobys-dinner-theatre/",
+      "headline": "The thrills are alive in ‘The Sound of Music’ at Toby’s Dinner Theatre",
+      "publishDate": "2024-12-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sound-of-music-1998",
+        "the-sound-of-music-2027"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/24/20th-annual-fuego-flamenco-festival-at-gala-treats-eyes-ears-and-heart/",
+      "headline": "20th annual Fuego Flamenco Festival at GALA treats eyes, ears, and heart",
+      "publishDate": "2024-11-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/23/a-powerful-take-on-the-trials-and-tribulations-of-girlhood-in-john-proctor-is-the-villain-at-catholic-university/",
+      "headline": "A powerful take on the trials and tribulations of girlhood in ‘John Proctor Is the Villain’ at Catholic University",
+      "publishDate": "2024-11-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "john-proctor-is-the-villain-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/19/kate-eastwood-norris-and-holly-twyford-are-not-to-be-missed-in-summer-1976/",
+      "headline": "Kate Eastwood Norris and Holly Twyford are not to be missed in ‘Summer, 1976’",
+      "publishDate": "2024-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "summer-1976-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/16/signatures-ill-take-you-there-pays-spirited-tribute-to-stax-records/",
+      "headline": "Signature’s ‘I’ll Take You There’ pays spirited tribute to Stax Records",
+      "publishDate": "2024-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tribute-1978"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/11/hilarious-things-happen-in-sondheims-a-funny-thing-happened-on-the-way-to-the-forum-at-signature-theatre/",
+      "headline": "Hilarious things happen in Sondheim’s ‘A Funny Thing Happened on the Way to the Forum’ at Signature Theatre",
+      "publishDate": "2024-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-funny-thing-happened-on-the-way-to-the-forum-1996",
+        "a-funny-thing-happened-on-the-way-to-the-forum-1972"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/08/at-bsu-a-snappy-and-witty-fabulation-or-the-re-education-of-undine/",
+      "headline": "At BSU, a snappy and witty ‘Fabulation, or the Re-Education of Undine’",
+      "publishDate": "2024-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fabulation-or-the-re-education-of-undine-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/06/safety-eludes-two-generations-of-jews-in-joshua-harmons-soul-stirring-prayer-for-the-french-republic-at-theater-j/",
+      "headline": "Safety eludes two generations of Jews in Joshua Harmon’s soul-stirring ‘Prayer for the French Republic’ at Theater J",
+      "publishDate": "2024-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/04/john-leguizamos-exhilarating-other-americans-premieres-at-arena-stage/",
+      "headline": "John Leguizamo’s exhilarating ‘Other Americans’ premieres at Arena Stage",
+      "publishDate": "2024-11-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-other-americans-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/03/happenstance-theatres-cabaret-noir-delights-at-baltimore-theatre-project/",
+      "headline": "Happenstance Theater’s ‘Cabaret Noir’ delights at Baltimore Theatre Project",
+      "publishDate": "2024-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/11/02/a-carnal-encounter-on-a-graveyard-shift-in-lykos-anthropos/",
+      "headline": "A carnal encounter on a graveyard shift in ‘Lýkos Ánthrōpos’",
+      "publishDate": "2024-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-encounter-2016"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/30/nonstop-yuks-in-dracula-a-comedy-of-terrors-at-american-shakespeare-center/",
+      "headline": "Nonstop yuks in ‘Dracula: A Comedy of Terrors’ at American Shakespeare Center",
+      "publishDate": "2024-10-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-a-comedy-of-terrors-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/29/disneys-frozen-musical-melts-hearts-at-olney-theatre-center/",
+      "headline": "‘Disney’s Frozen’ musical melts hearts at Olney Theatre Center",
+      "publishDate": "2024-10-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frozen-2018",
+        "frozen-2004"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/28/washington-national-operas-fidelio-is-a-timely-triumph/",
+      "headline": "‘Washington National Opera’s ‘Fidelio’ is a timely triumph",
+      "publishDate": "2024-10-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "triumph-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/27/hope-and-courage-in-queens-girl-black-in-the-green-mountains-at-everyman/",
+      "headline": "Hope and courage in ‘Queens Girl: Black in the Green Mountains’ at Everyman",
+      "publishDate": "2024-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "queens-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/21/riveting-and-spell-binding-covenant-at-theater-alliance/",
+      "headline": "Riveting and spellbinding ‘Covenant’ at Theater Alliance",
+      "publishDate": "2024-10-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "covenant-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/20/poetic-drama-about-grief-and-faith-in-to-be-still-from-pipeline-playwrights/",
+      "headline": "Poetic drama about grief and faith in ‘to be still’ from Pipeline Playwrights",
+      "publishDate": "2024-10-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/19/a-couple-has-secret-trysts-same-time-next-year-at-compass-rose-theater/",
+      "headline": "A couple has secret trysts ‘Same Time, Next Year’ at Compass Rose Theater",
+      "publishDate": "2024-10-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "same-time-next-year-1975"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/19/shakespeare-at-his-grooviest-in-as-you-like-it-at-american-university/",
+      "headline": "Shakespeare at his grooviest in ‘As You Like It’ at American University",
+      "publishDate": "2024-10-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-1974",
+        "as-you-like-it-1986"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/16/mean-girls-is-back-at-the-national-to-make-fetch-happen/",
+      "headline": "‘Mean Girls’ is back at the National to make fetch happen",
+      "publishDate": "2024-10-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mean-girls-2018"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/15/putnam-county-spelling-bee-at-kennedy-center-is-simply-p-h-e-n-o-m-e-n-a-l/",
+      "headline": "‘Putnam County Spelling Bee’ at Kennedy Center is simply P-H-E-N-O-M-E-N-A-L",
+      "publishDate": "2024-10-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/13/gripping-ford-hill-project-at-woolly-mammoth-speaks-truth-to-male-power/",
+      "headline": "Gripping ‘Ford/Hill Project’ at Woolly Mammoth speaks truth to male power",
+      "publishDate": "2024-10-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-ford-hill-project-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/11/taffetty-punks-riot-grrrls-macbeth-flips-script-on-manliness/",
+      "headline": "Taffety Punk’s Riot Grrrls ‘Macbeth’ flips script on manliness",
+      "publishDate": "2024-10-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/09/creative-cauldrons-sondheim-tribute-revue-is-musical-theater-heaven/",
+      "headline": "Creative Cauldron’s ‘Sondheim Tribute Revue’ is musical theater heaven",
+      "publishDate": "2024-10-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tribute-1978"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/08/womens-voices-inspire-new-musical-she-persisted-at-adventure-theatre/",
+      "headline": "Women’s voices inspire new musical ‘She Persisted’ at Adventure Theatre",
+      "publishDate": "2024-10-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "voices-1972"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/04/oh-happy-day-at-baltimore-center-stage-makes-a-bid-for-broadway/",
+      "headline": "‘Oh Happy Day!’ at Baltimore Center Stage makes a bid for Broadway",
+      "publishDate": "2024-10-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oh-happy-day-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/03/potus-among-us-beyond-belief-this-is-how-we-do-wit/",
+      "headline": "‘POTUS Among Us: Beyond Belief’: This is how we do WIT",
+      "publishDate": "2024-10-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "potus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/03/spellbinding-emotion-in-synetics-wordless-hamletthe-rest-is-silence/",
+      "headline": "Spellbinding emotion in Synetic’s wordless ‘Hamlet…the rest is silence’",
+      "publishDate": "2024-10-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/01/extraordinary-talent-depicts-a-legend-in-marlene-at-expats-theatre/",
+      "headline": "Extraordinary talent depicts a legend in ‘Marlene’ at ExPats Theatre",
+      "publishDate": "2024-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "marlene-1999"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/10/01/broadway-star-lea-salonga-delights-arts-by-george-audience-at-gmu/",
+      "headline": "Broadway star Lea Salonga delights ‘ARTS by George!’ audience at GMU",
+      "publishDate": "2024-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/30/a-screamingly-funny-potus-at-nextstop-theatre-company/",
+      "headline": "A screamingly funny ‘POTUS’ at NextStop Theatre Company",
+      "publishDate": "2024-09-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "potus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/29/taut-atmospheric-macbeth-at-classic-theatre-of-maryland/",
+      "headline": "Taut, atmospheric ‘Macbeth’ at Classic Theatre of Maryland",
+      "publishDate": "2024-09-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/25/scott-bakula-plays-a-flawless-mister-lincoln-at-fords-theatre/",
+      "headline": "Scott Bakula plays a flawless ‘Mister Lincoln’ at Ford’s Theatre",
+      "publishDate": "2024-09-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mister-lincoln-1980"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/23/clue-on-tour-at-kennedy-center-a-triumph-in-murder-mystery-and-comedy/",
+      "headline": "‘Clue’ on tour at Kennedy Center: a triumph in murder mystery and comedy",
+      "publishDate": "2024-09-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "triumph-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/22/joe-turners-come-and-gone-captivates-at-chesapeake-shakespeare-company/",
+      "headline": "‘Joe Turner’s Come and Gone’ captivates at Chesapeake Shakespeare Company",
+      "publishDate": "2024-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "joe-turners-come-and-gone-2026",
+        "joe-turners-come-and-gone-2009",
+        "joe-turners-come-and-gone-1988"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/22/shrek-the-musical-turns-into-childrens-theater-on-tour-at-capital-one-hall/",
+      "headline": "‘Shrek the Musical’ turns into children’s theater on tour at Capital One Hall",
+      "publishDate": "2024-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "shrek-the-musical-2008"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/21/signature-theatres-primary-trust-a-transformative-balm-for-loneliness/",
+      "headline": "Signature Theatre’s ‘Primary Trust’: a transformative balm for loneliness",
+      "publishDate": "2024-09-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "primary-trust-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/21/in-the-waverly-gallery-at-1st-stage-a-heartfelt-call-for-kindness/",
+      "headline": "In ‘The Waverly Gallery’ at 1st Stage, a heartfelt call for kindness",
+      "publishDate": "2024-09-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-waverly-gallery-2018"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/19/a-compelling-look-at-immigration-in-sojourners-at-round-house-theatre/",
+      "headline": "A compelling look at immigration in ‘Sojourners’ at Round House Theatre",
+      "publishDate": "2024-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sojourners-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/19/mortality-attends-a-high-school-reunion-the-comeuppance-at-woolly-mammoth/",
+      "headline": "Mortality attends a high school reunion in ‘Comeuppance’ at Woolly Mammoth",
+      "publishDate": "2024-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-comeuppance-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/18/dracula-a-comedy-of-terrors-is-a-comic-treat-at-workhouse-arts-center/",
+      "headline": "‘Dracula: A Comedy of Terrors’ is a comic treat at Workhouse Arts Center",
+      "publishDate": "2024-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-a-comedy-of-terrors-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/14/jajas-african-hair-braiding-at-arena-stage-is-laugh-out-loud-hilarious/",
+      "headline": "‘Jaja’s African Hair Braiding’ at Arena Stage is laugh-out-loud hilarious",
+      "publishDate": "2024-09-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jajas-african-hair-braiding-2023"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/13/the-addams-family-musical-comedy-enthralls-at-tobys-dinner-theatre/",
+      "headline": "‘The Addams Family’ musical comedy enthralls at Toby’s Dinner Theatre",
+      "publishDate": "2024-09-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-addams-family-2010"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/10/fabulous-roz-white-stars-in-lady-day-at-emersons-bar-and-grill-at-mosaic/",
+      "headline": "Fabulous Roz White powers ‘Lady Day at Emerson’s Bar and Grill’ at Mosaic",
+      "publishDate": "2024-09-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "lady-day-at-emersons-bar-and-grill-2014"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/09/09/potus-at-everyman-theatre-is-hilarious-break-from-todays-news-cycle/",
+      "headline": "‘POTUS’ at Everyman Theatre is a hilarious break from today’s news cycle",
+      "publishDate": "2024-09-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "potus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/08/28/betrayal-heartache-and-redemption-in-treachery-lies-deception/",
+      "headline": "Betrayal, heartache, and redemption in ‘Treachery Lies & Deception’",
+      "publishDate": "2024-08-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "betrayal-2019",
+        "betrayal-2013",
+        "betrayal-1980",
+        "betrayal-2000"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/08/16/mamma-mia-on-tour-at-kennedy-center-is-an-over-the-top-good-time/",
+      "headline": "‘Mamma Mia!’ on tour at Kennedy Center is an over-the-top good time",
+      "publishDate": "2024-08-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mamma-mia-2025",
+        "mamma-mia-2001"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/08/15/a-spectacular-staging-of-a-political-fantasia-in-soft-power-at-signature/",
+      "headline": "A spectacular staging of a political fantasia in ‘Soft Power’ at Signature",
+      "publishDate": "2024-08-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "soft-power-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/08/12/theatre-lab-teens-deliver-a-rousing-production-of-footloose-at-atlas/",
+      "headline": "Theatre Lab teens deliver a rousing production of ‘Footloose’ at Atlas",
+      "publishDate": "2024-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "footloose-1998"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/08/11/gorgeous-world-war-i-opera-silent-night-uplifts-the-human-spirit-at-wolf-trap/",
+      "headline": "Gorgeous World War I opera ‘Silent Night’ uplifts the human spirit at Wolf Trap",
+      "publishDate": "2024-08-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "silent-night-off-broadway-2027",
+        "human-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/08/09/father-and-son-actors-are-flawless-in-a-number-by-edge-of-the-universe-theater/",
+      "headline": "Father and son actors are flawless in ‘A Number’ by Edge of the Universe Theater",
+      "publishDate": "2024-08-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/08/06/keegan-theatre-nails-noises-off-and-hilarity-ensues/",
+      "headline": "Keegan Theatre nails ‘Noises Off’ and hilarity ensues",
+      "publishDate": "2024-08-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "noises-off-2016",
+        "noises-off-2001",
+        "noises-off-1983"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/08/04/a-phenomenal-hamlet-by-new-york-circus-project-on-tour-at-union-market/",
+      "headline": "A phenomenal ‘Hamlet’ by New York Circus Project on tour at Union Market",
+      "publishDate": "2024-08-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/08/01/wickedly-funny-importance-of-being-earnest-at-american-shakespeare-center/",
+      "headline": "Wickedly funny ‘Importance of Being Earnest’ at American Shakespeare Center",
+      "publishDate": "2024-08-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-importance-of-being-earnest-2011",
+        "the-importance-of-being-earnest-1977"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/07/25/faction-of-fools-mounts-spectacularly-original-the-moors-by-jen-silverman/",
+      "headline": "Faction of Fools mounts spectacularly original ‘The Moors’ by Jen Silverman",
+      "publishDate": "2024-07-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981",
+        "the-moors-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/07/23/a-macbeth-for-our-moment-at-american-shakespeare-center/",
+      "headline": "A ‘Macbeth’ for our moment at American Shakespeare Center",
+      "publishDate": "2024-07-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/07/23/hot-in-the-heights-excites-at-montgomery-college-summer-dinner-theatre/",
+      "headline": "‘In the Heights’ excites at Montgomery College Summer Dinner Theatre",
+      "publishDate": "2024-07-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "in-the-heights-2008",
+        "in-the-heights-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/07/22/2024-capital-fringe-review-democracy-by-xy-players-1-%c2%bd-stars/",
+      "headline": "2024 Capital Fringe Review: ‘Democracy’ by XY Players (1 ½ stars)",
+      "publishDate": "2024-07-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978",
+        "democracy-2004"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/07/21/a-midsummer-nights-dream-delights-at-classic-theatre-of-maryland/",
+      "headline": "‘A Midsummer Night’s Dream’ delights at Classic Theatre of Maryland",
+      "publishDate": "2024-07-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-midsummer-nights-dream-1996",
+        "a-midsummer-nights-dream-1971",
+        "a-midsummer-nights-dream-off-broadway-2025",
+        "a-midsummer-nights-dream-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/07/20/mclean-community-players-has-big-fun-with-heathers-the-musical/",
+      "headline": "McLean Community Players has big fun with ‘Heathers: The Musical’",
+      "publishDate": "2024-07-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978",
+        "heathers-the-musical-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/07/15/theatre-labs-titanic-the-musical-had-stunning-teen-talent-aboard/",
+      "headline": "Theatre Lab’s ‘Titanic: The Musical’ had stunning teen talent aboard",
+      "publishDate": "2024-07-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/07/15/2024-capital-fringe-review-love-west-of-dupont-circle-by-john-harney-4-stars/",
+      "headline": "2024 Capital Fringe Review: ‘Love West of Dupont Circle’ by John Harney (4 stars)",
+      "publishDate": "2024-07-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://dctheaterarts.org/2024/07/08/rollicking-good-beautiful-the-carole-king-musical-at-olney-theatre-center/",
+      "headline": "Rollicking good ‘Beautiful: The Carole King Musical’ at Olney Theatre Center",
+      "publishDate": "2024-07-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "beautiful-the-carole-king-musical-2014"
       ]
     }
   ]

@@ -1,36 +1,85 @@
 {
   "outletId": "hollywood-reporter",
-  "generatedAt": "2026-10-28T20:40:42.463Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:33:12.753Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
+    "status": "complete",
     "notes": [],
-    "enumerated": 1501,
-    "inWindow": 1501,
+    "incomplete": false,
+    "enumerated": 1520,
+    "inWindow": 1520,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 1439,
-      "held": 40,
-      "held-other-market": 5,
-      "out-of-window": 9,
-      "gap": 3,
-      "held-unmatched": 3,
-      "held-alt-url": 2
+      "not-review": 1457,
+      "held-other-market": 6,
+      "held-unmatched": 21,
+      "held": 23,
+      "out-of-window": 10,
+      "catalog-gap": 2,
+      "held-alt-url": 1
     },
     "viaTitleVariant": {
-      "held": 2
+      "held": 1
     },
-    "recall": 0.933,
-    "recallWithCatalog": 0.933
+    "recall": 1,
+    "recallWithCatalog": 0.923
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 77,
+      "held-other-market": 2,
+      "held-unmatched": 1
+    },
+    "2025-26": {
+      "not-review": 293,
+      "held-unmatched": 2,
+      "held": 3,
+      "out-of-window": 1,
+      "held-other-market": 1
+    },
+    "2024-25": {
+      "not-review": 266,
+      "held-other-market": 1,
+      "held": 5,
+      "held-unmatched": 3,
+      "out-of-window": 2,
+      "catalog-gap": 1
+    },
+    "2023-24": {
+      "not-review": 245,
+      "held-unmatched": 1,
+      "out-of-window": 2,
+      "held": 6
+    },
+    "2022-23": {
+      "not-review": 257,
+      "held-unmatched": 6,
+      "held": 2,
+      "out-of-window": 2
+    },
+    "2021-22": {
+      "not-review": 281,
+      "held": 7,
+      "out-of-window": 3,
+      "held-unmatched": 8,
+      "held-other-market": 2,
+      "catalog-gap": 1,
+      "held-alt-url": 1
+    },
+    "2020-21": {
+      "not-review": 38
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 394,
-    "notEnumerated": 17,
-    "noUrl": 1,
+    "rowsInWindow": 480,
+    "notEnumerated": 16,
+    "noUrl": 4,
     "samples": [
       {
         "showId": "a-bronx-tale-the-musical-2016",
@@ -45,10 +94,22 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "a-midsummer-nights-dream-off-broadway-2017",
+        "url": "http://www.hollywoodreporter.com/review/a-midsummer-nights-dream-theater-review-1025277",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "american-buffalo-2022",
         "url": "https://www.hollywoodreporter.com/lifestyle/arts/american-buffalo-broadway-review-1235129032/",
         "publishDate": null,
         "why": "not-enumerated"
+      },
+      {
+        "showId": "ann-2013",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
       },
       {
         "showId": "caroline-or-change-2021",
@@ -57,14 +118,14 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "diana-the-musical-2021",
-        "url": "https://www.hollywoodreporter.com/lifestyle/arts/diana-musical-broadway-review-1235046509/",
-        "publishDate": null,
+        "showId": "cult-of-love-2024",
+        "url": "https://www.hollywoodreporter.com/mcdbeek-mg003/",
+        "publishDate": "2024-12-12",
         "why": "not-enumerated"
       },
       {
-        "showId": "farinelli-and-the-king-2017",
-        "url": "https://www.hollywoodreporter.com/review/farinelli-king-theater-1068729",
+        "showId": "diana-the-musical-2021",
+        "url": "https://www.hollywoodreporter.com/lifestyle/arts/diana-musical-broadway-review-1235046509/",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -75,14 +136,14 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "man-and-boy-2011",
-        "url": "https://www.hollywoodreporter.com/review/man-boy-theater-review-245989",
+        "showId": "julius-caesar-off-broadway-2017",
+        "url": "http://www.hollywoodreporter.com/review/julius-caesar-1012271",
         "publishDate": null,
         "why": "not-enumerated"
       },
       {
-        "showId": "marvins-room-2017",
-        "url": "https://www.hollywoodreporter.com/news/general-news/marvins-room-theater-review-1017924/",
+        "showId": "man-and-boy-2011",
+        "url": "https://www.hollywoodreporter.com/review/man-boy-theater-review-245989",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -91,12 +152,6 @@
         "url": null,
         "publishDate": null,
         "why": "no-url"
-      },
-      {
-        "showId": "pacific-overtures-1976",
-        "url": "https://www.hollywoodreporter.com/news/general-news/pacific-overtures-theater-1000003/",
-        "publishDate": null,
-        "why": "not-enumerated"
       },
       {
         "showId": "scandalous-2012",
@@ -123,14 +178,20 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "topdog-underdog-2022",
-        "url": "https://www.hollywoodreporter.com/lifestyle/arts/topdog-underdog-broadway-review-1235237108/",
+        "showId": "the-importance-of-being-earnest-1977",
+        "url": null,
         "publishDate": null,
-        "why": "not-enumerated"
+        "why": "no-url"
       },
       {
-        "showId": "true-west-2019",
-        "url": "https://www.hollywoodreporter.com/review/true-west-review-1177735",
+        "showId": "the-robber-bridegroom-1976",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "topdog-underdog-2022",
+        "url": "https://www.hollywoodreporter.com/lifestyle/arts/topdog-underdog-broadway-review-1235237108/",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -142,55 +203,8 @@
       }
     ]
   },
-  "gaps": [
-    {
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/cult-of-love-review-shailene-woodley-zachary-quinto-leslye-headland-1236085594/",
-      "headline": "‘Cult of Love’ Theater Review: Shailene Woodley and Barbie Ferreira Make Their Broadway Debuts in Leslye Headland’s Electric Family Drama",
-      "publishDate": "2024-12-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cult-of-love-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mary-jane-review-rachel-mcadams-broadway-debut-1235879665/",
-      "headline": "‘Mary Jane’ Theater Review: Rachel McAdams Makes a Moving Broadway Debut in Amy Herzog’s Portrait of Motherhood Under Duress",
-      "publishDate": "2024-04-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "mary-jane-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/take-me-out-broadway-review-1235124442/",
-      "headline": "Jesse Williams and Jesse Tyler Ferguson in ‘Take Me Out’: Theater Review",
-      "publishDate": "2022-04-04",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "take-me-out-2022"
-      ],
-      "outOfWindow": [
-        "take-me-out-2003"
-      ]
-    }
-  ],
+  "gaps": [],
   "heldAltUrl": [
-    {
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
-      "headline": "‘Caroline, or Change’: Theater Review",
-      "publishDate": "2021-10-27",
-      "matched": [
-        "caroline-or-change-2021"
-      ],
-      "heldUrls": [
-        "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/"
-      ]
-    },
     {
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/jagged-little-pill-producers-investigation-external-review-1235020755/",
       "headline": "‘Jagged Little Pill’ Producers Appoint External Firm to Investigate Allegations of Mistreatment Made By Former Cast Member",
@@ -206,6 +220,222 @@
   "misfiles": [],
   "heldUnmatched": [
     {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/other-desert-cities-theater-review-julia-louis-dreyfus-1236734079/",
+      "headline": "‘Other Desert Cities’ Theater Review: Julia Louis-Dreyfus, Ed Harris and Allison Janney Fail to Make a Once-Timely Play Relevant Again",
+      "publishDate": "2026-10-18",
+      "via": null,
+      "held": [
+        "other-desert-cities-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "other-desert-cities-2011",
+        "other-desert-cities-2026"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/death-of-a-salesman-theater-review-nathan-lane-broadway-1236560881/",
+      "headline": "‘Death of a Salesman’ Theater Review: Nathan Lane and Laurie Metcalf Illuminate the Tragedy of an Ordinary Man in Ageless Arthur Miller Classic",
+      "publishDate": "2026-04-09",
+      "via": null,
+      "held": [
+        "death-of-a-salesman-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "death-of-a-salesman-2026",
+        "death-of-a-salesman-2022",
+        "death-of-a-salesman-2012",
+        "death-of-a-salesman-1999",
+        "death-of-a-salesman-1975",
+        "death-of-a-salesman-1984"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michele-aaron-tveit-abba-musical-1236427952/",
+      "headline": "‘Chess’ Theater Review: Lea Michele, Aaron Tveit and Nicholas Christopher Headline Conflicted Broadway Revival of Cold War Concept Musical",
+      "publishDate": "2025-11-16",
+      "via": null,
+      "held": [
+        "chess-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "chess-2025",
+        "chess-1988",
+        "chess-2003",
+        "conflicted-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/good-night-and-good-luck-theater-review-george-clooney-broadway-1236181072/",
+      "headline": "‘Good Night, and Good Luck’ Theater Review: George Clooney Makes Restrained Broadway Debut in an Adaptation Most Notable for Its Timeliness",
+      "publishDate": "2025-04-03",
+      "via": null,
+      "held": [
+        "good-night-and-good-luck-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "good-night-and-good-luck-2025"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/othello-theater-review-denzel-washington-jake-gyllenhaal-shakespeare-broadway-1236170552/",
+      "headline": "‘Othello’ Theater Review: Denzel Washington and Jake Gyllenhaal Bring Star Wattage to Middling Revival Otherwise Short on Electricity",
+      "publishDate": "2025-03-23",
+      "via": null,
+      "held": [
+        "othello-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "othello-2025",
+        "othello-1970",
+        "othello-1982",
+        "othello-bedlam-off-broadway-2026",
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/gypsy-theater-review-audra-mcdonald-broadway-1236091036/",
+      "headline": "‘Gypsy’ Theater Review: Audra McDonald Climbs the Mountain of One of the All-Time Greatest Musicals and Plants a Triumphant Flag",
+      "publishDate": "2024-12-19",
+      "via": null,
+      "held": [
+        "gypsy-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "gypsy-2024",
+        "gypsy-2008",
+        "gypsy-2003",
+        "gypsy-1989",
+        "gypsy-1974"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
+      "headline": "‘Oh, Mary!’ Theater Review: Comedy Genius Cole Escola Serves Revisionist American History as Riotous Queer Silliness",
+      "publishDate": "2024-07-11",
+      "via": null,
+      "held": [
+        "oh-mary-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "oh-mary-2024",
+        "oh-mary-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/back-to-the-future-the-musical-theater-review-a-fun-faithful-stage-adaptation-hits-broadway-1235548700/",
+      "headline": "‘Back to the Future: The Musical’ Theater Review: A Fun, Faithful Stage Adaptation Hits Broadway",
+      "publishDate": "2023-08-03",
+      "via": null,
+      "held": [
+        "back-to-the-future-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "back-to-the-future-2023"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-dolls-house-review-jessica-chastain-1235347184/",
+      "headline": "‘A Doll’s House’ Theater Review: Jessica Chastain Blazes in Intensely Intimate Take on Ibsen Classic",
+      "publishDate": "2023-03-09",
+      "via": null,
+      "held": [
+        "a-dolls-house-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "a-dolls-house-2023",
+        "a-dolls-house-1997",
+        "a-dolls-house-1975"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/merrily-we-roll-along-theater-review-daniel-radcliffe-jonathan-groff-stephen-sondheim-1235280713/",
+      "headline": "‘Merrily We Roll Along’ Theater Review: Daniel Radcliffe and Jonathan Groff Lead a Buoyant Revival of Stephen Sondheim’s Flawed Jewel",
+      "publishDate": "2022-12-12",
+      "via": null,
+      "held": [
+        "merrily-we-roll-along-off-broadway-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "merrily-we-roll-along-2023",
+        "merrily-we-roll-along-1981",
+        "merrily-we-roll-along-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/kimberly-akimbo-theater-review-david-lindsay-abaire-jeanine-tesori-broadway-musical-1235259809/",
+      "headline": "‘Kimberly Akimbo’ Theater Review: David Lindsay-Abaire and Jeanine Tesori’s Wonderful New Broadway Musical Is Happy-Sad Heaven",
+      "publishDate": "2022-11-10",
+      "via": null,
+      "held": [
+        "kimberly-akimbo-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "kimberly-akimbo-2022",
+        "kimberly-akimbo-off-broadway-2021"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/almost-famous-theater-review-cameron-crowe-recaptures-70s-rock-fandom-on-broadway-1235254652/",
+      "headline": "‘Almost Famous’ Theater Review: Cameron Crowe Recaptures ’70s Rock Fandom in Spirited Broadway Musical Refit",
+      "publishDate": "2022-11-03",
+      "via": null,
+      "held": [
+        "almost-famous-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "almost-famous-2022"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/august-wilsons-piano-lesson-theater-review-1235241145/",
+      "headline": "August Wilson’s ‘The Piano Lesson’ Theater Review: Samuel L. Jackson Soars in a Broadway Revival That Only Intermittently Hits the Right Notes",
+      "publishDate": "2022-10-13",
+      "via": null,
+      "held": [
+        "the-piano-lesson-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-piano-lesson-2022",
+        "the-piano-lesson-1990",
+        "a-broadway-musical-1978"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/daniel-craig-ruth-negga-asia-kate-dillon-macbeth-theater-review-1235137293/",
+      "headline": "Daniel Craig and Ruth Negga in ‘Macbeth’: Theater Review",
+      "publishDate": "2022-04-29",
+      "via": null,
+      "held": [
+        "macbeth-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/for-colored-girls-theater-review-ntozake-shange-camille-a-brown-1235133022/",
       "headline": "‘For Colored Girls’: Theater Review",
       "publishDate": "2022-04-20",
@@ -217,6 +447,20 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/hugh-jackman-and-sutton-foster-in-the-music-man-theater-review-1235091456/",
+      "headline": "Hugh Jackman and Sutton Foster in ‘The Music Man’: Theater Review",
+      "publishDate": "2022-02-10",
+      "via": null,
+      "held": [
+        "the-music-man-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-music-man-2022",
+        "the-music-man-2000"
+      ]
+    },
+    {
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage-1235085086/",
       "headline": "‘MJ’: Theater Review",
       "publishDate": "2022-02-01",
@@ -226,6 +470,43 @@
       ],
       "matched": [],
       "outOfWindow": []
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theater-review-1235060159/",
+      "headline": "Patti LuPone in Stephen Sondheim’s ‘Company’: Theater Review",
+      "publishDate": "2021-12-09",
+      "via": null,
+      "held": [
+        "company-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mrs-doubtfire-theater-review-1235056997/",
+      "headline": "‘Mrs. Doubtfire’: Theater Review",
+      "publishDate": "2021-12-05",
+      "via": null,
+      "held": [
+        "mrs-doubtfire-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "mrs-doubtfire-2021"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/clydes-review-lynn-nottage-uzo-aduba-1235052637/",
+      "headline": "‘Clyde’s’: Theater Review",
+      "publishDate": "2021-11-24",
+      "via": null,
+      "held": [
+        "clydes-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "clydes-2021"
+      ]
     },
     {
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/six-broadway-review-1235024613/",
@@ -240,7 +521,27 @@
     }
   ],
   "ambiguous": [],
-  "catalogGaps": [],
+  "catalogGaps": [
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/cult-of-love-review-shailene-woodley-zachary-quinto-leslye-headland-1236085594/",
+      "headline": "‘Cult of Love’ Theater Review: Shailene Woodley and Barbie Ferreira Make Their Broadway Debuts in Leslye Headland’s Electric Family Drama",
+      "publishDate": "2024-12-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/thoughts-of-a-colored-man-broadway-review-1235030411/",
+      "headline": "‘Thoughts of a Colored Man’: Theater Review",
+      "publishDate": "2021-10-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
   "outOfWindow": [
     {
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/dracula-theater-review-cynthia-erivo-london-1236508632/",
@@ -263,8 +564,7 @@
       "matched": [],
       "outOfWindow": [
         "the-seagull-2008",
-        "the-seagull-1992",
-        "the-first-1981"
+        "the-seagull-1992"
       ]
     },
     {
@@ -343,6 +643,17 @@
         "the-glass-menagerie-1975",
         "the-glass-menagerie-2005",
         "the-glass-menagerie-1983"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
+      "headline": "‘Caroline, or Change’: Theater Review",
+      "publishDate": "2021-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "caroline-or-change-2004"
       ]
     },
     {

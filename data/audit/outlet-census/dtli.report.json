@@ -1,12 +1,16 @@
 {
   "outletId": "dtli",
-  "generatedAt": "2026-10-28T20:45:32.752Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:42:00.751Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "aggregator: its own reviews and its quote pages of other outlets share one URL shape and listing",
     "notes": [
-      "unreadable: no WordPress API; sitemap enumeration not yet configured"
+      "unreadable: aggregator: its own reviews and its quote pages of other outlets share one URL shape and listing"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,15 +23,22 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 39,
-    "notEnumerated": 39,
+    "rowsInWindow": 47,
+    "notEnumerated": 47,
     "noUrl": 0,
     "samples": [
       {
         "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
         "url": "https://didtheylikeit.com/shows/a-beautiful-noise/a-beautiful-noise-serves-cheap-thrills-but-no-drama/",
         "publishDate": "2022-12-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-strange-loop-2022",
+        "url": "https://didtheylikeit.com/shows/a-strange-loop/a-strange-loop-celebrates-the-beauty-of-black-queer-existence/",
+        "publishDate": "2022-04-26",
         "why": "not-enumerated"
       },
       {
@@ -109,6 +120,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "english-off-broadway-2022",
+        "url": "https://didtheylikeit.com/shows/english/unraveling-the-secrets-of-the-self-through-english/",
+        "publishDate": "2022-02-22",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
         "url": "https://didtheylikeit.com/shows/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf/for-colored-girls-is-a-timeless-movement-in-compassion/",
         "publishDate": "2022-04-20",
@@ -157,9 +174,21 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "lackawanna-blues-2021",
+        "url": "https://didtheylikeit.com/shows/lackawanna-blues/in-lackawanna-blues-santiago-hudson-builds-a-memorial-for-the-forgotten/",
+        "publishDate": "2021-10-07",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "leopoldstadt-2022",
         "url": "https://didtheylikeit.com/shows/leopoldstadt/loss-and-remembrance-are-at-the-heart-of-the-magnificent-leopoldstadt/",
         "publishDate": "2022-10-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "liberation-2025",
+        "url": "https://didtheylikeit.com/shows/liberation/women-in-search-of-answers-gather-for-the-years-best-play/",
+        "publishDate": "2025-10-28",
         "why": "not-enumerated"
       },
       {
@@ -217,6 +246,18 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "suffs-off-broadway-2022",
+        "url": "https://didtheylikeit.com/shows/suffs/while-looking-at-history-suffs-elects-didacticism-over-adventurousness/",
+        "publishDate": "2022-04-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-bedwetter-off-broadway-2022",
+        "url": "https://didtheylikeit.com/shows/the-bedwetter/the-bedwetter-shows-what-its-really-like-for-a-girl/",
+        "publishDate": "2022-06-07",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "the-collaboration-2022",
         "url": "https://didtheylikeit.com/shows/the-collaboration/pope-bettany-elevate-the-collaboration-into-art-worth-contemplating/",
         "publishDate": "2022-12-20",
@@ -227,36 +268,6 @@
         "url": "https://didtheylikeit.com/shows/the-minutes/the-thrilling-the-minutes-finds-pleasure-in-the-tedium-of-politics/",
         "publishDate": "2022-04-17",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "the-music-man-2022",
-        "url": "https://didtheylikeit.com/shows/the-music-man/we-dont-want-what-the-music-man-is-selling/",
-        "publishDate": "2022-02-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-skin-of-our-teeth-2022",
-        "url": "https://didtheylikeit.com/shows/the-skin-of-our-teeth/the-skin-of-our-teeth-review-a-set-as-big-as-the-running-time/",
-        "publishDate": "2022-04-25",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "thoughts-of-a-colored-man-2021",
-        "url": "https://didtheylikeit.com/shows/thoughts-of-a-colored-man/thoughts-of-a-colored-man-falters-and-it-should-be-allowed-to/",
-        "publishDate": "2021-10-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "topdog-underdog-2022",
-        "url": "https://didtheylikeit.com/shows/topdog-underdog-2/a-blazing-romp-through-americas-dog-eat-dog-butchery/",
-        "publishDate": "2022-10-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "trouble-in-mind-2021",
-        "url": "https://didtheylikeit.com/shows/trouble-in-mind/at-trouble-in-mind-school-is-in-session/",
-        "publishDate": "2021-11-18",
-        "why": "not-enumerated"
       }
     ]
   },
@@ -266,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

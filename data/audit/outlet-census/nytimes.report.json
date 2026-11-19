@@ -1,7 +1,7 @@
 {
   "outletId": "nytimes",
   "market": "nyc",
-  "generatedAt": "2026-11-19T06:59:01.374Z",
+  "generatedAt": "2026-11-19T10:47:10.429Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
@@ -16,13 +16,13 @@
   "corpus": "reviews.json",
   "summary": {
     "counts": {
+      "held": 427,
       "not-review": 2527,
-      "gap": 22,
-      "held": 426,
+      "out-of-window": 111,
       "held-other-market": 47,
       "held-unmatched": 27,
-      "out-of-window": 111,
       "catalog-gap": 18,
+      "gap": 21,
       "held-alt-url": 6,
       "misfile": 1
     },
@@ -32,17 +32,10 @@
       "gap": 2,
       "held-alt-url": 2
     },
-    "recall": 0.949,
-    "recallWithCatalog": 0.913
+    "recall": 0.952,
+    "recallWithCatalog": 0.915
   },
   "seasons": {
-    "2026-27": {
-      "not-review": 62,
-      "gap": 1,
-      "held": 32,
-      "held-other-market": 5,
-      "held-unmatched": 4
-    },
     "2024-25": {
       "held": 79,
       "not-review": 399,
@@ -50,6 +43,33 @@
       "held-other-market": 9,
       "held-unmatched": 8,
       "catalog-gap": 1
+    },
+    "2026-27": {
+      "not-review": 62,
+      "held": 33,
+      "held-other-market": 5,
+      "held-unmatched": 4
+    },
+    "2023-24": {
+      "not-review": 427,
+      "held": 78,
+      "out-of-window": 14,
+      "catalog-gap": 4,
+      "gap": 7,
+      "held-unmatched": 3,
+      "held-other-market": 11,
+      "held-alt-url": 1,
+      "misfile": 1
+    },
+    "2021-22": {
+      "not-review": 594,
+      "out-of-window": 28,
+      "catalog-gap": 6,
+      "held": 54,
+      "held-other-market": 7,
+      "held-unmatched": 3,
+      "gap": 4,
+      "held-alt-url": 1
     },
     "2025-26": {
       "not-review": 369,
@@ -59,16 +79,6 @@
       "held-unmatched": 6,
       "out-of-window": 5,
       "catalog-gap": 1
-    },
-    "2021-22": {
-      "not-review": 594,
-      "held": 54,
-      "catalog-gap": 6,
-      "out-of-window": 28,
-      "held-other-market": 7,
-      "held-unmatched": 3,
-      "gap": 4,
-      "held-alt-url": 1
     },
     "2022-23": {
       "not-review": 525,
@@ -80,17 +90,6 @@
       "catalog-gap": 5,
       "held-alt-url": 4
     },
-    "2023-24": {
-      "not-review": 427,
-      "held": 78,
-      "catalog-gap": 4,
-      "gap": 7,
-      "held-unmatched": 3,
-      "out-of-window": 14,
-      "held-other-market": 11,
-      "held-alt-url": 1,
-      "misfile": 1
-    },
     "2020-21": {
       "not-review": 151,
       "out-of-window": 6,
@@ -100,8 +99,8 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 1212,
-    "notEnumerated": 22,
+    "rowsInWindow": 1216,
+    "notEnumerated": 23,
     "noUrl": 2,
     "samples": [
       {
@@ -243,6 +242,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "tosca-off-broadway-2026",
+        "url": "https://www.nytimes.com/2026/11/16/arts/music/tosca-met-opera-new-york-philharmonic.html",
+        "publishDate": "2026-11-16",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "tristan-und-isolde-off-broadway-2026",
         "url": "https://www.nytimes.com/2026/03/10/arts/music/tristan-und-isolde-met-opera-review.html",
         "publishDate": "2026-03-10",
@@ -252,18 +257,6 @@
   },
   "gaps": [
     {
-      "url": "https://www.nytimes.com/2026/11/18/theater/exhibitionist-good-thief-review-hiller.html",
-      "headline": "exhibitionist good thief review hiller",
-      "publishDate": "2026-11-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-good-thief-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.nytimes.com/2026/04/27/theater/kenrex-review.html",
       "headline": "kenrex review",
       "publishDate": "2026-04-01",
@@ -272,18 +265,6 @@
       "held": [],
       "matched": [
         "kenrex-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2022/04/27/theater/mr-saturday-night-review.html",
-      "headline": "mr saturday night review",
-      "publishDate": "2022-04-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "mr-saturday-night-2022"
       ],
       "outOfWindow": []
     },
@@ -302,6 +283,18 @@
         "les-miserables-2006",
         "les-miserables-1987"
       ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/04/27/theater/mr-saturday-night-review.html",
+      "headline": "mr saturday night review",
+      "publishDate": "2022-04-01",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mr-saturday-night-2022"
+      ],
+      "outOfWindow": []
     },
     {
       "url": "https://www.nytimes.com/2021/11/14/theater/assassins-review-classic-stage.html",
@@ -644,6 +637,18 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
+      "headline": "american daughter review wendy wasserstein",
+      "publishDate": "2026-08-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "an-american-daughter-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.nytimes.com/2022/02/01/theater/mj-musical-review.html",
       "headline": "mj musical review",
       "publishDate": "2022-02-01",
@@ -732,18 +737,6 @@
       "outOfWindow": [
         "ghost-the-musical-2012"
       ]
-    },
-    {
-      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-      "headline": "american daughter review wendy wasserstein",
-      "publishDate": "2026-08-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "an-american-daughter-off-broadway-2026"
-      ],
-      "matched": [],
-      "outOfWindow": []
     },
     {
       "url": "https://www.nytimes.com/2025/10/09/theater/least-problematic-woman-review-dylan-mulvaney.html",
@@ -981,6 +974,16 @@
   "ambiguous": [],
   "catalogGaps": [
     {
+      "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
+      "headline": "oresteia review park avenue armory",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.nytimes.com/2022/02/16/theater/wolf-play-review-soho-rep.html",
       "headline": "wolf play review soho rep",
       "publishDate": "2022-02-01",
@@ -1014,16 +1017,6 @@
       "url": "https://www.nytimes.com/2021/10/19/theater/autumn-royal-review-irish-repertory-theater.html",
       "headline": "autumn royal review irish repertory theater",
       "publishDate": "2021-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2022/07/28/theater/oresteia-review-park-avenue-armory.html",
-      "headline": "oresteia review park avenue armory",
-      "publishDate": "2022-07-01",
       "dateSoft": true,
       "via": null,
       "held": [],
@@ -1174,6 +1167,110 @@
       "outOfWindow": [
         "the-seagull-2008",
         "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/07/31/theater/cat-on-a-hot-tin-roof-review.html",
+      "headline": "cat on a hot tin roof review",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cat-on-a-hot-tin-roof-2013",
+        "cat-on-a-hot-tin-roof-2008",
+        "cat-on-a-hot-tin-roof-1990",
+        "cat-on-a-hot-tin-roof-1974",
+        "cat-on-a-hot-tin-roof-2003",
+        "cat-on-a-hot-tin-roof-2027"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/07/24/theater/seagull-review-elevator-repair-service.html",
+      "headline": "seagull review elevator repair service",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-2008",
+        "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/07/25/theater/romeo-juliet-review-hudson-valley-shakespeare-festival.html",
+      "headline": "romeo juliet review hudson valley shakespeare festival",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-juliet-2024"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/07/21/theater/patriots-almeida-review.html",
+      "headline": "patriots almeida review",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "patriots-2024"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/07/18/theater/heart-review-jade-anouka.html",
+      "headline": "heart review jade anouka",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/07/12/theater/twelfth-night-review-classical-theater-of-harlem.html",
+      "headline": "twelfth night review classical theater of harlem",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/07/11/theater/richard-iii-review.html",
+      "headline": "richard iii review",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2024/08/03/theater/gatsby-queen-of-versailles-review.html",
+      "headline": "gatsby queen of versailles review",
+      "publishDate": "2024-08-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "queen-versailles-2025"
       ]
     },
     {
@@ -1431,110 +1528,6 @@
       "matched": [],
       "outOfWindow": [
         "the-heart-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/07/31/theater/cat-on-a-hot-tin-roof-review.html",
-      "headline": "cat on a hot tin roof review",
-      "publishDate": "2022-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "cat-on-a-hot-tin-roof-2013",
-        "cat-on-a-hot-tin-roof-2008",
-        "cat-on-a-hot-tin-roof-1990",
-        "cat-on-a-hot-tin-roof-1974",
-        "cat-on-a-hot-tin-roof-2003",
-        "cat-on-a-hot-tin-roof-2027"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/07/24/theater/seagull-review-elevator-repair-service.html",
-      "headline": "seagull review elevator repair service",
-      "publishDate": "2022-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-seagull-2008",
-        "the-seagull-1992"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/07/25/theater/romeo-juliet-review-hudson-valley-shakespeare-festival.html",
-      "headline": "romeo juliet review hudson valley shakespeare festival",
-      "publishDate": "2022-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "romeo-juliet-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/07/21/theater/patriots-almeida-review.html",
-      "headline": "patriots almeida review",
-      "publishDate": "2022-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "patriots-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/07/18/theater/heart-review-jade-anouka.html",
-      "headline": "heart review jade anouka",
-      "publishDate": "2022-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-heart-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/07/12/theater/twelfth-night-review-classical-theater-of-harlem.html",
-      "headline": "twelfth night review classical theater of harlem",
-      "publishDate": "2022-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "twelfth-night-2013",
-        "twelfth-night-1998",
-        "twelfth-night-1972"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/07/11/theater/richard-iii-review.html",
-      "headline": "richard iii review",
-      "publishDate": "2022-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "richard-iii-2013"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2024/08/03/theater/gatsby-queen-of-versailles-review.html",
-      "headline": "gatsby queen of versailles review",
-      "publishDate": "2024-08-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "queen-versailles-2025"
       ]
     },
     {
