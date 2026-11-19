@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+  "night": "2026-11-18",
+  "market": "broadway",
+  "embargoAt": "2026-11-19T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-19T02:30:04.211Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-19T04:55:12.371Z",
+    "lastOkSampleAt": "2026-11-19T04:55:12.371Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-19T04:00:09.372Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-19T05:00:28.489Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "lane",
+    "method": "lane-only-decision",
+    "holder": "gha-44413929799",
+    "stoodDownSeenAt": "2026-11-19T05:00:28.568Z",
+    "checks": [
+      {
+        "at": "2026-11-19T05:00:28.568Z",
+        "label": "2h",
+        "standDown": true,
+        "reason": "lane gha-44413929799 holds its-a-wonderful-life-a-live-radio-play-2026 2026-11-18",
+        "holder": "gha-44413929799"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-19T05:00:31.931Z",
+    "files": [
+      {
+        "file": "around-the-town-chicago--unknown.json",
+        "outletId": "around-the-town-chicago",
+        "outlet": "Around the Town Chicago",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-18T18:36:05.149Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "aroundthetownchicago.com/theatre-reviews/its-a-wonderful-life-the-live-radio-show-citadel",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "calgary-herald--louis-b-hobson.json",
+        "outletId": "calgary-herald",
+        "outlet": "Calgary Herald",
+        "critic": "Louis B. Hobson",
+        "firstSeenAt": "2026-11-18T17:22:14.957Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-12",
+        "url": "calgaryherald.com/entertainment/theatre/review-rosebuds-a-wonderful-life-a-perfect-holiday-show-bursting-with-nostalgia",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "stagezine--scott-harrah.json",
+        "outletId": "stagezine",
+        "outlet": "StageZine",
+        "critic": "Scott Harrah",
+        "firstSeenAt": "2026-11-18T18:36:23.027Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-01",
+        "url": "stagezine.com/its-a-wonderful-life-a-live-radio-play-sets-broadway-premiere-with-all-star-cast",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
