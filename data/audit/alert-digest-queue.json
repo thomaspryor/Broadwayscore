@@ -543,20 +543,6 @@
     "queuedAt": "2026-11-19T16:22:42.934Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-19.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T16:22:43.028Z"
-  },
-  {
     "conditionKey": "land:land/feedback-parked-cards",
     "title": "Landing blocked: merged-tree-tests red on land/feedback-parked-cards",
     "description": "land.yml did not land land/feedback-parked-cards: the merged-tree-tests gate went red at 8d5e04669c. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/feedback-parked-cards @ 8d5e04669c (origin/land/feedback-parked-cards) → origin/main @ 1b593c951f [land] attempt 1/3: rebased onto 1b593c951f, 12 file(s) changed — running checks [land] verified-base: main moved d7f1432a83 → 1b593c951f across 198 file(s), substantive — re-checking on the merged tree (+4 test file(s) changed on main since the verified base); full re-check: branch and ma Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44553457396",
@@ -765,6 +751,34 @@
       }
     ],
     "queuedAt": "2026-11-19T17:18:58.689Z"
+  },
+  {
+    "conditionKey": "corpus-drift:autoclear-vs-ensemble",
+    "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
+    "description": "check-corpus-drift.js audit \"autoclear-vs-ensemble\" (node scripts/audit-autoclear-vs-ensemble.js --strict) has been drifting. Latest output:\n\nautoclear-vs-ensemble audit: 83009 files scanned.\n  wrongProduction violations: 1\n    assassins-off-broadway-2021/stageandcinema--tony-frankel.json :: rebuild: other-production url no longer detected (was: Date guard: review 2022-03-16 is 43d after 2022-01-25 (close+7d) — likely different production)\n  wrongShow violations: 0\n\nFAIL: 1 autoclear-vs-ensemble violation(s) found.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T17:46:16.133Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-19.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T17:46:16.379Z"
   },
   {
     "conditionKey": "land:land/bro-7846-archiver-guard",
