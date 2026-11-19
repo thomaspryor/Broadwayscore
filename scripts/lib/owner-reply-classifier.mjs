@@ -26,14 +26,14 @@ const BARE_GO_RE = /^(?:go|go go|go now|go please|please go)$/i;
 // holds, conditions and delays on the push: final, never sent to a model. SOFT words are
 // complaints, requests for more to look at or "fix X" asides: a person reads those better than a list.
 // A clause stops the push if either list matches, so classifyOwnerReply behaves exactly as before.
-const HARD_STOP_WORDS = 'hold|wait|stop|cancel|pause|nah|nope|no|except|unless|first|before|until|once|later|hang on|not yet|not sure|never mind|one sec|tomorrow|tonight|if|when|assuming|provided|pending|as long as|soon|eventually|after|afterwards|next|week|weeks|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday|hours?|lunch|kidding';
+const HARD_STOP_WORDS = 'hold|wait|stop|cancel|pause|nah|nope|no|except|unless|first|before|until|once|later|hang on|not yet|not sure|never mind|one sec|tomorrow|tonight|if|when|assuming|provided|pending|as long as|soon|eventually|after|afterwards|next|week|weeks|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday|hours?|lunch|kidding|tmrw|nvm';
 const SOFT_STOP_WORDS = 'although|though|rather|instead|revisit|let me|need to see|want to see|look again|another look|check|show me|send me|also|broken|wrong|off|bug|bugs|issues?|problems?|bad|ugly|not working';
 const HARD_STOP_RE = new RegExp(`\\b(?:${HARD_STOP_WORDS})\\b`, 'i');
 const SOFT_STOP_RE = new RegExp(`\\b(?:${SOFT_STOP_WORDS})\\b`, 'i');
 // fix/change/redo is a stop ("looks good, fix the padding first") unless the clause
 // defers it AFTER the verb ("fix the system so it's less annoying after").
-const CHANGE_VERB_RE = /\b(?:fix|change|redo|rework|tweak)\b/i;
-const DEFERRAL_AFTER_VERB_RE = /\b(?:fix|change|redo|rework|tweak)\b[^]*\b(?:after|afterwards|afterward|later|next|separately|follow-?up)\b/i;
+const CHANGE_VERB_RE = /\b(?:fix|change|redo|rework|tweak|make|adjust|update|resize|move|add|remove|replace|bigger|smaller)\b/i;
+const DEFERRAL_AFTER_VERB_RE = /\b(?:fix|change|redo|rework|tweak|make|adjust|update|resize|move|add|remove|replace|bigger|smaller)\b[^]*\b(?:after|afterwards|afterward|later|next|separately|follow-?up)\b/i;
 // "later"/"once"/"until"/"first"/"before"/"instead" are stops, except inside a deferred change request.
 const DEFERRABLE_STOP_RE = /\b(?:later|once|until|first|before|instead|rather|after|afterwards|afterward|next|soon)\b/i;
 
