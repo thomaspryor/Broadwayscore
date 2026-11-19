@@ -1,0 +1,30 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+const require = createRequire(import.meta.url);
+const { applyDataEdit } = require('../../scripts/lib/data-edit-action');
+
+test('a plan removes only Show Score, tombstones it and recomputes the grade', (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'audience-source-plan-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, 'data'));
+  fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify({ shows: [{ id: 'a-moon-for-the-misbegotten-2007', category: 'broadway' }] }));
+  const sources = { showScore: { score: 73, reviewCount: 8 }, mezzanine: { score: 60, reviewCount: 5 } };
+  const data = { shows: { 'a-moon-for-the-misbegotten-2007': { sources, combinedScore: 68, designation: 'Shrugging' } } };
+  const action = { file: 'audience-buzz.json', showId: 'a-moon-for-the-misbegotten-2007', field: 'sources', oldValue: structuredClone(sources), newValue: { mezzanine: sources.mezzanine } };
+  const result = applyDataEdit(data, action, { root });
+  assert.equal(result.ok, true, result.reason);
+  assert.equal(data.shows[action.showId].combinedScore, 60);
+  assert.equal(data.shows[action.showId].designation, 'Disliking');
+  assert.match(data.shows[action.showId].sourcesRemoved.showScore, /UK production/);
+  assert.equal(applyDataEdit({ shows: { [action.showId]: { sources: structuredClone(sources) } } }, { ...action, newValue: {} }, { root }).ok, false);
+  assert.equal(applyDataEdit({ shows: { [action.showId]: { sources: { ...sources, showScore: { score: 90, reviewCount: 8 } } } } }, action, { root }).ok, false, 'stale source must be refused');
+  assert.equal(applyDataEdit({ shows: { missing: { sources: structuredClone(sources) } } }, { ...action, showId: 'missing' }, { root }).ok, false, 'missing show context must be refused');
+  const aliased = { showScore: { score: 73, reviewCount: 8 }, mezzanine: { score: 60, reviewCount: 5 } };
+  const plan = { ...action, oldValue: aliased };
+  assert.equal(applyDataEdit({ shows: { [action.showId]: { sources: aliased } } }, plan, { root }).ok, true);
+  assert.ok(plan.oldValue.showScore, 'plan generation must preserve oldValue');
+});

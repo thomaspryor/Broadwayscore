@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-7434",
+  "planId": "ea44e317-99d6-4d10-9707-4ac8ed7c6a36",
+  "status": "pending",
+  "createdAt": "2026-11-19T13:02:10.231Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove UK Show Score rating from the US production",
+    "steps": [
+      "audience-buzz.json: a-moon-for-the-misbegotten-2007.sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "audience-buzz.json",
+        "showId": "a-moon-for-the-misbegotten-2007",
+        "field": "sources",
+        "oldValue": {
+          "showScore": {
+            "score": 73,
+            "reviewCount": 8
+          },
+          "mezzanine": {
+            "score": 60,
+            "reviewCount": 5,
+            "starRating": 3,
+            "prodIds": [
+              "ICYFm75Ipb"
+            ]
+          }
+        },
+        "newValue": {
+          "mezzanine": {
+            "score": 60,
+            "reviewCount": 5,
+            "starRating": 3,
+            "prodIds": [
+              "ICYFm75Ipb"
+            ]
+          }
+        },
+        "description": "audience-buzz.json: a-moon-for-the-misbegotten-2007.sources"
+      }
+    ]
+  }
+}
