@@ -256,8 +256,9 @@ function inferMarketFromMessage(title, message) {
     // A sentence naming two different markets ("saw it in the West End, but the
     // Broadway one needs a cast") is a contrast the 30-char window can't read: skip.
     const sStart = Math.max(...['.', '!', '?', '\n'].map((c) => msg.lastIndexOf(c, idx))) + 1;
-    const sEndRaw = msg.slice(idx).search(/[.!?\n]/);
-    const sentence = msg.slice(sStart, sEndRaw < 0 ? msg.length : idx + sEndRaw);
+    // Search for the end after the title: "Mamma Mia!" or "Mr. Saturday Night" must not end it.
+    const sEndRaw = msg.slice(idx + t.length).search(/[.!?\n]/);
+    const sentence = msg.slice(sStart, sEndRaw < 0 ? msg.length : idx + t.length + sEndRaw);
     if (new Set(marketsIn(sentence)).size > 1) return null;
     for (const m of marketsIn(near)) found.add(m);
   }
