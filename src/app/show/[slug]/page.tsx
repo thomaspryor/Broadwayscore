@@ -66,6 +66,7 @@ import { pickCompactRelated } from '../../../../scripts/lib/related-shows-ab';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
 import CallTheScore, { CallResultStrip } from '@/components/show-page/CallTheScore';
+import { nyToday } from '@/lib/score-call';
 import { shouldShowReviewsSyncing } from '../../../../scripts/lib/show-page-provisional-state';
 import ShowTrustLines from '@/components/show-page/ShowTrustLines';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -514,6 +515,12 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // and which fallback fills the Critics' Take slot when there's no consensus.
   // One server-side verdict for every place on the page (see review-expectation.ts).
   const noReviewsExpected = noCriticReviewsExpected(show, reviewCount);
+  // Opened in the last few days with no review yet: reviews are on their way, not "archived" (BRO-7857).
+  const justOpened = (() => {
+    const o = show.openingDate ? Date.parse(`${show.openingDate.slice(0, 10)}T00:00:00Z`) : NaN;
+    const now = Date.parse(`${nyToday()}T00:00:00Z`);
+    return Number.isFinite(o) && o <= now && now - o <= 3 * 86400000;
+  })();
   const reviewsSyncing = shouldShowReviewsSyncing(show);
   // Opening-night status, decided once on the server so ISR HTML and the clock agree (BRO-7376).
   const reviewArrival = getReviewArrival(show, reviewCount, !showTBD);
@@ -1061,7 +1068,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 <>Reviews coming after {isWestEnd ? 'press night' : 'opening night'}.</>
               )}
             </p>
-            <CallTheScore show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate }} />
+            <CallTheScore show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount: show.criticScore?.reviewCount ?? 0 }} />
           </section>
           </LiveHideWhenOverlay>
         ) : (
@@ -1073,8 +1080,12 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             <p className="text-gray-400 text-sm">
               {noReviewsExpected
                 ? 'We found no critic reviews for this event.'
-                : <>Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.</>}
+                : justOpened
+                  ? <>Reviews come out after {isWestEnd ? 'press night' : 'opening night'}. They&apos;ll appear here as critics publish.</>
+                  : <>Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.</>}
             </p>
+            {/* Opening day, status already "open", no review live yet: predictions stay open (BRO-7857). Renders nothing otherwise. */}
+            {!noReviewsExpected && <CallTheScore show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount: show.criticScore?.reviewCount ?? 0 }} />}
           </section>
           </LiveHideWhenOverlay>
         )}

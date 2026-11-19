@@ -1165,7 +1165,7 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected =
       ) : (
         <div className="text-xs text-fg-muted">{progress}</div>
       )}
-      {!noReviewsExpected && <CallTheScoreHeroLink show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate }} />}
+      {!noReviewsExpected && <CallTheScoreHeroLink show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount }} />}
     </div>
   );
 }

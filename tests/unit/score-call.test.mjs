@@ -170,13 +170,36 @@ test('pending pick ignores tampered storage (non-integer, strings, bad JSON)', (
 test('isCallableShow hides already-open, no-date, closed, cancelled and non-broadway shows', () => {
   const base = { category: 'broadway', type: 'musical', status: 'previews', openingDate: '2026-12-01' };
   assert.equal(SC.isCallableShow(base, '2026-11-11'), true);
-  assert.equal(SC.isCallableShow({ ...base, openingDate: '2026-11-11' }, '2026-11-11'), false, 'opens today: closed');
+  assert.equal(SC.isCallableShow({ ...base, openingDate: '2026-11-11' }, '2026-11-11'), true, 'opens today, no review live: still open (BRO-7857)');
   assert.equal(SC.isCallableShow({ ...base, status: 'open', openingDate: '2026-01-01' }, '2026-11-11'), false);
   assert.equal(SC.isCallableShow({ ...base, openingDate: undefined }, '2026-11-11'), false);
   assert.equal(SC.isCallableShow({ ...base, openingDate: 'TBD' }, '2026-11-11'), false);
   assert.equal(SC.isCallableShow({ ...base, status: 'closed' }, '2026-11-11'), false);
   assert.equal(SC.isCallableShow({ ...base, cancelledBeforeOpening: true }, '2026-11-11'), false);
   assert.equal(SC.isCallableShow({ ...base, category: 'west-end' }, '2026-11-11'), false);
+});
+
+test('BRO-7857: open on opening day (status already open) until the first review is live, backstop one day after', () => {
+  const s = { category: 'broadway', type: 'play', status: 'open', openingDate: '2026-11-19', previewsStartDate: '2026-10-31' };
+  assert.equal(SC.isCallableShow(s, '2026-11-19'), true, 'opening day, 0 reviews');
+  assert.equal(SC.isCallableShow(s, '2026-11-19', 0), true);
+  assert.equal(SC.isCallableShow(s, '2026-11-19', 1), false, 'first review live: closed');
+  assert.equal(SC.isCallableShow(s, '2026-11-20'), true, 'day after, still no reviews');
+  assert.equal(SC.isCallableShow(s, '2026-11-21'), false, 'backstop: two days after opening');
+  assert.equal(SC.isCallableShow({ ...s, status: 'previews' }, '2026-11-18', 2), false, 'stray review before opening also closes');
+  assert.equal(SC.CALL_GRACE_DAYS, 1);
+});
+
+test('nyToday uses the New York date, not UTC (8pm ET the night before opening is still the day before)', () => {
+  assert.equal(SC.nyToday(new Date('2026-11-19T01:30:00Z')), '2026-11-18');
+  assert.equal(SC.nyToday(new Date('2026-11-19T15:00:00Z')), '2026-11-19');
+});
+
+test('the server backstop matches CALL_GRACE_DAYS (closes_at = opening + grace + 1 days, NY midnight)', () => {
+  const sql = fs.readFileSync(path.join(ROOT, 'supabase/migrations/20261119_score_calls_open_until_reviews.sql'), 'utf8');
+  const m = sql.match(/\(p_opening \+ (\d+)\)::timestamp AT TIME ZONE 'America\/New_York'/);
+  assert.ok(m, 'sync_score_call_show sets closes_at from p_opening + N');
+  assert.equal(Number(m[1]), SC.CALL_GRACE_DAYS + 1);
 });
 
 test('useScoreCall drops a late get_my_score_calls answer for a previous user (store.inflight guard)', () => {

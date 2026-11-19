@@ -13,17 +13,39 @@ const toDay = (iso) => {
 
 const PREVIEW_LOOKAHEAD_DAYS = 60;
 
-/** Same rule as the pilot target predicate in scripts/lib (a unit test pins them together): a show a reader can call. */
-function isCallableShow(show, today) {
+/**
+ * Days after opening day that calls may stay open while no review is live (owner 2026-11-19, BRO-7857:
+ * "keep it open until the first review is live on the site"). Matches the server backstop:
+ * closes_at = 00:00 New York on opening + (CALL_GRACE_DAYS + 1) days (supabase/migrations/20261119_score_calls_open_until_reviews.sql).
+ */
+const CALL_GRACE_DAYS = 1;
+
+/**
+ * A show a reader can call. Before opening day: the same rule as the pilot target predicate in scripts/lib
+ * (a unit test pins them together). From opening day: open until the first review is live on the page
+ * (reviewCount > 0 closes it), with a backstop of CALL_GRACE_DAYS after opening day.
+ */
+function isCallableShow(show, today, reviewCount = 0) {
   if (!show || show.category !== 'broadway') return false;
   if (show.type !== 'play' && show.type !== 'musical') return false;
   if (show.cancelledBeforeOpening || show.status === 'closed') return false;
+  if (reviewCount > 0) return false;
   const open = toDay(show.openingDate);
   const t = toDay(today);
-  if (open == null || t == null || !(open > t)) return false;
+  if (open == null || t == null) return false;
+  if (t >= open) return t <= open + CALL_GRACE_DAYS;
   if (show.status === 'previews') return true;
   const prev = toDay(show.previewsStartDate || show.previewDate);
   return prev != null && prev <= t + PREVIEW_LOOKAHEAD_DAYS;
+}
+
+/** Today's date (YYYY-MM-DD) in New York. Openings are NY calendar dates; a UTC date flips at 7-8pm ET, a day early. */
+function nyToday(now = new Date()) {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' })
+      .formatToParts(now).map((p) => [p.type, p.value]),
+  );
+  return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
 /** Integer 0-100 or null. Rejects NaN, floats, strings of text. */
@@ -162,4 +184,4 @@ function mergeCalls(fetched, held) {
   return { ...(fetched && typeof fetched === 'object' ? fetched : {}), ...(held && typeof held === 'object' ? held : {}) };
 }
 
-module.exports = { mergeCalls, isCallableShow, parseCall, resultStrip, gapSentence, readersSentence, rangeCaption, readersCaption, smallPrint, readersMissSentence, FIRST_READER_LINE, resultSentence, forecastMissSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };
+module.exports = { mergeCalls, isCallableShow, nyToday, CALL_GRACE_DAYS, parseCall, resultStrip, gapSentence, readersSentence, rangeCaption, readersCaption, smallPrint, readersMissSentence, FIRST_READER_LINE, resultSentence, forecastMissSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };

@@ -384,6 +384,19 @@ jobs:
           fi
           echo "All data/*.json files valid"
 
+      # BRO-7857: Predict the Score stays open until the first review is live on the site. Close it on the
+      # server for every show whose review this build is about to publish, before the build starts. Advisory:
+      # it never blocks a deploy (the server backstop closes two days after opening). Counts only in the log.
+      - name: Close Predict the Score for shows with a review going live (advisory)
+        if: vars.SCORE_CALL_SYNC_DISABLED != 'true'
+        # lint-allow-swallow: advisory (CLAUDE.md §19); a miss is caught by rebuild-fast.yml or the backstop.
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/close-score-calls-on-reviews.mjs
+
       - name: Compute core data blob SHAs
         # BRO-3149: stamped onto the Vercel deployment below (`--meta
         # reviewsBlobSha=... --meta showsBlobSha=...`) so should-deploy-gate.js
