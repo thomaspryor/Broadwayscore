@@ -122,12 +122,13 @@ async function main() {
     assertEq(r.ok, true, 'should be ok with 5M SB credits and 1900 GHA min');
   });
 
-  await test('SB blocker fires when needed > available (live remaining)', async () => {
+  await test('SB shortfall warns but never blocks (ride-out policy, BRO-7853)', async () => {
     const u = plentyUsage(); u.scrapingbee.remaining = 100_000;
     const r = await checkBudget(5, { liveUsage: u });
-    assertEq(r.ok, false);
-    const sb = r.blockers.find(b => b.resource === 'scrapingbee');
-    assert(sb, 'scrapingbee blocker missing');
+    assertEq(r.ok, true, 'SB shortfall must not block');
+    assert(!r.blockers.some(b => b.resource === 'scrapingbee'), 'SB must not be a blocker');
+    const sb = r.warnings.find(b => b.resource === 'scrapingbee');
+    assert(sb, 'scrapingbee warning missing');
     assertEq(sb.needed, 250000);
     assertEq(sb.available, 100000);
   });
@@ -176,7 +177,7 @@ async function main() {
   });
 
   await test('blocker shape: resource/needed/available/unit/message all present', async () => {
-    const u = plentyUsage(); u.scrapingbee.remaining = 1000;
+    const u = plentyUsage(); u.gha_minutes.remaining = 10;
     const r = await checkBudget(5, { liveUsage: u });
     const b = r.blockers[0];
     for (const k of ['resource', 'needed', 'available', 'unit', 'message']) {
@@ -215,11 +216,11 @@ async function main() {
   await test('live=0 (zero remaining) is treated as a hard blocker, not a fallthrough', async () => {
     // The `usage[resource]?.remaining ?? null` chain must NOT mistake 0 for null.
     const u = plentyUsage();
-    u.scrapingbee.remaining = 0;
+    u.gha_minutes.remaining = 0;
     const r = await checkBudget(1, { liveUsage: u });
     assertEq(r.ok, false, 'zero remaining must block');
-    const sb = r.blockers.find(b => b.resource === 'scrapingbee');
-    assert(sb, 'expected SB blocker at remaining=0');
+    const sb = r.blockers.find(b => b.resource === 'gha_minutes');
+    assert(sb, 'expected GHA blocker at remaining=0');
     assertEq(sb.available, 0);
   });
 

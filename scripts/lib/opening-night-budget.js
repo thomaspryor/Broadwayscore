@@ -310,10 +310,15 @@ async function fetchLiveUsage(opts = {}) {
 
 // ── Budget check ────────────────────────────────────────────────────────────
 
+// Resources whose shortfall only degrades (never fails) opening night: ScrapingBee
+// is one link in the fallback chain, not a dependence (owner policy, memory
+// feedback_sb_quota_ride_out.md; BRO-7853). A shortfall warns, never blocks.
+const ADVISORY_RESOURCES = new Set(['scrapingbee']);
+
 /**
  * Compare estimated consumption against live (or cap-based) availability.
  *
- * Hard blocker: needed > available (fails the pre-flight).
+ * Hard blocker: needed > available (fails the pre-flight), except ADVISORY_RESOURCES, which warn.
  * Soft warning: needed > 0.9 * available (tight squeeze) — or, when no live
  * API is available, needed > threshold (informational).
  *
@@ -342,7 +347,7 @@ async function checkBudget(numShows, opts = {}) {
 
     if (live != null) {
       if (need > live) {
-        blockers.push({
+        (ADVISORY_RESOURCES.has(resource) ? warnings : blockers).push({
           resource,
           needed: need,
           available: live,
@@ -363,7 +368,7 @@ async function checkBudget(numShows, opts = {}) {
 
     // No live data — fall back to threshold (cap) comparison.
     if (need > threshold) {
-      blockers.push({
+      (ADVISORY_RESOURCES.has(resource) ? warnings : blockers).push({
         resource,
         needed: need,
         available: threshold,
