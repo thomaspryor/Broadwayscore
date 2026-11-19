@@ -317,6 +317,28 @@ test('non-review URL the scorer will never take (and no verdict ever recorded) i
   assert.equal(classify(bwwVideo, LATER), null);
 });
 
+// BRO-7773 incident shape (2026-11-19, nacho-ate-spiderman-regional-2026): a BWW
+// stagemag digital-program page (cast bios, credits for dozens of other shows)
+// ingested as a T2 broadwayworld review. The scorer refuses it (no_scorable_text),
+// so the T1/T2 silent-gap row warned on it for days. The stagemag host pattern
+// existed but never fired (registrable-host collapse); now it does.
+test('BRO-7773: stagemag digital-program page the scorer refuses is a correct absence', () => {
+  const credits = ['Violet', 'Twelfth Night', 'The Last Five Years', 'Hedwig and the Angry Inch', 'Memphis',
+    'The Little Mermaid', 'Wicked', 'Hamilton', 'Chicago', 'Rent', 'Cats', 'Evita', 'Into the Woods',
+    'Company', 'Les Miserables', 'Hadestown', 'Six', 'Annie', 'Oklahoma', 'Grease'];
+  const body = Array.from({ length: 6 }, (_, i) => `Bio ${i}: credits include ${credits.join(', ')}. Proud member of Actors Equity.`).join('\n\n');
+  const LATER = { tier: 2, now: new Date('2026-11-19T12:00:00Z'), show: { title: 'Nacho Ate Spiderman' } };
+  const program = {
+    showId: 'nacho-ate-spiderman-regional-2026', outletId: 'broadwayworld', criticName: 'Michelle Kholos Brooks',
+    url: 'https://stagemag.broadwayworld.com/modern/Nacho-Ate-Spiderman-New-Jersey-Repertory-Company-124231',
+    source: 'submit-review-form', fullText: body, contentTier: 'complete', textFetchedAt: '2026-11-17T15:36:42.304Z',
+  };
+  assert.equal(classify(program, LATER), null);
+  // Same refused text at a main-site BWW review URL is still reported.
+  const real = { ...program, url: 'https://www.broadwayworld.com/los-angeles/article/Review-NACHO-ATE-SPIDERMAN-20261110' };
+  assert.equal(classify(real, LATER)?.type, 'unscored');
+});
+
 test('BRO-5166: empty-body file at a listing page (BWW regional show page) is not a gap; a manual clear restores it', () => {
   const listing = {
     showId: 'the-humanities-regional-2026', outletId: 'broadwayworld', criticName: 'Unknown',
