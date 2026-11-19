@@ -326,3 +326,27 @@ test('pickChildSitemaps skips whole editorial words only (stage/posttype-page su
     'https://bristololdvic.org.uk/sitemaps-1-section-workshopsEvents-1-sitemap.xml',
   ]), ['https://x.org/stage-sitemap.xml', 'https://citz.co.uk/sitemap-posttype-page.xml']);
 });
+
+// BRO-7368 review: archived productions and numbered sequels/parts.
+test('pickVenuePageUrl: an older year in ANY path segment rejects (archived production)', () => {
+  const hamlet = { id: 'hamlet-rsc-regional-2026', title: 'Hamlet', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon', openingDate: '2026-10-01', category: 'regional' };
+  assert.equal(pickVenuePageUrl(['https://www.rsc.org.uk/whats-on/2019/hamlet'], hamlet), null);
+  const grinch = { id: 'grinch-old-globe-regional-2026', title: 'How the Grinch Stole Christmas', venue: 'The Old Globe, San Diego, CA', openingDate: '2026-11-15', category: 'regional' };
+  assert.equal(pickVenuePageUrl(['https://www.theoldglobe.org/tickets-and-events/2016-season/how-the-grinch-stole-christmas/'], grinch), null);
+  // The current season still matches.
+  assert.equal(
+    pickVenuePageUrl(['https://www.theoldglobe.org/tickets-and-events/2026-season/how-the-grinch-stole-christmas/'], grinch).url,
+    'https://www.theoldglobe.org/tickets-and-events/2026-season/how-the-grinch-stole-christmas/',
+  );
+});
+
+test('pickVenuePageUrl: bare numbers are content (hamlet-2 is not Hamlet; Part 1 is not Part 2)', () => {
+  const hamlet = { id: 'hamlet-rsc-regional-2026', title: 'Hamlet', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon', openingDate: '2026-10-01', category: 'regional', synopsis: 'Act 2 of 5.' };
+  assert.equal(pickVenuePageUrl(['https://www.rsc.org.uk/shows/hamlet-2'], hamlet), null);
+  assert.equal(pickVenuePageUrl(['https://www.rsc.org.uk/shows/hamlet-2', 'https://www.rsc.org.uk/shows/hamlet'], hamlet).url,
+    'https://www.rsc.org.uk/shows/hamlet');
+  const part1 = { id: 'henry-iv-part-1-rsc-regional-2026', title: 'Henry IV, Part 1', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon', openingDate: '2026-10-01', category: 'regional' };
+  const urls = ['https://www.rsc.org.uk/whats-on/henry-iv-part-2', 'https://www.rsc.org.uk/whats-on/henry-iv-part-1'];
+  assert.equal(pickVenuePageUrl(urls, part1).url, 'https://www.rsc.org.uk/whats-on/henry-iv-part-1');
+  assert.equal(pickVenuePageUrl(urls.slice(0, 1), part1), null);
+});

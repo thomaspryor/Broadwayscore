@@ -96,7 +96,7 @@ test('collectVenueUrls: robots Sitemap -> index -> show shard, plus listing link
     'https://www.tron.co.uk/shows-sitemap.xml': '<urlset><url><loc>https://www.tron.co.uk/shows/antigone/</loc></url></urlset>',
     'https://www.tron.co.uk/': '<a href="/shows/panto/">p</a>',
   });
-  const urls = await collectVenueUrls('tron.co.uk', fetchText);
+  const urls = await collectVenueUrls("tron.co.uk", fetchText, 0);
   assert.deepEqual(urls, ['https://www.tron.co.uk/shows/antigone/', 'https://www.tron.co.uk/shows/panto/']);
   assert.ok(!calls.includes('https://www.tron.co.uk/post-sitemap.xml'), 'editorial shard skipped');
   assert.ok(calls.length <= 8);
@@ -108,10 +108,18 @@ test('discoverVenuePage: picks the show page and crawls a shared venue host once
   });
   const cache = new Map();
   const antigone = { id: 'antigone-tron-regional-2026', title: 'Antigone', venue: 'Tron Theatre, Glasgow', category: 'regional', openingDate: '2026-09-22' };
-  const pick = await discoverVenuePage(antigone, { cache, fetchText });
+  const pick = await discoverVenuePage(antigone, { cache, fetchText, gapMs: 0 });
   assert.deepEqual(pick, { url: 'https://www.tron.co.uk/shows/antigone/', platform: 'Venue Box Office' });
   const before = calls.length;
-  assert.equal(await discoverVenuePage({ ...antigone, title: 'Medea' }, { cache, fetchText }), null);
+  assert.equal(await discoverVenuePage({ ...antigone, title: "Medea" }, { cache, fetchText, gapMs: 0 }), null);
   assert.equal(calls.length, before, 'second show at the same host reuses the crawl');
   assert.equal(await discoverVenuePage({ title: 'X', venue: 'Unknown Hall' }, { cache, fetchText }), null);
+});
+
+test('collectVenueUrls: waits gapMs between consecutive reads of one host', async () => {
+  const stamps = [];
+  const fetchText = async () => { stamps.push(Date.now()); throw new Error('404'); };
+  await collectVenueUrls('tron.co.uk', fetchText, 40);
+  assert.ok(stamps.length >= 3);
+  for (let i = 1; i < stamps.length; i++) assert.ok(stamps[i] - stamps[i - 1] >= 35, `gap ${i} was ${stamps[i] - stamps[i - 1]}ms`);
 });

@@ -66,11 +66,20 @@ const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 // hops x 15s = 1 min), ~3.5 min, so an item started with under 1.5 min left
 // (3.5 minus the 2 min slack) can carry the step past its timeout.
 const MIN_REMAINING_MS_TO_START = 90_000;
-// The venue phase runs first and must leave the SERP phase its time: one venue
-// host costs at most MAX_VENUE_FETCHES direct reads (10s timeout each, ~80s)
-// plus probeUrl (~1 min), so stop starting venue items with under 4 min left.
-const VENUE_PHASE_RESERVE_MS = 240_000;
+// The venue phase runs first and must leave the SERP phase its time. The SERP
+// phase (10 shows) took 23-61s on the 12 successful update-show-status runs of
+// 2026-11-08..18, and its own worst single item is ~3.5 min (see above), so it
+// keeps a 4 min reserve (~4x its observed need). The worst venue item is one
+// uncached host crawl, MAX_VENUE_FETCHES reads at fetchPage's 10s direct
+// timeout plus VENUE_REQUEST_GAP_MS between them (~84s), plus probeUrl (4 hops
+// x 15s = 60s): ~2.5 min. A venue item therefore starts only with reserve +
+// worst item (6.5 min) left, i.e. in the first ~90s of the cron's 8 min budget;
+// the whole 30-show venue phase measured 69s on 2026-11-19.
+const SERP_PHASE_RESERVE_MS = 240_000;
+const VENUE_ITEM_WORST_MS = 150_000;
 const MAX_VENUE_FETCHES = 8;
+// Politeness gap between consecutive reads of one venue host.
+const VENUE_REQUEST_GAP_MS = 500;
 
 function isVenueSiteHost(url) {
   try {
@@ -145,11 +154,12 @@ async function fetchVenueText(url) {
  * /whats-on/ and homepage links. At most MAX_VENUE_FETCHES reads; a failed read is
  * skipped. fetchText is injectable so the tests drive it without a network.
  */
-async function collectVenueUrls(host, fetchText = fetchVenueText) {
+async function collectVenueUrls(host, fetchText = fetchVenueText, gapMs = VENUE_REQUEST_GAP_MS) {
   const origin = `https://www.${host}`;
   let fetches = 0;
   const read = async (url) => {
     if (fetches >= MAX_VENUE_FETCHES) return null;
+    if (fetches > 0 && gapMs > 0) await new Promise((r) => setTimeout(r, gapMs));
     fetches++;
     try { return await fetchText(url); } catch { return null; }
   };
@@ -182,10 +192,10 @@ async function collectVenueUrls(host, fetchText = fetchVenueText) {
  * SERP-free pick for one show: its allowlisted venue host's own pages.
  * `cache` (host → Promise<urls>) makes several shows at one venue cost one crawl.
  */
-async function discoverVenuePage(show, { cache = new Map(), fetchText = fetchVenueText } = {}) {
+async function discoverVenuePage(show, { cache = new Map(), fetchText = fetchVenueText, gapMs } = {}) {
   const host = venueHostForShow(show);
   if (!host) return null;
-  if (!cache.has(host)) cache.set(host, collectVenueUrls(host, fetchText));
+  if (!cache.has(host)) cache.set(host, collectVenueUrls(host, fetchText, gapMs));
   return pickVenuePageUrl(await cache.get(host), show);
 }
 
@@ -208,10 +218,16 @@ async function main() {
   // Phase 1 (BRO-7368): free venue-host lookup for shows at an allowlisted
   // regional venue. Same holder + liveness gates as the SERP path below.
   const venueCache = new Map();
-  const venueTargets = targets.filter((s) => venueHostForShow(s)).slice(0, VENUE_LIMIT);
+  let venueTargets = targets.filter((s) => venueHostForShow(s));
+  if (venueTargets.length > 0) {
+    // Same day-of-month rotation as the SERP phase, so a budget cut-off never
+    // starves the same tail of venue shows every day.
+    const vOffset = new Date().getUTCDate() % venueTargets.length;
+    venueTargets = venueTargets.slice(vOffset).concat(venueTargets.slice(0, vOffset)).slice(0, VENUE_LIMIT);
+  }
   console.log(`Venue-host lookup: ${venueTargets.length} show(s) at an allowlisted venue host (--venue-limit=${VENUE_LIMIT}).`);
   for (const show of venueTargets) {
-    if (!timeBudget.canStartItem(VENUE_PHASE_RESERVE_MS)) {
+    if (!timeBudget.canStartItem(SERP_PHASE_RESERVE_MS + VENUE_ITEM_WORST_MS)) {
       console.log('\n⏱ Venue phase stopped to leave the SERP phase its time budget.');
       break;
     }

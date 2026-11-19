@@ -445,9 +445,16 @@ function scoreVenuePage(url, show) {
   if (tokens.length > 1 && /\d/.test(tokens[tokens.length - 1]) && /[a-z]/.test(tokens[tokens.length - 1])
     && tokens[tokens.length - 1].length <= 6) tokens = tokens.slice(0, -1); // CMS hash suffix
 
+  // An older year anywhere in the path is an archived production: rsc.org.uk
+  // /whats-on/2019/hamlet, theoldglobe.org/…/2016-season/… (BRO-7368 review).
   const year = showYear(show);
-  for (const t of tokens) {
-    if (/^(19|20)\d{2}$/.test(t) && year && Number(t) < year - 1 && !foldTitle(bare).split(' ').includes(t)) return null;
+  const titleTokens = foldTitle(bare).split(' ');
+  if (year) {
+    for (const seg of segments) {
+      for (const m of seg.matchAll(/(?<!\d)(?:19|20)\d{2}(?!\d)/g)) {
+        if (Number(m[0]) < year - 1 && !titleTokens.includes(m[0])) return null;
+      }
+    }
   }
 
   const candidates = [bare];
@@ -461,6 +468,11 @@ function scoreVenuePage(url, show) {
     const compactHit = tokens.join('') === titleCompact;
     if (!compactHit && !words.every((w) => tokens.includes(w))) continue;
     if (words.length === 1 && !inShowSection) continue;
+    // A bare number that is not a year is content, not boilerplate: hamlet-2
+    // is not Hamlet, henry-iv-part-2 is not Part 1. It counts only when the
+    // title itself carries it, never via the synopsis.
+    const isNumber = (t) => /^\d+$/.test(t) && !/^(19|20)\d{2}$/.test(t);
+    if (!compactHit && tokens.some((t) => isNumber(t) && !titleTokens.includes(t))) continue;
     const extras = compactHit ? [] : tokens.filter(
       (t) => t.length > 1 && !STOPWORDS.has(t) && !isGenericToken(t) && !words.includes(t)
     );
