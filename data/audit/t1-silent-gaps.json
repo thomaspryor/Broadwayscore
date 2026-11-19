@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T19:33:47.352Z",
+  "generatedAt": "2026-11-19T20:34:44.469Z",
   "windowDays": 45,
   "showsScanned": 284,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 252.50299333333334,
+      "fileAgeHours": 253.54276472222222,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 229.97862555555557,
+      "nonTerminalAgeHours": 230.9944913888889,
       "needsManualRecovery": true
     },
     {
@@ -38,10 +38,33 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 221.74000333333333,
+      "fileAgeHours": 222.77467805555557,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 220.61418055555555,
+      "nonTerminalAgeHours": 221.6300463888889,
       "needsManualRecovery": true
+    },
+    {
+      "showId": "a-christmas-story-the-musical-tour-2026",
+      "title": "A Christmas Story The Musical",
+      "openingDate": "2026-11-17",
+      "file": "njcom--sal-dimaggio.json",
+      "outletId": "njcom",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.nj.com/entertainment/2026/11/nj-weekend-events-100-things-to-do-from-a-holiday-market-to-dinner-with-george-washington.html",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=a-christmas-story-the-musical-tour-2026 --url=https://www.nj.com/entertainment/2026/11/nj-weekend-events-100-things-to-do-from-a-holiday-market-to-dinner-with-george-washington.html --outlet=njcom --critic=\"Sal DiMaggio\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-19T20:05:32.328Z",
+      "fileAgeHours": 0.48654888888888886,
+      "gapSeenAt": "2026-11-19T20:34:44.469Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
     },
     {
       "showId": "carmen-regional-2026",
@@ -61,9 +84,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=carmen-regional-2026 --url=https://www.thewrap.com/calle-malaga-review-spanish-legend-carmen-maura-charms-her-way-through-moroccan-crowd-pleaser/ --outlet=thewrap --critic=\"Robert Hofler\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-19T18:11:58.985Z",
-      "fileAgeHours": 1.3634338888888888,
+      "fileAgeHours": 2.379299722222222,
       "gapSeenAt": "2026-11-19T19:33:47.352Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 1.0158658333333332,
       "needsManualRecovery": false
     }
   ],
