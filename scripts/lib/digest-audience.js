@@ -31,6 +31,7 @@ const INTERNAL_CATEGORIES = new Set([
   'Autofix',            // autofix throughput, canary, jobs-succeeding
   'Infra',              // worktree GC log, notion-schedule coupling
   'Infra-review',       // review-gate telemetry
+  'Skeptic review',     // skeptic-review gate telemetry (BRO-7843)
   'Stuck work',         // paused / orphaned Linear+Notion cards
   'Dispatch',           // "Dispatch: board targeting" (folded in by send-morning-digest.js)
   'Dispatch outcomes',  // dispatch ledger abandoned jobs
