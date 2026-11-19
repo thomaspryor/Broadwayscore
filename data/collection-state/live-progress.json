@@ -1,19 +1,26 @@
 {
-  "updatedAt": "2026-11-19T20:03:36.037Z",
-  "processed": 85,
-  "failed": 66,
-  "successRate": "56.3%",
+  "updatedAt": "2026-11-19T20:10:30.539Z",
+  "processed": 2,
+  "failed": 1,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 14,
-    "scrapingbee": 6,
+    "scrapingdog": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 25
+    "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-11-19T20:10:06.423Z",
+      "event": "bb-session",
+      "session": "85850df0",
+      "url": "https://deadline.com/2026/11/broadway-box-office-much-ado-about-nothing-billy-cr"
+    }
+  ]
 }
