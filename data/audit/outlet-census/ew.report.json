@@ -1,47 +1,49 @@
 {
   "outletId": "ew",
-  "generatedAt": "2026-10-28T20:45:32.692Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T07:07:18.594Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
+    "kind": "sitemap",
+    "status": "incomplete",
     "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
+      "child https://ew.com/sitemap_13.xml: fetchPage returned an unexpected page for https://ew.com/sitemap_13.xml"
     ],
-    "enumerated": 0,
-    "inWindow": 0,
-    "undated": 0,
+    "incomplete": true,
+    "enumerated": 359,
+    "inWindow": 359,
+    "undated": 359,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
+    "counts": {
+      "held-unmatched": 13,
+      "held": 105,
+      "gap": 8,
+      "not-review": 221,
+      "ambiguous": 8,
+      "held-alt-url": 4
+    },
     "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "recall": 0.932,
+    "recallWithCatalog": 0.932
+  },
+  "seasons": {
+    "undated": {
+      "held-unmatched": 13,
+      "held": 105,
+      "gap": 8,
+      "not-review": 221,
+      "ambiguous": 8,
+      "held-alt-url": 4
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 459,
-    "notEnumerated": 177,
-    "noUrl": 9,
+    "rowsInWindow": 485,
+    "notEnumerated": 52,
+    "noUrl": 8,
     "samples": [
-      {
-        "showId": "1776-2022",
-        "url": "https://ew.com/theater/theater-reviews/1776-review-broadway-musical-revival/",
-        "publishDate": "2022-10-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "33-variations-2009",
-        "url": "http://www.ew.com/ew/article/0,,20264100,00.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-        "url": "https://ew.com/theater/theater-reviews/a-beautiful-noise-review-neil-diamond/",
-        "publishDate": "2022-12-06",
-        "why": "not-enumerated"
-      },
       {
         "showId": "a-christmas-carol-1991",
         "url": null,
@@ -58,12 +60,6 @@
         "showId": "a-delicate-balance-2014",
         "url": "http://www.ew.com/ew/article/0,,20364394_20874829,00.html",
         "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-dolls-house-2023",
-        "url": "https://ew.com/theater/theater-reviews/dolls-house-jessica-chastain-broadway-review/",
-        "publishDate": "2023-03-09",
         "why": "not-enumerated"
       },
       {
@@ -91,81 +87,15 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "a-strange-loop-2022",
-        "url": "https://ew.com/theater/theater-reviews/a-strange-loop-review-michael-e-jackson/",
-        "publishDate": "2022-04-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "act-one-2014",
-        "url": "https://www.ew.com/ew/article/0,,20364394_20807898,00.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "almost-famous-2022",
-        "url": "https://ew.com/theater/theater-reviews/almost-famous-review-broadway-musical/",
-        "publishDate": "2022-11-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "american-buffalo-2022",
-        "url": "https://ew.com/theater/theater-reviews/american-buffalo-review-sam-rockwell-laurence-fishburne-david-mamet/",
-        "publishDate": "2022-04-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "american-idiot-2010",
-        "url": "https://www.ew.com/ew/article/0,,20362571,00.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
         "showId": "an-enemy-of-the-people-2024",
         "url": "https://ew.com/an-enemy-of-the-people-review-jeremy-strong-michael-imperioli-8610065",
         "publishDate": "2024-03-18",
         "why": "not-enumerated"
       },
       {
-        "showId": "and-juliet-2022",
-        "url": "https://ew.com/theater/theater-reviews/and-juliet-broadway-review-max-martin-musical/?srsltid=AfmBOoo1fLd94KpF17fFAtRLHF-OrFNks8-MW9etauVJZiDVUAT86cPS",
-        "publishDate": "2022-11-17",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "ann-2013",
         "url": "https://www.ew.com/ew/article/0,,20364394_20680088,00.html",
         "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "appropriate-2023",
-        "url": "https://ew.com/appropriate-sarah-paulson-broadway-review-8417802",
-        "publishDate": "2023-12-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "back-to-the-future-2023",
-        "url": "https://ew.com/theater/theater-reviews/back-to-the-future-review-musical-broadway/",
-        "publishDate": "2023-08-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bad-cinderella-2023",
-        "url": "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical/",
-        "publishDate": "2023-03-24",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "beaches-2026",
-        "url": "https://ew.com/beaches-broadway-review-you-will-laugh-and-cry-11955759",
-        "publishDate": "2026-04-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "becky-shaw-2026",
-        "url": "https://ew.com/becky-shaw-review-broadway-alden-ehrenreich-steals-the-show-11943173?srsltid=AfmBOopHO3G7poavGgA_I7dbdHCJ__7zQr0YnEp_JW6m8fMgFjV-Q_Dt",
-        "publishDate": "2026-04-06",
         "why": "not-enumerated"
       },
       {
@@ -176,26 +106,8 @@
       },
       {
         "showId": "betrayal-2013",
-        "url": "http://www.ew.com/ew/article/0,,20364394_20749744,00.html",
+        "url": "https://www.ew.com/ew/article/0,,20364394_20749744,00.html",
         "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "billy-crystal-860-2026",
-        "url": "https://ew.com/860-broadway-review-billy-crystal-brilliant-show-brings-audiences-into-his-home-12181826",
-        "publishDate": "2026-10-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "birthday-candles-2022",
-        "url": "https://ew.com/theater/theater-reviews/birthday-candles-review-debra-messing-has-cake-bakes-it-too/",
-        "publishDate": "2022-04-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bob-fosses-dancin-2023",
-        "url": "https://ew.com/theater/bob-fosses-dancin-broadway-revival-review/",
-        "publishDate": "2023-03-19",
         "why": "not-enumerated"
       },
       {
@@ -211,51 +123,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "bug-2026",
-        "url": "https://ew.com/bug-review-carrie-coon-captivating-tracy-letts-play-broadway-11881324",
-        "publishDate": "2026-01-08",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "burn-the-floor-2009",
-        "url": "https://www.ew.com/ew/article/0,,20295500,00.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cabaret-2024",
-        "url": "https://ew.com/cabaret-kit-kat-club-review-broadway-8636569",
-        "publishDate": "2024-04-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "camelot-2023",
-        "url": "https://ew.com/theater/camelot-review-aaron-sorkin-revival-phillipa-soo-andrew-burnap-jordan-donica/",
-        "publishDate": "2023-04-13",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "cat-on-a-hot-tin-roof-2013",
         "url": "http://www.ew.com/ew/article/0,,20364394_20665293,00.html",
         "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "catch-me-if-you-can-2011",
-        "url": "https://www.ew.com/ew/article/0,,20364394_20480885,00.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cats-the-jellicle-ball-2026",
-        "url": "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
-        "publishDate": "2026-04-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "chess-2025",
-        "url": "https://ew.com/chess-review-infamous-broadway-flop-returns-with-lea-michele-aaron-tveit-11850388",
-        "publishDate": "2025-11-16",
         "why": "not-enumerated"
       },
       {
@@ -263,14 +133,511 @@
         "url": "https://www.ew.com/ew/article/0,,20364394_20540774,00.html",
         "publishDate": null,
         "why": "not-enumerated"
+      },
+      {
+        "showId": "collected-stories-2010",
+        "url": "http://www.ew.com/ew/article/0,,20364798,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "constellations-2015",
+        "url": "http://www.ew.com/ew/article/0,,20364394_20891829,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "death-of-a-salesman-2022",
+        "url": "https://ew.com/theater/death-of-a-salesman-broadway-revival-review-wendell-pierce/",
+        "publishDate": "2022-10-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "diana-the-musical-2021",
+        "url": "https://ew.com/movies/movie-reviews/diana-the-musical-review/?srsltid=AfmBOor67lYMcJFdkLjWSpPf6SKGwWoUXOTvoqt_oW0GNbEsMqYgS7ZA",
+        "publishDate": "2021-11-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dog-day-afternoon-2026",
+        "url": "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173",
+        "publishDate": "2026-03-31",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "equus-2008",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "fela-2009",
+        "url": "http://www.ew.com/ew/article/0,,20322276,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "ghetto-klown-2011",
+        "url": "https://www.ew.com/ew/article/0,,20364394_20475578,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "ghost-the-musical-2012",
+        "url": "http://www.ew.com/ew/article/0,,20364394_20589553,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "giant-public-theater-off-broadway-2012",
+        "url": "http://www.ew.com/ew/article/0,,20364394_20648532,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "good-people-2011",
+        "url": "http://www.ew.com/ew/article/0,,20364394_20470641,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "high-2011",
+        "url": "http://www.ew.com/ew/article/0,,20364394_20483288,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "hold-on-to-me-darling-off-broadway-2024",
+        "url": "https://ew.com/hold-on-to-me-darling-review-adam-driver-hits-all-the-right-notes-8731418?srsltid=AYCX9vIC6t20eehAbw6nauE1ucNpLwdW_7tcyV0TBS5ygW4Yd-XC9MDa",
+        "publishDate": "2024-10-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "just-in-time-2025",
+        "url": "https://ew.com/just-in-time-review-jonathan-groff-irresistible-bobby-darin-11721853",
+        "publishDate": "2025-04-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "leap-of-faith-2012",
+        "url": "https://www.ew.com/ew/article/0,,20364394_20589865,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "lend-me-a-tenor-2010",
+        "url": "https://www.ew.com/ew/article/0,,20357821,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "lombardi-2010",
+        "url": "https://www.ew.com/ew/article/0,,20364394_20435979,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "macbeth-2013",
+        "url": "https://www.ew.com/ew/article/0,,20364394_20693398,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "man-and-boy-2011",
+        "url": "http://www.ew.com/ew/article/0,,20364394_20535691,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "master-class-2011",
+        "url": "https://www.ew.com/ew/article/0,,20364394_20508561,00.html8",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "matilda-the-musical-2013",
+        "url": "http://www.ew.com/ew/article/0,,20364394_20690686,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "million-dollar-quartet-2010",
+        "url": "https://www.ew.com/ew/article/0,,20359910,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "oh-mary-off-broadway-2024",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "once-upon-a-mattress-1996",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "outside-mullingar-2014",
+        "url": "https://www.ew.com/ew/article/0,,20364394_20779404,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
-  "heldAltUrl": [],
+  "gaps": [
+    {
+      "url": "https://ew.com/wicked-review-musical-adaptation-hits-right-notes-lacks-visual-variety-8747457",
+      "headline": "wicked review musical adaptation hits right notes lacks visual variety 8747457",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "wicked-2003"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/peter-pan-goes-wrong-review/",
+      "headline": "peter pan goes wrong review",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "peter-pan-goes-wrong-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/a-soldiers-play-review-the-pulitzer-prize-winner-offers-a-timely-yet-sterile-revival/",
+      "headline": "a soldiers play review the pulitzer prize winner offers a timely yet sterile revival",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-soldiers-play-2020"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/the-lonely-few-review/",
+      "headline": "the lonely few review",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-lonely-few-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/oedipus-review-deaf-west-returns-tragedy-to-most-physical-form/",
+      "headline": "oedipus review deaf west returns tragedy to most physical form",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "oedipus-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/the-minutes-tracy-letts-play-broadway-review/",
+      "headline": "the minutes tracy letts play broadway review",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-minutes-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/plaza-suite-broadway-review/",
+      "headline": "plaza suite broadway review",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "plaza-suite-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/slave-play-mark-taper-forum-review/",
+      "headline": "slave play mark taper forum review",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "slave-play-2021"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://ew.com/mean-girls-review-tina-fey-musical-update-of-teen-classic-8424303",
+      "headline": "mean girls review tina fey musical update of teen classic 8424303",
+      "matched": [
+        "mean-girls-2018"
+      ],
+      "heldUrls": [
+        "https://ew.com/theater/2018/04/08/mean-girls-broadway-review/"
+      ]
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/the-mountaintop-review-jon-michael-hill-amanda-warren/",
+      "headline": "the mountaintop review jon michael hill amanda warren",
+      "matched": [
+        "the-mountaintop-2011"
+      ],
+      "heldUrls": [
+        "https://www.ew.com/ew/article/0,,20364394_20536878,00.html"
+      ]
+    },
+    {
+      "url": "https://ew.com/theater/222-a-ghost-story-review-constance-wu/",
+      "headline": "222 a ghost story review constance wu",
+      "matched": [
+        "ghost-the-musical-2012"
+      ],
+      "heldUrls": [
+        "http://www.ew.com/ew/article/0,,20364394_20589553,00.html"
+      ]
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/head-over-heels-dance-party-no-beat/",
+      "headline": "head over heels dance party no beat",
+      "matched": [
+        "head-over-heels-2018"
+      ],
+      "heldUrls": [
+        "https://ew.com/theater/2018/07/26/head-over-heels-broadway-review/"
+      ]
+    }
+  ],
   "misfiles": [],
-  "heldUnmatched": [],
-  "ambiguous": [],
+  "heldUnmatched": [
+    {
+      "url": "https://ew.com/wanted-review-gunslinging-sisters-take-broadway-by-storm-in-powerhouse-musical-12243698",
+      "headline": "wanted review gunslinging sisters take broadway by storm in powerhouse musical 12243698",
+      "via": null,
+      "held": [
+        "wanted-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/860-broadway-review-billy-crystal-brilliant-show-brings-audiences-into-his-home-12181826",
+      "headline": "860 broadway review billy crystal brilliant show brings audiences into his home 12181826",
+      "via": null,
+      "held": [
+        "billy-crystal-860-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983",
+      "headline": "school girls broadway review the african teen comedy subverts the genre 12141983",
+      "via": null,
+      "held": [
+        "school-girls-or-the-african-mean-girls-play-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/beaches-broadway-review-you-will-laugh-and-cry-11955759",
+      "headline": "beaches broadway review you will laugh and cry 11955759",
+      "via": null,
+      "held": [
+        "beaches-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/the-wiz-broadway-revival-review-8635100",
+      "headline": "the wiz broadway revival review 8635100",
+      "via": null,
+      "held": [
+        "the-wiz-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/the-who-tommy-review-broadway-8620278",
+      "headline": "the who tommy review broadway 8620278",
+      "via": null,
+      "held": [
+        "the-whos-tommy-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/doubt-review-amy-ryan-liev-schreiber-broadway-8605479",
+      "headline": "doubt review amy ryan liev schreiber broadway 8605479",
+      "via": null,
+      "held": [
+        "doubt-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/parade-review-ben-platt-micaela-diamond-leo-frank/",
+      "headline": "parade review ben platt micaela diamond leo frank",
+      "via": null,
+      "held": [
+        "parade-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/dolls-house-jessica-chastain-broadway-review/",
+      "headline": "dolls house jessica chastain broadway review",
+      "via": null,
+      "held": [
+        "a-dolls-house-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/a-beautiful-noise-review-neil-diamond/",
+      "headline": "a beautiful noise review neil diamond",
+      "via": null,
+      "held": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/kpop-review-broadway/",
+      "headline": "kpop review broadway",
+      "via": null,
+      "held": [
+        "kpop-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/1776-review-broadway-musical-revival/",
+      "headline": "1776 review broadway musical revival",
+      "via": null,
+      "held": [
+        "1776-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/six-review/",
+      "headline": "six review",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://ew.com/potus-review-broadway-loses-its-purpose-in-los-angeles-production-8551737",
+      "headline": "potus review broadway loses its purpose in los angeles production 8551737",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "purpose-2025",
+        "potus-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/the-color-purple-review-fantasia-barrino-shines-lackluster-musical-8411747",
+      "headline": "the color purple review fantasia barrino shines lackluster musical 8411747",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-color-purple-2015",
+        "the-color-purple-2005"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/into-the-woods-review-stephen-sondheims-fairytale-remains-as-magic-as-ever/",
+      "headline": "into the woods review stephen sondheims fairytale remains as magic as ever",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/a-little-night-music-review-merle-dandridge-stephen-sondheim/",
+      "headline": "a little night music review merle dandridge stephen sondheim",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-little-night-music-2009",
+        "a-little-night-music-1973"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/the-sign-in-sidney-brusteins-window-review-hansberry-oscar-isaac/",
+      "headline": "the sign in sidney brusteins window review hansberry oscar isaac",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-sign-in-sidney-brusteins-window-2023",
+        "the-sign-in-sidney-brusteins-window-1972"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/sunday-in-the-park-with-george-review-graham-phillips/",
+      "headline": "sunday in the park with george review graham phillips",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "sunday-in-the-park-with-george-2017",
+        "sunday-in-the-park-with-george-2008",
+        "sunday-in-the-park-with-george-1994",
+        "sunday-in-the-park-with-george-1984"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/the-search-for-signs-of-intelligent-life-in-the-universe-review-cecily-strong/",
+      "headline": "the search for signs of intelligent life in the universe review cecily strong",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-search-for-signs-of-intelligent-life-in-the-universe-1985",
+        "the-search-for-signs-of-intelligent-life-in-the-universe-2000"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/kinky-boots-hollywood-bowl-review-wayne-brady/",
+      "headline": "kinky boots hollywood bowl review wayne brady",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "kinky-boots-2013",
+        "kinky-boots-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    }
+  ],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }
