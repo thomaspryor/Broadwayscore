@@ -24,6 +24,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
+import { isMainModule } from './lib/is-main-module.mjs';
 const _require = createRequire(import.meta.url);
 const { CLAUDE_SONNET } = _require('./lib/models');
 const { resolveShow, resolveShowMatches, extractShowTitlesFromText } = _require('./lib/resolve-show.js');
@@ -488,7 +489,7 @@ Respond with ONLY a JSON object in this exact format:
 // and exit 0 looking green.
 const _invokedDirectly = (() => {
   try {
-    return !!process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url);
+    return !!isMainModule(import.meta.url);
   } catch {
     return false;
   }

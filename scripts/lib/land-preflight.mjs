@@ -38,6 +38,7 @@ import { landPushTargets } from './push-command.mjs';
 import { hookReplayWarning } from './hook-replay.mjs';
 import { ruleTrialWarning } from './rule-trial.mjs';
 import { BOT_OWNED_RE, BOT_OWNED_MAX, checkBotOwnedRewrite, STALE_WINDOW, STALE_MIN_FILES, STALE_MIN_ABSENT_ONLY, checkStaleRevert, ciStaleTreeVerdict } from './stale-tree-check.mjs';
+import { isMainModule } from './is-main-module.mjs';
 // BRO-5359: the review-coverage gate is optional machinery. If any of these fail to load, the
 // rebase/test-registry preflight below must keep working, so load them tolerantly (checkReviewCoverage
 // fails open when `rc` is null).
@@ -1174,7 +1175,7 @@ function main(argv) {
   return v.decision === 'block' ? 3 : 0; // 3, not 1: a crash on load also exits 1
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   try {
     createRequire(import.meta.url)('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));
   } catch (e) {

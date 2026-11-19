@@ -62,7 +62,9 @@ function bareMainChecks(cwd) {
     '--', 'scripts', '.claude', 'src', 'tools', 'supabase'], { cwd, encoding: 'utf8' });
   if (r.status === 1) return []; // git grep: no match at all
   assert.equal(r.status, 0, r.stderr);
-  return r.stdout.split('\n').filter((l) => l && !/realpath/i.test(l)
+  // A bare realpathSync(argv[1]) throws when argv[1] is not a file (`node -` reading stdin, `node -e`), which crashes
+  // every importer of the module (BRO-7839 trial B): only a realpath inside a try is safe.
+  return r.stdout.split('\n').filter((l) => l && !(/realpath/i.test(l) && /\btry\b/.test(l))
     && !/^scripts\/lib\/is-main-module(\.test)?\.mjs:/.test(l));
 }
 
@@ -78,7 +80,8 @@ test('the main-module guard catches the variants it exists for (and is clean on 
   assert.deepEqual(bareMainChecks(dir), []);
   fs.writeFileSync(path.join(dir, 'scripts', 'a.mjs'), "if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) run();\n");
   fs.writeFileSync(path.join(dir, 'scripts', 'b.mjs'), "if (import.meta.url === 'file://' + process.argv[1]) run();\n");
-  fs.writeFileSync(path.join(dir, 'scripts', 'ok.mjs'), "if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) run();\n");
+  fs.writeFileSync(path.join(dir, 'scripts', 'c.mjs'), "if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) run();\n");
+  fs.writeFileSync(path.join(dir, 'scripts', 'ok.mjs'), "let m = false; try { m = fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url); } catch {}\n");
   execFileSync('git', ['add', '.'], { cwd: dir });
-  assert.deepEqual(bareMainChecks(dir).map((l) => l.split(':')[0]), ['scripts/a.mjs', 'scripts/b.mjs']);
+  assert.deepEqual(bareMainChecks(dir).map((l) => l.split(':')[0]), ['scripts/a.mjs', 'scripts/b.mjs', 'scripts/c.mjs']);
 });
