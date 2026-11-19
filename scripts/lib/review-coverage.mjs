@@ -123,7 +123,7 @@ const isExternalReviewCall = (cmd) => {
 // BRO-7839: the third ship-check reviewer asks the owner's question ("is this fully tested?") over the diff plus the
 // commands the session ran. It counts once its output carries the SKEPTIC REVIEW verdict line. Required from
 // SKEPTIC_REQUIRED_FROM (CLAUDE.md rule 19: advisory first); before that a missing run is only reported.
-export const SKEPTIC_CMD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+|timeout\s+\S+\s+)*node\s+\S*skeptic-review-stop\.mjs\s+--ship-check\b/;
+export const SKEPTIC_CMD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+|timeout\s+\S+\s+)*node\s+(?:\S*\/)?scripts\/lib\/skeptic-review-stop\.mjs(?:\s+--[\w-]+(?:=\S+)?)*\s+--ship-check\b/;
 export const SKEPTIC_VERDICT_RE = /^SKEPTIC REVIEW: /m;
 export const SKEPTIC_REQUIRED_FROM = '2026-11-25';
 export const isSkepticReviewCall = (cmd) => SKEPTIC_CMD_RE.test(shellCode(cmd));
@@ -493,7 +493,12 @@ export function stampReceipt({ cwd, evidence, run = execFileSync, env = process.
     try {
       g(['merge-base', '--is-ancestor', 'HEAD', 'origin/main']);
       return { stamped: false, reason: 'HEAD is already on origin/main (commit first, then record)' };
-    } catch { /* not on main: safe to amend */ }
+    } catch { /* not on main */ }
+    // Never rewrite a commit any remote branch already holds (claude/*, land/*, a shared branch): the next push would
+    // be non-fast-forward. Fail closed if git can't answer.
+    let remotes = 'unknown';
+    try { remotes = g(['branch', '-r', '--contains', 'HEAD']).trim(); } catch { /* keep 'unknown' */ }
+    if (remotes) return { stamped: false, reason: `HEAD is already pushed (${remotes.split('\n')[0].trim()}); commit first, then record` };
     g(['commit', '--amend', '--only', '--allow-empty', '--no-verify', '--cleanup=verbatim', '-m', `${msg}\n\n${line}`]);
     return { stamped: true, reason: line };
   } catch (e) {
