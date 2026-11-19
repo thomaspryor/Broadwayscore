@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7846-g",
   "planId": "80504550-34ed-4844-9ae9-4503b5e573b6",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T17:29:05.142Z",
   "submitter": {
     "name": null,
@@ -52,5 +52,19 @@
         "description": "Reject the bestoftheatre sources: they serve the 2019 Kiln poster (BRO-7846)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T18:37:15.006Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for handbagged-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for handbagged-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
 }
