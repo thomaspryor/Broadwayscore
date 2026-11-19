@@ -9,7 +9,7 @@
  * "review". A long page, or one that says review, is never refused here.
  */
 
-const NEWS_SLUG = /(?:^|[-/])(?:sets?-(?:closing|opening|a-closing)|closing-(?:date|and|on|august|september|october|november|december|january|february|march|april|may|june|july)|set-to-(?:open|close|begin)|celebrates?-\d+-(?:years?|anniversary)|announces?|extends?|extended|tickets?-(?:on-sale|now-on-sale)|cast-announced|casting-announced|to-close|to-open|to-extend)(?:-|\/|$)/i;
+const NEWS_SLUG = /(?:^|-)(?:sets?-(?:closing|opening)(?:-|$)|closing-(?:date|dates)(?:-|$)|closing-(?:january|february|march|april|may|june|july|august|september|october|november|december)-\d|set-to-(?:open|close)$|celebrates?-\d+(?:th|st|nd|rd)?-(?:years?|anniversary)|announces?-(?:cast|casting|extension|closing|opening|run|dates)|extends?-(?:run|its-run|through)|tickets?-(?:now-)?on-sale|cast-announced|casting-announced)/i;
 const MAX_NEWS_CHARS = 3000;
 const REVIEW_WORD = /\breview(?:s|ed|er|ing)?\b/i;
 
@@ -24,7 +24,9 @@ function slugOf(url) {
 function classifyNewsPost({ url, text }) {
   const body = typeof text === 'string' ? text : '';
   if (!body) return { news: false };
-  if (!NEWS_SLUG.test(slugOf(url))) return { news: false };
+  const slug = slugOf(url);
+  if (/review/i.test(slug)) return { news: false };
+  if (!NEWS_SLUG.test(slug)) return { news: false };
   if (body.length > MAX_NEWS_CHARS) return { news: false };
   if (REVIEW_WORD.test(body)) return { news: false };
   return { news: true, reason: `announcement-shaped url slug and a ${body.length}-char body with no "review"` };

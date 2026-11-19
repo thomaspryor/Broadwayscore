@@ -311,6 +311,7 @@ async function main() {
         results.skipped++;
         results.warnings.push(`${prefix} News post, not a review (${news.reason}): ${url}`);
         console.log(`    ⏭  Skipped news post (${news.reason})`);
+        console.log(`::warning::News post skipped, not a review: ${url}`);
         console.log('');
         continue;
       }

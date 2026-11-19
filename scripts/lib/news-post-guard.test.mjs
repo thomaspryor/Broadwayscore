@@ -25,7 +25,15 @@ test('a review page is never refused: says review, is long, or has a review-shap
   assert.equal(classifyNewsPost({ url: u, text: null }).news, false);
 });
 
+test('review-headline slugs that contain news words are never refused', () => {
+  for (const slug of ['extended-play', 'broadway-review-extends-its-reach', 'hamlet-to-open-old-wounds', 'the-closing-and-the-curtain', 'to-close-the-gap-review', 'macbeth-announces-itself']) {
+    assert.equal(classifyNewsPost({ url: 'https://x.com/2026/05/' + slug + '/', text: short }).news, false, slug);
+  }
+  assert.equal(classifyNewsPost({ url: 'https://x.com/2026/05/celebrates-10th-anniversary/', text: short }).news, true);
+});
+
 test('ingest-urls.js calls the guard (class guard: reverting the wiring fails here)', () => {
   const src = fs.readFileSync(new URL('../ingest-urls.js', import.meta.url), 'utf8');
   assert.match(src, /classifyNewsPost\(/);
+  assert.match(src, /if \(news\.news\) \{[\s\S]{0,400}continue;/);
 });
