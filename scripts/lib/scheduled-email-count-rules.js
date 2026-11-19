@@ -243,9 +243,19 @@ const COUNT_KEY_RE = /^scheduled-email-count:(?:unexpected|dup)-/;
 
 // The ONE place the per-sender count conditionKey is built: the monitor files
 // with it and builds its live set with it, so the two cannot drift.
-function countConditionKey(decision) {
-  const parts = [...(decision.unexpectedKeys || []).map((k) => `unexpected-${k}`), ...(decision.duplicateKeys || []).map((k) => `dup-${k}`)].sort();
-  return `scheduled-email-count:${parts.join(',')}`;
+// BRO-7731: one key per sender. A combined key (`dup-a,dup-b`) left the `dup-a`
+// row unrefreshed once b joined, so the quiet sweep resolved it while a still
+// duplicated. Older combined rows still match COUNT_KEY_RE and quiet-resolve.
+function countConditionKey(kind, sender) {
+  return `scheduled-email-count:${kind}-${sender}`;
+}
+
+// -> [{ key, kind: 'unexpected'|'dup', sender }] for one day's decision, sorted by key
+function countConditionKeys(decision) {
+  return [
+    ...(decision.unexpectedKeys || []).map((sender) => ({ kind: 'unexpected', sender })),
+    ...(decision.duplicateKeys || []).map((sender) => ({ kind: 'dup', sender })),
+  ].map((e) => ({ key: countConditionKey(e.kind, e.sender), ...e })).sort((a, b) => a.key.localeCompare(b.key));
 }
 
 // Open count keys that are not in this run's live violation set.
@@ -256,4 +266,4 @@ function openCountKeys(conditions, currentKeys = []) {
     .map(([key]) => key);
 }
 
-module.exports = { countConditionKey, openCountKeys, SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
+module.exports = { countConditionKey, countConditionKeys, openCountKeys, SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };

@@ -26,7 +26,8 @@
  *   --max-wait-minutes  give up waiting for the mutex after N min (default 20): exit 4 with a
  *            warning, so a worker is never stranded behind another check
  * Exit: 0 no new failures | 1 new failures (printed) | 2 usage | 3 not ready (tracked
- *       changes, under 4 GB free disk (BRO-7186, BRO-7467), no common history with origin/main, or no local core data) | 4 skipped
+ *       changes, under 4 GB free disk (BRO-7186, BRO-7467), no common history with origin/main even after bounded
+ *       --deepen rounds on a shallow clone (BRO-7731: prints the cut-new-branch recipe), or no local core data) | 4 skipped
  *       (mutex wait timed out)
  */
 'use strict';
@@ -127,6 +128,67 @@ function nodeModulesRemedy(root, commonDir) {
   return `Link them first: ln -sfn ${path.join(main, 'node_modules')} node_modules`;
 }
 
+// BRO-7731: a shallow cloud checkout whose branch was cut from an older base has no merge-base
+// with origin/main inside the fetched history, so the run refused with a bare "shares no history".
+// Deepen in bounded rounds instead. `git fetch --deepen=N origin main` deepens every shallow point
+// the client holds, HEAD's own cut-off root included (checked on a scratch repo whose depth-1
+// branch root is not on main). Each round is bounded in time (DEEPEN_TIMEOUT_MS) and in size:
+// without a partial-clone (promisor) remote every blob of every commit comes down, so the last
+// and largest round runs only when blobs can be left behind with --filter=blob:none.
+const DEEPEN_TIMEOUT_MS = 120_000;
+/** -> the fetch rounds to try, smallest first: [{ depth, args }] */
+function deepenRounds({ promisor = false } = {}) {
+  const depths = promisor ? [200, 1000, 5000] : [200, 1000];
+  return depths.map((depth) => ({ depth, args: ['fetch', '-q', `--deepen=${depth}`, ...(promisor ? ['--filter=blob:none'] : []), 'origin', 'main'] }));
+}
+
+/**
+ * Pure decision for the next step when HEAD and origin/main share no merge-base.
+ * state: { shallow, mergeBase, round (rounds tried so far), rounds, last: { ok, progressed } | null }
+ * -> { action: 'done' } | { action: 'deepen', round } | { action: 'give-up', reason }
+ */
+function nextHistoryStep({ shallow, mergeBase, round = 0, rounds = [], last = null }) {
+  if (mergeBase) return { action: 'done' };
+  if (!shallow) return { action: 'give-up', reason: 'not-shallow' };
+  if (last && !last.ok) return { action: 'give-up', reason: 'fetch-failed' };
+  // A round that moved no shallow point will not be helped by a bigger one: stop, don't burn fetches.
+  if (last && !last.progressed) return { action: 'give-up', reason: 'no-progress' };
+  if (round >= rounds.length) return { action: 'give-up', reason: 'rounds-exhausted' };
+  return { action: 'deepen', round: rounds[round] };
+}
+
+const GIVE_UP_REASONS = {
+  'not-shallow': 'this is a full clone, so HEAD and origin/main really share no commit',
+  'fetch-failed': 'a bounded deepen fetch failed or timed out',
+  'no-progress': 'a deepen fetch brought no older history',
+  'rounds-exhausted': 'the bounded deepen rounds did not reach a common commit',
+};
+
+/**
+ * The recipe that moves a branch's own commits onto current origin/main.
+ * commits: oldest first, the output of `git rev-list --reverse origin/main..HEAD`; only trusted
+ * (and so only printed) when a merge-base exists. Without one that range is HEAD's whole fetched
+ * history, not the branch's commits, so the recipe has the reader find them by hand.
+ * cutOffRoots: shallow points HEAD's own history still ends at.
+ */
+function noCommonHistoryRecipe({ branch, mergeBase = '', commits = [], cutOffRoots = [], reason = '' } = {}) {
+  const name = `${branch && branch !== 'HEAD' ? branch : 'my-branch'}-v2`;
+  const lines = [];
+  if (!mergeBase) {
+    lines.push(`land-local-check: HEAD shares no history with origin/main${reason ? ` (${GIVE_UP_REASONS[reason] || reason})` : ''}.`);
+    if (cutOffRoots.length) lines.push(`  HEAD's own history is cut off at ${cutOffRoots.map((s) => s.slice(0, 10)).join(', ')} (a shallow clone boundary), so its base commit is not here.`);
+  }
+  lines.push('  Move your commits onto current origin/main:', '    git fetch origin main', `    git switch -c ${name} origin/main`);
+  if (mergeBase && commits.length && commits.length <= 20) {
+    lines.push(`    git cherry-pick ${commits.join(' ')}`);
+  } else {
+    lines.push(`    git log --oneline -n 20 ${branch && branch !== 'HEAD' ? branch : '<old-branch>'}   # find your own commits (newest first)`,
+      '    git cherry-pick <your oldest sha>^..<your newest sha>   # or list them, oldest first');
+  }
+  lines.push('  then re-run this check from the new branch.');
+  return lines.join('\n');
+}
+
 /** -> { gates, maxWaitMs } or { error } */
 function parseArgs(argv) {
   let gates = DEFAULT_GATES;
@@ -150,6 +212,41 @@ function run(cmd, args, opts = {}) {
   return { code: r.status === null ? 1 : r.status, stdout: (r.stdout || '').trim(), stderr: (r.stderr || '').trim() };
 }
 const git = (...args) => run('git', args);
+
+/** -> the shallow-boundary commits the repo at cwd holds ([] in a full clone) */
+function shallowPoints(cwd = ROOT) {
+  const file = path.resolve(cwd, run('git', ['rev-parse', '--git-path', 'shallow'], { cwd }).stdout || '.git/shallow');
+  try { return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).sort(); } catch { return []; }
+}
+
+/** -> shallow-boundary commits in HEAD's own history (where HEAD itself is cut off) */
+function headShallowRoots(head, cwd = ROOT) {
+  const points = new Set(shallowPoints(cwd));
+  if (!points.size) return [];
+  return run('git', ['rev-list', head], { cwd }).stdout.split('\n').filter((c) => points.has(c));
+}
+
+/** -> { base, reason, deepened }: the merge-base with origin/main, deepening a shallow clone in bounded rounds */
+function findMergeBase(head, { cwd = ROOT, rounds = null, timeoutMs = DEEPEN_TIMEOUT_MS, log = (m) => console.error(m) } = {}) {
+  const g = (...args) => run('git', args, { cwd });
+  let plan = rounds;
+  let round = 0;
+  let last = null;
+  for (;;) {
+    const mergeBase = g('merge-base', head, 'origin/main').stdout;
+    if (mergeBase) return { base: mergeBase, deepened: round };
+    // Only a missing merge-base pays for the shallow and promisor lookups.
+    if (!plan) plan = deepenRounds({ promisor: g('config', '--get', 'remote.origin.promisor').stdout === 'true' });
+    const step = nextHistoryStep({ shallow: g('rev-parse', '--is-shallow-repository').stdout === 'true', mergeBase, round, rounds: plan, last });
+    if (step.action === 'done') return { base: mergeBase, deepened: round };
+    if (step.action === 'give-up') return { base: '', reason: step.reason, deepened: round };
+    const before = shallowPoints(cwd).join('\n');
+    log(`land-local-check: no merge-base with origin/main in this shallow clone; git fetch --deepen=${step.round.depth} (up to ${Math.round(timeoutMs / 1000)}s)`);
+    const r = run('git', step.round.args, { cwd, timeout: timeoutMs });
+    last = { ok: r.code === 0, progressed: shallowPoints(cwd).join('\n') !== before };
+    round += 1;
+  }
+}
 
 class MutexTimeout extends Error {}
 
@@ -458,10 +555,19 @@ function main(argv = process.argv.slice(2)) {
   const head = git('rev-parse', 'HEAD').stdout;
   // Judge against the main commit HEAD sits on: main moves every few minutes, so demanding the
   // newest one would refuse nearly every run. Rebase conflicts are land-preflight.mjs's job.
-  const base = git('merge-base', head, 'origin/main').stdout;
-  if (!base) { console.error('land-local-check: HEAD shares no history with origin/main'); return 3; }
+  const { base, reason, deepened } = findMergeBase(head);
+  const branch = git('rev-parse', '--abbrev-ref', 'HEAD').stdout;
+  if (!base) {
+    console.error(noCommonHistoryRecipe({ branch, reason, cutOffRoots: headShallowRoots(head) }));
+    return 3;
+  }
+  if (deepened) console.log(`land-local-check: deepened the shallow history ${deepened} time(s) to find the merge-base with origin/main`);
   const behind = Number(git('rev-list', '--count', `${head}..origin/main`).stdout) || 0;
-  if (behind > 200) console.error(`land-local-check: HEAD is ${behind} commits behind origin/main; rebase for a closer match to what land.yml judges`);
+  if (behind > 200) {
+    const commits = git('rev-list', '--reverse', '--max-count=21', `origin/main..${head}`).stdout.split('\n').filter(Boolean);
+    console.error(`land-local-check: HEAD is ${behind} commits behind origin/main; rebase for a closer match to what land.yml judges\n`
+      + noCommonHistoryRecipe({ branch, mergeBase: base, commits }));
+  }
 
   const dev = clearStaleDevTypes(ROOT);
   if (dev.removed) console.log('land-local-check: removed .next/dev (stale `next dev` types fail the tsc gate with TS6053)');
@@ -572,7 +678,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { isolatedRecheckPlan, aloneRunFinished, writeScopeFiles, adoptAloneResult, MAX_ISOLATED_FILES, cleanupStaleRuns, staleRunDecision, processCwds, liveProcessIn, parseWorktreeList, clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { deepenRounds, nextHistoryStep, noCommonHistoryRecipe, findMergeBase, headShallowRoots, DEEPEN_TIMEOUT_MS, isolatedRecheckPlan, aloneRunFinished, writeScopeFiles, adoptAloneResult, MAX_ISOLATED_FILES, cleanupStaleRuns, staleRunDecision, processCwds, liveProcessIn, parseWorktreeList, clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.

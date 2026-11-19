@@ -761,3 +761,79 @@ test('BRO-7752: an alone run that did not finish keeps the batch verdict and its
   assert.ok(seen.baseRan);
   assert.equal(seen.baseScope, null, 'the timing failure still forces a full base gate');
 });
+
+// BRO-7731: a shallow cloud checkout cut from an older base has no merge-base in its fetched history.
+test('BRO-7731: nextHistoryStep deepens a shallow clone in bounded rounds and stops early', () => {
+  const { nextHistoryStep, deepenRounds } = require('./land-local-check.js');
+  const rounds = deepenRounds();
+  assert.deepEqual(rounds.map((r) => r.depth), [200, 1000], 'no promisor remote: no 5000-commit full-blob round');
+  assert.ok(rounds.every((r) => !r.args.includes('--filter=blob:none')));
+  const partial = deepenRounds({ promisor: true });
+  assert.deepEqual(partial.map((r) => r.depth), [200, 1000, 5000]);
+  assert.ok(partial.every((r) => r.args.includes('--filter=blob:none') && r.args.at(-1) === 'main'));
+  assert.deepEqual(nextHistoryStep({ shallow: true, mergeBase: 'abc', rounds }), { action: 'done' });
+  assert.deepEqual(nextHistoryStep({ shallow: false, mergeBase: '', rounds }), { action: 'give-up', reason: 'not-shallow' });
+  assert.deepEqual(nextHistoryStep({ shallow: true, mergeBase: '', round: 0, rounds }), { action: 'deepen', round: rounds[0] });
+  assert.deepEqual(nextHistoryStep({ shallow: true, mergeBase: '', round: 1, rounds, last: { ok: true, progressed: true } }), { action: 'deepen', round: rounds[1] });
+  assert.deepEqual(nextHistoryStep({ shallow: true, mergeBase: '', round: 1, rounds, last: { ok: false, progressed: false } }), { action: 'give-up', reason: 'fetch-failed' });
+  assert.deepEqual(nextHistoryStep({ shallow: true, mergeBase: '', round: 1, rounds, last: { ok: true, progressed: false } }), { action: 'give-up', reason: 'no-progress' });
+  assert.deepEqual(nextHistoryStep({ shallow: true, mergeBase: '', round: 2, rounds, last: { ok: true, progressed: true } }), { action: 'give-up', reason: 'rounds-exhausted' });
+});
+
+test('BRO-7731: the recipe lists SHAs only when a merge-base makes origin/main..HEAD trustworthy', () => {
+  const { noCommonHistoryRecipe } = require('./land-local-check.js');
+  const none = noCommonHistoryRecipe({ branch: 'claude/x', reason: 'rounds-exhausted', cutOffRoots: ['0123456789abcdef'], commits: ['deadbeef'] });
+  assert.match(none, /shares no history with origin\/main/);
+  assert.match(none, /cut off at 0123456789/);
+  assert.match(none, /git switch -c claude\/x-v2 origin\/main/);
+  assert.match(none, /git log --oneline -n 20 claude\/x/);
+  assert.doesNotMatch(none, /deadbeef/, 'no merge-base: never print HEAD^origin/main as the commit list');
+  const withBase = noCommonHistoryRecipe({ branch: 'claude/x', mergeBase: 'base', commits: ['aaa', 'bbb'] });
+  assert.match(withBase, /git cherry-pick aaa bbb/);
+  assert.doesNotMatch(withBase, /shares no history/);
+  const many = noCommonHistoryRecipe({ branch: 'HEAD', mergeBase: 'base', commits: Array.from({ length: 21 }, (_, i) => `c${i}`) });
+  assert.doesNotMatch(many, /git cherry-pick c0/);
+  assert.match(many, /my-branch-v2/);
+});
+
+function shallowScenario(t, { offMain }) {
+  const scratch = mkdtempSync(join(tmpdir(), 'llc-shallow-'));
+  t.after(() => rmSync(scratch, { recursive: true, force: true }));
+  const g = (cwd, ...a) => execFileSync('git', ['-c', 'user.email=t@t', '-c', 'user.name=t', '-c', 'protocol.file.allow=always', ...a], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  const src = join(scratch, 'src');
+  fs.mkdirSync(src);
+  g(src, 'init', '-q', '-b', 'main');
+  const commit = (file, msg) => { writeFileSync(join(src, file), msg); g(src, 'add', file); g(src, 'commit', '-qm', msg); };
+  for (let i = 1; i <= 30; i++) commit('f', `c${i}`);
+  g(src, 'branch', 'old');
+  if (offMain) { g(src, 'switch', '-q', 'old'); for (let i = 1; i <= 3; i++) commit('h', `feat${i}`); g(src, 'switch', '-q', 'main'); }
+  for (let i = 31; i <= 60; i++) commit('f', `c${i}`);
+  const clone = join(scratch, 'clone');
+  g(scratch, 'clone', '-q', '--depth=1', '--branch', 'old', `file://${src}`, clone);
+  writeFileSync(join(clone, 'mine'), 'x'); g(clone, 'add', 'mine'); g(clone, 'commit', '-qm', 'mine');
+  g(clone, 'fetch', '-q', '--depth=1', 'origin', 'main:refs/remotes/origin/main');
+  return { clone, head: g(clone, 'rev-parse', 'HEAD'), g };
+}
+
+test('BRO-7731: findMergeBase recovers a real shallow branch cut from an older base, on or off main', (t) => {
+  const { findMergeBase, headShallowRoots } = require('./land-local-check.js');
+  const rounds = (depths) => depths.map((depth) => ({ depth, args: ['-c', 'protocol.file.allow=always', 'fetch', '-q', `--deepen=${depth}`, 'origin', 'main'] }));
+  for (const offMain of [false, true]) {
+    const { clone, head, g } = shallowScenario(t, { offMain });
+    assert.equal(spawnSync('git', ['merge-base', head, 'origin/main'], { cwd: clone }).status, 1, 'precondition: no merge-base');
+    assert.equal(headShallowRoots(head, clone).length, 1, 'HEAD is itself cut off');
+    const r = findMergeBase(head, { cwd: clone, rounds: rounds([5, 50]), log: () => {} });
+    assert.ok(r.base, `offMain=${offMain}: merge-base found after deepening`);
+    assert.equal(r.base, g(clone, 'merge-base', head, 'origin/main'));
+    assert.equal(r.deepened, 2);
+  }
+});
+
+test('BRO-7731: findMergeBase gives up after bounded rounds instead of unshallowing', (t) => {
+  const { findMergeBase } = require('./land-local-check.js');
+  const { clone, head } = shallowScenario(t, { offMain: false });
+  const r = findMergeBase(head, { cwd: clone, rounds: [{ depth: 2, args: ['-c', 'protocol.file.allow=always', 'fetch', '-q', '--deepen=2', 'origin', 'main'] }], log: () => {} });
+  assert.deepEqual([r.base, r.reason, r.deepened], ['', 'rounds-exhausted', 1]);
+  const failed = findMergeBase(head, { cwd: clone, rounds: [{ depth: 2, args: ['fetch', '-q', '--deepen=2', 'no-such-remote', 'main'] }, { depth: 9, args: [] }], log: () => {} });
+  assert.deepEqual([failed.reason, failed.deepened], ['fetch-failed', 1], 'a failed fetch stops the rounds');
+});
