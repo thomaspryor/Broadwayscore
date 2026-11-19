@@ -38,7 +38,10 @@ const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { generateApprovalUrl } = require('./lib/approval-link.js');
 const { buildEntry, mergeEntries } = require('./lib/feedback-request-ledger.js');
-const { loadIssueDiagnosis } = require('./lib/feedback-submitter-store.js');
+const { loadIssueDiagnosis, loadStore } = require('./lib/feedback-submitter-store.js');
+const Proposal = require('./lib/feedback-proposal.js');
+const { sendOwnerThreadEmail, threadSubject } = require('./lib/owner-email-thread.js');
+const { showLinkFor } = require('./draft-fixed-replies.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -278,7 +281,10 @@ async function main() {
   }
 
   // 1. Parse diagnosis from issue body
-  const diagnosis = parseDiagnosis(issueBody);
+  // Needs-review issues carry no DIAGNOSIS_JSON (BRO-7847): build a
+  // diagnosis-shaped object from the submission id and the private store so
+  // they get a proposal email too.
+  const diagnosis = parseDiagnosis(issueBody) || Proposal.buildNeedsReviewDiagnosis(issueBody, loadStore(process.env.FEEDBACK_SUBMITTERS_PATH || undefined));
   if (!diagnosis) {
     console.log('No DIAGNOSIS_JSON found — cannot generate plan');
     output('plan_created', 'false');
@@ -292,6 +298,59 @@ async function main() {
   // 2. Build context for Claude
   const showsData = loadJsonSafe('data/shows.json');
   const shows = showsData?.shows || showsData || [];
+
+  // --- Proposal email (BRO-7847): owner only, one per issue, capped, kill switch ---
+  const ownerEmail = process.env.OWNER_EMAIL;
+  const proposalLedger = Proposal.loadLedger();
+  const proposalOn = !!ownerEmail && !Proposal.proposalsDisabled() && Proposal.decideSend(proposalLedger, issueNumber).send;
+  const submittedAt = diagnosis.submittedAt || diagnosis.submissionId || null;
+
+  async function sendProposal({ alreadyFixed, fixedEvidence, catalogMatches, plan: p, approveUrl, rejectUrl, rootCause }) {
+    const reader = { name: diagnosis.submitterName, email: diagnosis.submitterEmail, show: diagnosis.submitterShow, message: diagnosis.originalMessage };
+    const showHref = (catalogMatches && catalogMatches[0] && catalogMatches[0].url) || showLinkFor(reader.show, shows);
+    const reply = Proposal.buildReaderReplyDraft({ reader, show: reader.show, url: showHref });
+    const scan = p ? Proposal.scanSimilar(p, shows) : { ran: false, findings: [] };
+    const { html, text } = Proposal.buildProposalEmail({
+      issueNumber, reader, alreadyFixed, fixedEvidence, catalogMatches, plan: p, approveUrl, rejectUrl,
+      rootCause, rootCauseUrl: Proposal.buildRootCauseUrl({ issueNumber, rootCause, secret }), scan, reply,
+    });
+    await sendOwnerThreadEmail({
+      issueNumber, subject: threadSubject({ show: reader.show, issueNumber }), html, text, root: true,
+    });
+    const sentAt = new Date().toISOString();
+    Proposal.recordSent(proposalLedger, issueNumber, { sentAt, submittedAt, kind: alreadyFixed ? 'already-fixed' : 'needs-fix' });
+    Proposal.saveLedger(proposalLedger);
+    const mins = proposalLedger.entries[String(issueNumber)].minutes;
+    console.log(`Proposal email sent (${alreadyFixed ? 'already fixed' : 'needs fix'}); ${mins == null ? 'SLA unknown' : `${mins} min after submission`}`);
+    output('proposal_sent', 'true');
+    output('proposal_minutes', mins == null ? '' : String(mins));
+  }
+
+  // Content-addition asks: if the show is already in the catalog, say so and
+  // let the workflow close the issue with a comment (#1190, #1124 pattern).
+  if (diagnosis.needsReview && Proposal.isContentAdditionBody(issueBody)) {
+    const matches = Proposal.selectAutoCloseMatch(diagnosis.originalMessage, diagnosis.submitterShow, shows);
+    if (matches.length > 0 && proposalOn) {
+      try {
+        await sendProposal({
+          alreadyFixed: true,
+          fixedEvidence: [`${matches.length} catalog ${matches.length === 1 ? 'entry matches' : 'entries match'} the show they named`],
+          catalogMatches: matches,
+          rootCause: {
+            title: 'router leaves already-fixed asks open',
+            summary: 'The feedback router could not tell which catalog entry the reader meant, so it left the issue open and sent no reply.',
+            approach: 'When a requested title already matches a catalog entry, close the issue with a comment and put the reply draft in front of the owner.',
+          },
+        });
+        output('already_fixed', 'true');
+        output('already_fixed_urls', matches.map((m) => m.url).join(' '));
+      } catch (err) {
+        console.error('Proposal email failed:', err.message);
+      }
+      output('plan_created', 'false');
+      return;
+    }
+  }
 
   // Find relevant shows — prefer the canonical multi-show showIds[] (issue
   // #515: a report can name more than one show), fall back to the legacy
@@ -406,9 +465,12 @@ Specify: operation (move, delete, rename), source path, destination path
 - Write the summary in plain English as if explaining to a friend
 - CRITICAL: Only use show IDs and production details that appear in the Show Data above. Do NOT guess production years, revival numbers, or historical facts. If the show data doesn't include specific shows mentioned in the diagnosis, use generic references (e.g., "the Sweeney Todd entry") and set showId to null with a note that the correct show ID needs to be looked up.
 
+- "rootCause" is optional. Include it ONLY when the specific fix leaves a pipeline or process gap that let this error through (for example a scraper that never retries). Give a plain-English summary and approach. Never put reader names, emails or message text in it. Otherwise set it to null.
+
 Respond with ONLY a JSON object:
 {
   "canCreatePlan": true,
+  "rootCause": null,
   "summary": "Plain English summary of the fix in 1-2 sentences",
   "steps": ["Step 1 in plain English", "Step 2"],
   "riskLevel": "Low|Medium|High",
@@ -464,8 +526,16 @@ Or if you cannot create an actionable plan:
     // Send a status email — its wording depends on whether the card above
     // actually got filed (auto-dispatched) or not (genuine fallback, still
     // needs a human to look).
-    const ownerEmail = process.env.OWNER_EMAIL;
-    if (ownerEmail) {
+    if (proposalOn) {
+      try {
+        await sendProposal({
+          alreadyFixed: false,
+          plan: { summary: `No automatic fix could be planned yet. ${String(plan.reason || '').replace(/\s+/g, ' ').slice(0, 300)} A fix card has been queued.`, steps: [], riskLevel: 'n/a' },
+        });
+      } catch (err) {
+        console.error('Proposal email failed:', err.message);
+      }
+    } else if (ownerEmail && !diagnosis.needsReview) {
       const who = diagnosis.submitterName && diagnosis.submitterName !== 'Anonymous' ? diagnosis.submitterName : 'Someone';
       const showRef = diagnosis.submitterShow ? ` about <strong>${diagnosis.submitterShow}</strong>` : '';
 
@@ -596,8 +666,23 @@ ${diagnosis.originalMessage
   const rejectUrl = generateApprovalUrl('reject', issueNumber, secret, planId);
 
   // 7. Send approval email
-  const ownerEmail = process.env.OWNER_EMAIL;
-  if (ownerEmail) {
+  const applied = Proposal.checkPlanAlreadyApplied(plan, shows);
+  if (proposalOn) {
+    try {
+      await sendProposal({
+        alreadyFixed: applied.fixed,
+        fixedEvidence: applied.evidence,
+        plan: { summary: plan.summary, steps: plan.steps, riskLevel: plan.riskLevel, actions: plan.actions },
+        approveUrl: applied.fixed ? null : approveUrl,
+        rejectUrl: applied.fixed ? null : rejectUrl,
+        rootCause: plan.rootCause && plan.rootCause.summary ? plan.rootCause : null,
+      });
+      // Close only after the owner was actually told (kill switch and cap never close).
+      if (applied.fixed) output('already_fixed', 'true');
+    } catch (err) {
+      console.error('Proposal email failed:', err.message);
+    }
+  } else if (ownerEmail && !diagnosis.needsReview) {
     const { subject, html } = buildFixApprovalEmail({
       // From the in-memory diagnosis, NOT planData.submitter — the persisted
       // plan is PII-redacted but the email to the owner keeps the full text.
@@ -692,12 +777,16 @@ ${diagnosis.originalMessage
         });
 
         try {
-          await sendEmail(
-            ownerEmail,
-            'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
-            `Systematic Fix: ${systematic.summary.slice(0, 60)} (#${issueNumber})`,
-            sysHtml
-          );
+          if (proposalOn) {
+            await sendOwnerThreadEmail({ issueNumber, subject: threadSubject({ show: diagnosis.submitterShow, issueNumber }), html: sysHtml });
+          } else {
+            await sendEmail(
+              ownerEmail,
+              'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+              `Systematic Fix: ${systematic.summary.slice(0, 60)} (#${issueNumber})`,
+              sysHtml
+            );
+          }
           console.log('Systematic approval email sent');
         } catch (err) {
           console.error('Failed to send systematic email:', err.message);

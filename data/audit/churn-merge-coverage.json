@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-19T16:19:02.095Z",
+    "generatedAt": "2026-11-19T17:42:33.787Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -18,17 +18,17 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 157,
+      "churn": 135,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 31,
+      "churn": 36,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 30,
+      "churn": 32,
       "mergeAttr": "union"
     }
   ]

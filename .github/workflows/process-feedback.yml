@@ -97,6 +97,8 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         env:
           STORE_PUSH_OUTCOME: ${{ steps.store_push.outcome }}
+          # Kill switch for the owner proposal email (BRO-7847): repo variable
+          FEEDBACK_PROPOSAL_DISABLED: ${{ vars.FEEDBACK_PROPOSAL_DISABLED }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -256,6 +258,29 @@ jobs:
                 );
                 recordIssue(submission, issue.data.number);
                 recordLedgerIssue(submission, issue.data.number);
+
+                // BRO-7847: a needs-review issue nobody auto-fixes gets the
+                // owner proposal email via the auto-fix workflow's planner
+                // step (GITHUB_TOKEN events never trigger issues.opened, so
+                // the dispatch is explicit). The reader store was pushed
+                // before this step, same as the bug-diagnosis dispatch below.
+                if (!willAutoDispatch && String(process.env.FEEDBACK_PROPOSAL_DISABLED || '').toLowerCase() !== 'true' && process.env.STORE_PUSH_OUTCOME !== 'failure') {
+                  try {
+                    await github.rest.actions.createWorkflowDispatch({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      workflow_id: 'auto-fix-feedback-bug.yml',
+                      ref: 'main',
+                      inputs: { issue_number: String(issue.data.number) },
+                    });
+                    console.log(`  Dispatched proposal run for needs-review #${issue.data.number}`);
+                    recordDispatch(submission, { workflow: 'auto-fix-feedback-bug.yml', kind: 'proposal', inputs: { issue_number: String(issue.data.number) } }, true, null);
+                  } catch (err) {
+                    console.log(`  Failed to dispatch proposal run for #${issue.data.number}: ${err.message}`);
+                    recordDispatch(submission, { workflow: 'auto-fix-feedback-bug.yml', kind: 'proposal', inputs: { issue_number: String(issue.data.number) } }, false, err.message);
+                  }
+                  await new Promise((r) => setTimeout(r, 10000));
+                }
 
                 // Dispatch each routable action. One failed dispatch must not
                 // sink the others or the issue itself — the issue (with its

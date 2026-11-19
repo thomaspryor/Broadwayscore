@@ -116,14 +116,14 @@ const RENEW_OUTLETS = {
     fileKey: 'ft',
     cookieDomains: ['ft.com'],
     loginUrl: 'https://accounts.ft.com/login?location=https%3A%2F%2Fwww.ft.com%2F',
-    login: 'two-step-password',
+    login: 'ft-otp',
     authCookies: ['FTSession_s'],
     ciConfirm: false,
   },
   // Telegraph: re-subscribed 2026-11-11 (owner keeps it). Email -> Continue
-  // -> password, with invisible reCAPTCHA Enterprise on the page (probed
-  // 2026-11-17): a challenge is a needs-human stop like any other. Until
-  // Keychain items exist the owner logs in once with --manual. localOnly:
+  // -> six-digit code emailed to Gmail (re-probed 2026-11-19: no password
+  // step any more), with invisible reCAPTCHA Enterprise on the page: a
+  // challenge is a needs-human stop like any other. localOnly:
   // CI can't get past Akamai, so the cookies serve the local gap driver.
   // tmg_session / tmg_refresh carry the session (400d, measured 2026-11-17
   // from the logged-in profile).
@@ -131,7 +131,7 @@ const RENEW_OUTLETS = {
     fileKey: 'telegraph',
     cookieDomains: ['telegraph.co.uk'],
     loginUrl: 'https://secure.telegraph.co.uk/customer/secure/login/?redirectTo=https%3A%2F%2Fwww.telegraph.co.uk%2Ftheatre%2Fwhat-to-see%2Fromeo-and-juliet-review-sadie-sink-noah-jupe%2F',
-    login: 'two-step-password',
+    login: 'telegraph-otp',
     authCookies: ['tmg_session', 'tmg_refresh'],
     ciConfirm: false,
     localOnly: true,
@@ -149,6 +149,10 @@ const LOGIN_ADAPTERS = {
   'two-step-password': { credentials: ['email', 'password'] },
   'nyt-otp': { credentials: ['email'], otp: { fromFilter: 'nytimes.com', codePattern: /code[^\d]{0,10}(\d{6})/i } },
   'newyorker-otp': { credentials: ['email'], otp: { fromFilter: 'condenast.com', codePattern: /code is[^\d]{0,5}(\d{6})/i } },
+  // Body "please enter the following code on your FT screen: *123456*" from service@mail.ft.com (2026-11-19).
+  'ft-otp': { credentials: ['email'], otp: { fromFilter: 'mail.ft.com', codePattern: /enter the following code[^\d]{0,60}(\d{6})/i } },
+  // Subject "123456 is your verification code" from no-reply@service-emails.telegraph.co.uk (2026-11-19).
+  'telegraph-otp': { credentials: ['email'], otp: { fromFilter: 'telegraph.co.uk', codePattern: /\b(\d{6}) is your verification code/i } },
 };
 
 /**

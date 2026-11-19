@@ -43,17 +43,39 @@ test('every outlet has a probe, a login adapter with a browser flow, and auth co
   assert.equal(renew.loginAdapterFor('nope'), null);
 });
 
-test('adapter selection: NYT and New Yorker need only the email (Gmail OTP); the rest need email + password', () => {
-  assert.deepEqual(renew.loginAdapterFor('nytimes').credentials, ['email']);
-  assert.deepEqual(renew.loginAdapterFor('newyorker').credentials, ['email']);
+test('adapter selection: NYT, New Yorker, FT and Telegraph need only the email (Gmail code); the rest need email + password', () => {
+  for (const o of ['nytimes', 'newyorker', 'ft', 'telegraph']) assert.deepEqual(renew.loginAdapterFor(o).credentials, ['email'], o);
   assert.equal(renew.loginAdapterFor('nytimes').kind, 'nyt-otp');
   assert.match('Log in with code 123456', renew.loginAdapterFor('nytimes').otp.codePattern);
   assert.equal('Your one time code is 654321'.match(renew.loginAdapterFor('newyorker').otp.codePattern)[1], '654321');
-  for (const o of ['wapo', 'thetimes', 'ft', 'telegraph', 'thestage']) {
+  for (const o of ['wapo', 'thetimes', 'thestage']) {
     assert.deepEqual(renew.loginAdapterFor(o).credentials, ['email', 'password'], o);
   }
   assert.equal(renew.loginAdapterFor('thetimes').kind, 'one-step-password');
-  assert.equal(renew.loginAdapterFor('ft').kind, 'two-step-password');
+  assert.equal(renew.loginAdapterFor('wapo').kind, 'two-step-password');
+});
+
+// Real email wording, 2026-11-19 (codes replaced). FT's password route ends in an
+// hCaptcha puzzle and Telegraph no longer offers a password step, so both sign in
+// by emailed code; these pin the Gmail parsers to what the outlets actually send.
+test('FT and Telegraph sign in by emailed code, parsed from their real email wording', () => {
+  assert.equal(renew.loginAdapterFor('ft').kind, 'ft-otp');
+  assert.equal(renew.loginAdapterFor('telegraph').kind, 'telegraph-otp');
+  const ft = renew.loginAdapterFor('ft').otp;
+  assert.equal(ft.fromFilter, 'mail.ft.com');
+  assert.equal('To complete your secure login, please enter the following code on your FT screen:\n*482913*\nPlease note'.match(ft.codePattern)[1], '482913');
+  const tg = renew.loginAdapterFor('telegraph').otp;
+  assert.equal(tg.fromFilter, 'telegraph.co.uk');
+  assert.equal('Subject: 370123 is your verification code'.match(tg.codePattern)[1], '370123');
+  assert.equal('no code in this one'.match(tg.codePattern), null);
+});
+
+test('password and FT flows disable passkeys first (FT stalls on a WebAuthn prompt otherwise)', async () => {
+  for (const o of ['wapo', 'ft']) {
+    const page = emptyPage();
+    await runLoginFlow(page, renew.loginAdapterFor(o), renew.RENEW_OUTLETS[o], { email: 'a@b.c', password: 'pw' }, { pollOtp: async () => null });
+    assert.ok(page.initScripts.length >= 1, o);
+  }
 });
 
 test('profiles are shared with the gap-driver adapters (same Chrome profile = same device)', () => {
@@ -69,11 +91,11 @@ test('missingCredentials lists only absent Keychain items', () => {
   const nyt = renew.loginAdapterFor('nytimes');
   assert.deepEqual(renew.missingCredentials(nyt, { email: null }), ['email']);
   assert.deepEqual(renew.missingCredentials(nyt, { email: 'a@b.c' }), []);
-  assert.deepEqual(renew.missingCredentials(renew.loginAdapterFor('ft'), { email: 'a@b.c' }), ['password']);
+  assert.deepEqual(renew.missingCredentials(renew.loginAdapterFor('wapo'), { email: 'a@b.c' }), ['password']);
 });
 
 test('credentialGate: missing Keychain items alert once, stay stopped, and clear themselves once added', () => {
-  const ft = renew.loginAdapterFor('ft');
+  const ft = renew.loginAdapterFor('wapo'); // a password outlet
   const first = renew.credentialGate({}, ft, { email: null, password: null }, '2026-11-17T00:00:00Z');
   assert.equal(first.action, 'stop-new');
   assert.equal(first.state.needsHuman.code, 'creds-missing');
@@ -229,10 +251,10 @@ test('classifyWithControl: one anonymous full read is not enough to call the pro
 // A page whose login form is not there: every flow must report formMissing
 // (a needs-human stop) instead of throwing or "succeeding".
 function emptyPage() {
-  const gotos = [];
+  const gotos = []; const initScripts = [];
   const loc = { first: () => loc, count: async () => 0, fill: async () => {}, click: async () => {}, press: async () => {}, waitFor: async () => {} };
   return {
-    gotos,
+    gotos, initScripts,
     goto: async (u) => { gotos.push(u); },
     waitForTimeout: async () => {},
     waitForSelector: async () => { throw new Error('timeout'); },
@@ -241,6 +263,9 @@ function emptyPage() {
     locator: () => loc,
     getByRole: () => loc,
     getByText: () => loc,
+    getByLabel: () => loc,
+    frameLocator: () => { const f = { first: () => f, getByRole: () => loc }; return f; },
+    addInitScript: async () => { initScripts.push(1); },
     url: () => 'https://example.test/login',
     content: async () => '<html></html>',
     keyboard: { press: async () => {} },
@@ -358,4 +383,22 @@ test('standalone logins count toward the renew login ledger (device limit sees e
   assert.equal(s.nytimes.logins.length, 2);
   assert.deepEqual(s.wapo.logins, [], 'other outlets untouched');
   assert.equal(renew.decideLogin(s.nytimes, Date.now()).allowed, false, 'two logins in 7 days -> the next renew run escalates instead of logging in');
+});
+
+// gmail search prints oldest first; the poller must type the NEWEST code
+// (BRO-7705 review 2026-11-19: it took the first = oldest, a superseded code).
+test('pickNewestCode takes the newest message: subject first, then its body', () => {
+  const { pickNewestCode } = require('../../scripts/lib/otp-login-helpers.js');
+  const tg = renew.loginAdapterFor('telegraph').otp.codePattern;
+  const out = '2 match(es)\nuid=10 | Thu | Telegraph | 111111 is your verification code\nuid=11 | Thu | Telegraph | 222222 is your verification code';
+  assert.equal(pickNewestCode(out, tg, () => ''), '222222');
+  const ft = renew.loginAdapterFor('ft').otp.codePattern;
+  const reads = [];
+  const bodies = { 20: 'enter the following code on your FT screen: *333333*', 21: 'enter the following code on your FT screen: *444444*' };
+  const ftOut = 'uid=20 | Your FT.com access code\nuid=21 | Your FT.com access code';
+  assert.equal(pickNewestCode(ftOut, ft, (u) => { reads.push(u); return bodies[u]; }), '444444');
+  assert.deepEqual(reads, ['21'], 'reads the newest body first and stops');
+  const mixed = 'uid=30 | Your FT.com access code\nuid=31 | Your FT weekly digest';
+  assert.equal(pickNewestCode(mixed, ft, (u) => (u === '30' ? bodies[20] : 'news')), '333333');
+  assert.equal(pickNewestCode('no matches', ft, () => ''), null);
 });

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T16:49:30.448Z",
+  "timestamp": "2026-11-19T17:30:45.257Z",
   "stats": {
-    "totalReviews": 82930,
-    "alreadyFlagged": 22505,
+    "totalReviews": 83008,
+    "alreadyFlagged": 22517,
     "dateGuardCatches": 221,
-    "directorMismatch": 3787,
-    "tvFilmSignals": 2368,
-    "londonSignals": 3821,
-    "offBroadwaySignals": 772,
+    "directorMismatch": 3786,
+    "tvFilmSignals": 2369,
+    "londonSignals": 3822,
+    "offBroadwaySignals": 770,
     "yearMismatch": 386,
-    "noPublishDate": 8242
+    "noPublishDate": 8295
   },
   "findings": [
     {
@@ -5590,6 +5590,7 @@
     {
       "showId": "and-juliet-2022",
       "file": "the-interested-bystander--interested-bystander.json",
+      "score": 85,
       "publishDate": "2023-05-15",
       "url": "https://www.interestedbystander.com/2023/05/theater-review-two-romeo-and-juliets.html",
       "findings": [
@@ -11897,6 +11898,7 @@
     {
       "showId": "caroline-or-change-2021",
       "file": "frontmezzjunkies--ross.json",
+      "score": 90,
       "publishDate": "2021-11-12",
       "url": "https://frontmezzjunkies.com/2021/11/12/caroline-or-change-broadway/",
       "findings": [
@@ -24708,6 +24710,7 @@
     {
       "showId": "funny-girl-2022",
       "file": "thewrap--by-robert-hofler.json",
+      "score": 74,
       "publishDate": "2022-10-03",
       "url": "https://www.thewrap.com/funny-girl-broadway-review-lea-michele-brings-her-funny-lady-to-the-stage/",
       "findings": [
@@ -25508,7 +25511,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 85,
+      "score": 86,
       "publishDate": null,
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295?ico=more_from_this_author",
       "findings": [
@@ -27339,20 +27342,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "guys-and-dolls-2009",
-      "file": "nytimes--ben-brantley.json",
-      "score": 34,
-      "publishDate": "March 2, 2009",
-      "url": "https://www.nytimes.com/2009/03/02/theater/reviews/02guys.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from guys-and-dolls-1992"
         }
       ]
     },
@@ -31189,6 +31178,7 @@
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "newyorker--emily-nussbaum.json",
+      "score": 92,
       "publishDate": "2026-06-04",
       "url": "https://www.newyorker.com/magazine/2026/06/15/can-i-be-frank-theatre-review-heated-rivalry",
       "findings": [
@@ -41394,6 +41384,7 @@
     {
       "showId": "lights-out-nat-king-cole-off-broadway-2025",
       "file": "broadway-and-me--unknown.json",
+      "score": 44,
       "publishDate": "2025-05-24",
       "url": "https://broadwayandme.blogspot.com/2025/05/let-down-by-lights-out-nat-king-cole.html",
       "findings": [
@@ -43028,7 +43019,7 @@
       "showId": "master-class-2011",
       "file": "village-voice--michael-musto.json",
       "score": 74,
-      "publishDate": null,
+      "publishDate": "2011-07-07T19:42:32-04:00",
       "url": "https://blogs.villagevoice.com/dailymusto/2011/07/tyne_daly_in_ma.php",
       "findings": [
         {
@@ -48416,6 +48407,7 @@
     {
       "showId": "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025",
       "file": "nytimes--laura-collins-hughes.json",
+      "score": 75,
       "publishDate": "2025-10-14",
       "url": "https://www.nytimes.com/2025/10/14/theater/nothing-can-take-you-from-the-hand-of-god-review.html",
       "findings": [
@@ -66413,6 +66405,7 @@
     {
       "showId": "take-me-out-2022",
       "file": "the-interested-bystander--interested-bystander.json",
+      "score": 62,
       "publishDate": "2022-04-28",
       "url": "https://www.interestedbystander.com/2022/04/theater-reviews-to-my-girls-and-take-me.html",
       "findings": [
@@ -67019,6 +67012,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv\nshow\""
+        }
+      ]
+    },
+    {
+      "showId": "the-antiquities-off-broadway-2025",
+      "file": "broadway-and-me--unknown.json",
+      "publishDate": "2025-02-08",
+      "url": "https://broadwayandme.blogspot.com/2025/02/the-antiquities-is-superbly-up-to-date.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -68884,7 +68890,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "artsdesk--veronica-lee.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2025-05-15",
       "url": "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
       "findings": [
@@ -69282,7 +69288,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 75,
+      "score": 71,
       "publishDate": "2025-05-14",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-comedy-about-spies-review-inventive-humour-we-need-cd2nx6qlc",
       "findings": [
@@ -73492,6 +73498,7 @@
     {
       "showId": "the-invention-of-love-off-broadway-2026",
       "file": "broadway-and-me--unknown.json",
+      "score": 88,
       "publishDate": "2026-09-26",
       "url": "https://broadwayandme.blogspot.com/2026/09/falling-in-love-with-invention-of-love.html",
       "findings": [
@@ -84536,6 +84543,7 @@
     {
       "showId": "vanya-off-broadway-2025",
       "file": "exeunt-magazine--carol-rocamora.json",
+      "score": 87,
       "publishDate": "2025-03-30",
       "url": "https://exeuntnyc.com/reviews/review-vanya-at-the-lucille-lortel/",
       "findings": [
@@ -84746,6 +84754,7 @@
     {
       "showId": "vanya-off-broadway-2025",
       "file": "theatrely--juan-a-ramirez.json",
+      "score": 63,
       "publishDate": "2025-03-19",
       "url": "https://www.theatrely.com/post/andrew-scott-in-one-man-vanya-review",
       "findings": [
@@ -89474,7 +89483,7 @@
     {
       "showId": "4-48-psychosis-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 61,
+      "score": 60,
       "publishDate": "June 19th, 2025",
       "url": "https://www.theguardian.com/stage/2025/jun/19/448-psychosis-review-royal-court-theatre-london-sarah-kane-play",
       "findings": [
@@ -89502,7 +89511,7 @@
     {
       "showId": "4-48-psychosis-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 57,
+      "score": 61,
       "publishDate": "June 19th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/4-48-psychosis-royal-court-theatre-review-b1233744.html",
       "findings": [
@@ -98809,6 +98818,20 @@
       "score": 78,
       "publishDate": "2026-11-11",
       "url": "https://www.london-unattached.com/cloud-9-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "londonlivinglarge--unknown.json",
+      "score": 78,
+      "publishDate": "2026-11-11",
+      "url": "https://www.londonlivinglarge.com/2026/11/cloud-9-national-theatre-nov-2-2026-jan.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -122383,7 +122406,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 97,
+      "score": 95,
       "publishDate": "2025-01-15",
       "url": "https://www.broadwayworld.com/westend/article/Review-OLIVER-Gielgud-Theatre-20250115",
       "findings": [
@@ -122410,7 +122433,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "city-am--adam-bloodworth.json",
-      "score": 98,
+      "score": 99,
       "publishDate": null,
       "url": "https://www.cityam.com/oliver-london-musical-review-please-sir-give-me-more-of-this-five-star-hit/",
       "findings": [
@@ -122499,7 +122522,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "January 15th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [
@@ -122569,7 +122592,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "theatre-weekly--unknown.json",
-      "score": 95,
+      "score": 96,
       "publishDate": null,
       "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
       "findings": [
@@ -126426,34 +126449,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-2013",
-      "file": "vulture--jesse-green.json",
-      "score": 52,
-      "publishDate": "September 20, 2013",
-      "url": "https://www.vulture.com/2013/09/theater-review-romeo-and-juliet.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-2013",
-      "file": "vulture--scott-brown.json",
-      "score": 42,
-      "publishDate": "September 20, 2013",
-      "url": "https://www.vulture.com/2013/09/theater-review-romeo-and-juliet.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
@@ -141331,6 +141326,7 @@
     {
       "showId": "the-sign-in-sidney-brusteins-window-2023",
       "file": "the-interested-bystander--interested-bystander.json",
+      "score": 65,
       "publishDate": "2023-06-13",
       "url": "https://www.interestedbystander.com/2023/06/theater-review-nostalgia-is-tarnished.html",
       "findings": [
@@ -141344,6 +141340,7 @@
     {
       "showId": "the-sign-in-sidney-brusteins-window-2023",
       "file": "theatrely--joey-sims.json",
+      "score": 78,
       "publishDate": "2023-05-09",
       "url": "https://www.theatrely.com/post/the-sign-in-sidney-brusteins-window-and-how-to-handle-a-revival-review",
       "findings": [
