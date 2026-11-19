@@ -418844,5 +418844,51 @@
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-18T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-19T04:25:21.224Z",
+    "completedAt": "2026-11-19T04:25:21.654Z",
+    "totalReviews": 6,
+    "processed": 0,
+    "skipped": 5,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "44457827601",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "the-wash-regional-2026",
+        "outletId": "boston-globe",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ],
+    "logKeepsSince": "2026-11-18T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-19T04:25:23.902Z",
+    "completedAt": "2026-11-19T04:25:23.904Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "44457827601",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-18T00:00:00.000Z"
   }
 ]
