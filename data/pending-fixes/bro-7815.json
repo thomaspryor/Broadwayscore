@@ -1,0 +1,99 @@
+{
+  "issueNumber": "bro-7815",
+  "planId": "eb074f21-c356-464d-9f5d-7ca57ff6d957",
+  "status": "pending",
+  "createdAt": "2026-11-19T06:37:11.572Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear 9 stale cross-show URL wrongProduction flags: the review texts describe the 2016 Broadway Les Liaisons Dangereuses (Booth, McTeer/Schreiber) and the Broadway Beautiful (Stephen Sondheim, 2018 revisits), not the West End productions a URL sweep moved them to",
+    "steps": [
+      "beautiful-the-carole-king-musical-2014/nysr--melissa-rose-bernardo.json: wrongProduction",
+      "beautiful-the-carole-king-musical-2014/nysr--michael-sommers.json: wrongProduction",
+      "les-liaisons-dangereuses-2016/city-cabaret--elizabeth-ahlfors.json: wrongProduction",
+      "les-liaisons-dangereuses-2016/plays-to-see--paul-meltzer.json: wrongProduction",
+      "les-liaisons-dangereuses-2016/theater-pizzazz--jk-clarke.json: wrongProduction",
+      "les-liaisons-dangereuses-2016/stagezine--david-nounou.json: wrongProduction",
+      "les-liaisons-dangereuses-2016/philadelphia-inquirer--toby-zinman.json: wrongProduction",
+      "les-liaisons-dangereuses-2016/wnyc--jennifer-vanasco.json: wrongProduction",
+      "les-liaisons-dangereuses-2016/theater-scene--julia-polinsky.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "beautiful-the-carole-king-musical-2014/nysr--melissa-rose-bernardo.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "beautiful-the-carole-king-musical-2014/nysr--melissa-rose-bernardo.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beautiful-the-carole-king-musical-2014/nysr--michael-sommers.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "beautiful-the-carole-king-musical-2014/nysr--michael-sommers.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/city-cabaret--elizabeth-ahlfors.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "les-liaisons-dangereuses-2016/city-cabaret--elizabeth-ahlfors.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/plays-to-see--paul-meltzer.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "les-liaisons-dangereuses-2016/plays-to-see--paul-meltzer.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/theater-pizzazz--jk-clarke.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "les-liaisons-dangereuses-2016/theater-pizzazz--jk-clarke.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/stagezine--david-nounou.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "les-liaisons-dangereuses-2016/stagezine--david-nounou.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/philadelphia-inquirer--toby-zinman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "les-liaisons-dangereuses-2016/philadelphia-inquirer--toby-zinman.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/wnyc--jennifer-vanasco.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "les-liaisons-dangereuses-2016/wnyc--jennifer-vanasco.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/theater-scene--julia-polinsky.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "les-liaisons-dangereuses-2016/theater-scene--julia-polinsky.json: wrongProduction"
+      }
+    ]
+  }
+}

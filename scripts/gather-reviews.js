@@ -76,7 +76,7 @@ const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { shouldTakeUrlOwnership, existingCopyYieldsUrl } = require('./lib/url-cross-production');
+const { shouldTakeUrlOwnership, existingCopyYieldsUrl, extractYear, showRunYears, sameShowTitle } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { incomingCrossProductionReason, crossProductionMergeRefusal } = require('./lib/merge-date-guard');
@@ -340,6 +340,19 @@ function getShowYearMap() {
     }
   } catch {}
   return _showYearMap;
+}
+
+// showId → shows.json entry (title, openingDate, closingDate) for the
+// cross-production URL ownership check (BRO-7815).
+let _showByIdMap = null;
+function getShowByIdMap() {
+  if (_showByIdMap) return _showByIdMap;
+  _showByIdMap = {};
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    for (const s of (showsData.shows || showsData)) if (s && s.id) _showByIdMap[s.id] = s;
+  } catch {}
+  return _showByIdMap;
 }
 
 // Global URL index for cross-production duplicate prevention
@@ -3615,8 +3628,21 @@ function createReviewFile(showId, reviewData, options = {}) {
         // tie) handed the URL to the *newer* production and flagged the older
         // copy wrongProduction — silently suppressing legitimate older reviews
         // when a same-title revival appeared. See scripts/lib/url-cross-production.js.
+        // BRO-7815: also require the same title, compare against each
+        // production's run (a long run owns reviews written while it played),
+        // and let the incumbent copy's own publishDate veto the move.
+        let existingReviewYear = null;
+        try {
+          const ex = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file), 'utf8'));
+          existingReviewYear = extractYear(ex.publishDate);
+        } catch (e) { /* unreadable: no veto */ }
+        const showById = getShowByIdMap();
         const thisShowIsCorrect = shouldTakeUrlOwnership({
           reviewYear, thisYear: myYear, existingYear,
+          thisRun: showRunYears(showById[showId]),
+          existingRun: showRunYears(showById[existing.showId]),
+          sameTitle: sameShowTitle(showById[showId], showById[existing.showId]) ?? undefined,
+          existingReviewYear,
         });
 
         if (thisShowIsCorrect) {

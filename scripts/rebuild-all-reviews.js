@@ -78,6 +78,7 @@ const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
 const { regionalVenueMismatch } = require('./lib/regional-venue-mismatch');
+const { otherFitsReviewYearBetter, showRunYears } = require('./lib/url-cross-production');
 const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isRefusedSubmissionUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -4103,10 +4104,16 @@ showDirs.forEach(showId => {
             if (m) reviewYear = parseInt(m[1]);
           }
           if (reviewYear && myYear) {
-            const myDist = Math.abs(myYear - reviewYear);
+            // BRO-7815: a long run owns the reviews written while it played
+            // (Broadway Beautiful 2014-2019 keeps a 2018 revisit; the 2015 West
+            // End transfer does not). Opening-year distance breaks ties.
+            // A combined review or roundup legitimately sits under several
+            // shows; it keeps the opening-year rule, not the run comparison.
+            const multiShowArticle = data.isCombinedReview === true || data.isRoundupArticle === true;
+            const myFit = { openYear: myYear, run: multiShowArticle ? null : showRunYears(showById[showId]) };
             for (const other of allCopies) {
               if (other.showId === showId || !other.showYear) continue;
-              if (Math.abs(other.showYear - reviewYear) < myDist) {
+              if (otherFitsReviewYearBetter(reviewYear, myFit, { openYear: other.showYear, run: multiShowArticle ? null : showRunYears(showById[other.showId]) })) {
                 if (shouldSkipCrossShowUrlFlag(data)) continue; // [GUARD:CROSS-SHOW-URL-DATED] honors manual-clear + CV-verified-correct
                 console.log(`  [CROSS-SHOW URL] ${showId}/${file}: URL year ${reviewYear} closer to ${other.showId} (${other.showYear}) than ${showId} (${myYear})`);
                 logExclusion("skippedCrossShowUrl", showId, file, data);
