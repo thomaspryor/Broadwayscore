@@ -701,15 +701,15 @@ jobs:
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
 
-      # BRO-7803: publish the hot shows' score payloads to the public live-scores
-      # bucket so show pages overlay them within ~a minute, ahead of the Next build +
-      # Vercel deploy (which still runs below and supersedes the overlay). Placed AFTER
-      # the push of core data and the deploy dispatch, so a payload is never public
-      # before its data is committed and the deploy dispatch is never delayed. Advisory
-      # (continue-on-error): a failure leaves the static pages exactly as the normal
-      # deploy will build them. Kill switch without a deploy:
-      #   npx tsx scripts/publish-live-scores.ts --kill   (writes kill.json)
       - name: Publish live score payloads (BRO-7803)
+        # BRO-7803: publish the hot shows' score payloads to the public live-scores
+        # bucket so show pages overlay them within ~a minute, ahead of the Next build +
+        # Vercel deploy (which still runs below and supersedes the overlay). Placed AFTER
+        # the push of core data and the deploy dispatch, so a payload is never public
+        # before its data is committed and the deploy dispatch is never delayed. Advisory
+        # (continue-on-error): a failure leaves the static pages exactly as the normal
+        # deploy will build them. Kill switch without a deploy:
+        #   npx tsx scripts/publish-live-scores.ts --kill   (writes kill.json)
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true' && steps.push-core-data.outcome == 'success'
         timeout-minutes: 3
         env:
