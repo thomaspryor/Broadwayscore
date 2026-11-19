@@ -1,21 +1,49 @@
 {
-  "updatedAt": "2026-11-19T14:32:04.613Z",
-  "processed": 78,
-  "failed": 10,
-  "successRate": "88.6%",
+  "updatedAt": "2026-11-19T14:55:10.164Z",
+  "processed": 150,
+  "failed": 103,
+  "successRate": "59.3%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 85,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 7,
+    "scrapingdog": 20,
+    "scrapingbee": 14,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 16
+    "archive": 32
   },
   "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-11-19T12:56:17.311Z",
+      "event": "bb-session",
+      "session": "73229e09",
+      "url": "https://deadline.com/2026/11/broadway-box-office-much-ado-about-nothing-billy-cr"
+    },
+    {
+      "t": "2026-11-19T12:58:31.413Z",
+      "event": "bb-session",
+      "session": "b2b97ee6",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-19T12:58:31.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T12:58:48.534Z",
+      "event": "bb-session",
+      "session": "ecb7fe9f",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-19T12:58:48.955Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-11-19T13:00:33.593Z",
       "event": "bb-session",
@@ -46,83 +74,6 @@
     },
     {
       "t": "2026-11-19T13:03:39.282Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T14:10:13.107Z",
-      "event": "bb-session",
-      "session": "ef6dfdd6",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-19T14:10:13.566Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T14:10:30.178Z",
-      "event": "bb-session",
-      "session": "4327354c",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-19T14:10:30.588Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T14:11:28.494Z",
-      "event": "bb-session",
-      "session": "62cb6c1c",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-19T14:11:28.980Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T14:11:46.176Z",
-      "event": "bb-session",
-      "session": "c8dacad5",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-19T14:11:46.565Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T14:13:18.927Z",
-      "event": "bb-session",
-      "session": "56ec4f41",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-19T14:13:19.381Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T14:13:26.517Z",
-      "event": "bb-session",
-      "session": "fce8d12f",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway.html?"
-    },
-    {
-      "t": "2026-11-19T14:13:26.942Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T14:13:35.947Z",
-      "event": "bb-session",
-      "session": "d2edd673",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-19T14:13:36.357Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
