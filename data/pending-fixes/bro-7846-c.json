@@ -1,0 +1,410 @@
+{
+  "issueNumber": "bro-7846-c",
+  "planId": "dea1de68-82e1-442a-acc2-9c6bfc977668",
+  "status": "pending",
+  "createdAt": "2026-11-19T15:25:48.381Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7846: clear TodayTix catalogue art of other productions from 56 closed rows and 3 tours that borrow their banners. 27 rows had their TodayTix poster/thumbnail rejected by the BRO-5089 sweep while the hero from the same catalogue match stayed (follies-2011 kept the 2017 NT Live Follies banner); the rest closed before TodayTix sold tickets (Sept 2013), so TodayTix art on them is another production or another show (grease-2007: an anti-vaping campaign, rain-2010: a Brian Lehrer talk). Every field was looked at by eye. Four thumbnail files on disk predate their TodayTix record and are the right art (follies-2011 2011 cast photo, wonderland-2011, grey-gardens-2006, well-2006): kept, sources recorded as manual in image-sources.json. Sources are added to rejectedImageUrls so the disk fallback and fetcher cannot put them back. No noReliableArt marker: the verified pipeline may refill. (part 3 of 5)",
+    "steps": [
+      "race-2009: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "race-2009: never re-take this art source (BRO-7846)",
+      "next-to-normal-2009: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "next-to-normal-2009: never re-take this art source (BRO-7846)",
+      "a-man-for-all-seasons-2008: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "a-man-for-all-seasons-2008: never re-take this art source (BRO-7846)",
+      "cirque-dreams-2008: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "cirque-dreams-2008: never re-take this art source (BRO-7846)",
+      "in-the-heights-2008: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "in-the-heights-2008: never re-take this art source (BRO-7846)",
+      "the-little-mermaid-2008: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "the-little-mermaid-2008: never re-take this art source (BRO-7846)",
+      "the-seafarer-2007: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "the-seafarer-2007: never re-take this art source (BRO-7846)",
+      "a-bronx-tale-2007: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "a-bronx-tale-2007: never re-take this art source (BRO-7846)",
+      "grease-2007: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "grease-2007: never re-take this art source (BRO-7846)",
+      "legally-blonde-2007: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "legally-blonde-2007: never re-take this art source (BRO-7846)",
+      "mary-poppins-2006: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "mary-poppins-2006: never re-take this art source (BRO-7846)",
+      "grey-gardens-2006: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846). Thumbnail kept: original 2006 Broadway art (Ebersole, Wilson).",
+      "grey-gardens-2006: never re-take this art source (BRO-7846)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "race-2009",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/race-2009/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "race-2009: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "race-2009",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7gxdkDm8dk1ZVJ6jbvZZ1W/45d053131efe721c9004164e3272e04a/West_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1BgNx5qcx796pqFIPMUC3d/efbdd5c0ea15a682c94c68d4aebe2c8a/West_TodayTix_1080x1080_carousel.png?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7gxdkDm8dk1ZVJ6jbvZZ1W/45d053131efe721c9004164e3272e04a/West_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1BgNx5qcx796pqFIPMUC3d/efbdd5c0ea15a682c94c68d4aebe2c8a/West_TodayTix_1080x1080_carousel.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3NU7KfZ6G2pdudGbtKS9AX/5934fb4beadef7ed6e9c632474b23ea2/West_TodayTix_1440x580.png?fm=webp&q=90"
+        ],
+        "description": "race-2009: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "next-to-normal-2009",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/next-to-normal-2009/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "next-to-normal-2009: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "next-to-normal-2009",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3f7Ko23f37fBgjZfPnCBqd/bac9f813997553327342ed87c413d197/Next_to_Normal_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3f7Ko23f37fBgjZfPnCBqd/bac9f813997553327342ed87c413d197/Next_to_Normal_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3f7Ko23f37fBgjZfPnCBqd/bac9f813997553327342ed87c413d197/Next_to_Normal_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3f7Ko23f37fBgjZfPnCBqd/bac9f813997553327342ed87c413d197/Next_to_Normal_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/HTmovrpqaow6Jo0PNeRID/e1b514e91e64dcffe4bab5f76837de93/Next_to_Normal_TodayTix_1600x1200.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "next-to-normal-2009: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-man-for-all-seasons-2008",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-man-for-all-seasons-2008/hero.webp",
+          "thumbnail": "/images/shows/a-man-for-all-seasons-2008/thumbnail.webp",
+          "poster": "/images/shows/a-man-for-all-seasons-2008/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-man-for-all-seasons-2008: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-man-for-all-seasons-2008",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6svVJ1ZtYCNbuoZ39Ax09h/24f237ee5206a1d587516b56db769927/1544646514670_480x720__282_29.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6svVJ1ZtYCNbuoZ39Ax09h/24f237ee5206a1d587516b56db769927/1544646514670_480x720__282_29.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6svVJ1ZtYCNbuoZ39Ax09h/24f237ee5206a1d587516b56db769927/1544646514670_480x720__282_29.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-man-for-all-seasons-2008: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cirque-dreams-2008",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/cirque-dreams-2008/hero.webp",
+          "thumbnail": "/images/shows/cirque-dreams-2008/thumbnail.webp",
+          "poster": "/images/shows/cirque-dreams-2008/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "cirque-dreams-2008: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cirque-dreams-2008",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/35SNxVHmk1avo3xoEnoJ2y/0d63f8e57ef75287f74311b0458e1807/CirqueDreamsPoster-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/35SNxVHmk1avo3xoEnoJ2y/0d63f8e57ef75287f74311b0458e1807/CirqueDreamsPoster-480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4mYpJRMAB7df34UsHF3pEF/03caf76a832dca4f1f4ce447917c5a80/CirqueHeader-1600x1200.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "cirque-dreams-2008: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-the-heights-2008",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/in-the-heights-2008/thumbnail.jpg",
+          "poster": "/images/shows/in-the-heights-2008/poster.jpg",
+          "hero": "/images/shows/in-the-heights-2008/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/in-the-heights-2008/thumbnail.jpg",
+          "poster": "/images/shows/in-the-heights-2008/poster.jpg",
+          "hero": null
+        },
+        "description": "in-the-heights-2008: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-the-heights-2008",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7hvQRaxcA0JHdG4m13yyTS/a1dddd5d5c5b07a2a3ec49178fc9e86b/ITH_TodayTix_Poster_Image__480x720_.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "in-the-heights-2008: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-mermaid-2008",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-little-mermaid-2008/hero.webp",
+          "thumbnail": "/images/shows/the-little-mermaid-2008/thumbnail.webp",
+          "poster": "/images/shows/the-little-mermaid-2008/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "the-little-mermaid-2008: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-mermaid-2008",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/48rViIbk8IprOKAtgtF9Sb/4f4453e7b7f33956706db3329861d58f/LM_Poster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/48rViIbk8IprOKAtgtF9Sb/4f4453e7b7f33956706db3329861d58f/LM_Poster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7e9t9Po3TQQd5HEBU5aHcE/c8fe4ba923f983620d53b7cc448cf4ba/Disney-s_Little_Mermaid_Header.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-little-mermaid-2008: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-seafarer-2007",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-seafarer-2007/hero.webp",
+          "thumbnail": "/images/shows/the-seafarer-2007/thumbnail.webp",
+          "poster": "/images/shows/the-seafarer-2007/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "the-seafarer-2007: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-seafarer-2007",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7FkVMpjFIActZvFzSxeHqr/12411a51137c80d9d606f5827bc91e72/1522615640493_Poster-2__281_29.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7FkVMpjFIActZvFzSxeHqr/12411a51137c80d9d606f5827bc91e72/1522615640493_Poster-2__281_29.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7FkVMpjFIActZvFzSxeHqr/12411a51137c80d9d606f5827bc91e72/1522615640493_Poster-2__281_29.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-seafarer-2007: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-bronx-tale-2007",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-bronx-tale-2007/hero.webp",
+          "thumbnail": "/images/shows/a-bronx-tale-2007/thumbnail.jpg",
+          "poster": "/images/shows/a-bronx-tale-2007/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": "/images/shows/a-bronx-tale-2007/thumbnail.jpg",
+          "poster": null
+        },
+        "description": "a-bronx-tale-2007: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-bronx-tale-2007",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4JDpCd0g9uplyF8yOqtFyz/39412c801bea72ef4b08c689cd7c9c21/1527870298887_BXT_P727_TodayTix_Poster_L1.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4JDpCd0g9uplyF8yOqtFyz/39412c801bea72ef4b08c689cd7c9c21/1527870298887_BXT_P727_TodayTix_Poster_L1.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-bronx-tale-2007: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grease-2007",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/grease-2007/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "grease-2007: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grease-2007",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/VENurjGRKqaezF3p8EqBc/7f1a520cbfe5091953caf176a18c8439/Vape_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/VENurjGRKqaezF3p8EqBc/7f1a520cbfe5091953caf176a18c8439/Vape_480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/VENurjGRKqaezF3p8EqBc/7f1a520cbfe5091953caf176a18c8439/Vape_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/VENurjGRKqaezF3p8EqBc/7f1a520cbfe5091953caf176a18c8439/Vape_480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/76dNggYIBGd0T2b5dyA9El/3d5980cb1656e546aa201093a003b666/Vape_1600x1200V5.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "grease-2007: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legally-blonde-2007",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/legally-blonde-2007/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "legally-blonde-2007: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legally-blonde-2007",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5eBrB0QNf1siu96m2Bnkyi/d97d3838bb95b2ea01f11f17e6e51075/TT-poster-ActorTherapySingsLegallyBlonde.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5eBrB0QNf1siu96m2Bnkyi/d97d3838bb95b2ea01f11f17e6e51075/TT-poster-ActorTherapySingsLegallyBlonde.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5eBrB0QNf1siu96m2Bnkyi/d97d3838bb95b2ea01f11f17e6e51075/TT-poster-ActorTherapySingsLegallyBlonde.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5eBrB0QNf1siu96m2Bnkyi/d97d3838bb95b2ea01f11f17e6e51075/TT-poster-ActorTherapySingsLegallyBlonde.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5tNKAN3xn6Y8oJXRz67myU/5ad82ad5c5f4fe06021c96b6c8cb169f/TT-production-ActorTherapySingsLegallyBlonde.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "legally-blonde-2007: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mary-poppins-2006",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/mary-poppins-2006/hero.webp",
+          "thumbnail": "/images/shows/mary-poppins-2006/thumbnail.webp",
+          "poster": "/images/shows/mary-poppins-2006/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "mary-poppins-2006: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mary-poppins-2006",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4IxsgiY8zSwtBTNUuIbz0W/01514aa610611c5e9a67168f157a3262/Mary_Poppins_Poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4IxsgiY8zSwtBTNUuIbz0W/01514aa610611c5e9a67168f157a3262/Mary_Poppins_Poster.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4IxsgiY8zSwtBTNUuIbz0W/01514aa610611c5e9a67168f157a3262/Mary_Poppins_Poster.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "mary-poppins-2006: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grey-gardens-2006",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/grey-gardens-2006/thumbnail.jpg",
+          "poster": "/images/shows/grey-gardens-2006/poster.webp",
+          "hero": "/images/shows/grey-gardens-2006/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/grey-gardens-2006/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "grey-gardens-2006: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846). Thumbnail kept: original 2006 Broadway art (Ebersole, Wilson)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grey-gardens-2006",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4qwYihH9Q9HwGWMAnSkl8Y/928fd1a1278effa3cbff8f8862f30a3a/poster-image.jpeg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3NEbrn9kRFOvr9ZUElS1ZU/5d8ed8a8b0d93a87fc06d1f85cc17a23/header-image.jpeg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "grey-gardens-2006: never re-take this art source (BRO-7846)"
+      }
+    ]
+  }
+}

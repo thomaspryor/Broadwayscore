@@ -1,0 +1,411 @@
+{
+  "issueNumber": "bro-7846-d",
+  "planId": "0cfde9c0-a2ae-4a0c-a268-07614baedff2",
+  "status": "pending",
+  "createdAt": "2026-11-19T15:25:48.381Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7846: clear TodayTix catalogue art of other productions from 56 closed rows and 3 tours that borrow their banners. 27 rows had their TodayTix poster/thumbnail rejected by the BRO-5089 sweep while the hero from the same catalogue match stayed (follies-2011 kept the 2017 NT Live Follies banner); the rest closed before TodayTix sold tickets (Sept 2013), so TodayTix art on them is another production or another show (grease-2007: an anti-vaping campaign, rain-2010: a Brian Lehrer talk). Every field was looked at by eye. Four thumbnail files on disk predate their TodayTix record and are the right art (follies-2011 2011 cast photo, wonderland-2011, grey-gardens-2006, well-2006): kept, sources recorded as manual in image-sources.json. Sources are added to rejectedImageUrls so the disk fallback and fetcher cannot put them back. No noReliableArt marker: the verified pipeline may refill. (part 4 of 5)",
+    "steps": [
+      "a-chorus-line-2006: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "a-chorus-line-2006: never re-take this art source (BRO-7846)",
+      "shining-city-2006: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "shining-city-2006: never re-take this art source (BRO-7846)",
+      "awake-and-sing-2006: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "awake-and-sing-2006: never re-take this art source (BRO-7846)",
+      "well-2006: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846). Thumbnail kept: 2006 Longacre Theatre Playbill.",
+      "well-2006: never re-take this art source (BRO-7846)",
+      "rabbit-hole-2006: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "rabbit-hole-2006: never re-take this art source (BRO-7846)",
+      "avenue-q-2003: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "avenue-q-2003: never re-take this art source (BRO-7846)",
+      "la-boheme-2002: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "la-boheme-2002: never re-take this art source (BRO-7846)",
+      "tartuffe-2003: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "tartuffe-2003: never re-take this art source (BRO-7846)",
+      "high-society-1998: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "high-society-1998: never re-take this art source (BRO-7846)",
+      "a-funny-thing-happened-on-the-way-to-the-forum-1996: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "a-funny-thing-happened-on-the-way-to-the-forum-1996: never re-take this art source (BRO-7846)",
+      "show-boat-1994: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "show-boat-1994: never re-take this art source (BRO-7846)",
+      "joseph-and-the-amazing-technicolor-dreamcoat-1993: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "joseph-and-the-amazing-technicolor-dreamcoat-1993: never re-take this art source (BRO-7846)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-chorus-line-2006",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-chorus-line-2006/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-chorus-line-2006: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-chorus-line-2006",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5VcyoEJBFYFwmufmzKF7Z7/bdac1f1d736defeab524a70ec6b3cb48/ACL-Assets-TodayTix-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5VcyoEJBFYFwmufmzKF7Z7/bdac1f1d736defeab524a70ec6b3cb48/ACL-Assets-TodayTix-480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5VcyoEJBFYFwmufmzKF7Z7/bdac1f1d736defeab524a70ec6b3cb48/ACL-Assets-TodayTix-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5VcyoEJBFYFwmufmzKF7Z7/bdac1f1d736defeab524a70ec6b3cb48/ACL-Assets-TodayTix-480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3qQJbbfyZbkhkaVGkq2ZHI/132d2ceb583da280ca4147fa69d07ce9/ACL-Assets-TodayTix-1600x1200.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-chorus-line-2006: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shining-city-2006",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/shining-city-2006/hero.webp",
+          "thumbnail": "/images/shows/shining-city-2006/thumbnail.webp",
+          "poster": "/images/shows/shining-city-2006/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "shining-city-2006: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shining-city-2006",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3QUum79SnbTe4VDAb1cU3f/168c12bc98c5e92849d5e46463dcb3a7/EditedShiningPoster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3QUum79SnbTe4VDAb1cU3f/168c12bc98c5e92849d5e46463dcb3a7/EditedShiningPoster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3QUum79SnbTe4VDAb1cU3f/168c12bc98c5e92849d5e46463dcb3a7/EditedShiningPoster.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "shining-city-2006: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "awake-and-sing-2006",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/awake-and-sing-2006/hero.webp",
+          "thumbnail": "/images/shows/awake-and-sing-2006/thumbnail.webp",
+          "poster": "/images/shows/awake-and-sing-2006/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "awake-and-sing-2006: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "awake-and-sing-2006",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7LehIyZtWE8PikTcHW5wAK/a8e849ad793c563c7ede74e3bd3b9969/AS-TodayTix-1600x1200-Header.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7LehIyZtWE8PikTcHW5wAK/a8e849ad793c563c7ede74e3bd3b9969/AS-TodayTix-1600x1200-Header.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7LehIyZtWE8PikTcHW5wAK/a8e849ad793c563c7ede74e3bd3b9969/AS-TodayTix-1600x1200-Header.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "awake-and-sing-2006: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "well-2006",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/well-2006/thumbnail.jpg",
+          "poster": "/images/shows/well-2006/poster.webp",
+          "hero": "/images/shows/well-2006/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/well-2006/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "well-2006: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846). Thumbnail kept: 2006 Longacre Theatre Playbill."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "well-2006",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1Wd7c6Pyv5Bl8rV8Ayxc9L/46a5cb76c266b64c784cfedea76b62ef/TTG_X_Poster_-_480px_x_720px.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4nB3m9sy2xQNYqXft4lCse/778e87029394b74d83080ce865235915/TTG_X_Header_Image_-_1600_x_1200.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "well-2006: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rabbit-hole-2006",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/rabbit-hole-2006/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "rabbit-hole-2006: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rabbit-hole-2006",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1pasyJWADlprqvWTLOOoIc/1aabee089c528bb843313ecfd562ce90/RadioLab_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1pasyJWADlprqvWTLOOoIc/1aabee089c528bb843313ecfd562ce90/RadioLab_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1pasyJWADlprqvWTLOOoIc/1aabee089c528bb843313ecfd562ce90/RadioLab_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1pasyJWADlprqvWTLOOoIc/1aabee089c528bb843313ecfd562ce90/RadioLab_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6rtZTsoxTCdv1Z01zv8VfV/288692bfa20c021563d598c1359ac410/RadioLab_TodayTix_1600x1200.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "rabbit-hole-2006: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "avenue-q-2003",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/avenue-q-2003/hero.webp",
+          "thumbnail": "/images/shows/avenue-q-2003/thumbnail.webp",
+          "poster": "/images/shows/avenue-q-2003/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "avenue-q-2003: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "avenue-q-2003",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4198NoYGRKqsNNiS1O1Dgx/71cac8039f2a755645fff775a1576d20/prod_1551978163135_AvenuePoster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4198NoYGRKqsNNiS1O1Dgx/71cac8039f2a755645fff775a1576d20/prod_1551978163135_AvenuePoster.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3kzWK0PFduIh1ynFvNG1rz/deef69a368158c96fa889e964753c0b1/1510096569568_171107_AveQ_TodayTix_1600x1200_BL1.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "avenue-q-2003: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-2002",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/la-boheme-2002/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "la-boheme-2002: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-2002",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/18dhTa5quQyTnbrRqjB8Bz/c0cae5f0d4555a6f73339e44d2b394db/TodayTix_2526_Imagery_Boheme_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3qw5kid1wU4o8pNSgQQRP4/bea297e4fe63039597bf131ec4c8d8ee/TodayTix_2526_Imagery_Boheme_1080x1080_Social.jpg?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/18dhTa5quQyTnbrRqjB8Bz/c0cae5f0d4555a6f73339e44d2b394db/TodayTix_2526_Imagery_Boheme_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3qw5kid1wU4o8pNSgQQRP4/bea297e4fe63039597bf131ec4c8d8ee/TodayTix_2526_Imagery_Boheme_1080x1080_Social.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7zqiS1yxc2LFQcAohfbZRj/008eeaafc0fc79f915fa69bd5c12ecf2/TodayTix_2526_Imagery_Boheme_1440x580.jpg?fm=webp&q=90"
+        ],
+        "description": "la-boheme-2002: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tartuffe-2003",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/tartuffe-2003/hero.webp",
+          "thumbnail": "/images/shows/tartuffe-2003/thumbnail.webp",
+          "poster": "/images/shows/tartuffe-2003/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "tartuffe-2003: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tartuffe-2003",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/51ZVHtApM7hxcQfsDhLNGC/dbeef1489584f71711fb5ad9ff06844c/Tartuffe-TodayTix-Poster-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/51ZVHtApM7hxcQfsDhLNGC/dbeef1489584f71711fb5ad9ff06844c/Tartuffe-TodayTix-Poster-480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/51ZVHtApM7hxcQfsDhLNGC/dbeef1489584f71711fb5ad9ff06844c/Tartuffe-TodayTix-Poster-480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "tartuffe-2003: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-society-1998",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/high-society-1998/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "high-society-1998: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-society-1998",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5D7e6KpTS8SjbuAtsOwtdw/3bb56a5126bcf6c1eb20e8a5895f64ef/HS_TODAYTIX_ON_SALE_ASSETS_DEC25_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/hBtJRvKmdMzLnfzCav0YL/34c8186d4ee1017bdbab8adb1ac687df/HS_TODAYTIX_ON_SALE_ASSETS_DEC25_1080x1080.jpg?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5D7e6KpTS8SjbuAtsOwtdw/3bb56a5126bcf6c1eb20e8a5895f64ef/HS_TODAYTIX_ON_SALE_ASSETS_DEC25_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/hBtJRvKmdMzLnfzCav0YL/34c8186d4ee1017bdbab8adb1ac687df/HS_TODAYTIX_ON_SALE_ASSETS_DEC25_1080x1080.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/42oFjjVFZSoFPj3hQGkTQV/f0f3df31886ca5a73903f662d5647247/HS_TODAYTIX_ON_SALE_ASSETS_DEC25_1440x580.jpg?fm=webp&q=90"
+        ],
+        "description": "high-society-1998: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-funny-thing-happened-on-the-way-to-the-forum-1996",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-funny-thing-happened-on-the-way-to-the-forum-1996/hero.webp",
+          "thumbnail": "/images/shows/a-funny-thing-happened-on-the-way-to-the-forum-1996/thumbnail.webp",
+          "poster": "/images/shows/a-funny-thing-happened-on-the-way-to-the-forum-1996/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-funny-thing-happened-on-the-way-to-the-forum-1996: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-funny-thing-happened-on-the-way-to-the-forum-1996",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4jCkLxR2uWPjOYefzj0I00/7e41b4231fde788ee60860e721d2d08c/1509400149531_ForumPoster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4jCkLxR2uWPjOYefzj0I00/7e41b4231fde788ee60860e721d2d08c/1509400149531_ForumPoster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4jCkLxR2uWPjOYefzj0I00/7e41b4231fde788ee60860e721d2d08c/1509400149531_ForumPoster.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-funny-thing-happened-on-the-way-to-the-forum-1996: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "show-boat-1994",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/show-boat-1994/hero.webp",
+          "thumbnail": "/images/shows/show-boat-1994/thumbnail.webp",
+          "poster": "/images/shows/show-boat-1994/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": "/images/shows/show-boat-1994/thumbnail.webp",
+          "poster": null
+        },
+        "description": "show-boat-1994: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "show-boat-1994",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/PkTSaMT9imdRXU72VXiQr/d82fd59dc3ecc3eb75bd95e25cdf0534/TodayTix_Hero_Poster_Artwork__480_x_720_.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1qkpptNwh0UIMICs8LOM9D/f87215e190ac267397f55bd2e6a83e80/TodayTix_Production_Images__1600_x_1200_px_.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "show-boat-1994: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joseph-and-the-amazing-technicolor-dreamcoat-1993",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-1993/hero.webp",
+          "thumbnail": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-1993/thumbnail.webp",
+          "poster": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-1993/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-1993/thumbnail.webp",
+          "poster": null
+        },
+        "description": "joseph-and-the-amazing-technicolor-dreamcoat-1993: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joseph-and-the-amazing-technicolor-dreamcoat-1993",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4wNqY2oGAQnnYlYHxgi833/c6baa0e2fedacf31f4a81ab46279e1de/Joseph_PosterImage_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5ckaYbO77elM44wEDkz2ri/571919610cbcbe4c5f4892404152c3a2/joseph_header.jpeg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "joseph-and-the-amazing-technicolor-dreamcoat-1993: never re-take this art source (BRO-7846)"
+      }
+    ]
+  }
+}

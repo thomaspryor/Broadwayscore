@@ -1,0 +1,435 @@
+{
+  "issueNumber": "bro-7846",
+  "planId": "3e6559c5-e2e8-4005-b9af-f6a26a686c1c",
+  "status": "pending",
+  "createdAt": "2026-11-19T15:25:48.381Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7846: clear TodayTix catalogue art of other productions from 56 closed rows and 3 tours that borrow their banners. 27 rows had their TodayTix poster/thumbnail rejected by the BRO-5089 sweep while the hero from the same catalogue match stayed (follies-2011 kept the 2017 NT Live Follies banner); the rest closed before TodayTix sold tickets (Sept 2013), so TodayTix art on them is another production or another show (grease-2007: an anti-vaping campaign, rain-2010: a Brian Lehrer talk). Every field was looked at by eye. Four thumbnail files on disk predate their TodayTix record and are the right art (follies-2011 2011 cast photo, wonderland-2011, grey-gardens-2006, well-2006): kept, sources recorded as manual in image-sources.json. Sources are added to rejectedImageUrls so the disk fallback and fetcher cannot put them back. No noReliableArt marker: the verified pipeline may refill. (part 1 of 5)",
+    "steps": [
+      "company-2021: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846).",
+      "company-2021: never re-take this art source (BRO-7846)",
+      "ink-2019: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846).",
+      "ink-2019: never re-take this art source (BRO-7846)",
+      "long-days-journey-into-night-2016: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846).",
+      "long-days-journey-into-night-2016: never re-take this art source (BRO-7846)",
+      "misery-2015: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846).",
+      "misery-2015: never re-take this art source (BRO-7846)",
+      "an-american-in-paris-2015: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846).",
+      "an-american-in-paris-2015: never re-take this art source (BRO-7846)",
+      "the-bridges-of-madison-county-2014: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846).",
+      "the-bridges-of-madison-county-2014: never re-take this art source (BRO-7846)",
+      "twelfth-night-2013: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846).",
+      "twelfth-night-2013: never re-take this art source (BRO-7846)",
+      "ann-2013: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "ann-2013: never re-take this art source (BRO-7846)",
+      "cat-on-a-hot-tin-roof-2013: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "cat-on-a-hot-tin-roof-2013: never re-take this art source (BRO-7846)",
+      "picnic-2013: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "picnic-2013: never re-take this art source (BRO-7846)",
+      "a-christmas-story-the-musical-2012: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "a-christmas-story-the-musical-2012: never re-take this art source (BRO-7846)",
+      "the-mystery-of-edwin-drood-2012: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "the-mystery-of-edwin-drood-2012: never re-take this art source (BRO-7846)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-2021",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/company-2021/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "company-2021: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-2021",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/25ondWFdFshEG5xGY0ATGM/afd0fde163faaf639e6155edf917a09c/CM_today_tix_vertical.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/25ondWFdFshEG5xGY0ATGM/afd0fde163faaf639e6155edf917a09c/CM_today_tix_vertical.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/25ondWFdFshEG5xGY0ATGM/afd0fde163faaf639e6155edf917a09c/CM_today_tix_vertical.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/25ondWFdFshEG5xGY0ATGM/afd0fde163faaf639e6155edf917a09c/CM_today_tix_vertical.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7boOdXPNa7RJTTD45njxlv/2eb8f7988086aaa6b70ce02a4c5e04bf/header.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "company-2021: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ink-2019",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/ink-2019/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "ink-2019: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ink-2019",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/68WWADf8FE1agwpZs1PcWn/d5fe11e71d5c5ec0a5a6b2ba05d488d5/Patinkin_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1SvCmmsjbftzmQZN9lELhu/aed9a58126222afc73549ab5ac2d2430/Patinkin_TodayTix_1080x1080_carousel.png?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/68WWADf8FE1agwpZs1PcWn/d5fe11e71d5c5ec0a5a6b2ba05d488d5/Patinkin_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1SvCmmsjbftzmQZN9lELhu/aed9a58126222afc73549ab5ac2d2430/Patinkin_TodayTix_1080x1080_carousel.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2zUSjjqVYVpfOB55HTFBpG/b647e004900576381e17880219127bea/Patinkin_TodayTix_1440x580.png?fm=webp&q=90"
+        ],
+        "description": "ink-2019: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "long-days-journey-into-night-2016",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/long-days-journey-into-night-2016/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "long-days-journey-into-night-2016: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "long-days-journey-into-night-2016",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/21RAqldGSi2MpiAeQBJxA8/dac01b3d1d3422aee03c90c54481d024/340960487-ldj-0003w-todaytix-480x720_v1.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/21RAqldGSi2MpiAeQBJxA8/dac01b3d1d3422aee03c90c54481d024/340960487-ldj-0003w-todaytix-480x720_v1.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/21RAqldGSi2MpiAeQBJxA8/dac01b3d1d3422aee03c90c54481d024/340960487-ldj-0003w-todaytix-480x720_v1.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/21RAqldGSi2MpiAeQBJxA8/dac01b3d1d3422aee03c90c54481d024/340960487-ldj-0003w-todaytix-480x720_v1.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3s9p3WdJI8JeniarvUAgA5/986c3f0b9fab5e065463273b687ebd09/LongDaysJourney_showpage_header.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "long-days-journey-into-night-2016: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "misery-2015",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/misery-2015/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "misery-2015: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "misery-2015",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/45Fezp5DFDXxgaRs3jPk64/0ecaeeab5c93b5cf9cda2d6b3c45bfd7/poster-image.jpeg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/45Fezp5DFDXxgaRs3jPk64/0ecaeeab5c93b5cf9cda2d6b3c45bfd7/poster-image.jpeg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/45Fezp5DFDXxgaRs3jPk64/0ecaeeab5c93b5cf9cda2d6b3c45bfd7/poster-image.jpeg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/45Fezp5DFDXxgaRs3jPk64/0ecaeeab5c93b5cf9cda2d6b3c45bfd7/poster-image.jpeg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/kp59et7pQnQLkpF9QC83q/d7e9517b2fc0f606560e09639623cb2a/header-image.jpeg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "misery-2015: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-2015",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/an-american-in-paris-2015/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "an-american-in-paris-2015: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-2015",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1Vwgyv3zE6cmCrT18t1ENL/c5ced7b4cc1813ab1af6270160720d86/TT-poster-matthew.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1Vwgyv3zE6cmCrT18t1ENL/c5ced7b4cc1813ab1af6270160720d86/TT-poster-matthew.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1Vwgyv3zE6cmCrT18t1ENL/c5ced7b4cc1813ab1af6270160720d86/TT-poster-matthew.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1Vwgyv3zE6cmCrT18t1ENL/c5ced7b4cc1813ab1af6270160720d86/TT-poster-matthew.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4ShMEuhPqLq0cQcsZHx0zJ/d288044bd8b79c9e8d34039cdbdf795d/TT-production-matthew.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "an-american-in-paris-2015: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/the-bridges-of-madison-county-2014/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-bridges-of-madison-county-2014: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/OPiXfmi4dDxegOiG0WrkT/766e933c8cb1a5e0d974018b393b92ca/Kate_Baldwin___Aaron_Lazar-_poster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/OPiXfmi4dDxegOiG0WrkT/766e933c8cb1a5e0d974018b393b92ca/Kate_Baldwin___Aaron_Lazar-_poster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/OPiXfmi4dDxegOiG0WrkT/766e933c8cb1a5e0d974018b393b92ca/Kate_Baldwin___Aaron_Lazar-_poster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/OPiXfmi4dDxegOiG0WrkT/766e933c8cb1a5e0d974018b393b92ca/Kate_Baldwin___Aaron_Lazar-_poster.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6ObQphfGQf2i4mPMTb1Dx6/19e8712ae283046639bb24ab713dcb7c/Kate_Baldwin___Aaron_Lazar-_production.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-bridges-of-madison-county-2014: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-2013",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/twelfth-night-2013/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "twelfth-night-2013: hero cleared, TodayTix catalogue art of another production (TodayTix art left after the same catalogue match's poster was rejected; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-2013",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/DiPuMMW2mXTjBr4qJvjzZ/981ce680ce64ffb25193bba38c7d05f0/25SITP_12N_todaytix_V1_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/DiPuMMW2mXTjBr4qJvjzZ/981ce680ce64ffb25193bba38c7d05f0/25SITP_12N_todaytix_V1_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/DiPuMMW2mXTjBr4qJvjzZ/981ce680ce64ffb25193bba38c7d05f0/25SITP_12N_todaytix_V1_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/DiPuMMW2mXTjBr4qJvjzZ/981ce680ce64ffb25193bba38c7d05f0/25SITP_12N_todaytix_V1_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5NCsFLnHuqPRErQNfCkkK8/776b13419ab720cf41138c8a959ba82e/25SITP_12N_todaytix_V1_1600x1200.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "twelfth-night-2013: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ann-2013",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/ann-2013/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "ann-2013: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ann-2013",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6UMd8IFp4uJIrBqy5I8Dnc/30ecbc408fc53632df2768f46f40cee5/Mccann_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6BL51oIsc8vlxpEWvMgyVO/b3aea1fd2b31af272ccdc75d25c7756e/McCann_TodayTix_Name_1080x1080.png?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6UMd8IFp4uJIrBqy5I8Dnc/30ecbc408fc53632df2768f46f40cee5/Mccann_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6BL51oIsc8vlxpEWvMgyVO/b3aea1fd2b31af272ccdc75d25c7756e/McCann_TodayTix_Name_1080x1080.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4o7sVlP9IQy8Mff9nF7sgD/ac83c793c3a0be9737f6b8790b6b4da0/McCann_TodayTix_1440x580.png?fm=webp&q=90"
+        ],
+        "description": "ann-2013: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cat-on-a-hot-tin-roof-2013",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/cat-on-a-hot-tin-roof-2013/hero.webp",
+          "thumbnail": "/images/shows/cat-on-a-hot-tin-roof-2013/thumbnail.webp",
+          "poster": "/images/shows/cat-on-a-hot-tin-roof-2013/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "cat-on-a-hot-tin-roof-2013: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cat-on-a-hot-tin-roof-2013",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7aIuHEF6BGpeYwORldmP3r/6bd6ad329c5f11b0057b8d820b28d858/COHTR-480x720__1_.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7aIuHEF6BGpeYwORldmP3r/6bd6ad329c5f11b0057b8d820b28d858/COHTR-480x720__1_.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7aIuHEF6BGpeYwORldmP3r/6bd6ad329c5f11b0057b8d820b28d858/COHTR-480x720__1_.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "cat-on-a-hot-tin-roof-2013: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "picnic-2013",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/picnic-2013/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "picnic-2013: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "picnic-2013",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3Rad4H1WUVeProUXCBZiDF/05e7e5eeffc23aeb9c896b683dff6a05/251028_PAHR_TodayTix_480x720_JK.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3Rad4H1WUVeProUXCBZiDF/05e7e5eeffc23aeb9c896b683dff6a05/251028_PAHR_TodayTix_480x720_JK.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3Rad4H1WUVeProUXCBZiDF/05e7e5eeffc23aeb9c896b683dff6a05/251028_PAHR_TodayTix_480x720_JK.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3Rad4H1WUVeProUXCBZiDF/05e7e5eeffc23aeb9c896b683dff6a05/251028_PAHR_TodayTix_480x720_JK.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6CytlN3iMK2JgrHP4qcK9l/b07dc47aa4f1b890fb0cf774c3a1c03d/251028_PAHR_TodayTix_1600x1200_JK.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "picnic-2013: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-story-the-musical-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/a-christmas-story-the-musical-2012/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-christmas-story-the-musical-2012: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-story-the-musical-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/VERZGk5SdoCzcvqIvkIsb/b9301d5f69489125fd8ceb7ebe6aa208/Poster_480x720_2025.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/VERZGk5SdoCzcvqIvkIsb/b9301d5f69489125fd8ceb7ebe6aa208/Poster_480x720_2025.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/VERZGk5SdoCzcvqIvkIsb/b9301d5f69489125fd8ceb7ebe6aa208/Poster_480x720_2025.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/VERZGk5SdoCzcvqIvkIsb/b9301d5f69489125fd8ceb7ebe6aa208/Poster_480x720_2025.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/nDOrimDydmYJRi5WCGgfZ/b55102879df66196a9704b9318ebcfff/Header_1600x1200_ttix.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-christmas-story-the-musical-2012: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-edwin-drood-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/the-mystery-of-edwin-drood-2012/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-mystery-of-edwin-drood-2012: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-edwin-drood-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5oSyg46NHwhDexaNWv6YJ7/c2c75de7533a64a1c0bbcb390c4af832/poster-image.jpeg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5oSyg46NHwhDexaNWv6YJ7/c2c75de7533a64a1c0bbcb390c4af832/poster-image.jpeg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5oSyg46NHwhDexaNWv6YJ7/c2c75de7533a64a1c0bbcb390c4af832/poster-image.jpeg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5oSyg46NHwhDexaNWv6YJ7/c2c75de7533a64a1c0bbcb390c4af832/poster-image.jpeg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5BMW92JNkF1jbVXZPo7HcS/9a870a4863fba9f691652d33c03dd165/header-image.jpeg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-mystery-of-edwin-drood-2012: never re-take this art source (BRO-7846)"
+      }
+    ]
+  }
+}

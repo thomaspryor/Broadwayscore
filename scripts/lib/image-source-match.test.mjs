@@ -9,7 +9,7 @@ const {
   normalizeVenueName, venuesMatch, pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, buildVenueCityIndex,
   canReuseArchivedFile,
   mayServeDiskImage, thumbnailFallbackAction,
-  keepExistingImage, findRejectedSourcesInUse, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
+  keepExistingImage, findRejectedSourcesInUse, wrongEraTodayTixReason, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
 } = require('./image-source-match.js');
 
 const at = (iso) => ({ __type: 'Date', iso });
@@ -236,6 +236,53 @@ test('findRejectedSourcesInUse lists only in-use local fields mapped to a reject
   assert.deepEqual(rows.map(r => `${r.id}.${r.format}`), ['funny-girl-2002.poster', 'funny-girl-2002.thumbnail']);
   const cleared = { ...funnyGirl, images: { poster: null, thumbnail: null } };
   assert.deepEqual(findRejectedSourcesInUse([cleared], SOURCES), []);
+});
+
+// BRO-7846: the BRO-5089 sweep cleared follies-2011's TodayTix poster and
+// thumbnail (NT Live Follies, another production) and left the hero from the
+// same catalogue match. Rows that closed before TodayTix sold tickets carried
+// TodayTix heroes of unrelated shows (Grease 2007: an anti-vaping campaign).
+const TT = (name) => `https://images.ctfassets.net/6pezt69ih962/abc/def/${name}.png?fm=webp&q=90`;
+const follies = {
+  id: 'follies-2011', status: 'closed', closingDate: '2012-01-22',
+  images: { poster: null, thumbnail: null, hero: '/images/shows/follies-2011/hero.webp' },
+  rejectedImageUrls: [TT('TodayTix_NTLive_Follies_480x720')],
+};
+const company = {
+  id: 'company-2021', status: 'closed', closingDate: '2022-07-31',
+  images: { poster: null, thumbnail: null, hero: '/images/shows/company-2021/hero.webp' },
+  rejectedImageUrls: [TT('company_poster')],
+};
+const TT_SOURCES = {
+  'follies-2011': { hero: TT('TodayTix_NTLive_Follies_1600x1200') },
+  'company-2021': { hero: TT('header') },
+  'once-upon-a-mattress-2024': { poster: TT('OUAM-KeyArt'), hero: null },
+};
+
+test('findRejectedSourcesInUse lists TodayTix art that cannot be the row\'s own production', () => {
+  const rows = findRejectedSourcesInUse([follies, company], TT_SOURCES);
+  assert.deepEqual(rows.map(r => `${r.id}.${r.format}`), ['follies-2011.hero', 'company-2021.hero']);
+  assert.match(rows[0].why, /closed before TodayTix/);
+  assert.match(rows[1].why, /poster was rejected/);
+  // A row that kept its own poster rejected one stray file, not the match.
+  const ouam = { id: 'once-upon-a-mattress-2024', status: 'closed', closingDate: '2024-11-30',
+    images: { poster: '/images/shows/once-upon-a-mattress-2024/poster.webp' }, rejectedImageUrls: [TT('heart-portal-banner')] };
+  assert.deepEqual(findRejectedSourcesInUse([ouam], TT_SOURCES), []);
+  // Cleared hero: nothing to report.
+  assert.deepEqual(findRejectedSourcesInUse([{ ...follies, images: { hero: null } }], TT_SOURCES), []);
+});
+
+test('wrongEraTodayTixReason keeps running rows, post-2013 rows with no rejection, and non-TodayTix sources', () => {
+  const running = { id: 'x', status: 'open', closingDate: null, rejectedImageUrls: [TT('old')] };
+  assert.equal(wrongEraTodayTixReason(running, TT('new')), null, 'a running row may take by-id catalogue art');
+  const closed2019 = { id: 'y', status: 'closed', closingDate: '2019-06-30' };
+  assert.equal(wrongEraTodayTixReason(closed2019, TT('art')), null, 'art taken during the run is the row\'s own');
+  assert.equal(wrongEraTodayTixReason(follies, 'manual:checked by eye'), null);
+  assert.equal(wrongEraTodayTixReason(follies, 'https://www.theaterdiary.com/x.jpg'), null);
+  assert.ok(wrongEraTodayTixReason({ ...follies, rejectedImageUrls: [] }, TT('x')), 'closed in 2012: always another production');
+  // An image-search hit recorded as a todaytix.com show page is the catalogue too (the-effect-west-end-2012).
+  assert.ok(wrongEraTodayTixReason(follies, 'google-images:https://www.todaytix.com/london/shows/33425-the-effect'));
+  assert.equal(wrongEraTodayTixReason(follies, 'google-images:https://www.broadway.com/shows/follies/'), null);
 });
 
 test('recordFileSources writes only entries whose path is still the field value', () => {

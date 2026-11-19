@@ -1,0 +1,358 @@
+{
+  "issueNumber": "bro-7846-e",
+  "planId": "a4a49172-40de-49d5-865a-f684c5c90b35",
+  "status": "pending",
+  "createdAt": "2026-11-19T15:25:48.381Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7846: clear TodayTix catalogue art of other productions from 56 closed rows and 3 tours that borrow their banners. 27 rows had their TodayTix poster/thumbnail rejected by the BRO-5089 sweep while the hero from the same catalogue match stayed (follies-2011 kept the 2017 NT Live Follies banner); the rest closed before TodayTix sold tickets (Sept 2013), so TodayTix art on them is another production or another show (grease-2007: an anti-vaping campaign, rain-2010: a Brian Lehrer talk). Every field was looked at by eye. Four thumbnail files on disk predate their TodayTix record and are the right art (follies-2011 2011 cast photo, wonderland-2011, grey-gardens-2006, well-2006): kept, sources recorded as manual in image-sources.json. Sources are added to rejectedImageUrls so the disk fallback and fetcher cannot put them back. No noReliableArt marker: the verified pipeline may refill. (part 5 of 5)",
+    "steps": [
+      "beauty-and-the-beast-1994: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "beauty-and-the-beast-1994: never re-take this art source (BRO-7846)",
+      "solitary-confinement-1992: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "solitary-confinement-1992: never re-take this art source (BRO-7846)",
+      "the-secret-garden-1991: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "the-secret-garden-1991: never re-take this art source (BRO-7846)",
+      "i-ought-to-be-in-pictures-1980: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "i-ought-to-be-in-pictures-1980: never re-take this art source (BRO-7846)",
+      "amahl-and-the-night-visitors-1970: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "amahl-and-the-night-visitors-1970: never re-take this art source (BRO-7846)",
+      "little-women-2005: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "little-women-2005: never re-take this art source (BRO-7846)",
+      "the-effect-west-end-2012: thumbnail cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "the-effect-west-end-2012: never re-take this art source (BRO-7846)",
+      "a-flea-in-her-ear-west-end-2010: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "a-flea-in-her-ear-west-end-2010: never re-take this art source (BRO-7846)",
+      "an-american-in-paris-tour-2022: hero cleared, it borrowed an-american-in-paris-2015/hero.webp, TodayTix art of an unrelated event (checked by eye, BRO-7846)",
+      "an-american-in-paris-tour-2022: never re-take this art source (BRO-7846)",
+      "company-tour-2023: hero cleared, it borrowed company-2021/hero.webp, TodayTix art of an unrelated event (checked by eye, BRO-7846)",
+      "company-tour-2023: never re-take this art source (BRO-7846)",
+      "legally-blonde-tour-2022: hero cleared, it borrowed legally-blonde-2007/hero.webp, TodayTix art of an unrelated event (checked by eye, BRO-7846)",
+      "legally-blonde-tour-2022: never re-take this art source (BRO-7846)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beauty-and-the-beast-1994",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/beauty-and-the-beast-1994/hero.webp",
+          "thumbnail": "/images/shows/beauty-and-the-beast-1994/thumbnail.webp",
+          "poster": "/images/shows/beauty-and-the-beast-1994/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": "/images/shows/beauty-and-the-beast-1994/thumbnail.webp",
+          "poster": null
+        },
+        "description": "beauty-and-the-beast-1994: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beauty-and-the-beast-1994",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/722nPmnEFPYY98B1USwBnu/9eec66653a73235faac56d4d2cfb47bb/poster-image.jpeg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3br80AdWseo9pnjgcmYKwB/cbf5497d1a552376e355418e9adab39b/header-image.jpeg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "beauty-and-the-beast-1994: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "solitary-confinement-1992",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/solitary-confinement-1992/hero.webp",
+          "thumbnail": "/images/shows/solitary-confinement-1992/thumbnail.webp",
+          "poster": "/images/shows/solitary-confinement-1992/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "solitary-confinement-1992: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "solitary-confinement-1992",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/778bu4BnKyblCVqQA3ydnW/78756fcbc18628f0a35b8a79c9378b65/poster-image.jpeg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/778bu4BnKyblCVqQA3ydnW/78756fcbc18628f0a35b8a79c9378b65/poster-image.jpeg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2WFaa588mt9U6NFCrm1Bnv/79aaa38c726331a0dd67ae5cf0a8a29f/header-image.jpeg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "solitary-confinement-1992: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-secret-garden-1991",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-secret-garden-1991/thumbnail.jpg",
+          "poster": "/images/shows/the-secret-garden-1991/poster.webp",
+          "hero": "/images/shows/the-secret-garden-1991/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-secret-garden-1991/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-secret-garden-1991: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-secret-garden-1991",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/26qA8ICZacQKmzrofRM1Ii/7542bb9c530290aba0ac064364ba0c3b/C1-222-TodayTix-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/26qA8ICZacQKmzrofRM1Ii/7542bb9c530290aba0ac064364ba0c3b/C1-222-TodayTix-480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-secret-garden-1991: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-ought-to-be-in-pictures-1980",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/i-ought-to-be-in-pictures-1980/hero.webp",
+          "thumbnail": "/images/shows/i-ought-to-be-in-pictures-1980/thumbnail.webp",
+          "poster": "/images/shows/i-ought-to-be-in-pictures-1980/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": "/images/shows/i-ought-to-be-in-pictures-1980/thumbnail.webp",
+          "poster": null
+        },
+        "description": "i-ought-to-be-in-pictures-1980: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-ought-to-be-in-pictures-1980",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/F2rn0N3lVJrrSlhyoeRT9/79ef993f4d41a669bb9d0997b916b5f9/Today_Tix_iotbip-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/21OqO4fgPBxHro6rqzy4eq/7a61caee0029fa21d986623f4b18d045/iotbip-1600x1200-c.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "i-ought-to-be-in-pictures-1980: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amahl-and-the-night-visitors-1970",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/amahl-and-the-night-visitors-1970/hero.webp",
+          "thumbnail": "/images/shows/amahl-and-the-night-visitors-1970/thumbnail.webp",
+          "poster": "/images/shows/amahl-and-the-night-visitors-1970/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": "/images/shows/amahl-and-the-night-visitors-1970/thumbnail.webp",
+          "poster": null
+        },
+        "description": "amahl-and-the-night-visitors-1970: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amahl-and-the-night-visitors-1970",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5wXfivaCnZTugzf9kMihE1/8f81bd6ad38629d24243bf43441486db/TT_480x720_Amahl.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/o0XFeGEoJ8vFhEZfHfazD/79d867f02d04df99102ca87cddab42a3/TT_1600x1200_Amahl.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "amahl-and-the-night-visitors-1970: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-2005",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/little-women-2005/hero.webp",
+          "thumbnail": "/images/shows/little-women-2005/thumbnail.webp",
+          "poster": "/images/shows/little-women-2005/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "little-women-2005: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-2005",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3xhhpmquDOJksmWGKPaWQY/c044ad3266a474834824278b73d00fdf/LW_Poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4bYiANf6R2yMjINfrYZZiR/4427fff29d0242f6a91a3c5ff2be09e4/LW_Square.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7dOVCmPGrf556jUFgV99Ox/4b4533ad4abaf9b28afe532f71dceb65/LW_Hero.jpg?fm=webp&q=90"
+        ],
+        "description": "little-women-2005: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-effect-west-end-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-effect-west-end-2012/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-effect-west-end-2012: thumbnail cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-effect-west-end-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.todaytix.com/london/shows/33425-the-effect"
+        ],
+        "description": "the-effect-west-end-2012: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-flea-in-her-ear-west-end-2010",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-flea-in-her-ear-west-end-2010/hero.webp",
+          "thumbnail": "/images/shows/a-flea-in-her-ear-west-end-2010/thumbnail.webp",
+          "poster": "/images/shows/a-flea-in-her-ear-west-end-2010/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-flea-in-her-ear-west-end-2010: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-flea-in-her-ear-west-end-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/78D6GAvPOIDw7cHINjrnwY/2ccd70e2c4b929717a39d49d5e86eac4/GR_Flea_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/78D6GAvPOIDw7cHINjrnwY/2ccd70e2c4b929717a39d49d5e86eac4/GR_Flea_480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/78D6GAvPOIDw7cHINjrnwY/2ccd70e2c4b929717a39d49d5e86eac4/GR_Flea_480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-flea-in-her-ear-west-end-2010: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-tour-2022",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/an-american-in-paris-2015/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "an-american-in-paris-tour-2022: hero cleared, it borrowed an-american-in-paris-2015/hero.webp, TodayTix art of an unrelated event (checked by eye, BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-tour-2022",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4ShMEuhPqLq0cQcsZHx0zJ/d288044bd8b79c9e8d34039cdbdf795d/TT-production-matthew.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "an-american-in-paris-tour-2022: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-tour-2023",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/company-2021/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "company-tour-2023: hero cleared, it borrowed company-2021/hero.webp, TodayTix art of an unrelated event (checked by eye, BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-tour-2023",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7boOdXPNa7RJTTD45njxlv/2eb8f7988086aaa6b70ce02a4c5e04bf/header.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "company-tour-2023: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legally-blonde-tour-2022",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/legally-blonde-2007/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "legally-blonde-tour-2022: hero cleared, it borrowed legally-blonde-2007/hero.webp, TodayTix art of an unrelated event (checked by eye, BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legally-blonde-tour-2022",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5tNKAN3xn6Y8oJXRz67myU/5ad82ad5c5f4fe06021c96b6c8cb169f/TT-production-ActorTherapySingsLegallyBlonde.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "legally-blonde-tour-2022: never re-take this art source (BRO-7846)"
+      }
+    ]
+  }
+}
