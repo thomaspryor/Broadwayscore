@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-11-19T11:53:09.647Z",
+  "runDate": "2026-11-19T11:53:36.658Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "desire-under-the-elms-off-west-end-2026",
+    "showFilter": "its-a-wonderful-life-a-live-radio-play-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -29,23 +29,23 @@
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -57,7 +57,7 @@
     "processed": 1,
     "failed": 1,
     "shows": [
-      "desire-under-the-elms-off-west-end-2026"
+      "its-a-wonderful-life-a-live-radio-play-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,22 +66,22 @@
     }
   },
   "processed": [
-    "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+    "its-a-wonderful-life-a-live-radio-play-2026/chicago-reader--justin-hayford.json"
   ],
   "failed": [
-    "desire-under-the-elms-off-west-end-2026/standard--unknown.json"
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+      "its-a-wonderful-life-a-live-radio-play-2026/chicago-reader--justin-hayford.json"
     ],
     "failed": [
-      "desire-under-the-elms-off-west-end-2026/standard--unknown.json"
+      "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+      "its-a-wonderful-life-a-live-radio-play-2026/chicago-reader--justin-hayford.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -92,6 +92,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Broadway News": {
+      "count": 1,
+      "domain": "broadwaynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
