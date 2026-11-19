@@ -33,4 +33,4 @@ for (const id of targets) {
   tally[out] = (tally[out] || 0) + 1;
 }
 console.error(`closed: ${JSON.stringify(tally)}`);
-if (Object.keys(tally).some((k) => k.startsWith('http_'))) process.exit(1);
+if (Object.keys(tally).some((k) => k.startsWith('http_'))) { if (process.env.GITHUB_ACTIONS) console.log('::warning title=Predict the Score::Could not close predictions for a show with a live review; the 2-day backstop still applies'); process.exit(1); }

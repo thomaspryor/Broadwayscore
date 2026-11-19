@@ -101,7 +101,7 @@ import { ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
 import { scoreGateArg } from '@/config/scoring';
 import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
 import { isRated, NOT_RATED_LABEL } from '@/lib/unrated';
-import { useLiveHeroProps } from '@/components/show-page/LiveScoreOverlay';
+import { useLiveHeroProps, LiveHideWhenOverlay } from '@/components/show-page/LiveScoreOverlay';
 
 // Opens on tap only, so its chunk (editor + photo fields) stays out of the
 // show page's first-load JS (BRO-7486: /show/[slug] sat 9kB over the 330kB cap).
@@ -1165,7 +1165,7 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected =
       ) : (
         <div className="text-xs text-fg-muted">{progress}</div>
       )}
-      {!noReviewsExpected && <CallTheScoreHeroLink show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount }} />}
+      {!noReviewsExpected && <LiveHideWhenOverlay><CallTheScoreHeroLink show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount }} /></LiveHideWhenOverlay>}
     </div>
   );
 }

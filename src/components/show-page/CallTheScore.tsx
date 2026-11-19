@@ -72,6 +72,8 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [saveAsk, setSaveAsk] = useState(false);
   const [callable, setCallable] = useState(false);
+  // The server said closed (a review went live after this page was built): keep the message, stop offering the button.
+  const [closed, setClosed] = useState(false);
   const autoRef = useRef(false);
   const tapRef = useRef(false);
   useEffect(() => { setCallable(isCallableShow(show as never, localToday(), show.reviewCount ?? 0)); }, [show]);
@@ -91,7 +93,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
       setBusy(false);
       if (r.ok || r.reason === 'already_called' || r.reason === 'calls_closed') clearPendingCall(show.id, ls());
       else autoRef.current = false;
-      if (!r.ok) setMsg(lockMsg(r.reason));
+      if (!r.ok) { setMsg(lockMsg(r.reason)); if (r.reason === 'calls_closed') setClosed(true); }
     });
   }, [callable, signedIn, loaded, loadError, call, show.id, lock]);
   useEffect(() => { if (call) clearPendingCall(show.id, ls()); }, [call, show.id]);
@@ -111,7 +113,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
     tapRef.current = true; setBusy(true);
     const r = await lock(value);
     tapRef.current = false; setBusy(false);
-    if (!r.ok) setMsg(lockMsg(r.reason));
+    if (!r.ok) { setMsg(lockMsg(r.reason)); if (r.reason === 'calls_closed') setClosed(true); }
   };
 
   if (signedIn && !loaded) return <Wrap><div className="h-24" aria-hidden /></Wrap>;
@@ -143,7 +145,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
         </div>
       </div>
       <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-        <button type="button" className="btn-primary w-full sm:w-auto sm:px-6" disabled={busy} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
+        <button type="button" className="btn-primary w-full sm:w-auto sm:px-6" disabled={busy || closed} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
         <p className="text-xs text-fg-muted m-0">Free account. Locking shows our forecast, if we have one, and can&apos;t be undone.</p>
       </div>
       {!signedIn && saveAsk && <p className="text-sm text-gray-200 mt-2 mb-0" data-testid="save-prompt">Save your prediction: create a free account or sign in.</p>}
