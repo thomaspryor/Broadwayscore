@@ -73,7 +73,15 @@ export function costHalfWidth(costMethodology: string | null | undefined, estima
 export const REPORTED_SOURCE_MAX_AGE_MONTHS = 24;
 
 /** A quote that only gives a lower bound ("well over $1 million") is not a reported figure. */
-const FLOOR_QUOTE_RE = /\b(?:more than|well over|(?<!turned |rolled |carried )over|at least|north of|upwards of|in excess of|exceed(?:s|ed|ing)?|top(?:s|ped|ping))\s+(?:about\s+|roughly\s+)?\$/i;
+// No lookbehind: Safari before 16.4 throws "invalid group specifier name" at parse time (BRO-7734).
+// "turned/rolled/carried over $X" is blanked out first instead (see hasFloorQuote).
+const NOT_A_FLOOR_RE = /\b(?:turned|rolled|carried) over\b/gi;
+const FLOOR_QUOTE_RE = /\b(?:more than|well over|over|at least|north of|upwards of|in excess of|exceed(?:s|ed|ing)?|top(?:s|ped|ping))\s+(?:about\s+|roughly\s+)?\$/i;
+
+/** True when the quote only gives a lower bound ("over $1 million", but not "rolled over $1 million"). */
+export function hasFloorQuote(sourceText: string): boolean {
+  return FLOOR_QUOTE_RE.test(sourceText.replace(NOT_A_FLOOR_RE, ' '));
+}
 
 /** "Broadway Journal (Nov 6, 2023): ..." -> "2023-11-06"; null when the source names no parseable date. */
 export function costSourceDate(sourceText: string): string | null {
@@ -111,7 +119,7 @@ export function v2CostBasis(input: {
   if (input.estimated || !input.sourceText) {
     return { estimated: true, halfWidth: costHalfWidth(input.costMethodology, true), floorQuote: false, aged: false };
   }
-  const floorQuote = FLOOR_QUOTE_RE.test(input.sourceText);
+  const floorQuote = hasFloorQuote(input.sourceText);
   const date = costSourceDate(input.sourceText);
   let aged = false;
   if (date) {
