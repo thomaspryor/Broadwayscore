@@ -227,21 +227,24 @@ function marketsIn(text) {
   return out;
 }
 /**
- * The market a free-text message attaches to `title`: a market word right next
- * to the title ("the Dirty Dancing Bway show") wins; otherwise the message's
- * only market. Null when the message names none, or several with no tie-break.
+ * The market a free-text message attaches to `title`: a market word within a
+ * few words of the title, in the same sentence ("the Dirty Dancing Bway show").
+ * Never the message at large: "Thanks for Broadway Scorecard! Hamilton has no
+ * picture" or "I took a backstage tour. Hamilton..." must stay ambiguous
+ * (second-opinion review, real shows.json). The site name is stripped first.
  */
 function inferMarketFromMessage(title, message) {
-  const msg = String(message || '');
+  const msg = String(message || '').replace(/broadway\s*scorecard/gi, ' ');
   const t = String(title || '').trim();
   if (!msg || !t) return null;
   const idx = msg.toLowerCase().indexOf(t.toLowerCase());
-  if (idx >= 0) {
-    const near = new Set(marketsIn(msg.slice(Math.max(0, idx - 25), idx + t.length + 25)));
-    if (near.size === 1) return [...near][0];
-  }
-  const all = new Set(marketsIn(msg));
-  return all.size === 1 ? [...all][0] : null;
+  if (idx < 0) return null;
+  let before = msg.slice(Math.max(0, idx - 25), idx);
+  let after = msg.slice(idx + t.length, idx + t.length + 25);
+  before = before.split(/[.!?\n]/).pop();
+  after = after.split(/[.!?\n]/)[0];
+  const near = new Set(marketsIn(`${before} ${after}`));
+  return near.size === 1 ? [...near][0] : null;
 }
 
 /**

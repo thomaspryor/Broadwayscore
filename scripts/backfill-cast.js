@@ -26,7 +26,7 @@ const path = require('path');
 require('./lib/load-env').loadEnv();
 
 const { lookupIBDBCast, RATE_LIMIT_MS } = require('./lib/ibdb-cast');
-const { shouldRetryTombstone, shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, expectedOpeningYear } = require('./lib/cast-tombstone');
+const { ibdbPageAppearedSinceTombstone, shouldRetryTombstone, shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, expectedOpeningYear } = require('./lib/cast-tombstone');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -126,7 +126,11 @@ async function main() {
   }
 
   if (openOnly) {
-    shows = shows.filter(s => s.status === 'open' || s.status === 'previews');
+    // Plus upcoming shows whose empty tombstone predates their IBDB page (#1192): the daily
+    // cron runs --open-only, so without this the one-shot retry would never fire on schedule.
+    shows = shows.filter(s => s.status === 'open' || s.status === 'previews' || (() => {
+      try { return ibdbPageAppearedSinceTombstone(JSON.parse(fs.readFileSync(path.join(CAST_DIR, `${s.id}.json`), 'utf8')), s); } catch { return false; }
+    })());
     console.log(`Open/previews only: ${shows.length} shows`);
   }
 

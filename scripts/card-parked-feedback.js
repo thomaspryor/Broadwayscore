@@ -29,7 +29,7 @@ async function main() {
   const dryRun = args.includes('--dry-run');
   const limitArg = args.find((a) => a.startsWith('--limit='));
   const limit = limitArg ? Number(limitArg.split('=')[1]) : 5; // per run; the 10-min cron drains a backlog quickly
-  const issues = await gh('GET', `/repos/${REPO}/issues?state=open&labels=${PARKED_LABEL}&per_page=100`);
+  const issues = await gh('GET', `/repos/${REPO}/issues?state=open&labels=${PARKED_LABEL}&sort=created&direction=asc&per_page=100`);
   const parked = selectParkedIssues(issues).sort((a, b) => a.number - b.number).slice(0, limit);
   console.log(`parked feedback issues needing a card: ${parked.length}`);
   for (const issue of parked) {
@@ -38,9 +38,10 @@ async function main() {
     let id = null;
     try {
       const { createLinearIssue } = require('./lib/linear-issue-create.js');
-      const { issue: created } = await createLinearIssue({ ...card, dispatch: true, priority: 3, source: 'parked-feedback' });
+      const { issue: created } = await createLinearIssue({ ...card, dispatch: true, priority: 2, source: 'parked-feedback' });
       id = created.identifier;
     } catch (e) {
+      // Safe to adopt the twin: the title carries the distinctive "#N", so a near-duplicate can only be this issue's card.
       if (e && e.code === 'NEAR_DUPLICATE_OPEN' && e.twin && e.twin.identifier) id = e.twin.identifier;
       else { console.error(`::warning::#${issue.number}: could not file card: ${e.message}`); continue; }
     }

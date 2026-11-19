@@ -117,6 +117,13 @@ const CAST_NOT_APPLICABLE_SHOW_IDS = new Set([
 ]);
 const TOMBSTONE_RETRY_WINDOW_DAYS = 7;
 const TOMBSTONE_RETRY_MS = 20 * 60 * 60 * 1000;
+/** Empty tombstone written before the show had an IBDB page, which it has now (#1192). */
+function ibdbPageAppearedSinceTombstone(castFile, show) {
+  if (!castFile || !show) return false;
+  if (Array.isArray(castFile.openingNightCast) && castFile.openingNightCast.length > 0) return false;
+  return !castFile.ibdbUrl && !!show.ibdbUrl;
+}
+
 function shouldRetryTombstone(castFile, show, now = Date.now()) {
   if (!castFile || !show) return false;
   if (CAST_NOT_APPLICABLE_SHOW_IDS.has(show.id)) return false;
@@ -125,7 +132,7 @@ function shouldRetryTombstone(castFile, show, now = Date.now()) {
   // (ibdbUrl null) and the show has one now. Retry once regardless of status/opening date
   // (IBDB sometimes posts the opening-night cast months early). One-shot: the rescrape
   // stamps ibdbUrl into the file, so a still-empty page is not retried again.
-  if (!castFile.ibdbUrl && show.ibdbUrl) return true;
+  if (ibdbPageAppearedSinceTombstone(castFile, show)) return true;
   if (show.status !== 'open' && show.status !== 'previews') return false;
   // Bounded: only within TOMBSTONE_RETRY_WINDOW_DAYS after openingDate, so a show that is
   // genuinely empty on IBDB is not re-scraped (and the daily job not woken) forever. No
@@ -174,7 +181,7 @@ function classifyCastCoverage(show, castFile, now = Date.now()) {
 }
 
 module.exports = {
-  classifyCastCoverage, CAST_NOT_APPLICABLE_SHOW_IDS, shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
+  ibdbPageAppearedSinceTombstone, classifyCastCoverage, CAST_NOT_APPLICABLE_SHOW_IDS, shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
   shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, MAX_WRONG_PRODUCTION_PURGES, parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch,
   expectedOpeningYear, castFileMismatchReason,
 };
