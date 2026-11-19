@@ -3586,9 +3586,11 @@ function createReviewFile(showId, reviewData, options = {}) {
       // or is junk (invalid/wrongShow/wrongContent) that shouldn't block real reviews
       let allowCrossShow = false;
       let existingIsJunk = false;
+      let existingReviewYear = null;
       try {
         const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
         const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
+        existingReviewYear = extractYear(existingData.publishDate);
         allowCrossShow = existingData.isRoundupArticle === true || existingData.isCombinedReview === true
           // BRO-4431: this show is a split sibling of the existing file's
           // multi-show article, so sharing the URL is by design.
@@ -3631,19 +3633,22 @@ function createReviewFile(showId, reviewData, options = {}) {
         // BRO-7815: also require the same title, compare against each
         // production's run (a long run owns reviews written while it played),
         // and let the incumbent copy's own publishDate veto the move.
-        let existingReviewYear = null;
-        try {
-          const ex = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file), 'utf8'));
-          existingReviewYear = extractYear(ex.publishDate);
-        } catch (e) { /* unreadable: no veto */ }
         const showById = getShowByIdMap();
-        const thisShowIsCorrect = shouldTakeUrlOwnership({
+        const ownershipInput = {
           reviewYear, thisYear: myYear, existingYear,
           thisRun: showRunYears(showById[showId]),
           existingRun: showRunYears(showById[existing.showId]),
-          sameTitle: sameShowTitle(showById[showId], showById[existing.showId]) ?? undefined,
-          existingReviewYear,
+        };
+        const sameTitle = sameShowTitle(showById[showId], showById[existing.showId]);
+        const thisShowIsCorrect = shouldTakeUrlOwnership({
+          ...ownershipInput, sameTitle: sameTitle ?? undefined, existingReviewYear,
         });
+        if (!thisShowIsCorrect && shouldTakeUrlOwnership(ownershipInput)) {
+          // A veto kept the incumbent. Say which one, so a wrong veto (both
+          // publishDates are often wrong) is visible in the run log.
+          const why = sameTitle === false ? 'different titles' : `incumbent's own date (${existingReviewYear}) fits ${existing.showId}`;
+          console.log(`    ⚖️  Keeping ${existing.showId}/${existing.file}: re-home to ${showId} vetoed (${why})`);
+        }
 
         if (thisShowIsCorrect) {
           // Flag the existing file as wrong production and save this one

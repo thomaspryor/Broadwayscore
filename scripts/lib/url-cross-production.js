@@ -1,4 +1,5 @@
 'use strict';
+const { normalizeTitle } = require('./title-match');
 /**
  * URL cross-production ownership decision.
  *
@@ -117,18 +118,23 @@ function showRunYears(show, nowYear = new Date().getUTCFullYear()) {
 
 /** Title key for "is this the same show": lower-case, no leading article or "Disney's". */
 function titleKey(title) {
-  return String(title || '').toLowerCase()
-    .replace(/[\u2018\u2019']/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
+  // normalizeTitle folds diacritics ("Les Misérables"), maps & to "and", drops
+  // apostrophes and a trailing "musical". "+" becomes a space there, so drop
+  // "and" too: "Romeo + Juliet" == "Romeo & Juliet" == "Romeo and Juliet".
+  return normalizeTitle(String(title || ''))
+    .replace(/\band\b/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim()
     .replace(/^(?:disneys |the )+/, '')
-    .replace(/ (?:the musical|a new musical|the play)$/, '')
+    .replace(/ (?:a new musical|the play)$/, '')
     .trim();
 }
 
 /**
  * Are two shows.json entries productions of the same title? Exact title key,
- * or one key starting the other ("Kinky Boots" / "Kinky Boots the Musical").
+ * or one key starting or ending the other as whole words ("Kinky Boots" /
+ * "Kinky Boots the Musical", "Old Friends" / "Stephen Sondheim's Old Friends").
+ * Loose on purpose: a false "same" only falls back to the year rule.
  * Returns null when either title is missing (unknown, not "different").
  */
 function sameShowTitle(a, b) {
@@ -136,7 +142,8 @@ function sameShowTitle(a, b) {
   const kb = titleKey(b && b.title);
   if (!ka || !kb) return null;
   if (ka === kb) return true;
-  return ka.startsWith(kb + ' ') || kb.startsWith(ka + ' ');
+  return ka.startsWith(kb + ' ') || kb.startsWith(ka + ' ')
+    || ka.endsWith(' ' + kb) || kb.endsWith(' ' + ka);
 }
 
 /**
