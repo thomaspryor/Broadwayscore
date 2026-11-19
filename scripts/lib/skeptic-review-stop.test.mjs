@@ -291,3 +291,23 @@ test('BRO-7872: main --stop-hook blocks an unanswered list within the round budg
   assert.equal(codes[codes.length - 1], 0, 'the round budget runs out: never loops a session');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('BRO-7872: a fresh close review (edits after the ship-check run) is handed the ship-check gaps still unanswered', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'skr-prev-'));
+  const tp = path.join(dir, 't.jsonl');
+  const line = (o) => JSON.stringify(o);
+  const use = (id, name, input) => line({ type: 'assistant', message: { id: `m${id}`, content: [{ type: 'tool_use', id, name, input }] } });
+  const out = (id, content) => line({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: id, content }] } });
+  fs.writeFileSync(tp, [
+    use('c1', 'Edit', { file_path: '/home/user/Broadwayscore/scripts/lib/foo.js', old_string: 'x', new_string: 'y' }), out('c1', 'ok'),
+    use('c2', 'Skill', { skill: 'ship-check' }), out('c2', 'Launching skill: ship-check'),
+    use('c3', 'Bash', { command: SHIP }), out('c3', GAPS1),
+    use('c4', 'Edit', { file_path: '/home/user/Broadwayscore/scripts/lib/foo.js', old_string: 'y', new_string: 'z' }), out('c4', 'ok'),
+  ].join('\n') + '\n');
+  let prompt = '';
+  const fetchImpl = async (_u, init) => { prompt = JSON.stringify(JSON.parse(init.body)); return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: JSON.stringify({ verdict: 'pass', gaps: [] }) } }], usage: {} }) }; };
+  const code = await main(['--stop-hook'], { env: { ...CLOUD, TMPDIR: dir }, fetchImpl, stdin: JSON.stringify({ transcript_path: tp, last_assistant_message: CLAIM }), now: new Date('2026-12-31T00:00:00Z') });
+  assert.equal(code, 0);
+  assert.match(prompt, /PREVIOUS GAPS[^"]*never ran the CLI/);
+  fs.rmSync(dir, { recursive: true, force: true });
+});

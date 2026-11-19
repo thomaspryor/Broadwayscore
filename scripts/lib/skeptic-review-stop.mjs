@@ -387,7 +387,9 @@ export async function main(argv, { env = process.env, now = new Date(), stdin = 
   if (st.passedEditKey === d.editKey) return 0;
   const budget = roundBudget(now);
   if (st.rounds >= budget && st.lastReviewedEditKey === d.editKey) return 0;
-  const reviewInput = buildReviewInput(events, d.from, lastMessage, st.lastGaps || []);
+  // BRO-7872: with no earlier Stop round, the ship-check list still unanswered is what the reviewer re-checks.
+  const previous = st.lastGaps?.length ? st.lastGaps : (evaluateCoverage(events, { lastMessage, env }).unansweredGaps || []).map((g) => ({ what: g.what, check: g.check }));
+  const reviewInput = buildReviewInput(events, d.from, lastMessage, previous);
   const r = await callReviewer(reviewInput, { env, fetchImpl });
   if (r.error) { logHit({ session, chunk: d.chunkKey, outcome: 'error', reason: r.error }); return 0; }
   const material = r.gaps.filter((g) => g.severity === 'material');
