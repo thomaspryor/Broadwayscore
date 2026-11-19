@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-19T18:59:00.851Z",
+  "generated": "2026-11-19T19:32:49.936Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 55,
+  "count": 60,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -99,6 +99,27 @@
       "loserFile": "british-theatre--unknown.json",
       "targetFile": "british-theatre--david-woodward.json",
       "reason": "orphaned-duplicate-heal: british-theatre--david-woodward.json was flagged invalid after british-theatre--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "loserFile": "daily-mail--unknown.json",
+      "targetFile": "daily-mail--laura-fox.json",
+      "reason": "orphaned-duplicate-heal: daily-mail--laura-fox.json was flagged invalid after daily-mail--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "loserFile": "guardian--unknown.json",
+      "targetFile": "guardian--sian-cain.json",
+      "reason": "orphaned-duplicate-heal: guardian--sian-cain.json was flagged invalid after guardian--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "loserFile": "times-uk--unknown.json",
+      "targetFile": "times-uk--nicola-jeal.json",
+      "reason": "orphaned-duplicate-heal: times-uk--nicola-jeal.json was flagged invalid after times-uk--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -387,6 +408,20 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "loserFile": "guardian--unknown.json",
+      "targetFile": "guardian--sian-cain.json",
+      "reason": "orphaned-duplicate-heal: guardian--sian-cain.json was flagged invalid after guardian--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "loserFile": "times-uk--unknown.json",
+      "targetFile": "times-uk--nicola-jeal.json",
+      "reason": "orphaned-duplicate-heal: times-uk--nicola-jeal.json was flagged invalid after times-uk--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
