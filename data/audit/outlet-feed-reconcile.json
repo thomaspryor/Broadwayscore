@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T01:27:33.421Z",
+  "generatedAt": "2026-11-19T03:02:02.980Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -158,11 +158,15 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "viewfromthegods",
+      "error": "Timeout fetching https://viewfromthegods.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -179,21 +183,20 @@
     {
       "outletId": "fringereview",
       "error": "HTTP 500 for https://fringereview.co.uk/feed/"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 875,
-  "matchedGaps": 1,
+  "itemsScanned": 823,
+  "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "the-good-thief-off-broadway-2026",
-      "title": "The Good Thief",
-      "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/11/13/the-good-thief",
-      "headline": "The Good Thief",
-      "publishDate": "2026-11-18"
-    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
