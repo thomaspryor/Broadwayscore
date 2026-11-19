@@ -121,12 +121,15 @@ function embargoVerdict(show, nowMs) {
   const dw = dropWindowFor(show);
   const history = dw ? ` Drop history: ${dw.text}.` : '';
   if (info.assumed && hrs <= 36 && hrs > 0) {
-    const pw = require('./opening-night-lane/preembargo-window');
-    const guardFromMs = pw.laneStartMs({ embargoMs: e.embargoMs, timeZone: require('./local-date').tzForMarket(show.category || show.market), enabled: true });
+    // BRO-7786: the same start the lane itself uses (nightTimes), so this text can never disagree with the lane.
+    const af = require('./opening-night-lane/auto-fallback');
+    const nt = af.nightTimes(show, show.openingDate, { preembargo: false });
+    const guardFromMs = nt ? nt.laneStartMs : e.embargoMs - 90 * 60000;
     const guardFrom = new Date(guardFromMs).toISOString();
+    const basisText = nt ? ` (${af.guardStartText(nt)})` : '';
     const early = dw && dw.basis === 'observed' && Date.parse(dw.fromAt) < guardFromMs
-      ? ` Recorded nights dropped as early as ${dw.fromAt}, before the guard opens: a review that early is caught only after it.` : '';
-    return { status: 'warn', detail: `Reviews are assumed to open ${e.embargoAt} (${when}), the market default, not a confirmed time. The lane guard (direct-only, no paid spend) opens ${guardFrom} and closes on the first live review; confirm the real time and set reviewEmbargoAt if known. ${kick}.${history}${early}` };
+      ? ` Recorded nights dropped as early as ${dw.fromAt}, before even the guard's earliest start: a review that early is caught only after it.` : '';
+    return { status: 'warn', detail: `Reviews are assumed to open ${e.embargoAt} (${when}), the market default, not a confirmed time. The lane guard (direct-only, no paid spend) opens ${guardFrom}${basisText} and closes on the first live review; confirm the real time and set reviewEmbargoAt if known. ${kick}.${history}${early}` };
   }
   return { status: 'pass', detail: `Reviews open ${e.embargoAt} (${when}${info.assumed ? ', assumed market default' : ''}); ${kick}.${history}` };
 }
@@ -245,7 +248,7 @@ function simulatedNightVerdict(record, nowMs) {
  * performance 2026-11-11, embargo lifted 2026-11-18) reads as "press night over" and gets no lane night. Signal that the
  * night is really happening now: the recorded night is more than LATE_EMBARGO_MIN_DAYS old, yet at least
  * LATE_EMBARGO_MIN_REVIEWS reviews share a publishDate within the last LATE_EMBARGO_RECENT_DAYS days (or a BWW
- * "Review Roundup ... Opens" article is that recent). reviewEmbargoAt on the show records the real time and silences it.
+ * "Review Roundup ... Opens" article is that recent). 
  * @param {object} show  shows.json row
  * @param {Array} reviews  reviews for the show ({publishDate:'YYYY-MM-DD', outletId, url})
  * @returns {{status:'pass'|'fail'|'skip', detail:string}}
@@ -253,25 +256,31 @@ function simulatedNightVerdict(record, nowMs) {
 const LATE_EMBARGO_MIN_DAYS = 2;
 const LATE_EMBARGO_MIN_REVIEWS = 3;
 const LATE_EMBARGO_RECENT_DAYS = 2;
-function lateEmbargoVerdict(show, reviews, nowMs) {
+function lateEmbargoVerdict(show, reviews, nowMs, { tierOf } = {}) {
   if (!show || !show.openingDate) return { status: 'skip', detail: 'No opening date.' };
   // Only open Broadway shows: the lane covers nothing else, and a closed show's stray rows are not a press night.
   if ((show.category || 'broadway') !== 'broadway' || (show.status && !['open', 'previews'].includes(show.status))) return { status: 'skip', detail: 'Not an open Broadway show.' };
   const openMs = Date.parse(`${show.openingDate}T12:00:00Z`);
   if (!Number.isFinite(openMs) || nowMs - openMs <= LATE_EMBARGO_MIN_DAYS * 24 * HOUR) return { status: 'skip', detail: 'Press night is not more than 2 days old.' };
-  if (show.reviewEmbargoAt) return { status: 'skip', detail: `reviewEmbargoAt ${show.reviewEmbargoAt} already records the real embargo.` };
   const recentFrom = nowMs - LATE_EMBARGO_RECENT_DAYS * 24 * HOUR;
   const byDay = {};
   let roundup = null;
   let dated = 0;
   for (const r of reviews || []) {
-    const t = Date.parse(`${r && r.publishDate}T12:00:00Z`);
+    // BRO-7808: publishDate is not always a bare day ("2026-11-18T00:59:02.000Z" exists); month-only values ("2026-10") are skipped.
+    // A full timestamp is a UTC instant: a 7:59pm ET review is "2026-11-18T00:59Z", so take its New York day, the one bare dates use.
+    const pd = String(r && r.publishDate);
+    let day = /^\d{4}-\d{2}-\d{2}$/.test(pd) ? pd : null;
+    if (!day && /^\d{4}-\d{2}-\d{2}T/.test(pd) && Number.isFinite(Date.parse(pd))) day = new Date(Date.parse(pd)).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const t = day ? Date.parse(`${day}T12:00:00Z`) : NaN;
     if (!Number.isFinite(t)) continue;
-    dated++;
+    const counts = !tierOf || tierOf(r) <= 2; // a pile of blog posts is not a press night: tier 3/4 count in neither side of the bulk test
+    if (counts) dated++;
     if (t < recentFrom - 12 * HOUR || t <= openMs + LATE_EMBARGO_MIN_DAYS * 24 * HOUR) continue;
-    byDay[r.publishDate] = (byDay[r.publishDate] || 0) + 1;
+    // With tierOf, only tier 1 and 2 outlets count toward a burst (a pile of blog posts is not a press night).
+    if (counts) byDay[day] = (byDay[day] || 0) + 1;
     // A BWW roundup only: other outlets (Theatrely) publish unrelated "review roundup" posts.
-    if (/broadwayworld\.com\/[^\s]*review-?roundup/i.test(String(r.url || '')) || /^bww-?roundup/i.test(String(r.outletId || ''))) roundup = r.publishDate;
+    if (/broadwayworld\.com\/[^\s]*review-?roundup/i.test(String(r.url || '')) || /^bww-?roundup/i.test(String(r.outletId || ''))) roundup = day;
   }
   // A burst is an embargo lift only when it is the bulk of the show's coverage: a week-one trickle sits on top of a
   // press night's worth of earlier reviews (schmigadoon, dog-day-afternoon), the late embargo does not.
@@ -279,7 +288,7 @@ function lateEmbargoVerdict(show, reviews, nowMs) {
   if (!hot && !roundup) return { status: 'skip', detail: 'No burst of new reviews after a long-past press night.' };
   const day = hot ? hot[0] : roundup;
   const why = hot ? `${hot[1]} reviews dated ${day}` : `a review roundup dated ${day}`;
-  return { status: 'fail', detail: `Recorded press night ${show.openingDate} is over, but ${why} just landed: the real embargo lifted later than openingDate, so no lane night or watchdog was set up. Set reviewEmbargoAt (ISO UTC) in shows.json and start a lane night / alert the coordinator now (BRO-7808).` };
+  return { status: 'fail', detail: `Recorded press night ${show.openingDate} is over, but ${why} just landed: the real embargo lifted later than openingDate, so no lane night or watchdog was set up. Alert the coordinator to start a lane night now (reviewEmbargoAt cannot fix this: it must fall on the openingDate night, press-night-record.embargoOverrideProblem) (BRO-7808).` };
 }
 
 module.exports = {
