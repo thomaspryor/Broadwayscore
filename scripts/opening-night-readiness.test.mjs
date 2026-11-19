@@ -62,11 +62,12 @@ test('CLI: real-shaped payload is read and judged', () => {
   assert.equal(runCheckWithCurl('{"message":"Unauthorized"}', 401).pass, null);
 });
 
-// BRO-3039 retro-review (BRO-5261): the per-show CLI has no demand-aware
-// budget check, so fewer credits than one opening night uses must fail it.
-test('CLI: fewer credits left than one show needs is not ready', () => {
+// BRO-7854 supersedes BRO-5261: SB is a fallback, so fewer credits than one
+// opening night's estimate warns (ride-it-out policy) and does not fail.
+test('CLI: fewer credits left than one show needs warns, not fails', () => {
   const r = runCheckWithCurl('{"max_api_credit":1000000,"used_api_credit":970000}', 200);
-  assert.equal(r.pass, false);
+  assert.equal(r.pass, true);
+  assert.equal(r.warn, true);
   assert.match(r.detail, /one opening night/);
   assert.equal(runCheckWithCurl('{"max_api_credit":1000000,"used_api_credit":900000}', 200).pass, true);
 });
