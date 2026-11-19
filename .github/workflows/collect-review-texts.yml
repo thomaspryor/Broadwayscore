@@ -1,4 +1,7 @@
 name: Collect Review Texts
+# BRO-7402: the show list is in the run title so outlet-listing-poller-window.yml can skip a show whose
+# collection is already queued or running (workflow_run triggers key on `name`, not this title).
+run-name: Collect Review Texts${{ github.event.inputs.show_filter && format(' — {0}', github.event.inputs.show_filter) || '' }}
 
 # Prevent un-filtered runs from duplicating each other; show-targeted runs are independent
 # per-run group intended (hybrid): scheduled/no-filter runs share a stable

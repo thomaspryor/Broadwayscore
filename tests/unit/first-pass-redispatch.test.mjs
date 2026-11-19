@@ -11,6 +11,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const rd = require('../../scripts/lib/re-dispatcher.js');
+const ow = require('../../scripts/lib/outlet-opening-window.js');
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const WF = path.join(ROOT, '.github/workflows');
@@ -46,8 +47,6 @@ test('The Good Thief night: the 03:30 sweep re-dispatches the window poller (las
   });
   assert.deepEqual(skipped, []);
   assert.deepEqual(dispatch.map((d) => d.workflow), [wf]);
-  // Re-dispatched before the sweep's 10:27 find: the FRC review (01:26) is in the feed for that run.
-  assert.ok(Date.parse('2026-11-18T03:30:00Z') < Date.parse('2026-11-18T10:27:10Z'));
 });
 
 test('a run inside the band is left alone (no extra spend)', () => {
@@ -60,4 +59,24 @@ test('a run inside the band is left alone (no extra spend)', () => {
     now: Date.parse('2026-11-18T03:30:00Z'),
   });
   assert.deepEqual(dispatch, []);
+});
+
+// More ticks must not mean the same show collected twice at once (ship-check P1).
+test('activeCollectShowIds reads show ids from queued/running collect run titles only', () => {
+  const runs = [
+    { displayTitle: 'Collect Review Texts \u2014 the-good-thief-off-broadway-2026', status: 'in_progress' },
+    { displayTitle: 'Collect Review Texts \u2014 a-2026,b-2026', status: 'queued' },
+    { displayTitle: 'Collect Review Texts \u2014 done-2026', status: 'completed' },
+    { displayTitle: 'Collect Review Texts', status: 'in_progress' },
+  ];
+  assert.deepEqual([...ow.activeCollectShowIds(runs)].sort(), ['a-2026', 'b-2026', 'the-good-thief-off-broadway-2026']);
+  assert.deepEqual([...ow.activeCollectShowIds(null)], []);
+});
+
+test('collect-review-texts.yml run title carries the show list in the form the window poller parses', () => {
+  const y = read('collect-review-texts.yml');
+  const m = y.match(/^run-name:\s*(.+)$/m);
+  assert.ok(m, 'collect-review-texts.yml has no run-name: the window poller cannot see which show is being collected');
+  assert.ok(m[1].includes("format(' \u2014 {0}', github.event.inputs.show_filter)"), m[1]);
+  assert.match(read('outlet-listing-poller-window.yml'), /activeCollectShowIds/);
 });

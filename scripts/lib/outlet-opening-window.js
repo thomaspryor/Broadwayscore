@@ -170,8 +170,25 @@ function showsNeedingCollection(windowShows, recordsByShow, limit = 3, { ledger 
     .map((x) => x.id);
 }
 
+/**
+ * BRO-7402: show ids that already have a collect-review-texts run queued or running, read from the run
+ * titles ("Collect Review Texts — a,b", collect-review-texts.yml run-name). runs: gh run list JSON
+ * [{displayTitle, status}]. A run without a show list (scheduled, unfiltered) names no show.
+ */
+const ACTIVE_RUN_STATUSES = new Set(['queued', 'in_progress', 'waiting', 'pending', 'requested']);
+function activeCollectShowIds(runs) {
+  const out = new Set();
+  for (const r of Array.isArray(runs) ? runs : []) {
+    if (!r || !ACTIVE_RUN_STATUSES.has(r.status)) continue;
+    const m = String(r.displayTitle || '').match(/^Collect Review Texts \u2014 (.+)$/);
+    if (!m) continue;
+    for (const id of m[1].split(',')) if (id.trim()) out.add(id.trim());
+  }
+  return out;
+}
+
 module.exports = {
-  needsCollection, showsNeedingCollection,
+  needsCollection, showsNeedingCollection, activeCollectShowIds,
   WINDOW_DAYS_PAST, WINDOW_DAYS_BY_CATEGORY, windowDaysFor, WINDOW_CATEGORIES, WINDOW_STRATEGIES, DEFAULT_MAX_PAID, WORST_CASE_USD_PER_PAID_CALL,
   selectWindowShows, selectLateWindowShows, lateOutletsToPoll, poolForOutlet, LATE_PUBLISHER_WINDOW_DAYS, windowStrategyFor, selectWindowOutlets, createPaidBudget, projectMonthlyCost,
 };

@@ -12,6 +12,12 @@ on:
       - 'tests/**'
       # BRO-6639: orchestrator-pause-read.test.mjs shape-checks pause-variable token use.
       - '.github/workflows/opening-night-orchestrator.yml'
+      # BRO-7402: tests/unit/first-pass-redispatch.test.mjs and scripts/lib/re-dispatcher.test.mjs read these
+      # workflow files (re-dispatch opt-in, band, collect run title), so a workflow-only edit must run them.
+      - '.github/workflows/outlet-listing-poller-window.yml'
+      - '.github/workflows/collect-review-texts.yml'
+      - '.github/workflows/check-cron-health.yml'
+      - '.github/workflows/cron-redispatch.yml'
       # Project agent definitions and the commands that name them are covered by
       # tests/unit/claude-agent-models.test.mjs (spend review 2026-10-01).
       - '.claude/agents/**'

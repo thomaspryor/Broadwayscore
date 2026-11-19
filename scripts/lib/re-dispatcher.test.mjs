@@ -150,16 +150,18 @@ test('caps a burst at maxPerSweep, most overdue relative to its band first', () 
   assert.deepEqual(skipped.map((s) => s.workflow).sort(), ['a.yml', 'c.yml']);
 });
 
-test('BRO-6751: the per-sweep cap exceeds the live count of opted-in bands <= 1h', () => {
+// BRO-7402: widened to bands <= 2h. The sort ranks by overdue/band, so a 2h-band workflow at 2.5h (1.25) outranks the
+// 1h gap audit at 1.2h (1.2): 2h bands compete for the same slots.
+test('BRO-6751: the per-sweep cap exceeds the live count of opted-in bands <= 2h', () => {
   const dir = path.join(ROOT, '.github/workflows');
   const entries = parseCriticalCronEntries(fs.readFileSync(path.join(dir, 'check-cron-health.yml'), 'utf8'));
   const tight = entries.filter((e) => {
     const text = fs.readFileSync(path.join(dir, e.workflow), 'utf8');
-    return acceptsRedispatch(text) && redispatchBandHours(text, e.maxHours) <= 1;
+    return acceptsRedispatch(text) && redispatchBandHours(text, e.maxHours) <= 2;
   }).map((e) => e.workflow);
   assert.ok(tight.includes('audit-aggregator-gap.yml'), `expected the gap audit among tight bands, got ${tight}`);
   assert.ok(DEFAULT_MAX_PER_SWEEP > tight.length,
-    `per-sweep cap ${DEFAULT_MAX_PER_SWEEP} must exceed the ${tight.length} opted-in workflows with a band <= 1h (${tight.join(', ')}); raise it in re-dispatcher.js`);
+    `per-sweep cap ${DEFAULT_MAX_PER_SWEEP} must exceed the ${tight.length} opted-in workflows with a band <= 2h (${tight.join(', ')}); raise it in re-dispatcher.js`);
 });
 
 test('throttle: one sweep per fixed 30-min window, never starved by a stream of throttled runs', () => {

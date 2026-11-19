@@ -40,8 +40,10 @@ const AFTER_HOURS_RE = /^\s*#\s*redispatch-after-hours:\s*(\d+(?:\.\d+)?)\b/m;
 // band <= 1h. Those are due every 2nd-3rd sweep, so with the cap at or below
 // their count, the 1h-band gap audit lost its slot ("over per-sweep cap 3",
 // 2026-11-01 11:28Z) and waited another bucket. re-dispatcher.test.mjs checks
-// the live registry against this rule.
-const DEFAULT_MAX_PER_SWEEP = 5;
+// the live registry against this rule. BRO-7402 widened the rule to bands <= 2h (the sort ranks by
+// overdue/band, so 2h bands take the same slots) when the opening-window outlet poller joined at 2h: 6 such
+// workflows, so 7.
+const DEFAULT_MAX_PER_SWEEP = 7;
 // The sweep runs on every main Test Suite completion (~100/day); at most one
 // sweep per fixed window of this many minutes.
 const DEFAULT_SWEEP_BUCKET_MIN = 30;
