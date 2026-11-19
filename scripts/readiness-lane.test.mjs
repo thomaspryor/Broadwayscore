@@ -204,7 +204,11 @@ test('late embargo: 3 same-day reviews 7 days after openingDate FAILS (Now You S
   assert.match(v.detail, /reviewEmbargoAt/);
   assert.equal(L.lateEmbargoVerdict(show, rv.slice(0, 2), now).status, 'skip', 'two reviews is not a burst');
   assert.equal(L.lateEmbargoVerdict(show, [{ outletId: 'bww', url: 'https://www.broadwayworld.com/article/Review-Roundup-X-Opens', publishDate: '2026-11-18' }], now).status, 'fail', 'roundup alone');
-  assert.equal(L.lateEmbargoVerdict({ ...show, reviewEmbargoAt: '2026-11-19T03:00:00Z' }, rv, now).status, 'skip', 'recorded embargo silences it');
+  // A reviewEmbargoAt must fall on the openingDate night (press-night-record.embargoOverrideProblem), so it cannot cover a later embargo and must not silence the alert.
+  assert.equal(L.lateEmbargoVerdict({ ...show, reviewEmbargoAt: '2026-11-19T03:00:00Z' }, rv, now).status, 'fail', 'reviewEmbargoAt cannot cover a later night');
+  const stamped = rv.map((r) => ({ ...r, publishDate: '2026-11-18T00:59:02.000Z' }));
+  assert.equal(L.lateEmbargoVerdict(show, stamped, now).status, 'fail', 'full timestamps count');
+  assert.equal(L.lateEmbargoVerdict(show, rv, now, { tierOf: () => 3 }).status, 'skip', 'tier 3 outlets alone are not a press night');
   assert.equal(L.lateEmbargoVerdict({ ...show, openingDate: '2026-11-17' }, rv, now).status, 'skip', 'press night under 2 days old');
 });
 
