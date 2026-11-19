@@ -1,0 +1,72 @@
+{
+  "issueNumber": "bro-7572",
+  "planId": "27e1b695-5648-497e-8b73-cf313aacd63b",
+  "status": "pending",
+  "createdAt": "2026-11-19T00:59:28.657Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove three rejections after verifying the displayed production programs",
+    "steps": [
+      "shows.json: teibele-and-her-demon-1979.rejectedImageUrls",
+      "shows.json: the-national-health-1974.rejectedImageUrls",
+      "shows.json: not-now-darling-1970.rejectedImageUrls"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "teibele-and-her-demon-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "google-images:https://playbill.com/production/teibele-and-her-demon-brooks-atkinson-theatre-vault-0000008030"
+        ],
+        "newValue": [],
+        "description": "shows.json: teibele-and-her-demon-1979.rejectedImageUrls",
+        "unreject": [
+          {
+            "url": "google-images:https://playbill.com/production/teibele-and-her-demon-brooks-atkinson-theatre-vault-0000008030",
+            "reason": "The displayed Playbill cover identifies this show and Brooks Atkinson Theatre, matching the 1979 production."
+          }
+        ]
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-national-health-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "google-images:https://playbill.com/production/the-national-health-circle-in-the-square-theatre-vault-0000003299"
+        ],
+        "newValue": [],
+        "description": "shows.json: the-national-health-1974.rejectedImageUrls",
+        "unreject": [
+          {
+            "url": "google-images:https://playbill.com/production/the-national-health-circle-in-the-square-theatre-vault-0000003299",
+            "reason": "The displayed program identifies Circle in the Square, director Arvin Brown and Rita Moreno, matching the 1974 production."
+          }
+        ]
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-now-darling-1970",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "google-images:https://playbill.com/production/not-now-darling-brooks-atkinson-theatre-vault-0000008042"
+        ],
+        "newValue": [],
+        "description": "shows.json: not-now-darling-1970.rejectedImageUrls",
+        "unreject": [
+          {
+            "url": "google-images:https://playbill.com/production/not-now-darling-brooks-atkinson-theatre-vault-0000008042",
+            "reason": "The displayed program identifies Brooks Atkinson Theatre, October 20 1970, Norman Wisdom and Rex Garner, matching the Broadway production."
+          }
+        ]
+      }
+    ]
+  }
+}
