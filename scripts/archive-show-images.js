@@ -39,7 +39,7 @@ const { checkFile: checkAspect } = require('./check-image-aspect');
 // archived here as if they were real key art (2026-07-31 review). Import it,
 // never re-declare it.
 const { isPlaceholderFile } = require('./lib/show-images');
-const { canReuseArchivedFile, missingFileRedownload } = require('./lib/image-source-match');
+const { canReuseArchivedFile, missingFileRedownload, localImageAction } = require('./lib/image-source-match');
 const { IMAGE_SOURCES_PATH: SOURCES_PATH, loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 const { buildSourceIndex, addToSourceIndex, sourceConflict } = require('./lib/shared-image-source');
 
@@ -216,11 +216,14 @@ async function main() {
         }
       }
 
-      // If URL is already local and we're not forcing, skip
-      if (url.startsWith('/images/') && !force) {
-        // Check that the local file actually exists
-        const localPath = path.join(__dirname, '..', 'public', url);
-        if (fs.existsSync(localPath)) {
+      // A local path: keep the file on disk, or re-download it (see below)
+      // Under --force a local path is re-downloaded from its recorded source
+      // (missingFileRedownload below); it must never reach the fetch code, where
+      // fetch('/images/...') fails with "Failed to parse URL" (BRO-7871).
+      const localPath = path.join(__dirname, '..', 'public', url);
+      const localAction = localImageAction(url, { force, fileExists: fs.existsSync(localPath) });
+      if (localAction !== 'fetch') {
+        if (localAction === 'check-existing') {
           // Always gate active posters; --check-aspect also checks other cached art.
           if (checkAspectFlag || (format === 'poster' && show.status !== 'closed')) {
             const aspect = await checkAspect(localPath, format);
@@ -246,7 +249,7 @@ async function main() {
         // production's art back (BRO-4901, BRO-7846).
         const redl = missingFileRedownload(show, format, url, imageSources, showsById);
         if (redl.skip) {
-          console.warn(`  ⚠ ${show.title} ${format}: Local file missing; ${redl.skip} — not re-downloading`);
+          console.warn(`  ⚠ ${show.title} ${format}: ${localAction === 'redownload' && !fs.existsSync(localPath) ? 'Local file missing' : 'Local file kept'}; ${redl.skip} — not re-downloading`);
           totalFailed++;
           continue;
         }
@@ -254,20 +257,23 @@ async function main() {
         // Re-download from source
         const ext = getLocalExtension(sourceUrl);
         const filepath = path.join(OUTPUT_DIR, show.id, `${format}.${ext}`);
+        let tmpToClean = null;
         try {
           const dlUrl = getDownloadUrl(sourceUrl, format);
-          const size = await downloadImage(dlUrl, filepath, format);
+          const tmpPath = `${filepath}.incoming`;
+          tmpToClean = tmpPath;
+          const size = await downloadImage(dlUrl, tmpPath, format);
           // Aspect-check: reject wide-landscape posters / portrait heroes / etc.
           // The source URL can produce a wrong-shape file (Evita case) — fall through
           // to fetch-show-images-auto on the next run rather than persisting bad shape.
-          const aspect = await checkAspect(filepath, format);
+          const aspect = await checkAspect(tmpPath, format);
           if (!aspect.ok) {
-            console.warn(`  ⚠ ${show.title} ${format}: re-download failed aspect check (${aspect.reason}) — leaving null`);
-            try { fs.unlinkSync(filepath); } catch {}
-            show.images[format] = null;
-            showChanged = true;
+            console.warn(`  ⚠ ${show.title} ${format}: re-download failed aspect check (${aspect.reason}) — ${fs.existsSync(localPath) ? 'keeping the existing file' : 'leaving null'}`);
+            try { fs.unlinkSync(tmpPath); } catch {}
+            if (!fs.existsSync(localPath)) { show.images[format] = null; showChanged = true; }
             totalFailed++;
           } else {
+            fs.renameSync(tmpPath, filepath);
             show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
             // The file now lives in this row's folder: record where it came
             // from under this row, or every audit is blind to it (BRO-7846).
@@ -278,6 +284,7 @@ async function main() {
             showChanged = true;
           }
         } catch (e) {
+          if (tmpToClean) { try { fs.unlinkSync(tmpToClean); } catch {} }
           console.error(`  ✗ ${show.title} ${format}: ${e.message}`);
           totalFailed++;
         }

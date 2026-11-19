@@ -9,7 +9,7 @@ const {
   normalizeVenueName, venuesMatch, pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, buildVenueCityIndex,
   canReuseArchivedFile,
   mayServeDiskImage, thumbnailFallbackAction,
-  keepExistingImage, findRejectedSourcesInUse, wrongEraTodayTixReason, refusedSourceReason, missingFileRedownload, freshSourceFor, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
+  keepExistingImage, findRejectedSourcesInUse, wrongEraTodayTixReason, refusedSourceReason, missingFileRedownload, freshSourceFor, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor, localImageAction,
 } = require('./image-source-match.js');
 
 const at = (iso) => ({ __type: 'Date', iso });
@@ -429,4 +429,23 @@ test('freshSourceFor reads the served file source, or a CDN value', () => {
   assert.equal(freshSourceFor('poster', '/images/shows/x/poster.jpg', null), null);
   const effect = { id: 'e', market: 'west-end', status: 'closed', openingDate: '2012-11-13', closingDate: '2013-02-23', images: {} };
   assert.ok(refusedSourceReason(effect, freshSourceFor('thumbnail', '/images/shows/x/thumbnail.jpg', fs)));
+});
+
+// BRO-7871: --force sent local /images/ paths to fetch(), which cannot parse them,
+// so the workflow's force_redownload re-downloaded nothing.
+test('localImageAction: a local path is never fetched; --force re-downloads it from its source', () => {
+  const local = '/images/shows/company-tour-2023/hero.webp';
+  assert.equal(localImageAction(local, { force: true, fileExists: true }), 'redownload');
+  assert.equal(localImageAction(local, { force: true, fileExists: false }), 'redownload');
+  assert.equal(localImageAction(local, { force: false, fileExists: true }), 'check-existing');
+  assert.equal(localImageAction(local, { force: false, fileExists: false }), 'redownload');
+  assert.equal(localImageAction('https://cdn.example.com/a.jpg', { force: true, fileExists: false }), 'fetch');
+  assert.equal(localImageAction(null, { force: true }), 'fetch');
+});
+
+test('archive-show-images routes local paths through localImageAction (class guard for BRO-7871)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('../archive-show-images.js', import.meta.url), 'utf8');
+  assert.match(src, /localImageAction\(url, \{ force/);
+  assert.doesNotMatch(src, /url\.startsWith\('\/images\/'\) && !force/);
 });
