@@ -178,5 +178,6 @@ async function main(argv) {
 }
 
 if (isMainModule(import.meta.url)) {
-  main(process.argv.slice(2)).then((c) => process.exit(c), (e) => { console.error(`land-ready: ${e.message}`); process.exit(0); });
+  const { exitFlushed } = require('./lib/exit-flushed.js');
+  main(process.argv.slice(2)).then((c) => exitFlushed(c), (e) => { console.error(`land-ready: ${e.message}`); exitFlushed(0); });
 }
