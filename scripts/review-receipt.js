@@ -46,9 +46,12 @@ function stamp() {
     const out = e.stdout ? String(e.stdout).split('\n')[0] : '';
     try { cov = JSON.parse(out); } catch { /* fall through */ }
   }
-  const line = cov && cov.complete && formatReceipt(cov.evidence);
+  // BRO-7872: complete coverage with unanswered skeptic gaps is not a pass, so it gets no receipt.
+  const gaps = (cov && cov.unansweredGaps) || [];
+  const line = cov && cov.complete && !gaps.length && formatReceipt(cov.evidence);
   if (!line) {
-    console.error(`review-receipt: no receipt to stamp (${cov ? (cov.missing || []).join('; ') || 'coverage has no evidence (/code-review runs carry none)' : 'coverage could not be read'})`);
+    const why = !cov ? 'coverage could not be read' : gaps.length ? `skeptic gap(s) ${gaps.map((g) => g.n).join(', ')} have no answer (run review-coverage.mjs --record to see them)` : (cov.missing || []).join('; ') || 'coverage has no evidence (/code-review runs carry none)';
+    console.error(`review-receipt: no receipt to stamp (${why})`);
     return 3;
   }
   const msg = sh('git', ['log', '-1', '--format=%B']).trimEnd();

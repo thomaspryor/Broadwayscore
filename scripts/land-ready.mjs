@@ -48,7 +48,7 @@ export function evaluate(f) {
       '/visual-qa (screenshots at 390 and 1440), then re-run this');
   }
   const cov = f.coverage;
-  const shipMissing = (cov?.missing || []).filter((m) => !/build/.test(m));
+  const shipMissing = [...(cov?.missing || []).filter((m) => !/build/.test(m)), ...(cov?.unansweredGaps || []).map((g) => `skeptic gap ${g.n} has no answer (BRO-7872)`)];
   add('shipcheck', '/ship-check coverage complete', !!f.transcript?.found && shipMissing.length === 0,
     f.transcript?.found ? shipMissing.join('; ') : 'session transcript not found (CLAUDE_CODE_SESSION_ID)', '/ship-check');
   if (f.judge?.skipped) add('judge', 'land dry run (judgeLand): NOT CHECKED (--no-judge), run without it before relying on this', true, 'skipped');

@@ -262,7 +262,7 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
     // budget ran out (3FKM's final close went through that way). No reviewer call: the gaps are already listed.
     const unanswered = evaluateCoverage(events, { lastMessage, env }).unansweredGaps || [];
     if (unanswered.length) return { decision: 'unanswered', unanswered, from, chunkKey: key(from), editKey: `${key(edits[edits.length - 1])}:answers` };
-    return { decision: 'allow', reason: 'ship-check skeptic review ran after the last code edit and its gaps are answered' };
+    return { decision: 'allow', reason: 'ship-check skeptic review ran after the last code edit; no unanswered gaps after the last /ship-check' };
   }
   return { decision: 'review', from, chunkKey: key(from), editKey: key(edits[edits.length - 1]) };
 }

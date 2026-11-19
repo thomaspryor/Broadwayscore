@@ -61,8 +61,9 @@ function parseSkepticReport(text) {
   return { verdict: 'gaps', count, gaps };
 }
 
-const ANSWER_RE = /^[ \t>*_`-]*GAP[ \t]*#?(\d+)[ \t]*[:.)-][ \t]*(.+)$/gim;
-const RAN_RE = /^ran\b[ \t]*[:-]?[ \t]*(.+)$/i;
+// Tolerates markdown (`**GAP 1:** ran x`), a list number (`1. GAP 1: ...`) and an em dash separator (ship-check review).
+const ANSWER_RE = /^[ \t>*_`-]*(?:\d+[.)][ \t]+)?[*_`]*GAP[ \t]*#?(\d+)[ \t]*[*_]*[ \t]*[:.)\u2014\u2013-][ \t]*[*_]*[ \t]*(.+)$/gim;
+const RAN_RE = /^ran\b[ \t]*[:\u2014-]?[ \t]*(.+)$/i;
 const CANNOT_RE = /^(?:cannot|can't|can not) run(?: here)?[ \t]*[:—-][ \t]*(.+)$/i;
 const NOT_GAP_RE = /^not a gap[ \t]*[:—-][ \t]*(.+)$/i;
 
@@ -95,10 +96,23 @@ function segments(cmd) { return norm(cmd).split(/&&|\|\||;|\|/).map((s) => s.tri
  * be at least MIN_RAN_CMD chars, and (when the gap's check names files) name one of those files.
  * -> { ok: true } | { ok: false, why }
  */
+// Reading a file is not running its check (ship-check review: `ran cat scripts/x.test.mjs` was accepted).
+const READ_ONLY_RE = /^(?:cat|less|more|head|tail|grep|rg|sed|awk|wc|ls|echo|printf|jq|diff|git\s+(?:diff|log|show|status|grep|blame)|node\s+(?:--check|-c)\b|npx\s+tsc)\b/;
+// A test run piped through `| tail` exits 0 even when it fails; its output still says so.
+const FAILED_OUTPUT_RE = /^# fail [1-9]\d*\s*$|^not ok \d+/m;
+/** The command a claim names: the backticked part if it starts with one, without a trailing note, its first non-cd segment. */
+function claimedCommand(claimed) {
+  const t = String(claimed || '').trim();
+  const tick = /^`([^`]+)`/.exec(t);
+  const body = (tick ? tick[1] : t).replace(/\s+\([^()]*\)\s*$/, '').replace(/[.,;:]+$/, '');
+  return segments(body.replace(/^\$\s*/, ''))[0] || '';
+}
+
 function verifyRan(claimed, gap, events, from) {
-  const c = norm(claimed).replace(/^\$\s*/, '');
+  const c = claimedCommand(claimed);
   if (c.length < MIN_RAN_CMD) return { ok: false, why: `"${c}" is too short to name a command` };
   if (PLACEHOLDER_RE.test(c)) return { ok: false, why: 'it is the template, not a command' };
+  if (READ_ONLY_RE.test(c)) return { ok: false, why: `"${c.slice(0, 40)}" reads a file, it does not run the check` };
   const wanted = fileNames(`${gap.check} ${gap.what}`);
   if (wanted.size && ![...fileNames(c)].some((f) => wanted.has(f))) return { ok: false, why: `the command names none of the files the check names (${[...wanted].slice(0, 3).join(', ')})` };
   const results = new Map();
@@ -107,10 +121,10 @@ function verifyRan(claimed, gap, events, from) {
     const e = events[i];
     if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') continue;
     const r = results.get(e.id);
-    if (!r || r.isError) continue;
+    if (!r || r.isError || FAILED_OUTPUT_RE.test(String(typeof r.content === 'string' ? r.content : JSON.stringify(r.content ?? '')))) continue;
     if (segments(e.input?.command).some((seg) => seg.startsWith(c))) return { ok: true };
   }
-  return { ok: false, why: 'no successful command after the skeptic run starts with it' };
+  return { ok: false, why: 'no successful command after the skeptic run starts with it (a run whose output shows failing tests does not count)' };
 }
 
 /**

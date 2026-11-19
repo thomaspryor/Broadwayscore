@@ -65,3 +65,21 @@ test('skepticStats counts runs, gaps found/answered and unavailable runs', () =>
   assert.deepEqual(skepticStats([], { isSkepticCall: isSkepticReviewCall }), { runs: 0, gapsFound: 0, gapsAnswered: 0, errors: 0 });
   assert.throws(() => skepticStats(events), /pass isSkepticCall/, 'no silent loose fallback matcher');
 });
+
+test('ship-check review: reading a file or a failing run is not "ran"; natural answer forms are accepted', () => {
+  const gap = { n: 1, what: 'x', check: 'node scripts/lib/foo.test.mjs' };
+  const call = (id, c) => ({ kind: 'assistant_tool_use', name: 'Bash', id, input: { command: c } });
+  const out = (id, t) => ({ kind: 'tool_result', tool_use_id: id, content: t, isError: false });
+  const ev = [call('a', 'cd /w && node --test scripts/lib/foo.test.mjs 2>&1 | tail -3'), out('a', '# pass 12\n# fail 0'),
+    call('b', 'cat scripts/lib/foo.test.mjs'), out('b', 'x'),
+    call('c', 'node scripts/lib/foo.test.mjs | tail -2'), out('c', 'not ok 3 - y\n# fail 1')];
+  assert.equal(verifyRan('cat scripts/lib/foo.test.mjs', gap, ev, -1).ok, false, 'cat is not a run');
+  assert.equal(verifyRan('node scripts/lib/foo.test.mjs', gap, ev, -1).ok, false, 'a run that printed failing tests does not count');
+  for (const c of ['`node --test scripts/lib/foo.test.mjs` (passed 12/12)', 'node --test scripts/lib/foo.test.mjs.', 'cd /w && node --test scripts/lib/foo.test.mjs']) {
+    assert.equal(verifyRan(c, gap, ev, -1).ok, true, c);
+  }
+  const kinds = (t) => [...answerLines([t]).values()].map((a) => a.kind);
+  assert.deepEqual(kinds('**GAP 1:** ran node x y z'), ['ran']);
+  assert.deepEqual(kinds('1. GAP 2: not a gap: because reasons here ok'), ['not-a-gap']);
+  assert.deepEqual(kinds('GAP 3 — cannot run here: sends real email to subscribers'), ['cannot']);
+});
