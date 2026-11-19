@@ -249,6 +249,11 @@ on:
       - 'scripts/backfill-wrongproduction-legacy-audit.js'
       # tests/unit/enrich-dtli-thumbs.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/enrich-dtli-thumbs.js'
+      # BRO-7790: landed-change proof audit CLI; scripts/lib/landed-change-proof.test.mjs smoke-runs it.
+      - 'scripts/landed-change-proof-audit.js'
+      # BRO-7802: scripts/lib/unproven-scripts-smoke.test.mjs requires/spawns these CLIs.
+      - 'scripts/file-feedback-card.js'
+      - 'scripts/verify-existing-reviews.js'
       # BRO-2410: blog-reviews generator + its manifest-registered test (resolver is under scripts/lib/**).
       - 'scripts/generate-blog-reviews-for-scoring.js'
       # scripts/cmux-auth-stall-watchdog.js (BRO-4056) is the I/O wrapper for
@@ -5201,6 +5206,25 @@ jobs:
         # Advisory first (CLAUDE.md section 19).
         continue-on-error: true
         run: node scripts/audit-cross-show-url.js --source=reviews.json --strict --max=92
+
+      - name: Simulated opening night (BRO-7781, advisory)
+        # A whole synthetic press night through the real lane code on a fake clock, local outlets only (~15s). Runs on
+        # every lane/rss-discovery/near-miss/byline/press-night change (scripts/lib/**) and on the daily 06:00 UTC run.
+        # Mutation proof that it still guards BRO-7739/7745/7748: node scripts/lib/game-day/mutants.js.
+        # Advisory first (CLAUDE.md section 19).
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        # Hermetic: the night's card comments go to its own report and alerts to a 127.0.0.1 capture endpoint, so no
+        # real key is ever passed. Pinned empty so nothing inherited can reach Linear (and the secret-gap audit sees it).
+        env:
+          LINEAR_API_KEY: ''
+        run: |
+          set +e
+          bash scripts/lib/run-test-batch-bounded.sh "simulated night" 180 /tmp/sim-night.log -- \
+            node --test --test-timeout 170000 tests/integration/simulated-opening-night.test.mjs
+          rc=$?
+          bash scripts/lib/summarize-failing-tests.sh "simulated night" /tmp/sim-night.log "$rc" warning
+          exit "$rc"
 
       - name: Repeat file-lock race test 20x (stale-break regression guard)
         # scripts/lib/file-lock.test.mjs's 'racing stale-lock breakers' test

@@ -230,7 +230,7 @@ function buildRealLaneDeps({
       const scorer = new ScorerClass(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY, env.OPENROUTER_API_KEY);
       const reviewsFile = path.join(repoDir, 'data', 'reviews.json');
       // BRO-7740: the guard is on for the owner variable OR a market-default (guessed) embargo (auto-fallback.laneGuardMode).
-      const preembargo = (() => { const pw = require('./preembargo-window'); const mode = require('./auto-fallback').laneGuardMode(show, night, pw.parseFlag(env[pw.VARIABLE])); const at = Date.parse(require('./lane-only-markets').embargoForNight(show, night) || ''); return mode.enabled && Number.isFinite(at) ? { enabled: true, embargoMs: at, reason: mode.reason } : null; })();
+      const preembargo = (() => { const pw = require('./preembargo-window'); const mode = require('./auto-fallback').laneGuardMode(show, night, pw.parseFlag(env[pw.VARIABLE])); const at = Date.parse(require('./lane-only-markets').embargoForNight(show, night) || ''); if (!(mode.enabled && Number.isFinite(at))) return null; const af = require('./auto-fallback'); const t = af.nightTimes(show, night, { preembargo: pw.parseFlag(env[pw.VARIABLE]) }); console.log(`::notice::lane guard for ${show.id} ${night}: ${af.guardStartText(t)}`); return { enabled: true, embargoMs: at, reason: mode.reason, startMs: t ? t.laneStartMs : undefined }; })();
       return wireLaneNight({
         show, night, openingDate, timeZone, ledgerDir, adaptersConfig, laneFetch,
         recorder: recorderFromEnv(env),
@@ -295,7 +295,7 @@ function wireLaneNight({
   let liftedAt = null;
   const onAdmitted = (admitted, stampMs) => {
     if (!pe || liftedAt != null) return;
-    const d = pw.dropEvidence({ admitted, night, floorMs: pe.embargoMs - pw.MAX_LEAD_MIN * 60 * 1000, onDiskUrls: onDiskUrls instanceof Set ? onDiskUrls : new Set(onDiskUrls || []) });
+    const d = pw.dropEvidence({ admitted, night, floorMs: Math.min(pe.embargoMs - pw.MAX_LEAD_MIN * 60 * 1000, Number.isFinite(pe.startMs) ? pe.startMs : Infinity), onDiskUrls: onDiskUrls instanceof Set ? onDiskUrls : new Set(onDiskUrls || []) });
     if (d.lifted) { liftedAt = stampMs; console.log(`::notice::embargo lifted for ${show.id} ${night} at ${new Date(stampMs).toISOString()} (assumed embargo ${new Date(pe.embargoMs).toISOString()}); first live review ${d.evidence.url || d.evidence.key}; pre-embargo guard closed`); }
   };
   const isActive = () => !!pe && liftedAt == null && pw.windowActive({ enabled: true, embargoMs: pe.embargoMs, nowMs: now() });

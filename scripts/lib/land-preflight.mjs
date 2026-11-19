@@ -538,7 +538,9 @@ function findNodeModules(dir) {
   }
 }
 /** -> { status: 'clean' | 'fail' | 'skip', problems?, reason? }. Fails open: a check that cannot run is not a block. */
-export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = spawnSync }) {
+export const WORKFLOW_CHECK_TIMEOUT_SECONDS = 120;
+export const WORKFLOW_BATCH_TIMEOUT_MS = 123000;
+export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = spawnSync, deadline = Infinity }) {
   const diff = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`]);
   if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
   const checks = selectWorkflowChecks(out(diff).split('\n'));
@@ -548,10 +550,12 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
   // js-yaml, acorn and friends live in the checkout's node_modules, not in the exported tree.
   const env = { ...process.env, GH_TOKEN: '', GITHUB_TOKEN: '', GITHUB_EVENT_NAME: '', NODE_PATH: [nm, process.env.NODE_PATH].filter(Boolean).join(path.delimiter) };
 
-  // Runs `specs` concurrently inside `treeRoot` (the guard script alone takes ~45s, so
-  // one bash with `wait` keeps the total inside the hook's 90s budget).
+  // Run checks concurrently; the hook budgets the remaining time for fast tests.
   // -> [{ c, rc, text }]; rc is null when the check never finished.
   const runBatch = (treeRoot, specs) => {
+    const batchMs = Math.min(WORKFLOW_BATCH_TIMEOUT_MS, Math.max(0, deadline - Date.now()));
+    if (batchMs < 4000) return [];
+    const checkSeconds = Math.min(WORKFLOW_CHECK_TIMEOUT_SECONDS, Math.floor((batchMs - 3000) / 1000));
     try {
       if (nm) fs.symlinkSync(nm, path.join(treeRoot, 'node_modules'), 'dir');
     } catch { /* NODE_PATH still covers plain require() */ }
@@ -559,9 +563,9 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
     try {
       const runnable = specs.filter((c) => fs.existsSync(path.join(treeRoot, c.file || c.args[0])));
       const script = runnable
-        .map((c) => `( timeout 55 ${[c.cmd, ...c.args].join(' ')} >"${outDir}/${c.i}.out" 2>&1; echo $? >"${outDir}/${c.i}.rc" ) &`)
+        .map((c) => `( timeout ${checkSeconds} ${[c.cmd, ...c.args].join(' ')} >"${outDir}/${c.i}.out" 2>&1; echo $? >"${outDir}/${c.i}.rc" ) &`)
         .join('\n') + '\nwait\n';
-      run('bash', ['-c', script], { cwd: treeRoot, env, encoding: 'utf8', timeout: 58000 });
+      run('bash', ['-c', script], { cwd: treeRoot, env, encoding: 'utf8', timeout: batchMs });
       return runnable.map((c) => {
         let rc = null;
         let text = '';
@@ -824,7 +828,7 @@ function logEvent(cwd, entry) {
  * Judge one land push. -> { decision: 'allow' | 'block' | 'skip', message?, detail }
  * seams: { fetch: (cwd) => errString|null, preview, checkTests } for tests.
  */
-export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true, checkTests = true, seams = {} }) {
+export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true, checkTests = true, seams = {}, deadline = Infinity }) {
   const detail = { target, src, base };
   if (fetch) {
     const fe = (seams.fetch || fetchBase)(cwd);
@@ -847,7 +851,7 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
     ? (seams.checkRebasedManifests || checkRebasedManifests)({ base, src, tip: rebase.tip, cwd })
     : { status: 'skip' };
   detail.manifests = manifests;
-  const workflows = (seams.checkWorkflowChecks || checkWorkflowChecks)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
+  const workflows = (seams.checkWorkflowChecks || checkWorkflowChecks)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null, deadline });
   detail.workflows = workflows;
   const pendingPlans = (seams.checkPendingPlans || checkPendingPlans)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
   detail.pendingPlans = pendingPlans;
@@ -1002,9 +1006,13 @@ export function localCheckWarning({ root, src, base = 'origin/main', seams = {} 
  * LAND_FAST_TESTS_DISABLE=1 turns it off; LAND_FAST_TESTS_ADVISORY=1 turns a fail into a warning.
  */
 export const FAST_TESTS_PHASE_MS = 80000;
-export function fastTestsCheck({ root, base = 'origin/main', rebase, env = process.env, seams = {} }) {
+export function fastTestsPhaseBudget(elapsedMs) {
+  return Math.max(0, Math.min(FAST_TESTS_PHASE_MS, Math.floor((240000 - elapsedMs - 40000) / 2)));
+}
+export function fastTestsCheck({ root, base = 'origin/main', rebase, env = process.env, seams = {}, phaseMs = FAST_TESTS_PHASE_MS }) {
   if (env.LAND_FAST_TESTS_DISABLE === '1') return { status: 'off', reason: 'LAND_FAST_TESTS_DISABLE=1' };
   if (!rebase || rebase.status !== 'clean' || !rebase.tip) return { status: 'skip', reason: `rebase preview ${rebase ? rebase.status : 'missing'}` };
+  if (phaseMs < 15000) return { status: 'skip', reason: 'hook time budget exhausted', warning: 'Fast tests skipped: the preflight time budget is nearly exhausted.' };
   try {
     const codeRe = rc && rc.GATED_PATH_RE;
     const baseSha = out(git(root, ['rev-parse', '--verify', '--quiet', `${base}^{commit}`]));
@@ -1013,9 +1021,9 @@ export function fastTestsCheck({ root, base = 'origin/main', rebase, env = proce
     if (codeRe && !changed.some((f) => codeRe.test(f))) return { status: 'skip', reason: 'no gated code in the diff' };
     const script = path.join(root, 'scripts', 'lib', 'land-fast-tests.js');
     if (!seams.run && !fs.existsSync(script)) return { status: 'skip', reason: 'land-fast-tests.js not in this tree' };
-    const args = [script, 'run', '--base', baseSha, '--tip', rebase.tip, '--json', '--worktree', '--timeout-ms', String(FAST_TESTS_PHASE_MS)];
+    const args = [script, 'run', '--base', baseSha, '--tip', rebase.tip, '--json', '--worktree', '--timeout-ms', String(phaseMs)];
     // Two phases (tip, then a base re-check of the red files) plus worktree setup; the CLI bounds each phase itself.
-    const r = (seams.run || spawnSync)(process.execPath, args, { cwd: root, encoding: 'utf8', timeout: 2 * FAST_TESTS_PHASE_MS + 40000, maxBuffer: 16 * 1024 * 1024 });
+    const r = (seams.run || spawnSync)(process.execPath, args, { cwd: root, encoding: 'utf8', timeout: 2 * phaseMs + 40000, maxBuffer: 16 * 1024 * 1024 });
     let res = null;
     try { res = JSON.parse(String(r.stdout || '').trim()); } catch { /* below */ }
     if (!res || !res.status) return { status: 'skip', reason: `land-fast-tests gave no verdict (exit ${r.status ?? r.signal ?? 'n/a'})` };
@@ -1036,6 +1044,7 @@ export function fastTestsCheck({ root, base = 'origin/main', rebase, env = proce
 
 /** PreToolUse hook entry: command string + session cwd -> verdict. */
 export function runHook({ command, cwd, env = process.env, seams = {}, transcriptPath = null }) {
+  const started = Date.now();
   if (env.LAND_PREFLIGHT_DISABLE === '1') return { decision: 'skip', reason: 'LAND_PREFLIGHT_DISABLE=1' };
   const targets = landPushTargets(command);
   if (targets.length === 0) return { decision: 'skip', reason: 'not a land push' };
@@ -1089,7 +1098,7 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     const checkTests = srcIsHead && dirty.length === 0;
     // seams.base: replay a past push against the main it saw (tests, BRO-7150 replays); always origin/main live.
     const base = seams.base || 'origin/main';
-    const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, base, checkTests, seams });
+    const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, base, checkTests, seams, deadline: started + 220000 });
     if (!checkTests) v.detail.tests = { status: 'skip', reason: srcIsHead ? `uncommitted test files: ${dirty.slice(0, 3).join(', ')}` : 'pushed ref is not HEAD' };
     // BRO-7353: runHook only, never judgeLand (see checkSkipCiTip).
     const skipCi = v.decision === 'block' ? { status: 'skip', reason: 'already refused' } : (seams.checkSkipCiTip || checkSkipCiTip)({ tip: t.src || 'HEAD', cwd: root });
@@ -1099,7 +1108,7 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     // BRO-7150: only when nothing above refused (a refusal is the faster answer) and the land would apply cleanly.
     const ft = v.decision === 'block' ? { status: 'skip', reason: 'already refused' }
       : lc.status === 'clean' ? { status: 'skip', reason: 'land-local-check already passed this tip' }
-      : fastTestsCheck({ root, base, rebase: v.detail.rebase, env, seams: seams.fastTests || {} });
+      : fastTestsCheck({ root, base, rebase: v.detail.rebase, env, seams: seams.fastTests || {}, phaseMs: fastTestsPhaseBudget(Date.now() - started) });
     v.detail.fastTests = ft;
     if (ft.status === 'fail') { v.decision = 'block'; v.message = ft.message; }
     if (ft.warning) v.warnings = [...(v.warnings || []), ft.warning];

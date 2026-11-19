@@ -122,7 +122,7 @@ if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "$
   _lrs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/live-run-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:LIVERUN]\n' "$_lrs_err" >&2; exit 2; fi; _ve_pre_died live-run-stop.mjs $_ve_s
 fi
 result=$(python3 - "$transcript" <<'PYEOF'
-import hashlib, json, sys, os, re, shlex
+import hashlib, json, sys, os, re, shlex, subprocess
 
 # Per-gate loop guard (BRO-4367): keys that already blocked in this
 # turn-chain (bash passes them in VE_SKIP_CODES) must not hide the gates
@@ -1027,6 +1027,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # BRO-7701: per ref. One boolean let the first finished wait clear every later push
         # (a worker waited on land/a, pushed land/b, claimed Done while b was in flight).
         _land_unchecked = set()    # land refs pushed and not yet followed to a verdict
+        _land_nolookup = set()     # refs whose absence from origin proves nothing (BRO-7811)
         _land_pushes = {}          # ref -> pushes this session; a re-pushed ref needs a waiter verdict
         _land_refused = set()      # refs whose latest verdict is REFUSED: followed, but the work did not land
         def _land_verdict(ref, refused):  # a later LANDED of any ref clears refusals: the fix lands under a new ref name
@@ -1037,6 +1038,23 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # Anchored: `git push origin HEAD:refs/heads/land/x`, `... HEAD:land/x`,
         # `git push origin land/x` — not `foo-land/`.
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
+        # BRO-7811: only what the shell RUNS counts (mirror of runShellCode in review-coverage.mjs). Heredoc bodies and
+        # quoted text with spaces (echo, node -e, test fixtures) are data; a `bash -c '...'` / `bash <<EOF` script is code.
+        _hd_re = re.compile(r'(<<-?\s*([\'"]?)(\w+)\2[^\n]*)\n(.*?)\n[ \t]*\3(?=\n|$)', re.S)
+        def _land_code(cmd, _depth=0):
+            _inner = []
+            def _hd(m):
+                if re.search(r'(?:^|[\s;&|(])(?:ba|z)?sh\b[^\n<]*$', cmd[:m.start()].split('\n')[-1] + ' '):
+                    _inner.append(m.group(4))
+                return m.group(1)
+            _o = _hd_re.sub(_hd, cmd or '')
+            def _q(m):
+                if re.search(r'(?:^|[\s;&|(])(?:ba|z)?sh\s+-[a-z]*c\s+$', _o[max(0, m.start() - 64):m.start()]):
+                    _inner.append(m.group(0)[1:-1])
+                    return '""'
+                return '""' if re.search(r'\s', m.group(0)) else m.group(0)
+            _o = re.sub(r"'[^']*'|\"[^\"]*\"", _q, _o)
+            return '\n'.join([_o] + ([_land_code(i, _depth + 1) for i in _inner] if _depth < 3 else []))
         _push_seg_re = re.compile(r'\bgit\s+push\b([^\n;&|]*)')
         _refspec_re = re.compile(r'(?:^|\s)[\'"]?(\+?\S*?:)?(?:refs/heads/)?(land/[^\s;&|\'"<>)`]+)')
         def _push_land_refs(cmd):  # (refs pushed, refs deleted), every refspec of every push in the command
@@ -1044,6 +1062,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             for _seg in _push_seg_re.finditer(cmd):
                 _deleting = bool(re.search(r'(?:^|\s)(--delete|-d)(?=\s|$)', _seg.group(1)))
                 for _m in _refspec_re.finditer(_seg.group(1)):
+                    if re.search(r'[$`{*]', _m.group(2)): continue  # BRO-7811: land/$r is a template, not a ref
                     (_del if _deleting or _m.group(1) == ':' else _add).add(_m.group(2).rstrip(',.'))
             return _add, _del
         def _newest_run_done(res, ref=None):  # the NEWEST run (of this ref, or any) in an actions_get/list result finished
@@ -1081,7 +1100,9 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         _wfl_run_re = re.compile(r'\bnode\s+\S*wait-for-land\.js\s+(?:refs/heads/)?(land/[^\s;&|\'"]+)')
         _wfl_verdict_re = re.compile(r'\b\d\d:\d\d:\d\dZ (?:LANDED|REFUSED): (?:refs/heads/)?(land/[^\s;&|\'"]+)')  # the waiter's own stamped line
         _wfl_pending = {}          # background waiter task id -> the land ref it waits on
-        for _kind, _payload in events:
+        for _ei, (_kind, _payload) in enumerate(events):
+            if _kind == 'text' and _ei < len(events) - 1 and re.search(r'^\s*NO-VERIFY:[^\n]*\bland', _payload or '', re.M | re.I):
+                _land_unchecked.clear()  # BRO-7811: an earlier NO-VERIFY already waived what was pending; do not re-ask the same set
             if _kind in ('user_notice', 'user_text'):
                 for _mn in re.finditer(r'<task-notification>(.*?)</task-notification>', (_payload or '') if _wfl_pending else '', flags=re.DOTALL):
                     _idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', _mn.group(1))
@@ -1112,8 +1133,8 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 # "failed to merge …: 405 …" and denials carry no "error" word.
                 if re.search(r'"merged"\s*:\s*true', tool_results_by_id.get(_tid, '') or ''):
                     _merged_pr = True
-            elif _name == 'Bash' and _land_push_re.search(_inp.get('command') or ''):
-                _add, _del = _push_land_refs(_inp.get('command') or '')
+            elif _name == 'Bash' and _land_push_re.search(_land_code(_inp.get('command') or '')):
+                _add, _del = _push_land_refs(_land_code(_inp.get('command') or ''))
                 _land_unchecked -= _del
                 _land_refused -= _del | _add
                 if _add:
@@ -1121,6 +1142,8 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                     _pres = tool_results_by_id.get(_tid, '') or ''
                     if _tid not in tool_refused_ids and not re.search(r'\[rejected\]|failed to push|src refspec .* does not match|^fatal:|RPC failed|Could not read from remote', _pres, re.M):  # a rejected push starts no Land run; a filtered pipe exiting 1 still pushed
                         _land_unchecked |= _add
+                        if _inp.get('run_in_background') or re.search(r'\bgit\s+-C\b', _inp.get('command') or ''):
+                            _land_nolookup |= _add  # BRO-7811: a backgrounded or other-repo push says nothing about this origin
                         for _r in _add:
                             _land_pushes[_r] = _land_pushes.get(_r, 0) + 1
                         for _k in [k for k, v in _wfl_pending.items() if v in _add]:
@@ -1142,7 +1165,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             # Not in the elif chain: `git push ... land/x && node ...wait-for-land.js land/x` is both.
             if _land_unchecked:  # no error filter: a refused foreground waiter exits 1
                 _res = tool_results_by_id.get(_tid, '') or ''
-                _wms = [m.group(1) for m in _wfl_run_re.finditer(_inp.get('command') or '')] if _name == 'Bash' else []
+                _wms = [m.group(1) for m in _wfl_run_re.finditer(_land_code(_inp.get('command') or ''))] if _name == 'Bash' else []
                 _mine = [r for r in _wms if r in _land_unchecked]
                 if _mine:
                     _bgm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', _res) if _inp.get('run_in_background') else None
@@ -1160,6 +1183,17 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                             _land_unchecked.discard(_vm.group(1))
                             _land_verdict(_vm.group(1), 'REFUSED' in _vm.group(0))
         _msg_ok = bool(_last_msg) and 'NO-VERIFY:' not in _last_msg
+        if _msg_ok and _land_unchecked and _SAFE_RE.match(_closing()[1]) and os.environ.get('LANDUNCHECKED_REMOTE_CHECK', '1') != '0':
+            # BRO-7811: land.yml deletes a land ref once it fast-forwards main, so a ref absent from origin has landed (or never
+            # existed). Only a clean empty ls-remote counts; any error keeps the ref unchecked.
+            for _r in [r for r in _land_unchecked if r.startswith('land/') and r not in _land_nolookup]:
+                try:
+                    _lr = subprocess.run(shlex.split(os.environ.get('LANDUNCHECKED_LS_REMOTE_CMD', 'git ls-remote --heads origin')) + ['refs/heads/' + _r],
+                                         capture_output=True, text=True, timeout=10)
+                    if _lr.returncode == 0 and not _lr.stdout.strip():
+                        _land_unchecked.discard(_r)
+                except Exception:
+                    pass
         _stripped_owner = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
         # OWNERMERGE (2026-09-27): the owner never merges — this repo lands via
         # land/** (land.yml). "NOT SAFE TO EXIT — waiting on your merge" used

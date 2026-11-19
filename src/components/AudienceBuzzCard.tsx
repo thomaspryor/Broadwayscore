@@ -122,10 +122,6 @@ export default function AudienceBuzzCard({
       // combined score by audience-weighting.js — hide their tile too so we
       // don't show, e.g., an inflated Reddit count next to the corrected grade.
       if (data.suppressed) return null;
-      // Per-source minimum-volume gates (mirrors scripts/lib/audience-weighting.js
-      // and generate-mobile-show-details.js). Without these, sources with too
-      // little signal render as misleading "100% / 1 vote" cards.
-      if (src.key === 'theatr' && (data.reviewCount || 0) < 10) return null;
 
       const value =
         src.showStarRating && data.starRating != null

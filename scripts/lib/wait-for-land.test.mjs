@@ -9,6 +9,7 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine } = require('./wait-for-land.js');
+const { retroPrompt } = require('./wait-for-land.js');
 const waitForLand = require('./wait-for-land.js');
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
 
@@ -448,4 +449,13 @@ test('BRO-7755: readRefusalCause detects rebase conflicts from annotations, step
   assert.equal(waitForLand.readRefusalCause(run, { read: () => { throw new Error('api'); } }), 'unknown');
   assert.match(waitForLand.refusedMessage('land/x', 'w', null, { rebaseConflict: 'unknown' }), /could not read why[\s\S]*land\/x-v2[\s\S]*same ref land\/x/);
   assert.equal(waitForLand.readRefusalCause({ ...run, conclusion: 'cancelled' }, { read: t.read }), false);
+});
+
+test('BRO-7810: land-time prompt names the exact session-retro --record command in cloud only', () => {
+  const t = retroPrompt({ CLAUDE_CODE_REMOTE: 'true' });
+  assert.match(t, /node scripts\/lib\/session-retro\.js --record --fixes=BRO-N/);
+  assert.match(t, /--no-action=/);
+  assert.equal(retroPrompt({}), '');
+  const src = readFileSync(new URL('./wait-for-land.js', import.meta.url), 'utf8');
+  assert.ok((src.match(/retroPrompt\(\)/g) || []).length >= 2, 'both LANDED paths print the prompt');
 });

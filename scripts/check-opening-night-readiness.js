@@ -543,6 +543,13 @@ async function runChecks() {
   const nowMs = Date.now();
   const night = show.openingDate;
   emit('Embargo (reviews open)', RL.embargoVerdict(show, nowMs));
+  // BRO-7808: embargo lifted days after the recorded openingDate; runs before any early return so it is never skipped.
+  try {
+    const allReviews = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'data', 'reviews.json'), 'utf8'));
+    const mine = (allReviews.reviews || allReviews).filter((r) => r.showId === SHOW_ID);
+    const late = RL.lateEmbargoVerdict(show, mine, nowMs);
+    if (late.status !== 'skip') emit('Late embargo (reviews after press night)', late);
+  } catch (e) { if (e.code !== 'ENOENT') throw e; /* no reviews file: nothing to compare */ }
 
   // The lane only publishes shows LANE_ONLY_MARKETS covers; for any other show a disarmed lane or a missing night run
   // is not a risk and must not exit 1 (West End, off-Broadway). Read from the lane-switch ledger (cloud gets 403 on
@@ -572,6 +579,12 @@ async function runChecks() {
   } catch (e) {
     emit('Lane armed', RL.armVerdict(null));
   }
+
+  // BRO-7781: the latest simulated opening night (lane-rehearsal.yml writes the record). Read, never run here: the night is
+  // synthetic and show-independent, and this script runs with live scraper and model keys in its env.
+  let simRecord = null;
+  try { simRecord = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'data', 'audit', 'simulated-opening-night.json'), 'utf8')); } catch { /* none yet */ }
+  emit('Simulated opening night', RL.simulatedNightVerdict(simRecord, nowMs));
 
   const emb = RL.embargoFor(show);
   if (!ghToken) {

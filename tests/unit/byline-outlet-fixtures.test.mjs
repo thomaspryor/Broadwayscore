@@ -23,6 +23,7 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../.
 const DIR = path.join(ROOT, 'tests/fixtures/byline-outlets');
 const manifest = JSON.parse(fs.readFileSync(path.join(DIR, 'manifest.json'), 'utf8'));
 const { readPageByline } = require('../../scripts/lib/page-byline.js');
+const { readPageBylineForShow } = require('../../scripts/lib/page-byline-for-show.js');
 const { realFetchPorts } = require('../../scripts/lib/opening-night-lane/inline-score.js');
 const { sameCriticName } = require('../../scripts/lib/byline-from-text.js');
 const lane = realFetchPorts({ fetchPage: async () => ({}) });
@@ -98,6 +99,33 @@ describe('monthly drift check verdicts (check-byline-fixture-drift.js)', () => {
     assert.equal(classifyDrift({ expected: 'Jonas Schwartz' }, { criticName: null }), 'drift');
     assert.equal(classifyDrift({ expected: 'Jonas Schwartz' }, { error: '403' }), 'unreachable');
   });
+  // 2026-11-18 live run: londontheatre1 answered a 200-byte SiteGround captcha (meta refresh to
+  // /.well-known/sgcaptcha/) and was reported as drift. A page with no article text was not read.
+  test('a challenge page with no article text is unreachable, not drift', () => {
+    assert.equal(classifyDrift({ expected: 'Chris Omaweng' }, { criticName: null, textLength: 0 }), 'unreachable');
+    assert.equal(classifyDrift({ expected: 'Chris Omaweng' }, { criticName: null, textLength: 4000 }), 'drift');
+    assert.equal(classifyDrift({ expected: 'Chris Omaweng' }, { criticName: 'Chris Omaweng', textLength: 0 }), 'same');
+  });
+  // Cousin: the stored-byline sweep had the same hole (a captcha page read as 'no-page-byline',
+  // which is the list that keeps a stored name). Both tools use one rule from page-byline.js.
+  test('sweep: a page with no article text is fetch-failed, not no-page-byline', () => {
+    const { classify } = require('../../scripts/sweep-stored-bylines.js');
+    assert.equal(classify('David Gordon', { pageByline: null, textLength: 0 }), 'fetch-failed');
+    assert.equal(classify('David Gordon', { pageByline: null, textLength: 4000 }), 'no-page-byline');
+    assert.equal(classify('David Gordon', { pageByline: 'David Gordon', textLength: 0 }), 'match');
+  });
+  test('sweep and drift check share articleWasRead', async () => {
+    const fs = await import('node:fs');
+    for (const f of ['scripts/sweep-stored-bylines.js', 'scripts/check-byline-fixture-drift.js']) {
+      const src = fs.readFileSync(new URL('../../' + f, import.meta.url), 'utf8');
+      assert.match(src, /articleWasRead\(/, `${f} must use page-byline articleWasRead`);
+    }
+  });
+  test('the drift run records the article text length it read', async () => {
+    const fs = await import('node:fs');
+    const src = fs.readFileSync(new URL('../../scripts/check-byline-fixture-drift.js', import.meta.url), 'utf8');
+    assert.match(src, /live\.textLength\s*=/, 'check-byline-fixture-drift.js must set live.textLength for classifyDrift');
+  });
 });
 
 // BRO-7780 ship-check: saved pages were named by the last 60 base64 chars of the URL, so two
@@ -117,4 +145,86 @@ test('saved page names: whole-URL hash, one helper for writer and reader', async
     if (!/savedPageName\(/.test(src)) throw new Error(`${f} does not name saved pages with savedPageName`);
     if (/base64url'\)\.slice\(-60\)/.test(src)) throw new Error(`${f} still names pages by a base64 tail`);
   }
+});
+
+// BRO-7792: collect-review-texts' Unknown-critic enrichment (1B-iii) names the critic through the
+// shared readPageByline, the same reader ingest, the sweep and the lane use. It used to call
+// extractAuthorFromHtml directly and skipped the outlet rules (TheaterMania's visible author tag).
+describe('collect-review-texts enrichment uses the shared reader (BRO-7792)', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/collect-review-texts.js'), 'utf8');
+  const start = src.indexOf('1B-iii. AUTHOR ENRICHMENT');
+  const block = src.slice(start, src.indexOf('1B-iv.', start));
+  test('the enrichment block calls readPageByline with excludeNames and publishDate, not extractAuthorFromHtml', () => {
+    assert.ok(start > 0 && block.length > 100, 'enrichment block not found');
+    assert.ok(/readPageBylineForShow\(/.test(block), 'enrichment must call readPageBylineForShow (readPageByline + excludeNames)');
+    assert.ok(/excludeNames:\s*bylineExcludeNames/.test(block), 'excludeNames dropped');
+    assert.ok(/publishDate/.test(block), 'publishDate dropped');
+    assert.ok(!/extractAuthorFromHtml\(/.test(block), 'enrichment reverted to extractAuthorFromHtml');
+  });
+  for (const f of manifest.fixtures) {
+    test(`${f.file}: enrichment path names ${f.expected}`, () => {
+      const out = quietly(() => readPageBylineForShow({ html: html(f), text: '', url: f.url, outletId: f.outletId, excludeNames: ['Some Cast Member'], publishDate: '2026-01-01' }).criticName);
+      assert.ok(out && sameCriticName(out, f.expected), `got ${out}`);
+    });
+  }
+  test('a vetoed name falls back to the article text byline (old extractAuthorFromHtml behaviour)', () => {
+    const page = '<html><head><meta name="author" content="Jane Castmember"></head><body><p>By John Critic</p></body></html>';
+    const out = quietly(() => readPageBylineForShow({ html: page, text: 'By John Critic\n\nThe show opens with a long first paragraph about the production and its cast and many other things. '.repeat(3), url: 'https://example.com/r', excludeNames: ['Jane Castmember'] }));
+    assert.equal(out.criticName, 'John Critic');
+    const none = quietly(() => readPageBylineForShow({ html: page, text: '', url: 'https://example.com/r', excludeNames: ['Jane Castmember'] }));
+    assert.equal(none.criticName, null);
+  });
+  test('the collector passes no outletId rather than the literal unknown', () => {
+    assert.ok(/enrichOutlet !== 'unknown' \? enrichOutlet : undefined/.test(block), 'unknown outlet must not reach the reader');
+  });
+  test('an all-caps page byline is stored in proper case (new-york-sun fixture), mixed case untouched', () => {
+    const f = manifest.fixtures.find((x) => x.outletId === 'new-york-sun');
+    assert.equal(quietly(() => readPageBylineForShow({ html: html(f), url: f.url, outletId: f.outletId }).criticName), 'Elysa Gardner');
+    const { properCase } = require('../../scripts/lib/page-byline-for-show.js');
+    assert.equal(properCase("MARY O'BRIEN-SMITH"), "Mary O'Brien-Smith");
+    assert.equal(properCase('Jesse Green'), 'Jesse Green');
+  });
+  test('excludeNames vetoes a cast name the page credits', () => {
+    const f = manifest.fixtures[0];
+    const base = quietly(() => readPageByline({ html: html(f), url: f.url, outletId: f.outletId }).criticName);
+    assert.equal(quietly(() => readPageBylineForShow({ html: html(f), url: f.url, outletId: f.outletId, excludeNames: [base] }).criticName), null);
+    assert.equal(quietly(() => readPageBylineForShow({ html: html(f), url: f.url, outletId: f.outletId }).criticName), base, 'wrapper must agree with the shared reader when nothing is excluded');
+  });
+});
+
+// BRO-7792: the sweep's concurrent workers each saved the CURRENT console.log and restored it, so one
+// worker could save the muted function and swallow every later line (the report) for good. One saved
+// original, restored by every worker.
+test('sweep-stored-bylines restores one saved console.log, never a per-worker copy of the current one', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/sweep-stored-bylines.js'), 'utf8');
+  assert.ok(/const realLog = console\.log;/.test(src), 'realLog not saved once');
+  assert.ok(/console\.log = realLog/.test(src), 'workers must restore realLog');
+  assert.ok(!/const log = console\.log; console\.log = quiet/.test(src), 'a worker saves the current console.log (race)');
+});
+
+// BRO-7792 class guard: a script that names a critic from a fetched page goes through the shared reader
+// (readPageByline / readPageBylineForShow), not extractAuthorFromHtml directly (which skips the outlet
+// rules: TheaterMania's visible author tag, BRO-7745). New direct callers fail here; the ones below are
+// the known remainder, each with why it is not converted yet. BRO-7798 converted the four backfill/replay scripts.
+test('no script reads a page byline with extractAuthorFromHtml directly (allowlist of known remainder)', () => {
+  const ALLOWED = new Map([
+    ['scripts/sweep-stored-bylines.js', 'diagnostic: records every reader side by side'],
+    ['scripts/lib/game-day/simulated-opening-night.js', 'game-day simulation'],
+    ['scripts/lib/page-byline.js', 'the shared reader itself'],
+    ['scripts/lib/page-byline-for-show.js', 'the shared reader wrapper'],
+  ]);
+  const found = [];
+  const walk = (d) => {
+    for (const e of fs.readdirSync(path.join(ROOT, d), { withFileTypes: true })) {
+      const rel = `${d}/${e.name}`;
+      if (e.isDirectory()) { if (!/node_modules|fixtures/.test(e.name)) walk(rel); continue; }
+      if (!/\.js$/.test(e.name) || /\.test\./.test(e.name) || rel === 'scripts/lib/content-quality.js') continue;
+      const src = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+      // BRO-7798: a call, or an import / alias of it (`{ extractAuthorFromHtml: x } = require(...)`).
+      if (/\bextractAuthorFromHtml\(/.test(src) || /\{[^}]*\bextractAuthorFromHtml\b[^}]*\}\s*=\s*require\(/.test(src)) found.push(rel);
+    }
+  };
+  walk('scripts');
+  const extra = found.filter((f) => !ALLOWED.has(f));
+  assert.deepEqual(extra, [], `direct extractAuthorFromHtml callers (use readPageByline / readPageBylineForShow): ${extra.join(', ')}`);
 });

@@ -595,6 +595,7 @@ module.exports = {
   isCacheKeyRelevant,
   decideGateDelta,
   computeRerunScope,
+  readGateFiles,
   decideAllGates,
   redGates,
   firstFailingGate,

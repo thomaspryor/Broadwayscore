@@ -211,7 +211,10 @@ function recordNew(ledgerDir, { showId, night, kind, items, now = Date.now(), pe
 /** The one command that puts a URL in front of the running lane (BRO-7741 inbox), plus the regular-path fallback. */
 // The BRO-7741 lane inbox, when it is on this checkout; until then the regular ingest workflow is the one command.
 const INBOX_SCRIPT = path.join(__dirname, '..', '..', 'opening-night-lane-inbox.js');
+// BRO-7793: a Google News wrapper has no publisher URL the lane can fetch (the inbox accepts it, the runner then drops it).
+const isGoogleWrapper = (url) => /^https?:\/\/news\.google\.com\//i.test(String(url || ''));
 function ingestCommand(showId, item, { inbox = fs.existsSync(INBOX_SCRIPT) } = {}) {
+  if (isGoogleWrapper(item.url)) return { primary: null, fallback: null, wrapper: true };
   const q = (v) => `'${String(v).replace(/'/g, `'\\''`)}'`; // copy-paste safe even if the URL holds a quote
   const outlet = item.outletId ? ` --outlet=${item.outletId}` : '';
   // Through the queue cap (workflow-queue-cap-coverage); --priority because this is opening-night work.
@@ -227,12 +230,12 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHea
   for (const n of nearMisses) {
     const c = ingestCommand(show.id, n);
     const page = n.pageNamesShow === true ? ' (the page names the show)' : n.pageNamesShow === false ? ' (the page did not name the show with its venue or cast)' : '';
-    lines.push(`NEAR-MISS (${n.outletId || 'known outlet'}, via ${n.adapter}): ${n.url}${page}`, `  headline: ${n.title || '(none)'}`, `  partial match: ${(n.signals || []).join(', ')}; the strict title matcher refused it`, `  add it: \`${c.primary}\``, ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
+    lines.push(`NEAR-MISS (${n.outletId || 'known outlet'}, via ${n.adapter}): ${n.url}${page}`, `  headline: ${n.title || '(none)'}`, `  partial match: ${(n.signals || []).join(', ')}; the strict title matcher refused it`, ...(c.wrapper ? ['  open the Google link, then add the outlet\'s own article URL with opening-night-lane-inbox.js add'] : [`  add it: \`${c.primary}\``]), ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
   }
   for (const g of gaps) {
     const c = ingestCommand(show.id, g);
     const why = windowMismatch(g) ? `${g.aggregatorCited ? 'an aggregator cites it' : 'the outlet lists it as a review'} but it is dated ${Number.isFinite(g.rejectedDayOffset) ? `${g.rejectedDayOffset > 0 ? '+' : ''}${g.rejectedDayOffset} day(s) from` : 'outside'} tonight: check the show's openingDate${g.rejectedDayOffset < 0 ? ' (or it is a preview-period review or another production)' : ''}` : g.rejectedFor ? `lane refused it: ${g.rejectedFor}` : 'lane has not dated it yet: backlog or a blocked page';
-    lines.push(`${windowMismatch(g) ? 'WINDOW-MISMATCH' : 'GAP'} (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${why})`, `  add it: \`${c.primary}\``, ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
+    lines.push(`${windowMismatch(g) ? 'WINDOW-MISMATCH' : 'GAP'} (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${why})`, ...(c.wrapper ? ['  open the Google link, then add the outlet\'s own article URL with opening-night-lane-inbox.js add'] : [`  add it: \`${c.primary}\``]), ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
   }
   for (const h of sourceHealth) {
     if (h.kind === 'fetch-failing') lines.push(`SOURCE FAILING (${h.adapter || 'lane'}${h.outletId ? `, ${h.outletId}` : ''}): ${h.url}`, `  ${h.fails} reads in a row failed (last: ${h.lastError || 'unknown'}); last good read ${h.lastOkAt || 'never tonight'}. Reviews it lists are not being seen.`);
@@ -243,6 +246,7 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHea
 }
 
 module.exports = {
+  isGoogleWrapper,
   GAP_AFTER_MS, WINDOW_MISMATCH_MAX_DAYS, MAX_NEAR_MISSES_PER_ADAPTER, MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER, INTENDED_REJECTIONS,
   leadTitle, leadWord, nearMissSignals, windowMismatch, pageNamesShow, gapCandidates, recordNew, signalsPath, ingestCommand, formatPressSignals,
 };

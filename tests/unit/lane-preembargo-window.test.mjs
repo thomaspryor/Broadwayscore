@@ -148,11 +148,11 @@ test('nightTimes: default unchanged; on starts earlier and runs the longer windo
   const off = af.nightTimes(show, '2026-11-11');
   assert.equal(off.laneStartMs, CLOSE);
   assert.equal(off.watchEndMs, CLOSE + (af.LANE_WINDOW_MIN + af.LEASE_TTL_MIN) * MIN);
-  const on = af.nightTimes(show, '2026-11-11', { preembargo: true });
+  const on = af.nightTimes(show, '2026-11-11', { preembargo: true, dropProfiles: null }); // no profile: the market-default start (observed start: lane-guard-observed-drop.test.mjs)
   assert.equal(on.laneStartMs, OPEN);
   assert.equal(on.watchEndMs, OPEN + (af.LANE_WINDOW_PREEMBARGO_MIN + af.LEASE_TTL_MIN) * MIN);
   assert.ok(on.watchEndMs >= off.watchEndMs - 55 * MIN, 'the tail is at most 55 min shorter');
-  const wait = af.planNightWait({ show, night: '2026-11-11', now: new Date(OPEN - 10 * MIN), preembargo: true });
+  const wait = af.planNightWait({ show, night: '2026-11-11', now: new Date(OPEN - 10 * MIN), preembargo: true, dropProfiles: null });
   assert.equal(wait.action, 'sleep-go'); assert.equal(wait.sleepMin, 10);
   assert.equal(af.planNightWait({ show, night: '2026-11-11', now: new Date(OPEN - 10 * MIN) }).sleepMin, 70);
 });

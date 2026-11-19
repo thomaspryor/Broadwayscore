@@ -1661,7 +1661,7 @@ function urlLooksLikeReview(url, showTitle) {
   if (lower.includes('/page/') && !lower.includes('talkinbroadway.com/page/')) return false;
   if (lower.includes('ticket') && !lower.includes('review')) return false;
 
-  if (urlTitleWordsPass(lower, showTitle)) return true;
+  if (urlTitleWordsPass(lower, showTitle)) return !urlNamesOtherArticle(url, showTitle);
 
   // Short-title fallback for comma-subtitled shows ("Beaches, A New Musical" → "Beaches").
   // Outlet URL slugs typically carry only the short title ("/beaches-review-broadway.html").
@@ -1685,11 +1685,14 @@ function urlLooksLikeReview(url, showTitle) {
       .replace(/[^a-z0-9\s-]/g, '')
       .split(/\s+/)
       .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
-    if (shortMeaningfulWords.length > 0 && urlTitleWordsPass(lower, shortTitle)) return true;
+    if (shortMeaningfulWords.length > 0 && urlTitleWordsPass(lower, shortTitle)) return !urlNamesOtherArticle(url, showTitle);
   }
 
   return false;
 }
+
+// BRO-7785: urlNamesOtherArticle lives in show-names.js beside slugOtherStagingCue (one URL identity check).
+const { urlNamesOtherArticle } = require('./show-names');
 
 /**
  * Outlets whose article URLs carry NO human-readable slug — the path is an opaque
@@ -7172,6 +7175,7 @@ function isSyndicatedDuplicateActive(data, filePath) {
 }
 
 module.exports = {
+  urlNamesOtherArticle,
   isSyndicatedDuplicateActive,
   isUrlCorrectedAwaitingFreshScore,
   isRejectedByReasonExclusion,

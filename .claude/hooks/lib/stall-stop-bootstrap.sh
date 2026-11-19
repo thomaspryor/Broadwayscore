@@ -41,7 +41,7 @@ case "$mode" in
     S="$HOME_DIR/.bsc-hooks"
     command -v git >/dev/null 2>&1 || { msg "BRO-7194: git missing, stall Stop gate NOT installed."; exit 0; }
     if [ -d "$S/.git" ]; then
-      git -C "$S" sparse-checkout set --no-cone '/.claude/' '/scripts/' '/package.json' 2>/dev/null; timeout 30 git -C "$S" fetch -q --depth 1 origin main 2>/dev/null && timeout 60 git -C "$S" reset -q --hard FETCH_HEAD 2>/dev/null
+      git -C "$S" sparse-checkout set --no-cone '/.claude/' '/scripts/' '/package.json' 2>/dev/null; timeout 30 git -C "$S" fetch -q --depth 1 origin main 2>/dev/null && timeout 60 git -C "$S" reset -q --hard FETCH_HEAD 2>/dev/null  # depth1-fetch-ok: separate ~/.bsc-hooks clone, reset to FETCH_HEAD
     else
       # Clone into a private temp dir, then rename: a concurrent session never sees a half-made
       # checkout and never has it deleted under it. Loser of the rename race just discards its copy.

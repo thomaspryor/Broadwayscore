@@ -28,7 +28,7 @@ test('embargoInfo: market default is assumed, a valid reviewEmbargoAt is not', (
 });
 
 test('nightTimes: an assumed embargo starts the lane at embargo - 90 min with the longer window; a confirmed one keeps embargo - 30', () => {
-  const a = af.nightTimes(BMG, '2026-11-17');
+  const a = af.nightTimes(BMG, '2026-11-17', { dropProfiles: null }); // no profile = the market-default start; the observed start is tested in lane-guard-observed-drop.test.mjs
   assert.equal(a.laneStartMs, Z('2026-11-18T01:30:00Z'));
   assert.equal(a.guard.reason, 'assumed-embargo');
   assert.equal(a.watchEndMs, a.laneStartMs + (af.LANE_WINDOW_PREEMBARGO_MIN + af.LEASE_TTL_MIN) * MIN);

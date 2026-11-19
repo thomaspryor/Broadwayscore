@@ -18,7 +18,7 @@ const src = { sources: SOURCES, londonSources: LONDON };
 
 test('serp-kind source is never used, even when the other table has a free one', () => {
   assert.equal(census.censusSourceFor('nytimes'), null);
-  assert.equal(census.censusSourceFor('slantmagazine'), null);
+  assert.ok(census.censusSourceFor('slantmagazine'), 'BRO-7812: Slant moved off paid search to a proxy-read sitemap');
   assert.equal(census.censusSourceFor('paid', { sources: SOURCES, londonSources: {} }), null);
   assert.equal(census.shouldUseCensus({ outletId: 'paid', hasFeed: false, lookbackDays: 60, ...src, sources: SOURCES, londonSources: {} }).use, false);
   assert.ok(!census.FREE_KINDS.has('serp'));

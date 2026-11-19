@@ -60,6 +60,7 @@ function parseArgs(argv) {
 // push is committed by land.yml after the push event fires.
 function fetchOriginLandings(repoDir) {
   try {
+    // depth1-fetch-ok: CI-only (check-direct-push-to-main.yml, land.yml), a throwaway checkout (BRO-7789)
     runGitOrThrow(['fetch', '--depth=1', '-q', 'origin', 'main'], { cwd: repoDir, stdio: 'ignore', timeout: 90_000 });
   } catch {
     return null;

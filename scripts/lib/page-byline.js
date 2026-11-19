@@ -73,4 +73,15 @@ function bylineConflictStands(writtenName, conflict) {
   return normalizeCritic(a) !== normalizeCritic(b) && !sameCriticName(a, b);
 }
 
-module.exports = { readPageByline, bylineConflictStands };
+/**
+ * Did a fetch return the article at all? A captcha, bot wall or consent page has no article text,
+ * and a reader finding "nobody" on it says nothing about the page's byline. The drift check and the
+ * stored-byline sweep both use this so neither reads an interstitial as "the page names nobody".
+ * textLength undefined (caller did not measure) counts as read.
+ */
+const MIN_ARTICLE_CHARS = 500;
+function articleWasRead(textLength) {
+  return textLength == null || textLength >= MIN_ARTICLE_CHARS;
+}
+
+module.exports = { readPageByline, bylineConflictStands, articleWasRead, MIN_ARTICLE_CHARS };

@@ -103,8 +103,10 @@ const { getTotalAudienceReviews, hasEnoughAudienceReviews, hasFullConfidenceAudi
 
 test('review gates share scoring eligibility for volume, market, suppression and recency', () => {
   const cases = [
-    ['theatr', { score: 100, reviewCount: 9 }, {}, false],
-    ['theatr', { score: 100, reviewCount: 10 }, {}, true],
+    // Theatr counts at any volume (owner decision 2026-11-18, BRO-7805).
+    ['theatr', { score: 100, reviewCount: 0 }, {}, false],
+    ['theatr', { score: 100, reviewCount: 1 }, {}, true],
+    ['theatr', { score: 100, reviewCount: 9 }, {}, true],
     ['reddit', { score: 80, reviewCount: 49 }, {}, false],
     ['reddit', { score: 80, reviewCount: 50 }, {}, true],
     ['reddit', { score: 80, reviewCount: 50 }, { category: 'tour' }, false],
@@ -145,7 +147,7 @@ test('excluded sources cannot lift a small sample over the grade or ranking floo
   for (const count of [9, 10, 14, 15]) {
     const sources = {
       mezzanine: { score: 80, reviewCount: count },
-      theatr: { score: 100, reviewCount: 9 },
+      theatr: { score: 100, reviewCount: 9, suppressed: true },
       reddit: { score: 80, reviewCount: 49 },
       broadwayCom: { score: 80, reviewCount: 500 },
     };

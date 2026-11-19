@@ -26,11 +26,15 @@ const isLondonMarket = (category) => LONDON_CATEGORIES.has(category);
 const MIN_REDDIT_ITEMS = 50;
 const REDDIT_RECENCY_YEARS = 3;
 const MAX_SINGLE_SOURCE_WEIGHT = 0.80;
-// Theatr is a 3-way thumb vote (like / mixed / dislike). Below 10 votes the
-// score is statistically meaningless (single voter = 100 or 0). Skip it from
-// both combined-score weighting AND display. Matches Reddit's MIN_REDDIT_ITEMS
-// philosophy: each source needs minimum signal before it counts.
-const MIN_THEATR_VOTES = 10;
+// A source needs this many reviews to absorb weight the 80% ceiling sheds.
+const CEILING_RECIPIENT_MIN = 10;
+// Theatr is a 3-way thumb vote (like / mixed / dislike). Owner decision
+// 2026-11-18 (BRO-7805): every source's votes count and display, however few.
+// Small samples are handled by the cross-source grade minimum
+// (src/config/audience-grade.json minReviews) and by volume weighting, which
+// gives a 3-vote source almost no weight. Blue Man Group's 7 Theatr votes were
+// hidden by the old 10-vote floor.
+const MIN_THEATR_VOTES = 1;
 
 // Reddit scores average ~5 points below Mezzanine (the most neutral source) on the same
 // shows — a systematic scale difference, not a signal difference. Calibrating to
@@ -159,11 +163,15 @@ function calculateCombinedScore(sources, showInfo) {
   const totalVolume = active.reduce((sum, s) => sum + s.volume, 0);
   const weighted = active.map(s => ({ ...s, weight: s.volume / totalVolume }));
 
-  // Apply weight ceiling — no single source >80%
+  // Apply weight ceiling — no single source >80%. The excess goes only to
+  // other sources with at least CEILING_RECIPIENT_MIN reviews: handing it to a
+  // 1-vote source gave that vote ~20% of the grade (BRO-7805: Lost in Del
+  // Valle moved Shrugging -> Liking on one Theatr vote). With no such
+  // recipient the ceiling does not apply and weights stay proportional.
   const max = weighted.reduce((a, b) => a.weight > b.weight ? a : b);
-  if (max.weight > MAX_SINGLE_SOURCE_WEIGHT) {
+  const others = weighted.filter(w => w.name !== max.name && w.volume >= CEILING_RECIPIENT_MIN);
+  if (max.weight > MAX_SINGLE_SOURCE_WEIGHT && others.length > 0) {
     const excess = max.weight - MAX_SINGLE_SOURCE_WEIGHT;
-    const others = weighted.filter(w => w.name !== max.name);
     const othersTotal = others.reduce((sum, w) => sum + w.weight, 0);
     max.weight = MAX_SINGLE_SOURCE_WEIGHT;
     for (const w of others) {

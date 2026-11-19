@@ -35,6 +35,9 @@ const LISTING_STOP = new Set(['the', 'and', 'for', 'with', 'from', 'musical', 'p
 const words = (t) => String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter((w) => w.length >= 3);
 function headlineNamesShow(headline, show) {
   const { registryShowTitles } = require('./show-names');
+  // BRO-7785: the lane's one other-staging test, over every name (billed, main, press titles), so a headline the lane
+  // refuses ("...: A Live Radio Play at Stages Houston") is refused here too.
+  if (require('./rss-discovery').headlineNamesOtherStaging(headline, show.title, { akaTitles: searchTitles(show).slice(1) })) return false;
   // akaTitles: [] here: press titles go through headlineNamesPressTitle's own rule below.
   return titleMatchesShow(headline, show.title, { fuzzy: true, akaTitles: [], mainTitle: true, allShowTitles: registryShowTitles() })
     || headlineNamesPressTitle(headline, show);

@@ -8,24 +8,60 @@
 
 const PARSE_BASE = 'https://api.theaterdiary.com/parse/classes';
 
+/** A failure on theaterdiary.com's side (network error, 5xx, 429, a
+ *  non-JSON body). Third-party and transient: the caller answers with the
+ *  handled {ok:false} channel, not a 500 (BRO-7733, Sentry 7815060800). */
+function upstreamError(message, cause) {
+  const err = new Error(message, cause ? { cause } : undefined);
+  err.upstreamFailed = true;
+  return err;
+}
+
 async function queryParse(className, body, appId, sessionToken) {
-  const res = await fetch(`${PARSE_BASE}/${className}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      'X-Parse-Application-Id': appId,
-      'X-Parse-Session-Token': sessionToken,
-    },
-    body: JSON.stringify(body),
-  });
+  let res;
+  try {
+    res = await fetch(`${PARSE_BASE}/${className}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'X-Parse-Application-Id': appId,
+        'X-Parse-Session-Token': sessionToken,
+      },
+      body: JSON.stringify(body),
+    });
+  } catch (e) {
+    throw upstreamError(`Mezzanine Parse API unreachable: ${e instanceof Error ? e.message : String(e)}`, e);
+  }
   if (res.status === 401 || res.status === 403) {
     const err = new Error(`Mezzanine auth failed (${res.status})`);
     err.authFailed = true;
     throw err;
   }
-  if (!res.ok) throw new Error(`Mezzanine Parse API HTTP ${res.status}`);
-  const json = await res.json();
+  if (!res.ok) {
+    const msg = `Mezzanine Parse API HTTP ${res.status}`;
+    if (res.status >= 500 || res.status === 429) throw upstreamError(msg);
+    throw new Error(msg); // other 4xx: our request is malformed, a real bug that must reach Sentry
+  }
+  let json;
+  try {
+    json = await res.json();
+  } catch (e) {
+    throw upstreamError('Mezzanine Parse API returned a non-JSON body', e);
+  }
   return json.results || [];
+}
+
+/**
+ * Map an error caught by the edge function to its response. Per the error
+ * contract in index.ts, handled failures (upstream auth, upstream outage) are
+ * HTTP 200 {ok:false}; only our own bugs stay a 500. A 500 here is reported
+ * to Sentry by the browser's instrumentedFetch as "UGC functions
+ * mezzanine-search failed (500)", so an upstream outage must not reach it.
+ */
+export function errorOutcome(e) {
+  if (e && e.authFailed) return { status: 200, body: { ok: false, error: 'upstream_auth' } };
+  if (e && e.upstreamFailed) return { status: 200, body: { ok: false, error: 'upstream_unavailable' } };
+  return { status: 500, body: { ok: false, error: 'internal' } };
 }
 
 /** Search Shows by normalized (searchableName) title substring. */
@@ -49,15 +85,28 @@ export function findProductionsForShow(showObjectId, appId, sessionToken) {
 /** GET a single Production by objectId (used by the exact-mezzShowId path
  *  when the client already knows which Show to look up). */
 export async function getShow(showObjectId, appId, sessionToken) {
-  const res = await fetch(`${PARSE_BASE}/Show/${showObjectId}`, {
-    headers: { 'X-Parse-Application-Id': appId, 'X-Parse-Session-Token': sessionToken },
-  });
+  let res;
+  try {
+    res = await fetch(`${PARSE_BASE}/Show/${showObjectId}`, {
+      headers: { 'X-Parse-Application-Id': appId, 'X-Parse-Session-Token': sessionToken },
+    });
+  } catch (e) {
+    throw upstreamError(`Mezzanine Parse API unreachable: ${e instanceof Error ? e.message : String(e)}`, e);
+  }
   if (res.status === 401 || res.status === 403) {
     const err = new Error(`Mezzanine auth failed (${res.status})`);
     err.authFailed = true;
     throw err;
   }
   if (res.status === 404) return null;
-  if (!res.ok) throw new Error(`Mezzanine Parse API HTTP ${res.status}`);
-  return res.json();
+  if (!res.ok) {
+    const msg = `Mezzanine Parse API HTTP ${res.status}`;
+    if (res.status >= 500 || res.status === 429) throw upstreamError(msg);
+    throw new Error(msg); // other 4xx: our request is malformed, a real bug that must reach Sentry
+  }
+  try {
+    return await res.json();
+  } catch (e) {
+    throw upstreamError('Mezzanine Parse API returned a non-JSON body', e);
+  }
 }

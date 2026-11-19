@@ -52,6 +52,21 @@ describe('TheaterMania: the visible byline beats the JSON-LD editor slug', () =>
     assert.equal(extractAuthorFromHtml(old, '', { url: TM_URL, theaterManiaCritics: TM_ROSTER }), null);
     assert.equal(extractAuthorFromHtml(old, 'By Kenji Fujishima\nThe review opens here.', { url: TM_URL, theaterManiaCritics: TM_ROSTER }), 'Kenji Fujishima');
   });
+  // The opening-night lane reads bylines through its own extractMeta port (inline-score.js), not
+  // extractAuthorFromHtml. Pin the Blue Man Group night on that path too, so a lane that skipped the
+  // TheaterMania author tag (the 2026-11-17 failure) goes red here, not on the next press night.
+  test('the opening-night lane extractMeta credits Dan Rubins on the Blue Man Group page', () => {
+    const { realFetchPorts } = require('../../scripts/lib/opening-night-lane/inline-score.js');
+    const lane = realFetchPorts({ fetchPage: async () => ({}) });
+    const l = console.log, w = console.warn; console.log = () => {}; console.warn = () => {};
+    let meta; try { meta = lane.extractMeta(TM_PAGE, TM_URL, { outletId: 'theatermania' }); } finally { console.log = l; console.warn = w; }
+    assert.equal(meta.criticName, 'Dan Rubins');
+    // and with no author area at all, the lane credits nobody rather than the posting editor
+    const old = `<html><head>${TM_JSONLD}</head><body><h1>x</h1></body></html>`;
+    console.log = () => {}; console.warn = () => {};
+    try { meta = lane.extractMeta(old, TM_URL, { outletId: 'theatermania' }); } finally { console.log = l; console.warn = w; }
+    assert.notEqual(meta.criticName, 'David Gordon');
+  });
 });
 
 const ATD_URL = 'https://www.allthatdazzles.co.uk/post/review-memoriam-southwark-playhouse-borough';

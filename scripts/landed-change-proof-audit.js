@@ -1,0 +1,256 @@
+#!/usr/bin/env node
+// BRO-7790: daily landed-change proof audit (CLI). Pure logic + verdict meanings: scripts/lib/landed-change-proof.mjs.
+//
+// Usage:
+//   node scripts/landed-change-proof-audit.js [--date=YYYY-MM-DD] [--days=3] [--dry-run] [--json] [--no-safe-run] [--no-dispatch]
+//   --date      audit day (default: today UTC). Replays use runs created before <date>T09:00Z (when the cron lands).
+//   --days      window of landed days before the audit day (default 3: D-1..D-3)
+//   --dry-run   print only: no ledger write, no Linear card, no safe runs (prints what it would run)
+//   --sha=a,b   only these commits (prefixes); with --expect-proven exits 1 unless each is proven/deployed/waiting
+//
+// Evidence comes from git (origin/main), the Actions runs API (per workflow, so no 1000-row cap is hit silently:
+// an incomplete list makes the commit 'unknown', never 'not_run'), and Vercel via check-prod-deploy.js --json.
+// Writes: data/audit/landed-change-proof.jsonl (append-only), and ONE Linear card per day for misses (comment on the
+// open "Landed changes without run proof" card when one exists).
+'use strict';
+const fs = require('fs');
+const path = require('path');
+const { execFileSync, spawnSync } = require('child_process');
+
+const ROOT = path.resolve(__dirname, '..');
+if (require('./lib/cli-help.js').hasHelpFlag(process.argv.slice(2))) {
+  console.log('usage: node scripts/landed-change-proof-audit.js [--date=YYYY-MM-DD] [--days=3] [--dry-run] [--json] [--no-safe-run] [--sha=a,b --expect-proven]\nSee the header comment of this file and scripts/lib/landed-change-proof.mjs for verdict meanings.');
+  process.exit(0);
+}
+// Local runs: read VERCEL_TOKEN from .env (CI passes it via env). Only keys not already set; nothing printed.
+try {
+  for (const line of fs.readFileSync(path.join(ROOT, '.env'), 'utf8').split('\n')) {
+    const m = line.match(/^\s*(VERCEL_TOKEN)\s*=\s*"?([^"\n]*)"?\s*$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].trim();
+  }
+} catch { /* no .env */ }
+const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+const CARD_TITLE = 'Landed changes without run proof';
+
+function arg(name, dflt = null) {
+  const a = process.argv.find((x) => x === `--${name}` || x.startsWith(`--${name}=`));
+  if (!a) return dflt;
+  return a.includes('=') ? a.slice(a.indexOf('=') + 1) : true;
+}
+const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+
+function readCommits(since, until) {
+  const out = git(['log', 'origin/main', '--no-merges', `--since=${since}`, `--until=${until}`, '--format=%x1e%H%x1f%cI%x1f%an%x1f%ae%x1f%s%x1f%B%x1f', '--name-only']);
+  return out.split('\x1e').filter((c) => c.trim()).map((c) => {
+    const [sha, landedAt, authorName, authorEmail, subject, body, rest] = c.split('\x1f');
+    return { sha, landedAt: new Date(landedAt).toISOString(), authorName, authorEmail, subject, body, files: String(rest || '').split('\n').map((s) => s.trim()).filter(Boolean) };
+  });
+}
+
+function positions(since) {
+  const shas = git(['rev-list', '--first-parent', 'origin/main', `--since=${since}`]).split('\n').filter(Boolean).reverse();
+  const firstParent = new Map(shas.map((s, i) => [s, i]));
+  const pos = new Map(firstParent);
+  // Commits a merge brought in sit at the merge's position: any run at or after the merge contains them.
+  for (const m of git(['rev-list', '--first-parent', '--merges', 'origin/main', `--since=${since}`]).split('\n').filter(Boolean)) {
+    for (const c of git(['rev-list', `${m}^1..${m}^2`]).split('\n').filter(Boolean)) if (!pos.has(c)) pos.set(c, pos.get(m));
+  }
+  return { pos, firstParent };
+}
+
+let ghCalls = 0; // every GitHub API call this run makes (pages included)
+function ghJson(url) {
+  ghCalls++;
+  return JSON.parse(execFileSync('gh', ['api', url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }));
+}
+
+/** Completed runs of one workflow created in [start, end). -> { runs, complete } */
+function workflowRuns(wf, start, end, depth = 0) {
+  const runs = [];
+  let total = 0;
+  for (let page = 1; page <= 10; page++) {
+    const body = ghJson(`repos/${REPO}/actions/workflows/${encodeURIComponent(wf)}/runs?created=${start}..${end}&status=completed&per_page=100&page=${page}`);
+    total = body.total_count;
+    for (const r of body.workflow_runs || []) runs.push({ id: r.id, workflow: wf, event: r.event, conclusion: r.conclusion, headSha: r.head_sha, createdAt: r.created_at });
+    if (runs.length >= total || !(body.workflow_runs || []).length) break;
+  }
+  if (runs.length >= total) return { runs, complete: true };
+  // More runs than one query returns (*/5 crons): split the window in half, at most 3 times.
+  if (depth >= 3) return { runs, complete: false };
+  const mid = new Date((Date.parse(start) + Date.parse(end)) / 2).toISOString().replace(/\.\d+Z$/, 'Z');
+  const a = workflowRuns(wf, start, mid, depth + 1);
+  const b = workflowRuns(wf, mid, end, depth + 1);
+  return { runs: [...a.runs, ...b.runs], complete: a.complete && b.complete };
+}
+
+function prodSha() {
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/check-prod-deploy.js'), '--json'], { cwd: ROOT, encoding: 'utf8', timeout: 60000 });
+  try { return JSON.parse(r.stdout).deployedSha || null; } catch { return null; }
+}
+
+function readLedger(file) {
+  if (!fs.existsSync(file)) return [];
+  return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+}
+
+function safeRun(cmd, isUsageOnlyOutput) {
+  // Minimal env: no GitHub, Linear, provider or email credentials reach the child (plan review P0).
+  const env = { PATH: process.env.PATH, HOME: process.env.HOME, CI: process.env.CI || '', NODE_ENV: 'production' };
+  const [bin, ...args] = cmd.split(' ');
+  const r = spawnSync(bin, args, { cwd: ROOT, env, encoding: 'utf8', timeout: 120000 });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  const usageOnly = isUsageOnlyOutput(out);
+  return { cmd, exit: r.status, ok: r.status === 0 && !usageOnly, usageOnly, tail: out.trim().split('\n').slice(-3).join(' | ').slice(0, 300) };
+}
+
+function fileCard(body, auditDay, count) {
+  const run = (args) => spawnSync('node', [path.join(ROOT, 'scripts/linear-brain.js'), ...args], { cwd: ROOT, encoding: 'utf8', timeout: 120000 });
+  let open = null;
+  try {
+    const f = JSON.parse(run(['find', CARD_TITLE, '--exact-title']).stdout || 'null');
+    if (f && f.title === CARD_TITLE && !['completed', 'canceled'].includes(f.stateType)) open = f.identifier;
+  } catch { /* none open */ }
+  const r = open
+    ? run(['update', open, '--comment', body])
+    : run(['create', CARD_TITLE, '--dispatch', '--notes', body]);
+  const id = open || ((r.stdout || '').match(/BRO-\d+/) || [])[0] || null;
+  console.log(`[landed-proof] card ${open ? 'comment on' : 'created'} ${id || '(unknown id)'} for ${count} change(s) from ${auditDay} (exit ${r.status})`);
+  if (r.status !== 0) console.error(String(r.stderr || '').slice(0, 500));
+  return id;
+}
+
+async function main() {
+  const lib = await import('./lib/landed-change-proof.mjs');
+  const { loadWorkflows } = await import('./lib/live-run-stop.mjs');
+  const dryRun = !!arg('dry-run');
+  const auditDay = String(arg('date') || new Date().toISOString().slice(0, 10));
+  const days = Number(arg('days', 3));
+  const today = new Date().toISOString().slice(0, 10);
+  const asOf = auditDay === today ? new Date().toISOString().replace(/\.\d+Z$/, 'Z') : `${auditDay}T09:00:00Z`;
+  const windowStart = `${lib.dayMinus(auditDay, days)}T00:00:00Z`;
+  const windowEnd = `${auditDay}T00:00:00Z`;
+
+  const index = lib.workflowScriptIndex(loadWorkflows(ROOT));
+  const exists = (p) => fs.existsSync(path.join(ROOT, p));
+  const libIndex = lib.libWorkflowIndex(index, (p) => fs.readFileSync(path.join(ROOT, p), 'utf8'), exists);
+  const only = arg('sha');
+  // --sha (a card's VERIFY line): look the commits up over the last 14 days, whatever --days says, and fail on a
+  // prefix that matches nothing, so a VERIFY over commits outside the window cannot pass by checking zero rows.
+  let commits = readCommits(typeof only === 'string' ? `${lib.dayMinus(auditDay, 14)}T00:00:00Z` : windowStart, typeof only === 'string' ? asOf : windowEnd);
+  if (typeof only === 'string') {
+    const ps = only.split(',').filter(Boolean);
+    commits = commits.filter((c) => ps.some((p) => c.sha.startsWith(p)));
+    const missing = ps.filter((p) => !commits.some((c) => c.sha.startsWith(p)));
+    if (missing.length) { console.log(`[landed-proof] --sha not found on origin/main in the last 14 days: ${missing.join(', ')}`); if (arg('expect-proven')) process.exitCode = 1; }
+  }
+  const { pos: posOf, firstParent: headPos } = positions(`${lib.dayMinus(auditDay, typeof only === 'string' ? 16 : days + 2)}T00:00:00Z`);
+  const runsFrom = typeof only === 'string' ? `${lib.dayMinus(auditDay, 14)}T00:00:00Z` : windowStart;
+
+  // Runs are fetched per workflow on first use and cached; a lib file stops at its first proving workflow. Hard budget
+  // on list calls (the CI token's hourly quota is shared with every other workflow): past it, a workflow is
+  // 'incomplete' and its files read 'unknown', never 'not_run'.
+  const LIST_BUDGET = Number(process.env.LANDED_PROOF_API_BUDGET || 300);
+  const runCache = new Map();
+  const incomplete = new Set();
+  const runsFor = (wf) => {
+    if (runCache.has(wf)) return runCache.get(wf);
+    let out = [];
+    if (ghCalls >= LIST_BUDGET) incomplete.add(wf);
+    else {
+      try { const r = workflowRuns(wf, runsFrom, asOf); out = r.runs.filter((x) => x.createdAt < asOf); if (!r.complete) incomplete.add(wf); }
+      catch (e) { incomplete.add(wf); console.error(`[landed-proof] WARN runs for ${wf} unreadable: ${String(e.message).split('\n')[0].slice(0, 160)}`); }
+    }
+    runCache.set(wf, out);
+    return out;
+  };
+
+  const deployed = commits.some((c) => c.files.some((f) => lib.classifyPath(f, { index, libIndex }).kind === 'src')) ? prodSha() : null;
+  const isDeployed = (sha) => {
+    if (!deployed) return null;
+    if (posOf.has(deployed) && posOf.has(sha)) return posOf.get(sha) <= posOf.get(deployed);
+    const r = spawnSync('git', ['merge-base', '--is-ancestor', sha, deployed], { cwd: ROOT });
+    return r.status === 0 ? true : r.status === 1 ? false : null;
+  };
+
+  // A green run whose jobs were all skipped ran nothing. One jobs call per run, cached, capped (then: unknown = counts).
+  const jobsSeen = new Map();
+  let jobCalls = 0;
+  const ranWork = (run) => {
+    if (!run.id) return null;
+    if (jobsSeen.has(run.id)) return jobsSeen.get(run.id);
+    if (jobCalls >= Number(process.env.LANDED_PROOF_JOBS_BUDGET || 150)) return null;
+    jobCalls++;
+    let v = null;
+    try { const j = ghJson(`repos/${REPO}/actions/runs/${run.id}/jobs?per_page=100`); v = (j.jobs || []).some((x) => x.conclusion === 'success'); } catch { v = null; }
+    jobsSeen.set(run.id, v);
+    return v;
+  };
+  const rows = commits.map((c) => lib.auditCommit(c, { index, libIndex, auditDay, runsFor, incomplete, posOf, headPos, isDeployed, ranWork }))
+    .filter((r) => r.verdict !== 'exempt');
+
+  // Safe form: run vetted read-only commands for not-run scripts (only those the safe-form gate accepts).
+  const { explainUnsafeCheckCommand } = require('./lib/autonomous-triage-core.js');
+  const ran = new Map();
+  for (const r of rows.filter((x) => x.verdict === 'not_run')) {
+    for (const f of r.files.filter((x) => x.verdict === 'not_run')) {
+      const cmd = lib.safeRunCommand(f.file, explainUnsafeCheckCommand, exists);
+      if (!cmd) continue;
+      if (dryRun || arg('no-safe-run')) { f.safeRun = { cmd, wouldRun: true }; continue; }
+      if (!ran.has(cmd)) ran.set(cmd, safeRun(cmd, lib.isUsageOnlyOutput));
+      f.safeRun = ran.get(cmd);
+    }
+  }
+
+  // Dispatch (BRO-7796): a not-run file whose proving workflow is on the vetted no-spend allowlist gets that workflow
+  // dispatched by the `dispatch` job of landed-change-proof.yml (job-scoped actions: write). This step only plans it and
+  // marks the files, so the ledger dedupes and the follow-up card waits a night for the run. Nothing is dispatched here.
+  const dispatchWorkflows = [];
+  if (!arg('no-dispatch')) {
+    const plan = lib.dispatchPlan(rows, readLedger(path.join(ROOT, lib.LEDGER_PATH)));
+    for (const e of plan) {
+      dispatchWorkflows.push(e.workflow);
+      for (const { sha, file } of e.files) {
+        const f = rows.find((r) => r.sha === sha)?.files.find((x) => x.file === file);
+        if (f) f.dispatch = { workflow: e.workflow, requested: !dryRun && !!process.env.GITHUB_OUTPUT, wouldDispatch: dryRun || undefined };
+      }
+    }
+    if (dispatchWorkflows.length) console.log(`[landed-proof] ${dryRun ? 'would dispatch' : 'dispatch requested for'}: ${dispatchWorkflows.join(', ')}`);
+    if (!dryRun && process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `dispatch_workflows=${dispatchWorkflows.join(',')}\n`);
+  }
+
+  const s = lib.summarize(rows);
+  const byDay = {};
+  for (const r of rows) (byDay[r.landedDay] ||= []).push(r);
+  if (arg('json')) console.log(JSON.stringify({ auditDay, asOf, deployed, ghCalls, jobCalls, incomplete: [...incomplete], summary: s, rows }, null, 2));
+  else {
+    console.log(`[landed-proof] audit ${auditDay} (runs before ${asOf}), window ${windowStart}..${windowEnd}, prod ${deployed ? deployed.slice(0, 10) : 'UNKNOWN'}, ${runCache.size} workflows read, ${ghCalls} GitHub API calls (${jobCalls} jobs), ${incomplete.size} incomplete`);
+    for (const d of Object.keys(byDay).sort()) {
+      const x = lib.summarize(byDay[d]);
+      console.log(`  landed ${d}: ${x.total} code commits  verdicts ${JSON.stringify(x.verdicts)}  sources ${JSON.stringify(x.sources)}`);
+    }
+    console.log(`  all: ${s.total} code commits  ${JSON.stringify(s.verdicts)}`);
+    console.log(`  digest: ${lib.digestLine([...rows, lib.runMarker(auditDay)], { now: new Date(`${auditDay}T12:00:00Z`) })}`);
+  }
+
+  const ledger = path.join(ROOT, lib.LEDGER_PATH);
+  const existing = readLedger(ledger);
+  const follow = lib.needsFollowUp(rows, existing);
+  if (arg('expect-proven')) {
+    const bad = rows.filter((r) => !['proven', 'deployed', 'waiting'].includes(r.verdict));
+    for (const r of bad) console.log(`  NOT PROVEN ${r.sha.slice(0, 10)} ${r.verdict} ${r.subject}`);
+    if (bad.length) process.exitCode = 1;
+  }
+  if (dryRun) { (arg("json") ? console.error : console.log)(`[landed-proof] dry run: would append ${lib.newRows(existing, rows).length} row(s) + run marker, card for ${follow.length} change(s)`); return; }
+
+  if (follow.length && process.env.LINEAR_API_KEY) {
+    const id = fileCard(lib.cardBody(follow, { auditDay }), auditDay, follow.length);
+    for (const r of follow) r.card = id;
+  }
+  const add = lib.newRows(existing, [...rows, lib.runMarker(auditDay, { codeCommits: s.total, incomplete: incomplete.size, ghCalls })]);
+  fs.mkdirSync(path.dirname(ledger), { recursive: true });
+  if (add.length) fs.appendFileSync(ledger, add.map((r) => JSON.stringify(r)).join('\n') + '\n');
+  console.log(`[landed-proof] appended ${add.length} row(s) to ${lib.LEDGER_PATH}`);
+}
+
+// Explicit exit: an imported helper keeps a handle open and the process would otherwise never end (replay 2026-11-18).
+main().then(() => process.exit(process.exitCode || 0), (e) => { console.error(`[landed-proof] FAILED: ${e && e.stack || e}`); process.exit(1); });

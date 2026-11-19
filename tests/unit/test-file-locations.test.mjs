@@ -23,6 +23,7 @@ const EXTRA_DIRS = new Map([
   ['scripts/lib', "test.yml's tests=(scripts/lib/*.test.mjs) step and land's scripts-lib-tests gate"],
   ['tests/acceptance', 'card acceptance probes, run by their Linear card VERIFY line (e.g. BRO-5222)'],
   ['scripts/social-autopost', 'scripts/social-autopost/index.js (card VERIFY: node --test scripts/social-autopost/) and the collected wrapper scripts/social-autopost-notability.test.mjs (BRO-7413)'],
+  ['tests/integration', "test.yml's 'Simulated opening night (BRO-7781, advisory)' step (card VERIFY: node --test tests/integration/simulated-opening-night.test.mjs)"],
   ['tests/sql', 'SQL fixtures run by scripts/lib/*-roundtrip.mjs against Supabase'],
 ]);
 

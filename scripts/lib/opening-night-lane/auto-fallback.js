@@ -32,7 +32,7 @@ const { tokensMatchShow, standsDown } = require('./standdown');
 const MIN = 60 * 1000;
 const LEASE_TTL_MIN = 30;           // lease.js DEFAULT_TTL_MS
 const LANE_LEAD_MIN = 30;           // the lane starts this long before the embargo
-const LANE_WINDOW_PREEMBARGO_MIN = 275; // the same variable on: lane starts up to 60 min earlier, so the tail ends about 55 min sooner (the 355-min job cap leaves 5 min more window)
+const LANE_WINDOW_PREEMBARGO_MIN = 275; // the same variable on: lane starts up to 60 min earlier (BRO-7786: up to 150 min with an observed early drop, window length unchanged, so the tail then ends at embargo +95), so the tail ends about 55 min sooner (the 355-min job cap leaves 5 min more window)
 const LANE_WINDOW_MIN = 270;        // OPENING_NIGHT_LANE_WINDOW_MIN in opening-night-lane-live.yml (BRO-7740: only a confirmed embargo uses it; a market-default embargo takes the guard's start and 275 min, so the tail ends at embargo +185 instead of +240)
 const START_BEFORE_MIN = 20 * 60;   // starter window opens 20h before the embargo (covers opening day's crons)
 const START_AFTER_MIN = 60;         // and closes 1h after it; later than that the old path keeps the night
@@ -48,7 +48,7 @@ const leaseKey = (show, night) => `${show}|${night}`;
 const toMs = (t) => (t === undefined ? Date.now() : new Date(t).getTime());
 
 /** Lane start and the watchdog's window for one show-night, or null when the embargo is unknown. Pure. */
-function nightTimes(show, night, { preembargo = false } = {}) {
+function nightTimes(show, night, { preembargo = false, dropProfiles } = {}) {
   const embargoMs = Date.parse(embargoForNight(show, night) || '');
   if (!Number.isFinite(embargoMs)) return null;
   // BRO-7280: with the pre-embargo guard the lane starts earlier (never before embargo - 90 min) and runs a longer window
@@ -56,9 +56,41 @@ function nightTimes(show, night, { preembargo = false } = {}) {
   // embargo is only the market-default guess, so every caller (starter, night-wait, watchdog, driver) gets the same times.
   const pw = require('./preembargo-window');
   const mode = laneGuardMode(show, night, preembargo);
-  const laneStartMs = pw.laneStartMs({ embargoMs, timeZone: mode.enabled ? require('../local-date').tzForMarket(show.category || show.market) : null, enabled: mode.enabled });
+  // BRO-7786: with the guard on, the start follows the earliest drop observed on recorded nights for the market (embargo-drop-profiles.js);
+  // a guess basis (too few nights) keeps the 90-min market default. `drop` says which basis was used, for the lane log and alerts.
+  // Only for an ASSUMED embargo (the profile offsets are measured from the market hour, which a confirmed reviewEmbargoAt replaces).
+  const drop = mode.enabled && mode.reason === 'assumed-embargo' ? dropBasisFor(show, night, dropProfiles) : null;
+  const earliestDropMs = drop && drop.basis === 'observed' ? Date.parse(drop.fromAt) : undefined;
+  const tz = mode.enabled ? require('../local-date').tzForMarket(show.category || show.market) : null;
+  const defaultLaneStartMs = pw.laneStartMs({ embargoMs, timeZone: tz, enabled: mode.enabled }); // the start before any observed-drop adjustment (coverage windows anchor here)
+  const laneStartMs = pw.laneStartMs({ embargoMs, timeZone: tz, enabled: mode.enabled, earliestDropMs });
   const windowMin = mode.enabled ? LANE_WINDOW_PREEMBARGO_MIN : LANE_WINDOW_MIN;
-  return { embargoMs, laneStartMs, watchEndMs: laneStartMs + (windowMin + LEASE_TTL_MIN) * MIN, guard: mode };
+  return { embargoMs, laneStartMs, defaultLaneStartMs, watchEndMs: laneStartMs + (windowMin + LEASE_TTL_MIN) * MIN, guard: mode, drop };
+}
+
+let _benchProfiles;
+/** BRO-7786: the drop window for a show-night from recorded nights. `profiles` undefined = the tracked test bench (cached); null = none. Never throws. */
+function dropBasisFor(show, night, profiles) {
+  try {
+    const dp = require('../embargo-drop-profiles');
+    if (profiles === undefined) { if (_benchProfiles === undefined) _benchProfiles = dp.loadBenchProfiles(); profiles = _benchProfiles; }
+    const w = dp.dropWindow({ category: show.category || show.market, openingDate: night }, profiles);
+    return { basis: w.basis, n: w.n, fromAt: w.fromAt, earliestMin: w.earliestMin, text: w.text };
+  } catch { return { basis: 'none', n: 0, fromAt: null, earliestMin: null, text: 'drop profiles unavailable, so the market-hour default' }; }
+}
+
+/** BRO-7786: one line for the lane log and alert text: when the guard opens and which basis set it. Pure. */
+function guardStartText(t) {
+  if (!t || !t.guard || !t.guard.enabled) return 'pre-embargo guard off';
+  const at = new Date(t.laneStartMs).toISOString();
+  const d = t.drop || { basis: 'none' };
+  const leadMin = Math.round((t.embargoMs - t.laneStartMs) / MIN);
+  if (d.basis === 'observed' && t.laneStartMs < t.defaultLaneStartMs) {
+    if (leadMin >= require('./preembargo-window').MAX_OBSERVED_LEAD_MIN) return `guard opens ${at} (embargo -${leadMin} min), CAPPED at the ${leadMin}-min maximum lead: the earliest of ${d.n} recorded nights (${d.earliestMin} min) would open it earlier`;
+    return `guard opens ${at} (embargo -${leadMin} min), set by the earliest drop in ${d.n} recorded nights (${d.earliestMin} min vs the market hour)`;
+  }
+  if (d.basis === 'observed') return `guard opens ${at} (embargo -${leadMin} min), the default start; the earliest of ${d.n} recorded nights (${d.earliestMin} min) is not earlier`;
+  return `guard opens ${at} (embargo -${leadMin} min), a GUESS: the market default, ${d.n || 0} recorded night(s) for this market`;
 }
 
 /** BRO-7740: the one place that decides whether the pre-embargo guard is on for a show-night. flagOn = the owner variable. */
@@ -79,12 +111,12 @@ function laneOnlyCovers(onlyMarkets, show) {
  *          last day, any status (null = the run list failed).
  * @returns {{start:boolean, reason:string, night?:string, watchdogOnly?:boolean}}  watchdogOnly: dispatch only the watchdog
  */
-function planNightStart({ show, now, onlyMarkets, standdown, armed, seenTitles }) {
+function planNightStart({ show, now, onlyMarkets, standdown, armed, seenTitles, dropProfiles }) {
   const nowMs = toMs(now);
   const no = (reason) => ({ start: false, reason });
   if (!show || !show.id || !/^\d{4}-\d{2}-\d{2}$/.test(String(show.openingDate || ''))) return no('no opening night');
   const night = show.openingDate;
-  const t = nightTimes(show, night);
+  const t = nightTimes(show, night, { dropProfiles });
   if (!t) return no('embargo unknown');
   if (nowMs < t.embargoMs - START_BEFORE_MIN * MIN) return no('before the start window');
   if (nowMs > t.embargoMs + START_AFTER_MIN * MIN) return no('after the start window');
@@ -109,9 +141,9 @@ function planNightStart({ show, now, onlyMarkets, standdown, armed, seenTitles }
  *   sleep-chain sleep sleepMin (the whole budget), then dispatch the next hop and end without starting
  *   late        more than an hour past the embargo: do not start (the watchdog falls back)
  */
-function planNightWait({ show, night, now, preembargo = false }) {
+function planNightWait({ show, night, now, preembargo = false, dropProfiles }) {
   const nowMs = toMs(now);
-  const t = show && nightTimes(show, night, { preembargo });
+  const t = show && nightTimes(show, night, { preembargo, dropProfiles });
   if (!t) return { action: 'unknown', sleepMin: 0, reason: 'embargo unknown' };
   if (nowMs > t.embargoMs + START_AFTER_MIN * MIN) return { action: 'late', sleepMin: 0, reason: 'more than 1h past the embargo' };
   const waitMin = Math.ceil((t.laneStartMs - nowMs) / MIN);
@@ -136,13 +168,13 @@ function planNightWait({ show, night, now, preembargo = false }) {
  *   fallback: release the dead lease when `release` (or `holder`'s live lease when `releaseStuck`), then dispatch the
  *   old path once; `digest` = page (digest row + red run).
  */
-function decideWatchdog({ show, night, now, leaseState, laneRun, sinceMs, fallbackDone, leaseSeen, onlyMarkets, standdown, progress, preembargo = false }) {
+function decideWatchdog({ show, night, now, leaseState, laneRun, sinceMs, fallbackDone, leaseSeen, onlyMarkets, standdown, progress, preembargo = false, dropProfiles }) {
   const nowMs = toMs(now);
   const wait = (reason) => ({ action: 'wait', reason });
   const stop = (reason) => ({ action: 'stop', reason });
   const fallback = (reason, { release = false, digest = true, ...extra } = {}) => ({ action: 'fallback', reason, release, digest, ...extra });
   if (fallbackDone) return stop('old path already dispatched for this night');
-  const t = show && show.id && nightTimes(show, night, { preembargo });
+  const t = show && show.id && nightTimes(show, night, { preembargo, dropProfiles });
   if (!t) return fallback('embargo unknown', { digest: true });
   if (nowMs >= t.watchEndMs) return stop('past the lane window');
   // Nothing can be dead before the lane is due to start; the old path is the default until then anyway.
@@ -402,6 +434,7 @@ function runWatchdogTick(input, ports) {
 }
 
 module.exports = {
+  dropBasisFor, guardStartText,
   laneGuardMode,
   LANE_WINDOW_PREEMBARGO_MIN, LEASE_TTL_MIN, LANE_LEAD_MIN, LANE_WINDOW_MIN, START_BEFORE_MIN, START_AFTER_MIN, WAIT_JOB_BUDGET_MIN, TICK_MIN,
   nightRunTitle, watchdogRunTitle, nightTimes, laneOnlyCovers, planNightStart, planNightWait, decideWatchdog,

@@ -133,9 +133,10 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 
 // Content quality detection (garbage/invalid content filter)
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
+const { readPageBylineForShow } = require('./lib/page-byline-for-show');
 const { columnSectionAfterRoundupRejection } = require('./lib/column-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
-const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
+const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { chooseArticleBody, SHORT_JSONLD_MAX: JSONLD_TEASER_MAX } = require('./lib/jsonld-body-choice');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { detectBylineConflict } = require('./lib/byline-extraction');
@@ -5515,11 +5516,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // 1B-iii. AUTHOR ENRICHMENT — resolve "Unknown" critics from HTML metadata
   // Skip if criticNameManual is set — this means the name was manually verified and should not be overwritten
   if ((!data.criticName || data.criticName === 'Unknown') && html && !data.criticNameManual) {
-    const extractedAuthor = extractAuthorFromHtml(html, cleanedText, {
-      excludeNames: bylineExcludeNames,
-      url: data.url,
-      publishDate: data.publishDate,
-    });
+    // BRO-7792: the shared reader (outlet rules, printed credit) that ingest, the sweep and the lane use.
+    let extractedAuthor = null;
+    try {
+      // normalizeOutlet('') is the literal 'unknown', which would switch off the outlet rules and printed
+      // credit; with no outlet the reader resolves it from the url instead.
+      const enrichOutlet = normalizeOutlet(data.outletId || data.outlet || review.outletId);
+      extractedAuthor = readPageBylineForShow({
+        html, text: cleanedText, url: data.url,
+        outletId: enrichOutlet && enrichOutlet !== 'unknown' ? enrichOutlet : undefined,
+        excludeNames: bylineExcludeNames, publishDate: data.publishDate,
+      }).criticName;
+    } catch { extractedAuthor = null; }
     if (extractedAuthor) {
       console.log(`    → Author enriched: "Unknown" → "${extractedAuthor}"`);
       data.criticName = extractedAuthor;
