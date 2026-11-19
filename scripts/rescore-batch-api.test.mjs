@@ -18,7 +18,7 @@ const models = require('./lib/models.js');
 describe('shouldBatchScoring', () => {
   const rescoreFlags = [
     { needsRescore: 'true' }, { runRescore: 'true' }, { rescore: 'true' }, { outdated: 'true' },
-    { staleScores: 'true' }, { upgradeEnsemble: 'true' }, { rescoreReason: 'fullText added' },
+    { staleScores: 'true' }, { upgradeEnsemble: 'true' },
   ];
   for (const f of rescoreFlags) {
     test(`manual dispatch ${JSON.stringify(f)} batches`, () => {
@@ -39,6 +39,10 @@ describe('shouldBatchScoring', () => {
     assert.equal(shouldBatchScoring({ eventName: 'workflow_dispatch', showId: 'x-2026', rescoreReason: 'auto-rescore-x-2026' }), false);
     assert.equal(shouldBatchScoring({ eventName: 'workflow_dispatch', showId: 'x-2026', needsRescore: 'true' }), false);
   });
+  test('rescore_reason lane and sync=true stay sync (shared batch-state slot / human escape hatch)', () => {
+    assert.equal(shouldBatchScoring({ eventName: 'workflow_dispatch', needsRescore: 'true', rescoreReason: 'fullText added' }), false);
+    assert.equal(shouldBatchScoring({ eventName: 'workflow_dispatch', needsRescore: 'true', sync: 'true' }), false);
+  });
   test('kill switch and dry run force sync / no paid batch', () => {
     assert.equal(shouldBatchScoring({ eventName: 'schedule', disableBatch: '1' }), false);
     assert.equal(shouldBatchScoring({ eventName: 'workflow_dispatch', needsRescore: 'true', disableBatch: '1' }), false);
@@ -50,22 +54,18 @@ describe('shouldBatchScoring', () => {
 });
 
 describe('shouldBatchComparative (the gpt-4o leg)', () => {
-  test('chain, schedule and bulk dispatch all batch', () => {
-    for (const eventName of ['schedule', 'workflow_dispatch']) {
-      for (const chain of ['true', 'false']) assert.equal(shouldBatchComparative({ eventName, chain }), true);
-    }
-  });
-  test('single-show stays sync; kill switch off', () => {
-    assert.equal(shouldBatchComparative({ showId: 'x-2026' }), false);
-    assert.equal(shouldBatchComparative({ disableBatch: '1' }), false);
+  test('is the main-pass decision: urgent plain catch-up chain stays sync, bulk rescore batches', () => {
+    assert.equal(shouldBatchComparative({ eventName: 'workflow_dispatch', chain: 'true' }), false);
+    assert.equal(shouldBatchComparative({ eventName: 'workflow_dispatch', chain: 'true', needsRescore: 'true' }), true);
+    assert.equal(shouldBatchComparative({ eventName: 'schedule' }), true);
+    assert.equal(shouldBatchComparative({ eventName: 'schedule', showId: 'x-2026' }), false);
   });
 });
 
 describe('workflow is wired to the policy (no hand-rolled schedule-only gate)', () => {
   const wf = readFileSync(join(root, '.github/workflows/llm-ensemble-score.yml'), 'utf8');
   test('both passes call rescore-batch-policy.js', () => {
-    assert.equal((wf.match(/scripts\/lib\/rescore-batch-policy\.js/g) || []).length >= 3, true); // 2 comments+calls
-    assert.match(wf, /rescore-batch-policy\.js comparative\)/);
+    assert.equal((wf.match(/node scripts\/lib\/rescore-batch-policy\.js\)" == "true"/g) || []).length, 2); // main + comparative
     assert.match(wf, /rescore-batch-policy\.js\)" == "true" \]; then\s+#[^\n]*\n(?:\s+#[^\n]*\n)*\s+ARGS="\$ARGS --batch/);
   });
   test('the old schedule-only batch condition is gone', () => {

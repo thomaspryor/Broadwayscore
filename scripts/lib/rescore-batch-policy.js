@@ -6,11 +6,17 @@
  * memory/api-cost-investigation.md: rescore chains ran synchronously at full
  * price ($40-60/day on gpt-4o) because batch mode was gated on
  * `schedule && !chain`. Rule: a BULK rescore (needs_rescore, outdated,
- * stale_scores, upgrade_ensemble, rescore, a rescore_reason bucket, or the
- * auto-detected needsRescore backlog) always batches, scheduled or not, chain
- * or not. Only a run aimed at ONE show stays synchronous (opening-night /
- * press-night per-show dispatches, dispatch-rescore.js): there the latency is
- * the point.
+ * stale_scores, upgrade_ensemble, rescore, or the auto-detected needsRescore
+ * backlog) always batches, scheduled or not, chain or not. Stays synchronous:
+ * a run aimed at ONE show (opening-night / press-night, dispatch-rescore.js:
+ * latency is the point), the human `sync=true` escape hatch, and any run with
+ * a rescore_reason (it gets its own concurrency lane, but the batch state is
+ * ONE file, data/collection-state/scoring-batch-state.json, so a second
+ * parallel lane would overwrite or poll the first lane's vendor batch IDs).
+ * retry_emergency and the auto-detected stale-scores pass stay synchronous
+ * (small, rare).
+ * The comparative pass batches exactly when the main pass does, so urgent
+ * catch-up runs never wait on it before their commit step.
  *
  * Kill switch (unchanged): repo variable DISABLE_BATCH_SCORING=1.
  */
@@ -19,7 +25,7 @@ const on = (v) => v === true || v === 'true' || v === '1' || v === 1;
 /** Does this dispatch ask for a rescore (rather than first-time scoring)? */
 function isRescoreRun(i = {}) {
   return on(i.needsRescore) || on(i.runRescore) || on(i.rescore) || on(i.outdated)
-    || on(i.staleScores) || on(i.upgradeEnsemble) || !!(i.rescoreReason && String(i.rescoreReason).trim());
+    || on(i.staleScores) || on(i.upgradeEnsemble);
 }
 
 /**
@@ -34,22 +40,15 @@ function isRescoreRun(i = {}) {
  */
 function shouldBatchScoring(i = {}) {
   if (on(i.disableBatch)) return false;
-  if (on(i.dryRun)) return false;
-  const showId = i.showId && String(i.showId).trim();
-  if (showId) return false;
+  if (on(i.dryRun) || on(i.sync)) return false;
+  if (i.showId && String(i.showId).trim()) return false;
+  if (i.rescoreReason && String(i.rescoreReason).trim()) return false; // own lane, shared batch-state slot
   if (i.eventName === 'schedule' && !on(i.chain)) return true; // original #516 rule
   return isRescoreRun(i);                                      // BRO-7807: bulk rescore, chain or dispatch
 }
 
-/**
- * Comparative within-band rescore (comparative-rescore.ts, gpt-4o leg). Every
- * run that is not aimed at a single show batches, chain included.
- */
-function shouldBatchComparative(i = {}) {
-  if (on(i.disableBatch)) return false;
-  if (on(i.dryRun)) return false;
-  return !(i.showId && String(i.showId).trim());
-}
+/** Comparative within-band rescore (comparative-rescore.ts, gpt-4o leg): same decision as the main pass. */
+const shouldBatchComparative = shouldBatchScoring;
 
 module.exports = { isRescoreRun, shouldBatchScoring, shouldBatchComparative };
 
@@ -60,8 +59,7 @@ if (require.main === module) {
     eventName: e.EVENT_NAME, chain: e.CHAIN, showId: e.SHOW_ID, disableBatch: e.DISABLE_BATCH_SCORING,
     dryRun: e.DRY_RUN, needsRescore: e.NEEDS_RESCORE, runRescore: e.RUN_RESCORE, rescore: e.RESCORE,
     outdated: e.OUTDATED, staleScores: e.STALE_SCORES, upgradeEnsemble: e.UPGRADE_ENSEMBLE,
-    rescoreReason: e.RESCORE_REASON,
+    rescoreReason: e.RESCORE_REASON, sync: e.SYNC,
   };
-  const which = process.argv[2] === 'comparative' ? shouldBatchComparative : shouldBatchScoring;
-  console.log(String(which(input)));
+    console.log(String(shouldBatchScoring(input)));
 }
