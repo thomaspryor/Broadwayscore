@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T07:42:28.955Z",
+  "timestamp": "2026-11-19T08:01:17.579Z",
   "stats": {
     "totalReviews": 82749,
     "alreadyFlagged": 22496,
     "dateGuardCatches": 220,
-    "directorMismatch": 3766,
-    "tvFilmSignals": 2358,
-    "londonSignals": 3804,
+    "directorMismatch": 3768,
+    "tvFilmSignals": 2360,
+    "londonSignals": 3812,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8259
+    "noPublishDate": 8258
   },
   "findings": [
     {
@@ -21463,6 +21463,20 @@
     },
     {
       "showId": "every-brilliant-thing-west-end-2025",
+      "file": "beyondthecurtain--giada-if.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.beyondthecurtain.co.uk/2025/08/every-brilliant-thing-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from every-brilliant-thing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-west-end-2025",
       "file": "british-theatre--howard-loxton.json",
       "score": 78,
       "publishDate": "2025-08-09",
@@ -25351,6 +25365,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295?ico=more_from_this_author",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -31851,6 +31884,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"amy marie seidel\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-we-are-west-end-2025",
+      "file": "city-am--arifa-akbar.json",
+      "score": 62,
+      "publishDate": null,
+      "url": "https://www.cityam.com/here-we-are-national-theatre-review-final-stephen-sondheim-musical-is-more-severance-than-sing-a-long/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -46002,6 +46054,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-warrens-profession-west-end-2025",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": "2025-05-27",
+      "url": "https://playsinternational.org.uk/mrs-warrens-profession-garrick-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -89053,6 +89119,20 @@
       ]
     },
     {
+      "showId": "4-48-psychosis-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 61,
+      "publishDate": "June 19th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/4-48-psychosis-royal-court-theatre-review-b1233744.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "42nd-street-2001",
       "file": "nytimes--ben-brantley.json",
       "score": 61,
@@ -100041,6 +100121,34 @@
       "score": 90,
       "publishDate": "2025-09-05",
       "url": "https://www.londontheatre.co.uk/reviews/deaf-republic-review-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "deaf-republic-west-end-2025",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playsinternational.org.uk/deaf-republic-royal-court-theatre-downstairs/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "deaf-republic-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/deaf-republic-royal-court-jerwood-theatre-b1246686.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -113495,6 +113603,20 @@
     },
     {
       "showId": "just-for-one-day-the-live-aid-musical-west-end-2025",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playsinternational.org.uk/just-for-one-day-shaftesbury-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-the-live-aid-musical-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
       "score": 58,
       "publishDate": "2025-06-12",
@@ -119628,6 +119750,20 @@
       "score": 96,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/barbican-encore-season-for-my-neighbour-totoro/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "theupcoming--unknown.json",
+      "score": 83,
+      "publishDate": "2026-08-27",
+      "url": "https://www.theupcoming.co.uk/2026/08/27/caravan-covent-garden-unveils-my-neighbour-totoro-pre-theatre-menu/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -134245,6 +134381,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "the-estate-west-end-2025",
+      "file": "liamodell--liam-odell.json",
+      "score": 59,
+      "publishDate": "2025-07-22",
+      "url": "https://liamodell.com/2025/07/22/the-estate-review-dorfman-theatre-national-theatre-cast-shaan-sahota-adeel-akhtar-daniel-raggett/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
