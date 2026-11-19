@@ -180,10 +180,10 @@ function noCommonHistoryRecipe({ branch, mergeBase = '', commits = [], cutOffRoo
   }
   lines.push('  Move your commits onto current origin/main:', '    git fetch origin main', `    git switch -c ${name} origin/main`);
   if (mergeBase && commits.length && commits.length <= 20) {
-    lines.push(`    git cherry-pick ${commits.join(' ')}`);
+    lines.push(`    git cherry-pick ${commits.join(' ')}`); // keep-run-ok: printed advice for a human, never executed
   } else {
     lines.push(`    git log --oneline -n 20 ${branch && branch !== 'HEAD' ? branch : '<old-branch>'}   # find your own commits (newest first)`,
-      '    git cherry-pick <your oldest sha>^..<your newest sha>   # or list them, oldest first');
+      '    git cherry-pick <your oldest sha>^..<your newest sha>   # or list them, oldest first'); // keep-run-ok: printed advice for a human, never executed
   }
   lines.push('  then re-run this check from the new branch.');
   return lines.join('\n');
