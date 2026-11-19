@@ -134,6 +134,9 @@ const REVIEW_ABSENCE_RE = new RegExp(
     /\b(?:finish|complete|update|missing|lacks?|lacking|without|incomplete|unfinished|needs?\s+(?:more\s+)?|there'?s\s+no|only\s+(?:one|two|1|2|a\s+few))\b[^.!?]{0,40}?\breviews?\b/.source,
     // noun first: "reviews are incomplete", "reviews aren't finished", "reviews missing"
     /\breviews?\b[^.!?]{0,30}?\b(?:missing|incomplete|unfinished|not\s+(?:yet\s+)?(?:done|finished|complete|up))\b/.source,
+    // outlet request (GH #552): "Please add Stage West, Stage and Cinema ... to X's scorecard".
+    // Needs the add/include verb AND the scorecard noun in one sentence.
+    /\b(?:add|include)\b[^.!?]{0,160}?\bscore\s?cards?\b/.source,
   ].join('|'),
   'i'
 );

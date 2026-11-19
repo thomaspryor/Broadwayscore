@@ -634,3 +634,23 @@ describe('a year next to the title picks one run in the market (BRO-7844 cousins
     assert.equal(r('Stereophonic', 'Stereophonic transferred from London and is missing reviews').ambiguous, true);
   });
 });
+
+// GH #552: "add <outlets> to <show>'s scorecard" parked as unroutable.
+test('an outlet-addition ask for a catalogued show routes to a review gather (GH #552)', () => {
+  const actions = planContentRequestActions({
+    message: 'Please add Stage West, Stage and Cinema, and Vanguard Culture\u2019s to 3 Summers of Lincoln\u2019s scorecard, please',
+    show: REVIEW_SHOW_FIELD,
+    shows: SHOWS_WITH_LINCOLN,
+  });
+  assert.deepEqual(actions.map((a) => a.kind), ['missing-reviews']);
+  assert.equal(actions[0].workflow, WORKFLOW_REVIEWS);
+});
+
+test('"add a show to the scorecard" style praise does not become a review gather without a catalogued show', () => {
+  const actions = planContentRequestActions({
+    message: 'Love the site, add dark mode to the scorecard page',
+    show: null,
+    shows: SHOWS_WITH_LINCOLN,
+  });
+  assert.equal(actions.some((a) => a.workflow === WORKFLOW_REVIEWS), false);
+});
