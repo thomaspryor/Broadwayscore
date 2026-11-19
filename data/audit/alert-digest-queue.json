@@ -590,20 +590,6 @@
     "queuedAt": "2026-11-19T16:06:11.355Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T18:13:24.710Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:its-a-wonderful-life-a-live-radio-play-2026",
     "title": "Auto-remediation gave up on its-a-wonderful-life-a-live-radio-play-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"its-a-wonderful-life-a-live-radio-play-2026\"}",
@@ -849,7 +835,7 @@
     "title": "Data audit failing: Run data validation",
     "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44585347440",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44587064876",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -866,10 +852,10 @@
       },
       {
         "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44585347440)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44587064876)"
       }
     ],
-    "queuedAt": "2026-11-19T18:39:15.363Z"
+    "queuedAt": "2026-11-19T18:42:04.078Z"
   },
   {
     "conditionKey": "land:land/bro-7847-ledger-persist",
@@ -901,19 +887,5 @@
       }
     ],
     "queuedAt": "2026-11-19T18:13:44.245Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-19.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T18:39:20.547Z"
   }
 ]
