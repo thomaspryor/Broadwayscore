@@ -19,7 +19,7 @@ const census = require('../../scripts/lib/outlet-census-sources.js');
 // Hosted-platform API gateways: the host says nothing about the outlet's own domain.
 const PLATFORM_HOSTS = new Set(['public-api.wordpress.com']);
 // Outlets whose feed lives on a hosting domain while the site answers on its own domain (checked, not drift).
-const FEED_HOST_EXEMPT = { 'bobs-theater-blog': 'Blogger feed (gotham-playgoer.blogspot.com) behind the bobstheaterblog.com custom domain' };
+const FEED_HOST_EXEMPT = { 'broadway-and-me': 'Blogger sitemap (broadwayandme.blogspot.com): all 94 corpus URLs are on the blogspot host while the registry primary domain is broadwayandme.com (BRO-7816; swapping them trips the hosted-blog-platform tier test)', 'bobs-theater-blog': 'Blogger feed (gotham-playgoer.blogspot.com) behind the bobstheaterblog.com custom domain' };
 const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return null; } };
 
 function sourceUrls() {
