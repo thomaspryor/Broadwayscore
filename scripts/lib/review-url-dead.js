@@ -59,7 +59,10 @@ function applyDecision(rec, decision, nowIso = new Date().toISOString()) {
     return true;
   }
   if (decision.action === 'restore') {
-    delete rec.urlDead; delete rec.urlDeadAt; delete rec.urlDeadUrl; delete rec.urlDeadStatus;
+    // urlDead:false, not a delete: the push-review-texts merge puts back any protected field that is empty locally
+    // but set in HEAD, which would flip a restored link back to withheld (review of BRO-7841). The other urlDead* fields
+    // stay as the history of the last outage; urlDeadActive() only reads urlDead === true.
+    rec.urlDead = false;
     rec.urlRestoredAt = nowIso;
     return true;
   }

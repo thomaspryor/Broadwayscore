@@ -6,7 +6,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { decideRecheck, applyDecision, withinRecheckWindow } = require('./review-url-dead');
+const { decideRecheck, applyDecision, withinRecheckWindow, urlDeadActive } = require('./review-url-dead');
 
 function listCandidates(reviewTextsDir, { now, hours, onlyShow } = {}) {
   const out = [];
@@ -22,7 +22,7 @@ function listCandidates(reviewTextsDir, { now, hours, onlyShow } = {}) {
       let rec;
       try { rec = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { continue; }
       if (!rec || !rec.url || !/^https?:\/\//i.test(rec.url)) continue;
-      if (!withinRecheckWindow(rec.publishDate, now, hours) && !rec.urlDead) continue;
+      if (!withinRecheckWindow(rec.publishDate, now, hours) && !urlDeadActive(rec)) continue;
       out.push({ show, f, file, rec });
     }
   }
@@ -39,7 +39,7 @@ async function recheck({ reviewTextsDir, probe, apply = false, now = Date.now(),
     const first = await probe(c.rec.url);
     let statuses = [first];
     // A second probe only when the first looks dead or the record is already withheld: one 404 is never enough.
-    if (first === 404 || first === 410 || c.rec.urlDead) statuses.push(await probe(c.rec.url));
+    if (first === 404 || first === 410 || urlDeadActive(c.rec)) statuses.push(await probe(c.rec.url));
     checked++;
     const decision = decideRecheck(c.rec, statuses);
     if (decision.action === 'mark' || decision.action === 'restore') {

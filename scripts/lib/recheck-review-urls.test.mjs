@@ -53,7 +53,8 @@ test('a dry run writes nothing; a republished url restores the link', async () =
   const res = await recheck({ reviewTextsDir: dir, apply: true, now: NOW + 3600e3, hours: 72, probe: probeFor({}) });
   assert.equal(res.restored.length, 1);
   const rec = read(dir, 'iawl', 'theaterscene--samuel-l-leiter.json');
-  assert.equal(rec.urlDead, undefined);
+  assert.equal(rec.urlDead, false); // false, not deleted: the push merge would put a deleted protected field back
+  assert.ok(rec.urlRestoredAt);
   assert.equal(dead.publishedUrl(rec, null), GONE);
 });
 
