@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T04:10:36.190Z",
+  "timestamp": "2026-11-19T04:23:28.535Z",
   "stats": {
-    "totalReviews": 82726,
-    "alreadyFlagged": 22495,
+    "totalReviews": 82732,
+    "alreadyFlagged": 22496,
     "dateGuardCatches": 220,
-    "directorMismatch": 3764,
+    "directorMismatch": 3765,
     "tvFilmSignals": 2356,
-    "londonSignals": 3801,
+    "londonSignals": 3803,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8266
+    "noPublishDate": 8262
   },
   "findings": [
     {
@@ -2060,6 +2060,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2024",
+      "file": "london-theatre--olivia-rook.json",
+      "score": null,
+      "publishDate": "November 21st, 2024",
+      "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-review-john-simm-jack-thorne-charles-dickens-old-vic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -135801,6 +135820,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-earnest-west-end-2024",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2024-11-28",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14138167/Oscar-Wildes-national-treasure-witty-reboot-PATRICK-MARMION-reviews.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
