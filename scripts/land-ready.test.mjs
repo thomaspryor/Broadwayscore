@@ -29,13 +29,13 @@ test('missing build + ship-check + verdict are ALL reported in one run, owner is
 });
 
 test('everything done on a rendering UI diff: ask the owner now, once; already approved: no approval needed', () => {
-  const ready = { ...base, uiFiles: ['src/a.tsx'], gatedFiles: ['src/a.tsx'], verdict: { exists: true, schemaOk: true, uiPatchId: 'abc', currentPatchId: 'abc' } };
+  const ready = { ...base, uiFiles: ['src/a.tsx'], gatedFiles: ['src/a.tsx'], verdict: { exists: true, schemaOk: true, overallPass: true, uiPatchId: 'abc', currentPatchId: 'abc' } };
   assert.equal(evaluate(ready).owner.line, 'Ask the owner now: yes');
   assert.equal(evaluate({ ...ready, approval: { approved: true } }).owner.line, 'No owner approval needed');
 });
 
 test('a verdict for an older diff (uiPatchId mismatch) is an open item', () => {
-  const r = evaluate({ ...base, uiFiles: ['src/a.tsx'], gatedFiles: ['src/a.tsx'], verdict: { exists: true, schemaOk: true, uiPatchId: 'old', currentPatchId: 'new' } });
+  const r = evaluate({ ...base, uiFiles: ['src/a.tsx'], gatedFiles: ['src/a.tsx'], verdict: { exists: true, schemaOk: true, overallPass: true, uiPatchId: 'old', currentPatchId: 'new' } });
   assert.ok(r.missing.some((i) => i.id === 'verdict' && /older/.test(i.detail)));
 });
 
@@ -68,4 +68,10 @@ test('CLI on a real branch with a UI change and no transcript lists every open i
   assert.match(out, /\[ \] \/ship-check/);
   assert.match(out, /\[ \] UI commits carry VISUAL-OK-1440/);
   assert.match(out.trim().split('\n').pop(), /^Ask the owner now: no$/);
+});
+
+test('a verdict whose overallPass is not true never counts as ready (BRO-7849 ship-check)', () => {
+  const ready = { ...base, uiFiles: ['src/a.tsx'], gatedFiles: ['src/a.tsx'], touchesSrc: true, verdict: { exists: true, schemaOk: true, overallPass: false, uiPatchId: 'p', currentPatchId: 'p' } };
+  assert.equal(evaluate(ready).missing.some((m) => m.id === 'verdict'), true);
+  assert.equal(evaluate({ ...ready, verdict: { ...ready.verdict, overallPass: true } }).missing.some((m) => m.id === 'verdict'), false);
 });

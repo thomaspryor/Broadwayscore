@@ -182,8 +182,9 @@ test('useInsertionEffect bodies are never exempt (they inject styles)', () => {
   const old = "import { useInsertionEffect } from 'react';\nexport default function A() {\n  useInsertionEffect(() => {\n    if (a) return null;\n  }, []);\n  return <p>x</p>;\n}\n";
   const next = old.replace('if (a) return null;', 'if (b) return null;');
   assert.equal(isNonRenderingChange({ file: F, oldSource: old, newSource: next, resolveImport: resolveTs }).exempt, false);
+  // a guard directly in an effect body is also gated now: an early return can skip later setState / DOM writes
   const eff = old.replaceAll('useInsertionEffect', 'useEffect');
-  assert.equal(isNonRenderingChange({ file: F, oldSource: eff, newSource: eff.replace('if (a) return null;', 'if (b) return null;'), resolveImport: resolveTs }).exempt, true);
+  assert.equal(isNonRenderingChange({ file: F, oldSource: eff, newSource: eff.replace('if (a) return null;', 'if (b) return null;'), resolveImport: resolveTs }).exempt, false);
 });
 
 test('a template-literal line that starts with // is not skipped as a comment', () => {
@@ -193,4 +194,44 @@ test('a template-literal line that starts with // is not skipped as a comment', 
 
 test('regex/string list edits inside an effect (ignoreErrors style) are exempt', () => {
   assert.equal(check(swap(BASE, '/Script error\\.?$/i,', '/Script error\\.?$/i,\n              /ChunkLoadError/,')).exempt, true);
+});
+
+// BRO-7849 ship-check: rendering changes the first detector wrongly exempted. Each must stay gated.
+const eff = (body, extra = '') => `import { useEffect, useState } from 'react';\nimport { isBot, applyTheme } from '@/lib/x';\n${extra}export default function A() {\n  const [d, setD] = useState(0);\n  useEffect(() => {\n${body}  }, []);\n  return <p>{d}</p>;\n}\n`;
+const gated = (a, b, msg) => assert.equal(isNonRenderingChange({ file: F, oldSource: a, newSource: b, resolveImport: resolveTs }).exempt, false, msg);
+test('early return in an effect that skips a later setState stays gated', () => {
+  gated(eff('    setD(1);\n'), eff('    if (!d) return;\n    setD(1);\n'));
+  gated(eff('    document.title = "x";\n'), eff('    if (!d) return;\n    document.title = "x";\n'));
+});
+test('guard inside a nested event handler stays gated', () => {
+  const o = eff('    const cb = (e) => {\n      setD(2);\n    };\n    window.addEventListener("x", cb);\n');
+  gated(o, o.replace('      setD(2);', '      if (e.detail) return;\n      setD(2);'));
+});
+test('new element in a multi-line array that is an argument to a setter or classList stays gated', () => {
+  const o = eff('    setD([\n      "a",\n    ]);\n');
+  gated(o, o.replace('"a",', '"a",\n      "hidden-banner",'));
+  const c = eff('    document.body.classList.add(...[\n      "a",\n    ]);\n');
+  gated(c, c.replace('"a",', '"a",\n      "dark",'));
+});
+test('guard conditions with side effects stay gated', () => {
+  gated(eff('    setD(1);\n'), eff('    if (applyTheme("dark")) return;\n    setD(1);\n'));
+  const hook = (cond) => `import { isBot, hide } from '@/lib/x';\nexport default function A() {\n  const o = { beforeSend(e) {\n${cond}    return e;\n  } };\n  return <p>{String(o)}</p>;\n}\n`;
+  gated(hook(''), hook('    if (els.some(hide)) return null;\n'));
+  gated(hook(''), hook('    if (hide(e)) return null;\n'));
+});
+test('a guard in an inert beforeSend is exempt, but not when the hook also writes to the DOM or an outer variable', () => {
+  const hook = (body) => `import { isBot } from '@/lib/x';\nlet seen = 0;\nexport default function A() {\n  const o = { beforeSend(e) {\n${body}    return e;\n  } };\n  return <p>{String(o)}</p>;\n}\n`;
+  const ok = isNonRenderingChange({ file: F, oldSource: hook(''), newSource: hook('    if (isBot(e)) return null;\n'), resolveImport: resolveTs });
+  assert.equal(ok.exempt, true, ok.reason);
+  gated(hook('    seen++;\n'), hook('    seen++;\n    if (isBot(e)) return null;\n'));
+  gated(hook('    seen = 1;\n'), hook('    seen = 1;\n    if (isBot(e)) return null;\n'));
+});
+test('new bare-package import and unused new import stay gated', () => {
+  const o = eff('    setD(1);\n');
+  gated(o, o.replace("import { isBot, applyTheme } from '@/lib/x';", "import { isBot, applyTheme } from '@/lib/x';\nimport { toast } from 'sonner';"));
+  gated(o, o.replace("import { isBot, applyTheme } from '@/lib/x';", "import { isBot, applyTheme } from '@/lib/x';\nimport { unusedThing } from '@/lib/x';"));
+});
+test('whitespace-only change inside a string literal stays gated', () => {
+  const o = eff('    const s = "a  b";\n    void s;\n');
+  gated(o, o.replace('"a  b"', '"a b"'));
 });

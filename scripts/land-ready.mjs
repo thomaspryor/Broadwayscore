@@ -41,16 +41,16 @@ export function evaluate(f) {
   }
   if (needsVisual) {
     const v = f.verdict || {};
-    const ok = !!v.exists && v.schemaOk !== false && !!v.uiPatchId && v.uiPatchId === v.currentPatchId;
+    const ok = !!v.exists && v.schemaOk !== false && v.overallPass === true && !!v.uiPatchId && v.uiPatchId === v.currentPatchId;
     add('verdict', 'visual verdict exists and matches this diff', ok,
-      !v.exists ? 'no verdict.json for this branch' : v.schemaOk === false ? 'verdict is an old schema' : v.uiPatchId !== v.currentPatchId ? 'verdict is for an older version of the UI diff' : '',
+      !v.exists ? 'no verdict.json for this branch' : v.schemaOk === false ? 'verdict is an old schema' : v.overallPass !== true ? 'verdict says the visual check did not pass' : v.uiPatchId !== v.currentPatchId ? 'verdict is for an older version of the UI diff' : '',
       '/visual-qa (screenshots at 390 and 1440), then re-run this');
   }
   const cov = f.coverage;
   const shipMissing = (cov?.missing || []).filter((m) => !/build/.test(m));
   add('shipcheck', '/ship-check coverage complete', !!f.transcript?.found && shipMissing.length === 0,
     f.transcript?.found ? shipMissing.join('; ') : 'session transcript not found (CLAUDE_CODE_SESSION_ID)', '/ship-check');
-  if (f.judge?.skipped) add('judge', 'land dry run (judgeLand)', true, 'skipped');
+  if (f.judge?.skipped) add('judge', 'land dry run (judgeLand): NOT CHECKED (--no-judge), run without it before relying on this', true, 'skipped');
   else add('judge', 'land dry run (judgeLand)', f.judge?.decision !== 'block', f.judge?.decision === 'block' ? String(f.judge.message || '').split('\n')[0] : '', 'fix what the line above says, then re-run');
 
   const missing = items.filter((i) => !i.ok);
@@ -125,10 +125,14 @@ export async function gather({ cwd = process.cwd(), base = 'origin/main', doctor
   // visual verdict
   if (f.gatedFiles.length) {
     const branch = tryGit(cwd, ['branch', '--show-current']) || 'HEAD';
-    const vp = path.join(cwd, '.claude', 'visual-qa', branch, 'verdict.json');
+    // Same lookup order as the push hook: this checkout first, then the canonical root (worktrees keep verdicts there).
+    let canon = null;
+    try { canon = path.resolve(cwd, tryGit(cwd, ['rev-parse', '--git-common-dir'])); canon = path.basename(canon) === '.git' ? path.dirname(canon) : null; } catch { canon = null; }
+    const vps = [path.join(cwd, '.claude', 'visual-qa', branch, 'verdict.json'), canon && path.join(canon, '.claude', 'visual-qa', branch, 'verdict.json')].filter(Boolean);
+    const vp = vps.find((x) => existsSync(x)) || vps[0];
     let v = { exists: false };
     try {
-      if (existsSync(vp)) { const j = JSON.parse(readFileSync(vp, 'utf8')); v = { exists: true, schemaOk: String(j.schemaVersion) === '2', uiPatchId: j.uiPatchId || null, hash: j.contentHash || j.verdictHash || null }; }
+      if (existsSync(vp)) { const j = JSON.parse(readFileSync(vp, 'utf8')); v = { exists: true, schemaOk: String(j.schemaVersion) === '2', overallPass: j.overallPass === true, uiPatchId: j.uiPatchId || null, hash: j.contentHash || j.verdictHash || null }; }
     } catch { v = { exists: true, schemaOk: false }; }
     try { v.currentPatchId = require('./lib/visual-approval-durable.js').uiPatchId(cwd, 'HEAD', base); } catch { v.currentPatchId = null; }
     f.verdict = v;

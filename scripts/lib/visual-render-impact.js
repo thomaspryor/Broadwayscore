@@ -29,7 +29,16 @@ function loadTs() {
 
 // useInsertionEffect injects styles, so it is never exempt.
 const EFFECT_HOOKS = new Set(['useEffect', 'useLayoutEffect']);
-const SAFE_METHODS = new Set(['test', 'includes', 'startsWith', 'endsWith', 'some', 'every', 'has', 'indexOf']);
+const SAFE_METHODS = new Set(['test', 'includes', 'startsWith', 'endsWith', 'has', 'indexOf']);
+// Telemetry SDK filter hooks: they receive an event and return it or null. They cannot change what is on screen, but only
+// when their whole body is inert (see inertFn). Anything else (event handlers, effect bodies) is never a guard host.
+const FILTER_HOOKS = new Set(['beforeSend', 'beforeSendTransaction', 'beforeBreadcrumb', 'beforeSendSpan']);
+// Config properties whose value is a list of patterns that only suppress telemetry.
+const PATTERN_LISTS = new Set(['ignoreErrors', 'denyUrls', 'allowUrls', 'ignoreTransactions']);
+// Array methods that are pure when given an inert callback; string/regexp tests that are pure on any input.
+const CALLBACK_METHODS = new Set(['some', 'every', 'filter', 'map', 'find', 'findIndex']);
+// Imported helpers called in a guard condition must be named like predicates.
+const PREDICATE_NAME = /^(is|has|should|can|matches)[A-Z0-9_]/;
 // Changed lines matching any of these can alter what is on screen even inside an effect: state setters, DOM writes,
 // class/style writes, imperative render calls.
 const FORBIDDEN_LINE_RE = new RegExp([
@@ -127,28 +136,56 @@ function safeCond(ts, n, imported) {
   }
   if (ts.isCallExpression(n)) {
     const c = n.expression;
-    const okCallee = (ts.isIdentifier(c) && imported.has(c.text)) || (ts.isPropertyAccessExpression(c) && SAFE_METHODS.has(c.name.text) && safeCond(ts, c.expression, imported));
+    const okCallee = (ts.isIdentifier(c) && imported.has(c.text) && PREDICATE_NAME.test(c.text)) || (ts.isPropertyAccessExpression(c) && SAFE_METHODS.has(c.name.text) && safeCond(ts, c.expression, imported));
     return okCallee && n.arguments.every((a) => safeCond(ts, a, imported));
   }
   return false;
 }
 
-/** Guards in the first argument of an effect hook where a changed line is allowed. */
+/**
+ * True when fn can only compute a value: no assignment, delete, new, await, JSX, DOM/state text, and the only calls are to
+ * imported helpers or pure array/string methods (callbacks passed to them are checked the same way).
+ */
+function inertFn(ts, fn, imported, sf) {
+  if (FORBIDDEN_LINE_RE.test(fn.getText(sf))) return false;
+  const K = ts.SyntaxKind;
+  let ok = true;
+  const visit = (n) => {
+    if (!ok) return;
+    if (ts.isBinaryExpression(n) && n.operatorToken.kind >= K.FirstAssignment && n.operatorToken.kind <= K.LastAssignment) { ok = false; return; }
+    if (ts.isDeleteExpression(n) || ts.isNewExpression(n) || ts.isAwaitExpression(n) || ts.isTaggedTemplateExpression(n) || ts.isYieldExpression(n)
+      || ts.isJsxElement(n) || ts.isJsxSelfClosingElement(n) || ts.isJsxFragment(n)
+      || (ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) && (n.operator === K.PlusPlusToken || n.operator === K.MinusMinusToken)) { ok = false; return; }
+    if (ts.isCallExpression(n)) {
+      const c = n.expression;
+      if (ts.isIdentifier(c)) { if (!imported.has(c.text)) { ok = false; return; } } else if (ts.isPropertyAccessExpression(c)) {
+        const m = c.name.text;
+        if (CALLBACK_METHODS.has(m)) { if (!n.arguments.every((a) => ts.isArrowFunction(a) || ts.isFunctionExpression(a))) { ok = false; return; } } else if (!SAFE_METHODS.has(m)) { ok = false; return; }
+      } else { ok = false; return; }
+    }
+    ts.forEachChild(n, visit);
+  };
+  ts.forEachChild(fn, visit);
+  return ok;
+}
+
+/** Guards allowed to change: `if (<safeCond>) return null;` directly inside an inert filter hook, and pattern-list arrays. */
 function guardRanges(ts, sf) {
   const imported = new Set(importBindings(ts, sf).keys());
   const out = [];
-  const visitInside = (n) => {
-    if (ts.isIfStatement(n) && !n.elseStatement && isReturnOfNothing(ts, n.thenStatement) && safeCond(ts, n.expression, imported)) { out.push([n.getStart(sf), n.end]); return; }
-    if (ts.isArrayLiteralExpression(n) && n.elements.every((e) => ts.isRegularExpressionLiteral(e) || ts.isStringLiteral(e))) { out.push([n.getStart(sf), n.end]); return; }
-    ts.forEachChild(n, visitInside);
-  };
+  const nameOf = (n) => (n.name && (ts.isIdentifier(n.name) || ts.isStringLiteral(n.name)) ? n.name.text : '');
   const visit = (n) => {
-    if (ts.isCallExpression(n) && n.arguments.length) {
-      const callee = n.expression;
-      const name = ts.isIdentifier(callee) ? callee.text : (ts.isPropertyAccessExpression(callee) ? callee.name.text : '');
-      const a = n.arguments[0];
-      if (EFFECT_HOOKS.has(name) && (ts.isArrowFunction(a) || ts.isFunctionExpression(a))) visitInside(a);
+    // beforeSend(event) { ... }   or   beforeSend: (event) => { ... }
+    let fn = null;
+    if (ts.isMethodDeclaration(n) && FILTER_HOOKS.has(nameOf(n))) fn = n;
+    else if (ts.isPropertyAssignment(n) && FILTER_HOOKS.has(nameOf(n)) && (ts.isArrowFunction(n.initializer) || ts.isFunctionExpression(n.initializer))) fn = n.initializer;
+    if (fn && fn.body && ts.isBlock(fn.body) && inertFn(ts, fn.body, imported, sf)) {
+      for (const st of fn.body.statements) {
+        if (ts.isIfStatement(st) && !st.elseStatement && isReturnOfNothing(ts, st.thenStatement) && safeCond(ts, st.expression, imported)) out.push([st.getStart(sf), st.end]);
+      }
     }
+    if (ts.isPropertyAssignment(n) && PATTERN_LISTS.has(nameOf(n)) && ts.isArrayLiteralExpression(n.initializer)
+      && n.initializer.elements.every((e) => ts.isRegularExpressionLiteral(e) || ts.isStringLiteral(e))) out.push([n.initializer.getStart(sf), n.initializer.end]);
     ts.forEachChild(n, visit);
   };
   visit(sf);
@@ -168,8 +205,8 @@ function importRanges(ts, sf, resolveImport) {
 
 function importIsTs(spec, resolveImport) {
   if (/\.(css|scss|sass|less|svg|png|jpe?g|gif|webp|json)$/.test(spec)) return false;
-  const isBare = !spec.startsWith('.') && !spec.startsWith('@/') && !spec.startsWith('~/');
-  if (isBare) return true; // npm package: harmless unless used, and every use is checked
+  // A bare npm package runs its top-level code on load (CSS injection, DOM writes): never exempt.
+  if (!spec.startsWith('.') && !spec.startsWith('@/') && !spec.startsWith('~/')) return false;
   try { return resolveImport(spec) === 'ts'; } catch { return false; }
 }
 
@@ -234,15 +271,28 @@ function isNonRenderingChange({ file, oldSource, newSource, resolveImport }) {
     const added = new Set([...nB.keys()].filter((k) => !oB.has(k)));
     if (added.size) {
       const inGuard = (id) => nGuard.some(([s0, e0]) => id.getStart(nSf) >= s0 && id.end <= e0);
-      let bad = null;
+      let bad = null; const usedInGuard = new Set();
       const visit = (n) => {
         if (ts.isImportDeclaration(n)) return;
-        if (ts.isIdentifier(n) && added.has(n.text) && !inGuard(n)) bad = bad || n.text;
+        if (ts.isIdentifier(n) && added.has(n.text)) { if (inGuard(n)) usedInGuard.add(n.text); else bad = bad || n.text; }
         ts.forEachChild(n, visit);
       };
       visit(nSf);
       if (bad) return no(`newly imported name ${bad} is used outside an allowed guard`);
+      for (const name of added) if (!usedInGuard.has(name)) return no(`newly imported name ${name} is never used in a guard (an import can run code on load)`);
     }
+    // String, template, regex and JSX text contents must be byte-identical outside guards and imports (diffLines ignores whitespace).
+    const literals = (sf, skip, typeR) => {
+      const K = ts.SyntaxKind; const out = [];
+      const kinds = new Set([K.StringLiteral, K.NoSubstitutionTemplateLiteral, K.TemplateHead, K.TemplateMiddle, K.TemplateTail, K.JsxText, K.RegularExpressionLiteral]);
+      const v = (n) => {
+        if (kinds.has(n.kind)) { const st = n.getStart(sf); if (!skip.some(([a, b]) => st >= a && n.end <= b) && !typeR.some(([a, b]) => st >= a && n.end <= b)) out.push(n.getText(sf)); }
+        ts.forEachChild(n, v);
+      };
+      v(sf); return out;
+    };
+    const oLit = literals(oSf, [...oGuard, ...oImp], typeRanges(ts, oSf)); const nLit = literals(nSf, [...nGuard, ...nImp], typeRanges(ts, nSf));
+    if (oLit.length !== nLit.length || oLit.some((t, i) => t !== nLit[i])) return no('a string, template, regex or text literal changed');
     const sides = [[d.removed, oErased, [], oGuard, oNon, 'removed'], [d.added, nErased, nImp, nGuard, nNon, 'added']];
     let changed = 0;
     for (const [idxs, text, imps, guards, non, label] of sides) {
