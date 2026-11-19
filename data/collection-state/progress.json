@@ -2,10 +2,13 @@
   "processed": [
     "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
     "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json",
-    "takes-all-kinds-regional-2026/dc-theater-arts--unknown.json"
+    "takes-all-kinds-regional-2026/dc-theater-arts--unknown.json",
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "much-ado-about-nothing-2026/deadline--unknown.json"
   ],
   "failed": [
-    "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json"
+    "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -13,20 +16,31 @@
       "takes-all-kinds-regional-2026/dc-theater-arts--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/much-ado-about-nothing-2026/deadline--unknown.json",
+      "much-ado-about-nothing-2026/deadline--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json"
     ],
     "scrapingbee": [
       "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json"
+      "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json",
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-11-19T22:01:42.526Z",
-  "lastProcessed": "takes-all-kinds-regional-2026/dc-theater-arts--unknown.json",
-  "log": []
+  "lastProcessed": "much-ado-about-nothing-2026/timeout--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-19T22:43:33.236Z",
+      "event": "bb-session",
+      "session": "f16cdfc6",
+      "url": "https://deadline.com/2026/11/broadway-box-office-much-ado-about-nothing-billy-cr"
+    }
+  ]
 }
