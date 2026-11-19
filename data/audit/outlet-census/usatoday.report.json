@@ -1,23 +1,23 @@
 {
   "outletId": "usatoday",
   "market": "nyc",
-  "generatedAt": "2026-11-19T07:07:32.971Z",
+  "generatedAt": "2026-11-19T12:36:15.473Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 310,
-    "inWindow": 310,
+    "enumerated": 306,
+    "inWindow": 306,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 20,
-      "not-review": 284,
+      "held": 19,
+      "not-review": 281,
       "held-unmatched": 4,
       "out-of-window": 2
     },
@@ -27,8 +27,8 @@
   },
   "seasons": {
     "2026-27": {
-      "held": 4,
-      "not-review": 16
+      "held": 3,
+      "not-review": 13
     },
     "2024-25": {
       "held": 8,
@@ -60,7 +60,7 @@
   },
   "corpusSide": {
     "rowsInWindow": 233,
-    "notEnumerated": 12,
+    "notEnumerated": 13,
     "noUrl": 0,
     "samples": [
       {
@@ -127,6 +127,12 @@
         "showId": "smash-2025",
         "url": "https://www.usatoday.com/story/entertainment/2025/04/12/smash-review-broadway-musical/83043644007/",
         "publishDate": "2025-04-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-fantasticks-2026",
+        "url": "https://www.usatoday.com/story/entertainment/music/2026/11/16/fantasticks-review-broadway-musicals/92811425007/",
+        "publishDate": "2026-11-16",
         "why": "not-enumerated"
       },
       {

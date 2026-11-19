@@ -1,7 +1,7 @@
 {
   "outletId": "nytimes",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:47:10.429Z",
+  "generatedAt": "2026-11-19T12:33:46.022Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
@@ -16,11 +16,11 @@
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 427,
       "not-review": 2527,
-      "out-of-window": 111,
+      "held": 427,
       "held-other-market": 47,
       "held-unmatched": 27,
+      "out-of-window": 111,
       "catalog-gap": 18,
       "gap": 21,
       "held-alt-url": 6,
@@ -36,6 +36,12 @@
     "recallWithCatalog": 0.915
   },
   "seasons": {
+    "2026-27": {
+      "not-review": 62,
+      "held": 33,
+      "held-other-market": 5,
+      "held-unmatched": 4
+    },
     "2024-25": {
       "held": 79,
       "not-review": 399,
@@ -43,12 +49,6 @@
       "held-other-market": 9,
       "held-unmatched": 8,
       "catalog-gap": 1
-    },
-    "2026-27": {
-      "not-review": 62,
-      "held": 33,
-      "held-other-market": 5,
-      "held-unmatched": 4
     },
     "2023-24": {
       "not-review": 427,
@@ -67,8 +67,8 @@
       "catalog-gap": 6,
       "held": 54,
       "held-other-market": 7,
-      "held-unmatched": 3,
       "gap": 4,
+      "held-unmatched": 3,
       "held-alt-url": 1
     },
     "2025-26": {
@@ -269,6 +269,18 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.nytimes.com/2022/04/27/theater/mr-saturday-night-review.html",
+      "headline": "mr saturday night review",
+      "publishDate": "2022-04-01",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mr-saturday-night-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
       "headline": "les miserables review hudson valley shakespeare",
       "publishDate": "2026-08-01",
@@ -283,18 +295,6 @@
         "les-miserables-2006",
         "les-miserables-1987"
       ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/04/27/theater/mr-saturday-night-review.html",
-      "headline": "mr saturday night review",
-      "publishDate": "2022-04-01",
-      "dateSoft": true,
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "mr-saturday-night-2022"
-      ],
-      "outOfWindow": []
     },
     {
       "url": "https://www.nytimes.com/2021/11/14/theater/assassins-review-classic-stage.html",
@@ -637,70 +637,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
-      "headline": "american daughter review wendy wasserstein",
-      "publishDate": "2026-08-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "an-american-daughter-off-broadway-2026"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2022/02/01/theater/mj-musical-review.html",
-      "headline": "mj musical review",
-      "publishDate": "2022-02-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "mj-2022"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
-      "headline": "for colored girls review ntozake shange",
-      "publishDate": "2022-04-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
-      "headline": "two strangers carry cake review",
-      "publishDate": "2025-11-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "two-strangers-bway-2025"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "two-strangers-bway-2025"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2023/07/14/theater/the-saviour-theater-review.html",
-      "headline": "the saviour theater review",
-      "publishDate": "2023-07-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [
-        "the-saviour-off-broadway-2023"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "the-saviour-off-broadway-2023"
-      ]
-    },
-    {
       "url": "https://www.nytimes.com/2026/10/29/theater/few-good-men-review-whitford-blyth-sorkin.html",
       "headline": "few good men review whitford blyth sorkin",
       "publishDate": "2026-10-01",
@@ -737,6 +673,70 @@
       "outOfWindow": [
         "ghost-the-musical-2012"
       ]
+    },
+    {
+      "url": "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
+      "headline": "for colored girls review ntozake shange",
+      "publishDate": "2022-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2022/02/01/theater/mj-musical-review.html",
+      "headline": "mj musical review",
+      "publishDate": "2022-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
+      "headline": "two strangers carry cake review",
+      "publishDate": "2025-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "two-strangers-bway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "two-strangers-bway-2025"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2023/07/14/theater/the-saviour-theater-review.html",
+      "headline": "the saviour theater review",
+      "publishDate": "2023-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-saviour-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-saviour-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2026/08/13/theater/american-daughter-review-wendy-wasserstein.html",
+      "headline": "american daughter review wendy wasserstein",
+      "publishDate": "2026-08-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "an-american-daughter-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
     },
     {
       "url": "https://www.nytimes.com/2025/10/09/theater/least-problematic-woman-review-dylan-mulvaney.html",
@@ -1262,15 +1262,17 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2024/08/03/theater/gatsby-queen-of-versailles-review.html",
-      "headline": "gatsby queen of versailles review",
-      "publishDate": "2024-08-01",
+      "url": "https://www.nytimes.com/2022/04/14/theater/cyrano-de-bergerac-review.html",
+      "headline": "cyrano de bergerac review",
+      "publishDate": "2022-04-01",
       "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "queen-versailles-2025"
+        "cyrano-de-bergerac-2012",
+        "cyrano-de-bergerac-2007",
+        "cyrano-de-bergerac-1984"
       ]
     },
     {
@@ -1310,20 +1312,6 @@
       "matched": [],
       "outOfWindow": [
         "prayer-for-the-french-republic-2024"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2022/04/14/theater/cyrano-de-bergerac-review.html",
-      "headline": "cyrano de bergerac review",
-      "publishDate": "2022-04-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "cyrano-de-bergerac-2012",
-        "cyrano-de-bergerac-2007",
-        "cyrano-de-bergerac-1984"
       ]
     },
     {
@@ -1368,28 +1356,15 @@
       ]
     },
     {
-      "url": "https://www.nytimes.com/2021/11/15/theater/mornings-at-seven-review.html",
-      "headline": "mornings at seven review",
-      "publishDate": "2021-11-01",
+      "url": "https://www.nytimes.com/2024/08/03/theater/gatsby-queen-of-versailles-review.html",
+      "headline": "gatsby queen of versailles review",
+      "publishDate": "2024-08-01",
       "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "mornings-at-seven-2002",
-        "mornings-at-seven-1980"
-      ]
-    },
-    {
-      "url": "https://www.nytimes.com/2025/10/13/theater/are-the-bennet-girls-ok-review-bedlam.html",
-      "headline": "are the bennet girls ok review bedlam",
-      "publishDate": "2025-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "are-the-bennet-girls-ok-off-broadway-2026"
+        "queen-versailles-2025"
       ]
     },
     {
@@ -1414,6 +1389,31 @@
       "matched": [],
       "outOfWindow": [
         "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2021/11/15/theater/mornings-at-seven-review.html",
+      "headline": "mornings at seven review",
+      "publishDate": "2021-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mornings-at-seven-2002",
+        "mornings-at-seven-1980"
+      ]
+    },
+    {
+      "url": "https://www.nytimes.com/2025/10/13/theater/are-the-bennet-girls-ok-review-bedlam.html",
+      "headline": "are the bennet girls ok review bedlam",
+      "publishDate": "2025-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "are-the-bennet-girls-ok-off-broadway-2026"
       ]
     },
     {

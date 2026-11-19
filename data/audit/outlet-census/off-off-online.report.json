@@ -1,7 +1,7 @@
 {
   "outletId": "off-off-online",
   "market": "nyc",
-  "generatedAt": "2026-11-19T10:41:04.784Z",
+  "generatedAt": "2026-11-19T12:25:58.732Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
@@ -9,32 +9,32 @@
     "notes": [],
     "incomplete": false,
     "enumerated": 795,
-    "inWindow": 795,
+    "inWindow": 765,
     "undated": 0,
     "meta": {
       "fetched": 795,
-      "failed": 166
+      "failed": 288
     }
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 320,
-      "held-unmatched": 10,
-      "not-review": 307,
+      "held": 308,
+      "held-unmatched": 22,
+      "not-review": 291,
       "misfile": 1,
-      "held-alt-url": 3,
-      "out-of-window": 93,
+      "held-alt-url": 4,
+      "out-of-window": 89,
       "gap": 8,
-      "catalog-gap": 52,
+      "catalog-gap": 41,
       "ambiguous": 1
     },
     "viaTitleVariant": {
-      "held": 15,
+      "held": 14,
       "gap": 1
     },
-    "recall": 0.973,
-    "recallWithCatalog": 0.841
+    "recall": 0.972,
+    "recallWithCatalog": 0.862
   },
   "seasons": {
     "2026-27": {
@@ -43,8 +43,7 @@
       "not-review": 5,
       "misfile": 1,
       "held-alt-url": 1,
-      "out-of-window": 1,
-      "catalog-gap": 1
+      "out-of-window": 1
     },
     "2025-26": {
       "held": 118,
@@ -58,38 +57,38 @@
     "2024-25": {
       "out-of-window": 18,
       "held": 61,
-      "not-review": 57,
+      "not-review": 56,
       "held-unmatched": 1,
       "catalog-gap": 18,
       "gap": 3
     },
     "2023-24": {
-      "held": 59,
-      "not-review": 57,
-      "catalog-gap": 12,
-      "out-of-window": 19,
-      "held-unmatched": 2,
+      "held": 48,
+      "not-review": 64,
+      "catalog-gap": 4,
+      "out-of-window": 18,
+      "held-unmatched": 16,
       "ambiguous": 1,
-      "gap": 1
+      "gap": 1,
+      "held-alt-url": 1
     },
     "2022-23": {
-      "not-review": 64,
-      "held": 36,
-      "out-of-window": 22,
-      "catalog-gap": 9,
-      "gap": 3,
-      "held-unmatched": 1
+      "held": 34,
+      "not-review": 66,
+      "out-of-window": 20,
+      "catalog-gap": 4,
+      "gap": 3
     },
     "2021-22": {
-      "out-of-window": 19,
-      "not-review": 89,
-      "held": 6,
-      "held-unmatched": 2,
-      "catalog-gap": 4
+      "out-of-window": 17,
+      "not-review": 66,
+      "held": 7,
+      "catalog-gap": 7,
+      "held-unmatched": 1
     },
     "2020-21": {
-      "out-of-window": 1,
-      "not-review": 2
+      "not-review": 1,
+      "out-of-window": 2
     }
   },
   "corpusSide": {
@@ -170,8 +169,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2024/2/9/munich-medea-happy-family",
-      "headline": "Munich Medea: Happy Family",
+      "headline": "munich medea happy family",
       "publishDate": "2024-02-14",
+      "dateSoft": true,
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -203,8 +203,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/4/20/daughter-of-the-wicked",
-      "headline": "Daughter of the Wicked",
+      "headline": "daughter of the wicked",
       "publishDate": "2023-04-25",
+      "dateSoft": true,
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -214,8 +215,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/2/20/black-odyssey",
-      "headline": "Black Odyssey",
-      "publishDate": "2023-03-01",
+      "headline": "black odyssey",
+      "publishDate": "2023-03-30",
+      "dateSoft": true,
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -256,6 +258,17 @@
       ],
       "heldUrls": [
         "https://www.offoffonline.com/offoffonline/tag/Heated+Rivalry%3A+The+Unauthorized+Musical+Parody"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2023/5/21/orlando",
+      "headline": "orlando",
+      "publishDate": "2024-04-19",
+      "matched": [
+        "orlando-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://www.offoffonline.com/offoffonline/2024/4/14/orlando"
       ]
     }
   ],
@@ -337,21 +350,157 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2024/6/24/na",
-      "headline": "N/A",
-      "publishDate": "2024-06-28",
+      "headline": "na",
+      "publishDate": "2024-07-12",
+      "dateSoft": true,
       "via": null,
       "held": [
         "n-a-off-broadway-2024"
       ],
       "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2024/5/3/staff-meal",
+      "headline": "staff meal",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "staff-meal-off-broadway-2024"
+      ],
+      "matched": [],
       "outOfWindow": [
-        "n-a-off-broadway-2024"
+        "staff-meal-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2024/4/14/orlando",
+      "headline": "orlando",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "orlando-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "orlando-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2024/4/19/still",
+      "headline": "still",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "still-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2024/4/11/scarlett-dreams",
+      "headline": "scarlett dreams",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "scarlett-dreams-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "scarlett-dreams-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2024/3/29/macbeth-an-undoing",
+      "headline": "macbeth an undoing",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "macbeth-an-undoing-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2024/2/26/teeth",
+      "headline": "teeth",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "teeth-playwrights-horizons-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "teeth-off-broadway-2024",
+        "teeth-playwrights-horizons-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2024/3/17/corruption",
+      "headline": "corruption",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "corruption-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "corruption-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2024/3/14/brooklyn-laundry",
+      "headline": "brooklyn laundry",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "brooklyn-laundry-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "brooklyn-laundry-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2023/12/20/buena-vista-social-club",
+      "headline": "buena vista social club",
+      "publishDate": "2024-05-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "buena-vista-social-club-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "buena-vista-social-club-2025",
+        "buena-vista-social-club-off-broadway-2023"
       ]
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/11/21/amid-falling-walls",
-      "headline": "Amid Falling Walls",
-      "publishDate": "2023-11-29",
+      "headline": "amid falling walls",
+      "publishDate": "2023-11-30",
+      "dateSoft": true,
       "via": null,
       "held": [
         "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023"
@@ -362,31 +511,76 @@
       ]
     },
     {
-      "url": "https://www.offoffonline.com/offoffonline/2022/9/7/hyprov-improv-under-hypnosis",
-      "headline": "hyprov improv under hypnosis",
-      "publishDate": "2023-03-08",
+      "url": "https://www.offoffonline.com/offoffonline/2023/10/18/translations",
+      "headline": "translations",
+      "publishDate": "2024-04-19",
       "dateSoft": true,
       "via": null,
       "held": [
-        "hyprov-improv-under-hypnosis-off-broadway-2022"
+        "translations-off-broadway-2023"
       ],
       "matched": [],
       "outOfWindow": [
-        "hyprov-improv-under-hypnosis-off-broadway-2022"
+        "translations-2007",
+        "translations-1995",
+        "translations-off-broadway-2023"
       ]
     },
     {
-      "url": "https://www.offoffonline.com/offoffonline/2022/2/14/black-no-more",
-      "headline": "black no more",
-      "publishDate": "2022-05-15",
+      "url": "https://www.offoffonline.com/offoffonline/2023/9/24/mary-gets-hers",
+      "headline": "mary gets hers",
+      "publishDate": "2024-04-19",
       "dateSoft": true,
       "via": null,
       "held": [
-        "black-no-more-off-broadway-2022"
+        "mary-gets-hers-off-broadway-2023"
       ],
       "matched": [],
       "outOfWindow": [
-        "black-no-more-off-broadway-2022"
+        "mary-gets-hers-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2023/7/31/toros",
+      "headline": "toros",
+      "publishDate": "2023-10-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "toros-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "toros-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2023/7/15/orpheus-descending-zbuPP",
+      "headline": "orpheus descending zbuPP",
+      "publishDate": "2023-11-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "orpheus-descending-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "orpheus-descending-1989",
+        "orpheus-descending-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2023/6/20/the-comeuppance",
+      "headline": "the comeuppance",
+      "publishDate": "2024-05-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-comeuppance-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-comeuppance-off-broadway-2026"
       ]
     },
     {
@@ -678,69 +872,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.offoffonline.com/offoffonline/2024/5/24/the-opposite-of-love",
-      "headline": "The Opposite of Love",
-      "publishDate": "2024-06-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2024/4/3/fish",
-      "headline": "Fish",
-      "publishDate": "2024-04-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2024/3/29/grief-hotel",
-      "headline": "Grief Hotel",
-      "publishDate": "2024-04-02",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2024/3/9/like-they-do-in-the-movies",
-      "headline": "Like They Do in the Movies",
-      "publishDate": "2024-03-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2024/3/12/the-slow-dance",
-      "headline": "The Slow Dance",
-      "publishDate": "2024-03-14",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2024/2/9/the-apiary",
-      "headline": "The Apiary",
-      "publishDate": "2024-02-14",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2023/11/2/food",
-      "headline": "Food",
-      "publishDate": "2023-11-06",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.offoffonline.com/offoffonline/2023/10/2/the-making-of-a-great-moment",
       "headline": "The Making of a Great Moment",
       "publishDate": "2023-10-06",
@@ -759,54 +890,9 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.offoffonline.com/offoffonline/2023/9/5/doris-day-my-secret-love",
-      "headline": "Doris Day: My Secret Love",
-      "publishDate": "2023-09-12",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2023/6/19/rock-amp-roll-man",
-      "headline": "Rock & Roll Man",
-      "publishDate": "2023-06-24",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.offoffonline.com/offoffonline/2023/6/9/singfeld-a-musical-parody-about-nothing",
       "headline": "Singfeld! A Musical Parody About Nothing",
       "publishDate": "2023-06-20",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2023/6/2/bees-and-honey",
-      "headline": "Bees & Honey",
-      "publishDate": "2023-06-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2023/4/19/robin-and-me-my-little-spark-of-madness",
-      "headline": "Robin and Me: My Little Spark of Madness",
-      "publishDate": "2023-04-24",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2023/4/10/emilie-la-marquise-du-chtelet-defends-her-life-tonight",
-      "headline": "Emilie: La Marquise du Châtelet Defends Her Life Tonight",
-      "publishDate": "2023-04-13",
       "via": null,
       "held": [],
       "matched": [],
@@ -831,28 +917,63 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.offoffonline.com/offoffonline/2023/1/23/anthony-rapps-without-you",
-      "headline": "Anthony Rapp’s Without You",
-      "publishDate": "2023-01-28",
+      "url": "https://www.offoffonline.com/offoffonline/2022/9/7/jasper",
+      "headline": "Jasper",
+      "publishDate": "2022-09-19",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": []
     },
     {
-      "url": "https://www.offoffonline.com/offoffonline/2022/12/12/becky-nurse-of-salem",
-      "headline": "Becky Nurse of Salem",
-      "publishDate": "2022-12-21",
+      "url": "https://www.offoffonline.com/offoffonline/2022/5/4/americano",
+      "headline": "¡Americano!",
+      "publishDate": "2022-05-12",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": []
     },
     {
-      "url": "https://www.offoffonline.com/offoffonline/2019/10/19/forbidden-broadway-the-next-generation",
-      "headline": "forbidden broadway the next generation",
-      "publishDate": "2022-04-27",
-      "dateSoft": true,
+      "url": "https://www.offoffonline.com/offoffonline/2022/4/30/colorblind",
+      "headline": "Colorblind",
+      "publishDate": "2022-05-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2022/3/7/jane-anger",
+      "headline": "Jane Anger",
+      "publishDate": "2022-03-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2021/12/2/cheek-to-cheek-irving-berlin-in-hollywood",
+      "headline": "Cheek to Cheek: Irving Berlin in Hollywood",
+      "publishDate": "2021-12-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2021/11/20/a-sherlock-carol",
+      "headline": "A Sherlock Carol",
+      "publishDate": "2021-11-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.offoffonline.com/offoffonline/2021/10/31/tammany-hall",
+      "headline": "Tammany Hall",
+      "publishDate": "2021-11-04",
       "via": null,
       "held": [],
       "matched": [],
@@ -861,36 +982,6 @@
     {
       "url": "https://www.offoffonline.com/offoffonline/2019/9/3/forbidden-broadway-to-return",
       "headline": "forbidden broadway to return",
-      "publishDate": "2022-04-27",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2019/7/30/summer-shorts-series-b-59e59",
-      "headline": "summer shorts series b 59e59",
-      "publishDate": "2026-10-01",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2017/4/13/roundabout-casino-fundraiser-scheduled",
-      "headline": "roundabout casino fundraiser scheduled",
-      "publishDate": "2022-04-27",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2017/3/20/broadway-cares-benefit-saturday",
-      "headline": "broadway cares benefit saturday",
       "publishDate": "2022-04-27",
       "dateSoft": true,
       "via": null,
@@ -1304,8 +1395,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2024/6/4/much-ado-about-nothing",
-      "headline": "Much Ado About Nothing",
-      "publishDate": "2024-06-21",
+      "headline": "much ado about nothing",
+      "publishDate": "2024-06-22",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1317,8 +1409,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2024/6/3/midnight-coleslaws-tales-from-beyond-the-closet",
-      "headline": "Midnight Coleslaw’s Tales from Beyond the Closet!!!",
-      "publishDate": "2024-06-12",
+      "headline": "midnight coleslaws tales from beyond the closet",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1328,8 +1421,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2024/5/29/molly-sweeney",
-      "headline": "Molly Sweeney",
-      "publishDate": "2024-05-31",
+      "headline": "molly sweeney",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1339,8 +1433,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2024/5/10/twelfth-night",
-      "headline": "Twelfth Night",
-      "publishDate": "2024-05-18",
+      "headline": "twelfth night",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1352,8 +1447,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2024/5/14/here-there-are-blueberries",
-      "headline": "Here There Are Blueberries",
-      "publishDate": "2024-05-16",
+      "headline": "here there are blueberries",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1363,8 +1459,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2024/4/2/the-miser",
-      "headline": "The Miser",
-      "publishDate": "2024-05-12",
+      "headline": "the miser",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1373,9 +1470,22 @@
       ]
     },
     {
+      "url": "https://www.offoffonline.com/offoffonline/2024/4/13/philadelphia-here-i-come",
+      "headline": "philadelphia here i come",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "philadelphia-here-i-come-off-broadway-2024"
+      ]
+    },
+    {
       "url": "https://www.offoffonline.com/offoffonline/2024/3/11/ibsens-ghost",
-      "headline": "Ibsen’s Ghost",
-      "publishDate": "2024-03-15",
+      "headline": "ibsens ghost",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1384,9 +1494,22 @@
       ]
     },
     {
+      "url": "https://www.offoffonline.com/offoffonline/2024/3/10/the-effect",
+      "headline": "the effect",
+      "publishDate": "2024-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-effect-off-broadway-2024"
+      ]
+    },
+    {
       "url": "https://www.offoffonline.com/offoffonline/2024/2/2/where-women-go",
-      "headline": "Where Women Go",
-      "publishDate": "2024-02-16",
+      "headline": "where women go",
+      "publishDate": "2024-02-18",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1397,8 +1520,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/12/19/the-night-of-the-iguana",
-      "headline": "The Night of the Iguana",
-      "publishDate": "2023-12-29",
+      "headline": "the night of the iguana",
+      "publishDate": "2024-01-04",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1409,8 +1533,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/12/14/death-let-me-do-my-show",
-      "headline": "Death, Let Me Do My Show",
-      "publishDate": "2023-12-18",
+      "headline": "death let me do my show",
+      "publishDate": "2023-12-29",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1420,8 +1545,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/11/22/the-jerusalem-syndrome",
-      "headline": "The Jerusalem Syndrome",
+      "headline": "the jerusalem syndrome",
       "publishDate": "2023-12-01",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1453,8 +1579,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/8/15/uncle-vanya",
-      "headline": "Uncle Vanya",
+      "headline": "uncle vanya",
       "publishDate": "2023-08-17",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1467,24 +1594,14 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/6/19/richard-iii",
-      "headline": "Richard III",
-      "publishDate": "2023-06-30",
+      "headline": "richard iii",
+      "publishDate": "2023-07-16",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
         "richard-iii-2013"
-      ]
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2023/5/21/orlando",
-      "headline": "Orlando",
-      "publishDate": "2023-05-29",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "orlando-off-broadway-2026"
       ]
     },
     {
@@ -1500,8 +1617,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/5/8/tartuffe",
-      "headline": "Tartuffe",
-      "publishDate": "2023-05-14",
+      "headline": "tartuffe",
+      "publishDate": "2023-06-12",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1514,8 +1632,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/3/1/pericles",
-      "headline": "Pericles",
-      "publishDate": "2023-03-12",
+      "headline": "pericles",
+      "publishDate": "2023-03-16",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1525,8 +1644,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/3/4/cat-on-a-hot-tin-roof",
-      "headline": "Cat on a Hot Tin Roof",
-      "publishDate": "2023-03-06",
+      "headline": "cat on a hot tin roof",
+      "publishDate": "2023-03-07",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1541,8 +1661,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/2/18/othello",
-      "headline": "Othello",
-      "publishDate": "2023-03-01",
+      "headline": "othello",
+      "publishDate": "2023-03-30",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1556,21 +1677,10 @@
       ]
     },
     {
-      "url": "https://www.offoffonline.com/offoffonline/2023/2/21/the-seagullwoodstock-ny",
-      "headline": "The Seagull/Woodstock, NY",
-      "publishDate": "2023-03-01",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-seagull-2008",
-        "the-seagull-1992"
-      ]
-    },
-    {
       "url": "https://www.offoffonline.com/offoffonline/2023/2/25/fall-river-fishing",
-      "headline": "Fall River Fishing",
-      "publishDate": "2023-02-28",
+      "headline": "fall river fishing",
+      "publishDate": "2023-03-30",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1580,8 +1690,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/1/31/endgame",
-      "headline": "Endgame",
-      "publishDate": "2023-02-03",
+      "headline": "endgame",
+      "publishDate": "2023-03-06",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1591,8 +1702,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2023/1/19/colin-quinn-small-talk",
-      "headline": "Colin Quinn: Small Talk",
-      "publishDate": "2023-01-24",
+      "headline": "colin quinn small talk",
+      "publishDate": "2023-02-08",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1613,8 +1725,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2022/12/6/hoagy-carmichaels-stardust-road",
-      "headline": "Hoagy Carmichael’s Stardust Road",
-      "publishDate": "2022-12-09",
+      "headline": "hoagy carmichaels stardust road",
+      "publishDate": "2023-01-16",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1624,8 +1737,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2022/11/21/fiddler-on-the-roof-in-yiddish",
-      "headline": "Fiddler on the Roof",
-      "publishDate": "2022-12-05",
+      "headline": "fiddler on the roof in yiddish",
+      "publishDate": "2023-01-16",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1638,8 +1752,9 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2022/11/5/a-delicate-balance",
-      "headline": "A Delicate Balance",
-      "publishDate": "2022-11-07",
+      "headline": "a delicate balance",
+      "publishDate": "2023-01-16",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1685,9 +1800,8 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2022/10/11/hedda-gabler",
-      "headline": "hedda gabler",
-      "publishDate": "2023-01-16",
-      "dateSoft": true,
+      "headline": "Hedda Gabler",
+      "publishDate": "2022-10-20",
       "via": null,
       "held": [],
       "matched": [],
@@ -1723,9 +1837,8 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2022/7/20/cat-on-a-hot-tin-roof",
-      "headline": "cat on a hot tin roof",
-      "publishDate": "2022-07-25",
-      "dateSoft": true,
+      "headline": "Cat on a Hot Tin Roof",
+      "publishDate": "2022-07-20",
       "via": null,
       "held": [],
       "matched": [],
@@ -1769,9 +1882,8 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2022/5/23/fat-ham",
-      "headline": "fat ham",
-      "publishDate": "2022-06-22",
-      "dateSoft": true,
+      "headline": "Fat Ham",
+      "publishDate": "2022-05-28",
       "via": null,
       "held": [],
       "matched": [],
@@ -1808,9 +1920,8 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2022/3/28/oratorio-for-living-things",
-      "headline": "oratorio for living things",
-      "publishDate": "2022-06-16",
-      "dateSoft": true,
+      "headline": "Oratorio for Living Things",
+      "publishDate": "2022-04-02",
       "via": null,
       "held": [],
       "matched": [],
@@ -1820,9 +1931,8 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2022/3/28/a-touch-of-the-poet",
-      "headline": "a touch of the poet",
-      "publishDate": "2022-05-15",
-      "dateSoft": true,
+      "headline": "A Touch of the Poet",
+      "publishDate": "2022-03-31",
       "via": null,
       "held": [],
       "matched": [],
@@ -1845,9 +1955,8 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2022/2/14/the-merchant-of-venice",
-      "headline": "the merchant of venice",
-      "publishDate": "2022-05-15",
-      "dateSoft": true,
+      "headline": "The Merchant of Venice",
+      "publishDate": "2022-02-21",
       "via": null,
       "held": [],
       "matched": [],
@@ -1884,9 +1993,8 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2021/10/27/brecht-on-brecht-a-celebration-of-a-life-lived-in-defiance",
-      "headline": "brecht on brecht a celebration of a life lived in defiance",
+      "headline": "Brecht on Brecht",
       "publishDate": "2021-10-31",
-      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
@@ -1896,9 +2004,8 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2021/10/23/mrs-warrens-profession",
-      "headline": "mrs warrens profession",
-      "publishDate": "2023-10-23",
-      "dateSoft": true,
+      "headline": "Mrs. Warren’s Profession",
+      "publishDate": "2021-10-28",
       "via": null,
       "held": [],
       "matched": [],
@@ -1909,9 +2016,8 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2021/8/1/friends-the-musical-parody",
-      "headline": "friends the musical parody",
-      "publishDate": "2021-09-13",
-      "dateSoft": true,
+      "headline": "Friends: The Musical Parody",
+      "publishDate": "2021-08-04",
       "via": null,
       "held": [],
       "matched": [],
@@ -1921,26 +2027,14 @@
     },
     {
       "url": "https://www.offoffonline.com/offoffonline/2021/6/30/fruma-sarah-waiting-in-the-wings",
-      "headline": "fruma sarah waiting in the wings",
-      "publishDate": "2021-08-04",
-      "dateSoft": true,
+      "headline": "Fruma-Sarah (Waiting in the Wings)",
+      "publishDate": "2021-07-09",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
+        "wings-1979",
         "waiting-in-the-wings-1999"
-      ]
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2020/1/18/timon-of-athens",
-      "headline": "timon of athens",
-      "publishDate": "2023-11-17",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "timon-of-athens-1993"
       ]
     },
     {
@@ -1956,18 +2050,6 @@
       ]
     },
     {
-      "url": "https://www.offoffonline.com/offoffonline/2019/7/13/dog-man-the-musical",
-      "headline": "dog man the musical",
-      "publishDate": "2022-04-27",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "dog-man-the-musical-off-broadway-2023"
-      ]
-    },
-    {
       "url": "https://www.offoffonline.com/offoffonline/2019/5/12/curse-of-the-starving-class",
       "headline": "curse of the starving class",
       "publishDate": "2022-06-02",
@@ -1977,31 +2059,6 @@
       "matched": [],
       "outOfWindow": [
         "curse-of-the-starving-class-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2019/3/24/julius-caesar",
-      "headline": "julius caesar",
-      "publishDate": "2023-11-17",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "julius-caesar-2005",
-        "julius-caesar-off-broadway-2017"
-      ]
-    },
-    {
-      "url": "https://www.offoffonline.com/offoffonline/2018/4/10/play-on-lgbt-pioneer-scheduled",
-      "headline": "play on lgbt pioneer scheduled",
-      "publishDate": "2022-04-27",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "play-on-1997"
       ]
     },
     {

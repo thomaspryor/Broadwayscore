@@ -1,26 +1,26 @@
 {
   "outletId": "newyorker",
   "market": "nyc",
-  "generatedAt": "2026-11-19T07:01:16.220Z",
+  "generatedAt": "2026-11-19T12:35:52.943Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 120,
-    "inWindow": 120,
+    "enumerated": 121,
+    "inWindow": 121,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
+      "out-of-window": 16,
       "held": 27,
       "not-review": 42,
       "held-unmatched": 31,
-      "gap": 5,
-      "out-of-window": 15
+      "gap": 5
     },
     "viaTitleVariant": {
       "gap": 1,
@@ -31,6 +31,7 @@
   },
   "seasons": {
     "2026-27": {
+      "out-of-window": 1,
       "held": 1,
       "not-review": 4,
       "held-unmatched": 2
@@ -837,6 +838,18 @@
   "catalogGaps": [],
   "otherMarketReviews": [],
   "outOfWindow": [
+    {
+      "url": "https://www.newyorker.com/magazine/2026/11/30/downstate-theatre-review",
+      "headline": "downstate theatre review",
+      "publishDate": "2026-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
     {
       "url": "https://www.newyorker.com/magazine/2025/09/01/twelfth-night-theatre-review",
       "headline": "twelfth night theatre review",
