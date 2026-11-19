@@ -44,7 +44,7 @@ function splitClauses(text) {
 }
 
 function negatesPush(clause) {
-  const toks = clause.toLowerCase().replace(/[^a-z0-9'\s]/g, ' ').split(/\s+/).filter(Boolean);
+  const toks = clause.toLowerCase().replace(/[^\p{L}\p{N}'\s]/gu, ' ').split(/\s+/).filter(Boolean);
   for (let i = 0; i < toks.length; i++) {
     // "do not" is two tokens; test the pair as well as the single word.
     const here = toks[i] === 'do' && toks[i + 1] === 'not' ? 'do not' : toks[i];
