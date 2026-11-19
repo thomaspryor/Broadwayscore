@@ -1,22 +1,40 @@
 {
-  "generatedAt": "2026-11-18T10:55:12.700Z",
+  "generatedAt": "2026-11-19T11:14:02.186Z",
   "shadow": true,
-  "checkoutSha": "511fe3936fed884d9329c720c5d8ca6c56ee71ca",
-  "totalCandidates": 420,
-  "eligibleCandidates": 140,
+  "checkoutSha": "b852e5c171638333bbdf6bde5fefdb3dbe0c7bf3",
+  "totalCandidates": 412,
+  "eligibleCandidates": 139,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 17,
-    "fail": 2,
-    "unverifiable": 11
+    "pass": 15,
+    "fail": 8,
+    "unverifiable": 7
   },
   "alreadyDone": [
     {
-      "id": "BRO-7752",
-      "name": "land-local-check base comparison still exceeds 30 min and gets killed (split from BRO-7652)",
-      "verifyCmd": "node --test scripts/lib/land-local-check.test.mjs",
+      "id": "BRO-7819",
+      "name": "Widen cross-market page check with the BWW JSON-LD location signal (~54 wrong-production pages still unflagged)",
+      "verifyCmd": "node --test tests/unit/page-market-qualifier.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7814",
+      "name": "land fast-fail selection misses undriven-rebase-lint when scripts/lib/land-*.js changes",
+      "verifyCmd": "node --test scripts/lib/land-fast-tests.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7806",
+      "name": "mezzanine-search: upstream outages (200 upstream_unavailable) are now invisible; add a counter or sampled alert",
+      "verifyCmd": "npx tsx --test tests/unit/sentry-7815060800.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7805",
+      "name": "Show Score audience: no-ratings opening-night check suppresses re-checks for 20h",
+      "verifyCmd": "node --test scripts/lib/audience-freshness.test.mjs",
       "detail": null
     },
     {
@@ -26,45 +44,15 @@
       "detail": null
     },
     {
-      "id": "BRO-7731",
-      "name": "Cloud worktrees on a shallow clone make land-local-check refuse (no shared history); count alert keys group senders so a sender can be resolved while still duplicating",
-      "verifyCmd": "node --test scripts/lib/scheduled-email-count-rules.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7730",
-      "name": "Land-follow check reads land pushes inside heredocs and test fixtures as real pushes",
-      "verifyCmd": "node --test scripts/tests/verify-edits-cloud-session-gates.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-7729",
       "name": "Retro gate: the session-retro row must ride a land push to main",
       "verifyCmd": "node --test scripts/lib/retro-coverage-stop.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7726",
-      "name": "Sentry error: UgcError: UGC insert reviews failed (account_gone)",
-      "verifyCmd": "npx tsx --test tests/unit/sentry-7835186801.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7710",
-      "name": "Auto-fixer ignores thin synopses (under 120 chars): 48 open shows flagged by health check but never improved",
-      "verifyCmd": "node --test scripts/auto-fix-show-data.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-7701",
       "name": "Audit: is the self-improving session loop working? Verify BRO-7645 and the recheck-reopen fix independently",
       "verifyCmd": "node --test scripts/lib/retro-coverage-stop.test.mjs scripts/lib/session-retro.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7697",
-      "name": "Failed Done-rechecks reopen and dispatch instead of only reporting",
-      "verifyCmd": "node --test scripts/lib/recheck-reopen.test.mjs scripts/lib/close-check-on-main.test.mjs",
       "detail": null
     },
     {
@@ -77,6 +65,12 @@
       "id": "BRO-7676",
       "name": "Opening-night Resend draft: create automatically as soon as reviews are ready, keep it updated; stop lane twin files blocking it",
       "verifyCmd": "node --test tests/unit/review-count-match-url.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7660",
+      "name": "Older-years audit: 120 FAILs are pipeline-excluded reviews (wrongProduction/wrongShow/nonReview) needing review-text reads",
+      "verifyCmd": "node scripts/check-never-audited-backlog.js --max=100",
       "detail": null
     },
     {
@@ -108,64 +102,70 @@
       "name": "Board falling behind: find and fix what floods the board with cards (385 added vs 348 closed in 7d)",
       "verifyCmd": "node --test scripts/lib/board-summary.test.mjs scripts/lib/recheck-handoff.test.mjs scripts/lib/red-escalation.test.mjs scripts/lib/recheck-headless-receipt.test.mjs scripts/lib/alert-router-title-twin.test.mjs scripts/lib/stuck-card-closer-backlog.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-7579",
-      "name": "Recheck 2026-11-16: 10 done claims no longer hold on main",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 Z2FwOmFkaXJvbmRhY2stY2hhaXItY2lyY2xlLXJlZ2lvbmFsLTIwMjYvdGFsa2luYnJvYWR3YXktLXVua25vd24uanNvbg",
-      "detail": null
     }
   ],
   "failing": [
     {
-      "id": "BRO-7709",
-      "name": "ReviewsList.tsx:381 ships a literal &mdash; that tests/unit/rendered-copy-voice.test.mjs rejects",
-      "verifyCmd": "npx tsx --test tests/unit/rendered-copy-voice.test.mjs",
-      "detail": "not ok: on-screen copy in src/app, src/components, src/config and s… | first failure: rewrite with commas, periods or parentheses, and plain wording:"
+      "id": "BRO-7822",
+      "name": "Root cause: \"Quality: outlet domain moves\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class outlet-domain-moves --quiet",
+      "detail": "FAIL: last case 6d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7818",
+      "name": "Quarantine 4 poisoned aggregator-archive pages that fail audit --strict (+ 93 cross-market pages awaiting quarantine)",
+      "verifyCmd": "node scripts/audit-aggregator-archive-integrity.js --strict",
+      "detail": "❌ scanned 0 archive files — data/aggregator-archive is missing or empty (private data not set up). The gate cannot pass vacuously; run scripts/setup-local-data.sh first."
+    },
+    {
+      "id": "BRO-7796",
+      "name": "Landed changes without run proof",
+      "verifyCmd": "node --test scripts/verify-landed-proof-saferun.test.mjs",
+      "detail": "not ok: the nightly audit now self-runs not_run files: a ledger row… | first failure: no ledger row since 2026-11-19 carries a passing safeRun; the audit self-run pat"
+    },
+    {
+      "id": "BRO-7759",
+      "name": "Root cause: \"Headless dispatch: success rate\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class headless-dispatch-success-rate --quiet",
+      "detail": "FAIL: last case 1d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7758",
+      "name": "Root cause: \"Quality: outlet-heartbeat red flags\" keeps coming back (4 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class outlet-heartbeat-red-flags --quiet",
+      "detail": "FAIL: last case 1d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7757",
+      "name": "Root cause: \"ft login cookies fail the live access check: reviews will score on paywall-truncated text\" keeps coming back (5 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class reviews-will-score-paywall-truncated-text --quiet",
+      "detail": "FAIL: last case 1d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7655",
+      "name": "Root cause: \"Corpus drift: one Show Score URL mapped to + showIds\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class one-show-score-url-mapped-showids --quiet",
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-7583",
       "name": "Root cause: \"Landing blocked: scripts-lib-tests red\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class scripts-lib-tests-red --quiet",
-      "detail": "FAIL: last case 19d ago, needs 21\n"
+      "detail": "FAIL: last case 20d ago, needs 21\n"
     }
   ],
   "unverifiable": [
     {
-      "id": "BRO-7736",
-      "name": "Sentry error: UgcError: UGC insert unmatched_imports failed (42501)",
-      "verifyCmd": "npx tsx --test tests/unit/sentry-7801266960.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sentry-7801266960.test.mjs"
+      "id": "BRO-7800",
+      "name": "UX audit: Date for the same show is styled differently in grid vs. list view. For 'SIX', the date 'Dec 18' is yellow tex",
+      "verifyCmd": "node scripts/lib/ux-walkthrough-resolution.js --key=8fdd3bb449b1332f95c4b0ad77393b36",
+      "detail": "could not run here (credential-withheld): FAIL UX resolution: LINEAR_API_KEY not set in .env or environment"
     },
     {
-      "id": "BRO-7734",
-      "name": "Sentry error: SyntaxError: Invalid regular expression: invalid group specifier name",
-      "verifyCmd": "npx tsx --test tests/unit/sentry-7812256534.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sentry-7812256534.test.mjs"
-    },
-    {
-      "id": "BRO-7733",
-      "name": "Sentry error: UgcError: UGC functions mezzanine-search failed (500)",
-      "verifyCmd": "npx tsx --test tests/unit/sentry-7815060800.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sentry-7815060800.test.mjs"
-    },
-    {
-      "id": "BRO-7732",
-      "name": "Sentry error: UgcError: UGC insert watchlist failed (23503)",
-      "verifyCmd": "npx tsx --test tests/unit/sentry-7799170551.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sentry-7799170551.test.mjs"
-    },
-    {
-      "id": "BRO-7728",
-      "name": "Sentry error: UgcError: UGC insert watchlist failed (account_gone)",
-      "verifyCmd": "npx tsx --test tests/unit/sentry-7815055841.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sentry-7815055841.test.mjs"
-    },
-    {
-      "id": "BRO-7727",
-      "name": "Sentry error: UgcError: UGC insert reviews failed (23503)",
-      "verifyCmd": "npx tsx --test tests/unit/sentry-7835186822.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sentry-7835186822.test.mjs"
+      "id": "BRO-7799",
+      "name": "UX audit: Destructive action (delete) uses the same color as non-destructive actions, making it unclear. Example: trash",
+      "verifyCmd": "node scripts/lib/ux-walkthrough-resolution.js --key=e9dedcdba02632518eb009ec9c9bffc9",
+      "detail": "could not run here (credential-withheld): FAIL UX resolution: LINEAR_API_KEY not set in .env or environment"
     },
     {
       "id": "BRO-7725",
@@ -174,10 +174,10 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sentry-7834294511.test.mjs"
     },
     {
-      "id": "BRO-7724",
-      "name": "Sentry error: SecurityError: Attempt to use history.replaceState() more than 100 times per 10",
-      "verifyCmd": "npx tsx --test tests/unit/sentry-7834294498.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sentry-7834294498.test.mjs"
+      "id": "BRO-7704",
+      "name": "Money welcome email: send within ~5 min of sign-up (event trigger + hourly backstop)",
+      "verifyCmd": "node --test tests/unit/money-welcome-kick.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/money-welcome-kick.test.mjs"
     },
     {
       "id": "BRO-7695",
@@ -189,7 +189,7 @@
       "id": "BRO-7685",
       "name": "Fix: LLM scoring daily spend over budget (still open — BRO-6732)",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 ZGlnZXN0LW5lZWRzLXlvdTpMTE0gc2NvcmluZyBkYWlseSBzcGVuZCBvdmVyIGJ1ZGdldCAoc3RpbGwgb3BlbiDigJQgQlJPLTY3MzIp",
-      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:LLM scoring daily spend over budget (still open — BRO-6732)\" is in no alert ledger (/tmp/open-backlog-sweep-3OVOJj/main/data/audit/alert-l"
+      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:LLM scoring daily spend over budget (still open — BRO-6732)\" is in no alert ledger (/tmp/open-backlog-sweep-OAnCC7/main/data/audit/alert-l"
     },
     {
       "id": "BRO-7596",
@@ -200,11 +200,11 @@
   ],
   "landedButOpen": [
     {
-      "id": "BRO-7726",
-      "name": "Sentry error: UgcError: UGC insert reviews failed (account_gone)",
-      "branch": "land/codex-bro-7726",
-      "sha": "3b4373a49ac0d34ffb1a97aac1bd9631b4cbdc94",
-      "landedAt": "2026-11-18T10:08:17.760Z"
+      "id": "BRO-7660",
+      "name": "Older-years audit: 120 FAILs are pipeline-excluded reviews (wrongProduction/wrongShow/nonReview) needing review-text reads",
+      "branch": "land/bro-7660-older-audit",
+      "sha": "d8389f4cd96cb760424c9c5ecadd8e18b9da8d12",
+      "landedAt": "2026-11-18T08:51:28.524Z"
     },
     {
       "id": "BRO-7654",
@@ -219,13 +219,6 @@
       "branch": "land/bro-7595-sentry-family",
       "sha": "709efd1143ea167bb918cf43c447dbd80dee7470",
       "landedAt": "2026-11-18T08:12:04.033Z"
-    },
-    {
-      "id": "BRO-7579",
-      "name": "Recheck 2026-11-16: 10 done claims no longer hold on main",
-      "branch": "land/bro-7579-recheck-fixes",
-      "sha": "a0be55fe10dbc51c96ab8144a137dbdae69e01b4",
-      "landedAt": "2026-11-16T02:21:17.301Z"
     }
   ]
 }
