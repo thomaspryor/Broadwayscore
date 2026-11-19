@@ -45,6 +45,29 @@ async function dismissConsent(page, re) {
   if (await b.count()) { await b.first().click().catch(() => {}); await page.waitForTimeout(500); }
 }
 
+// Consent managers that render in an iframe (FT's consent-manager.ft.com,
+// Sourcepoint-style) sit over the form and swallow the Next click
+// (probed 2026-11-19: FT's Next did nothing until the banner was accepted).
+async function dismissConsentFrame(page) {
+  const btn = page.frameLocator('iframe[src*="consent"]').getByRole('button', { name: /^(accept|accept all|i accept|agree)$/i });
+  await btn.first().click({ timeout: 6000 }).then(() => page.waitForTimeout(1000)).catch(() => {});
+}
+
+// FT (2026-11-19) answers Next with a WebAuthn passkey challenge for accounts
+// that have a passkey; in an automated browser it waits forever and no
+// password field appears. Without WebAuthn the site falls back to email +
+// password. Page-scoped so the persistent profile keeps nothing.
+async function disablePasskeys(page) {
+  await page.addInitScript(() => {
+    try { Object.defineProperty(window, 'PublicKeyCredential', { value: undefined, configurable: true }); } catch { /* read-only in some builds */ }
+    if (navigator.credentials) {
+      const no = () => Promise.reject(new DOMException('passkeys disabled for scripted login', 'NotAllowedError'));
+      navigator.credentials.get = no;
+      navigator.credentials.create = no;
+    }
+  });
+}
+
 const FLOWS = {
   // The Stage: one form, explicit selectors from the outlet config.
   async 'stage-form'(page, cfg, creds) {
@@ -76,10 +99,12 @@ const FLOWS = {
     return pageState(page);
   },
 
-  // WaPo, FT, Telegraph: email -> Next/Continue -> password -> Sign in.
+  // WaPo, FT: email -> Next/Continue -> password -> Sign in.
   async 'two-step-password'(page, cfg, creds) {
+    await disablePasskeys(page);
     await page.goto(cfg.loginUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
     await page.waitForSelector(VISIBLE_EMAIL, { timeout: 15000 }).catch(() => {});
+    await dismissConsentFrame(page);
     const email = page.locator(VISIBLE_EMAIL).first();
     if (!(await email.count())) return pageState(page, { formMissing: true });
     await email.fill(creds.email);
@@ -88,8 +113,68 @@ const FLOWS = {
     await password.waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
     if (!(await password.count())) return pageState(page, { formMissing: true, why: 'no password step after the email step (code, captcha or SSO?)' });
     await password.fill(creds.password);
+    // FT only sets its long-lived FTSession_s when "Keep me signed in" is ticked
+    // (2026-11-19: unticked login read the article but had no FTSession_s).
+    const keep = page.getByLabel(/keep me (signed|logged) in|remember me|stay (signed|logged) in/i).first();
+    if ((await keep.count()) && !(await keep.isChecked().catch(() => true))) await keep.check({ force: true }).catch(() => {});
     await clickOrEnter(page, /^(sign in|log in|continue|submit)$/i, password);
     await settle(page);
+    return pageState(page);
+  },
+
+  // Telegraph (2026-11-19): email -> Continue -> "Check your email" with six
+  // single-digit boxes (the first has autocomplete=one-time-code); no password
+  // step is offered first any more. The code comes from Gmail.
+  async 'telegraph-otp'(page, cfg, creds, { pollOtp, otp }) {
+    await page.goto(cfg.loginUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+    await page.waitForSelector(VISIBLE_EMAIL, { timeout: 15000 }).catch(() => {});
+    await dismissConsentFrame(page);
+    const email = page.locator(VISIBLE_EMAIL).first();
+    if (!(await email.count())) return pageState(page, { formMissing: true });
+    await email.fill(creds.email);
+    const since = Math.floor(Date.now() / 1000) - 30; // clock skew
+    await clickOrEnter(page, /^continue$/i, email);
+    const first = page.locator('input[autocomplete="one-time-code"]:visible').first();
+    await first.waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
+    if (!(await first.count())) return pageState(page, { formMissing: true, why: 'no code boxes after the email step (password step, captcha?)' });
+    const code = await pollOtp({ ...otp, sinceEpochSeconds: since });
+    if (!code) return pageState(page, { why: 'no one-time code arrived in Gmail within 90s' });
+    await first.click();
+    await page.keyboard.type(code, { delay: 80 }); // boxes auto-advance
+    await page.waitForFunction(() => !/\/login/i.test(window.location.pathname), { timeout: 25000 }).catch(() => {});
+    await settle(page, 3000);
+    return pageState(page);
+  },
+
+  // FT (2026-11-19): the password route ends in an hCaptcha image puzzle a
+  // script can't solve. FT's own "Sign in without a password" route is
+  // hCaptcha-free: email -> Next -> that button -> access code from Gmail
+  // (subject "Your FT.com access code") into input[name=token] -> Sign in.
+  // The consent iframe re-renders after Next, so it is dismissed twice.
+  async 'ft-otp'(page, cfg, creds, { pollOtp, otp }) {
+    await disablePasskeys(page);
+    await page.goto(cfg.loginUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+    await page.waitForSelector(VISIBLE_EMAIL, { timeout: 15000 }).catch(() => {});
+    await dismissConsentFrame(page);
+    const email = page.locator(VISIBLE_EMAIL).first();
+    if (!(await email.count())) return pageState(page, { formMissing: true });
+    await email.fill(creds.email);
+    await clickOrEnter(page, /^next$/i, email);
+    await settle(page, 4000);
+    await dismissConsentFrame(page);
+    const noPassword = page.getByRole('button', { name: /sign in without a password/i });
+    if (!(await noPassword.count())) return pageState(page, { formMissing: true, why: '"Sign in without a password" not offered' });
+    const since = Math.floor(Date.now() / 1000) - 30; // clock skew
+    await noPassword.first().click();
+    const field = page.locator('input[name="token"]:visible').first();
+    await field.waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
+    if (!(await field.count())) return pageState(page, { formMissing: true, why: 'access-code field missing' });
+    const code = await pollOtp({ ...otp, sinceEpochSeconds: since });
+    if (!code) return pageState(page, { why: 'no access code arrived in Gmail within 90s' });
+    await field.fill(code);
+    await clickOrEnter(page, /^sign in$/i, field);
+    await page.waitForFunction(() => !/accounts\.ft\.com/.test(window.location.hostname), { timeout: 25000 }).catch(() => {});
+    await settle(page, 3000);
     return pageState(page);
   },
 
@@ -101,8 +186,9 @@ const FLOWS = {
     if (!(await email.count())) return pageState(page, { formMissing: true });
     await email.fill(creds.email);
     await page.locator('button[type="submit"]').first().click();
-    await page.waitForTimeout(2500);
     const otpButton = page.getByRole('button', { name: /email me a one-time code/i });
+    // Wait for the button, not a fixed delay: the page can take 5s+ to swap (2026-11-19).
+    await otpButton.first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
     if (!(await otpButton.count())) return pageState(page, { formMissing: true, why: '"Email me a one-time code" not offered' });
     const since = Math.floor(Date.now() / 1000) - 30; // clock skew
     await otpButton.click();
@@ -126,8 +212,9 @@ const FLOWS = {
     if (!(await email.count())) return pageState(page, { formMissing: true });
     await email.fill(creds.email);
     await page.locator('button[type="submit"]').first().click();
-    await page.waitForTimeout(2500);
     const otpButton = page.getByRole('button', { name: /sign in with one-time code/i });
+    // Wait for the button, not a fixed delay: the page can take 5s+ to swap (2026-11-19).
+    await otpButton.first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
     if (!(await otpButton.count())) return pageState(page, { formMissing: true, why: '"Sign in with one-time code" not offered' });
     const since = Math.floor(Date.now() / 1000) - 30;
     await otpButton.click();

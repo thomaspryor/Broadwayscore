@@ -175,7 +175,7 @@ test('renew-cookies: telegraph is local-only with an automatic login, and a brow
   const cfg = RENEW_OUTLETS.telegraph;
   assert.equal(cfg.manualOnly, undefined);
   assert.equal(cfg.localOnly, true);
-  assert.equal(loginAdapterFor('telegraph').kind, 'two-step-password');
+  assert.equal(loginAdapterFor('telegraph').kind, 'telegraph-otp'); // emailed code since 2026-11-19
   assert.match(cfg.loginUrl, /^https:\/\/secure\.telegraph\.co\.uk\/customer\/secure\/login\//);
   const p = COOKIE_PROBES.telegraph;
   assert.equal(p.url, A.ADAPTERS.telegraph.testUrl);
