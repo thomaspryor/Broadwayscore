@@ -284,6 +284,8 @@ function probe(base, run) {
  * log(line) is called once per exemption.
  */
 function filterFiles(files, read, resolveImportFor, log) {
+  // Kill switch (rollback without a revert): RENDER_IMPACT_DISABLED=1 keeps every file gated, in the hook and in visual-approval.js.
+  if (process.env.RENDER_IMPACT_DISABLED === '1') return files.slice();
   return files.filter((f) => {
     if (!/^src\/.*\.(tsx|jsx)$/.test(f)) return true;
     try {

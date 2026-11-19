@@ -123,6 +123,19 @@ test('filterFiles drops only exempt files and logs each exemption; helper errors
   assert.deepEqual(boom, [F]);
 });
 
+test('RENDER_IMPACT_DISABLED=1 kill switch keeps every file gated', () => {
+  const read = (side) => (side === 'old' ? BASE : sentry37());
+  const prev = process.env.RENDER_IMPACT_DISABLED;
+  try {
+    process.env.RENDER_IMPACT_DISABLED = '1';
+    assert.deepEqual(filterFiles([F], read, resolveTs, () => {}), [F]);
+    delete process.env.RENDER_IMPACT_DISABLED;
+    assert.deepEqual(filterFiles([F], read, resolveTs, () => {}), []);
+  } finally {
+    if (prev === undefined) delete process.env.RENDER_IMPACT_DISABLED; else process.env.RENDER_IMPACT_DISABLED = prev;
+  }
+});
+
 test('CLI --filter on a real git range exempts the sentry-37 diff and keeps a className diff', () => {
   const dir = mkdtempSync(join(tmpdir(), 'vri-'));
   const git = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
