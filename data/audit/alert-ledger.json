@@ -44073,7 +44073,7 @@
       "resolvedAt": "2026-11-15T23:43:19.700Z"
     },
     "image-source-rejected:in-use": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Show art: 105 image fields point at rejected or wrong-production art",
       "firstSeen": "2026-11-15T23:41:29.001Z",
@@ -44084,7 +44084,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-7572",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-19T17:19:16.274Z",
+      "resolveReason": "no in-use art from a rejected URL"
     },
     "land:land/bro-7559-recheck-stale-checks": {
       "status": "open",
