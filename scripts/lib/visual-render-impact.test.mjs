@@ -378,3 +378,14 @@ test('callbacks inside a guard are held to the same import and parameter rules',
   assert.equal(hookCheck('', 'if (e.exception.values.some((v: any) => v.type === "X")) return null;').exempt, true);
   void unverified;
 });
+
+// --- round 6 (BRO-7849) ---
+test('helper modules cannot reach window through property chains (location.replace) and guards cannot shadow window', () => {
+  const only = (body) => _isDeclarationOnly(tsLib, 'p.ts', `export function isGone(h: any) { ${body} }\n`);
+  assert.equal(only("return h.event.view.location.replace('https://x.example');"), false);
+  assert.equal(only("return h.ownerDocument.title === 'x';"), false);
+  assert.equal(only("return ((window: any) => window.find('x'))(h);"), false);
+  const top = "import { isGone } from '@/lib/g';";
+  assert.equal(hookCheck(top, 'if (e.x?.some((window: any) => 0) || isGone(window)) return null;').exempt, false);
+  assert.equal(hookCheck('', 'if (e.x?.some((window: any) => 0) || window.find((v: any) => v)) return null;').exempt, false);
+});
