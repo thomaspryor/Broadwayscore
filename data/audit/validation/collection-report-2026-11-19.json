@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-11-19T20:52:12.871Z",
+  "runDate": "2026-11-19T21:15:43.978Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 60,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "desire-under-the-elms-off-west-end-2026",
-    "aggressive": true,
+    "showFilter": "florence-off-west-end-2026",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
     "processed": 2,
-    "failed": 0,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier1_9Attempts": 2,
+    "tier1_9Success": 1,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 4,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -55,9 +55,9 @@
   },
   "thisRun": {
     "processed": 2,
-    "failed": 0,
+    "failed": 3,
     "shows": [
-      "desire-under-the-elms-off-west-end-2026"
+      "florence-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,31 +66,49 @@
     }
   },
   "processed": [
-    "desire-under-the-elms-off-west-end-2026/artsdesk--unknown.json",
-    "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+    "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "florence-off-west-end-2026/thereviewshub--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
+    "florence-off-west-end-2026/ign--unknown.json",
+    "florence-off-west-end-2026/sunday-times--unknown.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "desire-under-the-elms-off-west-end-2026/artsdesk--unknown.json",
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+      "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "florence-off-west-end-2026/thereviewshub--unknown.json"
     ],
-    "failed": []
+    "failed": [
+      "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
+      "florence-off-west-end-2026/ign--unknown.json",
+      "florence-off-west-end-2026/sunday-times--unknown.json"
+    ]
   },
   "tierDetails": {
     "playwright": [
-      "desire-under-the-elms-off-west-end-2026/artsdesk--unknown.json",
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+      "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "florence-off-west-end-2026/thereviewshub--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "florence-off-west-end-2026/daily-mail--joanna-crawley.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Sunday Times": {
+      "count": 1,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
