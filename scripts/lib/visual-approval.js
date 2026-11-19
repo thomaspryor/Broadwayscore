@@ -64,7 +64,9 @@ function visualSurfaceFiles(range, cwd) {
   } catch {
     return ['(could not diff against main)']; // fail closed: when unsure, the owner may be asked
   }
-  return filterFiles(range, files, (r, f) => git(['diff', r, '--', f], { cwd }));
+  const afterText = filterFiles(range, files, (r, f) => git(['diff', r, '--', f], { cwd }));
+  // BRO-7849: same second exemption as .claude/hooks/pre-push-visual-gate.sh (non-rendering .tsx edits), so the two never disagree.
+  return require('./visual-render-impact.js').filterRange(range, afterText, cwd);
 }
 
 /** A hold is settled when its fetch failed or its diff against main is empty. */

@@ -236,7 +236,7 @@ test('(3) valid v2 verdict with contentHash but no approval -> exit 2', (t) => {
   writeVerdict(fx, { schemaVersion: 2, overallPass: true, contentHash: HASH });
   const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
   assert.equal(r.status, 2, `stderr: ${r.stderr}`);
-  assert.match(r.stderr, /passing visual-qa verdict exists \(overallPass=true\) but the user has not yet approved it/);
+  assert.match(r.stderr, /passing visual-qa verdict exists \(overallPass=true\) but the owner has not approved it yet/);
   assert.equal(existsSync(fx.ledger), false, 'a blocked push must not write a ledger approval');
 });
 
@@ -245,7 +245,7 @@ test('(3b) negated affirmative ("looks good but fix X first") does not approve -
   writeVerdict(fx, { schemaVersion: 2, overallPass: true, contentHash: HASH });
   const r = runHook(fx, writeTranscript(fx, 'looks good but fix the padding first'));
   assert.equal(r.status, 2, `stderr: ${r.stderr}`);
-  assert.match(r.stderr, /has not yet approved it/);
+  assert.match(r.stderr, /has not approved it yet/);
 });
 
 test('(4) plain user approval -> exit 0, ledger row recorded, and the ledger alone then allows', (t) => {
@@ -360,4 +360,29 @@ test('(BRO-5844) a visual file after 5 text-only files is not hidden by the head
   commitFile(fx.repo, 'src/app/p6/page.tsx', `export default () => <p className="z">Old</p>;\n`, 'style 6');
   const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
   assert.equal(r.status, 2, `stderr: ${r.stderr}`);
+});
+
+// BRO-7849: non-rendering .tsx edits (an analytics guard inside useEffect) need no owner approval; rendering ones are
+// still blocked, and the block message carries the one-run land checklist.
+const EFFECT_BASE = "import { useEffect } from 'react';\nexport default function P() {\n  useEffect(() => {\n    const f = (e: unknown) => e;\n    void f;\n  }, []);\n  return <p className=\"a\">Words</p>;\n}\n";
+test('(BRO-7849) an added guard inside useEffect -> exit 0, exemption logged', (t) => {
+  const fx = makeFixture(t, { uiBranch: false });
+  assertGateLive(fx);
+  withUiBase(fx, EFFECT_BASE);
+  commitFile(fx.repo, 'src/app/copy/page.tsx', EFFECT_BASE.replace('    void f;', '    if (!f) return null;\n    void f;'), 'guard');
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
+  assert.equal(r.status, 0, `stderr: ${r.stderr}`);
+  assert.match(readFileSync(join(fx.logs, 'visual-gate-bypass.log'), 'utf8'), /render-impact-exempt\t.*page\.tsx/);
+});
+
+test('(BRO-7849) setState added inside the same effect -> blocked, with detector line and land checklist', (t) => {
+  const fx = makeFixture(t, { uiBranch: false });
+  assertGateLive(fx);
+  withUiBase(fx, EFFECT_BASE);
+  commitFile(fx.repo, 'src/app/copy/page.tsx', EFFECT_BASE.replace('    void f;', '    setOpen(true);\n    void f;'), 'state');
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
+  assert.equal(r.status, 2, `stderr: ${r.stderr}`);
+  assert.match(r.stderr, /render-impact detector: no file exempt/);
+  assert.match(r.stderr, /do NOT ask the owner until every item below is done|Do NOT ask the owner until every item below is done/);
+  assert.match(r.stderr, /land checklist/);
 });
