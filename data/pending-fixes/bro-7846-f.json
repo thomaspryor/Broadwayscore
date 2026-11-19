@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7846-f",
   "planId": "dcf11328-1be6-43cf-a927-8e8adf06e076",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T17:24:29.453Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,19 @@
         "description": "Clear hero re-downloaded from the parent row's deleted wrong-production banner (BRO-7846 follow-up)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T18:27:22.246Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for an-american-in-paris-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for company-tour-2023"
+    }
+  ],
+  "executedIn": "ci"
 }
