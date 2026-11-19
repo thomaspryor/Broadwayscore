@@ -19,13 +19,14 @@
 
 const { parseDate } = require('./date-utils');
 const { earliestShowDate } = require('./date-guard');
+const { foldDiacritics } = require('./title-match');
 
 const DAY_MS = 86400000;
 // Reviews land a few days either side of the run (preview-week notices, late
 // write-ups). Small on purpose: two same-title runs are usually months apart.
 const WINDOW_SLACK_DAYS = 14;
 
-const normTitle = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const normTitle = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
 function inRunWindow(dateMs, show) {
   const start = parseDate(earliestShowDate(show));
