@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T09:34:01.360Z",
+  "timestamp": "2026-11-19T11:15:28.375Z",
   "stats": {
-    "totalReviews": 82756,
+    "totalReviews": 82765,
     "alreadyFlagged": 22486,
     "dateGuardCatches": 220,
-    "directorMismatch": 3768,
+    "directorMismatch": 3769,
     "tvFilmSignals": 2360,
     "londonSignals": 3815,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8259
+    "noPublishDate": 8262
   },
   "findings": [
     {
@@ -48206,6 +48206,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "now-you-see-me-live-2026",
+      "file": "front-row-center--carmin-caterina.json",
+      "publishDate": "2026-11-18",
+      "url": "https://thefrontrowcenter.com/2026/11/now-you-see-me-live-a-little-more-than-magic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ash jacks mccready\" from now-you-see-me-live-off-west-end-2026"
         }
       ]
     },
