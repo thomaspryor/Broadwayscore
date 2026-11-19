@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T20:47:54.712Z",
+  "timestamp": "2026-11-19T21:04:07.186Z",
   "stats": {
-    "totalReviews": 83165,
+    "totalReviews": 83169,
     "alreadyFlagged": 22547,
     "dateGuardCatches": 221,
     "directorMismatch": 3788,
     "tvFilmSignals": 2373,
-    "londonSignals": 3826,
+    "londonSignals": 3827,
     "offBroadwaySignals": 773,
     "yearMismatch": 386,
-    "noPublishDate": 8272
+    "noPublishDate": 8275
   },
   "findings": [
     {
@@ -101546,6 +101546,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "artsdesk--helen-hawkins.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/desire-under-elms-almeida-theatre-review-dour-tragedy-recast-dynamic-musical-drama",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
