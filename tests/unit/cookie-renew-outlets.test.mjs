@@ -264,7 +264,7 @@ function emptyPage() {
     getByRole: () => loc,
     getByText: () => loc,
     getByLabel: () => loc,
-    frameLocator: () => ({ getByRole: () => loc }),
+    frameLocator: () => { const f = { first: () => f, getByRole: () => loc }; return f; },
     addInitScript: async () => { initScripts.push(1); },
     url: () => 'https://example.test/login',
     content: async () => '<html></html>',
@@ -383,4 +383,22 @@ test('standalone logins count toward the renew login ledger (device limit sees e
   assert.equal(s.nytimes.logins.length, 2);
   assert.deepEqual(s.wapo.logins, [], 'other outlets untouched');
   assert.equal(renew.decideLogin(s.nytimes, Date.now()).allowed, false, 'two logins in 7 days -> the next renew run escalates instead of logging in');
+});
+
+// gmail search prints oldest first; the poller must type the NEWEST code
+// (BRO-7705 review 2026-11-19: it took the first = oldest, a superseded code).
+test('pickNewestCode takes the newest message: subject first, then its body', () => {
+  const { pickNewestCode } = require('../../scripts/lib/otp-login-helpers.js');
+  const tg = renew.loginAdapterFor('telegraph').otp.codePattern;
+  const out = '2 match(es)\nuid=10 | Thu | Telegraph | 111111 is your verification code\nuid=11 | Thu | Telegraph | 222222 is your verification code';
+  assert.equal(pickNewestCode(out, tg, () => ''), '222222');
+  const ft = renew.loginAdapterFor('ft').otp.codePattern;
+  const reads = [];
+  const bodies = { 20: 'enter the following code on your FT screen: *333333*', 21: 'enter the following code on your FT screen: *444444*' };
+  const ftOut = 'uid=20 | Your FT.com access code\nuid=21 | Your FT.com access code';
+  assert.equal(pickNewestCode(ftOut, ft, (u) => { reads.push(u); return bodies[u]; }), '444444');
+  assert.deepEqual(reads, ['21'], 'reads the newest body first and stops');
+  const mixed = 'uid=30 | Your FT.com access code\nuid=31 | Your FT weekly digest';
+  assert.equal(pickNewestCode(mixed, ft, (u) => (u === '30' ? bodies[20] : 'news')), '333333');
+  assert.equal(pickNewestCode('no matches', ft, () => ''), null);
 });

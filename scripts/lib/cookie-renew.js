@@ -152,7 +152,7 @@ const LOGIN_ADAPTERS = {
   // Body "please enter the following code on your FT screen: *123456*" from service@mail.ft.com (2026-11-19).
   'ft-otp': { credentials: ['email'], otp: { fromFilter: 'mail.ft.com', codePattern: /enter the following code[^\d]{0,60}(\d{6})/i } },
   // Subject "123456 is your verification code" from no-reply@service-emails.telegraph.co.uk (2026-11-19).
-  'telegraph-otp': { credentials: ['email'], otp: { fromFilter: 'telegraph.co.uk', codePattern: /(\d{6}) is your verification code/i } },
+  'telegraph-otp': { credentials: ['email'], otp: { fromFilter: 'telegraph.co.uk', codePattern: /\b(\d{6}) is your verification code/i } },
 };
 
 /**

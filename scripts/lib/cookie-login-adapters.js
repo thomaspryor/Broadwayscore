@@ -49,7 +49,7 @@ async function dismissConsent(page, re) {
 // Sourcepoint-style) sit over the form and swallow the Next click
 // (probed 2026-11-19: FT's Next did nothing until the banner was accepted).
 async function dismissConsentFrame(page) {
-  const btn = page.frameLocator('iframe[src*="consent"]').getByRole('button', { name: /^(accept|accept all|i accept|agree)$/i });
+  const btn = page.frameLocator('iframe[src*="consent"]').first().getByRole('button', { name: /^(accept|accept all|i accept|agree)$/i });
   await btn.first().click({ timeout: 6000 }).then(() => page.waitForTimeout(1000)).catch(() => {});
 }
 
@@ -99,7 +99,7 @@ const FLOWS = {
     return pageState(page);
   },
 
-  // WaPo, FT: email -> Next/Continue -> password -> Sign in.
+  // WaPo: email -> Next/Continue -> password -> Sign in (FT moved to ft-otp).
   async 'two-step-password'(page, cfg, creds) {
     await disablePasskeys(page);
     await page.goto(cfg.loginUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
@@ -113,8 +113,7 @@ const FLOWS = {
     await password.waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
     if (!(await password.count())) return pageState(page, { formMissing: true, why: 'no password step after the email step (code, captcha or SSO?)' });
     await password.fill(creds.password);
-    // FT only sets its long-lived FTSession_s when "Keep me signed in" is ticked
-    // (2026-11-19: unticked login read the article but had no FTSession_s).
+    // Tick "keep me signed in" where offered so the session is the long-lived one.
     const keep = page.getByLabel(/keep me (signed|logged) in|remember me|stay (signed|logged) in/i).first();
     if ((await keep.count()) && !(await keep.isChecked().catch(() => true))) await keep.check({ force: true }).catch(() => {});
     await clickOrEnter(page, /^(sign in|log in|continue|submit)$/i, password);
@@ -141,7 +140,8 @@ const FLOWS = {
     if (!code) return pageState(page, { why: 'no one-time code arrived in Gmail within 90s' });
     await first.click();
     await page.keyboard.type(code, { delay: 80 }); // boxes auto-advance
-    await page.waitForFunction(() => !/\/login/i.test(window.location.pathname), { timeout: 25000 }).catch(() => {});
+    // Done when the code boxes are gone (the URL may not change).
+    await first.waitFor({ state: 'hidden', timeout: 25000 }).catch(() => {});
     await settle(page, 3000);
     return pageState(page);
   },
@@ -191,7 +191,7 @@ const FLOWS = {
     await otpButton.first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
     if (!(await otpButton.count())) return pageState(page, { formMissing: true, why: '"Email me a one-time code" not offered' });
     const since = Math.floor(Date.now() / 1000) - 30; // clock skew
-    await otpButton.click();
+    await otpButton.first().click();
     const code = await pollOtp({ ...otp, sinceEpochSeconds: since });
     if (!code) return pageState(page, { why: 'no one-time code arrived in Gmail within 90s' });
     const field = page.locator('input[name="verificationCode"]').first();
@@ -217,7 +217,7 @@ const FLOWS = {
     await otpButton.first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
     if (!(await otpButton.count())) return pageState(page, { formMissing: true, why: '"Sign in with one-time code" not offered' });
     const since = Math.floor(Date.now() / 1000) - 30;
-    await otpButton.click();
+    await otpButton.first().click();
     const code = await pollOtp({ ...otp, sinceEpochSeconds: since });
     if (!code) return pageState(page, { why: 'no one-time code arrived in Gmail within 90s' });
     await dismissConsent(page, /^ok$/i); // the banner can overlay the boxes
