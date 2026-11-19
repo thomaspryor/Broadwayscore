@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7817",
   "planId": "3f6fa779-9f90-44ff-9889-9c06e76e40b2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T17:08:35.369Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "description": "BRO-7817 part 1 test ingest wrote this from a Front Row Center news post (To Kill A Mockingbird Sets Closing and Opening Dates, 2022-01-14, 986 chars of schedule news, no review of the production); it is a non-review, so no critic review is lost"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T17:21:40.351Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-2018/front-row-center--tulis-mccall.json"
+    }
+  ],
+  "executedIn": "ci"
 }

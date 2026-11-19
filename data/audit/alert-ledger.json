@@ -39832,7 +39832,7 @@
       "resolvedAt": "2026-11-09T02:23:27.087Z"
     },
     "test-yml:data-validation-red:run-data-validation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run data validation",
       "firstSeen": "2026-11-09T03:33:12.490Z",
@@ -39844,7 +39844,9 @@
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-19T17:23:18.701Z",
+      "resolveReason": "step passed"
     },
     "gap:iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json": {
       "status": "resolved",
@@ -41431,12 +41433,13 @@
       "firstSeen": "2026-11-10T15:36:09.264Z",
       "incidentOpenedAt": "2026-11-19T17:00:14.718Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-19T17:00:14.718Z",
+      "lastSeen": "2026-11-19T17:23:18.737Z",
       "lastNotifiedAt": "2026-11-19T17:00:14.718Z",
       "lastSurfacedAt": "2026-11-19T17:00:14.718Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:data-validation-red:run-aggregator-domain-tld-parity-corpus-scan-needs-review-texts": {
       "status": "resolved",
@@ -42204,13 +42207,12 @@
       "title": "Unverified revival on Cloud 9",
       "firstSeen": "2026-11-11T10:26:38.949Z",
       "incidentOpenedAt": "2026-11-11T10:26:38.949Z",
-      "lastSeen": "2026-11-17T20:10:50.653Z",
-      "lastNotifiedAt": "2026-11-11T10:26:38.949Z",
-      "lastSurfacedAt": "2026-11-11T10:26:38.949Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-19T17:18:58.388Z",
+      "lastNotifiedAt": "2026-11-19T17:18:58.388Z",
+      "lastSurfacedAt": "2026-11-19T17:18:58.388Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 132
+      "linearIdentifier": null
     },
     "pending-unrecoverable:cloud-9-west-end-2026": {
       "status": "resolved",
@@ -42411,13 +42413,12 @@
       "title": "Content mismatch on Cloud 9",
       "firstSeen": "2026-11-11T17:40:18.493Z",
       "incidentOpenedAt": "2026-11-11T17:40:18.493Z",
-      "lastSeen": "2026-11-17T20:10:50.630Z",
-      "lastNotifiedAt": "2026-11-11T17:40:18.493Z",
-      "lastSurfacedAt": "2026-11-11T17:40:18.493Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-19T17:18:58.366Z",
+      "lastNotifiedAt": "2026-11-19T17:18:58.366Z",
+      "lastSurfacedAt": "2026-11-19T17:18:58.366Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 128
+      "linearIdentifier": null
     },
     "broadcast-gate:checklist:cloud-9-west-end-2026": {
       "status": "open",
@@ -42426,13 +42427,12 @@
       "title": "Opening-night email draft on hold: a quality check flagged a review",
       "firstSeen": "2026-11-11T17:40:20.346Z",
       "incidentOpenedAt": "2026-11-11T17:40:20.346Z",
-      "lastSeen": "2026-11-17T20:10:50.947Z",
-      "lastNotifiedAt": "2026-11-17T05:55:18.838Z",
-      "lastSurfacedAt": "2026-11-17T05:55:18.838Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-11-19T17:18:58.686Z",
+      "lastNotifiedAt": "2026-11-19T17:18:58.686Z",
+      "lastSurfacedAt": "2026-11-19T17:18:58.686Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 12
+      "linearIdentifier": null
     },
     "land:land/bro-7348": {
       "status": "resolved",
@@ -44076,7 +44076,7 @@
       "resolvedAt": "2026-11-15T23:43:19.700Z"
     },
     "image-source-rejected:in-use": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Show art: 105 image fields point at rejected or wrong-production art",
       "firstSeen": "2026-11-15T23:41:29.001Z",
@@ -44087,7 +44087,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-7572",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-19T17:19:16.274Z",
+      "resolveReason": "no in-use art from a rejected URL"
     },
     "land:land/bro-7559-recheck-stale-checks": {
       "status": "open",
