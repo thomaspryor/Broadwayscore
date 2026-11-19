@@ -14,6 +14,19 @@ const ADSENSE_HOST_RE = /googlesyndication\.com|adtrafficquality\.google/i;
  */
 
 test.describe('Post-deploy smoke tests', () => {
+  // BRO-7809: the Sentry beforeSend drops SyntaxErrors raised inside built chunks (cut-off
+  // downloads from scrapers). This is the alarm that replaces it for a chunk that is broken
+  // for everyone: a clean browser must be able to parse every first-party script.
+  test('no first-party script fails to parse', async ({ page }) => {
+    // A script that fails to parse reports a SyntaxError with an empty stack, so match on the error itself.
+    const syntaxErrors: string[] = [];
+    page.on('pageerror', (e) => { if (e.name === 'SyntaxError') syntaxErrors.push(e.message); });
+    await page.goto('/');
+    await page.goto('/show/hamilton');
+    await page.waitForLoadState('load');
+    expect(syntaxErrors, `a first-party script failed to parse: ${syntaxErrors.join(' | ')}`).toEqual([]);
+  });
+
   test('homepage renders show cards with scores', async ({ page }) => {
     await page.goto('/');
 
