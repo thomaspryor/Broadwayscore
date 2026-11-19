@@ -14,6 +14,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { callReviewer, redact, REVIEW_MODEL, meterToSessionLedger } from './skeptic-review-stop.mjs';
+import { isMainModule } from './is-main-module.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIFF_CAP = 14000;
@@ -111,6 +112,6 @@ async function cli(argv) {
   return 0;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   cli(process.argv.slice(2)).then((c) => { process.exitCode = c; }, (e) => { console.error(e); process.exitCode = 1; });
 }

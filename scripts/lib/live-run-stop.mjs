@@ -30,6 +30,7 @@ import { landedPushIndices, claimsSafeToArchive, runShellCode, lastAcceptedClaim
 import { shellEditsCode } from './retro-coverage-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
 import { isUsageOnlyOutput } from './usage-output.mjs';
+import { isMainModule } from './is-main-module.mjs';
 
 export const LIVE_RUN_BLOCKING_FROM = '2026-11-25';
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'MultiEdit']);
@@ -249,7 +250,7 @@ export function main(argv, { env = process.env, now = new Date() } = {}) {
   return 2;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   let code = 0;
   try { code = main(process.argv.slice(2)); } catch (e) { process.stderr.write(`live-run-stop: internal error (failing open): ${e && e.message}\n`); code = 0; }
   process.exitCode = code;

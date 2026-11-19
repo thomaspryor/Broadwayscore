@@ -37,6 +37,7 @@ import { createRequire } from 'node:module';
 import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex } from './review-coverage.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
+import { isMainModule } from './is-main-module.mjs';
 
 const require = createRequire(import.meta.url);
 const { isPendingEffect } = require('./root-cause-close.js');
@@ -247,7 +248,7 @@ export function main(argv, { env = process.env, now = new Date() } = {}) {
   return 2;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   let code = 0;
   try { code = main(process.argv.slice(2)); } catch (e) { process.stderr.write(`effect-pending-stop: internal error (failing open): ${e && e.message}\n`); code = 0; }
   process.exitCode = code;

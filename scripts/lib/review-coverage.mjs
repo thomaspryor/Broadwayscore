@@ -57,6 +57,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { walkTranscript, isStopHookFeedback } from './transcript-scan.mjs';
 import { linearCommands } from './linear-command.js';
+import { isMainModule } from './is-main-module.mjs';
 
 const { stripHeredocBodies } = createRequire(import.meta.url)('./infra-review-scope.js');
 
@@ -558,7 +559,7 @@ async function main(argv) {
   return cov.complete ? 0 : 3;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   main(process.argv.slice(2)).then(
     (c) => createRequire(import.meta.url)('./exit-flushed.js').exitFlushed(c),
     (e) => {

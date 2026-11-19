@@ -31,6 +31,7 @@ import { claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex, landedPushIn
 import { shellEditsCode } from './retro-coverage-stop.mjs';
 import { defersProof } from './live-run-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
+import { isMainModule } from './is-main-module.mjs';
 
 const require = createRequire(import.meta.url);
 const { GPT54_MINI } = require('./models.js');
@@ -389,6 +390,6 @@ export async function main(argv, { env = process.env, now = new Date(), stdin = 
   return 2;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   main(process.argv.slice(2)).then((code) => { process.exitCode = code; }, (e) => { process.stderr.write(`skeptic-review-stop: internal error (failing open): ${e && e.message}\n`); process.exitCode = 0; });
 }
