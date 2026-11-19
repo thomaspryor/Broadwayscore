@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T21:32:42.129Z",
+  "timestamp": "2026-11-19T22:22:31.173Z",
   "stats": {
-    "totalReviews": 83171,
-    "alreadyFlagged": 22547,
+    "totalReviews": 83203,
+    "alreadyFlagged": 22549,
     "dateGuardCatches": 221,
-    "directorMismatch": 3788,
-    "tvFilmSignals": 2373,
+    "directorMismatch": 3789,
+    "tvFilmSignals": 2374,
     "londonSignals": 3827,
     "offBroadwaySignals": 773,
     "yearMismatch": 386,
-    "noPublishDate": 8275
+    "noPublishDate": 8271
   },
   "findings": [
     {
@@ -44019,6 +44019,19 @@
     },
     {
       "showId": "merrily-we-roll-along-off-broadway-2022",
+      "file": "front-row-center--tulis-mccall.json",
+      "publishDate": "2023-01-06",
+      "url": "https://thefrontrowcenter.com/2023/01/merrily-we-roll-along-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-off-broadway-2022",
       "file": "frontmezzjunkies--unknown.json",
       "score": 91,
       "publishDate": null,
@@ -66283,6 +66296,19 @@
       "score": 90,
       "publishDate": "November 19, 2024",
       "url": "https://deadline.com/2024/11/swept-away-broadway-review-1236180210/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "swept-away-2024",
+      "file": "front-row-center--holli-harms.json",
+      "publishDate": "2024-11-22",
+      "url": "https://thefrontrowcenter.com/2024/11/swept-away/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
