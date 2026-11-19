@@ -40,3 +40,19 @@ test('most-divisive list ranks only shown scores on both sides', () => {
   assert.match(block, /displaysCriticScore\(show\)/, 'critic TBD shows must not rank (Pygmalion, 2 reviews, was #1)');
   assert.match(block, /hasFullConfidenceAudienceReviews\(buzz\)/, 'audience side needs the full-confidence sample');
 });
+
+test('80% ceiling sheds weight only to sources with 10+ reviews', () => {
+  // 9 reviews: below CEILING_RECIPIENT_MIN, weights stay proportional.
+  let r = calculateCombinedScore({ mezzanine: { score: 50, reviewCount: 1000 }, showScore: { score: 90, reviewCount: 9 } });
+  assert.equal(r.weights.mezzanine, 99);
+  assert.equal(r.weights.showScore, 1);
+  // 10 reviews: a valid recipient, the dominant source is capped at 80%.
+  r = calculateCombinedScore({ mezzanine: { score: 50, reviewCount: 1000 }, showScore: { score: 90, reviewCount: 10 } });
+  assert.equal(r.weights.mezzanine, 80);
+  assert.equal(r.weights.showScore, 20);
+  // Mixed: the excess goes to the 50-review source, never the 1-vote one.
+  r = calculateCombinedScore({ mezzanine: { score: 50, reviewCount: 1000 }, theatr: { score: 100, reviewCount: 1 }, showScore: { score: 90, reviewCount: 50 } });
+  assert.equal(r.weights.mezzanine, 80);
+  assert.equal(r.weights.theatr, 0);
+  assert.equal(r.weights.showScore, 20);
+});
