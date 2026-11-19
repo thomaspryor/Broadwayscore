@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-7846-b",
-  "planId": "967117d6-71eb-4fa2-aa3b-41a9de30dcdc",
+  "planId": "7f4494e2-7cf0-4906-b317-35f5c08378ed",
   "status": "pending",
-  "createdAt": "2026-11-19T15:25:48.381Z",
+  "createdAt": "2026-11-19T15:33:26.684Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-7846: clear TodayTix catalogue art of other productions from 56 closed rows and 3 tours that borrow their banners. 27 rows had their TodayTix poster/thumbnail rejected by the BRO-5089 sweep while the hero from the same catalogue match stayed (follies-2011 kept the 2017 NT Live Follies banner); the rest closed before TodayTix sold tickets (Sept 2013), so TodayTix art on them is another production or another show (grease-2007: an anti-vaping campaign, rain-2010: a Brian Lehrer talk). Every field was looked at by eye. Four thumbnail files on disk predate their TodayTix record and are the right art (follies-2011 2011 cast photo, wonderland-2011, grey-gardens-2006, well-2006): kept, sources recorded as manual in image-sources.json. Sources are added to rejectedImageUrls so the disk fallback and fetcher cannot put them back. No noReliableArt marker: the verified pipeline may refill. (part 2 of 5)",
+    "summary": "BRO-7846: clear TodayTix catalogue art of other productions from 56 closed rows and 3 tours that borrow their banners. 27 rows had their TodayTix poster/thumbnail rejected by the BRO-5089 sweep while the hero from the same catalogue match stayed (follies-2011 kept the 2017 NT Live Follies banner); the rest closed before TodayTix sold tickets (Sept 2013), so TodayTix art on them is another production or another show (grease-2007: an anti-vaping campaign, rain-2010: a Brian Lehrer talk). Every field was looked at by eye. Four thumbnail files on disk predate their TodayTix record and are the right art (follies-2011 2011 cast photo, wonderland-2011, grey-gardens-2006, well-2006): kept, sources recorded as manual in image-sources.json. Sources are added to rejectedImageUrls so the disk fallback and fetcher cannot put them back. No noReliableArt marker: the verified pipeline may refill. (part 1 of 5) (part 2 of 5)",
     "steps": [
       "a-streetcar-named-desire-2012: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
       "a-streetcar-named-desire-2012: never re-take this art source (BRO-7846)",
