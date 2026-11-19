@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-7846-h",
+  "planId": "42c0bb83-db12-45fb-859e-3fe8e66b61f5",
+  "status": "pending",
+  "createdAt": "2026-11-19T18:43:03.480Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear 2023 revival art from the-effect-west-end-2012 and reject its source",
+    "steps": [
+      "Clear 2023 NT revival TodayTix art from the 2012 Cottesloe/Dorfman row (BRO-7846)",
+      "Reject the 2023 revival TodayTix asset for the 2012 row (BRO-7846)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-effect-west-end-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-effect-west-end-2012/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "Clear 2023 NT revival TodayTix art from the 2012 Cottesloe/Dorfman row (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-effect-west-end-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "google-images:https://www.todaytix.com/london/shows/33425-the-effect"
+        ],
+        "newValue": [
+          "google-images:https://www.todaytix.com/london/shows/33425-the-effect",
+          "https://images.ctfassets.net/6pezt69ih962/4oIOdVMdvX8tsExMGD19Vr/5c482b411daf0d92e6625bac8f1059f8/NTGDS_CC_The_Effect_Digital_TodayTix_20.jpg"
+        ],
+        "description": "Reject the 2023 revival TodayTix asset for the 2012 row (BRO-7846)"
+      }
+    ]
+  }
+}

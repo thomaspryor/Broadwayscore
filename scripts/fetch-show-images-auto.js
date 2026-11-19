@@ -39,7 +39,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { unconfirmedArtReason } = require('./lib/unconfirmed-art-policy');
-const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
+const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, refusedSourceReason, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { findContentOwner } = require('./lib/duplicate-images');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
@@ -2738,6 +2738,26 @@ function applyImages(show, images) {
     if (d.path && !wasStaged) {
       try { fs.unlinkSync(path.join(__dirname, '..', 'public', d.path)); } catch {}
     }
+  }
+  // BRO-7846 backstop for every tier (trusted tiers skip verifyAndCollect):
+  // a fresh candidate whose source is refused for this row (rejected, or
+  // TodayTix art on a row that closed before TodayTix sold tickets) is
+  // dropped. The prior file stays when intact and keepable.
+  for (const format of ['hero', 'poster', 'thumbnail']) {
+    const p = safe[format];
+    if (typeof p !== 'string' || !p) continue;
+    const st = staged && staged[format] && staged[format].local === p ? staged[format] : null;
+    if (!st && p === before[format]) continue; // not touched by this fetch
+    const src = (fileSources && fileSources[format]) || (/^https?:/.test(p) ? p : null);
+    const why = refusedSourceReason(show, src);
+    if (!why) continue;
+    console.log(`   ✗ Refusing ${format} for ${show.id}: ${why} (${String(src).slice(0, 90)})`);
+    const prior = before[format];
+    const wasStaged = discardStaged(staged, format);
+    if (wasStaged && fileSources) delete fileSources[format];
+    const priorIntact = typeof prior === 'string' && prior.startsWith('/images/') && (prior !== p || wasStaged);
+    safe[format] = priorIntact && keepExistingImage(show, format, sources) ? prior : null;
+    if (!wasStaged && p.startsWith('/images/')) { try { fs.unlinkSync(path.join(__dirname, '..', 'public', p)); } catch {} }
   }
   // BRO-7390 byte-level backstop: a fresh candidate whose bytes an unrelated
   // show already serves (same stock/venue photo fetched under another URL) is

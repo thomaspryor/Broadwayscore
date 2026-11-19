@@ -404,3 +404,17 @@ test('missingFileRedownload refuses a pre-TodayTix row and keeps the ordinary ca
   const rej = { ...race, rejectedImageUrls: [ok] };
   assert.match(missingFileRedownload(rej, 'hero', race.images.hero, { 'race-2009': { hero: ok } }, new Map()).skip, /rejected/);
 });
+
+// BRO-7846: the 2026-11-19 finder run gave the-effect-west-end-2012 the 2023 NT
+// revival's TodayTix art through a trusted tier that skips verifyAndCollect.
+// applyImages must refuse a fresh candidate whose source refusedSourceReason flags.
+test('the finder refuses refused sources for every tier in applyImages', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../fetch-show-images-auto.js', import.meta.url), 'utf8');
+  const apply = src.slice(src.indexOf('function applyImages('));
+  const body = apply.slice(0, apply.indexOf('\nfunction ', 10));
+  assert.match(body, /refusedSourceReason\(show, src\)/);
+  const effect = { id: 'the-effect-west-end-2012', market: 'west-end', status: 'closed', openingDate: '2012-11-13', closingDate: '2013-02-23', images: { thumbnail: null, poster: null, hero: null } };
+  const nt2023 = 'https://images.ctfassets.net/6pezt69ih962/4oIOdVMdvX8tsExMGD19Vr/5c482b411daf0d92e6625bac8f1059f8/NTGDS_CC_The_Effect_Digital_TodayTix_20.jpg';
+  assert.ok(refusedSourceReason(effect, nt2023));
+});
