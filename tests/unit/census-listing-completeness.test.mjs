@@ -52,6 +52,21 @@ test('F13: review-named child preference reports skipped generic children unless
   assert.match(r.partial[0], /1 non-review/);
 });
 
+test('BRO-7812: tailChildren reads only the newest sitemap children (Slant poller arm), the full archive stays the CLI census job', async () => {
+  const kids = Array.from({ length: 34 }, (_, i) => `https://e.test/post-sitemap${i}.xml`);
+  const idx = `<sitemapindex>${kids.map((k) => `<loc>${k}</loc>`).join('')}</sitemapindex>`;
+  const read = [];
+  const fetchText = async (u) => { read.push(u); return u.endsWith('sitemap_index.xml') ? idx : `<urlset><url><loc>https://e.test/p/${read.length}-review/</loc><lastmod>${day(1)}</lastmod></url></urlset>`; };
+  const tail = { sm: { ...sources.sm, childFilter: /post-sitemap\d*\.xml/, sourceSaysReview: true, tailChildren: 2 } };
+  const r = await census.enumerateCensusItemsDetailed('sm', cutoff, { sourceOverrides: { sources: tail, londonSources: {} }, log: () => {}, fetchText });
+  assert.deepEqual(read.slice(1), ['https://e.test/post-sitemap32.xml', 'https://e.test/post-sitemap33.xml']);
+  assert.equal(r.items.length, 2);
+  assert.equal(r.complete, true);
+  read.length = 0;
+  await census.enumerateCensusItemsDetailed('sm', cutoff, { sourceOverrides: { sources: { sm: { ...tail.sm, tailChildren: 0 } }, londonSources: {} }, log: () => {}, fetchText });
+  assert.equal(read.length, 1 + 34);
+});
+
 test('F03: a healthy, long-span feed is still reconciled against the listing on a rotation', () => {
   const fine = { newestFiltered: day(1), filteredCount: 10, newestAny: day(1), oldestAny: day(30) };
   const reasons = new Set();

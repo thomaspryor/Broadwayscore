@@ -27,10 +27,10 @@ const path = require('path');
 const zlib = require('zlib');
 const { SOURCES, LONDON_SOURCES, sourceFromJson } = require('./lib/outlet-census-sources');
 const census = require('./lib/outlet-census');
-const { parseSitemapXml } = require('./lib/outlet-listing-helpers');
+const { parseSitemapXml, looksLikeSitemap } = require('./lib/outlet-listing-helpers');
 const { guardianItemIsReview } = require('./lib/we-major-recovery');
 const { urlKey } = require('./lib/outlet-feed-reconcile');
-const { fetchViaSitemap } = require('./outlet-listing-poller');
+const { fetchViaSitemap, fetchXmlWithProxyRetry } = require('./outlet-listing-poller');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const ROOT = path.join(__dirname, '..');
@@ -173,8 +173,16 @@ async function enumerateGuardian(src, since, until) {
 const SOURCE_LABEL = 'outlet-census';
 
 async function fetchSitemapUrls(url, urlFilter, opts = {}) {
-  const { status, body: raw } = await get(url, 60000);
-  if (status !== 200) throw new Error(`HTTP ${status} for ${url}`);
+  let raw;
+  if (opts.proxyRetry) {
+    // A source that opts in (Slant, BRO-7812) reads through the poller's fetcher: direct first, then the
+    // shared proxy chain when the site 403s or answers with a challenge page. Throws on a block page.
+    raw = await fetchXmlWithProxyRetry(url, 'sitemap', looksLikeSitemap, { proxyRetry: true, timeoutMs: 60000 });
+  } else {
+    const { status, body } = await get(url, 60000);
+    if (status !== 200) throw new Error(`HTTP ${status} for ${url}`);
+    raw = body;
+  }
   // CDATA-wrapped and entity-escaped <loc>s (Yoast, Arc) parse like plain ones.
   const body = raw.replace(/<!\[CDATA\[\s*([^\]]*?)\s*\]\]>/g, '$1').replace(/&amp;/g, '&');
   if (/<sitemapindex/i.test(body)) {
@@ -270,7 +278,7 @@ async function enumerateSitemap(src, since) {
   } else {
     const got = [];
     for (const u of [].concat(src.url)) {
-      got.push(...await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter, since, notes, childConcurrency: src.childConcurrency }));
+      got.push(...await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter, since, notes, childConcurrency: src.childConcurrency, proxyRetry: !!src.proxyRetry }));
     }
     const seen = new Set();
     return { items: got.filter((i) => !seen.has(i.url) && seen.add(i.url)).map((g) => ({ url: g.url, lastmod: g.publishDate || null })), notes };
@@ -626,6 +634,15 @@ function summaryTable(market = 'nyc') {
   return lines.join('\n');
 }
 
+/** Outlets with many corpus reviews and no readable listing (BRO-7812). Empty string when none. */
+function blindOutletTable() {
+  const files = fs.readdirSync(OUT_DIR).filter((f) => f.endsWith('.report.json'));
+  const blind = census.blindOutlets(files.map((f) => JSON.parse(fs.readFileSync(path.join(OUT_DIR, f), 'utf8'))));
+  if (!blind.length) return '';
+  return ['Blind outlets (the census cannot see a gap here):', '', '| Outlet | Source | Corpus rows | Why |', '|---|---|---|---|',
+    ...blind.map((b) => `| ${b.outletId} | ${b.kind} | ${b.rows} | ${b.why} |`)].join('\n');
+}
+
 /** Per outlet and season: published (every review item), held, gap, misfile, catalog gap, ambiguous. */
 function seasonTable() {
   const lines = ['| Outlet | Season | Reviews listed | Held | Gap | Misfile | Ambiguous | Catalog gap | Other market |', '|---|---|---|---|---|---|---|---|---|'];
@@ -672,6 +689,8 @@ async function main() {
   if (o.probe) { await probe(o.probe); return 0; }
   if (o.summary) {
     console.log(summaryTable(o.market));
+    const blind = blindOutletTable();
+    if (blind) console.log(`\n${blind}`);
     if (o.market === 'london') {
       console.log(`\n${seasonTable()}`);
       const g = catalogGapSummary();

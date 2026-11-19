@@ -86,9 +86,19 @@ const SOURCES = {
   'pages-on-stages': wp('https://public-api.wordpress.com/wp/v2/sites/pagesonstages.com/posts', { sourceSaysReview: true }), // a reviews-only blog,
   frontmezzjunkies: wp('https://public-api.wordpress.com/wp/v2/sites/frontmezzjunkies.com/posts', { categories: [42035, 42036], sourceSaysReview: true }), // broadway, off broadway,
   'off-off-online': { kind: 'sitemap', url: 'https://www.offoffonline.com/sitemap.xml', urlFilter: /offoffonline\.com\/offoffonline\/20\d\d\/\d{1,2}\/\d{1,2}\/[^/]+$/, needsMeta: true, sourceSaysReview: true },
-  // Sitemaps, wp-json, feeds and section pages all return HTTP 403 to the census client
-  // (probed 2026-10-30, BRO-6514), so Slant is enumerated through Google like the others.
-  slantmagazine: serp(['site:slantmagazine.com/theater review'], /slantmagazine\.com\/theater\/[^/]+\/?$/),
+  // Slant's sitemaps, wp-json, feeds and section pages all 403 a direct client (probed 2026-10-30,
+  // BRO-6514), but the Yoast sitemap index and its post-sitemap children read fine through the
+  // poller's proxy chain (BRO-7812, probed 2026-11-19: 33 children, 238 /theater/ URLs). Google
+  // (the BRO-6514 answer) returns ~10 results a query, so it could never list a 14-year archive:
+  // Dan Rubins's Call Me Izzy review (2025-06-13) sat undiscovered until a reader reported it.
+  // Slug stands in for the headline (no paid per-page fetch); the filter keeps /theater/<slug> only,
+  // and the headline must still say "review" (sourceSaysReview stays off: the section also holds
+  // interviews and festival previews).
+  slantmagazine: {
+    kind: 'sitemap', url: 'https://www.slantmagazine.com/sitemap_index.xml', proxyRetry: true,
+    childFilter: /post-sitemap\d*\.xml/, urlFilter: /slantmagazine\.com\/theater\/[^/]+\/?$/, headlineFromSlug: true,
+    tailChildren: 2, // the poller's census arm reads the newest 2 children only (see sitemapFileItems)
+  },
   // UK paper: only slugs naming a New York house or Broadway can be NYC reviews.
   thestage: { kind: 'sitemap', url: 'https://www.thestage.co.uk/SiteMap_TheStage_index.xml', childFilter: (c) => /Reviews/i.test(c), urlFilter: /thestage\.co\.uk\/reviews\/[^/]*(?:broadway|new-york|nyc|manhattan|brooklyn)/, headlineFromSlug: true, sourceSaysReview: true, requireNycSignal: true },
   'the-interested-bystander': { kind: 'sitemap', url: 'https://www.interestedbystander.com/sitemap.xml', urlFilter: /interestedbystander\.com\/20\d\d\/\d\d\/[^/]*(?:theater|theatre|broadway|musical|play)[^/]*\.html$/, needsMeta: true, sourceSaysReview: true },

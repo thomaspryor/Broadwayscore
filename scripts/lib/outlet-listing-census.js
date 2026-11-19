@@ -200,6 +200,10 @@ async function sitemapFileItems(url, src, cutoff, { fetchText, log, status }, de
       if (reviewKids.length < children.length && !src.sourceSaysReview) noteIncomplete(status, 'partial', `${children.length - reviewKids.length} non-review sitemap child(ren) skipped under ${url}`);
       children = reviewKids;
     }
+    // A source that opts in (Slant, BRO-7812) reads only the newest children here: its index lists them
+    // oldest first and a 7-day window never reaches the old ones, so a run costs a few proxy calls, not 34.
+    // The full archive is the census CLI's job (scripts/outlet-census.js), which ignores this option.
+    if (src.tailChildren > 0 && children.length > src.tailChildren) children = children.slice(-src.tailChildren);
     if (children.length > MAX_SITEMAP_CHILDREN) noteIncomplete(status, 'capped', `${children.length - MAX_SITEMAP_CHILDREN} of ${children.length} sitemap children beyond the first ${MAX_SITEMAP_CHILDREN} unread under ${url}`);
     const out = [];
     for (const c of children.slice(0, MAX_SITEMAP_CHILDREN)) {
