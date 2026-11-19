@@ -19,6 +19,7 @@ const { escapeHtml } = require('./email-templates.js');
 const { buildReplyText } = require('./feedback-reply-drafts.js');
 const { buildDispatchUrl } = require('./dispatch-link.js');
 const { detectCombinedRoles } = require('./systematic-fix-detection.js');
+const { foldDiacritics } = require('./url-slug');
 
 const BASE_URL = 'https://broadwayscorecard.com';
 const LEDGER_PATH = path.join(__dirname, '../../data/audit/feedback-proposals.json');
@@ -76,7 +77,7 @@ function recordSent(ledger, issueNumber, { sentAt, submittedAt, kind }) {
 
 // ── "already fixed?" (step one of every proposal) ───────────────────────────
 
-const norm = (s) => String(s || '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
+const norm = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
 
 function showUrl(show) {
   return `${BASE_URL}/show/${show.slug || show.id}`;
