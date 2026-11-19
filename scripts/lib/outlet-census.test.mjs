@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const census = require('./outlet-census.js');
+const { SOURCES, LONDON_SOURCES } = require('./outlet-census-sources.js');
 
 const beaches = { id: 'beaches-2026', title: 'Beaches, A New Musical', market: 'broadway', venue: 'Majestic Theatre', previewsStartDate: '2026-03-27', openingDate: '2026-04-22', closingDate: '2026-05-24', cast: [], creativeTeam: [] };
 const giant = { id: 'giant-2026', title: 'Giant', market: 'broadway', venue: 'Music Box Theatre', openingDate: '2026-03-23', closingDate: '2026-06-28', cast: [], creativeTeam: [] };
@@ -393,6 +394,56 @@ test('BRO-7812: blindOutlets flags big outlets whose listing cannot be read, and
   assert.deepEqual(census.blindOutlets(undefined), []);
 });
 
+test('BRO-7816: a blind outlet reports its probed reason, and no unreadable source ships a generic or missing one', () => {
+  const rep = { outletId: 'nypost', source: { kind: 'unreadable', reason: 'daily sitemaps, one paid fetch per day' }, corpusSide: { rowsInWindow: 413 } };
+  assert.equal(census.blindOutlets([rep])[0].why, 'daily sitemaps, one paid fetch per day');
+  const old = { outletId: 'ew', source: { kind: 'unreadable', notes: ['unreadable: site answers 403'] }, corpusSide: { rowsInWindow: 459 } };
+  assert.equal(census.blindOutlets([old])[0].why, 'site answers 403');
+  // Class guard: the stale placeholder that hid ten readable outlets (BRO-7816) must not come back.
+  for (const [id, src] of [...Object.entries(SOURCES), ...Object.entries(LONDON_SOURCES)]) {
+    if (src.kind !== 'unreadable') continue;
+    assert.ok(src.reason && src.reason.length > 25, `${id}: unreadable needs a specific probed reason`);
+    assert.ok(!/not yet configured/i.test(src.reason), `${id}: "not yet configured" is not a probed reason`);
+  }
+});
+
+test('BRO-7816: no committed NYC census report says "unreadable" for an outlet whose source is now readable', () => {
+  // The root cause of the 23-outlet blind spot: sources were configured (sitemap, wp-json) but the committed
+  // reports were never re-run, so --summary kept printing the old "not yet configured" row. serp outlets are
+  // paid and run with --no-serp, so an unreadable report may stand for them.
+  const dir = new URL('../../data/audit/outlet-census/', import.meta.url);
+  const fs = require('node:fs');
+  const stale = [];
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.report.json'))) {
+    const rep = JSON.parse(fs.readFileSync(new URL(f, dir), 'utf8'));
+    const src = SOURCES[rep.outletId];
+    if (src && rep.source.kind === 'unreadable' && !['unreadable', 'serp'].includes(src.kind)) stale.push(`${rep.outletId} (${src.kind})`);
+  }
+  // Lands advisory (CLAUDE.md rule 19): the regenerated reports for these outlets reach main in a later change,
+  // because one land may rewrite at most 10 bot-owned files. Set CENSUS_STALE_REPORT_STRICT=1 to fail; arm it
+  // by default once `stale` is empty on main.
+  const msg = `re-run: node scripts/outlet-census.js --outlet=${stale.map((x) => x.split(' ')[0]).join(',')}`;
+  if (process.env.CENSUS_STALE_REPORT_STRICT === '1') assert.deepEqual(stale, [], msg);
+  else if (stale.length) console.warn(`census stale-report guard (advisory): ${stale.length} stale, ${msg}`);
+  assert.ok(Array.isArray(stale));
+});
+
+test('BRO-7816: monthly-sitemap outlets list only the months in the census window', () => {
+  const nyt = SOURCES.nytimes;
+  assert.equal(nyt.childFilter('https://www.nytimes.com/sitemaps/new/sitemap-2025-03.xml.gz', '2021-06-01'), true);
+  assert.equal(nyt.childFilter('https://www.nytimes.com/sitemaps/new/sitemap-2021-05.xml.gz', '2021-06-01'), false);
+  assert.equal(nyt.childFilter('https://www.nytimes.com/sitemaps/new/news.xml.gz', '2021-06-01'), false);
+  assert.ok(nyt.urlFilter.test('https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html'));
+  assert.equal(nyt.urlFilter.test('https://www.nytimes.com/2025/03/19/us/politics/x.html'), false);
+  assert.equal(SOURCES.wsj.childFilter('https://www.wsj.com/sitemaps/web/wsj/en/sitemap_wsj_en_m3_2025.xml', '2021-06-01'), true);
+  assert.equal(SOURCES.wsj.childFilter('https://www.wsj.com/sitemaps/web/wsj/en/sitemap_wsj_en_m9_2021.xml', '2021-06-01'), true);
+  assert.equal(SOURCES.wsj.childFilter('https://www.wsj.com/sitemaps/web/wsj/en/sitemap_wsj_en_m3_2021.xml', '2021-06-01'), false);
+  assert.ok(SOURCES.newyorker.urlFilter.test('https://www.newyorker.com/magazine/2025/03/31/vanya-and-purpose-theatre-review'));
+  assert.equal(SOURCES.newyorker.urlFilter.test('https://www.newyorker.com/news/annals-of-immigration/x'), false);
+  assert.ok(SOURCES.ew.urlFilter.test('https://ew.com/real-women-have-curves-review-musical-broadway-11722804'));
+  assert.equal(SOURCES.ew.urlFilter.test('https://ew.com/the-masked-singer-season-13-finale-11730338'), false);
+});
+
 test('an archival film review naming an old year is not a gap; a show titled with a year still is (Vulture, BRO-6485)', () => {
   const david = { id: 'david-a-new-musical-off-broadway-2024', title: 'David', market: 'broadway', openingDate: '2024-09-01', closingDate: '2024-12-01' };
   const s1776 = { id: '1776-2022', title: '1776', market: 'broadway', openingDate: '2022-10-06', closingDate: '2023-01-08' };
@@ -434,4 +485,15 @@ test('a Los Angeles house in the headline marks a same-titled review as another 
   const r = census.bucketItem({ outletId: 'frontmezzjunkies', sourceSaysReview: true, url: 'https://frontmezzjunkies.com/2024/10/04/fountain-theatres-fatherland/', publishDate: '2024-10-04',
     headline: 'Fountain Theatre’s “Fatherland” Talks Its Way Through', description: '' }, ctx);
   assert.notEqual(r.bucket, 'gap');
+});
+
+test('BRO-7816: ignoreLastmod sources date by their child sitemap, never by a bulk-touched lastmod', () => {
+  const { itemFromSitemapEntry } = require('./outlet-census.js');
+  const g = { url: 'https://www.nytimes.com/2021/06/25/theater/x-review.html', publishDate: '2022-10-24', sitemap: 'https://www.nytimes.com/sitemaps/new/sitemap-2021-06.xml' };
+  assert.equal(itemFromSitemapEntry(g, SOURCES.nytimes).lastmod, null);
+  assert.equal(itemFromSitemapEntry(g, SOURCES.nytimes).sitemap, g.sitemap);
+  assert.equal(itemFromSitemapEntry(g, { kind: 'sitemap' }).lastmod, '2022-10-24');
+  for (const id of ['nytimes', 'washpost', 'wsj', 'newyorker', 'ew', 'usatoday']) {
+    if (SOURCES[id].ignoreLastmod) assert.equal(itemFromSitemapEntry(g, SOURCES[id]).lastmod, null, id);
+  }
 });

@@ -794,12 +794,25 @@ function blindOutlets(reports, { minRows = 100 } = {}) {
     const unreadable = src.kind === 'unreadable' || src.status === 'unreadable';
     const searchOnly = src.kind === 'serp';
     if (!unreadable && !searchOnly) continue;
-    out.push({ outletId: r.outletId, kind: src.kind, rows, why: unreadable ? 'no listing can be read' : 'search results only (~10 per query), cannot list an archive' });
+    // The probed reason the config carries (BRO-7816): a blind outlet says why, so the next session knows what to try.
+    const reason = String(src.reason || (src.notes && src.notes[0]) || '').replace(/^unreadable:\s*/, '').trim();
+    out.push({ outletId: r.outletId, kind: src.kind, rows, why: unreadable ? (reason || 'no listing can be read') : 'search results only (~10 per query), cannot list an archive' });
   }
   return out.sort((a, b) => b.rows - a.rows || a.outletId.localeCompare(b.outletId));
 }
 
+/**
+ * PURE. A census item from one sitemap entry. ignoreLastmod sources (NYT, WSJ, Slant: lastmod is bulk-touched,
+ * a whole archive on one day) keep no lastmod and carry the child sitemap URL instead, so the item is dated by
+ * the month it was listed under, never by a re-touch day (BRO-7816: an old NYT review was filed in 2022).
+ */
+function itemFromSitemapEntry(g, src) {
+  if (src && src.ignoreLastmod) return { url: g.url, sitemap: g.sitemap || null, lastmod: null };
+  return { url: g.url, lastmod: g.publishDate || null };
+}
+
 module.exports = {
+  itemFromSitemapEntry,
   blindOutlets,
   LONDON_SIGNAL_RE,
   catalogGapMarkdown,

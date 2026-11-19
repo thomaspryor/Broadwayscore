@@ -193,7 +193,7 @@ async function fetchSitemapUrls(url, urlFilter, opts = {}) {
       .filter((c) => !cf || (typeof cf === 'function' ? cf(c, opts.since) : cf.test(c)));
     const out = [];
     await pool(children, opts.childConcurrency || 1, async (c) => {
-      try { out.push(...await fetchSitemapUrls(c, urlFilter, opts)); } catch (e) { console.log(`  child ${c}: ${e.message}`); (opts.notes || []).push(`child ${c}: ${e.message}`); }
+      try { out.push(...(await fetchSitemapUrls(c, urlFilter, opts)).map((g) => ({ sitemap: c, ...g }))); } catch (e) { console.log(`  child ${c}: ${e.message}`); (opts.notes || []).push(`child ${c}: ${e.message}`); }
     });
     return out;
   }
@@ -281,7 +281,7 @@ async function enumerateSitemap(src, since) {
       got.push(...await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter, since, notes, childConcurrency: src.childConcurrency, proxyRetry: !!src.proxyRetry }));
     }
     const seen = new Set();
-    return { items: got.filter((i) => !seen.has(i.url) && seen.add(i.url)).map((g) => ({ url: g.url, lastmod: g.publishDate || null })), notes };
+    return { items: got.filter((i) => !seen.has(i.url) && seen.add(i.url)).map((g) => census.itemFromSitemapEntry(g, src)), notes };
   }
 }
 
@@ -640,7 +640,7 @@ function blindOutletTable() {
   const blind = census.blindOutlets(files.flatMap((f) => { try { return [JSON.parse(fs.readFileSync(path.join(OUT_DIR, f), 'utf8'))]; } catch { return []; } }));
   if (!blind.length) return '';
   return ['Blind outlets (the census cannot see a gap here):', '', '| Outlet | Source | Corpus rows | Why |', '|---|---|---|---|',
-    ...blind.map((b) => `| ${b.outletId} | ${b.kind} | ${b.rows} | ${b.why} |`)].join('\n');
+    ...blind.map((b) => `| ${b.outletId} | ${b.kind} | ${b.rows} | ${b.why.replace(/\|/g, '/')} |`)].join('\n');
 }
 
 /** Per outlet and season: published (every review item), held, gap, misfile, catalog gap, ambiguous. */
