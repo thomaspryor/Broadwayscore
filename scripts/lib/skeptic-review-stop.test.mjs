@@ -252,3 +252,42 @@ test('main --ship-check: reads the transcript, reviews only work since the last 
   assert.doesNotMatch(await run(['--ship-check', `--transcript=${empty}`], CLOUD), /^SKEPTIC REVIEW: /m, 'an empty transcript is not a review');
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
+
+// ---------------------------------------------------------------- BRO-7872: the backstop checks the ship-check list was answered
+const GAPS1 = 'SKEPTIC REVIEW: 1 material gap(s).\n1. never ran the CLI (unit only)\n   check: node scripts/lib/foo.js --all';
+
+test('BRO-7872: a ship-check list with no answers is not a pass at close (no reviewer call); answering it lets the close through', () => {
+  const events = [...editCode(), ...tool('Skill', { skill: 'ship-check' }, 'Launching skill: ship-check'), ...tool('Bash', { command: SHIP }, GAPS1)];
+  const d = stopHookDecision({ lastMessage: CLAIM, events, env: CLOUD });
+  assert.equal(d.decision, 'unanswered', '3FKM shape: the list was printed and ignored');
+  assert.deepEqual(d.unanswered.map((g) => g.n), [1]);
+  assert.equal(stopHookDecision({ lastMessage: `GAP 1: not a gap: foo.js --all only reads files the unit test covers end to end\n${CLAIM}`, events, env: CLOUD }).decision, 'allow');
+  assert.equal(stopHookDecision({ lastMessage: `${CLAIM}\nNO-SKEPTIC: the reviewer cannot see the owner device run`, events, env: CLOUD }).decision, 'allow', 'bypass still wins');
+  assert.equal(stopHookDecision({ lastMessage: CLAIM, events, env: { ...CLOUD, SKEPTIC_GAP_ANSWERS_DISABLE: '1' } }).decision, 'allow', 'kill switch');
+});
+
+test('BRO-7872: main --stop-hook blocks an unanswered list within the round budget, never calls the reviewer', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'skr-unans-'));
+  const tp = path.join(dir, 't.jsonl');
+  const line = (o) => JSON.stringify(o);
+  const use = (id, name, input) => line({ type: 'assistant', message: { id: `m${id}`, content: [{ type: 'tool_use', id, name, input }] } });
+  const out = (id, content) => line({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: id, content }] } });
+  fs.writeFileSync(tp, [
+    use('b1', 'Edit', { file_path: '/home/user/Broadwayscore/scripts/lib/foo.js', old_string: 'x', new_string: 'y' }), out('b1', 'ok'),
+    use('b2', 'Skill', { skill: 'ship-check' }), out('b2', 'Launching skill: ship-check'),
+    use('b3', 'Bash', { command: SHIP }), out('b3', GAPS1),
+  ].join('\n') + '\n');
+  let calls = 0;
+  const fetchImpl = async () => { calls++; throw new Error('must not be called'); };
+  const errs = [];
+  const orig = process.stderr.write.bind(process.stderr);
+  process.stderr.write = (c) => { errs.push(String(c)); return true; };
+  const stdin = JSON.stringify({ transcript_path: tp, last_assistant_message: CLAIM, session_id: 's' });
+  const codes = [];
+  try { for (let i = 0; i < 6; i++) codes.push(await main(['--stop-hook'], { env: { ...CLOUD, TMPDIR: dir }, fetchImpl, stdin, now: new Date('2026-12-31T00:00:00Z') })); } finally { process.stderr.write = orig; }
+  assert.equal(calls, 0);
+  assert.equal(codes[0], 2);
+  assert.match(errs.join(''), /BRO-7872[\s\S]*gap 1:[\s\S]*GAP <n>: ran/);
+  assert.equal(codes[codes.length - 1], 0, 'the round budget runs out: never loops a session');
+  fs.rmSync(dir, { recursive: true, force: true });
+});

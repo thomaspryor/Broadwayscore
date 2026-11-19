@@ -28,7 +28,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
-import { claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex, landedPushIndices, findSessionTranscript, isSkepticReviewCall, SKEPTIC_VERDICT_RE } from './review-coverage.mjs';
+import { claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex, landedPushIndices, findSessionTranscript, isSkepticReviewCall, SKEPTIC_VERDICT_RE, evaluateCoverage } from './review-coverage.mjs';
 import { shellEditsCode } from './retro-coverage-stop.mjs';
 import { defersProof } from './live-run-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
@@ -46,7 +46,7 @@ const CODE_EXT_RE = /\.(?:m?[jt]sx?|cjs|sh|py|ya?ml|sql)$/;
 const CODE_DIR_RE = /^(?:src|scripts|\.github|\.claude\/(?:hooks|commands|skills|agents)|supabase|tests)\//;
 const NO_SKEPTIC_RE = /^[ \t>*_-]*NO-SKEPTIC(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.{14,})$/im;
 // One definition of an acceptable "cannot run here" reason, shared with the per-gap answer check (BRO-7872).
-const { SCHEDULE_ONLY_REASON_RE, REAL_COST_REASON_RE } = require('./skeptic-gap-answers.js');
+const { SCHEDULE_ONLY_REASON_RE, REAL_COST_REASON_RE, answerInstructions } = require('./skeptic-gap-answers.js');
 const CAPS = { edits: 14000, perSnippet: 700, commands: 45, cmd: 300, tail: 300, notes: 2500, claim: 3000 };
 
 /** Repo-relative path ('' when outside the repo or a worktree of it). */
@@ -253,10 +253,17 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   // Backstop only (BRO-7839): /ship-check runs this same reviewer in Phase 5. If it ran after the last code edit, the
   // gaps were already in front of the session before landing; do not pay for a second read at close.
   const shipCheckReview = lastSkepticShipCheckIndex(events);
-  if (shipCheckReview > edits[edits.length - 1]) return { decision: 'allow', reason: 'ship-check skeptic review ran after the last code edit' };
   const by = bypassReason(events, from, lastMessage);
   if (by) return { decision: 'allow', reason: `NO-SKEPTIC bypass: ${by.slice(0, 120)}`, bypass: true };
   const key = (i) => (i < 0 ? 'start' : String(events[i].id || events[i].messageId || events[i].ts || i));
+  if (shipCheckReview > edits[edits.length - 1]) {
+    // BRO-7872: the ship-check list was in front of the session, but a list nobody answered is not a review. This is the
+    // last Stop gate, so it is reached on the close every other gate accepts, even after review-coverage's own block
+    // budget ran out (3FKM's final close went through that way). No reviewer call: the gaps are already listed.
+    const unanswered = evaluateCoverage(events, { lastMessage, env }).unansweredGaps || [];
+    if (unanswered.length) return { decision: 'unanswered', unanswered, from, chunkKey: key(from), editKey: `${key(edits[edits.length - 1])}:answers` };
+    return { decision: 'allow', reason: 'ship-check skeptic review ran after the last code edit and its gaps are answered' };
+  }
   return { decision: 'review', from, chunkKey: key(from), editKey: key(edits[edits.length - 1]) };
 }
 
@@ -361,6 +368,18 @@ export async function main(argv, { env = process.env, now = new Date(), stdin = 
   const d = stopHookDecision({ lastMessage, events, env });
   const session = input.session_id || null;
   if (d.bypass) logHit({ session, outcome: 'bypass', reason: d.reason });
+  if (d.decision === 'unanswered') {
+    // Same per-chunk round budget as a review, so an unanswerable list can never loop a session.
+    const f = stateFile(tp, d.chunkKey);
+    const st = readState(f);
+    const budget = roundBudget(now);
+    const base = { session, chunk: d.chunkKey, round: st.rounds + 1, budget, unanswered: d.unanswered.map((g) => g.n) };
+    if (st.rounds >= budget) { logHit({ ...base, outcome: 'over-budget', blocked: false, reason: 'ship-check gaps unanswered' }); return 0; }
+    writeState(f, { ...st, rounds: st.rounds + 1, lastReviewedEditKey: d.editKey });
+    logHit({ ...base, outcome: 'block', blocked: true, reason: 'ship-check gaps unanswered' });
+    process.stderr.write([`BLOCKED (BRO-7872, skeptic review ${st.rounds + 1}/${budget}): the ship-check skeptic reviewer listed gaps that still have no answer:`, answerInstructions(d.unanswered), 'Last resort: NO-SKEPTIC: <15+ chars on why> (logged and counted).'].join('\n') + '\n');
+    return 2;
+  }
   if (d.decision !== 'review') return 0;
   const f = stateFile(tp, d.chunkKey);
   const st = readState(f);
