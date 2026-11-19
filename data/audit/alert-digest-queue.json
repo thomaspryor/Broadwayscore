@@ -1087,5 +1087,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-19T06:40:22.979Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7816-census-blind",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7816-census-blind",
+    "description": "land.yml did not land land/bro-7816-census-blind: the unit-tests-node gate went red at 9074e95e90. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44477341117",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7816-census-blind"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9074e95e907181b659ab5d5afb137817737cc0a6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44477341117"
+      }
+    ],
+    "queuedAt": "2026-11-19T07:13:38.066Z"
   }
 ]
