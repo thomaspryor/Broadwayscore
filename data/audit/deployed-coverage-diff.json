@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-19T20:35:05.584Z",
+  "generatedAt": "2026-11-19T22:26:56.846Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 364,
-  "clean": 364,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 362,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "jenufa-off-broadway-2026",
+      "title": "Jenůfa",
+      "openingDate": "2026-11-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79 vs local 78.4 (Δ0.6)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-19T22:26:46.542Z"
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.82 vs local 63.4 (Δ0.42)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 36,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-11-19T22:26:46.542Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
