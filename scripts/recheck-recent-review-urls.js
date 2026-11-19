@@ -17,7 +17,12 @@ const { recheck } = require('./lib/recheck-review-urls');
 async function fetchStatus(url) {
   const { fetchPage } = require('./lib/scraper');
   try {
-    await fetchPage(url, { directOnly: true, skipVerify: true });
+    const res = await fetchPage(url, { directOnly: true, skipVerify: true });
+    // A 200 that landed on another page (301 to the homepage, a login wall) is not proof the review is back.
+    try {
+      const a = new URL(url); const b = new URL(res && res.finalUrl ? res.finalUrl : url);
+      if (a.hostname.replace(/^www\./, '') !== b.hostname.replace(/^www\./, '') || a.pathname.replace(/\/+$/, '') !== b.pathname.replace(/\/+$/, '')) return null;
+    } catch { return null; }
     return 200;
   } catch (e) {
     const m = /failed: (\d{3})/.exec(String(e && e.message));
