@@ -203,6 +203,62 @@ const MARKET_WORD_TO_CATEGORY = {
 const MARKET_TOKEN_RE =
   /\s*(?:\((regional|broadway|off[-\s]?broadway|west[-\s]?end|tryout|pre[-\s]?broadway)\)|\b(regional|broadway|off[-\s]?broadway|west[-\s]?end|pre[-\s]?broadway)\b)/gi;
 
+// Feedback #1192: "I see you have the Dirty Dancing Bway show added ... (same as
+// the tour)" named no market in the form's show field, matched four Dirty
+// Dancing productions, and was parked as ambiguous even though the reader said
+// which one. Readers name the market in the message, often as "Bway".
+const MESSAGE_MARKET_RE =
+  /\b(off[-\s]?broadway|off[-\s]?west[-\s]?end|pre[-\s]?broadway|broadway|b'?way|west[-\s]?end|national tour|tour(?:ing)?|regional|tryout)\b/gi;
+function messageMarketWord(w) {
+  const k = w.toLowerCase().replace(/\s+/g, '-');
+  if (k === 'bway' || k === "b'way") return 'broadway';
+  if (k === 'off-west-end') return 'off-west-end';
+  if (/^(national-tour|tour|touring)$/.test(k)) return 'tour';
+  return MARKET_WORD_TO_CATEGORY[k] || null;
+}
+function marketsIn(text) {
+  const out = [];
+  MESSAGE_MARKET_RE.lastIndex = 0;
+  let m;
+  while ((m = MESSAGE_MARKET_RE.exec(text)) !== null) {
+    const c = messageMarketWord(m[1]);
+    if (c) out.push(c);
+  }
+  return out;
+}
+/**
+ * The market a free-text message attaches to `title`: a market word right next
+ * to the title ("the Dirty Dancing Bway show") wins; otherwise the message's
+ * only market. Null when the message names none, or several with no tie-break.
+ */
+function inferMarketFromMessage(title, message) {
+  const msg = String(message || '');
+  const t = String(title || '').trim();
+  if (!msg || !t) return null;
+  const idx = msg.toLowerCase().indexOf(t.toLowerCase());
+  if (idx >= 0) {
+    const near = new Set(marketsIn(msg.slice(Math.max(0, idx - 25), idx + t.length + 25)));
+    if (near.size === 1) return [...near][0];
+  }
+  const all = new Set(marketsIn(msg));
+  return all.size === 1 ? [...all][0] : null;
+}
+
+/**
+ * resolveShowInMarket, but an ambiguous unscoped match gets one more try scoped
+ * to the market the message itself names (inferMarketFromMessage). Still "skip,
+ * don't guess": if that market does not narrow it to exactly one show, the
+ * original ambiguity stands.
+ */
+function resolveShowUsingMessage(title, market, shows, message) {
+  const first = resolveShowInMarket(title, market, shows);
+  if (!first.ambiguous || market) return first;
+  const inferred = inferMarketFromMessage(title, message);
+  if (!inferred) return first;
+  const scoped = resolveShowInMarket(title, inferred, shows);
+  return scoped.resolved ? scoped : first;
+}
+
 function parseRequestedTitles(raw) {
   const field = String(raw || '').trim();
   if (!field) return [];
@@ -426,7 +482,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!IMAGE_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowInMarket(title, null, allShows);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, message);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;
@@ -468,7 +524,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!REVIEW_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowInMarket(title, null, allShows);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, message);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;
@@ -502,7 +558,7 @@ function planContentRequestActions({
     // Market-scoped: a Broadway entry does not satisfy a request for the
     // regional tryout of the same title. See resolveShowInMarket().
     const { resolved: existing, ambiguous, candidateIds, candidateTitles } =
-      resolveShowInMarket(requestedTitle, market, allShows);
+      resolveShowUsingMessage(requestedTitle, market, allShows, message);
     if (ambiguous) {
       // Shared with Ask 1/1b's seenAmbiguousTitles: the same candidate set can
       // surface here too (e.g. the show field repeats a title already flagged
@@ -583,6 +639,8 @@ module.exports = {
   cleanRequestedTitle,
   parseRequestedTitles,
   resolveShowInMarket,
+  resolveShowUsingMessage,
+  inferMarketFromMessage,
   extractVenueHint,
   extractVenueHintFor,
   splitSentences,
