@@ -20,3 +20,9 @@ test('same shape at another venue does not match', () => {
 test('same shape outside the run window does not match', () => {
   assert.deepEqual(ids('Nero – Southwark Playhouse Elephant, London', '/nero-southwark-playhouse-elephant-london/', '2027-03-01'), []);
 });
+test('title-venue headlines with a news or ticket tail do not match', () => {
+  for (const h of ['Nero – Southwark Playhouse extends run', 'Nero – Southwark Playhouse: cast announced',
+    'Nero - Southwark Playhouse interview: the director on Rome', 'Nero – Southwark Playhouse | Tickets']) {
+    assert.deepEqual(ids(h, '/x/', '2026-11-08'), [], h);
+  }
+});
