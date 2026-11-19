@@ -22,8 +22,6 @@ const ROOT = path.join(__dirname, '..', '..');
 const EDITABLE_DATA_FIELDS = pickEditableFields([
   'shows.json', 'commercial.json', 'audience-buzz.json',
 ]);
-// Plans may remove a wrongly attributed Show Score source, never replace sources.
-EDITABLE_DATA_FIELDS['audience-buzz.json'].push('sources');
 // Owner-set recoupment estimates are plan-only, never feedback/research output.
 EDITABLE_DATA_FIELDS['commercial.json'] = [...EDITABLE_DATA_FIELDS['commercial.json'], 'ourRecoupEstimatePct', 'ourRecoupEstimateAsOf'];
 // Dated return evidence is curated through plans, never feedback/model output (BRO-6333).
@@ -244,25 +242,6 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       return { ok: false, reason: `audience-buzz.json:${field}: value changed since plan` };
     }
 
-    if (field === 'sources') {
-      const remaining = { ...currentVal };
-      if (!remaining.showScore) return { ok: false, reason: 'sources: no Show Score source to remove' };
-      delete remaining.showScore;
-      if (JSON.stringify(remaining) !== JSON.stringify(newValue)) return { ok: false, reason: 'sources: plans may only remove Show Score' };
-      let show;
-      try { show = JSON.parse(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8')).shows.find(s => s.id === showId); } catch { /* Fail closed when show context is unavailable. */ }
-      if (!show) return { ok: false, reason: `sources: show context unavailable for ${showId}` };
-      const { removeSourceWithTombstone } = require('./reconcile-audience-buzz');
-      const { calculateCombinedScore, getDesignation } = require('./audience-weighting');
-      const rec = data.shows[showId];
-      // Plan generation keeps oldValue as a reference to the original object.
-      rec.sources = { ...rec.sources };
-      removeSourceWithTombstone(rec, 'showScore', 'Show Score page is a UK production page (canonical /uk/london/...) (BRO-5499)');
-      const { score } = calculateCombinedScore(rec.sources, { status: show.status, closingDate: show.closingDate, category: show.category });
-      rec.combinedScore = score ?? null;
-      rec.designation = score == null ? null : getDesignation(score);
-      return { ok: true, msg: `audience-buzz.json: removed Show Score and recomputed score for ${showId}` };
-    }
     data.shows[showId][field] = newValue;
     return { ok: true, msg: `audience-buzz.json: ${field} updated for ${showId}` };
   }

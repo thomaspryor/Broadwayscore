@@ -1,49 +1,24 @@
 {
   "issueNumber": "bro-7434",
-  "planId": "ea44e317-99d6-4d10-9707-4ac8ed7c6a36",
+  "planId": "72679cd7-e48b-42c8-89a3-17b9969c20e0",
   "status": "pending",
-  "createdAt": "2026-11-19T13:02:10.231Z",
+  "createdAt": "2026-11-19T13:28:20.930Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Remove UK Show Score rating from the US production",
+    "summary": "Remove UK Show Score audience ratings from US shows",
     "steps": [
-      "audience-buzz.json: a-moon-for-the-misbegotten-2007.sources"
+      "Remove UK Show Score 73%/8 from a-moon-for-the-misbegotten-2007; combined score 68 to 60."
     ],
     "riskLevel": "low",
     "actions": [
       {
-        "type": "data-edit",
-        "file": "audience-buzz.json",
-        "showId": "a-moon-for-the-misbegotten-2007",
-        "field": "sources",
-        "oldValue": {
-          "showScore": {
-            "score": 73,
-            "reviewCount": 8
-          },
-          "mezzanine": {
-            "score": 60,
-            "reviewCount": 5,
-            "starRating": 3,
-            "prodIds": [
-              "ICYFm75Ipb"
-            ]
-          }
-        },
-        "newValue": {
-          "mezzanine": {
-            "score": 60,
-            "reviewCount": 5,
-            "starRating": 3,
-            "prodIds": [
-              "ICYFm75Ipb"
-            ]
-          }
-        },
-        "description": "audience-buzz.json: a-moon-for-the-misbegotten-2007.sources"
+        "type": "run-script",
+        "description": "Remove UK Show Score 73%/8 from a-moon-for-the-misbegotten-2007; combined score 68 to 60.",
+        "script": "purge-uk-show-score-audience.js",
+        "args": "--apply"
       }
     ]
   }
