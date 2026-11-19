@@ -28,7 +28,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, startsMidClause, expandToSentenceStart, hasUsableLlmQuote, snapToSourceSpan, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, startsMidClause, expandToSentenceStart, hasUsableLlmQuote, pullQuoteSourceText, snapToSourceSpan, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -434,7 +434,11 @@ function stampRejection(filePath, judgedText, judgedScore, reason) {
 // Main processing
 // ============================================================
 async function processReview(entry) {
-  const { filePath, data } = entry;
+  const { filePath } = entry;
+  // BRO-7346: a multi-show column (Finkle First Nighter) is judged and verified on
+  // the target show's section only; the rejection stamp keys on the stored fullText.
+  const storedText = entry.data.fullText;
+  const data = { ...entry.data, fullText: pullQuoteSourceText(entry.data) };
   stats.scanned++;
 
   // Pass assignedScore to the LLM so it can align the pull quote with the
@@ -444,7 +448,7 @@ async function processReview(entry) {
   const hadPrevious = !!data.llmPullQuote;
   // Final rejections are stamped so the next run skips this text (BRO-7535).
   // Transient failures (API error, rate limit) are not stamped.
-  const reject = (reason) => stampRejection(filePath, data.fullText, score, reason);
+  const reject = (reason) => stampRejection(filePath, storedText, score, reason);
 
   // Try up to 2 times. Attempt 1's response can fail for three independent
   // reasons — a promo-teaser standfirst, a hedge-opener on a positive review,

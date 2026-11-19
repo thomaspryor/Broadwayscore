@@ -1,0 +1,88 @@
+{
+  "issueNumber": "bro-7346-b",
+  "planId": "e0a5385b-808c-480d-ab3b-c2ddfc4d6fc0",
+  "status": "pending",
+  "createdAt": "2026-11-19T20:45:53.883Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7346 (b): 8 HuffPost/Finkle multi-show columns were scored on the whole column; queue a rescore of the target section, and replace 7 displayed pull quotes that came from another show in the same column (Finkle x6, Vulture Ava x1)",
+    "steps": [
+      "BRO-7346: set needsRescore on 8 complete, scored HuffPost/Finkle First Nighter rows whose body is a two- or three-show asterisk-divider column scored as a whole before BRO-7538 taught the scorer to read the target section; the script refuses anything else.",
+      "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section",
+      "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section",
+      "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section",
+      "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section",
+      "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section",
+      "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section",
+      "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "BRO-7346: set needsRescore on 8 complete, scored HuffPost/Finkle First Nighter rows whose body is a two- or three-show asterisk-divider column scored as a whole before BRO-7538 taught the scorer to read the target section; the script refuses anything else.",
+        "script": "flag-multishow-column-rescore.js",
+        "args": "--file=ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json,fade-off-broadway-2017/huffpost--david-finkle.json,fool-for-love-2015/huffpost--david-finkle.json,god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json,henry-iv-off-broadway-2015/huffpost--david-finkle.json,othello-the-remix-off-broadway-2016/huffpost--david-finkle.json,the-gin-game-2015/huffpost--david-finkle.json,turn-me-loose-off-broadway-2016/huffpost--david-finkle.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json",
+        "field": "llmPullQuote",
+        "oldValue": "Still, a revival like Ali’s that gives so many patrons a pungent taste of Shakespeare’s abundant pluses has to be embraced.",
+        "newValue": "Ernest Shackleton Loves Me still comes across as absolutely original.",
+        "description": "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fade-off-broadway-2017/huffpost--david-finkle.json",
+        "field": "llmPullQuote",
+        "oldValue": "Although Holman's play adds up to less than the sum of its parts, the acting amounts to a good deal more.",
+        "newValue": "Dow's never-ending jitters are great fun to watch.",
+        "description": "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "henry-iv-off-broadway-2015/huffpost--david-finkle.json",
+        "field": "llmPullQuote",
+        "oldValue": "This videoed performance is a stunning example of that.",
+        "newValue": "The major triumph of this triumphant undertaking is Lloyd's work with the actors.",
+        "description": "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-the-remix-off-broadway-2016/huffpost--david-finkle.json",
+        "field": "llmPullQuote",
+        "oldValue": "The reasons for either existing aren't immediately apparent or convincing.",
+        "newValue": "The four men barely take a breather while moving about and gesticulating in the now time-honored rapper manner, but something does nag about the modernizing.",
+        "description": "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-real-thing-2014/huffpost--david-finkle.json",
+        "field": "llmPullQuote",
+        "oldValue": "Though Lips Together, Teeth Apart keeps going longer than it needs to, Dubois and troupe make the ride enjoyable and thought-provoking.",
+        "newValue": "While Gyllenhaal with her appealingly loose delivery, and Raftery, breathing fresh sexiness into the proceedings, shine in their sequences, McGregor cops the highlight moment.",
+        "description": "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "turn-me-loose-off-broadway-2016/huffpost--david-finkle.json",
+        "field": "llmPullQuote",
+        "oldValue": "Unfortunately, Cal, Tim and Flynt are unbearable for so long--Adrienne Campbell-Holt is the flummoxed director--that by the time they reconcile, few watching them will care.",
+        "newValue": "By the time the intermissionless Turn Me Loose ends, Gregory has become a symbol of growing impatience among black Americans for their civil rights, a growing demand for equality.",
+        "description": "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json",
+        "field": "llmPullQuote",
+        "oldValue": "If Weiler’s construction provides the opportunity to see a series of fine actors at work with delicate tête-à-têtes, the neatness of the structure constricts some of the feeling.",
+        "newValue": "If there are great revelations about the real and secret Ava Gardner to uncover, Ava itself doesn’t find them.",
+        "description": "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section"
+      }
+    ]
+  }
+}
