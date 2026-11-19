@@ -33,7 +33,16 @@ const MAJOR_SET = new Set(MAJOR_FULLTEXT_OUTLETS);
 
 function isMajorFulltextOutlet(outletId) { return MAJOR_SET.has(outletId); }
 function floorFor(outletId) { return STRICT_OUTLETS.includes(outletId) ? FLOOR_STRICT : FLOOR_DEFAULT; }
-function isRecentProductionShow(showId) { return /-(2025|2026)(\b|-)/.test(showId); }
+// "Last two years" (owner rule): the current and previous calendar year, so
+// the floor and queue boost roll forward on their own instead of going empty
+// in 2027 (review 2026-11-19). 2026 -> 2025 and 2026.
+function recentYears(nowMs = Date.now()) { const y = new Date(nowMs).getUTCFullYear(); return [y - 1, y]; }
+function isRecentProductionShow(showId, nowMs) {
+  const m = String(showId || '').match(/-(\d{4})(?:\b|-)/g);
+  if (!m) return false;
+  const yrs = recentYears(nowMs);
+  return m.some((s) => yrs.includes(Number(s.slice(1, 5))));
+}
 function excluded(r) { return !!(r.wrongProduction || r.wrongShow || r.isRoundupArticle || r.duplicateOf); }
 
 /** Full by length, or proved complete by tier. `tier` is the live tier (manual wins). Pure. */
@@ -79,7 +88,15 @@ function readJson(p) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } ca
  * reviewKeys (`<show>/<file>`) the gap scanner closes as EXCLUDED, with the subclass.
  * @returns {Map<string,string>}
  */
-function scannerExclusions(base, showsPath = path.join(__dirname, '..', '..', 'data', 'shows.json')) {
+// Same resolution as gap-recovery-driver.js showsPath(): env, repo data/, then
+// the data clone (worktrees have no data/; review 2026-11-19 reproduced a crash).
+function defaultShowsPath() {
+  if (process.env.SHOWS_JSON_PATH) return process.env.SHOWS_JSON_PATH;
+  const local = path.join(__dirname, '..', '..', 'data', 'shows.json');
+  return fs.existsSync(local) ? local : path.join(require('os').homedir(), 'broadway-scorecard-data', 'shows.json');
+}
+
+function scannerExclusions(base, showsPath = defaultShowsPath()) {
   const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   const shows = new Map((Array.isArray(raw) ? raw : raw.shows || []).filter((x) => x && x.id).map((x) => [x.id, x]));
   const { scanCorpus } = require('./text-gap-metric');
@@ -206,6 +223,6 @@ function evaluateFloors({ rates, gaps, attemptedKeys, nowMs = Date.now(), staleD
 module.exports = {
   evaluateFloors,
   MAJOR_FULLTEXT_OUTLETS, STRICT_OUTLETS, FLOOR_STRICT, FLOOR_DEFAULT,
-  isMajorFulltextOutlet, floorFor, sameCritic, isRecentProductionShow, isFull, excerptPassages, excerptQuotedIn,
+  isMajorFulltextOutlet, floorFor, sameCritic, isRecentProductionShow, recentYears, isFull, excerptPassages, excerptQuotedIn,
   computeOutletFulltext, quotedExcerptDuplicates, scannerExclusions,
 };

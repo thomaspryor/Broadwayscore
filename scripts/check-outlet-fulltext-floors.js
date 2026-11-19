@@ -17,7 +17,7 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
-const { computeOutletFulltext, evaluateFloors } = require('./lib/outlet-fulltext');
+const { computeOutletFulltext, evaluateFloors, recentYears } = require('./lib/outlet-fulltext');
 const { INERT_STRATEGIES } = require('./lib/gap-recovery-ledger');
 
 const argv = process.argv.slice(2);
@@ -42,7 +42,7 @@ function main() {
   const { rates, gaps } = computeOutletFulltext({ base });
   const v = evaluateFloors({ rates, gaps, attemptedKeys, staleDays: parseInt(opt('stale-days', '7'), 10) || 7 });
   if (asJson) { console.log(JSON.stringify({ ...v, ledgerRows, gapCount: gaps.length }, null, 1)); return v.ok ? 0 : 1; }
-  console.log(`Major-outlet full text, 2025/26 productions (ledger ${ledgerRows} rows, ${gaps.length} gaps):`);
+  console.log(`Major-outlet full text, ${recentYears().join('/')} productions (ledger ${ledgerRows} rows, ${gaps.length} gaps):`);
   for (const x of v.outlets) {
     console.log(`  ${x.outlet.padEnd(16)} ${String(x.pct).padStart(5)}%  floor ${x.floor}%  gaps ${String(x.gaps).padStart(3)}  never attempted ${String(x.unattempted).padStart(3)}${x.fail ? '  FAIL' : x.below ? '  below floor (all gaps attempted)' : ''}`);
   }

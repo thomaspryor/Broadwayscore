@@ -99,3 +99,16 @@ test('digest line: names outlets below target and stale unattempted gaps; silent
   const s = N.outletFloorSummary({ ok: false, outlets: [{ outlet: 'times-uk', pct: 92.3, floor: 98, below: true, unattempted: 3 }, { outlet: 'guardian', pct: 99, floor: 95, below: false }], failingOutlets: ['times-uk'], staleUnattempted: [{}, {}] });
   assert.equal(N.outletFloorLine(s), 'Major outlets below the full-text target: times-uk 92.3% (target 98%); 2 major-outlet reviews missing text for over a week with no recovery attempt yet.');
 });
+
+// Review 2026-11-19: the window rolls with the calendar (was hardcoded 2025/2026).
+test('recent productions = this year and last, by the clock', () => {
+  const at = (iso) => Date.parse(iso);
+  const nov26 = at('2026-11-19T00:00:00Z');
+  assert.deepEqual(F.recentYears(nov26), [2025, 2026]);
+  assert.equal(F.isRecentProductionShow('play-2026', nov26), true);
+  assert.equal(F.isRecentProductionShow('hamlet-2025-london', nov26), true);
+  assert.equal(F.isRecentProductionShow('play-2024', nov26), false);
+  assert.equal(F.isRecentProductionShow('cats', nov26), false);
+  assert.equal(F.isRecentProductionShow('play-2025', at('2027-03-01T00:00:00Z')), false, 'rolls forward in 2027');
+  assert.equal(F.isRecentProductionShow('play-2027', at('2027-03-01T00:00:00Z')), true);
+});
