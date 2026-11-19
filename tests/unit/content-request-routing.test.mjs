@@ -564,6 +564,10 @@ describe('market named in the message breaks a title tie (feedback #1192)', () =
 
 describe('message market inference never guesses from the message at large (second-opinion)', () => {
   const { inferMarketFromMessage } = require('../../scripts/lib/content-request-routing.js');
+  it('skips a sentence that contrasts two markets (skeptic review, BRO-7844)', () => {
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'I saw Dirty Dancing in the West End years ago, but the Broadway one needs a cast'), null);
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'I saw it in London. Dirty Dancing on Broadway needs a cast'), 'broadway');
+  });
   it('ignores the site name', () => {
     assert.equal(inferMarketFromMessage('Hamilton', 'Thanks for Broadway Scorecard! Hamilton is missing a picture.'), null);
   });
