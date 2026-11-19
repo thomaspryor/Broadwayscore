@@ -232,6 +232,13 @@ function inertFn(ts, fn, ctx, sf) {
     if (ts.isDeleteExpression(n) || ts.isNewExpression(n) || ts.isAwaitExpression(n) || ts.isTaggedTemplateExpression(n) || ts.isYieldExpression(n)
       || ts.isJsxElement(n) || ts.isJsxSelfClosingElement(n) || ts.isJsxFragment(n) || ts.isThisTypeNode(n) || n.kind === K.ThisKeyword
       || ((ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) && (n.operator === K.PlusPlusToken || n.operator === K.MinusMinusToken))) { ok = false; return; }
+    if (ts.isIdentifier(n)) {
+      const par = n.parent;
+      let inType = false; for (let q = par; q && q !== fn; q = q.parent) if (ts.isTypeNode(q)) { inType = true; break; }
+      const isName = (ts.isPropertyAccessExpression(par) && par.name === n) || (ts.isPropertyAssignment(par) && par.name === n) || (ts.isMethodDeclaration(par) && par.name === n)
+        || (ts.isBindingElement(par) && par.propertyName === n) || (ts.isShorthandPropertyAssignment(par) && false);
+      if (!inType && !isName && !(n.text === 'undefined' || ctx.locals.has(n.text) || ctx.imported.has(n.text))) { ok = false; return; }
+    }
     if (ts.isCallExpression(n)) { if (!callOk(ts, n, ctx, () => true)) { ok = false; return; } }
     else if ((ts.isPropertyAccessExpression(n) || ts.isElementAccessExpression(n)) && !(ts.isCallExpression(n.parent) && n.parent.expression === n) && !rootOk(ts, n, ctx)) { ok = false; return; }
     ts.forEachChild(n, visit);
@@ -297,7 +304,9 @@ function guardRanges(ts, sf, resolveImport) {
             const st = sts[i];
             // ASI: a guard that ends without `;`, or follows a `;`-less expression/variable statement, can join its neighbours into a call.
             const prev = sts[i - 1];
-            const asiSafe = st.getText(sf).endsWith(';') && (!prev || !(ts.isVariableStatement(prev) || ts.isExpressionStatement(prev) || ts.isReturnStatement(prev)) || prev.getText(sf).endsWith(';'));
+            const next = sts[i + 1];
+            const closed = (x) => { const t = x.getText(sf); return t.endsWith(';') || (t.endsWith('}') && (ts.isBlock(x) || ts.isIfStatement(x) || ts.isForStatement(x) || ts.isWhileStatement(x) || ts.isTryStatement(x) || ts.isFunctionDeclaration(x))); };
+            const asiSafe = st.getText(sf).endsWith(';') && (!prev || closed(prev)) && (!next || !/^[([`+\-/]/.test(next.getText(sf)));
             if (asiSafe && ts.isIfStatement(st) && !st.elseStatement && isReturnOfNothing(ts, st.thenStatement) && safeCond(ts, st.expression, { locals: ctx.locals, imported: ctx.strict })) out.push([st.getStart(sf), st.end]);
           }
         }

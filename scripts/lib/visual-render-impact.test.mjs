@@ -415,3 +415,22 @@ test('guards that could join into a neighbouring call (ASI) are not exempt; chai
   assert.equal(hookCheck('', 'if (e.h.event.view.find((v: any) => 0)) return null;', 'Sentry.init').exempt, false);
   assert.equal(hookCheck('', 'if (e.a) return null', 'Sentry.init').exempt, false);
 });
+
+// --- round 8 (BRO-7849) ---
+test('deleting a guard cannot join its neighbours into a global call; bare globals in a hook are not inert', () => {
+  const mk = (guard) => `export function C() {
+  Sentry.init({ beforeSend(e: any) {
+    if (e.q) return open
+    ${guard}
+    ("https://evil.example/")
+    return e;
+  } });
+  return <p>x</p>;
+}
+`;
+  const chk = (a, b) => isNonRenderingChange({ file: 'src/a.tsx', oldSource: a, newSource: b, resolveImport: () => 'ts' });
+  assert.equal(chk(mk('if (e.z === 1) return null;'), mk('')).exempt, false);
+  assert.equal(chk(mk(''), mk('if (e.z === 1) return null;')).exempt, false);
+  const bare = (line) => `export function C() {\n  Sentry.init({ beforeSend(e: any) {\n    ${line}\n    return e;\n  } });\n  return <p>x</p>;\n}\n`;
+  assert.equal(chk(bare('alert;'), bare('alert;\n    if (e.a) return null;')).exempt, false);
+});
