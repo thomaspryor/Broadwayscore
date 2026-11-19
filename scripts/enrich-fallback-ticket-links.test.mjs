@@ -74,3 +74,44 @@ test('isVenueSiteHost matches venue domains and subdomains only', () => {
 // which runs in test.yml's continue-on-error network-dependent step — never in
 // this blocking batch (second-opinion review: third-party flake must not gate
 // every push to main).
+
+// BRO-7368: the free venue-host crawl, driven through an injected fetchText.
+const { collectVenueUrls, discoverVenuePage } = require('./enrich-fallback-ticket-links.js');
+
+function fakeSite(pages) {
+  const calls = [];
+  const fetchText = async (url) => {
+    calls.push(url);
+    if (!(url in pages)) throw new Error('Direct fetch failed: 404');
+    return pages[url];
+  };
+  return { fetchText, calls };
+}
+
+test('collectVenueUrls: robots Sitemap -> index -> show shard, plus listing links, bounded reads', async () => {
+  const { fetchText, calls } = fakeSite({
+    'https://www.tron.co.uk/robots.txt': 'User-agent: *\nSitemap: https://www.tron.co.uk/sitemap.xml\n',
+    'https://www.tron.co.uk/sitemap.xml': '<sitemapindex><sitemap><loc>https://www.tron.co.uk/post-sitemap.xml</loc></sitemap>'
+      + '<sitemap><loc>https://www.tron.co.uk/shows-sitemap.xml</loc></sitemap></sitemapindex>',
+    'https://www.tron.co.uk/shows-sitemap.xml': '<urlset><url><loc>https://www.tron.co.uk/shows/antigone/</loc></url></urlset>',
+    'https://www.tron.co.uk/': '<a href="/shows/panto/">p</a>',
+  });
+  const urls = await collectVenueUrls('tron.co.uk', fetchText);
+  assert.deepEqual(urls, ['https://www.tron.co.uk/shows/antigone/', 'https://www.tron.co.uk/shows/panto/']);
+  assert.ok(!calls.includes('https://www.tron.co.uk/post-sitemap.xml'), 'editorial shard skipped');
+  assert.ok(calls.length <= 8);
+});
+
+test('discoverVenuePage: picks the show page and crawls a shared venue host once', async () => {
+  const { fetchText, calls } = fakeSite({
+    'https://www.tron.co.uk/sitemap.xml': '<urlset><url><loc>https://www.tron.co.uk/shows/antigone/</loc></url></urlset>',
+  });
+  const cache = new Map();
+  const antigone = { id: 'antigone-tron-regional-2026', title: 'Antigone', venue: 'Tron Theatre, Glasgow', category: 'regional', openingDate: '2026-09-22' };
+  const pick = await discoverVenuePage(antigone, { cache, fetchText });
+  assert.deepEqual(pick, { url: 'https://www.tron.co.uk/shows/antigone/', platform: 'Venue Box Office' });
+  const before = calls.length;
+  assert.equal(await discoverVenuePage({ ...antigone, title: 'Medea' }, { cache, fetchText }), null);
+  assert.equal(calls.length, before, 'second show at the same host reuses the crawl');
+  assert.equal(await discoverVenuePage({ title: 'X', venue: 'Unknown Hall' }, { cache, fetchText }), null);
+});

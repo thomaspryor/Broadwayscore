@@ -14,7 +14,10 @@
  * venue sites with a diacritic-folded title match (scripts/lib/
  * ticket-link-discovery.js), then verifies the URL responds before writing.
  *
- * Usage: node scripts/enrich-fallback-ticket-links.js [--dry-run] [--limit=N] [--show=ID]
+ * Usage: node scripts/enrich-fallback-ticket-links.js [--dry-run] [--limit=N] [--venue-limit=N] [--show=ID]
+ *
+ * BRO-7368: before any SERP spend, shows at an allowlisted regional venue are
+ * looked up on that venue's own sitemap / what's-on page (free direct reads).
  */
 
 const https = require('https');
@@ -23,12 +26,13 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const USAGE = `enrich-fallback-ticket-links.js — SERP-discover ticket links for open shows with none.
 
 Usage:
-  node scripts/enrich-fallback-ticket-links.js [--dry-run] [--limit=N] [--show=ID]
+  node scripts/enrich-fallback-ticket-links.js [--dry-run] [--limit=N] [--venue-limit=N] [--show=ID]
   node scripts/enrich-fallback-ticket-links.js --help, -h    print this usage and exit
 
 Options:
   --dry-run    discover + verify but do not write shows.json
-  --limit=N    max shows to attempt this run (default 10, bounds SERP spend)
+  --limit=N    max shows to SERP this run (default 10, bounds SERP spend)
+  --venue-limit=N  max shows for the free venue-site lookup (default 40)
   --show=ID    only attempt this show id
   --time-budget-min=N  wall-clock budget in minutes (0/omitted = unlimited)
 `;
@@ -40,12 +44,20 @@ if (hasHelpFlag(process.argv.slice(2))) {
 
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { serpQuery } = require('./lib/url-discovery');
-const { pickTicketUrl, buildTicketQuery, platformForUrl, VENUE_SITES } = require('./lib/ticket-link-discovery');
+const {
+  pickTicketUrl, buildTicketQuery, platformForUrl, VENUE_SITES,
+  venueHostForShow, pickChildSitemaps, extractSameHostLinks, pickVenuePageUrl,
+} = require('./lib/ticket-link-discovery');
+const { parseSitemapLocs } = require('./lib/gap-url-find');
+const { parseSitemapLines } = require('./lib/sitemap-urls');
 const { findTicketUrlHolder } = require('./lib/show-duplicate-detection');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LIMIT = Number((process.argv.find((a) => a.startsWith('--limit=')) || '').split('=')[1]) || 10;
+// BRO-7368: the venue-host lookup is free (direct HTTP only), so it is capped
+// separately and far higher than the SERP --limit, which bounds paid credits.
+const VENUE_LIMIT = Number((process.argv.find((a) => a.startsWith('--venue-limit=')) || '').split('=')[1]) || 40;
 const ONLY_SHOW = (process.argv.find((a) => a.startsWith('--show=')) || '').split('=')[1] || null;
 const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 // BRO-5338: update-show-status.yml runs this with --time-budget-min=8 under a
@@ -54,6 +66,11 @@ const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
 // hops x 15s = 1 min), ~3.5 min, so an item started with under 1.5 min left
 // (3.5 minus the 2 min slack) can carry the step past its timeout.
 const MIN_REMAINING_MS_TO_START = 90_000;
+// The venue phase runs first and must leave the SERP phase its time: one venue
+// host costs at most MAX_VENUE_FETCHES direct reads (10s timeout each, ~80s)
+// plus probeUrl (~1 min), so stop starting venue items with under 4 min left.
+const VENUE_PHASE_RESERVE_MS = 240_000;
+const MAX_VENUE_FETCHES = 8;
 
 function isVenueSiteHost(url) {
   try {
@@ -115,6 +132,63 @@ async function probeUrl(url, timeout = 15000, fetchStatusFn = fetchStatus) {
   return false;
 }
 
+/** Free direct read (no paid or browser tier) of a venue sitemap / listing. */
+async function fetchVenueText(url) {
+  const { fetchPage } = require('./lib/scraper');
+  const r = await fetchPage(url, { directOnly: true, skipVerify: true });
+  return r.content;
+}
+
+/**
+ * Every URL a venue host publishes about its shows: robots.txt Sitemap: lines
+ * (else /sitemap.xml), up to 4 show-ish child sitemaps of an index, and the
+ * /whats-on/ and homepage links. At most MAX_VENUE_FETCHES reads; a failed read is
+ * skipped. fetchText is injectable so the tests drive it without a network.
+ */
+async function collectVenueUrls(host, fetchText = fetchVenueText) {
+  const origin = `https://www.${host}`;
+  let fetches = 0;
+  const read = async (url) => {
+    if (fetches >= MAX_VENUE_FETCHES) return null;
+    fetches++;
+    try { return await fetchText(url); } catch { return null; }
+  };
+  const urls = [];
+  const robots = await read(`${origin}/robots.txt`);
+  const roots = parseSitemapLines(robots || '').filter((u) => {
+    try { return new URL(u).hostname.replace(/^www\./, '') === host; } catch { return false; }
+  });
+  if (roots.length === 0) roots.push(`${origin}/sitemap.xml`);
+  for (const root of roots.slice(0, 2)) {
+    const xml = await read(root);
+    if (!xml) continue;
+    const locs = parseSitemapLocs(xml);
+    if (!/<sitemapindex/i.test(xml)) { urls.push(...locs); continue; }
+    for (const child of pickChildSitemaps(locs)) {
+      const childXml = await read(child);
+      if (childXml && !/<sitemapindex/i.test(childXml)) urls.push(...parseSitemapLocs(childXml));
+    }
+  }
+  // Listing pages last: the homepage features current shows that some CMSs
+  // leave out of the sitemap (writerstheatre.org /events/the-royale).
+  for (const page of [`${origin}/whats-on/`, `${origin}/`]) {
+    const html = await read(page);
+    if (html) urls.push(...extractSameHostLinks(html, page));
+  }
+  return urls;
+}
+
+/**
+ * SERP-free pick for one show: its allowlisted venue host's own pages.
+ * `cache` (host → Promise<urls>) makes several shows at one venue cost one crawl.
+ */
+async function discoverVenuePage(show, { cache = new Map(), fetchText = fetchVenueText } = {}) {
+  const host = venueHostForShow(show);
+  if (!host) return null;
+  if (!cache.has(host)) cache.set(host, collectVenueUrls(host, fetchText));
+  return pickVenuePageUrl(await cache.get(host), show);
+}
+
 async function main() {
   const data = loadShows();
   const shows = Array.isArray(data) ? data : data.shows;
@@ -127,6 +201,34 @@ async function main() {
   if (ONLY_SHOW) targets = targets.filter((s) => s.id === ONLY_SHOW);
 
   console.log(`Open/previews shows without ticketLinks: ${targets.length}`);
+
+  let added = 0;
+  let misses = 0;
+
+  // Phase 1 (BRO-7368): free venue-host lookup for shows at an allowlisted
+  // regional venue. Same holder + liveness gates as the SERP path below.
+  const venueCache = new Map();
+  const venueTargets = targets.filter((s) => venueHostForShow(s)).slice(0, VENUE_LIMIT);
+  console.log(`Venue-host lookup: ${venueTargets.length} show(s) at an allowlisted venue host (--venue-limit=${VENUE_LIMIT}).`);
+  for (const show of venueTargets) {
+    if (!timeBudget.canStartItem(VENUE_PHASE_RESERVE_MS)) {
+      console.log('\n⏱ Venue phase stopped to leave the SERP phase its time budget.');
+      break;
+    }
+    console.log(`\n${show.id}: venue host ${venueHostForShow(show)}`);
+    const pick = await discoverVenuePage(show, { cache: venueCache });
+    if (!pick) { console.log('  ✗ no matching page on the venue site'); continue; }
+    const holder = findTicketUrlHolder(shows, show, pick.url);
+    if (holder) { console.log(`  ✗ ${pick.url} is already ${holder.id}'s listing`); continue; }
+    if (!(await probeUrl(pick.url))) { console.log(`  ✗ URL failed liveness probe: ${pick.url}`); continue; }
+    console.log(`  ✓ ${pick.platform}: ${pick.url}`);
+    // Mark as filled even in --dry-run so the SERP phase does not re-spend on it.
+    show.ticketLinks = [{ platform: pick.platform, url: pick.url, priceFrom: null, source: 'venue-sitemap' }];
+    added++;
+  }
+  targets = targets.filter((s) => !s.ticketLinks || s.ticketLinks.length === 0);
+  console.log(`\nSERP phase: ${targets.length} show(s) still without ticketLinks.`);
+
   if (targets.length > LIMIT) {
     // Day-of-month rotation so permanently-unfindable shows at the head of
     // the list can't starve the tail forever (every gap show gets attempts
@@ -136,8 +238,6 @@ async function main() {
     console.log(`Attempting ${LIMIT} this run (--limit, rotation offset ${offset}); the daily cron cycles the rest.`);
   }
 
-  let added = 0;
-  let misses = 0;
   for (const show of targets) {
     if (!timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
       console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — remaining shows deferred to next run.`);
@@ -199,7 +299,7 @@ async function main() {
 // Exported for the colocated test suite; the sweep only runs when invoked
 // directly (requiring this module must never trigger a live SERP run —
 // the cousin --help bug class, in require() form).
-module.exports = { probeUrl, isVenueSiteHost };
+module.exports = { probeUrl, isVenueSiteHost, collectVenueUrls, discoverVenuePage };
 
 if (require.main === module) {
   main().catch((err) => {
