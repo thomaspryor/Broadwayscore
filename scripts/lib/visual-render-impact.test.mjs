@@ -10,7 +10,12 @@ const { isNonRenderingChange, filterFiles, _isDeclarationOnly } = createRequire(
 const tsLib = createRequire(import.meta.url)('typescript');
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const BASE = readFileSync(join(HERE, '../../src/components/AnalyticsWrapper.tsx'), 'utf8');
+// The live file may already carry the sentry-37 fix (it landed on main), so strip it to model the pre-fix file the diff was made against.
+const BASE = readFileSync(join(HERE, '../../src/components/AnalyticsWrapper.tsx'), 'utf8')
+  .replace(/^import \{ isTruncatedChunkError \} from '[^']+';\n/m, '')
+  .replace(/^[^\n]*\n?[^\n]*isTruncatedChunkError\(event\)\) return null;\n/m, (m) => (m.includes('isTruncatedChunkError') ? '' : m))
+  .replace(/^ *\/\/ A SyntaxError inside a built chunk[^\n]*\n/m, '')
+  .replace('type?: string; value?: string; stacktrace?', 'stacktrace?');
 const F = 'src/components/AnalyticsWrapper.tsx';
 // import resolution used by the real gate: only a known .ts/.js module counts as non-rendering.
 const resolveTs = (spec) => (spec.startsWith('@/lib/') ? 'ts' : 'unknown');
