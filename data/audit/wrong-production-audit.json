@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-19T08:01:17.579Z",
+  "timestamp": "2026-11-19T08:14:39.818Z",
   "stats": {
-    "totalReviews": 82749,
-    "alreadyFlagged": 22496,
+    "totalReviews": 82750,
+    "alreadyFlagged": 22497,
     "dateGuardCatches": 220,
     "directorMismatch": 3768,
     "tvFilmSignals": 2360,
-    "londonSignals": 3812,
+    "londonSignals": 3813,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
     "noPublishDate": 8258
@@ -121953,6 +121953,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "city-am--adam-bloodworth.json",
+      "score": 98,
+      "publishDate": null,
+      "url": "https://www.cityam.com/oliver-london-musical-review-please-sir-give-me-more-of-this-five-star-hit/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
