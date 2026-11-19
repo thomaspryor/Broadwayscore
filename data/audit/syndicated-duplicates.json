@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-19T12:12:51.318Z",
+  "generatedAt": "2026-11-19T12:35:31.049Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 1,
-    "newlyFlagged": 1,
+    "totalSyndicatedPairs": 0,
+    "newlyFlagged": 0,
     "alreadyFlagged": 0,
-    "criticsAffected": 1,
-    "showsAffected": 1,
-    "avgSimilarity": 100,
+    "criticsAffected": 0,
+    "showsAffected": 0,
+    "avgSimilarity": 0,
     "avgScoreDiff": 0
   },
   "syndicationPairs": [
@@ -162,20 +162,7 @@
       "count": 0
     }
   ],
-  "flagged": [
-    {
-      "critic": "AP wire",
-      "showId": "now-you-see-me-live-2026",
-      "primaryOutlet": "ap",
-      "secondaryOutlet": "boston-herald",
-      "primaryFile": "unknown",
-      "secondaryFile": "boston-herald--marilyn-stasio.json",
-      "similarity": 100,
-      "primaryScore": null,
-      "secondaryScore": null,
-      "scoreDiff": 0
-    }
-  ],
+  "flagged": [],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
@@ -288,13 +275,6 @@
       "fileCritic": "lyn-gardner",
       "detectedAuthor": "proves that she",
       "pattern": "tail"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "file": "the-new-criterion--robert-erickson.json",
-      "fileCritic": "robert-erickson",
-      "detectedAuthor": "Jay Nordlinger",
-      "pattern": "head"
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T12:18:23.982Z",
+  "timestamp": "2026-11-19T12:42:20.687Z",
   "stats": {
-    "totalReviews": 82770,
+    "totalReviews": 82774,
     "alreadyFlagged": 22488,
-    "dateGuardCatches": 220,
+    "dateGuardCatches": 221,
     "directorMismatch": 3769,
     "tvFilmSignals": 2360,
-    "londonSignals": 3816,
+    "londonSignals": 3818,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8261
+    "noPublishDate": 8262
   },
   "findings": [
     {
@@ -101173,6 +101173,19 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "standard--unknown.json",
+      "publishDate": "2026-11-19",
+      "url": "https://standard.co.uk/culture/theatre/desire-under-the-elms-review-b1305513.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "telegraph--claire-allfree.json",
       "score": 77,
       "publishDate": "2026-11-18",
@@ -124640,6 +124653,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "file": "aussie-theatre--james-kennedy.json",
+      "publishDate": "2026-08-25",
+      "url": "https://www.aussietheatre.com.au/international/pride-bridge-theatre-transfer",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 79d before show (2026-08-25 vs 2026-11-12)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
