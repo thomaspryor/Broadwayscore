@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7265-b",
   "planId": "e521cd4d-d4be-444d-b89b-3a58ed045e90",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T17:21:40.207Z",
   "submitter": {
     "name": null,
@@ -86,5 +86,29 @@
         "description": "hangman-regional-2026: key art from the production's own page (Long Beach Playhouse event page, Aug 29-Sep 26 2026), BRO-7265"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T20:29:27.379Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for crossing-delancey-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lakefront-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-dolls-house-part-2-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for hangman-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
