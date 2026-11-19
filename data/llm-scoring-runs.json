@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-11-17T23:50:06.820Z",
-    "completedAt": "2026-11-17T23:50:06.823Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "44201275337",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-16T00:00:00.000Z"
-  },
-  {
     "startedAt": "2026-11-18T00:00:26.215Z",
     "completedAt": "2026-11-18T00:00:29.616Z",
     "totalReviews": 3,
@@ -418695,6 +418675,52 @@
     },
     "costUsd": 0,
     "runId": "44452325185",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-18T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-19T03:46:57.714Z",
+    "completedAt": "2026-11-19T03:52:50.134Z",
+    "totalReviews": 83050,
+    "processed": 3,
+    "skipped": 83038,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 61723,
+      "output": 2342,
+      "cacheRead": 48762,
+      "cacheWrite": 10733,
+      "total": 173158
+    },
+    "costUsd": 0.07552757500000001,
+    "runId": "44453471996",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      }
+    ],
+    "logKeepsSince": "2026-11-18T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-19T03:53:02.820Z",
+    "completedAt": "2026-11-19T03:56:26.461Z",
+    "totalReviews": 12,
+    "processed": 12,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 18239,
+      "output": 1557,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 19796
+    },
+    "costUsd": 0.025315300000000002,
+    "runId": "44453471996",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-18T00:00:00.000Z"
