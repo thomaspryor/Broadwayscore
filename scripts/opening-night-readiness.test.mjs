@@ -74,3 +74,9 @@ test('CLI: fewer credits left than one show needs is not ready', () => {
 test('minRemaining never fails an unread status', () => {
   assert.equal(sbReadinessCheck({ ok: false, reason: 'no-key' }, undefined, { minRemaining: 50000 }).pass, null);
 });
+
+test('BRO-7854: SB balance below per-show estimate warns, never fails', () => {
+  const r = sbReadinessCheck({ ok: true, maxCredits: 250000, usedCredits: 206429, remaining: 43571, pctUsed: 82.6, pctRemaining: 17.4 }, undefined, { minRemaining: 50000 });
+  assert.equal(r.pass, true);
+  assert.equal(r.warn, true);
+});

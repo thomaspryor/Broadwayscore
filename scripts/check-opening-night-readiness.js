@@ -468,7 +468,8 @@ async function runChecks() {
   // 11b. Resource budget headroom (single-show pre-flight).
   // Soft-warns when any resource has less than 1.5× the per-show estimate
   // available — i.e. enough to cover this show plus ~half another. Failures
-  // block. See scripts/lib/opening-night-budget.js.
+  // block, except ScrapingBee-only shortfalls (fallback provider, WARN; BRO-7854).
+  // See scripts/lib/opening-night-budget.js.
   try {
     const { checkBudget, splitBudgetBlockers } = require('./lib/opening-night-budget');
     const budget = await checkBudget(1);

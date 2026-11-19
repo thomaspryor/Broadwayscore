@@ -131,12 +131,12 @@ function sbReadinessCheck(status, thresholds, { minRemaining } = {}) {
   const v = sbCreditVerdict(status, thresholds);
   const read = !!(status && status.ok);
   if (v.level === 'fail') return { pass: false, detail: v.detail };
-  // The per-show CLI has no check 11b (the demand-aware budget gate that
-  // justifies failing only at exhaustion above), so it passes the per-show
-  // demand estimate here: fewer credits left than one opening night needs
-  // is not ready (BRO-3039 retro-review, BRO-5261).
+  // Fewer credits than one opening night's estimate is a WARN, not a fail:
+  // SB is a fallback link and owner policy is ride-it-out
+  // (memory/feedback_sb_quota_ride_out.md, BRO-7854). Check 11b of the main
+  // readiness script treats it the same way.
   if (read && Number.isFinite(minRemaining) && Number.isFinite(status.remaining) && status.remaining < minRemaining) {
-    return { pass: false, detail: `${v.detail} Fewer than the ~${minRemaining} credits one opening night uses.` };
+    return { pass: true, warn: true, detail: `${v.detail} Fewer than the ~${minRemaining} credits one opening night's worst-case estimate; fallback provider, riding it out.` };
   }
   if (v.level === 'pass') return { pass: true, detail: v.detail };
   if (v.level === 'skip') return { pass: null, detail: v.detail };
