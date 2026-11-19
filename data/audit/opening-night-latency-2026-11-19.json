@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-19T11:16:55.368Z",
+  "generatedAt": "2026-11-19T13:19:40.224Z",
   "date": "2026-11-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 239831,
+  "entryCount": 248578,
   "shows": [
     {
       "showId": "beetlejuice-2025",
@@ -432,13 +432,13 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": 34042787,
       "p90_e2e_ms": 34042787,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 494952,
-        "scored-to-rebuilt": 301737,
+        "scored-to-rebuilt": 289422,
         "rebuilt-to-deployed": 4231666
       },
       "reviews_over_15min": 1,
@@ -468,13 +468,13 @@
     },
     {
       "showId": "dogstar-off-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 559536,
+        "scored-to-rebuilt": 487308,
         "rebuilt-to-deployed": 59464595
       },
       "reviews_over_15min": 0,
@@ -3663,13 +3663,13 @@
     },
     {
       "showId": "downstate-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 501416,
-        "scored-to-rebuilt": 420709,
+        "collected-to-scored": 337278,
+        "scored-to-rebuilt": 259031,
         "rebuilt-to-deployed": 74766459
       },
       "reviews_over_15min": 0,
@@ -6005,13 +6005,13 @@
     },
     {
       "showId": "dear-evan-hansen-la-regional-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 843073,
-        "scored-to-rebuilt": 310416,
+        "scored-to-rebuilt": 195098,
         "rebuilt-to-deployed": 38202974
       },
       "reviews_over_15min": 0,
@@ -6236,13 +6236,13 @@
     },
     {
       "showId": "our-town-regional-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 431290,
+        "scored-to-rebuilt": 425975,
         "rebuilt-to-deployed": 28536199
       },
       "reviews_over_15min": 0,
@@ -8579,13 +8579,13 @@
     },
     {
       "showId": "now-you-see-me-live-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 754354,
-        "scored-to-rebuilt": 107282,
+        "scored-to-rebuilt": 256478,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8991,6 +8991,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 718974,
+        "scored-to-rebuilt": 299640,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,

@@ -410,5 +410,47 @@
     "testId": "tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)",
     "fields": [],
     "queuedAt": "2026-11-19T13:02:56.857Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-snowman-off-west-end-2026",
+    "title": "Auto-remediation gave up on the-snowman-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-snowman-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T13:19:38.222Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:cinderella-lyric-hammersmith-off-west-end-2026",
+    "title": "Auto-remediation gave up on cinderella-lyric-hammersmith-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"cinderella-lyric-hammersmith-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T13:19:38.240Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:arrowhead-regional-2026",
+    "title": "Auto-remediation gave up on arrowhead-regional-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"arrowhead-regional-2026\",\"category\":\"regional\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T13:19:39.568Z"
   }
 ]
