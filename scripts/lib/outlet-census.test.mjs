@@ -429,13 +429,15 @@ test('BRO-7816: no committed NYC census report says "unreadable" for an outlet w
   for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.report.json'))) {
     const rep = JSON.parse(fs.readFileSync(new URL(f, dir), 'utf8'));
     const src = SOURCES[rep.outletId];
-    if (src && rep.source.kind === 'unreadable' && !['unreadable', 'serp'].includes(src.kind)) stale.push(`${rep.outletId} (${src.kind})`);
+    if (src && rep.source.kind === 'unreadable' && !['unreadable', 'serp'].includes(src.kind) && !src.proxyRetry) stale.push(`${rep.outletId} (${src.kind})`);
   }
   // Lands advisory (CLAUDE.md rule 19): the regenerated reports for these outlets reach main in a later change,
   // because one land may rewrite at most 10 bot-owned files. Set CENSUS_STALE_REPORT_STRICT=1 to fail; arm it
   // by default once `stale` is empty on main.
   const msg = `re-run: node scripts/outlet-census.js --outlet=${stale.map((x) => x.split(' ')[0]).join(',')}`;
-  if (process.env.CENSUS_STALE_REPORT_STRICT === '1') assert.deepEqual(stale, [], msg);
+  // BRO-7820: armed by default now that the weekly census job keeps reports fresh. proxyRetry outlets are exempt:
+  // they need a paid proxy key the free job never holds, so their report can only be refreshed by a keyed run.
+  if (process.env.CENSUS_STALE_REPORT_STRICT !== '0') assert.deepEqual(stale, [], msg);
   else if (stale.length) console.warn(`census stale-report guard (advisory): ${stale.length} stale, ${msg}`);
   assert.ok(Array.isArray(stale));
 });
