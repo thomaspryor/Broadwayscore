@@ -26,5 +26,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-19T10:35:45.010Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7820-arm-guard",
+    "title": "Landing blocked: rebase red on land/bro-7820-arm-guard",
+    "description": "land.yml did not land land/bro-7820-arm-guard: the rebase gate went red at 265e2757d4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44509671611",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7820-arm-guard"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "265e2757d4cf95193f35814e9c44a021294ca1f9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44509671611"
+      }
+    ],
+    "queuedAt": "2026-11-19T10:55:26.558Z"
   }
 ]
