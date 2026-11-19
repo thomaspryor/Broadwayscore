@@ -6,7 +6,8 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
-const { isNonRenderingChange, filterFiles } = createRequire(import.meta.url)('./visual-render-impact.js');
+const { isNonRenderingChange, filterFiles, _isDeclarationOnly } = createRequire(import.meta.url)('./visual-render-impact.js');
+const tsLib = createRequire(import.meta.url)('typescript');
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const BASE = readFileSync(join(HERE, '../../src/components/AnalyticsWrapper.tsx'), 'utf8');
@@ -312,4 +313,51 @@ test('declaration-only check rejects load-time code in unary operands, object me
   w('src/lib/e.ts', 'export const isA = (e: any) => !!e;\nexport const PATTERNS = [/a/, "b", -1];\n'); git('add', '-A'); git('commit', '-qm', 'ok');
   assert.deepEqual(filterRange('base0...HEAD', ['src/c.tsx'], dir), []);
   assert.ok(ts);
+});
+
+// --- final review round (BRO-7849): four reproduced bypasses ---
+const hookSrc = (top, guard, init = 'Sentry.init') => `${top}
+export function C() {
+  ${init}({ beforeSend(e: any) {
+    ${guard}
+    return e;
+  } });
+  return <p>x</p>;
+}
+`;
+const hookCheck = (top, guard, init, resolveImport = (spec) => (spec.startsWith('@/lib/') ? 'ts' : 'unknown')) =>
+  isNonRenderingChange({ file: 'src/components/H.tsx', oldSource: hookSrc(top, '', init), newSource: hookSrc(top, guard, init), resolveImport });
+
+test('a guard in a genuine Sentry.init hook is exempt (control for the bypass tests)', () => {
+  assert.equal(hookCheck('', 'if (e.a === 1) return null;').exempt, true);
+});
+
+test('a window.Sentry faked by assignment in the same file is not a telemetry global', () => {
+  const fake = '(window as any).Sentry = { init(o: any) { if (o.beforeSend({ a: 1 }) === null) document.body.hidden = true; } };';
+  assert.equal(hookCheck(fake, 'if (e.a === 1) return null;', 'window.Sentry.init').exempt, false);
+  assert.equal(hookCheck('Object.defineProperty(window, "Sentry", { value: { init() {} } });', 'if (e.a === 1) return null;', 'window.Sentry.init').exempt, false);
+  assert.equal(hookCheck('(window as any)[k] = { init() {} };', 'if (e.a === 1) return null;', 'window.Sentry.init').exempt, false);
+});
+
+test('an imported module named Sentry is not the telemetry global', () => {
+  assert.equal(hookCheck("import * as Sentry from '@/lib/fake';", 'if (e.a === 1) return null;').exempt, false);
+  assert.equal(hookCheck("import { Sentry } from '@/lib/fake';", 'if (e.a === 1) return null;').exempt, false);
+});
+
+test('guard conditions may only use imports from declaration-only modules, even when the import was already there', () => {
+  const unverified = (spec) => (spec === '@/lib/b' ? 'unknown' : 'ts');
+  assert.equal(hookCheck("import { isOpen } from '@/lib/b';", 'if (isOpen(e)) return null;', 'Sentry.init', unverified).exempt, false);
+  assert.equal(hookCheck("import { banner } from '@/lib/b';", 'if (banner.has(e)) return null;', 'Sentry.init', unverified).exempt, false);
+  // methods on an imported object are never allowed, even from a verified module (a getter or proxy could run code)
+  assert.equal(hookCheck("import { banner } from '@/lib/b';", 'if (banner.has(e)) return null;').exempt, false);
+  assert.equal(hookCheck("import { isOpen } from '@/lib/b';", 'if (isOpen(e)) return null;').exempt, true);
+});
+
+test('declaration-only modules: functions may only compute from their own inputs', () => {
+  const only = (body) => _isDeclarationOnly(tsLib, 'p.ts', `export function isBot(e: any) { ${body} }\n`);
+  assert.equal(only('return /bot/.test(e.ua);'), true);
+  for (const bad of ['location.href = "/sold-out"; return true;', 'scrollTo(0, 9999); return true;', 'top!.location.reload(); return true;',
+    'e.target.ownerDocument.body.innerText = "x"; return true;', 'e.focus(); return true;', 'return foo(e);', 'return new Date().getTime() > 0;']) {
+    assert.equal(only(bad), false, bad);
+  }
 });

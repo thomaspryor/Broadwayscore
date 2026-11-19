@@ -75,3 +75,9 @@ test('a verdict whose overallPass is not true never counts as ready (BRO-7849 sh
   assert.equal(evaluate(ready).missing.some((m) => m.id === 'verdict'), true);
   assert.equal(evaluate({ ...ready, verdict: { ...ready.verdict, overallPass: true } }).missing.some((m) => m.id === 'verdict'), false);
 });
+
+test('an unreadable diff never reads as "No owner approval needed" (BRO-7849 final review)', () => {
+  const r = evaluate({ diffError: true, uiFiles: [], gatedFiles: [], doctor: { skipped: true }, dirty: [] });
+  assert.equal(r.owner.line, 'Ask the owner now: no');
+  assert.ok(r.missing.some((m) => m.id === 'diff'));
+});

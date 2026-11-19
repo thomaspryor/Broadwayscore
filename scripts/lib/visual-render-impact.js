@@ -139,11 +139,14 @@ function declaredNames(ts, node) {
 }
 
 /** Scope facts for one filter hook: imported helpers (minus any name also declared in the file) and names local to the hook. */
-function hookCtx(ts, sf, fn) {
+function hookCtx(ts, sf, fn, resolveImport) {
   const shadowed = declaredNames(ts, sf);
-  const imported = new Set([...importBindings(ts, sf).keys()].filter((k) => !shadowed.has(k)));
+  const all = [...importBindings(ts, sf)].filter(([k]) => !shadowed.has(k));
+  const imported = new Set(all.map(([k]) => k)); // loose: may be called from the hook's unchanged statements (predicate/scrub-named only)
+  // strict: names from a project module that resolves to a declaration-only .ts file; the only imports a guard CONDITION may use
+  const strict = new Set(all.filter(([, spec]) => importIsTs(spec, resolveImport)).map(([k]) => k));
   const locals = declaredNames(ts, fn);
-  return { imported, locals };
+  return { imported, strict, locals };
 }
 
 /** root of a.b.c / a?.[0] / (a)! / "lit" / /re/ chains, or null when the root is something else (call, this, new ...). */
@@ -165,6 +168,8 @@ function callOk(ts, n, ctx, argOk) {
   const c = n.expression;
   if (ts.isIdentifier(c)) return ctx.imported.has(c.text) && PREDICATE_NAME.test(c.text) && n.arguments.every(argOk);
   if (!ts.isPropertyAccessExpression(c) || !rootOk(ts, c.expression, ctx)) return false;
+  const r0 = chainRoot(ts, c.expression); // a method on an imported object runs that module's code: only hook-local receivers
+  if (r0 && ts.isIdentifier(r0) && ctx.imported.has(r0.text) && !ctx.locals.has(r0.text)) return false;
   const m = c.name.text;
   if (CALLBACK_METHODS.has(m)) return n.arguments.every((a) => ts.isArrowFunction(a) || ts.isFunctionExpression(a));
   return SAFE_METHODS.has(m) && n.arguments.every(argOk);
@@ -215,14 +220,33 @@ function inertFn(ts, fn, ctx, sf) {
  * Guards allowed to change: `if (<safeCond>) return null;` directly inside an inert telemetry filter hook, and pattern-list
  * arrays, both only as direct properties of the options object passed to an `*.init({...})` call.
  */
-function guardRanges(ts, sf) {
+function guardRanges(ts, sf, resolveImport) {
   const out = [];
-  const fileDeclared = declaredNames(ts, sf);
+  const fileDeclared = new Set([...declaredNames(ts, sf), ...importBindings(ts, sf).keys()]);
+  // A file that assigns to window/globalThis/Sentry/posthog (or defines properties on them) may have faked the telemetry global.
+  const strip0 = (e) => { while (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e)) e = e.expression; return e; };
+  const tampered = new Set();
+  const tamperAll = () => { for (const g of TELEMETRY_GLOBALS) tampered.add(g); };
+  (function scan(n) {
+    if (ts.isBinaryExpression(n) && n.operatorToken.kind >= ts.SyntaxKind.FirstAssignment && n.operatorToken.kind <= ts.SyntaxKind.LastAssignment) {
+      const lt = n.left.getText(sf);
+      for (const g of TELEMETRY_GLOBALS) if (new RegExp(`\\b${g}\\b`).test(lt)) tampered.add(g);
+      const l = strip0(n.left);
+      if (ts.isObjectLiteralExpression(l) || ts.isArrayLiteralExpression(l) || (ts.isElementAccessExpression(l) && /\b(window|globalThis|self)\b/.test(lt) && (() => {
+        const k = l.argumentExpression;
+        if (ts.isStringLiteral(k) || ts.isNoSubstitutionTemplateLiteral(k)) return TELEMETRY_GLOBALS.has(k.text);
+        if (ts.isTemplateExpression(k) && k.head.text) return [...TELEMETRY_GLOBALS].some((g) => g.startsWith(k.head.text) || k.head.text.startsWith(g));
+        return true;
+      })())) tamperAll();
+    }
+    if (ts.isCallExpression(n) && /\b(defineProperty|defineProperties|assign|setPrototypeOf|__defineGetter__|__defineSetter__)\b/.test(n.expression.getText(sf))) tamperAll();
+    ts.forEachChild(n, scan);
+  })(sf);
   const strip = (e) => { while (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e)) e = e.expression; return e; };
   const globalRef = (e) => { // window.Sentry / globalThis.posthog / bare Sentry that this file does not declare
     e = strip(e);
-    if (ts.isIdentifier(e)) return TELEMETRY_GLOBALS.has(e.text) && !fileDeclared.has(e.text);
-    if (ts.isPropertyAccessExpression(e) && TELEMETRY_GLOBALS.has(e.name.text)) { const r = strip(e.expression); return ts.isIdentifier(r) && (r.text === 'window' || r.text === 'globalThis') && !fileDeclared.has(r.text); }
+    if (ts.isIdentifier(e)) return TELEMETRY_GLOBALS.has(e.text) && !tampered.has(e.text) && !fileDeclared.has(e.text);
+    if (ts.isPropertyAccessExpression(e) && TELEMETRY_GLOBALS.has(e.name.text) && !tampered.has(e.name.text)) { const r = strip(e.expression); return ts.isIdentifier(r) && (r.text === 'window' || r.text === 'globalThis') && !fileDeclared.has(r.text); }
     return false;
   };
   const aliasDecls = new Map();
@@ -241,11 +265,11 @@ function guardRanges(ts, sf) {
       if (ts.isMethodDeclaration(pr) && FILTER_HOOKS.has(nameOf(pr))) fn = pr;
       else if (ts.isPropertyAssignment(pr) && FILTER_HOOKS.has(nameOf(pr)) && (ts.isArrowFunction(pr.initializer) || ts.isFunctionExpression(pr.initializer))) fn = pr.initializer;
       if (fn && fn.body && ts.isBlock(fn.body)) {
-        const ctx = hookCtx(ts, sf, fn);
+        const ctx = hookCtx(ts, sf, fn, resolveImport);
         for (const prm of fn.parameters) if (ts.isIdentifier(prm.name)) ctx.locals.add(prm.name.text);
         if (inertFn(ts, fn.body, ctx, sf)) {
           for (const st of fn.body.statements) {
-            if (ts.isIfStatement(st) && !st.elseStatement && isReturnOfNothing(ts, st.thenStatement) && safeCond(ts, st.expression, ctx)) out.push([st.getStart(sf), st.end]);
+            if (ts.isIfStatement(st) && !st.elseStatement && isReturnOfNothing(ts, st.thenStatement) && safeCond(ts, st.expression, { locals: ctx.locals, imported: ctx.strict })) out.push([st.getStart(sf), st.end]);
           }
         }
       }
@@ -290,7 +314,37 @@ function isDeclarationOnly(ts, file, text) {
   const sf = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, /\.jsx?$/.test(file) ? ts.ScriptKind.JS : ts.ScriptKind.TS);
   if (!Array.isArray(sf.parseDiagnostics) || sf.parseDiagnostics.length) return false;
   const K = ts.SyntaxKind;
-  const pureFn = (n) => !FORBIDDEN_LINE_RE.test(n.getText(sf)) && !IMPURE_RE.test(n.getText(sf));
+  const moduleNames = declaredNames(ts, sf);
+  const SAFE_GLOBALS = new Set(['undefined', 'NaN', 'Infinity', 'Math', 'String', 'Number', 'Boolean', 'Array', 'JSON', 'isNaN', 'parseInt', 'parseFloat']);
+  const PURE_METHODS = new Set([...SAFE_METHODS, ...CALLBACK_METHODS, 'toLowerCase', 'toUpperCase', 'trim', 'slice', 'split', 'join', 'map', 'filter', 'some', 'every', 'concat', 'replace', 'match', 'startsWith', 'endsWith', 'floor', 'ceil', 'round', 'min', 'max', 'abs', 'isArray']);
+  // A function body that can only compute from its parameters/locals/module declarations: no assignment, no calls except to
+  // module-declared functions, safe globals and pure methods, no identifier from anywhere else (location, top, scrollTo ...).
+  const pureFn = (fn) => {
+    if (FORBIDDEN_LINE_RE.test(fn.getText(sf)) || IMPURE_RE.test(fn.getText(sf))) return false;
+    const locals = declaredNames(ts, fn);
+    let ok = true;
+    const visit = (n) => {
+      if (!ok) return;
+      if (ts.isBinaryExpression(n) && n.operatorToken.kind >= K.FirstAssignment && n.operatorToken.kind <= K.LastAssignment) { ok = false; return; }
+      if (ts.isDeleteExpression(n) || ts.isNewExpression(n) || ts.isAwaitExpression(n) || ts.isTaggedTemplateExpression(n) || ts.isYieldExpression(n) || n.kind === K.ThisKeyword
+        || ts.isJsxElement(n) || ts.isJsxSelfClosingElement(n) || ts.isJsxFragment(n)
+        || ((ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) && (n.operator === K.PlusPlusToken || n.operator === K.MinusMinusToken))) { ok = false; return; }
+      if (ts.isCallExpression(n)) {
+        const c = n.expression;
+        if (ts.isIdentifier(c)) { if (!(moduleNames.has(c.text) || SAFE_GLOBALS.has(c.text) || locals.has(c.text))) { ok = false; return; } }
+        else if (!(ts.isPropertyAccessExpression(c) && PURE_METHODS.has(c.name.text))) { ok = false; return; }
+      }
+      if (ts.isIdentifier(n)) {
+        const par = n.parent;
+        const isPropName = (ts.isPropertyAccessExpression(par) && par.name === n) || (ts.isPropertyAssignment(par) && par.name === n) || (ts.isBindingElement(par) && par.propertyName === n)
+          || ts.isTypeReferenceNode(par) || ts.isTypeParameterDeclaration(par);
+        if (!isPropName && !(locals.has(n.text) || moduleNames.has(n.text) || SAFE_GLOBALS.has(n.text))) { ok = false; return; }
+      }
+      ts.forEachChild(n, visit);
+    };
+    visit(fn);
+    return ok;
+  };
   // Values that run nothing when the module loads: primitives, regexes, and arrays/objects made only of them.
   const pureLit = (e) => {
     if (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e)) return pureLit(e.expression);
@@ -389,7 +443,7 @@ function isNonRenderingChange({ file, oldSource, newSource, resolveImport }) {
     const d = diffLines(oErased, nErased);
     if (!d) return no('diff too large to analyse');
     const oImp = importRanges(ts, oSf, resolveImport); const nImp = importRanges(ts, nSf, resolveImport);
-    const oGuard = guardRanges(ts, oSf); const nGuard = guardRanges(ts, nSf);
+    const oGuard = guardRanges(ts, oSf, resolveImport); const nGuard = guardRanges(ts, nSf, resolveImport);
     const oNon = nonCodeRanges(ts, oSf); const nNon = nonCodeRanges(ts, nSf);
     // Imports: only ADDED names. A name present on both sides must point at the same module (no alias/path swap).
     const oB = importBindings(ts, oSf); const nB = importBindings(ts, nSf);
@@ -492,7 +546,7 @@ function filterRange(range, files, cwd, log = null) {
   } catch { return files; } // fail closed
 }
 
-module.exports = { isNonRenderingChange, filterFiles, filterRange };
+module.exports = { isNonRenderingChange, filterFiles, filterRange, _isDeclarationOnly: isDeclarationOnly };
 
 if (require.main === module && process.argv[2] === '--filter') {
   const fs = require('fs');

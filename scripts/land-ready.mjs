@@ -30,6 +30,7 @@ export function evaluate(f) {
   const noPrefix = f.uiCommitsMissingPrefix || [];
   if ((f.uiFiles || []).length) add('prefix', 'UI commits carry VISUAL-OK-1440:', noPrefix.length === 0, noPrefix.slice(0, 5).join(', '), 'reword those commits to start with VISUAL-OK-1440: after checking 1440px');
 
+  if (f.diffError) add('diff', 'diff against origin/main is readable', false, 'git diff failed, so no file list is known', 'git fetch origin main, then re-run');
   const gated = f.gatedFiles || [];
   const cls = !(f.uiFiles || []).length ? 'no UI files' : gated.length ? 'rendering UI change' : (f.renderImpactDropped || []).length ? 'non-rendering (render-impact detector)' : 'text-only copy';
   const needsVisual = gated.length > 0;
@@ -55,7 +56,8 @@ export function evaluate(f) {
 
   const missing = items.filter((i) => !i.ok);
   let owner;
-  if (!needsVisual) owner = { line: 'No owner approval needed', why: `diff class is ${cls}` };
+  if (f.diffError) owner = { line: 'Ask the owner now: no', why: 'the diff could not be read, so nothing can be judged yet' };
+  else if (!needsVisual) owner = { line: 'No owner approval needed', why: `diff class is ${cls}` };
   else if (f.approval?.approved) owner = { line: 'No owner approval needed', why: 'this UI diff is already approved' };
   else if (missing.length) owner = { line: 'Ask the owner now: no', why: `${missing.length} item(s) above are still open; finish them first so the owner is asked once` };
   else owner = { line: 'Ask the owner now: yes', why: 'everything else is done: send ONE message with the screenshots; any clear yes after it clears the gate' };
@@ -87,7 +89,9 @@ export async function gather({ cwd = process.cwd(), base = 'origin/main', doctor
   if (fetch) tryGit(cwd, ['fetch', '-q', 'origin', 'main']);
   f.dirty = (() => { try { return execFileSync('git', ['-C', cwd, 'status', '--porcelain'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).split('\n').filter(Boolean).map((l) => l.slice(3)); } catch { return []; } })();
   const range = `${base}...HEAD`;
-  const changed = tryGit(cwd, ['diff', '--name-only', range]).split('\n').filter(Boolean);
+  let diffOut = '';
+  try { diffOut = git(cwd, ['diff', '--name-only', range]); f.diffError = false; } catch { f.diffError = true; }
+  const changed = diffOut.split('\n').filter(Boolean);
   f.uiFiles = changed.filter((x) => UI_RE.test(x));
   f.touchesSrc = changed.some((x) => x.startsWith('src/'));
   const filter = (script, files) => {
