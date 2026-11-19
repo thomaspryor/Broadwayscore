@@ -99,6 +99,20 @@ test('a stale gray reply (older than the verdict) never reaches the judge', asyn
   assert.equal(j.calls, 0);
 });
 
+test('a gray reply with a missing or unparsable timestamp never reaches the judge (fail toward asking)', async () => {
+  for (const ts of [undefined, '', 'not-a-date']) {
+    const j = approveJudge();
+    const e = ts === undefined ? { kind: 'user_text', text: 'sounds good', synthetic: false } : ev('sounds good', ts);
+    const r = await queryApprovalOfJudged([e], HASH, { after: VERDICT_TS }, { judge: j, mode: 'decide', logPath: tmpLog() });
+    assert.equal(r.approved, false, String(ts));
+    assert.equal(j.calls, 0, String(ts));
+  }
+  const ok = approveJudge();
+  const r2 = await queryApprovalOfJudged([ev('sounds good')], HASH, { after: VERDICT_TS }, { judge: ok, mode: 'decide', logPath: tmpLog() });
+  assert.equal(ok.calls, 1, 'control: a valid timestamp is judged');
+  assert.equal(r2.approved, true);
+});
+
 test('only the newest owner message counts: a later stop cancels an earlier gray yes', async () => {
   const j = approveJudge();
   const r = await queryApprovalOfJudged([ev('sounds good', '2026-11-19T11:00:00.000Z'), ev('wait, stop', '2026-11-19T11:05:00.000Z')], HASH, { after: VERDICT_TS }, { judge: j, mode: 'decide', logPath: tmpLog() });
