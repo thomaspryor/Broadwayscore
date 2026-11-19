@@ -321,11 +321,11 @@ export async function main(argv, { env = process.env, now = new Date(), stdin = 
   if (st.rounds >= budget) {
     // Out of rounds: record what it would have said (the advisory signal), never block.
     writeState(f, { ...st, lastReviewedEditKey: d.editKey, lastGaps: material });
-    logHit({ ...base, outcome: 'over-budget' });
+    logHit({ ...base, outcome: 'over-budget', blocked: false });
     return 0;
   }
   writeState(f, { ...st, rounds: st.rounds + 1, lastReviewedEditKey: d.editKey, lastGaps: material });
-  logHit({ ...base, outcome: 'block' });
+  logHit({ ...base, outcome: 'block', blocked: true });
   process.stderr.write(blockMessage(material, { round: st.rounds + 1, budget }) + '\n');
   return 2;
 }
