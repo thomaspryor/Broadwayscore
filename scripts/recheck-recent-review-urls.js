@@ -10,6 +10,7 @@
  * Hosted in rebuild-reviews.yml, right before the rebuild, so a marker is pushed with the same run.
  * Writes `marked`/`restored` counts to $GITHUB_OUTPUT. Exit 0 always except bad usage (2).
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { recheck } = require('./lib/recheck-review-urls');
