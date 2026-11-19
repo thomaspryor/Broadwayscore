@@ -329,6 +329,28 @@ test('ledgerPrecondition: an infra job-abandoned (no live sibling) is ackable; a
     { ts: '2026-11-16T00:45:00.000Z', event: 'job-spawned', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-live' },
     { ts: '2026-11-16T00:50:35.777Z', event: 'job-abandoned', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-b', reason: 'disk-pressure: disk free 3.2GB' }];
   assert.equal(core.ledgerPrecondition(liveSibling).refusals.length, 1);
+  // Review finding 1: an unended cmux attempt (no jobId) is a live sibling.
+  const cmuxSibling = [...base,
+    { ts: '2026-11-16T00:44:00.000Z', event: 'launch', taskId: 'linear:BRO-7569', workspaceRef: 'workspace:42' },
+    { ts: '2026-11-16T00:50:35.777Z', event: 'job-abandoned', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-b', reason: 'disk-pressure: x' }];
+  assert.equal(core.ledgerPrecondition(cmuxSibling).refusals.length, 1);
+  // Review finding 2: a fresh abandon may precede a starting sibling's first row.
+  const fresh = ab('disk-pressure: x').map((r, i, a) => (i === a.length - 1 ? { ...r, ts: new Date(Date.now() - 60_000).toISOString() } : r));
+  assert.equal(core.ledgerPrecondition(fresh).refusals.length, 1);
+});
+
+test('decideAck after an infra abandon: commit window ends at the job that ran, not at the abandon (review finding 3)', () => {
+  const rows = [
+    { ts: '2026-11-15T22:34:07.945Z', event: 'launch', taskId: TASK, verifyCmd: 'node scripts/audit-workflow-concurrency.js' },
+    { ts: '2026-11-15T22:34:24.185Z', event: 'job-spawned', taskId: TASK, jobId: `${TASK}-a` },
+    { ts: '2026-11-16T00:34:27.326Z', event: 'job-failed', taskId: TASK, jobId: `${TASK}-a` },
+    { ts: '2026-11-16T00:40:34.976Z', event: 'job-retried', taskId: TASK, jobId: `${TASK}-a` },
+    { ts: '2026-11-16T03:50:35.777Z', event: 'job-abandoned', taskId: TASK, jobId: `${TASK}-b`, reason: 'disk-pressure: x' },
+  ];
+  const inWindow = core.decideAck(happy({ rows, landing: { verdict: 'LANDED', sha: 'aaa', commitTs: '2026-11-16T00:10:00.000Z', message: `${REF}: work` } }));
+  assert.deepEqual(inWindow.refusals, []);
+  const postMortem = core.decideAck(happy({ rows, landing: { verdict: 'LANDED', sha: 'bbb', commitTs: '2026-11-16T02:00:00.000Z', message: `${REF}: work` } }));
+  assert.match(postMortem.refusals.join('\n'), /AFTER the job's terminal job-(failed|retried) row/);
 });
 
 // BRO-5219: a data-only fix lands in a private data repo, while the job's
