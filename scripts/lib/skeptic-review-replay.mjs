@@ -8,14 +8,13 @@
 //
 //   node scripts/lib/skeptic-review-replay.mjs <case.json ...> [--json] [--model=<openai id>]
 // Spends one reviewer call and one judge call per case (cents). Needs OPENAI_API_KEY.
+import './llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { createRequire } from 'node:module';
-import { callReviewer, redact, REVIEW_MODEL } from './skeptic-review-stop.mjs';
+import { callReviewer, redact, REVIEW_MODEL, meterToSessionLedger } from './skeptic-review-stop.mjs';
 
-const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const DIFF_CAP = 14000;
 
@@ -66,7 +65,6 @@ async function judge(admitted, gaps, env) {
     signal: AbortSignal.timeout(90000),
   });
   const j = await res.json();
-  try { require('./gemini-usage-ledger.js').logSessionCall({ provider: 'openai', model: 'gpt-5.5', response: j, caller: 'skeptic-review-replay' }); } catch { /* record only */ }
   return JSON.parse(j.choices[0].message.content);
 }
 export async function replayCase(file, { env = process.env, model = REVIEW_MODEL } = {}) {
@@ -88,6 +86,7 @@ export async function replayCase(file, { env = process.env, model = REVIEW_MODEL
 }
 
 async function cli(argv) {
+  meterToSessionLedger();
   const files = argv.filter((a) => !a.startsWith('--'));
   const model = (argv.find((a) => a.startsWith('--model=')) || '').slice(8) || REVIEW_MODEL;
   if (!files.length) { console.error('usage: skeptic-review-replay.mjs <case.json ...> [--json] [--model=id]'); return 2; }
