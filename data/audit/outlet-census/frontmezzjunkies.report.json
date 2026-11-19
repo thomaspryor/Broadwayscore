@@ -1,51 +1,105 @@
 {
   "outletId": "frontmezzjunkies",
-  "generatedAt": "2026-10-28T20:45:32.746Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:39:57.460Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
-    "notes": [
-      "unreadable: no WordPress API; sitemap enumeration not yet configured"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "kind": "wp-json",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 554,
+    "inWindow": 554,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "held": 227,
+      "catalog-gap": 115,
+      "gap": 38,
+      "held-alt-url": 24,
+      "out-of-window": 73,
+      "not-review": 61,
+      "ambiguous": 12,
+      "held-unmatched": 4
+    },
+    "viaTitleVariant": {
+      "held": 13,
+      "held-alt-url": 5,
+      "gap": 4
+    },
+    "recall": 0.869,
+    "recallWithCatalog": 0.621
+  },
+  "seasons": {
+    "2026-27": {
+      "held": 6,
+      "catalog-gap": 4,
+      "gap": 7,
+      "held-alt-url": 1
+    },
+    "2025-26": {
+      "catalog-gap": 36,
+      "out-of-window": 30,
+      "not-review": 16,
+      "held-alt-url": 15,
+      "gap": 13,
+      "ambiguous": 3,
+      "held": 45,
+      "held-unmatched": 2
+    },
+    "2024-25": {
+      "held": 58,
+      "catalog-gap": 32,
+      "gap": 4,
+      "out-of-window": 17,
+      "not-review": 16,
+      "ambiguous": 3,
+      "held-alt-url": 2
+    },
+    "2023-24": {
+      "held": 50,
+      "gap": 3,
+      "catalog-gap": 20,
+      "out-of-window": 12,
+      "not-review": 14,
+      "held-alt-url": 2,
+      "ambiguous": 3
+    },
+    "2022-23": {
+      "held": 42,
+      "out-of-window": 6,
+      "catalog-gap": 9,
+      "gap": 3,
+      "not-review": 7,
+      "ambiguous": 2,
+      "held-alt-url": 2
+    },
+    "2021-22": {
+      "catalog-gap": 14,
+      "held": 26,
+      "held-alt-url": 2,
+      "gap": 8,
+      "out-of-window": 8,
+      "not-review": 5,
+      "ambiguous": 1,
+      "held-unmatched": 2
+    },
+    "2020-21": {
+      "not-review": 3
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 140,
-    "notEnumerated": 62,
+    "rowsInWindow": 378,
+    "notEnumerated": 7,
     "noUrl": 0,
     "samples": [
-      {
-        "showId": "and-juliet-2022",
-        "url": "https://frontmezzjunkies.com/2022/12/23/juliet-the-new-broadway-musical/",
-        "publishDate": "2022-12-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "art-2025",
-        "url": "https://frontmezzjunkies.com/2025/11/17/art-on-broadway/",
-        "publishDate": "2025-11-17",
-        "why": "not-enumerated"
-      },
       {
         "showId": "back-to-the-future-2023",
         "url": "https://frontmezzjunkies.com/2023/08/18/the-shark-is-broken-back-to-the-future-the-musical-broadway/",
         "publishDate": "2023-08-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "becoming-hamlet-off-broadway-2026",
-        "url": "https://frontmezzjunkies.com/2026/09/18/becoming-hamlet-gets-lost-inside-its-own-experiment/",
-        "publishDate": "2026-09-18",
         "why": "not-enumerated"
       },
       {
@@ -55,93 +109,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "bug-2026",
-        "url": "https://frontmezzjunkies.com/2026/01/17/scratching-at-reality-bug-and-the-seduction-of-shared-madness/",
-        "publishDate": "2026-01-17",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cats-the-jellicle-ball-2026",
-        "url": "https://frontmezzjunkies.com/2026/04/13/glitter-fur-and-full-commitment-cats-the-jellicle-ball-and-titanique-refuse-to-behave-on-broadway/",
-        "publishDate": "2026-04-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "chess-2025",
-        "url": "https://frontmezzjunkies.com/2025/12/17/checkmate-by-vocal-firepower-broadways-chess-blows-the-roof-off-broadway/",
-        "publishDate": "2025-12-17",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "clydes-2021",
-        "url": "https://frontmezzjunkies.com/2021/12/25/second-stage-clydes/",
-        "publishDate": "2021-12-25",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "company-2021",
-        "url": "https://frontmezzjunkies.com/2021/12/28/broadways-gender-swapping-company/",
-        "publishDate": "2021-12-28",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "cosi-fan-tutte-off-broadway-2026",
         "url": "https://frontmezzjunkies.com/2026/10/08/cosi-fan-tutte-has-me-questioning-the-wisdom-of-testing-love/",
         "publishDate": "2026-10-08",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-becomes-her-2024",
-        "url": "https://frontmezzjunkies.com/2024/11/29/broadway-death-becomes-her/",
-        "publishDate": "2024-11-29",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2022",
-        "url": "https://frontmezzjunkies.com/2022/10/30/arthur-millers-death-of-a-salesman-revival-on-broadway/",
-        "publishDate": "2022-10-30",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2026",
-        "url": "https://frontmezzjunkies.com/2026/05/06/the-weight-of-arrival-death-of-a-salesman-on-broadway/",
-        "publishDate": "2026-05-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "deep-history-off-broadway-2024",
-        "url": "https://frontmezzjunkies.com/2024/10/28/david-finnigans-deep-history-at-the-public-theater-ny/",
-        "publishDate": "2024-10-28",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "endgame-off-broadway-2025",
-        "url": "https://frontmezzjunkies.com/2025/11/05/endgame-at-irish-arts-center/",
-        "publishDate": "2025-11-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "every-brilliant-thing-2026",
-        "url": "https://frontmezzjunkies.com/2026/03/26/the-courage-to-participate-every-brilliant-thing-at-the-hudson-theatre/",
-        "publishDate": "2026-03-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "fallen-angels-2026",
-        "url": "https://frontmezzjunkies.com/2026/04/28/fallen-angels-leans-into-laughter-and-leaves-its-bite-behind-on-broadway/",
-        "publishDate": "2026-04-28",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "funny-girl-2022",
-        "url": "https://frontmezzjunkies.com/2022/05/07/funny-girl-on-broadway/",
-        "publishDate": "2022-05-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "good-bones-off-broadway-2024",
-        "url": "https://frontmezzjunkies.com/2024/10/24/public-theater-good-bones/",
-        "publishDate": "2024-10-24",
         "why": "not-enumerated"
       },
       {
@@ -151,126 +121,2853 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "grey-house-2023",
-        "url": "https://frontmezzjunkies.com/2023/06/14/broadway-grey-house/",
-        "publishDate": "2023-06-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gruesome-playground-injuries-off-broadway-2025",
-        "url": "https://frontmezzjunkies.com/2025/12/24/does-it-hurt-love-and-injury-in-off-broadways-gruesome-playground-injuries/",
-        "publishDate": "2025-12-24",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gutenberg-2023",
-        "url": "https://frontmezzjunkies.com/2023/10/24/gutenberg-the-not-so-best-musical-ever/",
-        "publishDate": "2023-10-24",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gypsy-2024",
-        "url": "https://frontmezzjunkies.com/2025/01/12/broadway-gypsy/",
-        "publishDate": "2025-01-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "here-we-are-off-broadway-2023",
-        "url": "https://frontmezzjunkies.com/2023/10/22/here-we-are-off-broadway-the-shed/",
-        "publishDate": "2023-10-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "into-the-woods-2022",
-        "url": "https://frontmezzjunkies.com/2022/07/28/latest-broadway-revival-into-the-woods/",
-        "publishDate": "2022-07-28",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "joe-turners-come-and-gone-2026",
-        "url": "https://frontmezzjunkies.com/2026/03/30/a-story-that-still-demands-to-be-heard-joe-turners-come-and-gone-begins-broadway-previews/",
-        "publishDate": "2026-03-30",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "just-in-time-2025",
-        "url": "https://frontmezzjunkies.com/2025/04/27/broadway-just-in-time/",
-        "publishDate": "2025-04-27",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "kenrex-off-broadway-2026",
-        "url": "https://frontmezzjunkies.com/2026/04/27/kenrex-tightens-its-grip-off-broadway-at-the-lucille-lortel/",
-        "publishDate": "2026-04-27",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "kimberly-akimbo-2022",
-        "url": "https://frontmezzjunkies.com/2022/12/10/broadway-kimberly-akimbo/",
-        "publishDate": "2022-12-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "kowalski-off-broadway-2025",
-        "url": "https://frontmezzjunkies.com/2025/02/15/off-broadway-kowalski/",
-        "publishDate": "2025-02-15",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "left-on-tenth-2024",
-        "url": "https://frontmezzjunkies.com/2024/10/27/broadway-left-on-tenth/",
-        "publishDate": "2024-10-27",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "liberation-2025",
-        "url": "https://frontmezzjunkies.com/2025/10/28/liberation-finds-expanded-power-and-light-on-broadway/",
-        "publishDate": "2025-10-28",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "url": "https://frontmezzjunkies.com/2023/03/30/broadways-life-of-pi/",
-        "publishDate": "2023-03-30",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "lone-star-off-broadway-2023",
-        "url": "https://frontmezzjunkies.com/2023/12/06/ruth-stage-lone-star/",
-        "publishDate": "2023-12-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "mary-jane-2024",
-        "url": "https://frontmezzjunkies.com/2024/04/28/broadway-mary-jane/",
-        "publishDate": "2024-04-28",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "maybe-happy-ending-2024",
-        "url": "https://frontmezzjunkies.com/2024/11/16/maybe-happy-ending-broadway/",
-        "publishDate": "2024-11-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "merrily-we-roll-along-2023",
-        "url": "https://frontmezzjunkies.com/2023/10/10/merrily-we-roll-along-broadway/",
-        "publishDate": "2023-10-10",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "mexodus-off-broadway-2026",
         "url": "https://frontmezzjunkies.com/2026/02/08/mexodus-returns-off-broadway-looping-history-back-into-the-present/",
         "publishDate": "2026-02-08",
         "why": "not-enumerated"
+      },
+      {
+        "showId": "schmigadoon-2026",
+        "url": "https://frontmezzjunkies.com/2026/05/01/schmigadoon-kicks-its-way-into-joy-on-broadway/",
+        "publishDate": "2026-05-01",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "stephen-sondheims-old-friends-2025",
+        "url": "https://frontmezzjunkies.com/2025/04/13/stephen-sondheims-old-friends-on-broadway/",
+        "publishDate": "2025-04-13",
+        "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
-  "heldAltUrl": [],
+  "gaps": [
+    {
+      "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
+      "headline": "“Rent” Still Has My Heart, Thirty Years Later",
+      "publishDate": "2026-10-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-heart-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "still-off-broadway-2024",
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/10/21/kramer-fauci-turns-a-1993-aids-debate-into-electrifying-theatre/",
+      "headline": "“Kramer/Fauci” Turns a 1993 AIDS Debate Into Electrifying Theatre",
+      "publishDate": "2026-10-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "kramerfauci-st-anns-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "kramerfauci-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/10/20/222-a-ghost-story-is-coming-to-off-broadway-and-im-already-watching-that-damn-clock/",
+      "headline": "“2:22 – A Ghost Story” Is Coming to Off-Broadway, and I’m Already Watching that Damn Clock",
+      "publishDate": "2026-10-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "222-a-ghost-story-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/10/16/good-time-charlie-knows-everyone-loves-a-one-act-play/",
+      "headline": "“Good Time Charlie” Knows Everyone Loves a One-Act Play",
+      "publishDate": "2026-10-16",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "good-time-charlie-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/",
+      "headline": "“ANON: a tempest at our kitchen table” Unleashes Suburban Panic at MCC Theater",
+      "publishDate": "2026-10-15",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "anon-a-tempest-at-our-kitchen-table-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/10/03/antonio-says-give-crowns-and-pounds-and-guineas-but-not-your-heart-away/",
+      "headline": "Antonio says, “Give crowns and pounds and guineas- but not your heart away”",
+      "publishDate": "2026-10-03",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-heart-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/09/09/heated-rivalry-knows-exactly-why-were-here/",
+      "headline": "“Heated Rivalry: The Unauthorized Musical Parody” Knows Exactly Why We’re Here",
+      "publishDate": "2026-09-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/08/08/broadway-is-saying-goodbye-to-cats-titanique-and-some-remarkable-shows/",
+      "headline": "Broadway Is Saying Goodbye to Cats, Titaníque, and Some Remarkable Shows",
+      "publishDate": "2026-08-08",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "titanique-2026"
+      ],
+      "outOfWindow": [
+        "titanique-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/13/the-equation-of-isolation-is-calculated-inside-proof-on-broadway/",
+      "headline": "The Equation of Isolation is Calculated Inside “Proof” on Broadway",
+      "publishDate": "2026-05-13",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "proof-2026"
+      ],
+      "outOfWindow": [
+        "proof-2000"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/09/the-fear-of-13-locks-time-memory-and-identity-inside-solitary-confinement/",
+      "headline": "“The Fear of 13” Locks Time, Memory, and Identity Inside Solitary Confinement",
+      "publishDate": "2026-05-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-fear-of-13-2026"
+      ],
+      "outOfWindow": [
+        "solitary-confinement-1992"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/03/80s-nostalgia-in-two-keys-beaches-and-the-lost-boys-reimagined-on-broadway/",
+      "headline": "80s Nostalgia in Two Keys: “Beaches” and “The Lost Boys” Reimagined on Broadway",
+      "publishDate": "2026-05-03",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-lost-boys-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/04/24/the-unknown-turns-obsession-into-a-slick-unsettling-game-of-control/",
+      "headline": "“The Unknown” Frames Obsession as an Unsettling Game of Control",
+      "publishDate": "2026-04-24",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-unknown-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/04/22/cold-war-choir-practice-sings-through-paranoia-with-razor-sharp-wit-and-uneasy-joy/",
+      "headline": "“Cold War Choir Practice” Sings Through Paranoia with Razor-Sharp Wit and Uneasy Joy",
+      "publishDate": "2026-04-22",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cold-war-choir-practice-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/30/a-heated-night-at-the-theatre-dog-day-afternoon-opens-on-broadway-amid-offstage-tension/",
+      "headline": "A Heated Night at the Theatre: “Dog Day Afternoon” Opens on Broadway Amid Offstage Tension",
+      "publishDate": "2026-03-30",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "dog-day-afternoon-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/19/broadway-welcomes-the-fear-of-13-as-awards-season-heats-up/",
+      "headline": "Broadway Welcomes “The Fear of 13” as Awards Season Heats Up",
+      "publishDate": "2026-03-19",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-fear-of-13-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/10/a-scorching-true-crime-cinematic-classic-comes-to-broadway-dog-day-afternoon-begins-previews/",
+      "headline": "A Scorching True-Crime Cinematic Classic Comes to Broadway: “Dog Day Afternoon” Begins Previews",
+      "publishDate": "2026-03-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "dog-day-afternoon-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/02/27/why-silver-manhattan-makes-me-wish-i-were-in-new-york-right-now/",
+      "headline": "Why “Silver Manhattan” Makes Me Wish I Were in New York Right Now",
+      "publishDate": "2026-02-27",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "silver-manhattan-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/02/16/up-close-with-capote-jesse-tyler-ferguson-returns-to-new-york-in-tru/",
+      "headline": "Up Close with Capote: Jesse Tyler Ferguson Returns to New York in “Tru”",
+      "publishDate": "2026-02-16",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "tru-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/01/21/punch-lines-privilege-and-the-limits-of-satire-in-messy-white-gays/",
+      "headline": "Punch Lines, Privilege, and the Limits of Satire in “Messy White Gays”",
+      "publishDate": "2026-01-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "messy-white-gays-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "punch-2025"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/10/01/house-of-mcqueen/",
+      "headline": "“House of McQueen”: A Stylish but Neat Hemline Where a Raw Cut Was Desired",
+      "publishDate": "2025-10-01",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "house-of-mcqueen-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/08/26/house-of-mcqueen-opens-off-broadway-a-gripping-portrait-of-lee-alexander-mcqueen/",
+      "headline": "“House of McQueen” Opens Off-Broadway—A Gripping Portrait of Lee Alexander McQueen",
+      "publishDate": "2025-08-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "house-of-mcqueen-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
+      "headline": "Acton Says: Color Me Stoked: “Heathers the Musical” at New World Stages",
+      "publishDate": "2025-07-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "heathers-the-musical-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/11/10/mama-im-a-big-girl-now/",
+      "headline": "“Mama I’m a Big Girl Now!” is Just What the Musical Theatre Junkie Doctor Ordered",
+      "publishDate": "2024-11-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mama-im-a-big-girl-now-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "the-doctor-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/10/04/fountain-theatres-fatherland/",
+      "headline": "Fountain Theatre’s “Fatherland” Literally Talks Its Way Through Without Unpacking That Warped Mind",
+      "publishDate": "2024-10-04",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "fatherland-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/08/22/max-wolf-friedlichs-job-fires-with-force-on-broadway/",
+      "headline": "Max Wolf Friedlich’s “JOB” Fires with Force on Broadway",
+      "publishDate": "2024-08-22",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-fires-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/07/02/n-a-at-lct/",
+      "headline": "“N/A” at LCT Delivers the Wit and the Anger Somewhat Lopsided, But Still With Value",
+      "publishDate": "2024-07-02",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "still-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/01/orlando-a-rhapsody-mixes-a-woolf-cocktail-that-is-easy-to-get-lost-in/",
+      "headline": "“Orlando: A Rhapsody” Mixes a Woolf Cocktail That is Easy to Get Lost in",
+      "publishDate": "2024-05-01",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "orlando-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/07/13/broadways-once-upon-a-please-dont-hit-me-with-this-one-more-time/",
+      "headline": "Broadway’s “Once Upon a [please don’t hit me with this] One More Time”",
+      "publishDate": "2023-07-13",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "once-upon-a-one-more-time-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/04/13/how-to-defend-yourself-punches-strong-at-nytw/",
+      "headline": "“How To Defend Yourself” Punches Strong at NYTW",
+      "publishDate": "2023-04-13",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "how-to-defend-yourself-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/01/31/broadway-a-beautiful-noise/",
+      "headline": "Broadway’s A Beautiful Noise Tries Hard, Without a Lot of Sing Song Blues to Run With",
+      "publishDate": "2023-01-31",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/07/19/atlantic-theater-the-bedwetter/",
+      "headline": "Atlantic Theater’s The Bedwetter Shines Above and Beyond its Shame. I Swear. And So Does This Show. A Lot.",
+      "publishDate": "2022-07-19",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-bedwetter-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/05/30/the-little-prince/",
+      "headline": "Broadway’s The Little Prince Fails to Fly",
+      "publishDate": "2022-05-30",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-little-prince-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/04/09/atlantic-theater-english/",
+      "headline": "Atlantic Theater Tests Power and Humor with Toossi’s Extraordinary Play, English",
+      "publishDate": "2022-04-09",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "english-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/03/20/the-new-group-black-no-more/",
+      "headline": "The New Group’s Black No More Rushes In and Awkwardly Dances Forward",
+      "publishDate": "2022-03-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "black-no-more-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/03/11/long-days-journey-audible/",
+      "headline": "Audible Theatre’s Long Day’s Journey Into Night Finds Sizzle in its Shortening",
+      "publishDate": "2022-03-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "long-days-journey-into-night-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "long-days-journey-into-night-2016",
+        "long-days-journey-into-night-2003",
+        "long-days-journey-into-night-1986",
+        "long-days-journey-into-night-1988"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/03/05/actress-activist-pooya-mohseni-on-her-role-in-sanaz-toossis-english-part-2/",
+      "headline": "Actress/Activist Pooya Mohseni On Her Role In Sanaz Toossi’s ENGLISH – Part 2",
+      "publishDate": "2022-03-05",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "english-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/02/15/actress-activist-pooya-mohseni-on-her-role-in-sanaz-toossis-english/",
+      "headline": "Actress/Activist Pooya Mohseni On Her Role In Sanaz Toossi’s ENGLISH",
+      "publishDate": "2022-02-15",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "english-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/11/12/caroline-or-change-broadway/",
+      "headline": "Roundabout’s Caroline, or Change Heats Up from Within on Broadway",
+      "publishDate": "2021-11-12",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "caroline-or-change-2021"
+      ],
+      "outOfWindow": [
+        "caroline-or-change-2004"
+      ]
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://frontmezzjunkies.com/2026/10/22/downstate-finally-arrives-on-broadway-tonight-and-im-ready-to-enter-that-difficult-house-again/",
+      "headline": "“Downstate” Finally Arrives on Broadway Tonight, and I’m Ready to Enter That Difficult House Again",
+      "publishDate": "2026-10-22",
+      "matched": [
+        "downstate-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/11/16/downstate-opens-on-broadway-and-im-ready-to-enter-that-difficult-house-again/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/08/14/paranormal-activity-opens-its-broadway-doors-tonight-and-im-already-nervous/",
+      "headline": "“Paranormal Activity” Opens Its Broadway Doors Tonight, and I’m Already Nervous",
+      "publishDate": "2026-08-14",
+      "matched": [
+        "paranormal-activity-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/10/12/paranormal-activity-turns-broadway-into-a-house-of-horrors/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/07/16/some-possible-paranormal-activity-at-222-two-ghost-stories-arrive-aiming-to-test-my-nerves/",
+      "headline": "Possible “Paranormal Activity” at “2:22”: Two Ghost Stories Arrive Aiming to Test My Nerves",
+      "publishDate": "2026-07-16",
+      "matched": [
+        "paranormal-activity-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/10/12/paranormal-activity-turns-broadway-into-a-house-of-horrors/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/29/mexodus-spelling-bee-and-more-honoured-at-the-off-broadway-alliance-awards/",
+      "headline": "“Mexodus,” “Spelling Bee,” and More Honoured at the Off-Broadway Alliance Awards",
+      "publishDate": "2026-05-29",
+      "matched": [
+        "mexodus-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/02/08/mexodus-returns-off-broadway-looping-history-back-into-the-present/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/24/two-final-bows-broadway-says-goodbye-to-death-becomes-her-and-beaches/",
+      "headline": "Two Final Bows: Broadway Says Goodbye to “Death Becomes Her” and “Beaches”",
+      "publishDate": "2026-05-24",
+      "matched": [
+        "death-becomes-her-2024"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2024/11/29/broadway-death-becomes-her/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/19/dancing-at-the-centre-schmigadoon-leads-the-2026-chita-rivera-awards/",
+      "headline": "Dancing at the Centre: “Schmigadoon!” Leads the 2026 Chita Rivera Awards",
+      "publishDate": "2026-05-19",
+      "matched": [
+        "schmigadoon-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/05/01/schmigadoon-kicks-its-way-into-joy-on-broadway/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/10/finding-the-song-inside-joe-turners-come-and-gone-on-broadway/",
+      "headline": "Finding the Song Inside “Joe Turner’s Come and Gone” on Broadway",
+      "publishDate": "2026-05-10",
+      "matched": [
+        "joe-turners-come-and-gone-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/03/30/a-story-that-still-demands-to-be-heard-joe-turners-come-and-gone-begins-broadway-previews/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/04/four-wins-and-a-clear-voice-mexodus-leads-the-41st-lucille-lortel-awards/",
+      "headline": "Four Wins and a Clear Voice: “Mexodus” Leads the 41st Lucille Lortel Awards",
+      "publishDate": "2026-05-04",
+      "matched": [
+        "mexodus-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/02/08/mexodus-returns-off-broadway-looping-history-back-into-the-present/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/04/16/a-town-on-edge-again-kenrex-brings-its-blistering-story-to-new-york/",
+      "headline": "A Town on Edge Again: “Kenrex” Brings Its Blistering Story to New York",
+      "publishDate": "2026-04-16",
+      "matched": [
+        "kenrex-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/04/27/kenrex-tightens-its-grip-off-broadway-at-the-lucille-lortel/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/04/04/a-town-you-might-not-want-to-leave-schmigadoon-begins-its-broadway-journey/",
+      "headline": "A Town You Might Not Want to Leave: Schmigadoon! Begins Its Broadway Journey",
+      "publishDate": "2026-04-04",
+      "matched": [
+        "schmigadoon-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/05/01/schmigadoon-kicks-its-way-into-joy-on-broadway/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/04/03/old-friends-new-reach-merrily-we-roll-along-arrives-on-netflix-april-4/",
+      "headline": "Old Friends, New Reach: “Merrily,” “Hadestown,” and “Six” Expand Beyond the Stage",
+      "publishDate": "2026-04-03",
+      "matched": [
+        "hadestown-2019"
+      ],
+      "heldUrls": [
+        "http://frontmezzjunkies.com/2019/04/26/hadestown/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/31/memory-in-motion-gotta-dance-brings-broadways-choreographic-history-to-life/",
+      "headline": "Memory in Motion: “Gotta Dance!” Brings Broadway’s Choreographic History to Life",
+      "publishDate": "2026-03-31",
+      "matched": [
+        "gotta-dance-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/04/06/dancing-the-memory-missing-the-map-gotta-dance-celebrates-broadway-while-holding-us-at-a-distance/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/11/giant-begins-previews-on-broadway-with-john-lithgows-commanding-return/",
+      "headline": "“Giant” Begins Previews on Broadway With John Lithgow’s Commanding Return",
+      "publishDate": "2026-03-11",
+      "matched": [
+        "giant-2026"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2026/04/19/giant-and-the-weight-of-words-that-cannot-be-taken-back/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/02/13/jeremy-jordan-is-taking-over-just-in-time-and-honestly-that-feels-exactly-right/",
+      "headline": "Jeremy Jordan Is Taking Over “Just In Time” and Honestly, That Feels Exactly Right",
+      "publishDate": "2026-02-13",
+      "matched": [
+        "just-in-time-2025"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2025/04/27/broadway-just-in-time/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/10/04/mexodus-brilliantly-layers-and-loops-history-with-liberation-at-audible-theater/",
+      "headline": "“Mexodus” Brilliantly Layers and Loops History with Liberation at Audible Theater",
+      "publishDate": "2025-10-04",
+      "matched": [
+        "liberation-2025"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2025/10/28/liberation-finds-expanded-power-and-light-on-broadway/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/09/02/hamilton-film-at-the-delacorte/",
+      "headline": "“Hamilton” Film Premiering at the Delacorte in Central Park",
+      "publishDate": "2025-09-02",
+      "matched": [
+        "hamilton-2015"
+      ],
+      "heldUrls": [
+        "http://frontmezzjunkies.com/2016/02/09/finally-heres-hamilton/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/02/20/off-broadways-little-shop-of-horrors-stays-camp-tastically-strong-with-christopher-and-scott/",
+      "headline": "Off-Broadway’s “Little Shop of Horrors” Stays Camp-tastically Strong with Christopher and Scott",
+      "publishDate": "2025-02-20",
+      "matched": [
+        "little-shop-of-horrors-off-broadway-2019"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2019/10/18/little-shop-of-horrors-off-broadway/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/02/05/pooya-mohseni-makes-her-broadway-debut-in-english-a-dream-she-didnt-know-she-could-have/",
+      "headline": "Pooya Mohseni Makes Her Broadway Debut in “English”: A Dream She Didn’t Know She Could Have",
+      "publishDate": "2025-02-05",
+      "matched": [
+        "english-2025"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2025/02/17/broadway-english/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/24/shakespeares-romeo-and-juliet-times-three/",
+      "headline": "Shakespeare’s “Romeo and Juliet” Times Three",
+      "publishDate": "2024-05-24",
+      "matched": [
+        "and-juliet-2022"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2022/12/23/juliet-the-new-broadway-musical/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/21/merrily-gatsby-and-more-win-big-at-2024-broadway-com-audience-choice-awards/",
+      "headline": "Merrily, Gatsby, Mary Jane, and More Win Applause at 2024 Broadway.com Audience Choice Awards",
+      "publishDate": "2024-05-21",
+      "matched": [
+        "mary-jane-2024"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2024/04/28/broadway-mary-jane/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/04/02/sweeney-todd-kills-and-eats-up-the-competition-on-broadway/",
+      "headline": "Sweeney Todd Kills and Eats Up the Competition on Broadway",
+      "publishDate": "2023-04-02",
+      "matched": [
+        "sweeney-todd-2023"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2024/03/06/tveit-and-foster-unite-masterfully-in-broadways-sweeney-todd-the-demon-barber-of-fleet-street/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/12/02/the-lea-michele-revitalized-funny-girl-is-finally-balanced-and-buoyant/",
+      "headline": "The Lea Michele Revitalized Funny Girl is Finally Balanced and Buoyant",
+      "publishDate": "2022-12-02",
+      "matched": [
+        "funny-girl-2022"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2022/05/07/funny-girl-on-broadway/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/07/25/between-the-lines/",
+      "headline": "Between the Lines Skips Along in a Wicked-ly Fun Way, Yet Taking the Long Way  Home",
+      "publishDate": "2022-07-25",
+      "matched": [
+        "wicked-2003"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2017/09/20/wicked/"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/09/11/come-from-away-on-apple/",
+      "headline": "Come From Away on Apple+ Via Broadway, Via Newfoundland",
+      "publishDate": "2021-09-11",
+      "matched": [
+        "come-from-away-2017"
+      ],
+      "heldUrls": [
+        "https://frontmezzjunkies.com/2017/03/12/come-from-away-on-broadway/"
+      ]
+    }
+  ],
   "misfiles": [],
-  "heldUnmatched": [],
-  "ambiguous": [],
-  "catalogGaps": [],
-  "outOfWindow": []
+  "heldUnmatched": [
+    {
+      "url": "https://frontmezzjunkies.com/2026/01/17/scratching-at-reality-bug-and-the-seduction-of-shared-madness/",
+      "headline": "Scratching at Reality: “Bug” and the Seduction of Shared Madness",
+      "publishDate": "2026-01-17",
+      "via": null,
+      "held": [
+        "bug-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/11/17/art-on-broadway/",
+      "headline": "“Art” on Broadway: A High-Gloss Revival That Mistakes Value for Meaning",
+      "publishDate": "2025-11-17",
+      "via": null,
+      "held": [
+        "art-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/12/28/broadways-gender-swapping-company/",
+      "headline": "Broadway’s Gender-Swapping Company Elevates Itself to Rises Up and Cheer",
+      "publishDate": "2021-12-28",
+      "via": null,
+      "held": [
+        "company-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/10/03/broadways-six/",
+      "headline": "Broadway’s Six Queens Finally Return to the Throne to Proudly Pop-Rule",
+      "publishDate": "2021-10-03",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "queens-off-broadway-2025"
+      ]
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://frontmezzjunkies.com/2026/06/03/the-final-clues-before-the-tonys-dorian-awards-crown-schmigadoon-and-ragtime/",
+      "headline": "The Final Clues as the Dorian Awards Crown “Schmigadoon!” and “Ragtime”",
+      "publishDate": "2026-06-03",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "schmigadoon-2026",
+        "ragtime-2025"
+      ],
+      "outOfWindow": [
+        "ragtime-2009",
+        "ragtime-1998"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/31/two-nights-two-questions-proof-and-the-balusters-begin-broadway-previews/",
+      "headline": "Two Nights, Two Questions: “Proof” and “The Balusters” Begin Broadway Previews",
+      "publishDate": "2026-03-31",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-balusters-2026",
+        "proof-2026"
+      ],
+      "outOfWindow": [
+        "proof-2000"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/11/11/prince-fggot/",
+      "headline": "God Save the Queens: “Prince Faggot” and the Mischief Making of a Royal Queer Off-Broadway",
+      "publishDate": "2025-11-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "queens-off-broadway-2025",
+        "prince-faggot-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "prince-faggot-playwrights-horizons-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/04/10/good-night-and-good-luck-and-glengarry-glen-ross-broadway/",
+      "headline": "“Good Night, and Good Luck” & “Glengarry Glen Ross” Broadway Finely Smokes Solid Scenarios with Stars",
+      "publishDate": "2025-04-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "good-night-and-good-luck-2025",
+        "glengarry-glen-ross-2025"
+      ],
+      "outOfWindow": [
+        "glengarry-glen-ross-2012",
+        "glengarry-glen-ross-2005",
+        "glengarry-glen-ross-1984"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/12/28/broadway-cult-of-love-eureka-day/",
+      "headline": "2ST’s “Cult of Love” & MTC’s “Eureka Day” Clash Hard, Electric, and True on Broadway",
+      "publishDate": "2024-12-28",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "eureka-day-2024",
+        "cult-of-love-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/10/09/the-counter-roundabout-off-broadway-mcneal-broadway/",
+      "headline": "Roundabout’s “The Counter” Off-Broadway and LCT’s “McNeal” on Broadway Dig Deep Into Death, Escapism, and the Surprise of Life in the Real World and AI",
+      "publishDate": "2024-10-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mcneal-2024",
+        "the-counter-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/22/water-for-elephants-hells-kitchen-and-barbie-win-at-the-2024-chita-rivera-awards/",
+      "headline": "“Water For Elephants”, “Hell’s Kitchen”, and “Barbie” Win at The 2024 Chita Rivera Awards",
+      "publishDate": "2024-05-22",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hells-kitchen-2024",
+        "water-for-elephants-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/07/broadways-illinoise/",
+      "headline": "Broadway’s “Illinoise” Dances and Sings, Igniting a Fire of Storytellers, Both Dynamic and Distant.",
+      "publishDate": "2024-05-07",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "illinoise-2024",
+        "illinoise-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/04/21/broadway-water-for-elephants-and-the-outsiders-musicals/",
+      "headline": "Broadway’s Two New Musicals:  “Water for Elephants” & “The Outsiders” Fly Off the Pages and Screen With Different Splashs of Stage Water",
+      "publishDate": "2024-04-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-outsiders-2024",
+        "water-for-elephants-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/04/30/the-non-magical-lands-of-lcts-camelot-and-broadways-new-york-new-york/",
+      "headline": "The Non-Magical Lands of LCT’s “Camelot” and Broadway’s “New York, New York”",
+      "publishDate": "2023-04-30",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "new-york-new-york-2023",
+        "camelot-2023"
+      ],
+      "outOfWindow": [
+        "camelot-1993",
+        "camelot-1981"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/04/04/great-shucked-and-bad-bad-cinderella-on-broadway/",
+      "headline": "Great “Shucked” bests Bad “Bad Cinderella” on Broadway",
+      "publishDate": "2023-04-04",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "shucked-2023",
+        "bad-cinderella-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/04/26/how-i-learned-to-drive-birthday-candles/",
+      "headline": "Two Very Different Memory Plays: How I Learned to Drive and Birthday Candles",
+      "publishDate": "2022-04-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "how-i-learned-to-drive-2022",
+        "birthday-candles-2022"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "catalogGaps": [
+    {
+      "url": "https://frontmezzjunkies.com/2026/11/15/school-girls-turns-a-beauty-pageant-into-a-battle-for-belonging/",
+      "headline": "“School Girls” Turns a Beauty Pageant Into a Battle for Belonging",
+      "publishDate": "2026-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/10/06/antonio-says-it-is-in-pardoning-that-we-are-pardoned-how-shakespeare-turns-theatre-into-a-testimony-of-salvation/",
+      "headline": "Antonio Says, “It Is in Pardoning That We Are Pardoned”*: How Shakespeare Turns Theatre Into a Testimony of Salvation",
+      "publishDate": "2026-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/09/12/dirty-bird-goes-beautifully-off-the-rails/",
+      "headline": "“Dirty Bird” Goes Beautifully Off the Rails",
+      "publishDate": "2026-09-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/09/08/antonio-says-well-done-i-can-see-your-career-rise-in-the-east-like-the-sun/",
+      "headline": "Antonio says, “Well done! I can see your career rise in the east like the sun.”*",
+      "publishDate": "2026-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/08/31/broadways-plays-are-pulling-on-my-senses/",
+      "headline": "Broadway’s Plays Are Pulling on My Senses",
+      "publishDate": "2026-08-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/08/23/broadway-musicals-keep-giving-me-new-reasons-to-return-and-rejoice/",
+      "headline": "Broadway Musicals Keep Giving Me New Reasons to Return and Rejoice",
+      "publishDate": "2026-08-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/08/17/antonio-says-behind-every-great-woman-is-a-society-waiting-to-celebrate-her-downfall/",
+      "headline": "Antonio Says, “Behind Every Great Woman is a Society Waiting to Celebrate Her Downfall.”",
+      "publishDate": "2026-08-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/08/15/antonio-says-embracing-herstory-and-erasing-history/",
+      "headline": "Antonio Says, “Embracing Herstory and Erasing History”",
+      "publishDate": "2026-08-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/08/12/antonio-says-the-truth-will-set-you-free/",
+      "headline": "Antonio Says: “The Truth Will Set You Free”",
+      "publishDate": "2026-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/07/27/acton-says-fractured-scary-tale/",
+      "headline": "Acton Says: Fractured Scary Tale",
+      "publishDate": "2026-07-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/06/26/the-wicked-tickle-finally-opens-its-doors-again/",
+      "headline": "The Wicked Tickle Finally Opens Its Doors Again",
+      "publishDate": "2026-06-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/06/15/bam-unveils-a-bold-and-boundary-breaking-2026-fall-next-wave-season/",
+      "headline": "BAM Unveils a Bold and Boundary-Breaking 2026 Fall Next Wave Season",
+      "publishDate": "2026-06-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/06/10/a-season-of-brilliant-minds-and-wounded-hearts-as-tom-hiddleston-and-rosamund-pike-head-to-broadway-in-2026/",
+      "headline": "A Season of Brilliant Minds and Wounded Hearts as Tom Hiddleston and Rosamund Pike Come to Broadway",
+      "publishDate": "2026-06-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/06/08/the-envelopes-are-open-and-broadway-has-its-winners-at-the-2026-tonys/",
+      "headline": "The Envelopes Are Open and Broadway Has Its Winners at the 2026 Tonys",
+      "publishDate": "2026-06-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/22/the-2026-dorian-theater-award-nominations-celebrate-queer-storytelling-across-new-york-stages/",
+      "headline": "The 2026 Dorian Theater Award Nominations Celebrate Queer Storytelling Across New York Stages",
+      "publishDate": "2026-05-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/20/two-sisters-one-legend-wanted-brings-an-outlaw-story-to-broadway/",
+      "headline": "Two Sisters, One Legend: “WANTED” Brings an Outlaw Story to Broadway",
+      "publishDate": "2026-05-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/18/the-full-spectrum-of-theatre-takes-a-bow-the-2026-drama-desk-awards-celebrate-a-season-of-extraordinary-range/",
+      "headline": "The Full Spectrum of Theatre Takes a Bow: The 2026 Drama Desk Awards Celebrate a Season of Extraordinary Range",
+      "publishDate": "2026-05-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/16/2026-off-broadway-alliance-award-nominations-beat-loud-and-true-celebrating-new-yorks-most-adventurous-theatre/",
+      "headline": "2026 Off Broadway Alliance Award Nominations Beat Loud and True, Celebrating New York’s Most Adventurous Theatre",
+      "publishDate": "2026-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/15/the-public-theater-unveils-a-bold-community-driven-2026-27-season/",
+      "headline": "The Public Theater Unveils a Bold, Community-Driven 2026–27 Season",
+      "publishDate": "2026-05-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/12/a-new-generation-takes-the-stage-at-the-80th-annual-theatre-world-awards/",
+      "headline": "A New Generation Takes the Stage at the 80th Annual Theatre World Awards",
+      "publishDate": "2026-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/04/02/it-starts-with-a-list-the-lucille-lortel-nominations-signal-new-yorks-awards-season-has-begun/",
+      "headline": "It Starts with a List: The Lucille Lortel Nominations Signal New York’s Awards Season Has Begun",
+      "publishDate": "2026-04-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/31/acton-says-into-the-darger-zone/",
+      "headline": "Acton Says: Into the Darger Zone",
+      "publishDate": "2026-03-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/26/two-shows-one-night-march-26-kicks-off-broadways-boldest-party-yet/",
+      "headline": "Two Shows, One Night: March 26 Kicks Off Broadway’s Boldest Party Yet",
+      "publishDate": "2026-03-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/18/three-shows-one-night-march-18th-is-about-to-become-a-theatre-lovers-holiday/",
+      "headline": "Three Shows, One Night: March 18 Is Shaping Up to Be a Theatre Lover’s Dream",
+      "publishDate": "2026-03-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/02/17/two-nights-one-community-miscast-and-broadway-backwards-celebrate-the-joy-of-reinvention-in-2026/",
+      "headline": "Two Nights, One Community: Broadway’s Annual Celebrations of Surprise and Storytelling",
+      "publishDate": "2026-02-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/02/14/when-one-curtain-falls-and-another-rises/",
+      "headline": "When One Curtain Falls and Another Rises",
+      "publishDate": "2026-02-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/02/10/the-creatives-most-honored-at-the-2026-obie-awards/",
+      "headline": "The Creatives Most Honoured at the 2026 Obie Awards",
+      "publishDate": "2026-02-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/02/01/crowded-stages-heavyweights-and-the-race-to-the-tonys-spring-2026-broadway-openings-worth-watching/",
+      "headline": "Crowded Stages, Heavyweights, and the Race to the Tonys: Spring 2026 Broadway Openings Worth Watching",
+      "publishDate": "2026-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/01/30/good-heavens-ciminos-defeat-at-torn-page/",
+      "headline": "Acton Says: Good Heaven’s! “Cimino’s Defeat” at Torn Page",
+      "publishDate": "2026-01-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/12/18/the-2025-list-of-the-top-theatrical-treats-from-nyc-toronto-and-beyond/",
+      "headline": "Stories That Wouldn’t Leave Me: FrontMezzJunkies’ Top Theatrical Experiences of 2025 from NYC, Toronto, and Beyond",
+      "publishDate": "2025-12-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/12/06/a-quaint-and-curious-night-of-horror-at-radiotheatres-15th-annual-edgar-allan-poe-festival/",
+      "headline": "A Quaint and Curious Night of Horror at Radiotheatre’s 15th Annual Edgar Allan Poe Festival",
+      "publishDate": "2025-12-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/11/16/the-new-groups-new-home-and-new-season/",
+      "headline": "THE NEW GROUP’s New Home and New Season",
+      "publishDate": "2025-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/11/06/romy-michele-the-musical-high-kicks-high-camp-and-a-whole-lot-of-feather-light-fun/",
+      "headline": "Romy & Michele: The Musical — High Kicks, High Camp, and Some Feather-Light Fun",
+      "publishDate": "2025-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/11/04/bat-boy-the-musical-at-nycc-a-sharp-toothed-sweet-hearted-revival-that-soars/",
+      "headline": "Bat Boy: The Musical at NYCC — A Sharp-Toothed, Sweet-Hearted Revival That Soars",
+      "publishDate": "2025-11-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/10/31/gwyneth-goes-skiing/",
+      "headline": "“Gwyneth Goes Skiing” — A Slippery, Silly, and Slightly Overextended Good Time on the Off-Broadway Slopes",
+      "publishDate": "2025-10-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/10/16/acton-says-batter-up-the-pitch-at-actors-temple-theatre/",
+      "headline": "Acton Says: Batter up – “The Pitch” at Actors Temple Theatre",
+      "publishDate": "2025-10-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/10/12/wondrously-waiting-wanting-watching-beckett-on-broadway-and-beyond/",
+      "headline": "Wondrously “Waiting…“, Wanting, Watching: Beckett on Broadway and Beyond",
+      "publishDate": "2025-10-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/10/11/john-lithgow-towers-over-broadway-once-more-in-giant-mark-rosenblatts-roald-dahl-drama/",
+      "headline": "John Lithgow Towers Over Broadway Once More in “Giant”, Mark Rosenblatt’s Roald Dahl Drama",
+      "publishDate": "2025-10-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/09/27/acton-says-its-in-the-bag-blood-orange-at-the-jeffrey-and-paula-gural-theatre/",
+      "headline": "Acton Says: It’s in the Bag: Blood Orange at the Jeffrey and Paula Gural Theatre",
+      "publishDate": "2025-09-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/09/19/acton-says-playing-with-fire-kinkakuji-at-japan-society/",
+      "headline": "Acton Says: Playing with fire: “Kinkakuji” at Japan Society",
+      "publishDate": "2025-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/08/28/the-muppets-rob-lake-are-coming-to-broadway/",
+      "headline": "The Muppets (& Rob Lake) Are Coming to Broadway",
+      "publishDate": "2025-08-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/08/24/broadways-jeff-ross-slips-on-his-take-a-banana-for-the-ride/",
+      "headline": "Broadway’s Jeff Ross Slips on his “Take a Banana for the Ride”",
+      "publishDate": "2025-08-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/08/15/acton-says-the-animals-speak-walt-disney-in-south-america/",
+      "headline": "Acton Says: “The Animals Speak”: Walt Disney in South America",
+      "publishDate": "2025-08-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/07/12/tony-award-winner-j-harrison-ghee-to-star-in-roger-q-masons-night-cities/",
+      "headline": "Tony Award Winner J Harrison Ghee to Star in Roger Q. Mason’s “Night Cities”",
+      "publishDate": "2025-07-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/27/nycc-gives-us-our-encores-bat-boy/",
+      "headline": "NYCC Delivers Us Our “Bat Boy”",
+      "publishDate": "2025-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/24/acton-says-stirred-by-shakespeare-in-love-you-more-at-the-tank/",
+      "headline": "Acton says: Stirred by Shakespeare in “Love You More” at the Tank",
+      "publishDate": "2025-06-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/14/mtc-annouces-two-exciting-plays-for-the-2025-26-season/",
+      "headline": "MTC Annouces Two Exciting Plays for the 2025-26 Season",
+      "publishDate": "2025-06-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/08/acton-gets-his-freek-on-at-atlantic-theater-company/",
+      "headline": "Acton gets his “Freek” on at Atlantic Theater Company",
+      "publishDate": "2025-06-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/03/the-winners-of-the-2025-off-broadway-alliance-awards-are/",
+      "headline": "The Winners of the 2025 Off Broadway Alliance Awards are…",
+      "publishDate": "2025-06-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/02/the-winners-of-the-2025-drama-desk-awards-are/",
+      "headline": "The Winners of the 2025 Drama Desk Awards are…",
+      "publishDate": "2025-06-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/27/acton-cracked-open-at-theatre-row/",
+      "headline": "Acton Says: A Family in Crisis: “Cracked Open” at Theatre Row",
+      "publishDate": "2025-05-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/20/the-winners-of-the-2025-chita-rivera-awards-are/",
+      "headline": "The Winners of the 2025 Chita Rivera Awards are…",
+      "publishDate": "2025-05-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/17/the-new-york-drama-league-winners-are/",
+      "headline": "The New York Drama League Winners Are….",
+      "publishDate": "2025-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/14/ye-gods-nongod-at-american-theatre-of-actors/",
+      "headline": "Ye gods! “NONGOD” at American Theatre of Actors",
+      "publishDate": "2025-05-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/07/pirates-broadway/",
+      "headline": "The Swashbuckling “Pirates!” of “The Penzance Musical” Give Broadway Some Spectacular Silliness in their Sword Playfulness",
+      "publishDate": "2025-05-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/07/the-2025-theatre-world-award-winners-are/",
+      "headline": "The 2025 Theatre World Award Winners Are…",
+      "publishDate": "2025-05-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/06/the-new-york-drama-critics-awards-goes-to/",
+      "headline": "The New York Drama Critics’ Awards Goes To…",
+      "publishDate": "2025-05-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/05/the-2025-lucille-lortel-awards-winners-announced/",
+      "headline": "The 2025 Lucille Lortel Awards Winners Are…",
+      "publishDate": "2025-05-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/04/20/public-theater-glass-kill-what-if-if-only-imp/",
+      "headline": "Public Theater Floats Out A Magical Four One-Act Churchill Compilation: “Glass. Kill. What If If Only. Imp.”",
+      "publishDate": "2025-04-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/04/15/mtc-we-had-a-world/",
+      "headline": "MTC Vulnerable and Angrily Unpacks an Engaging “We Had A World”",
+      "publishDate": "2025-04-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/04/11/acton-says-bubbly-boop-could-use-more-cartoon-magic/",
+      "headline": "Acton Says: Bubbly “Boop!” Could Use More Cartoon Magic",
+      "publishDate": "2025-04-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/04/06/nominations-for-the-40th-annual-lucille-lortel-awards-announced/",
+      "headline": "All Hail the Nominations for the 40th Annual Lucille Lortel Awards",
+      "publishDate": "2025-04-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/03/20/dakar-2000/",
+      "headline": "“Dakar 2000” Delivers a Big, Wild, Imaginative, Tense Tale at MTC Off-Broadway",
+      "publishDate": "2025-03-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/01/14/under-the-radar-festival-nyc-wakka-wakka-dead-as-a-dodo/",
+      "headline": "Frontmezzjunkies Has Some Fun at the Under The Radar Festival NYC with Wakka Wakka’s Brilliantly Inventive “Dead as a Dodo”",
+      "publishDate": "2025-01-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/11/23/elf-the-musical-broadway/",
+      "headline": "“Elf – The Musical” Flies Festively High into the Central Park Sky on Broadway",
+      "publishDate": "2024-11-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/11/18/mercutio-loves-romeo-loves-juliet-loves-off-broadway/",
+      "headline": "Ya Sorta Gotta Love “Mercutio Loves Romeo Loves Juliet Loves” (or at least Like in a Friend Kinda Way) Off-Broadway by Boomerang",
+      "publishDate": "2024-11-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/11/14/second-stage-walden/",
+      "headline": "Second Stage Lands a Futuristic Gem of a Play About Salvation with Berryman’s “Walden”",
+      "publishDate": "2024-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/10/23/dead-sexy-burlesque/",
+      "headline": "Jonny Porkpie Unwraps his “Dead Sexy” Burlesque Act Right Before Halloween",
+      "publishDate": "2024-10-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/10/22/theater-adult-gianmarco-soresi-at-joes-pub/",
+      "headline": "“Theater Adult” Showcases the Wildly Funny and Engaging Gianmarco Soresi at Joe’s Pub with Some Very Special Talented Guests",
+      "publishDate": "2024-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/10/18/sisters/",
+      "headline": "Jay Armstrong Johnson’s “I Put a Spell on You” Sisters With a Streaming Benefit For The Ali Forney Center",
+      "publishDate": "2024-10-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/10/16/vladimir/",
+      "headline": "MTC’s “Vladimir” Digs Into a Strong Story but Gets Lost in the Cool Maze of Studio Equipment and Inserted Complications",
+      "publishDate": "2024-10-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/09/18/out-of-the-box-theatrics-see-what-i-wanna-see/",
+      "headline": "Out of the Box Theatrics’ “See What I Wanna See” Delivers Brilliant Vocals Sharing Differing Perspectives",
+      "publishDate": "2024-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/07/23/mart-foundation-presents-arlekin-in-residence-at-off-broadways-classic-stage-company-with-two-productions/",
+      "headline": "MART Foundation presents Arlekin in Residence at Off-Broadway’s Classic Stage Company with Two Productions",
+      "publishDate": "2024-07-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/07/10/cats-the-jellical-ball-pac-nyc/",
+      "headline": "“Cats – The Jellical Ball” at PAC NYC Death Drops Deliriously Divine and Feline-Free",
+      "publishDate": "2024-07-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/06/the-lipstick-projects-in-memory-of/",
+      "headline": "The Lipstick Project’s In Memory Of",
+      "publishDate": "2024-05-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/04/24/public-theater-sally-tom/",
+      "headline": "The Complex Exciting Layers of “Sally & Tom” at The Public Theater",
+      "publishDate": "2024-04-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/04/22/sauna-boy-laura-beecham-theater/",
+      "headline": "“Sauna Boy” Steams Up the Laura Beecham Theater",
+      "publishDate": "2024-04-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/03/25/thirdwing-burbank/",
+      "headline": "Thirdwing’s “Burbank” Unveils a Different Side of Disney",
+      "publishDate": "2024-03-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/03/19/my-beatnik-youth-a-solo-riff/",
+      "headline": "“My Beatnik Youth: A Solo Riff” is A Wild One-Person Road at La Mama",
+      "publishDate": "2024-03-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/03/10/tuesdays-with-morrie/",
+      "headline": "“Tuesdays With Morrie” Unpacks a Relationship Regained with Subtle Ease",
+      "publishDate": "2024-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/03/08/the-maid-the-mezmeriser-twists-in-a-compelling-tale-of-victorian-isolation/",
+      "headline": "“The Maid & The Mezmeriser” Twists in a Compelling Tale of Victorian Isolation",
+      "publishDate": "2024-03-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/03/04/the-double-dare-of-the-life-and-slimes-of-marc-summers-off-broadway/",
+      "headline": "The Engaging Double Dare of “The Life and Slimes of Marc Summers” Off-Broadway",
+      "publishDate": "2024-03-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/03/03/max-wolf-friedlich-job-play/",
+      "headline": "Friedlich’s Downtown “JOB” Standoff Soars Sharply with Great Aim",
+      "publishDate": "2024-03-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/02/27/public-theater-the-ally/",
+      "headline": "Public Theater Brings “The Ally” Forward for an Intense Debate",
+      "publishDate": "2024-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/12/22/second-stage-spain/",
+      "headline": "Second Stage Spins Forth a Compelling and Funny “Spain” for the Consumption of the  Disinformation Age",
+      "publishDate": "2023-12-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/12/18/a-r-t-ny-shadows/",
+      "headline": "A.R.T./NY’s Unemotional “Shadows” Doesn’t Realize Its Goals",
+      "publishDate": "2023-12-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/11/19/all-the-devils-are-here-how-shakespeare-invented-the-villain/",
+      "headline": "“All The Devils Are Here: How Shakespeare Invented The Villain” Magnificently Explored Page by Patrick Page",
+      "publishDate": "2023-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/11/09/is-59e59s-pair-an-entertaining-pear-or-an-iconic-spoon-with-a-cherry-on-top/",
+      "headline": "Is 59E59 Theaters’ “Pair” an Entertaining Pear or an Iconic Spoon with a Cherry on Top?",
+      "publishDate": "2023-11-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/11/09/soho-playhouse-tragedy-plus-time/",
+      "headline": "SoHo Playhouse’s Five Star “Tragedy Plus Time”",
+      "publishDate": "2023-11-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/10/30/gabe-mollica-finds-his-revelation-in-solo-a-show-about-friendship/",
+      "headline": "Gabe Mollica Finds His Revelation in “Solo: A Show About Friendship”",
+      "publishDate": "2023-10-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/10/03/broadway-melissa-etheridge-my-window/",
+      "headline": "On Broadway: Melissa Etheridge Rocks Us All; Pulling Us In and Out of “My Window”",
+      "publishDate": "2023-10-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/09/24/59e59-primary-stages-dig/",
+      "headline": "Primary Stages’ “DIG” Does Exactly That Into What’s Underground",
+      "publishDate": "2023-09-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/08/05/one-woman-show-greenwich-house-theatre-nyc/",
+      "headline": "Liz Kingsman’s “One Woman Show” Flies Meta-Hilariously High at Greenwich House Theatre NYC",
+      "publishDate": "2023-08-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/03/03/mcc-wolf-play/",
+      "headline": "MCC’s Wolf Play Rings Forth the Battle, Playfully and Emotionally",
+      "publishDate": "2023-03-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/02/25/anthony-rapps-without-you/",
+      "headline": "Anthony Rapp’s Without You Gets the Rent Right, But Disconnects When it Gets Personal",
+      "publishDate": "2023-02-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/02/22/leo-reich-literally-who-cares-well-maybe-i-do/",
+      "headline": "Leo Reich: Literally Who Cares?! Well, Maybe I do. Most Definitely.",
+      "publishDate": "2023-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/02/21/audible-lucy/",
+      "headline": "Audible’s Lucy Builds Tension, But to What End?",
+      "publishDate": "2023-02-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/12/21/atlantic-theater-company-the-far-country/",
+      "headline": "Atlantic Theater Company’s Wisely Floats Forward “The Far Country”",
+      "publishDate": "2022-12-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/12/11/broadway-one-man-christmas-carol/",
+      "headline": "Broadway’s One-Mays “Christmas Carol”, is Sumptuously Staged, But Lacks an Engaging Middle",
+      "publishDate": "2022-12-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/10/27/atc-im-revolting/",
+      "headline": "ATC Waits Out the Multi-Layered I’m Revolting to Score Big at the End of the Day",
+      "publishDate": "2022-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/10/20/nytw-american-televisions/",
+      "headline": "NYTW american (tele)visions Shuffles Stations Hypnotically Meeting Needs, Without a Cure",
+      "publishDate": "2022-10-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/08/02/reporting-and-reviewing-and-juliet/",
+      "headline": "Reporting and Reviewing & Juliet in the West End, Toronto, and NYC’s Broadway",
+      "publishDate": "2022-08-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/06/21/the-chita-rivera-awards-kick-up-their-heels-once-again/",
+      "headline": "The Chita Rivera Awards Kick Up Their Heels Once Again",
+      "publishDate": "2022-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/06/21/2st-to-my-girls/",
+      "headline": "2ST’s To My Girls Doesn’t Bite Down Hard Enough Where and When It Probably Should",
+      "publishDate": "2022-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/05/17/for-colored-girls-on-broadway/",
+      "headline": "for colored girls… Gives Broadway a Slice of Captivating Power",
+      "publishDate": "2022-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/05/10/which-way-to-the-stage/",
+      "headline": "Which Way To The Stage Lights Itself Up Strong, Smart, and Hilariously.",
+      "publishDate": "2022-05-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/05/01/hangman-on-broadway/",
+      "headline": "The Smell of Death Hillariously Never Really Vanishes for the Hangman on Broadway",
+      "publishDate": "2022-05-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/04/19/lct-intimate-apparel/",
+      "headline": "LCT Has Sewn a Lovely Intimate Apparel, But It Might Not Have Been Made to Fit Me",
+      "publishDate": "2022-04-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/04/11/mint-theater-the-daughter-in-law/",
+      "headline": "Mint Theater Revitalizes its Celebrated Revival, The Daughter-in-Law For Us All to Dig Into",
+      "publishDate": "2022-04-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/03/29/mcc-theater-space-dogs/",
+      "headline": "MCC Theater Wins The War with Space Dogs, the Musical",
+      "publishDate": "2022-03-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/12/19/public-theater-cullud-wattah/",
+      "headline": "Public Theater’s cullud wattah of Flint Unpacks and Informs",
+      "publishDate": "2021-12-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/12/03/morning-sun/",
+      "headline": "Morning Sun Shines Down Beautifully on an Ordinary Woman Living an (Extra) Ordinary Life",
+      "publishDate": "2021-12-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/12/01/the-visitor-public/",
+      "headline": "The Public’s Visitor Loses Its Way and Its Inner Focus",
+      "publishDate": "2021-12-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/11/08/a-slight-commercial-jingle/",
+      "headline": "A Slight Light Commercial Jingle for the Talented Regina Comet",
+      "publishDate": "2021-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/10/06/nytw-sanctuary-city/",
+      "headline": "NYTW Splits Sanctuary City with Flashes of Brilliance and Disbelief",
+      "publishDate": "2021-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://frontmezzjunkies.com/2026/08/24/antonio-says-the-ennui-of-a-provincial-hamlet/",
+      "headline": "Antonio Says, “The Ennui of a Provincial Hamlet.”",
+      "publishDate": "2026-08-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/08/01/the-curious-case-of-benjamin-button-returns-to-the-stage-this-time-just-a-little-closer-to-home/",
+      "headline": "“The Curious Case of Benjamin Button” Returns to the Stage, This Time Just a Little Closer to Home",
+      "publishDate": "2026-08-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "closer-1999",
+        "the-curious-case-of-benjamin-button-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/07/30/druids-endgame-returns-to-canada-to-open-torontos-newest-cultural-landmark/",
+      "headline": "Druid’s “Endgame” Returns to Canada to Open Toronto’s Newest Cultural Landmark",
+      "publishDate": "2026-07-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "endgame-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/07/08/all-shall-know-the-wonder-again-spring-awakening-returns-off-broadway-this-fall/",
+      "headline": "All Shall Know the Wonder Again: “Spring Awakening” Returns Off-Broadway This Fall",
+      "publishDate": "2026-07-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "spring-awakening-2015",
+        "spring-awakening-2006",
+        "spring-awakening-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/06/16/julia-louis-dreyfus-heads-to-broadway-in-star-studded-revival-of-other-desert-cities/",
+      "headline": "Julia Louis-Dreyfus Heads to Broadway in Star-Studded Revival of Other Desert Cities",
+      "publishDate": "2026-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-desert-cities-2011",
+        "other-desert-cities-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/06/14/danny-burstein-jessica-hecht-and-jeremy-shamos-to-lead-broadway-revival-of-awake-and-sing/",
+      "headline": "Danny Burstein, Jessica Hecht, and Jeremy Shamos to Lead Broadway Revival of Awake and Sing!",
+      "publishDate": "2026-06-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "awake-and-sing-2006",
+        "awake-and-sing-1984",
+        "awake-and-sing-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/28/inter-alia-grips-the-west-end-with-ferociousness-and-agonizing-force/",
+      "headline": "“Inter Alia” Grips the West End With Rock-Star Ferocity and Agonizing Force",
+      "publishDate": "2026-05-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "inter-alia-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/17/liza-i-cant-be-there-and-its-breaking-my-theatre-loving-heart/",
+      "headline": "“Liza!,” I Can’t Be There, and It’s Breaking My Theatre-Loving Heart",
+      "publishDate": "2026-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/13/fans-take-the-lead-2026-broadway-com-audience-choice-awards-celebrate-broadways-most-loved-performances/",
+      "headline": "Fans Take the Lead: 2026 Broadway.com Audience Choice Awards Celebrate Broadway’s Most-Loved Performances",
+      "publishDate": "2026-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/11/broadways-brightest-crowned-at-the-2026-outer-critics-circle-awards/",
+      "headline": "Broadway’s Brightest Crowned at the 2026 Outer Critics Circle Awards",
+      "publishDate": "2026-05-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/07/a-modern-classic-in-the-heights-returns-home-to-ny-city-center-this-fall/",
+      "headline": "A Modern Classic, “In the Heights” Returns Home to NY City Center This Fall",
+      "publishDate": "2026-05-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "in-the-heights-2008",
+        "in-the-heights-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/05/01/new-york-drama-critics-circle-crowns-little-bear-ridge-road-best-play-of-the-season/",
+      "headline": "New York Drama Critics’ Circle Crowns “Little Bear Ridge Road” Best Play of the Season",
+      "publishDate": "2026-05-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "little-bear-ridge-road-2025",
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/04/30/the-brothers-size-finds-power-in-ritual-rhythm-and-the-unspoken-online-from-the-shed/",
+      "headline": "“The Brothers Size” Finds Power in Ritual, Rhythm, and the Unspoken Online From The Shed",
+      "publishDate": "2026-04-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-brothers-size-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/04/21/the-2026-outer-critics-circle-award-nominations-carry-the-pulse-of-a-remarkable-season/",
+      "headline": "The 2026 Outer Critics Circle Award Nominations Carry the Pulse of a Remarkable Season",
+      "publishDate": "2026-04-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/27/three-shows-one-night-again-a-broadway-evening-of-extremes/",
+      "headline": "Three Shows, One Night (Again): A Broadway Evening of Extremes",
+      "publishDate": "2026-03-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-broadway-musical-1978"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/24/bedlams-music-city-hits-pause-just-before-its-next-act/",
+      "headline": "BEDLAM’s Music City Hits Pause Just Before Its Next Act",
+      "publishDate": "2026-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "music-city-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/03/02/a-voice-worth-waiting-for-raul-esparza-returns-to-broadway-in-galileo/",
+      "headline": "A Voice Worth Waiting For: Raúl Esparza Leads “Galileo” Back to Broadway",
+      "publishDate": "2026-03-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "galileo-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/02/23/twelve-hours-isnt-quite-enough-celebrating-tracy-letts-for-a-day-at-circle-in-the-square/",
+      "headline": "Twelve Hours Isn’t Quite Enough: Celebrating Tracy Letts for a Day at Circle in the Square",
+      "publishDate": "2026-02-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/02/05/last-call-for-a-legend-finding-dorothy-parker-returns-to-the-beechman/",
+      "headline": "Last Call for a Legend: Finding Dorothy Parker Returns to the Beechman",
+      "publishDate": "2026-02-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "last-call-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/01/31/bedlams-music-city-finds-a-new-home-and-a-bigger-honky-tonk-heart-in-midtown/",
+      "headline": "BEDLAM’s “Music City” Finds a New Home, and a Bigger Honky-Tonk Heart, in Midtown",
+      "publishDate": "2026-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "music-city-off-broadway-2026",
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/01/26/diana-the-untold-and-untrue-story/",
+      "headline": "Crowns, Chaos, and Crowd Participation in “Diana: The Untold and Untrue Story”",
+      "publishDate": "2026-01-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "diana-the-untold-and-untrue-story-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/01/15/meeting-the-fantasticks-for-the-first-time-through-a-queer-lens/",
+      "headline": "Meeting The Fantasticks for the First Time—Through a Queer Lens",
+      "publishDate": "2026-01-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981",
+        "the-fantasticks-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2026/01/13/anchored-in-joy-nygasps-h-m-s-pinafore-sails-with-love-and-laughter/",
+      "headline": "Anchored in Joy: NYGASP’s “H.M.S. Pinafore” Sails with Love and Laughter",
+      "publishDate": "2026-01-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hms-pinafore-1976"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/12/15/marla-mindelle-and-josh-sharp-channel-nicole-kidman-and-cate-blanchett-in-a-kidman-carol-and-im-gonna-to-miss-it/",
+      "headline": "Marla Mindelle and Josh Sharp Channel Nicole Kidman and Cate Blanchett in “A Kidman Carol” – and Bah Humbug, I’m Gonna Miss It!",
+      "publishDate": "2025-12-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-kidman-carol-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/12/05/the-revival-of-millers-death-of-a-salesman-and-the-numerous-concerns-attached/",
+      "headline": "The Revival of Miller’s Death of a Salesman, and the Numerous Concerns Attached",
+      "publishDate": "2025-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "death-of-a-salesman-2026",
+        "death-of-a-salesman-2022",
+        "death-of-a-salesman-2012",
+        "death-of-a-salesman-1999",
+        "death-of-a-salesman-1975",
+        "death-of-a-salesman-1984"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/11/18/revisiting-the-laramie-project/",
+      "headline": "Revisiting The Laramie Project: A Return to the Heart of Why We Gather",
+      "publishDate": "2025-11-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/11/02/why-ragtime-matters-now-a-reflection-on-revival-and-resonance/",
+      "headline": "Why Ragtime Matters Now: A Reflection on Revival and Resonance",
+      "publishDate": "2025-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ragtime-2009",
+        "ragtime-1998"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/10/14/cats-the-jellicle-ball-returns-to-broadway-the-invitation-you-cant-refuse/",
+      "headline": "“Cats: The Jellicle Ball” Returns to Broadway & “Cats” Goes to Regent’s Park— Two Invitations You Can’t Refuse",
+      "publishDate": "2025-10-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cats-the-jellicle-ball-2026",
+        "cats-the-jellicle-ball-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/10/11/schmigadoon-is-heading-to-broadway-in-spring-2026/",
+      "headline": "SCHMIGADOON! is Heading to #Broadway in Spring 2026",
+      "publishDate": "2025-10-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "schmigadoon-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/09/28/acton-says-the-cherry-orchard-at-rutgers-presbyterian-church/",
+      "headline": "Acton Says: …And I Feel Fine: “The Cherry Orchard” at Rutgers Presbyterian Church",
+      "publishDate": "2025-09-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/08/22/two-strangers-carry-a-cake-across-new-york-set-for-broadway-bow-this-fall/",
+      "headline": "“Two Strangers (Carry a Cake Across New York)” Set for a Broadway Bake Off This Fall",
+      "publishDate": "2025-08-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "two-strangers-bway-2025",
+        "a-broadway-musical-1978"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/08/20/classic-stage-cooks-up-an-oscar-winner-to-star-in-the-bakers-wife/",
+      "headline": "Classic Stage Cooks Up an Oscar Winner to Star in “The Baker’s Wife”",
+      "publishDate": "2025-08-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bakers-wife-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/16/classic-stage-companys-bus-stop-pauses-to-solidly-ponder-love-and-loneliness-over-a-cup-of-coffee/",
+      "headline": "Classic Stage Company’s “Bus Stop” Pauses to Solidly Ponder Love and Loneliness Over a Cup of Coffee",
+      "publishDate": "2025-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "bus-stop-1996"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/10/vive-la-farce-the-imaginary-invalid-at-red-bull-theater/",
+      "headline": "Acton Says: Vive la farce! “The Imaginary Invalid” at Red Bull Theater",
+      "publishDate": "2025-06-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-imaginary-invalid-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/06/03/third-times-a-palace-charm-for-beetlejuice-the-musical/",
+      "headline": "Third Time’s a Palace Charm for Beetlejuice the Musical",
+      "publishDate": "2025-06-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "beetlejuice-2025",
+        "beetlejuice-2022",
+        "beetlejuice-2019",
+        "charm-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/16/the-winners-of-the-25th-annual-broadway-com-audience-choice-awards-are/",
+      "headline": "The Winners of the 25th annual Broadway.com Audience Choice Awards are…",
+      "publishDate": "2025-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/13/the-outer-critics-circle-awards-winners-are/",
+      "headline": "The Outer Critics Circle Award Winners Are….",
+      "publishDate": "2025-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/05/06/the-nominations-are-in-for-the-2025-broadway-com-audience-choice-awards/",
+      "headline": "The Nominations are in for the 2025 Broadway.com Audience Choice Awards",
+      "publishDate": "2025-05-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/04/23/three-looks-into-other-peoples-lives-by-adult-film/",
+      "headline": "Three Looks Into “Other People’s Lives” by Adult Film",
+      "publishDate": "2025-04-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/04/04/frankenstein-at-jack-theater-in-brooklyn/",
+      "headline": "An intense and inventive “Frankenstein” at JACK theater in Brooklyn",
+      "publishDate": "2025-04-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frankenstein-1981"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/03/26/a-streetcar-named-desire-bam/",
+      "headline": "Almeida’s “A Streetcar Named Desire” Pours Down the Pain and Anger Magnificently at BAM",
+      "publishDate": "2025-03-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/02/19/nycc-encores-urinetown/",
+      "headline": "“Urinetown” Soars Fairly (but not completely) Strong at NYCC Encores!",
+      "publishDate": "2025-02-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "urinetown-2001"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2025/01/25/bedlam-music-city/",
+      "headline": "Bedlam’s “Music City” Country Musical Makes Me Smile Like the Sun",
+      "publishDate": "2025-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "smile-1986",
+        "music-city-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/12/17/luna-stage-mrs-stern-wanders-the-prussian-state-library/",
+      "headline": "Luna Stage’s Polite Political Play “Mrs. Stern Wanders the Prussian State Library” at WP Theater Off-Broadway",
+      "publishDate": "2024-12-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/11/14/king-lear-at-the-shed/",
+      "headline": "Branagh’s “King Lear” Briskly Moves Mountains of Emotion at NYC’s The Shed",
+      "publishDate": "2024-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "king-lear-2019",
+        "king-lear-2004",
+        "king-lear-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/11/02/new-york-city-centers-ragtime/",
+      "headline": "New York City Center’s “Ragtime” Excels Expectations, Giving Us Exactly What We Need Right Now",
+      "publishDate": "2024-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ragtime-2025",
+        "ragtime-2009",
+        "ragtime-1998"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/09/25/arlekin-players-our-class/",
+      "headline": "Arlekin Players’ Unpacks History and Violence, Lesson by Lesson, in the Compelling “Our Class”",
+      "publishDate": "2024-09-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/06/27/west-end-the-hills-of-california/",
+      "headline": "Climbing the West End Heights Magnificently Inside Butterworth’s  “The Hills of California”",
+      "publishDate": "2024-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-hills-of-california-2024"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/06/01/audra-mcdonald-returning-to-broadway-in-gypsy/",
+      "headline": "Audra McDonald Returning to Broadway in Gypsy",
+      "publishDate": "2024-06-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "gypsy-2024",
+        "gypsy-2008",
+        "gypsy-2003",
+        "gypsy-1989",
+        "gypsy-1974"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/29/urie-re-joins-foster-in-the-broadway-l-a-revival-of-once-upon-a-mattress/",
+      "headline": "Urie Re-joins Foster In the Broadway-L.A. Revival Of “Once Upon A Mattress”",
+      "publishDate": "2024-05-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "once-upon-a-mattress-2024",
+        "once-upon-a-mattress-1996"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/19/sutton-foster-returns-to-once-upon-a-mattress-on-broadway/",
+      "headline": "Sutton Foster Returns to “Once Upon a Mattress” on Broadway",
+      "publishDate": "2024-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "once-upon-a-mattress-2024",
+        "once-upon-a-mattress-1996"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/12/i-ought-to-be-in-pictures/",
+      "headline": "TBTB’s “I Ought to Be in Pictures” Zings Out One Liners Solidly",
+      "publishDate": "2024-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "i-ought-to-be-in-pictures-1980"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/05/09/axis-company-twelfth-night/",
+      "headline": "Axis Theatre Company’s “Twelfth Night” Lends a Fluid Festive Air of Delightful Fantasy",
+      "publishDate": "2024-05-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2024/04/27/broadways-latest-revival-of-cabaret/",
+      "headline": "Broadway’s Latest Revival of “Cabaret” Circles Berlin Triumphantly",
+      "publishDate": "2024-04-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/12/19/public-hells-kitchen/",
+      "headline": "“Hell’s Kitchen” is on Fire, Igniting the Genre Masterfully as it Elevates the Girl from The Public to Broadway",
+      "publishDate": "2023-12-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/10/25/the-great-gatsby-musical-paper-mill-playhouse/",
+      "headline": "“The Great Gatsby” – The New Musical Finds Vocal Power at Paper Mill Playhouse, But Misplaces its Narrator",
+      "publishDate": "2023-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-great-gatsby-2024"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/10/06/audible-goodman-theatre-swing-stage/",
+      "headline": "Audible Theater Brings the Powerful Goodman Theatre’s “Swing Stage” to Off-Broadway",
+      "publishDate": "2023-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "swing-1999"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/10/01/appropriate-coal-mine-theatre-toronto/",
+      "headline": "Totally “Appropriate” (for our time) and Phenomenally Brilliant, Housed and Unpacked by Coal Mine Theatre Toronto",
+      "publishDate": "2023-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "appropriate-2023"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/09/18/relapse-voices-in-my-head/",
+      "headline": "“Relapse” Musically Releases Some Compelling Voices in Our Heads",
+      "publishDate": "2023-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "voices-1972"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/08/16/uncle-vanya-heats-up-downtown/",
+      "headline": "OHenry’s “Uncle Vanya” Heats Up Downtown Most Intimately",
+      "publishDate": "2023-08-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "uncle-vanya-2024",
+        "uncle-vanya-1995",
+        "uncle-vanya-1973",
+        "uncle-vanya-2000"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/08/02/shakespeare-in-the-park-hamlet/",
+      "headline": "Shakespeare in the Park’s  “Hamlet” Modernly Harmonizes",
+      "publishDate": "2023-08-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2023/04/16/the-new-groups-the-seagull-woodstock-ny-and-soulpeppers-the-seagull/",
+      "headline": "The New Group’s “The Seagull/Woodstock, NY” and Soulpepper’s “The Seagull” Flies Out With Force in Uniquely Different Ways Over a Vastly Different Lake",
+      "publishDate": "2023-04-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-2008",
+        "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/12/24/becky-nurse-of-salem/",
+      "headline": "“Becky Nurse of Salem” Fires Up The Stakes, But Fizzles Out Soon After",
+      "publishDate": "2022-12-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-fires-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/12/15/playwrights-horizons-downstate/",
+      "headline": "Playwrights Horizons Scores Big with Norris’s Complicated “Downstate”",
+      "publishDate": "2022-12-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/11/15/public-theater-raisin-in-the-sun/",
+      "headline": "Public Theater’s Dynamic A Raisin in the Sun Demolishes the Happy Ending",
+      "publishDate": "2022-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-raisin-in-the-sun-2014",
+        "a-raisin-in-the-sun-2004"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/07/11/shakespeare-in-the-parks-richard-iii/",
+      "headline": "Shakespeare in the Park’s Richard III Fails to Inspire, Even With All Its Groundbreaking Positioning",
+      "publishDate": "2022-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/05/20/six-the-lehman-trilogy-kimberly-akimbo-win-big-at-the-2022-outer-critics-circle-awards/",
+      "headline": "Six, The Lehman Trilogy, Kimberly Akimbo Win Big at the 2022 Outer Critics Circle Awards",
+      "publishDate": "2022-05-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kimberly-akimbo-2022",
+        "the-lehman-trilogy-2021",
+        "the-circle-1989",
+        "kimberly-akimbo-off-broadway-2021"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/05/13/new-york-drama-critics-circle-names-its-winners/",
+      "headline": "New York Drama Critics’ Circle Winners Named",
+      "publishDate": "2022-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/05/08/nycc-encores-into-the-woods/",
+      "headline": "NYCC Encores’ Soars High Into The Woods",
+      "publishDate": "2022-05-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2022/03/05/the-long-and-intensely-satisfying-prayer-for-the-french-republic/",
+      "headline": "The Long and Intensely Satisfying Prayer for the French Republic",
+      "publishDate": "2022-03-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/12/26/spielberg-west-side-story/",
+      "headline": "Spielberg’s Gamble Wins Big with his Spectacular West Side Story",
+      "publishDate": "2021-12-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "west-side-story-2020",
+        "west-side-story-2009",
+        "west-side-story-1980"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/11/24/broadway-girl-from-the-north-country/",
+      "headline": "Broadway’s Girl From the North Country Wraps Us Tenderly in a Worn Coat of Sadness and Beauty",
+      "publishDate": "2021-11-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "girl-from-the-north-country-2022"
+      ]
+    },
+    {
+      "url": "https://frontmezzjunkies.com/2021/10/27/mrs-warrens-profession/",
+      "headline": "Mrs. Warren’s Profession Stumbles, Even With These Two Strong Women at its Core",
+      "publishDate": "2021-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mrs-warrens-profession-2010",
+        "the-women-2001",
+        "mrs-warrens-profession-1976",
+        "the-women-1973"
+      ]
+    }
+  ]
 }

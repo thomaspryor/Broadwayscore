@@ -1,123 +1,100 @@
 {
   "outletId": "the-interested-bystander",
-  "generatedAt": "2026-10-28T20:45:32.751Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:42:00.740Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
-    "notes": [
-      "unreadable: no WordPress API; sitemap enumeration not yet configured"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "kind": "sitemap",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 126,
+    "inWindow": 126,
     "undated": 0,
-    "meta": null
+    "meta": {
+      "fetched": 126,
+      "failed": 103
+    }
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "held-unmatched": 27,
+      "held": 27,
+      "not-review": 37,
+      "misfile": 3,
+      "held-alt-url": 1,
+      "catalog-gap": 12,
+      "gap": 8,
+      "ambiguous": 3,
+      "out-of-window": 8
+    },
+    "viaTitleVariant": {
+      "held": 6,
+      "misfile": 1,
+      "gap": 2
+    },
+    "recall": 0.718,
+    "recallWithCatalog": 0.549
+  },
+  "seasons": {
+    "2026-27": {
+      "held-unmatched": 3,
+      "held": 2
+    },
+    "2025-26": {
+      "held-unmatched": 15,
+      "not-review": 4,
+      "held": 11
+    },
+    "2024-25": {
+      "misfile": 2,
+      "not-review": 6,
+      "held-unmatched": 6,
+      "held-alt-url": 1,
+      "held": 8,
+      "catalog-gap": 1
+    },
+    "2023-24": {
+      "catalog-gap": 4,
+      "held-unmatched": 2,
+      "not-review": 5,
+      "gap": 3,
+      "ambiguous": 3,
+      "misfile": 1,
+      "held": 1,
+      "out-of-window": 1
+    },
+    "2022-23": {
+      "not-review": 11,
+      "out-of-window": 2,
+      "catalog-gap": 4,
+      "gap": 1
+    },
+    "2021-22": {
+      "not-review": 11,
+      "out-of-window": 5,
+      "held-unmatched": 1,
+      "gap": 4,
+      "catalog-gap": 3,
+      "held": 5
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 46,
-    "notEnumerated": 46,
+    "rowsInWindow": 116,
+    "notEnumerated": 4,
     "noUrl": 0,
     "samples": [
       {
-        "showId": "a-walk-on-the-moon-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
-        "publishDate": null,
+        "showId": "bughouse-off-broadway-2026",
+        "url": "https://www.interestedbystander.com/2026/03/reviews-my-take-on-enjoyable-ryan.html",
+        "publishDate": "2026-03-17",
         "why": "not-enumerated"
       },
       {
-        "showId": "all-the-beauty-in-the-world-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/04/theater-reviews-three-books-are-vividly.html?m=0",
-        "publishDate": "2025-04-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "america-who-hurt-you-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "an-american-daughter-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "beaches-2026",
-        "url": "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html?m=0",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "becoming-eve-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/04/theater-reviews-three-books-are-vividly.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "broken-snow-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/05/off-broadway-reviews-past-is-not-full.html?m=0",
-        "publishDate": "2026-05-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bug-2026",
-        "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "chinese-republicans-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "crooked-cross-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/10/theater-crooked-cross-is-dire-warning.html",
-        "publishDate": "2025-10-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "dead-outlaw-2025",
-        "url": "https://www.interestedbystander.com/2025/04/theater-and-book-reviews-dead-outlaw-is.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-becomes-her-2024",
-        "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html?m=0",
-        "publishDate": "2024-11-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "disruption-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "floyd-collins-2025",
-        "url": "https://www.interestedbystander.com/2025/04/theater-reviews-tragedy-of-floyd.html#more",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "ginger-twinsies-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/07/theater-reviews-three-summer-shows-joy.html",
-        "publishDate": "2025-07-28",
+        "showId": "burnout-paradise-off-broadway-2026",
+        "url": "https://www.interestedbystander.com/2026/03/reviews-my-take-on-enjoyable-ryan.html",
+        "publishDate": "2026-03-17",
         "why": "not-enumerated"
       },
       {
@@ -127,150 +104,816 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "gypsy-2024",
-        "url": "https://www.interestedbystander.com/2025/01/theater-review-gypsy-triumphs-again-on.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/06/off-broadway-reviews-some-pride-month.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "house-of-mcqueen-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/09/off-broadway-reviews-two-young-gay-men.html",
-        "publishDate": "2025-09-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "king-of-the-yees-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
-        "publishDate": "2026-10-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "kowalski-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/01/theater-reviews-kowalski-cleverly.html",
-        "publishDate": "2025-01-27",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "laowang-a-chinatown-king-lear-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
-        "publishDate": "2025-12-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "midnight-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/10/theater-reviews-midnight-is-unique-and.html",
-        "publishDate": "2026-10-15",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "not-ready-for-prime-time-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/10/theater-reviews-liberation-moves-to.html",
-        "publishDate": "2025-10-31",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "oh-mary-2024",
-        "url": "https://www.interestedbystander.com/2024/07/broadway-review-cole-escolas-irreverent.html",
-        "publishDate": "2024-07-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "paranormal-activity-2026",
-        "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
-        "publishDate": "2026-08-31",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "prince-faggot-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/10/theater-crooked-cross-is-dire-warning.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "redwood-2025",
-        "url": "https://www.interestedbystander.com/2025/02/theater-reviews-idina-menzel-defies.html?m=0",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "reunions-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/11/theater-review-reunions-abound-with.html",
-        "publishDate": "2025-11-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "romeo-juliet-2024",
-        "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
-        "publishDate": "2024-10-24",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "spare-parts-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/03/theater-reviews-mint-theater-presents.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "stranger-things-2024",
-        "url": "https://www.interestedbystander.com/2025/05/theater-reviews-stranger-things-first.html?m=0",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "sumo-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/03/theater-reviews-ambitious-sumo.html?m=0",
-        "publishDate": "2025-03-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "sunset-boulevard-2024",
-        "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
-        "publishDate": "2024-11-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-balusters-2026",
-        "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-august-wilsons-joe.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-burning-cauldron-of-fiery-fire-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2025/11/theater-reviews-three-visionary.html",
-        "publishDate": "2025-11-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-emporium-off-broadway-2025",
-        "url": "https://www.interestedbystander.com/2026/05/off-broadway-reviews-past-is-not-full.html?m=0",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-invention-of-love-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html",
-        "publishDate": "2026-09-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-other-place-off-broadway-2026",
-        "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-provides.html",
-        "publishDate": "2026-02-11",
+        "showId": "the-saviors-off-broadway-2026",
+        "url": "https://www.interestedbystander.com/2026/07/reviews-teens-born-with-empathy-try-to.html",
+        "publishDate": "2026-07-29",
         "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
-  "heldAltUrl": [],
-  "misfiles": [],
-  "heldUnmatched": [],
-  "ambiguous": [],
-  "catalogGaps": [],
-  "outOfWindow": []
+  "gaps": [
+    {
+      "url": "https://www.interestedbystander.com/2024/06/theater-reviews-home-is-elusive-thing.html",
+      "headline": "theater reviews home is elusive thing",
+      "publishDate": "2024-06-20",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "home-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/03/theater-reviews-teeth-is-new-musical.html",
+      "headline": "theater reviews teeth is new musical",
+      "publishDate": "2024-03-19",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "teeth-playwrights-horizons-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "teeth-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2023/10/theater-review-playwrights-horizons.html",
+      "headline": "Theater Review:  Playwrights Horizons Presents an Excellent and Absorbing Look at the Making of a Rock Album by a Band Resembling Fleetwood Mac (“Stereophonic’s” Version)",
+      "publishDate": "2023-10-29",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "stereophonic-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/11/theater-review-almost-famous-and-man-of.html",
+      "headline": "theater review almost famous and man of",
+      "publishDate": "2022-11-16",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "almost-famous-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/06/broadway-reviews-ambitious-choreopoem.html",
+      "headline": "Broadway Reviews: Ambitious Choreopoem Revival “for colored girls…” and the Black Comedy “The Minutes” as the Tony Awards Approaches",
+      "publishDate": "2022-06-03",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-minutes-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/05/theater-review-which-way-to-stage-and.html",
+      "headline": "Theater Review: “Which Way to the Stage” and “A Case for the Existence of God” are Plays About Finding a Purpose in Life, While Encores Goes “Into the Woods”",
+      "publishDate": "2022-05-10",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-case-for-the-existence-of-god-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "purpose-2025",
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/04/theater-reviews-citizen-wong-dramatizes.html",
+      "headline": "Theater Reviews:  \"Citizen Wong\" Dramatizes a Shameful Moment in American History, James McAvoy's \"Cyrano\" is Not Quite on The Nose, and a Life is Examined in Broadway's \"Birthday Candles\"",
+      "publishDate": "2022-04-19",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "birthday-candles-2022"
+      ],
+      "outOfWindow": [
+        "cyrano-the-musical-1993",
+        "a-life-1980",
+        "cyrano-1973"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/04/theater-reviews-chinese-lady-irish-of.html",
+      "headline": "Theater Reviews: \"The Chinese Lady,\" the Irish of \"A Touch of the Poet\" and the Hookers of \"The Life\" Try to Survive Their Versions of America",
+      "publishDate": "2022-04-01",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-chinese-lady-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "a-touch-of-the-poet-2005",
+        "a-touch-of-the-poet-1977"
+      ]
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://www.interestedbystander.com/2025/06/galeca-theater-critics-honor-cats.html",
+      "headline": "GALECA Theater Critics Honor \"Cats: The Jellicle Ball\"  and \"John Proctor is the Villain\" for 2025 Dorian Theater Awards",
+      "publishDate": "2025-06-03",
+      "matched": [
+        "john-proctor-is-the-villain-2025"
+      ],
+      "heldUrls": [
+        "https://www.interestedbystander.com/2025/04/theater-reviews-tragedy-of-floyd.html"
+      ]
+    }
+  ],
+  "misfiles": [
+    {
+      "url": "https://www.interestedbystander.com/2025/07/theater-reviews-three-summer-shows-joy.html",
+      "headline": "Theater Reviews:  Three Summer Shows (“Joy,” “Rolling Thunder,” “Ginger Twinses”) Rely Too Heavily on Nostalgia as Their Selling Points",
+      "publishDate": "2025-07-28",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [
+        "ginger-twinsies-off-broadway-2025"
+      ],
+      "matched": [
+        "rolling-thunder-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/12/theater-reviews-eureka-day-hysterically.html",
+      "headline": "theater reviews eureka day hysterically",
+      "publishDate": "2024-12-30",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "pen-pals-off-broadway-2025"
+      ],
+      "matched": [
+        "eureka-day-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/06/broadway-rewind-looking-back-at-some-of.html",
+      "headline": "Broadway Rewind:  Looking Back at Some of Last Season’s Shows, Including the Sufjan Stevens’ Dance Musical, “Illinoise” and Cinderella, by way of Britney Spears, in “Once Upon a One More Time”",
+      "publishDate": "2024-06-07",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "hells-kitchen-2024"
+      ],
+      "matched": [
+        "illinoise-2024"
+      ],
+      "outOfWindow": [
+        "once-upon-a-one-more-time-2023",
+        "illinoise-off-broadway-2024",
+        "cinderella-the-musical-off-broadway-2027"
+      ]
+    }
+  ],
+  "heldUnmatched": [
+    {
+      "url": "https://www.interestedbystander.com/2026/11/theater-review-john-patrick-shanleys.html",
+      "headline": "theater review john patrick shanleys",
+      "publishDate": "2026-11-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "downstate-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
+      "headline": "theater reviews lauren yees king of",
+      "publishDate": "2026-10-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "king-of-the-yees-off-broadway-2026",
+        "memoirs-of-amorous-gentlemen-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html",
+      "headline": "theater reviews david greenspan shines",
+      "publishDate": "2026-09-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "america-who-hurt-you-off-broadway-2026",
+        "garry-starr-classic-penguins-off-broadway-2026",
+        "the-invention-of-love-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
+      "headline": "theater reviews in late summer new",
+      "publishDate": "2026-08-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "disruption-off-broadway-2026",
+        "paranormal-activity-2026",
+        "the-real-ivanov-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
+      "headline": "theater review thirty years later in",
+      "publishDate": "2026-08-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "an-american-daughter-off-broadway-2026",
+        "cat-cohen-broad-strokes-off-broadway-2026",
+        "the-pass-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/07/theater-reviews-two-buzzy-women-driven.html",
+      "headline": "theater reviews two buzzy women driven",
+      "publishDate": "2026-07-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-whoopi-monologues-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
+      "headline": "theater review walk on moon is old",
+      "publishDate": "2026-07-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-walk-on-the-moon-off-broadway-2026",
+        "are-you-now-or-have-you-ever-been-off-broadway-2026",
+        "music-city-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/06/off-broadway-reviews-some-pride-month.html",
+      "headline": "off broadway reviews some pride month",
+      "publishDate": "2026-06-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "encores-la-cage-aux-folles-off-broadway-2026",
+        "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+        "jerome-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-august-wilsons-joe.html",
+      "headline": "broadway reviews august wilsons joe",
+      "publishDate": "2026-04-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "fallen-angels-2026",
+        "joe-turners-come-and-gone-2026",
+        "the-balusters-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
+      "headline": "broadway reviews ips on broadway get",
+      "publishDate": "2026-04-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cats-the-jellicle-ball-2026",
+        "dog-day-afternoon-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/03/theater-reviews-mint-theater-presents.html",
+      "headline": "theater reviews mint theater presents",
+      "publishDate": "2026-03-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bigfoot-off-broadway-2026",
+        "spare-parts-off-broadway-2026",
+        "zack-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
+      "headline": "theater reviews off broadway explores",
+      "publishDate": "2026-02-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "chinese-republicans-off-broadway-2026",
+        "mother-russia-off-broadway-2026",
+        "the-monsters-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-provides.html",
+      "headline": "theater reviews off broadway provides",
+      "publishDate": "2026-02-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "data-off-broadway-2026",
+        "the-other-place-off-broadway-2026",
+        "the-porch-on-windy-hill-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/01/theater-review-concept-of-theater.html",
+      "headline": "theater review concept of theater",
+      "publishDate": "2026-01-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "an-ark-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/12/theater-one-is-my-favorite-plays-of.html",
+      "headline": "theater one is my favorite plays of",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "marjorie-prime-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/11/theater-reviews-5-hour-initiative-at.html",
+      "headline": "theater reviews 5 hour initiative at",
+      "publishDate": "2025-11-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "chess-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/11/theater-reviews-three-visionary.html",
+      "headline": "theater reviews three visionary",
+      "publishDate": "2025-11-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-burning-cauldron-of-fiery-fire-off-broadway-2025",
+        "the-seat-of-our-pants-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/09/off-broadway-reviews-two-young-gay-men.html",
+      "headline": "off broadway reviews two young gay men",
+      "publishDate": "2025-09-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "house-of-mcqueen-off-broadway-2025",
+        "saturday-church-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/06/reviews-off-broadway-provides-enjoyable.html",
+      "headline": "reviews off broadway provides enjoyable",
+      "publishDate": "2025-06-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bowl-ep-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/04/broadway-two-icons-are-celebrated-in.html",
+      "headline": "broadway two icons are celebrated in",
+      "publishDate": "2025-04-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/04/theater-reviews-three-books-are-vividly.html",
+      "headline": "theater reviews three books are vividly",
+      "publishDate": "2025-04-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "all-the-beauty-in-the-world-off-broadway-2025",
+        "becoming-eve-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/02/theater-reviews-idina-menzel-defies.html",
+      "headline": "theater reviews idina menzel defies",
+      "publishDate": "2025-02-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "redwood-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2025/02/theater-reviews-three-shows-urinetown.html",
+      "headline": "theater reviews three shows urinetown",
+      "publishDate": "2025-02-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "english-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "urinetown-2001"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
+      "headline": "theater reviews capsule reviews of drag",
+      "publishDate": "2024-11-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-wonderful-world-the-louis-armstrong-musical-2024",
+        "drag-the-musical-off-broadway-2024",
+        "mama-im-a-big-girl-now-off-broadway-2024",
+        "sunset-boulevard-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/07/broadway-review-cole-escolas-irreverent.html",
+      "headline": "broadway review cole escolas irreverent",
+      "publishDate": "2024-07-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "oh-mary-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/06/theater-review-off-broadway-is-burning.html",
+      "headline": "theater review off broadway is burning",
+      "publishDate": "2024-06-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cats-the-jellicle-ball-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/06/theater-review-sarah-silvermans-new.html",
+      "headline": "theater review sarah silvermans new",
+      "publishDate": "2022-06-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-bedwetter-off-broadway-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://www.interestedbystander.com/2024/06/theater-review-off-broadways.html",
+      "headline": "Theater Review:  Off-Broadway’s Fascinating “The Fires” Burns Intensely; “What Became of Us” Is a Universal, Immigration Story as Told by Second Generation Siblings; and “Titanic” Sails Magnificently With Its Cast of Dreams",
+      "publishDate": "2024-06-14",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-fires-off-broadway-2024",
+        "what-became-of-us-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/05/theater-merrily-we-roll-along-and.html",
+      "headline": "Theater:  \"Merrily We Roll Along\" and \"Stereophonic\" Lead LGBTQ Critics’ Dorian Theater Award Nominations",
+      "publishDate": "2024-05-14",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "stereophonic-2024",
+        "merrily-we-roll-along-2023"
+      ],
+      "outOfWindow": [
+        "merrily-we-roll-along-1981",
+        "stereophonic-off-broadway-2023",
+        "merrily-we-roll-along-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2023/10/theater-review-dracula-comedy-of.html",
+      "headline": "Theater Review:  “Dracula, A Comedy of Terrors” is Goofy Fun, While “Bite Me” and “Job” are Intriguing Two-Character Plays That Are More Than What They Present",
+      "publishDate": "2023-10-11",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "bite-me-off-broadway-2023",
+        "dracula-a-comedy-of-terrors-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "the-present-2017"
+      ]
+    }
+  ],
+  "catalogGaps": [
+    {
+      "url": "https://www.interestedbystander.com/2025/03/theater-reviews-three-off-broadway.html",
+      "headline": "theater reviews three off broadway",
+      "publishDate": "2025-03-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/08/the-interested-bystanders-broadway-fall.html",
+      "headline": "the interested bystanders broadway fall",
+      "publishDate": "2024-08-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/05/theater-recipients-of-78th-theatre.html",
+      "headline": "Theater:  Recipients of The 78th Theatre World Awards",
+      "publishDate": "2024-05-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/04/theater-reviews-eclectic-off-broadway.html",
+      "headline": "theater reviews eclectic off broadway",
+      "publishDate": "2024-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/02/theater-review-at-new-world-stages-two.html",
+      "headline": "theater review at new world stages two",
+      "publishDate": "2024-02-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/12/film-new-documentary-broadway-rising.html",
+      "headline": "film new documentary broadway rising",
+      "publishDate": "2022-12-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/12/theater-review-this-broadway-bound.html",
+      "headline": "theater review this broadway bound",
+      "publishDate": "2022-12-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/10/theater-review-at-bam-play-provides.html",
+      "headline": "theater review at bam play provides",
+      "publishDate": "2022-10-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/10/theater-reviews-off-broadway-fall.html",
+      "headline": "theater reviews off broadway fall",
+      "publishDate": "2022-10-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/05/broadway-reviews-capsule-reviews.html",
+      "headline": "broadway reviews capsule reviews",
+      "publishDate": "2022-05-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/05/lost-broadway-review-uzo-adubo-has.html",
+      "headline": "lost broadway review uzo adubo has",
+      "publishDate": "2022-05-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/01/top-new-york-theater-of-2021.html",
+      "headline": "top new york theater of 2021",
+      "publishDate": "2022-01-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://www.interestedbystander.com/2023/09/theater-review-final-shakespeare-in.html",
+      "headline": "Theater Review:  The Final Shakespeare in the Park Production Before a 20-Month Closure Immerses Us into the Brave New World of an Enjoyable “The Tempest”",
+      "publishDate": "2023-09-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-1995"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2023/03/theater-review-first-rate-plays-to.html",
+      "headline": "theater review first rate plays to",
+      "publishDate": "2023-03-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2023/01/tibs-broadway-world-cabaret-review-debut.html",
+      "headline": "TIB's Broadway World Cabaret Review Debut",
+      "publishDate": "2023-01-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2022/07/theater-review-for-this-richard-iii-our.html",
+      "headline": "theater review for this richard iii our",
+      "publishDate": "2022-07-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2021/11/theater-twilight-los-angeles-1992.html",
+      "headline": "theater twilight los angeles 1992",
+      "publishDate": "2021-11-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twilight-los-angeles-1992-1994"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2021/11/my-play-our-house-in-middle-of-our.html",
+      "headline": "my play our house in middle of our",
+      "publishDate": "2021-11-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "our-house-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2021/10/my-play-our-house-in-middle-of-our.html",
+      "headline": "my play our house in middle of our",
+      "publishDate": "2021-10-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "our-house-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.interestedbystander.com/2021/09/theater-last-of-love-letters.html",
+      "headline": "theater last of love letters",
+      "publishDate": "2021-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-letters-2014",
+        "love-letters-1989"
+      ]
+    }
+  ]
 }

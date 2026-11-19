@@ -1,276 +1,1629 @@
 {
   "outletId": "theatrely",
-  "generatedAt": "2026-10-28T20:45:32.714Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:48:35.594Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
-    "notes": [
-      "unreadable: site answers HTTP 429/503/202 challenge pages to the census client"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "kind": "sitemap",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 2528,
+    "inWindow": 2528,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "not-review": 2157,
+      "held": 251,
+      "held-unmatched": 16,
+      "out-of-window": 65,
+      "gap": 26,
+      "held-other-market": 3,
+      "catalog-gap": 7,
+      "ambiguous": 3
+    },
+    "viaTitleVariant": {
+      "held": 21,
+      "not-review": 1
+    },
+    "recall": 0.906,
+    "recallWithCatalog": 0.884
+  },
+  "seasons": {
+    "2022-23": {
+      "not-review": 569,
+      "held": 45,
+      "out-of-window": 18,
+      "gap": 3,
+      "ambiguous": 1,
+      "held-unmatched": 1,
+      "catalog-gap": 1,
+      "held-other-market": 1
+    },
+    "2023-24": {
+      "not-review": 395,
+      "held": 46,
+      "held-unmatched": 3,
+      "out-of-window": 5,
+      "gap": 12,
+      "held-other-market": 1
+    },
+    "2020-21": {
+      "not-review": 155,
+      "held": 1,
+      "out-of-window": 6,
+      "gap": 1
+    },
+    "2025-26": {
+      "not-review": 181,
+      "held": 45,
+      "out-of-window": 4,
+      "gap": 1,
+      "held-unmatched": 4,
+      "ambiguous": 1
+    },
+    "2021-22": {
+      "not-review": 553,
+      "held": 44,
+      "out-of-window": 23,
+      "held-unmatched": 4,
+      "gap": 6,
+      "catalog-gap": 4,
+      "held-other-market": 1
+    },
+    "2024-25": {
+      "not-review": 287,
+      "held-unmatched": 2,
+      "held": 62,
+      "out-of-window": 9,
+      "gap": 3,
+      "catalog-gap": 2,
+      "ambiguous": 1
+    },
+    "2026-27": {
+      "held": 8,
+      "held-unmatched": 2,
+      "not-review": 17
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 236,
-    "notEnumerated": 235,
+    "rowsInWindow": 279,
+    "notEnumerated": 6,
     "noUrl": 1,
     "samples": [
       {
-        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-        "url": "https://www.theatrely.com/post/a-beautiful-noise-reaches-out-and-grabs-hold-review",
-        "publishDate": "2022-12-04",
+        "showId": "a-few-good-men-2026",
+        "url": "https://www.theatrely.com/post/a-few-good-men-brings-sorkin-back-to-broadway-review",
+        "publishDate": "2026-10-29",
         "why": "not-enumerated"
       },
       {
-        "showId": "a-christmas-carol-2022",
-        "url": "https://www.theatrely.com/post/a-christmas-carol-that-brings-the-thrills-review",
-        "publishDate": "2022-11-21",
+        "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+        "url": "https://www.theatrely.com/post/the-executrix-waiting-for-lefty-review-roundup",
+        "publishDate": "2026-11-02",
         "why": "not-enumerated"
       },
       {
-        "showId": "a-dolls-house-2023",
-        "url": "https://www.theatrely.com/post/a-dolls-house-a-directors-choice-review",
+        "showId": "downstate-2026",
+        "url": "https://www.theatrely.com/post/an-excellent-downstate-has-moved-to-broadway-review",
+        "publishDate": "2026-11-15",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "here-there-are-blueberries-2026",
+        "url": "https://www.theatrely.com/post/an-incredibly-strong-ensemble-with-here-there-are-blueberries-review",
+        "publishDate": "2026-11-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "once-upon-a-mattress-1996",
+        "url": null,
         "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "the-heart-off-broadway-2026",
+        "url": "https://www.theatrely.com/post/the-heart-an-icy-musical-dnr-review",
+        "publishDate": "2026-10-30",
         "why": "not-enumerated"
       },
       {
-        "showId": "a-ghost-in-your-ear-off-broadway-2026",
-        "url": "https://www.theatrely.com/post/a-ghost-in-your-ear-in-one-and-out-the-other-review",
-        "publishDate": "2026-10-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-strange-loop-2022",
-        "url": "https://www.theatrely.com/post/a-strange-loop-and-a-glorious-catharsis-review",
-        "publishDate": "2022-04-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-walk-on-the-moon-off-broadway-2026",
-        "url": "https://www.theatrely.com/post/critic-roundup-a-walk-on-the-moon-music-city-camping",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "aint-no-mo-2022",
-        "url": "https://www.theatrely.com/post/unmissable-aint-no-mo-unlike-anything-else-on-broadway-review",
-        "publishDate": "2022-12-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "all-nighter-off-broadway-2025",
-        "url": "https://www.theatrely.com/post/up-all-night-with-the-girls-in-all-nighter-review",
-        "publishDate": "2025-03-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "almost-famous-2022",
-        "url": "https://www.theatrely.com/post/almost-famous-barely-there-review",
-        "publishDate": "2022-11-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "american-buffalo-2022",
-        "url": "https://www.theatrely.com/post/american-buffalo-doesnt-tame-its-beast-review",
-        "publishDate": "2022-04-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "an-enemy-of-the-people-2024",
-        "url": "https://www.theatrely.com/post/an-enemy-of-the-people-watered-down-liquored-up-review",
-        "publishDate": "2024-03-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "and-juliet-2022",
-        "url": "https://www.theatrely.com/post/juliet-is-all-fun-review",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "angry-alan-off-broadway-2025",
-        "url": "https://www.theatrely.com/post/john-krasinski-downvotes-the-nice-guy-in-angry-alan-review",
-        "publishDate": "2025-06-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "appropriate-2023",
-        "url": "https://www.theatrely.com/post/appropriate-review",
-        "publishDate": "2023-12-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "arias-with-a-twist-off-broadway-2026",
-        "url": "https://www.theatrely.com/post/a-september-review-roundup",
-        "publishDate": "2026-09-25",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "art-2025",
-        "url": "https://www.theatrely.com/post/art-a-debate-over-devaluation-review",
-        "publishDate": "2025-09-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "ava-the-secret-conversations-off-broadway-2025",
-        "url": "https://www.theatrely.com/post/old-hollywood-is-back-in-ava-the-secret-conversations-review",
-        "publishDate": "2025-08-25",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "back-to-the-future-2023",
-        "url": "https://www.theatrely.com/post/back-to-the-future-the-musical-soars-review",
-        "publishDate": "2023-08-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "beaches-2026",
-        "url": "https://www.theatrely.com/post/despite-jessica-vosk-beaches-is-beached-review",
-        "publishDate": "2026-04-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "becky-shaw-2026",
-        "url": "https://www.theatrely.com/post/becky-shaw-the-irresistible-spikiness-of-wrong-matches---review",
-        "publishDate": "2026-04-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "benevolent-off-broadway-2026",
-        "url": "https://www.theatrely.com/post/a-wonderful-benevolent-off-broadway-review",
-        "publishDate": "2026-08-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "between-riverside-and-crazy-2022",
-        "url": "https://www.theatrely.com/post/between-riverside-and-crazy-far-south-of-interesting-review",
-        "publishDate": "2022-12-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "birthday-candles-2022",
-        "url": "https://www.theatrely.com/post/birthday-candles-the-monotonous-trick-kind-review",
-        "publishDate": "2022-04-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bob-fosses-dancin-2023",
-        "url": "https://www.theatrely.com/post/bob-fosses-dancin-dance-10-plot-3-review",
-        "publishDate": "2023-03-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "boop-2025",
-        "url": "https://www.theatrely.com/post/boop-the-musical-betty-lands-on-broadway-and-broadway-gains-a-star-review",
-        "publishDate": "2025-04-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bowl-ep-off-broadway-2025",
-        "url": "https://www.theatrely.com/post/bowl-ep-is-the-explosive-new-work-we-have-been-waiting-for-review",
-        "publishDate": "2025-05-29",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "buena-vista-social-club-2025",
-        "url": "https://www.theatrely.com/post/buena-vista-social-club-brings-the-music-to-life-review",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "buena-vista-social-club-off-broadway-2023",
-        "url": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
-        "publishDate": "2023-12-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bug-2026",
-        "url": "https://www.theatrely.com/post/conspiracies-abound-in-bug-review",
-        "publishDate": "2026-01-08",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cabaret-2024",
-        "url": "https://www.theatrely.com/post/a-new-cabaret-for-the-ages-on-broadway-review",
-        "publishDate": "2024-04-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "call-me-izzy-2025",
-        "url": "http://www.theatrely.com/post/an-indomitable-jean-smart-in-call-me-izzy-review",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "camelot-2023",
-        "url": "https://www.theatrely.com/post/the-gleaming-promise-of-camelot-review",
-        "publishDate": "2023-04-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "caroline-off-broadway-2026",
-        "url": "https://www.theatrely.com/post/finding-the-beauty-in-caroline-review",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "caroline-or-change-2021",
-        "url": "https://www.theatrely.com/post/a-searing-caroline-or-change-finds-pain-in-hope-review",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cats-the-jellicle-ball-2026",
-        "url": "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review",
-        "publishDate": "2026-04-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "celebrity-autobiography-2026",
-        "url": "https://www.theatrely.com/post/celebrity-autobiography-the-library-is-open-kind-of-review",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "chess-2025",
-        "url": "http://www.theatrely.com/post/this-chess-is-a-blast-review",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "chicken-and-biscuits-2021",
-        "url": "https://www.theatrely.com/post/chicken-biscuits-worth-seconds-review",
-        "publishDate": "2021-10-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "clydes-2021",
-        "url": "https://www.theatrely.com/post/clydes-serves-up-dreams-and-insults-review",
-        "publishDate": "2021-11-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "company-2021",
-        "url": "https://www.theatrely.com/post/a-hopeless-bachelorette-in-excellent-company-review",
-        "publishDate": "2021-12-09",
+        "showId": "wanted-2022",
+        "url": "https://www.theatrely.com/post/the-clarke-sisters-get-their-broadway-debut-in-wanted-review",
+        "publishDate": "2026-11-08",
         "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
+  "gaps": [
+    {
+      "url": "https://www.theatrely.com/post/absurdism-across-america-evanston-salt-costs-climbing-george-kaplan-review",
+      "headline": "absurdism across america evanston salt costs climbing george kaplan review",
+      "publishDate": "2022-12-19",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "evanston-salt-costs-climbing-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/alicia-keys-charts-broadway-beginnings-in-hells-kitchen-review",
+      "headline": "alicia keys charts broadway beginnings in hells kitchen review",
+      "publishDate": "2024-04-20",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hells-kitchen-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/an-astounding-what-we-did-before-our-moth-days-downtown-review",
+      "headline": "an astounding what we did before our moth days downtown review",
+      "publishDate": "2026-03-12",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "what-we-did-before-our-moth-days-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/andrew-scott-in-one-man-vanya-review",
+      "headline": "andrew scott in one man vanya review",
+      "publishDate": "2025-03-19",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "vanya-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/coal-country-mines-for-misery-review",
+      "headline": "coal country mines for misery review",
+      "publishDate": "2022-03-10",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "coal-country-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "misery-2015"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/dead-outlaw-outsmarts-life-after-death-review",
+      "headline": "dead outlaw outsmarts life after death review",
+      "publishDate": "2024-03-11",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "dead-outlaw-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "dead-outlaw-2025"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/dear-evan-hansen-you-missed-your-chance-review",
+      "headline": "dear evan hansen you missed your chance review",
+      "publishDate": "2021-09-24",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "dear-evan-hansen-2016"
+      ],
+      "outOfWindow": [
+        "dear-evan-hansen-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/elyria-maps-out-a-maternal-melodrama-review",
+      "headline": "elyria maps out a maternal melodrama review",
+      "publishDate": "2023-03-02",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "elyria-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review",
+      "headline": "harry potter and the cursed child magic reworked review",
+      "publishDate": "2022-02-07",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "harry-potter-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/i-can-get-it-for-you-wholesale-alright-material-great-value-review",
+      "headline": "i can get it for you wholesale alright material great value review",
+      "publishDate": "2023-10-31",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "i-can-get-it-for-you-wholesale-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/in-i-love-you-so-much-i-could-die-a-loss-beyond-words-and-beyond-theater-review",
+      "headline": "in i love you so much i could die a loss beyond words and beyond theater review",
+      "publishDate": "2024-02-15",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "i-love-you-so-much-i-could-die-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "beyond-words-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/in-push-party-and-the-welkin-off-kilter-worlds-straining-for-full-form-review",
+      "headline": "in push party and the welkin off kilter worlds straining for full form review",
+      "publishDate": "2024-06-24",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-welkin-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review",
+      "headline": "jajas african hair braiding an unbridled joy review",
+      "publishDate": "2023-10-03",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "jajas-african-hair-braiding-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/mary-gets-hers-gets-it-right-review",
+      "headline": "mary gets hers gets it right review",
+      "publishDate": "2023-10-04",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mary-gets-hers-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/model-citizens-in-wine-in-the-wilderness-review",
+      "headline": "model citizens in wine in the wilderness review",
+      "publishDate": "2025-03-25",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "wine-in-the-wilderness-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/review-little-shop-of-horrors-the-cape-playhouse",
+      "headline": "review little shop of horrors the cape playhouse",
+      "publishDate": "2021-07-06",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "little-shop-of-horrors-off-broadway-2019"
+      ],
+      "outOfWindow": [
+        "little-shop-of-horrors-2003"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/sufjan-stevens-dance-musical-illinoise-is-monumental-review",
+      "headline": "sufjan stevens dance musical illinoise is monumental review",
+      "publishDate": "2024-03-08",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "illinoise-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "illinoise-2024"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-chinese-lady-shines-through-a-lacquered-cage-review",
+      "headline": "the chinese lady shines through a lacquered cage review",
+      "publishDate": "2022-03-09",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-chinese-lady-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-effect-loses-its-cause----review",
+      "headline": "the effect loses its cause review",
+      "publishDate": "2024-03-14",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-effect-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-fires-brings-a-breathtaking-inferno-downtown----review",
+      "headline": "the fires brings a breathtaking inferno downtown review",
+      "publishDate": "2024-05-22",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-fires-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-lehman-trilogy-trades-greed-for-gold-review",
+      "headline": "the lehman trilogy trades greed for gold review",
+      "publishDate": "2021-10-14",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-lehman-trilogy-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-sign-in-sidney-brusteins-window-and-how-to-handle-a-revival-review",
+      "headline": "the sign in sidney brusteins window and how to handle a revival review",
+      "publishDate": "2023-05-22",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-sign-in-sidney-brusteins-window-2023"
+      ],
+      "outOfWindow": [
+        "the-sign-in-sidney-brusteins-window-1972"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/this-circle-jerk-is-back-and-better-than-ever-review",
+      "headline": "this circle jerk is back and better than ever review",
+      "publishDate": "2022-06-17",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "circle-jerk-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/two-new-off-broadway-stories-breaking-the-story-what-became-of-us-review",
+      "headline": "two new off broadway stories breaking the story what became of us review",
+      "publishDate": "2024-06-05",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "what-became-of-us-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/waiting-for-godot-on-an-endless-aimless-road-review",
+      "headline": "waiting for godot on an endless aimless road review",
+      "publishDate": "2023-11-16",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "waiting-for-godot-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "waiting-for-godot-2025",
+        "waiting-for-godot-2013",
+        "waiting-for-godot-2009"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/wicked-finally-makes-it-to-the-big-screen-review",
+      "headline": "wicked finally makes it to the big screen review",
+      "publishDate": "2024-11-29",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "wicked-2003"
+      ],
+      "outOfWindow": []
+    }
+  ],
   "heldAltUrl": [],
   "misfiles": [],
-  "heldUnmatched": [],
-  "ambiguous": [],
-  "catalogGaps": [],
-  "outOfWindow": []
+  "heldUnmatched": [
+    {
+      "url": "https://www.theatrely.com/post/a-charming-old-friends-brings-nostalgia-to-broadway-review",
+      "headline": "a charming old friends brings nostalgia to broadway review",
+      "publishDate": "2025-04-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-new-cabaret-for-the-ages-on-broadway-review",
+      "headline": "a new cabaret for the ages on broadway review",
+      "publishDate": "2024-04-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cabaret-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-rattling-job-on-broadway-review",
+      "headline": "a rattling job on broadway review",
+      "publishDate": "2024-08-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "job-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-reworked-pirates-for-our-time-review",
+      "headline": "a reworked pirates for our time review",
+      "publishDate": "2025-04-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "pirates-the-penzance-musical-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-september-review-roundup",
+      "headline": "a september review roundup",
+      "publishDate": "2026-09-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "arias-with-a-twist-off-broadway-2026",
+        "very-blue-light-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/art-a-debate-over-devaluation-review",
+      "headline": "art a debate over devaluation review",
+      "publishDate": "2025-09-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "art-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
+      "headline": "buena vista social clubs rhythm of life review",
+      "publishDate": "2023-12-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "buena-vista-social-club-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/chicken-biscuits-worth-seconds-review",
+      "headline": "chicken biscuits worth seconds review",
+      "publishDate": "2021-10-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "chicken-and-biscuits-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/conspiracies-abound-in-bug-review",
+      "headline": "conspiracies abound in bug review",
+      "publishDate": "2026-01-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bug-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/encores-the-wild-partys-late-night-thrills---review",
+      "headline": "encores the wild partys late night thrills review",
+      "publishDate": "2026-03-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "encores-the-wild-party-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/for-colored-girls-returns-home-to-broadway-review",
+      "headline": "for colored girls returns home to broadway review",
+      "publishDate": "2022-04-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/juliet-is-all-fun-review",
+      "headline": "juliet is all fun review",
+      "publishDate": "2022-11-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "and-juliet-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/reframing-antigone-for-today-review",
+      "headline": "reframing antigone for today review",
+      "publishDate": "2026-03-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "antigone-1971",
+        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/six-earns-its-crown-jewels-review",
+      "headline": "six earns its crown jewels review",
+      "publishDate": "2021-12-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/throwing-out-the-rule-book-three-off-broadway-plays-upend-expectations",
+      "headline": "throwing out the rule book three off broadway plays upend expectations",
+      "publishDate": "2026-10-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "human-things-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/tthoughts-of-a-colored-man-writ-large-and-unoriginal-review",
+      "headline": "tthoughts of a colored man writ large and unoriginal review",
+      "publishDate": "2021-10-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "thoughts-of-a-colored-man-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://www.theatrely.com/post/harm-reduction-how-to-defend-yourself-the-coast-starlight-review",
+      "headline": "harm reduction how to defend yourself the coast starlight review",
+      "publishDate": "2023-03-15",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "how-to-defend-yourself-off-broadway-2023",
+        "the-coast-starlight-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/review-round-up-empire-records-the-beacon-the-ghost-of-john-mccain",
+      "headline": "review round up empire records the beacon the ghost of john mccain",
+      "publishDate": "2024-09-28",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-beacon-off-broadway-2024",
+        "ghost-of-john-mccain-off-broadway-2024",
+        "empire-the-musical-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-monsters-the-dinosaurs-are-off-broadway-review",
+      "headline": "the monsters the dinosaurs are off broadway review",
+      "publishDate": "2026-02-18",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-monsters-off-broadway-2026",
+        "the-dinosaurs-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "catalogGaps": [
+    {
+      "url": "https://www.theatrely.com/post/hannah-gadsby-heads-off-broadway-with-woof----review",
+      "headline": "hannah gadsby heads off broadway with woof review",
+      "publishDate": "2024-10-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/in-signature-theatres-daphnes-dive-brokenness-is-a-gift-and-a-curse-review",
+      "headline": "in signature theatres daphnes dive brokenness is a gift and a curse review",
+      "publishDate": "2022-03-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/letters-of-suresh-at-second-stage-folds-into-a-beautiful-narrative-review",
+      "headline": "letters of suresh at second stage folds into a beautiful narrative review",
+      "publishDate": "2021-10-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/n-o-w-i-s-w-h-e-n-w-e-a-r-e-the-stars-lights-up-brooklyn-review",
+      "headline": "n o w i s w h e n w e a r e the stars lights up brooklyn review",
+      "publishDate": "2022-12-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/signature-theatres-the-upstairs-department-unpacks-the-grief-of-covid-19-review",
+      "headline": "signature theatres the upstairs department unpacks the grief of covid 19 review",
+      "publishDate": "2022-06-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/speakeasy-magick-at-the-mckittrick-hotel-astounds-review",
+      "headline": "speakeasy magick at the mckittrick hotel astounds review",
+      "publishDate": "2021-09-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrely.com/post/what-i-saw-off-broadway-this-month-reviews",
+      "headline": "what i saw off broadway this month reviews",
+      "publishDate": "2025-05-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://www.theatrely.com/post/a-commercial-jingle-for-regina-comet-opens-as-first-new-musical-in-new-york-review",
+      "headline": "a commercial jingle for regina comet opens as first new musical in new york review",
+      "publishDate": "2021-09-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-deeply-human-kin-review",
+      "headline": "a deeply human kin review",
+      "publishDate": "2024-12-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "human-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-gripping-first-deep-breath-at-geffen-review",
+      "headline": "a gripping first deep breath at geffen review",
+      "publishDate": "2023-02-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-gripping-uncompromising-downstate-review",
+      "headline": "a gripping uncompromising downstate review",
+      "publishDate": "2022-11-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+      "headline": "a hasty king lear at the shed review",
+      "publishDate": "2024-11-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "king-lear-2019",
+        "king-lear-2004",
+        "king-lear-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-raisin-in-the-sun-shines-on-its-women-review",
+      "headline": "a raisin in the sun shines on its women review",
+      "publishDate": "2022-10-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-raisin-in-the-sun-2014",
+        "the-women-2001",
+        "the-women-1973",
+        "a-raisin-in-the-sun-2004"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-soaring-gorgeous-the-light-in-the-piazza-review",
+      "headline": "a soaring gorgeous the light in the piazza review",
+      "publishDate": "2023-06-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-light-in-the-piazza-2005"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-soaring-titanic-at-encores-review",
+      "headline": "a soaring titanic at encores review",
+      "publishDate": "2024-06-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-stellar-potus-at-geffen-review",
+      "headline": "a stellar potus at geffen review",
+      "publishDate": "2024-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "potus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-strange-loop-stages-an-endless-spiral-of-identity-and-the-rupture-my-hometown-needs-review",
+      "headline": "a strange loop stages an endless spiral of identity and the rupture my hometown needs review",
+      "publishDate": "2021-12-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-strange-loop-2022"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-streetcar-named-desire-perfectly-fit-for-today-review",
+      "headline": "a streetcar named desire perfectly fit for today review",
+      "publishDate": "2025-03-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-stunning-well-ill-let-you-go-off-broadway-review",
+      "headline": "a stunning well ill let you go off broadway review",
+      "publishDate": "2025-08-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "well-ill-let-you-go-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-sugary-rub-on-fat-ham-review",
+      "headline": "a sugary rub on fat ham review",
+      "publishDate": "2022-05-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-too-wonky-wonderful-town-review",
+      "headline": "a too wonky wonderful town review",
+      "publishDate": "2025-05-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wonderful-town-2003"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/a-wild-big-feelings-brings-us-back-to-first-grade-review",
+      "headline": "a wild big feelings brings us back to first grade review",
+      "publishDate": "2026-07-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981",
+        "big-feelings-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/an-excellent-cyrano-that-fights-for-words-review",
+      "headline": "an excellent cyrano that fights for words review",
+      "publishDate": "2022-04-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyrano-the-musical-1993",
+        "cyrano-1973"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/ava-the-secret-conversations-an-exposed-icon-review",
+      "headline": "ava the secret conversations an exposed icon review",
+      "publishDate": "2023-05-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ava-the-secret-conversations-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/center-theatre-groups-secret-garden-is-not-quite-in-bloom-review",
+      "headline": "center theatre groups secret garden is not quite in bloom review",
+      "publishDate": "2023-03-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-secret-garden-1991"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/crushing-machinery-machinal-review",
+      "headline": "crushing machinery machinal review",
+      "publishDate": "2025-06-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "machinal-2014"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/darker-oklahoma-goes-out-on-tour-review",
+      "headline": "darker oklahoma goes out on tour review",
+      "publishDate": "2022-01-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oklahoma-2019",
+        "oklahoma-2002",
+        "oklahoma-1979"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/every-brilliant-thing-is-well-brilliant-review",
+      "headline": "every brilliant thing is well brilliant review",
+      "publishDate": "2023-09-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "every-brilliant-thing-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/glitter-grindr-and-the-ghost-of-abraham-lincoln-in-lavender-men-review",
+      "headline": "glitter grindr and the ghost of abraham lincoln in lavender men review",
+      "publishDate": "2022-08-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghost-the-musical-2012"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/hamlet-smartly-traps-the-audience-in-its-madness-review",
+      "headline": "hamlet smartly traps the audience in its madness review",
+      "publishDate": "2022-10-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015",
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/hercules-has-just-enough-strength-to-match-its-heart-review",
+      "headline": "hercules has just enough strength to match its heart review",
+      "publishDate": "2023-03-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "match-2004",
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/heroes-are-toppled-and-reborn-in-studio-theatres-john-proctor-is-the-villain-review",
+      "headline": "heroes are toppled and reborn in studio theatres john proctor is the villain review",
+      "publishDate": "2022-06-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "john-proctor-is-the-villain-2025"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/history-you-wont-find-in-your-textbook-in-mexodus-review",
+      "headline": "history you wont find in your textbook in mexodus review",
+      "publishDate": "2025-09-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
+      "headline": "immersive great gatsby brings the roarin 20s to midtown review",
+      "publishDate": "2023-06-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-great-gatsby-2024"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/in-arena-stages-change-agent-women-shape-the-past-and-future-of-america-review",
+      "headline": "in arena stages change agent women shape the past and future of america review",
+      "publishDate": "2022-03-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/in-mosaic-theaters-birds-of-north-america-a-father-and-daughter-yearn-to-connect-review",
+      "headline": "in mosaic theaters birds of north america a father and daughter yearn to connect review",
+      "publishDate": "2021-11-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/in-the-heights-lives-up-to-its-name-review",
+      "headline": "in the heights lives up to its name review",
+      "publishDate": "2021-06-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "in-the-heights-2008",
+        "in-the-heights-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/into-the-woods-with-a-hurricane-of-talent-review",
+      "headline": "into the woods with a hurricane of talent review",
+      "publishDate": "2022-05-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/irish-reps-the-cordelia-dream-brings-rocky-relationships-front-and-center-review",
+      "headline": "irish reps the cordelia dream brings rocky relationships front and center review",
+      "publishDate": "2021-07-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "rocky-2014"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/its-only-a-play-is-a-virtual-feast-at-george-st-playhouse-review",
+      "headline": "its only a play is a virtual feast at george st playhouse review",
+      "publishDate": "2021-06-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "its-only-a-play-2014"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/jackman-and-beatty-in-a-minimally-staged-maximally-potent-sexual-misconduct-of-the-middle-classes-review",
+      "headline": "jackman and beatty in a minimally staged maximally potent sexual misconduct of the middle classes review",
+      "publishDate": "2025-05-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/jane-anger-presents-hilarious-parallels-between-past-and-present-review",
+      "headline": "jane anger presents hilarious parallels between past and present review",
+      "publishDate": "2022-03-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-present-2017"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/jordan-e-cooper-rewrites-salvation-in-oh-happy-day-review",
+      "headline": "jordan e cooper rewrites salvation in oh happy day review",
+      "publishDate": "2024-10-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oh-happy-day-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/journeys-of-the-soul-a-christmas-carol-and-interstate-reviews",
+      "headline": "journeys of the soul a christmas carol and interstate reviews",
+      "publishDate": "2025-12-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/kristin-chenoweth-soars-in-the-queen-of-versailles-review",
+      "headline": "kristin chenoweth soars in the queen of versailles review",
+      "publishDate": "2024-08-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "queen-versailles-2025"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/language-is-king-in-another-modern-hamlet-review",
+      "headline": "language is king in another modern hamlet review",
+      "publishDate": "2022-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/madeline-sayet-explores-where-we-belong-at-woolly-mammoth-review",
+      "headline": "madeline sayet explores where we belong at woolly mammoth review",
+      "publishDate": "2021-07-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "where-we-belong-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/mindplay-knows-exactly-what-you-are-thinking-review",
+      "headline": "mindplay knows exactly what you are thinking review",
+      "publishDate": "2022-11-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mindplay-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/norma-desmond-girlboss-sammi-cannolds-sunset-boulevard-review",
+      "headline": "norma desmond girlboss sammi cannolds sunset boulevard review",
+      "publishDate": "2023-02-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sunset-boulevard-2024",
+        "sunset-boulevard-2017",
+        "sunset-boulevard-1994"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/ogunquit-playhouse-opens-with-spamalot-review",
+      "headline": "ogunquit playhouse opens with spamalot review",
+      "publishDate": "2021-06-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "spamalot-2023",
+        "spamalot-2005"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/othello-speaks-to-and-undermines-reality-in-red-velvet-review",
+      "headline": "othello speaks to and undermines reality in red velvet review",
+      "publishDate": "2022-06-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "othello-2025",
+        "othello-1970",
+        "othello-1982",
+        "othello-bedlam-off-broadway-2026",
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/personality-the-lloyd-price-musical-struggles-with-its-subject-review",
+      "headline": "personality the lloyd price musical struggles with its subject review",
+      "publishDate": "2022-04-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999",
+        "the-price-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/prayer-for-the-french-republic-ask-what-jewish-safe-havens-remain-review",
+      "headline": "prayer for the french republic ask what jewish safe havens remain review",
+      "publishDate": "2022-02-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/prosperous-fools-targets-the-art-x-philanthropy-set-review",
+      "headline": "prosperous fools targets the art x philanthropy set review",
+      "publishDate": "2025-06-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/richard-iii-and-between-the-lines-two-stories-one-arena-review",
+      "headline": "richard iii and between the lines two stories one arena review",
+      "publishDate": "2022-07-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/romeo-juliet-returns-to-the-park-review",
+      "headline": "romeo juliet returns to the park review",
+      "publishDate": "2026-06-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-juliet-2024"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/shakespeare-theatre-companys-our-town-is-a-transfixing-production-of-a-well-worn-classic-review",
+      "headline": "shakespeare theatre companys our town is a transfixing production of a well worn classic review",
+      "publishDate": "2022-06-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "our-town-2024",
+        "our-town-2002",
+        "our-town-1988"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/sing-street-review",
+      "headline": "sing street review",
+      "publishDate": "2022-09-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sing-street-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/songs-for-a-new-world-shines-at-papermill-playhouse-review",
+      "headline": "songs for a new world shines at papermill playhouse review",
+      "publishDate": "2021-10-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "songs-for-a-new-world-off-broadway-1995"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/sophie-sucks-face-cradles-the-heart-review",
+      "headline": "sophie sucks face cradles the heart review",
+      "publishDate": "2022-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/studio-theatres-white-noise-is-a-blunt-tragedy-for-our-times-review",
+      "headline": "studio theatres white noise is a blunt tragedy for our times review",
+      "publishDate": "2022-02-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "white-noise-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/sweating-out-the-fever-review",
+      "headline": "sweating out the fever review",
+      "publishDate": "2021-10-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-fever-greenwich-house-theater-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/tell-me-how-to-get-to-endgame-street-review",
+      "headline": "tell me how to get to endgame street review",
+      "publishDate": "2023-02-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "endgame-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-animal-wisdom-of-ghosts-and-catfishes-review",
+      "headline": "the animal wisdom of ghosts and catfishes review",
+      "publishDate": "2021-06-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghosts-1982",
+        "animal-wisdom-off-broadway-2022",
+        "ghosts-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-lonely-few-welcomes-you-in-review",
+      "headline": "the lonely few welcomes you in review",
+      "publishDate": "2023-05-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-lonely-few-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-sign-in-sidney-brusteins-window-still-slipping-off-review",
+      "headline": "the sign in sidney brusteins window still slipping off review",
+      "publishDate": "2023-03-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sign-in-sidney-brusteins-window-2023",
+        "the-sign-in-sidney-brusteins-window-1972",
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-tap-dance-kid-dusts-off-weary-shoes-review",
+      "headline": "the tap dance kid dusts off weary shoes review",
+      "publishDate": "2022-03-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tap-dance-kid-1983"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/the-voices-in-your-head-finds-the-weird-joy----review",
+      "headline": "the voices in your head finds the weird joy review",
+      "publishDate": "2024-01-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "voices-1972"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/triple-texting-the-last-of-the-love-letters-review",
+      "headline": "triple texting the last of the love letters review",
+      "publishDate": "2021-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-letters-2014",
+        "love-letters-1989"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/women-on-the-verge-help-and-at-the-wedding-review",
+      "headline": "women on the verge help and at the wedding review",
+      "publishDate": "2022-03-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973",
+        "the-verge-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/woolly-mammoth-aint-no-mo-review",
+      "headline": "woolly mammoth aint no mo review",
+      "publishDate": "2022-09-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "aint-no-mo-2022"
+      ]
+    },
+    {
+      "url": "https://www.theatrely.com/post/wuthering-heights-hits-a-lot-of-notes-not-necessarily-the-right-ones-review",
+      "headline": "wuthering heights hits a lot of notes not necessarily the right ones review",
+      "publishDate": "2022-10-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wuthering-heights-off-broadway-2026"
+      ]
+    }
+  ]
 }
