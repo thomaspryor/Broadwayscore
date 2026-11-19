@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-19T22:22:31.173Z",
+  "timestamp": "2026-11-19T22:36:08.472Z",
   "stats": {
-    "totalReviews": 83203,
+    "totalReviews": 83211,
     "alreadyFlagged": 22549,
     "dateGuardCatches": 221,
-    "directorMismatch": 3789,
+    "directorMismatch": 3792,
     "tvFilmSignals": 2374,
     "londonSignals": 3827,
     "offBroadwaySignals": 773,
@@ -41195,6 +41195,19 @@
       "score": 83,
       "publishDate": "2025-02-28",
       "url": "https://exeuntnyc.com/reviews/review-liberation-at-the-laura-pels-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "front-row-center--tulis-mccall.json",
+      "publishDate": "2025-02-20",
+      "url": "https://thefrontrowcenter.com/2025/02/liberation/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -87198,6 +87211,24 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2020 (1x). 2026 matches production: west-side-story-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
+      "file": "slantmagazine--dan-rubins.json",
+      "publishDate": "2020-03-10",
+      "url": "https://www.slantmagazine.com/theater/west-side-story-review-ivo-van-hove/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
         }
       ]
     },
