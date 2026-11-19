@@ -39,7 +39,7 @@ const { checkFile: checkAspect } = require('./check-image-aspect');
 // archived here as if they were real key art (2026-07-31 review). Import it,
 // never re-declare it.
 const { isPlaceholderFile } = require('./lib/show-images');
-const { canReuseArchivedFile, missingFileRedownload, localImageAction } = require('./lib/image-source-match');
+const { canReuseArchivedFile, missingFileRedownload, localImageAction, imagePathOwner } = require('./lib/image-source-match');
 const { IMAGE_SOURCES_PATH: SOURCES_PATH, loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 const { buildSourceIndex, addToSourceIndex, sourceConflict } = require('./lib/shared-image-source');
 
@@ -221,7 +221,7 @@ async function main() {
       // (missingFileRedownload below); it must never reach the fetch code, where
       // fetch('/images/...') fails with "Failed to parse URL" (BRO-7871).
       const localPath = path.join(__dirname, '..', 'public', url);
-      const localAction = localImageAction(url, { force, fileExists: fs.existsSync(localPath) });
+      const localAction = localImageAction(url, { force, fileExists: fs.existsSync(localPath), ownsFile: (imagePathOwner(url) || show.id) === show.id });
       if (localAction !== 'fetch') {
         if (localAction === 'check-existing') {
           // Always gate active posters; --check-aspect also checks other cached art.
@@ -249,7 +249,7 @@ async function main() {
         // production's art back (BRO-4901, BRO-7846).
         const redl = missingFileRedownload(show, format, url, imageSources, showsById);
         if (redl.skip) {
-          console.warn(`  ⚠ ${show.title} ${format}: ${localAction === 'redownload' && !fs.existsSync(localPath) ? 'Local file missing' : 'Local file kept'}; ${redl.skip} — not re-downloading`);
+          console.warn(`  ⚠ ${show.title} ${format}: ${fs.existsSync(localPath) ? 'Local file kept' : 'Local file missing'}; ${redl.skip} — not re-downloading`);
           totalFailed++;
           continue;
         }
@@ -263,6 +263,7 @@ async function main() {
           const tmpPath = `${filepath}.incoming`;
           tmpToClean = tmpPath;
           const size = await downloadImage(dlUrl, tmpPath, format);
+          if (isPlaceholderFile(tmpPath)) throw new Error('re-downloaded image is a "Coming Soon" placeholder — rejected');
           // Aspect-check: reject wide-landscape posters / portrait heroes / etc.
           // The source URL can produce a wrong-shape file (Evita case) — fall through
           // to fetch-show-images-auto on the next run rather than persisting bad shape.
@@ -282,6 +283,11 @@ async function main() {
             totalDownloaded++;
             totalBytes += size;
             showChanged = true;
+            // --force over an existing file of another extension: drop the old one.
+            for (const oldExt of ['jpg', 'jpeg', 'png', 'webp'].filter(e => e !== ext)) {
+              const oldPath = path.join(OUTPUT_DIR, show.id, `${format}.${oldExt}`);
+              if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+            }
           }
         } catch (e) {
           if (tmpToClean) { try { fs.unlinkSync(tmpToClean); } catch {} }

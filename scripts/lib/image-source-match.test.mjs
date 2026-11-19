@@ -439,6 +439,9 @@ test('localImageAction: a local path is never fetched; --force re-downloads it f
   assert.equal(localImageAction(local, { force: true, fileExists: false }), 'redownload');
   assert.equal(localImageAction(local, { force: false, fileExists: true }), 'check-existing');
   assert.equal(localImageAction(local, { force: false, fileExists: false }), 'redownload');
+  // A file borrowed from another row is refreshed through its owner.
+  assert.equal(localImageAction(local, { force: true, fileExists: true, ownsFile: false }), 'check-existing');
+  assert.equal(localImageAction(local, { force: true, fileExists: false, ownsFile: false }), 'redownload');
   assert.equal(localImageAction('https://cdn.example.com/a.jpg', { force: true, fileExists: false }), 'fetch');
   assert.equal(localImageAction(null, { force: true }), 'fetch');
 });

@@ -306,9 +306,11 @@ function refusedSourceReason(show, source, owner = null) {
  * re-fetch from its recorded source, because the file is missing or --force was
  * given. A local path must never be 'fetch' (fetch('/images/...') cannot parse).
  */
-function localImageAction(url, { force = false, fileExists = false } = {}) {
+function localImageAction(url, { force = false, fileExists = false, ownsFile = true } = {}) {
   if (typeof url !== 'string' || !url.startsWith('/images/')) return 'fetch';
-  if (force) return 'redownload';
+  // --force refreshes a row's own files; a file borrowed from another row is
+  // refreshed through its owner, never copied into this row's folder.
+  if (force) return fileExists && !ownsFile ? 'check-existing' : 'redownload';
   return fileExists ? 'check-existing' : 'redownload';
 }
 
