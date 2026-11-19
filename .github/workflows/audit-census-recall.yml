@@ -200,3 +200,66 @@ jobs:
         with:
           title: 'Audit Census Recall Failed (the recall detector itself is broken)'
           severity: 'warning'
+
+  # BRO-7820: the outlet-first census (scripts/outlet-census.js) had no scheduled run, so the committed
+  # reports went stale and a new blind outlet (Slant) went unnoticed. This job regenerates every free
+  # readable outlet's report weekly and commits only the files whose content changed.
+  #
+  # Its own job, not a step of `measure`: a cold-cache run fetches thousands of pages, and a timeout in
+  # `measure` would kill the recall trend commit above. It runs even when `measure` fails.
+  #
+  # FREE BY CONSTRUCTION: no secret is in any env here, so scraper fallbacks that need a key (Bright Data,
+  # ScrapingBee) cannot spend; --no-serp skips the paid SERP outlets, which keep their committed reports.
+  # review-texts is NOT checked out on purpose: the committed reports were built against reviews.json,
+  # and the run would otherwise shift every held/gap count.
+  #
+  # Like the recall step, it exits 0 when outlets fail: the verdict is the report content, not the exit code.
+  census:
+    needs: measure
+    if: ${{ always() && !inputs.no_trend && vars.CENSUS_RECALL_DISABLED != '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Regenerate free outlet census reports
+        timeout-minutes: 75
+        run: |
+          rc=0
+          node scripts/outlet-census.js --all --no-serp --concurrency=6 > /tmp/outlet-census.log 2>&1 || rc=$?
+          tail -n 60 /tmp/outlet-census.log
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::outlet-census.js exited $rc (some outlets failed; their previous reports stay)"
+          fi
+          { echo '### Outlet census'; echo '```'; node scripts/outlet-census.js --summary | tail -n 40; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit census reports
+        env:
+          PUSH_DEADLINE_SEC: '420'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
+        run: |
+          # Reports only (the stale-report guard reads reports); manifests are large and need no weekly commit.
+          bash scripts/lib/git-add-existing.sh data/audit/outlet-census/*.report.json
+          if git diff --cached --quiet; then
+            echo "No census report changed"
+            exit 0
+          fi
+          git commit -m "audit: outlet census reports [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Outlet census job failed (reports are going stale)'
+          severity: 'warning'

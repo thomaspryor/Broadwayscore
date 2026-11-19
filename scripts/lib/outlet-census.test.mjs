@@ -394,6 +394,18 @@ test('BRO-7812: blindOutlets flags big outlets whose listing cannot be read, and
   assert.deepEqual(census.blindOutlets(undefined), []);
 });
 
+test('BRO-7820: writeJsonUnlessOnlyStampChanged skips timestamp-only rewrites and writes real changes', () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const dir = fs.mkdtempSync(`${os.tmpdir()}/census-stamp-`);
+  const f = `${dir}/x.report.json`;
+  assert.equal(census.writeJsonUnlessOnlyStampChanged(f, { a: 1, generatedAt: 't1' }, 2), true);
+  assert.equal(census.writeJsonUnlessOnlyStampChanged(f, { a: 1, generatedAt: 't2' }, 2), false);
+  assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).generatedAt, 't1');
+  assert.equal(census.writeJsonUnlessOnlyStampChanged(f, { a: 2, generatedAt: 't3' }, 2), true);
+  assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).a, 2);
+});
+
 test('BRO-7816: a blind outlet reports its probed reason, and no unreadable source ships a generic or missing one', () => {
   const rep = { outletId: 'nypost', source: { kind: 'unreadable', reason: 'daily sitemaps, one paid fetch per day' }, corpusSide: { rowsInWindow: 413 } };
   assert.equal(census.blindOutlets([rep])[0].why, 'daily sitemaps, one paid fetch per day');
