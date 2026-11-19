@@ -1,71 +1,63 @@
 {
-  "runDate": "2026-11-19T11:58:44.584Z",
+  "runDate": "2026-11-19T12:21:19.149Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-good-thief-off-broadway-2026,jenufa-off-broadway-2026,the-fantasticks-2026,la-distance-bam-off-broadway-2026,now-you-see-me-live-2026,blue-man-group-a-new-holiday-surprise-2026,top-gunchained-off-west-end-2026,its-a-wonderful-life-a-live-radio-play-2026,a-christmas-story-the-musical-tour-2026,nixon-in-china-regional-2026,entre-dos-sombras-regional-2026,takes-all-kinds-regional-2026,my-english-persian-kitchen-regional-2026,destiny-of-desire-regional-2026",
+    "showFilter": "a-christmas-story-the-musical-tour-2026,my-english-persian-kitchen-regional-2026,takes-all-kinds-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 7,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "56.3%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 7,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 4,
-    "tier1_5Success": 2,
-    "tier1_9Attempts": 3,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 7,
-    "tier2Success": 5,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier3_6Attempts": 2,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 9,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 6,
-    "scrapingBeePageCredits": 15,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 1.5,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 9,
-    "failed": 7,
+    "processed": 1,
+    "failed": 0,
     "shows": [
-      "a-christmas-story-the-musical-tour-2026",
-      "blue-man-group-a-new-holiday-surprise-2026",
-      "destiny-of-desire-regional-2026",
-      "entre-dos-sombras-regional-2026",
-      "its-a-wonderful-life-a-live-radio-play-2026",
-      "now-you-see-me-live-2026",
-      "the-fantasticks-2026",
-      "the-good-thief-off-broadway-2026",
-      "top-gunchained-off-west-end-2026"
+      "a-christmas-story-the-musical-tour-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -74,87 +66,28 @@
     }
   },
   "processed": [
-    "its-a-wonderful-life-a-live-radio-play-2026/chicago-reader--justin-hayford.json",
-    "the-good-thief-off-broadway-2026/nytimes--unknown.json",
-    "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
-    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-    "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-    "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json",
-    "now-you-see-me-live-2026/boston-herald--marilyn-stasio.json",
-    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-    "now-you-see-me-live-2026/culturesauce--unknown.json"
+    "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json"
   ],
-  "failed": [
-    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
-    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
-    "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
-    "top-gunchained-off-west-end-2026/british-theatre--unknown.json",
-    "the-fantasticks-2026/nytimes--maya-phillips.json",
-    "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json",
-    "the-fantasticks-2026/bobs-theater-blog--unknown.json"
-  ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "its-a-wonderful-life-a-live-radio-play-2026/chicago-reader--justin-hayford.json",
-      "the-good-thief-off-broadway-2026/nytimes--unknown.json",
-      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json",
-      "now-you-see-me-live-2026/boston-herald--marilyn-stasio.json",
-      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-      "now-you-see-me-live-2026/culturesauce--unknown.json"
+      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json"
     ],
-    "failed": [
-      "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
-      "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
-      "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
-      "top-gunchained-off-west-end-2026/british-theatre--unknown.json",
-      "the-fantasticks-2026/nytimes--maya-phillips.json",
-      "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json",
-      "the-fantasticks-2026/bobs-theater-blog--unknown.json"
-    ]
+    "failed": []
   },
   "tierDetails": {
-    "playwright": [
-      "its-a-wonderful-life-a-live-radio-play-2026/chicago-reader--justin-hayford.json",
-      "now-you-see-me-live-2026/boston-herald--marilyn-stasio.json",
-      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-      "now-you-see-me-live-2026/culturesauce--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--unknown.json",
-      "the-good-thief-off-broadway-2026/nytimes--unknown.json",
-      "data/review-texts/top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [
-      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json"
+      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "Broadway News": {
-      "count": 1,
-      "domain": "broadwaynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The New York Times": {
-      "count": 1,
-      "domain": "nytimes.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
