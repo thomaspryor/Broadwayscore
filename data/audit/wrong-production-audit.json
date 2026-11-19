@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T13:49:17.315Z",
+  "timestamp": "2026-11-19T14:25:27.866Z",
   "stats": {
-    "totalReviews": 82813,
-    "alreadyFlagged": 22483,
+    "totalReviews": 82846,
+    "alreadyFlagged": 22499,
     "dateGuardCatches": 221,
-    "directorMismatch": 3783,
-    "tvFilmSignals": 2362,
-    "londonSignals": 3818,
+    "directorMismatch": 3785,
+    "tvFilmSignals": 2364,
+    "londonSignals": 3819,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8252
+    "noPublishDate": 8250
   },
   "findings": [
     {
@@ -2066,7 +2066,7 @@
     {
       "showId": "a-christmas-carol-west-end-2024",
       "file": "london-theatre--olivia-rook.json",
-      "score": null,
+      "score": 83,
       "publishDate": "November 21st, 2024",
       "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-review-john-simm-jack-thorne-charles-dickens-old-vic",
       "findings": [
@@ -8893,7 +8893,7 @@
     {
       "showId": "betrayal-2019",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 88,
+      "score": 97,
       "publishDate": "2019-09-05T20:16:16",
       "url": "https://nystagereview.com/2019/09/05/betrayal-less-is-more-in-this-london-born-revival/",
       "findings": [
@@ -10830,6 +10830,7 @@
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "culturesauce--thom-geier.json",
+      "score": 94,
       "publishDate": "2023-12-13",
       "url": "https://culturesauce.com/buena-vista-social-club-off-broadway-review/",
       "findings": [
@@ -10885,6 +10886,7 @@
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "nyt-theater--jonathan-mandell.json",
+      "score": 79,
       "publishDate": "2023-12-17",
       "url": "https://newyorktheater.me/2023/12/17/buena-vista-social-club-off-broadway-review/",
       "findings": [
@@ -11010,6 +11012,7 @@
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "theatermania--pete-hempstead.json",
+      "score": 92,
       "publishDate": "2023-12-13",
       "url": "https://www.theatermania.com/news/review-legendary-cuban-musicians-come-to-life-in-an-electric-buena-vista-social-club_1723903/",
       "findings": [
@@ -16502,6 +16505,7 @@
     {
       "showId": "dead-outlaw-off-broadway-2024",
       "file": "broadway-and-me--unknown.json",
+      "score": 91,
       "publishDate": "2024-03-16",
       "url": "https://broadwayandme.blogspot.com/2024/03/dead-outlaw-is-liveliest-show-in-town.html",
       "findings": [
@@ -16764,6 +16768,7 @@
     {
       "showId": "dead-outlaw-off-broadway-2024",
       "file": "theatrely--juan-a-ramirez.json",
+      "score": 79,
       "publishDate": "2024-03-11",
       "url": "https://www.theatrely.com/post/dead-outlaw-outsmarts-life-after-death-review",
       "findings": [
@@ -20945,6 +20950,7 @@
     {
       "showId": "english-off-broadway-2022",
       "file": "broadway-and-me--unknown.json",
+      "score": 85,
       "publishDate": "2022-02-26",
       "url": "https://broadwayandme.blogspot.com/2022/02/english-has-some-valuable-things-to-say.html",
       "findings": [
@@ -21542,7 +21548,7 @@
     {
       "showId": "every-brilliant-thing-west-end-2025",
       "file": "beyondthecurtain--giada-if.json",
-      "score": null,
+      "score": 92,
       "publishDate": null,
       "url": "https://www.beyondthecurtain.co.uk/2025/08/every-brilliant-thing-review.html",
       "findings": [
@@ -22349,6 +22355,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "file": "newsday--barbara-schuler.json",
+      "score": 86,
+      "publishDate": "2017-12-17T19:31:17-05:00",
+      "url": "https://www.newsday.com/entertainment/theater/farinelli-and-the-king-review-1.15472253",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -25449,7 +25469,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 75,
+      "score": 85,
       "publishDate": null,
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295?ico=more_from_this_author",
       "findings": [
@@ -25539,7 +25559,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "thestage--laurie-yule.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2025-05-02",
       "url": "https://www.thestage.co.uk/reviews/giant-review-harold-pinter-theatre-london-john-lithgow-mark-rosenblatt-nicholas-hytner",
       "findings": [
@@ -31129,6 +31149,19 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "newyorker--emily-nussbaum.json",
+      "publishDate": "2026-06-04",
+      "url": "https://www.newyorker.com/magazine/2026/06/15/can-i-be-frank-theatre-review-heated-rivalry",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 66,
       "publishDate": "2026-05-26",
@@ -31771,19 +31804,6 @@
       ]
     },
     {
-      "showId": "hedda-royal-bath-regional-2025",
-      "file": "mashable--kristy-puchko.json",
-      "publishDate": "2025-10-22",
-      "url": "https://mashable.com/article/hedda-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
       "showId": "heisenberg-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 79,
@@ -31968,7 +31988,7 @@
     {
       "showId": "here-we-are-west-end-2025",
       "file": "city-am--arifa-akbar.json",
-      "score": 62,
+      "score": 85,
       "publishDate": null,
       "url": "https://www.cityam.com/here-we-are-national-theatre-review-final-stephen-sondheim-musical-is-more-severance-than-sing-a-long/",
       "findings": [
@@ -36599,6 +36619,7 @@
     {
       "showId": "jagged-little-pill-tour-2022",
       "file": "la-excites--imaan-jalali.json",
+      "score": 90,
       "publishDate": "2022-09-15",
       "url": "https://laexcites.com/2022/09/16/review-alanis-morissette-jagged-little-pill-pantages-theatre/",
       "findings": [
@@ -41800,7 +41821,7 @@
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "thewrap--robert-hofler.json",
-      "score": 64,
+      "score": 74,
       "publishDate": "2019-10-18",
       "url": "https://www.thewrap.com/little-shop-of-horrors-theater-review-once-christian-borle-jonathan-groff-tammy-blanchard/",
       "findings": [
@@ -44071,6 +44092,7 @@
     {
       "showId": "merrily-we-roll-along-off-broadway-2022",
       "file": "stagebuddy--unknown.json",
+      "score": 88,
       "publishDate": "2023-01-09",
       "url": "https://stagebuddy.com/theater/theater-review/merrily-roll-along",
       "findings": [
@@ -44131,6 +44153,7 @@
     {
       "showId": "merrily-we-roll-along-off-broadway-2022",
       "file": "theatermania--david-gordon.json",
+      "score": 94,
       "publishDate": "2022-12-12",
       "url": "https://www.theatermania.com/news/review-jonathan-groff-daniel-radcliffe-and-lindsay-mendez-in-a-revelatory-merrily-we-roll-along_94671/",
       "findings": [
@@ -44149,6 +44172,7 @@
     {
       "showId": "merrily-we-roll-along-off-broadway-2022",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
+      "score": 80,
       "publishDate": "2022-12-24",
       "url": "https://www.theatrereviews.com/off-broadway-review-merrily-we-roll-along/",
       "findings": [
@@ -45531,6 +45555,7 @@
     {
       "showId": "moulin-rouge-tour-2022",
       "file": "san-jose-mercury-news--karen-dsouza.json",
+      "score": 74,
       "publishDate": "2022-09-14",
       "url": "https://www.mercurynews.com/2022/09/14/review-moulin-rouge-musical-is-flash-over-substance-but-what-flash/",
       "findings": [
@@ -47194,7 +47219,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "express-uk--neil-norman.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2022-10-27",
       "url": "https://www.express.co.uk/entertainment/theatre/1688608/My-Neighbour-Totoro-theatre-review",
       "findings": [
@@ -47360,7 +47385,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "observer--susannah-clapp.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2022-10-23",
       "url": "https://www.theguardian.com/stage/2022/oct/23/my-neighbour-totoro-barbican-rsc-phelim-mcdermott-review-studio-ghibli-local-hero-minerva-chichester-daniel-evans",
       "findings": [
@@ -47398,7 +47423,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "sunday-times--quentin-letts.json",
-      "score": 79,
+      "score": 74,
       "publishDate": "2022-10-22",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/my-neighbour-totoro-review-a-monster-hit-86zjsjqcz",
       "findings": [
@@ -47482,7 +47507,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "October 19th, 2022",
       "url": "https://www.thetimes.co.uk/article/my-neighbour-totoro-review-animated-whimsy-takes-to-the-stage-with-aplomb-b28sv8dnl",
       "findings": [
@@ -48323,6 +48348,19 @@
       "score": null,
       "publishDate": "2025-10-09",
       "url": "https://www.nytimes.com/2025/10/09/theater/jen-tullock-severance-hand-of-god.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025",
+      "file": "nytimes--laura-collins-hughes.json",
+      "publishDate": "2025-10-14",
+      "url": "https://www.nytimes.com/2025/10/14/theater/nothing-can-take-you-from-the-hand-of-god-review.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -55648,7 +55686,7 @@
     {
       "showId": "present-laughter-2017",
       "file": "stagezine--david-nounou.json",
-      "score": 86,
+      "score": 88,
       "publishDate": "2017-04-09",
       "url": "http://www.stagezine.com/present-laughter-comedy-good-bad-manners/",
       "findings": [
@@ -58535,7 +58573,7 @@
     {
       "showId": "sea-wall-a-life-2019",
       "file": "dailybeast--tim-teeman.json",
-      "score": 62,
+      "score": 78,
       "publishDate": "2019-08-08",
       "url": "https://www.thedailybeast.com/sea-walla-life-jake-gyllenhaal-and-tom-sturridge-confront-life-and-death-on-broadway?source=articles&via=rss",
       "findings": [
@@ -62521,6 +62559,7 @@
     {
       "showId": "stereophonic-off-broadway-2023",
       "file": "nyt-theater--jonathan-mandell.json",
+      "score": 65,
       "publishDate": "2023-10-29",
       "url": "https://newyorktheater.me/2023/10/29/stereophonic-review/",
       "findings": [
@@ -62693,6 +62732,7 @@
     {
       "showId": "stereophonic-off-broadway-2023",
       "file": "thewrap--robert-hofler.json",
+      "score": 77,
       "publishDate": "2023-10-29",
       "url": "https://www.thewrap.com/stereophonic-off-broadway-review/",
       "findings": [
@@ -66218,7 +66258,7 @@
     {
       "showId": "take-me-out-2022",
       "file": "amny--matt-windman.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2022-04-04",
       "url": "https://www.amny.com/entertainment/theater/review-take-me-out-hits-a-home-run/",
       "findings": [
@@ -68452,6 +68492,7 @@
     {
       "showId": "the-chinese-lady-off-broadway-2022",
       "file": "the-interested-bystander--interested-bystander.json",
+      "score": 77,
       "publishDate": "2022-04-01",
       "url": "https://www.interestedbystander.com/2022/04/theater-reviews-chinese-lady-irish-of.html",
       "findings": [
@@ -68760,7 +68801,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "artsdesk--veronica-lee.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2025-05-15",
       "url": "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
       "findings": [
@@ -69158,7 +69199,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 72,
+      "score": 75,
       "publishDate": "2025-05-14",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-comedy-about-spies-review-inventive-humour-we-need-cd2nx6qlc",
       "findings": [
@@ -74781,6 +74822,7 @@
     {
       "showId": "the-minutes-2022",
       "file": "the-interested-bystander--interested-bystander.json",
+      "score": 65,
       "publishDate": "2022-06-03",
       "url": "https://www.interestedbystander.com/2022/06/broadway-reviews-ambitious-choreopoem.html",
       "findings": [
@@ -84397,6 +84439,19 @@
     },
     {
       "showId": "vanya-off-broadway-2025",
+      "file": "exeunt-magazine--carol-rocamora.json",
+      "publishDate": "2025-03-30",
+      "url": "https://exeuntnyc.com/reviews/review-vanya-at-the-lucille-lortel/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 90,
       "publishDate": "March 21st, 2025",
@@ -84584,6 +84639,19 @@
       "score": 92,
       "publishDate": "2025-03-24",
       "url": "https://www.theatrereviews.com/off-broadway-review-vanya-at-the-lucille-lortel-theatre-through-sunday-may-11-2025/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "theatrely--juan-a-ramirez.json",
+      "publishDate": "2025-03-19",
+      "url": "https://www.theatrely.com/post/andrew-scott-in-one-man-vanya-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -88415,6 +88483,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "picture-this-post--lauren-katz.json",
+      "score": 89,
       "publishDate": "2022-10-01",
       "url": "https://www.picturethispost.com/broadway-in-chicago-wicked-review",
       "findings": [
@@ -89309,7 +89378,7 @@
     {
       "showId": "4-48-psychosis-west-end-2025",
       "file": "guardian--arifa-akbar.json",
-      "score": 57,
+      "score": 61,
       "publishDate": "June 19th, 2025",
       "url": "https://www.theguardian.com/stage/2025/jun/19/448-psychosis-review-royal-court-theatre-london-sarah-kane-play",
       "findings": [
@@ -89337,7 +89406,7 @@
     {
       "showId": "4-48-psychosis-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 61,
+      "score": 57,
       "publishDate": "June 19th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/4-48-psychosis-royal-court-theatre-review-b1233744.html",
       "findings": [
@@ -100348,7 +100417,7 @@
     {
       "showId": "deaf-republic-west-end-2025",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 47,
       "publishDate": null,
       "url": "https://playsinternational.org.uk/deaf-republic-royal-court-theatre-downstairs/",
       "findings": [
@@ -100362,7 +100431,7 @@
     {
       "showId": "deaf-republic-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": null,
+      "score": 78,
       "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/deaf-republic-royal-court-jerwood-theatre-b1246686.html",
       "findings": [
@@ -101375,8 +101444,22 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 57,
+      "publishDate": "2026-11-19",
+      "url": "https://standard.co.uk/culture/theatre/desire-under-the-elms-review-b1305513.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "standard--unknown.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "2026-11-19",
       "url": "https://standard.co.uk/culture/theatre/desire-under-the-elms-review-b1305513.html",
       "findings": [
@@ -101435,6 +101518,20 @@
       "score": 89,
       "publishDate": "2026-11-18",
       "url": "https://viewfromthegods.co.uk/2026/11/18/desire-under-the-elms-almeida-islington/?utm_source=rss&utm_medium=rss&utm_campaign=desire-under-the-elms-almeida-islington",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "west-end-best-friend--oli-burgin.json",
+      "score": 72,
+      "publishDate": "2026-11-19",
+      "url": "https://www.westendbestfriend.co.uk/news/review-desire-under-the-elms-almeida-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -113848,7 +113945,7 @@
     {
       "showId": "just-for-one-day-the-live-aid-musical-west-end-2025",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 79,
       "publishDate": null,
       "url": "https://playsinternational.org.uk/just-for-one-day-shaftesbury-theatre/",
       "findings": [
@@ -118801,7 +118898,7 @@
     {
       "showId": "merry-me-off-broadway-2023",
       "file": "west-end-best-friend--liz-turner.json",
-      "score": 85,
+      "score": 90,
       "publishDate": "2023-11-06",
       "url": "https://www.westendbestfriend.co.uk/news/review-merry-me-new-york-theatre-workshop",
       "findings": [
@@ -120019,7 +120116,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "theupcoming--unknown.json",
-      "score": 83,
+      "score": null,
       "publishDate": "2026-08-27",
       "url": "https://www.theupcoming.co.uk/2026/08/27/caravan-covent-garden-unveils-my-neighbour-totoro-pre-theatre-menu/",
       "findings": [
@@ -122190,7 +122287,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2025-01-15",
       "url": "https://www.broadwayworld.com/westend/article/Review-OLIVER-Gielgud-Theatre-20250115",
       "findings": [
@@ -122306,7 +122403,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
-      "score": 94,
+      "score": 96,
       "publishDate": "January 15th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [
@@ -122376,7 +122473,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "theatre-weekly--unknown.json",
-      "score": 96,
+      "score": 95,
       "publishDate": null,
       "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
       "findings": [
@@ -134677,7 +134774,7 @@
     {
       "showId": "the-estate-west-end-2025",
       "file": "liamodell--liam-odell.json",
-      "score": 59,
+      "score": 49,
       "publishDate": "2025-07-22",
       "url": "https://liamodell.com/2025/07/22/the-estate-review-dorfman-theatre-national-theatre-cast-shaan-sahota-adeel-akhtar-daniel-raggett/",
       "findings": [
@@ -136321,7 +136418,7 @@
     {
       "showId": "the-importance-of-being-earnest-west-end-2024",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2024-11-29",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-IMPORTANCE-OF-BEING-EARNEST-National-Theatre-20241129",
       "findings": [
@@ -136335,6 +136432,7 @@
     {
       "showId": "the-importance-of-being-earnest-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 94,
       "publishDate": "2024-11-28",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-14138167/Oscar-Wildes-national-treasure-witty-reboot-PATRICK-MARMION-reviews.html",
       "findings": [
@@ -136418,7 +136516,7 @@
     {
       "showId": "the-importance-of-being-earnest-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
-      "score": 98,
+      "score": 99,
       "publishDate": "2024-11-29",
       "url": "https://www.londontheatre.co.uk/reviews/the-importance-of-being-earnest-review-national-theatre",
       "findings": [
@@ -137715,7 +137813,7 @@
     {
       "showId": "the-lion-king-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 85,
+      "score": 88,
       "publishDate": "2022-06-29",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-lion-king-london-review",
       "findings": [
@@ -142852,7 +142950,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "thestage--holly-omahony.json",
-      "score": 87,
+      "score": 90,
       "publishDate": "2024-08-02",
       "url": "https://www.thestage.co.uk/reviews/the-years-review-at-the-almeida-theatre-london-by-annie-ernaux-and-eline-arbo",
       "findings": [
@@ -142874,19 +142972,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
-        }
-      ]
-    },
-    {
-      "showId": "the-years-west-end-2025",
-      "file": "timeout-london--andrjez-lukowski.json",
-      "publishDate": null,
-      "url": "https://www.timeout.com/london/theatre/the-years-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
