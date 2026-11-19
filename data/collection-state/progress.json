@@ -1,136 +1,32 @@
 {
   "processed": [
-    "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "florence-off-west-end-2026/thereviewshub--unknown.json",
-    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-    "much-ado-about-nothing-2026/deadline--unknown.json",
-    "much-ado-about-nothing-2026/hercampus--jaden-sabathia.json",
-    "its-a-wonderful-life-a-live-radio-play-2026/whatsonstage--unknown.json",
-    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
-    "jenufa-off-broadway-2026/financialtimes--unknown.json",
-    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-    "now-you-see-me-live-2026/culturesauce--unknown.json"
+    "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
+    "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json",
+    "takes-all-kinds-regional-2026/dc-theater-arts--unknown.json"
   ],
   "failed": [
-    "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
-    "florence-off-west-end-2026/ign--unknown.json",
-    "florence-off-west-end-2026/sunday-times--unknown.json",
-    "much-ado-about-nothing-2026/timeout--unknown.json",
-    "king-lear-off-broadway-2026/patch--lauren-traut.json",
-    "medea-off-broadway-2026/express-uk--neil-norman.json",
-    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
-    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
-    "the-fantasticks-2026/nytimes--maya-phillips.json",
-    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
-    "downstate-2026/nytimes--unknown.json"
+    "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-      "florence-off-west-end-2026/thereviewshub--unknown.json",
-      "much-ado-about-nothing-2026/hercampus--jaden-sabathia.json",
-      "its-a-wonderful-life-a-live-radio-play-2026/whatsonstage--unknown.json",
-      "jenufa-off-broadway-2026/financialtimes--unknown.json",
-      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-      "now-you-see-me-live-2026/culturesauce--unknown.json"
+      "takes-all-kinds-regional-2026/dc-theater-arts--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/much-ado-about-nothing-2026/deadline--unknown.json",
-      "much-ado-about-nothing-2026/deadline--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
-      "florence-off-west-end-2026/daily-mail--joanna-crawley.json"
+      "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json"
     ],
     "scrapingbee": [
-      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
+      "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
+      "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json"
     ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "dogstar-off-west-end-2026/islingtontribune--unknown.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-11-19T21:11:20.819Z",
-  "lastProcessed": "downstate-2026/nytimes--unknown.json",
-  "log": [
-    {
-      "t": "2026-11-19T21:40:53.348Z",
-      "event": "bb-session",
-      "session": "c4d12d8a",
-      "url": "https://deadline.com/2026/11/broadway-box-office-much-ado-about-nothing-billy-cr"
-    },
-    {
-      "t": "2026-11-19T21:43:29.289Z",
-      "event": "bb-session",
-      "session": "3836a585",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-19T21:43:29.534Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T21:43:45.616Z",
-      "event": "bb-session",
-      "session": "d02b2b09",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-19T21:43:45.849Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T21:45:50.419Z",
-      "event": "bb-session",
-      "session": "f4875fb8",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-19T21:45:50.628Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T21:46:06.585Z",
-      "event": "bb-session",
-      "session": "dad02768",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-19T21:46:06.812Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T21:49:17.051Z",
-      "event": "bb-session",
-      "session": "a0406358",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-19T21:49:17.263Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T21:49:33.421Z",
-      "event": "bb-session",
-      "session": "70bfcb92",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-19T21:49:33.646Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-11-19T22:01:42.526Z",
+  "lastProcessed": "takes-all-kinds-regional-2026/dc-theater-arts--unknown.json",
+  "log": []
 }
