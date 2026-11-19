@@ -9,6 +9,7 @@ import {
   recoveredMissingKeys,
   countConditionKey,
   countConditionKeys,
+  liveCountKeys,
   openCountKeys,
 } from './scheduled-email-count-rules.js';
 
@@ -325,7 +326,7 @@ test('countConditionKey builds the sorted per-sender key the router files (BRO-6
 
 test('day 1 dup a, day 2 dup a+b: the dup-a row stays live while a still duplicates (BRO-7731)', () => {
   // The monitor's live set, built exactly as monitor-scheduled-email-count.js builds it.
-  const liveKeys = (violations) => violations.flatMap(({ decision }) => countConditionKeys(decision)).map((e) => e.key);
+  const liveKeys = liveCountKeys;
   const day2Only = [{ dayKey: '2026-11-17', decision: { unexpectedKeys: [], duplicateKeys: ['a', 'b'] } }];
   // Day 1 has left the 2-day live window; only day 2 is judged.
   assert.deepEqual(liveKeys(day2Only), ['scheduled-email-count:dup-a', 'scheduled-email-count:dup-b']);

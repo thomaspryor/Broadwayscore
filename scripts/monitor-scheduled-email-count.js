@@ -47,7 +47,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { fetchOwnerEmailsSince: fetchOwnerEmailsSinceShared } = require('./lib/resend-owner-emails.js');
-const { buildDailyReport, decideDayViolation, dayKeyET, countConditionKeys, openCountKeys } = require('./lib/scheduled-email-count-rules');
+const { buildDailyReport, decideDayViolation, dayKeyET, countConditionKeys, liveCountKeys, openCountKeys } = require('./lib/scheduled-email-count-rules');
 const { compareToBaseline } = require('./audit-alert-senders.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
@@ -209,7 +209,7 @@ async function main() {
   if (!DRY_RUN) {
     const router = require('./lib/owner-alert-router');
     // countConditionKeys and openCountKeys come from the top-level import; one key per sender (BRO-7731)
-    const current = completeViolations.flatMap(({ decision }) => countConditionKeys(decision)).map((e) => e.key);
+    const current = liveCountKeys(completeViolations);
     for (const key of router.resolveQuietConditions(openCountKeys(router.loadLedger().conditions, current), { reason: 'BRO-6918: no repeat of this scheduled-email count violation' })) {
       console.log(`resolved ${key} (quiet)`);
     }

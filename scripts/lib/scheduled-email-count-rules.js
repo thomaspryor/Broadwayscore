@@ -266,4 +266,9 @@ function openCountKeys(conditions, currentKeys = []) {
     .map(([key]) => key);
 }
 
-module.exports = { countConditionKey, countConditionKeys, openCountKeys, SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
+/** Keys of every violation still live, exactly as the monitor feeds them to the quiet sweep (BRO-7731). */
+function liveCountKeys(violations) {
+  return violations.flatMap(({ decision }) => countConditionKeys(decision)).map((e) => e.key);
+}
+
+module.exports = { countConditionKey, countConditionKeys, liveCountKeys, openCountKeys, SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
