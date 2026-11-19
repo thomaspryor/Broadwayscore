@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "showId": "la-distance-bam-off-broadway-2026",
+  "night": "2026-11-18",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-19T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-19T02:30:03.999Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-19T04:55:14.584Z",
+    "lastOkSampleAt": "2026-11-19T04:55:14.584Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-19T04:00:11.037Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-19T05:00:26.052Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-19T05:00:26.149Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-19T05:00:30.542Z",
+    "files": [
+      {
+        "file": "consequence--paolo-ragusa.json",
+        "outletId": "consequence",
+        "outlet": "Consequence",
+        "critic": "Paolo Ragusa",
+        "firstSeenAt": "2026-11-18T10:39:34.617Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "concerts.consequence.net/events/la-distance-at-harvey-theater-at-bam-strong-complex-on-2026-11-18-18-30",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
