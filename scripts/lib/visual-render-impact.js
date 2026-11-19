@@ -41,6 +41,9 @@ const CALLBACK_METHODS = new Set(['some', 'every', 'filter', 'map', 'find', 'fin
 // Imported helpers called in a guard condition must be named like predicates.
 const PREDICATE_NAME = /^(is|has|should|can|matches)[A-Z0-9_]|(Scrub|Redact|Sanitize)$/;
 // Extra markers that make a function body non-pure for the declaration-only module check.
+// Browser globals and window-reaching property names: a local named like one, or a property chain through one, is never trusted.
+const GLOBAL_NAMES = /^(window|globalThis|self|top|parent|frames|document|location|history|navigator|opener|view|defaultView|ownerDocument|contentWindow|contentDocument|localStorage|sessionStorage)$/;
+const GLOBAL_LOCALS = /^(window|globalThis|self|top|parent|document|location|history|navigator|opener|localStorage|sessionStorage)$/;
 const IMPURE_RE = /\b(window|globalThis|self|localStorage|sessionStorage|navigator|fetch|XMLHttpRequest|require|import|Function|eval|Reflect|Proxy)\b/;
 // Changed lines matching any of these can alter what is on screen even inside an effect: state setters, DOM writes,
 // class/style writes, imperative render calls.
@@ -136,6 +139,14 @@ function declaredNames(ts, node) {
   };
   visit(node);
   return out;
+}
+
+/** True when fn declares a local named like a browser global (so a later bare use could be the real global), or has a parameter called `frames`. */
+function shadowsGlobal(ts, fn) {
+  if ([...declaredNames(ts, fn)].some((nm) => GLOBAL_LOCALS.test(nm))) return true;
+  let hit = false;
+  (function v(n) { if (ts.isParameter(n) && ts.isIdentifier(n.name) && n.name.text === 'frames') hit = true; ts.forEachChild(n, v); })(fn);
+  return hit;
 }
 
 /** Scope facts for one filter hook: imported helpers (minus any name also declared in the file) and names local to the hook. */
@@ -276,7 +287,7 @@ function guardRanges(ts, sf, resolveImport) {
       if (fn && fn.body && ts.isBlock(fn.body)) {
         const ctx = hookCtx(ts, sf, fn, resolveImport);
         for (const prm of fn.parameters) if (ts.isIdentifier(prm.name)) ctx.locals.add(prm.name.text);
-        if (inertFn(ts, fn.body, ctx, sf)) {
+        if (!shadowsGlobal(ts, fn) && inertFn(ts, fn.body, ctx, sf)) {
           for (const st of fn.body.statements) {
             if (ts.isIfStatement(st) && !st.elseStatement && isReturnOfNothing(ts, st.thenStatement) && safeCond(ts, st.expression, { locals: ctx.locals, imported: ctx.strict })) out.push([st.getStart(sf), st.end]);
           }
@@ -325,12 +336,13 @@ function isDeclarationOnly(ts, file, text) {
   const K = ts.SyntaxKind;
   const moduleNames = declaredNames(ts, sf);
   const SAFE_GLOBALS = new Set(['undefined', 'NaN', 'Infinity', 'Math', 'String', 'Number', 'Boolean', 'Array', 'JSON', 'isNaN', 'parseInt', 'parseFloat']);
-  const PURE_METHODS = new Set([...SAFE_METHODS, ...CALLBACK_METHODS, 'toLowerCase', 'toUpperCase', 'trim', 'slice', 'split', 'join', 'map', 'filter', 'some', 'every', 'concat', 'replace', 'match', 'startsWith', 'endsWith', 'floor', 'ceil', 'round', 'min', 'max', 'abs', 'isArray']);
+  const PURE_METHODS = new Set([...SAFE_METHODS, ...CALLBACK_METHODS, 'toLowerCase', 'toUpperCase', 'trim', 'slice', 'split', 'join', 'map', 'filter', 'some', 'every', 'concat', 'startsWith', 'endsWith', 'floor', 'ceil', 'round', 'min', 'max', 'abs', 'isArray']);
   // A function body that can only compute from its parameters/locals/module declarations: no assignment, no calls except to
   // module-declared functions, safe globals and pure methods, no identifier from anywhere else (location, top, scrollTo ...).
   const pureFn = (fn) => {
     if (FORBIDDEN_LINE_RE.test(fn.getText(sf)) || IMPURE_RE.test(fn.getText(sf))) return false;
     const locals = declaredNames(ts, fn);
+    if (shadowsGlobal(ts, fn)) return false;
     let ok = true;
     const visit = (n) => {
       if (!ok) return;
@@ -339,6 +351,7 @@ function isDeclarationOnly(ts, file, text) {
         || ts.isJsxElement(n) || ts.isJsxSelfClosingElement(n) || ts.isJsxFragment(n)
         || ((ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) && (n.operator === K.PlusPlusToken || n.operator === K.MinusMinusToken))) { ok = false; return; }
       if (ts.isElementAccessExpression(n) && !ts.isNumericLiteral(n.argumentExpression)) { ok = false; return; }
+      if (ts.isPropertyAccessExpression(n) && GLOBAL_NAMES.test(n.name.text)) { ok = false; return; }
       if (ts.isPropertyAccessExpression(n) && /^(constructor|__proto__|prototype|call|apply|bind|getPrototypeOf|__defineGetter__|__lookupGetter__)$/.test(n.name.text)) { ok = false; return; }
       if (ts.isCallExpression(n)) {
         const c = n.expression;
