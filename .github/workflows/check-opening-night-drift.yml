@@ -288,25 +288,6 @@ jobs:
               }
             }
 
-      # BRO-7808: a show whose critics were embargoed days after its recorded openingDate has no lane lease, night run or
-      # watchdog. Advisory (BRO-2123): routes to the opening-night coordinator, never starts a lane, never fails the job.
-      # Outside the skip gates on purpose: it needs neither the drift window nor the rebuild race check.
-      - name: Late press-night watch (BRO-7808)
-        continue-on-error: true
-        timeout-minutes: 3
-        if: always()
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-        run: node scripts/late-press-night-watch.js
-
-      - name: Commit scraper-spend ledger
-        if: always()
-        continue-on-error: true
-        uses: ./.github/actions/commit-scraper-spend-ledger
-        with:
-          workflow-name: check-opening-night-drift
-
       - name: Commit updated drift state
         continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         # always(): routeAlert() has already written alert-ledger.json in-process
@@ -340,6 +321,25 @@ jobs:
             git commit -m "chore: update drift-state.json [skip ci]"
             bash scripts/lib/push-with-retry.sh 3 main
           fi
+
+      # BRO-7808: a show whose critics were embargoed days after its recorded openingDate has no lane lease, night run or
+      # watchdog. Advisory (BRO-2123): routes to the opening-night coordinator, never starts a lane, never fails the job.
+      # Outside the skip gates on purpose: it needs neither the drift window nor the rebuild race check.
+      - name: Late press-night watch (BRO-7808)
+        continue-on-error: true
+        timeout-minutes: 3
+        if: always()
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: node scripts/late-press-night-watch.js
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: check-opening-night-drift
 
       - name: Notify on failure
         if: failure()

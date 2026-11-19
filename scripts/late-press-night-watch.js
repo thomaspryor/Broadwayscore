@@ -109,4 +109,5 @@ async function main() {
   return 0;
 }
 
-main().then((c) => process.exit(c), (e) => { console.log(`::warning::late-press-night failed: ${e && e.stack ? e.stack.split('\n').slice(0, 3).join(' | ') : e}`); process.exit(0); });
+const { exitFlushed } = require('./lib/exit-flushed');
+main().then((c) => exitFlushed(c), (e) => { console.log(`::warning::late-press-night failed: ${e && e.stack ? e.stack.split('\n').slice(0, 3).join(' | ') : e}`); exitFlushed(0); });
