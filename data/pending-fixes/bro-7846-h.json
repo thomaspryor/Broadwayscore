@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7846-h",
   "planId": "42c0bb83-db12-45fb-859e-3fe8e66b61f5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T18:43:03.480Z",
   "submitter": {
     "name": null,
@@ -47,5 +47,19 @@
         "description": "Reject the 2023 revival TodayTix asset for the 2012 row (BRO-7846)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T19:29:18.939Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-effect-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-effect-west-end-2012"
+    }
+  ],
+  "executedIn": "ci"
 }
