@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7815",
   "planId": "273dc963-7b97-4020-8807-fdaad62bf6ea",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T06:50:18.294Z",
   "submitter": {
     "name": null,
@@ -113,5 +113,64 @@
         "description": "the-phantom-of-the-opera-1988/nytimes--jason-zinoman.json: wrongProduction"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T08:29:07.628Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beautiful-the-carole-king-musical-2014/nysr--melissa-rose-bernardo.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beautiful-the-carole-king-musical-2014/nysr--michael-sommers.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/city-cabaret--elizabeth-ahlfors.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/plays-to-see--paul-meltzer.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/theater-pizzazz--jk-clarke.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/stagezine--david-nounou.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/philadelphia-inquirer--toby-zinman.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/wnyc--jennifer-vanasco.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/theater-scene--julia-polinsky.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-of-ages-2009/variety--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-phantom-of-the-opera-1988/nytimes--jason-zinoman.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ],
+  "executedIn": "ci"
 }
