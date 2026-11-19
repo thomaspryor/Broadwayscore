@@ -6,8 +6,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { cardFit, regionalLocalPaths, writeRegionalFormats } = require('./regional-key-art.js');
-const { entryProblem, imagesAction } = require('../apply-verified-key-art.js');
+const { cardFit, regionalLocalPaths, writeRegionalFormats, entryProblem, imagesAction } = require('./regional-key-art.js');
 
 test('cardFit only cover-crops art already close to the card shape', () => {
   const poster = 480 / 720;

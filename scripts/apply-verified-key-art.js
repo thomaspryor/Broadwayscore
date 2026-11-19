@@ -28,35 +28,11 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { regionalLocalPaths, writeRegionalFormats } = require('./lib/regional-key-art');
+const { writeRegionalFormats, entryProblem, imagesAction } = require('./lib/regional-key-art');
 
 const ROOT = path.join(__dirname, '..');
 const USAGE = 'Usage: node scripts/apply-verified-key-art.js --manifest=<file.json> [--dry-run] [--actions-out=<file.json>]';
 const MIN_WIDTH = 400; // the automatic regional path's floor (fetchFromRegionalVenue)
-
-/** Why an entry cannot be applied, or null. Pure. */
-function entryProblem(entry, show) {
-  if (!entry || typeof entry !== 'object') return 'entry is not an object';
-  if (!show) return `show ${entry.showId} not in shows.json`;
-  if (show.category !== 'regional') return `${show.id} is ${show.category || 'uncategorised'}, not regional`;
-  for (const k of ['page', 'image']) {
-    if (typeof entry[k] !== 'string' || !/^https:\/\/\S+$/i.test(entry[k])) return `${k} must be an https URL`;
-  }
-  const rejected = Array.isArray(show.rejectedImageUrls) ? show.rejectedImageUrls : [];
-  if (rejected.includes(entry.image) || rejected.includes(entry.page)) return 'image or page is in the show\'s rejectedImageUrls';
-  return null;
-}
-
-/** The shows.json images data-edit for one show, or null when its paths already match. Pure. */
-function imagesAction(show, note) {
-  const newValue = regionalLocalPaths(show.id);
-  const oldValue = show.images && typeof show.images === 'object' ? show.images : null;
-  if (oldValue && ['poster', 'thumbnail', 'hero'].every((k) => oldValue[k] === newValue[k])) return null;
-  return {
-    type: 'data-edit', file: 'shows.json', showId: show.id, field: 'images', oldValue, newValue,
-    description: `${show.id}: key art from the production's own page (${note || 'hand-verified'}), BRO-7265`,
-  };
-}
 
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
@@ -111,4 +87,4 @@ async function main(argv = process.argv.slice(2)) {
 }
 
 if (require.main === module) main().then((c) => { process.exitCode = c; });
-module.exports = { entryProblem, imagesAction, main };
+module.exports = { main };

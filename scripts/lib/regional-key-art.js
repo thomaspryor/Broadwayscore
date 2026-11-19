@@ -73,4 +73,28 @@ async function writeRegionalFormats(sharpLib, buffer, dir, fsImpl = require('fs'
   fsImpl.writeFileSync(pathImpl.join(dir, 'hero.webp'), await fitCard(sharpLib, buffer, 1600, 1000, 82, { trim: false }));
 }
 
-module.exports = { cardFit, fitCard, portraitCardFromKeyArt, regionalLocalPaths, writeRegionalFormats };
+/** Why an entry cannot be applied, or null. Pure. */
+function entryProblem(entry, show) {
+  if (!entry || typeof entry !== 'object') return 'entry is not an object';
+  if (!show) return `show ${entry.showId} not in shows.json`;
+  if (show.category !== 'regional') return `${show.id} is ${show.category || 'uncategorised'}, not regional`;
+  for (const k of ['page', 'image']) {
+    if (typeof entry[k] !== 'string' || !/^https:\/\/\S+$/i.test(entry[k])) return `${k} must be an https URL`;
+  }
+  const rejected = Array.isArray(show.rejectedImageUrls) ? show.rejectedImageUrls : [];
+  if (rejected.includes(entry.image) || rejected.includes(entry.page)) return 'image or page is in the show\'s rejectedImageUrls';
+  return null;
+}
+
+/** The shows.json images data-edit for one show, or null when its paths already match. Pure. */
+function imagesAction(show, note) {
+  const newValue = regionalLocalPaths(show.id);
+  const oldValue = show.images && typeof show.images === 'object' ? show.images : null;
+  if (oldValue && ['poster', 'thumbnail', 'hero'].every((k) => oldValue[k] === newValue[k])) return null;
+  return {
+    type: 'data-edit', file: 'shows.json', showId: show.id, field: 'images', oldValue, newValue,
+    description: `${show.id}: key art from the production's own page (${note || 'hand-verified'}), BRO-7265`,
+  };
+}
+
+module.exports = { entryProblem, imagesAction, cardFit, fitCard, portraitCardFromKeyArt, regionalLocalPaths, writeRegionalFormats };
