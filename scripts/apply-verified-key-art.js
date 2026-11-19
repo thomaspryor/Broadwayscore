@@ -85,7 +85,11 @@ async function main(argv = process.argv.slice(2)) {
     try {
       const res = await fetch(entry.image, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard key-art)' }, signal: AbortSignal.timeout(30000) });
       if (!res.ok) throw new Error(`image HTTP ${res.status}`);
+      if (!/^https:\/\//i.test(res.url || entry.image)) throw new Error(`redirected off https: ${res.url}`);
+      if (!/^image\//i.test(res.headers.get('content-type') || '')) throw new Error(`not an image: ${res.headers.get('content-type')}`);
+      if (Number(res.headers.get('content-length') || 0) > 25 * 1024 * 1024) throw new Error('image over 25MB');
       const buffer = Buffer.from(await res.arrayBuffer());
+      if (buffer.length > 25 * 1024 * 1024) throw new Error('image over 25MB');
       const meta = await sharp(buffer).metadata();
       if (!meta.width || meta.width < MIN_WIDTH) throw new Error(`image too small (${meta.width}px < ${MIN_WIDTH})`);
       if (!dryRun) {
