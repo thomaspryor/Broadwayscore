@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7572",
   "planId": "27e1b695-5648-497e-8b73-cf313aacd63b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T00:59:28.657Z",
   "submitter": {
     "name": null,
@@ -68,5 +68,24 @@
         ]
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T02:08:18.168Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for teibele-and-her-demon-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-national-health-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for not-now-darling-1970"
+    }
+  ],
+  "executedIn": "ci"
 }
