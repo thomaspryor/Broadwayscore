@@ -471,20 +471,6 @@
     "queuedAt": "2026-11-19T13:27:27.433Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T15:32:59.345Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
     "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
@@ -631,6 +617,20 @@
       }
     ],
     "queuedAt": "2026-11-19T16:06:11.355Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T16:51:12.404Z"
   },
   {
     "conditionKey": "test-yml:data-validation-red:run-data-validation",

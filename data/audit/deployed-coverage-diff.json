@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-19T15:36:06.513Z",
+  "generatedAt": "2026-11-19T16:51:40.858Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 359,
-  "clean": 359,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 358,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "title": "Blue Man Group “A New Holiday Surprise”",
+      "openingDate": "2026-11-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 50.73 vs local 49.28 (Δ1.45)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-19T16:51:29.732Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
