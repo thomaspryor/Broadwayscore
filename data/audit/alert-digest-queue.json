@@ -796,5 +796,33 @@
       }
     ],
     "queuedAt": "2026-11-19T17:36:19.334Z"
+  },
+  {
+    "conditionKey": "cookie-renew:probe-vacuous:newyorker",
+    "title": "Cookie renew: newyorker probe URL is no longer walled",
+    "description": "https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain shows the full article to a browser with no session. Pick a recent walled article in scripts/lib/cookie-probes.js.",
+    "severity": "error",
+    "url": "https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T17:16:50.897Z"
+  },
+  {
+    "conditionKey": "cookie-renew:probe-vacuous:telegraph",
+    "title": "Cookie renew: telegraph probe URL is no longer walled",
+    "description": "https://www.telegraph.co.uk/theatre/what-to-see/romeo-and-juliet-review-sadie-sink-noah-jupe/ shows the full article to a browser with no session. Pick a recent walled article in scripts/lib/cookie-probes.js.",
+    "severity": "error",
+    "url": "https://www.telegraph.co.uk/theatre/what-to-see/romeo-and-juliet-review-sadie-sink-noah-jupe/",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T17:17:29.387Z"
   }
 ]
