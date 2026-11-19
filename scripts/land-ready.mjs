@@ -104,7 +104,15 @@ export async function gather({ cwd = process.cwd(), base = 'origin/main', doctor
   const noLog = { ...process.env, VISUAL_RENDER_IMPACT_LOG: '/dev/null' };
   const afterRender = (() => {
     if (!afterText.length) return afterText;
-    const r = spawnSync('node', [path.join(HERE, 'lib', 'visual-render-impact.js'), '--filter', range], { cwd, input: afterText.join('\n'), encoding: 'utf8', env: noLog });
+    // Same detector copy the push hook runs: the main checkout's, so a branch cannot loosen it and get a wrong "no approval" line here.
+    let detector = path.join(HERE, 'lib', 'visual-render-impact.js');
+    try {
+      let g = path.resolve(cwd, git(cwd, ['rev-parse', '--git-common-dir']));
+      g = path.basename(g) === '.git' ? path.dirname(g) : null;
+      const cand = g && path.join(g, 'scripts', 'lib', 'visual-render-impact.js');
+      if (cand && existsSync(cand)) detector = cand;
+    } catch { /* fall back to this checkout's copy */ }
+    const r = spawnSync('node', [detector, '--filter', range], { cwd, input: afterText.join('\n'), encoding: 'utf8', env: noLog, timeout: 20000 });
     return r.status === 0 ? r.stdout.split('\n').filter(Boolean) : afterText;
   })();
   f.gatedFiles = afterRender;
