@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T15:24:54.339Z",
+  "timestamp": "2026-11-19T15:42:55.715Z",
   "stats": {
-    "totalReviews": 82882,
-    "alreadyFlagged": 22502,
+    "totalReviews": 82898,
+    "alreadyFlagged": 22505,
     "dateGuardCatches": 221,
-    "directorMismatch": 3790,
+    "directorMismatch": 3787,
     "tvFilmSignals": 2367,
-    "londonSignals": 3820,
+    "londonSignals": 3821,
     "offBroadwaySignals": 771,
     "yearMismatch": 385,
-    "noPublishDate": 8247
+    "noPublishDate": 8246
   },
   "findings": [
     {
@@ -40119,29 +40119,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2014 (2x) more than 2026 (0x). 2014 matches production: les-miserables-2014"
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "file": "nytimes--helen-shaw.json",
-      "publishDate": "2026-08-28",
-      "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john caird\" from les-miserables-2006"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
         }
       ]
     },
@@ -125892,6 +125869,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "relative-motion-off-west-end-2026",
+      "file": "sierz-co-uk--unknown.json",
+      "publishDate": "2026-11-19",
+      "url": "https://sierz.co.uk/reviews/relative-motion-southwark-playhouse-borough/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
