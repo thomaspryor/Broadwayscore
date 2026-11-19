@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T17:09:26.764Z",
+  "timestamp": "2026-11-19T17:30:45.257Z",
   "stats": {
-    "totalReviews": 82967,
-    "alreadyFlagged": 22506,
+    "totalReviews": 83008,
+    "alreadyFlagged": 22517,
     "dateGuardCatches": 221,
-    "directorMismatch": 3787,
-    "tvFilmSignals": 2368,
+    "directorMismatch": 3786,
+    "tvFilmSignals": 2369,
     "londonSignals": 3822,
-    "offBroadwaySignals": 772,
+    "offBroadwaySignals": 770,
     "yearMismatch": 386,
-    "noPublishDate": 8269
+    "noPublishDate": 8295
   },
   "findings": [
     {
@@ -27342,20 +27342,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "guys-and-dolls-2009",
-      "file": "nytimes--ben-brantley.json",
-      "score": 34,
-      "publishDate": "March 2, 2009",
-      "url": "https://www.nytimes.com/2009/03/02/theater/reviews/02guys.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from guys-and-dolls-1992"
         }
       ]
     },
@@ -67026,6 +67012,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv\nshow\""
+        }
+      ]
+    },
+    {
+      "showId": "the-antiquities-off-broadway-2025",
+      "file": "broadway-and-me--unknown.json",
+      "publishDate": "2025-02-08",
+      "url": "https://broadwayandme.blogspot.com/2025/02/the-antiquities-is-superbly-up-to-date.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -126450,34 +126449,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-2013",
-      "file": "vulture--jesse-green.json",
-      "score": 52,
-      "publishDate": "September 20, 2013",
-      "url": "https://www.vulture.com/2013/09/theater-review-romeo-and-juliet.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-2013",
-      "file": "vulture--scott-brown.json",
-      "score": 52,
-      "publishDate": "September 20, 2013",
-      "url": "https://www.vulture.com/2013/09/theater-review-romeo-and-juliet.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
