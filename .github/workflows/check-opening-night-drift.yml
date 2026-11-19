@@ -300,6 +300,13 @@ jobs:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: node scripts/late-press-night-watch.js
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: check-opening-night-drift
+
       - name: Commit updated drift state
         continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
         # always(): routeAlert() has already written alert-ledger.json in-process
