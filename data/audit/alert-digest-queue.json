@@ -590,31 +590,18 @@
     "queuedAt": "2026-11-19T16:06:11.355Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red:run-data-validation",
-    "title": "Data audit failing: Run data validation",
-    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-    "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44566999976",
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
     "decision": false,
-    "info": false,
+    "info": true,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "Job",
-        "value": "Data Validation"
-      },
-      {
-        "name": "Step",
-        "value": "Run data validation"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44566999976)"
-      }
-    ],
-    "queuedAt": "2026-11-19T16:41:50.925Z"
+    "fields": [],
+    "queuedAt": "2026-11-19T18:13:24.710Z"
   },
   {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:its-a-wonderful-life-a-live-radio-play-2026",
@@ -783,20 +770,6 @@
     "queuedAt": "2026-11-19T17:36:19.334Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T18:13:24.710Z"
-  },
-  {
     "conditionKey": "cookie-renew:probe-vacuous:newyorker",
     "title": "Cookie renew: newyorker probe URL is no longer walled",
     "description": "https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain shows the full article to a browser with no session. Pick a recent walled article in scripts/lib/cookie-probes.js.",
@@ -884,6 +857,33 @@
     "testId": "tests/unit/book-of-mormon-2011-criticname.test.mjs::BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors",
     "fields": [],
     "queuedAt": "2026-11-19T18:03:56.924Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-data-validation",
+    "title": "Data audit failing: Run data validation",
+    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44585347440",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run data validation"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44585347440)"
+      }
+    ],
+    "queuedAt": "2026-11-19T18:39:15.363Z"
   },
   {
     "conditionKey": "land:land/bro-7847-ledger-persist",
