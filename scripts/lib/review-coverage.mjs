@@ -49,6 +49,7 @@
 
 import './llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -119,6 +120,13 @@ const isExternalReviewCall = (cmd) => {
   const visible = stripHeredocBodies(cmd);
   return (CURL_POS_RE.test(code) && MODEL_ENDPOINT_RE.test(visible) && DATA_FLAG_RE.test(visible)) || CODEX_POS_RE.test(code);
 };
+// BRO-7839: the third ship-check reviewer asks the owner's question ("is this fully tested?") over the diff plus the
+// commands the session ran. It counts once its output carries the SKEPTIC REVIEW verdict line. Required from
+// SKEPTIC_REQUIRED_FROM (CLAUDE.md rule 19: advisory first); before that a missing run is only reported.
+export const SKEPTIC_CMD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+|timeout\s+\S+\s+)*node\s+\S*skeptic-review-stop\.mjs\s+--ship-check\b/;
+export const SKEPTIC_VERDICT_RE = /^SKEPTIC REVIEW: /m;
+export const SKEPTIC_REQUIRED_FROM = '2026-11-25';
+export const isSkepticReviewCall = (cmd) => SKEPTIC_CMD_RE.test(shellCode(cmd));
 const substantiveResult = (r) => !!r && !r.isError && String(r.content || '').trim().length >= MIN_RESULT_CHARS && !/"error"\s*:/.test(String(r.content));
 export const NO_SHIP_CHECK_RE = /#\s*NO-SHIP-CHECK:\s*(\S.{14,})/;
 
@@ -161,7 +169,7 @@ export function findRuns(events, skills = STRONG_SKILLS) {
  * Coverage after the last strong review run in the session.
  * -> { ran, complete, skill, missing: string[], evidence|null }
  */
-export function evaluateCoverage(events, { requireBuild = false } = {}) {
+export function evaluateCoverage(events, { requireBuild = false, now = new Date() } = {}) {
   const runs = findRuns(events);
   if (runs.length === 0) {
     return { ran: false, complete: false, skill: null, missing: ['no /ship-check or /code-review run in this session'], evidence: null };
@@ -180,12 +188,15 @@ export function evaluateCoverage(events, { requireBuild = false } = {}) {
   const answeredWell = (id) => substantiveResult(results.get(id));
   const claude = [];
   const external = [];
+  const skeptic = [];
   for (const e of events.slice(last.i + 1)) {
     if (e.kind !== 'assistant_tool_use') continue;
     if (e.name === 'Agent' || e.name === 'Task') {
       if (String(e.input?.prompt || '').length >= MIN_PANELIST_PROMPT && /\b(?:review|audit|adversar\w*)\b/i.test(String(e.input?.prompt)) && answered(e.id)) claude.push(e);
     } else if (e.name === 'Bash' && isExternalReviewCall(String(e.input?.command || '')) && answeredWell(e.id)) {
       external.push(e);
+    } else if (e.name === 'Bash' && isSkepticReviewCall(String(e.input?.command || '')) && answered(e.id) && SKEPTIC_VERDICT_RE.test(String(results.get(e.id)?.content || ''))) {
+      skeptic.push(e);
     }
   }
   // land.yml runs tsc + lint but NOT `next build`; a src/ change needs the build run by the session.
@@ -195,18 +206,23 @@ export function evaluateCoverage(events, { requireBuild = false } = {}) {
   if (requireBuild && !built) missing.push('the build (`npm run build`, Phase 2 of ship-check): land.yml does not run it and this diff touches src/');
   if (claude.length === 0) missing.push('Claude codebase review (an Agent call, subagent_type review-panelist, with a real review prompt of 200+ characters)');
   if (external.length === 0) missing.push('external adversarial review (curl -d to api.openai.com /v1/chat/completions, Gemini generateContent, or `codex exec`) with a real response');
+  const advisory = [];
+  if (skeptic.length === 0) {
+    const m = 'skeptic "is this fully tested?" review (`node scripts/lib/skeptic-review-stop.mjs --ship-check`, Phase 5 of ship-check) with its SKEPTIC REVIEW verdict';
+    (now.toISOString().slice(0, 10) >= (process.env.REVIEW_COVERAGE_SKEPTIC_FROM || SKEPTIC_REQUIRED_FROM) ? missing : advisory).push(m);
+  }
   const complete = missing.length === 0;
   let evidence = null;
   if (complete) {
     const h = createHash('sha256');
-    for (const e of [...claude, ...external]) h.update(`${e.id}\n${results.get(e.id)?.content || ''}\n`);
+    for (const e of [...claude, ...external, ...skeptic]) h.update(`${e.id}\n${results.get(e.id)?.content || ''}\n`);
     evidence = {
       outputsHash: h.digest('hex'),
       invocationId: String(last.id),
-      checks: [`claude-subagent-review x${claude.length}`, `external-review x${external.length}`],
+      checks: [`claude-subagent-review x${claude.length}`, `external-review x${external.length}`, ...(skeptic.length ? [`skeptic-review x${skeptic.length}`] : [])],
     };
   }
-  return { ran: true, complete, skill: last.skill, missing, evidence };
+  return { ran: true, complete, skill: last.skill, missing, advisory, evidence };
 }
 
 /**
@@ -461,6 +477,29 @@ function stopHookMain() {
   return 2;
 }
 
+/**
+ * Amend HEAD's message with the Review-Receipt trailer (BRO-5411) when it is safe:
+ * HEAD is not already on origin/main, does not already carry one, and only the message changes (--only keeps any
+ * staged files out). Never throws. -> { stamped, reason }
+ */
+export function stampReceipt({ cwd, evidence, run = execFileSync }) {
+  const g = (args) => String(run('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
+  try {
+    const line = createRequire(import.meta.url)('./review-receipt.js').formatReceipt(evidence);
+    if (!line) return { stamped: false, reason: 'no evidence to stamp' };
+    const msg = g(['log', '-1', '--format=%B']).trimEnd();
+    if (/^Review-Receipt:/m.test(msg)) return { stamped: false, reason: 'HEAD already carries a receipt' };
+    try {
+      g(['merge-base', '--is-ancestor', 'HEAD', 'origin/main']);
+      return { stamped: false, reason: 'HEAD is already on origin/main (commit first, then record)' };
+    } catch { /* not on main: safe to amend */ }
+    g(['commit', '--amend', '--only', '--no-verify', '--cleanup=verbatim', '-m', `${msg}\n\n${line}`]);
+    return { stamped: true, reason: line };
+  } catch (e) {
+    return { stamped: false, reason: `git failed: ${String(e && e.message).split('\n')[0]}` };
+  }
+}
+
 /** Find this session's transcript (cloud keeps them under ~/.claude/projects/*). */
 export function findSessionTranscript(sessionId, home = os.homedir()) {
   if (!sessionId) return null;
@@ -494,12 +533,19 @@ async function main(argv) {
       process.stderr.write(`review-coverage: NOT recording a pass. Missing:\n${cov.missing.map((m) => `  - ${m}`).join('\n')}\n`);
       return 3;
     }
-    const { recordVerdict } = await import('./review-gate.mjs');
+    if (cov.advisory?.length) process.stderr.write(`review-coverage: advisory (required from ${SKEPTIC_REQUIRED_FROM}):\n${cov.advisory.map((m) => `  - ${m}`).join('\n')}\n`);
     const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+    // BRO-7839: stamp the Review-Receipt trailer here, BEFORE the verdict records HEAD (amending after would leave the
+    // recorded head off HEAD's ancestry). Before this, `review-receipt.js stamp` was a separate step almost no session
+    // ran: 4 of 307 receipt-required landings since 2026-11-12 carried one.
+    const st = stampReceipt({ cwd: process.cwd(), evidence: cov.evidence });
+    process.stderr.write(`review-coverage: receipt ${st.stamped ? 'stamped on HEAD' : `not stamped (${st.reason})`}\n`);
+    const { recordVerdict } = await import('./review-gate.mjs');
     const r = recordVerdict({ repoRoot, reviewer: cov.skill, result: 'pass', sessionId: process.env.CLAUDE_CODE_SESSION_ID || null, evidence: cov.evidence });
     process.stdout.write(JSON.stringify(r) + '\n');
     return 0;
   }
+  if (!argv.includes('--json') && cov.advisory?.length) process.stdout.write(`advisory (required from ${SKEPTIC_REQUIRED_FROM}):\n${cov.advisory.map((m) => `  - ${m}`).join('\n')}\n`);
   if (!argv.includes('--json')) {
     process.stdout.write(cov.complete ? `coverage complete (${cov.skill})\n` : `coverage incomplete:\n${cov.missing.map((m) => `  - ${m}`).join('\n')}\n`);
   }

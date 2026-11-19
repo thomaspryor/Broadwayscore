@@ -7,6 +7,7 @@ import path from 'node:path';
 import {
   stopHookDecision, buildReviewInput, codeEditIndices, redact, parseGaps, callReviewer, reviewPrompt,
   bypassReason, roundBudget, blockMessage, digest, main, SKEPTIC_BLOCKING_FROM, MAX_ROUNDS,
+  lastSkepticShipCheckIndex, shipCheckReport,
 } from './skeptic-review-stop.mjs';
 
 const CLOUD = { CLAUDE_CODE_REMOTE: 'true', OPENAI_API_KEY: 'sk-test-key-not-real-000000', SKEPTIC_REVIEW_LOG: path.join(os.tmpdir(), `skeptic-test-log-${process.pid}.jsonl`) };
@@ -191,4 +192,53 @@ test('verify-edits.sh wires the gate (a Mac-master sync must not drop it)', () =
   assert.match(sh, /SKEPTIC_REVIEW_STOP_DISABLE/);
   assert.match(sh, /skeptic-review-stop\.mjs" --stop-hook/);
   assert.match(sh, /\[VE:SKEPTIC\]/);
+});
+
+// ---------------------------------------------------------------- ship-check mode (BRO-7839 steer: reviewer inside /ship-check)
+const SHIP = 'node scripts/lib/skeptic-review-stop.mjs --ship-check';
+
+test('backstop: a ship-check skeptic run after the last code edit lets the close through without a call; an edit after it does not', () => {
+  const ran = tool('Bash', { command: SHIP }, 'SKEPTIC REVIEW: no material gaps.');
+  assert.equal(stopHookDecision({ lastMessage: CLAIM, events: [...editCode(), ...ran], env: CLOUD }).decision, 'allow');
+  assert.equal(stopHookDecision({ lastMessage: CLAIM, events: [...editCode(), ...ran, ...editCode()], env: CLOUD }).decision, 'review');
+  // A run that printed no verdict (crashed, or only echoed the name) is not coverage.
+  const crashed = tool('Bash', { command: SHIP }, 'Error: Cannot find module', true);
+  assert.equal(stopHookDecision({ lastMessage: CLAIM, events: [...editCode(), ...crashed], env: CLOUD }).decision, 'review');
+  const echoed = tool('Bash', { command: `echo ${SHIP}` }, 'SKEPTIC REVIEW: no material gaps.');
+  assert.equal(lastSkepticShipCheckIndex([...editCode(), ...echoed]), -1);
+});
+
+test('shipCheckReport: verdict line first, material gaps with checks, minor gaps apart, errors still print the verdict line', () => {
+  const r = shipCheckReport({ gaps: [{ what: 'never ran X', why: 'unit only', check: 'node x.js', severity: 'material' }, { what: 'typo', check: '', severity: 'minor' }] });
+  assert.match(r, /^SKEPTIC REVIEW: 1 material gap\(s\)/);
+  assert.match(r, /1\. never ran X \(unit only\)\n {3}check: node x\.js/);
+  assert.match(r, /Minor \(optional\):\n1\. typo/);
+  assert.equal(shipCheckReport({ gaps: [] }), 'SKEPTIC REVIEW: no material gaps.');
+  assert.match(shipCheckReport({ error: 'no OPENAI_API_KEY' }), /^SKEPTIC REVIEW: unavailable \(no OPENAI_API_KEY\)/);
+});
+
+test('main --ship-check: reads the transcript, reviews only work since the last landed push, prints the verdict, exits 0', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'skr-ship-'));
+  const tp = path.join(dir, 't.jsonl');
+  const line = (o) => JSON.stringify(o);
+  const use = (id, name, input) => line({ type: 'assistant', message: { id: `m${id}`, content: [{ type: 'tool_use', id, name, input }] } });
+  const out = (id, content) => line({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: id, content }] } });
+  fs.writeFileSync(tp, [
+    use('a1', 'Edit', { file_path: '/home/user/Broadwayscore/scripts/lib/old.js', old_string: 'x', new_string: 'y' }), out('a1', 'ok'),
+    use('a2', 'Bash', { command: 'git push origin HEAD:refs/heads/land/old' }), out('a2', 'To github.com:o/r.git\n * [new branch] HEAD -> land/old'),
+    use('a3', 'Edit', { file_path: '/home/user/Broadwayscore/scripts/lib/new.js', old_string: 'x', new_string: 'y' }), out('a3', 'ok'),
+  ].join('\n') + '\n');
+  let body = null;
+  const fetchImpl = async (_u, init) => { body = JSON.parse(init.body); return { ok: true, status: 200, json: async () => ({ choices: [{ message: { content: JSON.stringify({ verdict: 'gaps', gaps: [{ what: 'new.js never ran', check: 'node scripts/lib/new.js', severity: 'material' }] }) } }], usage: {} }) }; };
+  const writes = [];
+  const orig = process.stdout.write.bind(process.stdout);
+  process.stdout.write = (c) => { writes.push(String(c)); return true; };
+  let code;
+  try { code = await main(['--ship-check', `--transcript=${tp}`], { env: CLOUD, fetchImpl }); } finally { process.stdout.write = orig; }
+  assert.equal(code, 0);
+  assert.match(writes.join(''), /^SKEPTIC REVIEW: 1 material gap\(s\)[\s\S]*check: node scripts\/lib\/new\.js/);
+  const sent = body.messages.map((m) => m.content).join('\n');
+  assert.match(sent, /new\.js/);
+  assert.doesNotMatch(sent, /old\.js/, 'work landed before the last push is not re-reviewed');
+  fs.rmSync(dir, { recursive: true, force: true });
 });

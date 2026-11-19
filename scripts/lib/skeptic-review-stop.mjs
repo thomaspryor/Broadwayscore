@@ -12,13 +12,14 @@
 //
 // Input is built from the transcript alone (buildReviewInput), so scripts/lib/skeptic-review-replay.mjs runs the same
 // review on past sessions. Secrets are redacted before anything leaves the container (redact()).
-// Reviewer: OpenAI (the key cloud containers have), model pin GPT54_MINI, 25s cap, spend metered through
-// gemini-usage-ledger logSessionCall (caller skeptic-review-stop). Any error, timeout or missing key allows (fails open).
+// Reviewer: OpenAI (the key cloud containers have), model pin GPT54_MINI, 25s cap, spend metered by the
+// install() fetch meter, pointed at the session ledger (meterToSessionLedger). Any error, timeout or missing key allows (fails open).
 //
 // Rollout (CLAUDE.md rule 19, same shape as live-run-stop): one block per chunk until SKEPTIC_BLOCKING_FROM, then up
 // to MAX_ROUNDS. Every decision goes to .cache/skeptic-review-stop.log (`--digest` counts them).
 // Bypass: NO-SKEPTIC: <15+ chars> (a schedule-only reason is refused). Kill switch SKEPTIC_REVIEW_STOP_DISABLE=1.
 // Wired in .claude/hooks/verify-edits.sh as [VE:SKEPTIC]; pinned by skeptic-review-stop.test.mjs.
+import './llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043); main() points it at the session ledger
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -26,7 +27,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
-import { claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex } from './review-coverage.mjs';
+import { claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex, landedPushIndices, findSessionTranscript, isSkepticReviewCall, SKEPTIC_VERDICT_RE } from './review-coverage.mjs';
 import { shellEditsCode } from './retro-coverage-stop.mjs';
 import { defersProof } from './live-run-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
@@ -208,14 +209,19 @@ export async function callReviewer(input, { env = process.env, fetchImpl = globa
   } catch (e) { return { error: `reviewer call failed: ${e && e.name === 'TimeoutError' ? 'timeout' : e && e.message}` }; }
   let json;
   try { json = await res.json(); } catch { return { error: `reviewer HTTP ${res.status}, unreadable body` }; }
-  meter(model, json);
   if (!res.ok) return { error: `reviewer HTTP ${res.status}: ${clip(json?.error?.message, 160)}` };
   const parsed = parseGaps(json?.choices?.[0]?.message?.content);
   return parsed.error ? parsed : { gaps: parsed.gaps, usage: json.usage || null };
 }
 
-function meter(model, json) {
-  try { require('./gemini-usage-ledger.js').logSessionCall({ provider: 'openai', model, response: json, caller: 'skeptic-review-stop' }); } catch { /* record only */ }
+/**
+ * Spend goes through the install() fetch meter (one count per call). This runs as a Stop hook in a session checkout,
+ * where the committed ledger must stay untouched (CI owns it), so point the meter at the session ledger, which is
+ * the tracked ledger again under GITHUB_ACTIONS or a test run. Call before the first reviewer request.
+ */
+export function meterToSessionLedger(env = process.env) {
+  if (env.GEMINI_USAGE_LEDGER_PATH) return;
+  try { env.GEMINI_USAGE_LEDGER_PATH = require('./gemini-usage-ledger.js').sessionLedgerPath(); } catch { /* record only */ }
 }
 
 /** PURE. Does an accepted NO-SKEPTIC bypass appear in this chunk (or the claim)? */
@@ -240,10 +246,40 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const from = lastAcceptedClaimIndex(events, lastMessage);
   const edits = codeEditIndices(events, from);
   if (!edits.length) return { decision: 'allow', reason: 'no code edits in this chunk' };
+  // Backstop only (BRO-7839): /ship-check runs this same reviewer in Phase 5. If it ran after the last code edit, the
+  // gaps were already in front of the session before landing; do not pay for a second read at close.
+  const shipCheckReview = lastSkepticShipCheckIndex(events);
+  if (shipCheckReview > edits[edits.length - 1]) return { decision: 'allow', reason: 'ship-check skeptic review ran after the last code edit' };
   const by = bypassReason(events, from, lastMessage);
   if (by) return { decision: 'allow', reason: `NO-SKEPTIC bypass: ${by.slice(0, 120)}`, bypass: true };
   const key = (i) => (i < 0 ? 'start' : String(events[i].id || events[i].messageId || events[i].ts || i));
   return { decision: 'review', from, chunkKey: key(from), editKey: key(edits[edits.length - 1]) };
+}
+
+/** PURE. Index of the last answered `skeptic-review-stop.mjs --ship-check` run that printed its verdict, else -1. */
+export function lastSkepticShipCheckIndex(events) {
+  const results = new Map();
+  for (const e of events) if (e.kind === 'tool_result') results.set(e.tool_use_id, e);
+  let at = -1;
+  events.forEach((e, i) => {
+    if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash' || !isSkepticReviewCall(String(e.input?.command || ''))) return;
+    const r = results.get(e.id);
+    if (r && !r.isError && SKEPTIC_VERDICT_RE.test(String(r.content || ''))) at = i;
+  });
+  return at;
+}
+
+/** PURE. The ship-check report: the verdict line review-coverage.mjs looks for, then each gap and its check. */
+export function shipCheckReport(r) {
+  if (r.error) return `SKEPTIC REVIEW: unavailable (${r.error}). Ask yourself the owner's question by hand: "Is this fully tested? What is untested or could still be broken?" and run what that names.`;
+  const material = r.gaps.filter((g) => g.severity === 'material');
+  const minor = r.gaps.filter((g) => g.severity !== 'material');
+  const fmt = (g, i) => `${i + 1}. ${g.what}${g.why ? ` (${g.why})` : ''}\n   check: ${g.check || '(name one)'}`;
+  return [
+    material.length ? `SKEPTIC REVIEW: ${material.length} material gap(s). Run each check (or fix it) before landing; one that truly cannot run here needs a one-line reason in your close.` : 'SKEPTIC REVIEW: no material gaps.',
+    ...material.map(fmt),
+    ...(minor.length ? ['Minor (optional):', ...minor.map(fmt)] : []),
+  ].join('\n');
 }
 
 export function roundBudget(now = new Date()) {
@@ -285,13 +321,32 @@ export function digest(rows) {
 
 export async function main(argv, { env = process.env, now = new Date(), stdin = null, fetchImpl = globalThis.fetch } = {}) {
   logPath = env.SKEPTIC_REVIEW_LOG || LOG;
+  if (env === process.env) meterToSessionLedger();
   if (argv.includes('--digest')) {
     let rows = [];
     try { rows = fs.readFileSync(logPath, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)); } catch { /* empty */ }
     process.stdout.write(JSON.stringify(digest(rows)) + '\n');
     return 0;
   }
-  if (!argv.includes('--stop-hook')) { process.stderr.write('usage: skeptic-review-stop.mjs --stop-hook (Stop hook JSON on stdin) | --digest\n'); return 0; }
+  if (argv.includes('--ship-check')) {
+    // /ship-check Phase 5 (BRO-7839): the same reviewer over the work since the last landed push, read from this
+    // session's own transcript. Always exit 0: the gaps are findings for ship-check to fix, not a hook decision.
+    const tArg = argv.find((a) => a.startsWith('--transcript='))?.slice(13);
+    const tp = tArg || findSessionTranscript(env.CLAUDE_CODE_SESSION_ID);
+    if (!tp || !fs.existsSync(tp)) { process.stdout.write(shipCheckReport({ error: 'session transcript not found (pass --transcript=<path>)' }) + '\n'); return 0; }
+    const events = walkTranscript(tp);
+    const landed = landedPushIndices(events);
+    const from = landed.length ? landed[landed.length - 1] : -1;
+    const texts = events.filter((e) => e.kind === 'assistant_text');
+    const claim = texts.length ? String(texts[texts.length - 1].text || '') : '';
+    const reviewInput = buildReviewInput(events, from, claim, []);
+    if (!reviewInput.files.length && !reviewInput.edits.length) { process.stdout.write('SKEPTIC REVIEW: no material gaps. (No code edits since the last landed push.)\n'); return 0; }
+    const r = await callReviewer(reviewInput, { env, fetchImpl, timeoutMs: 60000 });
+    logHit({ session: env.CLAUDE_CODE_SESSION_ID || null, outcome: 'ship-check', ...(r.error ? { reason: r.error } : { gaps: r.gaps, usage: r.usage }), files: reviewInput.files.length, commands: reviewInput.commands.length });
+    process.stdout.write(shipCheckReport(r) + '\n');
+    return 0;
+  }
+  if (!argv.includes('--stop-hook')) { process.stderr.write('usage: skeptic-review-stop.mjs --stop-hook (Stop hook JSON on stdin) | --ship-check [--transcript=<path>] | --digest\n'); return 0; }
   let input = {};
   try { input = JSON.parse(stdin ?? fs.readFileSync(0, 'utf8') ?? '{}'); } catch { return 0; }
   const tp = input.transcript_path;
