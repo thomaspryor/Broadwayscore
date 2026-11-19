@@ -250,5 +250,5 @@ test('main --ship-check: reads the transcript, reviews only work since the last 
   assert.match(await run(['--ship-check', `--transcript=${tp}`], { ...CLOUD, CLAUDE_CODE_SESSION_ID: 'other-session' }), /^SKEPTIC REVIEW UNAVAILABLE \(--transcript is not this session/);
   const empty = path.join(dir, 'empty.jsonl'); fs.writeFileSync(empty, '');
   assert.doesNotMatch(await run(['--ship-check', `--transcript=${empty}`], CLOUD), /^SKEPTIC REVIEW: /m, 'an empty transcript is not a review');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
