@@ -249,6 +249,7 @@ jobs:
         env:
           PUSH_DEADLINE_SEC: '420'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           # Reports only (the stale-report guard reads reports); manifests are large and need no weekly commit.
           bash scripts/lib/git-add-existing.sh data/audit/outlet-census/*.report.json data/audit/scraper-spend-ledger.jsonl
