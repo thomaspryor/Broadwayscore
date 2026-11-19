@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T20:31:20.534Z",
+  "timestamp": "2026-11-19T20:47:54.712Z",
   "stats": {
-    "totalReviews": 83159,
-    "alreadyFlagged": 22546,
+    "totalReviews": 83165,
+    "alreadyFlagged": 22547,
     "dateGuardCatches": 221,
-    "directorMismatch": 3787,
+    "directorMismatch": 3788,
     "tvFilmSignals": 2373,
     "londonSignals": 3826,
     "offBroadwaySignals": 773,
     "yearMismatch": 386,
-    "noPublishDate": 8274
+    "noPublishDate": 8272
   },
   "findings": [
     {
@@ -33315,6 +33315,19 @@
       "score": 72,
       "publishDate": null,
       "url": "https://www.theatermania.com/news/review-illinoise-is-a-folk-ballet-for-the-emotionally-wounded_1732498/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin peck\" from illinoise-2024"
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-off-broadway-2024",
+      "file": "theatrely--joey-sims.json",
+      "publishDate": "2024-03-08",
+      "url": "https://www.theatrely.com/post/sufjan-stevens-dance-musical-illinoise-is-monumental-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -123432,7 +123445,7 @@
     {
       "showId": "othello-west-end-2022",
       "file": "i-paper--fiona-mountford.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2022-12-01",
       "url": "https://inews.co.uk/culture/arts/othello-national-theatre-review-clint-dyer-gives-us-a-powerful-study-of-racism-and-misogyny-2003896?srsltid=AU7gw4UxbVwHVBetr57QS5AA0BpHAzW3_NDKdqjhtix1IeX4C4I8Pz_c",
       "findings": [
@@ -123446,7 +123459,7 @@
     {
       "showId": "othello-west-end-2022",
       "file": "independent--jessie-thompson.json",
-      "score": 85,
+      "score": 87,
       "publishDate": "2022-12-01",
       "url": "https://www.independent.co.uk/independentpremium/culture/othello-review-national-theatre-b2236955.html?r=73253",
       "findings": [
