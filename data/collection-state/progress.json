@@ -1,0 +1,108 @@
+{
+  "processed": [
+    "much-ado-about-nothing-2026/deadline--unknown.json",
+    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+    "jenufa-off-broadway-2026/wsj--richard-sasanow.json",
+    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json",
+    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
+    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+  ],
+  "failed": [
+    "much-ado-about-nothing-2026/theater-news-online--jeremy-gerard.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json",
+    "downstate-2026/nydailynews--unknown.json",
+    "downstate-2026/pages-on-stages--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [
+      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json",
+      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/much-ado-about-nothing-2026/deadline--unknown.json",
+      "much-ado-about-nothing-2026/deadline--unknown.json",
+      "data/review-texts/jenufa-off-broadway-2026/wsj--richard-sasanow.json",
+      "jenufa-off-broadway-2026/wsj--richard-sasanow.json",
+      "data/review-texts/downstate-2026/nytimes--unknown.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
+    ],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
+    ]
+  },
+  "startTime": "2026-11-19T07:37:00.984Z",
+  "lastProcessed": "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-19T07:37:05.075Z",
+      "event": "bb-session",
+      "session": "585dd92a",
+      "url": "https://deadline.com/2026/11/broadway-box-office-much-ado-about-nothing-billy-cr"
+    },
+    {
+      "t": "2026-11-19T07:38:40.916Z",
+      "event": "bb-session",
+      "session": "0f08dc13",
+      "url": "https://www.wsj.com/arts-culture/theater/jenufa-review-a-powerfully-grim-opera-a"
+    },
+    {
+      "t": "2026-11-19T07:38:41.769Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-19T07:40:06.230Z",
+      "event": "bb-session",
+      "session": "a8136118",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-19T07:40:07.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T07:44:42.838Z",
+      "event": "bb-session",
+      "session": "11e2c36f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-19T07:44:43.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-19T07:45:13.923Z",
+      "event": "bb-session",
+      "session": "b38aa465",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-19T07:45:14.711Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
+}
