@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-11-19T19:40:53.540Z",
+  "timestamp": "2026-11-19T20:00:38.485Z",
   "stats": {
-    "totalReviews": 83138,
-    "alreadyFlagged": 22544,
+    "totalReviews": 83155,
+    "alreadyFlagged": 22548,
     "dateGuardCatches": 221,
-    "directorMismatch": 3786,
-    "tvFilmSignals": 2372,
+    "directorMismatch": 3787,
+    "tvFilmSignals": 2373,
     "londonSignals": 3825,
-    "offBroadwaySignals": 772,
+    "offBroadwaySignals": 773,
     "yearMismatch": 386,
     "noPublishDate": 8277
   },
@@ -16055,6 +16055,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "file": "the-interested-bystander--interested-bystander.json",
+      "publishDate": "2024-01-30",
+      "url": "https://www.interestedbystander.com/2024/01/theater-kelli-ohara-shines-through-dark.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
@@ -82250,6 +82268,19 @@
       "score": 81,
       "publishDate": "June 23rd, 2022",
       "url": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tye blue\" from titanique-2026"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-off-broadway-2022",
+      "file": "the-interested-bystander--interested-bystander.json",
+      "publishDate": "2022-07-28",
+      "url": "https://www.interestedbystander.com/2022/07/theater-reviews-enjoyable-new-musicals.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
