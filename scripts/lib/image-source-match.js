@@ -193,7 +193,7 @@ function canReuseArchivedFile({ recordedSource, incomingUrl, fileExists, force }
  * other-production banners straight back (BRO-2242).
  */
 function mayServeDiskImage(show, recordedSource) {
-  return !isRejectedImage({ hero: recordedSource }, show);
+  return !refusedSourceReason(show, recordedSource);
 }
 
 /**
@@ -240,7 +240,7 @@ function keepExistingImage(show, format, sources) {
   const existing = show && show.images && show.images[format];
   if (!imagePathOwner(existing)) return false;
   const recorded = recordedSourceFor(show, format, sources);
-  return !recorded || !isRejectedImage({ [format]: recorded }, show);
+  return !recorded || !refusedSourceReason(show, recorded);
 }
 
 // TodayTix's catalogue images live in this Contentful space; an image search
@@ -283,6 +283,43 @@ function wrongEraTodayTixReason(show, source) {
 }
 
 /**
+ * Why this row must not serve a file recorded from `source`, or null: a person
+ * rejected the source for the row, or it is TodayTix art that cannot be the
+ * row's (judged by `owner` too, the row whose folder holds the file, when that
+ * is another row). One rule for the audit, the deploy re-attach, the
+ * archiver's re-download and the fetcher's keep: the archiver once checked
+ * only the rejected list and re-downloaded 2007-era rows' wrong TodayTix art
+ * the wrong-era audit had just cleared, and copied a parent's banner onto two
+ * tours with no recorded source (BRO-7846).
+ */
+function refusedSourceReason(show, source, owner = null) {
+  if (!show || typeof source !== 'string' || !source) return null;
+  if (isRejectedImage({ hero: source }, show)) return 'recorded from rejected';
+  return wrongEraTodayTixReason(show, source)
+    || (owner && owner !== show ? wrongEraTodayTixReason(owner, source) : null);
+}
+
+/**
+ * The archiver found shows.json pointing at a local file that is not on disk.
+ * Re-download it from the recorded source? The source is recorded under the
+ * file's owner (a row may serve another row's file, BRO-4901); the new file
+ * is written to this row's own folder, so the caller must record the source
+ * under this row's id. Returns { sourceUrl } to download or { skip: why }.
+ */
+function missingFileRedownload(show, format, localPath, sources, showsById) {
+  const ownerId = imagePathOwner(localPath) || show.id;
+  const sourceUrl = sources && sources[ownerId] ? sources[ownerId][format] : null;
+  if (!sourceUrl) return { skip: 'no source URL' };
+  if (!isDownloadableSource(sourceUrl)) return { skip: 'recorded source is not downloadable' };
+  const owner = ownerId !== show.id && showsById ? showsById.get(ownerId) : null;
+  // The owning row dropped this file (a cleanup nulled it and deleted it):
+  // a row that borrowed it must not bring it back under its own folder.
+  if (owner && (owner.images || {})[format] !== localPath) return { skip: `${ownerId} no longer serves this file` };
+  const why = refusedSourceReason(show, sourceUrl, owner);
+  return why ? { skip: `recorded source is refused for this show (${why})` } : { sourceUrl };
+}
+
+/**
  * Local image fields in use whose recorded source is in the row's
  * rejectedImageUrls: either the art is still the rejected production, or a
  * hand fix replaced the file without updating image-sources.json. Both need a
@@ -300,17 +337,12 @@ function findRejectedSourcesInUse(shows, sources) {
       if (!imagePathOwner(p)) continue;
       const source = recordedSourceFor(show, format, sources);
       if (!source) continue;
-      if (isRejectedImage({ [format]: source }, show)) out.push({ id: show.id, format, path: p, source, why: 'recorded from rejected' });
-      else {
-        // A row can serve another row's file (a tour borrowing its parent's
-        // hero). Judge the art by the row that owns the file too: the borrower
-        // may be a recent tour, but the art is still the 2007 row's wrong
-        // TodayTix match (legally-blonde-tour-2022, BRO-7846).
-        const owner = byId.get(imagePathOwner(p));
-        const why = wrongEraTodayTixReason(show, source)
-          || (owner && owner !== show ? wrongEraTodayTixReason(owner, source) : null);
-        if (why) out.push({ id: show.id, format, path: p, source, why });
-      }
+      // A row can serve another row's file (a tour borrowing its parent's
+      // hero). Judge the art by the row that owns the file too: the borrower
+      // may be a recent tour, but the art is still the 2007 row's wrong
+      // TodayTix match (legally-blonde-tour-2022, BRO-7846).
+      const why = refusedSourceReason(show, source, byId.get(imagePathOwner(p)));
+      if (why) out.push({ id: show.id, format, path: p, source, why });
     }
   }
   return out;
@@ -386,6 +418,8 @@ module.exports = {
   isRejectedImage,
   isTodayTixAsset,
   wrongEraTodayTixReason,
+  refusedSourceReason,
+  missingFileRedownload,
   TODAYTIX_FIRST_SALE,
   TODAYTIX_FIRST_SALE_BY_MARKET,
   canReuseArchivedFile,

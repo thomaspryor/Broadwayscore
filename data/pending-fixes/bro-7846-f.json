@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-7846-f",
+  "planId": "dcf11328-1be6-43cf-a927-8e8adf06e076",
+  "status": "pending",
+  "createdAt": "2026-11-19T17:24:29.453Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear two tour heroes the image archiver re-downloaded from deleted parent banners (an-american-in-paris-tour-2022: Matthew Scott concert art; company-tour-2023: COMPANY XIV photo)",
+    "steps": [
+      "Clear hero re-downloaded from the parent row's deleted wrong-production banner (BRO-7846 follow-up)",
+      "Clear hero re-downloaded from the parent row's deleted wrong-production banner (BRO-7846 follow-up)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-tour-2022",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/an-american-in-paris-tour-2022/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "Clear hero re-downloaded from the parent row's deleted wrong-production banner (BRO-7846 follow-up)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-tour-2023",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/company-tour-2023/hero.webp",
+          "thumbnail": "/images/shows/company-2021/thumbnail.jpg",
+          "poster": "/images/shows/company-2021/poster.jpg"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "Clear hero re-downloaded from the parent row's deleted wrong-production banner (BRO-7846 follow-up)"
+      }
+    ]
+  }
+}
