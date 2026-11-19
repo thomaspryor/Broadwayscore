@@ -364,12 +364,12 @@ test('(BRO-5844) a visual file after 5 text-only files is not hidden by the head
 
 // BRO-7849: non-rendering .tsx edits (an analytics guard inside useEffect) need no owner approval; rendering ones are
 // still blocked, and the block message carries the one-run land checklist.
-const EFFECT_BASE = "import { useEffect } from 'react';\nexport default function P() {\n  useEffect(() => {\n    const f = (e: unknown) => e;\n    void f;\n  }, []);\n  return <p className=\"a\">Words</p>;\n}\n";
-test('(BRO-7849) an added guard inside useEffect -> exit 0, exemption logged', (t) => {
+const EFFECT_BASE = "import { useEffect } from 'react';\nexport default function P() {\n  useEffect(() => {\n    const f = { beforeSend(e: unknown) {\n      void e;\n      return e;\n    } };\n    void f;\n  }, []);\n  return <p className=\"a\">Words</p>;\n}\n";
+test('(BRO-7849) an added guard inside an inert beforeSend filter -> exit 0, exemption logged', (t) => {
   const fx = makeFixture(t, { uiBranch: false });
   assertGateLive(fx);
   withUiBase(fx, EFFECT_BASE);
-  commitFile(fx.repo, 'src/app/copy/page.tsx', EFFECT_BASE.replace('    void f;', '    if (!f) return null;\n    void f;'), 'guard');
+  commitFile(fx.repo, 'src/app/copy/page.tsx', EFFECT_BASE.replace('      void e;', '      if (!e) return null;\n      void e;'), 'guard');
   const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER));
   assert.equal(r.status, 0, `stderr: ${r.stderr}`);
   assert.match(readFileSync(join(fx.logs, 'visual-gate-bypass.log'), 'utf8'), /render-impact-exempt\t.*page\.tsx/);
