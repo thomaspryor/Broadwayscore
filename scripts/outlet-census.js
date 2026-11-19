@@ -193,7 +193,7 @@ async function fetchSitemapUrls(url, urlFilter, opts = {}) {
       .filter((c) => !cf || (typeof cf === 'function' ? cf(c, opts.since) : cf.test(c)));
     const out = [];
     await pool(children, opts.childConcurrency || 1, async (c) => {
-      try { out.push(...await fetchSitemapUrls(c, urlFilter, opts)); } catch (e) { console.log(`  child ${c}: ${e.message}`); (opts.notes || []).push(`child ${c}: ${e.message}`); }
+      try { out.push(...(await fetchSitemapUrls(c, urlFilter, opts)).map((g) => ({ sitemap: c, ...g }))); } catch (e) { console.log(`  child ${c}: ${e.message}`); (opts.notes || []).push(`child ${c}: ${e.message}`); }
     });
     return out;
   }
@@ -281,7 +281,7 @@ async function enumerateSitemap(src, since) {
       got.push(...await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter, since, notes, childConcurrency: src.childConcurrency, proxyRetry: !!src.proxyRetry }));
     }
     const seen = new Set();
-    return { items: got.filter((i) => !seen.has(i.url) && seen.add(i.url)).map((g) => ({ url: g.url, lastmod: g.publishDate || null })), notes };
+    return { items: got.filter((i) => !seen.has(i.url) && seen.add(i.url)).map((g) => census.itemFromSitemapEntry(g, src)), notes };
   }
 }
 

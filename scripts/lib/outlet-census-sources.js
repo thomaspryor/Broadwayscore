@@ -160,6 +160,7 @@ const SOURCES = {
   // ("real-women-have-curves-review-musical-broadway-11722804"); the 2022-23 reviews sit under /theater/theater-reviews/.
   ew: {
     kind: 'sitemap', url: 'https://ew.com/sitemap.xml', proxyRetry: true,
+    tailChildren: 2, // the live poller reads only the newest 2 of 13 big children (each about 20k URLs, proxyRetry)
     urlFilter: /ew\.com\/(?:theater\/[^?#]*[^/?#]+|[^/]*(?:review[^/]*(?:broadway|musical|theater|theatre)|(?:broadway|musical|theater|theatre)[^/]*review)[^/]*)\/?$/i, headlineFromSlug: true, ignoreLastmod: true,
   },
   // USA Today: monthly sitemaps on gannett-cdn.com (about 5k URLs, 2MB; they read direct). The section is unreliable

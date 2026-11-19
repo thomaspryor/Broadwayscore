@@ -480,3 +480,14 @@ test('a Los Angeles house in the headline marks a same-titled review as another 
     headline: 'Fountain Theatre’s “Fatherland” Talks Its Way Through', description: '' }, ctx);
   assert.notEqual(r.bucket, 'gap');
 });
+
+test('BRO-7816: ignoreLastmod sources date by their child sitemap, never by a bulk-touched lastmod', () => {
+  const { itemFromSitemapEntry } = require('./outlet-census.js');
+  const g = { url: 'https://www.nytimes.com/2021/06/25/theater/x-review.html', publishDate: '2022-10-24', sitemap: 'https://www.nytimes.com/sitemaps/new/sitemap-2021-06.xml' };
+  assert.equal(itemFromSitemapEntry(g, SOURCES.nytimes).lastmod, null);
+  assert.equal(itemFromSitemapEntry(g, SOURCES.nytimes).sitemap, g.sitemap);
+  assert.equal(itemFromSitemapEntry(g, { kind: 'sitemap' }).lastmod, '2022-10-24');
+  for (const id of ['nytimes', 'washpost', 'wsj', 'newyorker', 'ew', 'usatoday']) {
+    if (SOURCES[id].ignoreLastmod) assert.equal(itemFromSitemapEntry(g, SOURCES[id]).lastmod, null, id);
+  }
+});
