@@ -9,7 +9,7 @@
 // The fixture is the owner's ACTUAL submission text, verbatim from the
 // Formspree API, including the two-asks-in-one-message shape that the old
 // one-issue-per-submission path could not represent.
-import { test } from 'node:test';
+import { test, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
@@ -531,4 +531,59 @@ test('an unambiguous title still routes normally through resolveShowInMarket', (
   });
   assert.deepEqual(actions.map((a) => a.kind), ['missing-image']);
   assert.equal(actions[0].showId, 'book-of-mormon-2011');
+});
+
+describe('market named in the message breaks a title tie (feedback #1192)', () => {
+  const { inferMarketFromMessage, resolveShowUsingMessage } = require('../../scripts/lib/content-request-routing.js');
+  const dd = [
+    { id: 'dirty-dancing-2027', title: 'Dirty Dancing', category: 'broadway', openingDate: '2027-03-14' },
+    { id: 'dirty-dancing-tour-2026', title: 'Dirty Dancing', category: 'tour', openingDate: '2026-08-12' },
+    { id: 'dirty-dancing-west-end-2027', title: 'Dirty Dancing', category: 'west-end', openingDate: '2027-02-01' },
+    { id: 'dirty-dancing-west-end-2013', title: 'Dirty Dancing', category: 'west-end', openingDate: '2013-07-01' },
+  ];
+  const msg = 'I see you have the Dirty Dancing Bway show addded. Below is the cast list (same as the tour) submitted by IBDB.';
+  it('reads "Bway" next to the title as Broadway even when the tour is also mentioned', () => {
+    assert.equal(inferMarketFromMessage('Dirty Dancing', msg), 'broadway');
+  });
+  it('resolves the ambiguous title to the Broadway production', () => {
+    const r = resolveShowUsingMessage('Dirty Dancing', null, dd, msg);
+    assert.equal(r.ambiguous, false);
+    assert.equal(r.resolved.id, 'dirty-dancing-2027');
+  });
+  it('stays ambiguous when the named market still has two productions', () => {
+    const r = resolveShowUsingMessage('Dirty Dancing', null, dd, 'Please fix Dirty Dancing in the West End');
+    assert.equal(r.ambiguous, true);
+  });
+  it('stays ambiguous when the message names no market', () => {
+    assert.equal(resolveShowUsingMessage('Dirty Dancing', null, dd, 'Dirty Dancing needs a cast list').ambiguous, true);
+  });
+  it('does not read Off-Broadway as Broadway', () => {
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'the Dirty Dancing off-broadway run'), 'off-broadway');
+  });
+});
+
+describe('message market inference never guesses from the message at large (second-opinion)', () => {
+  const { inferMarketFromMessage } = require('../../scripts/lib/content-request-routing.js');
+  it('ignores the site name', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'Thanks for Broadway Scorecard! Hamilton is missing a picture.'), null);
+  });
+  it('ignores a market word in another sentence', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'I took a backstage tour. Hamilton has no reviews.'), null);
+  });
+  it('still reads a market word right next to the title', () => {
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'the Dirty Dancing tour cast is wrong'), 'tour');
+  });
+});
+
+describe('message market inference: every mention must agree (ship-check review)', () => {
+  const { inferMarketFromMessage } = require('../../scripts/lib/content-request-routing.js');
+  it('two mentions in two markets -> no guess', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'I loved Hamilton on Broadway, but the West End Hamilton is missing a photo'), null);
+  });
+  it('negation near the mention -> no guess', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'The Hamilton, not the Broadway one, the London one'), null);
+  });
+  it('a site name like Broadway.com is not a market', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'Saw Hamilton reviewed on Broadway.com'), null);
+  });
 });

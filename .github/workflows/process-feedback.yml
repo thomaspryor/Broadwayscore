@@ -510,6 +510,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/verify-feedback-requests-live.js
 
+      # Feedback #1192: a parked (needs-review) request was consumed by nothing.
+      # Each one now gets one dispatchable Linear card, then the `carded` label.
+      # Advisory (CLAUDE.md §19); at most 5 cards per run.
+      - name: File work cards for parked reader requests
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/card-parked-feedback.js
+
       # BRO-7693: for each feedback bug closed as completed (launch cutoff in
       # the script), email the owner ONE "it's fixed" draft reply to send by
       # hand. Nothing goes to the reader. The reply-drafted label is the only

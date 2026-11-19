@@ -203,6 +203,74 @@ const MARKET_WORD_TO_CATEGORY = {
 const MARKET_TOKEN_RE =
   /\s*(?:\((regional|broadway|off[-\s]?broadway|west[-\s]?end|tryout|pre[-\s]?broadway)\)|\b(regional|broadway|off[-\s]?broadway|west[-\s]?end|pre[-\s]?broadway)\b)/gi;
 
+// Feedback #1192: "I see you have the Dirty Dancing Bway show added ... (same as
+// the tour)" named no market in the form's show field, matched four Dirty
+// Dancing productions, and was parked as ambiguous even though the reader said
+// which one. Readers name the market in the message, often as "Bway".
+const MESSAGE_MARKET_RE =
+  /\b(off[-\s]?broadway|off[-\s]?west[-\s]?end|pre[-\s]?broadway|broadway|b'?way|west[-\s]?end|national tour|tour(?:ing)?|regional|tryout)\b/gi;
+function messageMarketWord(w) {
+  const k = w.toLowerCase().replace(/\s+/g, '-');
+  if (k === 'bway' || k === "b'way") return 'broadway';
+  if (k === 'off-west-end') return 'off-west-end';
+  if (/^(national-tour|tour|touring)$/.test(k)) return 'tour';
+  return MARKET_WORD_TO_CATEGORY[k] || null;
+}
+function marketsIn(text) {
+  const out = [];
+  MESSAGE_MARKET_RE.lastIndex = 0;
+  let m;
+  while ((m = MESSAGE_MARKET_RE.exec(text)) !== null) {
+    const c = messageMarketWord(m[1]);
+    if (c) out.push(c);
+  }
+  return out;
+}
+/**
+ * The market a free-text message attaches to `title`: a market word within a
+ * few words of the title, in the same sentence ("the Dirty Dancing Bway show").
+ * Never the message at large: "Thanks for Broadway Scorecard! Hamilton has no
+ * picture" or "I took a backstage tour. Hamilton..." must stay ambiguous
+ * (second-opinion review, real shows.json). The site name is stripped first.
+ */
+function inferMarketFromMessage(title, message) {
+  const msg = String(message || '').replace(/broadway\s*scorecard|broadway\.com|broadwayworld/gi, ' ');
+  const t = String(title || '').trim();
+  if (!msg || !t) return null;
+  // Every mention of the title must point at the same single market, and a
+  // negation near a mention ("not the Broadway one") means skip: wrong is worse
+  // than unroutable (ship-check review of #1192).
+  const lower = msg.toLowerCase();
+  const needle = t.toLowerCase();
+  const found = new Set();
+  let mentions = 0;
+  for (let idx = lower.indexOf(needle); idx >= 0; idx = lower.indexOf(needle, idx + needle.length)) {
+    mentions += 1;
+    const before = msg.slice(Math.max(0, idx - 30), idx).split(/[.!?\n]/).pop();
+    const after = msg.slice(idx + t.length, idx + t.length + 30).split(/[.!?\n]/)[0];
+    const near = `${before} ${after}`;
+    if (/\b(not|isn'?t|wasn'?t)\b/i.test(near)) return null;
+    for (const m of marketsIn(near)) found.add(m);
+  }
+  if (mentions === 0) return null;
+  return found.size === 1 ? [...found][0] : null;
+}
+
+/**
+ * resolveShowInMarket, but an ambiguous unscoped match gets one more try scoped
+ * to the market the message itself names (inferMarketFromMessage). Still "skip,
+ * don't guess": if that market does not narrow it to exactly one show, the
+ * original ambiguity stands.
+ */
+function resolveShowUsingMessage(title, market, shows, message) {
+  const first = resolveShowInMarket(title, market, shows);
+  if (!first.ambiguous || market) return first;
+  const inferred = inferMarketFromMessage(title, message);
+  if (!inferred) return first;
+  const scoped = resolveShowInMarket(title, inferred, shows);
+  return scoped.resolved ? scoped : first;
+}
+
 function parseRequestedTitles(raw) {
   const field = String(raw || '').trim();
   if (!field) return [];
@@ -426,7 +494,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!IMAGE_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowInMarket(title, null, allShows);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, sentence);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;
@@ -468,7 +536,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!REVIEW_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowInMarket(title, null, allShows);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, sentence);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;
@@ -502,7 +570,7 @@ function planContentRequestActions({
     // Market-scoped: a Broadway entry does not satisfy a request for the
     // regional tryout of the same title. See resolveShowInMarket().
     const { resolved: existing, ambiguous, candidateIds, candidateTitles } =
-      resolveShowInMarket(requestedTitle, market, allShows);
+      resolveShowUsingMessage(requestedTitle, market, allShows, message);
     if (ambiguous) {
       // Shared with Ask 1/1b's seenAmbiguousTitles: the same candidate set can
       // surface here too (e.g. the show field repeats a title already flagged
@@ -583,6 +651,8 @@ module.exports = {
   cleanRequestedTitle,
   parseRequestedTitles,
   resolveShowInMarket,
+  resolveShowUsingMessage,
+  inferMarketFromMessage,
   extractVenueHint,
   extractVenueHintFor,
   splitSentences,

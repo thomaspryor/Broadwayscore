@@ -596,22 +596,31 @@ jobs:
             ARGS="$ARGS --shard=${INPUT_SHARD} --total-shards=${INPUT_TOTAL_SHARDS}"
           fi
 
-          # Batch API mode (task #516) — scheduled runs only.
-          # Vendor Batch APIs bill at 50% but are submit-now/poll-later
-          # (minutes to 24h). The nightly cron has no latency requirement, so
-          # it takes the discount. workflow_dispatch and chain=true runs stay
-          # synchronous: those are the opening-night paths where getting a
-          # score onto the site within minutes is the entire point.
+          # Batch API mode (task #516, widened by BRO-7807). Vendor Batch APIs
+          # bill at 50% but are submit-now/poll-later (minutes to 24h). Policy
+          # lives in scripts/lib/rescore-batch-policy.js (unit-tested): the
+          # scheduled non-chain run batches, and so does a bulk rescore dispatch
+          # (needs_rescore / outdated / stale_scores / upgrade_ensemble /
+          # rescore / the auto-detected backlog); chain links batch only for
+          # needs_rescore (the cron resumes that backlog if a poll times out).
+          # Stays synchronous: any run aimed at one show (opening night /
+          # press night: latency is the point), a rescore_reason lane (shared
+          # batch-state file), sync=true, dry_run.
           # Kill switch: repo variable DISABLE_BATCH_SCORING=1.
-          if [ "${{ github.event_name }}" == "schedule" ] \
-             && [ "${{ github.event.inputs.chain }}" != "true" ] \
-             && [ "${{ vars.DISABLE_BATCH_SCORING }}" != "1" ]; then
+          if [ "$(EVENT_NAME="${{ github.event_name }}" CHAIN="${{ github.event.inputs.chain }}" \
+                  SHOW_ID="${INPUT_SHOW_ID}" RESCORE_REASON="${INPUT_RESCORE_REASON}" \
+                  DISABLE_BATCH_SCORING="${{ vars.DISABLE_BATCH_SCORING }}" DRY_RUN="${{ github.event.inputs.dry_run }}" \
+                  SYNC="${{ github.event.inputs.sync }}" \
+                  NEEDS_RESCORE="${{ github.event.inputs.needs_rescore }}" RUN_RESCORE="${{ steps.check-needed.outputs.run_rescore }}" \
+                  RESCORE="${{ github.event.inputs.rescore }}" OUTDATED="${{ github.event.inputs.outdated }}" \
+                  STALE_SCORES="${{ github.event.inputs.stale_scores }}" UPGRADE_ENSEMBLE="${{ github.event.inputs.upgrade_ensemble }}" \
+                  node scripts/lib/rescore-batch-policy.js)" == "true" ]; then
             # Poll budget sits well under this job's timeout-minutes: 350,
             # leaving room for the merge, the checkpoint push, and the
             # rescore-drain step afterwards. If the batch outlives the budget,
-            # state persists and the next scheduled run resumes polling.
+            # state persists and the next run resumes polling.
             ARGS="$ARGS --batch --batch-poll-minutes=120"
-            echo "Scheduled run — using --batch (50% vendor discount)"
+            echo "Using --batch (50% vendor discount)"
           fi
 
           # Always verbose in CI
@@ -740,6 +749,7 @@ jobs:
         if: (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true') && vars.DISABLE_COMPARATIVE_RESCORE != '1' && github.event.inputs.dry_run != 'true'
         continue-on-error: true
         env:
+          INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
           INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -759,7 +769,16 @@ jobs:
           # DISABLE_BATCH_SCORING=1 (same as the main pass). Poll budget keeps the
           # job well under timeout-minutes: 350.
           CMP_BATCH=""
-          if [ "${{ github.event_name }}" == "schedule" ] && [ "${{ github.event.inputs.chain }}" != "true" ] && [ "${{ vars.DISABLE_BATCH_SCORING }}" != "1" ]; then
+          # BRO-7807: batches exactly when the main pass does (same policy, same
+          # inputs), so an urgent catch-up run never waits on it before its commit.
+          if [ "$(EVENT_NAME="${{ github.event_name }}" CHAIN="${{ github.event.inputs.chain }}" \
+                  SHOW_ID="${INPUT_SHOW_ID}" RESCORE_REASON="${INPUT_RESCORE_REASON}" \
+                  DISABLE_BATCH_SCORING="${{ vars.DISABLE_BATCH_SCORING }}" DRY_RUN="${{ github.event.inputs.dry_run }}" \
+                  SYNC="${{ github.event.inputs.sync }}" \
+                  NEEDS_RESCORE="${{ github.event.inputs.needs_rescore }}" RUN_RESCORE="${{ steps.check-needed.outputs.run_rescore }}" \
+                  RESCORE="${{ github.event.inputs.rescore }}" OUTDATED="${{ github.event.inputs.outdated }}" \
+                  STALE_SCORES="${{ github.event.inputs.stale_scores }}" UPGRADE_ENSEMBLE="${{ github.event.inputs.upgrade_ensemble }}" \
+                  node scripts/lib/rescore-batch-policy.js)" == "true" ]; then
             CMP_BATCH="--batch --batch-poll-minutes=20"
           fi
           if [ -n "${INPUT_SHOW_ID}" ]; then
@@ -1113,6 +1132,7 @@ jobs:
           INPUT_MAX_COST: ${{ github.event.inputs.max_cost }}
           INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
           INPUT_CHAIN_SPENT: ${{ github.event.inputs.chain_spent_usd }}
+          INPUT_SYNC: ${{ github.event.inputs.sync }}
           SCORING_CHAIN_BUDGET_DISABLED: ${{ vars.SCORING_CHAIN_BUDGET_DISABLED }}
         run: |
           BATCHES_LEFT="${INPUT_REMAINING_BATCHES}"
@@ -1148,6 +1168,7 @@ jobs:
           echo "Reviews still unscored: ${{ steps.count-remaining.outputs.remaining }}"
 
           CHAIN_ARGS="-f limit=$LIMIT -f chain=true -f remaining_batches=$NEXT_BATCHES -f run_calibration=false -f run_validation=false"
+          if [ "${INPUT_SYNC}" = "true" ]; then CHAIN_ARGS="$CHAIN_ARGS -f sync=true"; fi
           if [ -n "$SHARD" ] && [ -n "$TOTAL_SHARDS" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f shard=$SHARD -f total_shards=$TOTAL_SHARDS"
           fi

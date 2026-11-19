@@ -239,3 +239,13 @@ test('labelShowCandidates appends category only when candidates span more than o
   ];
   assert.deepEqual(labelShowCandidates(shows), ['A', 'B']);
 });
+
+test('a market-word show title ("Broadway") is dropped when another show is named (#1192)', () => {
+  const shows = [
+    { id: 'broadway-1987', title: 'Broadway', category: 'broadway' },
+    { id: 'dirty-dancing-2027', title: 'Dirty Dancing', category: 'broadway' },
+  ];
+  assert.deepEqual(extractShowTitlesFromText('The Broadway Dirty Dancing page has no image.', shows), ['Dirty Dancing']);
+  // Named alone, the show titled Broadway still matches.
+  assert.deepEqual(extractShowTitlesFromText('The page for Broadway has no image.', shows), ['Broadway']);
+});

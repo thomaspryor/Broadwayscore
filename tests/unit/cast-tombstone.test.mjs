@@ -155,3 +155,14 @@ describe('shouldRetryTombstone: IBDB page appeared after an empty scrape (Dirty 
     assert.equal(shouldRetryTombstone({ ibdbUrl: null, openingNightCast: [{ name: 'X' }], scrapedAt: '2026-10-07T13:50:30Z' }, upcoming, now), false);
   });
 });
+
+describe('ibdbPageAppearedSinceTombstone (daily --open-only pass must include it)', () => {
+  const { ibdbPageAppearedSinceTombstone } = require('../../scripts/lib/cast-tombstone.js');
+  it('true for an empty tombstone without url when the show now has one', () => {
+    assert.equal(ibdbPageAppearedSinceTombstone({ ibdbUrl: null, openingNightCast: [] }, { ibdbUrl: 'https://www.ibdb.com/x' }), true);
+  });
+  it('false once stamped, or when populated', () => {
+    assert.equal(ibdbPageAppearedSinceTombstone({ ibdbUrl: 'https://www.ibdb.com/x', openingNightCast: [] }, { ibdbUrl: 'https://www.ibdb.com/x' }), false);
+    assert.equal(ibdbPageAppearedSinceTombstone({ ibdbUrl: null, openingNightCast: [{ name: 'A' }] }, { ibdbUrl: 'https://www.ibdb.com/x' }), false);
+  });
+});

@@ -21,6 +21,7 @@
 // Wired in .claude/hooks/verify-edits.sh as [VE:SKEPTIC]; pinned by skeptic-review-stop.test.mjs.
 import './llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043); main() points it at the session ledger
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -301,7 +302,15 @@ export function blockMessage(gaps, { round, budget }) {
 
 // ------------------------------------------------------------------ IO (state, log, CLI)
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const LOG = path.join(ROOT, '.cache', 'skeptic-review-stop.log');
+// Canonical (main-checkout) root, so a worktree session's rows land where health-check.js reads them (BRO-7843).
+function canonicalRoot() {
+  try {
+    const common = execFileSync('git', ['rev-parse', '--git-common-dir'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    if (common) return path.dirname(path.isAbsolute(common) ? common : path.join(ROOT, common));
+  } catch { /* fall back to this checkout */ }
+  return ROOT;
+}
+const LOG = path.join(canonicalRoot(), '.cache', 'skeptic-review-stop.log');
 const stateFile = (tp, chunkKey) => path.join(os.tmpdir(), `skeptic-review-${createHash('sha1').update(tp + '\u0000' + chunkKey).digest('hex').slice(0, 12)}.json`);
 function readState(f) { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return { rounds: 0, passedEditKey: null, lastGaps: [] }; } }
 function writeState(f, s) { try { fs.writeFileSync(f, JSON.stringify(s)); } catch { /* best effort */ } }
@@ -310,17 +319,8 @@ function logHit(entry) {
   try { fs.mkdirSync(path.dirname(logPath), { recursive: true }); fs.appendFileSync(logPath, JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n'); } catch { /* best effort */ }
 }
 
-/** PURE. Counts over the decision log rows. */
-export function digest(rows) {
-  const out = { reviews: 0, blocked: 0, passed: 0, wouldBlock: 0, bypass: 0, errors: 0, sessions: new Set() };
-  for (const r of rows) {
-    if (r.session) out.sessions.add(r.session);
-    if (r.outcome === 'bypass') out.bypass++;
-    else if (r.outcome === 'error') out.errors++;
-    else if (r.outcome === 'pass') { out.reviews++; out.passed++; } else if (r.outcome === 'block') { out.reviews++; out.blocked++; } else if (r.outcome === 'over-budget') { out.reviews++; out.wouldBlock++; }
-  }
-  return { ...out, sessions: out.sessions.size };
-}
+/** PURE. Counts over the decision log rows (shared with the daily digest: skeptic-review-digest.js). */
+export function digest(rows) { return require('./skeptic-review-digest.js').countSkepticRows(rows); }
 
 export async function main(argv, { env = process.env, now = new Date(), stdin = null, fetchImpl = globalThis.fetch } = {}) {
   logPath = env.SKEPTIC_REVIEW_LOG || LOG;

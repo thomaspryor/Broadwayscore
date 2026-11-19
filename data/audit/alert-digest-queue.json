@@ -354,20 +354,6 @@
     "queuedAt": "2026-11-19T11:36:29.351Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-19.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T12:44:44.179Z"
-  },
-  {
     "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
     "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed cross-outlet suspects remain (first 5): [\n{\n\"file\": \"the-lion-king-1997/jasonraize--frank-scheck.json\",\n\"criticName\": \"Frank Scheck\",\n\"defaultCriticOf\": [\n\"scheckontheater\",\n\"reuters\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_spt112197.html\"\n},\n{\n\"file\": \"the-lion-king-1997/jasonraize--michael-sommers.json\",\n\"criticName\": \"Michael Sommers\",\n\"defaultCriticOf\": [\n\"the-kalamazoo-gazette\",\n\"journaltimes\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_njsl111497.html\"\n}\n]\n\n2 !== 0\n",
@@ -485,20 +471,6 @@
     "queuedAt": "2026-11-19T13:27:27.433Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T14:19:53.813Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
     "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
@@ -525,5 +497,226 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-19T15:07:27.884Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
+    "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): [\n{\n\"file\": \"circle-jerk-off-broadway-2022/theatrely--christian-lewis.json\",\n\"criticName\": \"Christian Lewis\",\n\"defaultCriticOf\": [\n\"into\",\n\"queer-voices\"\n],\n\"source\": \"ingest-urls\",\n\"url\": \"https://www.theatrely.com/post/this-circle-jerk-is-back-and-better-than-ever-review\",\n\"mode\": \"fulltext\"\n},\n{\n\"file\": \"wicked-2003/theatermania--david-gordon.json\",\n\"criticName\": \"Peter Filichia\",\n\"defaultCriticOf\": [\n\"broadwayselect\"\n],\n\"source\": \"playbill-verdict\",\n\"url\": \"https://www.theatermania.com/news/wicked-good-or-wicked-bad_4041/\",\n\"mode\": \"fulltext\"\n}\n]\n\n2 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
+    "fields": [],
+    "queuedAt": "2026-11-19T15:59:32.306Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'review: Bree Samani-McGrath (1) -> Bree Samani (2) [extra words, both pages sizeable]'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "fields": [],
+    "queuedAt": "2026-11-19T15:59:32.788Z"
+  },
+  {
+    "conditionKey": "corpus-drift:contradicted-flag-basis",
+    "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
+    "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 4887 shows scanned, 1 match(es).\n  [wrongProduction] the-bookstore-off-broadway-2026/theater-life--alix-cohen.json\n      basis cites 2017-01-17 but record is dated 2026-01-17, inside run 2026-01-10..2026-02-22\n\nFAIL: 1 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T16:22:42.934Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-19.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T16:22:43.028Z"
+  },
+  {
+    "conditionKey": "land:land/feedback-parked-cards",
+    "title": "Landing blocked: merged-tree-tests red on land/feedback-parked-cards",
+    "description": "land.yml did not land land/feedback-parked-cards: the merged-tree-tests gate went red at 8d5e04669c. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/feedback-parked-cards @ 8d5e04669c (origin/land/feedback-parked-cards) → origin/main @ 1b593c951f [land] attempt 1/3: rebased onto 1b593c951f, 12 file(s) changed — running checks [land] verified-base: main moved d7f1432a83 → 1b593c951f across 198 file(s), substantive — re-checking on the merged tree (+4 test file(s) changed on main since the verified base); full re-check: branch and ma Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44553457396",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/feedback-parked-cards"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "8d5e04669c3dd7240969762c4598368b743e9a1e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44553457396"
+      }
+    ],
+    "queuedAt": "2026-11-19T16:02:53.803Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7841-retro",
+    "title": "Landing blocked: rebase red on land/bro-7841-retro",
+    "description": "land.yml did not land land/bro-7841-retro: the rebase gate went red at 3fd1bc3d51. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44561817072",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7841-retro"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3fd1bc3d515a76b171af234e5226a110172abeb6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44561817072"
+      }
+    ],
+    "queuedAt": "2026-11-19T16:06:11.355Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T16:51:12.404Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-data-validation",
+    "title": "Data audit failing: Run data validation",
+    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44566999976",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run data validation"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44566999976)"
+      }
+    ],
+    "queuedAt": "2026-11-19T16:41:50.925Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:its-a-wonderful-life-a-live-radio-play-2026",
+    "title": "Auto-remediation gave up on its-a-wonderful-life-a-live-radio-play-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"its-a-wonderful-life-a-live-radio-play-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T16:25:46.857Z"
+  },
+  {
+    "conditionKey": "feedback-requests-stuck:missing-show:the way we get by:2026-10-19T05:04:34.150097+00:00",
+    "title": "1 user request(s) stuck — not live after 3 days",
+    "description": "\"The Way We Get By\" was asked for 31 day(s) ago and is still not on the site. Its most recent run since then on 2026-10-19 ended as failure.\n  That run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39211864891\n  Tracking issue: https://github.com/thomaspryor/Broadwayscore/issues/1123",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39211864891",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Stuck",
+        "value": "1"
+      }
+    ],
+    "queuedAt": "2026-11-19T16:49:33.175Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-autoclear-vs-ensemble-corpus-test-needs-review-texts",
+    "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts)",
+    "description": "The \"Run autoclear-vs-ensemble corpus test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44570638717",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run autoclear-vs-ensemble corpus test (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44570638717)"
+      }
+    ],
+    "queuedAt": "2026-11-19T17:00:14.721Z"
   }
 ]

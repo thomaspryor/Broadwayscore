@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7846-e",
   "planId": "4d23056d-9703-4a6a-9962-6f27cfc61735",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T15:38:50.465Z",
   "submitter": {
     "name": null,
@@ -404,5 +404,135 @@
         "description": "handbagged-west-end-2014: never re-take this art source (BRO-7846)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T17:11:57.771Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for beauty-and-the-beast-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for beauty-and-the-beast-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for solitary-confinement-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for solitary-confinement-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-secret-garden-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-secret-garden-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for i-ought-to-be-in-pictures-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for i-ought-to-be-in-pictures-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for amahl-and-the-night-visitors-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for amahl-and-the-night-visitors-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for little-women-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for little-women-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-effect-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-effect-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-flea-in-her-ear-west-end-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-flea-in-her-ear-west-end-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for an-american-in-paris-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for an-american-in-paris-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for company-tour-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for company-tour-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for legally-blonde-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for legally-blonde-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images already {\"hero\":null,\"thumbnail\":\"/images/shows/beauty-and-the-beast-tour-2025/thumbnail.webp\",\"poster\":\"/images/shows/beauty-and-the-beast-tour-2025/poster.webp\"}, pins refreshed for beauty-and-the-beast-tour-2025",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for handbagged-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for handbagged-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
 }

@@ -3691,6 +3691,32 @@ function checkInfraReviewGate() {
   }))];
 }
 
+// CI-ONLY-OK(checkSkepticReview): reads .cache/skeptic-review-stop.log, a gitignored per-machine log the
+// skeptic Stop gate (scripts/lib/skeptic-review-stop.mjs, BRO-7839) writes where it runs. The row is
+// computeSkepticReviewDigest() (scripts/lib/skeptic-review-digest.js), which returns only 'pass' or 'warn',
+// never 'error', so there is no unreachable error state. Non-paging gate telemetry (BRO-7843): where the log
+// is absent it says plainly that it cannot measure here, and the real counts show wherever the gate fires.
+function checkSkepticReview() {
+  const logPath = path.join(infraReviewLedgerRoot(), '.cache', 'skeptic-review-stop.log');
+  if (!fs.existsSync(logPath)) {
+    // CI and ephemeral cloud containers never have the log: count the gate's hits from the committed session-retro rows.
+    const retroPath = path.join(infraReviewLedgerRoot(), 'data', 'audit', 'session-retro.jsonl');
+    if (fs.existsSync(retroPath)) {
+      const { computeSkepticFromRetro } = require('./lib/skeptic-review-digest.js');
+      return [runCheck('Skeptic review: gate telemetry', () => computeSkepticFromRetro(readJsonlBestEffort(retroPath), Date.now()))];
+    }
+    return [{
+      name: 'Skeptic review: gate telemetry',
+      status: 'warn',
+      unmeasurable: true,
+      message: 'Skeptic review: neither .cache/skeptic-review-stop.log nor data/audit/session-retro.jsonl is visible from this environment, so the gate hit rate cannot be measured here.',
+      hint: 'Run `node scripts/lib/skeptic-review-stop.mjs --digest` where the Stop gate fires.',
+    }];
+  }
+  const { computeSkepticReviewDigest } = require('./lib/skeptic-review-digest.js');
+  return [runCheck('Skeptic review: gate telemetry', () => computeSkepticReviewDigest(readJsonlBestEffort(logPath)))];
+}
+
 // --- Category: Dispatch outcomes (did dispatched work actually land?) ---
 //
 // scripts/audit-dispatch-outcomes.js (task #1101) already classifies every
@@ -6430,6 +6456,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...(await checkCodexRunner()),
     ...checkPushRetryDeadman(dryRun),
     ...checkInfraReviewGate(),
+    ...checkSkepticReview(),
     ...checkSharedCheckoutShallow(),
     ...checkDispatchOutcomes(dryRun),
     ...checkDispatchHealth(),
@@ -6673,4 +6700,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkPressNightReadiness, invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkUncardedDigestRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };
+module.exports = { checkPressNightReadiness, invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkUncardedDigestRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth, checkSkepticReview };
