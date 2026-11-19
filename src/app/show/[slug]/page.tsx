@@ -51,7 +51,6 @@ import { showsMarketBadge } from '../../../../scripts/lib/market-badge';
 import { StatusBadge, ReviewsSyncingBadge, FormatPill, ProductionPill, CategoryBadge, ScoreBadge, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { reviewsRemainingForScore } from '@/config/score-buckets';
 import { computeShowTBD } from '@/lib/show-score-tbd';
-import { selectHotShows } from '../../../../scripts/lib/live-score/core';
 import { LiveScoreProvider, LiveStickyScoreHeader, LiveReviewCount, LiveCallResultStrip, LiveBreakdownBar, LiveReviewsList, LiveReviewsSectionIfAbsent, LiveHideWhenOverlay } from '@/components/show-page/LiveScoreOverlay';
 import { scoreGateArg, TOP_CRITICS } from '@/config/scoring';
 import { getBroadwayDuration, formatShowDate } from '@/lib/date-utils';
@@ -534,9 +533,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
   const totalAudienceCount = audienceBuzz ? getTotalAudienceReviews(audienceBuzz) : 0;
 
-  const liveReviewDates: Record<string, string[]> = { [show.id]: (show.criticScore?.reviews ?? []).map(r => r.publishDate).filter(Boolean) };
-  const liveEligible = (show.status === 'open' || show.status === 'previews')
-    && selectHotShows({ shows: [show], reviewDatesByShow: liveReviewDates, now: Date.now() }).length > 0;
+  const liveEligible = show.status === 'open' || show.status === 'previews';
   const liveStaticRev = Date.parse(getDataFreshness().reviewsLastUpdated) || 0;
   return (
     <LiveScoreProvider showId={show.id} staticRev={liveStaticRev} staticReviewCount={reviewCount} eligible={liveEligible}>

@@ -297,3 +297,9 @@ describe('master switch and game-day wiring (BRO-7803)', () => {
     assert.match(read('scripts/lib/game-day/mutants.js'), /BRO-7803-runtime-score-path/);
   });
 });
+
+test('open and preview pages can receive a pointer when they become hot after a build', () => {
+  const page = fs.readFileSync('src/app/show/[slug]/page.tsx', 'utf8');
+  assert.match(page, /const liveEligible = show\.status === 'open' \|\| show\.status === 'previews';/);
+  assert.doesNotMatch(page, /selectHotShows/);
+});
