@@ -633,6 +633,7 @@ test('stampReceipt: amends only the message, once, never a commit already on mai
   assert.match(msg, /^work\n\nReview-Receipt: v1 a{64} toolu_1$/m);
   assert.equal(g('show', '--name-only', '--format=', 'HEAD').stdout.trim(), 'a', 'the staged file stays out of the amended commit');
   assert.equal(stampReceipt({ cwd: dir, evidence }).reason, 'HEAD already carries a receipt');
+  assert.match(stampReceipt({ cwd: dir, evidence, env: { REVIEW_RECEIPT_STAMP: '0' } }).reason, /opt-out/, 'opt-out never touches git');
   assert.equal(stampReceipt({ cwd: dir, evidence: null }).stamped, false);
   g('rm', '-q', '--cached', 'b');
   g('commit', '-q', '--allow-empty', '-m', 'empty');
