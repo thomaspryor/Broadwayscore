@@ -586,5 +586,36 @@
     "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
     "fields": [],
     "queuedAt": "2026-11-19T15:59:32.788Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7841-retro",
+    "title": "Landing blocked: rebase red on land/bro-7841-retro",
+    "description": "land.yml did not land land/bro-7841-retro: the rebase gate went red at 3fd1bc3d51. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44561817072",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7841-retro"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3fd1bc3d515a76b171af234e5226a110172abeb6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44561817072"
+      }
+    ],
+    "queuedAt": "2026-11-19T16:06:11.355Z"
   }
 ]
