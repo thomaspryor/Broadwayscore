@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T09:20:38.397Z",
+  "generatedAt": "2026-11-19T11:04:57.515Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -158,34 +158,58 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
-      "outletId": "musical-theatre-review",
-      "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
+      "outletId": "front-row-center",
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+    },
+    {
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "north-west-end",
+      "error": "Timeout fetching https://northwestend.com/feed/"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
       "outletId": "fringereview",
       "error": "HTTP 500 for https://fringereview.co.uk/feed/"
     },
     {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 898,
+  "itemsScanned": 823,
   "matchedGaps": 0,
   "possibleGaps": 3,
   "gaps": [
     {
-      "showId": "annie-regional-2026-drury-lane-oakbrook",
-      "title": "Annie",
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
       "level": "possible",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/annie-the-brindley/",
-      "headline": "Annie &#8211; The Brindley",
-      "publishDate": "2026-11-17"
+      "outletId": "standard",
+      "url": "https://standard.co.uk/culture/theatre/desire-under-the-elms-review-b1305513.html",
+      "headline": "Desire Under the Elms: Committed but overwrought",
+      "publishDate": null
     },
     {
       "showId": "much-ado-about-nothing-2026",
