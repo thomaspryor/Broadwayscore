@@ -1,13 +1,39 @@
 {
-  "generatedAt": "2026-11-19T00:01:04.072Z",
+  "generatedAt": "2026-11-19T01:27:33.031Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 358,
-  "clean": 358,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 357,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1,
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "destiny-of-desire-regional-2026",
+      "title": "Destiny of Desire",
+      "openingDate": "2026-11-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: la-drama-critics-circle"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.64 vs local 83.62 (Δ0.98)"
+        }
+      ],
+      "missingFromProd": [
+        "la-drama-critics-circle"
+      ],
+      "localCount": 6,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-19T01:27:24.186Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

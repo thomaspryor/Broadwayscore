@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T00:00:40.705Z",
+  "generatedAt": "2026-11-19T01:27:09.788Z",
   "windowDays": 45,
   "showsScanned": 286,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 232.97505583333333,
+      "fileAgeHours": 234.41654972222221,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 210.4267788888889,
+      "nonTerminalAgeHours": 211.86819083333333,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 202.2069675,
+      "fileAgeHours": 203.64842472222222,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 201.0623338888889,
+      "nonTerminalAgeHours": 202.50374583333334,
       "needsManualRecovery": true
     },
     {
@@ -61,9 +61,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=nacho-ate-spiderman-regional-2026",
       "firstSeen": "2026-11-17T15:36:45.908Z",
-      "fileAgeHours": 32.39854694444445,
+      "fileAgeHours": 33.83996055555556,
       "gapSeenAt": "2026-11-18T04:03:05.725Z",
-      "nonTerminalAgeHours": 19.95971638888889,
+      "nonTerminalAgeHours": 21.401128333333332,
       "needsManualRecovery": false
     }
   ],
