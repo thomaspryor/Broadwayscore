@@ -3713,8 +3713,11 @@ function checkSkepticReview() {
       hint: 'Run `node scripts/lib/skeptic-review-stop.mjs --digest` where the Stop gate fires.',
     }];
   }
-  const { computeSkepticReviewDigest } = require('./lib/skeptic-review-digest.js');
-  return [runCheck('Skeptic review: gate telemetry', () => computeSkepticReviewDigest(readJsonlBestEffort(logPath)))];
+  const { computeSkepticReviewDigest, skepticOutcomesFromRetro } = require('./lib/skeptic-review-digest.js');
+  // BRO-7872: also show whether ship-check skeptic gaps were answered (session-retro rows carry `skeptic`).
+  const retroPath = path.join(infraReviewLedgerRoot(), 'data', 'audit', 'session-retro.jsonl');
+  const outcomes = fs.existsSync(retroPath) ? skepticOutcomesFromRetro(readJsonlBestEffort(retroPath), Date.now()) : null;
+  return [runCheck('Skeptic review: gate telemetry', () => computeSkepticReviewDigest(readJsonlBestEffort(logPath), outcomes))];
 }
 
 // --- Category: Dispatch outcomes (did dispatched work actually land?) ---

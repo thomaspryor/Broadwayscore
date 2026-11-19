@@ -302,3 +302,22 @@ test('BRO-7749: every Stop gate that logs to .cache/<x>-stop.log is in STOP_GATE
   assert.ok(logged.size >= 4, 'found the gate logs');
   assert.deepEqual([...logged].filter((l) => !R.STOP_GATES.some((g) => g.log === l)), []);
 });
+
+test('BRO-7872: --record writes the skeptic outcome (runs, gaps found/answered, errors) into the ledger row', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-skeptic-'));
+  const file = path.join(dir, 'sess.jsonl');
+  const ledger = path.join(dir, 'ledger.jsonl');
+  const row = (o) => JSON.stringify({ sessionId: 'sess', timestamp: '2026-11-19T20:00:00Z', ...o });
+  const gaps = 'SKEPTIC REVIEW: 2 material gap(s).\n1. a (b)\n   check: node scripts/x.js\n2. c (d)\n   check: node scripts/x.js --all';
+  fs.writeFileSync(file, [
+    row({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Bash', id: 'k1', input: { command: 'node scripts/lib/skeptic-review-stop.mjs --ship-check' } }] } }),
+    row({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'k1', content: gaps }] } }),
+    row({ type: 'assistant', message: { content: [{ type: 'text', text: 'GAP 2: cannot run here: the full run sends real email to subscribers' }] } }),
+  ].join('\n') + '\n');
+  const r = spawnSync('node', [path.join(path.dirname(new URL(import.meta.url).pathname), 'session-retro.js'), '--record', '--no-action=test fixture only', `--transcript=${file}`],
+    { encoding: 'utf8', env: { ...process.env, SESSION_RETRO_LEDGER: ledger } });
+  assert.equal(r.status, 0, r.stderr);
+  const rec = JSON.parse(fs.readFileSync(ledger, 'utf8').trim().split('\n').pop());
+  assert.deepEqual(rec.skeptic, { runs: 1, gapsFound: 2, gapsAnswered: 1, errors: 0 });
+  fs.rmSync(dir, { recursive: true, force: true });
+});

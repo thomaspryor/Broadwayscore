@@ -22,16 +22,48 @@ function countSkepticRows(rows) {
   return { ...out, sessions: sessions.size };
 }
 
-/** PURE. Daily-digest row from the counts. Never 'error' (non-paging telemetry, same policy as infra-review). */
-function computeSkepticReviewDigest(rows) {
-  const d = countSkepticRows(rows);
-  const message = `Skeptic review: ${d.reviews} reviews (${d.passed} passed, ${d.blocked} blocked, ${d.wouldBlock} would-block over budget), `
-    + `${d.bypass} bypasses, ${d.errors} errors, ${d.sessions} sessions`;
-  const status = d.errors > 0 && d.errors >= d.reviews ? 'warn' : 'pass';
-  return { name: 'Skeptic review: gate telemetry', status, message, ...d };
+const WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * PURE (BRO-7872). Ship-check skeptic outcomes from session-retro rows that carry `skeptic`
+ * ({ runs, gapsFound, gapsAnswered, errors }, written by session-retro.js --record), latest row per session,
+ * inside the window. Ignored gaps (found but not answered) are the number this exists to show.
+ */
+function skepticOutcomesFromRetro(retroRows, now, windowMs = WINDOW_MS) {
+  const latest = new Map();
+  (retroRows || []).forEach((r, i) => {
+    if (!r || !r.skeptic) return;
+    const t = Date.parse(r.recordedAt || r.endAt || '');
+    if (!Number.isFinite(t) || t > now || now - t > windowMs) return;
+    const key = r.sessionId || `row-${i}`; // a row with no session id still counts, once
+    const prev = latest.get(key);
+    if (!prev || prev.t <= t) latest.set(key, { t, s: r.skeptic });
+  });
+  const out = { sessions: 0, runs: 0, gapsFound: 0, gapsAnswered: 0, errors: 0, sessionsWithUnanswered: 0 };
+  for (const { s } of latest.values()) {
+    if (!s.runs) continue;
+    out.sessions++;
+    for (const k of ['runs', 'gapsFound', 'gapsAnswered', 'errors']) out[k] += Number(s[k]) || 0;
+    if ((Number(s.gapsFound) || 0) > (Number(s.gapsAnswered) || 0)) out.sessionsWithUnanswered++;
+  }
+  return out;
 }
 
-const WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+/** PURE. The digest sentence for skepticOutcomesFromRetro(). */
+function outcomeSentence(o) {
+  return `ship-check skeptic runs: ${o.runs} runs in ${o.sessions} sessions, ${o.gapsFound} gaps found, ${o.gapsAnswered} answered`
+    + ` (${o.sessionsWithUnanswered} sessions left gaps unanswered), ${o.errors} errors`;
+}
+
+/** PURE. Daily-digest row from the counts. Never 'error' (non-paging telemetry, same policy as infra-review).
+ *  `outcomes` (optional): skepticOutcomesFromRetro() so the row also shows whether gaps were answered. */
+function computeSkepticReviewDigest(rows, outcomes = null) {
+  const d = countSkepticRows(rows);
+  const message = `Skeptic review: ${d.reviews} reviews (${d.passed} passed, ${d.blocked} blocked, ${d.wouldBlock} would-block over budget), `
+    + `${d.bypass} bypasses, ${d.errors} errors, ${d.sessions} sessions` + (outcomes ? `; ${outcomeSentence(outcomes)}` : '');
+  const status = d.errors > 0 && d.errors >= d.reviews ? 'warn' : 'pass';
+  return { name: 'Skeptic review: gate telemetry', status, message, ...d, ...(outcomes ? { outcomes } : {}) };
+}
 const GATE = '[VE:SKEPTIC]';
 
 /**
@@ -49,9 +81,10 @@ function computeSkepticFromRetro(retroRows, now, windowMs = WINDOW_MS) {
     const g = r.gates && r.gates[GATE];
     if (g) { withGate++; if (g.blocks > 0) { blockedSessions++; blocks += g.blocks; } }
   }
+  const outcomes = skepticOutcomesFromRetro(retroRows, now, windowMs);
   const message = `Skeptic review (last 7 days, from session retros): ${blocks} blocks in ${blockedSessions} of ${sessions} recorded sessions`
-    + ` (${withGate} sessions with a gate hit)`;
-  return { name: 'Skeptic review: gate telemetry', status: 'pass', message, sessions, withGate, blockedSessions, blocks, source: 'session-retro' };
+    + ` (${withGate} sessions with a gate hit); ${outcomeSentence(outcomes)}`;
+  return { name: 'Skeptic review: gate telemetry', status: 'pass', message, sessions, withGate, blockedSessions, blocks, outcomes, source: 'session-retro' };
 }
 
-module.exports = { countSkepticRows, computeSkepticReviewDigest, computeSkepticFromRetro };
+module.exports = { countSkepticRows, computeSkepticReviewDigest, computeSkepticFromRetro, skepticOutcomesFromRetro };

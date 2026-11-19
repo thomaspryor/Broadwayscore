@@ -54,3 +54,20 @@ test('log-absent fallback counts [VE:SKEPTIC] hits from session-retro rows in th
   assert.match(r.message, /2 blocks in 1 of 3 recorded sessions/);
   assert.ok(healthSrc.includes('computeSkepticFromRetro'), 'health-check no longer falls back to session-retro');
 });
+
+test('BRO-7872: digest shows ship-check skeptic outcomes (runs, gaps found/answered, errors) from retro rows', () => {
+  const { computeSkepticFromRetro, computeSkepticReviewDigest, skepticOutcomesFromRetro } = require('../lib/skeptic-review-digest.js');
+  const now = Date.parse('2026-11-20T00:00:00Z');
+  const rows = [
+    { sessionId: 'a', recordedAt: '2026-11-19T10:00:00Z', gates: {}, skeptic: { runs: 1, gapsFound: 5, gapsAnswered: 0, errors: 0 } },
+    { sessionId: 'a', recordedAt: '2026-11-19T12:00:00Z', gates: {}, skeptic: { runs: 2, gapsFound: 1, gapsAnswered: 1, errors: 0 } },
+    { sessionId: 'b', recordedAt: '2026-11-19T11:00:00Z', gates: {}, skeptic: { runs: 2, gapsFound: 3, gapsAnswered: 1, errors: 1 } },
+    { sessionId: 'c', recordedAt: '2026-11-19T11:00:00Z', gates: {}, skeptic: { runs: 0, gapsFound: 0, gapsAnswered: 0, errors: 0 } },
+    { sessionId: 'old', recordedAt: '2026-11-01T12:00:00Z', skeptic: { runs: 9, gapsFound: 9, gapsAnswered: 0, errors: 0 } },
+  ];
+  assert.deepEqual(skepticOutcomesFromRetro(rows, now), { sessions: 2, runs: 4, gapsFound: 4, gapsAnswered: 2, errors: 1, sessionsWithUnanswered: 1 }, 'latest row per session');
+  assert.match(computeSkepticFromRetro(rows, now).message, /ship-check skeptic runs: 4 runs in 2 sessions, 4 gaps found, 2 answered \(1 sessions left gaps unanswered\), 1 errors/);
+  assert.match(computeSkepticReviewDigest([], skepticOutcomesFromRetro(rows, now)).message, /4 gaps found, 2 answered/);
+  assert.doesNotMatch(computeSkepticReviewDigest([]).message, /ship-check skeptic/, 'log-only call unchanged');
+  assert.ok(healthSrc.includes('skepticOutcomesFromRetro'), 'health-check log path no longer reports outcomes');
+});

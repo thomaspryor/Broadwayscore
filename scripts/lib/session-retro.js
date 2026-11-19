@@ -99,6 +99,12 @@ async function dryRunGates(transcriptPath, env = process.env) {
   return { out, errors };
 }
 
+/** The row's `skeptic` field (BRO-7872): { runs, gapsFound, gapsAnswered, errors } for this session's
+ *  skeptic-review --ship-check runs, so ignored gaps show in the ledger and the digest. null when unreadable. */
+async function skepticOutcome(transcriptPath) {
+  try { return require('./skeptic-gap-answers.js').skepticStats((await import('./transcript-scan.mjs')).walkTranscript(transcriptPath)); } catch { return null; }
+}
+
 /** PURE. The row's `gates` field: only gates with activity; {} means measured, nothing hit. */
 function mergeGateActivity(hookBlocks, logged, dry) {
   const out = {};
@@ -343,9 +349,10 @@ async function main(argv) {
     const cacheDir = hookCacheDir();
     const dry = await dryRunGates(file);
     r.gates = mergeGateActivity(r.hookBlocks, cacheDir ? logHits(sessionKey, cacheDir) : {}, dry.out);
+    const skeptic = await skepticOutcome(file);
     const gatesErrors = [...(cacheDir ? [] : ['cache: could not resolve the hook checkout (git rev-parse failed)']), ...dry.errors];
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
-    fs.appendFileSync(LEDGER, JSON.stringify({ v: 2, sessionId: r.sessionId, gates: r.gates, ...(gatesErrors.length ? { gatesErrors } : {}), endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
+    fs.appendFileSync(LEDGER, JSON.stringify({ v: 2, sessionId: r.sessionId, gates: r.gates, ...(skeptic ? { skeptic } : {}), ...(gatesErrors.length ? { gatesErrors } : {}), endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
     r.links = pl.links; r.noAction = pl.noAction;
   }
   console.log(opt.json ? JSON.stringify(r, null, 2) : report(r));
@@ -361,4 +368,4 @@ async function main(argv) {
 if (require.main === module) {
   main(process.argv.slice(2)).then((c) => require('./exit-flushed').exitFlushed(c), (e) => { console.error(`session-retro: ${e && e.stack}`); require('./exit-flushed').exitFlushed(1); });
 }
-module.exports = { main, STOP_GATES, logHits, dryRunGates, mergeGateActivity, gateRollup, hookCacheDir, rollup, analyze, report, signals, T, hookLabel, triggersFor, parseLinks, retroStatus, readLedger, LEDGER };
+module.exports = { main, STOP_GATES, logHits, dryRunGates, skepticOutcome, mergeGateActivity, gateRollup, hookCacheDir, rollup, analyze, report, signals, T, hookLabel, triggersFor, parseLinks, retroStatus, readLedger, LEDGER };
