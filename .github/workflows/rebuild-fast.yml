@@ -440,24 +440,6 @@ jobs:
         run: node scripts/audit-score-public-since.js
         continue-on-error: true
 
-      # BRO-7803: publish the hot shows' score payloads to the public live-scores
-      # bucket so show pages overlay them within ~a minute, ahead of the Next build +
-      # Vercel deploy (which still runs below and supersedes the overlay). Placed AFTER
-      # the staleness guard and the flagged-show revert and BEFORE the push, so it can
-      # only publish data the guard cleared and never waits on the push. Advisory
-      # (continue-on-error): a failure leaves the static pages exactly as the normal
-      # deploy will build them. Kill switch without a deploy:
-      #   npx tsx scripts/publish-live-scores.ts --kill   (writes kill.json)
-      - name: Publish live score payloads (BRO-7803)
-        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
-        timeout-minutes: 3
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          LIVE_SCORES_SAFE: ${{ steps.staleness.outputs.safe_to_publish }}
-        run: npx tsx scripts/publish-live-scores.ts --flagged-file="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
-        continue-on-error: true
-
       - name: Get new review count
         id: after
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
@@ -718,6 +700,24 @@ jobs:
           fi
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
+
+      # BRO-7803: publish the hot shows' score payloads to the public live-scores
+      # bucket so show pages overlay them within ~a minute, ahead of the Next build +
+      # Vercel deploy (which still runs below and supersedes the overlay). Placed AFTER
+      # the push of core data and the deploy dispatch, so a payload is never public
+      # before its data is committed and the deploy dispatch is never delayed. Advisory
+      # (continue-on-error): a failure leaves the static pages exactly as the normal
+      # deploy will build them. Kill switch without a deploy:
+      #   npx tsx scripts/publish-live-scores.ts --kill   (writes kill.json)
+      - name: Publish live score payloads (BRO-7803)
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true' && steps.push-core-data.outcome == 'success'
+        timeout-minutes: 3
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          LIVE_SCORES_SAFE: ${{ steps.staleness.outputs.safe_to_publish }}
+        run: npx tsx scripts/publish-live-scores.ts --flagged-file="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
+        continue-on-error: true
 
       # BRO-7606: backfill a Linear card for any parked review submission
       # (needs-manual-review / scraping-failed) whose issue has no linear-card

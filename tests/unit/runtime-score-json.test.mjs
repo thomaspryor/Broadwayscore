@@ -249,16 +249,26 @@ describe('8. workflow wiring (rebuild-fast)', () => {
     assert.match(block, /--flagged-file=/);
     assert.match(block, /SUPABASE_SERVICE_ROLE_KEY/);
   });
-  test('runs after the staleness guard + flagged revert and BEFORE the push and deploy trigger', () => {
+  test('runs after the staleness guard + flagged revert, the core data push and the deploy trigger', () => {
     const at = (n) => wf.indexOf(n);
     assert.ok(at('Verify no scoreable review vanished') < i);
     assert.ok(at('Revert public data for shows flagged by staleness guard') < i);
-    assert.ok(i < at('- name: Commit and push changes'));
-    assert.ok(i < at('- name: Trigger deploy (core data changed)'));
+    assert.ok(i > at('- name: Push core data to private repo'));
+    assert.ok(i > at('- name: Trigger deploy (core data changed)'));
+    assert.match(block, /steps\.push-core-data\.outcome == 'success'/);
   });
   test('publisher honours the guard inputs (flagged file, safe flag, no-decrease)', () => {
     const ts = fs.readFileSync('scripts/publish-live-scores.ts', 'utf8');
     assert.match(ts, /flagged-file/); assert.match(ts, /LIVE_SCORES_SAFE/);
+  });
+});
+
+describe('8b. page does not render a second reviews section next to the static one', () => {
+  test('LiveReviewsSectionIfAbsent is told whether the static section exists and returns null then', () => {
+    const page = fs.readFileSync('src/app/show/[slug]/page.tsx', 'utf8');
+    const comp = fs.readFileSync('src/components/show-page/LiveScoreOverlay.tsx', 'utf8');
+    assert.match(page, /<LiveReviewsSectionIfAbsent[^>]*staticHasReviews=/);
+    assert.match(comp, /if \(staticHasReviews \|\|/);
   });
 });
 

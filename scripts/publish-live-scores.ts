@@ -49,11 +49,18 @@ async function main() {
   for (const s of all) dates[s.id] = (s.criticScore?.reviews ?? []).map((r: any) => r.publishDate).filter(Boolean);
   const days = Number(val('days')) || undefined;
   const ids = only ? [only] : selectHotShows({ shows: all.filter((s: any) => s.status === 'open' || s.status === 'previews'), reviewDatesByShow: dates, days });
-  const plan = ids.map((id: string) => {
-    const show = all.find((s) => s.id === id);
-    if (!show) throw new Error(`unknown show ${id}`);
-    return { showId: id, view: buildScoreRegionView(show as never, !!getCriticConsensus(id)), reviews: getReviewListItems(show) };
-  });
+  const plan: any[] = [];
+  for (const id of ids) {
+    // One show failing to build must not stop the others from publishing.
+    try {
+      const show = all.find((s) => s.id === id);
+      if (!show) throw new Error(`unknown show ${id}`);
+      plan.push({ showId: id, view: buildScoreRegionView(show as never, !!getCriticConsensus(id)), reviews: getReviewListItems(show) });
+    } catch (e: any) {
+      console.error(`skip ${id}: ${e.message || e}`);
+      process.exitCode = 1;
+    }
+  }
   const safe = process.env.LIVE_SCORES_SAFE !== 'false';
   await storage.ensureBucket().catch(() => {});
   const out = await publish({ storage, plan, rev, flagged, safe, allowDecrease: flag('allow-decrease'), dryRun: flag('dry-run'), log: console.log });

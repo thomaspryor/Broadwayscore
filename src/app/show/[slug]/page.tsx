@@ -1079,7 +1079,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           </LiveHideWhenOverlay>
         )}
 
-        <LiveReviewsSectionIfAbsent category={show.category ?? ''} showId={show.id} showTiers={!isOpera} />
+        <LiveReviewsSectionIfAbsent category={show.category ?? ''} showId={show.id} showTiers={!isOpera} staticHasReviews={!!(show.criticScore && show.criticScore.reviews.length > 0)} />
 
         <RelatedShowsCompactAB shows={compactRelated} sourceShowId={show.id} />
 

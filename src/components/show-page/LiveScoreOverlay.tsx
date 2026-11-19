@@ -100,9 +100,10 @@ export function LiveReviewsList(props: React.ComponentProps<typeof ReviewsList>)
 }
 
 /** Rendered only when the build had no reviews (so no static section): the section appears when the overlay brings the first rows. */
-export function LiveReviewsSectionIfAbsent({ category, showId, showTiers }: { category: string; showId: string; showTiers: boolean }) {
+export function LiveReviewsSectionIfAbsent({ category, showId, showTiers, staticHasReviews }: { category: string; showId: string; showTiers: boolean; staticHasReviews: boolean }) {
   const overlay = useLiveOverlay();
-  if (!overlay || overlay.reviews.length === 0) return null;
+  // A static reviews section already renders the overlay rows through LiveReviewsList; a second one would duplicate the id and the list.
+  if (staticHasReviews || !overlay || overlay.reviews.length === 0) return null;
   const score = overlay.view.showTBD ? null : overlay.view.score;
   return (
     <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading">
