@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-11-18T10:55:14.678Z",
-  "bannerText": "224/254 Done(14d) verified on main · 11 FAILED · 0 vacuous · 11 stuck-but-done · 5 mis-armed, needs re-arming (BRO-7706, BRO-6963, BRO-6919, +2 more)",
+  "generatedAt": "2026-11-19T11:14:14.495Z",
+  "bannerText": "191/216 Done(14d) verified on main · 12 FAILED · 0 vacuous · 9 stuck-but-done · 3 mis-armed, needs re-arming (BRO-6213, BRO-6097, BRO-7706)",
   "items": [
     {
-      "title": "FAILED BRO-7519 — Digest 2026-11-15: 4 visitor rows with no fix (stale announced The Humans WE, coverageExpectation drift ap/broadwaynews/latimes, score outside critic rating, Now You See Me BWW roundup misses)",
-      "detail": "[check-health-row-absent] FAIL: \"Data: BWW roundup discovery misses near opening\" still listed in the 2026-11-18T10:19:20.703Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7519/digest-2026-11-15-4-visitor-rows-with-no-fix-stale-announced-the"
-    },
-    {
       "title": "FAILED BRO-7482 — BSC Daily: Data audit failing: Run data validation",
-      "detail": "[check-health-row-absent] FAIL: \"Data audit failing: Run data validation\" still listed in the 2026-11-18T10:19:20.703Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data audit failing: Run data validation\" still listed in the 2026-11-19T10:32:20.134Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7482/bsc-daily-data-audit-failing-run-data-validation"
     },
     {
-      "title": "FAILED BRO-7453 — BSC Daily: Data: T1/T2 silent review gaps",
-      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-11-18T10:19:20.703Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7453/bsc-daily-data-t1t2-silent-review-gaps"
-    },
-    {
       "title": "FAILED BRO-7364 — BSC Daily: Data: T1/T2 silent review gaps",
-      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-11-18T10:19:20.703Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-11-19T10:32:20.134Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7364/bsc-daily-data-t1t2-silent-review-gaps"
     },
     {
-      "title": "FAILED BRO-7335 — BSC Daily: Quality: outlet domain moves",
-      "detail": "[check-health-row-absent] FAIL: \"Quality: outlet domain moves\" still listed in the 2026-11-18T10:19:20.703Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7335/bsc-daily-quality-outlet-domain-moves"
-    },
-    {
-      "title": "FAILED BRO-7208 — Default-critic diversity: 13 outlets credit blank bylines to one of several critics",
-      "detail": "[check-alert-condition-absent] FAIL: \"default-critic-diversity:unflagged\" still firing — open, last fired 2026-11-18T10:22:50.905Z (0.6h ago, within 168h)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7208/default-critic-diversity-13-outlets-credit-blank-bylines-to-one-of"
-    },
-    {
-      "title": "FAILED BRO-7031 — P1: Opening night miss: 2:22 - A Ghost Story (2026-11-05)",
-      "detail": "gap audit generated 2026-11-18T09:09:55.409Z FAIL the-unbelievers-off-broadway-2026: 18 live, 0 cited not live, 1 automated exclusion(s) to re-verify; info: 1 census candidate(s),…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7031/p1-opening-night-miss-222-a-ghost-story-2026-11-05"
-    },
-    {
       "title": "FAILED BRO-6590 — Renew the NYT login cookie on the Mac Studio (NYT-S / nyt-a expired by 2026-10-27, poller NYT reviews cut at the paywall)",
-      "detail": "(gh not authenticated; read runs from the public GitHub API) check-cookie-health.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com/thomas…",
+      "detail": "gh not authenticated and public API fallback failed: GET https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/check-cookie-health.yml/runs?per_page=1&status=co…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6590/renew-the-nyt-login-cookie-on-the-mac-studio-nyt-s-nyt-a-expired-by"
+    },
+    {
+      "title": "FAILED BRO-5516 — Review-gap audit refused to write — 61.9% of shows changed coverage state",
+      "detail": "[check-alert-condition-absent] FAIL: \"review-gap:blast-radius-refused\" still firing — open, last fired 2026-11-17T23:39:11.634Z (35.6h ago, within 168h)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5516/review-gap-audit-refused-to-write-619percent-of-shows-changed-coverage"
+    },
+    {
+      "title": "FAILED BRO-5447 — BSC Daily: Data quality: missed opening-night broadcasts",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: missed opening-night broadcasts\" still listed in the 2026-11-19T10:32:20.134Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5447/bsc-daily-data-quality-missed-opening-night-broadcasts"
+    },
+    {
+      "title": "FAILED BRO-4623 — Commercial scorecard launch-readiness audit (accuracy, freshness, coverage) before Forbes interview",
+      "detail": "gh not authenticated and public API fallback failed: GET https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/commercial-weekly.yml/runs?per_page=1&status=comp…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4623/commercial-scorecard-launch-readiness-audit-accuracy-freshness"
+    },
+    {
+      "title": "FAILED BRO-4372 — Cloud Stop hook: port remaining Mac finish-line gates (2 defer-question, 3 deferral, 7 absence-claim) + Mac verify-edits per-gate loop guard",
+      "detail": "TAP version 13",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4372/cloud-stop-hook-port-remaining-mac-finish-line-gates-2-defer-question"
+    },
+    {
+      "title": "FAILED BRO-7730 — Land-follow check reads land pushes inside heredocs and test fixtures as real pushes",
+      "detail": "TAP version 13",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7730/land-follow-check-reads-land-pushes-inside-heredocs-and-test-fixtures"
     }
   ],
-  "moreCount": 14
+  "moreCount": 13
 }
