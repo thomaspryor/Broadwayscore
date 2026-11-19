@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-19T02:26:21.344Z",
-  "processed": 410,
-  "failed": 242,
-  "successRate": "62.9%",
+  "updatedAt": "2026-11-19T02:36:58.164Z",
+  "processed": 417,
+  "failed": 238,
+  "successRate": "63.7%",
   "tierBreakdown": {
-    "playwright": 233,
+    "playwright": 238,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 0,
-    "scrapingdog": 37,
+    "scrapingdog": 38,
     "scrapingbee": 20,
     "brightdata": 2,
     "archiveToday": 0,
     "archive": 121
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-11-18T20:39:51.013Z",
@@ -114,6 +114,17 @@
       "t": "2026-11-19T01:37:27.885Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T02:15:42.385Z",
+      "event": "bb-session",
+      "session": "cd13988a",
+      "url": "https://www.wsj.com/arts-culture/theater/jenufa-review-a-powerfully-grim-opera-a"
+    },
+    {
+      "t": "2026-11-19T02:15:42.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
