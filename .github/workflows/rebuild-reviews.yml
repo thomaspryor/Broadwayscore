@@ -65,7 +65,8 @@ jobs:
     # old one.
     # 40->45 (BRO-2321): the advisory "Exclusion mirror vs rebuild census"
     # step adds its own 5-minute budget.
-    timeout-minutes: 45
+    # 45->52 (BRO-7841): the "Recheck recent review urls" step adds its own 6-minute budget.
+    timeout-minutes: 52
 
     steps:
       - name: Checkout repository
