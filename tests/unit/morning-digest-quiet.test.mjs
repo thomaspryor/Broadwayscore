@@ -229,6 +229,14 @@ test('plain wording: no visitor-facing health check shows its raw name (BRO-7047
   const hcSrc = fs.readFileSync(path.join(process.cwd(), 'scripts/health-check.js'), 'utf8');
   const declared = [...hcSrc.matchAll(/runCheck\(\s*(['"])([^'"`$]+)\1/g)].map((m) => m[2]);
   assert.ok(declared.length >= 30, `expected 30+ literal runCheck names in health-check.js, found ${declared.length}`);
+  // BRO-7402: rows built in a helper lib (press-night-readiness-gaps.js returns { name: 'Press night: ...' }) never
+  // appear as a runCheck literal, so they reached main raw and turned every land red. Scan `name: '...'` literals in
+  // health-check.js and every ./lib module it requires.
+  const libFiles = [...new Set([...hcSrc.matchAll(/require\(\s*'\.\/lib\/([\w.-]+?)(?:\.js)?'\s*\)/g)].map((m) => path.join(process.cwd(), 'scripts/lib', `${m[1]}.js`)))].filter((f) => fs.existsSync(f));
+  assert.ok(libFiles.length >= 20, `expected 20+ ./lib requires in health-check.js, found ${libFiles.length}`);
+  for (const f of [path.join(process.cwd(), 'scripts/health-check.js'), ...libFiles]) {
+    for (const m of fs.readFileSync(f, 'utf8').matchAll(/\bname:\s*'([A-Z][^'`$\\]{3,}: [^'`$\\]+)'/g)) declared.push(m[1]);
+  }
   for (const n of new Set([...fixed, ...history, ...declared])) {
     if (classifyHealthCheck({ name: n }) !== 'visitors') continue;
     const line = plainHealthLine(n, '');
