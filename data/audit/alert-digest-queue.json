@@ -984,5 +984,19 @@
       }
     ],
     "queuedAt": "2026-11-19T01:52:02.045Z"
+  },
+  {
+    "conditionKey": "opening-night-backup-trigger-dispatch-failed",
+    "title": "Opening-night backup trigger: orchestrator dispatch failed ( broadway)",
+    "description": "gh workflow run failed from the Mac Studio (see data/opening-night-monitor/backup-trigger.log). GitHub-native crons remain the fallback.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T02:00:33.104Z"
   }
 ]
