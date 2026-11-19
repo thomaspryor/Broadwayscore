@@ -592,8 +592,15 @@ async function runOutlet(outletId, o, shared) {
     items: results.map((r) => ({ url: r.url, publishDate: r.publishDate || null, dateSoft: r.dateSoft || undefined, headline: r.headline || null, bucket: r.bucket,
       matched: r.matchedIds && r.matchedIds.length ? r.matchedIds : undefined, itemMarket: r.itemMarket, venueHint: r.venueHint || undefined })) };
   // BRO-7820: a timestamp-only difference leaves the file alone, so the weekly CI run commits only real changes.
-  census.writeJsonUnlessOnlyStampChanged(path.join(OUT_DIR, `${outletId}.manifest.json`), manifest, 1);
-  census.writeJsonUnlessOnlyStampChanged(path.join(OUT_DIR, `${outletId}.report.json`), report, 2);
+  const reportPath = path.join(OUT_DIR, `${outletId}.report.json`);
+  let prevReport = null;
+  try { prevReport = JSON.parse(fs.readFileSync(reportPath, 'utf8')); } catch { /* first run */ }
+  if (census.shouldKeepPreviousReport(prevReport, report)) {
+    console.log(`  KEEP previous report: this run could not read the listing (${report.source.reason || 'unreadable'})`);
+  } else {
+    census.writeJsonUnlessOnlyStampChanged(path.join(OUT_DIR, `${outletId}.manifest.json`), manifest, 1);
+    census.writeJsonUnlessOnlyStampChanged(reportPath, report, 2);
+  }
   console.log(`  buckets ${JSON.stringify(summary.counts)} recall=${summary.recall}${report.source.incomplete ? ' (INCOMPLETE: ' + enumerated.notes.join('; ') + ')' : ''}`);
   console.log(`  corpus-side: ${uniqRows.length} held rows in window, ${report.corpusSide.notEnumerated} not enumerated, ${report.corpusSide.noUrl} without URL`);
   return report;

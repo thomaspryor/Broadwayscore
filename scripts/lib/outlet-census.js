@@ -816,6 +816,14 @@ function itemFromSitemapEntry(g, src) {
  * Every run stamps every file, so without this a weekly CI run would rewrite ~100 files for nothing.
  * Returns true when the file was written.
  */
+// BRO-7820: a report whose listing could not be read ('unreadable') must not replace a previous
+// report that did read it: the weekly job would otherwise trade real coverage numbers for zeros.
+function shouldKeepPreviousReport(prev, next) {
+  const ps = prev && prev.source && prev.source.status;
+  const ns = next && next.source && next.source.status;
+  return ps === 'complete' && ns === 'unreadable';
+}
+
 function writeJsonUnlessOnlyStampChanged(file, obj, indent) {
   const nodeFs = require('fs');
   try {
@@ -827,7 +835,7 @@ function writeJsonUnlessOnlyStampChanged(file, obj, indent) {
 }
 
 module.exports = {
-  writeJsonUnlessOnlyStampChanged,
+  writeJsonUnlessOnlyStampChanged, shouldKeepPreviousReport,
   itemFromSitemapEntry,
   blindOutlets,
   LONDON_SIGNAL_RE,

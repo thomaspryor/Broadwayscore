@@ -509,3 +509,11 @@ test('BRO-7816: ignoreLastmod sources date by their child sitemap, never by a bu
     if (SOURCES[id].ignoreLastmod) assert.equal(itemFromSitemapEntry(g, SOURCES[id]).lastmod, null, id);
   }
 });
+
+test('BRO-7820: shouldKeepPreviousReport keeps a complete report over an unreadable one', () => {
+  const k = census.shouldKeepPreviousReport;
+  assert.equal(k({ source: { status: 'complete' } }, { source: { status: 'unreadable' } }), true);
+  assert.equal(k({ source: { status: 'complete' } }, { source: { status: 'incomplete' } }), false);
+  assert.equal(k({ source: { status: 'unreadable' } }, { source: { status: 'unreadable' } }), false);
+  assert.equal(k(null, { source: { status: 'unreadable' } }), false);
+});
