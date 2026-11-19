@@ -202,6 +202,16 @@ function evidenceSinceFor(show, now) {
   return new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 }
 
+/**
+ * The ONE call both the audit and its acceptance test make (BRO-7409): evidence of opening
+ * restricted to reviews dated inside the run (evidenceSinceFor). The acceptance test used to call
+ * hasEvidenceOfOpening without `since`, so a 2022 review of an earlier production kept
+ * the-apology-west-end-2027 "opened" there while the script (fixed in BRO-7519) did not.
+ */
+function hasInRunEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show, now = new Date()) {
+  return hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show, { since: evidenceSinceFor(show, now) });
+}
+
 function describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show, opts = {}) {
   const since = opts.since || null;
   const dir = path.join(reviewTextsDir, showId);
@@ -319,6 +329,7 @@ module.exports = {
   AUDITED_STATUSES,
   isEvidenceOfOpening,
   hasEvidenceOfOpening,
+  hasInRunEvidenceOfOpening,
   describeOpeningEvidence,
   evidenceSinceFor,
   NOT_EVIDENCE_OF_OPENING,

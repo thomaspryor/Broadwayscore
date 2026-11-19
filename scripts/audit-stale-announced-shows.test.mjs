@@ -101,7 +101,7 @@ test('BRO-93 acceptance: current shows.json produces zero stale announced flags'
   const fs = require('fs');
   const path = require('path');
   const { fileURLToPath } = require('url');
-  const { loadAcks, hasEvidenceOfOpening } = require('./lib/stale-announced-audit.js');
+  const { loadAcks, hasInRunEvidenceOfOpening } = require('./lib/stale-announced-audit.js');
   const { explainExclusion } = require('./lib/review-guards.js');
 
   const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -132,7 +132,7 @@ test('BRO-93 acceptance: current shows.json produces zero stale announced flags'
     const reasons = evaluateAnnouncedShow(show, {
       now,
       staleDays: 30,
-      hasReviews: hasEvidenceOfOpening(reviewTextsDir, show.id, explainExclusion, show),
+      hasReviews: hasInRunEvidenceOfOpening(reviewTextsDir, show.id, explainExclusion, show, now),
       acks,
     });
     if (reasons.length > 0) flagged.push({ id: show.id, reasons });
@@ -208,4 +208,24 @@ test('announced show: a review of an earlier production is not evidence it opene
   fs.writeFileSync(path.join(dir, 'humans', 'new.json'), JSON.stringify({ publishDate: '2026-05-28', url: 'https://example.com/humans-2026' }));
   assert.equal(describeOpeningEvidence(dir, 'humans', () => null, show, { since: evidenceSinceFor(show, NOW) }).hasEvidence, true);
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// BRO-7409 class guard: the acceptance test and the audit script must make the SAME evidence call.
+// Both go through hasInRunEvidenceOfOpening; the old acceptance test omitted `since` and drifted from the script.
+test('hasInRunEvidenceOfOpening ignores an earlier production and counts an in-run review (BRO-7409)', async () => {
+  const { hasInRunEvidenceOfOpening } = require('./lib/stale-announced-audit.js');
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7409-'));
+  fs.mkdirSync(path.join(dir, 'apology'));
+  // the-apology-west-end-2027: announced, previews 2027-03-19, one 2022 London Box Office review of the earlier production
+  fs.writeFileSync(path.join(dir, 'apology', 'lbo.json'), JSON.stringify({ publishDate: '2022-09-23', url: 'https://www.londonboxoffice.co.uk/news/post/review-the-apology' }));
+  const show = { id: 'apology', status: 'announced', previewsStartDate: '2027-03-19' };
+  assert.equal(hasInRunEvidenceOfOpening(dir, 'apology', () => null, show, NOW), false);
+  fs.rmSync(dir, { recursive: true, force: true });
+  const fs2 = fs; const dir2 = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7409b-'));
+  // a review dated inside the run still counts (the source-grep guard lives in tests/unit/stale-announced-evidence.test.mjs)
+  fs2.mkdirSync(path.join(dir2, 'apology'));
+  fs2.writeFileSync(path.join(dir2, 'apology', 'new.json'), JSON.stringify({ publishDate: '2027-03-25', url: 'https://example.com/apology-2027' }));
+  assert.equal(hasInRunEvidenceOfOpening(dir2, 'apology', () => null, show, NOW), true);
+  fs2.rmSync(dir2, { recursive: true, force: true });
 });

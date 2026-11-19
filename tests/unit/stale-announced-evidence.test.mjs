@@ -83,8 +83,8 @@ test('neither the audit script nor its acceptance test re-inlines the review-tex
       .filter((line) => !line.trim().startsWith('//'))
       .join('\n');
     assert.ok(
-      /hasEvidenceOfOpening\(/.test(src),
-      `${rel} must call hasEvidenceOfOpening from scripts/lib/stale-announced-audit.js`
+      /hasInRunEvidenceOfOpening\(/.test(src),
+      `${rel} must call hasInRunEvidenceOfOpening from scripts/lib/stale-announced-audit.js`
     );
     assert.ok(
       !/readdirSync\([^)]*\)[\s\S]{0,80}endsWith\('\.json'\)/.test(src),
