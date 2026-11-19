@@ -1,78 +1,78 @@
 {
-  "generatedAt": "2026-11-16T21:17:44.601Z",
+  "generatedAt": "2026-11-19T10:18:17.353Z",
   "naivePages": 2,
   "settlingHours": 24,
   "totals": {
     "shows": 5,
     "excluded": [],
-    "undatedCandidates": 5,
-    "truthUrls": 37,
-    "scopedUrls": 8,
-    "naiveUrls": 11,
-    "onDiskUrls": 27,
-    "newFromNaive": 5,
+    "undatedCandidates": 6,
+    "truthUrls": 46,
+    "scopedUrls": 11,
+    "naiveUrls": 9,
+    "onDiskUrls": 33,
+    "newFromNaive": 8,
     "perArm": {
       "naive-p0": {
+        "found": 7,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.152
+      },
+      "naive-p1": {
+        "found": 2,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.043
+      },
+      "onDisk": {
+        "found": 33,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.717
+      },
+      "scoped-q0": {
+        "found": 6,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.13
+      },
+      "scoped-q1": {
         "found": 8,
         "queries": 5,
         "failed": 0,
-        "recall": 0.216
-      },
-      "naive-p1": {
-        "found": 3,
-        "queries": 5,
-        "failed": 0,
-        "recall": 0.081
-      },
-      "onDisk": {
-        "found": 27,
-        "queries": 5,
-        "failed": 0,
-        "recall": 0.73
-      },
-      "scoped-q0": {
-        "found": 5,
-        "queries": 5,
-        "failed": 0,
-        "recall": 0.135
-      },
-      "scoped-q1": {
-        "found": 3,
-        "queries": 5,
-        "failed": 0,
-        "recall": 0.081
+        "recall": 0.174
       },
       "scoped-q2": {
-        "found": 1,
-        "queries": 3,
+        "found": 2,
+        "queries": 1,
         "failed": 0,
-        "recall": 0.027
+        "recall": 0.043
       }
     },
     "perFamily": {
       "naive": {
-        "found": 11,
+        "found": 9,
         "arms": 2,
         "failed": 0,
-        "recall": 0.297
+        "recall": 0.196
       },
       "onDisk": {
-        "found": 27,
+        "found": 33,
         "arms": 1,
         "failed": 0,
-        "recall": 0.73
+        "recall": 0.717
       },
       "scoped": {
-        "found": 8,
+        "found": 11,
         "arms": 3,
         "failed": 0,
-        "recall": 0.216
+        "recall": 0.239
       }
     },
     "byCategory": {
-      "off-broadway": {
+      "broadway": {
         "shows": 1,
-        "truthUrls": 1,
+        "truthUrls": 8,
         "families": {
           "naive": {
             "found": 0,
@@ -81,31 +81,31 @@
             "recall": 0
           },
           "onDisk": {
-            "found": 1,
+            "found": 8,
             "arms": 1,
             "failed": 0,
             "recall": 1
           },
           "scoped": {
-            "found": 0,
+            "found": 1,
             "arms": 2,
             "failed": 0,
-            "recall": 0
+            "recall": 0.125
           }
         }
       },
-      "off-west-end": {
-        "shows": 2,
-        "truthUrls": 22,
+      "off-broadway": {
+        "shows": 1,
+        "truthUrls": 11,
         "families": {
           "naive": {
-            "found": 9,
+            "found": 2,
             "arms": 2,
             "failed": 0,
-            "recall": 0.409
+            "recall": 0.182
           },
           "onDisk": {
-            "found": 16,
+            "found": 8,
             "arms": 1,
             "failed": 0,
             "recall": 0.727
@@ -114,426 +114,128 @@
             "found": 3,
             "arms": 3,
             "failed": 0,
-            "recall": 0.136
+            "recall": 0.273
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 1,
+        "truthUrls": 9,
+        "families": {
+          "naive": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0
+          },
+          "onDisk": {
+            "found": 9,
+            "arms": 1,
+            "failed": 0,
+            "recall": 1
+          },
+          "scoped": {
+            "found": 1,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.111
           }
         }
       },
       "regional": {
-        "shows": 2,
-        "truthUrls": 14,
+        "shows": 1,
+        "truthUrls": 11,
         "families": {
           "naive": {
             "found": 2,
             "arms": 2,
             "failed": 0,
-            "recall": 0.143
+            "recall": 0.182
           },
           "onDisk": {
-            "found": 10,
+            "found": 6,
             "arms": 1,
+            "failed": 0,
+            "recall": 0.545
+          },
+          "scoped": {
+            "found": 6,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.545
+          }
+        }
+      },
+      "tour": {
+        "shows": 1,
+        "truthUrls": 7,
+        "families": {
+          "naive": {
+            "found": 5,
+            "arms": 2,
             "failed": 0,
             "recall": 0.714
           },
-          "scoped": {
-            "found": 5,
-            "arms": 3,
+          "onDisk": {
+            "found": 2,
+            "arms": 1,
             "failed": 0,
-            "recall": 0.357
+            "recall": 0.286
+          },
+          "scoped": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0
           }
         }
       }
     },
-    "scopedRecall": 0.216,
-    "naiveRecall": 0.297
+    "scopedRecall": 0.239,
+    "naiveRecall": 0.196
   },
   "shows": [
     {
-      "showId": "nutty-nattys-magic-puppet-show-off-broadway-2026",
-      "title": "Nutty Natty's Magic Puppet Show",
-      "market": "off-broadway",
-      "openingDate": "2026-11-14",
+      "showId": "a-christmas-story-the-musical-tour-2026",
+      "title": "A Christmas Story The Musical",
+      "market": "tour",
+      "openingDate": "2026-11-17",
       "sampleState": "measured",
-      "sampleReason": "opened 2d ago",
+      "sampleReason": "opened 1d ago",
       "geo": "us",
-      "naiveQuery": "Nutty Natty's Magic Puppet Show The Theater Center / Jerry Orbach Theater review",
+      "naiveQuery": "A Christmas Story The Musical North American Tour review",
       "counts": {
-        "truth": 1,
+        "truth": 7,
         "scoped": 0,
-        "naive": 0,
-        "onDisk": 1
-      },
-      "recall": {
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 1,
-        "censusPlusDisk": 1
-      },
-      "newFromNaive": [],
-      "missedByCensus": [
-        "https://concerts.consequence.net/events/nutty-nattys-magic-puppet-show-at-the-theater-center-on-2026-12-05-11-00--1"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Nutty Natty's Magic Puppet Show\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 4,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Nutty Natty's Magic Puppet Show\" review jerry",
-          "page": 0,
-          "geo": null,
-          "raw": 5,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Nutty Natty's Magic Puppet Show The Theater Center / Jerry Orbach Theater review",
-          "page": 0,
-          "geo": "us",
-          "raw": 5,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Nutty Natty's Magic Puppet Show The Theater Center / Jerry Orbach Theater review",
-          "page": 1,
-          "geo": "us",
-          "raw": 5,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 1,
-          "accepted": 1,
-          "urls": [
-            "https://concerts.consequence.net/events/nutty-nattys-magic-puppet-show-at-the-theater-center-on-2026-12-05-11-00--1"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "pride-bridge-theatre-off-west-end-2026",
-      "title": "Pride - Bridge Theatre",
-      "market": "off-west-end",
-      "openingDate": "2026-11-14",
-      "sampleState": "measured",
-      "sampleReason": "opened 2d ago",
-      "geo": "gb",
-      "naiveQuery": "Pride - Bridge Theatre Bridge Theatre review",
-      "counts": {
-        "truth": 13,
-        "scoped": 1,
-        "naive": 4,
-        "onDisk": 10
-      },
-      "recall": {
-        "scoped": 0.077,
-        "naive": 0.308,
-        "onDisk": 0.769,
-        "censusPlusDisk": 0.846
-      },
-      "newFromNaive": [
-        "https://www.londontheatredirect.com/news/reasons-to-see-pride-at-bridge",
-        "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026/"
-      ],
-      "missedByCensus": [
-        "https://www.londontheatredirect.com/news/reasons-to-see-pride-at-bridge",
-        "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre",
-        "https://musicaltheatrereview.com/bridge-theatre-transfer-for-hit-musical-pride/",
-        "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026/",
-        "https://www.bestoftheatre.co.uk/blog/post/pride-the-musical-confirms-bridge-theatre-company",
-        "https://www.ft.com/content/5c9ce3b7-4d71-4bff-a896-6a9c4d1bf3d3",
-        "https://www.londontheatrereviews.co.uk/post.cfm?p=28830",
-        "https://monstagigz.com/2026/11/14/theatre-review-pride-the-musical-starring-samuel-barnett-at-the-bridge-theatre/",
-        "https://www.standard.co.uk/culture/theatre/pride-transfers-west-end-bridge-theatre-london-b1294544.html",
-        "https://theatreweekly.com/pride-musical-to-transfer-to-bridge-theatre-following-sold-out-success/",
-        "https://westendwilma.com/news-pride-bridge-theatre-london/",
-        "https://www.whatsonstage.com/news/pride-musical-begins-performances-at-the-bridge-theatre_1737317/"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Pride - Bridge Theatre\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 4,
-          "accepted": 1,
-          "urls": [
-            "https://www.westendbestfriend.co.uk/news/pride-transfer-bridge-theatre-november-2026"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Pride - Bridge Theatre\" review bridge",
-          "page": 0,
-          "geo": null,
-          "raw": 2,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"Pride - Bridge Theatre\" Beresford review",
-          "page": 0,
-          "geo": null,
-          "raw": 4,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Pride - Bridge Theatre Bridge Theatre review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 5,
-          "accepted": 3,
-          "urls": [
-            "https://www.londontheatredirect.com/news/reasons-to-see-pride-at-bridge",
-            "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre",
-            "https://musicaltheatrereview.com/bridge-theatre-transfer-for-hit-musical-pride/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Pride - Bridge Theatre Bridge Theatre review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 5,
-          "accepted": 1,
-          "urls": [
-            "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 10,
-          "accepted": 10,
-          "urls": [
-            "https://www.bestoftheatre.co.uk/blog/post/pride-the-musical-confirms-bridge-theatre-company",
-            "https://www.ft.com/content/5c9ce3b7-4d71-4bff-a896-6a9c4d1bf3d3",
-            "https://www.londontheatre.co.uk/theatre-news/news/new-musical-pride-to-transfer-to-bridge-theatre",
-            "https://www.londontheatrereviews.co.uk/post.cfm?p=28830",
-            "https://monstagigz.com/2026/11/14/theatre-review-pride-the-musical-starring-samuel-barnett-at-the-bridge-theatre/",
-            "https://musicaltheatrereview.com/bridge-theatre-transfer-for-hit-musical-pride/",
-            "https://www.standard.co.uk/culture/theatre/pride-transfers-west-end-bridge-theatre-london-b1294544.html",
-            "https://theatreweekly.com/pride-musical-to-transfer-to-bridge-theatre-following-sold-out-success/",
-            "https://westendwilma.com/news-pride-bridge-theatre-london/",
-            "https://www.whatsonstage.com/news/pride-musical-begins-performances-at-the-bridge-theatre_1737317/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "market": "off-west-end",
-      "openingDate": "2026-11-14",
-      "sampleState": "measured",
-      "sampleReason": "opened 2d ago",
-      "geo": "gb",
-      "naiveQuery": "Desire Under the Elms Almeida Theatre review",
-      "counts": {
-        "truth": 9,
-        "scoped": 2,
         "naive": 5,
-        "onDisk": 6
-      },
-      "recall": {
-        "scoped": 0.222,
-        "naive": 0.556,
-        "onDisk": 0.667,
-        "censusPlusDisk": 0.667
-      },
-      "newFromNaive": [
-        "https://www.theguardian.com/stage/oct/desire-under-the-elms-review",
-        "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
-        "https://www.britishtheatreguide.info/reviews/desire-under-th-lyric-hammersmi-8123"
-      ],
-      "missedByCensus": [
-        "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
-        "https://www.theguardian.com/stage/oct/desire-under-the-elms-review",
-        "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
-        "https://www.britishtheatreguide.info/reviews/desire-under-th-lyric-hammersmi-8123",
-        "https://revstanstheatreblog.co.uk/2026/11/15/review-desire-under-the-elms-almeida-theatre/",
-        "https://rolandcat.substack.com/p/review-desire-under-the-elms-almeida",
-        "https://theatreweekly.com/almeida-theatre-reveals-full-cast-for-desire-under-the-elms/"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Desire Under the Elms\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 4,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Desire Under the Elms\" review almeida",
-          "page": 0,
-          "geo": null,
-          "raw": 4,
-          "accepted": 2,
-          "urls": [
-            "https://rolandcat.substack.com/review-desire-under-the-elms-almeida",
-            "https://westendwilma.com/shows-desire-under-the-elms-almeida-theatre/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"Desire Under the Elms\" O'Neill review",
-          "page": 0,
-          "geo": null,
-          "raw": 5,
-          "accepted": 1,
-          "urls": [
-            "https://rolandcat.substack.com/review-desire-under-the-elms-almeida"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Desire Under the Elms Almeida Theatre review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 7,
-          "accepted": 3,
-          "urls": [
-            "https://rolandcat.substack.com/review-desire-under-the-elms-almeida",
-            "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
-            "https://www.theguardian.com/stage/oct/desire-under-the-elms-review"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Desire Under the Elms Almeida Theatre review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 3,
-          "accepted": 2,
-          "urls": [
-            "https://theartsdesk.com/theatre/desire-under-elms-lyric-hammersmith",
-            "https://www.britishtheatreguide.info/reviews/desire-under-th-lyric-hammersmi-8123"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 6,
-          "accepted": 6,
-          "urls": [
-            "https://revstanstheatreblog.co.uk/2026/11/15/review-desire-under-the-elms-almeida-theatre/",
-            "https://rolandcat.substack.com/p/review-desire-under-the-elms-almeida",
-            "https://rolandcat.substack.com/review-desire-under-the-elms-almeida",
-            "https://theatreweekly.com/almeida-theatre-reveals-full-cast-for-desire-under-the-elms/",
-            "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
-            "https://westendwilma.com/shows-desire-under-the-elms-almeida-theatre/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "the-elaborate-entrance-of-chad-deity-regional-2026",
-      "title": "The Elaborate Entrance of Chad Deity",
-      "market": "regional",
-      "openingDate": "2026-11-13",
-      "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
-      "geo": "us",
-      "naiveQuery": "The Elaborate Entrance of Chad Deity NextStop Theatre, Herndon, VA review",
-      "counts": {
-        "truth": 2,
-        "scoped": 0,
-        "naive": 0,
         "onDisk": 2
       },
       "recall": {
         "scoped": 0,
-        "naive": 0,
-        "onDisk": 1,
-        "censusPlusDisk": 1
+        "naive": 0.714,
+        "onDisk": 0.286,
+        "censusPlusDisk": 0.286
       },
-      "newFromNaive": [],
+      "newFromNaive": [
+        "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-by-joseph-robinette-benj-pasek-and-justin-paul-calliope-productions-boylston-ma-review",
+        "https://hotchka.com/a-christmas-story-tour-review",
+        "https://www.uticatheater.com/reviews/customer-reviews/a-christmas-story",
+        "https://offbookcincinnati.substack.com/review-a-christmas-story-the-musical",
+        "https://www.dallas-theater.com/reviews/customer-reviews/a-christmas-story"
+      ],
       "missedByCensus": [
-        "https://www.broadwayworld.com/washington-dc/article/Review-THE-ELABORATE-ENTRANCE-OF-CHAD-DIETY-at-NextStop-Theatre-20261113",
-        "https://mdtheatreguide.com/2026/11/theatre-review-the-elaborate-entrance-of-chad-deity-at-nextstop-theatre-in-association-with-flying-v/"
+        "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-by-joseph-robinette-benj-pasek-and-justin-paul-calliope-productions-boylston-ma-review",
+        "https://hotchka.com/a-christmas-story-tour-review",
+        "https://www.uticatheater.com/reviews/customer-reviews/a-christmas-story",
+        "https://offbookcincinnati.substack.com/review-a-christmas-story-the-musical",
+        "https://www.dallas-theater.com/reviews/customer-reviews/a-christmas-story",
+        "https://www.broadwaynews.com/how-a-christmas-story-keeps-holiday-nostalgia-fresh-yet-familiar/",
+        "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-boch-center-wang-theatre-boston-ma-review"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"The Elaborate Entrance of Chad Deity\" Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 6,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"The Elaborate Entrance of Chad Deity\" review nextstop",
-          "page": 0,
-          "geo": null,
-          "raw": 4,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"The Elaborate Entrance of Chad Deity\" Diaz review",
+          "query": "\"A Christmas Story The Musical\" Broadway review 2026",
           "page": 0,
           "geo": null,
           "raw": 2,
@@ -543,10 +245,10 @@
           "error": null
         },
         {
-          "arm": "naive-p0",
-          "query": "The Elaborate Entrance of Chad Deity NextStop Theatre, Herndon, VA review",
+          "arm": "scoped-q1",
+          "query": "\"A Christmas Story The Musical\" review american",
           "page": 0,
-          "geo": "us",
+          "geo": null,
           "raw": 3,
           "accepted": 0,
           "urls": [],
@@ -554,13 +256,31 @@
           "error": null
         },
         {
+          "arm": "naive-p0",
+          "query": "A Christmas Story The Musical North American Tour review",
+          "page": 0,
+          "geo": "us",
+          "raw": 6,
+          "accepted": 4,
+          "urls": [
+            "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-by-joseph-robinette-benj-pasek-and-justin-paul-calliope-productions-boylston-ma-review",
+            "https://hotchka.com/a-christmas-story-tour-review",
+            "https://www.uticatheater.com/reviews/customer-reviews/a-christmas-story",
+            "https://offbookcincinnati.substack.com/review-a-christmas-story-the-musical"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
           "arm": "naive-p1",
-          "query": "The Elaborate Entrance of Chad Deity NextStop Theatre, Herndon, VA review",
+          "query": "A Christmas Story The Musical North American Tour review",
           "page": 1,
           "geo": "us",
-          "raw": 3,
-          "accepted": 0,
-          "urls": [],
+          "raw": 4,
+          "accepted": 1,
+          "urls": [
+            "https://www.dallas-theater.com/reviews/customer-reviews/a-christmas-story"
+          ],
           "ok": true,
           "error": null
         },
@@ -572,8 +292,8 @@
           "raw": 2,
           "accepted": 2,
           "urls": [
-            "https://www.broadwayworld.com/washington-dc/article/Review-THE-ELABORATE-ENTRANCE-OF-CHAD-DIETY-at-NextStop-Theatre-20261113",
-            "https://mdtheatreguide.com/2026/11/theatre-review-the-elaborate-entrance-of-chad-deity-at-nextstop-theatre-in-association-with-flying-v/"
+            "https://www.broadwaynews.com/how-a-christmas-story-keeps-holiday-nostalgia-fresh-yet-familiar/",
+            "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-boch-center-wang-theatre-boston-ma-review"
           ],
           "ok": true,
           "error": null
@@ -581,86 +301,180 @@
       ]
     },
     {
-      "showId": "annie-regional-2026-drury-lane-oakbrook",
-      "title": "Annie",
-      "market": "regional",
-      "openingDate": "2026-11-13",
+      "showId": "top-gunchained-off-west-end-2026",
+      "title": "Top Gunchained",
+      "market": "off-west-end",
+      "openingDate": "2026-11-17",
       "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
-      "geo": "us",
-      "naiveQuery": "Annie Drury Lane- Oakbrook, Oakbrook Terrace, IL review",
+      "sampleReason": "opened 1d ago",
+      "geo": "gb",
+      "naiveQuery": "Top Gunchained Wilton's Music Hall review",
       "counts": {
-        "truth": 12,
-        "scoped": 5,
-        "naive": 2,
-        "onDisk": 8
+        "truth": 9,
+        "scoped": 1,
+        "naive": 0,
+        "onDisk": 9
       },
       "recall": {
-        "scoped": 0.417,
-        "naive": 0.167,
-        "onDisk": 0.667,
+        "scoped": 0.111,
+        "naive": 0,
+        "onDisk": 1,
         "censusPlusDisk": 1
       },
       "newFromNaive": [],
       "missedByCensus": [
-        "https://www.conversationswithedtracy.com/picksinsix/2026/11/13/picksinsix-review-annie-drury-lane-theatre",
-        "https://www.broadwayworld.com/minneapolis/article/Review-ANNIE-at-Chanhassen-Dinner-Theatres-20261109",
-        "https://www.broadwayworld.com/chicago/article/Review-ANNIE-at-Drury-Lane-Theatre-Oakbrook-Terrace-IL-20261108",
-        "https://www.chicagotheatrereview.com/2026/11/the-sun-will-come-out-tomorrow/",
-        "https://deadline.com/2026/09/all-that-she-wants-review-annie-murphy-cooper-raiff-romcom-1237101323/",
-        "https://www.letsplaytheatricalreview.com/blog/annie-1",
-        "https://observer.com/2023/09/review-annie-bakers-infinite-life-turns-chronic-pain-into-complex-pleasure/"
+        "https://www.britishtheatreguide.info/reviews/top-gunchained-bristol-old-vic-26065",
+        "https://www.broadwayworld.com/westend/article/Review-TOP-GUNCHAINED-Wiltons-Music-Hall-20261118",
+        "https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
+        "https://southlondon.co.uk/lifestyle/review-top-gunchained-at-wiltons/",
+        "https://thespyinthestalls.com/2026/11/top-gunchained/",
+        "https://www.thereviewshub.com/top-gunchained-wiltons-music-hall-london/",
+        "https://www.thestage.co.uk/reviews/top-gunchained-review-gilded-balloon-teviot-edinburgh-richard-marsh",
+        "https://www.thetimes.com/culture/theatre-dance/article/indy-top-gunchained-reviews-edinburgh-mbh097p5j"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"Annie\" Broadway review 2026",
+          "query": "\"Top Gunchained\" West End review 2026",
           "page": 0,
           "geo": null,
-          "raw": 6,
-          "accepted": 4,
-          "urls": [
-            "https://aroundthetownchicago.com/theatre-reviews/annie-7",
-            "https://www.courant.com/2026/10/25",
-            "https://ctxlivetheatre.com/productions/20261127-annie-the-musical-by-waco-civic-theatre/",
-            "http://www.buzznews.net/theatre/theatre-reviews/item/6839-genuine-heart-meets-classic-charm-in-drury-lane-s-sunny-holiday-revival-of-annie.html"
-          ],
+          "raw": 1,
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "scoped-q1",
-          "query": "\"Annie\" review drury",
+          "query": "\"Top Gunchained\" review wilton",
           "page": 0,
           "geo": null,
-          "raw": 3,
+          "raw": 2,
           "accepted": 1,
           "urls": [
-            "https://aroundthetownchicago.com/theatre-reviews/annie-7/"
+            "https://everything-theatre.co.uk/2026/11/review-top-gunchained-wiltons-music-hall/"
           ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p0",
-          "query": "Annie Drury Lane- Oakbrook, Oakbrook Terrace, IL review",
+          "query": "Top Gunchained Wilton's Music Hall review",
           "page": 0,
-          "geo": "us",
-          "raw": 3,
-          "accepted": 2,
-          "urls": [
-            "https://www.conversationswithedtracy.com/picksinsix/2026/11/13/picksinsix-review-annie-drury-lane-theatre",
-            "https://aroundthetownchicago.com/theatre-reviews/annie-7"
-          ],
+          "geo": "gb",
+          "raw": 1,
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "Annie Drury Lane- Oakbrook, Oakbrook Terrace, IL review",
+          "query": "Top Gunchained Wilton's Music Hall review",
           "page": 1,
+          "geo": "gb",
+          "raw": 4,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 9,
+          "accepted": 9,
+          "urls": [
+            "https://www.britishtheatreguide.info/reviews/top-gunchained-bristol-old-vic-26065",
+            "https://www.broadwayworld.com/westend/article/Review-TOP-GUNCHAINED-Wiltons-Music-Hall-20261118",
+            "https://everything-theatre.co.uk/2026/11/review-top-gunchained-wiltons-music-hall/",
+            "https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
+            "https://southlondon.co.uk/lifestyle/review-top-gunchained-at-wiltons/",
+            "https://thespyinthestalls.com/2026/11/top-gunchained/",
+            "https://www.thereviewshub.com/top-gunchained-wiltons-music-hall-london/",
+            "https://www.thestage.co.uk/reviews/top-gunchained-review-gilded-balloon-teviot-edinburgh-richard-marsh",
+            "https://www.thetimes.com/culture/theatre-dance/article/indy-top-gunchained-reviews-edinburgh-mbh097p5j"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "blue-man-group-a-new-holiday-surprise-2026",
+      "title": "Blue Man Group “A New Holiday Surprise”",
+      "market": "broadway",
+      "openingDate": "2026-11-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 1d ago",
+      "geo": "us",
+      "naiveQuery": "Blue Man Group “A New Holiday Surprise” Lunt-Fontanne Theatre review",
+      "counts": {
+        "truth": 8,
+        "scoped": 1,
+        "naive": 0,
+        "onDisk": 8
+      },
+      "recall": {
+        "scoped": 0.125,
+        "naive": 0,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://www.nysun.com/article/a-blue-streak-of-staleness",
+        "https://nitelifeexchange.com/blue-man-group-returns-a-new-holiday-surprise-begins-its-limited-run-at-the-lunt-fontanne-theater-on-thursday-november-12/",
+        "https://newyorktheater.me/2026/11/18/blue-man-group-a-new-holiday-surprise-broadway-review/",
+        "https://newyorktheatreguide.com/reviews/blue-man-group-a-new-holiday-surprise-broadway-review",
+        "https://1minutecritic.com/blue-man-group-new-holiday-surprise-review/",
+        "https://stageandcinema.com/2026/11/17/blue-man-group-a-new-holiday-surprise-broadway-review/",
+        "https://www.theatermania.com/news/review-blue-man-groups-broadway-christmas-show-is-a-lump-of-coal_1860029/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Blue Man Group “A New Holiday Surprise”\" Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 2,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Blue Man Group “A New Holiday Surprise”\" review lunt",
+          "page": 0,
+          "geo": null,
+          "raw": 2,
+          "accepted": 1,
+          "urls": [
+            "https://www.vulture.com/article/theater-review-blue-man-group-new-holiday-surprise-broadway.html"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Blue Man Group “A New Holiday Surprise” Lunt-Fontanne Theatre review",
+          "page": 0,
           "geo": "us",
           "raw": 3,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Blue Man Group “A New Holiday Surprise” Lunt-Fontanne Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 4,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -674,14 +488,249 @@
           "raw": 8,
           "accepted": 8,
           "urls": [
-            "https://aroundthetownchicago.com/theatre-reviews/annie-7/",
-            "https://www.broadwayworld.com/minneapolis/article/Review-ANNIE-at-Chanhassen-Dinner-Theatres-20261109",
-            "https://www.broadwayworld.com/chicago/article/Review-ANNIE-at-Drury-Lane-Theatre-Oakbrook-Terrace-IL-20261108",
-            "https://www.chicagotheatrereview.com/2026/11/the-sun-will-come-out-tomorrow/",
-            "https://deadline.com/2026/09/all-that-she-wants-review-annie-murphy-cooper-raiff-romcom-1237101323/",
-            "https://www.letsplaytheatricalreview.com/blog/annie-1",
-            "https://observer.com/2023/09/review-annie-bakers-infinite-life-turns-chronic-pain-into-complex-pleasure/",
-            "https://www.conversationswithedtracy.com/picksinsix/2026/11/13/picksinsix-review-annie-drury-lane-theatre"
+            "https://www.nysun.com/article/a-blue-streak-of-staleness",
+            "https://nitelifeexchange.com/blue-man-group-returns-a-new-holiday-surprise-begins-its-limited-run-at-the-lunt-fontanne-theater-on-thursday-november-12/",
+            "https://newyorktheater.me/2026/11/18/blue-man-group-a-new-holiday-surprise-broadway-review/",
+            "https://newyorktheatreguide.com/reviews/blue-man-group-a-new-holiday-surprise-broadway-review",
+            "https://1minutecritic.com/blue-man-group-new-holiday-surprise-review/",
+            "https://stageandcinema.com/2026/11/17/blue-man-group-a-new-holiday-surprise-broadway-review/",
+            "https://www.theatermania.com/news/review-blue-man-groups-broadway-christmas-show-is-a-lump-of-coal_1860029/",
+            "https://www.vulture.com/article/theater-review-blue-man-group-new-holiday-surprise-broadway.html"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "the-good-thief-off-broadway-2026",
+      "title": "The Good Thief",
+      "market": "off-broadway",
+      "openingDate": "2026-11-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 1d ago",
+      "geo": "us",
+      "naiveQuery": "The Good Thief Irish Repertory Theatre review",
+      "counts": {
+        "truth": 11,
+        "scoped": 3,
+        "naive": 2,
+        "onDisk": 8
+      },
+      "recall": {
+        "scoped": 0.273,
+        "naive": 0.182,
+        "onDisk": 0.727,
+        "censusPlusDisk": 0.818
+      },
+      "newFromNaive": [
+        "https://variety.com/legit/reviews/the-good-thief-4-1200552978",
+        "https://thefrontrowcenter.com/2026/11/the-good-thief"
+      ],
+      "missedByCensus": [
+        "https://variety.com/legit/reviews/the-good-thief-4-1200552978",
+        "https://thefrontrowcenter.com/2026/11/the-good-thief",
+        "https://nysun.com/article/the-humanity-in-a-hit-man",
+        "https://nystagereview.com/2026/11/17/the-good-thief-boastful-self-incriminating-hero-is-more-than-good/",
+        "https://www.nytimes.com/2026/11/18/theater/exhibitionist-good-thief-review-hiller.html",
+        "https://www.offoffonline.com/offoffonline/2026/11/13/the-good-thief",
+        "https://www.talkinbroadway.com/page/ob/11_17_26.html",
+        "https://www.theatermania.com/news/derek-delgaudio-and-frank-oz-will-reunite-on-new-magic-show-unknown-caller_1859996/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"The Good Thief\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 4,
+          "accepted": 2,
+          "urls": [
+            "https://www.theatermania.com/news/review-christopher-fitzgerald-delights-the-audience-in-the-good-thief_1859923/",
+            "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"The Good Thief\" review irish",
+          "page": 0,
+          "geo": null,
+          "raw": 4,
+          "accepted": 2,
+          "urls": [
+            "https://thefrontrowcenter.com/2026/11/the-good-thief/",
+            "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"The Good Thief\" McPherson review",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 2,
+          "urls": [
+            "https://thefrontrowcenter.com/2026/11/the-good-thief/",
+            "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "The Good Thief Irish Repertory Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 5,
+          "accepted": 1,
+          "urls": [
+            "https://variety.com/legit/reviews/the-good-thief-4-1200552978"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "The Good Thief Irish Repertory Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 5,
+          "accepted": 1,
+          "urls": [
+            "https://thefrontrowcenter.com/2026/11/the-good-thief"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 8,
+          "accepted": 8,
+          "urls": [
+            "https://thefrontrowcenter.com/2026/11/the-good-thief/",
+            "https://nysun.com/article/the-humanity-in-a-hit-man",
+            "https://nystagereview.com/2026/11/17/the-good-thief-boastful-self-incriminating-hero-is-more-than-good/",
+            "https://www.nytimes.com/2026/11/18/theater/exhibitionist-good-thief-review-hiller.html",
+            "https://www.offoffonline.com/offoffonline/2026/11/13/the-good-thief",
+            "https://www.talkinbroadway.com/page/ob/11_17_26.html",
+            "https://www.theatermania.com/news/review-christopher-fitzgerald-delights-the-audience-in-the-good-thief_1859923/",
+            "https://www.theatermania.com/news/derek-delgaudio-and-frank-oz-will-reunite-on-new-magic-show-unknown-caller_1859996/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "destiny-of-desire-regional-2026",
+      "title": "Destiny of Desire",
+      "market": "regional",
+      "openingDate": "2026-11-16",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "Destiny of Desire Mark Taper Forum, Los Angeles, CA review",
+      "counts": {
+        "truth": 11,
+        "scoped": 6,
+        "naive": 2,
+        "onDisk": 6
+      },
+      "recall": {
+        "scoped": 0.545,
+        "naive": 0.182,
+        "onDisk": 0.545,
+        "censusPlusDisk": 0.909
+      },
+      "newFromNaive": [
+        "https://www.theatreinla.com/destiny-of-desire"
+      ],
+      "missedByCensus": [
+        "https://www.theatreinla.com/destiny-of-desire",
+        "https://ladramacriticscircle.com/destiny-of-desire-center-theatre-group/",
+        "https://latheatrebites.com/destiny-of-desire-mark-taper-forum-review/",
+        "https://splashmags.com/2026/11/destiny-of-desire-a-laugh-out-loud-telenovela-with-music/",
+        "https://stagescenela.com/2026/11/destiny-of-desire-2/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Destiny of Desire\" Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 6,
+          "accepted": 4,
+          "urls": [
+            "https://www.latimes.com/entertainment-arts/story/2026-11-17/destiny-of-desire-review-karen-zacarias-mark-taper-forum",
+            "https://stagescenela.com/2026/11/destiny-of-desire-2",
+            "https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier/",
+            "https://ladramacriticscircle.com/destiny-of-desire-center-theatre-group"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Destiny of Desire\" review mark",
+          "page": 0,
+          "geo": null,
+          "raw": 6,
+          "accepted": 4,
+          "urls": [
+            "https://www.latimes.com/entertainment-arts/story/2026-11-17/destiny-of-desire-review-karen-zacarias-mark-taper-forum",
+            "https://stagescenela.com/2026/11/destiny-of-desire-2",
+            "https://laexcites.com/destiny-of-desire-mark-taper-forum-adrian-javier",
+            "https://soundcloud.com/latheatrebites/destiny-of-desire-mark-taper"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Destiny of Desire Mark Taper Forum, Los Angeles, CA review",
+          "page": 0,
+          "geo": "us",
+          "raw": 5,
+          "accepted": 2,
+          "urls": [
+            "https://stagescenela.com/2026/11/destiny-of-desire-2",
+            "https://www.theatreinla.com/destiny-of-desire"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Destiny of Desire Mark Taper Forum, Los Angeles, CA review",
+          "page": 1,
+          "geo": "us",
+          "raw": 4,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 6,
+          "accepted": 6,
+          "urls": [
+            "https://ladramacriticscircle.com/destiny-of-desire-center-theatre-group/",
+            "https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier/",
+            "https://latheatrebites.com/destiny-of-desire-mark-taper-forum-review/",
+            "https://www.latimes.com/entertainment-arts/story/2026-11-17/destiny-of-desire-review-karen-zacarias-mark-taper-forum",
+            "https://splashmags.com/2026/11/destiny-of-desire-a-laugh-out-loud-telenovela-with-music/",
+            "https://stagescenela.com/2026/11/destiny-of-desire-2/"
           ],
           "ok": true,
           "error": null
@@ -693,43 +742,43 @@
   "onDiskUnavailable": false,
   "trend": {
     "entry": {
-      "date": "2026-11-16",
-      "generatedAt": "2026-11-16T21:17:44.601Z",
+      "date": "2026-11-19",
+      "generatedAt": "2026-11-19T10:18:17.353Z",
       "naivePages": 2,
       "shows": 5,
       "informativeShows": 5,
       "excluded": {
-        "settling": 4
+        "settling": 3
       },
-      "truthUrls": 37,
-      "onDiskUrls": 27,
-      "newFromNaive": 5,
+      "truthUrls": 46,
+      "onDiskUrls": 33,
+      "newFromNaive": 8,
       "families": {
-        "naive": 0.297,
-        "onDisk": 0.73,
-        "scoped": 0.216
+        "naive": 0.196,
+        "onDisk": 0.717,
+        "scoped": 0.239
       },
       "arms": {
-        "naive-p0": 0.216,
-        "naive-p1": 0.081,
-        "onDisk": 0.73,
-        "scoped-q0": 0.135,
-        "scoped-q1": 0.081,
-        "scoped-q2": 0.027
+        "naive-p0": 0.152,
+        "naive-p1": 0.043,
+        "onDisk": 0.717,
+        "scoped-q0": 0.13,
+        "scoped-q1": 0.174,
+        "scoped-q2": 0.043
       },
-      "combinedRecall": 0.865,
+      "combinedRecall": 0.826,
       "familyYield": {
-        "naive": 2.2,
-        "onDisk": 5.4,
-        "scoped": 1.6
+        "naive": 1.8,
+        "onDisk": 6.6,
+        "scoped": 2.2
       },
       "armYield": {
-        "naive-p0": 1.6,
-        "naive-p1": 0.6,
-        "onDisk": 5.4,
-        "scoped-q0": 1,
-        "scoped-q1": 0.6,
-        "scoped-q2": 0.2
+        "naive-p0": 1.4,
+        "naive-p1": 0.4,
+        "onDisk": 6.6,
+        "scoped-q0": 1.2,
+        "scoped-q1": 1.6,
+        "scoped-q2": 0.4
       },
       "armsFailed": {
         "naive-p0": 0,
@@ -741,84 +790,112 @@
       },
       "unavailableArms": [],
       "byCategory": {
-        "off-broadway": {
+        "broadway": {
           "shows": 1,
-          "truthUrls": 1,
+          "truthUrls": 8,
           "families": {
             "naive": 0,
             "onDisk": 1,
-            "scoped": 0
+            "scoped": 0.125
+          }
+        },
+        "off-broadway": {
+          "shows": 1,
+          "truthUrls": 11,
+          "families": {
+            "naive": 0.182,
+            "onDisk": 0.727,
+            "scoped": 0.273
           }
         },
         "off-west-end": {
-          "shows": 2,
-          "truthUrls": 22,
+          "shows": 1,
+          "truthUrls": 9,
           "families": {
-            "naive": 0.409,
-            "onDisk": 0.727,
-            "scoped": 0.136
+            "naive": 0,
+            "onDisk": 1,
+            "scoped": 0.111
           }
         },
         "regional": {
-          "shows": 2,
-          "truthUrls": 14,
+          "shows": 1,
+          "truthUrls": 11,
           "families": {
-            "naive": 0.143,
-            "onDisk": 0.714,
-            "scoped": 0.357
+            "naive": 0.182,
+            "onDisk": 0.545,
+            "scoped": 0.545
+          }
+        },
+        "tour": {
+          "shows": 1,
+          "truthUrls": 7,
+          "families": {
+            "naive": 0.714,
+            "onDisk": 0.286,
+            "scoped": 0
           }
         }
       },
       "sampleIds": [
-        "nutty-nattys-magic-puppet-show-off-broadway-2026",
-        "pride-bridge-theatre-off-west-end-2026",
-        "desire-under-the-elms-off-west-end-2026",
-        "the-elaborate-entrance-of-chad-deity-regional-2026",
-        "annie-regional-2026-drury-lane-oakbrook"
+        "a-christmas-story-the-musical-tour-2026",
+        "top-gunchained-off-west-end-2026",
+        "blue-man-group-a-new-holiday-surprise-2026",
+        "the-good-thief-off-broadway-2026",
+        "destiny-of-desire-regional-2026"
       ]
     },
     "judgement": {
-      "verdict": "ok",
-      "reason": "3 search method(s) within 0.15 of their 4-run median",
-      "regressions": [],
+      "verdict": "regressed",
+      "reason": "naive: recall 0.196 vs 0.353 median over 4 prior run(s) — down 0.157 (threshold 0.15), yield 1.8 vs 4 URLs/show",
+      "regressions": [
+        {
+          "level": "families",
+          "arm": "naive",
+          "baseline": 0.353,
+          "current": 0.196,
+          "drop": 0.157,
+          "rule": "week-on-week",
+          "reason": "recall 0.196 vs 0.353 median over 4 prior run(s) — down 0.157 (threshold 0.15), yield 1.8 vs 4 URLs/show"
+        }
+      ],
       "latest": {
-        "date": "2026-11-16",
-        "generatedAt": "2026-11-16T21:17:44.601Z",
+        "date": "2026-11-19",
+        "generatedAt": "2026-11-19T10:18:17.353Z",
         "naivePages": 2,
         "shows": 5,
         "informativeShows": 5,
         "excluded": {
-          "settling": 4
+          "settling": 3
         },
-        "truthUrls": 37,
-        "onDiskUrls": 27,
-        "newFromNaive": 5,
+        "truthUrls": 46,
+        "onDiskUrls": 33,
+        "newFromNaive": 8,
         "families": {
-          "naive": 0.297,
-          "onDisk": 0.73,
-          "scoped": 0.216
+          "naive": 0.196,
+          "onDisk": 0.717,
+          "scoped": 0.239
         },
         "arms": {
-          "naive-p0": 0.216,
-          "naive-p1": 0.081,
-          "onDisk": 0.73,
-          "scoped-q0": 0.135,
-          "scoped-q1": 0.081,
-          "scoped-q2": 0.027
+          "naive-p0": 0.152,
+          "naive-p1": 0.043,
+          "onDisk": 0.717,
+          "scoped-q0": 0.13,
+          "scoped-q1": 0.174,
+          "scoped-q2": 0.043
         },
-        "combinedRecall": 0.865,
+        "combinedRecall": 0.826,
         "familyYield": {
-          "naive": 2.2,
-          "onDisk": 5.4,
-          "scoped": 1.6
+          "naive": 1.8,
+          "onDisk": 6.6,
+          "scoped": 2.2
         },
         "armYield": {
-          "naive-p0": 1.6,
-          "naive-p1": 0.6,
-          "onDisk": 5.4,
-          "scoped-q0": 1,
-          "scoped-q1": 0.6,
-          "scoped-q2": 0.2
+          "naive-p0": 1.4,
+          "naive-p1": 0.4,
+          "onDisk": 6.6,
+          "scoped-q0": 1.2,
+          "scoped-q1": 1.6,
+          "scoped-q2": 0.4
         },
         "armsFailed": {
           "naive-p0": 0,
@@ -830,40 +907,58 @@
         },
         "unavailableArms": [],
         "byCategory": {
-          "off-broadway": {
+          "broadway": {
             "shows": 1,
-            "truthUrls": 1,
+            "truthUrls": 8,
             "families": {
               "naive": 0,
               "onDisk": 1,
-              "scoped": 0
+              "scoped": 0.125
+            }
+          },
+          "off-broadway": {
+            "shows": 1,
+            "truthUrls": 11,
+            "families": {
+              "naive": 0.182,
+              "onDisk": 0.727,
+              "scoped": 0.273
             }
           },
           "off-west-end": {
-            "shows": 2,
-            "truthUrls": 22,
+            "shows": 1,
+            "truthUrls": 9,
             "families": {
-              "naive": 0.409,
-              "onDisk": 0.727,
-              "scoped": 0.136
+              "naive": 0,
+              "onDisk": 1,
+              "scoped": 0.111
             }
           },
           "regional": {
-            "shows": 2,
-            "truthUrls": 14,
+            "shows": 1,
+            "truthUrls": 11,
             "families": {
-              "naive": 0.143,
-              "onDisk": 0.714,
-              "scoped": 0.357
+              "naive": 0.182,
+              "onDisk": 0.545,
+              "scoped": 0.545
+            }
+          },
+          "tour": {
+            "shows": 1,
+            "truthUrls": 7,
+            "families": {
+              "naive": 0.714,
+              "onDisk": 0.286,
+              "scoped": 0
             }
           }
         },
         "sampleIds": [
-          "nutty-nattys-magic-puppet-show-off-broadway-2026",
-          "pride-bridge-theatre-off-west-end-2026",
-          "desire-under-the-elms-off-west-end-2026",
-          "the-elaborate-entrance-of-chad-deity-regional-2026",
-          "annie-regional-2026-drury-lane-oakbrook"
+          "a-christmas-story-the-musical-tour-2026",
+          "top-gunchained-off-west-end-2026",
+          "blue-man-group-a-new-holiday-surprise-2026",
+          "the-good-thief-off-broadway-2026",
+          "destiny-of-desire-regional-2026"
         ]
       },
       "comparedArms": 3,

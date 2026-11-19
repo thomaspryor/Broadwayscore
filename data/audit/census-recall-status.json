@@ -1,48 +1,58 @@
 {
-  "generatedAt": "2026-11-16T21:17:44.601Z",
-  "verdict": "ok",
-  "reason": "3 search method(s) within 0.15 of their 4-run median",
-  "regressions": [],
+  "generatedAt": "2026-11-19T10:18:17.353Z",
+  "verdict": "regressed",
+  "reason": "naive: recall 0.196 vs 0.353 median over 4 prior run(s) — down 0.157 (threshold 0.15), yield 1.8 vs 4 URLs/show",
+  "regressions": [
+    {
+      "level": "families",
+      "arm": "naive",
+      "baseline": 0.353,
+      "current": 0.196,
+      "drop": 0.157,
+      "rule": "week-on-week",
+      "reason": "recall 0.196 vs 0.353 median over 4 prior run(s) — down 0.157 (threshold 0.15), yield 1.8 vs 4 URLs/show"
+    }
+  ],
   "comparedArms": 3,
-  "trendEntries": 13,
+  "trendEntries": 14,
   "latest": {
-    "date": "2026-11-16",
-    "generatedAt": "2026-11-16T21:17:44.601Z",
+    "date": "2026-11-19",
+    "generatedAt": "2026-11-19T10:18:17.353Z",
     "naivePages": 2,
     "shows": 5,
     "informativeShows": 5,
     "excluded": {
-      "settling": 4
+      "settling": 3
     },
-    "truthUrls": 37,
-    "onDiskUrls": 27,
-    "newFromNaive": 5,
+    "truthUrls": 46,
+    "onDiskUrls": 33,
+    "newFromNaive": 8,
     "families": {
-      "naive": 0.297,
-      "onDisk": 0.73,
-      "scoped": 0.216
+      "naive": 0.196,
+      "onDisk": 0.717,
+      "scoped": 0.239
     },
     "arms": {
-      "naive-p0": 0.216,
-      "naive-p1": 0.081,
-      "onDisk": 0.73,
-      "scoped-q0": 0.135,
-      "scoped-q1": 0.081,
-      "scoped-q2": 0.027
+      "naive-p0": 0.152,
+      "naive-p1": 0.043,
+      "onDisk": 0.717,
+      "scoped-q0": 0.13,
+      "scoped-q1": 0.174,
+      "scoped-q2": 0.043
     },
-    "combinedRecall": 0.865,
+    "combinedRecall": 0.826,
     "familyYield": {
-      "naive": 2.2,
-      "onDisk": 5.4,
-      "scoped": 1.6
+      "naive": 1.8,
+      "onDisk": 6.6,
+      "scoped": 2.2
     },
     "armYield": {
-      "naive-p0": 1.6,
-      "naive-p1": 0.6,
-      "onDisk": 5.4,
-      "scoped-q0": 1,
-      "scoped-q1": 0.6,
-      "scoped-q2": 0.2
+      "naive-p0": 1.4,
+      "naive-p1": 0.4,
+      "onDisk": 6.6,
+      "scoped-q0": 1.2,
+      "scoped-q1": 1.6,
+      "scoped-q2": 0.4
     },
     "armsFailed": {
       "naive-p0": 0,
@@ -54,40 +64,58 @@
     },
     "unavailableArms": [],
     "byCategory": {
-      "off-broadway": {
+      "broadway": {
         "shows": 1,
-        "truthUrls": 1,
+        "truthUrls": 8,
         "families": {
           "naive": 0,
           "onDisk": 1,
-          "scoped": 0
+          "scoped": 0.125
+        }
+      },
+      "off-broadway": {
+        "shows": 1,
+        "truthUrls": 11,
+        "families": {
+          "naive": 0.182,
+          "onDisk": 0.727,
+          "scoped": 0.273
         }
       },
       "off-west-end": {
-        "shows": 2,
-        "truthUrls": 22,
+        "shows": 1,
+        "truthUrls": 9,
         "families": {
-          "naive": 0.409,
-          "onDisk": 0.727,
-          "scoped": 0.136
+          "naive": 0,
+          "onDisk": 1,
+          "scoped": 0.111
         }
       },
       "regional": {
-        "shows": 2,
-        "truthUrls": 14,
+        "shows": 1,
+        "truthUrls": 11,
         "families": {
-          "naive": 0.143,
-          "onDisk": 0.714,
-          "scoped": 0.357
+          "naive": 0.182,
+          "onDisk": 0.545,
+          "scoped": 0.545
+        }
+      },
+      "tour": {
+        "shows": 1,
+        "truthUrls": 7,
+        "families": {
+          "naive": 0.714,
+          "onDisk": 0.286,
+          "scoped": 0
         }
       }
     },
     "sampleIds": [
-      "nutty-nattys-magic-puppet-show-off-broadway-2026",
-      "pride-bridge-theatre-off-west-end-2026",
-      "desire-under-the-elms-off-west-end-2026",
-      "the-elaborate-entrance-of-chad-deity-regional-2026",
-      "annie-regional-2026-drury-lane-oakbrook"
+      "a-christmas-story-the-musical-tour-2026",
+      "top-gunchained-off-west-end-2026",
+      "blue-man-group-a-new-holiday-surprise-2026",
+      "the-good-thief-off-broadway-2026",
+      "destiny-of-desire-regional-2026"
     ]
   }
 }
