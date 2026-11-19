@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T13:39:42.916Z",
+  "timestamp": "2026-11-19T13:49:17.315Z",
   "stats": {
-    "totalReviews": 82801,
-    "alreadyFlagged": 22484,
+    "totalReviews": 82813,
+    "alreadyFlagged": 22483,
     "dateGuardCatches": 221,
-    "directorMismatch": 3778,
+    "directorMismatch": 3783,
     "tvFilmSignals": 2362,
     "londonSignals": 3818,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8259
+    "noPublishDate": 8252
   },
   "findings": [
     {
@@ -941,7 +941,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "file": "culturesauce--thom-geier.json",
-      "publishDate": null,
+      "publishDate": "2022-12-04",
       "url": "https://culturesauce.com/a-beautiful-noise-the-neil-diamond-musical-tries-so-hard-so-hard-so-hard-broadway-review/",
       "findings": [
         {
@@ -16501,6 +16501,19 @@
     },
     {
       "showId": "dead-outlaw-off-broadway-2024",
+      "file": "broadway-and-me--unknown.json",
+      "publishDate": "2024-03-16",
+      "url": "https://broadwayandme.blogspot.com/2024/03/dead-outlaw-is-liveliest-show-in-town.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
       "file": "cititour--brian-scott-lipton.json",
       "score": 76,
       "publishDate": "2024-03-10",
@@ -16740,6 +16753,19 @@
       "score": 91,
       "publishDate": "2024-03-11",
       "url": "https://www.theatermania.com/news/review-dead-outlaw-is-a-new-musical-about-an-infamous-corpse_1732817/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "theatrely--juan-a-ramirez.json",
+      "publishDate": "2024-03-11",
+      "url": "https://www.theatrely.com/post/dead-outlaw-outsmarts-life-after-death-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -62494,6 +62520,19 @@
     },
     {
       "showId": "stereophonic-off-broadway-2023",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "publishDate": "2023-10-29",
+      "url": "https://newyorktheater.me/2023/10/29/stereophonic-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
       "file": "nytg--joe-dziemianowicz.json",
       "score": 74,
       "publishDate": "October 31, 2023",
@@ -62569,6 +62608,20 @@
     },
     {
       "showId": "stereophonic-off-broadway-2023",
+      "file": "the-interested-bystander--cary-wong.json",
+      "score": 50,
+      "publishDate": "2023-10-29",
+      "url": "https://www.interestedbystander.com/2023/10/theater-review-playwrights-horizons.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
       "file": "theater-life--david-sheward.json",
       "score": 88,
       "publishDate": "2023-11-24",
@@ -62629,6 +62682,19 @@
       "score": 91,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/stereophonic-hits-all-the-right-notes-on-every-channel-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "2023-10-29",
+      "url": "https://www.thewrap.com/stereophonic-off-broadway-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
