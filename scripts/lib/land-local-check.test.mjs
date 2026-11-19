@@ -798,7 +798,7 @@ test('BRO-7731: the recipe lists SHAs only when a merge-base makes origin/main..
 
 function shallowScenario(t, { offMain }) {
   const scratch = mkdtempSync(join(tmpdir(), 'llc-shallow-'));
-  t.after(() => rmSync(scratch, { recursive: true, force: true }));
+  t.after(() => rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const g = (cwd, ...a) => execFileSync('git', ['-c', 'user.email=t@t', '-c', 'user.name=t', '-c', 'protocol.file.allow=always', ...a], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
   const src = join(scratch, 'src');
   fs.mkdirSync(src);
