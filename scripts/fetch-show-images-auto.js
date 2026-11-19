@@ -2748,7 +2748,9 @@ function applyImages(show, images) {
     if (typeof p !== 'string' || !p) continue;
     const st = staged && staged[format] && staged[format].local === p ? staged[format] : null;
     if (!st && p === before[format]) continue; // not touched by this fetch
-    const src = (fileSources && fileSources[format]) || (/^https?:/.test(p) ? p : null);
+    // _fileSources entries are { path, source }, counted only for the file served (as recordFileSources).
+    const fe = fileSources && fileSources[format];
+    const src = fe && fe.path === p && typeof fe.source === 'string' ? fe.source : (/^https?:/.test(p) ? p : null);
     const why = refusedSourceReason(show, src);
     if (!why) continue;
     console.log(`   ✗ Refusing ${format} for ${show.id}: ${why} (${String(src).slice(0, 90)})`);

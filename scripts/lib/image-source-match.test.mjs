@@ -414,6 +414,9 @@ test('the finder refuses refused sources for every tier in applyImages', async (
   const apply = src.slice(src.indexOf('function applyImages('));
   const body = apply.slice(0, apply.indexOf('\nfunction ', 10));
   assert.match(body, /refusedSourceReason\(show, src\)/);
+  // _fileSources entries are { path, source } objects: the guard must read .source, never the object.
+  assert.match(body, /fe\.path === p && typeof fe\.source === 'string' \? fe\.source/);
+  assert.doesNotMatch(body, /\(fileSources && fileSources\[format\]\) \|\|/);
   const effect = { id: 'the-effect-west-end-2012', market: 'west-end', status: 'closed', openingDate: '2012-11-13', closingDate: '2013-02-23', images: { thumbnail: null, poster: null, hero: null } };
   const nt2023 = 'https://images.ctfassets.net/6pezt69ih962/4oIOdVMdvX8tsExMGD19Vr/5c482b411daf0d92e6625bac8f1059f8/NTGDS_CC_The_Effect_Digital_TodayTix_20.jpg';
   assert.ok(refusedSourceReason(effect, nt2023));
