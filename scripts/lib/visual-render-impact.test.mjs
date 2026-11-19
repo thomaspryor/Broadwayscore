@@ -389,3 +389,29 @@ test('helper modules cannot reach window through property chains (location.repla
   assert.equal(hookCheck(top, 'if (e.x?.some((window: any) => 0) || isGone(window)) return null;').exempt, false);
   assert.equal(hookCheck('', 'if (e.x?.some((window: any) => 0) || window.find((v: any) => v)) return null;').exempt, false);
 });
+
+// --- round 7 (BRO-7849) ---
+test('a lone CR / LS / PS in place of a space is a change (return<LS>x renders nothing)', () => {
+  const o = 'export function C() { return <p>x</p>; }\n';
+  for (const sep of ['\r', ' ', ' ']) {
+    assert.equal(isNonRenderingChange({ file: 'src/a.tsx', oldSource: o, newSource: o.replace('return ', `return${sep}`), resolveImport: () => 'ts' }).exempt, false, JSON.stringify(sep));
+  }
+});
+
+test('guards that could join into a neighbouring call (ASI) are not exempt; chains through .view are not safe', () => {
+  const mk = (guard) => `export function C() {
+  Sentry.init({ beforeSend(e: any) {
+    const r = showBanner
+    ${guard}
+    (e)
+    return r;
+  } });
+  return <p>x</p>;
+}
+`;
+  const chk = (a, b) => isNonRenderingChange({ file: 'src/a.tsx', oldSource: a, newSource: b, resolveImport: () => 'ts' });
+  assert.equal(chk(mk('if (e.a) return null;'), mk('')).exempt, false);
+  assert.equal(chk(mk(''), mk('if (e.a) return null;')).exempt, false);
+  assert.equal(hookCheck('', 'if (e.h.event.view.find((v: any) => 0)) return null;', 'Sentry.init').exempt, false);
+  assert.equal(hookCheck('', 'if (e.a) return null', 'Sentry.init').exempt, false);
+});
