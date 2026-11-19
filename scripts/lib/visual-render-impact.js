@@ -42,7 +42,7 @@ const CALLBACK_METHODS = new Set(['some', 'every', 'filter', 'map', 'find', 'fin
 const PREDICATE_NAME = /^(is|has|should|can|matches)[A-Z0-9_]|(Scrub|Redact|Sanitize)$/;
 // Extra markers that make a function body non-pure for the declaration-only module check.
 // Browser globals and window-reaching property names: a local named like one, or a property chain through one, is never trusted.
-const GLOBAL_NAMES = /^(window|globalThis|self|top|parent|frames|document|location|history|navigator|opener|view|defaultView|ownerDocument|contentWindow|contentDocument|localStorage|sessionStorage)$/;
+const GLOBAL_NAMES = /^(window|globalThis|self|top|parent|document|location|history|navigator|opener|view|defaultView|ownerDocument|contentWindow|contentDocument|localStorage|sessionStorage)$/;
 const GLOBAL_LOCALS = /^(window|globalThis|self|top|parent|document|location|history|navigator|opener|localStorage|sessionStorage)$/;
 const IMPURE_RE = /\b(window|globalThis|self|localStorage|sessionStorage|navigator|fetch|XMLHttpRequest|require|import|Function|eval|Reflect|Proxy)\b/;
 // Changed lines matching any of these can alter what is on screen even inside an effect: state setters, DOM writes,
@@ -169,6 +169,10 @@ function chainRoot(ts, n) {
   }
 }
 function rootOk(ts, n, ctx) {
+  for (let m = n; ; ) { // a chain through window/document/view/location ... reaches the page
+    if (ts.isParenthesizedExpression(m) || ts.isNonNullExpression(m) || ts.isAsExpression(m) || ts.isElementAccessExpression(m)) m = m.expression;
+    else if (ts.isPropertyAccessExpression(m)) { if (GLOBAL_NAMES.test(m.name.text)) return false; m = m.expression; } else break;
+  }
   const r = chainRoot(ts, n);
   if (!r) return false;
   if (ts.isIdentifier(r)) return r.text === 'undefined' || ctx.locals.has(r.text) || ctx.imported.has(r.text);
@@ -288,8 +292,13 @@ function guardRanges(ts, sf, resolveImport) {
         const ctx = hookCtx(ts, sf, fn, resolveImport);
         for (const prm of fn.parameters) if (ts.isIdentifier(prm.name)) ctx.locals.add(prm.name.text);
         if (!shadowsGlobal(ts, fn) && inertFn(ts, fn.body, ctx, sf)) {
-          for (const st of fn.body.statements) {
-            if (ts.isIfStatement(st) && !st.elseStatement && isReturnOfNothing(ts, st.thenStatement) && safeCond(ts, st.expression, { locals: ctx.locals, imported: ctx.strict })) out.push([st.getStart(sf), st.end]);
+          const sts = fn.body.statements;
+          for (let i = 0; i < sts.length; i++) {
+            const st = sts[i];
+            // ASI: a guard that ends without `;`, or follows a `;`-less expression/variable statement, can join its neighbours into a call.
+            const prev = sts[i - 1];
+            const asiSafe = st.getText(sf).endsWith(';') && (!prev || !(ts.isVariableStatement(prev) || ts.isExpressionStatement(prev) || ts.isReturnStatement(prev)) || prev.getText(sf).endsWith(';'));
+            if (asiSafe && ts.isIfStatement(st) && !st.elseStatement && isReturnOfNothing(ts, st.thenStatement) && safeCond(ts, st.expression, { locals: ctx.locals, imported: ctx.strict })) out.push([st.getStart(sf), st.end]);
           }
         }
       }
@@ -459,6 +468,7 @@ function isNonRenderingChange({ file, oldSource, newSource, resolveImport }) {
     if (typeof oldSource !== 'string' || typeof newSource !== 'string') return no('file is new, deleted or renamed');
     const ts = loadTs();
     if (!ts) return no('typescript package not available (fail closed)');
+    if (/\u2028|\u2029|\r(?!\n)/.test(oldSource) || /\u2028|\u2029|\r(?!\n)/.test(newSource)) return no('line separator other than \\n / \\r\\n (a lone CR, LS or PS changes how code parses)');
     const oSf = parse(ts, file, oldSource); const nSf = parse(ts, file, newSource);
     if (!oSf || !nSf) return no('parse error (fail closed)');
     const oJsx = jsxTexts(ts, oSf); const nJsx = jsxTexts(ts, nSf);
