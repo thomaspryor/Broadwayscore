@@ -78,6 +78,8 @@ const SECRET_RES = [
   [/\b(?:lin_api|re|xoxb|xoxp)_[A-Za-z0-9_-]{16,}/g, '[REDACTED_KEY]'],
   [/(Bearer|Basic)\s+[A-Za-z0-9._~+/=-]{12,}/gi, '$1 [REDACTED]'],
   [/\b([A-Z][A-Z0-9_]*(?:KEY|TOKEN|SECRET|PASSWORD|PASS))=(?!\$)[^\s'"]{6,}/g, '$1=[REDACTED]'],
+  [/\b([A-Za-z][A-Za-z0-9_-]*(?:KEY|TOKEN|SECRET|PASSWORD|PASS))(["']?\s*[:=]\s*["']?)(?!\$)[^\s'",]{6,}/gi, '$1$2[REDACTED]'],
+  [/\bAKIA[0-9A-Z]{16}\b/g, '[REDACTED_KEY]'],
   [/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, '[EMAIL]'],
   [/\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{5,}/g, '[REDACTED_JWT]'],
 ];
@@ -271,7 +273,7 @@ export function lastSkepticShipCheckIndex(events) {
 
 /** PURE. The ship-check report: the verdict line review-coverage.mjs looks for, then each gap and its check. */
 export function shipCheckReport(r) {
-  if (r.error) return `SKEPTIC REVIEW: unavailable (${r.error}). Ask yourself the owner's question by hand: "Is this fully tested? What is untested or could still be broken?" and run what that names.`;
+  if (r.error) return `SKEPTIC REVIEW UNAVAILABLE (${r.error}); this does not count as a review. Ask yourself the owner's question by hand: "Is this fully tested? What is untested or could still be broken?" and run what that names.`;
   const material = r.gaps.filter((g) => g.severity === 'material');
   const minor = r.gaps.filter((g) => g.severity !== 'material');
   const fmt = (g, i) => `${i + 1}. ${g.what}${g.why ? ` (${g.why})` : ''}\n   check: ${g.check || '(name one)'}`;
@@ -334,7 +336,9 @@ export async function main(argv, { env = process.env, now = new Date(), stdin = 
     const tArg = argv.find((a) => a.startsWith('--transcript='))?.slice(13);
     const tp = tArg || findSessionTranscript(env.CLAUDE_CODE_SESSION_ID);
     if (!tp || !fs.existsSync(tp)) { process.stdout.write(shipCheckReport({ error: 'session transcript not found (pass --transcript=<path>)' }) + '\n'); return 0; }
+    if (tArg && env.CLAUDE_CODE_SESSION_ID && !tArg.includes(env.CLAUDE_CODE_SESSION_ID)) { process.stdout.write(shipCheckReport({ error: '--transcript is not this session\'s transcript' }) + '\n'); return 0; }
     const events = walkTranscript(tp);
+    if (!events.length) { process.stdout.write(shipCheckReport({ error: 'transcript has no events' }) + '\n'); return 0; }
     const landed = landedPushIndices(events);
     const from = landed.length ? landed[landed.length - 1] : -1;
     const texts = events.filter((e) => e.kind === 'assistant_text');

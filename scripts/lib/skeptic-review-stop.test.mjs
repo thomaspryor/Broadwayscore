@@ -61,6 +61,11 @@ test('NO-SKEPTIC bypass with a real reason allows; a schedule-only reason does n
   assert.equal(bypassReason([text('NO-SKEPTIC: short')], -1, ''), null);
 });
 
+test('redact catches quoted, YAML, JSON, header, query and AWS key forms', () => {
+  const s = redact('SCRAPINGBEE_API_KEY="abcd1234efgh5678" BRIGHTDATA_API_TOKEN: tok_abcdef123456 https://x.io/?api_key=qwerty123456 x-api-key: zzzz9999yyyy {"apiKey":"jsonsecret123"} AKIAABCDEFGHIJKLMNOP');
+  for (const leak of ['abcd1234efgh5678', 'tok_abcdef123456', 'qwerty123456', 'zzzz9999yyyy', 'jsonsecret123', 'AKIAABCDEFGHIJKLMNOP']) assert.ok(!s.includes(leak), `${leak} leaked: ${s}`);
+});
+
 test('redact strips keys, tokens, bearer headers, env assignments and emails', () => {
   const s = redact('OPENAI_API_KEY=sk-proj-abcdefghijklmnop1234 ghp_abcdefghijklmnopqrstuvwxyz12 Authorization: Bearer abcdef0123456789xyz mail owner@example.com AIzaSyA1234567890abcdefghijklmnopqrstuv LINEAR_API_KEY=lin_api_abcdefghijklmnopqrst');
   for (const leak of ['sk-proj-abcdef', 'ghp_abcdef', 'abcdef0123456789xyz', 'owner@example.com', 'AIzaSyA123', 'lin_api_abcdef']) assert.ok(!s.includes(leak), `${leak} leaked: ${s}`);
@@ -214,7 +219,7 @@ test('shipCheckReport: verdict line first, material gaps with checks, minor gaps
   assert.match(r, /1\. never ran X \(unit only\)\n {3}check: node x\.js/);
   assert.match(r, /Minor \(optional\):\n1\. typo/);
   assert.equal(shipCheckReport({ gaps: [] }), 'SKEPTIC REVIEW: no material gaps.');
-  assert.match(shipCheckReport({ error: 'no OPENAI_API_KEY' }), /^SKEPTIC REVIEW: unavailable \(no OPENAI_API_KEY\)/);
+  assert.match(shipCheckReport({ error: 'no OPENAI_API_KEY' }), /^SKEPTIC REVIEW UNAVAILABLE \(no OPENAI_API_KEY\)/);
 });
 
 test('main --ship-check: reads the transcript, reviews only work since the last landed push, prints the verdict, exits 0', async () => {
@@ -240,5 +245,10 @@ test('main --ship-check: reads the transcript, reviews only work since the last 
   const sent = body.messages.map((m) => m.content).join('\n');
   assert.match(sent, /new\.js/);
   assert.doesNotMatch(sent, /old\.js/, 'work landed before the last push is not re-reviewed');
+  // A transcript that is not this session's, or an empty one, never yields a verdict line (fake-pass guard).
+  const run = async (args, env) => { const w = []; process.stdout.write = (c) => { w.push(String(c)); return true; }; try { await main(args, { env, fetchImpl }); } finally { process.stdout.write = orig; } return w.join(''); };
+  assert.match(await run(['--ship-check', `--transcript=${tp}`], { ...CLOUD, CLAUDE_CODE_SESSION_ID: 'other-session' }), /^SKEPTIC REVIEW UNAVAILABLE \(--transcript is not this session/);
+  const empty = path.join(dir, 'empty.jsonl'); fs.writeFileSync(empty, '');
+  assert.doesNotMatch(await run(['--ship-check', `--transcript=${empty}`], CLOUD), /^SKEPTIC REVIEW: /m, 'an empty transcript is not a review');
   fs.rmSync(dir, { recursive: true, force: true });
 });

@@ -615,6 +615,8 @@ test('skeptic reviewer: command detection', () => {
   assert.equal(isSkepticReviewCall('echo node scripts/lib/skeptic-review-stop.mjs --ship-check'), false);
   assert.equal(isSkepticReviewCall('grep -n ship-check scripts/lib/skeptic-review-stop.mjs'), false);
   assert.equal(isSkepticReviewCall('node scripts/lib/skeptic-review-stop.mjs --digest'), false);
+  assert.equal(isSkepticReviewCall('node /tmp/skeptic-review-stop.mjs --ship-check'), false, 'a stand-in script elsewhere does not count');
+  assert.equal(isSkepticReviewCall('node scripts/lib/skeptic-review-stop.mjs --transcript=/x/y.jsonl --ship-check'), true, 'flags before --ship-check');
 });
 
 test('stampReceipt: amends only the message, once, never a commit already on main', () => {
@@ -638,5 +640,10 @@ test('stampReceipt: amends only the message, once, never a commit already on mai
   g('rm', '-q', '--cached', 'b');
   g('commit', '-q', '--allow-empty', '-m', 'empty');
   assert.equal(stampReceipt({ cwd: dir, evidence }).stamped, true, 'an empty HEAD commit (merge-only or marker commit) still takes the trailer');
+  g('commit', '-q', '--allow-empty', '-m', 'pushed');
+  g('update-ref', 'refs/remotes/origin/claude/x', 'HEAD');
+  const pushed = stampReceipt({ cwd: dir, evidence });
+  assert.equal(pushed.stamped, false, 'a commit a remote branch already holds is never rewritten');
+  assert.match(pushed.reason, /already pushed \(origin\/claude\/x\)/);
   fs.rmSync(dir, { recursive: true, force: true });
 });
