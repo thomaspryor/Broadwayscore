@@ -564,6 +564,12 @@ describe('market named in the message breaks a title tie (feedback #1192)', () =
 
 describe('message market inference never guesses from the message at large (second-opinion)', () => {
   const { inferMarketFromMessage } = require('../../scripts/lib/content-request-routing.js');
+  it('skips a sentence that contrasts two markets (skeptic review, BRO-7844)', () => {
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'I saw Dirty Dancing in the West End years ago, but the Broadway one needs a cast'), null);
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'I saw it in London. Dirty Dancing on Broadway needs a cast'), 'broadway');
+    // A title with its own ! or . must not end the sentence early (ship-check review).
+    assert.equal(inferMarketFromMessage('Mamma Mia!', 'I saw Mamma Mia! in the West End years ago, but the Broadway one needs a cast'), null);
+  });
   it('ignores the site name', () => {
     assert.equal(inferMarketFromMessage('Hamilton', 'Thanks for Broadway Scorecard! Hamilton is missing a picture.'), null);
   });
@@ -629,4 +635,24 @@ describe('a year next to the title picks one run in the market (BRO-7844 cousins
     assert.equal(inferMarketFromMessage('Stereophonic', 'Stereophonic transferred from London and is missing reviews'), null);
     assert.equal(r('Stereophonic', 'Stereophonic transferred from London and is missing reviews').ambiguous, true);
   });
+});
+
+// GH #552: "add <outlets> to <show>'s scorecard" parked as unroutable.
+test('an outlet-addition ask for a catalogued show routes to a review gather (GH #552)', () => {
+  const actions = planContentRequestActions({
+    message: 'Please add Stage West, Stage and Cinema, and Vanguard Culture\u2019s to 3 Summers of Lincoln\u2019s scorecard, please',
+    show: REVIEW_SHOW_FIELD,
+    shows: SHOWS_WITH_LINCOLN,
+  });
+  assert.deepEqual(actions.map((a) => a.kind), ['missing-reviews']);
+  assert.equal(actions[0].workflow, WORKFLOW_REVIEWS);
+});
+
+test('"add a show to the scorecard" style praise does not become a review gather without a catalogued show', () => {
+  const actions = planContentRequestActions({
+    message: 'Love the site, add dark mode to the scorecard page',
+    show: null,
+    shows: SHOWS_WITH_LINCOLN,
+  });
+  assert.equal(actions.some((a) => a.workflow === WORKFLOW_REVIEWS), false);
 });

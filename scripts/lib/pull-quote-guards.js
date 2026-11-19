@@ -727,8 +727,34 @@ function llmQuoteHardRejectReason(quote, fullText) {
 // also come back context-dependent (llmPullQuoteContextCheckedAt), it is kept.
 function hasUsableLlmQuote(data) {
   return !!(data && data.llmPullQuote && !llmQuoteHardRejectReason(data.llmPullQuote, data.fullText)
+    && !quoteOutsideTargetSection(data.llmPullQuote, data)
     && (data.llmPullQuoteContextCheckedAt || (!isContextDependentQuote(data.llmPullQuote, { showTitle: data.showTitle })
       && !startsMidClause(data.llmPullQuote, data.fullText))));
+}
+
+/**
+ * BRO-7346: the text a pull quote may come from. A column that reviews several
+ * shows (HuffPost/Finkle First Nighter, split by asterisk dividers) yields only
+ * the target show's section; anything else yields the whole fullText. Uses the
+ * scorer's own section split, so quote and score read the same section.
+ * Before this, 6 live reviews showed a quote about another show in the column.
+ */
+function pullQuoteSourceText(data, showTitle) {
+  const text = data && typeof data.fullText === 'string' ? data.fullText : '';
+  const title = showTitle || (data && data.showTitle);
+  if (!text || !title) return text;
+  const { trimByAsteriskDivider } = require('./multi-show-asterisk-divider');
+  const r = trimByAsteriskDivider(text, title, data);
+  return r.trimmed ? r.text : text;
+}
+
+/** True when the quote is in the record's fullText but not in the target show's section of it. */
+function quoteOutsideTargetSection(quote, data, showTitle) {
+  if (!quote || !data || typeof data.fullText !== 'string') return false;
+  const section = pullQuoteSourceText(data, showTitle);
+  if (section === data.fullText) return false;
+  const norm = (t) => foldDiacritics(String(t || '')).replace(/[‘’“”'"]/g, '').replace(/[\u2013\u2014]|--/g, '-').replace(/\s+/g, ' ').trim().toLowerCase();
+  return !norm(section).includes(norm(quote));
 }
 
 // ---------------------------------------------------------------------------
@@ -1367,6 +1393,8 @@ module.exports = {
   isClippedAggregatorBlurb,
   llmQuoteHardRejectReason,
   hasUsableLlmQuote,
+  pullQuoteSourceText,
+  quoteOutsideTargetSection,
   HEDGE_OPENER_RE,
   MID_SENTENCE_PIVOT_RE,
   MIN_QUOTE_LENGTH,

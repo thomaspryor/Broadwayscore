@@ -328,8 +328,11 @@ const FIELD_VALUE_CHECKS = {
     }
     // The extractor's write guard (BRO-5796): a quote it refuses would be
     // re-extracted over this edit on its next run.
-    const reject = require('./pull-quote-guards').llmQuoteHardRejectReason(v, record.fullText);
+    const guards = require('./pull-quote-guards');
+    const reject = guards.llmQuoteHardRejectReason(v, record.fullText);
     if (reject) return `llmPullQuote rejected: ${reject}`;
+    // BRO-7346: in a multi-show column the quote must come from this show's section.
+    if (guards.quoteOutsideTargetSection(v, record)) return 'llmPullQuote must come from this show\'s section of the multi-show column';
     return null;
   },
   // A url edit is allowed only when the CURRENT url is provably wrong for this

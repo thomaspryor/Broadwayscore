@@ -27,12 +27,26 @@ try { specs = parseFileSpecs(fileArg.slice('--file='.length)); } catch (e) { con
 const dryRun = args.includes('--dry-run');
 const root = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
+// BRO-7346: the catalogue title drives the asterisk-divider section check.
+let titleCache = null;
+function showTitles() {
+  if (!titleCache) {
+    titleCache = new Map();
+    try {
+      const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+      const list = Array.isArray(raw) ? raw : (raw.shows || Object.values(raw));
+      titleCache = new Map(list.filter((s) => s && s.id).map((s) => [s.id, s.title]));
+    } catch (e) { console.log(`  shows.json unreadable (${e.message}): falling back to each file's showTitle`); }
+  }
+  return titleCache;
+}
+
 let flagged = 0;
 for (const { showId, file } of specs) {
   const p = path.join(root, showId, file);
   if (!fs.existsSync(p)) { console.log(`  MISSING ${showId}/${file}`); continue; }
   const data = JSON.parse(fs.readFileSync(p, 'utf8'));
-  const r = flagMultiShowRescore(data);
+  const r = flagMultiShowRescore(data, undefined, { showTitle: showTitles().get(showId) || data.showTitle });
   console.log(`  ${r.ok ? 'FLAGGED' : 'SKIP   '} ${showId}/${file}: ${r.reason}`);
   if (r.ok) { flagged++; if (!dryRun) safeWriteReview(p, data); }
 }

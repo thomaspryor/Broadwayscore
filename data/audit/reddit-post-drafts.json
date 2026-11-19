@@ -3,7 +3,7 @@
     "postedDetection": "ok",
     "postedDetectionFailingSince": null,
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-19T17:14:57.507Z"
+    "lastRun": "2026-11-19T22:09:16.977Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3819,33 +3819,33 @@
       "showTitle": "Jenůfa",
       "market": "off-broadway",
       "subreddit": "offbroadwayNYC",
-      "score": 78,
-      "reviewCount": 5,
+      "score": 79,
+      "reviewCount": 6,
       "url": "https://broadwayscorecard.com/show/jenufa-off-broadway",
       "notability": 8,
       "createdAt": "2026-11-18T21:06:55.814Z",
       "status": "ready",
-      "source": "template",
-      "lintProblems": [
-        "body: quote not found in the reviews: \"They are enough for each other, and reason enough to see thi\""
-      ],
-      "title": "5 reviews are in for Jenůfa. 78/100",
-      "body": "It opened at Metropolitan Opera House, and I found 5 reviews: 3 raves, 1 positive, 1 negative. That works out to a 78/100.\n\nGrigorian's soaring soprano earns near-universal raves in this Met *Jenůfa*, though Guth's direction splits critics, some find it revelatory, others heavy-handed and distracting.\n\nNo audience grade yet, since hardly any users have reviewed it on any of the sites.\n\nOperaWire is the lone holdout.\n\nI haven't seen it yet. Anyone been?\n\nhttps://broadwayscorecard.com/show/jenufa-off-broadway",
-      "why": "Template fallback: plain roundup with the score, breakdown and critic consensus.",
-      "expectedPushback": "Someone may say numbers can't capture theater.",
-      "suggestedReply": "Totally fair, the number is just a quick way to see where critics landed. Which review do you think got it most right?",
+      "source": "claude-sonnet-5-5",
+      "lintProblems": [],
+      "title": "Reviews are in for Jenůfa at the Met. 79/100 from 6 critics, and the one pan is about the empty stage",
+      "body": "I found 6 reviews: 3 raves, 2 positive, 1 negative.\n\nhttps://broadwayscorecard.com/show/jenufa-off-broadway\n\nJoshua Barone at the NYT wrote that the leads are \"enough for each other, and reason enough to see this\" production. Heidi Waleson at the Wall Street Journal liked Claus Guth's direction, praising its \"astutely detailed direction.\" Meanwhile Francisco Salazar at OperaWire was the lone pan, saying the production \"looked empty and unfinished on the massive Met stage\". Which I GET, that is a very big stage.\n\nNo audience grade yet, since hardly any users have reviewed it on any of the sites.\n\nI haven't seen this one yet, and I want to. Anyone caught it?",
+      "why": "It leads with the show, the score and the count, then gives the one real tension (raves for the music and direction vs. one critic calling the staging empty on the big Met stage), using only quotes copied from the fact sheet.",
+      "expectedPushback": "Why is an opera at the Met in an Off-Broadway sub, and who cares about a score from only 6 reviews?",
+      "suggestedReply": "Fair, 6 reviews is a small pile, so I'm mostly sharing what the critics actually wrote. Mostly I just wanted to see what people here thought of it.",
       "personalLines": [
-        "I haven't seen it yet, and now I really want to.",
-        "Still undecided on going to this one."
+        "I haven't seen this one yet, and I want to.",
+        "Still undecided on this one, honestly.",
+        "[if true] We've got tickets for later this month."
       ],
-      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=5+reviews+are+in+for+Jen%C5%AFfa.+78%2F100&text=It+opened+at+Metropolitan+Opera+House%2C+and+I+found+5+reviews%3A+3+raves%2C+1+positive%2C+1+negative.+That+works+out+to+a+78%2F100.%0A%0AGrigorian%27s+soaring+soprano+earns+near-universal+raves+in+this+Met+*Jen%C5%AFfa*%2C+though+Guth%27s+direction+splits+critics%2C+some+find+it+revelatory%2C+others+heavy-handed+and+distracting.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AOperaWire+is+the+lone+holdout.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fjenufa-off-broadway",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=5+reviews+are+in+for+Jen%C5%AFfa.+78%2F100&text=It+opened+at+Metropolitan+Opera+House%2C+and+I+found+5+reviews%3A+3+raves%2C+1+positive%2C+1+negative.+That+works+out+to+a+78%2F100.%0A%0AGrigorian%27s+soaring+soprano+earns+near-universal+raves+in+this+Met+*Jen%C5%AFfa*%2C+though+Guth%27s+direction+splits+critics%2C+some+find+it+revelatory%2C+others+heavy-handed+and+distracting.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AOperaWire+is+the+lone+holdout.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fjenufa-off-broadway",
+      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=Reviews+are+in+for+Jen%C5%AFfa+at+the+Met.+79%2F100+from+6+critics%2C+and+the+one+pan+is+about+the+empty+stage&text=I+found+6+reviews%3A+3+raves%2C+2+positive%2C+1+negative.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fjenufa-off-broadway%0A%0AJoshua+Barone+at+the+NYT+wrote+that+the+leads+are+%22enough+for+each+other%2C+and+reason+enough+to+see+this%22+production.+Heidi+Waleson+at+the+Wall+Street+Journal+liked+Claus+Guth%27s+direction%2C+praising+its+%22astutely+detailed+direction.%22+Meanwhile+Francisco+Salazar+at+OperaWire+was+the+lone+pan%2C+saying+the+production+%22looked+empty+and+unfinished+on+the+massive+Met+stage%22.+Which+I+GET%2C+that+is+a+very+big+stage.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+want+to.+Anyone+caught+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=Reviews+are+in+for+Jen%C5%AFfa+at+the+Met.+79%2F100+from+6+critics%2C+and+the+one+pan+is+about+the+empty+stage&text=I+found+6+reviews%3A+3+raves%2C+2+positive%2C+1+negative.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fjenufa-off-broadway%0A%0AJoshua+Barone+at+the+NYT+wrote+that+the+leads+are+%22enough+for+each+other%2C+and+reason+enough+to+see+this%22+production.+Heidi+Waleson+at+the+Wall+Street+Journal+liked+Claus+Guth%27s+direction%2C+praising+its+%22astutely+detailed+direction.%22+Meanwhile+Francisco+Salazar+at+OperaWire+was+the+lone+pan%2C+saying+the+production+%22looked+empty+and+unfinished+on+the+massive+Met+stage%22.+Which+I+GET%2C+that+is+a+very+big+stage.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+want+to.+Anyone+caught+it%3F",
       "crosspostSubreddit": "Broadway",
-      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=5+reviews+are+in+for+Jen%C5%AFfa.+78%2F100&text=It+opened+at+Metropolitan+Opera+House%2C+and+I+found+5+reviews%3A+3+raves%2C+1+positive%2C+1+negative.+That+works+out+to+a+78%2F100.%0A%0AGrigorian%27s+soaring+soprano+earns+near-universal+raves+in+this+Met+*Jen%C5%AFfa*%2C+though+Guth%27s+direction+splits+critics%2C+some+find+it+revelatory%2C+others+heavy-handed+and+distracting.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AOperaWire+is+the+lone+holdout.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fjenufa-off-broadway",
-      "emailedAt": "2026-11-18T21:08:27.558Z",
-      "emailedScore": 78,
-      "emailedReviewCount": 5,
-      "reminderAt": "2026-11-19T17:15:13.048Z"
+      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Reviews+are+in+for+Jen%C5%AFfa+at+the+Met.+79%2F100+from+6+critics%2C+and+the+one+pan+is+about+the+empty+stage&text=I+found+6+reviews%3A+3+raves%2C+2+positive%2C+1+negative.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fjenufa-off-broadway%0A%0AJoshua+Barone+at+the+NYT+wrote+that+the+leads+are+%22enough+for+each+other%2C+and+reason+enough+to+see+this%22+production.+Heidi+Waleson+at+the+Wall+Street+Journal+liked+Claus+Guth%27s+direction%2C+praising+its+%22astutely+detailed+direction.%22+Meanwhile+Francisco+Salazar+at+OperaWire+was+the+lone+pan%2C+saying+the+production+%22looked+empty+and+unfinished+on+the+massive+Met+stage%22.+Which+I+GET%2C+that+is+a+very+big+stage.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+want+to.+Anyone+caught+it%3F",
+      "emailedAt": "2026-11-19T22:10:29.306Z",
+      "reminderAt": "2026-11-19T22:10:29.306Z",
+      "emailedScore": 79,
+      "emailedReviewCount": 6,
+      "updateCount": 1
     }
   }
 }

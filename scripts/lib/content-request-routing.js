@@ -134,6 +134,9 @@ const REVIEW_ABSENCE_RE = new RegExp(
     /\b(?:finish|complete|update|missing|lacks?|lacking|without|incomplete|unfinished|needs?\s+(?:more\s+)?|there'?s\s+no|only\s+(?:one|two|1|2|a\s+few))\b[^.!?]{0,40}?\breviews?\b/.source,
     // noun first: "reviews are incomplete", "reviews aren't finished", "reviews missing"
     /\breviews?\b[^.!?]{0,30}?\b(?:missing|incomplete|unfinished|not\s+(?:yet\s+)?(?:done|finished|complete|up))\b/.source,
+    // outlet request (GH #552): "Please add Stage West, Stage and Cinema ... to X's scorecard".
+    // Needs the add/include verb AND the scorecard noun in one sentence.
+    /\b(?:add|include)\b[^.!?]{0,160}?\bscore\s?cards?\b/.source,
   ].join('|'),
   'i'
 );
@@ -250,6 +253,13 @@ function inferMarketFromMessage(title, message) {
     const after = msg.slice(idx + t.length, idx + t.length + 30).split(/[.!?\n]/)[0];
     const near = `${before} ${after}`;
     if (/\b(not|isn'?t|wasn'?t)\b/i.test(near)) return null;
+    // A sentence naming two different markets ("saw it in the West End, but the
+    // Broadway one needs a cast") is a contrast the 30-char window can't read: skip.
+    const sStart = Math.max(...['.', '!', '?', '\n'].map((c) => msg.lastIndexOf(c, idx))) + 1;
+    // Search for the end after the title: "Mamma Mia!" or "Mr. Saturday Night" must not end it.
+    const sEndRaw = msg.slice(idx + t.length).search(/[.!?\n]/);
+    const sentence = msg.slice(sStart, sEndRaw < 0 ? msg.length : idx + t.length + sEndRaw);
+    if (new Set(marketsIn(sentence)).size > 1) return null;
     for (const m of marketsIn(near)) found.add(m);
   }
   if (mentions === 0) return null;

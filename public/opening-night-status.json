@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T21:32:55.306Z",
+  "generatedAt": "2026-11-19T23:13:56.122Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1426,6 +1426,10 @@
         {
           "name": "The Globe and Mail",
           "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         },
         {
           "name": "The Arts Desk",
@@ -3175,28 +3179,27 @@
       "status": "open",
       "slug": "jenufa-off-broadway",
       "thumbnail": "/images/shows/jenufa-off-broadway-2026/thumbnail.webp",
-      "siteScore": 78.4,
+      "siteScore": 79,
       "liveScore": 83,
-      "scoreDrift": 4.599999999999994,
+      "scoreDrift": 4,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
-      "t1": 2,
+      "total": 6,
+      "t1": 3,
       "t2": 1,
       "t3": 2,
-      "positive": 4,
+      "positive": 5,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
-          "T1:2/3",
+          "6/12 total",
           "T2:1/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3581,6 +3584,18 @@
           "t2": 1,
           "t3": 2,
           "p": 4,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-19T22:22:45.640Z",
+          "rc": 6,
+          "s": 79,
+          "t1": 3,
+          "t2": 1,
+          "t3": 2,
+          "p": 5,
           "m": 0,
           "n": 1,
           "bc": "waiting"
@@ -5240,27 +5255,27 @@
       "slug": "takes-all-kinds-regional-2026",
       "thumbnail": "/images/shows/takes-all-kinds-regional-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 43,
+      "liveScore": 61,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 1,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "2/12 total",
           "T1:0/3",
           "T2:1/3",
-          "hi-conf:1/8"
+          "hi-conf:2/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -5609,6 +5624,18 @@
           "t2": 1,
           "t3": 0,
           "p": 0,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-19T22:22:45.640Z",
+          "rc": 2,
+          "s": 61,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
           "m": 0,
           "n": 1,
           "bc": "waiting"

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T22:40:07.296Z",
+  "generatedAt": "2026-11-19T22:44:07.587Z",
   "promoted": [],
   "rejected": [
     {
@@ -9,6 +9,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as desire-under-the-elms-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Almeida For Free: Desire Under the Elms",
+      "venue": "Almeida Theatre",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as desire-under-the-elms-off-west-end-2026 (colon-segment-of: \"Desire Under the Elms\")"
     },
     {
       "title": "Angel to Olympus",
@@ -891,12 +899,28 @@
       "reason": "already in shows.json as god-is-a-woman-the-musical-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Jellicile",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
+    },
+    {
       "title": "Saving Alan Turing",
       "venue": "King's Head Theatre",
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as saving-alan-turing-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Selina Mosinski: Puss in Boots - A Working Class Fairy Tale",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 3 performance(s) listed — a short booking, not a run"
     },
     {
       "title": "Stand Up If You're Here Tonight",

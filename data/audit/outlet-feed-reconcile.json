@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T20:35:06.048Z",
+  "generatedAt": "2026-11-19T23:01:15.639Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -173,16 +173,16 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "north-west-end",
-      "error": "Timeout fetching https://northwestend.com/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -197,27 +197,18 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 871,
-  "matchedGaps": 1,
+  "itemsScanned": 868,
+  "matchedGaps": 0,
   "possibleGaps": 3,
   "gaps": [
     {
-      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
-      "title": "A Homo Alone 2: Yikes, We Did It Again!",
-      "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-a-homo-alone-2-yikes-we-did-it-again-the-other-palace-studio",
-      "headline": "Review: A HOMO ALONE 2: YIKES, WE DID IT AGAIN!, The Other Palace Studio",
-      "publishDate": "2026-11-19"
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
+      "showId": "annie-regional-2026-drury-lane-oakbrook",
+      "title": "Annie",
       "level": "possible",
-      "outletId": "artsdesk",
-      "url": "https://theartsdesk.com/theatre/desire-under-elms-almeida-theatre-review-dour-tragedy-recast-dynamic-musical-drama",
-      "headline": "Desire Under the Elms, Almeida Theatre review - dour tragedy recast as a dynamic musical drama",
-      "publishDate": null
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/annie-the-brindley/",
+      "headline": "Annie &#8211; The Brindley",
+      "publishDate": "2026-11-17"
     },
     {
       "showId": "much-ado-about-nothing-2026",

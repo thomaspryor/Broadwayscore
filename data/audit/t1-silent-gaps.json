@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T20:34:44.469Z",
+  "generatedAt": "2026-11-19T22:58:16.547Z",
   "windowDays": 45,
   "showsScanned": 284,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 253.54276472222222,
+      "fileAgeHours": 255.93509166666666,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 230.9944913888889,
+      "nonTerminalAgeHours": 233.38673527777777,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 222.77467805555557,
+      "fileAgeHours": 225.16696638888888,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 221.6300463888889,
+      "nonTerminalAgeHours": 224.02229027777778,
       "needsManualRecovery": true
     },
     {
@@ -61,9 +61,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=a-christmas-story-the-musical-tour-2026 --url=https://www.nj.com/entertainment/2026/11/nj-weekend-events-100-things-to-do-from-a-holiday-market-to-dinner-with-george-washington.html --outlet=njcom --critic=\"Sal DiMaggio\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-19T20:05:32.328Z",
-      "fileAgeHours": 0.48654888888888886,
+      "fileAgeHours": 2.878823611111111,
       "gapSeenAt": "2026-11-19T20:34:44.469Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 2.392243888888889,
       "needsManualRecovery": false
     },
     {
@@ -84,9 +84,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=carmen-regional-2026 --url=https://www.thewrap.com/calle-malaga-review-spanish-legend-carmen-maura-charms-her-way-through-moroccan-crowd-pleaser/ --outlet=thewrap --critic=\"Robert Hofler\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-19T18:11:58.985Z",
-      "fileAgeHours": 2.379299722222222,
+      "fileAgeHours": 4.771543888888889,
       "gapSeenAt": "2026-11-19T19:33:47.352Z",
-      "nonTerminalAgeHours": 1.0158658333333332,
+      "nonTerminalAgeHours": 3.408109722222222,
       "needsManualRecovery": false
     }
   ],
