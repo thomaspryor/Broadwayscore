@@ -77,6 +77,13 @@ describe('showRunYears', () => {
 });
 
 describe('sameShowTitle', () => {
+  test('accents, & / + and possessive prefixes are the same title (second-opinion catch)', () => {
+    assert.strictEqual(sameShowTitle({ title: 'Les Miserables' }, { title: 'Les Misérables' }), true);
+    assert.strictEqual(sameShowTitle({ title: 'Romeo and Juliet' }, { title: 'Romeo + Juliet' }), true);
+    assert.strictEqual(sameShowTitle({ title: 'Romeo and Juliet' }, { title: 'Romeo & Juliet' }), true);
+    assert.strictEqual(sameShowTitle({ title: 'Old Friends' }, { title: "Stephen Sondheim's Old Friends" }), true);
+  });
+
   test('ignores a trailing "The Musical" and a leading "Disney\'s"/"The"', () => {
     assert.strictEqual(sameShowTitle({ title: 'Kinky Boots' }, { title: 'Kinky Boots: The Musical' }), true);
     assert.strictEqual(sameShowTitle({ title: "Disney's Frozen" }, { title: 'Frozen' }), true);

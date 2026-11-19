@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-7815",
-  "planId": "eb074f21-c356-464d-9f5d-7ca57ff6d957",
+  "planId": "273dc963-7b97-4020-8807-fdaad62bf6ea",
   "status": "pending",
-  "createdAt": "2026-11-19T06:37:11.572Z",
+  "createdAt": "2026-11-19T06:50:18.294Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Clear 9 stale cross-show URL wrongProduction flags: the review texts describe the 2016 Broadway Les Liaisons Dangereuses (Booth, McTeer/Schreiber) and the Broadway Beautiful (Stephen Sondheim, 2018 revisits), not the West End productions a URL sweep moved them to",
+    "summary": "Clear 11 stale cross-show URL wrongProduction flags: the review texts describe the 2016 Broadway Les Liaisons Dangereuses (Booth, McTeer/Schreiber), the Broadway Beautiful (2018 revisits), the 2009 Broadway Rock of Ages and the Broadway Phantom at the Majestic (2005), not the London productions a URL sweep moved them to",
     "steps": [
       "beautiful-the-carole-king-musical-2014/nysr--melissa-rose-bernardo.json: wrongProduction",
       "beautiful-the-carole-king-musical-2014/nysr--michael-sommers.json: wrongProduction",
@@ -18,7 +18,9 @@
       "les-liaisons-dangereuses-2016/stagezine--david-nounou.json: wrongProduction",
       "les-liaisons-dangereuses-2016/philadelphia-inquirer--toby-zinman.json: wrongProduction",
       "les-liaisons-dangereuses-2016/wnyc--jennifer-vanasco.json: wrongProduction",
-      "les-liaisons-dangereuses-2016/theater-scene--julia-polinsky.json: wrongProduction"
+      "les-liaisons-dangereuses-2016/theater-scene--julia-polinsky.json: wrongProduction",
+      "rock-of-ages-2009/variety--unknown.json: wrongProduction",
+      "the-phantom-of-the-opera-1988/nytimes--jason-zinoman.json: wrongProduction"
     ],
     "riskLevel": "low",
     "actions": [
@@ -93,6 +95,22 @@
         "oldValue": true,
         "newValue": false,
         "description": "les-liaisons-dangereuses-2016/theater-scene--julia-polinsky.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-of-ages-2009/variety--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "rock-of-ages-2009/variety--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-1988/nytimes--jason-zinoman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "the-phantom-of-the-opera-1988/nytimes--jason-zinoman.json: wrongProduction"
       }
     ]
   }
