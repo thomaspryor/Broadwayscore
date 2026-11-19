@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T08:14:39.818Z",
+  "timestamp": "2026-11-19T09:34:01.360Z",
   "stats": {
-    "totalReviews": 82750,
-    "alreadyFlagged": 22497,
+    "totalReviews": 82756,
+    "alreadyFlagged": 22486,
     "dateGuardCatches": 220,
     "directorMismatch": 3768,
     "tvFilmSignals": 2360,
-    "londonSignals": 3813,
+    "londonSignals": 3815,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8258
+    "noPublishDate": 8259
   },
   "findings": [
     {
@@ -103107,6 +103107,20 @@
     },
     {
       "showId": "eurotrash-off-west-end-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "score": 74,
+      "publishDate": "2026-11-17",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-eurotrash.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
       "file": "west-end-wilma--westendwilma.json",
       "publishDate": "2026-11-09",
       "url": "https://westendwilma.com/eurotrash-ben-whishaw-kathryn-hunter-young-vic-2026/",
@@ -114890,6 +114904,20 @@
       "score": 73,
       "publishDate": "October 30, 2016",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-nyc-revival-of-les-liaisons-dangereuses-crackles/2016/10/30/3d47319e-9f06-11e6-8864-6f892cad0865_story.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
+      "file": "wnyc--jennifer-vanasco.json",
+      "score": 72,
+      "publishDate": "November 3rd, 2016",
+      "url": "http://www.wnyc.org/story/review-les-liaisons-seduces-thanks-janet-mcteer/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
