@@ -293,6 +293,7 @@ jobs:
       # Outside the skip gates on purpose: it needs neither the drift window nor the rebuild race check.
       - name: Late press-night watch (BRO-7808)
         continue-on-error: true
+        timeout-minutes: 3
         if: always()
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}

@@ -16,7 +16,7 @@ const path = require('path');
 const LPN = require('./lib/late-press-night');
 
 const ROOT = path.join(__dirname, '..');
-const MAX_SHOW_AGE_DAYS = 45; // a roundup or burst for a show opened longer ago is not a press night
+const MAX_SHOW_AGE_DAYS = 14; // a roundup or burst for a show opened longer ago is not a press night
 const DEDUPE_DAYS = 4;
 
 const flag = (n) => process.argv.includes(`--${n}`);
@@ -35,9 +35,10 @@ async function homepageHtml() {
   try {
     const { fetchPage } = require('./lib/scraper');
     const url = 'https://www.broadwayworld.com/';
-    // Free direct request first; the paid chain only when BWW refuses it (it answers 403 to some networks).
-    try { const r = await fetchPage(url, { directOnly: true }); if (r && r.content) return r.content; } catch { /* fall through */ }
-    return await require('./lib/opening-night-lane/discovery').fetchTextFrom(fetchPage)(url);
+    // Free direct request only: this runs every 30 minutes, a paid fallback would be ~1,400 paid fetches a month.
+    const r = await fetchPage(url, { directOnly: true });
+    if (!r || !r.content) throw new Error('empty response');
+    return r.content;
   } catch (e) {
     console.log(`::warning::late-press-night: BWW homepage unreadable (${String(e.message).slice(0, 120)}); only the review-burst signal runs`);
     return null;
@@ -57,7 +58,7 @@ async function main() {
   const shows = (Array.isArray(raw.shows) ? raw.shows : raw)
     .filter((s) => s && s.openingDate && (s.category || 'broadway') === 'broadway' && ['open', 'previews'].includes(s.status || 'open'))
     .filter((s) => { const t = Date.parse(`${s.openingDate}T12:00:00Z`); return nowMs - t > LPN.MIN_PRESS_NIGHT_AGE_DAYS * 864e5 && nowMs - t <= MAX_SHOW_AGE_DAYS * 864e5; });
-  if (!shows.length) { console.log('late-press-night: no open Broadway show with a press night 2 to 45 days old'); return 0; }
+  if (!shows.length) { console.log('late-press-night: no open Broadway show with a press night 2 to 14 days old'); return 0; }
 
   let reviewsRaw;
   try { reviewsRaw = readJson('data/reviews.json'); } catch (e) { console.log(`::warning::late-press-night: reviews.json unreadable (${e.message})`); reviewsRaw = []; }
@@ -67,6 +68,7 @@ async function main() {
 
   const leases = readLeaseState();
   const lease = require('./lib/opening-night-lane/lease');
+  if (leases.unknown) { console.log('::warning::late-press-night: lease store unreadable, nothing can be decided this run'); return 0; }
   const unwatched = shows.filter((s) => leases.unknown || !lease.activeLeaseFor(leases.state, s.id, { now: nowMs }));
   if (!unwatched.length) { console.log('late-press-night: every candidate show has an active lane lease'); return 0; }
   const html = await homepageHtml();
@@ -89,19 +91,17 @@ async function main() {
   for (const { show, d } of decisions) {
     const text = LPN.alertText(show, d);
     if (dryRun) { console.log(`dry-run: would alert\n${text}`); continue; }
-    if (linear) {
-      try {
-        const sinceIso = new Date(nowMs - DEDUPE_DAYS * 864e5).toISOString();
-        const seen = await linear.listRecentCommentsContaining({ sinceIso, text: d.marker });
-        if (seen.length) { console.log(`late-press-night: ${d.marker} already sent, skipping`); continue; }
-      } catch (e) { console.log(`::warning::late-press-night: dedupe check failed (${String(e.message).slice(0, 120)}); sending anyway`); }
-    }
-    let sent = false;
-    if (linear && card) {
-      try { const issue = await linear.getIssue(card); await linear.createComment(issue.id, text); sent = true; } catch (e) { console.log(`::warning::late-press-night: card comment failed (${String(e.message).slice(0, 120)})`); }
-    }
+    // The card comment is the record that dedupes later runs, so every failure here skips this run and retries on the next
+    // (silence for 30 minutes beats a repeat alert every 30 minutes).
+    if (!linear || !card) { console.log(`::error::late-press-night: ${d.marker} not sent, no LINEAR_API_KEY or coordinator card`); continue; }
+    try {
+      const sinceIso = new Date(nowMs - DEDUPE_DAYS * 864e5).toISOString();
+      if ((await linear.listRecentCommentsContaining({ sinceIso, text: d.marker })).length) { console.log(`late-press-night: ${d.marker} already sent, skipping`); continue; }
+      const issue = await linear.getIssue(card);
+      if (!issue || !issue.id) throw new Error(`card ${card} not found`);
+      await linear.createComment(issue.id, text);
+    } catch (e) { console.log(`::error::late-press-night: ${d.marker} not sent (${String(e.message).slice(0, 120)}); retries next run`); continue; }
     if (process.env.DISCORD_WEBHOOK_ALERTS) {
-      // Reached once per marker: an already-recorded marker `continue`d above. Discord also fires when the card comment failed.
       try { await postDiscord(process.env.DISCORD_WEBHOOK_ALERTS, text); } catch (e) { console.log(`::warning::late-press-night: discord failed (${String(e.message).slice(0, 120)})`); }
     }
     console.log(`::warning title=Late press night::${show.id}: ${d.reason}`);

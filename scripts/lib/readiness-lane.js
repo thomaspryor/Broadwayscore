@@ -268,15 +268,19 @@ function lateEmbargoVerdict(show, reviews, nowMs, { tierOf } = {}) {
   let dated = 0;
   for (const r of reviews || []) {
     // BRO-7808: publishDate is not always a bare day ("2026-11-18T00:59:02.000Z" exists); month-only values ("2026-10") are skipped.
-    const day = /^\d{4}-\d{2}-\d{2}/.test(String(r && r.publishDate)) ? String(r.publishDate).slice(0, 10) : null;
+    // A full timestamp is a UTC instant: a 7:59pm ET review is "2026-11-18T00:59Z", so take its New York day, the one bare dates use.
+    const pd = String(r && r.publishDate);
+    let day = /^\d{4}-\d{2}-\d{2}$/.test(pd) ? pd : null;
+    if (!day && /^\d{4}-\d{2}-\d{2}T/.test(pd) && Number.isFinite(Date.parse(pd))) day = new Date(Date.parse(pd)).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
     const t = day ? Date.parse(`${day}T12:00:00Z`) : NaN;
     if (!Number.isFinite(t)) continue;
-    dated++;
+    const counts = !tierOf || tierOf(r) <= 2; // a pile of blog posts is not a press night: tier 3/4 count in neither side of the bulk test
+    if (counts) dated++;
     if (t < recentFrom - 12 * HOUR || t <= openMs + LATE_EMBARGO_MIN_DAYS * 24 * HOUR) continue;
     // With tierOf, only tier 1 and 2 outlets count toward a burst (a pile of blog posts is not a press night).
-    if (!tierOf || tierOf(r) <= 2) byDay[day] = (byDay[day] || 0) + 1;
+    if (counts) byDay[day] = (byDay[day] || 0) + 1;
     // A BWW roundup only: other outlets (Theatrely) publish unrelated "review roundup" posts.
-    if (/broadwayworld\.com\/[^\s]*review-?roundup/i.test(String(r.url || '')) || /^bww-?roundup/i.test(String(r.outletId || ''))) roundup = r.publishDate;
+    if (/broadwayworld\.com\/[^\s]*review-?roundup/i.test(String(r.url || '')) || /^bww-?roundup/i.test(String(r.outletId || ''))) roundup = day;
   }
   // A burst is an embargo lift only when it is the bulk of the show's coverage: a week-one trickle sits on top of a
   // press night's worth of earlier reviews (schmigadoon, dog-day-afternoon), the late embargo does not.

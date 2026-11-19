@@ -23,7 +23,7 @@ test('live BWW roundup for an unwatched show routes to the coordinator, marker i
 });
 
 test('three tier 1/2 reviews on one recent day, including a full timestamp, route; the same three blog posts do not', () => {
-  const t12 = [rv('nyt', '2026-11-18T00:59:02.000Z'), rv('timeout', '2026-11-18'), rv('tmania', '2026-11-18')];
+  const t12 = [rv('nyt', '2026-11-19T01:59:02.000Z'), rv('timeout', '2026-11-18'), rv('tmania', '2026-11-18')];
   const d = L.decideLatePressNight({ show, reviews: t12, nowMs: NOW, tierOf });
   assert.equal(d.action, 'route-coordinator');
   assert.equal(d.signal, 'tier12-burst');
@@ -53,4 +53,15 @@ test('roundupDayFromUrl reads the BWW date suffix only', () => {
   assert.equal(L.roundupDayFromUrl(ROUNDUP), '2026-11-18');
   assert.equal(L.roundupDayFromUrl('https://www.broadwayworld.com/article/Review-Roundup-X'), null);
   assert.equal(L.roundupDayFromUrl(null), null);
+});
+
+test('real press night: a tier 1/2 burst is not drowned by tier 3/4 rows, and a 7:59pm ET timestamp counts as that evening', () => {
+  const now = Date.parse('2026-11-19T04:00:00Z');
+  const tier = { nyt: 1, timeout: 1, tmania: 2, vulture: 1, blog1: 4, blog2: 4, blog3: 4, blog4: 4, blog5: 4, blog6: 4 };
+  const mk = (o, d) => ({ showId: 'x', outletId: o, publishDate: d });
+  const rows = [mk('nyt', '2026-11-18'), mk('timeout', '2026-11-19T01:59:02.000Z'), mk('tmania', '2026-11-19T03:10:00.000Z'), mk('vulture', '2026-11-18'),
+    ...['blog1', 'blog2', 'blog3', 'blog4', 'blog5', 'blog6'].map((o) => mk(o, '2026-11-18'))];
+  const d = L.decideLatePressNight({ show: { id: 'x', title: 'X', category: 'broadway', status: 'open', openingDate: '2026-11-11' }, reviews: rows, lease: null, nowMs: now, tierOf: (r) => tier[r.outletId] });
+  assert.equal(d.action, 'route-coordinator');
+  assert.equal(d.signal, 'tier12-burst');
 });
