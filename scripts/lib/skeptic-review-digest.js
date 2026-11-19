@@ -31,4 +31,27 @@ function computeSkepticReviewDigest(rows) {
   return { name: 'Skeptic review: gate telemetry', status, message, ...d };
 }
 
-module.exports = { countSkepticRows, computeSkepticReviewDigest };
+const WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+const GATE = '[VE:SKEPTIC]';
+
+/**
+ * PURE. Fallback when the per-machine log is absent (CI, ephemeral cloud containers): count the skeptic gate's hits
+ * from the committed session-retro rows (scripts/lib/session-retro.js maps [VE:SKEPTIC] into each row's gates).
+ * @param {object[]} retroRows parsed lines of data/audit/session-retro.jsonl
+ * @param {number} now Date.now()
+ */
+function computeSkepticFromRetro(retroRows, now, windowMs = WINDOW_MS) {
+  let sessions = 0; let withGate = 0; let blockedSessions = 0; let blocks = 0;
+  for (const r of retroRows || []) {
+    const t = Date.parse(r && (r.recordedAt || r.endAt) || '');
+    if (!Number.isFinite(t) || t > now || now - t > windowMs) continue;
+    sessions++;
+    const g = r.gates && r.gates[GATE];
+    if (g) { withGate++; if (g.blocks > 0) { blockedSessions++; blocks += g.blocks; } }
+  }
+  const message = `Skeptic review (last 7 days, from session retros): ${blocks} blocks in ${blockedSessions} of ${sessions} recorded sessions`
+    + ` (${withGate} sessions with a gate hit)`;
+  return { name: 'Skeptic review: gate telemetry', status: 'pass', message, sessions, withGate, blockedSessions, blocks, source: 'session-retro' };
+}
+
+module.exports = { countSkepticRows, computeSkepticReviewDigest, computeSkepticFromRetro };

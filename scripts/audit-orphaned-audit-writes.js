@@ -115,6 +115,8 @@ const EXEMPT = {
     "staged: send-follow-notifications.yml lists this file in its for-f loop and git adds \"$f\"",
   "scripts/disposition-misroute.js|data/audit/slug-misroute-dispositioned.json":
     "manual mode only: cmdAdd writes DISP; audit-cross-production-weekly.yml calls report --email, which only reads dispositions",
+  "scripts/health-check.js|data/audit/session-retro.jsonl":
+    "read-only: checkSkepticReview counts the [VE:SKEPTIC] gate hits in the committed session-retro rows (BRO-7843); session-retro.js writes it and it rides the session's own land push",
   "scripts/health-check.js|data/audit/autofix-canary-ledger.jsonl":
     "read-only: health-check consumes this detector report/ledger or mentions it in a hint; its own write targets are history, digest, triage, workflow coverage and the two local caches documented separately",
   "scripts/health-check.js|data/audit/backlog-drain-ledger.jsonl":

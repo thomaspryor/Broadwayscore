@@ -3699,11 +3699,17 @@ function checkInfraReviewGate() {
 function checkSkepticReview() {
   const logPath = path.join(infraReviewLedgerRoot(), '.cache', 'skeptic-review-stop.log');
   if (!fs.existsSync(logPath)) {
+    // CI and ephemeral cloud containers never have the log: count the gate's hits from the committed session-retro rows.
+    const retroPath = path.join(infraReviewLedgerRoot(), 'data', 'audit', 'session-retro.jsonl');
+    if (fs.existsSync(retroPath)) {
+      const { computeSkepticFromRetro } = require('./lib/skeptic-review-digest.js');
+      return [runCheck('Skeptic review: gate telemetry', () => computeSkepticFromRetro(readJsonlBestEffort(retroPath), Date.now()))];
+    }
     return [{
       name: 'Skeptic review: gate telemetry',
       status: 'warn',
       unmeasurable: true,
-      message: 'Skeptic review: no .cache/skeptic-review-stop.log visible from this environment (gitignored, per-machine), so the gate hit rate cannot be measured here.',
+      message: 'Skeptic review: neither .cache/skeptic-review-stop.log nor data/audit/session-retro.jsonl is visible from this environment, so the gate hit rate cannot be measured here.',
       hint: 'Run `node scripts/lib/skeptic-review-stop.mjs --digest` where the Stop gate fires.',
     }];
   }

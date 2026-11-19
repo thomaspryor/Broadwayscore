@@ -37,3 +37,20 @@ test('writer logs to the same canonical root the digest reads (worktree rows mus
   assert.match(src, /const LOG = path\.join\(canonicalRoot\(\), '\.cache', 'skeptic-review-stop\.log'\)/);
   assert.match(healthSrc, /infraReviewLedgerRoot\(\), '\.cache', 'skeptic-review-stop\.log'/);
 });
+
+test('log-absent fallback counts [VE:SKEPTIC] hits from session-retro rows in the last 7 days (fails without the fallback)', () => {
+  const { computeSkepticFromRetro } = require('../lib/skeptic-review-digest.js');
+  const now = Date.parse('2026-11-20T00:00:00Z');
+  const r = computeSkepticFromRetro([
+    { sessionId: 'a', recordedAt: '2026-11-19T10:00:00Z', gates: { '[VE:SKEPTIC]': { blocks: 2 } } },
+    { sessionId: 'b', recordedAt: '2026-11-19T11:00:00Z', gates: { '[VE:SKEPTIC]': { blocks: 0, logged: 1 } } },
+    { sessionId: 'c', recordedAt: '2026-11-19T12:00:00Z', gates: {} },
+    { sessionId: 'old', recordedAt: '2026-11-01T12:00:00Z', gates: { '[VE:SKEPTIC]': { blocks: 9 } } },
+  ], now);
+  assert.equal(r.blocks, 2);
+  assert.equal(r.blockedSessions, 1);
+  assert.equal(r.sessions, 3);
+  assert.equal(r.withGate, 2);
+  assert.match(r.message, /2 blocks in 1 of 3 recorded sessions/);
+  assert.ok(healthSrc.includes('computeSkepticFromRetro'), 'health-check no longer falls back to session-retro');
+});
