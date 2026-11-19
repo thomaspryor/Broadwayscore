@@ -308,6 +308,29 @@ test('ledgerPrecondition: a resume after job-retried keeps the ORIGINAL launch',
   assert.equal(core.ledgerPrecondition(wrongSession).launch.ts, '2026-09-29T20:51:59.142Z');
 });
 
+test('ledgerPrecondition: an infra job-abandoned (no live sibling) is ackable; a lease-held one is not (BRO-7569)', () => {
+  const base = [
+    { ts: '2026-11-15T22:34:07.945Z', event: 'launch', taskId: 'linear:BRO-7569' },
+    { ts: '2026-11-15T22:34:24.185Z', event: 'job-spawned', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-a' },
+    { ts: '2026-11-16T00:34:27.326Z', event: 'job-failed', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-a' },
+    { ts: '2026-11-16T00:40:34.976Z', event: 'job-retried', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-a' },
+  ];
+  const ab = (reason) => [...base, { ts: '2026-11-16T00:50:35.777Z', event: 'job-abandoned', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-b', reason }];
+  for (const reason of ['disk-pressure: disk free 3.2GB < floor 5GB after self-heal GC', 'acquireLease threw: EACCES']) {
+    assert.deepEqual(core.ledgerPrecondition(ab(reason)).refusals, [], reason);
+  }
+  const held = core.ledgerPrecondition(ab('lease held (held by linear:BRO-7569-c)'));
+  assert.equal(held.refusals.length, 1);
+  assert.match(held.refusals[0], /job-abandoned/);
+  assert.equal(core.ledgerPrecondition(ab(undefined)).refusals.length, 1);
+  // Disk check runs before the lease: a still-running sibling (spawned, no end
+  // row) keeps a disk-pressure abandon unackable.
+  const liveSibling = [...base,
+    { ts: '2026-11-16T00:45:00.000Z', event: 'job-spawned', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-live' },
+    { ts: '2026-11-16T00:50:35.777Z', event: 'job-abandoned', taskId: 'linear:BRO-7569', jobId: 'linear:BRO-7569-b', reason: 'disk-pressure: disk free 3.2GB' }];
+  assert.equal(core.ledgerPrecondition(liveSibling).refusals.length, 1);
+});
+
 // BRO-5219: a data-only fix lands in a private data repo, while the job's
 // job-stranded row carries its Broadwayscore worktree HEAD. The stranded tie
 // can never match a data-repo commit, so --data-repo applies the strict rule
