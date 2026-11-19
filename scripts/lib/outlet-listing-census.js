@@ -203,7 +203,11 @@ async function sitemapFileItems(url, src, cutoff, { fetchText, log, status }, de
     // A source that opts in (Slant, BRO-7812) reads only the newest children here: its index lists them
     // oldest first and a 7-day window never reaches the old ones, so a run costs a few proxy calls, not 34.
     // The full archive is the census CLI's job (scripts/outlet-census.js), which ignores this option.
-    if (src.tailChildren > 0 && children.length > src.tailChildren) children = children.slice(-src.tailChildren);
+    if (src.tailChildren > 0 && children.length > src.tailChildren) {
+      // Order by the number in the file name (post-sitemap.xml = 0), not by index position, so a reordered index cannot hide the newest.
+      const n = (c) => Number((/(\d+)\.xml(?:$|\?)/.exec(c) || [, 0])[1]);
+      children = [...children].sort((a, b) => n(a) - n(b)).slice(-src.tailChildren);
+    }
     if (children.length > MAX_SITEMAP_CHILDREN) noteIncomplete(status, 'capped', `${children.length - MAX_SITEMAP_CHILDREN} of ${children.length} sitemap children beyond the first ${MAX_SITEMAP_CHILDREN} unread under ${url}`);
     const out = [];
     for (const c of children.slice(0, MAX_SITEMAP_CHILDREN)) {

@@ -53,7 +53,7 @@ test('F13: review-named child preference reports skipped generic children unless
 });
 
 test('BRO-7812: tailChildren reads only the newest sitemap children (Slant poller arm), the full archive stays the CLI census job', async () => {
-  const kids = Array.from({ length: 34 }, (_, i) => `https://e.test/post-sitemap${i}.xml`);
+  const kids = Array.from({ length: 34 }, (_, i) => `https://e.test/post-sitemap${i}.xml`).reverse(); // newest-first index: order must come from the file number
   const idx = `<sitemapindex>${kids.map((k) => `<loc>${k}</loc>`).join('')}</sitemapindex>`;
   const read = [];
   const fetchText = async (u) => { read.push(u); return u.endsWith('sitemap_index.xml') ? idx : `<urlset><url><loc>https://e.test/p/${read.length}-review/</loc><lastmod>${day(1)}</lastmod></url></urlset>`; };
