@@ -100,8 +100,8 @@ async function main() {
     if (linear && card) {
       try { const issue = await linear.getIssue(card); await linear.createComment(issue.id, text); sent = true; } catch (e) { console.log(`::warning::late-press-night: card comment failed (${String(e.message).slice(0, 120)})`); }
     }
-    if (process.env.DISCORD_WEBHOOK_ALERTS && !(linear && card && !sent)) {
-      // Discord only repeats when the card comment did not land (the comment is the deduped record, Discord has none).
+    if (process.env.DISCORD_WEBHOOK_ALERTS) {
+      // Reached once per marker: an already-recorded marker `continue`d above. Discord also fires when the card comment failed.
       try { await postDiscord(process.env.DISCORD_WEBHOOK_ALERTS, text); } catch (e) { console.log(`::warning::late-press-night: discord failed (${String(e.message).slice(0, 120)})`); }
     }
     console.log(`::warning title=Late press night::${show.id}: ${d.reason}`);
