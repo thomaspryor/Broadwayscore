@@ -884,5 +884,36 @@
     "testId": "tests/unit/book-of-mormon-2011-criticname.test.mjs::BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors",
     "fields": [],
     "queuedAt": "2026-11-19T18:03:56.924Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7847-ledger-persist",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7847-ledger-persist",
+    "description": "land.yml did not land land/bro-7847-ledger-persist: the scripts-lib-tests gate went red at 99c5f6ad44. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44584220474",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7847-ledger-persist"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "99c5f6ad4488abf51717c4519311d9efee09a7d9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44584220474"
+      }
+    ],
+    "queuedAt": "2026-11-19T18:13:44.245Z"
   }
 ]
