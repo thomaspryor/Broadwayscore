@@ -1,187 +1,23 @@
 {
   "processed": [
-    "its-a-wonderful-life-a-live-radio-play-2026/chicago-reader--justin-hayford.json",
-    "the-good-thief-off-broadway-2026/nytimes--unknown.json",
-    "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
-    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-    "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-    "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json",
-    "now-you-see-me-live-2026/boston-herald--marilyn-stasio.json",
-    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-    "now-you-see-me-live-2026/culturesauce--unknown.json",
-    "much-ado-about-nothing-2026/deadline--unknown.json",
-    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "downstate-2026/newyorker--emily-nussbaum.json",
-    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
+    "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json"
   ],
-  "failed": [
-    "king-lear-off-broadway-2026/patch--lauren-traut.json",
-    "medea-off-broadway-2026/express-uk--neil-norman.json",
-    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
-    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
-    "the-fantasticks-2026/nytimes--maya-phillips.json",
-    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
-    "downstate-2026/nytimes--unknown.json",
-    "downstate-2026/nydailynews--unknown.json",
-    "downstate-2026/pages-on-stages--unknown.json",
-    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json"
-  ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "its-a-wonderful-life-a-live-radio-play-2026/chicago-reader--justin-hayford.json",
-      "now-you-see-me-live-2026/boston-herald--marilyn-stasio.json",
-      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-      "now-you-see-me-live-2026/culturesauce--unknown.json",
-      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--unknown.json",
-      "the-good-thief-off-broadway-2026/nytimes--unknown.json",
-      "data/review-texts/top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
-      "data/review-texts/much-ado-about-nothing-2026/deadline--unknown.json",
-      "much-ado-about-nothing-2026/deadline--unknown.json"
-    ],
-    "directCookies": [
-      "downstate-2026/newyorker--emily-nussbaum.json"
-    ],
+    "browserbase": [],
+    "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [
-      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--richard-sasanow.json",
-      "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-19T11:48:35.659Z",
-  "lastProcessed": "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
-  "log": [
-    {
-      "t": "2026-11-19T11:50:35.810Z",
-      "event": "bb-session",
-      "session": "49a7907e",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-19T11:50:36.429Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T11:52:23.992Z",
-      "event": "bb-session",
-      "session": "17616756",
-      "url": "https://www.thereviewshub.com/top-gunchained-wiltons-music-hall-london/"
-    },
-    {
-      "t": "2026-11-19T11:53:18.082Z",
-      "event": "bb-session",
-      "session": "7b6cec7c",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-19T11:53:18.701Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T11:53:35.755Z",
-      "event": "bb-session",
-      "session": "0e4caf04",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-19T11:53:36.411Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T11:59:32.838Z",
-      "event": "bb-session",
-      "session": "f265984e",
-      "url": "https://deadline.com/2026/11/broadway-box-office-much-ado-about-nothing-billy-cr"
-    },
-    {
-      "t": "2026-11-19T12:01:41.468Z",
-      "event": "bb-session",
-      "session": "3c0af62b",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-19T12:01:42.033Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T12:01:58.851Z",
-      "event": "bb-session",
-      "session": "e2b576c7",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-19T12:01:59.406Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T12:03:37.028Z",
-      "event": "bb-session",
-      "session": "71951658",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-19T12:03:37.631Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T12:04:53.058Z",
-      "event": "bb-session",
-      "session": "3b09cb38",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway.html?"
-    },
-    {
-      "t": "2026-11-19T12:04:53.733Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T12:05:42.779Z",
-      "event": "bb-session",
-      "session": "ca7de5bb",
-      "url": "https://www.newyorker.com/magazine/2026/11/30/downstate-theatre-review"
-    },
-    {
-      "t": "2026-11-19T12:05:43.344Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-11-19T12:06:18.539Z",
-      "event": "bb-session",
-      "session": "09fccb7d",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-19T12:06:19.100Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T12:06:35.981Z",
-      "event": "bb-session",
-      "session": "f3edcf95",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-19T12:06:36.543Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-11-19T12:19:21.981Z",
+  "lastProcessed": "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
+  "log": []
 }
