@@ -438,7 +438,8 @@ async function processReview(entry) {
   // BRO-7346: a multi-show column (Finkle First Nighter) is judged and verified on
   // the target show's section only; the rejection stamp keys on the stored fullText.
   const storedText = entry.data.fullText;
-  const data = { ...entry.data, fullText: pullQuoteSourceText(entry.data) };
+  const data = entry.data;
+  const sourceText = pullQuoteSourceText(data);
   stats.scanned++;
 
   // Pass assignedScore to the LLM so it can align the pull quote with the
@@ -463,7 +464,7 @@ async function processReview(entry) {
 
   while (attempt < 2) {
     attempt++;
-    const userPrompt = buildUserPrompt(data.fullText, score, hint);
+    const userPrompt = buildUserPrompt(sourceText, score, hint);
 
     try {
       responseText = await callLLMWithRetry(SYSTEM_PROMPT, userPrompt);
@@ -505,7 +506,7 @@ async function processReview(entry) {
 
     // Service-section check: a sentence from "Who should see X" / "What to
     // expect" boilerplate is genre filler, not a verdict (BRO-4973).
-    if (isInServiceSection(quote, data.fullText)) {
+    if (isInServiceSection(quote, sourceText)) {
       if (attempt === 1) {
         stats.serviceSectionRetried = (stats.serviceSectionRetried || 0) + 1;
         if (VERBOSE) console.log(`  SERVICE-SECTION: "${quote.slice(0, 80)}..." — retrying`);
@@ -563,11 +564,11 @@ async function processReview(entry) {
     // terrific play." from "...truthful, as Mr. Norris so superbly does...").
     // The fix is usually the SAME sentence from its start, so the hint asks
     // for that, unlike the context retry above.
-    if (startsMidClause(quote, data.fullText)) {
+    if (startsMidClause(quote, sourceText)) {
       // First choice: the critic's own sentence from its first word, no LLM call.
-      const whole = expandToSentenceStart(quote, data.fullText);
+      const whole = expandToSentenceStart(quote, sourceText);
       if (whole && !isBadCandidateLength(whole) && !isContextDependentQuote(whole, { showTitle: data.showTitle })
-          && !isPromoTeaser(whole) && !isInServiceSection(whole, data.fullText) && !shouldRejectAsReservation(whole, score)) {
+          && !isPromoTeaser(whole) && !isInServiceSection(whole, sourceText) && !shouldRejectAsReservation(whole, score)) {
         stats.midClauseExpanded = (stats.midClauseExpanded || 0) + 1;
         if (VERBOSE) console.log(`  MID-CLAUSE expanded to its sentence: "${whole.slice(0, 80)}..."`);
         quote = whole;
@@ -623,12 +624,12 @@ async function processReview(entry) {
     // then dropped as not-in-text, leaving the old weak quote in place. Snap
     // to the critic's own sentence(s) first (same helper the rebuild uses);
     // only if that fails, retry once asking for the exact wording.
-    if (!verifyInText(quote, data.fullText)) {
-      const snapped = snapToSourceSpan(quote, data.fullText);
-      if (snapped && verifyInText(snapped, data.fullText) && !isBadCandidateLength(snapped)
+    if (!verifyInText(quote, sourceText)) {
+      const snapped = snapToSourceSpan(quote, sourceText);
+      if (snapped && verifyInText(snapped, sourceText) && !isBadCandidateLength(snapped)
           && !isContextDependentQuote(snapped, { showTitle: data.showTitle })
-          && !startsMidClause(snapped, data.fullText)
-          && !isPromoTeaser(snapped) && !isInServiceSection(snapped, data.fullText)
+          && !startsMidClause(snapped, sourceText)
+          && !isPromoTeaser(snapped) && !isInServiceSection(snapped, sourceText)
           && !shouldRejectAsReservation(snapped, score)) {
         stats.snappedToSource = (stats.snappedToSource || 0) + 1;
         if (VERBOSE) console.log(`  SNAPPED to source: "${snapped.slice(0, 80)}..."`);
@@ -646,7 +647,7 @@ async function processReview(entry) {
   }
 
   // Verify the quote actually appears in the review text
-  if (!verifyInText(quote, data.fullText)) {
+  if (!verifyInText(quote, sourceText)) {
     stats.notInText++;
     if (VERBOSE) console.log(`  NOT IN TEXT: "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
     reject('not-in-text');
@@ -654,7 +655,7 @@ async function processReview(entry) {
   }
 
   // Subset of the hard guards audit-pull-quotes.js applies to shipped quotes (BRO-5789): internal notes and mid-word truncation.
-  const hardReject = llmQuoteHardRejectReason(quote, data.fullText);
+  const hardReject = llmQuoteHardRejectReason(quote, sourceText);
   if (hardReject) {
     stats.hardRejected = (stats.hardRejected || 0) + 1;
     if (VERBOSE) console.log(`  ${hardReject.toUpperCase()}: "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);

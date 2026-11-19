@@ -46,7 +46,9 @@ test('a review-field-edit refuses a quote from another show in the column', () =
 
 test('the extractor prompts and verifies on the section, but stamps rejections on the stored text', () => {
   const src = fs.readFileSync(new URL('../../scripts/extract-pull-quotes.js', import.meta.url), 'utf8');
-  assert.match(src, /const data = \{ \.\.\.entry\.data, fullText: pullQuoteSourceText\(entry\.data\) \}/);
+  assert.match(src, /const sourceText = pullQuoteSourceText\(data\)/);
+  assert.match(src, /buildUserPrompt\(sourceText,/);
+  assert.doesNotMatch(src, /buildUserPrompt\(data\.fullText/);
   assert.match(src, /stampRejection\(filePath, storedText,/);
 });
 
