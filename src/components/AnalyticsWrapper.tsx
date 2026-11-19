@@ -14,7 +14,7 @@ import { sampledForReplay } from '@/lib/analytics/replay-sample';
 import { isTruncatedChunkError } from '@/lib/analytics/truncated-chunk-error';
 
 interface SentryEvent {
-  exception?: { values?: Array<{ stacktrace?: { frames?: Array<{ filename?: string }> } }> };
+  exception?: { values?: Array<{ type?: string; value?: string; stacktrace?: { frames?: Array<{ filename?: string }> } }> };
 }
 
 declare global {

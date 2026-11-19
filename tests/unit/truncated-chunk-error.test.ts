@@ -11,8 +11,14 @@ import { isTruncatedChunkError } from '../../src/lib/analytics/truncated-chunk-e
 
 const CHUNK = 'https://broadwayscorecard.com/_next/static/chunks/b468fba8.47bfaad1005addc2.js?dpl=5d91bef15ce0cbe37fdc9182bf8014aa';
 
+const PARSE_MESSAGES = ['Unexpected end of input', 'Invalid or unexpected token', 'missing ) after argument list'];
+
 function ev(type: string, ...filenames: Array<string | undefined>) {
-  return { exception: { values: [{ type, stacktrace: { frames: filenames.map(filename => ({ filename })) } }] } };
+  return evMsg(type, 'Unexpected end of input', ...filenames);
+}
+
+function evMsg(type: string, value: string, ...filenames: Array<string | undefined>) {
+  return { exception: { values: [{ type, value, stacktrace: { frames: filenames.map(filename => ({ filename })) } }] } };
 }
 
 test('the three SyntaxError messages seen on the issue, at varied columns, are dropped', () => {
@@ -20,6 +26,21 @@ test('the three SyntaxError messages seen on the issue, at varied columns, are d
   for (const file of [CHUNK, '/_next/static/chunks/b468fba8.47bfaad1005addc2.js', 'https://demo.broadwayscorecard.com/_next/static/chunks/app/layout-f27cae964f06d305.js']) {
     assert.equal(isTruncatedChunkError(ev('SyntaxError', file)), true, file);
   }
+});
+
+test('each of the three real messages is dropped', () => {
+  for (const m of PARSE_MESSAGES) assert.equal(isTruncatedChunkError(evMsg('SyntaxError', m, CHUNK)), true, m);
+});
+
+test('runtime SyntaxErrors from our own code in a chunk still report (JSON.parse, RegExp)', () => {
+  for (const m of [
+    `Unexpected token '<', "<!DOCTYPE "... is not valid JSON`,
+    'Unexpected end of JSON input',
+    'Invalid regular expression: /(/: Unterminated group',
+    'JSON.parse: unexpected character at line 1 column 1 of the JSON data',
+    '',
+  ]) assert.equal(isTruncatedChunkError(evMsg('SyntaxError', m, CHUNK)), false, m);
+  assert.equal(isTruncatedChunkError({ exception: { values: [{ type: 'SyntaxError', stacktrace: { frames: [{ filename: CHUNK }] } }] } }), false, 'no message');
 });
 
 test('anything else still reports', () => {
