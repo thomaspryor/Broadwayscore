@@ -215,12 +215,12 @@ test('new element in a multi-line array that is an argument to a setter or class
 });
 test('guard conditions with side effects stay gated', () => {
   gated(eff('    setD(1);\n'), eff('    if (applyTheme("dark")) return;\n    setD(1);\n'));
-  const hook = (cond) => `import { isBot, hide } from '@/lib/x';\nexport default function A() {\n  const o = { beforeSend(e) {\n${cond}    return e;\n  } };\n  return <p>{String(o)}</p>;\n}\n`;
+  const hook = (cond) => `import { isBot, hide } from '@/lib/x';\nexport default function A() {\n  Sentry.init({ beforeSend(e) {\n${cond}    return e;\n  } });\n  return <p>x</p>;\n}\n`;
   gated(hook(''), hook('    if (els.some(hide)) return null;\n'));
   gated(hook(''), hook('    if (hide(e)) return null;\n'));
 });
 test('a guard in an inert beforeSend is exempt, but not when the hook also writes to the DOM or an outer variable', () => {
-  const hook = (body) => `import { isBot } from '@/lib/x';\nlet seen = 0;\nexport default function A() {\n  const o = { beforeSend(e) {\n${body}    return e;\n  } };\n  return <p>{String(o)}</p>;\n}\n`;
+  const hook = (body) => `import { isBot } from '@/lib/x';\nlet seen = 0;\nexport default function A() {\n  Sentry.init({ beforeSend(e) {\n${body}    return e;\n  } });\n  return <p>x</p>;\n}\n`;
   const ok = isNonRenderingChange({ file: F, oldSource: hook(''), newSource: hook('    if (isBot(e)) return null;\n'), resolveImport: resolveTs });
   assert.equal(ok.exempt, true, ok.reason);
   gated(hook('    seen++;\n'), hook('    seen++;\n    if (isBot(e)) return null;\n'));
@@ -234,4 +234,49 @@ test('new bare-package import and unused new import stay gated', () => {
 test('whitespace-only change inside a string literal stays gated', () => {
   const o = eff('    const s = "a  b";\n    void s;\n');
   gated(o, o.replace('"a  b"', '"a b"'));
+});
+
+// Second ship-check round: bypasses found by probing the hardened detector.
+const hk = (body, pre = '', imp = "import { isBot, showBanner } from '@/lib/x';\n") => `${imp}${pre}export default function A() {\n  Sentry.init({ beforeSend(e) {\n${body}    return e;\n  } });\n  return <p>x</p>;\n}\n`;
+const ex = (a, b) => isNonRenderingChange({ file: F, oldSource: a, newSource: b, resolveImport: resolveTs });
+test('live code after a // line start inside a block comment stays gated', () => {
+  const o = eff('    setD(1);\n');
+  assert.equal(ex(o, o.replace('    setD(1);', '    /*\n// note */ label = label + label; /*\n*/\n    setD(1);')).exempt, false);
+  assert.equal(ex(o, o.replace('    setD(1);', '    // just a comment\n    setD(1);')).exempt, true);
+});
+test('pattern list / filter hook outside an init() options object stays gated', () => {
+  const lst = (items) => `export default function A() {\n  const cfg = { denyUrls: [\n    'a',\n${items}  ] };\n  return <ul>{cfg.denyUrls.map((u) => <li key={u}>{u}</li>)}</ul>;\n}\n`;
+  assert.equal(ex(lst(''), lst("    'Sold out tonight',\n")).exempt, false);
+  const fmt = (g) => `export default function A({ name }: { name: string }) {\n  const fmt = { beforeSend: (s: string) => {\n${g}    return s;\n  } };\n  return <p>{fmt.beforeSend(name)}</p>;\n}\n`;
+  assert.equal(ex(fmt(''), fmt('    if (s) return null;\n')).exempt, false);
+});
+test('hook calling a non-predicate imported helper stays gated (an early return could skip it)', () => {
+  assert.equal(ex(hk('    showBanner(e);\n'), hk('    if (e.level) return null;\n    showBanner(e);\n')).exempt, false);
+});
+test('shadowed import name, methods on foreign objects and getters stay gated', () => {
+  const sh = (g) => `import { isBot } from '@/lib/bot';\nexport default function A() {\n  const isBot2 = 1; void isBot2;\n  function setup() {\n    const isBot = () => { (window as any).__open = true; return false; };\n    Sentry.init({ beforeSend(e) {\n${g}      return e;\n    } });\n  }\n  return <p onClick={setup}>x</p>;\n}\n`;
+  assert.equal(ex(sh(''), sh('      if (isBot()) return null;\n')).exempt, false);
+  const ui = (g) => `const ui = { has(_: unknown) { return false; }, get hide() { return false; } };\nexport default function A() {\n  Sentry.init({ beforeSend(e) {\n${g}    return e;\n  } });\n  return <p>{String(ui)}</p>;\n}\n`;
+  assert.equal(ex(ui(''), ui('    if (ui.has(e)) return null;\n')).exempt, false);
+  assert.equal(ex(ui(''), ui('    if (ui.hide) return null;\n')).exempt, false);
+});
+test('an added project import is exempt only when the module is declaration-only', () => {
+  const { filterRange } = createRequire(import.meta.url)('./visual-render-impact.js');
+  const dir = mkdtempSync(join(tmpdir(), 'vri2-'));
+  const git = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  git('init', '-q', '-b', 'main'); git('config', 'user.email', 't@t'); git('config', 'user.name', 't');
+  const w = (pth, src) => { const full = join(dir, pth); execFileSync('mkdir', ['-p', dirname(full)]); writeFileSync(full, src); };
+  const comp = (imp, g) => `${imp}export default function A() {\n  Sentry.init({ beforeSend(e) {\n${g}    return e;\n  } });\n  return <p>x</p>;\n}\n`;
+  w('src/c.tsx', comp('', ''));
+  git('add', '-A'); git('commit', '-qm', 'base'); git('branch', 'base0');
+  w('src/c.tsx', comp("import { isBot } from '@/lib/pure';\n", '    if (isBot(e)) return null;\n'));
+  w('src/lib/pure.ts', 'export function isBot(e: unknown) { return !!e; }\n');
+  git('add', '-A'); git('commit', '-qm', 'pure');
+  assert.deepEqual(filterRange('base0...HEAD', ['src/c.tsx'], dir), []);
+  w('src/lib/pure.ts', "document.documentElement.dataset.theme = 'x';\nexport function isBot(e: unknown) { return !!e; }\n");
+  git('add', '-A'); git('commit', '-qm', 'impure');
+  assert.deepEqual(filterRange('base0...HEAD', ['src/c.tsx'], dir), ['src/c.tsx']);
+  w('src/lib/pure.ts', 'export function isBot(e: unknown) { document.title = "x"; return !!e; }\n');
+  git('add', '-A'); git('commit', '-qm', 'impure2');
+  assert.deepEqual(filterRange('base0...HEAD', ['src/c.tsx'], dir), ['src/c.tsx']);
 });

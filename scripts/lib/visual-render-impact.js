@@ -38,7 +38,9 @@ const PATTERN_LISTS = new Set(['ignoreErrors', 'denyUrls', 'allowUrls', 'ignoreT
 // Array methods that are pure when given an inert callback; string/regexp tests that are pure on any input.
 const CALLBACK_METHODS = new Set(['some', 'every', 'filter', 'map', 'find', 'findIndex']);
 // Imported helpers called in a guard condition must be named like predicates.
-const PREDICATE_NAME = /^(is|has|should|can|matches)[A-Z0-9_]/;
+const PREDICATE_NAME = /^(is|has|should|can|matches)[A-Z0-9_]|(Scrub|Redact|Sanitize)$/;
+// Extra markers that make a function body non-pure for the declaration-only module check.
+const IMPURE_RE = /\b(window|globalThis|self|localStorage|sessionStorage|navigator|fetch|XMLHttpRequest|require|import)\b/;
 // Changed lines matching any of these can alter what is on screen even inside an effect: state setters, DOM writes,
 // class/style writes, imperative render calls.
 const FORBIDDEN_LINE_RE = new RegExp([
@@ -118,35 +120,79 @@ function isReturnOfNothing(ts, st) {
   return !e || e.kind === ts.SyntaxKind.NullKeyword || e.kind === ts.SyntaxKind.FalseKeyword || (ts.isIdentifier(e) && e.text === 'undefined');
 }
 
-/** A side-effect-free condition: names, property reads, literals, operators, calls to imported helpers or pure string/array tests. */
-function safeCond(ts, n, imported) {
+/** Names declared anywhere under node (variables, parameters, functions, classes, destructured bindings), NOT import specifiers. */
+function declaredNames(ts, node) {
+  const out = new Set();
+  const addName = (nm) => {
+    if (!nm) return;
+    if (ts.isIdentifier(nm)) out.add(nm.text);
+    else if (ts.isObjectBindingPattern(nm) || ts.isArrayBindingPattern(nm)) for (const e of nm.elements) if (!ts.isOmittedExpression(e)) addName(e.name);
+  };
+  const visit = (n) => {
+    if (ts.isVariableDeclaration(n) || ts.isParameter(n) || ts.isBindingElement(n)) addName(n.name);
+    else if ((ts.isFunctionDeclaration(n) || ts.isFunctionExpression(n) || ts.isClassDeclaration(n) || ts.isClassExpression(n)) && n.name) out.add(n.name.text);
+    ts.forEachChild(n, visit);
+  };
+  visit(node);
+  return out;
+}
+
+/** Scope facts for one filter hook: imported helpers (minus any name also declared in the file) and names local to the hook. */
+function hookCtx(ts, sf, fn) {
+  const shadowed = declaredNames(ts, sf);
+  const imported = new Set([...importBindings(ts, sf).keys()].filter((k) => !shadowed.has(k)));
+  const locals = declaredNames(ts, fn);
+  return { imported, locals };
+}
+
+/** root of a.b.c / a?.[0] / (a)! / "lit" / /re/ chains, or null when the root is something else (call, this, new ...). */
+function chainRoot(ts, n) {
+  for (;;) {
+    if (ts.isParenthesizedExpression(n) || ts.isNonNullExpression(n) || ts.isAsExpression(n)) n = n.expression;
+    else if (ts.isPropertyAccessExpression(n)) n = n.expression;
+    else if (ts.isElementAccessExpression(n)) { if (!ts.isNumericLiteral(n.argumentExpression)) return null; n = n.expression; } else return n;
+  }
+}
+function rootOk(ts, n, ctx) {
+  const r = chainRoot(ts, n);
+  if (!r) return false;
+  if (ts.isIdentifier(r)) return r.text === 'undefined' || ctx.locals.has(r.text) || ctx.imported.has(r.text);
+  return ts.isStringLiteral(r) || ts.isNoSubstitutionTemplateLiteral(r) || ts.isRegularExpressionLiteral(r);
+}
+/** A call that cannot have side effects on the page: predicate/scrub-named imported helper, or a pure array/string/regexp method on a hook-local value. */
+function callOk(ts, n, ctx, argOk) {
+  const c = n.expression;
+  if (ts.isIdentifier(c)) return ctx.imported.has(c.text) && PREDICATE_NAME.test(c.text) && n.arguments.every(argOk);
+  if (!ts.isPropertyAccessExpression(c) || !rootOk(ts, c.expression, ctx)) return false;
+  const m = c.name.text;
+  if (CALLBACK_METHODS.has(m)) return n.arguments.every((a) => ts.isArrowFunction(a) || ts.isFunctionExpression(a));
+  return SAFE_METHODS.has(m) && n.arguments.every(argOk);
+}
+
+/** A side-effect-free condition: hook-local names, property reads on them, literals, operators, and callOk calls. */
+function safeCond(ts, n, ctx) {
   const K = ts.SyntaxKind;
-  if (ts.isIdentifier(n)) return true;
+  if (ts.isIdentifier(n)) return n.text === 'undefined' || ctx.locals.has(n.text) || ctx.imported.has(n.text);
   if (ts.isStringLiteral(n) || ts.isNumericLiteral(n) || ts.isRegularExpressionLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) return true;
   if (n.kind === K.NullKeyword || n.kind === K.TrueKeyword || n.kind === K.FalseKeyword) return true;
-  if (ts.isParenthesizedExpression(n) || ts.isNonNullExpression(n) || ts.isAsExpression(n) || ts.isTypeOfExpression(n)) return safeCond(ts, n.expression, imported);
-  if (ts.isPropertyAccessExpression(n)) return safeCond(ts, n.expression, imported);
-  if (ts.isElementAccessExpression(n)) return ts.isNumericLiteral(n.argumentExpression) && safeCond(ts, n.expression, imported);
-  if (ts.isPrefixUnaryExpression(n)) return (n.operator === K.ExclamationToken || n.operator === K.MinusToken) && safeCond(ts, n.operand, imported);
+  if (ts.isParenthesizedExpression(n) || ts.isNonNullExpression(n) || ts.isAsExpression(n) || ts.isTypeOfExpression(n)) return safeCond(ts, n.expression, ctx);
+  if (ts.isPropertyAccessExpression(n)) return rootOk(ts, n, ctx);
+  if (ts.isElementAccessExpression(n)) return rootOk(ts, n, ctx);
+  if (ts.isPrefixUnaryExpression(n)) return (n.operator === K.ExclamationToken || n.operator === K.MinusToken) && safeCond(ts, n.operand, ctx);
   if (ts.isBinaryExpression(n)) {
     const op = n.operatorToken.kind;
-    if (op >= K.FirstAssignment && op <= K.LastAssignment) return false;
-    if (op === K.CommaToken) return false;
-    return safeCond(ts, n.left, imported) && safeCond(ts, n.right, imported);
+    if ((op >= K.FirstAssignment && op <= K.LastAssignment) || op === K.CommaToken) return false;
+    return safeCond(ts, n.left, ctx) && safeCond(ts, n.right, ctx);
   }
-  if (ts.isCallExpression(n)) {
-    const c = n.expression;
-    const okCallee = (ts.isIdentifier(c) && imported.has(c.text) && PREDICATE_NAME.test(c.text)) || (ts.isPropertyAccessExpression(c) && SAFE_METHODS.has(c.name.text) && safeCond(ts, c.expression, imported));
-    return okCallee && n.arguments.every((a) => safeCond(ts, a, imported));
-  }
+  if (ts.isCallExpression(n)) return callOk(ts, n, ctx, (a) => safeCond(ts, a, ctx));
   return false;
 }
 
 /**
- * True when fn can only compute a value: no assignment, delete, new, await, JSX, DOM/state text, and the only calls are to
- * imported helpers or pure array/string methods (callbacks passed to them are checked the same way).
+ * True when the hook can only compute a value: no assignment, delete, new, await, JSX, DOM/state text, every property read
+ * rooted in a hook-local or imported name, and the only calls are callOk calls.
  */
-function inertFn(ts, fn, imported, sf) {
+function inertFn(ts, fn, ctx, sf) {
   if (FORBIDDEN_LINE_RE.test(fn.getText(sf))) return false;
   const K = ts.SyntaxKind;
   let ok = true;
@@ -154,42 +200,95 @@ function inertFn(ts, fn, imported, sf) {
     if (!ok) return;
     if (ts.isBinaryExpression(n) && n.operatorToken.kind >= K.FirstAssignment && n.operatorToken.kind <= K.LastAssignment) { ok = false; return; }
     if (ts.isDeleteExpression(n) || ts.isNewExpression(n) || ts.isAwaitExpression(n) || ts.isTaggedTemplateExpression(n) || ts.isYieldExpression(n)
-      || ts.isJsxElement(n) || ts.isJsxSelfClosingElement(n) || ts.isJsxFragment(n)
-      || (ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) && (n.operator === K.PlusPlusToken || n.operator === K.MinusMinusToken)) { ok = false; return; }
-    if (ts.isCallExpression(n)) {
-      const c = n.expression;
-      if (ts.isIdentifier(c)) { if (!imported.has(c.text)) { ok = false; return; } } else if (ts.isPropertyAccessExpression(c)) {
-        const m = c.name.text;
-        if (CALLBACK_METHODS.has(m)) { if (!n.arguments.every((a) => ts.isArrowFunction(a) || ts.isFunctionExpression(a))) { ok = false; return; } } else if (!SAFE_METHODS.has(m)) { ok = false; return; }
-      } else { ok = false; return; }
-    }
+      || ts.isJsxElement(n) || ts.isJsxSelfClosingElement(n) || ts.isJsxFragment(n) || ts.isThisTypeNode(n) || n.kind === K.ThisKeyword
+      || ((ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) && (n.operator === K.PlusPlusToken || n.operator === K.MinusMinusToken))) { ok = false; return; }
+    if (ts.isCallExpression(n)) { if (!callOk(ts, n, ctx, () => true)) { ok = false; return; } }
+    else if ((ts.isPropertyAccessExpression(n) || ts.isElementAccessExpression(n)) && !(ts.isCallExpression(n.parent) && n.parent.expression === n) && !rootOk(ts, n, ctx)) { ok = false; return; }
     ts.forEachChild(n, visit);
   };
   ts.forEachChild(fn, visit);
   return ok;
 }
 
-/** Guards allowed to change: `if (<safeCond>) return null;` directly inside an inert filter hook, and pattern-list arrays. */
+/**
+ * Guards allowed to change: `if (<safeCond>) return null;` directly inside an inert telemetry filter hook, and pattern-list
+ * arrays, both only as direct properties of the options object passed to an `*.init({...})` call.
+ */
 function guardRanges(ts, sf) {
-  const imported = new Set(importBindings(ts, sf).keys());
   const out = [];
   const nameOf = (n) => (n.name && (ts.isIdentifier(n.name) || ts.isStringLiteral(n.name)) ? n.name.text : '');
-  const visit = (n) => {
-    // beforeSend(event) { ... }   or   beforeSend: (event) => { ... }
-    let fn = null;
-    if (ts.isMethodDeclaration(n) && FILTER_HOOKS.has(nameOf(n))) fn = n;
-    else if (ts.isPropertyAssignment(n) && FILTER_HOOKS.has(nameOf(n)) && (ts.isArrowFunction(n.initializer) || ts.isFunctionExpression(n.initializer))) fn = n.initializer;
-    if (fn && fn.body && ts.isBlock(fn.body) && inertFn(ts, fn.body, imported, sf)) {
-      for (const st of fn.body.statements) {
-        if (ts.isIfStatement(st) && !st.elseStatement && isReturnOfNothing(ts, st.thenStatement) && safeCond(ts, st.expression, imported)) out.push([st.getStart(sf), st.end]);
+  const fromOptions = (obj) => {
+    for (const pr of obj.properties) {
+      let fn = null;
+      if (ts.isMethodDeclaration(pr) && FILTER_HOOKS.has(nameOf(pr))) fn = pr;
+      else if (ts.isPropertyAssignment(pr) && FILTER_HOOKS.has(nameOf(pr)) && (ts.isArrowFunction(pr.initializer) || ts.isFunctionExpression(pr.initializer))) fn = pr.initializer;
+      if (fn && fn.body && ts.isBlock(fn.body)) {
+        const ctx = hookCtx(ts, sf, fn);
+        for (const prm of fn.parameters) if (ts.isIdentifier(prm.name)) ctx.locals.add(prm.name.text);
+        if (inertFn(ts, fn.body, ctx, sf)) {
+          for (const st of fn.body.statements) {
+            if (ts.isIfStatement(st) && !st.elseStatement && isReturnOfNothing(ts, st.thenStatement) && safeCond(ts, st.expression, ctx)) out.push([st.getStart(sf), st.end]);
+          }
+        }
       }
+      if (ts.isPropertyAssignment(pr) && PATTERN_LISTS.has(nameOf(pr)) && ts.isArrayLiteralExpression(pr.initializer)
+        && pr.initializer.elements.every((e) => ts.isRegularExpressionLiteral(e) || ts.isStringLiteral(e))) out.push([pr.initializer.getStart(sf), pr.initializer.end]);
     }
-    if (ts.isPropertyAssignment(n) && PATTERN_LISTS.has(nameOf(n)) && ts.isArrayLiteralExpression(n.initializer)
-      && n.initializer.elements.every((e) => ts.isRegularExpressionLiteral(e) || ts.isStringLiteral(e))) out.push([n.initializer.getStart(sf), n.initializer.end]);
+  };
+  const visit = (n) => {
+    if (ts.isCallExpression(n)) {
+      const c = n.expression;
+      const name = ts.isIdentifier(c) ? c.text : (ts.isPropertyAccessExpression(c) ? c.name.text : '');
+      if (name === 'init') for (const a of n.arguments) if (ts.isObjectLiteralExpression(a)) fromOptions(a);
+    }
     ts.forEachChild(n, visit);
   };
   visit(sf);
   return out;
+}
+
+/** Comment ranges taken from the parser's own trivia (never a line-prefix guess): erasing them cannot hide live code. */
+function commentRanges(ts, sf) {
+  const seen = new Set(); const out = []; const text = sf.text;
+  const add = (rs) => { for (const r of rs || []) { const k = `${r.pos}:${r.end}`; if (!seen.has(k)) { seen.add(k); out.push([r.pos, r.end]); } } };
+  const inJsxChildren = (n) => n.parent && (ts.isJsxElement(n.parent) || ts.isJsxFragment(n.parent));
+  const visit = (n) => {
+    if (n.kind !== ts.SyntaxKind.JsxText) {
+      if (!inJsxChildren(n)) { add(ts.getLeadingCommentRanges(text, n.getFullStart())); add(ts.getTrailingCommentRanges(text, n.end)); }
+    }
+    ts.forEachChild(n, visit);
+  };
+  visit(sf);
+  add(ts.getLeadingCommentRanges(text, sf.endOfFileToken.getFullStart()));
+  return out;
+}
+
+/** A project module is safe to import as non-rendering only if its top level declares things and runs nothing. */
+function isDeclarationOnly(ts, file, text) {
+  const sf = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, /\.jsx?$/.test(file) ? ts.ScriptKind.JS : ts.ScriptKind.TS);
+  if (!Array.isArray(sf.parseDiagnostics) || sf.parseDiagnostics.length) return false;
+  const K = ts.SyntaxKind;
+  const pureFn = (n) => !FORBIDDEN_LINE_RE.test(n.getText(sf)) && !IMPURE_RE.test(n.getText(sf));
+  const pureInit = (e) => {
+    if (!e) return true;
+    if (ts.isArrowFunction(e) || ts.isFunctionExpression(e)) return pureFn(e);
+    if (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isSatisfiesExpression?.(e) || ts.isNonNullExpression(e)) return pureInit(e.expression);
+    if (ts.isStringLiteral(e) || ts.isNumericLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e) || ts.isRegularExpressionLiteral(e)) return true;
+    if (e.kind === K.TrueKeyword || e.kind === K.FalseKeyword || e.kind === K.NullKeyword) return true;
+    if (ts.isPrefixUnaryExpression(e)) return pureInit(e.operand);
+    if (ts.isArrayLiteralExpression(e)) return e.elements.every(pureInit);
+    if (ts.isObjectLiteralExpression(e)) return e.properties.every((pr) => ts.isPropertyAssignment(pr) && !ts.isComputedPropertyName(pr.name) && pureInit(pr.initializer));
+    return false;
+  };
+  return sf.statements.every((st) => {
+    if (ts.isInterfaceDeclaration(st) || ts.isTypeAliasDeclaration(st)) return true;
+    if (ts.isImportDeclaration(st)) return !!(st.importClause && st.importClause.isTypeOnly);
+    if (ts.isFunctionDeclaration(st)) return !!st.body && pureFn(st);
+    if (ts.isVariableStatement(st)) return st.declarationList.declarations.every((d) => pureInit(d.initializer));
+    if (ts.isExportDeclaration(st)) return !st.moduleSpecifier || !!st.isTypeOnly;
+    if (ts.isExportAssignment(st)) return pureInit(st.expression);
+    return false;
+  });
 }
 
 /** Import declarations whose added lines are allowed (known .ts/.js module or bare package, never css/tsx/unresolved). */
@@ -259,7 +358,7 @@ function isNonRenderingChange({ file, oldSource, newSource, resolveImport }) {
     if (!oSf || !nSf) return no('parse error (fail closed)');
     const oJsx = jsxTexts(ts, oSf); const nJsx = jsxTexts(ts, nSf);
     if (oJsx.length !== nJsx.length || oJsx.some((t, i) => t !== nJsx[i])) return no('JSX changed');
-    const oErased = erase(oldSource, typeRanges(ts, oSf)); const nErased = erase(newSource, typeRanges(ts, nSf));
+    const oErased = erase(oldSource, [...typeRanges(ts, oSf), ...commentRanges(ts, oSf)]); const nErased = erase(newSource, [...typeRanges(ts, nSf), ...commentRanges(ts, nSf)]);
     const d = diffLines(oErased, nErased);
     if (!d) return no('diff too large to analyse');
     const oImp = importRanges(ts, oSf, resolveImport); const nImp = importRanges(ts, nSf, resolveImport);
@@ -300,7 +399,6 @@ function isNonRenderingChange({ file, oldSource, newSource, resolveImport }) {
         const span = lineSpan(text, idx);
         const t = span.text.trim();
         if (!t) continue;
-        if (/^\/\//.test(t) && !non.some(([s0, e0]) => span.start >= s0 && span.start < e0)) continue; // whole-line comment
         changed++;
         if (FORBIDDEN_LINE_RE.test(span.text)) return no(`${label} line ${idx + 1} touches DOM/state/class code: ${t.slice(0, 60)}`);
         if (!covered(span, guards) && !covered(span, imps)) return no(`${label} line ${idx + 1} is outside added imports, types and effect guards: ${t.slice(0, 60)}`);
@@ -313,18 +411,19 @@ function isNonRenderingChange({ file, oldSource, newSource, resolveImport }) {
 }
 
 /** Candidate resolver for the CLI: reads the pushed tree via git, never the working copy. */
-function makeGitResolver(run) {
+function makeGitResolver(run, pure) {
   return (spec) => {
     let base;
     if (spec.startsWith('@/')) base = 'src/' + spec.slice(2);
     else if (spec.startsWith('~/')) return 'unknown';
     else return 'unknown'; // relative specifiers resolved per file by the caller
-    return probe(base, run);
+    return probe(base, run, pure);
   };
 }
-function probe(base, run) {
-  for (const [ext, kind] of [['.ts', 'ts'], ['.js', 'ts'], ['.mjs', 'ts'], ['/index.ts', 'ts'], ['/index.js', 'ts'], ['.tsx', 'tsx'], ['.jsx', 'tsx'], ['/index.tsx', 'tsx']]) {
-    if (run(base + ext)) return kind;
+// Same order as Next/webpack: .tsx before .ts. A 'ts' hit counts only when the module is declaration-only (pure(path) true).
+function probe(base, run, pure) {
+  for (const [ext, kind] of [['.tsx', 'tsx'], ['.ts', 'ts'], ['.jsx', 'tsx'], ['.js', 'ts'], ['.mjs', 'ts'], ['/index.tsx', 'tsx'], ['/index.ts', 'ts'], ['/index.js', 'ts']]) {
+    if (run(base + ext)) return kind === 'ts' && pure && !pure(base + ext) ? 'unknown' : kind;
   }
   return 'unknown';
 }
@@ -359,7 +458,9 @@ function filterRange(range, files, cwd, log = null) {
     const base = git(['merge-base', baseRef, headRef]).trim();
     const show = (ref, f) => { try { return git(['show', `${ref}:${f}`]); } catch { return null; } };
     const exists = (f) => { try { git(['cat-file', '-e', `${headRef}:${f}`]); return true; } catch { return false; } };
-    const resolve = (spec) => (spec.startsWith('@rel:') ? probe(spec.slice(5), exists) : makeGitResolver(exists)(spec));
+    const ts = loadTs();
+    const pure = (f) => { const t = show(headRef, f); return !!ts && typeof t === 'string' && isDeclarationOnly(ts, f, t); };
+    const resolve = (spec) => (spec.startsWith('@rel:') ? probe(spec.slice(5), exists, pure) : makeGitResolver(exists, pure)(spec));
     return filterFiles(files, (side, f) => show(side === 'old' ? base : headRef, f), resolve, log || (() => {}));
   } catch { return files; } // fail closed
 }
