@@ -645,5 +645,5 @@ test('stampReceipt: amends only the message, once, never a commit already on mai
   const pushed = stampReceipt({ cwd: dir, evidence });
   assert.equal(pushed.stamped, false, 'a commit a remote branch already holds is never rewritten');
   assert.match(pushed.reason, /already pushed \(origin\/claude\/x\)/);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
