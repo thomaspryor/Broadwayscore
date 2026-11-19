@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifyGapCandidateUrl, namedNonReviewReason, NAMED_NON_REVIEW_URL_PATTERNS, NON_REVIEW_HOST_PATTERNS, nonReviewHostMatch } = require('./non-review-url-patterns.js');
+const { classifyGapCandidateUrl, namedNonReviewReason, NAMED_NON_REVIEW_URL_PATTERNS, NON_REVIEW_HOST_PATTERNS, nonReviewHostMatch, classifyReviewUrl } = require('./non-review-url-patterns.js');
 
 // BRO-7773: the real host check classifyReviewUrl uses (rule 15). This file used
 // to mirror it with a registrable-host-only copy, which is how the
