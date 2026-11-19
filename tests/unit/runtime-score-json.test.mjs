@@ -17,7 +17,7 @@ const view = (o = {}) => ({ score: 82, reviewCount: 6, tier1Count: 3, tier2Count
 const row = (n) => ({ outletId: 'o' + n, outlet: 'O' + n, outletBadge: null, url: null, publishDate: '2026-11-19', tier: 1, reviewScore: 80 });
 const KILL_ON = { schema: 1, enabled: true };
 
-function mkPayload({ showId = 'x-2026', rev = 2000, v = view(), reviews = [row(1)] } = {}) {
+function mkPayload({ showId = 'x-2026', rev = 2000, v = view(), reviews = Array.from({ length: v.reviewCount }, (_, i) => row(i + 1)) } = {}) {
   const b = core.buildPayload({ showId, view: v, reviews, rev });
   return b;
 }
@@ -35,6 +35,23 @@ function memStorage({ failPut = () => false, corruptGet = () => false } = {}) {
     async remove(path) { m.delete(path); },
   };
 }
+
+describe('1b. overlay never shows a count that differs from its rows (bar total)', () => {
+  test('payload whose reviewCount differs from its row total is rejected', () => {
+    const b = mkPayload({ v: view({ reviewCount: 99 }), reviews: [row(1), row(2)] });
+    const entry = pointerFor(b).shows['x-2026'];
+    const r = validatePayload({ payload: b.payload, entry, showId: 'x-2026', staticRev: 1000, staticReviewCount: 0 });
+    assert.equal(r.reason, 'count-rows-mismatch');
+  });
+  test('payload whose rows match the count applies, and the breakdown total equals the count', () => {
+    const b = mkPayload({ v: view({ reviewCount: 4 }) });
+    const entry = pointerFor(b).shows['x-2026'];
+    const r = validatePayload({ payload: b.payload, entry, showId: 'x-2026', staticRev: 1000, staticReviewCount: 0 });
+    assert.equal(r.ok, true);
+    const p = applyHeroOverlay({ show: { criticScore: {} } }, { view: r.view, reviews: r.reviews });
+    assert.equal(p.show.criticScore.reviews.length, p.show.criticScore.reviewCount);
+  });
+});
 
 describe('1. pointer/payload mismatch keeps the static page', () => {
   const b = mkPayload(); const ptr = pointerFor(b); const entry = ptr.shows['x-2026'];

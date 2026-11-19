@@ -3,6 +3,7 @@
 // (3) the overlay reviewCount equals the count JSON-LD / the page heading use (criticScore.reviewCount).
 import { getAllShows } from '../src/lib/data';
 import { buildScoreRegionView } from '../src/lib/live-score/view';
+import { getReviewListItems } from '../src/lib/show-review-items';
 import { computeShowTBD } from '../src/lib/show-score-tbd';
 import { hasEnoughReviews, applyCoverageFloor } from '../src/config/score-buckets';
 import { scoreGateArg } from '../src/config/scoring';
@@ -20,6 +21,8 @@ for (const s of shows) {
   if (computeShowTBD(s) !== legacy) { bad++; console.log('MISMATCH shared gate vs legacy', s.id); }
   if (v.showTBD !== legacy) { bad++; console.log('MISMATCH view.showTBD vs legacy', s.id); }
   if (v.reviewCount !== reviewCount) { bad++; console.log('MISMATCH reviewCount', s.id, v.reviewCount, reviewCount); }
+  const rows = getReviewListItems(s).length;
+  if (rows !== v.reviewCount) { bad++; console.log('MISMATCH rows vs reviewCount', s.id, rows, v.reviewCount); }
   if (!v.showTBD && v.score == null) { bad++; console.log('MISMATCH scored without score', s.id); }
 }
 console.log(`parity: ${shows.length} shows, ${bad} mismatches`);

@@ -42,6 +42,8 @@ function validatePayload({ payload, entry, showId, staticRev, staticReviewCount 
     if (!isNum(v.reviewsRemaining) || typeof v.noReviewsExpected !== 'boolean') return { reason: 'bad-view' };
     for (const f of VIEW_FIELDS) if (!(f in v)) return { reason: 'missing-' + f };
     if (!Array.isArray(payload.reviews)) return { reason: 'bad-reviews' };
+    // The hero count, the breakdown bar and the row list must tell one story.
+    if (payload.reviews.length !== v.reviewCount) return { reason: 'count-rows-mismatch' };
     if (!payload.tombstone && isNum(staticReviewCount) && v.reviewCount < staticReviewCount) return { reason: 'review-count-regression' };
     return { ok: true, view: v, reviews: payload.reviews };
   } catch (_e) {
