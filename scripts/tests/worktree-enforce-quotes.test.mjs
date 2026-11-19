@@ -51,6 +51,9 @@ const CASES = [
   ['empty heredoc then a real write', 'cat <<EOF > /tmp/a\nEOF\necho hi > scripts/x.js\ncat <<EOF\nx\nEOF', 2],
   // A relative target after a leading cd resolves against the cd target, not the session cwd.
   ['cd into a worktree then sed -i', `cd ${wt} && sed -i 's/a/b/' scripts/x.js`, 0],
+  // BRO-7783: the exact reported shape, a heredoc write after a leading cd.
+  ['cd into a worktree then heredoc write', `cd ${wt} && cat > scripts/x.js <<'EOF'\nhello\nEOF`, 0],
+  ['cd into the main checkout then heredoc write', `cd ${repo} && cat > scripts/x.js <<'EOF'\nhello\nEOF`, 2],
   ['cd into a worktree then redirect', `cd ${wt} && echo hi > scripts/x.js`, 0],
   ['cd into the main checkout then sed -i', `cd ${repo} && sed -i 's/a/b/' scripts/x.js`, 2],
   ['cd into a worktree, absolute main-checkout target', `cd ${wt} && echo hi > ${repo}/scripts/x.js`, 2],
