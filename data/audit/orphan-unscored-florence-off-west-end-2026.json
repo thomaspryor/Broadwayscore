@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "florence-off-west-end-2026",
   "openingDate": "2026-11-18",
-  "detectedAt": "2026-11-19T18:38:08.006Z",
+  "detectedAt": "2026-11-19T18:48:13.884Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "complete",
       "eligibilityReason": null
+    },
+    {
+      "file": "west-end-best-friend--brian-penn.json",
+      "outletId": "west-end-best-friend",
+      "criticName": "Brian Penn",
+      "url": "https://www.westendbestfriend.co.uk/news/review-florence-park-theatre",
+      "fullTextLen": 2458,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-11-19T18:38:08.006Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
