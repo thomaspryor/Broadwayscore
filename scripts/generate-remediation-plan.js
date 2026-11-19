@@ -307,8 +307,8 @@ async function main() {
 
   async function sendProposal({ alreadyFixed, fixedEvidence, catalogMatches, plan: p, approveUrl, rejectUrl, rootCause }) {
     const reader = { name: diagnosis.submitterName, email: diagnosis.submitterEmail, show: diagnosis.submitterShow, message: diagnosis.originalMessage };
-    const url = (catalogMatches && catalogMatches[0] && catalogMatches[0].url) || showLinkFor(reader.show, shows);
-    const reply = Proposal.buildReaderReplyDraft({ reader, show: reader.show, url });
+    const showHref = (catalogMatches && catalogMatches[0] && catalogMatches[0].url) || showLinkFor(reader.show, shows);
+    const reply = Proposal.buildReaderReplyDraft({ reader, show: reader.show, url: showHref });
     const scan = p ? Proposal.scanSimilar(p, shows) : { ran: false, findings: [] };
     const { html, text } = Proposal.buildProposalEmail({
       issueNumber, reader, alreadyFixed, fixedEvidence, catalogMatches, plan: p, approveUrl, rejectUrl,

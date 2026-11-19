@@ -22,7 +22,7 @@ const { detectCombinedRoles } = require('./systematic-fix-detection.js');
 const { foldDiacritics } = require('./url-slug');
 
 const BASE_URL = 'https://broadwayscorecard.com';
-const LEDGER_PATH = path.join(__dirname, '../../data/audit/feedback-proposals.json');
+const LEDGER_PATH = path.join(__dirname, '../../data/pending-fixes/_proposals/ledger.json');
 const DAILY_CAP = 10;
 const LIVE_STATUSES = new Set(['open', 'previews']);
 
