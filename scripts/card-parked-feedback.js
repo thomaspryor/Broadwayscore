@@ -6,7 +6,7 @@
  * Why: scripts/lib/parked-feedback.js header (feedback #1192).
  *
  * Usage: node scripts/card-parked-feedback.js [--dry-run] [--limit=N]
- * Env: GH_TOKEN/GITHUB_TOKEN (list + label issues), LINEAR_API_KEY (file cards).
+ * Env: GH_TOKEN (list + label issues), LINEAR_API_KEY (file cards).
  * Never exits non-zero for a filing failure: the next run retries (no label set).
  */
 require('./lib/cli-help').exitOnHelp(module);
@@ -15,11 +15,11 @@ const { selectParkedIssues, buildParkedCard, CARDED_LABEL, PARKED_LABEL } = requ
 const REPO = 'thomaspryor/Broadwayscore';
 
 async function gh(method, path, body) {
-  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  const token = process.env.GH_TOKEN;
   const headers = { 'User-Agent': 'broadwayscore-parked-feedback', Accept: 'application/vnd.github+json' };
   if (token) headers.Authorization = `Bearer ${token}`;
   if (body) headers['Content-Type'] = 'application/json';
-  const res = await fetch(`https://api.github.com${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
+  const res = await fetch(`https://api.github.com${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined, signal: AbortSignal.timeout(30000) });
   if (!res.ok) throw new Error(`GitHub ${method} ${path}: ${res.status}`);
   return res.json();
 }
