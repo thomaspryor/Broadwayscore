@@ -276,6 +276,8 @@ const PROTECTED_FIELDS = [
   // so it must survive a rebase alongside routedFromShowId (BRO-4656).
   'routedPriorVerdicts',
   'urlVerified',
+  // BRO-7841: outlet pulled the review; must survive rewrites by collectors or the dead link comes back.
+  'urlDead', 'urlDeadAt', 'urlDeadUrl', 'urlDeadStatus', 'urlRestoredAt',
   // Provenance marker (BRO-121): distinguishes an automated flip-flop pin
   // from a real human urlVerified decision. Must survive rebases alongside
   // urlVerified itself, or a restored file loses the marker and becomes

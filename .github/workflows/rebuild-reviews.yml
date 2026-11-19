@@ -267,6 +267,19 @@ jobs:
         run: node scripts/sweep-tour-reviews.js --auto 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
+      # BRO-7841: an outlet can pull a review after we link it (TheaterScene / It's A Wonderful Life, 2026-11-19).
+      # Re-test the urls of reviews published in the last 3 days; a url that 404s/410s twice is marked urlDead so the
+      # rebuild below publishes the review without its link (text and score stay). A withheld review whose url is live
+      # again is restored. Pushed by "Push review-texts to private repo" with the rest of this run's edits.
+      # Kill switch: repo variable DEAD_LINK_RECHECK=off.
+      - name: Recheck recent review urls (withhold pulled links)
+        # lint-allow-swallow: best-effort probe; a failure must not block the rebuild, and a crash only means no marker this run (the next run retries)
+        if: inputs.skip_enrichment != 'true' && vars.DEAD_LINK_RECHECK != 'off'
+        shell: bash
+        run: node scripts/recheck-recent-review-urls.js --apply --days=3 --time-budget-sec=240 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 6
+
       # BRO-7747 (cousin of BRO-7744): the same cross-show fingerprint memo
       # rebuild-fast.yml uses (scripts/lib/fingerprint-memo.js). It skips
       # ~165s of cleanText work per rebuild and validates itself, so a stale
