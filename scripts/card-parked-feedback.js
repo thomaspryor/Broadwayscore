@@ -28,7 +28,8 @@ async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
   const limitArg = args.find((a) => a.startsWith('--limit='));
-  const limit = limitArg ? Number(limitArg.split('=')[1]) : 5; // per run; the 10-min cron drains a backlog quickly
+  const limit = limitArg ? Number(limitArg.split('=')[1]) : 5;
+  if (!Number.isInteger(limit) || limit < 1) throw new Error(`--limit must be a positive integer, got ${limitArg}`); // per run; the 10-min cron drains a backlog quickly
   // Carded issues stay open with the needs-review label until done, so walk every
   // page: a single page of 100 would hide new requests behind old carded ones.
   const issues = [];
@@ -45,7 +46,16 @@ async function main() {
     let id = null;
     try {
       const { createLinearIssue } = require('./lib/linear-issue-create.js');
-      const { issue: created } = await createLinearIssue({ ...card, dispatch: true, priority: 2, source: 'parked-feedback' });
+      const { issue: created } = await createLinearIssue({
+        ...card,
+        // Spam-held batches are reader-written text the filter distrusted: a person
+        // reads those, they never go straight to a worker session (review of #1192).
+        ...(/spam-flagged/i.test(issue.title || '')
+          ? { park: 'Spam-held reader batch: a person reads it before any worker acts on reader-written text.' }
+          : { dispatch: true }),
+        priority: 2,
+        source: 'parked-feedback',
+      });
       id = created.identifier;
     } catch (e) {
       // Safe to adopt the twin: the title carries the distinctive "#N", so a near-duplicate can only be this issue's card.

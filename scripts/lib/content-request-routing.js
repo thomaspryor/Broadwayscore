@@ -234,17 +234,26 @@ function marketsIn(text) {
  * (second-opinion review, real shows.json). The site name is stripped first.
  */
 function inferMarketFromMessage(title, message) {
-  const msg = String(message || '').replace(/broadway\s*scorecard/gi, ' ');
+  const msg = String(message || '').replace(/broadway\s*scorecard|broadway\.com|broadwayworld/gi, ' ');
   const t = String(title || '').trim();
   if (!msg || !t) return null;
-  const idx = msg.toLowerCase().indexOf(t.toLowerCase());
-  if (idx < 0) return null;
-  let before = msg.slice(Math.max(0, idx - 25), idx);
-  let after = msg.slice(idx + t.length, idx + t.length + 25);
-  before = before.split(/[.!?\n]/).pop();
-  after = after.split(/[.!?\n]/)[0];
-  const near = new Set(marketsIn(`${before} ${after}`));
-  return near.size === 1 ? [...near][0] : null;
+  // Every mention of the title must point at the same single market, and a
+  // negation near a mention ("not the Broadway one") means skip: wrong is worse
+  // than unroutable (ship-check review of #1192).
+  const lower = msg.toLowerCase();
+  const needle = t.toLowerCase();
+  const found = new Set();
+  let mentions = 0;
+  for (let idx = lower.indexOf(needle); idx >= 0; idx = lower.indexOf(needle, idx + needle.length)) {
+    mentions += 1;
+    const before = msg.slice(Math.max(0, idx - 30), idx).split(/[.!?\n]/).pop();
+    const after = msg.slice(idx + t.length, idx + t.length + 30).split(/[.!?\n]/)[0];
+    const near = `${before} ${after}`;
+    if (/\b(not|isn'?t|wasn'?t)\b/i.test(near)) return null;
+    for (const m of marketsIn(near)) found.add(m);
+  }
+  if (mentions === 0) return null;
+  return found.size === 1 ? [...found][0] : null;
 }
 
 /**
@@ -485,7 +494,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!IMAGE_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, message);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, sentence);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;
@@ -527,7 +536,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!REVIEW_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, message);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, sentence);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;

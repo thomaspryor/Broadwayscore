@@ -574,3 +574,16 @@ describe('message market inference never guesses from the message at large (seco
     assert.equal(inferMarketFromMessage('Dirty Dancing', 'the Dirty Dancing tour cast is wrong'), 'tour');
   });
 });
+
+describe('message market inference: every mention must agree (ship-check review)', () => {
+  const { inferMarketFromMessage } = require('../../scripts/lib/content-request-routing.js');
+  it('two mentions in two markets -> no guess', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'I loved Hamilton on Broadway, but the West End Hamilton is missing a photo'), null);
+  });
+  it('negation near the mention -> no guess', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'The Hamilton, not the Broadway one, the London one'), null);
+  });
+  it('a site name like Broadway.com is not a market', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'Saw Hamilton reviewed on Broadway.com'), null);
+  });
+});
