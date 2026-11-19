@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7847).
 // BRO-7847: the reader-feedback "proposed fix" email. Real functions, real
 // data. Each test names the owner-visible failure it prevents.
 import { test } from 'node:test';
