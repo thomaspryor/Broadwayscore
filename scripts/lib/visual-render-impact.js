@@ -171,7 +171,16 @@ function callOk(ts, n, ctx, argOk) {
   const r0 = chainRoot(ts, c.expression); // a method on an imported object runs that module's code: only hook-local receivers
   if (r0 && ts.isIdentifier(r0) && ctx.imported.has(r0.text) && !ctx.locals.has(r0.text)) return false;
   const m = c.name.text;
-  if (CALLBACK_METHODS.has(m)) return n.arguments.every((a) => ts.isArrowFunction(a) || ts.isFunctionExpression(a));
+  if (CALLBACK_METHODS.has(m)) {
+    // The callback body is held to the same rules as the condition itself: plain identifier params (no defaults, so no window smuggled in),
+    // an expression body, and every name/call in it from hook-local values or the SAME import set as the caller.
+    return n.arguments.every((a) => {
+      if (!(ts.isArrowFunction(a) || ts.isFunctionExpression(a)) || !a.body || ts.isBlock(a.body)) return false;
+      if (!a.parameters.every((q) => ts.isIdentifier(q.name) && !q.initializer && !q.dotDotDotToken)) return false;
+      const inner = { locals: new Set([...ctx.locals, ...a.parameters.map((q) => q.name.text)]), imported: ctx.imported };
+      return safeCond(ts, a.body, inner);
+    });
+  }
   return SAFE_METHODS.has(m) && n.arguments.every(argOk);
 }
 
@@ -329,9 +338,11 @@ function isDeclarationOnly(ts, file, text) {
       if (ts.isDeleteExpression(n) || ts.isNewExpression(n) || ts.isAwaitExpression(n) || ts.isTaggedTemplateExpression(n) || ts.isYieldExpression(n) || n.kind === K.ThisKeyword
         || ts.isJsxElement(n) || ts.isJsxSelfClosingElement(n) || ts.isJsxFragment(n)
         || ((ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) && (n.operator === K.PlusPlusToken || n.operator === K.MinusMinusToken))) { ok = false; return; }
+      if (ts.isElementAccessExpression(n) && !ts.isNumericLiteral(n.argumentExpression)) { ok = false; return; }
+      if (ts.isPropertyAccessExpression(n) && /^(constructor|__proto__|prototype|call|apply|bind|getPrototypeOf|__defineGetter__|__lookupGetter__)$/.test(n.name.text)) { ok = false; return; }
       if (ts.isCallExpression(n)) {
         const c = n.expression;
-        if (ts.isIdentifier(c)) { if (!(moduleNames.has(c.text) || SAFE_GLOBALS.has(c.text) || locals.has(c.text))) { ok = false; return; } }
+        if (ts.isIdentifier(c)) { if (!(moduleNames.has(c.text) || SAFE_GLOBALS.has(c.text)) || (locals.has(c.text) && !moduleNames.has(c.text))) { ok = false; return; } }
         else if (!(ts.isPropertyAccessExpression(c) && PURE_METHODS.has(c.name.text))) { ok = false; return; }
       }
       if (ts.isIdentifier(n)) {

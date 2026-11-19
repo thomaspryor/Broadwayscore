@@ -361,3 +361,20 @@ test('declaration-only modules: functions may only compute from their own inputs
     assert.equal(only(bad), false, bad);
   }
 });
+
+// --- round 5 (BRO-7849) ---
+test('declaration-only modules cannot reach Function via .constructor or computed keys', () => {
+  const only = (body) => _isDeclarationOnly(tsLib, 'p.ts', `export function isNoise(e: any) { ${body} }\n`);
+  assert.equal(only('const F = Array.constructor; const f = F("this.HIT = 1; return false"); return f();'), false);
+  assert.equal(only('return e["constructor"]("x")();'), false);
+  assert.equal(only('return e.__proto__ === null;'), false);
+});
+
+test('callbacks inside a guard are held to the same import and parameter rules', () => {
+  const unverified = (spec) => (spec === 'consent-banner-pkg' ? 'unknown' : 'ts');
+  const top = "import { hasConsent } from '@/lib/b';";
+  assert.equal(hookCheck(top, 'if (e.exception.values.some(() => hasConsent())) return null;', 'Sentry.init', (s) => (s === '@/lib/b' ? 'unknown' : 'ts')).exempt, false);
+  assert.equal(hookCheck(top, 'if (e.exception.values.some((a: any, b: any, c: any, w: any = window) => w.find(() => 0))) return null;').exempt, false);
+  assert.equal(hookCheck('', 'if (e.exception.values.some((v: any) => v.type === "X")) return null;').exempt, true);
+  void unverified;
+});
