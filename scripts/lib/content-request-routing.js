@@ -268,7 +268,41 @@ function resolveShowUsingMessage(title, market, shows, message) {
   const inferred = inferMarketFromMessage(title, message);
   if (!inferred) return first;
   const scoped = resolveShowInMarket(title, inferred, shows);
-  return scoped.resolved ? scoped : first;
+  if (scoped.resolved) return scoped;
+  // Two runs in the same market ("Dirty Dancing in the West End 2013"): a year
+  // written next to the title picks the one production with that year, else stay parked.
+  if (scoped.ambiguous) {
+    const year = yearNearTitle(title, message);
+    if (year) {
+      const hits = shows.filter((s) => s && scoped.candidateIds.includes(s.id) && showYear(s) === year);
+      if (hits.length === 1) return { resolved: hits[0], ambiguous: false, candidateIds: [], candidateTitles: [] };
+    }
+  }
+  return first;
+}
+
+/** The single 4-digit year within ~40 chars of a title mention, in the same sentence, or null. */
+function yearNearTitle(title, message) {
+  const msg = String(message || '');
+  const needle = String(title || '').toLowerCase();
+  if (!needle) return null;
+  const years = new Set();
+  const lower = msg.toLowerCase();
+  const isWordChar = (c) => !!c && /[a-z0-9]/i.test(c);
+  for (let idx = lower.indexOf(needle); idx >= 0; idx = lower.indexOf(needle, idx + needle.length)) {
+    // whole-title mentions only ("Art" must not match inside "started")
+    if (isWordChar(lower[idx - 1]) || isWordChar(lower[idx + needle.length])) continue;
+    const before = msg.slice(Math.max(0, idx - 40), idx).split(/[.!?\n]/).pop();
+    const after = msg.slice(idx + needle.length, idx + needle.length + 40).split(/[.!?\n]/)[0];
+    // A bare year only: not part of a phone number, price, date or longer number ("212-555-1999", "$2012", "01/2013").
+    for (const m of `${before} ${after}`.matchAll(/(?<![\d$£€/\-.,:])((?:19|20)\d{2})(?![\d/\-.,:%]|\.\d)/g)) years.add(Number(m[1]));
+  }
+  return years.size === 1 ? [...years][0] : null;
+}
+
+function showYear(show) {
+  const m = /^((?:19|20)\d{2})/.exec(show.openingDate || show.previewsStartDate || '') || /-((?:19|20)\d{2})$/.exec(show.id || '');
+  return m ? Number(m[1]) : null;
 }
 
 function parseRequestedTitles(raw) {
@@ -652,6 +686,7 @@ module.exports = {
   parseRequestedTitles,
   resolveShowInMarket,
   resolveShowUsingMessage,
+  yearNearTitle,
   inferMarketFromMessage,
   extractVenueHint,
   extractVenueHintFor,

@@ -9,7 +9,7 @@ const {
   normalizeVenueName, venuesMatch, pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, buildVenueCityIndex,
   canReuseArchivedFile,
   mayServeDiskImage, thumbnailFallbackAction,
-  keepExistingImage, findRejectedSourcesInUse, wrongEraTodayTixReason, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
+  keepExistingImage, findRejectedSourcesInUse, wrongEraTodayTixReason, refusedSourceReason, missingFileRedownload, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
 } = require('./image-source-match.js');
 
 const at = (iso) => ({ __type: 'Date', iso });
@@ -339,4 +339,68 @@ test('thumbnailFallbackAction copies the poster over a rejected leftover thumbna
   assert.equal(thumbnailFallbackAction(row, { targetExists: true, targetRecordedSource: 'google-images:https://example.com/other.jpg' }), 'reuse');
   assert.equal(thumbnailFallbackAction({ id: 'x' }, { targetExists: true, targetRecordedSource: rejected }), 'reuse');
   assert.equal(thumbnailFallbackAction(row, { targetExists: true, targetRecordedSource: undefined }), 'reuse');
+});
+
+// BRO-7846 follow-up: the wrong-era rule lived only in the audit. The deploy
+// re-attach and the archiver's "file missing, re-download it" branch checked
+// only rejectedImageUrls, so a fetch run re-downloaded the cleared 2007-era
+// TodayTix art, and copied the deleted parent banners (an American in Paris
+// 2015's Matthew Scott concert art, Company 2021's COMPANY XIV photo) onto two
+// tours under their own folders with no recorded source.
+const TT_EFFECT = 'https://images.ctfassets.net/6pezt69ih962/4oIOdVMdvX8tsExMGD19Vr/5c482b411daf0d92e6625bac8/poster.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90';
+const TT_AIP_HERO = 'https://images.ctfassets.net/6pezt69ih962/4ShMEuhPqLq0cQcsZHx0zJ/d288044bd8b79c9e8d34039cdbdf795d/TT-production-matthew.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90';
+const TT_RACE_HERO = 'https://images.ctfassets.net/6pezt69ih962/3NU7KfZ6G2pdudGbtKS9AX/5934fb4beadef7ed6e9c632474b23ea2/West_TodayTix_1440x580.png?fm=webp&q=90';
+
+test('mayServeDiskImage refuses a wrong-era TodayTix file even when the rejected list misses it', () => {
+  // the-effect-west-end-2012 rejected only the todaytix.com page reference;
+  // its thumbnail file is recorded from the Contentful asset.
+  const effect = { id: 'the-effect-west-end-2012', market: 'west-end', status: 'closed', closingDate: '2013-02-23',
+    images: { thumbnail: null, poster: null, hero: null },
+    rejectedImageUrls: ['google-images:https://www.todaytix.com/london/shows/33425-the-effect'] };
+  assert.equal(mayServeDiskImage(effect, TT_EFFECT), false);
+  assert.match(refusedSourceReason(effect, TT_EFFECT), /closed before TodayTix/);
+  // A current row's TodayTix art, and a non-TodayTix file, are still served.
+  assert.equal(mayServeDiskImage({ id: 'x', status: 'open', images: {} }, TT_EFFECT), true);
+  assert.equal(mayServeDiskImage(effect, 'https://www.theaterdiary.com/parse/files/x/effect.jpg'), true);
+  assert.equal(mayServeDiskImage(effect, null), true);
+});
+
+test('missingFileRedownload refuses a borrowed parent file whose source is wrong for the parent', () => {
+  // At run time the parent still listed the hero (its plan applied later),
+  // with poster and thumbnail already cleared after a rejected TodayTix match.
+  const parent = { id: 'an-american-in-paris-2015', status: 'closed', closingDate: '2016-10-09',
+    images: { thumbnail: null, poster: null, hero: '/images/shows/an-american-in-paris-2015/hero.webp' },
+    rejectedImageUrls: ['https://images.ctfassets.net/6pezt69ih962/1Vwgyv3zE6cmCrT18t1ENL/c5/TT-poster-matthew.png?fm=webp&q=90'] };
+  // The tour had not yet recorded the rejection when the run read it.
+  const tour = { id: 'an-american-in-paris-tour-2022', status: 'closed', closingDate: '2023-06-11',
+    images: { hero: '/images/shows/an-american-in-paris-2015/hero.webp', thumbnail: null, poster: null } };
+  const sources = { 'an-american-in-paris-2015': { hero: TT_AIP_HERO } };
+  const byId = new Map([[parent.id, parent], [tour.id, tour]]);
+  const r = missingFileRedownload(tour, 'hero', tour.images.hero, sources, byId);
+  assert.ok(r.skip, 'must not re-download');
+  assert.match(r.skip, /refused/);
+  // Without the owner row it cannot judge the parent: it would download.
+  assert.equal(missingFileRedownload(tour, 'hero', tour.images.hero, sources, new Map()).sourceUrl, TT_AIP_HERO);
+  // Live case: the parent was refilled with its own poster after the cleanup,
+  // so the wrong-era rule no longer fires, but the parent no longer serves the
+  // hero the tour borrowed. Not re-downloaded either.
+  const refilled = { ...parent, rejectedImageUrls: [], images: { thumbnail: '/images/shows/an-american-in-paris-2015/thumbnail.jpg', poster: '/images/shows/an-american-in-paris-2015/poster.jpg', hero: null } };
+  assert.match(missingFileRedownload(tour, 'hero', tour.images.hero, sources, new Map([[refilled.id, refilled]])).skip, /no longer serves/);
+  // A parent still serving the file (lost from disk only) is re-downloaded.
+  const ok = 'https://www.theaterdiary.com/parse/files/x/aip.jpg';
+  const serving = { ...refilled, images: { ...refilled.images, hero: tour.images.hero } };
+  assert.deepEqual(missingFileRedownload(tour, 'hero', tour.images.hero, { [parent.id]: { hero: ok } }, new Map([[serving.id, serving]])), { sourceUrl: ok });
+});
+
+test('missingFileRedownload refuses a pre-TodayTix row and keeps the ordinary cases', () => {
+  const race = { id: 'race-2009', status: 'closed', closingDate: '2010-08-21', images: { hero: '/images/shows/race-2009/hero.webp' } };
+  assert.match(missingFileRedownload(race, 'hero', race.images.hero, { 'race-2009': { hero: TT_RACE_HERO } }, new Map()).skip, /closed before TodayTix/);
+  // A good recorded source is re-downloaded; manual and missing sources are skipped.
+  const ok = 'https://www.theaterdiary.com/parse/files/x/race.jpg';
+  assert.deepEqual(missingFileRedownload(race, 'hero', race.images.hero, { 'race-2009': { hero: ok } }, new Map()), { sourceUrl: ok });
+  assert.match(missingFileRedownload(race, 'hero', race.images.hero, { 'race-2009': { hero: 'manual:hand crop' } }, new Map()).skip, /not downloadable/);
+  assert.match(missingFileRedownload(race, 'hero', race.images.hero, {}, new Map()).skip, /no source/);
+  // A rejected source is refused as before (BRO-4901).
+  const rej = { ...race, rejectedImageUrls: [ok] };
+  assert.match(missingFileRedownload(rej, 'hero', race.images.hero, { 'race-2009': { hero: ok } }, new Map()).skip, /rejected/);
 });

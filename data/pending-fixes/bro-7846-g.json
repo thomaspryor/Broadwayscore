@@ -1,0 +1,70 @@
+{
+  "issueNumber": "bro-7846-g",
+  "planId": "80504550-34ed-4844-9ae9-4503b5e573b6",
+  "status": "applied",
+  "createdAt": "2026-11-19T17:29:05.142Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear wrong Kiln 2019 art from handbagged-west-end-2014 and reject its sources",
+    "steps": [
+      "Clear 2019 Kiln revival art the finder attached to the 2014 Vaudeville row (BRO-7846)",
+      "Reject the bestoftheatre sources: they serve the 2019 Kiln poster (BRO-7846)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "handbagged-west-end-2014",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/handbagged-west-end-2014/thumbnail.jpg",
+          "poster": "/images/shows/handbagged-west-end-2014/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "Clear 2019 Kiln revival art the finder attached to the 2014 Vaudeville row (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "handbagged-west-end-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1dD5tQYaCblxrUSp6Y0c3r/d226f217b11ba8304e4a061fec6a6967/Handbagged_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1dD5tQYaCblxrUSp6Y0c3r/d226f217b11ba8304e4a061fec6a6967/Handbagged_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1dD5tQYaCblxrUSp6Y0c3r/d226f217b11ba8304e4a061fec6a6967/Handbagged_480x720.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1dD5tQYaCblxrUSp6Y0c3r/d226f217b11ba8304e4a061fec6a6967/Handbagged_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1dD5tQYaCblxrUSp6Y0c3r/d226f217b11ba8304e4a061fec6a6967/Handbagged_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1dD5tQYaCblxrUSp6Y0c3r/d226f217b11ba8304e4a061fec6a6967/Handbagged_480x720.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+          "https://www.bestoftheatre.co.uk/assets/images/content/shows/rectangle-poster/resized/188x282/4466-1394468936-handbaggedrec2014.jpg",
+          "https://www.bestoftheatre.co.uk/assets/images/content/shows/square-poster/original/handbagged.jpg"
+        ],
+        "description": "Reject the bestoftheatre sources: they serve the 2019 Kiln poster (BRO-7846)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-19T18:37:15.006Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for handbagged-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for handbagged-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
+}

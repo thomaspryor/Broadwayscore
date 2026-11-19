@@ -587,3 +587,46 @@ describe('message market inference: every mention must agree (ship-check review)
     assert.equal(inferMarketFromMessage('Hamilton', 'Saw Hamilton reviewed on Broadway.com'), null);
   });
 });
+
+describe('a year next to the title picks one run in the market (BRO-7844 cousins)', () => {
+  const { inferMarketFromMessage, resolveShowUsingMessage } = require('../../scripts/lib/content-request-routing.js');
+  const shows = [
+    { id: 'dirty-dancing-2027', title: 'Dirty Dancing', category: 'broadway', previewsStartDate: '2027-03-01' },
+    { id: 'dirty-dancing-tour-2026', title: 'Dirty Dancing', category: 'tour', openingDate: '2026-09-01' },
+    { id: 'dirty-dancing-west-end-2013', title: 'Dirty Dancing', category: 'west-end', openingDate: '2013-07-01' },
+    { id: 'dirty-dancing-west-end-2027', title: 'Dirty Dancing', category: 'west-end' },
+    { id: 'death-of-a-salesman-1999', title: 'Death of a Salesman', category: 'broadway', openingDate: '1999-02-10' },
+    { id: 'death-of-a-salesman-2012', title: 'Death of a Salesman', category: 'broadway', openingDate: '2012-03-15' },
+    { id: 'art-1998', title: 'Art', category: 'broadway', openingDate: '1998-03-01' },
+    { id: 'art-2025', title: 'Art', category: 'broadway', openingDate: '2025-09-01' },
+    { id: 'stereophonic-2024', title: 'Stereophonic', category: 'broadway', openingDate: '2024-04-19' },
+    { id: 'stereophonic-west-end-2025', title: 'Stereophonic', category: 'west-end', openingDate: '2025-05-01' },
+  ];
+  const r = (t, m) => resolveShowUsingMessage(t, null, shows, m);
+  it('a year next to the title picks one of two West End runs', () => {
+    assert.equal(r('Dirty Dancing', 'Dirty Dancing in the West End 2013 has no cast').resolved.id, 'dirty-dancing-west-end-2013');
+  });
+  it('no year, a year matching none, or a year in another sentence stays parked', () => {
+    assert.equal(r('Dirty Dancing', 'Dirty Dancing in the West End has no cast').ambiguous, true);
+    assert.equal(r('Dirty Dancing', 'Dirty Dancing in the West End 1999 has no cast').ambiguous, true);
+    assert.equal(r('Dirty Dancing', 'I saw it in 2013. Dirty Dancing in the West End has no cast').ambiguous, true);
+  });
+  it('phone numbers, prices and dates are not years (review probes)', () => {
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway, call 212-555-1999').ambiguous, true);
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway tickets were $2012').ambiguous, true);
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway posted 01/2012').ambiguous, true);
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway in 2012 is missing a review').resolved.id, 'death-of-a-salesman-2012');
+  });
+  it('two different years near the title stay parked', () => {
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway 1999 or 2012 is missing a review').ambiguous, true);
+  });
+  it('the title must be a whole word ("Art" inside "started")', () => {
+    const { yearNearTitle } = require('../../scripts/lib/content-request-routing.js');
+    assert.equal(yearNearTitle('Art', 'The show restarted in 1998 on Broadway'), null);
+    assert.equal(yearNearTitle('Art', 'Art (1998) on Broadway'), 1998);
+  });
+  it('London is NOT read as a market: it often means where a show came from', () => {
+    assert.equal(inferMarketFromMessage('Stereophonic', 'Stereophonic transferred from London and is missing reviews'), null);
+    assert.equal(r('Stereophonic', 'Stereophonic transferred from London and is missing reviews').ambiguous, true);
+  });
+});

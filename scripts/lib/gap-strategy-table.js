@@ -123,6 +123,9 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
   return { strategy: null, skipped };
 }
 
+const { isMajorFulltextOutlet, isRecentProductionShow } = require('./outlet-fulltext');
+// A gap the full-text floor counts: a major outlet on a 2025/26 production (BRO-7702).
+const isFloorGap = (c) => isMajorFulltextOutlet(c.outletId) && isRecentProductionShow(String(c.showId || String(c.reviewKey || '').split('/')[0]));
 const ms = (v) => { const t = Date.parse(v || ''); return Number.isFinite(t) ? t : 0; };
 
 /**
@@ -169,11 +172,15 @@ function collectorRefetchGate(collectorDecision) {
 }
 
 /**
- * Candidate order: recent shows (<=2y) first, then newest show first, then
- * cheapest planned strategy first, then a stable key.
+ * Candidate order: recent shows (<=2y) first, then the major outlets the
+ * full-text floors cover (outlet-fulltext.MAJOR_FULLTEXT_OUTLETS, BRO-7702:
+ * their gaps sat at queue positions ~700-1250 of 7090 and were never reached),
+ * then newest show first, then cheapest planned strategy first, then a stable key.
  */
 function compareCandidates(a, b) {
   if ((a.recency === 'recent') !== (b.recency === 'recent')) return a.recency === 'recent' ? -1 : 1;
+  const ma = isFloorGap(a); const mb = isFloorGap(b);
+  if (ma !== mb) return ma ? -1 : 1;
   const da = ms(a.showDate); const db = ms(b.showDate);
   if (da !== db) return db - da;
   const cost = { F: 0, B: 1, P: 2, S: 2 };

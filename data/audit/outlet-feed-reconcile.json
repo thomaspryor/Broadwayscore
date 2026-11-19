@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T16:51:41.251Z",
+  "generatedAt": "2026-11-19T18:13:49.180Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -14,6 +14,11 @@
       "openingDate": "2026-11-14"
     },
     {
+      "id": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "openingDate": "2026-11-17"
+    },
+    {
       "id": "jenufa-off-broadway-2026",
       "title": "Jenůfa",
       "openingDate": "2026-11-16"
@@ -26,6 +31,11 @@
     {
       "id": "la-distance-bam-off-broadway-2026",
       "title": "La Distance",
+      "openingDate": "2026-11-18"
+    },
+    {
+      "id": "florence-off-west-end-2026",
+      "title": "Florence",
       "openingDate": "2026-11-18"
     },
     {
@@ -52,6 +62,11 @@
       "id": "blue-man-group-a-new-holiday-surprise-2026",
       "title": "Blue Man Group “A New Holiday Surprise”",
       "openingDate": "2026-11-17"
+    },
+    {
+      "id": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "title": "A Homo Alone 2: Yikes, We Did It Again!",
+      "openingDate": "2026-11-19"
     },
     {
       "id": "top-gunchained-off-west-end-2026",
@@ -158,10 +173,6 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -180,20 +191,93 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londonpubtheatres",
-      "error": "Client network socket disconnected before secure TLS connection was established"
-    },
-    {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 868,
-  "matchedGaps": 0,
+  "itemsScanned": 893,
+  "matchedGaps": 9,
   "possibleGaps": 3,
   "gaps": [
+    {
+      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "title": "A Homo Alone 2: Yikes, We Did It Again!",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/a-homo-alone-2-yikes-we-did-it-again-the-other-palace/",
+      "headline": "A Homo Alone 2: Yikes, We Did It Again! &#8211; The Other Palace ★★★★",
+      "publishDate": "2026-11-19"
+    },
+    {
+      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "title": "A Homo Alone 2: Yikes, We Did It Again!",
+      "level": "matched",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-a-homo-alone-2-yikes-we-did-it-again-the-other-palace",
+      "headline": "Review: A Homo Alone 2: Yikes, We Did It Again! (The Other Palace)",
+      "publishDate": "2026-11-19"
+    },
+    {
+      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "title": "A Homo Alone 2: Yikes, We Did It Again!",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/a-homo-alone-2-yikes-we-did-it-again-the-other-palace-london/",
+      "headline": "A Homo Alone 2: Yikes, We Did It Again! – The Other Palace, London",
+      "publishDate": "2026-11-19"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "title": "Florence",
+      "level": "matched",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-florence-park-theatre",
+      "headline": "Review: Florence (Park Theatre)",
+      "publishDate": "2026-11-19"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "title": "Florence",
+      "level": "matched",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/florence-play-honor-santa-barnes/",
+      "headline": "Florence &#8211;  Park Theatre",
+      "publishDate": "2026-11-19"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "title": "Florence",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/florence-park-theatre-london/",
+      "headline": "Florence – Park Theatre, London",
+      "publishDate": "2026-11-19"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "title": "Florence",
+      "level": "matched",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-florence-park-theatre",
+      "headline": "Review: FLORENCE, Park Theatre",
+      "publishDate": "2026-11-19"
+    },
+    {
+      "showId": "radio-galaxy-regional-2026",
+      "title": "Radio Galaxy",
+      "level": "matched",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-radio-galaxy-is-an-emotionally-manipulative-black-hole_1860330/",
+      "headline": "Review: Radio Galaxy Is an Emotionally Manipulative Black Hole",
+      "publishDate": "2026-11-19"
+    },
+    {
+      "showId": "the-fantasticks-2026",
+      "title": "The Fantasticks",
+      "level": "matched",
+      "outletId": "gay-city-news",
+      "url": "https://gaycitynews.com/the-fantasticks-classic-romance-same-sex-twist/",
+      "headline": "‘The Fantasticks’: Classic romance with a same-sex twist",
+      "publishDate": "2026-11-19"
+    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",

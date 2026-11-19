@@ -77,6 +77,21 @@ function publish(nightlyPath, ledgerPath) {
   });
 }
 
+/** check-outlet-fulltext-floors.js --json against tonight's ledger; null when it cannot run (fail-soft). */
+function outletFloorVerdict(ledger) {
+  const r = spawnSync(process.execPath, [path.join(__dirname, 'check-outlet-fulltext-floors.js'), '--json', `--ledger=${ledger}`], {
+    cwd: ROOT, encoding: 'utf8', timeout: 5 * 60000, maxBuffer: 32 * 1024 * 1024,
+  });
+  try {
+    const v = JSON.parse(r.stdout);
+    log(`outlet floors: ${v.ok ? 'ok' : `below ${v.failingOutlets.join(',') || '-'}; ${v.staleUnattempted.length} stale unattempted`}`);
+    return N.outletFloorSummary(v);
+  } catch {
+    log(`outlet floors: check did not run (exit ${r.status}) ${String(r.stderr || '').slice(0, 200)}`);
+    return null;
+  }
+}
+
 function finishRow(row, nightlyPath, ledgerPath) {
   log(`summary row: ${JSON.stringify(row)}`);
   if (DRY) { log('dry run: row not recorded, nothing published'); return 0; }
@@ -154,6 +169,17 @@ function main() {
       return finishRow(N.buildNightlyRow({ ...base, status: 'busy' }), nightlyPath, ledgerPath);
     }
   }
+  // BRO-7702: a bare push failure (nothing else went wrong: pushOnlyFailure) is
+  // retried once more tonight instead of failing the night; a crash stays failed.
+  let pushRetried = null;
+  if (!DRY && runExit === 1 && summary && summary.pushFailed && summary.pushOnlyFailure) {
+    const retrySum = path.join(STATE_DIR, 'retry-pending-summary.json');
+    try { fs.unlinkSync(retrySum); } catch { /* none */ }
+    const retryExit = driver(['--retry-pending', `--summary=${retrySum}`], env, 20);
+    pushRetried = { exit: retryExit, landed: (readJsonSafe(retrySum) || {}).landed || 0 };
+    log(`push retry: exit ${retryExit}, ${pushRetried.landed} review(s) landed`);
+    if (retryExit === 0) { runExit = 0; summary.pushFailed = false; summary.pushRetried = pushRetried; summary.landed = (summary.landed || 0) + pushRetried.landed; }
+  }
   const planExit = driver(['--dry-run', `--json=${planPath}`], env, 20);
   const plan = readJsonSafe(planPath);
   const counts = plan ? N.planCounts(plan.candidates) : null;
@@ -166,6 +192,8 @@ function main() {
     ...base, status, summary, counts, reopened, superseded, ledgerRows: L.readRows(runLedger),
     driverExit: runExit || recExit, ownerBatch,
   });
+  // BRO-7702: the major-outlet full-text floor verdict rides on the row (and so the digest line).
+  if (!DRY) row.outletFloors = outletFloorVerdict(runLedger);
   const code = finishRow(row, nightlyPath, ledgerPath);
   if (DRY) { try { fs.unlinkSync(runLedger); } catch { /* none */ } }
   return status === 'failed' ? 1 : code;

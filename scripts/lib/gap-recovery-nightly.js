@@ -259,10 +259,34 @@ function renderDigestLine(rows, nowMs = Date.now()) {
   if (last.status === 'failed' && !(last.alerts || []).some((a) => a.key === 'run_failed')) line += ' The nightly run stopped with an error.';
   const alerts = (last.alerts || []).map((a) => a.text).filter(Boolean);
   if (alerts.length) line += ` Needs attention: ${alerts.join('; ')}.`;
+  const fl = outletFloorLine(last.outletFloors);
+  if (fl) line += ` ${fl}`;
   return line;
 }
 
+/** The counts-only slice of check-outlet-fulltext-floors.js --json kept on the nightly row (BRO-7702). Pure. */
+function outletFloorSummary(v) {
+  if (!v || typeof v !== 'object' || !Array.isArray(v.outlets)) return null;
+  return {
+    ok: !!v.ok,
+    below: v.outlets.filter((x) => x.below).map((x) => ({ outlet: x.outlet, pct: x.pct, floor: x.floor, unattempted: x.unattempted })),
+    failingOutlets: v.failingOutlets || [],
+    staleUnattempted: (v.staleUnattempted || []).length,
+  };
+}
+
+/** One plain-English digest sentence for the floor verdict; null when every outlet is at its floor. Pure. */
+function outletFloorLine(f) {
+  if (!f || (f.ok && !(f.below || []).length)) return null;
+  const parts = [];
+  if ((f.below || []).length) parts.push(`below the full-text target: ${f.below.map((b) => `${b.outlet} ${b.pct}% (target ${b.floor}%)`).join(', ')}`);
+  if (f.staleUnattempted) parts.push(`${fmt(f.staleUnattempted)} major-outlet review${f.staleUnattempted === 1 ? '' : 's'} missing text for over a week with no recovery attempt yet`);
+  return `Major outlets ${parts.join('; ')}.`;
+}
+
 module.exports = {
+  outletFloorSummary,
+  outletFloorLine,
   INERT_STRATEGIES: INERT,
   NIGHTLY_REL,
   DEFAULT_NIGHTLY_CEILING,

@@ -8,20 +8,38 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifyGapCandidateUrl, namedNonReviewReason, NAMED_NON_REVIEW_URL_PATTERNS, NON_REVIEW_HOST_PATTERNS, ALLOWED_ORG_HOSTS } = require('./non-review-url-patterns.js');
+const { classifyGapCandidateUrl, namedNonReviewReason, NAMED_NON_REVIEW_URL_PATTERNS, NON_REVIEW_HOST_PATTERNS, nonReviewHostMatch, classifyReviewUrl } = require('./non-review-url-patterns.js');
 
-// Mirrors audit-show-review-gap.js's registrableHost() collapse for a plain
-// host-pattern check (task #71 residual-gap triage additions) — including its
-// multi-part public-suffix list, so a .co.uk host collapses to 3 labels, not 2.
-const MULTIPART_SUFFIXES = ['co.uk', 'org.uk', 'me.uk', 'ac.uk', 'gov.uk', 'com.au', 'net.au', 'org.au', 'co.nz', 'co.za', 'com.br'];
-function isHostBlocked(url) {
-  let host;
-  try { host = new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return false; }
-  const parts = host.split('.').filter(Boolean);
-  const keep = MULTIPART_SUFFIXES.some(s => host.endsWith('.' + s)) ? 3 : 2;
-  const registrable = parts.length > keep ? parts.slice(-keep).join('.') : host;
-  return NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(registrable)) && !ALLOWED_ORG_HOSTS.has(registrable);
-}
+// BRO-7773: the real host check classifyReviewUrl uses (rule 15). This file used
+// to mirror it with a registrable-host-only copy, which is how the
+// subdomain-anchored patterns went dead without a failing test.
+const isHostBlocked = nonReviewHostMatch;
+
+// BRO-7773 class guard: every subdomain-anchored host pattern must actually
+// fire through classifyReviewUrl. A pattern written as /^sub\.host\.tld$/ or
+// /^prefix\./ never matches the registrable-host collapse alone; the stagemag
+// digital-program page sat in the T1/T2 silent-gap row for days because of it.
+test('NON_REVIEW_HOST_PATTERNS: subdomain-anchored patterns fire through classifyReviewUrl (BRO-7773)', () => {
+  for (const url of [
+    'https://stagemag.broadwayworld.com/modern/Nacho-Ate-Spiderman-New-Jersey-Repertory-Company-124231',
+    'https://tickets.mothdays.com/booking/calendar/45208/2026-02',
+    'https://boxoffice.example-theatre.com/show/1',
+    'https://podcasts.apple.com/us/podcast/x/id1',
+    'https://jt-pr-dot-yamm-track.appspot.com/abc',
+  ]) {
+    assert.equal(nonReviewHostMatch(url), true, url);
+    assert.deepEqual(classifyReviewUrl(url), { ok: false, reason: 'non-review-host' }, url);
+  }
+  // Every literal ^sub.host.tld$ pattern: its own host must be classified non-review.
+  for (const rx of NON_REVIEW_HOST_PATTERNS) {
+    const m = /^\^([a-z0-9-]+(?:\\\.[a-z0-9-]+){2,})\$$/.exec(rx.source);
+    if (!m) continue;
+    const host = m[1].replace(/\\\./g, '.');
+    assert.equal(classifyReviewUrl(`https://${host}/some/page`).ok, false, `${rx} never fires for ${host}`);
+  }
+  // Main-site BWW reviews stay classifiable.
+  assert.equal(nonReviewHostMatch('https://www.broadwayworld.com/los-angeles/article/Review-NACHO-ATE-SPIDERMAN-20261110'), false);
+});
 
 test('namedNonReviewReason: ticketing reseller hosts are named', () => {
   assert.equal(namedNonReviewReason('https://www.newyorkcitytheatre.com/some-show'), 'ticketing-reseller');
@@ -167,7 +185,7 @@ test('NAMED_NON_REVIEW_URL_PATTERNS: every entry has a host regex and a reason s
 });
 
 // ── task #1073: classifyReviewUrl — THE canonical candidate gate ──────────────
-const { classifyReviewUrl, hostOf, registrableHost } = require('./non-review-url-patterns.js');
+const { hostOf, registrableHost } = require('./non-review-url-patterns.js');
 const domainFilters = require('./domain-filters.js');
 const { isRoundupUrl } = require('./review-guards.js');
 const { isProfileUrl } = require('./review-normalization.js');

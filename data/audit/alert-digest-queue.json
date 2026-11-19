@@ -514,21 +514,6 @@
     "queuedAt": "2026-11-19T15:59:32.306Z"
   },
   {
-    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
-    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'review: Bree Samani-McGrath (1) -> Bree Samani (2) [extra words, both pages sizeable]'\n+ ]\n- []\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
-    "fields": [],
-    "queuedAt": "2026-11-19T15:59:32.788Z"
-  },
-  {
     "conditionKey": "corpus-drift:contradicted-flag-basis",
     "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
     "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 4887 shows scanned, 1 match(es).\n  [wrongProduction] the-bookstore-off-broadway-2026/theater-life--alix-cohen.json\n      basis cites 2017-01-17 but record is dated 2026-01-17, inside run 2026-01-10..2026-02-22\n\nFAIL: 1 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
@@ -603,47 +588,6 @@
       }
     ],
     "queuedAt": "2026-11-19T16:06:11.355Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T16:51:12.404Z"
-  },
-  {
-    "conditionKey": "test-yml:data-validation-red:run-data-validation",
-    "title": "Data audit failing: Run data validation",
-    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-    "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44566999976",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Job",
-        "value": "Data Validation"
-      },
-      {
-        "name": "Step",
-        "value": "Run data validation"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44566999976)"
-      }
-    ],
-    "queuedAt": "2026-11-19T16:41:50.925Z"
   },
   {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:its-a-wonderful-life-a-live-radio-play-2026",
@@ -767,20 +711,6 @@
     "queuedAt": "2026-11-19T17:46:16.133Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-19.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T17:46:16.379Z"
-  },
-  {
     "conditionKey": "land:land/bro-7846-archiver-guard",
     "title": "Landing blocked: rebase red on land/bro-7846-archiver-guard",
     "description": "land.yml did not land land/bro-7846-archiver-guard: the rebase gate went red at cab773b5cf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44577730178",
@@ -838,5 +768,155 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-19T17:17:29.387Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7849-render-impact",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7849-render-impact",
+    "description": "land.yml did not land land/bro-7849-render-impact: the unit-tests-node gate went red at 87e1d89bfb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44582712468",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7849-render-impact"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "87e1d89bfb934ca21b16b63b494643d44faeae65"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44582712468"
+      }
+    ],
+    "queuedAt": "2026-11-19T18:05:05.096Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/lib/autoclear-vs-ensemble.test.mjs::corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)",
+    "title": "Live-data test failing: corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow) (scripts/lib/autoclear-vs-ensemble.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)\" in scripts/lib/autoclear-vs-ensemble.test.mjs is red against the live corpus.\n\n1 wrongProduction auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix\n+ actual - expected\n\n+ [\n+   'assassins-off-broadway-2021/stageandcinema--tony-frankel.json (rebuild: other-production url no longer detected (was: Date guard: review 2022-03-16 is 43d after 2022-01-25 (close+7d) — likely different production))'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/lib/autoclear-vs-ensemble.test.mjs::corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)",
+    "fields": [],
+    "queuedAt": "2026-11-19T18:03:56.896Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/book-of-mormon-2011-criticname.test.mjs::BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors",
+    "title": "Live-data test failing: BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors (tests/unit/book-of-mormon-2011-criticname.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors\" in tests/unit/book-of-mormon-2011-criticname.test.mjs is red against the live corpus.\n\nENOENT: no such file or directory, open '<root>/data/review-texts/book-of-mormon-2011/guardian--david-cote.json'",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/book-of-mormon-2011-criticname.test.mjs::BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors",
+    "fields": [],
+    "queuedAt": "2026-11-19T18:03:56.924Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-data-validation",
+    "title": "Data audit failing: Run data validation",
+    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44588975602",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run data validation"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44588975602)"
+      }
+    ],
+    "queuedAt": "2026-11-19T19:07:04.039Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7847-ledger-persist",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7847-ledger-persist",
+    "description": "land.yml did not land land/bro-7847-ledger-persist: the scripts-lib-tests gate went red at 99c5f6ad44. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44584220474",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7847-ledger-persist"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "99c5f6ad4488abf51717c4519311d9efee09a7d9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44584220474"
+      }
+    ],
+    "queuedAt": "2026-11-19T18:13:44.245Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7853-mwnu1aee",
+    "title": "Landing blocked: merged-tree-tests red on land/job/linear-BRO-7853-mwnu1aee",
+    "description": "land.yml did not land land/job/linear-BRO-7853-mwnu1aee: the merged-tree-tests gate went red at da5185f9c7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7853-mwnu1aee @ da5185f9c7 (origin/land/job/linear-BRO-7853-mwnu1aee) → origin/main @ 2544d51b4f [land] attempt 1/3: rebased onto 310eef9d1f, 2 file(s) changed — running checks [land] verified-base: main moved bb6cfa5432 → 310eef9d1f across 391 file(s), substantive — re-checking on the merged tree (+6 test file(s) changed on main since the verified base); full re-check:  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44584271663",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7853-mwnu1aee"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "da5185f9c7874b69e7e2ff5e8ba4e3fa531ffdd7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44584271663"
+      }
+    ],
+    "queuedAt": "2026-11-19T18:49:34.782Z"
   }
 ]

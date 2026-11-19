@@ -874,6 +874,22 @@ function hostOf(u) {
   catch { return null; }
 }
 
+// BRO-7773: NON_REVIEW_HOST_PATTERNS holds subdomain-anchored entries
+// (/^stagemag\.broadwayworld\.com$/, /^tickets\./, /^boxoffice\./,
+// /^podcasts\.apple\.com$/ ...) but classifyReviewUrl only tested them against
+// hostOf(), which collapses to the registrable domain, so they never matched:
+// a BWW digital-program page (stagemag) was ingested as a review and sat in the
+// silent-gap row with no scorable text. Test the full host (cosmetic www./amp.
+// prefixes stripped) as well as the registrable one. The .org allow-list stays
+// keyed on the registrable host, as before.
+function nonReviewHostMatch(url) {
+  let full;
+  try { full = stripCosmeticPrefixes(new URL(url).hostname); } catch { return false; }
+  const reg = registrableHost(full);
+  if (!reg || ALLOWED_ORG_HOSTS.has(reg)) return false;
+  return NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(reg) || (!!full && rx.test(full)));
+}
+
 /**
  * The host a publication is registered under, for outlet-registry lookups
  * (BRO-6716). Two shared-host shapes name one publication under a host the
@@ -917,7 +933,7 @@ function classifyReviewUrl(url) {
   // BRO-6696: share discovery's film, book-shop and announcement policy with
   // ingest. A distinct reason lets the narrow write gate refuse these too.
   if (isNonReviewUrl(url)) return { ok: false, reason: 'non-stage-review' };
-  if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) {
+  if (nonReviewHostMatch(url)) {
     return { ok: false, reason: 'non-review-host' };
   }
   // Ticket sellers: read the WRITE PATH's list rather than keeping a parallel
@@ -1194,5 +1210,6 @@ module.exports = {
   listingPageUrlReason,
   registrableHost,
   hostOf,
+  nonReviewHostMatch,
   classifyReviewUrl,
 };

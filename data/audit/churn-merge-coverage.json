@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-19T17:42:33.787Z",
+    "generatedAt": "2026-11-19T18:35:37.232Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -9,26 +9,26 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 0,
-    "coveredCount": 3,
+    "exemptCount": 1,
+    "coveredCount": 2,
     "highChurnTracked": 3
   },
   "flagged": [],
-  "exempt": [],
+  "exempt": [
+    {
+      "path": "data/audit/alert-ledger.json",
+      "churn": 33
+    }
+  ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 135,
+      "churn": 106,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 36,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/stage-latency.jsonl",
-      "churn": 32,
+      "churn": 35,
       "mergeAttr": "union"
     }
   ]

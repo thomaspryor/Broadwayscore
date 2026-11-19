@@ -468,13 +468,18 @@ async function runChecks() {
   // 11b. Resource budget headroom (single-show pre-flight).
   // Soft-warns when any resource has less than 1.5× the per-show estimate
   // available — i.e. enough to cover this show plus ~half another. Failures
-  // block. See scripts/lib/opening-night-budget.js.
+  // block, except ScrapingBee-only shortfalls (fallback provider, WARN; BRO-7854).
+  // See scripts/lib/opening-night-budget.js.
   try {
-    const { checkBudget } = require('./lib/opening-night-budget');
+    const { checkBudget, splitBudgetBlockers } = require('./lib/opening-night-budget');
     const budget = await checkBudget(1);
-    if (!budget.ok) {
-      const lines = budget.blockers.map(b => `${b.resource}: need ${b.needed} ${b.unit || ''}, ${b.available} available`);
-      report(FAIL, 'Resource budget (1 show)', lines.join('; '));
+    const { hard, soft } = splitBudgetBlockers(budget.blockers);
+    const fmt = b => `${b.resource}: need ${b.needed} ${b.unit || ''}, ${b.available} available`;
+    if (hard.length > 0) {
+      report(FAIL, 'Resource budget (1 show)', hard.concat(soft).map(fmt).join('; '));
+    } else if (soft.length > 0) {
+      // SB is a fallback link; owner policy is ride-it-out (BRO-7854).
+      report(WARN, 'Resource budget (1 show)', `${soft.map(fmt).join('; ')} (fallback provider, riding it out per policy)`);
     } else {
       // Soft-warn at 1.5× per-show headroom (i.e. tight if we couldn't fit a second one)
       const tight = [];

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T17:30:45.257Z",
+  "timestamp": "2026-11-19T19:05:57.522Z",
   "stats": {
-    "totalReviews": 83008,
-    "alreadyFlagged": 22517,
+    "totalReviews": 83082,
+    "alreadyFlagged": 22533,
     "dateGuardCatches": 221,
     "directorMismatch": 3786,
-    "tvFilmSignals": 2369,
-    "londonSignals": 3822,
-    "offBroadwaySignals": 770,
+    "tvFilmSignals": 2372,
+    "londonSignals": 3825,
+    "offBroadwaySignals": 772,
     "yearMismatch": 386,
-    "noPublishDate": 8295
+    "noPublishDate": 8272
   },
   "findings": [
     {
@@ -15869,6 +15869,19 @@
       ]
     },
     {
+      "showId": "danny-and-the-deep-blue-sea-off-broadway-2023",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "publishDate": "2023-11-14",
+      "url": "https://www.nytimes.com/2023/11/14/theater/danny-and-the-deep-blue-sea-review-aubrey-plaza.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
       "showId": "daphne-off-broadway-2023",
       "file": "vulture--sara-holdren.json",
       "score": 60,
@@ -24009,6 +24022,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "file": "daily-mail--unknown.json",
+      "score": null,
+      "publishDate": "2026-11-18",
+      "url": "https://www.dailymail.com/tvshowbiz/article-16302081/Florence-Pugh-fires-surgery-speculation-faces-change.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -34568,7 +34595,7 @@
     {
       "showId": "into-the-woods-2022",
       "file": "culturesauce--thom-geier.json",
-      "publishDate": null,
+      "publishDate": "2022-07-10",
       "url": "https://culturesauce.com/into-the-woods-broadway-review/",
       "findings": [
         {
@@ -50030,6 +50057,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (5x) more than 2013 (0x). 2026 matches production: once-pitlochry-festival-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "one-day-the-musical-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2026-11-18",
+      "url": "https://www.whatsonstage.com/news/one-day-musical-exclusive-first-look-at-west-end-premiere_1737687/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -101507,6 +101547,19 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2026-11-18",
+      "url": "https://www.theguardian.com/stage/2026/nov/18/desire-under-the-elms-review-almeida-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "liamodell--unknown.json",
       "score": 40,
       "publishDate": "2026-11-18",
@@ -105547,6 +105600,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "gettin-the-band-back-together-2018",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": "2018-08-13",
+      "url": "https://www.theatermania.com/broadway/reviews/the-familiar-feeling-of-gettin-the-band-back-toget_86128.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -123346,6 +123412,19 @@
     },
     {
       "showId": "othello-west-end-2022",
+      "file": "independent--jessie-thompson.json",
+      "publishDate": "2022-12-01",
+      "url": "https://www.independent.co.uk/independentpremium/culture/othello-review-national-theatre-b2236955.html?r=73253",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "othello-west-end-2022",
       "file": "liamodell--liam-odell.json",
       "score": 97,
       "publishDate": "2022-12-01",
@@ -123758,6 +123837,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "paradise-square-2022",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "2022-04-03",
+      "url": "https://www.theatermania.com/broadway/reviews/review-broadway-paradise-square-five-points_93598.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -130641,6 +130734,19 @@
       "score": 92,
       "publishDate": "2024-10-20",
       "url": "https://www.chicagotribune.com/2024/10/20/review-nicole-scherzinger-is-devastating-in-a-sultry-new-sunset-blvd-on-broadway/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "file": "exeunt-magazine--cameron-kelsall.json",
+      "publishDate": "2024-10-24",
+      "url": "https://exeuntnyc.com/reviews/review-sunset-blvd-at-the-st-james-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

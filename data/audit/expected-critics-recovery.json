@@ -298,8 +298,16 @@
         {
           "at": "2026-11-12T17:45:06.516Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-19T18:33:25.408Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-19T18:33:25.408Z",
+        "note": "auto (BRO-7312): 3 targeted searches of theatermania for tristan-and-yseult-off-broadway-2026 found no review (2026-11-11, 2026-11-12, 2026-11-19)"
+      }
     },
     "iphigenie-en-tauride-english-national-opera-west-end-2026::thestage": {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -447,6 +455,54 @@
         },
         {
           "at": "2026-11-16T19:48:20.323Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "tosca-off-broadway-2026::theatermania": {
+      "showId": "tosca-off-broadway-2026",
+      "outletId": "theatermania",
+      "openingDate": "2026-11-01",
+      "firstSeenMissingAt": "2026-11-19T18:33:09.634Z",
+      "attempts": [
+        {
+          "at": "2026-11-19T18:33:14.918Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "downstate-2026::talkinbroadway": {
+      "showId": "downstate-2026",
+      "outletId": "talkinbroadway",
+      "openingDate": "2026-11-15",
+      "firstSeenMissingAt": "2026-11-19T18:33:09.634Z",
+      "attempts": [
+        {
+          "at": "2026-11-19T18:33:47.764Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "downstate-2026::theater-scene": {
+      "showId": "downstate-2026",
+      "outletId": "theater-scene",
+      "openingDate": "2026-11-15",
+      "firstSeenMissingAt": "2026-11-19T18:33:09.634Z",
+      "attempts": [
+        {
+          "at": "2026-11-19T18:33:47.764Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "downstate-2026::variety": {
+      "showId": "downstate-2026",
+      "outletId": "variety",
+      "openingDate": "2026-11-15",
+      "firstSeenMissingAt": "2026-11-19T18:33:09.634Z",
+      "attempts": [
+        {
+          "at": "2026-11-19T18:33:47.764Z",
           "outcome": "no_evidence"
         }
       ]

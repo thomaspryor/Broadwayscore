@@ -42,9 +42,23 @@ const COOKIE_PROBES = {
     minBody: 1500,
     // In a class attribute only, never a script/CSS bundle mention.
     wallMarker: /class="[^"]*martech-paywall__blur/i,
-    gateMarker: /martech-paywall__blur|data-js="martech-paywall"|martech-regwall/i,
+    // is-subscriber--false: the site names the reader a non-subscriber (also
+    // on a metered free read, which has no paywall element).
+    // Only inside a rendered class attribute, never CSS/bundle text.
+    gateMarker: /martech-paywall__blur|data-js="martech-paywall"|martech-regwall|class="[^"]*\bis-subscriber--false\b/i,
+    // Evidence required before adopting cookies or spending a login: the
+    // rendered paywall itself, never the reader class alone (review
+    // 2026-11-19: a subscriber page captured before its class flips must not
+    // start a login).
+    loginWallMarker: /class="[^"]*martech-paywall__blur|data-js="martech-paywall"|class="[^"]*martech-regwall/i,
     browserOnly: true,
     extractBody: (html) => require('./browser-outlet-adapters').extractTelegraphBody(html),
+    // Metered: about 1 in 4 fresh anonymous loads read the full article
+    // (measured 2026-11-19: 2 of 7), which read 'vacuous' twice in a row on
+    // a live renewal. The page names the reader instead: subscriber page
+    // carries is-subscriber--true, every anonymous load (free read or
+    // walled) is-subscriber--false.
+    subscriberMarker: /class="[^"]*\bis-subscriber--true\b/,
   },
   // BRO-7705 probes. Every number below was measured live on 2026-11-17 on
   // the SAME url with the subscriber session and with none (the control), so
@@ -80,7 +94,13 @@ const COOKIE_PROBES = {
     url: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain',
     minBody: 4000,
     browserOnly: true,
-    loginWallMarker: /InContentBarrier|JOURNEY_PAYWALL/,
+    // Since 2026-11-19 a fresh anonymous browser gets this article as a free
+    // metered read (full 8474 chars) with a thin "Subscribe" bar rendered as
+    // data-testid="paywall-bar-thin"; the subscriber page has no bar. The bare
+    // word InContentBarrier is in the strings bundle of BOTH pages, so it only
+    // counts inside a rendered attribute.
+    wallMarker: /data-testid="paywall-bar(?:-[a-z]+)?"/,
+    loginWallMarker: /data-testid="paywall-bar(?:-[a-z]+)?"|JOURNEY_PAYWALL|(?:class|data-testid)="[^"]*InContentBarrier/,
   },
   ft: {
     url: 'https://www.ft.com/content/681beb68-5155-11df-bed9-00144feab49a',
@@ -106,12 +126,16 @@ const COOKIE_PROBES = {
  * @param {RegExp} [p.wallMarker] - present => logged out
  * @param {RegExp} [p.gateMarker] - when given, a failing page must show it
  *   to count as 'logged-out'; otherwise the page is unrecognised => 'error'
+ * @param {RegExp} [p.subscriberMarker] - when given, a page passes only if it
+ *   shows it (the site names the reader a subscriber). Lets a metered free
+ *   read in the control count as walled instead of 'vacuous'.
  * @returns {'logged-in'|'logged-out'|'vacuous'|'error'}
  */
-function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker, gateMarker }) {
+function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker, gateMarker, subscriberMarker }) {
   const passes = (r) => !!r
     && (r.body || '').length >= minBody
-    && !(wallMarker && wallMarker.test(r.html || ''));
+    && !(wallMarker && wallMarker.test(r.html || ''))
+    && !(subscriberMarker && !subscriberMarker.test(r.html || ''));
   const recognisedGate = (r) => !gateMarker || gateMarker.test(r.html || '');
 
   // A bot interstitial says nothing about the login on either side: never
