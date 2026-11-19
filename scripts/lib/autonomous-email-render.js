@@ -301,7 +301,7 @@ const PLAIN_HEALTH = [
   [/^Data: Tours To You pages not checked/, () => 'Some national-tour pages were not checked'],
   // BRO-7779 rows (scripts/lib/press-night-readiness-gaps.js); main went red without these (BRO-7402 land).
   [/^Press night: openings not watched/, () => 'Some upcoming openings have no press-night watch, so their reviews are not tracked that night'],
-  [/^Data: BWW reverse-discovery audit stale/, () => 'The check that finds BroadwayWorld reviews we missed has not run lately'],
+  [/^Data: BWW reverse-discovery audit stale/, () => 'The check that finds shows we are missing from BroadwayWorld review roundups has not run lately'],
   [/^Press night: score gate undecided/, () => 'A short-run or special show opens soon with no decision on when its Critic Score shows'],
   [/^Data: closed national tours reopened automatically/, () => 'Closed national tours were reopened automatically'],
   [/^Data: closed national tour lists new dates/, () => 'A closed national tour is listing new dates'],
