@@ -30,3 +30,21 @@ test('overlay-imported live-score modules reach no Node builtin', () => {
 test('SCHEMA is shared by core and resolve', () => {
   assert.equal(require(path.join(dir, 'core.js')).SCHEMA, require(path.join(dir, 'schema.js')).SCHEMA);
 });
+
+// Cousin (BRO-7830): src/lib/critic-claim.ts imports Node 'crypto'; client
+// components must take constants from critic-claim-constants.ts instead.
+test("no 'use client' file imports @/lib/critic-claim", () => {
+  const bad = [];
+  const walk = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const f = path.join(d, e.name);
+      if (e.isDirectory()) walk(f);
+      else if (/\.tsx?$/.test(e.name)) {
+        const s = fs.readFileSync(f, 'utf8');
+        if (/^\s*['"]use client['"]/m.test(s.slice(0, 400)) && /from\s+['"]@\/lib\/critic-claim['"]/.test(s)) bad.push(f);
+      }
+    }
+  };
+  walk(path.resolve('src'));
+  assert.deepEqual(bad, []);
+});

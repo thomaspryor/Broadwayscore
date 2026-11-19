@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Modal from '@/components/show-cards/Modal';
 import { accessToken } from './CriticClaimPanel';
-import { BIO_MAX, TITLE_MAX, MAX_LINKS, PICK_MAX } from '@/lib/critic-claim';
+import { BIO_MAX, TITLE_MAX, MAX_LINKS, PICK_MAX } from '@/lib/critic-claim-constants';
 
 export interface EditableProfile {
   photoUrl: string | null; jobTitle: string | null; bio: string | null; outlets: string[];

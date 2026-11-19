@@ -1,15 +1,15 @@
 // BRO-6895: pure helpers for critic page claiming. No I/O, no framework
 // imports, so tests require() the real functions (CLAUDE.md §15).
 import crypto from 'crypto';
+import { BIO_MAX, TITLE_MAX, MAX_LINKS, PICK_MAX, FLAG_NOTE_MAX, FLAG_REASONS, type FlagReason } from './critic-claim-constants';
+
+export { BIO_MAX, TITLE_MAX, MAX_LINKS, PICK_MAX, FLAG_NOTE_MAX, FLAG_REASONS };
+export type { FlagReason };
 
 export type ClaimAction = 'approve' | 'decline';
 
 export const CLAIM_LINK_TTL_SECONDS = 14 * 24 * 3600;
-export const BIO_MAX = 300;
-export const TITLE_MAX = 100;
-export const MAX_LINKS = 6;
 export const MAX_OUTLETS = 6;
-export const PICK_MAX = 120;
 export const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,99}$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -265,16 +265,7 @@ export function claimHints(i: HintInput): string[] {
   return hints;
 }
 
-export const FLAG_NOTE_MAX = 600;
 
-/** What a critic can say is wrong with one of their reviews (BRO-6984). */
-export const FLAG_REASONS = {
-  wrong_score: 'Wrong score',
-  not_mine: 'Not my review',
-  wrong_show: 'Wrong show',
-  other: 'Something else',
-} as const;
-export type FlagReason = keyof typeof FLAG_REASONS;
 
 export interface ScoreFlagInput { slug: string; reviewKey: string; reason: FlagReason; note: string | null }
 

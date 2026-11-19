@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Modal from '@/components/show-cards/Modal';
 import { accessToken } from './CriticClaimPanel';
-import { FLAG_NOTE_MAX, FLAG_REASONS, type FlagReason } from '@/lib/critic-claim';
+import { FLAG_NOTE_MAX, FLAG_REASONS, type FlagReason } from '@/lib/critic-claim-constants';
 
 const inputClasses = 'w-full px-3 py-2.5 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-fg-muted focus:ring-2 focus:ring-brand focus:border-transparent';
 const btnPrimary = 'px-4 py-2 bg-cta text-white text-shadow-cta text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-50';
