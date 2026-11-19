@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-19T18:39:26.320Z",
-  "processed": 84,
-  "failed": 66,
-  "successRate": "56.0%",
+  "updatedAt": "2026-11-19T18:40:44.544Z",
+  "processed": 87,
+  "failed": 58,
+  "successRate": "60.0%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 51,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 8,
+    "scrapingdog": 14,
+    "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 24
+    "archive": 18
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-11-19T12:56:17.311Z",
@@ -76,6 +76,40 @@
       "t": "2026-11-19T13:03:39.282Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T18:32:41.707Z",
+      "event": "bb-session",
+      "session": "d3b29f0c",
+      "url": "https://deadline.com/2026/11/broadway-box-office-much-ado-about-nothing-billy-cr"
+    },
+    {
+      "t": "2026-11-19T18:38:21.766Z",
+      "event": "bb-session",
+      "session": "1468f396",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-19T18:38:21.995Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T18:38:38.027Z",
+      "event": "bb-session",
+      "session": "840a1ea0",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-19T18:38:38.267Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T18:40:00.854Z",
+      "event": "bb-session",
+      "session": "9ebe086b",
+      "url": "https://www.thereviewshub.com/top-gunchained-wiltons-music-hall-london/"
     }
   ]
 }
