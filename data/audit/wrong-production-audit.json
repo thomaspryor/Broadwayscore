@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T04:57:21.230Z",
+  "timestamp": "2026-11-19T05:33:19.255Z",
   "stats": {
-    "totalReviews": 82735,
-    "alreadyFlagged": 22495,
+    "totalReviews": 82744,
+    "alreadyFlagged": 22496,
     "dateGuardCatches": 220,
-    "directorMismatch": 3765,
-    "tvFilmSignals": 2356,
+    "directorMismatch": 3766,
+    "tvFilmSignals": 2357,
     "londonSignals": 3803,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8260
+    "noPublishDate": 8259
   },
   "findings": [
     {
@@ -31660,6 +31660,19 @@
       ]
     },
     {
+      "showId": "hedda-royal-bath-regional-2025",
+      "file": "mashable--kristy-puchko.json",
+      "publishDate": "2025-10-22",
+      "url": "https://mashable.com/article/hedda-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
       "showId": "heisenberg-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 79,
@@ -52507,6 +52520,19 @@
       "file": "latimes--james-c-taylor.json",
       "publishDate": "2026-11-05",
       "url": "https://www.latimes.com/entertainment-arts/story/2026-11-05/passing-strange-premieres-in-la-at-pasadena-playhouse",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"annie dorsen\" from passing-strange-2008"
+        }
+      ]
+    },
+    {
+      "showId": "passing-strange-regional-2026",
+      "file": "stage-raw--f-kathleen-foley.json",
+      "publishDate": "2026-11-17",
+      "url": "https://stageraw.com/stage-raw-review-passing-strange",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
