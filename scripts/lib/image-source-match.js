@@ -243,21 +243,61 @@ function keepExistingImage(show, format, sources) {
   return !recorded || !isRejectedImage({ [format]: recorded }, show);
 }
 
+// TodayTix's catalogue images live in this Contentful space; an image search
+// hit can also be recorded as a todaytix.com show page. The catalogue lists
+// only productions on sale now (BRO-5080).
+const TODAYTIX_ASSET_RE = /^(?:https?:\/\/images\.ctfassets\.net\/6pezt69ih962\/|google-images:https?:\/\/(?:www\.)?todaytix\.com\/)/i;
+const isTodayTixAsset = (u) => typeof u === 'string' && TODAYTIX_ASSET_RE.test(u);
+// TodayTix began selling Broadway tickets in September 2013. A row that closed
+// before then was never in its catalogue, so TodayTix art on it is always
+// another production's (BRO-7846: Follies 2011 carried the 2017 NT Live
+// banner, Grease 2007 an anti-vaping campaign).
+const TODAYTIX_FIRST_SALE = '2013-09-01';
+
+/**
+ * Why a TodayTix catalogue file on this row is another production's, or null.
+ * - the row closed before TodayTix sold tickets;
+ * - the row is closed, rejected a TodayTix source, and its poster and
+ *   thumbnail are both cleared: the fetcher took poster, thumbnail and hero
+ *   from one catalogue match, and a cleanup removed only the first two. The
+ *   BRO-5089 sweep left 27 heroes this way (BRO-7846). A row that still has a
+ *   poster rejected a stray file only (once-upon-a-mattress-2024 rejected a
+ *   banner and kept its own key art), so it is not flagged.
+ * A file whose recorded source is "manual:<note>" is not TodayTix and is kept.
+ */
+function wrongEraTodayTixReason(show, source) {
+  if (!show || !isTodayTixAsset(source) || show.status !== 'closed') return null;
+  const closed = String(show.closingDate || '').slice(0, 10);
+  if (closed && closed < TODAYTIX_FIRST_SALE) return 'TodayTix art on a row that closed before TodayTix sold tickets';
+  const images = show.images || {};
+  if (!images.poster && !images.thumbnail && (show.rejectedImageUrls || []).some(isTodayTixAsset)) {
+    return 'TodayTix art left after the same catalogue match\'s poster was rejected';
+  }
+  return null;
+}
+
 /**
  * Local image fields in use whose recorded source is in the row's
  * rejectedImageUrls: either the art is still the rejected production, or a
  * hand fix replaced the file without updating image-sources.json. Both need a
- * person (BRO-4901). Returns [{ id, format, path, source }].
+ * person (BRO-4901). Also fields whose recorded source is TodayTix catalogue
+ * art that cannot be this row's (wrongEraTodayTixReason, BRO-7846).
+ * Returns [{ id, format, path, source, why }].
  */
 function findRejectedSourcesInUse(shows, sources) {
   const out = [];
   for (const show of shows || []) {
-    if (!show || !show.images || !Array.isArray(show.rejectedImageUrls) || !show.rejectedImageUrls.length) continue;
+    if (!show || !show.images) continue;
     for (const format of ['poster', 'thumbnail', 'hero']) {
       const p = show.images[format];
       if (!imagePathOwner(p)) continue;
       const source = recordedSourceFor(show, format, sources);
-      if (source && isRejectedImage({ [format]: source }, show)) out.push({ id: show.id, format, path: p, source });
+      if (!source) continue;
+      if (isRejectedImage({ [format]: source }, show)) out.push({ id: show.id, format, path: p, source, why: 'recorded from rejected' });
+      else {
+        const why = wrongEraTodayTixReason(show, source);
+        if (why) out.push({ id: show.id, format, path: p, source, why });
+      }
     }
   }
   return out;
@@ -331,6 +371,9 @@ module.exports = {
   pickMezzanineCandidate,
   theatrEligible,
   isRejectedImage,
+  isTodayTixAsset,
+  wrongEraTodayTixReason,
+  TODAYTIX_FIRST_SALE,
   canReuseArchivedFile,
   mayServeDiskImage,
   thumbnailFallbackAction,

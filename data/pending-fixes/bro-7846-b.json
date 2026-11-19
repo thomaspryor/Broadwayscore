@@ -1,0 +1,425 @@
+{
+  "issueNumber": "bro-7846-b",
+  "planId": "967117d6-71eb-4fa2-aa3b-41a9de30dcdc",
+  "status": "pending",
+  "createdAt": "2026-11-19T15:25:48.381Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7846: clear TodayTix catalogue art of other productions from 56 closed rows and 3 tours that borrow their banners. 27 rows had their TodayTix poster/thumbnail rejected by the BRO-5089 sweep while the hero from the same catalogue match stayed (follies-2011 kept the 2017 NT Live Follies banner); the rest closed before TodayTix sold tickets (Sept 2013), so TodayTix art on them is another production or another show (grease-2007: an anti-vaping campaign, rain-2010: a Brian Lehrer talk). Every field was looked at by eye. Four thumbnail files on disk predate their TodayTix record and are the right art (follies-2011 2011 cast photo, wonderland-2011, grey-gardens-2006, well-2006): kept, sources recorded as manual in image-sources.json. Sources are added to rejectedImageUrls so the disk fallback and fetcher cannot put them back. No noReliableArt marker: the verified pipeline may refill. (part 2 of 5)",
+    "steps": [
+      "a-streetcar-named-desire-2012: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "a-streetcar-named-desire-2012: never re-take this art source (BRO-7846)",
+      "wit-2012: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "wit-2012: never re-take this art source (BRO-7846)",
+      "follies-2011: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846). Thumbnail restored: the file on disk is the 2011 Broadway cast photo.",
+      "follies-2011: never re-take this art source (BRO-7846)",
+      "wonderland-2011: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846). Thumbnail kept: 2011 Marquis Theatre production photo (Paul Kolnik caption).",
+      "wonderland-2011: never re-take this art source (BRO-7846)",
+      "the-importance-of-being-earnest-2011: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "the-importance-of-being-earnest-2011: never re-take this art source (BRO-7846)",
+      "the-merchant-of-venice-2010: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "the-merchant-of-venice-2010: never re-take this art source (BRO-7846)",
+      "the-scottsboro-boys-2010: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "the-scottsboro-boys-2010: never re-take this art source (BRO-7846)",
+      "rain-2010: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "rain-2010: never re-take this art source (BRO-7846)",
+      "a-life-in-the-theatre-2010: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "a-life-in-the-theatre-2010: never re-take this art source (BRO-7846)",
+      "mrs-warrens-profession-2010: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "mrs-warrens-profession-2010: never re-take this art source (BRO-7846)",
+      "all-about-me-2010: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "all-about-me-2010: never re-take this art source (BRO-7846)",
+      "a-little-night-music-2009: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
+      "a-little-night-music-2009: never re-take this art source (BRO-7846)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-streetcar-named-desire-2012",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-streetcar-named-desire-2012/hero.webp",
+          "thumbnail": "/images/shows/a-streetcar-named-desire-2012/thumbnail.webp",
+          "poster": "/images/shows/a-streetcar-named-desire-2012/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-streetcar-named-desire-2012: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-streetcar-named-desire-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5OjIeU3sijxqA4GE70Fwsf/cedc89f0d4bd0ba00b97b207a257a6ed/25-900813-WS-Today-Tix-Streetcar_1600_x_1200.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5OjIeU3sijxqA4GE70Fwsf/cedc89f0d4bd0ba00b97b207a257a6ed/25-900813-WS-Today-Tix-Streetcar_1600_x_1200.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5OjIeU3sijxqA4GE70Fwsf/cedc89f0d4bd0ba00b97b207a257a6ed/25-900813-WS-Today-Tix-Streetcar_1600_x_1200.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-streetcar-named-desire-2012: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wit-2012",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/wit-2012/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "wit-2012: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wit-2012",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4tBavxHbVsCMDMKGKaWuys/39eaa8c970e7589a3324bc8322b60646/Wolitzer_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1kq5xTerpKCeIjQQnBLQSN/4bb3031f6baa8b1f38c8d5f106cf16fb/Wolitzer_TodayTix_Name_1080x1080.png?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4tBavxHbVsCMDMKGKaWuys/39eaa8c970e7589a3324bc8322b60646/Wolitzer_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1kq5xTerpKCeIjQQnBLQSN/4bb3031f6baa8b1f38c8d5f106cf16fb/Wolitzer_TodayTix_Name_1080x1080.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/D0TJom2uNrvLqk8SUaM7u/ec5c7c22b6d7b82e790bbd148108f8b2/Wolitzer_TodayTix_1440x580.png?fm=webp&q=90"
+        ],
+        "description": "wit-2012: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "follies-2011",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/follies-2011/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/follies-2011/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "follies-2011: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846). Thumbnail restored: the file on disk is the 2011 Broadway cast photo."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "follies-2011",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1HY9eay4cjxCSguDalaG5V/8c365774d3b4c81bf2bfe6aba28ba1f1/TodayTix_NTLive_Follies_480x720__1_.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1HY9eay4cjxCSguDalaG5V/8c365774d3b4c81bf2bfe6aba28ba1f1/TodayTix_NTLive_Follies_480x720__1_.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1HY9eay4cjxCSguDalaG5V/8c365774d3b4c81bf2bfe6aba28ba1f1/TodayTix_NTLive_Follies_480x720__1_.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1HY9eay4cjxCSguDalaG5V/8c365774d3b4c81bf2bfe6aba28ba1f1/TodayTix_NTLive_Follies_480x720__1_.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2FoQTADCsRvWuo3Mju72NU/3363dbc408bca62c63c271f57537a5c1/TodayTix_NTLive_Follies_1600x1200__1_.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "follies-2011: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wonderland-2011",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wonderland-2011/thumbnail.jpg",
+          "poster": "/images/shows/wonderland-2011/poster.webp",
+          "hero": "/images/shows/wonderland-2011/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/wonderland-2011/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "wonderland-2011: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846). Thumbnail kept: 2011 Marquis Theatre production photo (Paul Kolnik caption)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wonderland-2011",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1nJn5grl5ob9moC5KD00YW/d88f878d3301873c40999c150e63913c/alice_poster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6YIyKkleu0g4o78WWQaoSH/859434f34a22900cb791fea0d4d119de/Header.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "wonderland-2011: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-2011",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/the-importance-of-being-earnest-2011/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-importance-of-being-earnest-2011: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnest-2011",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6eZO5uWsY2wuDvvfVM0n2s/d5552dbe157c3a3f6872cc2c5ad8fc4e/Earnest_film_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6eZO5uWsY2wuDvvfVM0n2s/d5552dbe157c3a3f6872cc2c5ad8fc4e/Earnest_film_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6eZO5uWsY2wuDvvfVM0n2s/d5552dbe157c3a3f6872cc2c5ad8fc4e/Earnest_film_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6eZO5uWsY2wuDvvfVM0n2s/d5552dbe157c3a3f6872cc2c5ad8fc4e/Earnest_film_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/39o5c9zgXRVcMzNyZaXhyM/69bba23b12ddc00cfe45f99c1aef71de/Earnest_film_TodayTix_1600x1200.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-importance-of-being-earnest-2011: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-merchant-of-venice-2010",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-merchant-of-venice-2010/hero.webp",
+          "thumbnail": "/images/shows/the-merchant-of-venice-2010/thumbnail.webp",
+          "poster": "/images/shows/the-merchant-of-venice-2010/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "the-merchant-of-venice-2010: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-merchant-of-venice-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/pDfT7ly5AnubLqmhaOaLO/7e54d02c40ab1475b9ae3a2ec5ce07aa/Merchant_480x720_TodayTix.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/pDfT7ly5AnubLqmhaOaLO/7e54d02c40ab1475b9ae3a2ec5ce07aa/Merchant_480x720_TodayTix.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/pDfT7ly5AnubLqmhaOaLO/7e54d02c40ab1475b9ae3a2ec5ce07aa/Merchant_480x720_TodayTix.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-merchant-of-venice-2010: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-scottsboro-boys-2010",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-scottsboro-boys-2010/hero.webp",
+          "thumbnail": "/images/shows/the-scottsboro-boys-2010/thumbnail.webp",
+          "poster": "/images/shows/the-scottsboro-boys-2010/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "the-scottsboro-boys-2010: poster+thumbnail+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-scottsboro-boys-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4QF7Jnh4hdK3TzoqVbOtxn/33bf64146e5cf48cc4e4abda21dbf82c/ScottsboroPoster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4QF7Jnh4hdK3TzoqVbOtxn/33bf64146e5cf48cc4e4abda21dbf82c/ScottsboroPoster.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4QF7Jnh4hdK3TzoqVbOtxn/33bf64146e5cf48cc4e4abda21dbf82c/ScottsboroPoster.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-scottsboro-boys-2010: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rain-2010",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/rain-2010/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "rain-2010: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rain-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1YXaEJV8nTVwYJDx3eD20s/bf1c25164145d5bc9cd671346b8d84de/Lehrer_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5I2VsoZsfDfq3xr6dnm5RI/185cda3c5012a1f2f19744c6157f9dcf/Lehrer_TodayTix_Name_1080x1080.png?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1YXaEJV8nTVwYJDx3eD20s/bf1c25164145d5bc9cd671346b8d84de/Lehrer_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5I2VsoZsfDfq3xr6dnm5RI/185cda3c5012a1f2f19744c6157f9dcf/Lehrer_TodayTix_Name_1080x1080.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2vynsJG7B3HxpCRBkzoReh/da2b85feacdebe7955c69832c73524a1/Lehrer_TodayTix_1440x580.png?fm=webp&q=90"
+        ],
+        "description": "rain-2010: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-life-in-the-theatre-2010",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-life-in-the-theatre-2010/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-life-in-the-theatre-2010: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-life-in-the-theatre-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/WYj8jHBFjqGHML7oMxulv/b3bf9f992ee0c54e679cc7d38d13e124/LifeAtTheatre_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/WYj8jHBFjqGHML7oMxulv/b3bf9f992ee0c54e679cc7d38d13e124/LifeAtTheatre_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/WYj8jHBFjqGHML7oMxulv/b3bf9f992ee0c54e679cc7d38d13e124/LifeAtTheatre_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/WYj8jHBFjqGHML7oMxulv/b3bf9f992ee0c54e679cc7d38d13e124/LifeAtTheatre_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5sN9nhl9TOqg5USDSViZB3/a2cccd562a7d7f1c62c2a27246b24f66/LifeAtTheatre_TodayTix_1600x1200.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-life-in-the-theatre-2010: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mrs-warrens-profession-2010",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": "/images/shows/mrs-warrens-profession-2010/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "mrs-warrens-profession-2010: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mrs-warrens-profession-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5rdGMQ5EL9X7AMYKKsXvOk/5511d4ebc13b4a1db2bdf5356970bb45/Warren_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5rdGMQ5EL9X7AMYKKsXvOk/5511d4ebc13b4a1db2bdf5356970bb45/Warren_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5rdGMQ5EL9X7AMYKKsXvOk/5511d4ebc13b4a1db2bdf5356970bb45/Warren_TodayTix_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5rdGMQ5EL9X7AMYKKsXvOk/5511d4ebc13b4a1db2bdf5356970bb45/Warren_TodayTix_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1swpLACKHPUWhZegqIyYNp/eda194f2d9ffcef40accc875ef0a24c5/Warren_TodayTix_1600x1200.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "mrs-warrens-profession-2010: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-about-me-2010",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/all-about-me-2010/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "all-about-me-2010: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-about-me-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5JRVVFEIwwApdI8uOJTP6u/7aa5f449ddbb1ce5d3cabbd7ec3b000a/TNG-AOM-TodayTix_Pull_Quotes_Poster__1_.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5JRVVFEIwwApdI8uOJTP6u/7aa5f449ddbb1ce5d3cabbd7ec3b000a/TNG-AOM-TodayTix_Pull_Quotes_Poster__1_.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5JRVVFEIwwApdI8uOJTP6u/7aa5f449ddbb1ce5d3cabbd7ec3b000a/TNG-AOM-TodayTix_Pull_Quotes_Poster__1_.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5JRVVFEIwwApdI8uOJTP6u/7aa5f449ddbb1ce5d3cabbd7ec3b000a/TNG-AOM-TodayTix_Pull_Quotes_Poster__1_.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5FWr35ayNda6wPaaCUJDax/8136a4d42115e53a0027b612f3c3c0e9/All_of_Me_Production_Photos_1600X12002.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "all-about-me-2010: never re-take this art source (BRO-7846)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-night-music-2009",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-little-night-music-2009/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "a-little-night-music-2009: hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-night-music-2009",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/52i7sI1md8hVn5gfoYoCNE/de70022408c81b858c23cdc92668cfc9/POSTER__Key_Art__480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/52i7sI1md8hVn5gfoYoCNE/de70022408c81b858c23cdc92668cfc9/POSTER__Key_Art__480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/52i7sI1md8hVn5gfoYoCNE/de70022408c81b858c23cdc92668cfc9/POSTER__Key_Art__480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/52i7sI1md8hVn5gfoYoCNE/de70022408c81b858c23cdc92668cfc9/POSTER__Key_Art__480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/A8QtWkh6LIjMHU5kwfAae/9349615e52f013cfd4766c20d1e5d0b4/GALLERY_IMAGES_HEADER_IMAGE_1600x1200.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-little-night-music-2009: never re-take this art source (BRO-7846)"
+      }
+    ]
+  }
+}

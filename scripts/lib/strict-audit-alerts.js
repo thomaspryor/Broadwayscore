@@ -103,7 +103,7 @@ function decideImageSourceRejectedAlert(out) {
   if (!out || !(out.showsCount > 0) || !(out.sourcesCount > 0)) return [];
   return [buildAuditAlert({
     conditionKey: KEYS.imageSourceRejected,
-    rows: (out.rows || []).map((r) => `${r.id}.${r.format}: ${r.path} recorded from rejected ${r.source}`),
+    rows: (out.rows || []).map((r) => `${r.id}.${r.format}: ${r.path}, ${r.why || 'recorded from rejected'} ${r.source}`),
     title: (n) => `Show art: ${plural(n, 'image field points', 'image fields point')} at art from a rejected URL`,
     intro: 'The image fetch run found show poster/thumbnail/hero files whose recorded source in data/image-sources.json is one of that show\'s own rejectedImageUrls: wrong-production art, or a hand fix whose source map was never updated.',
     hint: 'For each row look at the image. If it is wrong, clear the field; if it is right, record the real source (or "manual:<note>") in data/image-sources.json. Done when node scripts/audit-image-source-rejected.js --strict exits 0.',
