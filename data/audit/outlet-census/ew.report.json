@@ -1,68 +1,42 @@
 {
   "outletId": "ew",
   "market": "nyc",
-  "generatedAt": "2026-11-19T06:51:41.371Z",
+  "generatedAt": "2026-11-19T07:07:18.594Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
-    "status": "complete",
-    "notes": [],
-    "incomplete": false,
+    "status": "incomplete",
+    "notes": [
+      "child https://ew.com/sitemap_13.xml: fetchPage returned an unexpected page for https://ew.com/sitemap_13.xml"
+    ],
+    "incomplete": true,
     "enumerated": 359,
     "inWindow": 359,
-    "undated": 0,
+    "undated": 359,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 111,
-      "held-unmatched": 7,
-      "gap": 5,
-      "not-review": 218,
-      "out-of-window": 18
+      "held-unmatched": 13,
+      "held": 105,
+      "gap": 8,
+      "not-review": 221,
+      "ambiguous": 8,
+      "held-alt-url": 4
     },
-    "viaTitleVariant": {
-      "held": 9
-    },
-    "recall": 0.957,
-    "recallWithCatalog": 0.957
+    "viaTitleVariant": {},
+    "recall": 0.932,
+    "recallWithCatalog": 0.932
   },
   "seasons": {
-    "2026-27": {
-      "held": 3,
-      "held-unmatched": 2
-    },
-    "2025-26": {
-      "held": 20
-    },
-    "2024-25": {
-      "held": 22,
-      "gap": 1,
-      "not-review": 1
-    },
-    "2023-24": {
-      "held": 22,
-      "not-review": 20,
-      "held-unmatched": 2,
-      "out-of-window": 3
-    },
-    "2022-23": {
-      "not-review": 94,
-      "gap": 1,
-      "held": 35,
-      "out-of-window": 12,
-      "held-unmatched": 1
-    },
-    "2021-22": {
-      "not-review": 95,
-      "held-unmatched": 2,
-      "out-of-window": 3,
-      "held": 9,
-      "gap": 3
-    },
-    "2020-21": {
-      "not-review": 8
+    "undated": {
+      "held-unmatched": 13,
+      "held": 105,
+      "gap": 8,
+      "not-review": 221,
+      "ambiguous": 8,
+      "held-alt-url": 4
     }
   },
   "corpusSide": {
@@ -316,8 +290,6 @@
     {
       "url": "https://ew.com/wicked-review-musical-adaptation-hits-right-notes-lacks-visual-variety-8747457",
       "headline": "wicked review musical adaptation hits right notes lacks visual variety 8747457",
-      "publishDate": "2024-11-19",
-      "dateSoft": true,
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -328,8 +300,6 @@
     {
       "url": "https://ew.com/theater/theater-reviews/peter-pan-goes-wrong-review/",
       "headline": "peter pan goes wrong review",
-      "publishDate": "2023-08-21",
-      "dateSoft": true,
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -338,10 +308,38 @@
       "outOfWindow": []
     },
     {
+      "url": "https://ew.com/theater/a-soldiers-play-review-the-pulitzer-prize-winner-offers-a-timely-yet-sterile-revival/",
+      "headline": "a soldiers play review the pulitzer prize winner offers a timely yet sterile revival",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-soldiers-play-2020"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/the-lonely-few-review/",
+      "headline": "the lonely few review",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-lonely-few-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/oedipus-review-deaf-west-returns-tragedy-to-most-physical-form/",
+      "headline": "oedipus review deaf west returns tragedy to most physical form",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "oedipus-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
       "url": "https://ew.com/theater/theater-reviews/the-minutes-tracy-letts-play-broadway-review/",
       "headline": "the minutes tracy letts play broadway review",
-      "publishDate": "2022-04-18",
-      "dateSoft": true,
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -352,8 +350,6 @@
     {
       "url": "https://ew.com/theater/theater-reviews/plaza-suite-broadway-review/",
       "headline": "plaza suite broadway review",
-      "publishDate": "2022-04-01",
-      "dateSoft": true,
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -364,8 +360,6 @@
     {
       "url": "https://ew.com/theater/theater-reviews/slave-play-mark-taper-forum-review/",
       "headline": "slave play mark taper forum review",
-      "publishDate": "2022-02-17",
-      "dateSoft": true,
       "via": "poller-matcher",
       "held": [],
       "matched": [
@@ -374,14 +368,63 @@
       "outOfWindow": []
     }
   ],
-  "heldAltUrl": [],
+  "heldAltUrl": [
+    {
+      "url": "https://ew.com/mean-girls-review-tina-fey-musical-update-of-teen-classic-8424303",
+      "headline": "mean girls review tina fey musical update of teen classic 8424303",
+      "matched": [
+        "mean-girls-2018"
+      ],
+      "heldUrls": [
+        "https://ew.com/theater/2018/04/08/mean-girls-broadway-review/"
+      ]
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/the-mountaintop-review-jon-michael-hill-amanda-warren/",
+      "headline": "the mountaintop review jon michael hill amanda warren",
+      "matched": [
+        "the-mountaintop-2011"
+      ],
+      "heldUrls": [
+        "https://www.ew.com/ew/article/0,,20364394_20536878,00.html"
+      ]
+    },
+    {
+      "url": "https://ew.com/theater/222-a-ghost-story-review-constance-wu/",
+      "headline": "222 a ghost story review constance wu",
+      "matched": [
+        "ghost-the-musical-2012"
+      ],
+      "heldUrls": [
+        "http://www.ew.com/ew/article/0,,20364394_20589553,00.html"
+      ]
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/head-over-heels-dance-party-no-beat/",
+      "headline": "head over heels dance party no beat",
+      "matched": [
+        "head-over-heels-2018"
+      ],
+      "heldUrls": [
+        "https://ew.com/theater/2018/07/26/head-over-heels-broadway-review/"
+      ]
+    }
+  ],
   "misfiles": [],
   "heldUnmatched": [
     {
+      "url": "https://ew.com/wanted-review-gunslinging-sisters-take-broadway-by-storm-in-powerhouse-musical-12243698",
+      "headline": "wanted review gunslinging sisters take broadway by storm in powerhouse musical 12243698",
+      "via": null,
+      "held": [
+        "wanted-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://ew.com/860-broadway-review-billy-crystal-brilliant-show-brings-audiences-into-his-home-12181826",
       "headline": "860 broadway review billy crystal brilliant show brings audiences into his home 12181826",
-      "publishDate": "2026-10-21",
-      "dateSoft": true,
       "via": null,
       "held": [
         "billy-crystal-860-2026"
@@ -392,8 +435,6 @@
     {
       "url": "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983",
       "headline": "school girls broadway review the african teen comedy subverts the genre 12141983",
-      "publishDate": "2026-09-28",
-      "dateSoft": true,
       "via": null,
       "held": [
         "school-girls-or-the-african-mean-girls-play-2026"
@@ -402,25 +443,28 @@
       "outOfWindow": []
     },
     {
-      "url": "https://ew.com/cabaret-kit-kat-club-review-broadway-8636569",
-      "headline": "cabaret kit kat club review broadway 8636569",
-      "publishDate": "2024-04-21",
-      "dateSoft": true,
+      "url": "https://ew.com/beaches-broadway-review-you-will-laugh-and-cry-11955759",
+      "headline": "beaches broadway review you will laugh and cry 11955759",
       "via": null,
       "held": [
-        "cabaret-2024"
+        "beaches-2026"
       ],
       "matched": [],
-      "outOfWindow": [
-        "cabaret-2014",
-        "cabaret-1987"
-      ]
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/the-wiz-broadway-revival-review-8635100",
+      "headline": "the wiz broadway revival review 8635100",
+      "via": null,
+      "held": [
+        "the-wiz-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
     },
     {
       "url": "https://ew.com/the-who-tommy-review-broadway-8620278",
       "headline": "the who tommy review broadway 8620278",
-      "publishDate": "2024-03-28",
-      "dateSoft": true,
       "via": null,
       "held": [
         "the-whos-tommy-2024"
@@ -429,10 +473,28 @@
       "outOfWindow": []
     },
     {
+      "url": "https://ew.com/doubt-review-amy-ryan-liev-schreiber-broadway-8605479",
+      "headline": "doubt review amy ryan liev schreiber broadway 8605479",
+      "via": null,
+      "held": [
+        "doubt-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/parade-review-ben-platt-micaela-diamond-leo-frank/",
+      "headline": "parade review ben platt micaela diamond leo frank",
+      "via": null,
+      "held": [
+        "parade-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://ew.com/theater/theater-reviews/dolls-house-jessica-chastain-broadway-review/",
       "headline": "dolls house jessica chastain broadway review",
-      "publishDate": "2023-03-09",
-      "dateSoft": true,
       "via": null,
       "held": [
         "a-dolls-house-2023"
@@ -441,24 +503,38 @@
       "outOfWindow": []
     },
     {
-      "url": "https://ew.com/theater/theater-reviews/mike-birbiglia-the-old-man-and-the-pool-review/",
-      "headline": "mike birbiglia the old man and the pool review",
-      "publishDate": "2022-08-06",
-      "dateSoft": true,
+      "url": "https://ew.com/theater/theater-reviews/a-beautiful-noise-review-neil-diamond/",
+      "headline": "a beautiful noise review neil diamond",
       "via": null,
       "held": [
-        "mike-birbiglia-the-old-man-and-the-pool-2022"
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
       ],
       "matched": [],
-      "outOfWindow": [
-        "mike-birbiglia-the-old-man-and-the-pool-2022"
-      ]
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/kpop-review-broadway/",
+      "headline": "kpop review broadway",
+      "via": null,
+      "held": [
+        "kpop-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://ew.com/theater/theater-reviews/1776-review-broadway-musical-revival/",
+      "headline": "1776 review broadway musical revival",
+      "via": null,
+      "held": [
+        "1776-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
     },
     {
       "url": "https://ew.com/theater/theater-reviews/six-review/",
       "headline": "six review",
-      "publishDate": "2021-10-03",
-      "dateSoft": true,
       "via": null,
       "held": [
         "six-2021"
@@ -467,239 +543,101 @@
       "outOfWindow": []
     }
   ],
-  "ambiguous": [],
-  "catalogGaps": [],
-  "otherMarketReviews": [],
-  "outOfWindow": [
+  "ambiguous": [
     {
       "url": "https://ew.com/potus-review-broadway-loses-its-purpose-in-los-angeles-production-8551737",
       "headline": "potus review broadway loses its purpose in los angeles production 8551737",
-      "publishDate": "2024-01-29",
-      "dateSoft": true,
-      "via": null,
+      "via": "poller-matcher",
       "held": [],
-      "matched": [],
-      "outOfWindow": [
+      "matched": [
         "purpose-2025",
         "potus-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://ew.com/mean-girls-review-tina-fey-musical-update-of-teen-classic-8424303",
-      "headline": "mean girls review tina fey musical update of teen classic 8424303",
-      "publishDate": "2024-01-10",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "mean-girls-2018"
-      ]
+      ],
+      "outOfWindow": []
     },
     {
       "url": "https://ew.com/the-color-purple-review-fantasia-barrino-shines-lackluster-musical-8411747",
       "headline": "the color purple review fantasia barrino shines lackluster musical 8411747",
-      "publishDate": "2023-12-19",
-      "dateSoft": true,
-      "via": null,
+      "via": "poller-matcher",
       "held": [],
-      "matched": [],
-      "outOfWindow": [
+      "matched": [
         "the-color-purple-2015",
         "the-color-purple-2005"
-      ]
+      ],
+      "outOfWindow": []
     },
     {
       "url": "https://ew.com/theater/into-the-woods-review-stephen-sondheims-fairytale-remains-as-magic-as-ever/",
       "headline": "into the woods review stephen sondheims fairytale remains as magic as ever",
-      "publishDate": "2023-06-30",
-      "dateSoft": true,
-      "via": null,
+      "via": "poller-matcher",
       "held": [],
-      "matched": [],
-      "outOfWindow": [
+      "matched": [
         "into-the-woods-2022",
         "into-the-woods-2002",
         "into-the-woods-1997",
         "into-the-woods-1987"
-      ]
-    },
-    {
-      "url": "https://ew.com/theater/theater-reviews/the-mountaintop-review-jon-michael-hill-amanda-warren/",
-      "headline": "the mountaintop review jon michael hill amanda warren",
-      "publishDate": "2023-06-16",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-mountaintop-2011"
-      ]
-    },
-    {
-      "url": "https://ew.com/theater/a-soldiers-play-review-the-pulitzer-prize-winner-offers-a-timely-yet-sterile-revival/",
-      "headline": "a soldiers play review the pulitzer prize winner offers a timely yet sterile revival",
-      "publishDate": "2023-06-02",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-soldiers-play-2020"
-      ]
+      ],
+      "outOfWindow": []
     },
     {
       "url": "https://ew.com/theater/theater-reviews/a-little-night-music-review-merle-dandridge-stephen-sondheim/",
       "headline": "a little night music review merle dandridge stephen sondheim",
-      "publishDate": "2023-05-04",
-      "dateSoft": true,
-      "via": null,
+      "via": "poller-matcher",
       "held": [],
-      "matched": [],
-      "outOfWindow": [
+      "matched": [
         "a-little-night-music-2009",
         "a-little-night-music-1973"
-      ]
-    },
-    {
-      "url": "https://ew.com/theater/the-lonely-few-review/",
-      "headline": "the lonely few review",
-      "publishDate": "2023-03-17",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-lonely-few-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://ew.com/theater/secret-garden-review-musical-revival-los-angeles/",
-      "headline": "secret garden review musical revival los angeles",
-      "publishDate": "2023-03-02",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-secret-garden-1991"
-      ]
+      ],
+      "outOfWindow": []
     },
     {
       "url": "https://ew.com/theater/theater-reviews/the-sign-in-sidney-brusteins-window-review-hansberry-oscar-isaac/",
       "headline": "the sign in sidney brusteins window review hansberry oscar isaac",
-      "publishDate": "2023-02-27",
-      "dateSoft": true,
-      "via": null,
+      "via": "poller-matcher",
       "held": [],
-      "matched": [],
-      "outOfWindow": [
+      "matched": [
         "the-sign-in-sidney-brusteins-window-2023",
         "the-sign-in-sidney-brusteins-window-1972"
-      ]
+      ],
+      "outOfWindow": []
     },
     {
       "url": "https://ew.com/theater/theater-reviews/sunday-in-the-park-with-george-review-graham-phillips/",
       "headline": "sunday in the park with george review graham phillips",
-      "publishDate": "2023-02-20",
-      "dateSoft": true,
-      "via": null,
+      "via": "poller-matcher",
       "held": [],
-      "matched": [],
-      "outOfWindow": [
+      "matched": [
         "sunday-in-the-park-with-george-2017",
         "sunday-in-the-park-with-george-2008",
         "sunday-in-the-park-with-george-1994",
         "sunday-in-the-park-with-george-1984"
-      ]
-    },
-    {
-      "url": "https://ew.com/theater/222-a-ghost-story-review-constance-wu/",
-      "headline": "222 a ghost story review constance wu",
-      "publishDate": "2022-11-07",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "ghost-the-musical-2012"
-      ]
+      ],
+      "outOfWindow": []
     },
     {
       "url": "https://ew.com/theater/the-search-for-signs-of-intelligent-life-in-the-universe-review-cecily-strong/",
       "headline": "the search for signs of intelligent life in the universe review cecily strong",
-      "publishDate": "2022-09-29",
-      "dateSoft": true,
-      "via": null,
+      "via": "poller-matcher",
       "held": [],
-      "matched": [],
-      "outOfWindow": [
+      "matched": [
         "the-search-for-signs-of-intelligent-life-in-the-universe-1985",
         "the-search-for-signs-of-intelligent-life-in-the-universe-2000"
-      ]
-    },
-    {
-      "url": "https://ew.com/theater/theater-reviews/oedipus-review-deaf-west-returns-tragedy-to-most-physical-form/",
-      "headline": "oedipus review deaf west returns tragedy to most physical form",
-      "publishDate": "2022-09-17",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "oedipus-2025"
-      ]
-    },
-    {
-      "url": "https://ew.com/theater/theater-reviews/oklahoma-sexy-revival-loses-provocative-edge-on-tour-review/",
-      "headline": "oklahoma sexy revival loses provocative edge on tour review",
-      "publishDate": "2022-09-16",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "oklahoma-2019",
-        "oklahoma-2002",
-        "oklahoma-1979"
-      ]
+      ],
+      "outOfWindow": []
     },
     {
       "url": "https://ew.com/theater/theater-reviews/kinky-boots-hollywood-bowl-review-wayne-brady/",
       "headline": "kinky boots hollywood bowl review wayne brady",
-      "publishDate": "2022-07-09",
-      "dateSoft": true,
-      "via": null,
+      "via": "poller-matcher",
       "held": [],
-      "matched": [],
-      "outOfWindow": [
+      "matched": [
         "kinky-boots-2013",
         "kinky-boots-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://ew.com/theater/theater-reviews/the-lehman-trilogy-los-angeles-review/",
-      "headline": "the lehman trilogy los angeles review",
-      "publishDate": "2022-03-10",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-lehman-trilogy-2021"
-      ]
-    },
-    {
-      "url": "https://ew.com/theater/theater-reviews/head-over-heels-dance-party-no-beat/",
-      "headline": "head over heels dance party no beat",
-      "publishDate": "2021-11-15",
-      "dateSoft": true,
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "head-over-heels-2018"
-      ]
+      ],
+      "outOfWindow": []
     }
-  ]
+  ],
+  "catalogGaps": [],
+  "otherMarketReviews": [],
+  "outOfWindow": []
 }
