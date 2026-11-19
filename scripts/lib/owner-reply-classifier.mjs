@@ -19,16 +19,21 @@ const APPROVE_RE = /\b(?:approved?|ship|push|send|deploy|publish|merge|lgtm|look
 const BARE_GO_RE = /^(?:go|go go|go now|go please|please go)$/i;
 
 // A clause that holds, delays or conditions the push, wherever it sits in the clause.
-const STOP_RE = /\b(?:hold|wait|stop|cancel|pause|nah|nope|no|except|unless|first|before|until|once|later|although|though|rather|instead|revisit|hang on|not yet|not sure|never mind|one sec|tomorrow)\b/i;
+const STOP_RE = /\b(?:hold|wait|stop|cancel|pause|nah|nope|no|except|unless|first|before|until|once|later|although|though|rather|instead|revisit|hang on|not yet|not sure|never mind|one sec|tomorrow|tonight|if|when|assuming|provided|pending|as long as|soon|eventually|after|afterwards|next|week|weeks|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday|hours?|lunch|let me|need to see|want to see|look again|another look|check|kidding|show me|send me|also|broken|wrong|off|bug|bugs|issues?|problems?|bad|ugly|not working)\b/i;
 // fix/change/redo is a stop ("looks good, fix the padding first") unless the clause
 // defers it AFTER the verb ("fix the system so it's less annoying after").
 const CHANGE_VERB_RE = /\b(?:fix|change|redo|rework|tweak)\b/i;
 const DEFERRAL_AFTER_VERB_RE = /\b(?:fix|change|redo|rework|tweak)\b[^]*\b(?:after|afterwards|afterward|later|next|separately|follow-?up)\b/i;
 // "later"/"once"/"until"/"first"/"before"/"instead" are stops, except inside a deferred change request.
-const DEFERRABLE_STOP_RE = /\b(?:later|once|until|first|before|instead|rather)\b/i;
+const DEFERRABLE_STOP_RE = /\b(?:later|once|until|first|before|instead|rather|after|afterwards|afterward|next|soon)\b/i;
 
 // A negation aimed at the push itself: "don't ship", "do not push it yet", "I said don't do it".
-const NEGATOR_RE = /\b(?:don'?t|do not|didn'?t|did not|never|not|shouldn'?t|cant|can'?t|won'?t)\b/i;
+const NEGATOR_RE = /\b(?:don'?t|do not|didn'?t|did not|never|not|shouldn'?t|cant|can'?t|cannot|wouldn'?t|won'?t)\b/i;
+// Any of these anywhere in a clause stops it: "don't.", "ship it, NOT", "yes but not the header", "cannot ship".
+// "never" is not here: "I never have to fall into this trap again" is not a stop (negatesPush covers "never ship").
+const HARD_NEGATOR_RE = /\b(?:don'?t|do not|dont|didn'?t|did not|not|shouldn'?t|cant|can'?t|cannot|wouldn'?t|won'?t|nor|neither)\b/i;
+// The one idiom a frustrated owner types next to a yes: "I don't know how many times I need to say yes".
+const FRUSTRATION_IDIOM_RE = /\b(?:don'?t|do not|dont)\s+know\s+how\s+(?:many|often|much|long)\b/gi;
 const ACTION_RE = /^(?:ship|push|deploy|land|merge|send|publish|release|it|this|that|them|yet|do)$/i;
 
 function splitClauses(text) {
@@ -57,7 +62,8 @@ export function isStopClause(clause) {
   if (CHANGE_VERB_RE.test(clause) && !deferred) return true;
   let probe = clause;
   if (deferred) probe = probe.replace(new RegExp(DEFERRABLE_STOP_RE.source, 'gi'), ' ');
-  return STOP_RE.test(probe) || negatesPush(probe);
+  probe = probe.replace(FRUSTRATION_IDIOM_RE, ' ');
+  return STOP_RE.test(probe) || HARD_NEGATOR_RE.test(probe) || negatesPush(probe);
 }
 
 export function isApproveClause(clause) {

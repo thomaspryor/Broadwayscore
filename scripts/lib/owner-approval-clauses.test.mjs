@@ -45,6 +45,17 @@ const MUST_NOT_APPROVE = [
   'nah',
   'I said don’t push it yet',
   'ship it? no wait',
+  // Second-review findings (BRO-7848): negation split from its verb, partial approvals, conditions, delays.
+  "don't. ship. it.", 'do. not. ship.', 'ship it, NOT', 'yes. kidding. don’t.',
+  'yes but not the header', 'ship it but not the footer', 'looks good but not on mobile', 'nice but not quite',
+  'I said yes to the copy, not the layout', 'ship version B not A', 'not A, ship B',
+  'yes but let me check', 'yes but I need to see mobile', 'approve but I want to look again', 'yes but let me sleep on it',
+  'ship it but only after review', 'looks good but the mobile is broken', 'yes but the header is wrong', 'yes, however the footer is off',
+  'yes if tests pass', 'ship if green', 'deploy when CI passes', 'ship it when ready', 'yes, assuming tests pass',
+  'yes provided it builds', 'yes as long as mobile works', 'yes, pending review', 'ship it next week', 'ship it monday',
+  'ship it in an hour', 'ship it after lunch', 'ship it soon', 'approve after I look', 'ok nice, now show me mobile',
+  'looks great, can you also show tablet', 'Yes\nhmm the mobile is off', 'yes\nactually, let me look again',
+  'cannot ship this', "I wouldn't ship this", 'DO NOT SHIP', 'dont ship', 'sure, but not yet', "let's wait", 'yes\nactually hold off',
 ];
 
 test('the owner messages that failed in production now approve', () => {
