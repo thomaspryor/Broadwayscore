@@ -101,6 +101,7 @@ import { ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
 import { scoreGateArg } from '@/config/scoring';
 import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
 import { isRated, NOT_RATED_LABEL } from '@/lib/unrated';
+import { useLiveHeroProps } from '@/components/show-page/LiveScoreOverlay';
 
 // Opens on tap only, so its chunk (editor + photo fields) stays out of the
 // show page's first-load JS (BRO-7486: /show/[slug] sat 9kB over the 330kB cap).
@@ -169,7 +170,8 @@ interface ShowHeroRedesignProps {
 // Deep-link params are read after mount instead (readDeepLink below).
 
 export default function ShowHeroRedesign(props: ShowHeroRedesignProps) {
-  return <Inner {...props} />;
+  // BRO-7803: the live-score overlay (when one applies) replaces the score region's inputs.
+  return <Inner {...useLiveHeroProps(props)} />;
 }
 
 type DeepLink = { rate: boolean; stars: number | null; edit: boolean };

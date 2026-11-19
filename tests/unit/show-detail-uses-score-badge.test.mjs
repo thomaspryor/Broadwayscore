@@ -30,7 +30,7 @@ test('show detail keeps the existing large badge dimensions without local overri
 });
 
 test('show detail passes its final TBD decision without reapplying the review-count gate', () => {
-  assert.match(page, /const showTBD = applyCoverageFloor\(/);
+  assert.match(page, /const showTBD = computeShowTBD\(show\);/); // the final decision (coverage floor included) lives in src/lib/show-score-tbd.ts (BRO-7803)
   assert.match(scoreBox, /reviewCount=\{showTBD \? 0 : undefined\}/,
     'zero keeps held scores TBD; undefined preserves scores protected by the coverage floor');
   assert.doesNotMatch(scoreBox, /status=\{show\.status\}/,

@@ -60,6 +60,14 @@ const MUTANTS = [
     to: 'const outletIdFor = (e) => e.outletId || null;',
     expectFail: /manual inbox: every dropped URL ends published/,
   },
+  {
+    id: 'BRO-7803-runtime-score-path',
+    what: 'the runtime score path is switched off, so found-to-live falls back to rebuild + deploy (~20 min)',
+    source: 'scripts/lib/live-score/config.js',
+    from: 'const PUBLISHER_ENABLED = true;',
+    to: 'const PUBLISHER_ENABLED = false;',
+    expectFail: /found-to-live \(runtime score path, BRO-7803\): median under 15 min/,
+  },
 ];
 
 function runNight() {

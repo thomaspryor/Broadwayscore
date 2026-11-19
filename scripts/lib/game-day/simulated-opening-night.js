@@ -35,7 +35,36 @@ const REPO = path.resolve(__dirname, '..', '..', '..');
 const fixtureLib = require('./sim-night-fixture');
 
 // Modelled stage costs on the fake clock (assumptions, as rehearsal.js DEFAULT_LATENCY).
-const LATENCY = { passIntervalMs: 2 * 60 * 1000, regenMs: 30 * 1000, deployMs: 8 * 60 * 1000, cdnMs: 2 * 60 * 1000, pollMs: 15 * 1000 };
+const LATENCY = { passIntervalMs: 2 * 60 * 1000, regenMs: 30 * 1000, deployMs: 8 * 60 * 1000, cdnMs: 2 * 60 * 1000, pollMs: 15 * 1000,
+  // BRO-7803: rebuild-fast is ~9.8 min whole (BRO-7766 round 3); the live-score publish step runs ~7 min in, and a page
+  // sees the pointer at most one 20 s cache window later.
+  rebuildMs: 9.8 * 60 * 1000, rebuildToPublishMs: 7 * 60 * 1000, overlayMs: 20 * 1000 };
+const FOUND_TO_LIVE_RUNTIME_BAR_MS = 15 * 60 * 1000;
+const liveScoreCfg = require('../live-score/config');
+const { makeStorage } = require('../live-score/storage');
+const liveScore = { publish: require('../live-score/publish').publish, resolve: require('../live-score/resolve') };
+
+/** Minimal Supabase-Storage-compatible server (bucket create, object put/get/delete) so the real storage client, publisher and resolver run unchanged. */
+function startBucketServer() {
+  const objects = new Map();
+  const server = http.createServer((req, res) => {
+    const chunks = [];
+    req.on('data', (c) => chunks.push(c));
+    req.on('end', () => {
+      const url = new URL(req.url, 'http://x');
+      const body = Buffer.concat(chunks).toString('utf8');
+      const done = (code, text = '') => { res.writeHead(code, { 'content-type': 'application/json' }); res.end(text); };
+      const pub = url.pathname.match(/^\/storage\/v1\/object\/public\/[^/]+\/(.+)$/);
+      const obj = url.pathname.match(/^\/storage\/v1\/object\/[^/]+\/(.+)$/);
+      if (url.pathname === '/storage/v1/bucket') return done(200, '{}');
+      if (req.method === 'GET' && pub) return objects.has(pub[1]) ? done(200, objects.get(pub[1])) : done(404);
+      if (req.method === 'POST' && obj) { objects.set(obj[1], body); return done(200, '{}'); }
+      if (req.method === 'DELETE' && obj) { objects.delete(obj[1]); return done(200, '{}'); }
+      return done(400);
+    });
+  });
+  return new Promise((resolve) => server.listen(0, '127.0.0.1', () => resolve({ baseUrl: `http://127.0.0.1:${server.address().port}`, objects, close: () => server.close() })));
+}
 const FOUND_TO_LIVE_BAR_MS = 30 * 60 * 1000;
 
 /** While fn runs, data/shows.json (read by the lane's main-title matcher and guards) is the sim's own show list. */
@@ -168,6 +197,9 @@ async function runSimulatedNight({ keep = false, log = () => {}, only = null } =
   const capture = await startCaptureServer();
   const publish = require('../opening-night-lane/publish');
   const liveServer = await publish.startStaticServer(liveDir);
+  const bucket = await startBucketServer();
+  const storage = makeStorage({ baseUrl: bucket.baseUrl, serviceKey: 'sim', fetchImpl: fetch });
+  await storage.put('kill.json', JSON.stringify({ schema: 1, enabled: true }), { cacheSeconds: 20 }); // what `publish-live-scores.ts --enable` writes
   const report = { night: gd.night, deadSource, shows: {}, alerts: [], cardComments: [], inbox: [], checks: [], watch: [], coverage: [], foundToLive: [], bylineManualIngest: null };
   try {
     await withSimShowsJson(gd.shows, async () => {
@@ -214,14 +246,38 @@ async function runSimulatedNight({ keep = false, log = () => {}, only = null } =
             ...real,
             regenShow: async (id, urls) => { await clock.wait(LATENCY.regenMs); return real.regenShow(id, urls); },
             deploy: async () => {
-              await clock.wait(LATENCY.deployMs);
               const src = path.join(treeDir, 'public', 'data', 'shows', `${show.id}.json`);
+              if (liveScoreCfg.PUBLISHER_ENABLED) {
+                // Runtime path: the real publisher uploads the payload + pointer to the (local) bucket mid-rebuild.
+                await clock.wait(LATENCY.rebuildToPublishMs);
+                const doc = JSON.parse(fs.readFileSync(src, 'utf8'));
+                const view = { score: doc.cs ?? null, reviewCount: (doc.rv || []).length, tier1Count: 0, tier2Count: 0, showTBD: doc.cs == null, reviewsRemaining: 0, noReviewsExpected: false, criticsTakeMode: false };
+                const out = await liveScore.publish({ storage, plan: [{ showId: show.id, view, reviews: doc.rv || [] }], rev: clock.now(), now: clock.now(), safe: true });
+                if (out.results.some((r) => r.status === 'failed')) throw new Error('live-score publish failed: ' + JSON.stringify(out.results));
+                // The follow-on rebuild + deploy still ships the same data later; mirror it for the final-state checks (not time-gated).
+                fs.mkdirSync(path.join(liveDir, 'data', 'shows'), { recursive: true });
+                fs.copyFileSync(src, path.join(liveDir, 'data', 'shows', `${show.id}.json`));
+                visibleAt = clock.now() + LATENCY.overlayMs;
+                return { shippedBy: 'sim live-score' };
+              }
+              await clock.wait(LATENCY.rebuildMs + LATENCY.deployMs);
               fs.mkdirSync(path.join(liveDir, 'data', 'shows'), { recursive: true });
               fs.copyFileSync(src, path.join(liveDir, 'data', 'shows', `${show.id}.json`));
               visibleAt = clock.now() + LATENCY.cdnMs;
               return { shippedBy: 'sim deploy' };
             },
-            fetchLiveShow: async (id) => (clock.now() >= visibleAt ? real.fetchLiveShow(id) : { rv: [] }),
+            fetchLiveShow: async (id) => {
+              if (clock.now() < visibleAt) return { rv: [] };
+              if (!liveScoreCfg.PUBLISHER_ENABLED) return real.fetchLiveShow(id);
+              // The page overlay: the real resolver over HTTP (kill.json, pointer, immutable payload), static page rev 0.
+              const kill = await storage.get('kill.json');
+              const ptr = await storage.get('p.json', { cacheBust: Math.floor(clock.now() / 20000) });
+              const pick = liveScore.resolve.chooseEntry({ showId: id, staticRev: 0, kill: kill.status === 200 ? JSON.parse(kill.text) : null, pointer: ptr.status === 200 ? JSON.parse(ptr.text) : null });
+              if (!pick.entry) return { rv: [] };
+              const pl = await storage.get(`s/${id}.${pick.entry.v}.json`);
+              const ok = pl.status === 200 && liveScore.resolve.validatePayload({ payload: JSON.parse(pl.text), entry: pick.entry, showId: id, staticRev: 0, staticReviewCount: 0 });
+              return ok && ok.ok ? { rv: ok.reviews } : { rv: [] };
+            },
           };
         };
         // Manual inbox: entries become visible to the lane at their drop time.
@@ -293,7 +349,7 @@ async function runSimulatedNight({ keep = false, log = () => {}, only = null } =
   } finally {
     dc.unsubscribe('undici:request:create', onUndici);
     Object.assign(http, http0); Object.assign(httpsMod, https0);
-    await outlets.close(); await capture.close(); await liveServer.close();
+    await outlets.close(); await capture.close(); await liveServer.close(); bucket.close();
     if (!keep) fs.rmSync(work, { recursive: true, force: true, maxRetries: 5 }); else report.workDir = work;
   }
   check(report, 'hermetic: no request left this machine (no paid model, scraper or live-site call)', outside.length === 0, [...new Set(outside)].slice(0, 10));
@@ -344,6 +400,12 @@ function evaluate(report, gd, { canonicalUrl }) {
   for (const x of report.foundToLive) if (x.via !== 'bww' && x.pageToLiveMs > FOUND_TO_LIVE_BAR_MS) // bww: only on the roundup, which the fixture posts late on purpose
     report.watch.push({ review: x.review, why: `page-to-live ${Math.round(x.pageToLiveMs / 60000)} min (bar ${FOUND_TO_LIVE_BAR_MS / 60000}); found-to-live ${Math.round(x.ms / 60000)} min` });
   check(report, 'found-to-live: every review goes live within the bar once the lane has it', report.foundToLive.length > 0 && report.foundToLive.every((x) => x.ms <= FOUND_TO_LIVE_BAR_MS), report.foundToLive.filter((x) => x.ms > FOUND_TO_LIVE_BAR_MS));
+  // BRO-7803: with the runtime score path on, found-to-live must be a median under 15 min (the rebuild+deploy route is ~20).
+  {
+    const ms = report.foundToLive.map((x) => x.ms).sort((a, b) => a - b);
+    const med = ms.length ? ms[Math.floor(ms.length / 2)] : Infinity;
+    check(report, `found-to-live (runtime score path, BRO-7803): median under ${FOUND_TO_LIVE_RUNTIME_BAR_MS / 60000} min`, med <= FOUND_TO_LIVE_RUNTIME_BAR_MS, { medianMin: Math.round(med / 600) / 100, n: ms.length });
+  }
   // The deliberately dead feed: the source-health alarm names it exactly once per show (one lane run per show).
   if (report.deadSource) {
     const perShow = Object.keys(report.shows).map((id) => [id, report.alerts.filter((a) => a.show === id).map((a) => String(a.content || '')).reduce((n, t) => n + t.split('\n').filter((l) => /^SOURCE FAILING \(/.test(l) && l.endsWith(report.deadSource)).length, 0)]);
