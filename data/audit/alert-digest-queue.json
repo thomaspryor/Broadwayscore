@@ -1063,5 +1063,36 @@
       }
     ],
     "queuedAt": "2026-11-19T22:35:13.664Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7873-retro-row",
+    "title": "Landing blocked: rebase red on land/bro-7873-retro-row",
+    "description": "land.yml did not land land/bro-7873-retro-row: the rebase gate went red at 491748c13c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44636544501",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7873-retro-row"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "491748c13c2c6a86ea1b0007a94273dad075f3b7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44636544501"
+      }
+    ],
+    "queuedAt": "2026-11-19T23:23:22.690Z"
   }
 ]
