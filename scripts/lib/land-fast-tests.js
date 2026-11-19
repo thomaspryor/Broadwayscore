@@ -127,6 +127,9 @@ function gateFor(file, { nodeSet, tsxSet }) {
 // links them: BRO-7729's land was refused 20 minutes in for a wrap-up.md edit without the sync.
 const MIRRORED_SOURCES = [
   [/^\.claude\/(?:commands|skills)\//, 'tests/unit/codex-parity.test.mjs', 'mirrored to .agents/skills (run scripts/codex/sync-skills.js)'],
+  // undriven-rebase-lint scans scripts/lib/land-*.{js,sh} (landScripts()) and .github/ through fs, not by name:
+  // BRO-7731's land was refused 25 minutes in because land-local-check.js printed 'git cherry-pick' advice (BRO-7814).
+  [/^scripts\/lib\/land-[^/]*\.(?:js|sh)$|^\.github\//, 'scripts/lib/undriven-rebase-lint.test.mjs', 'scanned by undriven-rebase-lint'],
 ];
 
 /** Which tier a changed file pulls a test in at (lower is stronger), or null. */

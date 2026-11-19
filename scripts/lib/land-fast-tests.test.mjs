@@ -180,3 +180,13 @@ test('colocatedTests uses the same tsx manifests as land.js', () => {
   assert.match(src, /readTsxRunTests\(root\)/);
   assert.doesNotMatch(src, /readTsxManifest\(root\)/);
 });
+
+test('a change to scripts/lib/land-*.js or .github/ selects undriven-rebase-lint (BRO-7814)', () => {
+  const lintTest = 'scripts/lib/undriven-rebase-lint.test.mjs';
+  const u = { ...universe, libFiles: [...universe.libFiles, lintTest] };
+  const pick = (changed) => F.selectFastTests({ changed, universe: u, readText: () => 'unrelated', invariants: [], slow: new Set() }).files.map((f) => f.file);
+  assert.ok(pick(['scripts/lib/land-local-check.js']).includes(lintTest), 'land-local-check.js');
+  assert.ok(pick(['scripts/lib/land-rebase.sh']).includes(lintTest), 'land-rebase.sh');
+  assert.ok(pick(['.github/workflows/land.yml']).includes(lintTest), 'land.yml');
+  assert.ok(!pick(['scripts/lib/widget-maker.js']).includes(lintTest), 'unrelated file');
+});
