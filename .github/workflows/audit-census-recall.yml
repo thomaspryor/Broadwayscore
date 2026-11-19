@@ -163,7 +163,7 @@ jobs:
       # step 2's not-yet-committed working-tree edits to the trend/ledger
       # files). Keeping one atomic commit avoids that entirely.
       - name: Commit recall report + trend ledger
-        if: ${{ always() && !inputs.no_trend }}
+        if: ${{ !cancelled() && !inputs.no_trend }}
         env:
           # The trend ledger is a read-modify-write file that other data/audit
           # writers race (task #784's class). `rebase -X theirs` resolves in our
@@ -240,10 +240,12 @@ jobs:
           tail -n 60 /tmp/outlet-census.log
           if [ "$rc" -ne 0 ]; then
             echo "::warning::outlet-census.js exited $rc (some outlets failed; their previous reports stay)"
+            echo EXIT-NONZERO > /tmp/outlet-census.rc
           fi
           { echo '### Outlet census'; echo '```'; node scripts/outlet-census.js --summary | tail -n 40; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit census reports
+        if: ${{ !cancelled() }}
         env:
           PUSH_DEADLINE_SEC: '420'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
@@ -252,6 +254,11 @@ jobs:
           bash scripts/lib/git-add-existing.sh data/audit/outlet-census/*.report.json
           if git diff --cached --quiet; then
             echo "No census report changed"
+            # A nonzero exit with nothing written means a total outage (network, proxy), not a quiet week.
+            if [ -s /tmp/outlet-census.log ] && grep -q 'EXIT-NONZERO' /tmp/outlet-census.rc 2>/dev/null; then
+              echo "::error::census exited nonzero and no report changed (total outage?)"
+              exit 1
+            fi
             exit 0
           fi
           git commit -m "audit: outlet census reports [skip ci]"
