@@ -80,7 +80,7 @@ const FLOOR_QUOTE_RE = /\b(?:more than|well over|over|at least|north of|upwards 
 
 /** True when the quote only gives a lower bound ("over $1 million", but not "rolled over $1 million"). */
 export function hasFloorQuote(sourceText: string): boolean {
-  return FLOOR_QUOTE_RE.test(sourceText.replace(NOT_A_FLOOR_RE, ' '));
+  return FLOOR_QUOTE_RE.test(sourceText.replace(NOT_A_FLOOR_RE, ' _ '));
 }
 
 /** "Broadway Journal (Nov 6, 2023): ..." -> "2023-11-06"; null when the source names no parseable date. */

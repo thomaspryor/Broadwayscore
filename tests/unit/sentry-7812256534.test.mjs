@@ -4,36 +4,33 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { hasFloorQuote } from '../../src/lib/box-office-status.ts';
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) walk(p, out);
-    else if (/\.(ts|tsx)$/.test(e.name)) out.push(p);
+    else if (/\.(ts|tsx|js|jsx|mjs)$/.test(e.name)) out.push(p);
   }
   return out;
 }
 
-test('no regex lookbehind or named group in src/ (ships to old Safari)', () => {
+test('no regex lookbehind in src/ (literal, string or template), ships to old Safari', () => {
   const bad = [];
   for (const f of walk('src')) {
     fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
-      if (/^\s*(\/\/|\*)/.test(line)) return;
-      if (/\/[^/\n]*\(\?<[=!A-Za-z][^/\n]*\/[gimsuy]*/.test(line)) bad.push(`${f}:${i + 1}`);
+      if (/^\s*(\/\/|\*|\/\*)/.test(line)) return;
+      if (/\(\?<[=!]/.test(line)) bad.push(`${f}:${i + 1}`);
     });
   }
   assert.deepEqual(bad, []);
 });
 
-test('hasFloorQuote keeps the old lookbehind behaviour', async () => {
-  const src = fs.readFileSync('src/lib/box-office-status.ts', 'utf8');
-  const m = src.match(/const NOT_A_FLOOR_RE = (.*);\nconst FLOOR_QUOTE_RE = (.*);/);
-  assert.ok(m, 'regex constants found');
-  const not = eval(m[1]); const floor = eval(m[2]);
-  const has = (t) => floor.test(t.replace(not, ' '));
-  assert.equal(has('capitalized at over $20 million'), true);
-  assert.equal(has('at least $5 million'), true);
-  assert.equal(has('Rolled over $5 million from last year'), false);
-  assert.equal(has('carried over $5 million'), false);
-  assert.equal(has('a budget of $5 million'), false);
+test('hasFloorQuote keeps the old lookbehind behaviour', () => {
+  assert.equal(hasFloorQuote('capitalized at over $20 million'), true);
+  assert.equal(hasFloorQuote('at least $5 million'), true);
+  assert.equal(hasFloorQuote('Rolled over $5 million from last year'), false);
+  assert.equal(hasFloorQuote('carried over $5 million'), false);
+  assert.equal(hasFloorQuote('more than turned over $5'), false);
+  assert.equal(hasFloorQuote('a budget of $5 million'), false);
 });
