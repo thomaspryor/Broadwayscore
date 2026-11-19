@@ -121,3 +121,19 @@ describe('classifyCrossShowUrlFlag (advisory class guard)', () => {
     assert.strictEqual(classifyCrossShowUrlFlag({ wrongProduction: true, wrongProductionNote: 'Text reviews the 2008 production' }, liaisons2016, liaisonsWE).flagged, false);
   });
 });
+
+test('overlapping runs: opening-year tie-break re-homes like rebuild does (ship-check P1)', () => {
+  const L = require('../../scripts/lib/url-cross-production.js');
+  // Long-runner 1997-now vs tour 2021-now, review 2021: both distance 0.
+  const longRun = { from: 1997, to: 2026 }, tour = { from: 2021, to: 2026 };
+  assert.equal(L.shouldTakeUrlOwnership({ reviewYear: 2021, thisYear: 2021, existingYear: 1997, thisRun: tour, existingRun: longRun }), true);
+  assert.equal(L.otherFitsReviewYearBetter(2021, { openYear: 1997, run: longRun }, { openYear: 2021, run: tour }), true);
+  // Reverse direction must not re-home back.
+  assert.equal(L.shouldTakeUrlOwnership({ reviewYear: 2021, thisYear: 1997, existingYear: 2021, thisRun: longRun, existingRun: tour }), false);
+  // Incumbent-date veto with a tie also uses the tie-break: incumbent dated 2021 agrees.
+  assert.equal(L.shouldTakeUrlOwnership({ reviewYear: 2021, thisYear: 2021, existingYear: 1997, thisRun: tour, existingRun: longRun, existingReviewYear: 2022 }), true);
+  // Incumbent dated 1998 (only the long-runner was open) vetoes.
+  assert.equal(L.shouldTakeUrlOwnership({ reviewYear: 2021, thisYear: 2021, existingYear: 1997, thisRun: tour, existingRun: longRun, existingReviewYear: 1998 }), false);
+  // sameTitle null does not veto.
+  assert.equal(L.shouldTakeUrlOwnership({ reviewYear: 2021, thisYear: 2021, existingYear: 1997, thisRun: tour, existingRun: longRun, sameTitle: null }), true);
+});

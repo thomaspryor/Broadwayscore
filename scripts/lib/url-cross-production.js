@@ -49,13 +49,14 @@ function shouldTakeUrlOwnership({
 } = {}) {
   if (sameTitle === false) return false;
   if (!reviewYear || !thisYear || !existingYear) return false;
-  const thisDist = yearDistance(reviewYear, thisYear, thisRun);
-  const existingDist = yearDistance(reviewYear, existingYear, existingRun);
-  if (!(thisDist < existingDist)) return false;
+  // Same comparison as rebuild (run distance, then opening-year tie-break), so
+  // gather and rebuild agree when two productions overlap (long-runner + tour).
+  const seeker = { openYear: thisYear, run: thisRun };
+  const incumbent = { openYear: existingYear, run: existingRun };
+  if (!otherFitsReviewYearBetter(reviewYear, incumbent, seeker)) return false;
   if (existingReviewYear && existingReviewYear !== reviewYear) {
     // The incumbent's own date must agree that this show is the closer one.
-    if (!(yearDistance(existingReviewYear, thisYear, thisRun)
-      < yearDistance(existingReviewYear, existingYear, existingRun))) return false;
+    if (!otherFitsReviewYearBetter(existingReviewYear, incumbent, seeker)) return false;
   }
   return true;
 }
