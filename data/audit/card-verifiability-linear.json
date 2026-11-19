@@ -1,15 +1,63 @@
 {
-  "generatedAt": "2026-11-18T14:26:18.891Z",
-  "total": 423,
-  "armedCount": 396,
-  "refusedCount": 27,
+  "generatedAt": "2026-11-19T14:38:20.735Z",
+  "total": 416,
+  "armedCount": 391,
+  "refusedCount": 25,
   "byKind": {
-    "shape": 20,
+    "no-section": 2,
+    "shape": 19,
     "no-command": 3,
-    "no-section": 3,
     "basename": 1
   },
   "refused": [
+    {
+      "id": "BRO-7842",
+      "name": "Triage 153 baseline unhandled CV.wrongProduction reviews (lifetime sweep)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7842/triage-153-baseline-unhandled-cvwrongproduction-reviews-lifetime-sweep",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7829",
+      "name": "Opening-night audit 2026-11-19",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7829/opening-night-audit-2026-11-19",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7817",
+      "name": "Ingest the known census gaps on readable outlets (about 956 Broadway URLs, TheaterMania 118, StageBuddy 133, Culture Sauce 107, Exeunt 101)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7817/ingest-the-known-census-gaps-on-readable-outlets-about-956-broadway",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/outlet-census.js --summary)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7801",
+      "name": "Closing date audit: 1 show need review (2026-11-18)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7801/closing-date-audit-1-show-need-review-2026-11-18",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7797",
+      "name": "Opening-night lane: one dead feed raises SOURCE FAILING once per show (4 shows = 4 identical alarms); dedupe per night",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7797/opening-night-lane-one-dead-feed-raises-source-failing-once-per-show-4",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/integration/simulated-opening-night.test.mjs (passes with a per-night check) and node scripts/lib/game)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7788",
+      "name": "Land preflight: refuse or warn when node_modules is unresolvable, so targeted guard tests are not silently skipped",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7788/land-preflight-refuse-or-warn-when-node-modules-is-unresolvable-so",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/cloud-doctor.js --quick)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-7769",
       "name": "Stub review slot accepts unrelated same-outlet news URLs (Good Thief TheaterMania/Linda Buchwald)",
@@ -43,76 +91,12 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-7721",
-      "name": "iOS 1.1.0 App Store rejection (submission 99077a80, Nov 16): find reason and fix plan",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7721/ios-110-app-store-rejection-submission-99077a80-nov-16-find-reason-and",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
       "id": "BRO-7720",
       "name": "App push: closing-date alert only for dates within 60 days",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7720/app-push-closing-date-alert-only-for-dates-within-60-days",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: cd \\~/BroadwayScorecard-app && npm test (alerts-registry: 'a date more than 60 days out never pushes' passes; red with g)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-7702",
-      "name": "Lift outlet full-text rates to 95%+ (WSJ/Times/Standard/WaPo ~100%): metric fix, dedupe, re-URL, nightly queue priority, floor guard",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7702/lift-outlet-full-text-rates-to-95percent-wsjtimesstandardwapo",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/report-outlet-fulltext-gaps.js)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7698",
-      "name": "NOSTATUSLINE and CLEARCLOSE Stop gates fire on mid-session Stops (7 and 6 of 9 sessions)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7698/nostatusline-and-clearclose-stop-gates-fire-on-mid-session-stops-7-and",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/lib/session-retro.js --rollup --days=7)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7684",
-      "name": "Bylineless aggregator-quote ghosts stay live up to a week: run excerpt-containment at ingest/rebuild, not only in the weekly audit",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7684/bylineless-aggregator-quote-ghosts-stay-live-up-to-a-week-run-excerpt",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/tests/cross-outlet-excerpt-containment.test.mjs)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7677",
-      "name": "City hub audit chicago-il 2026-W47: 2 new finding(s)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7677/city-hub-audit-chicago-il-2026-w47-2-new-findings",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=chicago-il --no-llm --dry-run --open)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7662",
-      "name": "Opening-night audit 2026-11-17",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7662/opening-night-audit-2026-11-17",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-7620",
-      "name": "Missing show: Shakespeare's Cousin",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7620/missing-show-shakespeares-cousin",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-7619",
-      "name": "Missing show: Freestyle Love Supreme",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7619/missing-show-freestyle-love-supreme",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
     },
     {
       "id": "BRO-7418",
@@ -228,8 +212,8 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 290,
-    "checked": 290,
+    "total": 285,
+    "checked": 285,
     "complete": true,
     "cards": [
       {
@@ -250,30 +234,30 @@
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-7767",
-      "name": "P1: Opening night miss: Blue Man Group “A New Holiday Surprise” (2026-11-17)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7767/p1-opening-night-miss-blue-man-group-a-new-holiday-surprise-2026-11-17",
-      "cmd": "node --test scripts/lib/press-night-review-timing.test.mjs",
+      "id": "BRO-7841",
+      "name": "IAWL: TheaterScene review pulled by outlet (404); hide dead-link reviews + recheck new review URLs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7841/iawl-theaterscene-review-pulled-by-outlet-404-hide-dead-link-reviews",
+      "cmd": "node --test scripts/tests/review-dead-link-recheck.test.mjs",
       "missingPaths": [
-        "scripts/lib/press-night-review-timing.test.mjs"
+        "scripts/tests/review-dead-link-recheck.test.mjs"
       ]
     },
     {
-      "id": "BRO-7750",
-      "name": "Per-show score gate override: Blue Man Group shows score at 3 reviews",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7750/per-show-score-gate-override-blue-man-group-shows-score-at-3-reviews",
-      "cmd": "node --test tests/unit/score-gate-overrides.test.mjs",
+      "id": "BRO-7809",
+      "name": "Sentry BROADWAY-SCORECARD-37: drop truncated-chunk SyntaxErrors (posthog chunk, bot/proxy downloads)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7809/sentry-broadway-scorecard-37-drop-truncated-chunk-syntaxerrors-posthog",
+      "cmd": "npx tsx --test tests/unit/truncated-chunk-error.test.ts",
       "missingPaths": [
-        "tests/unit/score-gate-overrides.test.mjs"
+        "tests/unit/truncated-chunk-error.test.ts"
       ]
     },
     {
-      "id": "BRO-7736",
-      "name": "Sentry error: UgcError: UGC insert unmatched_imports failed (42501)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7736/sentry-error-ugcerror-ugc-insert-unmatched-imports-failed-42501",
-      "cmd": "npx tsx --test tests/unit/sentry-7801266960.test.mjs",
+      "id": "BRO-7807",
+      "name": "Make rescore runs batch-only (half-price) and finish the gpt-4o to cheaper-model A/B",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7807/make-rescore-runs-batch-only-half-price-and-finish-the-gpt-4o-to",
+      "cmd": "node --test scripts/rescore-batch-api.test.mjs",
       "missingPaths": [
-        "tests/unit/sentry-7801266960.test.mjs"
+        "scripts/rescore-batch-api.test.mjs"
       ]
     },
     {
@@ -283,51 +267,6 @@
       "cmd": "npx tsx --test tests/unit/sentry-7810618279.test.mjs",
       "missingPaths": [
         "tests/unit/sentry-7810618279.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7734",
-      "name": "Sentry error: SyntaxError: Invalid regular expression: invalid group specifier name",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7734/sentry-error-syntaxerror-invalid-regular-expression-invalid-group",
-      "cmd": "npx tsx --test tests/unit/sentry-7812256534.test.mjs",
-      "missingPaths": [
-        "tests/unit/sentry-7812256534.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7733",
-      "name": "Sentry error: UgcError: UGC functions mezzanine-search failed (500)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7733/sentry-error-ugcerror-ugc-functions-mezzanine-search-failed-500",
-      "cmd": "npx tsx --test tests/unit/sentry-7815060800.test.mjs",
-      "missingPaths": [
-        "tests/unit/sentry-7815060800.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7732",
-      "name": "Sentry error: UgcError: UGC insert watchlist failed (23503)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7732/sentry-error-ugcerror-ugc-insert-watchlist-failed-23503",
-      "cmd": "npx tsx --test tests/unit/sentry-7799170551.test.mjs",
-      "missingPaths": [
-        "tests/unit/sentry-7799170551.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7728",
-      "name": "Sentry error: UgcError: UGC insert watchlist failed (account_gone)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7728/sentry-error-ugcerror-ugc-insert-watchlist-failed-account-gone",
-      "cmd": "npx tsx --test tests/unit/sentry-7815055841.test.mjs",
-      "missingPaths": [
-        "tests/unit/sentry-7815055841.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7727",
-      "name": "Sentry error: UgcError: UGC insert reviews failed (23503)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7727/sentry-error-ugcerror-ugc-insert-reviews-failed-23503",
-      "cmd": "npx tsx --test tests/unit/sentry-7835186822.test.mjs",
-      "missingPaths": [
-        "tests/unit/sentry-7835186822.test.mjs"
       ]
     },
     {
@@ -346,6 +285,15 @@
       "cmd": "npx tsx --test tests/unit/sentry-7834294498.test.mjs",
       "missingPaths": [
         "tests/unit/sentry-7834294498.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7721",
+      "name": "iOS 1.1.0 App Store rejection (submission 99077a80, Nov 16): find reason and fix plan",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7721/ios-110-app-store-rejection-submission-99077a80-nov-16-find-reason-and",
+      "cmd": "test -f memory/app-store-rejection-99077a80-reason-and-fix.md",
+      "missingPaths": [
+        "memory/app-store-rejection-99077a80-reason-and-fix.md"
       ]
     },
     {
@@ -400,15 +348,6 @@
       "cmd": "node --test tests/unit/show-other-desert-cities-link.test.mjs",
       "missingPaths": [
         "tests/unit/show-other-desert-cities-link.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7517",
-      "name": "Investigate model API cost savings (OpenAI, Google, Anthropic)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7517/investigate-model-api-cost-savings-openai-google-anthropic",
-      "cmd": "test -f memory/api-cost-investigation.md",
-      "missingPaths": [
-        "memory/api-cost-investigation.md"
       ]
     },
     {

@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7836",
+  "planId": "6bf2a24b-6f94-45ad-863f-2c098d0bc369",
+  "status": "applied",
+  "createdAt": "2026-11-19T13:04:30.858Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7836: Top Gunchained London Pub Theatres review is of the current Wilton's Music Hall run (verifier misread an earlier-show aside); body reviews this production, clear the wrongProduction hold",
+    "steps": [
+      "top-gunchained-off-west-end-2026/londonpubtheatres--paul-maidment.json: wrongProductionManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "top-gunchained-off-west-end-2026/londonpubtheatres--paul-maidment.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "top-gunchained-off-west-end-2026/londonpubtheatres--paul-maidment.json: wrongProductionManualClear"
+      }
+    ]
+  },
+  "executedAt": "2026-11-19T13:57:06.840Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "top-gunchained-off-west-end-2026/londonpubtheatres--paul-maidment.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

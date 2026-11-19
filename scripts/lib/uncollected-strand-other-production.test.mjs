@@ -49,6 +49,17 @@ test('tour: tour-integrity UK/overseas flags are not a blackout; a bare LLM flag
   assert.equal(n.totalBlackout, true);
 });
 
+test('tour: a real decideTourIntegrity flag written by applyIntegrityFlag is discounted (end to end)', () => {
+  const tb = createRequire(import.meta.url)('./tour-backfill.js');
+  const row = { showId: 't', file: 'f.json', kind: 'uk-on-tour', reason: 'UK or overseas production reviewed, not the North American tour; tour integrity (BRO-4656)' };
+  const flagged = tb.applyIntegrityFlag({ url: 'https://x.test/e2e', fullText: '' }, row);
+  assert.equal(flagged.wrongProductionKind, 'uk-on-tour');
+  assert.equal(assessShow(tour, files(flagged, { ...flagged, url: 'https://x.test/e2e2' }), { nowMs }).totalBlackout, false);
+  // kind alone (reason reworded) still discounts
+  const reworded = { ...flagged, wrongProductionReason: 'reworded' };
+  assert.equal(assessShow(tour, files(reworded, { ...reworded, url: 'https://x.test/e2e3' }), { nowMs }).discovered, 0);
+});
+
 test('non-tour: deterministic date-guard rejections are discounted', () => {
   const r = assessShow(bway, files(
     wp('Pre-opening guard: pre-window date — review dated 2023-10-16 is 60+ days before show starts 2024-10-12'),

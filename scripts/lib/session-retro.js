@@ -41,6 +41,7 @@ const STOP_GATES = [
   { code: '[VE:EFFECTPENDING]', log: 'effect-pending-stop', module: './effect-pending-stop.mjs' },
   { code: '[VE:RETROCOV]', log: 'retro-coverage-stop' }, // its own dry run would judge the --record being written
   { code: '[VE:ROOTCAUSE]', log: 'root-cause-stop' }, // judges the closing message's ROOT-CAUSE block, so no synthetic close
+  { code: '[VE:SKEPTIC]', log: 'skeptic-review-stop' }, // BRO-7839: no dry run, it would spend an LLM call per --record
 ];
 const DRY_RUN_CLOSE = 'SAFE TO ARCHIVE (session-retro --record dry run)';
 const DRY_RUN_LAND = [
@@ -68,6 +69,8 @@ function logHits(sessionKey, dir) {
     for (const l of text.split('\n')) {
       let e; try { e = JSON.parse(l); } catch { continue; }
       if (!e || e.session !== sessionKey) continue;
+      // skeptic-review-stop also logs passes, errors and bypasses (outcome field); only would-block rows count here.
+      if (e.outcome && e.outcome !== 'block' && e.outcome !== 'over-budget') continue;
       const o = (out[g.code] = out[g.code] || { logged: 0, overBudget: 0 });
       o.logged++;
       if (e.blocked === false) o.overBudget++;

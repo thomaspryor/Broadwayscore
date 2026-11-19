@@ -1,30 +1,238 @@
 {
-  "generatedAt": "2026-11-19T12:21:10.087Z",
+  "generatedAt": "2026-11-19T14:20:11.306Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 359,
-  "clean": 358,
-  "defective": 1,
+  "clean": 345,
+  "defective": 14,
   "byType": {
-    "score-drift": 1
+    "score-drift": 14
   },
   "shows": [
     {
-      "showId": "dear-evan-hansen-la-regional-2026",
-      "title": "Dear Evan Hansen",
-      "openingDate": "2026-11-09",
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "openingDate": "2026-11-14",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 91 vs local 90.7 (Δ0.3)"
+          "detail": "deployed cs 65.83 vs local 65.65 (Δ0.18)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-19T12:21:06.858Z"
+      "localCount": 17,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "the-wash-regional-2026",
+      "title": "The Wash",
+      "openingDate": "2026-11-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.35 vs local 89.03 (Δ1.68)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "rorschach-regional-2026",
+      "title": "Rorschach",
+      "openingDate": "2026-10-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.54 vs local 78.65 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "the-music-man-tour-2026",
+      "title": "The Music Man",
+      "openingDate": "2026-01-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.26 vs local 74.2 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "stranger-things-2024",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2025-04-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.61 vs local 63.49 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 37,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "title": "My Neighbour Totoro",
+      "openingDate": "2025-03-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.44 vs local 84 (Δ0.56)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "title": "Oliver!",
+      "openingDate": "2025-01-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.1 vs local 84.87 (Δ0.23)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "title": "Titanique",
+      "openingDate": "2025-01-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.61 vs local 79.91 (Δ0.3)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "title": "The Lion King",
+      "openingDate": "2021-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.99 vs local 86.91 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 57,
+      "deployedCount": 58,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "title": "Wicked",
+      "openingDate": "2021-08-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.79 vs local 83.49 (Δ0.3)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 49,
+      "deployedCount": 53,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
+      "title": "Little Shop of Horrors",
+      "openingDate": "2019-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.52 vs local 83.1 (Δ0.42)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "title": "Matilda The Musical",
+      "openingDate": "2011-11-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 91.36 vs local 91.53 (Δ0.17)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
+      "title": "The Lion King",
+      "openingDate": "1999-10-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.65 vs local 83.35 (Δ0.3)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "title": "The Lion King",
+      "openingDate": "1997-11-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.51 vs local 85.99 (Δ0.52)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-19T14:20:05.221Z"
     }
   ],
   "persistentDefective": 0,

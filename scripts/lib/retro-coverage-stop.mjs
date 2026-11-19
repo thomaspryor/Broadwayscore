@@ -19,6 +19,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive, runShellCode } from './review-coverage.mjs';
+import { isMainModule } from './is-main-module.mjs';
 
 const CODE_PATH_RE = /^(?:src|scripts|\.github|\.claude)\//;
 /** A path relative to the repo or worktree root, or '' for files outside it (memory, ~/.claude). */
@@ -263,7 +264,7 @@ export function main(argv, { env = process.env } = {}) {
   return 2;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   let code = 0;
   try { code = main(process.argv.slice(2)); } catch (e) {
     process.stderr.write(`retro-coverage-stop: internal error (failing open): ${e && e.message}\n`);

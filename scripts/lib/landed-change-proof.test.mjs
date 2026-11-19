@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   sourceOf, classifyPath, relativeImports, libWorkflowIndex, fileVerdict, auditCommit, worst, newRows, summarize,
-  digestLine, needsFollowUp, cardBody, safeRunCommand, dayMinus, workflowScriptIndex, runMarker,
+  digestLine, digestLineWithCatchUp, hasAuditToday, needsFollowUp, cardBody, safeRunCommand, dayMinus, workflowScriptIndex, runMarker,
 } from './landed-change-proof.mjs';
 import { isUsageOnlyOutput } from './usage-output.mjs';
 
@@ -252,4 +252,19 @@ test('failed_preexisting: a workflow already red on main before the commit is no
     'Yesterday 4 code changes went live: 1 proven running, 1 ran and failed, 2 touched an already-failing check.');
   const nf = needsFollowUp(rows.map((r) => ({ ...r, landedDay: '2026-11-16' })));
   assert.deepEqual(nf.map((r) => r.sha), ['s1'], 'only a real failure is carded');
+});
+
+test('BRO-7840: digest runs the audit when today\'s marker is missing (late cron), not when present', () => {
+  const now = new Date('2026-11-19T11:30:00Z');
+  const old = [runMarker('2026-11-18')];
+  let calls = 0;
+  const runAudit = (day) => { calls++; assert.equal(day, '2026-11-19'); return []; };
+  const a = digestLineWithCatchUp(old, { now, runAudit });
+  assert.equal(calls, 1); assert.equal(a.caughtUp, true);
+  assert.equal(a.line, 'Yesterday no code changes went live.', 'fresh in-memory audit, not "not measured this morning"');
+  const b = digestLineWithCatchUp([...old, runMarker('2026-11-19')], { now, runAudit });
+  assert.equal(calls, 1, 'marker present: no second run'); assert.equal(b.caughtUp, false);
+  const c = digestLineWithCatchUp(old, { now, runAudit: () => { throw new Error('boom'); } });
+  assert.match(c.line, /not measured this morning/, 'failed catch-up degrades to the stale line');
+  assert.equal(hasAuditToday(old, now), false);
 });

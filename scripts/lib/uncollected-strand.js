@@ -122,7 +122,7 @@ function duplicateHasCanonical(review, siblings) {
  * BRO-5077: a touring production (All the Devils Are Here, tour 2024) inherits
  * every Broadway-aggregator URL for the earlier NYC run; all were rejected as
  * wrongProduction (correctly) and the alarm paged for 0 usable of 5 discovered.
- * Two cases are safe to discount; the LLM-only verdict on a non-tour is NOT
+ * Three cases are safe to discount; the LLM-only verdict on a non-tour is NOT
  * (it is fallible, and a wrongly flagged real review set is exactly the
  * blackout this alarm exists to catch):
  *  - the deterministic date guards (pre-window / URL date before the show's
@@ -130,7 +130,8 @@ function duplicateHasCanonical(review, siblings) {
  *  - on a tour only, a wrongProduction file published >60d before the tour
  *    opened, or whose verdict says it reviews the earlier NYC run. A bare
  *    wrongProduction flag is NOT enough: real local tour reviews get that
- *    flag too and must still page when they are all that was discovered.
+ *    flag too and must still page when they are all that was discovered, and
+ *  - on a tour only, a file the tour-integrity pass flagged uk-on-tour (BRO-7825).
  *
  * @param {object} show
  * @param {object} review
@@ -142,14 +143,16 @@ function isOtherProductionEvidence(show, review) {
     .filter(Boolean).join(' ');
   if (/pre-window date|URL date .* days before show earliest date/i.test(note)) return true;
   if (!show || (show.market !== 'tour' && show.category !== 'tour')) return false;
+  // BRO-7825: the tour-integrity pass flags 'uk-on-tour' on a London/.uk
+  // outlet, an overseas host, or UK text naming no stop of this tour, never on
+  // an LLM verdict. Match the structured kind; the reason text covers flags
+  // written before wrongProductionKind existed.
+  if (review.wrongProductionDetectedBy === 'tour-integrity'
+    && (review.wrongProductionKind === 'uk-on-tour'
+      || /UK or overseas production reviewed/i.test(review.wrongProductionReason || ''))) return true;
   // Tour only. Local tour reviews are also LLM-flagged wrongProduction at times
   // (and-juliet-tour-2024, mrs-doubtfire-tour-2025), so a bare flag proves
   // nothing; require positive evidence the file is about the earlier run.
-  // BRO-7825: the tour-integrity pass flags a file 'uk-on-tour' only on hard
-  // evidence (a London/.uk outlet, an overseas host, or UK text naming no stop
-  // of this tour), never on an LLM verdict, so it is safe to discount.
-  if (review.wrongProductionDetectedBy === 'tour-integrity'
-    && /UK or overseas production reviewed/i.test(review.wrongProductionReason || '')) return true;
   const pub = toDateMs(review.publishDate);
   const open = toDateMs(show.openingDate);
   if (!Number.isNaN(pub) && !Number.isNaN(open) && pub < open - 60 * 86400000) return true;

@@ -373,13 +373,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-19T12:21:10.220Z",
+      "lastSeen": "2026-11-19T14:20:11.443Z",
       "lastNotifiedAt": "2026-11-19T04:22:30.126Z",
       "lastSurfacedAt": "2026-11-17T03:05:41.603Z",
       "notifyCount": 85,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 6
+      "silentRefires": 8
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -19491,7 +19491,7 @@
       "title": "Roundup gaps: 12 listed review(s) not captured across 7 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-19T12:19:57.353Z",
+      "lastSeen": "2026-11-19T14:19:42.334Z",
       "lastNotifiedAt": "2026-11-19T09:17:11.533Z",
       "lastSurfacedAt": null,
       "notifyCount": 62,
@@ -19508,7 +19508,7 @@
         "la-distance-bam-off-broadway-2026",
         "much-ado-about-nothing-2026"
       ],
-      "silentRefires": 2
+      "silentRefires": 4
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -37536,13 +37536,13 @@
       "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "pending-unrecoverable:well-see-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for well-see-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-04T16:06:40.931Z",
       "incidentOpenedAt": "2026-11-19T10:30:49.697Z",
-      "lastSeen": "2026-11-19T12:39:55.499Z",
+      "lastSeen": "2026-11-19T13:49:42.717Z",
       "lastNotifiedAt": "2026-11-19T10:30:49.697Z",
       "lastSurfacedAt": "2026-11-19T10:30:49.697Z",
       "notifyCount": 23,
@@ -37550,7 +37550,9 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 17,
       "sweptTracker": "BRO-7485",
-      "silentRefires": 1
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-19T14:02:44.059Z",
+      "resolveReason": "outside the post-opening alert window on a complete scan"
     },
     "land:land/job/linear-BRO-6975-mw2c95n8": {
       "status": "resolved",
@@ -38476,13 +38478,13 @@
       "resolvedAt": "2026-11-06T21:29:38.516Z"
     },
     "pending-unrecoverable:parcel-from-america-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-06T20:46:29.742Z",
       "incidentOpenedAt": "2026-11-19T10:30:46.864Z",
-      "lastSeen": "2026-11-19T12:39:53.167Z",
+      "lastSeen": "2026-11-19T13:49:40.610Z",
       "lastNotifiedAt": "2026-11-19T10:30:46.864Z",
       "lastSurfacedAt": "2026-11-19T10:30:46.864Z",
       "notifyCount": 21,
@@ -38490,7 +38492,9 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 15,
       "sweptTracker": "BRO-7516",
-      "silentRefires": 1
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-19T14:02:38.179Z",
+      "resolveReason": "outside the post-opening alert window on a complete scan"
     },
     "uncollected-blackout:tango-after-dark-off-west-end-2026": {
       "status": "resolved",
@@ -39434,19 +39438,21 @@
       "resolveReason": "absent"
     },
     "pending-unrecoverable:tristan-and-yseult-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-08T17:42:05.149Z",
       "incidentOpenedAt": "2026-11-19T10:31:23.069Z",
-      "lastSeen": "2026-11-19T12:40:19.998Z",
+      "lastSeen": "2026-11-19T13:50:08.439Z",
       "lastNotifiedAt": "2026-11-19T10:31:23.069Z",
       "lastSurfacedAt": "2026-11-16T05:50:36.548Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-7581",
-      "silentRefires": 1
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-19T14:03:11.081Z",
+      "resolveReason": "outside the post-opening alert window on a complete scan"
     },
     "land:land/job/linear-BRO-7137-mw8323fw": {
       "status": "resolved",
@@ -40754,13 +40760,13 @@
       "title": "Placeholder synopsis on Arrowhead",
       "firstSeen": "2026-11-10T01:39:20.018Z",
       "incidentOpenedAt": "2026-11-19T01:34:38.353Z",
-      "lastSeen": "2026-11-19T11:16:54.758Z",
+      "lastSeen": "2026-11-19T13:19:39.588Z",
       "lastNotifiedAt": "2026-11-19T01:34:38.353Z",
       "lastSurfacedAt": "2026-11-19T01:34:38.353Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-7257": {
       "status": "resolved",
@@ -41206,20 +41212,17 @@
       "silentRefires": 22
     },
     "opening-night-remediation-exhausted-empty-cast:arrowhead-regional-2026": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on arrowhead-regional-2026",
       "firstSeen": "2026-11-10T09:58:33.178Z",
-      "incidentOpenedAt": "2026-11-10T09:58:33.178Z",
-      "lastSeen": "2026-11-10T17:56:13.587Z",
-      "lastNotifiedAt": "2026-11-10T09:58:33.178Z",
-      "lastSurfacedAt": "2026-11-10T09:58:33.178Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-11-19T13:19:39.568Z",
+      "lastSeen": "2026-11-19T13:19:39.568Z",
+      "lastNotifiedAt": "2026-11-19T13:19:39.568Z",
+      "lastSurfacedAt": "2026-11-19T13:19:39.568Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 3,
-      "resolvedAt": "2026-11-18T10:19:20.705Z",
-      "resolveReason": "absent"
+      "linearIdentifier": null
     },
     "land:land/job/linear-BRO-7277-mwaiqloa": {
       "status": "resolved",
@@ -45675,7 +45678,7 @@
       "resolvedAt": "2026-11-18T18:16:02.455Z"
     },
     "uncollected-blackout:menopause-the-musical-tour-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Menopause The Musical",
       "firstSeen": "2026-11-18T20:03:57.153Z",
@@ -45686,7 +45689,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7795",
-      "silentRefires": 12
+      "silentRefires": 12,
+      "resolvedAt": "2026-11-19T13:32:52.251Z",
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
     },
     "land:land/bro-7794-nearmiss-news": {
       "status": "open",
@@ -45943,13 +45948,13 @@
       "title": "1 review(s) for now-you-see-me-live-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-19T10:30:34.561Z",
       "incidentOpenedAt": "2026-11-19T10:30:34.561Z",
-      "lastSeen": "2026-11-19T12:39:41.257Z",
+      "lastSeen": "2026-11-19T14:00:54.308Z",
       "lastNotifiedAt": "2026-11-19T10:30:34.561Z",
       "lastSurfacedAt": "2026-11-19T10:30:34.561Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "coverage-holes:much-ado-about-nothing-2026": {
       "status": "open",
@@ -46023,12 +46028,13 @@
       "title": "Opening-night reviews stuck ≥60 min: much-ado-about-nothing-2026 (1)",
       "firstSeen": "2026-11-19T11:16:56.011Z",
       "incidentOpenedAt": "2026-11-19T11:16:56.011Z",
-      "lastSeen": "2026-11-19T11:16:56.011Z",
+      "lastSeen": "2026-11-19T13:19:40.840Z",
       "lastNotifiedAt": "2026-11-19T11:16:56.011Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7828"
+      "linearIdentifier": "BRO-7828",
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-7402-mwner6k4": {
       "status": "resolved",
@@ -46065,6 +46071,47 @@
       },
       "resolvedAt": "2026-11-19T13:02:54.769Z",
       "resolveReason": "clear in latest run"
+    },
+    "opening-night-remediation-exhausted-empty-cast:the-snowman-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on the-snowman-off-west-end-2026",
+      "firstSeen": "2026-11-19T13:19:38.221Z",
+      "incidentOpenedAt": "2026-11-19T13:19:38.221Z",
+      "lastSeen": "2026-11-19T13:19:38.221Z",
+      "lastNotifiedAt": "2026-11-19T13:19:38.221Z",
+      "lastSurfacedAt": "2026-11-19T13:19:38.221Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-empty-cast:cinderella-lyric-hammersmith-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on cinderella-lyric-hammersmith-off-west-end-2026",
+      "firstSeen": "2026-11-19T13:19:38.240Z",
+      "incidentOpenedAt": "2026-11-19T13:19:38.240Z",
+      "lastSeen": "2026-11-19T13:19:38.240Z",
+      "lastNotifiedAt": "2026-11-19T13:19:38.240Z",
+      "lastSurfacedAt": "2026-11-19T13:19:38.240Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-7841-dead-links": {
+      "status": "resolved",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7841-dead-links",
+      "firstSeen": "2026-11-19T13:30:57.767Z",
+      "incidentOpenedAt": "2026-11-19T13:30:57.767Z",
+      "lastSeen": "2026-11-19T14:00:19.020Z",
+      "lastNotifiedAt": "2026-11-19T13:30:57.767Z",
+      "lastSurfacedAt": "2026-11-19T13:30:57.767Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-19T14:45:47.759Z"
     }
   }
 }

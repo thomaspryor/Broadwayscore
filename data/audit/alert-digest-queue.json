@@ -354,20 +354,6 @@
     "queuedAt": "2026-11-19T11:36:29.351Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T12:20:55.761Z"
-  },
-  {
     "conditionKey": "corpus-drift:monitor-only",
     "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-19.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
@@ -410,5 +396,106 @@
     "testId": "tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)",
     "fields": [],
     "queuedAt": "2026-11-19T13:02:56.857Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-snowman-off-west-end-2026",
+    "title": "Auto-remediation gave up on the-snowman-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-snowman-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T13:19:38.222Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:cinderella-lyric-hammersmith-off-west-end-2026",
+    "title": "Auto-remediation gave up on cinderella-lyric-hammersmith-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"cinderella-lyric-hammersmith-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T13:19:38.240Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:arrowhead-regional-2026",
+    "title": "Auto-remediation gave up on arrowhead-regional-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"arrowhead-regional-2026\",\"category\":\"regional\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T13:19:39.568Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7841-dead-links",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7841-dead-links",
+    "description": "land.yml did not land land/bro-7841-dead-links: the unit-tests-node gate went red at e83c82f3e8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44533469464",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7841-dead-links"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e83c82f3e806095c9e8efedc0e1b79173fee8ad7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44533469464"
+      }
+    ],
+    "queuedAt": "2026-11-19T13:30:57.768Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7839",
+    "title": "Watchdog parked #linear:BRO-7839 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Skeptic review at session close: an independent reviewer asks 'is this fully tested?' and the session must close the gaps\" was claimed for redispatch at 2026-11-19T13:11:22.456Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7839), then re-arm with node scripts/linear-next.js --id BRO-7839 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T13:27:27.433Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T14:19:53.813Z"
   }
 ]

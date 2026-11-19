@@ -9,10 +9,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { walkTranscript } from './transcript-scan.mjs';
-import { evaluateCoverage, evaluateChain, landGateDecision, stopHookDecision, findRuns, findSessionTranscript } from './review-coverage.mjs';
+import { evaluateCoverage, evaluateChain, stampReceipt, isSkepticReviewCall, landGateDecision, stopHookDecision, findRuns, findSessionTranscript } from './review-coverage.mjs';
 import { checkReviewCoverage } from './land-preflight.mjs';
 import { landPushTargets } from './push-command.mjs';
 
+// The fixtures below predate the skeptic reviewer (BRO-7839); keep them judging the two original reviewers.
+// The skeptic requirement has its own dated tests at the end of this file.
+process.env.REVIEW_COVERAGE_SKEPTIC_FROM = '9999-12-31';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const CLI = path.join(ROOT, 'scripts', 'lib', 'review-coverage.mjs');
 
@@ -583,4 +586,64 @@ test('codex exec / curl behind a timeout, perl-alarm, env or nice wrapper counts
     'timeout 600 echo codex exec',
     'timeout 120 curl -s https://api.openai.com/v1/models',
   ]) assert.equal(covered(c), false, c);
+});
+
+// ---------------------------------------------------------------- BRO-7839: skeptic reviewer + automatic receipt
+const skepticCall = (cmd = 'node scripts/lib/skeptic-review-stop.mjs --ship-check') => tool('Bash', { command: cmd });
+const withFrom = (from, fn) => { const prev = process.env.REVIEW_COVERAGE_SKEPTIC_FROM; process.env.REVIEW_COVERAGE_SKEPTIC_FROM = from; try { return fn(); } finally { process.env.REVIEW_COVERAGE_SKEPTIC_FROM = prev; } };
+
+test('skeptic reviewer: advisory before the required date, missing after, counted only with its verdict line', () => {
+  const two = ev(skill(), agent(), curl());
+  const before = withFrom('2026-11-25', () => evaluateCoverage(two, { now: new Date('2026-11-20T00:00:00Z') }));
+  assert.equal(before.complete, true);
+  assert.equal(before.advisory.length, 1);
+  const after = withFrom('2026-11-25', () => evaluateCoverage(two, { now: new Date('2026-11-25T00:00:00Z') }));
+  assert.equal(after.complete, false);
+  assert.match(after.missing.join('\n'), /skeptic/);
+  const s = skepticCall();
+  const good = [...two, s, res(s, 'SKEPTIC REVIEW: 2 material gap(s)\n1. x\n   check: y')];
+  const ok = withFrom('2026-11-25', () => evaluateCoverage(good, { now: new Date('2026-11-26T00:00:00Z') }));
+  assert.equal(ok.complete, true);
+  assert.deepEqual(ok.evidence.checks, ['claude-subagent-review x1', 'external-review x1', 'skeptic-review x1']);
+  const noVerdict = [...two, s, res(s, 'node: cannot find module skeptic-review-stop.mjs, nothing ran here')];
+  assert.equal(withFrom('2026-11-25', () => evaluateCoverage(noVerdict, { now: new Date('2026-11-26T00:00:00Z') })).complete, false);
+});
+
+test('skeptic reviewer: command detection', () => {
+  assert.equal(isSkepticReviewCall('node scripts/lib/skeptic-review-stop.mjs --ship-check'), true);
+  assert.equal(isSkepticReviewCall('cd x && timeout 90 node /a/scripts/lib/skeptic-review-stop.mjs --ship-check 2>&1 | tail -40'), true);
+  assert.equal(isSkepticReviewCall('echo node scripts/lib/skeptic-review-stop.mjs --ship-check'), false);
+  assert.equal(isSkepticReviewCall('grep -n ship-check scripts/lib/skeptic-review-stop.mjs'), false);
+  assert.equal(isSkepticReviewCall('node scripts/lib/skeptic-review-stop.mjs --digest'), false);
+  assert.equal(isSkepticReviewCall('node /tmp/skeptic-review-stop.mjs --ship-check'), false, 'a stand-in script elsewhere does not count');
+  assert.equal(isSkepticReviewCall('node scripts/lib/skeptic-review-stop.mjs --transcript=/x/y.jsonl --ship-check'), true, 'flags before --ship-check');
+});
+
+test('stampReceipt: amends only the message, once, never a commit already on main', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'receipt-'));
+  const g = (...a) => spawnSync('git', a, { cwd: dir, encoding: 'utf8' });
+  g('init', '-q', '-b', 'main'); g('config', 'user.email', 't@t'); g('config', 'user.name', 't');
+  fs.writeFileSync(path.join(dir, 'a'), '1'); g('add', 'a'); g('commit', '-qm', 'base');
+  g('update-ref', 'refs/remotes/origin/main', 'HEAD');
+  const evidence = { outputsHash: 'a'.repeat(64), invocationId: 'toolu_1', checks: [] };
+  assert.equal(stampReceipt({ cwd: dir, evidence }).stamped, false, 'HEAD on origin/main is never amended');
+  fs.writeFileSync(path.join(dir, 'a'), '2'); g('add', 'a'); g('commit', '-qm', 'work');
+  fs.writeFileSync(path.join(dir, 'b'), 'staged'); g('add', 'b');
+  const r = stampReceipt({ cwd: dir, evidence });
+  assert.equal(r.stamped, true, r.reason);
+  const msg = g('log', '-1', '--format=%B').stdout;
+  assert.match(msg, /^work\n\nReview-Receipt: v1 a{64} toolu_1$/m);
+  assert.equal(g('show', '--name-only', '--format=', 'HEAD').stdout.trim(), 'a', 'the staged file stays out of the amended commit');
+  assert.equal(stampReceipt({ cwd: dir, evidence }).reason, 'HEAD already carries a receipt');
+  assert.match(stampReceipt({ cwd: dir, evidence, env: { REVIEW_RECEIPT_STAMP: '0' } }).reason, /opt-out/, 'opt-out never touches git');
+  assert.equal(stampReceipt({ cwd: dir, evidence: null }).stamped, false);
+  g('rm', '-q', '--cached', 'b');
+  g('commit', '-q', '--allow-empty', '-m', 'empty');
+  assert.equal(stampReceipt({ cwd: dir, evidence }).stamped, true, 'an empty HEAD commit (merge-only or marker commit) still takes the trailer');
+  g('commit', '-q', '--allow-empty', '-m', 'pushed');
+  g('update-ref', 'refs/remotes/origin/claude/x', 'HEAD');
+  const pushed = stampReceipt({ cwd: dir, evidence });
+  assert.equal(pushed.stamped, false, 'a commit a remote branch already holds is never rewritten');
+  assert.match(pushed.reason, /already pushed \(origin\/claude\/x\)/);
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
