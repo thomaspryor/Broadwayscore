@@ -599,11 +599,13 @@ jobs:
           # Batch API mode (task #516, widened by BRO-7807). Vendor Batch APIs
           # bill at 50% but are submit-now/poll-later (minutes to 24h). Policy
           # lives in scripts/lib/rescore-batch-policy.js (unit-tested): the
-          # scheduled non-chain run batches, and so does EVERY bulk rescore
+          # scheduled non-chain run batches, and so does a bulk rescore dispatch
           # (needs_rescore / outdated / stale_scores / upgrade_ensemble /
-          # rescore / rescore_reason bucket / the auto-detected backlog), chain
-          # links included. Only a run aimed at one show (opening-night and
-          # press-night dispatches) stays synchronous: latency is its point.
+          # rescore / the auto-detected backlog); chain links batch only for
+          # needs_rescore (the cron resumes that backlog if a poll times out).
+          # Stays synchronous: any run aimed at one show (opening night /
+          # press night: latency is the point), a rescore_reason lane (shared
+          # batch-state file), sync=true, dry_run.
           # Kill switch: repo variable DISABLE_BATCH_SCORING=1.
           if [ "$(EVENT_NAME="${{ github.event_name }}" CHAIN="${{ github.event.inputs.chain }}" \
                   SHOW_ID="${INPUT_SHOW_ID}" RESCORE_REASON="${INPUT_RESCORE_REASON}" \
@@ -1130,6 +1132,7 @@ jobs:
           INPUT_MAX_COST: ${{ github.event.inputs.max_cost }}
           INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
           INPUT_CHAIN_SPENT: ${{ github.event.inputs.chain_spent_usd }}
+          INPUT_SYNC: ${{ github.event.inputs.sync }}
           SCORING_CHAIN_BUDGET_DISABLED: ${{ vars.SCORING_CHAIN_BUDGET_DISABLED }}
         run: |
           BATCHES_LEFT="${INPUT_REMAINING_BATCHES}"
@@ -1165,6 +1168,7 @@ jobs:
           echo "Reviews still unscored: ${{ steps.count-remaining.outputs.remaining }}"
 
           CHAIN_ARGS="-f limit=$LIMIT -f chain=true -f remaining_batches=$NEXT_BATCHES -f run_calibration=false -f run_validation=false"
+          if [ "${INPUT_SYNC}" = "true" ]; then CHAIN_ARGS="$CHAIN_ARGS -f sync=true"; fi
           if [ -n "$SHARD" ] && [ -n "$TOTAL_SHARDS" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f shard=$SHARD -f total_shards=$TOTAL_SHARDS"
           fi

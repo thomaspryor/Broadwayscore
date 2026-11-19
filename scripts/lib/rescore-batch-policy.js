@@ -7,14 +7,14 @@
  * price ($40-60/day on gpt-4o) because batch mode was gated on
  * `schedule && !chain`. Rule: a BULK rescore (needs_rescore, outdated,
  * stale_scores, upgrade_ensemble, rescore, or the auto-detected needsRescore
- * backlog) always batches, scheduled or not, chain or not. Stays synchronous:
+ * backlog) batches on manual dispatch; chain links batch only for
+ * needs_rescore (see shouldBatchScoring). Stays synchronous:
  * a run aimed at ONE show (opening-night / press-night, dispatch-rescore.js:
  * latency is the point), the human `sync=true` escape hatch, and any run with
  * a rescore_reason (it gets its own concurrency lane, but the batch state is
  * ONE file, data/collection-state/scoring-batch-state.json, so a second
  * parallel lane would overwrite or poll the first lane's vendor batch IDs).
- * retry_emergency and the auto-detected stale-scores pass stay synchronous
- * (small, rare).
+ * retry_emergency stays synchronous (small, rare).
  * The comparative pass batches exactly when the main pass does, so urgent
  * catch-up runs never wait on it before their commit step.
  *
@@ -44,7 +44,13 @@ function shouldBatchScoring(i = {}) {
   if (i.showId && String(i.showId).trim()) return false;
   if (i.rescoreReason && String(i.rescoreReason).trim()) return false; // own lane, shared batch-state slot
   if (i.eventName === 'schedule' && !on(i.chain)) return true; // original #516 rule
-  return isRescoreRun(i);                                      // BRO-7807: bulk rescore, chain or dispatch
+  // BRO-7807. A chain link that batches and outlasts its poll writes no review
+  // files, so the workflow's chain step (has_scored_reviews) stops the chain.
+  // Only needs_rescore is resumed afterwards (the cron's cascade + 200/run
+  // drain pick the backlog up); an outdated/stale/upgrade/rescore chain would
+  // be silently dropped, so those chain links stay sync as before.
+  if (on(i.chain)) return on(i.needsRescore) || on(i.runRescore);
+  return isRescoreRun(i);
 }
 
 /** Comparative within-band rescore (comparative-rescore.ts, gpt-4o leg): same decision as the main pass. */
