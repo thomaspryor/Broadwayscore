@@ -255,7 +255,13 @@ export function eventsToRows(fileTexts) {
     const j = s.lastIndexOf('}');
     if (i < 0 || j < i) continue;
     let o;
-    try { o = JSON.parse(s.slice(i, j + 1)).ccr; } catch { continue; }
+    const body = s.slice(i, j + 1);
+    // BRO-7872: some saved pages carry raw control characters inside strings (a tool result with a literal newline
+    // or tab), which JSON.parse rejects; the page used to be dropped silently, losing those events from the replay.
+    // The tool's JSON is compact, so every raw control character is inside a string and escaping it is lossless.
+    try { o = JSON.parse(body).ccr; } catch {
+      try { o = JSON.parse(body.replace(/[\u0000-\u001f]/g, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`)).ccr; } catch { continue; }
+    }
     for (const e of o?.data || []) {
       for (const k of ['assistant', 'user']) {
         const v = e[k];

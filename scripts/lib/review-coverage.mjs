@@ -58,6 +58,7 @@ import { createRequire } from 'node:module';
 import { walkTranscript, isStopHookFeedback } from './transcript-scan.mjs';
 import { linearCommands } from './linear-command.js';
 import { isMainModule } from './is-main-module.mjs';
+const { evaluateGapAnswers, answerInstructions } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
 
 const { stripHeredocBodies } = createRequire(import.meta.url)('./infra-review-scope.js');
 
@@ -170,7 +171,7 @@ export function findRuns(events, skills = STRONG_SKILLS) {
  * Coverage after the last strong review run in the session.
  * -> { ran, complete, skill, missing: string[], evidence|null }
  */
-export function evaluateCoverage(events, { requireBuild = false, now = new Date() } = {}) {
+export function evaluateCoverage(events, { requireBuild = false, now = new Date(), lastMessage = '', env = process.env } = {}) {
   const runs = findRuns(events);
   if (runs.length === 0) {
     return { ran: false, complete: false, skill: null, missing: ['no /ship-check or /code-review run in this session'], evidence: null };
@@ -200,6 +201,14 @@ export function evaluateCoverage(events, { requireBuild = false, now = new Date(
       skeptic.push(e);
     }
   }
+  // BRO-7872: each material gap in the latest skeptic report needs an answer (a command that ran, or a concrete reason).
+  // Kept apart from `missing` so each caller can say what to do (re-running /ship-check would only renumber the gaps).
+  let unansweredGaps = [];
+  if (skeptic.length && env.SKEPTIC_GAP_ANSWERS_DISABLE !== '1') {
+    const idx = (e) => events.indexOf(e);
+    const lastSk = skeptic[skeptic.length - 1];
+    unansweredGaps = evaluateGapAnswers(events, { firstIdx: idx(skeptic[0]), lastIdx: idx(lastSk), reportText: String(results.get(lastSk.id)?.content || ''), lastMessage }).unanswered;
+  }
   // land.yml runs tsc + lint but NOT `next build`; a src/ change needs the build run by the session.
   // Any build in the session counts (did-it-work often builds before ship-check is invoked).
   const built = events.some((e) => e.kind === 'assistant_tool_use' && e.name === 'Bash' && answered(e.id) && (BUILD_RE.test(shellCode(String(e.input?.command || ''))) || SHELL_C_BUILD_RE.test(String(e.input?.command || ''))));
@@ -223,7 +232,7 @@ export function evaluateCoverage(events, { requireBuild = false, now = new Date(
       checks: [`claude-subagent-review x${claude.length}`, `external-review x${external.length}`, ...(skeptic.length ? [`skeptic-review x${skeptic.length}`] : [])],
     };
   }
-  return { ran: true, complete, skill: last.skill, missing, advisory, evidence };
+  return { ran: true, complete, skill: last.skill, missing, advisory, evidence, unansweredGaps };
 }
 
 /**
@@ -237,7 +246,18 @@ export function landGateDecision({ command = '', events = null, gatedLines = 0, 
   if (bypass) return { decision: 'allow', reason: `NO-SHIP-CHECK bypass: ${bypass[1].trim()}` };
   if (!events || events.length === 0) return { decision: 'skip', reason: 'no transcript to judge (fails open)' };
   if (gatedLines <= budget) return { decision: 'skip', reason: `gated diff is ${gatedLines} lines (<= ${budget})` };
-  const cov = evaluateCoverage(events, { requireBuild: touchesSrc });
+  const cov = evaluateCoverage(events, { requireBuild: touchesSrc, env });
+  if (cov.complete && cov.unansweredGaps?.length) {
+    return {
+      decision: 'block',
+      reason: 'skeptic gaps unanswered',
+      message: [
+        `LAND BLOCKED (BRO-7872): the skeptic reviewer listed ${cov.unansweredGaps.length} gap(s) this session has not answered. Do not re-run /ship-check (that only renumbers them).`,
+        answerInstructions(cov.unansweredGaps),
+        'Then push again. Only if this truly cannot be answered: `# NO-SHIP-CHECK: <reason, 15+ chars>` in the push command (logged).',
+      ].join('\n'),
+    };
+  }
   if (cov.complete) return { decision: 'allow', reason: `${cov.skill} coverage complete` };
   return {
     decision: 'block',
@@ -418,11 +438,13 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   // BRO-6020: SAFE TO ARCHIVE is the current claim; legacy SAFE TO EXIT stays an alias.
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
-  const cov = evaluateCoverage(events);
+  const cov = evaluateCoverage(events, { lastMessage, env });
   // Only a session that did reviewed code work is held to the rest of the chain.
   const problems = [];
   const noShipCheck = /^\s*NO-SHIP-CHECK:\s*(\S.{9,})/m.test(text);
   if (cov.ran && !cov.complete && !noShipCheck) problems.push(...cov.missing.map((m) => `/${cov.skill} did not run its reviewers: ${m}`));
+  // BRO-7872: NO-SHIP-CHECK waives the reviewers, not the answers to gaps a reviewer already listed.
+  if (cov.unansweredGaps?.length) problems.push(`the skeptic reviewer's gaps have no answer (BRO-7872):\n${answerInstructions(cov.unansweredGaps)}`);
   // The newest message is not flushed to the transcript when the Stop hook runs (verify-edits.sh
   // has the same note), so add it: a TESTED block in the closing message must count.
   // The chain checks apply to sessions that ran /ship-check; a pure /code-review (PR review) is not held to them.
@@ -540,6 +562,11 @@ async function main(argv) {
       process.stderr.write(`review-coverage: NOT recording a pass. Missing:\n${cov.missing.map((m) => `  - ${m}`).join('\n')}\n`);
       return 3;
     }
+    if (cov.unansweredGaps?.length) {
+      // BRO-7872: a session recorded a pass 23s after the skeptic listed 5 gaps, then landed without running any.
+      process.stderr.write(`review-coverage: NOT recording a pass. The skeptic reviewer listed ${cov.unansweredGaps.length} gap(s) with no answer:\n${answerInstructions(cov.unansweredGaps)}\nThen run --record again (kill switch: SKEPTIC_GAP_ANSWERS_DISABLE=1).\n`);
+      return 3;
+    }
     if (cov.advisory?.length) process.stderr.write(`review-coverage: advisory (required from ${SKEPTIC_REQUIRED_FROM}):\n${cov.advisory.map((m) => `  - ${m}`).join('\n')}\n`);
     const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
     // BRO-7839: stamp the Review-Receipt trailer here, BEFORE the verdict records HEAD (amending after would leave the
@@ -555,8 +582,9 @@ async function main(argv) {
   if (!argv.includes('--json') && cov.advisory?.length) process.stdout.write(`advisory (required from ${SKEPTIC_REQUIRED_FROM}):\n${cov.advisory.map((m) => `  - ${m}`).join('\n')}\n`);
   if (!argv.includes('--json')) {
     process.stdout.write(cov.complete ? `coverage complete (${cov.skill})\n` : `coverage incomplete:\n${cov.missing.map((m) => `  - ${m}`).join('\n')}\n`);
+    if (cov.unansweredGaps?.length) process.stdout.write(`skeptic gaps unanswered:\n${answerInstructions(cov.unansweredGaps)}\n`);
   }
-  return cov.complete ? 0 : 3;
+  return cov.complete && !cov.unansweredGaps?.length ? 0 : 3;
 }
 
 if (isMainModule(import.meta.url)) {
