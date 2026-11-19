@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7346-b",
   "planId": "e0a5385b-808c-480d-ab3b-c2ddfc4d6fc0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T20:45:53.883Z",
   "submitter": {
     "name": null,
@@ -84,5 +84,49 @@
         "description": "BRO-7346: stored quote is about another show in the same multi-show column; replace with a verbatim sentence from this show's section"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T23:13:04.078Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran flag-multishow-column-rescore.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json llmPullQuote: \"Still, a revival like Ali’s that gives so many patrons a pungent taste of Shakespeare’s abundant pluses has to be embraced.\" -> \"Ernest Shackleton Loves Me still comes across as absolutely original.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fade-off-broadway-2017/huffpost--david-finkle.json llmPullQuote: \"Although Holman's play adds up to less than the sum of its parts, the acting amounts to a good deal more.\" -> \"Dow's never-ending jitters are great fun to watch.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "henry-iv-off-broadway-2015/huffpost--david-finkle.json llmPullQuote: \"This videoed performance is a stunning example of that.\" -> \"The major triumph of this triumphant undertaking is Lloyd's work with the actors.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-the-remix-off-broadway-2016/huffpost--david-finkle.json llmPullQuote: \"The reasons for either existing aren't immediately apparent or convincing.\" -> \"The four men barely take a breather while moving about and gesticulating in the now time-honored rapper manner, but something does nag about the modernizing.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-real-thing-2014/huffpost--david-finkle.json llmPullQuote: \"Though Lips Together, Teeth Apart keeps going longer than it needs to, Dubois and troupe make the ride enjoyable and thought-provoking.\" -> \"While Gyllenhaal with her appealingly loose delivery, and Raftery, breathing fresh sexiness into the proceedings, shine in their sequences, McGregor cops the highlight moment.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "turn-me-loose-off-broadway-2016/huffpost--david-finkle.json llmPullQuote: \"Unfortunately, Cal, Tim and Flynt are unbearable for so long--Adrienne Campbell-Holt is the flummoxed director--that by the time they reconcile, few watching them will care.\" -> \"By the time the intermissionless Turn Me Loose ends, Gregory has become a symbol of growing impatience among black Americans for their civil rights, a growing demand for equality.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json llmPullQuote: \"If Weiler’s construction provides the opportunity to see a series of fine actors at work with delicate tête-à-têtes, the neatness of the structure constricts some of the feeling.\" -> \"If there are great revelations about the real and secret Ava Gardner to uncover, Ava itself doesn’t find them.\""
+    }
+  ],
+  "executedIn": "ci"
 }
