@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7808",
   "planId": "96e76410-a53a-4885-b5fd-c167587166cc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-19T03:16:41.463Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "shows.json: heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026.openingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-19T03:28:18.361Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
