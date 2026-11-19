@@ -22,7 +22,7 @@ const CALLS_LLM_RE = /generativelanguage\.googleapis\.com|api\.openai\.com|api\.
 const METER_RE = /llm-usage-install|gemini-usage-ledger['"]\)\.install\(\)/;
 const CLIENT_RE = /new (?:OpenAI|GoogleGenerativeAI|Anthropic)\(/;
 // The meter itself and tests that stub fetch are not callers.
-const EXEMPT = new Set(['scripts/lib/gemini-usage-ledger.js', 'scripts/lib/llm-usage-install.js', 'scripts/lib/skeptic-review-stop.mjs' /* BRO-7839: a Stop hook in the main checkout; meters via logSessionCall (session ledger), install() would write the committed ledger */, 'scripts/test-fixtures/stub-autonomous-email-io.cjs']);
+const EXEMPT = new Set(['scripts/lib/gemini-usage-ledger.js', 'scripts/lib/llm-usage-install.js', 'scripts/lib/skeptic-review-replay.mjs', 'scripts/lib/skeptic-review-stop.mjs' /* BRO-7839: a Stop hook in the main checkout; meters via logSessionCall (session ledger), install() would write the committed ledger */, 'scripts/test-fixtures/stub-autonomous-email-io.cjs']);
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
