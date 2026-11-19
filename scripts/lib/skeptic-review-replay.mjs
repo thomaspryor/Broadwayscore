@@ -8,6 +8,10 @@
 //
 //   node scripts/lib/skeptic-review-replay.mjs <case.json ...> [--json] [--model=<openai id>]
 // Spends one reviewer call and one judge call per case (cents). Needs OPENAI_API_KEY.
+//
+// Measured 2026-11-19 on 5 real sessions (BRO-7132, BRO-7138, BRO-7316, BRO-7738, BRO-7796), gpt-5.4-mini:
+// would block 5/5 closes, caught 19/23 admitted gaps (83%), 14/14 reviewer gaps judged specific. The misses were
+// defects only a live run exposed (a later-claim path, a worktree hook, a stale checkout, a slow recursion).
 import './llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import fs from 'node:fs';
 import path from 'node:path';
