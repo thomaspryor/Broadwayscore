@@ -471571,5 +471571,76 @@
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-18T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-19T13:45:04.563Z",
+    "completedAt": "2026-11-19T13:51:20.198Z",
+    "totalReviews": 83162,
+    "processed": 52,
+    "skipped": 83091,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 467560,
+      "output": 22182,
+      "cacheRead": 346646,
+      "cacheWrite": 26662,
+      "total": 1209516
+    },
+    "costUsd": 0.52230065,
+    "runId": "44536016278",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "the-lion-king-tour-2021",
+        "outletId": "arizona",
+        "error": "input_validation_failed:nav_chrome_majority"
+      },
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      }
+    ],
+    "logKeepsSince": "2026-11-18T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-19T13:51:50.223Z",
+    "completedAt": "2026-11-19T13:57:58.037Z",
+    "totalReviews": 83162,
+    "processed": 87,
+    "skipped": 83059,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 659114,
+      "output": 35567,
+      "cacheRead": 501482,
+      "cacheWrite": 53243,
+      "total": 1750707
+    },
+    "costUsd": 0.7825717749999999,
+    "runId": "44536016278",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-18T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-19T13:57:59.883Z",
+    "completedAt": "2026-11-19T14:01:27.238Z",
+    "totalReviews": 70,
+    "processed": 70,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 184616,
+      "output": 16101,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 200717
+    },
+    "costUsd": 0.2586245,
+    "runId": "44536016278",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-18T00:00:00.000Z"
   }
 ]
