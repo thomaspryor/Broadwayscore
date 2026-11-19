@@ -25,6 +25,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { isMainModule } from './is-main-module.mjs';
+import { classifyOwnerReply } from './owner-reply-classifier.mjs';
 
 // This file lives at <root>/scripts/lib/, so the checkout root is two levels
 // up. Derived from THIS file rather than cwd on purpose: the gate hooks invoke
@@ -141,18 +142,8 @@ function approvalRe(hash) {
 // confirm after seeing the visual) is the real safety, the hash never was.
 // Negation-guarded so it stays a deliberate yes (fails toward asking again, not
 // toward shipping, on anything ambiguous).
-// Affirmative vocabulary. 2026-06-04: broadened after the user typed a perfectly
-// clear "Ship all four" and the gate didn't recognize it (only "ship it"/"ship
-// now" matched), forcing the painful hash fallback. The negation/conditional
-// guard below is what keeps this safe, so the verbs themselves can be bare:
-// "ship", "push", "send", "deploy", "publish", "merge", "go" all count, in any
-// phrasing ("ship all four", "push them", "send everything", "ship 'em").
-const PLAIN_APPROVAL_RE = /\b(?:approved?|ship|push|send|deploy|publish|merge|lgtm|looks good|looks great|great|perfect|awesome|beautiful|love it|nice|go ahead|go for it|good to go|all good|yep|yup|yeah|yes|do it)\b/i;
-// Reject on negation OR conditional/change-request words — "looks good but fix X
-// first", "yes, wait", "approved except…" are NOT a clean ship. Fails toward
-// asking again, never toward shipping.
-const APPROVAL_NEGATION_RE = /\b(?:don'?t|do not|not|never|hold|wait|stop|cancel|no|but|however|except|first|fix|change|instead|before|unless|although|though|hold on|revisit)\b/i;
-
+// Word lists and clause rules live in owner-reply-classifier.mjs (BRO-7848): a negation word
+// now only blocks the clause it sits in, and a bare "go" counts. Still fails toward asking.
 function isPlainApproval(text) {
   if (!text || typeof text !== 'string') return false;
   // If the user used the explicit hash form (`APPROVED: <hash>`), honor it
@@ -160,8 +151,7 @@ function isPlainApproval(text) {
   // DIFFERENT verdict than the one named. Preserves per-hash scoping so a stale
   // approval of verdict A can't green-light verdict B.
   if (/APPROVED:\s*[A-Za-z0-9]{6,}/.test(text)) return false;
-  if (APPROVAL_NEGATION_RE.test(text)) return false; // "don't ship", "not yet", etc.
-  if (!PLAIN_APPROVAL_RE.test(text)) return false;
+  if (classifyOwnerReply(text) !== 'approve') return false; // "don't ship", "not yet", "yes but wait" etc. stay stops
   // BRO-7295: a question ("did you push it?", "should we deploy?") is not a
   // yes. Only a literal yes/approved inside it counts, which keeps the
   // frustrated "HOW MANY TIMES DO I HAVE TO SAY YES?!" working.
