@@ -1017,5 +1017,33 @@
       }
     ],
     "queuedAt": "2026-11-19T19:49:14.878Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-6751",
+    "title": "Watchdog parked #linear:BRO-6751 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Gap audit runs ~4-8x/day, not hourly: daily slow-market rechecks and the 30-day cap can't hold at ~13 shows/run\" was claimed for redispatch at 2026-11-19T19:30:41.706Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-6751), then re-arm with node scripts/linear-next.js --id BRO-6751 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T19:50:57.000Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7078",
+    "title": "Watchdog parked #linear:BRO-7078 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Opening retro: reviews stuck in pending or live late cannot recur\" was claimed for redispatch at 2026-11-19T19:30:43.498Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7078), then re-arm with node scripts/linear-next.js --id BRO-7078 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T19:50:57.002Z"
   }
 ]
