@@ -159,7 +159,7 @@ const SKEPTIC_SCRIPT_RE = /scripts\/lib\/skeptic-review-stop\.mjs\b[^\n]*--ship-
  * isSkepticCall(command) decides what a run is (review-coverage.mjs passes isSkepticReviewCall; the default is a
  * plain pattern so CJS callers need no ESM import).
  * -> { runs, gapsFound, gapsAnswered, errors }
- *    runs = skeptic --ship-check runs with a verdict; gapsFound = material gaps in the LAST report;
+ *    runs = every skeptic --ship-check invocation (errors = those with no verdict); gapsFound = material gaps in the LAST report;
  *    gapsAnswered = how many of those have an accepted answer; errors = UNAVAILABLE reports.
  */
 function skepticStats(events, { isSkepticCall = (cmd) => SKEPTIC_SCRIPT_RE.test(cmd), lastMessage = '' } = {}) {
@@ -171,9 +171,8 @@ function skepticStats(events, { isSkepticCall = (cmd) => SKEPTIC_SCRIPT_RE.test(
     const r = results.get(e.id);
     const text = r && !r.isError ? String(typeof r.content === 'string' ? r.content : JSON.stringify(r.content ?? '')) : '';
     const v = parseSkepticReport(text).verdict;
-    if (v === 'unavailable') { errors++; return; }
-    if (v !== 'gaps' && v !== 'clean') return;
-    runs++;
+    runs++; // every invocation; one that printed no verdict (UNAVAILABLE, crash, cut output) is also an error
+    if (v !== 'gaps' && v !== 'clean') { errors++; return; }
     if (first < 0) first = i;
     last = i; lastText = text;
   });

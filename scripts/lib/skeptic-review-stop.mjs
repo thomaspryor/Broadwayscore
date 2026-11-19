@@ -45,8 +45,8 @@ const EDIT_TOOLS = new Set(['Edit', 'Write', 'MultiEdit', 'NotebookEdit']);
 const CODE_EXT_RE = /\.(?:m?[jt]sx?|cjs|sh|py|ya?ml|sql)$/;
 const CODE_DIR_RE = /^(?:src|scripts|\.github|\.claude\/(?:hooks|commands|skills|agents)|supabase|tests)\//;
 const NO_SKEPTIC_RE = /^[ \t>*_-]*NO-SKEPTIC(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.{14,})$/im;
-const SCHEDULE_ONLY_REASON_RE = /\b(?:cron|schedul\w*|tomorrow|tonight|overnight|next run|nightly|later)\b/i;
-const REAL_COST_REASON_RE = /\b(?:e-?mail|broadcast|subscribers?|send(?:s|ing)?|\$\d|money|paid|spend\w*|cost\w*|credits?|device|phone|owner)\b/i;
+// One definition of an acceptable "cannot run here" reason, shared with the per-gap answer check (BRO-7872).
+const { SCHEDULE_ONLY_REASON_RE, REAL_COST_REASON_RE } = require('./skeptic-gap-answers.js');
 const CAPS = { edits: 14000, perSnippet: 700, commands: 45, cmd: 300, tail: 300, notes: 2500, claim: 3000 };
 
 /** Repo-relative path ('' when outside the repo or a worktree of it). */
@@ -280,7 +280,7 @@ export function shipCheckReport(r) {
   const minor = r.gaps.filter((g) => g.severity !== 'material');
   const fmt = (g, i) => `${i + 1}. ${g.what}${g.why ? ` (${g.why})` : ''}\n   check: ${g.check || '(name one)'}`;
   return [
-    material.length ? `SKEPTIC REVIEW: ${material.length} material gap(s). Run each check (or fix it) before landing; one that truly cannot run here needs a one-line reason in your close.` : 'SKEPTIC REVIEW: no material gaps.',
+    material.length ? `SKEPTIC REVIEW: ${material.length} material gap(s). Before recording the ship-check, answer EACH gap on its own line: "GAP <n>: ran <the command>" (it must have run and passed), "GAP <n>: cannot run here: <concrete reason>", or "GAP <n>: not a gap: <why>". review-coverage --record refuses a pass while any gap is unanswered (BRO-7872).` : 'SKEPTIC REVIEW: no material gaps.',
     ...material.map(fmt),
     ...(minor.length ? ['Minor (optional):', ...minor.map(fmt)] : []),
   ].join('\n');
