@@ -12,6 +12,8 @@
 
 const https = require('https');
 const { escapeHtml } = require('./email-templates.js');
+const { loadLedger } = require('./feedback-proposal.js');
+const { sendOwnerThreadEmail, threadSubject } = require('./owner-email-thread.js');
 
 const REPO = 'thomaspryor/Broadwayscore';
 const SEND_TIMEOUT_MS = 20000;
@@ -84,22 +86,17 @@ ${Number.isNaN(ghIssue) ? '' : `<p style="margin:16px 0 0;font-size:13px;color:#
   return { subject, html };
 }
 
-// Best effort: never throws, never logs the reader's email address.
-async function sendReaderFixOwnerEmail(opts) {
-  const ownerEmail = process.env.OWNER_EMAIL;
-  const resendKey = process.env.RESEND_API_KEY;
-  if (!shouldEmailOwnerOnFix({ issueNumber: opts.issueNumber, ownerEmail, appliedCount: (opts.changes || []).length })) return false;
-  if (!resendKey) { console.log('Owner fix email: no RESEND_API_KEY'); return false; }
-  const { subject, html } = buildReaderFixOwnerEmail(opts);
+
+// The original un-threaded send: own request so a hung Resend call is destroyed
+// rather than holding the job open until its timeout. Rejects on any failure.
+function sendPlainOwnerEmail({ ownerEmail, resendKey, subject, html }) {
   const payload = JSON.stringify({
     from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
     to: [ownerEmail],
     subject,
     html,
   });
-  const result = await new Promise((resolve) => {
-    // Own request (not email-templates postJSON) so a hung Resend call is
-    // destroyed rather than holding the job open until its timeout.
+  return new Promise((resolve, reject) => {
     const req = https.request({
       hostname: 'api.resend.com',
       path: '/emails',
@@ -113,12 +110,40 @@ async function sendReaderFixOwnerEmail(opts) {
     }, (res) => {
       let body = '';
       res.on('data', (c) => { body += c; });
-      res.on('end', () => resolve(res.statusCode >= 200 && res.statusCode < 300 ? 'ok' : `HTTP ${res.statusCode}: ${body.slice(0, 200)}`));
+      res.on('end', () => (res.statusCode >= 200 && res.statusCode < 300 ? resolve() : reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 200)}`))));
     });
     req.on('timeout', () => req.destroy(new Error('timeout')));
-    req.on('error', (err) => resolve(err.message.slice(0, 200)));
+    req.on('error', (err) => reject(err));
     req.end(payload);
   });
+}
+
+// Best effort: never throws, never logs the reader's email address.
+async function sendReaderFixOwnerEmail(opts) {
+  const ownerEmail = process.env.OWNER_EMAIL;
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!shouldEmailOwnerOnFix({ issueNumber: opts.issueNumber, ownerEmail, appliedCount: (opts.changes || []).length })) return false;
+  if (!resendKey) { console.log('Owner fix email: no RESEND_API_KEY'); return false; }
+  const { subject, html } = buildReaderFixOwnerEmail(opts);
+  // BRO-7847: when this report already got a proposal email, reply in that
+  // thread (same subject + In-Reply-To) so the owner sees one conversation.
+  const proposed = !!(loadLedger().entries[String(opts.issueNumber).replace(/-systematic$/, '')]);
+  let result;
+  try {
+    if (proposed) {
+      await sendOwnerThreadEmail({
+        issueNumber: opts.issueNumber,
+        subject: threadSubject({ show: (opts.reader && opts.reader.show) || null, issueNumber: opts.issueNumber }),
+        html,
+        env: process.env,
+      });
+    } else {
+      await sendPlainOwnerEmail({ ownerEmail, resendKey, subject, html });
+    }
+    result = 'ok';
+  } catch (err) {
+    result = String(err.message || err).slice(0, 200);
+  }
   if (result === 'ok') {
     console.log(`Owner fix email sent for #${opts.issueNumber}`);
     return true;

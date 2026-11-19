@@ -57,6 +57,34 @@ async function forwardToFormspree(formData: FormData): Promise<boolean> {
   }
 }
 
+const DISPATCH_TIMEOUT_MS = 4000;
+
+// Fire process-feedback.yml. Never throws and never blocks the reader's
+// success response for long: the cron picks the submission up if this fails.
+async function triggerProcessFeedback(): Promise<void> {
+  const token = process.env.GH_DISPATCH_TOKEN;
+  if (!token || process.env.FEEDBACK_PROPOSAL_DISABLED === 'true') return;
+  try {
+    const res = await fetch(
+      'https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/process-feedback.yml/dispatches',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+          'Content-Type': 'application/json',
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+        body: JSON.stringify({ ref: 'main' }),
+        signal: AbortSignal.timeout(DISPATCH_TIMEOUT_MS),
+      }
+    );
+    if (!res.ok) console.error(`feedback dispatch failed: HTTP ${res.status}`);
+  } catch (err) {
+    console.error('feedback dispatch error:', (err as Error).message);
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     let formData: FormData;
@@ -116,6 +144,11 @@ export async function POST(req: NextRequest) {
         { status: 502 }
       );
     }
+
+    // BRO-7847: start the feedback workflow now instead of waiting for the
+    // 10-minute cron, so the owner's proposal email lands within minutes. The
+    // cron stays as the backstop, so a failed dispatch loses nothing.
+    await triggerProcessFeedback();
 
     return NextResponse.json({ ok: true });
   } catch (err) {

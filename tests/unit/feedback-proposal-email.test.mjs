@@ -127,3 +127,27 @@ test('thread helper: owner only, stable subject, replies reference the root', as
   assert.equal(none.sent, false);
   assert.equal(sent.length, 1);
 });
+
+test('the "fix applied" owner email joins the proposal thread only when a proposal was sent', async () => {
+  const { sendReaderFixOwnerEmail } = require('../../scripts/lib/owner-email-thread.js') && require('../../scripts/lib/owner-fix-email.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'thr-'));
+  const dry = path.join(dir, 'out.json');
+  const ledgerFile = path.join(dir, 'l.json');
+  const saved = { ...process.env };
+  Object.assign(process.env, { OWNER_EMAIL: 'owner@example.com', RESEND_API_KEY: 'k', OWNER_EMAIL_DRY_RUN_FILE: dry, FEEDBACK_PROPOSALS_LEDGER: ledgerFile });
+  try {
+    const l = P.loadLedger(ledgerFile);
+    P.recordSent(l, 321, { sentAt: '2026-11-19T00:00:00Z', kind: 'needs-fix' });
+    P.saveLedger(l, ledgerFile);
+    const ok = await sendReaderFixOwnerEmail({ issueNumber: 321, reader: { show: 'Wanted' }, summary: 's', changes: ['x'] });
+    assert.equal(ok, true);
+    const out = JSON.parse(fs.readFileSync(dry, 'utf8'));
+    assert.equal(out.subject, 'Reader feedback: Wanted (#321)');
+    assert.equal(out.headers['In-Reply-To'], '<bsc-feedback-321@broadwayscorecard.com>');
+    assert.deepEqual(out.to, ['owner@example.com']);
+  } finally {
+    for (const k of ['OWNER_EMAIL', 'RESEND_API_KEY', 'OWNER_EMAIL_DRY_RUN_FILE', 'FEEDBACK_PROPOSALS_LEDGER']) {
+      if (saved[k] === undefined) delete process.env[k]; else process.env[k] = saved[k];
+    }
+  }
+});

@@ -31,7 +31,9 @@ function proposalsDisabled(env = process.env) {
   return String(env.FEEDBACK_PROPOSAL_DISABLED || '').toLowerCase() === 'true';
 }
 
-function loadLedger(p = LEDGER_PATH) {
+const ledgerPath = () => process.env.FEEDBACK_PROPOSALS_LEDGER || LEDGER_PATH;
+
+function loadLedger(p = ledgerPath()) {
   try {
     const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
     if (raw && typeof raw.entries === 'object' && raw.entries) return raw;
@@ -39,7 +41,7 @@ function loadLedger(p = LEDGER_PATH) {
   return { version: 1, entries: {} };
 }
 
-function saveLedger(ledger, p = LEDGER_PATH) {
+function saveLedger(ledger, p = ledgerPath()) {
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.writeFileSync(p, JSON.stringify(ledger, null, 2) + '\n');
 }
