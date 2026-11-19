@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T12:42:20.687Z",
+  "timestamp": "2026-11-19T13:26:04.144Z",
   "stats": {
-    "totalReviews": 82774,
-    "alreadyFlagged": 22488,
+    "totalReviews": 82778,
+    "alreadyFlagged": 22487,
     "dateGuardCatches": 221,
-    "directorMismatch": 3769,
+    "directorMismatch": 3770,
     "tvFilmSignals": 2360,
     "londonSignals": 3818,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8262
+    "noPublishDate": 8261
   },
   "findings": [
     {
@@ -80638,6 +80638,19 @@
     },
     {
       "showId": "the-weir-off-broadway-2025",
+      "file": "stagebuddy--unknown.json",
+      "publishDate": "2025-08-05",
+      "url": "https://stagebuddy.com/theater/theater-review/the-weir",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
       "file": "talkinbroadway--marc-miller.json",
       "score": 77,
       "publishDate": "2025-07-17",
@@ -101174,6 +101187,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "standard--unknown.json",
+      "score": 56,
       "publishDate": "2026-11-19",
       "url": "https://standard.co.uk/culture/theatre/desire-under-the-elms-review-b1305513.html",
       "findings": [
