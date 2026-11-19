@@ -1,12 +1,16 @@
 {
   "outletId": "nypost",
-  "generatedAt": "2026-10-28T20:45:32.689Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:39:53.835Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "sitemaps are daily (sitemap-YYYY.xml?mm=&dd=, about 1.9k since 2021) and carry the section (/entertainment/), so they are listable, but one paid proxy fetch per day is not run by the census",
     "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
+      "unreadable: sitemaps are daily (sitemap-YYYY.xml?mm=&dd=, about 1.9k since 2021) and carry the section (/entertainment/), so they are listable, but one paid proxy fetch per day is not run by the census"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,11 +23,18 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 413,
-    "notEnumerated": 175,
-    "noUrl": 6,
+    "rowsInWindow": 450,
+    "notEnumerated": 185,
+    "noUrl": 7,
     "samples": [
+      {
+        "showId": "1776-2022",
+        "url": "https://nypost.com/2022/10/06/1776-broadway-review-woke-musical-isnt-revolutionary/",
+        "publishDate": "2022-10-06",
+        "why": "not-enumerated"
+      },
       {
         "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
         "url": "https://nypost.com/2022/12/04/neil-diamond-musical-review-awful-broadway-show-is-on-the-rocks/",
@@ -40,6 +51,12 @@
         "showId": "a-dolls-house-2023",
         "url": "https://nypost.com/2023/03/09/a-dolls-house-broadway-review-jessica-chastain-is-trapped/",
         "publishDate": "2023-03-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-few-good-men-2026",
+        "url": "https://nypost.com/2026/10/29/entertainment/a-few-good-men-review-aaron-sorkins-mediocre-courtroom-drama-is-back-on-broadway/",
+        "publishDate": "2026-10-29",
         "why": "not-enumerated"
       },
       {
@@ -91,6 +108,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "ann-2013",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
         "showId": "art-2025",
         "url": "https://nypost.com/2025/09/16/entertainment/art-review-james-corden-and-neil-patrick-harris-drone-on-about-paintings-in-retro-broadway-comedy/",
         "publishDate": "2025-09-16",
@@ -136,6 +159,12 @@
         "showId": "birthday-candles-2022",
         "url": "https://nypost.com/2022/04/10/birthday-candles-on-broadway-has-debra-messing-age-90-years/",
         "publishDate": "2022-04-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "black-no-more-off-broadway-2022",
+        "url": "https://nypost.com/2022/02/15/black-no-more-review-off-broadway-musical-is-a-mess/",
+        "publishDate": "2022-02-15",
         "why": "not-enumerated"
       },
       {
@@ -239,30 +268,6 @@
         "url": "https://nypost.com/2024/11/21/entertainment/death-becomes-her-review-claws-are-out-in-broadway-camp-fest/?utm_campaign=nypost&utm_medium=referral",
         "publishDate": "2024-11-21",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2022",
-        "url": "https://nypost.com/2022/10/09/death-of-a-salesman-broadway-review-so-so-revival-lacks-fire/",
-        "publishDate": "2022-10-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2026",
-        "url": "https://nypost.com/2026/04/09/entertainment/death-of-a-salesman-review-nathan-lane-and-laurie-metcalf-star-in-a-triumphant-broadway-revival/",
-        "publishDate": "2026-04-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "url": "https://nypost.com/2021/11/17/diana-review-a-lifetime-original-broadway-show/?utm_campaign=SocialFlow&utm_source=NYPTwitter&utm_medium=SocialFlow",
-        "publishDate": "2021-11-17",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "dog-day-afternoon-2026",
-        "url": "https://nypost.com/2026/03/31/entertainment/dog-day-afternoon-review-jon-bernthals-broadway-play-turns-classic-ny-movie-into-a-silly-sitcom/",
-        "publishDate": "2026-03-31",
-        "why": "not-enumerated"
       }
     ]
   },
@@ -272,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

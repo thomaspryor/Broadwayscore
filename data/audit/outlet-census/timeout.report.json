@@ -1,28 +1,98 @@
 {
   "outletId": "timeout",
-  "generatedAt": "2026-10-28T20:45:32.730Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:36:38.317Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
-    "notes": [
-      "unreadable: no WordPress API; sitemap enumeration not yet configured"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "kind": "sitemap",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 1114,
+    "inWindow": 1030,
     "undated": 0,
-    "meta": null
+    "meta": {
+      "fetched": 1114,
+      "failed": 0
+    }
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "gap": 11,
+      "held": 148,
+      "not-review": 702,
+      "held-unmatched": 8,
+      "catalog-gap": 124,
+      "held-alt-url": 6,
+      "out-of-window": 31
+    },
+    "viaTitleVariant": {
+      "held-alt-url": 2,
+      "held": 10
+    },
+    "recall": 0.933,
+    "recallWithCatalog": 0.533
+  },
+  "seasons": {
+    "2026-27": {
+      "gap": 5,
+      "held": 13,
+      "not-review": 66,
+      "held-unmatched": 2,
+      "catalog-gap": 3,
+      "held-alt-url": 2,
+      "out-of-window": 1
+    },
+    "2025-26": {
+      "not-review": 173,
+      "held": 61,
+      "catalog-gap": 8,
+      "gap": 2,
+      "held-unmatched": 1,
+      "held-alt-url": 1,
+      "out-of-window": 1
+    },
+    "2024-25": {
+      "not-review": 353,
+      "held-alt-url": 2,
+      "held": 48,
+      "catalog-gap": 16,
+      "out-of-window": 7,
+      "gap": 2
+    },
+    "2021-22": {
+      "held-unmatched": 4,
+      "catalog-gap": 53,
+      "not-review": 43,
+      "out-of-window": 16,
+      "held": 9,
+      "gap": 1
+    },
+    "2022-23": {
+      "held": 3,
+      "not-review": 19,
+      "catalog-gap": 1
+    },
+    "2020-21": {
+      "gap": 1,
+      "not-review": 12,
+      "catalog-gap": 37,
+      "out-of-window": 5,
+      "held-unmatched": 1
+    },
+    "2023-24": {
+      "catalog-gap": 6,
+      "not-review": 36,
+      "held": 14,
+      "held-alt-url": 1,
+      "out-of-window": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 533,
-    "notEnumerated": 263,
-    "noUrl": 1,
+    "rowsInWindow": 659,
+    "notEnumerated": 139,
+    "noUrl": 2,
     "samples": [
       {
         "showId": "1776-2022",
@@ -39,7 +109,7 @@
       {
         "showId": "a-bright-new-boise-off-broadway-2023",
         "url": "https://www.timeout.com/newyork/theater/bright-new-boise-review-signature",
-        "publishDate": null,
+        "publishDate": "2023-03-06",
         "why": "not-enumerated"
       },
       {
@@ -67,33 +137,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "a-walk-on-the-moon-off-broadway-2026",
-        "url": "https://www.timeout.com/newyork/theater/a-walk-on-themoon",
-        "publishDate": "2026-06-29",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-        "url": "https://www.timeout.com/newyork/theater/a-wonderful-world-broadway-review-louis-armstrong-james-monroe-iglehart",
-        "publishDate": "2024-11-11",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "aint-no-mo-2022",
         "url": "https://www.timeout.com/newyork/theater/aint-no-mo-broadway-review-jordan-e-cooper",
         "publishDate": "2022-12-08",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "all-in-comedy-about-love-2024",
-        "url": "https://www.timeout.com/newyork/theater/all-in-comedy-about-love-broadway-review-simon-rich-john-mulaney",
-        "publishDate": "2024-12-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "amaze-magic-off-broadway-2025",
-        "url": "https://timeout.com/newyork/theater/amaze-review-magic-show-jamie-allan",
-        "publishDate": "2026-06-02",
         "why": "not-enumerated"
       },
       {
@@ -109,39 +155,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "and-juliet-2022",
-        "url": "https://www.timeout.com/newyork/theater/and-juliet-broadway-musical-review-max-martin",
-        "publishDate": "2022-11-17",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "animal-wisdom-off-broadway-2022",
-        "url": "https://timeout.com/newyork/theater/animal-wisdom-musical-review-kenita-miller-heather-christian",
-        "publishDate": "2026-06-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
-        "url": "https://www.timeout.com/newyork/theater/antigone-this-play-i-read-in-high-school-review-susannah-perkins-tony-shalhoub",
-        "publishDate": "2026-02-04",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "arcadia-off-broadway-2023",
         "url": "https://www.timeout.com/newyork/theater/arcadia-bedlam-review-tom-stoppard",
         "publishDate": "2023-11-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "art-2025",
-        "url": "https://www.timeout.com/newyork/theater/art-broadway-review-revival-play-james-corden-bobby-cannavale-neil-patrick-harris",
-        "publishDate": "2025-09-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "back-to-the-future-2023",
-        "url": "https://www.timeout.com/newyork/theater/back-to-the-future-the-musical",
-        "publishDate": "2023-08-04",
         "why": "not-enumerated"
       },
       {
@@ -151,33 +167,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "bad-krey-l-off-broadway-2026",
-        "url": "https://www.timeout.com/newyork/theater/bad-kreyol-review-haiti",
-        "publishDate": "2024-10-29",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "beaches-2026",
-        "url": "https://www.timeout.com/newyork/news/broadway-review-beaches-be-trippin-042326",
-        "publishDate": "2026-04-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "becky-shaw-2026",
-        "url": "https://www.timeout.com/newyork/news/broadway-review-becky-shaw-a-romantic-rectangle-with-all-the-right-angles-040726",
-        "publishDate": "2026-04-06",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "between-riverside-and-crazy-2022",
         "url": "https://www.timeout.com/newyork/theater/between-riverside-and-crazy-broadway-review",
         "publishDate": "2022-12-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "billy-crystal-860-2026",
-        "url": "https://www.timeout.com/newyork/news/broadway-review-billy-crystal-in-860-102226",
-        "publishDate": "2026-10-22",
         "why": "not-enumerated"
       },
       {
@@ -193,21 +185,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "boop-2025",
-        "url": "https://www.timeout.com/newyork/theater/boop-the-musical-broadway-review-betty-boop-jasmine-amy-rogers",
-        "publishDate": "2025-04-07",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "born-yesterday-2011",
         "url": "http://newyork.timeout.com/arts-culture/theater/1254809/review-born-yesterday",
         "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "buena-vista-social-club-2025",
-        "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-broadway-review",
-        "publishDate": "2025-03-19",
         "why": "not-enumerated"
       },
       {
@@ -217,45 +197,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "bug-2026",
-        "url": "https://www.timeout.com/newyork/theater/bug-broadway-review-carrie-coon-namir-smallwood-tracy-letts-paranoia",
-        "publishDate": "2026-01-08",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bughouse-off-broadway-2026",
-        "url": "https://www.timeout.com/newyork/news/theater-review-bughouse-looks-inside-the-world-of-outsider-artist-henry-darger-031826",
-        "publishDate": "2026-03-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "burnout-paradise-off-broadway-2026",
-        "url": "https://www.timeout.com/newyork/theater/burnout-paradise-review-pony-cam",
-        "publishDate": "2026-03-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cabaret-2024",
-        "url": "https://www.timeout.com/newyork/theater/cabaret-at-the-kit-kat-club-broadway-review-revival-eddie-redmayne",
-        "publishDate": "2024-04-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "calf-scramble-off-broadway-2026",
-        "url": "https://www.timeout.com/newyork/theater/calf-scramble-play-review",
-        "publishDate": "2026-03-17",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "camelot-2023",
         "url": "https://www.timeout.com/newyork/theater/camelot-musical-broadway-review-aaron-sorkin",
         "publishDate": "2023-04-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "caroline-off-broadway-2026",
-        "url": "https://www.timeout.com/newyork/theater/caroline-play-review-chloe-grace-moretz-amy-landecker-river-lipe-smith-transgender",
-        "publishDate": "2025-09-30",
         "why": "not-enumerated"
       },
       {
@@ -263,14 +207,1934 @@
         "url": "https://www.timeout.com/newyork/theater/caroline-or-change-broadway-review-revival-musical",
         "publishDate": "2021-11-03",
         "why": "not-enumerated"
+      },
+      {
+        "showId": "catch-me-if-you-can-2011",
+        "url": "http://newyork.timeout.com/arts-culture/theater/1170709/review-catch-me-if-you-can",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "chicken-and-biscuits-2021",
+        "url": "https://www.timeout.com/newyork/theater/chicken-and-biscuits-broadway-review-comedy",
+        "publishDate": "2021-10-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "clydes-2021",
+        "url": "https://www.timeout.com/newyork/theater/clydes-broadway-review-lynn-nottage-uzo-aduba?cid=%7Enewyork%7Enatsoc%7Etwitter%7Eechobox&utm_medium=Social&utm_source=Twitter",
+        "publishDate": "2021-11-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "company-2021",
+        "url": "https://www.timeout.com/newyork/theater/company-broadway-revival-review-stephen-sondheim-katrina-lenk-patti-lupone",
+        "publishDate": "2021-12-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cost-of-living-2022",
+        "url": "https://www.timeout.com/newyork/theater/cost-of-living-broadway-review",
+        "publishDate": "2022-10-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dana-h-2021",
+        "url": "https://www.timeout.com/newyork/theater/dana-h-broadway-review-deirdre-oconnell-lucas-hnath-lip-sync",
+        "publishDate": "2021-10-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "daphne-off-broadway-2023",
+        "url": "https://www.timeout.com/newyork/theater/daphne-review-off-broadway",
+        "publishDate": "2023-10-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dark-disabled-stories-off-broadway-2023",
+        "url": "https://www.timeout.com/newyork/theater/dark-disabled-stories-review-ryan-haddad",
+        "publishDate": "2023-03-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dark-noon-off-broadway-2024",
+        "url": "https://www.timeout.com/newyork/theater/dark-noon",
+        "publishDate": "2024-06-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "url": "https://www.timeout.com/newyork/theater/days-of-wine-and-roses-broadway-review-musical-kelli-ohara-brian-darcy-james",
+        "publishDate": "2024-01-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "deep-history-off-broadway-2024",
+        "url": "https://www.timeout.com/newyork/theater/deep-history-review-david-finnigan",
+        "publishDate": "2024-10-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "diana-the-musical-2021",
+        "url": "https://www.timeout.com/newyork/theater/diana-musical-broadway-review-princess",
+        "publishDate": "2021-11-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "doubt-2024",
+        "url": "https://www.timeout.com/newyork/theater/doubt-a-parable-revival-broadway-review-amy-ryan-liev-schreiber",
+        "publishDate": "2024-03-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dracula-a-comedy-of-terrors-off-broadway-2023",
+        "url": "https://www.timeout.com/newyork/theater/dracula-a-comedy-of-terrors-review-off-broadway-vampires",
+        "publishDate": "2023-09-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "elyria-off-broadway-2023",
+        "url": "https://www.timeout.com/newyork/theater/elyria-review",
+        "publishDate": "2023-02-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "fat-ham-2023",
+        "url": "https://www.timeout.com/newyork/theater/fat-ham-broadway-review",
+        "publishDate": "2023-04-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "fences-2010",
+        "url": "http://newyork.timeout.com/articles/theater/85208/fences-at-cort-theatre-theater-review",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "flying-over-sunset-2021",
+        "url": "https://www.timeout.com/newyork/theater/flying-over-sunset-broadway-review-lsd-musical",
+        "publishDate": "2021-12-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+        "url": "https://www.timeout.com/newyork/theater/for-colored-girls-who-have-considered-suicide-review-broadway-revival-2022",
+        "publishDate": "2022-04-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "funny-girl-2022",
+        "url": "https://www.timeout.com/newyork/theater/funny-girl-broadway-review-revival-beanie-feldstein",
+        "publishDate": "2022-04-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "good-bones-off-broadway-2024",
+        "url": "https://www.timeout.com/newyork/theater/good-bones-review-public-theater-james-ijames-gentrification",
+        "publishDate": "2024-10-01",
+        "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
-  "heldAltUrl": [],
+  "gaps": [
+    {
+      "url": "https://www.timeout.com/newyork/news/broadway-review-now-you-see-me-live-111826",
+      "headline": "Broadway review: Now You See Me Live",
+      "publishDate": "2026-11-19",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "now-you-see-me-live-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/memoirs-of-amorous-gentlemen-off-broadway-review-musical-duncan-sheik-sophia-anne-caruso",
+      "headline": "Theater review: Memoirs of Amorous Gentlemen, musical sex therapy",
+      "publishDate": "2026-11-13",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "memoirs-of-amorous-gentlemen-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-curious-case-of-benjamin-button-review-off-broadway-musical-andrew-durand",
+      "headline": "Theater review: The Curious Case of Benjamin Button (★★★)",
+      "publishDate": "2026-11-12",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-curious-case-of-benjamin-button-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/slam-frank",
+      "headline": "Slam Frank | Orpheum Theater | Theater in New York",
+      "publishDate": "2026-11-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "slam-frank-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/now-you-see-me-live",
+      "headline": "Now You See Me Live | Al Hirschfeld Theatre | Theater in New York",
+      "publishDate": "2026-11-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "now-you-see-me-live-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/theater-review-well-ill-let-you-go-is-a-mourning-glory-061026",
+      "headline": "Theater review:  Well, I'll Let You Go (★★★★★) is a mourning glory",
+      "publishDate": "2026-06-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "well-ill-let-you-go-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/oratorio-for-living-things",
+      "headline": "Review: Oratorio for Living Things (★★★★★)",
+      "publishDate": "2025-11-06",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "oratorio-for-living-things-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/wicked-on-broadway-tickets-and-information",
+      "headline": "Wicked on Broadway: Tickets, reviews and video",
+      "publishDate": "2021-08-25",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "wicked-2003"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/curse-of-the-starving-class-off-broadway-review-2025",
+      "headline": "Review: The New Group revives Curse of the Starving Class",
+      "publishDate": "2025-02-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "curse-of-the-starving-class-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
+      "headline": "Broadway review: Operation Mincemeat, a wacky WWII musical (★★★)",
+      "publishDate": "2025-03-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "operation-mincemeat-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/long-days-journey-into-night-revival-review-off-broadway-elizabeth-marvel",
+      "headline": "Review: Long Day's Journey Into Night takes a short cut",
+      "publishDate": "2022-01-25",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "long-days-journey-into-night-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "long-days-journey-into-night-2016",
+        "long-days-journey-into-night-2003",
+        "long-days-journey-into-night-1986",
+        "long-days-journey-into-night-1988"
+      ]
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://www.timeout.com/newyork/theater/degenerates",
+      "headline": "Degenerates | Playwrights Horizons | Theater in New York",
+      "publishDate": "2026-10-17",
+      "matched": [
+        "degenerates-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/newyork/news/theater-review-degenerates-at-playwrights-horizons-101726"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
+      "headline": "Broadway review: Stranger Things: The First Shadow (★★★)",
+      "publishDate": "2025-04-22",
+      "matched": [
+        "stranger-things-2024"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccarthy"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/broadway-review-jeremy-jordan-in-just-in-time-091026",
+      "headline": "Broadway review: Jeremy Jordan in Just in Time",
+      "publishDate": "2026-09-11",
+      "matched": [
+        "just-in-time-2025"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/giant-broadway-play-review-john-lithgow-roald-dahl",
+      "headline": "John Lithgow wrestles with Roald Dahl's demons in Giant  (★★★★)",
+      "publishDate": "2026-03-23",
+      "matched": [
+        "giant-2026"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/newyork/news/review-john-lithgow-wrestles-with-roald-dahls-demons-in-giant-032426"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/smash-star-brooks-ashmanskas-on-audiences-reviews-and-playing-gay-men-060225",
+      "headline": "Smash star Brooks Ashmanskas on audiences, reviews and playing gay men",
+      "publishDate": "2025-06-02",
+      "matched": [
+        "smash-2025"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/newyork/theater/smash-broadway-musical-review-brooks-ashmanskas-robyn-hurder"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-outsiders-broadway-musical-review",
+      "headline": "Broadway review: The Outsiders (★★★)",
+      "publishDate": "2024-04-11",
+      "matched": [
+        "the-outsiders-2024"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/newyork/theater/the-outsiders"
+      ]
+    }
+  ],
   "misfiles": [],
-  "heldUnmatched": [],
+  "heldUnmatched": [
+    {
+      "url": "https://www.timeout.com/newyork/news/theater-review-waiting-for-lefty-takes-a-swing-for-workers-110426",
+      "headline": "Theater review: Waiting for Lefty (★★★) takes a swing for workers",
+      "publishDate": "2026-11-04",
+      "via": null,
+      "held": [
+        "clifford-odets-waiting-for-lefty-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "swing-1999"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/broadway-review-billy-crystal-in-860-102226",
+      "headline": "Broadway review: Billy Crystal in 860 (★★★★)",
+      "publishDate": "2026-10-22",
+      "via": null,
+      "held": [
+        "billy-crystal-860-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+      "headline": "Broadway review: Harry Potter is still a triumph of theater magic",
+      "publishDate": "2021-12-07",
+      "via": null,
+      "held": [
+        "harry-potter-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/amaze-review-magic-show-jamie-allan",
+      "headline": "Review: Jamie Allan's Amaze at New World Stages",
+      "publishDate": "2026-06-02",
+      "via": null,
+      "held": [
+        "amaze-magic-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-magic-show-1974"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/mj-broadway-review-michael-jackson-musical",
+      "headline": "The Michael Jackson musical dances around the big question",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/twilight-los-angeles-1992-review-revival-signature-theatre-anna-deavere-smith",
+      "headline": "Review: Twilight: Los Angeles, 1992 shines at the Signature",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [
+        "twilight-los-angeles-1992-1994"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "twilight-los-angeles-1992-1994"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/six-broadway-review-musical",
+      "headline": "Six English queens have their day in a flashy Broadway musical",
+      "publishDate": "2021-10-03",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/waitress",
+      "headline": "Waitress | Theater in New York",
+      "publishDate": "2021-07-07",
+      "via": null,
+      "held": [
+        "waitress-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "waitress-2021",
+        "waitress-2016"
+      ]
+    }
+  ],
   "ambiguous": [],
-  "catalogGaps": [],
-  "outOfWindow": []
+  "catalogGaps": [
+    {
+      "url": "https://www.timeout.com/newyork/theater/off-broadway-shows-new-york-theater-reviews-tickets-and-listings",
+      "headline": "Off Broadway shows you can see in New York City",
+      "publishDate": "2026-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/off-off-broadway-shows-new-york-theater-reviews-tickets-and-listings",
+      "headline": "Off-Off Broadway shows in New York City right now",
+      "publishDate": "2026-10-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/international-puppet-fringe-festival-nyc",
+      "headline": "International Puppet Fringe Festival NYC | Theater in New York",
+      "publishDate": "2026-07-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/broadway-bound-theatre-festival-2026",
+      "headline": "Broadway Bound Theatre Festival 2026 | Theater in New York",
+      "publishDate": "2026-07-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/well-ill-let-you-go",
+      "headline": "Well, I'll Let You Go | Theater in New York",
+      "publishDate": "2026-06-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/new-york-theater-and-broadway-reviews",
+      "headline": "Complete New York theater and Broadway reviews",
+      "publishDate": "2026-04-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/lincoln-center-for-the-performing-arts",
+      "headline": "Lincoln Center for the Performing Arts | Theater in Upper West Side, New York",
+      "publishDate": "2026-03-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-jinkx-dela-holiday-special",
+      "headline": "The Jinkx & DeLa Holiday Special | Theater in New York",
+      "publishDate": "2021-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/sleepy-hollow-the-musical",
+      "headline": "Sleepy Hollow the Musical | Theater in New York",
+      "publishDate": "2025-10-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/vape-the-grease-parody",
+      "headline": "Don't Vape | Theater in New York",
+      "publishDate": "2025-10-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/exorcistic",
+      "headline": "Exorcistic: The Rock Musical | Theater in New York",
+      "publishDate": "2025-10-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/eros-unbound-erotic-readings-confessions",
+      "headline": "Eros Unbound: Erotic Readings + Confessions | Theater in New York",
+      "publishDate": "2025-08-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/jeff-ross-take-a-banana-for-the-ride-review-broadway-comedy",
+      "headline": "Broadway review: Jeff Ross's Take a Banana for the Ride (★★★)",
+      "publishDate": "2025-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/apollo-theater",
+      "headline": "Apollo Theater | Theater in Harlem, New York",
+      "publishDate": "2025-08-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-whisperer-in-darkness",
+      "headline": "The Whisperer in Darkness | Theater in New York",
+      "publishDate": "2025-06-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/in-scena-italian-theater-festival-ny",
+      "headline": "In Scena! Italian Theater Festival NY | Theater in New York",
+      "publishDate": "2025-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/lower-east-side-festival-of-the-arts",
+      "headline": "Lower East Side Festival of the Arts | Theater in New York",
+      "publishDate": "2025-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/prism-a-festival-of-new-queer-musicals",
+      "headline": "PRISM: A Festival of New Queer Musicals | Theater in New York",
+      "publishDate": "2025-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/dont-pass-the-peppa-sauce-caribbean-romi-juliet",
+      "headline": "Don’t Pass the Peppa Sauce presents “A Caribbean Comedy Show” | Theater in New York",
+      "publishDate": "2024-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/shakespeare-sonnet-slam",
+      "headline": "Celebrate Shakespeare's birthday at this free sonnet slam in Manhattan",
+      "publishDate": "2025-04-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/emoji-the-hieroglyphs-of-our-time",
+      "headline": "EMOJI: The Hieroglyphs of Our Time | Theater in New York",
+      "publishDate": "2025-03-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-barbarians",
+      "headline": "The Barbarians | Theater in New York",
+      "publishDate": "2025-02-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/unerase-poetry",
+      "headline": "UnErase Poetry | Theater in New York",
+      "publishDate": "2025-01-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/out-front-fest",
+      "headline": "Out-FRONT! Festival | Theater in New York",
+      "publishDate": "2025-01-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/cellino-v-barnes",
+      "headline": "Cellino v. Barnes | Theater in New York",
+      "publishDate": "2024-12-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/deliadelia-the-flat-chested-witch",
+      "headline": "DeliaDelia! The Flat-Chested Witch! | Theater in New York",
+      "publishDate": "2024-11-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/christmas-spectacular-starring-the-radio-city-rockettes",
+      "headline": "The Christmas Spectacular Starring the Radio City Rockettes | Theater in New York",
+      "publishDate": "2023-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/theater-and-broadway-in-new-york-critics-picks",
+      "headline": "New York Theater & Broadway | Reviews, Tickets & Listings | Time Out",
+      "publishDate": "2026-10-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/restaurant-review-untable-in-carroll-gardens-102623",
+      "headline": "Review: A rarely awarded five stars for an \"unconventional\" Thai restaurant in Brooklyn",
+      "publishDate": "2023-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/restaurant-review-farina-in-red-hook-110923",
+      "headline": "Restaurant Review: Farina in the old Moto space is NYC’s latest great pizza place",
+      "publishDate": "2023-11-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/restaurant-review-chama-mama-in-brooklyn-heights-100623",
+      "headline": "Restaurant Review: Chama Mama in Brooklyn Heights (★★★)",
+      "publishDate": "2023-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/monday-night-magic",
+      "headline": "Monday Night Magic: Close-Up & In-Person | Theater in New York",
+      "publishDate": "2023-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/cocktail-magique",
+      "headline": "Cocktail Magique | Theater in New York",
+      "publishDate": "2023-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/this-nyc-observatory-has-the-worlds-best-viewpoint-according-to-tripadvisor-reviews-062722",
+      "headline": "This NYC observatory has the world's best viewpoint",
+      "publishDate": "2022-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/beethovens-opera-told-through-the-lens-of-black-lives-matter",
+      "headline": "Beethoven's opera told through the lens of Black Lives Matter | Theater in New York",
+      "publishDate": "2022-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/little-christmas-miracles",
+      "headline": "Little Christmas Miracles | Theater in New York",
+      "publishDate": "2021-12-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/quantum-debt",
+      "headline": "Quantum Debt | Theater in New York",
+      "publishDate": "2021-12-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/to-build-a-soul",
+      "headline": "To Build a Soul | Theater in New York",
+      "publishDate": "2021-11-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/candlelight",
+      "headline": "Candlelight | Theater in New York",
+      "publishDate": "2021-11-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-lanford-wilson-project",
+      "headline": "The Lanford Wilson Project | Theater in New York",
+      "publishDate": "2021-11-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/free-broadway-performances",
+      "headline": "Here's your chance to see Broadway performances for free in NYC",
+      "publishDate": "2021-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/one-christmas-carol",
+      "headline": "One Christmas Carol | Theater in New York",
+      "publishDate": "2021-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/emmet-otters-jug-band-christmas",
+      "headline": "Emmet Otter’s Jug-Band Christmas | Theater in New York",
+      "publishDate": "2021-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/becoming-dr-ruth-1",
+      "headline": "Becoming Dr. Ruth | Theater in New York",
+      "publishDate": "2021-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/chasing-jack",
+      "headline": "Chasing Jack | Theater in New York",
+      "publishDate": "2021-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-visitor-musical-review-public-theater-david-hyde-pierce",
+      "headline": "Review: The Visitor loses its way at the Public Theater",
+      "publishDate": "2021-11-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/todos-los-anyos",
+      "headline": "Todos los Años | Theater in New York",
+      "publishDate": "2021-11-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/morning-sun-review-mtc-edie-falco",
+      "headline": "Review: Morning Sun shines a gentle light at MTC",
+      "publishDate": "2021-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/tammany-hall-review-off-broadway-immersive",
+      "headline": "Review: Tammany Hall immerses you in a Jazz Age election",
+      "publishDate": "2021-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/speakeasy-times-square",
+      "headline": "Speakeasy Times Square | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/klii",
+      "headline": "KLII | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-pool",
+      "headline": "The Pool | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/midsummer-a-shakespearience",
+      "headline": "Midsummer: A Shakespearience | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/best-life",
+      "headline": "Best Life | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/preparedness",
+      "headline": "Preparedness | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-dark-outside",
+      "headline": "The Dark Outside | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/sheep-1",
+      "headline": "Sheep #1 | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/no-pants-in-tucson",
+      "headline": "No Pants in Tucson | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/puffy-hair",
+      "headline": "Puffy Hair | Theater in New York",
+      "publishDate": "2021-10-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/a-girl-is-a-half-formed-thing-1",
+      "headline": "A Girl Is a Half-Formed Thing | Theater in New York",
+      "publishDate": "2021-10-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/seths-broadway-breakdown-review-rudetsky",
+      "headline": "Review: Seth's Broadway Breakdown is a joyous parade",
+      "publishDate": "2021-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/generation-rise",
+      "headline": "Generation Rise | Theater in New York",
+      "publishDate": "2021-10-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/brecht-on-brecht",
+      "headline": "Brecht on Brecht | Theater in New York",
+      "publishDate": "2021-10-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/la-mama-puppet-series-2021",
+      "headline": "La MaMa Puppet Series 2021 | Theater in New York",
+      "publishDate": "2021-10-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/hindsight-1",
+      "headline": "Hindsight | Theater in New York",
+      "publishDate": "2021-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/subject",
+      "headline": "Subject | Theater in New York",
+      "publishDate": "2021-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/alicealicealice",
+      "headline": "alice…Alice…ALICE! | Theater in New York",
+      "publishDate": "2021-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/ritual",
+      "headline": "Ritual | Theater in New York",
+      "publishDate": "2021-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/worlds-fair-inn",
+      "headline": "Worlds Fair Inn | Theater in New York",
+      "publishDate": "2021-10-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/love-actually-the-unauthorized-musical-parody",
+      "headline": "Love Actually? The Unauthorized Musical Parody | Theater in New York",
+      "publishDate": "2021-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/a-turtle-on-a-fence-post",
+      "headline": "A Turtle on a Fence Post | Theater in New York",
+      "publishDate": "2021-09-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/baby-2",
+      "headline": "Baby | Theater in New York",
+      "publishDate": "2021-09-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/autumn-royal",
+      "headline": "Autumn Royal | Theater in New York",
+      "publishDate": "2021-09-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-wayward-daughter-of-judah-the-prince",
+      "headline": "The Wayward Daughter of Judah the Prince | Theater in New York",
+      "publishDate": "2021-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/i-squeezed-really-hard",
+      "headline": "I Squeezed Really Hard. | Theater in New York",
+      "publishDate": "2021-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/polylogues",
+      "headline": "Polylogues | Theater in New York",
+      "publishDate": "2021-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/cross-over",
+      "headline": "Cross Over | Theater in New York",
+      "publishDate": "2021-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/repulsing-the-monkey",
+      "headline": "Repulsing the Monkey | Theater in New York",
+      "publishDate": "2021-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/what-happened-the-michaels-abroad",
+      "headline": "Off Broadway Review: Richard Nelson's What Happened?",
+      "publishDate": "2021-09-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/case-closed-the-dorian-corey-story",
+      "headline": "Case Closed: The Dorian Corey Story | Theater in New York",
+      "publishDate": "2021-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/between-the-bars",
+      "headline": "Between the Bars | Theater in New York",
+      "publishDate": "2021-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/new-works",
+      "headline": "?!:New Works 2025 | Theater in New York",
+      "publishDate": "2025-03-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/utopian-hotline",
+      "headline": "Utopian Hotline | Theater in New York",
+      "publishDate": "2021-09-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/sun-sea",
+      "headline": "Sun & Sea | Theater in New York",
+      "publishDate": "2021-09-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/rules-and-roles-of-comedy",
+      "headline": "Rules and Roles of Comedy | Theater in New York",
+      "publishDate": "2021-09-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/yeah-but-not-right-now",
+      "headline": "Yeah, But Not Right Now | Theater in New York",
+      "publishDate": "2021-09-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/my-mothers-severed-head",
+      "headline": "My Mother’s Severed Head | Theater in New York",
+      "publishDate": "2021-08-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/neal-brennan-unacceptable",
+      "headline": "Neal Brennan: Unacceptable | Theater in New York",
+      "publishDate": "2021-08-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/i-am-your-masseuse-six-short-digressions",
+      "headline": "I Am Your Masseuse (six short digressions) | Theater in New York",
+      "publishDate": "2021-08-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/leaves",
+      "headline": "Leaves | Theater in New York",
+      "publishDate": "2021-08-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/cory-and-smins-love-conquers-the-earth",
+      "headline": "Cory and Smin's Love Conquers the Earth | Theater in New York",
+      "publishDate": "2021-08-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/a-commercial-jingle-for-regina-comet",
+      "headline": "A Commercial Jingle for Regina Comet | Theater in New York",
+      "publishDate": "2021-08-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-overcoat",
+      "headline": "The Overcoat | Theater in New York",
+      "publishDate": "2021-08-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/letters-of-suresh",
+      "headline": "Letters of Suresh | Theater in New York",
+      "publishDate": "2021-08-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/waterman",
+      "headline": "Waterman | Theater in New York",
+      "publishDate": "2021-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/what-lies-beneath",
+      "headline": "What Lies Beneath | Theater in New York",
+      "publishDate": "2021-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-importance-of-being-earnestly-lgbtq",
+      "headline": "The Importance of Being Earnestly LGBTQ+ | Theater in New York",
+      "publishDate": "2021-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/semblance",
+      "headline": "Semblance | Theater in New York",
+      "publishDate": "2021-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/ni-mi-madre",
+      "headline": "Ni Mi Madre | Theater in New York",
+      "publishDate": "2021-08-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-book-of-moron",
+      "headline": "The Book of Moron | Theater in New York",
+      "publishDate": "2021-08-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/haus-of-dust",
+      "headline": "Haus of Dust | Theater in New York",
+      "publishDate": "2021-08-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/rule-of-7x7-a-presentation-of-plays",
+      "headline": "Rule of 7x7: A presentation of plays | Theater in New York",
+      "publishDate": "2021-08-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/womens-work-short-play-festival-2021",
+      "headline": "Women's Work Short Play Festival 2021 | Theater in New York",
+      "publishDate": "2021-08-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/alma-baya",
+      "headline": "Alma Baya | Theater in New York",
+      "publishDate": "2021-07-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/title-of-show",
+      "headline": "[title of show] | Theater in New York",
+      "publishDate": "2021-07-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/greeks-and-geeks",
+      "headline": "Greeks and Geeks | Theater in New York",
+      "publishDate": "2021-07-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/and-come-apart",
+      "headline": "and come apart | Theater in New York",
+      "publishDate": "2021-07-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/childrens-crusade",
+      "headline": "Children's Crusade | Theater in New York",
+      "publishDate": "2021-07-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/unrehearsed",
+      "headline": "Unrehearsed! | Theater in New York",
+      "publishDate": "2025-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/mobile-units-summer-of-joy",
+      "headline": "The Public's Mobile Unit brings free verse to all five boroughs",
+      "publishDate": "2021-07-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/reflections",
+      "headline": "\"Reflections\" | Theater in New York",
+      "publishDate": "2021-07-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/henry-vi-part-1",
+      "headline": "Henry VI, Part 1 | Theater in New York",
+      "publishDate": "2021-07-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/prospect-hill",
+      "headline": "Prospect Hill | Theater in New York",
+      "publishDate": "2021-07-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/city-point-cirque",
+      "headline": "City Point Cirque | Theater in New York",
+      "publishDate": "2021-07-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/ice-factory-festival-2021",
+      "headline": "Ice Factory Festival 2021 | Theater in New York",
+      "publishDate": "2021-07-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/botte-di-ferro",
+      "headline": "Botte di Ferro | Theater in New York",
+      "publishDate": "2021-07-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-disciple",
+      "headline": "The Disciple | Theater in New York",
+      "publishDate": "2021-07-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/islander",
+      "headline": "Islander | Theater in New York",
+      "publishDate": "2021-07-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/charmed-life-from-soul-singing-to-opera-star",
+      "headline": "Charmed Life: From Soul Singing to Opera Star | Theater in New York",
+      "publishDate": "2021-07-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-wake-of-dorcas-kelly",
+      "headline": "The Wake of Dorcas Kelly | Theater in New York",
+      "publishDate": "2021-07-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/voyeur-the-windows-of-toulouse-lautrec",
+      "headline": "Voyeur: The Windows of Toulouse-Lautrec | Theater in New York",
+      "publishDate": "2021-07-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/antigonick-1",
+      "headline": "Antigonick | Theater in New York",
+      "publishDate": "2021-07-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/blindness",
+      "headline": "Blindness | Theater in New York",
+      "publishDate": "2021-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-two-noble-kinsmen-1",
+      "headline": "The Two Noble Kinsmen | Theater in New York",
+      "publishDate": "2021-07-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://www.timeout.com/newyork/theater/lost-in-del-valle",
+      "headline": "Lost in Del Valle | Theater in New York",
+      "publishDate": "2026-10-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "lost-in-del-valle-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/are-the-bennet-girls-ok-bedlam-review-jane-austen-pride-prejudice-emily-breeze",
+      "headline": "Review: Are the Bennet Girls Ok? (★★★★) keeps Austen weird",
+      "publishDate": "2025-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "are-the-bennet-girls-ok-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/prosperous-fools",
+      "headline": "Prosperous Fools | Theater in New York",
+      "publishDate": "2025-06-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/twelfth-night-30",
+      "headline": "Twelfth Night | Theater in New York",
+      "publishDate": "2025-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/a-streetcar-named-desire-review-paul-mescal-patsy-ferran-bam",
+      "headline": "Review: A Streetcar Named Desire at BAM (with Paul Mescal)",
+      "publishDate": "2025-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/henry-iv-4",
+      "headline": "Henry IV | Theater in New York",
+      "publishDate": "2025-02-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "henry-iv-2003",
+        "henry-iv-off-broadway-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/venus-cuffs-bdsm-valentines",
+      "headline": "Venus Cuffs BDSM Valentine’s | Theater in New York",
+      "publishDate": "2025-01-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "venus-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-drunk-texts-the-merry-busters-of-ghosts",
+      "headline": "The Drunk Texts: The Merry Busters of Ghosts | Theater in New York",
+      "publishDate": "2025-01-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghosts-1982"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/a-christmas-carol-the-musical-1",
+      "headline": "A Christmas Carol the Musical | Theater in New York",
+      "publishDate": "2024-12-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/alicia-keys-well-reviewed-musical-hells-kitchen-will-officially-transfer-to-broadway-120523",
+      "headline": "Alicia Keys's well-reviewed musical 'Hell's Kitchen' will officially transfer to Broadway",
+      "publishDate": "2023-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/fat-ham-review-public-theater-james-ijames-hamlet-pulitzer",
+      "headline": "Review: Fat Ham at the Public Theater (★★★★★)",
+      "publishDate": "2022-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023",
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/hamlet-review-alex-lawther",
+      "headline": "Review: Alex Lawther is thrillingly tormented in Hamlet (★★★★)",
+      "publishDate": "2022-07-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/a-christmas-carol-oy-hanukkah-merry-kwanzaa",
+      "headline": "A Christmas Carol, Oy! Hanukkah, Merry Kwanzaa | Theater in New York",
+      "publishDate": "2021-12-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/is-there-still-sex-in-the-city-review-candace-bushnell-solo",
+      "headline": "Candace Bushnell dishes it out in Is There Still Sex in the City?",
+      "publishDate": "2021-12-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/empire-circus",
+      "headline": "Empire Circus | Theater in New York",
+      "publishDate": "2021-10-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "empire-the-musical-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/mornings-at-seven-revival-review",
+      "headline": "Review: Morning’s at Seven has enduring charm",
+      "publishDate": "2021-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mornings-at-seven-2002",
+        "mornings-at-seven-1980"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/gnit-review-will-eno-peer-gynt-off-broadway",
+      "headline": "Review: Gnit is a mournful and hilarious reworking of Peer Gynt",
+      "publishDate": "2021-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peer-gynt-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/one-empire-under-god",
+      "headline": "One Empire, Under God | Theater in New York",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "empire-the-musical-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/big-apple-circus-making-the-impossible-possible",
+      "headline": "Big Apple Circus: Making the Impossible, Possible | Theater in New York",
+      "publishDate": "2021-10-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "big-apple-circus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/mrs-warrens-profession-review-off-broadway-shaw",
+      "headline": "Review: Mrs. Warren's Profession retains a whiff of scandal",
+      "publishDate": "2021-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mrs-warrens-profession-2010",
+        "mrs-warrens-profession-1976"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/fairycakes-review-off-broadway-douglas-carter-beane",
+      "headline": "Review: Fairycakes goes into the woods and into the weeds",
+      "publishDate": "2021-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-fever-review-lili-taylor-wallace-shawn",
+      "headline": "Review: The Fever treats privilege as a raging disease",
+      "publishDate": "2021-10-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-fever-greenwich-house-theater-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/memredux-laboratories",
+      "headline": "Memredux Laboratories | Theater in Hell's Kitchen, New York",
+      "publishDate": "2021-10-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/swan-lake-rock-opera",
+      "headline": "Swan Lake Rock Opera | Theater in New York",
+      "publishDate": "2021-09-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "swan-lake-1998",
+        "swan-lake-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/blackbird-2",
+      "headline": "Blackbird | Theater in New York",
+      "publishDate": "2021-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "blackbird-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/by-heart",
+      "headline": "By Heart | Theater in New York",
+      "publishDate": "2021-09-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-grown-ups-review-nightdrive",
+      "headline": "The Grown-Ups is the coolest new play you probably can't see",
+      "publishDate": "2021-08-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "grown-ups-1981"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/the-last-of-the-love-letters",
+      "headline": "The Last of the Love Letters | Theater in New York",
+      "publishDate": "2021-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-letters-2014",
+        "love-letters-1989"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/much-ado-about-nothing-16",
+      "headline": "Much Ado About Nothing | Theater in New York",
+      "publishDate": "2021-07-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "much-ado-about-nothing-1984",
+        "much-ado-about-nothing-1972",
+        "much-ado-about-nothing-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/flatbed-follies",
+      "headline": "Flatbed Follies | Theater in New York",
+      "publishDate": "2021-07-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "follies-2011",
+        "follies-1971",
+        "follies-2001"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/fruma-sarah-waiting-in-the-wings",
+      "headline": "Jackie Hoffman is back and kvetching her face off in Fruma-Sarah",
+      "publishDate": "2021-07-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wings-1979",
+        "waiting-in-the-wings-1999"
+      ]
+    }
+  ]
 }

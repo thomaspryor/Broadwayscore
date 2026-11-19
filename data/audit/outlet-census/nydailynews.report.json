@@ -1,12 +1,16 @@
 {
   "outletId": "nydailynews",
-  "generatedAt": "2026-10-28T20:45:32.706Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:39:53.846Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "sitemaps are daily (sitemap.xml?yyyy=&mm=&dd=, about 1.9k since 2021) with no section in the URL, so one paid proxy fetch per day is needed and the stage reviews are only found by slug",
     "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
+      "unreadable: sitemaps are daily (sitemap.xml?yyyy=&mm=&dd=, about 1.9k since 2021) with no section in the URL, so one paid proxy fetch per day is needed and the stage reviews are only found by slug"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,11 +23,18 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 385,
-    "notEnumerated": 89,
-    "noUrl": 11,
+    "rowsInWindow": 425,
+    "notEnumerated": 81,
+    "noUrl": 6,
     "samples": [
+      {
+        "showId": "1776-2022",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-brodway-1776-review-20221007-o6yecwfuvnecfep45wmrxwnbb4-story.html",
+        "publishDate": "2022-10-06",
+        "why": "not-enumerated"
+      },
       {
         "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
         "url": "https://www.nydailynews.com/2022/12/04/broadway-review-neil-diamond-jukebox-musical-a-beautiful-noise-is-nostalgic-fun/",
@@ -34,6 +45,12 @@
         "showId": "a-christmas-carol-2022",
         "url": "https://www.nydailynews.com/entertainment/broadway/ny-christmas-carol-jefferson-mays-review-20221122-mzkeiz4mr5edvjgpvcwyo572mq-story.html",
         "publishDate": "2022-11-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-midsummer-nights-dream-off-broadway-2017",
+        "url": "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -65,12 +82,6 @@
         "url": "https://www.nydailynews.com/2023/03/24/broadway-review-terrible-bad-cinderella-lives-up-to-its-title/",
         "publishDate": "2023-03-24",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "beaches-2026",
-        "url": null,
-        "publishDate": null,
-        "why": "no-url"
       },
       {
         "showId": "billy-crystal-860-2026",
@@ -139,9 +150,21 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "days-of-wine-and-roses-off-broadway-2023",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-days-of-wine-and-roses-review-20230606-y3ccfhoh55ci5nyfbf7zuvssfq-story.html",
+        "publishDate": "2023-06-05",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "death-of-a-salesman-2022",
         "url": "https://www.nydailynews.com/entertainment/broadway/ny-death-of-a-salesman-broadway-chris-jones-review-20221010-7nckjd3wczfczgboqsbrr3dzjq-story.html",
         "publishDate": "2022-10-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "eclipsed-off-broadway-2015",
+        "url": "https://www.nydailynews.com/entertainment/theater-arts/lupita-nyong-brilliant-bleak-blunt-eclipsed-article-1.2397495",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -149,6 +172,12 @@
         "url": "https://www.nydailynews.com/2025/01/23/broadway-review-english-by-sanaz-toossi/",
         "publishDate": "2025-01-23",
         "why": "not-enumerated"
+      },
+      {
+        "showId": "fences-2010",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
       },
       {
         "showId": "first-date-2013",
@@ -163,15 +192,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "gigi-2015",
-        "url": "http://www.nydailynews.com/entertainment/theater-arts/gigi-review-vanessa-hudgens-debuts-broadway-article-1.2177846",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "glengarry-glen-ross-2025",
-        "url": "https://www.nydailynews.com/2025/03/31/broadway-review-glengarry-glen-ross-still-masterful-drama-despite-some-casting-choices/",
-        "publishDate": "2025-03-31",
+        "showId": "harmony-off-broadway-2022",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-barry-manilow-harmony-20220414-fth64bmxwreqxfgs5pco5zfj6a-story.html",
+        "publishDate": "2022-04-13",
         "why": "not-enumerated"
       },
       {
@@ -211,12 +234,6 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "just-in-time-2025",
-        "url": null,
-        "publishDate": null,
-        "why": "no-url"
-      },
-      {
         "showId": "kimberly-akimbo-2022",
         "url": "https://www.nydailynews.com/entertainment/broadway/ny-kimberly-akimbo-broadway-review-20221111-zirpvbfk5jdubn22zm7xtafblq-story.html",
         "publishDate": "2022-11-10",
@@ -232,12 +249,6 @@
         "showId": "leap-of-faith-2012",
         "url": "https://www.nydailynews.com/entertainment/theater-review-leap-faith-article-1.1068009?localLinksEnabled=false",
         "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "leopoldstadt-2022",
-        "url": "https://www.nydailynews.com/entertainment/broadway/ny-leopoldstadt-review-tom-stoppard-20221003-sozou6fsxnbmjg6k2vwma7mjum-story.html",
-        "publishDate": "2022-10-02",
         "why": "not-enumerated"
       },
       {
@@ -257,12 +268,6 @@
         "url": "https://www.nydailynews.com/entertainment/music-arts/machinal-theater-review-article-1.1579329",
         "publishDate": null,
         "why": "not-enumerated"
-      },
-      {
-        "showId": "merrily-we-roll-along-1981",
-        "url": "https://www.nydailynews.com/entertainment/music-arts/stephen-sondheim-merrily-roll-returns-doesn-t-glide-article-1.1019845?localLinksEnabled=false",
-        "publishDate": null,
-        "why": "not-enumerated"
       }
     ]
   },
@@ -272,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

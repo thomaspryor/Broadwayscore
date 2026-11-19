@@ -1,12 +1,16 @@
 {
   "outletId": "chicagotribune",
-  "generatedAt": "2026-10-28T20:45:32.695Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:39:53.852Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "sitemap index lists daily sitemaps (10k days since 1999, one paid proxy fetch each); the Chicago paper reviews Broadway touring productions only",
     "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
+      "unreadable: sitemap index lists daily sitemaps (10k days since 1999, one paid proxy fetch each); the Chicago paper reviews Broadway touring productions only"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,15 +23,22 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 311,
-    "notEnumerated": 133,
-    "noUrl": 1,
+    "rowsInWindow": 334,
+    "notEnumerated": 150,
+    "noUrl": 2,
     "samples": [
       {
         "showId": "a-dolls-house-2023",
         "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-dolls-house-jessica-chastain-review-20230310-ap4olzgdyndtnju5dahg76fizi-story.html",
         "publishDate": "2023-03-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-few-good-men-2026",
+        "url": "https://www.chicagotribune.com/2026/10/29/review-few-good-men-broadway/",
+        "publishDate": "2026-10-29",
         "why": "not-enumerated"
       },
       {
@@ -56,8 +67,14 @@
       },
       {
         "showId": "american-buffalo-2022",
-        "url": "https://www.chicagotribune.com/2022/04/14/review-american-buffalo-opens-on-broadway-with-laurence-fishburne-a-blast-of-a-mamet-play-that-stops-short-of-the-biggest-score/",
-        "publishDate": "2022-04-15",
+        "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-american-buffalo-20220415-qfpd6ihi2zfilbe75ht255q3ia-story.html",
+        "publishDate": "2022-04-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "american-idiot-2010",
+        "url": "https://leisureblogs.chicagotribune.com/the_theater_loop/2010/04/american-idiot-green-day-broadway-review-punk-with-possibilities.html",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -82,6 +99,12 @@
         "showId": "back-to-the-future-2023",
         "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-back-to-the-future-broadway-review-20230804-6i5bikjaqnf4roiijjbjm3nvha-story.html",
         "publishDate": "2023-08-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "be-more-chill-2019",
+        "url": "https://www.chicagotribune.com/entertainment/theater/sc-ent-be-more-chill-broadway-review-0311-story.html",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -199,6 +222,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "downstate-2026",
+        "url": "https://www.chicagotribune.com/2026/11/15/review-downstate-broadway/",
+        "publishDate": "2026-11-16",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "eureka-day-2024",
         "url": "https://www.chicagotribune.com/2024/12/16/review-in-eureka-day-on-broadway-idealism-only-goes-so-far-at-a-private-elementary-school/",
         "publishDate": "2024-12-16",
@@ -223,6 +252,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "fences-2010",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
         "showId": "floyd-collins-2025",
         "url": "https://www.chicagotribune.com/2025/04/21/review-now-on-a-broadway-stage-floyd-collins-feels-stuck-in-that-cavern/",
         "publishDate": "2025-04-21",
@@ -233,36 +268,6 @@
         "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-colored-girls-revival-20220421-wna26hhfyffcpkf5prr57qxpr4-story.html",
         "publishDate": "2022-04-21",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "funny-girl-2022",
-        "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-funny-girl-review-beanie-feldstein-20220425-tj7qdbxx7jbcnf2yrz5hzhckwm-story.html'",
-        "publishDate": "2022-04-25",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gettin-the-band-back-together-2018",
-        "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-band-together-broadway-review-0814-story.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "giant-2026",
-        "url": "https://www.chicagotribune.com/2026/03/23/review-giant-broadway-john-lithgow/",
-        "publishDate": "2026-03-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "good-night-and-good-luck-2025",
-        "url": "https://www.chicagotribune.com/2025/04/03/review-in-good-night-and-good-luck-on-broadway-heres-george-clooney-with-an-urgent-bulletin/",
-        "publishDate": "2025-04-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "good-night-oscar-2023",
-        "url": "https://www.chicagotribune.com/2023/04/24/review-sean-hayes-is-stunning-as-good-night-oscar-opens-on-broadway/",
-        "publishDate": "2023-04-24",
-        "why": "not-enumerated"
       }
     ]
   },
@@ -272,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

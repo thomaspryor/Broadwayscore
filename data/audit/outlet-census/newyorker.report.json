@@ -1,27 +1,74 @@
 {
   "outletId": "newyorker",
-  "generatedAt": "2026-10-28T20:45:32.703Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:51:09.152Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
-    "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "kind": "sitemap",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 120,
+    "inWindow": 120,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "held": 27,
+      "not-review": 42,
+      "held-unmatched": 31,
+      "gap": 5,
+      "out-of-window": 15
+    },
+    "viaTitleVariant": {
+      "gap": 1,
+      "held": 5
+    },
+    "recall": 0.844,
+    "recallWithCatalog": 0.844
+  },
+  "seasons": {
+    "2026-27": {
+      "held": 1,
+      "not-review": 4,
+      "held-unmatched": 2
+    },
+    "2025-26": {
+      "held-unmatched": 8,
+      "held": 8,
+      "not-review": 5,
+      "gap": 2
+    },
+    "2024-25": {
+      "out-of-window": 5,
+      "not-review": 3,
+      "held": 7,
+      "held-unmatched": 7,
+      "gap": 1
+    },
+    "2023-24": {
+      "not-review": 9,
+      "held-unmatched": 8,
+      "held": 6,
+      "out-of-window": 5,
+      "gap": 2
+    },
+    "2022-23": {
+      "held-unmatched": 6,
+      "not-review": 12,
+      "held": 5,
+      "out-of-window": 4
+    },
+    "2021-22": {
+      "not-review": 9,
+      "out-of-window": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 135,
-    "notEnumerated": 91,
+    "rowsInWindow": 157,
+    "notEnumerated": 40,
     "noUrl": 0,
     "samples": [
       {
@@ -31,45 +78,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "a-dolls-house-2023",
-        "url": "https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain",
-        "publishDate": "2023-03-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "an-ark-off-broadway-2026",
-        "url": "https://www.newyorker.com/magazine/2026/02/09/an-ark-theatre-review-data",
-        "publishDate": "2026-01-30",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "an-enemy-of-the-people-2024",
-        "url": "https://www.newyorker.com/magazine/2024/04/01/an-enemy-of-the-people-theatre-review",
-        "publishDate": "2024-03-22",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "and-juliet-2022",
         "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22",
         "publishDate": "2022-11-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "appropriate-2023",
-        "url": "https://www.newyorker.com/magazine/2024/01/01/appropriate-theatre-review-broadway",
-        "publishDate": "2023-12-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "art-2025",
-        "url": "https://www.newyorker.com/magazine/2025/09/29/art-theatre-review-the-wild-duck",
-        "publishDate": "2025-09-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "birthright-off-broadway-2026",
-        "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-broadway",
-        "publishDate": "2026-07-09",
         "why": "not-enumerated"
       },
       {
@@ -85,57 +96,21 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "buena-vista-social-club-off-broadway-2023",
-        "url": "https://www.newyorker.com/magazine/2023/12/25/buena-vista-social-club-theatre-review-how-to-dance-in-ohio",
-        "publishDate": "2023-12-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bug-2026",
-        "url": "https://www.newyorker.com/magazine/2026/01/19/bug-theatre-review",
-        "publishDate": "2026-01-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "call-me-izzy-2025",
-        "url": "https://www.newyorker.com/magazine/2025/06/23/call-me-izzy-theatre-review-angry-alan",
-        "publishDate": "2025-06-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cats-the-jellicle-ball-off-broadway-2024",
-        "url": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
-        "publishDate": "2024-06-27",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "chicken-and-biscuits-2021",
         "url": "https://www.newyorker.com/magazine/2021/10/25/is-this-a-room-and-chicken-biscuits-bring-the-unexpected-to-broadway",
         "publishDate": "2021-10-15",
         "why": "not-enumerated"
       },
       {
+        "showId": "cornelia-street-off-broadway-2023",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/cornelia-street-03-06-23",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "cost-of-living-2022",
         "url": "https://www.newyorker.com/goings-on-about-town/theatre/cost-of-living-10-17-22",
         "publishDate": "2022-10-31",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cult-of-love-2024",
-        "url": "https://www.newyorker.com/magazine/2024/12/23/the-cult-of-love-theatre-review-broadway",
-        "publishDate": "2024-12-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-becomes-her-2024",
-        "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-broadway",
-        "publishDate": "2024-11-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "degenerates-off-broadway-2026",
-        "url": "https://www.newyorker.com/magazine/2026/10/19/degenerates-theatre-review",
-        "publishDate": "2026-10-08",
         "why": "not-enumerated"
       },
       {
@@ -151,51 +126,27 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "dog-day-afternoon-2026",
-        "url": "https://www.newyorker.com/magazine/2026/04/13/dog-day-afternoon-theatre-review",
-        "publishDate": "2026-04-02",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "doubt-2024",
         "url": "https://www.newyorker.com/magazine/2024/03/18/john-patrick-shanley-wrestles-with-god-and-destiny",
         "publishDate": "2024-03-11",
         "why": "not-enumerated"
       },
       {
-        "showId": "dukes-off-broadway-2026",
-        "url": "https://www.newyorker.com/magazine/2026/08/03/jane-wickline-theatre-review",
-        "publishDate": "2026-07-23",
+        "showId": "evanston-salt-costs-climbing-off-broadway-2022",
+        "url": "https://www.newyorker.com/magazine/2022/11/28/evanston-salt-costs-climbing-a-pitch-dark-comedy-about-municipal-workers-on-the-brink",
+        "publishDate": "2022-11-21",
         "why": "not-enumerated"
       },
       {
-        "showId": "english-2025",
-        "url": "https://www.newyorker.com/magazine/2025/02/03/english-theatre-review-broadway",
-        "publishDate": "2025-01-24",
+        "showId": "evita-2012",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/evita-2",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
         "showId": "flex-off-broadway-2023",
         "url": "https://www.newyorker.com/goings-on-about-town/theatre/flex-07-31-23",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gatz-off-broadway-2024",
-        "url": "https://www.newyorker.com/magazine/2024/11/25/give-me-carmelita-tropicana-theatre-review-gatz",
-        "publishDate": "2024-11-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "glengarry-glen-ross-2025",
-        "url": "https://www.newyorker.com/magazine/2025/04/14/glengarry-glen-ross-good-night-and-good-luck-theatre-review-broadway",
-        "publishDate": "2025-04-04",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "good-night-and-good-luck-2025",
-        "url": "https://www.newyorker.com/magazine/2025/04/14/glengarry-glen-ross-good-night-and-good-luck-theatre-review-broadway",
-        "publishDate": "2025-04-04",
+        "publishDate": "2023-07-20",
         "why": "not-enumerated"
       },
       {
@@ -205,45 +156,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "gypsy-2024",
-        "url": "https://www.newyorker.com/magazine/2024/12/30/gypsy-theatre-review-broadway#:~:text=Joy%20Woods%20plays%20the%20stripper,the%20fading%20world%20of%20vaudeville.",
-        "publishDate": "2024-12-16",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "harry-potter-2021",
         "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-cursed-child-parts-one-and-two-2",
         "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "hate-radio-off-broadway-2026",
-        "url": "https://www.newyorker.com/magazine/2026/03/09/hate-radio-theatre-review",
-        "publishDate": "2026-02-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "here-lies-love-2023",
-        "url": "https://www.newyorker.com/magazine/2023/07/31/here-lies-love-uncle-vanya-theatre-reviews",
-        "publishDate": "2023-08-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "here-we-are-off-broadway-2023",
-        "url": "https://www.newyorker.com/magazine/2023/11/06/here-we-are-theatre-review",
-        "publishDate": "2023-10-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "home-2024",
-        "url": "https://www.newyorker.com/magazine/2024/06/17/samm-art-williams-home-shayan-lotfi-what-became-of-us-theatre-review-broadway",
-        "publishDate": "2024-06-17",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "im-assuming-you-know-david-greenspan-off-broadway-2025",
-        "url": "https://www.newyorker.com/magazine/2025/05/05/floyd-collins-theatre-review-rheology-im-assuming-you-know-david-greenspan",
-        "publishDate": "2025-04-28",
         "why": "not-enumerated"
       },
       {
@@ -263,14 +178,867 @@
         "url": "https://www.newyorker.com/goings-on-about-town/just-in-time",
         "publishDate": null,
         "why": "not-enumerated"
+      },
+      {
+        "showId": "kimberly-akimbo-2022",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/kimberly-akimbo-11-21-22",
+        "publishDate": "2022-11-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "leopoldstadt-2022",
+        "url": "https://www.newyorker.com/magazine/2022/10/17/tom-stoppard-resurrects-the-past-in-leopoldstadt",
+        "publishDate": "2022-10-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "liberation-2025",
+        "url": "https://www.newyorker.com/culture/goings-on/renoirs-surprising-experiments-in-perception",
+        "publishDate": "2025-11-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "lincoln-in-the-bardo-off-broadway-2026",
+        "url": "https://www.newyorker.com/magazine/2026/11/09/lincoln-in-the-bardo-music-review",
+        "publishDate": "2026-10-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "maybe-happy-ending-2024",
+        "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24",
+        "publishDate": "2024-11-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "merrily-we-roll-along-off-broadway-2022",
+        "url": "https://www.newyorker.com/magazine/2022/12/26/merrily-we-roll-along-and-some-like-it-hot-bring-blockbuster-energy-to-the-stage",
+        "publishDate": "2022-12-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mr-saturday-night-2022",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/mr-saturday-night-05-16-22",
+        "publishDate": "2022-07-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "oratorio-for-living-things-off-broadway-2026",
+        "url": "https://www.newyorker.com/culture/the-theatre/gospel-uplifts-oratorio-for-living-things-and-oh-happy-day",
+        "publishDate": "2025-10-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "pay-the-writer-off-broadway-2023",
+        "url": "https://www.newyorker.com/culture/goings-on/the-surreal-nudes-of-heji-shin",
+        "publishDate": "2023-08-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "prima-facie-2023",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/prima-facie-05-15-23",
+        "publishDate": "2023-04-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "samson-et-dalila-off-broadway-2018",
+        "url": "https://www.newyorker.com/goings-on-about-town/classical-music/samson-et-dalila-review",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "six-2021",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21",
+        "publishDate": "2021-10-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "someone-spectacular-off-broadway-2024",
+        "url": "https://www.newyorker.com/culture/goings-on/nick-caves-transfixing-chants",
+        "publishDate": "2024-08-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+        "url": "https://www.newyorker.com/magazine/2026/10/05/gut-renos-of-ionesco-and-chekhov",
+        "publishDate": "2026-09-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-collaboration-2022",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/the-collaboration-01-16-23",
+        "publishDate": "2023-01-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-kite-runner-2022",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/the-kite-runner-08-08-22",
+        "publishDate": "2022-08-08",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-piano-lesson-2022",
+        "url": "https://www.newyorker.com/culture/the-theatre/a-piano-lesson-with-no-false-notes",
+        "publishDate": "2022-10-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "time-stands-still-2010",
+        "url": "https://www.newyorker.com/arts/events/theatre/time-stands-still-cort-theatre",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "titanique-off-broadway-2022",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/titanique-07-11-22",
+        "publishDate": "2022-07-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "tristan-und-isolde-off-broadway-2026",
+        "url": "https://www.newyorker.com/magazine/2026/03/30/tristan-at-the-met-music-review",
+        "publishDate": "2026-03-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "waiting-for-godot-2025",
+        "url": "https://www.newyorker.com/culture/the-theatre/the-unexpected-sweetness-of-bill-and-teds-waiting-for-godot",
+        "publishDate": "2025-10-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "wet-brain-off-broadway-2023",
+        "url": "https://www.newyorker.com/goings-on-about-town/theatre/wet-brain-06-26-23",
+        "publishDate": "2023-06-16",
+        "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
+  "gaps": [
+    {
+      "url": "https://www.newyorker.com/magazine/2026/06/15/can-i-be-frank-theatre-review-heated-rivalry",
+      "headline": "can i be frank theatre review heated rivalry",
+      "publishDate": "2026-06-04",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the-jellicle-ball",
+      "headline": "becky shaw theatre review cats the jellicle ball",
+      "publishDate": "2026-04-16",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cats-the-jellicle-ball-2026"
+      ],
+      "outOfWindow": [
+        "becky-shaw-2026",
+        "cats-the-jellicle-ball-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/03/10/grangeville-and-curse-of-the-starving-class-theatre-review",
+      "headline": "grangeville and curse of the starving class theatre review",
+      "publishDate": "2025-02-28",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "grangeville-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "curse-of-the-starving-class-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/12/04/hells-kitchen-theatre-review-the-gardens-of-anuncia",
+      "headline": "hells kitchen theatre review the gardens of anuncia",
+      "publishDate": "2023-11-21",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-gardens-of-anuncia-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/10/23/the-refuge-plays-zoetrope-theatre-reviews",
+      "headline": "the refuge plays zoetrope theatre reviews",
+      "publishDate": "2023-10-12",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-refuge-plays-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    }
+  ],
   "heldAltUrl": [],
   "misfiles": [],
-  "heldUnmatched": [],
+  "heldUnmatched": [
+    {
+      "url": "https://www.newyorker.com/magazine/2026/11/02/other-desert-cities-theatre-review-a-bright-room-called-day",
+      "headline": "other desert cities theatre review a bright room called day",
+      "publishDate": "2026-10-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "other-desert-cities-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "other-desert-cities-2011",
+        "other-desert-cities-2026",
+        "a-bright-room-called-day-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2026/10/19/degenerates-theatre-review",
+      "headline": "degenerates theatre review",
+      "publishDate": "2026-10-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "degenerates-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "degenerates-off-broadway-2026",
+        "degenerates-dec-jan-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2026/08/03/jane-wickline-theatre-review",
+      "headline": "jane wickline theatre review",
+      "publishDate": "2026-07-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "dukes-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2026/04/13/dog-day-afternoon-theatre-review",
+      "headline": "dog day afternoon theatre review",
+      "publishDate": "2026-04-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "dog-day-afternoon-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "dog-day-afternoon-2026"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2026/03/09/hate-radio-theatre-review",
+      "headline": "hate radio theatre review",
+      "publishDate": "2026-02-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hate-radio-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "hate-radio-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2026/01/19/bug-theatre-review",
+      "headline": "bug theatre review",
+      "publishDate": "2026-01-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bug-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/12/29/tartuffe-theatre-review",
+      "headline": "tartuffe theatre review",
+      "publishDate": "2025-12-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "tartuffe-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "tartuffe-2003",
+        "tartuffe-1996",
+        "tartuffe-1977",
+        "tartuffe-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/11/10/little-bear-ridge-road-theatre-review-the-bride-and-the-goodnight-cinderella",
+      "headline": "little bear ridge road theatre review the bride and the goodnight cinderella",
+      "publishDate": "2025-10-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "little-bear-ridge-road-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "little-bear-ridge-road-2025",
+        "cinderella-the-musical-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/09/29/art-theatre-review-the-wild-duck",
+      "headline": "art theatre review the wild duck",
+      "publishDate": "2025-09-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "art-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/09/22/the-brothers-size-theatre-review",
+      "headline": "the brothers size theatre review",
+      "publishDate": "2025-09-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-brothers-size-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-brothers-size-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/06/02/sexual-misconduct-of-the-middle-classes-theatre-review-creditors",
+      "headline": "sexual misconduct of the middle classes theatre review creditors",
+      "publishDate": "2025-05-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/04/07/othello-theatre-review-broadway",
+      "headline": "othello theatre review broadway",
+      "publishDate": "2025-03-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "othello-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "othello-2025",
+        "othello-1970",
+        "othello-1982",
+        "othello-bedlam-off-broadway-2026",
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/02/03/english-theatre-review-broadway",
+      "headline": "english theatre review broadway",
+      "publishDate": "2025-01-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "english-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/12/30/gypsy-theatre-review-broadway",
+      "headline": "gypsy theatre review broadway",
+      "publishDate": "2024-12-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "gypsy-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "gypsy-2024",
+        "gypsy-2008",
+        "gypsy-2003",
+        "gypsy-1989",
+        "gypsy-1974"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/12/23/the-cult-of-love-theatre-review-broadway",
+      "headline": "the cult of love theatre review broadway",
+      "publishDate": "2024-12-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cult-of-love-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cult-of-love-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/12/02/death-becomes-her-theatre-review-broadway",
+      "headline": "death becomes her theatre review broadway",
+      "publishDate": "2024-11-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "death-becomes-her-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "death-becomes-her-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/10/14/the-hills-of-california-theatre-review",
+      "headline": "the hills of california theatre review",
+      "publishDate": "2024-10-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-hills-of-california-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-hills-of-california-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
+      "headline": "cats the jellicle ball theatre review",
+      "publishDate": "2024-06-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cats-the-jellicle-ball-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cats-the-jellicle-ball-2026",
+        "cats-the-jellicle-ball-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/06/24/the-welkin-theatre-review",
+      "headline": "the welkin theatre review",
+      "publishDate": "2024-06-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-welkin-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-welkin-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/05/06/stereophonic-theatre-review-cabaret",
+      "headline": "stereophonic theatre review cabaret",
+      "publishDate": "2024-04-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "stereophonic-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "stereophonic-2024",
+        "cabaret-2014",
+        "cabaret-1987",
+        "stereophonic-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/04/01/an-enemy-of-the-people-theatre-review",
+      "headline": "an enemy of the people theatre review",
+      "publishDate": "2024-03-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "an-enemy-of-the-people-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "an-enemy-of-the-people-2024",
+        "an-enemy-of-the-people-2012",
+        "an-enemy-of-the-people-1971"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/03/04/sunset-baby-theatre-review",
+      "headline": "sunset baby theatre review",
+      "publishDate": "2024-02-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "sunset-baby-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "sunset-baby-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/01/22/prayer-for-the-french-republic-theatre-review",
+      "headline": "prayer for the french republic theatre review",
+      "publishDate": "2024-01-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "prayer-for-the-french-republic-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/01/01/appropriate-theatre-review-broadway",
+      "headline": "appropriate theatre review broadway",
+      "publishDate": "2023-12-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "appropriate-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "appropriate-2023"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/11/06/here-we-are-theatre-review",
+      "headline": "here we are theatre review",
+      "publishDate": "2023-10-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "here-we-are-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "here-we-are-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/08/21/the-shark-is-broken-theatre-review-west-end",
+      "headline": "the shark is broken theatre review west end",
+      "publishDate": "2023-08-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-shark-is-broken-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-shark-is-broken-2023"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/06/19/the-comeuppance-theatre-review",
+      "headline": "the comeuppance theatre review",
+      "publishDate": "2023-06-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-comeuppance-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-comeuppance-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/04/17/shucked-theatre-review-broadway",
+      "headline": "shucked theatre review broadway",
+      "publishDate": "2023-04-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "shucked-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "shucked-2023"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/04/10/sweeney-todd-theatre-review-broadway",
+      "headline": "sweeney todd theatre review broadway",
+      "publishDate": "2023-03-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "sweeney-todd-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "sweeney-todd-2023",
+        "sweeney-todd-2005",
+        "sweeney-todd-1989",
+        "sweeney-todd-1979"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/03/27/parade-theatre-review-broadway",
+      "headline": "parade theatre review broadway",
+      "publishDate": "2023-03-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "parade-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain",
+      "headline": "dolls house review broadway jessica chastain",
+      "publishDate": "2023-03-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-dolls-house-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
   "ambiguous": [],
   "catalogGaps": [],
-  "outOfWindow": []
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://www.newyorker.com/magazine/2025/09/01/twelfth-night-theatre-review",
+      "headline": "twelfth night theatre review",
+      "publishDate": "2025-08-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/04/28/the-years-richard-ii-theatre-review",
+      "headline": "the years richard ii theatre review",
+      "publishDate": "2025-04-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-ii-off-broadway-2025",
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/03/24/a-streetcar-named-desire-and-ghosts-theatre-review",
+      "headline": "a streetcar named desire and ghosts theatre review",
+      "publishDate": "2025-03-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005",
+        "ghosts-1982",
+        "ghosts-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2025/02/10/hugh-jackman-live-beckett-briefs-theatre-review",
+      "headline": "hugh jackman live beckett briefs theatre review",
+      "publishDate": "2025-01-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "beckett-briefs-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/09/30/the-roommate-theatre-review-broadway",
+      "headline": "the roommate theatre review broadway",
+      "publishDate": "2024-09-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-roommate-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/06/03/player-kings-the-cherry-orchard-london-tide-theatre-review",
+      "headline": "player kings the cherry orchard london tide theatre review",
+      "publishDate": "2024-05-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/05/27/here-there-are-blueberries-theatre-review",
+      "headline": "here there are blueberries theatre review",
+      "publishDate": "2024-05-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2024/02/05/public-obscenities-theatre-review",
+      "headline": "public obscenities theatre review",
+      "publishDate": "2024-01-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "public-obscenities-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/11/13/sabbaths-theater-i-need-that-theatre-reviews",
+      "headline": "sabbaths theater i need that theatre reviews",
+      "publishDate": "2023-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "i-need-that-2023"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/09/25/infinite-life-theatre-review",
+      "headline": "infinite life theatre review",
+      "publishDate": "2023-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "infinite-life-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/07/24/hamlet-theatre-review",
+      "headline": "hamlet theatre review",
+      "publishDate": "2023-07-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/07/03/the-doctor-theatre-review",
+      "headline": "the doctor theatre review",
+      "publishDate": "2023-06-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-doctor-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/06/26/operation-mincemeat-theatre-review-guys-and-dolls",
+      "headline": "operation mincemeat theatre review guys and dolls",
+      "publishDate": "2023-06-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "operation-mincemeat-2025",
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2023/03/13/sign-in-sidney-brusteins-window-theatre-review",
+      "headline": "sign in sidney brusteins window theatre review",
+      "publishDate": "2023-03-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sign-in-sidney-brusteins-window-2023",
+        "the-sign-in-sidney-brusteins-window-1972"
+      ]
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2022/02/28/theater-review-broken-contracts-in-the-merchant-of-venice-and-wolf-play",
+      "headline": "theater review broken contracts in the merchant of venice and wolf play",
+      "publishDate": "2022-02-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-of-venice-1973"
+      ]
+    }
+  ]
 }

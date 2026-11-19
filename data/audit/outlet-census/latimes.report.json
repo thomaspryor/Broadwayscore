@@ -1,12 +1,16 @@
 {
   "outletId": "latimes",
-  "generatedAt": "2026-10-28T20:45:32.712Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:39:53.872Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "sitemap index lists 622 numbered sitemaps (sitemap-191412.xml) with no date or section in the names; a Los Angeles paper with few NYC reviews (80 corpus rows)",
     "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
+      "unreadable: sitemap index lists 622 numbered sitemaps (sitemap-191412.xml) with no date or section in the names; a Los Angeles paper with few NYC reviews (80 corpus rows)"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,9 +23,10 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 80,
-    "notEnumerated": 29,
+    "rowsInWindow": 87,
+    "notEnumerated": 31,
     "noUrl": 0,
     "samples": [
       {
@@ -121,6 +126,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "john-proctor-is-the-villain-2025",
+        "url": "https://www.latimes.com/entertainment-arts/story/2025-05-21/kimberly-belflower-playwright-danya-taymor-director-john-proctor-is-the-villain-crucible",
+        "publishDate": "2025-05-21",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "mcneal-2024",
         "url": "https://www.latimes.com/entertainment-arts/story/2024-09-30/review-theater-robert-downey-broadway-debut-ayad-akhtar-mcneal-artificial-intelligence",
         "publishDate": "2024-09-30",
@@ -130,6 +141,12 @@
         "showId": "merrily-we-roll-along-2023",
         "url": "https://www.latimes.com/entertainment-arts/story/2024-03-28/merrily-we-roll-along-daniel-radcliffe-jonathan-groff-lindsay-mendez-broadway-hollywood",
         "publishDate": "2024-03-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mother-play-2024",
+        "url": "https://www.latimes.com/entertainment-arts/story/2024-05-30/jessica-lange-paula-vogel-mother-play-broadway-great-lillian-hall-hbo",
+        "publishDate": "2024-05-30",
         "why": "not-enumerated"
       },
       {
@@ -206,5 +223,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

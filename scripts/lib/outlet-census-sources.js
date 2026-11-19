@@ -112,36 +112,79 @@ const SOURCES = {
     childFilter: (c, since) => { const m = /\/(\d{4}-\d{2}-\d{2})\?/.exec(c); return !!m && m[1] >= String(since).slice(0, 10); },
     urlFilter: /thedailybeast\.com\/(?:obsessed\/)?[^/?#]*(?:broadway|musical|-play-|-play\/|theater|theatre|revival|on-stage)/, needsMeta: true,
   },
-  // ── BRO-6485: site-scoped, quarter-windowed Google (kind 'serp') for outlets whose site,
-  // sitemaps and API refuse the census client (HTTP 403 or challenge pages, probed
-  // 2026-10-28). sourceSaysReview only where urlFilter is a reviews-only path or the site
-  // publishes nothing else; elsewhere the headline must say "review", so recall there is
-  // measured over the reviews Google titles as reviews.
-  nytimes: serp(['site:nytimes.com theater review'], /nytimes\.com\/\d{4}\/\d{2}\/\d{2}\/theater\//),
-  wsj: serp(['site:wsj.com theater review'], /wsj\.com\/(?:articles|arts-culture)\//),
-  nypost: serp(['site:nypost.com broadway review'], /nypost\.com\/\d{4}\/\d{2}\/\d{2}\//),
-  newyorker: serp(['site:newyorker.com/magazine theatre review'], /newyorker\.com\/magazine\/\d{4}\//),
-  ew: serp(['site:ew.com broadway review'], /ew\.com\//),
-  observer: serp(['site:observer.com broadway review'], /observer\.com\/\d{4}\/\d{2}\//),
-  nydailynews: serp(['site:nydailynews.com broadway review'], /nydailynews\.com\//),
-  chicagotribune: serp(['site:chicagotribune.com broadway review'], /chicagotribune\.com\//, { requireNycSignal: true }),
-  guardian: serp(['site:theguardian.com/stage broadway review'], /theguardian\.com\/stage\/\d{4}\//, { requireNycSignal: true }),
-  usatoday: serp(['site:usatoday.com broadway review'], /usatoday\.com\/story\//, { requireNycSignal: true }),
-  latimes: serp(['site:latimes.com broadway review'], /latimes\.com\//, { requireNycSignal: true }),
-  washpost: serp(['site:washingtonpost.com/theater-dance broadway'], /washingtonpost\.com\/theater-dance\/\d{4}\//, { requireNycSignal: true }),
-  theatrely: serp(['site:theatrely.com/post review'], /theatrely\.com\/post\//),
-  'new-york-sun': serp(['site:nysun.com broadway review'], /nysun\.com\/article\//),
-  'times-square-chronicles': serp(['site:t2conline.com broadway review'], /t2conline\.com\//),
+  // ── BRO-7816: outlets the BRO-7812 blind-outlet table flagged, probed 2026-11-19 with
+  // `outlet-census.js --probe` and the poller's proxy chain (fetchXmlWithProxyRetry). Site-scoped Google
+  // (the BRO-6485 answer) returns ~10 results a query, so it could never list an archive; where a
+  // sitemap reads, it replaces it. Where none does, the entry below says exactly what the probe saw.
+  // NYT: the monthly gzip sitemaps 403 a direct client but read through the proxy chain (1.4MB each);
+  // section is in the URL (/YYYY/MM/DD/theater/), so no per-page fetch is needed.
+  nytimes: {
+    kind: 'sitemap', url: 'https://www.nytimes.com/sitemaps/new/sitemap.xml.gz', proxyRetry: true,
+    childFilter: (c, since) => { const m = /sitemap-(\d{4})-(\d{2})\.xml/.exec(c); return !!m && `${m[1]}-${m[2]}` >= String(since).slice(0, 7); },
+    urlFilter: /nytimes\.com\/\d{4}\/\d{2}\/\d{2}\/theater\/[^/?#]+\.html$/, headlineFromSlug: true,
+    ignoreLastmod: true, // lastmod is bulk-touched on old months (2025-03 file carries 2026-11-19)
+  },
+  // Washington Post: monthly sitemaps (sitemap.xml.gz index), section in the URL (/theater-dance/ in 2022-23, /entertainment/theater/ since); DC-heavy, so NYC signal required.
+  washpost: {
+    kind: 'sitemap', url: 'https://www.washingtonpost.com/sitemaps/sitemap.xml.gz', proxyRetry: true,
+    childFilter: (c, since) => { const m = /sitemap-(\d{4})-(\d{2})\.xml/.exec(c); return !!m && `${m[1]}-${m[2]}` >= String(since).slice(0, 7); },
+    urlFilter: /washingtonpost\.com\/(?:entertainment\/theater|theater-dance)\/\d{4}\/\d{2}\/\d{2}\/[^/]+\/?$/, headlineFromSlug: true, requireNycSignal: true,
+    ignoreLastmod: true,
+  },
+  // Theatrely: one flat sitemap (2.9k URLs back to 2021-05), reviews under /post/. Reads direct.
+  theatrely: { kind: 'sitemap', url: 'https://www.theatrely.com/sitemap.xml', urlFilter: /theatrely\.com\/post\/[^/]+$/, headlineFromSlug: true },
+  // Broadway & Me: a Blogger review blog; its two sitemap pages list every post back to 2012. Reads direct.
+  'broadway-and-me': { kind: 'sitemap', url: 'https://broadwayandme.blogspot.com/sitemap.xml', urlFilter: /broadwayandme\.blogspot\.com\/20\d\d\/\d\d\/[^/]+\.html$/, headlineFromSlug: true, sourceSaysReview: true },
+  // Front Row Center: direct fetches get an sgcaptcha challenge; the proxy chain reads the 4 child sitemaps
+  // (about 4k URLs, /YYYY/MM/slug/). A review blog, so every post counts.
+  'front-row-center': {
+    kind: 'sitemap', url: 'http://thefrontrowcenter.com/sitemap-index-1.xml', proxyRetry: true,
+    urlFilter: /thefrontrowcenter\.com\/20\d\d\/\d\d\/[^/]+\/?$/, headlineFromSlug: true, sourceSaysReview: true,
+  },
+  // WSJ (PARTIAL: about 6% of corpus rows have a slug with no review/theater word and are not listed): monthly sitemaps (sitemap_wsj_en_m<M>_<YYYY>.xml, about 2.7k URLs, 1MB). Reviews are /articles/<slug>-review-...-<hex>
+  // or /arts-culture/theater/; the slug is the headline.
+  wsj: {
+    kind: 'sitemap', url: 'https://www.wsj.com/sitemaps/web/wsj/en/sitemap_wsj_en_index.xml', proxyRetry: true,
+    childFilter: (c, since) => { const m = /_m(\d{1,2})_(\d{4})\.xml/.exec(c); return !!m && `${m[2]}-${m[1].padStart(2, '0')}` >= String(since).slice(0, 7); },
+    urlFilter: /wsj\.com\/(?:arts-culture\/theater\/|articles\/[^/]*(?:review|broadway|theater|theatre|musical)[^/]*$)/i, headlineFromSlug: true, ignoreLastmod: true,
+  },
+  // The New Yorker: 60 small monthly sitemaps; theatre reviews are /magazine/YYYY/MM/DD/<slug>-theatre-review, and
+  // the capsule reviews /goings-on-about-town/theatre/. PARTIAL: a magazine piece whose slug omits "theatre" (about 1 in 4
+  // of the corpus rows) is not listed without a paid page fetch per URL, so recall here reads high.
+  newyorker: {
+    kind: 'sitemap', url: 'https://www.newyorker.com/sitemap.xml', proxyRetry: true,
+    childFilter: (c, since) => { const m = /sitemap-(\d{4})-(\d{2})\.xml/.exec(c); return !!m && `${m[1]}-${m[2]}` >= String(since).slice(0, 7); },
+    urlFilter: /newyorker\.com\/(?:magazine\/\d{4}\/\d{2}\/\d{2}\/[^/]*(?:theatre|theater|broadway)[^/]*|goings-on-about-town\/theatre\/[^/]+)$/i, headlineFromSlug: true, ignoreLastmod: true,
+  },
+  // EW: 13 sitemaps of 20k URLs, no section and no dates, but review slugs name the genre
+  // ("real-women-have-curves-review-musical-broadway-11722804"); the 2022-23 reviews sit under /theater/theater-reviews/.
+  ew: {
+    kind: 'sitemap', url: 'https://ew.com/sitemap.xml', proxyRetry: true,
+    urlFilter: /ew\.com\/(?:theater\/[^?#]*[^/?#]+|[^/]*(?:review[^/]*(?:broadway|musical|theater|theatre)|(?:broadway|musical|theater|theatre)[^/]*review)[^/]*)\/?$/i, headlineFromSlug: true, ignoreLastmod: true,
+  },
+  // USA Today: monthly sitemaps on gannett-cdn.com (about 5k URLs, 2MB; they read direct). The section is unreliable
+  // (Broadway reviews sit under /story/entertainment/music/ and /movies/ as well as /theater/), so the slug names the
+  // genre; touring and regional coverage is common, so an NYC signal is required.
+  usatoday: {
+    kind: 'sitemap', url: 'https://www.usatoday.com/web-sitemap-index.xml', proxyRetry: true,
+    childFilter: (c, since) => { const m = /web-sitemap-(\d{4})-(\d{2})\.xml/.exec(c); return !!m && `${m[1]}-${m[2]}` >= String(since).slice(0, 7); },
+    urlFilter: /usatoday\.com\/story\/(?:entertainment|life)\/(?:theat(?:er|re)\/\d{4}\/\d{2}\/\d{2}\/[^/]+|[^/]+\/\d{4}\/\d{2}\/\d{2}\/[^/]*(?:broadway|theater|theatre|musical)[^/]*)\//i, headlineFromSlug: true, requireNycSignal: true, ignoreLastmod: true,
+  },
+  // ── Probed and still unreadable (reason = what the probe saw; BRO-7816). ──
+  nypost: unreadable('sitemaps are daily (sitemap-YYYY.xml?mm=&dd=, about 1.9k since 2021) and carry the section (/entertainment/), so they are listable, but one paid proxy fetch per day is not run by the census'),
+  nydailynews: unreadable('sitemaps are daily (sitemap.xml?yyyy=&mm=&dd=, about 1.9k since 2021) with no section in the URL, so one paid proxy fetch per day is needed and the stage reviews are only found by slug'),
+  observer: unreadable('only a two-day news sitemap (observer.com/news-sitemap.xml) in robots.txt; no archive sitemap'),
+  chicagotribune: unreadable('sitemap index lists daily sitemaps (10k days since 1999, one paid proxy fetch each); the Chicago paper reviews Broadway touring productions only'),
+  guardian: unreadable('robots.txt lists only a news-window sitemap (theguardian.com/sitemaps/news.xml); the London census reads the Guardian archive from its Content API'),
+  latimes: unreadable('sitemap index lists 622 numbered sitemaps (sitemap-191412.xml) with no date or section in the names; a Los Angeles paper with few NYC reviews (80 corpus rows)'),
+  talkinbroadway: unreadable('Cloudflare challenge on /sitemap.xml that every fetchPage tier fails (probed 2026-11-19), and robots.txt lists no sitemap'),
+  cititour: unreadable('no sitemap (robots.txt lists none, /sitemap.xml answers 404); show pages under /NYC_Broadway are reached only by following links'),
+  'new-york-sun': unreadable('yearly article sitemaps (/news/articles/sitemap/YYYY/N.xml, 500 URLs a page, about 10 pages a year) read through the proxy chain, but the index lists only page 0 per year and URLs (/article/<slug>) carry no section'),
+  'times-square-chronicles': unreadable('sitemap (t2conline.com/sitemap.xml, read direct) lists about 1.2k URLs with no section, a fraction of the archive'),
   'la-voce-di-new-york': serp(['site:lavocedinewyork.com/en broadway review'], /lavocedinewyork\.com\/en\//),
   queerty: serp(['site:queerty.com broadway review'], /queerty\.com\//),
-  // Review-only paths: Talkin' Broadway's Broadway (world) and Off-Broadway (ob) columns,
-  // Front Row Center and Broadway & Me (review blogs), CitiTour's show pages.
-  talkinbroadway: serp(['site:talkinbroadway.com/page/world', 'site:talkinbroadway.com/page/ob'], /talkinbroadway\.com\/page\/(?:world|ob)\//, { sourceSaysReview: true }),
-  'front-row-center': serp(['site:thefrontrowcenter.com'], /thefrontrowcenter\.com\/20\d\d\/\d\d\/[^/]+\/?$/, { sourceSaysReview: true }),
-  'broadway-and-me': serp(['site:broadwayandme.blogspot.com'], /broadwayandme\.blogspot\.com\/20\d\d\/\d\d\//, { sourceSaysReview: true }),
-  cititour: serp(['site:cititour.com/NYC_Broadway', 'site:cititour.com review'], /cititour\.com\/NYC_(?:Broadway|News\/Review)/i, { sourceSaysReview: true }),
-  // Its sitemap lists 8.8k opaque story.asp?ID= pages with no section, date or title.
-  'lighting-and-sound-america': serp(['site:lightingandsoundamerica.com broadway review'], /lightingandsoundamerica\.com\/news\/story\.asp/i),
+  // Its sitemap lists 8.8k opaque story.asp?ID= pages with no section, date or title (probed 2026-11-19).
+  'lighting-and-sound-america': unreadable('sitemap lists 8.8k opaque story.asp?ID= pages with no section, date or title, all lastmod 2008-02-26'),
 };
 
 /**

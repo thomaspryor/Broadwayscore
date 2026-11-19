@@ -1,12 +1,16 @@
 {
   "outletId": "guardian",
-  "generatedAt": "2026-10-28T20:45:32.698Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:39:53.855Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "robots.txt lists only a news-window sitemap (theguardian.com/sitemaps/news.xml); the London census reads the Guardian archive from its Content API",
     "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
+      "unreadable: robots.txt lists only a news-window sitemap (theguardian.com/sitemaps/news.xml); the London census reads the Guardian archive from its Content API"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,10 +23,11 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 241,
-    "notEnumerated": 102,
-    "noUrl": 4,
+    "rowsInWindow": 258,
+    "notEnumerated": 104,
+    "noUrl": 3,
     "samples": [
       {
         "showId": "1776-2022",
@@ -34,6 +39,12 @@
         "showId": "a-dolls-house-2023",
         "url": "https://www.theguardian.com/stage/2023/mar/09/a-dolls-house-review-jessica-chastain-broadway",
         "publishDate": "2023-03-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-few-good-men-2026",
+        "url": "https://www.theguardian.com/stage/2026/oct/30/few-good-men-aaron-sorkin-review",
+        "publishDate": "2026-10-30",
         "why": "not-enumerated"
       },
       {
@@ -205,10 +216,22 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "downstate-2026",
+        "url": "https://www.theguardian.com/stage/2026/nov/15/downstate-play-review",
+        "publishDate": "2026-11-16",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "english-2025",
         "url": "https://www.theguardian.com/stage/2025/jan/23/english-review-broadway",
         "publishDate": "2025-01-23",
         "why": "not-enumerated"
+      },
+      {
+        "showId": "english-off-broadway-2022",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
       },
       {
         "showId": "eureka-day-2024",
@@ -245,24 +268,6 @@
         "url": "https://www.theguardian.com/stage/2026/jun/05/girl-interrupted-review-musical-aimee-mann",
         "publishDate": "2026-06-05",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "glengarry-glen-ross-2025",
-        "url": "https://www.theguardian.com/stage/2025/apr/01/glengarry-glen-ross-broadway-review",
-        "publishDate": "2025-03-31",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "good-night-and-good-luck-2025",
-        "url": "https://www.theguardian.com/stage/2025/apr/03/good-night-good-luck-review-george-clooney",
-        "publishDate": "2025-04-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "grease-2007",
-        "url": null,
-        "publishDate": null,
-        "why": "no-url"
       }
     ]
   },
@@ -272,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

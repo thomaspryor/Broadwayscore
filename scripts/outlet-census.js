@@ -640,7 +640,7 @@ function blindOutletTable() {
   const blind = census.blindOutlets(files.flatMap((f) => { try { return [JSON.parse(fs.readFileSync(path.join(OUT_DIR, f), 'utf8'))]; } catch { return []; } }));
   if (!blind.length) return '';
   return ['Blind outlets (the census cannot see a gap here):', '', '| Outlet | Source | Corpus rows | Why |', '|---|---|---|---|',
-    ...blind.map((b) => `| ${b.outletId} | ${b.kind} | ${b.rows} | ${b.why} |`)].join('\n');
+    ...blind.map((b) => `| ${b.outletId} | ${b.kind} | ${b.rows} | ${b.why.replace(/\|/g, '/')} |`)].join('\n');
 }
 
 /** Per outlet and season: published (every review item), held, gap, misfile, catalog gap, ambiguous. */

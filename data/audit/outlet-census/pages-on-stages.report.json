@@ -1,53 +1,88 @@
 {
   "outletId": "pages-on-stages",
-  "generatedAt": "2026-10-28T20:45:32.737Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:33:08.285Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
-    "notes": [
-      "unreadable: no WordPress API; sitemap enumeration not yet configured"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "kind": "wp-json",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 367,
+    "inWindow": 367,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "not-review": 80,
+      "catalog-gap": 23,
+      "gap": 21,
+      "held-unmatched": 23,
+      "held": 145,
+      "out-of-window": 37,
+      "held-alt-url": 37,
+      "ambiguous": 1
+    },
+    "viaTitleVariant": {
+      "held-alt-url": 1
+    },
+    "recall": 0.897,
+    "recallWithCatalog": 0.805
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 1,
+      "catalog-gap": 1,
+      "gap": 2,
+      "held-unmatched": 3,
+      "held": 18,
+      "out-of-window": 3
+    },
+    "2025-26": {
+      "held": 71,
+      "not-review": 19,
+      "held-unmatched": 6,
+      "held-alt-url": 1,
+      "out-of-window": 5,
+      "catalog-gap": 3,
+      "gap": 3
+    },
+    "2024-25": {
+      "out-of-window": 20,
+      "held-unmatched": 12,
+      "gap": 7,
+      "catalog-gap": 7,
+      "not-review": 44,
+      "held": 47,
+      "held-alt-url": 9
+    },
+    "2023-24": {
+      "held": 9,
+      "held-alt-url": 20,
+      "catalog-gap": 12,
+      "gap": 9,
+      "not-review": 14,
+      "out-of-window": 7,
+      "ambiguous": 1,
+      "held-unmatched": 2
+    },
+    "2022-23": {
+      "out-of-window": 2,
+      "not-review": 1,
+      "held-alt-url": 6
+    },
+    "2021-22": {
+      "held-alt-url": 1,
+      "not-review": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 175,
-    "notEnumerated": 175,
+    "rowsInWindow": 216,
+    "notEnumerated": 48,
     "noUrl": 0,
     "samples": [
-      {
-        "showId": "a-walk-on-the-moon-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/06/29/a-walk-on-the-moon/",
-        "publishDate": "2026-06-29",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-woman-among-women-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/06/04/a-woman-among-women/",
-        "publishDate": "2026-06-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-        "url": "http://pagesonstages.com/2024/11/11/wonderful-world/",
-        "publishDate": "2024-11-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "an-american-daughter-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/08/11/an-american-daughter/",
-        "publishDate": "2026-08-11",
-        "why": "not-enumerated"
-      },
       {
         "showId": "an-enemy-of-the-people-2024",
         "url": "https://pagesonstages.wordpress.com/2024/05/08/an-enemy-of-the-people/",
@@ -55,63 +90,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "angry-alan-off-broadway-2025",
-        "url": "https://pagesonstages.com/2025/07/18/angry-alan/",
-        "publishDate": "2025-07-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/10/25/anon/",
-        "publishDate": "2026-10-25",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "appropriate-2023",
-        "url": "http://pagesonstages.com/2024/02/06/appropriate/",
+        "url": "https://pagesonstages.wordpress.com/2024/02/06/appropriate/",
         "publishDate": "2024-02-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "ava-the-secret-conversations-off-broadway-2025",
-        "url": "https://pagesonstages.com/2025/09/06/ava-the-secret-conversations/",
-        "publishDate": "2025-09-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "beaches-2026",
-        "url": "https://pagesonstages.com/2026/05/02/beaches/",
-        "publishDate": "2026-05-02",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "beckett-briefs-off-broadway-2025",
-        "url": "https://pagesonstages.com/2025/02/22/beckett-briefs/",
-        "publishDate": "2025-02-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "becky-shaw-2026",
-        "url": "https://pagesonstages.com/2026/04/10/becky-shaw/",
-        "publishDate": "2026-04-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "becoming-eve-off-broadway-2025",
-        "url": "https://pagesonstages.com/2025/04/07/becoming-eve/",
-        "publishDate": "2025-04-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bigfoot-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/03/01/bigfoot/",
-        "publishDate": "2026-03-02",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "birthright-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/06/29/birthright/",
-        "publishDate": "2026-06-30",
         "why": "not-enumerated"
       },
       {
@@ -121,156 +102,1830 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "buena-vista-social-club-2025",
-        "url": "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
-        "publishDate": "2025-05-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bug-2026",
-        "url": "https://pagesonstages.com/2026/01/08/bug/",
-        "publishDate": "2026-01-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bughouse-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/03/11/bughouse/",
-        "publishDate": "2026-03-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cabaret-2024",
-        "url": "http://pagesonstages.com/2024/04/11/cabaret/",
-        "publishDate": "2024-04-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "call-me-izzy-2025",
-        "url": "https://pagesonstages.com/2025/07/13/call-me-izzy/",
-        "publishDate": "2025-07-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cats-the-jellicle-ball-2026",
-        "url": "https://pagesonstages.com/2026/04/08/cats-the-jellicle-ball/",
-        "publishDate": "2026-04-08",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "chess-2025",
-        "url": "https://pagesonstages.com/2025/11/22/chess/",
-        "publishDate": "2025-11-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "chinese-republicans-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/02/26/chinese-republicans/",
-        "publishDate": "2026-02-24",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/10/01/creation-stories-and-all-the-important-importants/",
-        "publishDate": "2026-10-01",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cult-of-love-2024",
-        "url": "https://pagesonstages.com/2025/01/09/cult-of-love/",
-        "publishDate": "2025-01-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "data-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/01/25/data/",
-        "publishDate": "2026-01-25",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "dead-outlaw-2025",
-        "url": "https://pagesonstages.com/2025/04/30/dead-outlaw/",
-        "publishDate": "2025-04-30",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-becomes-her-2024",
-        "url": "https://pagesonstages.com/2025/05/01/death-becomes-her/",
-        "publishDate": "2025-05-01",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2026",
-        "url": "https://pagesonstages.com/2026/05/04/death-of-a-salesman/",
-        "publishDate": "2026-05-04",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "dirty-books-off-broadway-2025",
-        "url": "https://pagesonstages.com/2026/05/23/dirty-books/",
-        "publishDate": "2026-05-23",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "dirty-laundry-off-broadway-2024",
         "url": "https://pagesonstages.wordpress.com/2024/10/12/dirty-laundry/",
         "publishDate": "2024-10-12",
         "why": "not-enumerated"
       },
       {
-        "showId": "disruption-off-broadway-2026",
-        "url": "https://pagesonstages.com/2026/08/08/disruption/",
-        "publishDate": "2026-08-08",
+        "showId": "doubt-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/04/02/doubt/",
+        "publishDate": "2024-04-02",
         "why": "not-enumerated"
       },
       {
-        "showId": "dog-day-afternoon-2026",
-        "url": "https://pagesonstages.com/2026/04/12/dog-day-afternoon/",
-        "publishDate": "2026-04-11",
+        "showId": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/09/22/forbidden-broadway-2024/",
+        "publishDate": "2024-09-22",
         "why": "not-enumerated"
       },
       {
-        "showId": "duality-off-broadway-2024",
-        "url": "https://pagesonstages.com/2024/12/14/duality/",
-        "publishDate": "2024-12-14",
+        "showId": "good-bones-off-broadway-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/10/01/good-bones/",
+        "publishDate": "2024-10-01",
         "why": "not-enumerated"
       },
       {
-        "showId": "duke-and-roya-off-broadway-2025",
-        "url": "https://pagesonstages.com/2025/06/24/duke-and-roya/",
-        "publishDate": "2025-06-24",
+        "showId": "here-lies-love-2023",
+        "url": "https://pagesonstages.wordpress.com/2023/09/02/here-lies-love/",
+        "publishDate": "2023-09-02",
         "why": "not-enumerated"
       },
       {
-        "showId": "elf-2024",
-        "url": "https://pagesonstages.com/2024/11/23/elf/",
-        "publishDate": "2024-11-23",
+        "showId": "here-we-are-off-broadway-2023",
+        "url": "https://pagesonstages.wordpress.com/2023/11/25/where-are-we-without-stephen-sondheim/",
+        "publishDate": "2023-11-25",
         "why": "not-enumerated"
       },
       {
-        "showId": "english-2025",
-        "url": "https://pagesonstages.com/2025/01/23/english/",
-        "publishDate": "2025-01-23",
+        "showId": "home-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/06/19/home/",
+        "publishDate": "2024-06-19",
         "why": "not-enumerated"
       },
       {
-        "showId": "eureka-day-2024",
-        "url": "https://pagesonstages.com/2024/12/16/eureka-day/",
-        "publishDate": "2024-12-16",
+        "showId": "how-to-dance-in-ohio-2023",
+        "url": "https://pagesonstages.wordpress.com/2023/11/16/inhibited-by-authenticity/",
+        "publishDate": "2023-11-16",
         "why": "not-enumerated"
       },
       {
-        "showId": "every-brilliant-thing-2026",
-        "url": "https://pagesonstages.com/2026/03/19/every-brilliant-thing/",
-        "publishDate": "2026-03-19",
+        "showId": "i-need-that-2023",
+        "url": "https://pagesonstages.wordpress.com/2023/11/05/i-need-that/",
+        "publishDate": "2023-11-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "illinoise-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/04/25/illinoise/",
+        "publishDate": "2024-04-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "in-the-amazon-warehouse-parking-lot-off-broadway-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/10/25/amazon-warehouse-parking-lot/",
+        "publishDate": "2024-10-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "job-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/08/06/job/",
+        "publishDate": "2024-08-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "jonah-off-broadway-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/01/26/jonah/",
+        "publishDate": "2024-01-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "kimberly-akimbo-2022",
+        "url": "https://pagesonstages.wordpress.com/2023/06/02/kimberly-akimbo/",
+        "publishDate": "2023-06-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "left-on-tenth-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/10/28/left-on-tenth/",
+        "publishDate": "2024-10-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mcneal-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/09/30/mcneal/",
+        "publishDate": "2024-09-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "url": "https://pagesonstages.wordpress.com/2024/04/03/merrily-we-roll-along/",
+        "publishDate": "2024-04-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mother-play-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/06/08/mother-play/",
+        "publishDate": "2024-06-08",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "new-york-new-york-2023",
+        "url": "https://pagesonstages.wordpress.com/2023/05/07/new-york-new-york/",
+        "publishDate": "2023-05-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "oh-mary-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/08/29/oh-mary/",
+        "publishDate": "2024-08-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "url": "https://pagesonstages.wordpress.com/2023/06/30/once-upon-a-one-more-time/",
+        "publishDate": "2023-06-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "paradise-square-2022",
+        "url": "https://pagesonstages.wordpress.com/2022/03/20/paradise-square/",
+        "publishDate": "2022-04-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "patriots-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/05/28/patriots/",
+        "publishDate": "2024-05-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "pay-the-writer-off-broadway-2023",
+        "url": "https://pagesonstages.wordpress.com/2023/09/21/pay-the-writer/",
+        "publishDate": "2023-09-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "people-of-the-book-off-broadway-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/10/10/people-of-the-book/",
+        "publishDate": "2024-10-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/01/18/prayer-french-republic/",
+        "publishDate": "2024-01-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "shucked-2023",
+        "url": "https://pagesonstages.wordpress.com/2023/05/28/shucked/",
+        "publishDate": "2023-05-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "six-2021",
+        "url": "https://pagesonstages.wordpress.com/2021/11/02/six-the-musical/",
+        "publishDate": "2021-11-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "some-like-it-hot-2022",
+        "url": "https://pagesonstages.wordpress.com/2023/05/21/some-like-it-hot/",
+        "publishDate": "2023-05-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "spamalot-2023",
+        "url": "https://pagesonstages.wordpress.com/2024/03/03/spamalot/",
+        "publishDate": "2024-03-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-beacon-off-broadway-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/10/21/the-beacon/",
+        "publishDate": "2024-10-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-great-gatsby-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/05/05/the-great-gatsby/",
+        "publishDate": "2024-05-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-hills-of-california-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/09/29/hills-of-california/",
+        "publishDate": "2024-09-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-lonely-few-off-broadway-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/05/26/the-lonely-few/",
+        "publishDate": "2024-05-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-lost-boys-2026",
+        "url": "https://pagesonstages.com/2026/04/27/the-lost-boys/",
+        "publishDate": "2026-04-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "url": "https://pagesonstages.wordpress.com/2024/04/06/the-notebook/",
+        "publishDate": "2024-04-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "url": "https://pagesonstages.wordpress.com/2023/10/15/shark-is-broken/",
+        "publishDate": "2023-10-15",
         "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
-  "heldAltUrl": [],
+  "gaps": [
+    {
+      "url": "https://pagesonstages.com/2026/11/17/other-desert-cities/",
+      "headline": "Just Desserts",
+      "publishDate": "2026-11-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "other-desert-cities-2026"
+      ],
+      "outOfWindow": [
+        "other-desert-cities-2011",
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2026/11/17/downstate/",
+      "headline": "Power Full",
+      "publishDate": "2026-11-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "downstate-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/12/22/tartuffe-nytw/",
+      "headline": "Clandestine Creative Casting",
+      "publishDate": "2025-12-22",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "tartuffe-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "tartuffe-2003",
+        "tartuffe-1996",
+        "tartuffe-1977"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee/",
+      "headline": "My Favorite Moments of the Bee",
+      "publishDate": "2025-11-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "the-25th-annual-putnam-county-spelling-bee-2005"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/10/29/tartuffe-redeemer/",
+      "headline": "Mindlessness and Mindfulness",
+      "publishDate": "2025-10-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "tartuffe-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "tartuffe-2003",
+        "tartuffe-1996",
+        "tartuffe-1977"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/08/26/mamma-mia/",
+      "headline": "Here I’d Go Again",
+      "publishDate": "2025-08-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mamma-mia-2025"
+      ],
+      "outOfWindow": [
+        "mamma-mia-2001"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/05/10/operation-mincemeat/",
+      "headline": "Gender Bender",
+      "publishDate": "2025-05-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "operation-mincemeat-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/04/11/op-ed-othello/",
+      "headline": "Op-Ed: Do Movie Stars Belong on Broadway?",
+      "publishDate": "2025-04-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "othello-2025"
+      ],
+      "outOfWindow": [
+        "othello-1970",
+        "othello-1982",
+        "othello-bedlam-off-broadway-2026",
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/02/08/300-paintings/",
+      "headline": "I Can Do Anything Better than You",
+      "publishDate": "2025-02-08",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "300-paintings-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/10/22/teeth-op-ed/",
+      "headline": "Teeth: Why I Didn’t Bite, But You Might",
+      "publishDate": "2024-10-22",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "teeth-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "teeth-playwrights-horizons-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/09/23/medea-re-versed/",
+      "headline": "That’s a Wrap",
+      "publishDate": "2024-09-23",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "medea-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "medea-2002",
+        "medea-1994",
+        "medea-1973",
+        "medea-1982",
+        "medea-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/09/23/blood-of-the-lamb/",
+      "headline": "Your Plight has Been Diverted",
+      "publishDate": "2024-09-23",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "blood-of-the-lamb-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/08/05/once-upon-a-mattress/",
+      "headline": "Once Upon an Actress",
+      "publishDate": "2024-08-05",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "once-upon-a-mattress-2024"
+      ],
+      "outOfWindow": [
+        "once-upon-a-mattress-1996"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/07/10/aint-done-bad/",
+      "headline": "Gay Done Fab",
+      "publishDate": "2024-07-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "aint-done-bad-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/06/18/hadestown/",
+      "headline": "The World We Live in Now",
+      "publishDate": "2024-06-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hadestown-2019"
+      ],
+      "outOfWindow": [
+        "hadestown-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/04/06/mary-jane/",
+      "headline": "What’s the Matter, Mary Jane?",
+      "publishDate": "2024-04-06",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mary-jane-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/04/05/suffs/",
+      "headline": "Sustenance Through Suffering",
+      "publishDate": "2024-04-05",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "suffs-2024"
+      ],
+      "outOfWindow": [
+        "suffs-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/03/23/lempicka/",
+      "headline": "Woman is Terrible",
+      "publishDate": "2024-03-23",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "lempicka-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/03/18/the-outsiders/",
+      "headline": "Stay Sold",
+      "publishDate": "2024-03-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-outsiders-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/03/08/water-for-elephants/",
+      "headline": "Just Passing Through",
+      "publishDate": "2024-03-08",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "water-for-elephants-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/01/13/the-connector/",
+      "headline": "I Connected",
+      "publishDate": "2024-01-13",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-connector-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://pagesonstages.com/2026/04/26/the-lost-boys/",
+      "headline": "The Place Where Theatre Belongs",
+      "publishDate": "2026-04-26",
+      "matched": [
+        "the-lost-boys-2026"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.com/2026/04/27/the-lost-boys/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/11/03/yellow-face/",
+      "headline": "Close Enough is Good Enough",
+      "publishDate": "2024-11-03",
+      "matched": [
+        "yellow-face-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/11/03/yellow-face/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/10/28/we-live-in-cairo/",
+      "headline": "I Am One Person",
+      "publishDate": "2024-10-28",
+      "matched": [
+        "we-live-in-cairo-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/10/28/we-live-in-cairo/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/10/28/left-on-tenth/",
+      "headline": "Right on Stage",
+      "publishDate": "2024-10-28",
+      "matched": [
+        "left-on-tenth-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/10/28/left-on-tenth/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/10/21/the-beacon/",
+      "headline": "It Was the Most Satisfying",
+      "publishDate": "2024-10-21",
+      "matched": [
+        "the-beacon-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/10/21/the-beacon/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/10/12/dirty-laundry/",
+      "headline": "It’s the Cycle of Life",
+      "publishDate": "2024-10-12",
+      "matched": [
+        "dirty-laundry-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/10/12/dirty-laundry/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/10/10/people-of-the-book/",
+      "headline": "I Wrote this Review",
+      "publishDate": "2024-10-10",
+      "matched": [
+        "people-of-the-book-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/10/10/people-of-the-book/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/10/01/good-bones/",
+      "headline": "Five Star Review (On Yelp)",
+      "publishDate": "2024-10-01",
+      "matched": [
+        "good-bones-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/10/01/good-bones/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/09/30/mcneal/",
+      "headline": "McSteal",
+      "publishDate": "2024-09-30",
+      "matched": [
+        "mcneal-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/09/30/mcneal/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/09/29/hills-of-california/",
+      "headline": "I Left My Heart in Sea View Resort and Spa",
+      "publishDate": "2024-09-29",
+      "matched": [
+        "the-hills-of-california-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/09/29/hills-of-california/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/08/29/oh-mary/",
+      "headline": "Honest Babe",
+      "publishDate": "2024-08-29",
+      "matched": [
+        "oh-mary-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/08/29/oh-mary/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/06/19/home/",
+      "headline": "Home is Where the Heart Is",
+      "publishDate": "2024-06-19",
+      "matched": [
+        "home-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/06/19/home/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/06/08/mother-play/",
+      "headline": "Child’s Play",
+      "publishDate": "2024-06-08",
+      "matched": [
+        "mother-play-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/06/08/mother-play/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/05/28/patriots/",
+      "headline": "Fishing for Power",
+      "publishDate": "2024-05-28",
+      "matched": [
+        "patriots-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/05/28/patriots/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/05/26/the-lonely-few/",
+      "headline": "Am I The Lonely One?",
+      "publishDate": "2024-05-26",
+      "matched": [
+        "the-lonely-few-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/05/26/the-lonely-few/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/05/08/uncle-vanya/",
+      "headline": "Chekhov’s Opera",
+      "publishDate": "2024-05-08",
+      "matched": [
+        "uncle-vanya-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/05/08/uncle-vanya/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/05/08/an-enemy-of-the-people/",
+      "headline": "On the Rocks",
+      "publishDate": "2024-05-08",
+      "matched": [
+        "an-enemy-of-the-people-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/05/08/an-enemy-of-the-people/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/05/05/the-great-gatsby/",
+      "headline": "This Gorgeous Gatsby is Made to Last",
+      "publishDate": "2024-05-05",
+      "matched": [
+        "the-great-gatsby-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/05/05/the-great-gatsby/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/04/06/the-notebook/",
+      "headline": "Don’t You Worry, This is Love",
+      "publishDate": "2024-04-06",
+      "matched": [
+        "the-notebook-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/04/06/the-notebook/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/04/04/brooklyn-laundry/",
+      "headline": "A Writer’s Spin Cycle",
+      "publishDate": "2024-04-04",
+      "matched": [
+        "brooklyn-laundry-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/04/04/brooklyn-laundry/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/04/03/merrily-we-roll-along/",
+      "headline": "To Be Frank",
+      "publishDate": "2024-04-03",
+      "matched": [
+        "merrily-we-roll-along-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/04/03/merrily-we-roll-along/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/03/03/spamalot/",
+      "headline": "You Won’t Succeed on Broadway If You Don’t Get Good Reviews",
+      "publishDate": "2024-03-03",
+      "matched": [
+        "spamalot-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/03/03/spamalot/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/02/06/appropriate/",
+      "headline": "In Appropriate",
+      "publishDate": "2024-02-06",
+      "matched": [
+        "appropriate-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/02/06/appropriate/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/02/02/white-rose/",
+      "headline": "Specifically Vague",
+      "publishDate": "2024-02-02",
+      "matched": [
+        "white-rose-the-musical-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/02/02/white-rose/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/01/26/jonah/",
+      "headline": "I Will Answer Your Questions",
+      "publishDate": "2024-01-26",
+      "matched": [
+        "jonah-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2024/01/26/jonah/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/11/12/sweeney-todd/",
+      "headline": "Attend the Tale As Sondheim Trod",
+      "publishDate": "2023-11-12",
+      "matched": [
+        "sweeney-todd-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.com/2024/02/16/sweeney-todd-replacements/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/11/05/i-need-that/",
+      "headline": "I Need That – Or Do I?",
+      "publishDate": "2023-11-05",
+      "matched": [
+        "i-need-that-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/11/05/i-need-that/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/10/15/shark-is-broken/",
+      "headline": "Did You Expect an Actual Shark?",
+      "publishDate": "2023-10-15",
+      "matched": [
+        "the-shark-is-broken-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/10/15/shark-is-broken/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/09/21/pay-the-writer/",
+      "headline": "Pay the Writer to Wrap Up Every Loose End",
+      "publishDate": "2023-09-21",
+      "matched": [
+        "pay-the-writer-off-broadway-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/09/21/pay-the-writer/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/09/02/here-lies-love/",
+      "headline": "Ask the Proletariat – Here Lie Lies, A Floor That’s Not Just for Dancing",
+      "publishDate": "2023-09-02",
+      "matched": [
+        "here-lies-love-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/09/02/here-lies-love/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/06/30/once-upon-a-one-more-time/",
+      "headline": "Once Upon a Real Great Time",
+      "publishDate": "2023-06-30",
+      "matched": [
+        "once-upon-a-one-more-time-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/06/30/once-upon-a-one-more-time/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/06/02/kimberly-akimbo/",
+      "headline": "TEEN VIBE THRU LATIN: A Heartfelt Anagram of “The Inevitable Turn”",
+      "publishDate": "2023-06-02",
+      "matched": [
+        "kimberly-akimbo-2022"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/06/02/kimberly-akimbo/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/05/28/shucked/",
+      "headline": "Aww, Shucks! A Corny, Comedic Concept Conveying Subtle Sentimentality",
+      "publishDate": "2023-05-28",
+      "matched": [
+        "shucked-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/05/28/shucked/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/05/21/some-like-it-hot/",
+      "headline": "And That Ain’t Bad",
+      "publishDate": "2023-05-21",
+      "matched": [
+        "some-like-it-hot-2022"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/05/21/some-like-it-hot/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/05/07/new-york-new-york/",
+      "headline": "A Show that Can Only Make It Here",
+      "publishDate": "2023-05-07",
+      "matched": [
+        "new-york-new-york-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/05/07/new-york-new-york/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/05/05/the-thanksgiving-play/",
+      "headline": "Thankfully, I’m Woke",
+      "publishDate": "2023-05-05",
+      "matched": [
+        "the-thanksgiving-play-2023"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2023/05/05/the-thanksgiving-play/"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2022/03/20/paradise-square/",
+      "headline": "A Little Bit of Eden – Paradise on Our Own Terms",
+      "publishDate": "2022-03-20",
+      "matched": [
+        "paradise-square-2022"
+      ],
+      "heldUrls": [
+        "https://pagesonstages.wordpress.com/2022/03/20/paradise-square/"
+      ]
+    }
+  ],
   "misfiles": [],
-  "heldUnmatched": [],
-  "ambiguous": [],
-  "catalogGaps": [],
-  "outOfWindow": []
+  "heldUnmatched": [
+    {
+      "url": "https://pagesonstages.com/2026/11/14/wanted/",
+      "headline": "Outstanding Outlaws",
+      "publishDate": "2026-11-14",
+      "via": null,
+      "held": [
+        "wanted-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2026/10/25/anon/",
+      "headline": "HUMANon",
+      "publishDate": "2026-10-25",
+      "via": null,
+      "held": [
+        "anon-a-tempest-at-our-kitchen-table-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2026/10/22/phyl/",
+      "headline": "Happiness Under a Microscope",
+      "publishDate": "2026-10-22",
+      "via": null,
+      "held": [
+        "phyl-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2026/07/16/the-piano-and-me/",
+      "headline": "A Good Magician Reveals His Secrets",
+      "publishDate": "2026-07-16",
+      "via": null,
+      "held": [
+        "hershey-felder-the-piano-and-me-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2026/05/02/beaches/",
+      "headline": "Wholesomely Hallmark",
+      "publishDate": "2026-05-02",
+      "via": null,
+      "held": [
+        "beaches-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2026/04/03/giant/",
+      "headline": "Dirty Beasts",
+      "publishDate": "2026-04-03",
+      "via": null,
+      "held": [
+        "giant-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2026/02/05/hans-litten/",
+      "headline": "Taking a Stand",
+      "publishDate": "2026-02-05",
+      "via": null,
+      "held": [
+        "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2026/01/25/data/",
+      "headline": "Chipping In",
+      "publishDate": "2026-01-25",
+      "via": null,
+      "held": [
+        "data-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2026/01/08/bug/",
+      "headline": "A Plague of Loneliness",
+      "publishDate": "2026-01-08",
+      "via": null,
+      "held": [
+        "bug-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/08/29/can-i-be-frank/",
+      "headline": "Stop Apologizing and Be You",
+      "publishDate": "2025-08-29",
+      "via": null,
+      "held": [
+        "morgan-bassichis-can-i-be-frank-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/06/15/sexual-misconduct-middle-classes/",
+      "headline": "Implied Consent",
+      "publishDate": "2025-06-15",
+      "via": null,
+      "held": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/05/24/good-night-good-luck/",
+      "headline": "Good Luck with That",
+      "publishDate": "2025-05-24",
+      "via": null,
+      "held": [
+        "good-night-and-good-luck-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/05/20/lights-out/",
+      "headline": "And a Very Bold Soul Was He",
+      "publishDate": "2025-05-20",
+      "via": null,
+      "held": [
+        "lights-out-nat-king-cole-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/05/07/stranger-things/",
+      "headline": "Dimensions",
+      "publishDate": "2025-05-07",
+      "via": null,
+      "held": [
+        "stranger-things-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/05/02/just-in-time/",
+      "headline": "I Just Want It to Last",
+      "publishDate": "2025-05-02",
+      "via": null,
+      "held": [
+        "just-in-time-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/04/25/pirates-penzance-musical/",
+      "headline": "The Very Model of a Modern Major Musical",
+      "publishDate": "2025-04-25",
+      "via": null,
+      "held": [
+        "pirates-the-penzance-musical-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/04/11/old-friends/",
+      "headline": "The Sondheim Review",
+      "publishDate": "2025-04-11",
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/01/23/english/",
+      "headline": "Farsi",
+      "publishDate": "2025-01-23",
+      "via": null,
+      "held": [
+        "english-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/12/24/romeo-and-juliet/",
+      "headline": "Little Stars in Love With the Night",
+      "publishDate": "2024-12-24",
+      "via": null,
+      "held": [
+        "romeo-juliet-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-and-juliet-2013",
+        "romeo-and-juliet-1986",
+        "romeo-and-juliet-1977",
+        "romeo-and-juliet-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/11/23/elf/",
+      "headline": "It’s the Most Wonderful Show of the Year",
+      "publishDate": "2024-11-23",
+      "via": null,
+      "held": [
+        "elf-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/11/11/wonderful-world/",
+      "headline": "Keep on Smiling",
+      "publishDate": "2024-11-11",
+      "via": null,
+      "held": [
+        "a-wonderful-world-the-louis-armstrong-musical-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/04/11/cabaret/",
+      "headline": "That Clinking, Clanking Sound Where Life is Beautiful",
+      "publishDate": "2024-04-11",
+      "via": null,
+      "held": [
+        "cabaret-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/12/29/purlie-victorious/",
+      "headline": "Subjugation vs. Subterfuge",
+      "publishDate": "2023-12-29",
+      "via": null,
+      "held": [
+        "purlie-victorious-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "purlie-1972"
+      ]
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://pagesonstages.com/2024/04/25/illinoise/",
+      "headline": "Make Us Moved",
+      "publishDate": "2024-04-25",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "illinoise-2024",
+        "illinoise-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "catalogGaps": [
+    {
+      "url": "https://pagesonstages.com/2026/11/17/paywall-explanation/",
+      "headline": "Paywall Explanation",
+      "publishDate": "2026-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/12/28/tartwoffes/",
+      "headline": "tarTWOffes: A Comparison",
+      "publishDate": "2025-12-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/12/22/its-a-wonderful-life/",
+      "headline": "Inclusive of Everyone",
+      "publishDate": "2025-12-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/10/03/and-then-we-were-no-more/",
+      "headline": "Breath Taking",
+      "publishDate": "2025-10-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/08/18/jeff-ross-banana-ride/",
+      "headline": "Big Banana Energy",
+      "publishDate": "2025-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/07/27/the-weir/",
+      "headline": "Ghostly Spirits",
+      "publishDate": "2025-07-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/07/26/joy/",
+      "headline": "UnMOPpable",
+      "publishDate": "2025-07-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/06/26/rise-up-live-loud/",
+      "headline": "RISE UP.  LIVE LOUD.",
+      "publishDate": "2025-06-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/04/16/caryl-churchill/",
+      "headline": "Breaking Down Breaking Down",
+      "publishDate": "2025-04-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2025/02/27/audit-american-dream/",
+      "headline": "The Risk of Buying In",
+      "publishDate": "2025-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/09/22/forbidden-broadway-2024/",
+      "headline": "Parodyse",
+      "publishDate": "2024-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/08/06/job/",
+      "headline": "BOT",
+      "publishDate": "2024-08-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/05/16/modern-witches-brain-hemingway/",
+      "headline": "Let’s Talk, Inspiration",
+      "publishDate": "2024-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/05/02/message-in-a-bottle/",
+      "headline": "SOS: Save Our Souls",
+      "publishDate": "2024-05-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/04/12/fish/",
+      "headline": "Teach a Man the Public School System",
+      "publishDate": "2024-04-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/02/25/five-the-musical-parody/",
+      "headline": "Five +1",
+      "publishDate": "2024-02-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/02/05/op-ed-show-score-loss/",
+      "headline": "The Loss of Show-Score Member Nights",
+      "publishDate": "2024-02-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/01/18/prayer-french-republic/",
+      "headline": "Pray for the Prey",
+      "publishDate": "2024-01-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2024/01/15/mahinerator/",
+      "headline": "Let’s Just Make Up Words",
+      "publishDate": "2024-01-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2023/12/02/the-forgotten-and-the-forgetters/",
+      "headline": "The Forgotten and the Forgetters",
+      "publishDate": "2023-12-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2023/12/01/lonely-star-what-is-it-you-cant-say/",
+      "headline": "Lonely Star — What Is It You Can’t Say?",
+      "publishDate": "2023-12-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2023/11/25/where-are-we-without-stephen-sondheim/",
+      "headline": "Where Are We Without Stephen Sondheim?",
+      "publishDate": "2023-11-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://pagesonstages.com/2023/11/16/inhibited-by-authenticity/",
+      "headline": "Inhibited by Authenticity",
+      "publishDate": "2023-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://pagesonstages.com/2026/10/27/pirates-of-penzance-nytf/",
+      "headline": "The Very Model of a Modern Yiddish General",
+      "publishDate": "2026-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-pirates-of-penzance-1981",
+        "the-pirates-of-penzance-1976"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2026/10/25/st-jeans-players-sondheim-tribute-revue/",
+      "headline": "Sondheim Tribute Revue – St. Jean’s Players",
+      "publishDate": "2026-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tribute-1978",
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2026/09/18/new-york-sings-yiddish-2026/",
+      "headline": "To Smile, To Laugh, To Dance, and To Sing",
+      "publishDate": "2026-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "smile-1986"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2026/04/05/prince-f/",
+      "headline": "Why I Will Not See “Prince Faggot”",
+      "publishDate": "2026-04-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prince-faggot-off-broadway-2025",
+        "prince-faggot-playwrights-horizons-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2026/01/23/the-visitors/",
+      "headline": "Civil Lives",
+      "publishDate": "2026-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-visitors-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/12/06/a-christmas-carol/",
+      "headline": "God Bless Us, It Was Fun",
+      "publishDate": "2025-12-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/09/18/the-porch-on-windy-hill/",
+      "headline": "A Healing Hootenanny",
+      "publishDate": "2025-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-porch-on-windy-hill-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/09/14/the-essentialisnt/",
+      "headline": "A Crucial Disruption",
+      "publishDate": "2025-09-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "disruption-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/08/31/pericles-2025/",
+      "headline": "Shakespeare in the Church",
+      "publishDate": "2025-08-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pericles-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/08/24/twelfth-night/",
+      "headline": "Play On",
+      "publishDate": "2025-08-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "play-on-1997",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/08/18/in-the-shadow-of-her-father/",
+      "headline": "Holding Space",
+      "publishDate": "2025-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/06/30/don-giovanni-rock-opera/",
+      "headline": "A Production with Promise",
+      "publishDate": "2025-06-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "don-giovanni-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/06/07/lunar-eclipse/",
+      "headline": "The Twilight Years",
+      "publishDate": "2025-06-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/05/18/bus-stop/",
+      "headline": "Just Stop",
+      "publishDate": "2025-05-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "bus-stop-1996"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/05/13/to-free-a-mockingbird/",
+      "headline": "Earning Your Wings",
+      "publishDate": "2025-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wings-1979"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/04/23/hold-me-in-the-water/",
+      "headline": "Person Centered Heartbreak Still Hurts",
+      "publishDate": "2025-04-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/04/05/threepenny-opera/",
+      "headline": "We Live Only a Short Time",
+      "publishDate": "2025-04-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-threepenny-opera-2006",
+        "threepenny-opera-1976"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/03/22/potus/",
+      "headline": "Hocus POTUS",
+      "publishDate": "2025-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "potus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/02/14/urinetown/",
+      "headline": "Run Theater, Run!",
+      "publishDate": "2025-02-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "urinetown-2001"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/02/06/still/",
+      "headline": "Sparkling",
+      "publishDate": "2025-02-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/01/23/cymbeline/",
+      "headline": "Simply Sublime",
+      "publishDate": "2025-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cymbeline-2007"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/01/19/showboat-river/",
+      "headline": "Sliver of a River",
+      "publishDate": "2025-01-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-river-2014"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/01/16/night-side-songs/",
+      "headline": "My Type Songs",
+      "publishDate": "2025-01-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "night-side-songs-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2025/01/12/many-happy-returns/",
+      "headline": "There’s Still Something to Earn",
+      "publishDate": "2025-01-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/12/21/merry-gay-cabaret/",
+      "headline": "The Merry and Gay Cabar-yay!",
+      "publishDate": "2024-12-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/11/26/merchant-of-venice/",
+      "headline": "From Bard to Verse",
+      "publishDate": "2024-11-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-1977",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/10/26/prussian-library/",
+      "headline": "Should I Read it First?",
+      "publishDate": "2024-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/09/12/counting-and-cracking/",
+      "headline": "Two Mathematicians, One Perfect World",
+      "publishDate": "2024-09-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "counting-and-cracking-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/06/08/here-there-are-blueberries/",
+      "headline": "Here There are Helferin",
+      "publishDate": "2024-06-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/04/26/cabaret-op-ed/",
+      "headline": "Maybe Next Time: What Cabaret’s Critics Missed",
+      "publishDate": "2024-04-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/02/23/jellys-last-jam/",
+      "headline": "The Shelf Life of Jam",
+      "publishDate": "2024-02-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jellys-last-jam-1992"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/02/22/the-night-of-the-iguana/",
+      "headline": "The Night of the “I Wanna”",
+      "publishDate": "2024-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-night-of-the-iguana-1988",
+        "the-night-of-the-iguana-1976"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2024/01/23/phantom-of-the-opera/",
+      "headline": "Good Grief",
+      "publishDate": "2024-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-phantom-of-the-opera-1988"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/12/20/jerusalem-syndrome/",
+      "headline": "Do We Need Direction?",
+      "publishDate": "2023-12-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jerusalem-2011"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/09/04/9-10/",
+      "headline": "9/10: The Night Before Don Quixote Sunk the Titanic",
+      "publishDate": "2023-09-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997",
+        "don-quixote-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/08/29/the-tempest-public-theater/",
+      "headline": "An Island Melting Pot of Tempestuous Ideology",
+      "publishDate": "2023-08-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-1995",
+        "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://pagesonstages.com/2023/07/22/side-by-side-analysis-fat-hamlet/",
+      "headline": "SIDE BY SIDE ANALYSIS: Fat HamLET",
+      "publishDate": "2023-07-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    }
+  ]
 }

@@ -1,12 +1,16 @@
 {
   "outletId": "talkinbroadway",
-  "generatedAt": "2026-10-28T20:45:32.682Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:39:53.858Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "Cloudflare challenge on /sitemap.xml that every fetchPage tier fails (probed 2026-11-19), and robots.txt lists no sitemap",
     "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
+      "unreadable: Cloudflare challenge on /sitemap.xml that every fetchPage tier fails (probed 2026-11-19), and robots.txt lists no sitemap"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,15 +23,22 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 545,
-    "notEnumerated": 313,
-    "noUrl": 3,
+    "rowsInWindow": 740,
+    "notEnumerated": 417,
+    "noUrl": 2,
     "samples": [
       {
         "showId": "1776-2022",
         "url": "https://www.talkinbroadway.com/page/world/17762022.html",
         "publishDate": "2022-10-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "222-a-ghost-story-off-broadway-2026",
+        "url": "https://www.talkinbroadway.com/page/ob/11_05_26.html",
+        "publishDate": "2026-11-05",
         "why": "not-enumerated"
       },
       {
@@ -43,6 +54,18 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "a-bright-new-boise-off-broadway-2023",
+        "url": "https://www.talkinbroadway.com/page/ob/02_21_23.html",
+        "publishDate": "2023-02-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-case-for-the-existence-of-god-off-broadway-2022",
+        "url": "https://www.talkinbroadway.com/page/ob/05_02_22.html",
+        "publishDate": "2022-05-02",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "a-christmas-carol-2022",
         "url": "https://www.talkinbroadway.com/page/world/AChristmasCarol2022.html",
         "publishDate": "2022-11-21",
@@ -55,14 +78,32 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "a-few-good-men-2026",
+        "url": "https://www.talkinbroadway.com/page/world/AFewGoodMen.html",
+        "publishDate": "2026-10-29",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "a-ghost-in-your-ear-off-broadway-2026",
         "url": "https://www.talkinbroadway.com/page/ob/10_14_26.html",
         "publishDate": "2026-10-14",
         "why": "not-enumerated"
       },
       {
+        "showId": "a-man-of-no-importance-off-broadway-2022",
+        "url": "https://www.talkinbroadway.com/page/ob/10_30_22.html",
+        "publishDate": "2022-10-30",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "a-naked-girl-on-the-appian-way-2005",
         "url": "https://www.talkinbroadway.com/world/AppianWay.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-steady-rain-2009",
+        "url": "https://www.talkinbroadway.com/world/SteadyRain.html",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -115,6 +156,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "american-buffalo-2022",
+        "url": "https://www.talkinbroadway.com/page/world/AmericanBuffalo22.html",
+        "publishDate": "2022-04-14",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "an-american-daughter-off-broadway-2026",
         "url": "https://www.talkinbroadway.com/page/ob/08_11_26.html",
         "publishDate": "2026-08-11",
@@ -157,6 +204,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "another-shot-off-broadway-2024",
+        "url": "https://www.talkinbroadway.com/page/ob/10_29_24.html",
+        "publishDate": "2024-10-29",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
         "url": "https://www.talkinbroadway.com/page/ob/03_11_26b.html",
         "publishDate": "2026-03-11",
@@ -172,6 +225,12 @@
         "showId": "archduke-off-broadway-2025",
         "url": "https://www.talkinbroadway.com/page/ob/11_12_25.html",
         "publishDate": "2025-11-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "aristocrats-off-broadway-2024",
+        "url": "https://www.talkinbroadway.com/page/ob/01_21_24.html",
+        "publishDate": "2024-01-21",
         "why": "not-enumerated"
       },
       {
@@ -193,6 +252,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "babe-off-broadway-2024",
+        "url": "https://www.talkinbroadway.com/page/ob/11_20_24.html",
+        "publishDate": "2024-11-20",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "back-to-the-future-2023",
         "url": "https://www.talkinbroadway.com/page/world/BacktotheFuture.html#:~:text=Without%20their%20tremendous%20skill%20and,the%20level%20of%20serviceable%20time%2D",
         "publishDate": "2023-08-03",
@@ -203,66 +268,6 @@
         "url": "https://www.talkinbroadway.com/page/world/BadCinderella.html",
         "publishDate": "2023-03-23",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "bandstand-2017",
-        "url": "http://www.talkinbroadway.com/page/world/Bandstand2017.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "beaches-2026",
-        "url": "https://www.talkinbroadway.com/page/world/Beaches.html",
-        "publishDate": "2026-04-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "beckett-briefs-off-broadway-2025",
-        "url": "https://www.talkinbroadway.com/page/ob/01_26_25.html",
-        "publishDate": "2025-01-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "becky-shaw-2026",
-        "url": "https://www.talkinbroadway.com/page/world/BeckyShaw.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "benevolent-off-broadway-2026",
-        "url": "https://www.talkinbroadway.com/page/ob/08_27_26.html",
-        "publishDate": "2026-08-27",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "betrayal-2019",
-        "url": "https://www.talkinbroadway.com/page/world/Betrayal2019.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "between-riverside-and-crazy-2022",
-        "url": "https://www.talkinbroadway.com/page/world/BetweenRiverside.html",
-        "publishDate": "2022-12-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bigfoot-off-broadway-2026",
-        "url": "https://www.talkinbroadway.com/page/ob/03_05_26.html",
-        "publishDate": "2026-03-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "billy-crystal-860-2026",
-        "url": "https://www.talkinbroadway.com/page/world/860.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "birthday-candles-2022",
-        "url": "https://www.talkinbroadway.com/page/world/BirthdayCandles.html",
-        "publishDate": "2022-04-10",
-        "why": "not-enumerated"
       }
     ]
   },
@@ -272,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

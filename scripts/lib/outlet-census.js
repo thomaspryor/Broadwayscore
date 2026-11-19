@@ -794,7 +794,9 @@ function blindOutlets(reports, { minRows = 100 } = {}) {
     const unreadable = src.kind === 'unreadable' || src.status === 'unreadable';
     const searchOnly = src.kind === 'serp';
     if (!unreadable && !searchOnly) continue;
-    out.push({ outletId: r.outletId, kind: src.kind, rows, why: unreadable ? 'no listing can be read' : 'search results only (~10 per query), cannot list an archive' });
+    // The probed reason the config carries (BRO-7816): a blind outlet says why, so the next session knows what to try.
+    const reason = String(src.reason || (src.notes && src.notes[0]) || '').replace(/^unreadable:\s*/, '').trim();
+    out.push({ outletId: r.outletId, kind: src.kind, rows, why: unreadable ? (reason || 'no listing can be read') : 'search results only (~10 per query), cannot list an archive' });
   }
   return out.sort((a, b) => b.rows - a.rows || a.outletId.localeCompare(b.outletId));
 }

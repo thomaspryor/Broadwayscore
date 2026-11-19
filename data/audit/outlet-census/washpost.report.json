@@ -1,130 +1,91 @@
 {
   "outletId": "washpost",
-  "generatedAt": "2026-10-28T20:45:32.733Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:50:40.794Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
-    "notes": [
-      "unreadable: no WordPress API; sitemap enumeration not yet configured"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "kind": "sitemap",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 860,
+    "inWindow": 860,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "not-review": 687,
+      "held-unmatched": 19,
+      "held-other-market": 7,
+      "held": 78,
+      "out-of-window": 56,
+      "catalog-gap": 10,
+      "gap": 1,
+      "misfile": 2
+    },
+    "viaTitleVariant": {
+      "held": 9,
+      "held-other-market": 1
+    },
+    "recall": 0.963,
+    "recallWithCatalog": 0.857
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 13,
+      "held-unmatched": 1
+    },
+    "2025-26": {
+      "held-other-market": 4,
+      "not-review": 54,
+      "held": 13,
+      "out-of-window": 9,
+      "catalog-gap": 1,
+      "held-unmatched": 1
+    },
+    "2023-24": {
+      "not-review": 143,
+      "out-of-window": 20,
+      "catalog-gap": 5,
+      "held": 15,
+      "held-unmatched": 6,
+      "gap": 1,
+      "misfile": 1
+    },
+    "2022-23": {
+      "not-review": 203,
+      "held-unmatched": 10,
+      "held": 12,
+      "out-of-window": 7,
+      "catalog-gap": 1
+    },
+    "2024-25": {
+      "not-review": 146,
+      "held": 28,
+      "catalog-gap": 3,
+      "out-of-window": 15,
+      "held-other-market": 3
+    },
+    "2021-22": {
+      "not-review": 128,
+      "out-of-window": 5,
+      "held": 10,
+      "held-unmatched": 1,
+      "misfile": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 254,
-    "notEnumerated": 119,
-    "noUrl": 1,
+    "rowsInWindow": 281,
+    "notEnumerated": 13,
+    "noUrl": 2,
     "samples": [
       {
-        "showId": "1776-2022",
-        "url": "https://www.washingtonpost.com/theater-dance/2022/10/06/1776-broadway-female-transgender-nonbinary/",
-        "publishDate": "2022-10-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-dolls-house-2023",
-        "url": "https://www.washingtonpost.com/theater-dance/2023/03/09/jessica-chastain-ibsen-dolls-house/?pwapi_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWJpZCI6IjIxOTUxMzgiLCJyZWFzb24iOiJnaWZ0IiwibmJmIjoxNjc4MzM4MDAwLCJpc3MiOiJzdWJzY3JpcHRpb25zIiwiZXhwIjoxNjc5NjMwMzk5LCJpYXQiOjE2NzgzMzgwMDAsImp0aSI6IjE3OGQ5NDBlLThmMDgtNDA2Mi04NWQ0LWZiOTcwNTI1ZGY3YyIsInVybCI6Imh0dHBzOi8vd3d3Lndhc2hpbmd0b25wb3N0LmNvbS90aGVhdGVyLWRhbmNlLzIwMjMvMDMvMDkvamVzc2ljYS1jaGFzdGFpbi1pYnNlbi1kb2xscy1ob3VzZS8ifQ.R0i-Nbef5EY0VVYViqBcSYJx0jbzYV1aQskQPO-29P8",
-        "publishDate": "2023-03-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-strange-loop-2022",
-        "url": "https://www.washingtonpost.com/theater-dance/2022/04/26/a-strange-loop-broadway/",
-        "publishDate": "2022-04-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "almost-famous-2022",
-        "url": "https://www.washingtonpost.com/theater-dance/2022/11/03/almost-famous-musical-broadway/",
-        "publishDate": "2022-11-04",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "an-enemy-of-the-people-2024",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/18/jeremy-strong-enemy-of-the-people-broadway-review-climate-activists/",
-        "publishDate": "2024-03-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "art-2025",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2025/09/16/art-broadway-review/",
-        "publishDate": "2025-09-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bad-cinderella-2023",
-        "url": "https://www.washingtonpost.com/theater-dance/2023/03/24/bad-cinderella-broadway-andrew-lloyd-webber/",
-        "publishDate": "2023-03-24",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "beaches-2026",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
-        "publishDate": "2026-05-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "between-riverside-and-crazy-2022",
-        "url": "https://www.washingtonpost.com/theater-dance/2022/12/22/riverside-crazy-some-like-hot/",
-        "publishDate": "2022-12-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "boop-2025",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
-        "publishDate": "2025-04-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "buena-vista-social-club-2025",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/20/operation-mincemeat-buena-vista-social-club/",
-        "publishDate": "2025-03-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bug-2026",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2026/01/08/bug-broadway-carrie-coon-review/",
-        "publishDate": "2026-01-08",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cabaret-2024",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/25/rachel-mcadams-mary-jane-steve-carell-uncle-vanya-eddie-redmayne-cabaret/",
-        "publishDate": "2024-04-25",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "camelot-2023",
-        "url": "https://www.washingtonpost.com/theater-dance/2023/04/13/camelot-sher-soo-aaron-sorkin/",
-        "publishDate": "2023-04-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "carmen-off-broadway-2025",
-        "url": "https://www.washingtonpost.com/entertainment/music/2024/01/01/metropolitan-opera-carmen-review/",
-        "publishDate": "2024-01-01",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cats-the-jellicle-ball-2026",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
-        "publishDate": "2026-04-15",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "chess-2025",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2025/11/16/chess-broadway-review/",
-        "publishDate": "2025-11-16",
-        "why": "not-enumerated"
+        "showId": "aint-too-proud-2019",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
       },
       {
         "showId": "clydes-2021",
@@ -133,45 +94,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "company-2021",
-        "url": "https://www.washingtonpost.com/theater-dance/2021/12/09/company-sondheim-broadway-revival/",
-        "publishDate": "2021-12-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cult-of-love-2024",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/12/cult-of-love-broadway-shailene-woodley-zachary-quinto/",
-        "publishDate": "2024-12-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "days-of-wine-and-roses-2024",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2024/01/28/days-of-wine-and-roses-review-broadway/",
-        "publishDate": "2024-01-28",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "dead-outlaw-2025",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/27/dead-outlaw-floyd-collins-broadway/",
-        "publishDate": "2025-04-27",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-becomes-her-2024",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/01/death-becomes-her-substance-sunset-beauty/",
-        "publishDate": "2024-12-01",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2022",
-        "url": "https://www.washingtonpost.com/theater-dance/2022/10/09/salesman-broadway-miller-pierce-clarke/",
-        "publishDate": "2022-10-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2026",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
-        "publishDate": "2026-04-15",
+        "showId": "dana-h-2021",
+        "url": "https://www.washingtonpost.com/entertainment/theater_dance/danah-hnath-broadway-review/2021/10/18/99886e8c-2f66-11ec-a1e5-07223c50280a_story.html",
+        "publishDate": "2021-10-15",
         "why": "not-enumerated"
       },
       {
@@ -181,81 +106,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "dog-day-afternoon-2026",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "doubt-2024",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/07/doubt-broadway-review-the-hunt/",
-        "publishDate": "2024-03-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "english-2025",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2025/01/23/english-broadway-review/",
-        "publishDate": "2025-01-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "eureka-day-2024",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/16/eureka-day-broadway-review/",
-        "publishDate": "2024-12-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "floyd-collins-2025",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/27/dead-outlaw-floyd-collins-broadway/",
-        "publishDate": "2025-04-27",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "flying-over-sunset-2021",
         "url": "https://www.washingtonpost.com/arts-entertainment/2021/12/13/flying-sunset-broadway-review/",
         "publishDate": "2021-12-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "funny-girl-2022",
-        "url": "https://www.washingtonpost.com/theater-dance/2022/04/24/funny-girl-beanie-feldstein-broadway-streisand/",
-        "publishDate": "2022-05-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "glengarry-glen-ross-2025",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/31/glengarry-glen-ross-broadway-review-kieran-culkin/",
-        "publishDate": "2025-03-31",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "good-night-and-good-luck-2025",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/04/good-night-and-good-luck-george-clooney-broadway/",
-        "publishDate": "2025-04-04",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "grey-house-2023",
-        "url": "https://www.washingtonpost.com/theater-dance/2023/06/01/grey-house-metcalf-mantello-broadway/",
-        "publishDate": "2023-06-01",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gutenberg-2023",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2023/10/12/gutenberg-broadway-gad-rannells-timbers/",
-        "publishDate": "2023-10-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gypsy-2024",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/20/gypsy-audra-mcdonald-review-broadway/",
-        "publishDate": "2024-12-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "harmony-2023",
-        "url": "https://www.washingtonpost.com/entertainment/theater/2023/11/13/barry-manilow-comedian-harmonists-harmony/",
-        "publishDate": "2023-11-14",
         "why": "not-enumerated"
       },
       {
@@ -263,14 +116,1168 @@
         "url": "https://www.washingtonpost.com/theater-dance/2023/07/21/here-lies-love-broadway-review/",
         "publishDate": "2023-07-21",
         "why": "not-enumerated"
+      },
+      {
+        "showId": "is-this-a-room-2021",
+        "url": "https://www.washingtonpost.com/entertainment/theater_dance/reality-winner-play-review/2021/10/11/36b076fc-29e8-11ec-8ef6-3ca8fe943a92_story.html",
+        "publishDate": "2021-10-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "lackawanna-blues-2021",
+        "url": "https://www.washingtonpost.com/entertainment/theater_dance/thoughts-colored-man/2021/10/13/eef681e0-2b71-11ec-8ef6-3ca8fe943a92_story.html",
+        "publishDate": "2021-10-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mrs-doubtfire-2021",
+        "url": "https://www.washingtonpost.com/arts-entertainment/2021/12/05/mrs-doubtfire-broadway-review/",
+        "publishDate": "2021-12-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "pass-over-2021",
+        "url": "https://www.washingtonpost.com/entertainment/theater_dance/pass-over-broadway/2021/08/22/01ba1088-0298-11ec-ba7e-2cf966e88e93_story.html",
+        "publishDate": "2021-08-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "six-2021",
+        "url": "https://www.washingtonpost.com/entertainment/theater_dance/six-musical-broadway/2021/10/03/2b8b4cfa-22c4-11ec-9309-b743b79abc59_story.html",
+        "publishDate": "2021-10-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-lehman-trilogy-2021",
+        "url": "https://www.washingtonpost.com/entertainment/theater_dance/lehman-trilogy-broadway/2021/10/14/c63882c4-2c6d-11ec-baf4-d7a4e075eb90_story.html",
+        "publishDate": "2021-10-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-rocky-horror-show-2026",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "thoughts-of-a-colored-man-2021",
+        "url": "https://www.washingtonpost.com/entertainment/theater_dance/thoughts-colored-man/2021/10/13/eef681e0-2b71-11ec-8ef6-3ca8fe943a92_story.html",
+        "publishDate": "2021-10-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "tristan-und-isolde-off-broadway-2026",
+        "url": "https://www.washingtonpost.com/style/2026/03/31/metropolitan-opera-tristan-isolde-ending/",
+        "publishDate": "2026-03-31",
+        "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
+  "gaps": [
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/19/teeth-musical-review-playwrights-horizons/",
+      "headline": "teeth musical review playwrights horizons",
+      "publishDate": "2024-03-19",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "teeth-playwrights-horizons-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "teeth-off-broadway-2024"
+      ]
+    }
+  ],
   "heldAltUrl": [],
-  "misfiles": [],
-  "heldUnmatched": [],
+  "misfiles": [
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/07/illinoise-park-avenue-armory/",
+      "headline": "illinoise park avenue armory",
+      "publishDate": "2024-03-07",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "illinoise-2024"
+      ],
+      "matched": [
+        "illinoise-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "illinoise-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/29/potus-macbeth-broadway/",
+      "headline": "potus macbeth broadway",
+      "publishDate": "2022-04-29",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+      ],
+      "matched": [
+        "macbeth-2022"
+      ],
+      "outOfWindow": [
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "potus-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    }
+  ],
+  "heldUnmatched": [
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/23/stars-are-shining-broadway-an-upstart-musical-upstages-them-all/",
+      "headline": "stars are shining broadway an upstart musical upstages them all",
+      "publishDate": "2026-10-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-imaginary-invalid-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/04/26/new-york-musical-kander-broadway/",
+      "headline": "new york musical kander broadway",
+      "publishDate": "2023-04-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "new-york-new-york-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/09/16/art-broadway-review/",
+      "headline": "art broadway review",
+      "publishDate": "2025-09-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "art-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/11/02/devito-turturro-fontana-rebeck-wholesale/",
+      "headline": "devito turturro fontana rebeck wholesale",
+      "publishDate": "2023-11-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "i-need-that-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/11/27/juliet-romeo-max-martin-broadway/",
+      "headline": "juliet romeo max martin broadway",
+      "publishDate": "2022-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "and-juliet-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/10/10/merrily-sondheim-radcliffe-groff-broadway/",
+      "headline": "merrily sondheim radcliffe groff broadway",
+      "publishDate": "2023-10-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "merrily-we-roll-along-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/10/03/jaja-braiding-jocelyn-bioh-broadway/",
+      "headline": "jaja braiding jocelyn bioh broadway",
+      "publishDate": "2023-10-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "jajas-african-hair-braiding-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/10/09/salesman-broadway-miller-pierce-clarke/",
+      "headline": "salesman broadway miller pierce clarke",
+      "publishDate": "2022-10-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "death-of-a-salesman-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/17/wiz-broadway-review/",
+      "headline": "wiz broadway review",
+      "publishDate": "2024-04-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-wiz-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/03/30/life-of-pie-broadway/",
+      "headline": "life of pie broadway",
+      "publishDate": "2023-03-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "life-of-pi-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/03/09/jessica-chastain-ibsen-dolls-house/",
+      "headline": "jessica chastain ibsen dolls house",
+      "publishDate": "2023-03-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-dolls-house-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/06/26/alex-edelman-broadway-comedy-show/",
+      "headline": "alex edelman broadway comedy show",
+      "publishDate": "2023-06-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "just-for-us-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/06/22/one-more-time-broadway-spears/",
+      "headline": "one more time broadway spears",
+      "publishDate": "2023-06-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "once-upon-a-one-more-time-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/06/05/wine-roses-ohara-james-guettel/",
+      "headline": "wine roses ohara james guettel",
+      "publishDate": "2023-06-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "days-of-wine-and-roses-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/28/tommy-broadway-show-review-pete-townshend/",
+      "headline": "tommy broadway show review pete townshend",
+      "publishDate": "2024-03-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-whos-tommy-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/18/jeremy-strong-enemy-of-the-people-broadway-review-climate-activists/",
+      "headline": "jeremy strong enemy of the people broadway review climate activists",
+      "publishDate": "2024-03-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "an-enemy-of-the-people-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/02/01/mj-michael-jackson-musical/",
+      "headline": "mj michael jackson musical",
+      "publishDate": "2022-02-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/22/riverside-crazy-some-like-hot/",
+      "headline": "riverside crazy some like hot",
+      "publishDate": "2022-12-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "between-riverside-and-crazy-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/02/09/lane-wanamaker-burstein-pictures-home/",
+      "headline": "lane wanamaker burstein pictures home",
+      "publishDate": "2023-02-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "pictures-from-home-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
   "ambiguous": [],
-  "catalogGaps": [],
-  "outOfWindow": []
+  "catalogGaps": [
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/02/15/private-jones-signature-theatre-review/",
+      "headline": "private jones signature theatre review",
+      "publishDate": "2024-02-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/09/18/wild-duck-review-off-broadway-shakespeare-theatre/",
+      "headline": "wild duck review off broadway shakespeare theatre",
+      "publishDate": "2025-09-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/08/funny-thing-signature-theatre-review/",
+      "headline": "funny thing signature theatre review",
+      "publishDate": "2024-11-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/02/06/job-review-signature-theatre-play-broadway/",
+      "headline": "job review signature theatre play broadway",
+      "publishDate": "2025-02-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/23/john-mulaney-all-in-broadway-review/",
+      "headline": "john mulaney all in broadway review",
+      "publishDate": "2024-12-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/09/28/melissa-etheridge-broadway-review/",
+      "headline": "melissa etheridge broadway review",
+      "publishDate": "2023-09-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/27/hair-signature-theatre-review/",
+      "headline": "hair signature theatre review",
+      "publishDate": "2024-04-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/16/sally-and-tom-public-theater-review/",
+      "headline": "sally and tom public theater review",
+      "publishDate": "2024-04-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/03/06/review-selling-kabul-signature-theatre/",
+      "headline": "review selling kabul signature theatre",
+      "publishDate": "2023-03-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/15/penelope-review-signature-theatre/",
+      "headline": "penelope review signature theatre",
+      "publishDate": "2024-03-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/02/23/where-we-belong-review-folger-theatre-madeline-sayet/",
+      "headline": "where we belong review folger theatre madeline sayet",
+      "publishDate": "2024-02-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "where-we-belong-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/02/13/romeo-juliet-synetic-theater-review/",
+      "headline": "romeo juliet synetic theater review",
+      "publishDate": "2024-02-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-juliet-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/02/07/this-much-i-know-review-theater-j/",
+      "headline": "this much i know review theater j",
+      "publishDate": "2024-02-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "this-much-i-know-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/03/26/hamnet-review-dc-jonah-inherit-wind/",
+      "headline": "hamnet review dc jonah inherit wind",
+      "publishDate": "2026-03-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jonah-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/09/23/inheritance-round-house-review/",
+      "headline": "inheritance round house review",
+      "publishDate": "2025-09-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-inheritance-2019"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/09/22/damn-yankees-arena-stage-review/",
+      "headline": "damn yankees arena stage review",
+      "publishDate": "2025-09-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "damn-yankees-1994",
+        "damn-yankees-2027"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/10/03/strategic-love-play-signature-review/",
+      "headline": "strategic love play signature review",
+      "publishDate": "2025-10-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "strategic-love-play-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/10/02/heart-sellers-studio-theatre-review/",
+      "headline": "heart sellers studio theatre review",
+      "publishDate": "2025-10-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-sellers-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/05/john-leguizamo-other-americans-review/",
+      "headline": "john leguizamo other americans review",
+      "publishDate": "2024-11-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-other-americans-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/11/19/mother-play-studio-theatre-review/",
+      "headline": "mother play studio theatre review",
+      "publishDate": "2025-11-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mother-play-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/11/15/hello-dolly-review-olney-theater/",
+      "headline": "hello dolly review olney theater",
+      "publishDate": "2025-11-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hello-dolly-2017",
+        "hello-dolly-1995",
+        "hello-dolly-1978",
+        "hello-dolly-1975"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/11/14/fiddler-on-the-roof-signature-review/",
+      "headline": "fiddler on the roof signature review",
+      "publishDate": "2025-11-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fiddler-on-the-roof-2015",
+        "fiddler-on-the-roof-1990",
+        "fiddler-on-the-roof-2004",
+        "fiddler-on-the-roof-1976"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/01/14/downstate-studio-theatre-review/",
+      "headline": "downstate studio theatre review",
+      "publishDate": "2025-01-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/11/07/mosaic-theatre-confederates-review/",
+      "headline": "mosaic theatre confederates review",
+      "publishDate": "2023-11-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "confederates-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/01/30/next-to-normal-review-round-house/",
+      "headline": "next to normal review round house",
+      "publishDate": "2024-01-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "next-to-normal-2009"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/01/29/tick-tick-boom-kennedy-center-review/",
+      "headline": "tick tick boom kennedy center review",
+      "publishDate": "2024-01-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tick-tick-boom-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/01/25/mindplay-review-arena-stage-vinny-deponto/",
+      "headline": "mindplay review arena stage vinny deponto",
+      "publishDate": "2024-01-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mindplay-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/01/15/love-love-love-review-studio-theatre/",
+      "headline": "love love love review studio theatre",
+      "publishDate": "2024-01-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-love-love-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/12/09/guys-and-dolls-review-shakespeare-theatre/",
+      "headline": "guys and dolls review shakespeare theatre",
+      "publishDate": "2025-12-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/08/24/play-on-signature-review/",
+      "headline": "play on signature review",
+      "publishDate": "2025-08-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "play-on-1997"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/06/21/fires-mirror-theater-j-review/",
+      "headline": "fires mirror theater j review",
+      "publishDate": "2022-06-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-fires-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/02/20/in-the-heights-signature-theatre-review/",
+      "headline": "in the heights signature theatre review",
+      "publishDate": "2025-02-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "in-the-heights-2008",
+        "in-the-heights-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/02/18/waitress-review-broadway-olney-theatre-center/",
+      "headline": "waitress review broadway olney theatre center",
+      "publishDate": "2025-02-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "waitress-2021",
+        "waitress-2016"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/02/18/bedwetter-arena-stage-review/",
+      "headline": "bedwetter arena stage review",
+      "publishDate": "2025-02-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bedwetter-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/12/15/girl-north-country-seafarer-reviews/",
+      "headline": "girl north country seafarer reviews",
+      "publishDate": "2023-12-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seafarer-2007"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/12/08/as-you-like-it-review-shakespeare-theatre/",
+      "headline": "as you like it review shakespeare theatre",
+      "publishDate": "2023-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-1974",
+        "as-you-like-it-1986"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/12/08/swept-away-review-avett-brothers-musical/",
+      "headline": "swept away review avett brothers musical",
+      "publishDate": "2023-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "swept-away-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/23/life-of-pi-tour-kennedy-center-review/",
+      "headline": "life of pi tour kennedy center review",
+      "publishDate": "2024-12-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "life-of-pi-2023"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/06/leopoldstadt-shakespeare-theatre-company-review/",
+      "headline": "leopoldstadt shakespeare theatre company review",
+      "publishDate": "2024-12-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "leopoldstadt-2022"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/30/frozen-olney-theatre-review/",
+      "headline": "frozen olney theatre review",
+      "publishDate": "2024-10-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frozen-2018",
+        "frozen-2004"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/08/sleeping-giant-review-steve-yockey/",
+      "headline": "sleeping giant review steve yockey",
+      "publishDate": "2024-10-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "steve-off-broadway-2015"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/03/oh-happy-day-review-baltimore/",
+      "headline": "oh happy day review baltimore",
+      "publishDate": "2024-10-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oh-happy-day-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/08/14/soft-power-review-signature/",
+      "headline": "soft power review signature",
+      "publishDate": "2024-08-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "soft-power-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/10/17/mountaintop-review-round-house-theatre/",
+      "headline": "mountaintop review round house theatre",
+      "publishDate": "2023-10-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-mountaintop-2011"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/10/16/macbeth-stride-shakespeare-theatre-review/",
+      "headline": "macbeth stride shakespeare theatre review",
+      "publishDate": "2023-10-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/10/09/brothers-paranormal-olney-theatre-review/",
+      "headline": "brothers paranormal olney theatre review",
+      "publishDate": "2023-10-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-brothers-paranormal-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/09/20/primary-trust-review-signature/",
+      "headline": "primary trust review signature",
+      "publishDate": "2024-09-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "primary-trust-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/09/13/jajas-african-hair-braiding-review-arena-stage/",
+      "headline": "jajas african hair braiding review arena stage",
+      "publishDate": "2024-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jajas-african-hair-braiding-2023"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/05/07/choke-hamlet-head-over-heels-review/",
+      "headline": "choke hamlet head over heels review",
+      "publishDate": "2025-05-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "head-over-heels-2018",
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/05/06/paradise-blue-studio-theatre-review/",
+      "headline": "paradise blue studio theatre review",
+      "publishDate": "2025-05-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "paradise-blue-off-broadway-2018"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/10/25/dracula-review-synetic-rorschach/",
+      "headline": "dracula review synetic rorschach",
+      "publishDate": "2022-10-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-1977",
+        "dracula-the-musical-2004"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/10/24/once-on-island-review-constellation/",
+      "headline": "once on island review constellation",
+      "publishDate": "2022-10-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/05/14/metamorphoses-folger-review/",
+      "headline": "metamorphoses folger review",
+      "publishDate": "2024-05-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "metamorphoses-2002"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/09/19/aint-no-mo-woolly-review/",
+      "headline": "aint no mo woolly review",
+      "publishDate": "2022-09-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "aint-no-mo-2022"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/06/04/topdog-underdog-round-house-review/",
+      "headline": "topdog underdog round house review",
+      "publishDate": "2024-06-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "topdog-underdog-2022",
+        "topdog-underdog-2002"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/07/05/fun-home-review-studio-theatre/",
+      "headline": "fun home review studio theatre",
+      "publishDate": "2023-07-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fun-home-2015"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/18/human-museum-unbuilt-life-review/",
+      "headline": "human museum unbuilt life review",
+      "publishDate": "2024-04-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "human-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/15/unknown-soldier-arena-stage-review/",
+      "headline": "unknown soldier arena stage review",
+      "publishDate": "2024-04-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-unknown-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/14/macbeth-review-ralph-fiennes/",
+      "headline": "macbeth review ralph fiennes",
+      "publishDate": "2024-04-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/03/08/review-clydes-studio-theatre-nottage/",
+      "headline": "review clydes studio theatre nottage",
+      "publishDate": "2023-03-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "clydes-2021"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2023/06/19/radio-golf-review-round-house-august-wilson/",
+      "headline": "radio golf review round house august wilson",
+      "publishDate": "2023-06-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "radio-golf-2007"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/12/01/review-tempest-round-house-theatre/",
+      "headline": "review tempest round house theatre",
+      "publishDate": "2022-12-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-1995"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/04/04/pointless-theatre-rhinoceros-review/",
+      "headline": "pointless theatre rhinoceros review",
+      "publishDate": "2022-04-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "rhinoceros-2027"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2021/12/10/seven-guitars-arena-stage-review/",
+      "headline": "seven guitars arena stage review",
+      "publishDate": "2021-12-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "seven-guitars-1996",
+        "seven-guitars-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/05/27/shakespeare-theatre-our-town-review/",
+      "headline": "shakespeare theatre our town review",
+      "publishDate": "2022-05-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "our-town-2024",
+        "our-town-2002",
+        "our-town-1988"
+      ]
+    },
+    {
+      "url": "https://www.washingtonpost.com/theater-dance/2022/05/02/faction-of-fools-missed-connections-review/",
+      "headline": "faction of fools missed connections review",
+      "publishDate": "2022-05-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    }
+  ]
 }

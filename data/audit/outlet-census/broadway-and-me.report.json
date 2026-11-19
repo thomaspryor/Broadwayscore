@@ -1,41 +1,86 @@
 {
   "outletId": "broadway-and-me",
-  "generatedAt": "2026-10-28T20:45:32.716Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T06:40:32.003Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
-    "notes": [
-      "unreadable: site answers HTTP 429/503/202 challenge pages to the census client"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "kind": "sitemap",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 154,
+    "inWindow": 154,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "gap": 23,
+      "not-review": 81,
+      "held-unmatched": 17,
+      "held": 17,
+      "out-of-window": 13,
+      "catalog-gap": 3
+    },
+    "viaTitleVariant": {
+      "gap": 3,
+      "held": 3
+    },
+    "recall": 0.425,
+    "recallWithCatalog": 0.395
+  },
+  "seasons": {
+    "2026-27": {
+      "gap": 2,
+      "not-review": 6
+    },
+    "2025-26": {
+      "gap": 4,
+      "not-review": 11,
+      "held-unmatched": 4,
+      "held": 1,
+      "out-of-window": 2
+    },
+    "2024-25": {
+      "not-review": 15,
+      "gap": 6,
+      "held": 4,
+      "held-unmatched": 1,
+      "catalog-gap": 1,
+      "out-of-window": 2
+    },
+    "2023-24": {
+      "not-review": 13,
+      "catalog-gap": 2,
+      "gap": 3,
+      "out-of-window": 3,
+      "held": 4,
+      "held-unmatched": 3
+    },
+    "2022-23": {
+      "gap": 4,
+      "not-review": 15,
+      "held": 5,
+      "held-unmatched": 6,
+      "out-of-window": 4
+    },
+    "2021-22": {
+      "not-review": 19,
+      "out-of-window": 2,
+      "held-unmatched": 3,
+      "held": 3,
+      "gap": 4
+    },
+    "2020-21": {
+      "not-review": 2
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 47,
-    "notEnumerated": 30,
+    "rowsInWindow": 96,
+    "notEnumerated": 0,
     "noUrl": 2,
     "samples": [
-      {
-        "showId": "1776-2022",
-        "url": "https://broadwayandme.blogspot.com/2022/10/the-new-1776-isnt-revolutionary-enough.html",
-        "publishDate": "2022-10-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-dolls-house-2023",
-        "url": "https://broadwayandme.blogspot.com/2023/03/doll-house-is-chic-but-underfurnished.html",
-        "publishDate": "2023-03-25",
-        "why": "not-enumerated"
-      },
       {
         "showId": "a-strange-loop-2022",
         "url": null,
@@ -43,186 +88,709 @@
         "why": "no-url"
       },
       {
-        "showId": "between-riverside-and-crazy-2022",
-        "url": "https://broadwayandme.blogspot.com/2023/02/cozy-at-home-theater-for-cold-weekend.html",
-        "publishDate": "2023-02-04",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "boop-2025",
-        "url": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
-        "publishDate": "2025-04-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bug-2026",
-        "url": "https://broadwayandme.blogspot.com/2026/01/the-infectious-qualities-of-bug.html",
-        "publishDate": "2026-01-17",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "camelot-2023",
-        "url": "https://broadwayandme.blogspot.com/2023/04/a-camelot-thats-not-most-shining-spot.html",
-        "publishDate": "2023-04-15",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cold-war-choir-practice-off-broadway-2026",
-        "url": "https://broadwayandme.blogspot.com/2026/03/chilly-thoughts-on-cold-war-choir.html",
-        "publishDate": "2026-03-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "company-2021",
-        "url": "https://broadwayandme.blogspot.com/2021/12/sizing-up-uneven-and-uneasy-fall-season.html",
-        "publishDate": "2021-12-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cult-of-love-2024",
-        "url": "https://broadwayandme.blogspot.com/2024/12/cult-of-love-fails-to-keep-faith.html",
-        "publishDate": "2024-12-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2026",
-        "url": "https://broadwayandme.blogspot.com/2026/04/thrilling-new-life-for-death-of-salesman.html",
-        "publishDate": "2026-04-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "dog-day-afternoon-2026",
-        "url": "https://broadwayandme.blogspot.com/2026/04/giving-head-pat-to-dog-day-afternoon.html",
-        "publishDate": "2026-04-04",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "home-2024",
-        "url": "https://broadwayandme.blogspot.com/2024/06/my-nostalgic-trip-back-to-home.html",
-        "publishDate": "2024-06-15",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "how-i-learned-to-drive-2022",
-        "url": "https://broadwayandme.blogspot.com/2022/04/riding-high-with-how-i-learned-to-drive.html",
-        "publishDate": "2022-04-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "kpop-2022",
-        "url": "https://broadwayandme.blogspot.com/2022/12/how-broadways-kpop-lost-its-mojo.html",
-        "publishDate": "2022-12-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "lackawanna-blues-2021",
-        "url": "https://broadwayandme.blogspot.com/2021/10/lackawanna-blues-and-other-laments.html",
-        "publishDate": "2021-10-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "lempicka-2024",
-        "url": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
-        "publishDate": "2024-04-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "url": "https://broadwayandme.blogspot.com/2023/04/life-of-pi-ponders-mysteries-of-faith.html",
-        "publishDate": "2023-04-08",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "mother-play-2024",
-        "url": "https://broadwayandme.blogspot.com/2024/04/play-is-work-of-true-compassion.html",
-        "publishDate": "2024-04-27",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "mr-saturday-night-2022",
         "url": null,
         "publishDate": "2022-04-30",
         "why": "no-url"
-      },
-      {
-        "showId": "paradise-square-2022",
-        "url": "https://broadwayandme.blogspot.com/2022/04/the-missteps-of-paradise-square-and.html",
-        "publishDate": "2022-04-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "pass-over-2021",
-        "url": "https://broadwayandme.blogspot.com/2021/10/going-back-to-pass-overand-live-theater.html",
-        "publishDate": "2021-10-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "pictures-from-home-2023",
-        "url": "https://broadwayandme.blogspot.com/2023/02/from-home-lacks-clear-focus.html",
-        "publishDate": "2023-02-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "plaza-suite-2022",
-        "url": "https://broadwayandme.blogspot.com/2022/04/some-old-fashioned-fun-with-music-man.html",
-        "publishDate": "2022-04-02",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "smash-2025",
-        "url": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
-        "publishDate": "2025-04-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "suffs-2024",
-        "url": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
-        "publishDate": "2024-04-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "sweeney-todd-2023",
-        "url": "https://broadwayandme.blogspot.com/2023/04/swooningonce-againfor-sweeney-todd.html",
-        "publishDate": "2023-04-01",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-notebook-2024",
-        "url": "https://broadwayandme.blogspot.com/2024/03/old-storiesand-old-guysget-spotlight-in.html",
-        "publishDate": "2024-03-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-phantom-of-the-opera-1988",
-        "url": "https://broadwayandme.blogspot.com/2023/01/finally-seduced-by-of-opera.html",
-        "publishDate": "2023-01-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "walking-with-ghosts-2022",
-        "url": "https://broadwayandme.blogspot.com/2022/11/life-and-death-stories-in-fine-with.html",
-        "publishDate": "2022-11-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "water-for-elephants-2024",
-        "url": "https://broadwayandme.blogspot.com/2024/03/old-storiesand-old-guysget-spotlight-in.html",
-        "publishDate": "2024-03-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "you-got-older-off-broadway-2026",
-        "url": "https://broadwayandme.blogspot.com/2026/02/real-families-really-matter-in.html",
-        "publishDate": "2026-02-28",
-        "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
+  "gaps": [
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/11/the-extra-burdens-of-midnight-wanted.html",
+      "headline": "the extra burdens of midnight wanted",
+      "publishDate": "2026-11-14",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "midnight-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/09/falling-in-love-with-invention-of-love.html",
+      "headline": "falling in love with invention of love",
+      "publishDate": "2026-09-26",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-invention-of-love-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "the-invention-of-love-2001"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/08/why-disruption-really-turned-me-off.html",
+      "headline": "why disruption really turned me off",
+      "publishDate": "2026-08-08",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "disruption-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/08/the-saviors-confirms-its-authors-talent.html",
+      "headline": "the saviors confirms its authors talent",
+      "publishDate": "2026-08-01",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-saviors-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/05/the-receptionist-revival-misses-its-call.html",
+      "headline": "the receptionist revival misses its call",
+      "publishDate": "2026-05-09",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-receptionist-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2025/11/kyoto-is-call-to-action-on-climate.html",
+      "headline": "kyoto is call to action on climate",
+      "publishDate": "2025-11-08",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "kyoto-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2025/07/why-ginger-twinsies-just-isnt-for-me.html",
+      "headline": "why ginger twinsies just isnt for me",
+      "publishDate": "2025-07-26",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "ginger-twinsies-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2025/05/let-down-by-lights-out-nat-king-cole.html",
+      "headline": "let down by lights out nat king cole",
+      "publishDate": "2025-05-24",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "lights-out-nat-king-cole-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2025/02/the-antiquities-is-superbly-up-to-date.html",
+      "headline": "the antiquities is superbly up to date",
+      "publishDate": "2025-02-09",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-antiquities-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/12/shit-meet-fan-just-pretends-to-be-bad.html",
+      "headline": "shit meet fan just pretends to be bad",
+      "publishDate": "2024-12-07",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "shit-meet-fan-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/11/a-wonderful-world-isnt-wonderful-enough.html",
+      "headline": "a wonderful world isnt wonderful enough",
+      "publishDate": "2024-11-16",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "a-wonderful-world-the-louis-armstrong-musical-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/10/the-splendors-of-hills-of-california.html",
+      "headline": "the splendors of hills of california",
+      "publishDate": "2024-10-05",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-hills-of-california-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/07/why-empire-failed-to-win-my-allegiance.html",
+      "headline": "why empire failed to win my allegiance",
+      "publishDate": "2024-07-13",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "empire-the-musical-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "allegiance-2015"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/03/dead-outlaw-is-liveliest-show-in-town.html",
+      "headline": "dead outlaw is liveliest show in town",
+      "publishDate": "2024-03-16",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "dead-outlaw-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "dead-outlaw-2025"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/02/the-connector-fails-to-connect-with-me.html",
+      "headline": "the connector fails to connect with me",
+      "publishDate": "2024-02-10",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-connector-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/08/shark-is-broken-makes-soft-splash.html",
+      "headline": "shark is broken makes soft splash",
+      "publishDate": "2023-08-12",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-shark-is-broken-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/07/flex-is-one-of-summer-seasons-mvps.html",
+      "headline": "flex is one of summer seasons mvps",
+      "publishDate": "2023-07-29",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "flex-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/06/how-comeuppance-let-me-down.html",
+      "headline": "how comeuppance let me down",
+      "publishDate": "2023-06-10",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-comeuppance-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/03/how-to-defend-yourself-grapples-with.html",
+      "headline": "how to defend yourself grapples with",
+      "publishDate": "2023-03-18",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "how-to-defend-yourself-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/04/some-old-fashioned-fun-with-music-man.html",
+      "headline": "some old fashioned fun with music man",
+      "publishDate": "2022-04-02",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-music-man-2022"
+      ],
+      "outOfWindow": [
+        "the-music-man-2000"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/03/paying-proper-respect-to-chinese-lady.html",
+      "headline": "paying proper respect to chinese lady",
+      "publishDate": "2022-03-26",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-chinese-lady-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/02/english-has-some-valuable-things-to-say.html",
+      "headline": "english has some valuable things to say",
+      "publishDate": "2022-02-26",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "english-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/02/black-no-more-is-little-too-pallid.html",
+      "headline": "black no more is little too pallid",
+      "publishDate": "2022-02-19",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "black-no-more-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    }
+  ],
   "heldAltUrl": [],
   "misfiles": [],
-  "heldUnmatched": [],
+  "heldUnmatched": [
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/04/thrilling-new-life-for-death-of-salesman.html",
+      "headline": "thrilling new life for death of salesman",
+      "publishDate": "2026-04-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "death-of-a-salesman-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/03/chilly-thoughts-on-cold-war-choir.html",
+      "headline": "chilly thoughts on cold war choir",
+      "publishDate": "2026-03-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cold-war-choir-practice-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/02/real-families-really-matter-in.html",
+      "headline": "real families really matter in",
+      "publishDate": "2026-02-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "you-got-older-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/01/the-infectious-qualities-of-bug.html",
+      "headline": "the infectious qualities of bug",
+      "publishDate": "2026-01-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bug-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2025/05/the-angry-young-women-in-john-proctor.html",
+      "headline": "the angry young women in john proctor",
+      "publishDate": "2025-05-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "john-proctor-is-the-villain-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/04/play-is-work-of-true-compassion.html",
+      "headline": "play is work of true compassion",
+      "publishDate": "2024-04-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "mother-play-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/03/old-storiesand-old-guysget-spotlight-in.html",
+      "headline": "old storiesand old guysget spotlight in",
+      "publishDate": "2024-03-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-notebook-2024",
+        "water-for-elephants-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/02/hailing-high-camp-virtues-of-mary.html",
+      "headline": "hailing high camp virtues of mary",
+      "publishDate": "2024-02-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "oh-mary-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/03/doll-house-is-chic-but-underfurnished.html",
+      "headline": "doll house is chic but underfurnished",
+      "publishDate": "2023-03-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-dolls-house-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/02/from-home-lacks-clear-focus.html",
+      "headline": "from home lacks clear focus",
+      "publishDate": "2023-02-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "pictures-from-home-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/02/cozy-at-home-theater-for-cold-weekend.html",
+      "headline": "cozy at home theater for cold weekend",
+      "publishDate": "2023-02-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "between-riverside-and-crazy-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/01/finally-seduced-by-of-opera.html",
+      "headline": "finally seduced by of opera",
+      "publishDate": "2023-01-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-phantom-of-the-opera-1988"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/11/succumbing-to-charms-of-juliet.html",
+      "headline": "succumbing to charms of juliet",
+      "publishDate": "2022-11-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "and-juliet-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/11/life-and-death-stories-in-fine-with.html",
+      "headline": "life and death stories in fine with",
+      "publishDate": "2022-11-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "walking-with-ghosts-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/06/zenzile-gets-lost-in-its-reveries.html",
+      "headline": "zenzile gets lost in its reveries",
+      "publishDate": "2022-06-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "dreaming-zenzile-off-broadway-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2021/12/sizing-up-uneven-and-uneasy-fall-season.html",
+      "headline": "sizing up uneven and uneasy fall season",
+      "publishDate": "2021-12-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "company-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2021/10/going-back-to-pass-overand-live-theater.html",
+      "headline": "going back to pass overand live theater",
+      "publishDate": "2021-10-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "pass-over-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
   "ambiguous": [],
-  "catalogGaps": [],
-  "outOfWindow": []
+  "catalogGaps": [
+    {
+      "url": "https://broadwayandme.blogspot.com/2025/04/star-struck-on-broadway-glengarry-glen.html",
+      "headline": "star struck on broadway glengarry glen",
+      "publishDate": "2025-04-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/08/introducing-broadway-me-quickies.html",
+      "headline": "introducing broadway me quickies",
+      "publishDate": "2024-08-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/09/thoughts-on-new-era-in-new-york-theater.html",
+      "headline": "thoughts on new era in new york theater",
+      "publishDate": "2023-09-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/01/happy-new-year.html",
+      "headline": "happy new year",
+      "publishDate": "2026-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "happy-new-year-1980"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2025/09/mexodus-hip-mix-of-hip-hop-and-history.html",
+      "headline": "mexodus hip mix of hip hop and history",
+      "publishDate": "2025-09-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2025/02/a-tardy-celebration-of-18-years-of-b.html",
+      "headline": "a tardy celebration of 18 years of b",
+      "publishDate": "2025-02-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/09/our-class-is-still-teaching-valuable.html",
+      "headline": "our class is still teaching valuable",
+      "publishDate": "2024-09-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/06/in-concert-with-titanic-and-follies.html",
+      "headline": "in concert with titanic and follies",
+      "publishDate": "2024-06-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "follies-2011",
+        "titanic-1997",
+        "follies-1971",
+        "follies-2001"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/06/following-paper-trail-to-this-years.html",
+      "headline": "following paper trail to this years",
+      "publishDate": "2024-06-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/04/an-uplifting-visit-to-tuesdays-with.html",
+      "headline": "an uplifting visit to tuesdays with",
+      "publishDate": "2024-04-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-visit-2015",
+        "the-visit-1973"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/03/the-sign-in-sidney-brusteins-window-is.html",
+      "headline": "the sign in sidney brusteins window is",
+      "publishDate": "2023-03-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sign-in-sidney-brusteins-window-2023",
+        "the-sign-in-sidney-brusteins-window-1972"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2023/01/high-hopes-for-very-happy-new-year.html",
+      "headline": "high hopes for very happy new year",
+      "publishDate": "2023-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "happy-new-year-1980"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/11/digging-deep-into-empathy-with-downstate.html",
+      "headline": "digging deep into empathy with downstate",
+      "publishDate": "2022-11-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/09/alan-cumming-follows-his-passion-in-burn.html",
+      "headline": "alan cumming follows his passion in burn",
+      "publishDate": "2022-09-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "passion-1994",
+        "passion-2004",
+        "passion-1983"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/07/women-and-politics-in-and-of.html",
+      "headline": "women and politics in and of",
+      "publishDate": "2022-07-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2022/01/wishing-all-of-us-really-happy-new-year.html",
+      "headline": "wishing all of us really happy new year",
+      "publishDate": "2022-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "happy-new-year-1980"
+      ]
+    }
+  ]
 }
