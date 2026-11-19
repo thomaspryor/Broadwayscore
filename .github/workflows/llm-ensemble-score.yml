@@ -747,6 +747,7 @@ jobs:
         if: (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true') && vars.DISABLE_COMPARATIVE_RESCORE != '1' && github.event.inputs.dry_run != 'true'
         continue-on-error: true
         env:
+          INPUT_RESCORE_REASON: ${{ github.event.inputs.rescore_reason }}
           INPUT_SHOW_ID: ${{ github.event.inputs.show_id }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -769,7 +770,7 @@ jobs:
           # BRO-7807: batches exactly when the main pass does (same policy, same
           # inputs), so an urgent catch-up run never waits on it before its commit.
           if [ "$(EVENT_NAME="${{ github.event_name }}" CHAIN="${{ github.event.inputs.chain }}" \
-                  SHOW_ID="${INPUT_SHOW_ID}" RESCORE_REASON="${{ github.event.inputs.rescore_reason }}" \
+                  SHOW_ID="${INPUT_SHOW_ID}" RESCORE_REASON="${INPUT_RESCORE_REASON}" \
                   DISABLE_BATCH_SCORING="${{ vars.DISABLE_BATCH_SCORING }}" DRY_RUN="${{ github.event.inputs.dry_run }}" \
                   SYNC="${{ github.event.inputs.sync }}" \
                   NEEDS_RESCORE="${{ github.event.inputs.needs_rescore }}" RUN_RESCORE="${{ steps.check-needed.outputs.run_rescore }}" \
