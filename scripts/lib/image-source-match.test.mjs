@@ -287,6 +287,16 @@ test('findRejectedSourcesInUse judges a borrowed file by the row that owns it', 
   assert.deepEqual(findRejectedSourcesInUse([tour], sources), []);
 });
 
+test('wrongEraTodayTixReason uses the London launch date for West End rows', () => {
+  // handbagged-west-end-2014 closed Aug 2014, before TodayTix sold West End
+  // tickets (June 2015); its TodayTix art was the 2019 Kiln revival's.
+  const we2014 = { id: 'handbagged-west-end-2014', market: 'west-end', status: 'closed', closingDate: '2014-08-02' };
+  assert.match(wrongEraTodayTixReason(we2014, TT('Handbagged')), /closed before TodayTix/);
+  assert.equal(wrongEraTodayTixReason({ ...we2014, closingDate: '2015-09-01' }, TT('x')), null);
+  // The same date on Broadway is after TodayTix's New York launch: kept.
+  assert.equal(wrongEraTodayTixReason({ ...we2014, market: 'broadway' }, TT('x')), null);
+});
+
 test('wrongEraTodayTixReason keeps running rows, post-2013 rows with no rejection, and non-TodayTix sources', () => {
   const running = { id: 'x', status: 'open', closingDate: null, rejectedImageUrls: [TT('old')] };
   assert.equal(wrongEraTodayTixReason(running, TT('new')), null, 'a running row may take by-id catalogue art');

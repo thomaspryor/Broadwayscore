@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-7846-e",
-  "planId": "9337ad35-caf3-4cb2-9136-88bc5ae5f858",
+  "planId": "4d23056d-9703-4a6a-9962-6f27cfc61735",
   "status": "pending",
-  "createdAt": "2026-11-19T15:33:26.684Z",
+  "createdAt": "2026-11-19T15:38:50.465Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-7846: clear TodayTix catalogue art of other productions from 56 closed rows and 3 tours that borrow their banners. 27 rows had their TodayTix poster/thumbnail rejected by the BRO-5089 sweep while the hero from the same catalogue match stayed (follies-2011 kept the 2017 NT Live Follies banner); the rest closed before TodayTix sold tickets (Sept 2013), so TodayTix art on them is another production or another show (grease-2007: an anti-vaping campaign, rain-2010: a Brian Lehrer talk). Every field was looked at by eye. Four thumbnail files on disk predate their TodayTix record and are the right art (follies-2011 2011 cast photo, wonderland-2011, grey-gardens-2006, well-2006): kept, sources recorded as manual in image-sources.json. Sources are added to rejectedImageUrls so the disk fallback and fetcher cannot put them back. No noReliableArt marker: the verified pipeline may refill. (part 1 of 5) (part 5 of 5)",
+    "summary": "BRO-7846: clear TodayTix catalogue art of other productions from 57 closed rows and 3 tours that borrow their banners. 27 rows had their TodayTix poster/thumbnail rejected by the BRO-5089 sweep while the hero from the same catalogue match stayed (follies-2011 kept the 2017 NT Live Follies banner); the rest closed before TodayTix sold tickets (Sept 2013), so TodayTix art on them is another production or another show (grease-2007: an anti-vaping campaign, rain-2010: a Brian Lehrer talk). Every field was looked at by eye. Four thumbnail files on disk predate their TodayTix record and are the right art (follies-2011 2011 cast photo, wonderland-2011, grey-gardens-2006, well-2006): kept, sources recorded as manual in image-sources.json. Sources are added to rejectedImageUrls so the disk fallback and fetcher cannot put them back. No noReliableArt marker: the verified pipeline may refill. (part 1 of 5) (part 1 of 5) (part 5 of 5)",
     "steps": [
       "beauty-and-the-beast-1994: poster+hero cleared, TodayTix catalogue art of another production (TodayTix art on a row that closed before TodayTix sold tickets; checked by eye, BRO-7846).",
       "beauty-and-the-beast-1994: never re-take this art source (BRO-7846)",
@@ -32,7 +32,9 @@
       "company-tour-2023: never re-take this art source (BRO-7846)",
       "legally-blonde-tour-2022: hero cleared, it borrowed legally-blonde-2007/hero.webp, TodayTix art of an unrelated event (checked by eye, BRO-7846)",
       "legally-blonde-tour-2022: never re-take this art source (BRO-7846)",
-      "beauty-and-the-beast-tour-2025: serve its own copy of the current tour poster instead of the 1994 row's file, so the 1994 row cannot pick it up again (BRO-7846)."
+      "beauty-and-the-beast-tour-2025: serve its own copy of the current tour poster instead of the 1994 row's file, so the 1994 row cannot pick it up again (BRO-7846).",
+      "handbagged-west-end-2014: poster+thumbnail+hero cleared, TodayTix art of the 2019 Kiln revival (row closed Aug 2014, before TodayTix sold West End tickets in June 2015; checked by eye, BRO-7846).",
+      "handbagged-west-end-2014: never re-take this art source (BRO-7846)"
     ],
     "riskLevel": "low",
     "actions": [
@@ -370,6 +372,36 @@
           "poster": "/images/shows/beauty-and-the-beast-tour-2025/poster.webp"
         },
         "description": "beauty-and-the-beast-tour-2025: serve its own copy of the current tour poster instead of the 1994 row's file, so the 1994 row cannot pick it up again (BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "handbagged-west-end-2014",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/handbagged-west-end-2014/hero.webp",
+          "thumbnail": "/images/shows/handbagged-west-end-2014/thumbnail.webp",
+          "poster": "/images/shows/handbagged-west-end-2014/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "handbagged-west-end-2014: poster+thumbnail+hero cleared, TodayTix art of the 2019 Kiln revival (row closed Aug 2014, before TodayTix sold West End tickets in June 2015; checked by eye, BRO-7846)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "handbagged-west-end-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1dD5tQYaCblxrUSp6Y0c3r/d226f217b11ba8304e4a061fec6a6967/Handbagged_480x720.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1dD5tQYaCblxrUSp6Y0c3r/d226f217b11ba8304e4a061fec6a6967/Handbagged_480x720.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1dD5tQYaCblxrUSp6Y0c3r/d226f217b11ba8304e4a061fec6a6967/Handbagged_480x720.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "handbagged-west-end-2014: never re-take this art source (BRO-7846)"
       }
     ]
   }
