@@ -13,7 +13,7 @@
 
 const crypto = require('crypto');
 
-const SCHEMA = 1;
+const { SCHEMA } = require('./schema');
 const POINTER_TTL_MS = 48 * 3600 * 1000;
 const HOT_DAYS = 3;
 

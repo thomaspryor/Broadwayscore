@@ -3,7 +3,7 @@
 // what the network returned, say whether to apply the overlay. Anything off
 // returns { apply:false } and the static server HTML stays. Never throws.
 
-const { SCHEMA } = require('./core');
+const { SCHEMA } = require('./schema');
 
 const isNum = (n) => typeof n === 'number' && Number.isFinite(n);
 
