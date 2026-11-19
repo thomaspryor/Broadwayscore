@@ -98,10 +98,12 @@ function buildRegistry(shows) {
   const peopleByTitle = new Map(); // name words of the cast and creative team ("rinna", "rannells")
   const marketsByTitle = new Map(); // categories of the shows billed with a title (BRO-7785)
   const titles = [];
+  const entries = []; // { id, title, status } for every show, closed too (BRO-7791 lead-word corroboration)
   const homeVenues = new Set(); // BRO-7793: venue + aliases of every NYC/London entry, so a renamed house needs no list edit
   for (const s of shows || []) {
     if (!s || !s.title) continue;
     titles.push(s.title);
+    entries.push({ id: s.id || null, title: s.title, status: typeof s.status === 'string' ? s.status : null });
     if (HOME_MARKETS.has(String(s.category)) && typeof s.venue === 'string' && s.venue.trim()) {
       for (const v of venueAliases(s.venue)) {
         const n = normTitle(String(v).replace(/'s\b/g, '')).split(' ').filter((w) => w && !VENUE_GENERIC.has(w)).join(' ');
@@ -125,7 +127,7 @@ function buildRegistry(shows) {
       if (!akaByTitle.get(k).some((x) => normTitle(x) === normTitle(a))) akaByTitle.get(k).push(a.trim());
     }
   }
-  return { akaByTitle, venueByTitle, peopleByTitle, marketsByTitle, titles, homeVenues };
+  return { akaByTitle, venueByTitle, peopleByTitle, marketsByTitle, titles, homeVenues, entries };
 }
 function registry() {
   if (!_registry) {
@@ -468,6 +470,8 @@ function urlNamesOtherArticle(url, showTitle) {
 
 /** Every billed title in the registry (closed shows too), for main-title uniqueness. Empty when unavailable. */
 function registryShowTitles() { return registry().titles; }
+/** Every loaded show as { id, title, status } (status null when the entry has none). */
+function registryShows() { return registry().entries; }
 
 /**
  * Plan value check for shows.json akaTitles (data-edit-action.js): null clears it; otherwise a non-empty array of
@@ -499,6 +503,6 @@ function akaTitlesValueProblem(value, show, shows, prevValue = null) {
 
 module.exports = {
   akaTitlesValueProblem, normTitle, sigWords, mainTitleSplit, mainTitleIsUnique, showNames,
-  pressAkaForTitle, pressVenuesForTitle, registryShowTitles, setPressNameShows, otherProductionCue,
+  pressAkaForTitle, pressVenuesForTitle, registryShowTitles, registryShows, setPressNameShows, otherProductionCue,
   billedTitleOtherProductionCue, wrongStagingGuardOff, isHomeHouse, textNamesOwnVenue, slugOtherStagingCue, pressPeopleForTitle, urlNamesOtherArticle,
 };
