@@ -145,6 +145,11 @@ function isOtherProductionEvidence(show, review) {
   // Tour only. Local tour reviews are also LLM-flagged wrongProduction at times
   // (and-juliet-tour-2024, mrs-doubtfire-tour-2025), so a bare flag proves
   // nothing; require positive evidence the file is about the earlier run.
+  // BRO-7825: the tour-integrity pass flags a file 'uk-on-tour' only on hard
+  // evidence (a London/.uk outlet, an overseas host, or UK text naming no stop
+  // of this tour), never on an LLM verdict, so it is safe to discount.
+  if (review.wrongProductionDetectedBy === 'tour-integrity'
+    && /UK or overseas production reviewed/i.test(review.wrongProductionReason || '')) return true;
   const pub = toDateMs(review.publishDate);
   const open = toDateMs(show.openingDate);
   if (!Number.isNaN(pub) && !Number.isNaN(open) && pub < open - 60 * 86400000) return true;

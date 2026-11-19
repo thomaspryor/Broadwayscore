@@ -36,6 +36,19 @@ test('tour: bare LLM wrongProduction on local reviews still pages (and-juliet / 
   assert.equal(r.totalBlackout, true);
 });
 
+// BRO-7825: menopause-the-musical-tour-2026 paged as a blackout over two UK articles the tour-integrity pass had flagged.
+test('tour: tour-integrity UK/overseas flags are not a blackout; a bare LLM flag or a non-tour still counts', () => {
+  const ti = (n) => wp('x' + n, { publishDate: '2026-10-14', wrongProductionDetectedBy: 'tour-integrity',
+    wrongProductionReason: 'UK or overseas production reviewed, not the North American tour; tour integrity (BRO-4656)' });
+  const r = assessShow(tour, files(ti(1), ti(2)), { nowMs });
+  assert.equal(r.discovered, 0);
+  assert.equal(r.totalBlackout, false);
+  const llm = (n) => ({ ...ti(n), url: 'https://x.test/llm' + n, wrongProductionDetectedBy: 'collector-llm' });
+  assert.equal(assessShow(tour, files(llm(1), llm(2)), { nowMs }).totalBlackout, true);
+  const n = assessShow(bway, files(ti(1), ti(2)), { nowMs });
+  assert.equal(n.totalBlackout, true);
+});
+
 test('non-tour: deterministic date-guard rejections are discounted', () => {
   const r = assessShow(bway, files(
     wp('Pre-opening guard: pre-window date — review dated 2023-10-16 is 60+ days before show starts 2024-10-12'),
