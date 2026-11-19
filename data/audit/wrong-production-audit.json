@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T18:31:53.116Z",
+  "timestamp": "2026-11-19T18:51:35.464Z",
   "stats": {
-    "totalReviews": 83032,
-    "alreadyFlagged": 22523,
-    "dateGuardCatches": 222,
+    "totalReviews": 83074,
+    "alreadyFlagged": 22532,
+    "dateGuardCatches": 221,
     "directorMismatch": 3786,
-    "tvFilmSignals": 2371,
+    "tvFilmSignals": 2372,
     "londonSignals": 3825,
     "offBroadwaySignals": 772,
     "yearMismatch": 386,
-    "noPublishDate": 8274
+    "noPublishDate": 8275
   },
   "findings": [
     {
@@ -24022,6 +24022,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "file": "daily-mail--laura-fox.json",
+      "score": null,
+      "publishDate": "2026-11-18",
+      "url": "https://www.dailymail.com/tvshowbiz/article-16302081/Florence-Pugh-fires-surgery-speculation-faces-change.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -123535,19 +123549,6 @@
       ]
     },
     {
-      "showId": "other-bodies-off-broadway-2026",
-      "file": "theatermania--linda-buchwald.json",
-      "publishDate": "2026-10-05",
-      "url": "https://www.theatermania.com/news/martin-morans-other-bodies-to-have-world-premiere-with-the-barrow-group_1856131/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 45d before show (2026-10-05 vs 2026-11-19)"
-        }
-      ]
-    },
-    {
       "showId": "other-desert-cities-west-end-2014",
       "file": "daily-mail--quentin-letts.json",
       "score": 63,
@@ -123842,6 +123843,7 @@
     {
       "showId": "paradise-square-2022",
       "file": "theatermania--zachary-stewart.json",
+      "score": null,
       "publishDate": "2022-04-03",
       "url": "https://www.theatermania.com/broadway/reviews/review-broadway-paradise-square-five-points_93598.html",
       "findings": [
