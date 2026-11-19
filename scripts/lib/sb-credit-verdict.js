@@ -28,10 +28,10 @@ const DEFAULT_ATTENTION_PCT_USED = 75;
  * The strongest reason is not policy, it is that the hard gate already exists
  * somewhere better: check 11b of the same readiness script runs a DEMAND-aware
  * budget check (lib/opening-night-budget.js checkBudget, ~50,000 SB credits
- * estimated per show) and blocks when projected demand exceeds what is
- * actually left. That is the check that should stop an opening night, because
- * it knows how many shows are opening; a flat percentage does not. Duplicating
- * a hard stop here would only add a second, dumber gate that fires first.
+ * estimated per show). Since BRO-7854 that check WARNs (not fails) on an SB-only
+ * shortfall, because SB is a fallback and the owner policy is to ride it out;
+ * non-SB resources still hard-fail there. A flat percentage here would only be
+ * a second, dumber gate that fires first.
  *
  * The attention line (75% used / 25% remaining) is the house number
  * (credit-preflight.js minPct=25, opening-night-readiness.js:81) and stays a
