@@ -1,155 +1,25 @@
 {
   "processed": [
-    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-    "much-ado-about-nothing-2026/deadline--unknown.json",
-    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
-    "the-fantasticks-2026/gay-city-news--unknown.json",
-    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-    "now-you-see-me-live-2026/culturesauce--unknown.json",
-    "now-you-see-me-live-2026/daily-herald--unknown.json",
-    "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
-    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/west-end-best-friend--unknown.json"
+    "desire-under-the-elms-off-west-end-2026/artsdesk--unknown.json",
+    "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
   ],
-  "failed": [
-    "much-ado-about-nothing-2026/timeout--unknown.json",
-    "king-lear-off-broadway-2026/patch--lauren-traut.json",
-    "medea-off-broadway-2026/express-uk--neil-norman.json",
-    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
-    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
-    "the-fantasticks-2026/nytimes--maya-phillips.json",
-    "jenufa-off-broadway-2026/financialtimes--unknown.json",
-    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
-    "downstate-2026/nytimes--unknown.json",
-    "downstate-2026/nydailynews--unknown.json",
-    "downstate-2026/pages-on-stages--unknown.json",
-    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json"
-  ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
-      "the-fantasticks-2026/gay-city-news--unknown.json",
-      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
-      "now-you-see-me-live-2026/culturesauce--unknown.json",
-      "now-you-see-me-live-2026/daily-herald--unknown.json",
-      "traitorz-the-unauthorized-musical-parody-off-broadway-2026/the-recs--randall-david-cook.json",
-      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/west-end-best-friend--unknown.json"
+      "desire-under-the-elms-off-west-end-2026/artsdesk--unknown.json",
+      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/much-ado-about-nothing-2026/deadline--unknown.json",
-      "much-ado-about-nothing-2026/deadline--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-19T20:09:53.963Z",
-  "lastProcessed": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/west-end-best-friend--unknown.json",
-  "log": [
-    {
-      "t": "2026-11-19T20:10:06.423Z",
-      "event": "bb-session",
-      "session": "85850df0",
-      "url": "https://deadline.com/2026/11/broadway-box-office-much-ado-about-nothing-billy-cr"
-    },
-    {
-      "t": "2026-11-19T20:24:57.316Z",
-      "event": "bb-session",
-      "session": "936aefa6",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-19T20:24:57.799Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T20:25:14.388Z",
-      "event": "bb-session",
-      "session": "d8b7aa27",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-19T20:25:14.802Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T20:26:41.519Z",
-      "event": "bb-session",
-      "session": "c6ec2eef",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-19T20:26:42.015Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T20:26:58.697Z",
-      "event": "bb-session",
-      "session": "729fc743",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-19T20:26:59.105Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T20:28:13.041Z",
-      "event": "bb-session",
-      "session": "a6f55adf",
-      "url": "https://www.ft.com/content/4da9deb8-5cb4-468d-b0ef-9d7a4a2bd89a"
-    },
-    {
-      "t": "2026-11-19T20:28:13.545Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-11-19T20:28:20.759Z",
-      "event": "bb-session",
-      "session": "aaa86028",
-      "url": "https://www.ft.com/content/4da9deb8-5cb4-468d-b0ef-9d7a4a2bd89a"
-    },
-    {
-      "t": "2026-11-19T20:28:21.171Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-11-19T20:30:04.182Z",
-      "event": "bb-session",
-      "session": "11f7c3bc",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-19T20:30:04.665Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-19T20:30:21.330Z",
-      "event": "bb-session",
-      "session": "5372fb4d",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-19T20:30:21.750Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-11-19T20:50:20.557Z",
+  "lastProcessed": "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+  "log": []
 }
