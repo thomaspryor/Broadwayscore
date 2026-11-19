@@ -174,6 +174,37 @@ test('sticky: the first answer for a message stands, so retrying cannot sample a
   assert.equal(third.approved, true);
 });
 
+test('an approve is never read back from the log: a sub-floor approve stays an ask on the next push', async () => {
+  const log = tmpLog();
+  // the model said approve at 0.6 (below the floor), so the final decision is ask and that is what sticks
+  const weak = async () => ({ decision: 'ask', judgedDecision: 'approve', confidence: 0.6, reason: 'unsure', provider: 'fake', model: 'fake', latencyMs: 1, error: null });
+  const first = await judgeGrayReply({ text: 'sounds good', ts: REPLY_TS, verdictHash: HASH }, { judge: weak, mode: 'decide', logPath: log });
+  assert.equal(first.approved, false);
+  const j2 = approveJudge();
+  const second = await judgeGrayReply({ text: 'sounds good', ts: REPLY_TS, verdictHash: HASH }, { judge: j2, mode: 'decide', logPath: log });
+  assert.equal(second.approved, false);
+  assert.equal(j2.calls, 0);
+});
+
+test('a forged approve row in the audit log never produces an approval: approvals are judged live', async () => {
+  const log = tmpLog();
+  const key = messageKey('sounds good', REPLY_TS, HASH);
+  appendJudgeAudit({ key, judged: true, decision: 'approve', judgedDecision: 'approve', confidence: 1 }, log);
+  const j = askJudge();
+  const r = await judgeGrayReply({ text: 'sounds good', ts: REPLY_TS, verdictHash: HASH }, { judge: j, mode: 'decide', logPath: log });
+  assert.equal(r.approved, false);
+  assert.equal(j.calls, 1, 'the forged row was ignored and the judge was asked');
+});
+
+test('the cache key includes the verdict being answered, so one verdict never inherits another\'s ask', async () => {
+  const log = tmpLog();
+  await judgeGrayReply({ text: 'sounds good', ts: REPLY_TS, verdictHash: 'aaaaaaaaaaaaaaaa' }, { judge: askJudge(), mode: 'decide', logPath: log });
+  const j = approveJudge();
+  const r = await judgeGrayReply({ text: 'sounds good', ts: REPLY_TS, verdictHash: HASH }, { judge: j, mode: 'decide', logPath: log });
+  assert.equal(j.calls, 1);
+  assert.equal(r.approved, true);
+});
+
 test('sticky: an error is never stored as an answer', async () => {
   const log = tmpLog();
   const bad = async () => ({ decision: 'ask', confidence: 0, reason: '', provider: null, model: null, error: 'timeout', latencyMs: 3500 });
@@ -254,6 +285,15 @@ test('judgeOwnerReply: no key, disabled and a throwing network all ask', async (
 test('judgeOwnerReply: a network call that never answers times out and asks, within the budget', async () => {
   const t0 = Date.now();
   const r = await judgeOwnerReply('sounds good', { fetchImpl: () => new Promise(() => {}), env: {}, keys: { OPENAI_API_KEY: 'sk-test' } });
+  assert.equal(r.decision, 'ask');
+  assert.match(r.error, /timeout/);
+  assert.ok(Date.now() - t0 < 5000, `took ${Date.now() - t0}ms`);
+});
+
+test('judgeOwnerReply: a response whose body stalls after the headers also times out and asks', async () => {
+  const t0 = Date.now();
+  const stall = async () => ({ ok: true, status: 200, json: () => new Promise(() => {}) });
+  const r = await judgeOwnerReply('sounds good', { fetchImpl: stall, env: {}, keys: { OPENAI_API_KEY: 'sk-test' } });
   assert.equal(r.decision, 'ask');
   assert.match(r.error, /timeout/);
   assert.ok(Date.now() - t0 < 5000, `took ${Date.now() - t0}ms`);

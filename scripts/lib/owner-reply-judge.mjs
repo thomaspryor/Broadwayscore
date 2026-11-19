@@ -31,7 +31,7 @@ const { readEnvKeys } = require('./load-env.js');
  * A code constant on purpose: an agent cannot flip it with an env var. OWNER_REPLY_JUDGE=off can only turn it off.
  */
 export const JUDGE_MODE = 'decide';
-export const PROMPT_VERSION = 'v2';
+export const PROMPT_VERSION = 'v3';
 export const CONFIDENCE_FLOOR = 0.85;
 export const MAX_TEXT = 1500;
 
@@ -52,6 +52,10 @@ export const SYSTEM_PROMPT = [
   'Other work the owner mentions alongside a clear go-ahead is not a condition when it is clearly separate or for later',
   '(for example "separately", "in a follow up", "also fix X" about a different thing); it is a condition when it must happen',
   'before shipping or concerns the change being shipped.',
+  'The reply may answer a different question than shipping, so a bare acknowledgement ("ok", "fine", "sure", "alright", "i guess"),',
+  'a reply that picks or praises one option or one detail ("darker sounds good", "that\'s the one"), or a shrug is "ask".',
+  'Only wording that clearly approves the whole change or tells the agent to ship it counts ("ship it", "sounds good", "looks right to me").',
+  'A clear go-ahead stays a go-ahead when the owner also remarks on the agent, the process or other work that is not part of this change.',
   'If you are unsure, answer "ask".',
   'Reply with JSON only: {"decision":"approve"|"ask","confidence":<number 0 to 1>,"reason":"<under 120 characters>"}.',
 ].join(' ');
@@ -85,8 +89,8 @@ export function finalDecision(v) {
   return v && v.decision === 'approve' && v.confidence >= CONFIDENCE_FLOOR ? 'approve' : 'ask';
 }
 
-export function messageKey(text, ts) {
-  return createHash('sha256').update(`${ts || ''}\n${text ?? ''}`).digest('hex').slice(0, 24);
+export function messageKey(text, ts, verdictHash) {
+  return createHash('sha256').update(`${verdictHash || ''}\n${ts || ''}\n${text ?? ''}`).digest('hex').slice(0, 24);
 }
 
 export function auditPath(env = process.env) {
@@ -106,11 +110,12 @@ export function appendJudgeAudit(row, path = auditPath()) {
 }
 
 /**
- * A repeat push attempt must not be a re-roll. The first successful judgement of a message (same
- * timestamp and text) stands, so asking again cannot sample until an "approve" appears.
+ * A repeat push attempt must not be a re-roll toward "approve". Only an "ask" is sticky: once the judge
+ * has said ask for a message (same verdict, timestamp and text), asking again cannot sample until an
+ * approve appears. An approve is never read back from the log: it is judged live every time, so a forged
+ * or sub-floor row can never produce an approval, and a retry can only get stricter.
  * Errors are never stored as answers, so a flaky first call does not freeze the message.
- * (The log is agent-writable like every file here; deleting it only costs the agent a fresh call
- * under the same fixed prompt and confidence floor.)
+ * (The log is agent-writable like every file here; the worst a forged row can do is make the gate ask.)
  */
 export function priorVerdict(key, path = auditPath()) {
   try {
@@ -118,8 +123,8 @@ export function priorVerdict(key, path = auditPath()) {
     const lines = readFileSync(path, 'utf8').split('\n').filter(Boolean);
     for (let i = lines.length - 1; i >= 0; i--) {
       let r; try { r = JSON.parse(lines[i]); } catch { continue; }
-      if (r.key === key && r.promptVersion === PROMPT_VERSION && !r.error && r.judged) {
-        return { decision: r.judgedDecision, confidence: r.confidence, reason: r.reason, provider: r.provider, model: r.model, cached: true };
+      if (r.key === key && r.promptVersion === PROMPT_VERSION && !r.error && r.judged && r.decision === 'ask') {
+        return { decision: 'ask', confidence: r.confidence, reason: r.reason, provider: r.provider, model: r.model, cached: true };
       }
     }
   } catch { /* fall through */ }
@@ -134,7 +139,9 @@ function withTimeout(promise, ms, controller) {
 
 async function callOpenAI(text, { fetchImpl, key }) {
   const controller = new AbortController();
-  const res = await withTimeout(fetchImpl(OPENAI_URL, {
+  // One budget for headers AND body: a response that stalls after the headers must not hold the hook.
+  return withTimeout((async () => {
+  const res = await fetchImpl(OPENAI_URL, {
     method: 'POST',
     signal: controller.signal,
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
@@ -145,15 +152,17 @@ async function callOpenAI(text, { fetchImpl, key }) {
       response_format: { type: 'json_object' },
       messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: buildUserContent(text) }],
     }),
-  }), OPENAI_TIMEOUT_MS, controller);
+  });
   if (!res.ok) throw new Error(`openai ${res.status}`);
   const j = await res.json();
   return { raw: j?.choices?.[0]?.message?.content, provider: 'openai', model: OPENAI_MODEL };
+  })(), OPENAI_TIMEOUT_MS, controller);
 }
 
 async function callGemini(text, { fetchImpl, key }) {
   const controller = new AbortController();
-  const res = await withTimeout(fetchImpl(`${GEMINI_BASE}/${GEMINI_MODEL}:generateContent`, {
+  return withTimeout((async () => {
+  const res = await fetchImpl(`${GEMINI_BASE}/${GEMINI_MODEL}:generateContent`, {
     method: 'POST',
     signal: controller.signal,
     headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
@@ -162,10 +171,11 @@ async function callGemini(text, { fetchImpl, key }) {
       contents: [{ role: 'user', parts: [{ text: buildUserContent(text) }] }],
       generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 120, thinkingConfig: { thinkingBudget: 0 } },
     }),
-  }), GEMINI_TIMEOUT_MS, controller);
+  });
   if (!res.ok) throw new Error(`gemini ${res.status}`);
   const j = await res.json();
   return { raw: (j?.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join(''), provider: 'gemini', model: GEMINI_MODEL };
+  })(), GEMINI_TIMEOUT_MS, controller);
 }
 
 /**
@@ -210,7 +220,7 @@ function safeEnvKeys() {
  *   approved is true only in decide mode with a confident approve.
  */
 export async function judgeGrayReply(msg, { judge = judgeOwnerReply, mode = JUDGE_MODE, logPath = auditPath(), fetchImpl, env, keys } = {}) {
-  const key = messageKey(msg.text, msg.ts);
+  const key = messageKey(msg.text, msg.ts, msg.verdictHash);
   let verdict = priorVerdict(key, logPath);
   if (!verdict) {
     try { verdict = await judge(msg.text, { fetchImpl, env, keys }); } catch (e) { verdict = { decision: 'ask', confidence: 0, reason: '', provider: null, model: null, error: String(e?.message || e).slice(0, 80), latencyMs: 0 }; }

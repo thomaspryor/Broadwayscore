@@ -50,13 +50,13 @@ export const MUST_NOT_APPROVE = [
   'yes provided it builds', 'yes as long as mobile works', 'yes, pending review', 'ship it next week', 'ship it monday',
   'ship it in an hour', 'ship it after lunch', 'ship it soon', 'approve after I look', 'ok nice, now show me mobile',
   'looks great, can you also show tablet', 'Yes\nhmm the mobile is off', 'yes\nactually, let me look again',
+  'ship it but make the logo bigger', 'ship it tmrw', 'ship it, tweak the padding', 'nvm',
   'cannot ship this', "I wouldn't ship this", 'DO NOT SHIP', 'dont ship', 'sure, but not yet', "let's wait", 'yes\nactually hold off',
 ];
 
 // Gray replies a person reads as a go-ahead but a word list cannot. The judge is expected to answer "approve".
 export const GRAY_YES = [
   'sounds good',
-  "that's the one",
   'works for me',
   'looks right to me',
   "I'm happy with it",
@@ -65,7 +65,6 @@ export const GRAY_YES = [
   'ship it, also fix the system',
   // held out from the prompt wording
   'sounds right, separately can you look at the settings page',
-  'awesome, thanks',
   'all set, and in a follow up please fix the typo',
 ];
 
@@ -76,5 +75,5 @@ export const GRAY_ASK = [
   'i like it, can you also show me the dark mode',
   'fine, but the spacing looks odd',
   'the score badge looks smaller than before',
-  'hmm',
+  'hmm', "that's the one", 'awesome, thanks', 'ok', 'fine whatever', 'i guess', 'idk', 'darker sounds good', 'yes ship it, the footer is off',
 ];
