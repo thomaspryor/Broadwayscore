@@ -16,10 +16,20 @@
 
 // Words that mean yes. "go" is handled separately, only as a whole clause.
 const APPROVE_RE = /\b(?:approved?|ship|push|send|deploy|publish|merge|lgtm|looks good|looks great|great|perfect|awesome|beautiful|love it|nice|go ahead|go for it|good to go|all good|yep|yup|yeah|yes|do it)\b/i;
+// BRO-7873: a lone "nice"/"looks good" is a yes, but "nice. one thing, the title wraps" is a complaint wearing one.
+// Weak yes words only count as a firm yes when they are the whole message (or every clause is a yes).
+const WEAK_APPROVE_RE = /^(?:looks good|looks great|great|perfect|awesome|beautiful|love it|nice|all good)$/i;
 const BARE_GO_RE = /^(?:go|go go|go now|go please|please go)$/i;
 
 // A clause that holds, delays or conditions the push, wherever it sits in the clause.
-const STOP_RE = /\b(?:hold|wait|stop|cancel|pause|nah|nope|no|except|unless|first|before|until|once|later|although|though|rather|instead|revisit|hang on|not yet|not sure|never mind|one sec|tomorrow|tonight|if|when|assuming|provided|pending|as long as|soon|eventually|after|afterwards|next|week|weeks|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday|hours?|lunch|let me|need to see|want to see|look again|another look|check|kidding|show me|send me|also|broken|wrong|off|bug|bugs|issues?|problems?|bad|ugly|not working)\b/i;
+// BRO-7873: split in two so the LLM judge only ever sees the soft ones. HARD words are literal
+// holds, conditions and delays on the push: final, never sent to a model. SOFT words are
+// complaints, requests for more to look at or "fix X" asides: a person reads those better than a list.
+// A clause stops the push if either list matches, so classifyOwnerReply behaves exactly as before.
+const HARD_STOP_WORDS = 'hold|wait|stop|cancel|pause|nah|nope|no|except|unless|first|before|until|once|later|hang on|not yet|not sure|never mind|one sec|tomorrow|tonight|if|when|assuming|provided|pending|as long as|soon|eventually|after|afterwards|next|week|weeks|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday|hours?|lunch|kidding';
+const SOFT_STOP_WORDS = 'although|though|rather|instead|revisit|let me|need to see|want to see|look again|another look|check|show me|send me|also|broken|wrong|off|bug|bugs|issues?|problems?|bad|ugly|not working';
+const HARD_STOP_RE = new RegExp(`\\b(?:${HARD_STOP_WORDS})\\b`, 'i');
+const SOFT_STOP_RE = new RegExp(`\\b(?:${SOFT_STOP_WORDS})\\b`, 'i');
 // fix/change/redo is a stop ("looks good, fix the padding first") unless the clause
 // defers it AFTER the verb ("fix the system so it's less annoying after").
 const CHANGE_VERB_RE = /\b(?:fix|change|redo|rework|tweak)\b/i;
@@ -57,13 +67,19 @@ function negatesPush(clause) {
   return false;
 }
 
-export function isStopClause(clause) {
+/** @returns {'hard'|'soft'|null} how this clause holds back the push, if it does. */
+export function stopKind(clause) {
   const deferred = DEFERRAL_AFTER_VERB_RE.test(clause);
-  if (CHANGE_VERB_RE.test(clause) && !deferred) return true;
   let probe = clause;
   if (deferred) probe = probe.replace(new RegExp(DEFERRABLE_STOP_RE.source, 'gi'), ' ');
   probe = probe.replace(FRUSTRATION_IDIOM_RE, ' ');
-  return STOP_RE.test(probe) || HARD_NEGATOR_RE.test(probe) || negatesPush(probe);
+  if (HARD_STOP_RE.test(probe) || HARD_NEGATOR_RE.test(probe) || negatesPush(probe)) return 'hard';
+  if (CHANGE_VERB_RE.test(clause) && !deferred) return 'soft';
+  return SOFT_STOP_RE.test(probe) ? 'soft' : null;
+}
+
+export function isStopClause(clause) {
+  return stopKind(clause) !== null;
 }
 
 export function isApproveClause(clause) {
@@ -78,3 +94,33 @@ export function classifyOwnerReply(text) {
   if (clauses.some(isStopClause)) return 'stop';
   return clauses.some(isApproveClause) ? 'approve' : 'neutral';
 }
+
+/**
+ * BRO-7873: how much of the decision the rules own.
+ *   hard-approve  the rules already say yes: no model needed
+ *   hard-stop     a literal hold, condition, delay or negation: final, the model never sees it
+ *   gray          no stop word beyond soft complaints or asks (or no yes either way): the judge may read it
+ * Everything here is derived from the same clauses as classifyOwnerReply, so the two cannot disagree
+ * about what counts as a hard stop.
+ * @returns {'hard-approve'|'hard-stop'|'gray'}
+ */
+export function classifyOwnerReplyTier(text) {
+  if (!text || typeof text !== 'string' || !text.trim()) return 'hard-stop';
+  const clauses = splitClauses(text.replace(/[\u2018\u2019\u02BC]/g, "'"));
+  const kinds = clauses.map(stopKind);
+  if (kinds.includes('hard')) return 'hard-stop';
+  if (kinds.includes('soft')) return 'gray';
+  if (!clauses.some(isApproveClause)) return 'gray';
+  // Only weak yes words, plus clauses that are not yes at all: let the judge read the rest.
+  const strong = clauses.some(c => isApproveClause(c) && !WEAK_APPROVE_RE.test(c.trim()) && !isOnlyWeakYes(c));
+  if (!strong && clauses.some(c => !isApproveClause(c))) return 'gray';
+  return 'hard-approve';
+}
+
+function isOnlyWeakYes(clause) {
+  // "looks great" / "love it" inside a longer clause still carries only weak yes words.
+  const m = clause.match(APPROVE_RE);
+  return !!m && WEAK_APPROVE_RE.test(m[0].trim()) && !BARE_GO_RE.test(clause.trim());
+}
+
+export const _STOP_WORD_LISTS = { HARD_STOP_WORDS, SOFT_STOP_WORDS };

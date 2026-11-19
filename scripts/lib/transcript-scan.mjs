@@ -25,7 +25,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { isMainModule } from './is-main-module.mjs';
-import { classifyOwnerReply } from './owner-reply-classifier.mjs';
+import { classifyOwnerReply, classifyOwnerReplyTier } from './owner-reply-classifier.mjs';
 
 // This file lives at <root>/scripts/lib/, so the checkout root is two levels
 // up. Derived from THIS file rather than cwd on purpose: the gate hooks invoke
@@ -144,21 +144,29 @@ function approvalRe(hash) {
 // toward shipping, on anything ambiguous).
 // Word lists and clause rules live in owner-reply-classifier.mjs (BRO-7848): a negation word
 // now only blocks the clause it sits in, and a bare "go" counts. Still fails toward asking.
-function isPlainApproval(text) {
-  if (!text || typeof text !== 'string') return false;
+// BRO-7873: the shape checks that run before ANY reading of the reply, rules or judge alike:
+// the explicit-hash form is per-hash scoped, and a question is never a yes.
+function rejectedByShape(text) {
+  if (!text || typeof text !== 'string') return true;
   // If the user used the explicit hash form (`APPROVED: <hash>`), honor it
   // STRICTLY via approvalRe — the bare word "approved" must not approve a
   // DIFFERENT verdict than the one named. Preserves per-hash scoping so a stale
   // approval of verdict A can't green-light verdict B.
-  if (/APPROVED:\s*[A-Za-z0-9]{6,}/.test(text)) return false;
-  if (classifyOwnerReply(text) !== 'approve') return false; // "don't ship", "not yet", "yes but wait" etc. stay stops
+  if (/APPROVED:\s*[A-Za-z0-9]{6,}/.test(text)) return true;
   // BRO-7295: a question ("did you push it?", "should we deploy?") is not a
   // yes. Only a literal yes/approved inside it counts, which keeps the
   // frustrated "HOW MANY TIMES DO I HAVE TO SAY YES?!" working.
   // A question about approval is not approval: "did my yes get recorded?", "is it approved?".
-  if (/^\s*(?:did|is|was|does|do|has|have|can|will|should|are|what|why|when|where|which)\b[^]*\?\s*$/i.test(text)) return false;
-  if (/\?\s*$/.test(text.trim()) && !/\b(?:yes|yep|yup|yeah|approved?)\b/i.test(text)) return false;
-  return true;
+  if (/^\s*(?:did|is|was|does|do|has|have|can|will|should|are|what|why|when|where|which)\b[^]*\?\s*$/i.test(text)) return true;
+  if (/\?\s*$/.test(text.trim()) && !/\b(?:yes|yep|yup|yeah|approved?)\b/i.test(text)) return true;
+  return false;
+}
+
+function isPlainApproval(text) {
+  if (rejectedByShape(text)) return false;
+  // "don't ship", "not yet", "yes but wait" etc. stay stops. BRO-7873: a weak yes plus other content ("nice. one thing, ...") is
+  // gray, not a rules approval, so the judge (or the owner) reads the rest.
+  return classifyOwnerReply(text) === 'approve' && classifyOwnerReplyTier(text) === 'hard-approve';
 }
 
 // BRO-7295: who wrote this record? Only the owner's own typed text may approve.
@@ -322,16 +330,45 @@ export function queryApprovalOf(events, hash, { after = null } = {}) {
         const a = Date.parse(after), t = Date.parse(e.ts || '');
         if (!(t >= a)) { approved = false; reason = 'owner reply is older than the verdict'; }
       }
+      // BRO-7873: a reply the rules did not approve MAY go to the judge, but only if it passed the
+      // shape checks and is newer than the verdict, and only when it is gray (never a hard stop).
+      const tier = rejectedByShape(e.text) ? 'hard-stop' : classifyOwnerReplyTier(e.text);
+      // Freshness applies to the judge too: no timestamp, or a reply older than the verdict, is never judged.
+      const fresh = after == null || Date.parse(e.ts || '') >= Date.parse(after);
+      const judgeCandidate = !approved && !reason && fresh && tier === 'gray';
       return {
         approved,
         via: approved ? (exact ? 'hash' : 'plain-affirmative') : null,
         lastUserText: e.text.slice(0, 200),
         matchedHash: hash,
+        tier,
+        ...(judgeCandidate ? { judgeCandidate: true, judgeText: e.text, judgeTs: e.ts || null } : {}),
         ...(reason ? { reason } : {}),
       };
     }
   }
   return { approved: false, reason: 'no user text in transcript' };
+}
+
+/**
+ * BRO-7873: queryApprovalOf plus the LLM judge for gray replies. The judge module is loaded lazily:
+ * this file is imported by many hooks that must not pay for it (or its spend meter) unless a gray
+ * reply actually shows up. Any judge failure leaves the rules' answer untouched (ask the owner).
+ * @param {object} [o] { judge, mode, logPath, fetchImpl, env, keys } test hooks, forwarded to judgeGrayReply
+ */
+export async function queryApprovalOfJudged(events, hash, opts = {}, o = {}) {
+  const base = queryApprovalOf(events, hash, opts);
+  const { judgeCandidate, judgeText, judgeTs, ...out } = base;
+  if (!judgeCandidate) return out;
+  try {
+    const { judgeGrayReply } = await import('./owner-reply-judge.mjs');
+    const r = await judgeGrayReply({ text: judgeText, ts: judgeTs, verdictHash: hash }, o);
+    const detail = { judge: { decision: r.decision, mode: r.mode, provider: r.verdict.provider, confidence: r.verdict.confidence, error: r.verdict.error || null } };
+    if (r.approved) return { ...out, approved: true, via: 'llm-judge', ...detail };
+    return { ...out, ...detail };
+  } catch (e) {
+    return { ...out, judge: { decision: 'ask', error: String(e?.message || e).slice(0, 80) } };
+  }
 }
 
 // Exempting a script from the push gate is an ASSERTION, and this is where it
@@ -669,7 +706,7 @@ async function main() {
       // --after-file: the verdict file's mtime (BRO-7295). An unreadable file means no freshness bound.
       let after = args.after || null;
       if (!after && args['after-file']) { try { after = statSync(args['after-file']).mtime.toISOString(); } catch { /* no bound */ } }
-      result = queryApprovalOf(events, hash, { after });
+      result = await queryApprovalOfJudged(events, hash, { after });
       break;
     }
     case 'reference-attached':
