@@ -39,7 +39,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { unconfirmedArtReason } = require('./lib/unconfirmed-art-policy');
-const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, refusedSourceReason, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
+const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, refusedSourceReason, freshSourceFor, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { findContentOwner } = require('./lib/duplicate-images');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
@@ -2747,10 +2747,10 @@ function applyImages(show, images) {
     const p = safe[format];
     if (typeof p !== 'string' || !p) continue;
     const st = staged && staged[format] && staged[format].local === p ? staged[format] : null;
-    if (!st && p === before[format]) continue; // not touched by this fetch
-    // _fileSources entries are { path, source }, counted only for the file served (as recordFileSources).
     const fe = fileSources && fileSources[format];
-    const src = fe && fe.path === p && typeof fe.source === 'string' ? fe.source : (/^https?:/.test(p) ? p : null);
+    // Untouched unless staged, or this fetch wrote the file in place (regional tier).
+    if (!st && p === before[format] && !(fe && fe.path === p)) continue;
+    const src = freshSourceFor(format, p, fileSources);
     const why = refusedSourceReason(show, src);
     if (!why) continue;
     console.log(`   ✗ Refusing ${format} for ${show.id}: ${why} (${String(src).slice(0, 90)})`);

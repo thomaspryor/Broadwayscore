@@ -380,6 +380,18 @@ function recordFileSources(sources, images) {
   return recorded;
 }
 
+/**
+ * The source of the candidate a fetch just produced for one format, or null.
+ * `value` is the candidate (a local /images/ path or a CDN URL); `fileSources`
+ * is images._fileSources, whose entries are { path, source } and count only for
+ * the file actually served (the rule recordFileSources uses).
+ */
+function freshSourceFor(format, value, fileSources) {
+  const e = fileSources && fileSources[format];
+  if (e && e.path === value && typeof e.source === 'string') return e.source;
+  return typeof value === 'string' && /^https?:/.test(value) ? value : null;
+}
+
 /** IBDB is a Broadway database: any hit for a London row is another production. */
 function ibdbEligible(show) {
   return todaytixMarket(show) !== 'london';
@@ -407,6 +419,7 @@ function buildMezzIndex(records) {
 }
 
 module.exports = {
+  freshSourceFor,
   normalizeMezzTitle,
   buildMezzIndex,
   sourceBase,

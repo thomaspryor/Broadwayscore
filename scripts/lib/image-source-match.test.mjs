@@ -9,7 +9,7 @@ const {
   normalizeVenueName, venuesMatch, pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, buildVenueCityIndex,
   canReuseArchivedFile,
   mayServeDiskImage, thumbnailFallbackAction,
-  keepExistingImage, findRejectedSourcesInUse, wrongEraTodayTixReason, refusedSourceReason, missingFileRedownload, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
+  keepExistingImage, findRejectedSourcesInUse, wrongEraTodayTixReason, refusedSourceReason, missingFileRedownload, freshSourceFor, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
 } = require('./image-source-match.js');
 
 const at = (iso) => ({ __type: 'Date', iso });
@@ -414,10 +414,19 @@ test('the finder refuses refused sources for every tier in applyImages', async (
   const apply = src.slice(src.indexOf('function applyImages('));
   const body = apply.slice(0, apply.indexOf('\nfunction ', 10));
   assert.match(body, /refusedSourceReason\(show, src\)/);
-  // _fileSources entries are { path, source } objects: the guard must read .source, never the object.
-  assert.match(body, /fe\.path === p && typeof fe\.source === 'string' \? fe\.source/);
-  assert.doesNotMatch(body, /\(fileSources && fileSources\[format\]\) \|\|/);
+  assert.match(body, /const src = freshSourceFor\(format, p, fileSources\)/);
   const effect = { id: 'the-effect-west-end-2012', market: 'west-end', status: 'closed', openingDate: '2012-11-13', closingDate: '2013-02-23', images: { thumbnail: null, poster: null, hero: null } };
   const nt2023 = 'https://images.ctfassets.net/6pezt69ih962/4oIOdVMdvX8tsExMGD19Vr/5c482b411daf0d92e6625bac8f1059f8/NTGDS_CC_The_Effect_Digital_TodayTix_20.jpg';
   assert.ok(refusedSourceReason(effect, nt2023));
+});
+
+test('freshSourceFor reads the served file source, or a CDN value', () => {
+  const tt = 'google-images:https://www.todaytix.com/london/shows/1-x';
+  const fs = { thumbnail: { path: '/images/shows/x/thumbnail.jpg', source: tt } };
+  assert.equal(freshSourceFor('thumbnail', '/images/shows/x/thumbnail.jpg', fs), tt);
+  assert.equal(freshSourceFor('thumbnail', '/images/shows/x/other.jpg', fs), null);
+  assert.equal(freshSourceFor('poster', 'https://cdn.example/p.jpg', fs), 'https://cdn.example/p.jpg');
+  assert.equal(freshSourceFor('poster', '/images/shows/x/poster.jpg', null), null);
+  const effect = { id: 'e', market: 'west-end', status: 'closed', openingDate: '2012-11-13', closingDate: '2013-02-23', images: {} };
+  assert.ok(refusedSourceReason(effect, freshSourceFor('thumbnail', '/images/shows/x/thumbnail.jpg', fs)));
 });
