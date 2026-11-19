@@ -397,6 +397,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     // `node scripts/outlet-census.js` runs that reach main through land/*, not this push path.
     // '/*.json' matches direct children only, so .cache/ and london/ stay out.
     file: 'audit/outlet-census/*.json',
+    concurrencyGroup: 'audit-census-recall',
     surface: 'public-repo',
     status: 'single-writer',
     apiFallbackSafe: true,
