@@ -373,13 +373,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-19T12:21:10.220Z",
+      "lastSeen": "2026-11-19T13:33:04.395Z",
       "lastNotifiedAt": "2026-11-19T04:22:30.126Z",
       "lastSurfacedAt": "2026-11-17T03:05:41.603Z",
       "notifyCount": 85,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -19491,7 +19491,7 @@
       "title": "Roundup gaps: 12 listed review(s) not captured across 7 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-19T12:19:57.353Z",
+      "lastSeen": "2026-11-19T13:32:32.742Z",
       "lastNotifiedAt": "2026-11-19T09:17:11.533Z",
       "lastSurfacedAt": null,
       "notifyCount": 62,
@@ -19508,7 +19508,7 @@
         "la-distance-bam-off-broadway-2026",
         "much-ado-about-nothing-2026"
       ],
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -45672,7 +45672,7 @@
       "resolvedAt": "2026-11-18T18:16:02.455Z"
     },
     "uncollected-blackout:menopause-the-musical-tour-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live show has ZERO critic reviews on site: Menopause The Musical",
       "firstSeen": "2026-11-18T20:03:57.153Z",
@@ -45683,7 +45683,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7795",
-      "silentRefires": 12
+      "silentRefires": 12,
+      "resolvedAt": "2026-11-19T13:32:52.251Z",
+      "resolveReason": "audit-uncollected-live-reviews: no longer a total blackout"
     },
     "land:land/bro-7794-nearmiss-news": {
       "status": "open",

@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-19T12:21:10.087Z",
+  "generatedAt": "2026-11-19T13:33:04.263Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 359,
-  "clean": 358,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "dear-evan-hansen-la-regional-2026",
-      "title": "Dear Evan Hansen",
-      "openingDate": "2026-11-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 91 vs local 90.7 (Δ0.3)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-19T12:21:06.858Z"
-    }
-  ],
+  "clean": 359,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

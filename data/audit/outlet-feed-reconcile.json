@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T12:21:10.409Z",
+  "generatedAt": "2026-11-19T13:33:04.580Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -158,28 +158,16 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theatre-weekly",
-      "error": "HTTP 403 for https://theatreweekly.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
+      "outletId": "north-west-end",
+      "error": "Timeout fetching https://northwestend.com/feed/"
     },
     {
-      "outletId": "exeunt-magazine",
-      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
-    },
-    {
-      "outletId": "fringereview",
-      "error": "HTTP 403 for https://fringereview.co.uk/feed/"
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     },
     {
       "outletId": "times-square-chronicles",
@@ -190,18 +178,18 @@
       "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 752,
-  "matchedGaps": 0,
-  "possibleGaps": 3,
+  "itemsScanned": 858,
+  "matchedGaps": 1,
+  "possibleGaps": 2,
   "gaps": [
     {
-      "showId": "annie-regional-2026-drury-lane-oakbrook",
-      "title": "Annie",
-      "level": "possible",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/annie-the-brindley/",
-      "headline": "Annie &#8211; The Brindley",
-      "publishDate": "2026-11-17"
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "level": "matched",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-desire-under-the-elms-almeida-theatre",
+      "headline": "Review: DESIRE UNDER THE ELMS, Almeida Theatre",
+      "publishDate": "2026-11-19"
     },
     {
       "showId": "much-ado-about-nothing-2026",

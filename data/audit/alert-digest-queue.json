@@ -354,20 +354,6 @@
     "queuedAt": "2026-11-19T11:36:29.351Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T12:20:55.761Z"
-  },
-  {
     "conditionKey": "corpus-drift:monitor-only",
     "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-19.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
@@ -380,6 +366,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-19T12:44:44.179Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T13:32:49.055Z"
   },
   {
     "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
