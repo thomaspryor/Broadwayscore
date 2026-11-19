@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-19T01:34:38.958Z",
+  "generatedAt": "2026-11-19T03:36:40.919Z",
   "date": "2026-11-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 194444,
+  "entryCount": 204744,
   "shows": [
     {
       "showId": "beetlejuice-2025",
@@ -664,6 +664,21 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "nacho-ate-spiderman-regional-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 549337,
+        "rebuilt-to-deployed": 13707787
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -5222,6 +5237,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "planet-omar-leeds-regional-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "dear-jack-dear-louise-off-west-end-2026",
       "reviewCount": 9,
       "median_e2e_ms": null,
@@ -5239,6 +5269,21 @@
     {
       "showId": "inter-alia-west-end-2026",
       "reviewCount": 18,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-official-biography-regional-2026",
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5510,13 +5555,13 @@
     },
     {
       "showId": "heroes-of-the-fourth-turning-red-regional-2026",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 309614,
-        "scored-to-rebuilt": 497917,
+        "scored-to-rebuilt": 494962,
         "rebuilt-to-deployed": 48784931
       },
       "reviews_over_15min": 0,
@@ -6071,7 +6116,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 644428,
-        "scored-to-rebuilt": 1336540,
+        "scored-to-rebuilt": 1091314,
         "rebuilt-to-deployed": 48321633
       },
       "reviews_over_15min": 0,
@@ -6170,13 +6215,13 @@
     },
     {
       "showId": "the-good-thief-off-broadway-2026",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": 35806298,
       "p90_e2e_ms": 35806298,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 386483,
-        "scored-to-rebuilt": 513845,
+        "collected-to-scored": 275045,
+        "scored-to-rebuilt": 537751,
         "rebuilt-to-deployed": 35008754
       },
       "reviews_over_15min": 1,
@@ -6453,6 +6498,21 @@
     {
       "showId": "admissions-regional-2026",
       "reviewCount": 7,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "dear-evan-hansen-regional-2026",
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7364,29 +7424,14 @@
     },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1587830,
+        "scored-to-rebuilt": 914967,
         "rebuilt-to-deployed": 16571566
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "nacho-ate-spiderman-regional-2026",
-      "reviewCount": 2,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 549337,
-        "rebuilt-to-deployed": 13707787
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8579,13 +8624,13 @@
     },
     {
       "showId": "now-you-see-me-live-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 754354,
-        "scored-to-rebuilt": 105845,
+        "scored-to-rebuilt": 107282,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8654,13 +8699,13 @@
     },
     {
       "showId": "tosca-off-broadway-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1373368,
+        "scored-to-rebuilt": 713513,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8766,6 +8811,81 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "sea-wall-a-life-2019",
+      "reviewCount": 27,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "reviewCount": 39,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "reviewCount": 21,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-norwegians-regional-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 812758,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
