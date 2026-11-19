@@ -33559,7 +33559,7 @@
       "resolveReason": "absent"
     },
     "workflow-alert:lighthouse-regression": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Lighthouse regression detected on broadwayscorecard.com",
       "firstSeen": "2026-10-30T21:28:02.257Z",
@@ -33575,7 +33575,9 @@
         "mode": "dispatch-at-filing",
         "runId": "44577150153",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44577150153"
-      }
+      },
+      "resolvedAt": "2026-11-19T17:39:03.556Z",
+      "resolveReason": "clear in latest run"
     },
     "land:land/bro-6663-lane-recording-import": {
       "status": "resolved",
