@@ -139,6 +139,10 @@ function writeTranscript(dir, toolCalls, { card = true, userText = 'please do th
 // picks the verdict (0 healthy / 3 erroring / 4 unreachable).
 const STUB_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-stubroot-'));
 fs.mkdirSync(path.join(STUB_ROOT, 'scripts'));
+// BRO-7872: run each case from a host-neutral env. Inherited from a cloud session, CLAUDE_CODE_REMOTE and a real
+// OPENAI_API_KEY switched on the cloud-only gates and the live skeptic reviewer, so 30 cases failed in cloud only and
+// one made a paid LLM call. A case that wants cloud sets CLAUDE_CODE_REMOTE in its own env.
+const HOST_ENV = Object.fromEntries(Object.entries(process.env).filter(([k]) => !['CLAUDE_CODE_REMOTE', 'OPENAI_API_KEY'].includes(k)));
 fs.writeFileSync(path.join(STUB_ROOT, 'scripts', 'linear-brain.js'), 'process.exit(Number(process.env.STUB_PROBE_EXIT || 0));\n');
 
 function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive = false, { cwd, hook = REPO_HOOK } = {}) {
@@ -160,7 +164,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
       // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', LANDREFUSED_GATE_MODE: 'off', LANDUNCHECKED_REMOTE_CHECK: '0', ...env, HOME: fakeHomeDir },
+      env: { ...HOST_ENV, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', LANDREFUSED_GATE_MODE: 'off', LANDUNCHECKED_REMOTE_CHECK: '0', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
