@@ -133,10 +133,12 @@ jobs:
           ACTIVE=$(gh run list --workflow=collect-review-texts.yml --limit 50 --json displayTitle,status 2>/dev/null \
             | node -e "const ow=require('./scripts/lib/outlet-opening-window');let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{let r=[];try{r=JSON.parse(s)}catch{};console.log([...ow.activeCollectShowIds(r)].join(' '))})" || true)
           for ID in $(echo "$IDS" | tr ',' ' '); do
-            if [ -n "$ACTIVE" ] && echo " $ACTIVE " | grep -qF " $ID "; then
-              echo "Skipping $ID: a collect-review-texts run for it is already queued or running"
-              continue
-            fi
+            case " $ACTIVE " in
+              *" $ID "*)
+                echo "Skipping $ID: a collect-review-texts run for it is already queued or running"
+                continue
+                ;;
+            esac
             echo "Dispatching collect-review-texts for $ID"
             gh workflow run collect-review-texts.yml -f show_filter="$ID" -f aggressive=true -f max_reviews=60 -f browserbase_max_sessions=5 || echo "::warning::collect dispatch failed for $ID"
           done
