@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T00:28:17.730Z",
+  "timestamp": "2026-11-19T01:38:33.302Z",
   "stats": {
-    "totalReviews": 82704,
-    "alreadyFlagged": 22492,
+    "totalReviews": 82707,
+    "alreadyFlagged": 22493,
     "dateGuardCatches": 220,
     "directorMismatch": 3763,
-    "tvFilmSignals": 2354,
-    "londonSignals": 3802,
-    "offBroadwaySignals": 767,
+    "tvFilmSignals": 2356,
+    "londonSignals": 3801,
+    "offBroadwaySignals": 769,
     "yearMismatch": 385,
-    "noPublishDate": 8269
+    "noPublishDate": 8266
   },
   "findings": [
     {
@@ -58269,6 +58269,25 @@
     },
     {
       "showId": "sea-wall-a-life-2019",
+      "file": "dailybeast--tim-teeman.json",
+      "score": 62,
+      "publishDate": "2019-08-08",
+      "url": "https://www.thedailybeast.com/sea-walla-life-jake-gyllenhaal-and-tom-sturridge-confront-life-and-death-on-broadway?source=articles&via=rss",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "sea-wall-a-life-2019",
       "file": "national-review--kyle-smith.json",
       "score": 38,
       "publishDate": "2019-08-09",
@@ -74872,6 +74891,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-norwegians-regional-2026",
+      "file": "broadwayworld--marc-savitt.json",
+      "score": null,
+      "publishDate": "2026-09-08",
+      "url": "https://www.broadwayworld.com/boston/article/Review-THE-NORWEGIANS-at-Shakespeare-Company-20260908",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -94395,20 +94428,6 @@
       "score": 75,
       "publishDate": "2026-05-28",
       "url": "https://theatreweekly.com/review-beetlejuice-the-musical-at-prince-edward-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "beetlejuice-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "score": null,
-      "publishDate": "2026-05-27",
-      "url": "https://theatreweekly.com/production-images-released-for-beetlejuice-the-musical-as-west-end-run-begins/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -124174,6 +124193,20 @@
       ]
     },
     {
+      "showId": "present-laughter-2017",
+      "file": "theatermania--david-gordon.json",
+      "score": 78,
+      "publishDate": "2017-04-05",
+      "url": "http://www.theatermania.com/broadway/news/present-laughter_80614.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "present-laughter-royal-bath-regional-2026",
       "file": "guardian--mark-lawson.json",
       "score": 79,
@@ -130291,7 +130324,7 @@
     },
     {
       "showId": "table-17-off-west-end-2026",
-      "file": "monstagigz--unknown.json",
+      "file": "monstagigz--mrmonstagigz.json",
       "score": 75,
       "publishDate": "2026-10-21",
       "url": "https://monstagigz.com/2026/10/21/theatre-review-table-17-starring-marisha-wallace-and-jamael-westman-at-the-kiln-theatre/",
@@ -135659,7 +135692,7 @@
     },
     {
       "showId": "the-hungry-ghost-off-west-end-2026",
-      "file": "revstanstheatreblog--unknown.json",
+      "file": "revstanstheatreblog--rightrevstan.json",
       "score": 82,
       "publishDate": "2026-10-06",
       "url": "https://revstanstheatreblog.co.uk/2026/10/06/review-the-hungry-ghost-bush-theatre/",
