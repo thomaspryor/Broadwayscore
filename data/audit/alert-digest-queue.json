@@ -810,6 +810,20 @@
     "queuedAt": "2026-11-18T22:31:32.557Z"
   },
   {
+    "conditionKey": "opening-night-lane-summary:its-a-wonderful-life-a-live-radio-play-2026:2026-11-18",
+    "title": "Opening-night lane for its-a-wonderful-life-a-live-radio-play-2026: 0 unpublished, 1 failed, 47 errors",
+    "description": "passes 124, admitted 1\nfailed: https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway (score failed for good after 1 attempt(s): scorer rejected the review: not_a_review)\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: rss: https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway: fetch deferred (pre-embargo direct-only window), retry at 2026-11-19T01:34:39.181Z: short page (559 chars) fetched direct-only\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: rss: https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway: fetch deferred (pre-embargo direct-only window), retry at 2026-11-19T01:38:52.397Z: short page (559 chars) fetched direct-only",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T06:09:50.627Z"
+  },
+  {
     "conditionKey": "watchdog-park:linear:BRO-7804",
     "title": "Watchdog parked #linear:BRO-7804 — redispatch never produced a launch",
     "description": "Watchdog: card \"Landed-change audit blames commits for workflows that were already red before they landed\" was claimed for redispatch at 2026-11-18T22:28:12.089Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7804), then re-arm with node scripts/linear-next.js --id BRO-7804 --force once fixed.",
@@ -1014,19 +1028,5 @@
     "testId": "tests/unit/compute-critic-score.test.mjs::real-data smoke test — a Gold-List-worthy show produces a plausible score",
     "fields": [],
     "queuedAt": "2026-11-19T03:00:05.119Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-19T05:22:29.717Z"
   }
 ]
