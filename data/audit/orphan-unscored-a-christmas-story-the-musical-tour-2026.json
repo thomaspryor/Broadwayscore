@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "a-christmas-story-the-musical-tour-2026",
   "openingDate": "2026-11-17",
-  "detectedAt": "2026-11-19T23:44:48.314Z",
+  "detectedAt": "2026-11-19T23:59:38.116Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "njcom--sal-dimaggio.json",
-      "outletId": "njcom",
-      "criticName": "Sal DiMaggio",
-      "url": "https://www.nj.com/entertainment/2026/11/nj-weekend-events-100-things-to-do-from-a-holiday-market-to-dinner-with-george-washington.html",
-      "fullTextLen": 31166,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "nuvo--nuvo.json",
       "outletId": "nuvo",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
