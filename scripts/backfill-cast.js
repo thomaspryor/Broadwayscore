@@ -266,7 +266,7 @@ async function main() {
         // empty tombstone so we don't re-scrape a production that truly has none.
         writeCastFile(show.id, {
           showId: show.id,
-          ibdbUrl: result.ibdbUrl || null,
+          ibdbUrl: result.ibdbUrl || show.ibdbUrl || null, // stamp the queried page so the "new IBDB page" retry stays one-shot
           scrapedAt: new Date().toISOString(),
           openingNightCast: [],
           currentCast: null
