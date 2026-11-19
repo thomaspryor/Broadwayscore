@@ -920,6 +920,20 @@
     "queuedAt": "2026-11-19T18:49:34.782Z"
   },
   {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T19:33:47.353Z"
+  },
+  {
     "conditionKey": "land:land/bro-7849-wrapup",
     "title": "Landing blocked: rebase red on land/bro-7849-wrapup",
     "description": "land.yml did not land land/bro-7849-wrapup: the rebase gate went red at ef1036c7fc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44596141364",

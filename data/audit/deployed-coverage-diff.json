@@ -1,13 +1,64 @@
 {
-  "generatedAt": "2026-11-19T18:13:48.790Z",
+  "generatedAt": "2026-11-19T19:34:07.588Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 364,
-  "clean": 364,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 361,
+  "defective": 3,
+  "byType": {
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "title": "A Homo Alone 2: Yikes, We Did It Again!",
+      "openingDate": "2026-11-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 62.16 vs local 63.49 (Δ1.33)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-19T19:34:04.110Z"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "title": "Florence",
+      "openingDate": "2026-11-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.46 vs local 77.04 (Δ2.58)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-19T19:34:04.110Z"
+    },
+    {
+      "showId": "the-fantasticks-2026",
+      "title": "The Fantasticks",
+      "openingDate": "2026-11-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.22 vs local 78.96 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 24,
+      "deployedCount": 25,
+      "firstDefectAt": "2026-11-19T19:34:04.110Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
