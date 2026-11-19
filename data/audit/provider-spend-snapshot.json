@@ -1,33 +1,36 @@
 {
-  "generatedAt": "2026-11-18T10:47:03.710Z",
-  "bannerText": "OVER BUDGET: scrapingbee on pace to run out before renewal: ~13185 credits/day (7-day average) x 17 days to 2026-12-05 = 224152 > 57937 left",
+  "generatedAt": "2026-11-19T11:09:27.209Z",
+  "bannerText": "OVER BUDGET: scrapingbee on pace to run out before renewal: ~12515 credits/day (7-day average) x 16 days to 2026-12-05 = 200240 > 47537 left",
   "items": [
     {
-      "title": "2026-11-17 · Browserbase: $1.14 (191 sessions, 236.65min)"
+      "title": "2026-11-18 · Browserbase: $0.84 (148 sessions, 84.45min)"
     },
     {
-      "title": "2026-11-17 · Bright Data: $3.59 (270 serp / 2121 unlocker)"
+      "title": "2026-11-18 · Bright Data: $3.63 (511 serp / 1908 unlocker)"
     },
     {
-      "title": "ScrapingBee: 11169 credits (192063 this cycle)"
+      "title": "ScrapingBee: 10400 credits (202463 this cycle)"
     },
     {
-      "title": "ScrapingDog: 126853 credits (1151023 this cycle)"
+      "title": "ScrapingDog: 103037 credits (1254060 this cycle)"
     },
     {
-      "title": "Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): collect-review-texts.js 112, bww-rr-discover.js 83, sweep-we-aggregators.js:the-stage 8, opening-night-lane 4, collect-talkinbroadway-index.js 1"
+      "title": "Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): bww-rr-discover.js 100, collect-review-texts.js 46, collect-talkinbroadway-index.js 2, opening-night-lane 2, sweep-we-aggregators.js:the-stage 1"
     },
     {
-      "title": "Bright Data attribution: 100% attributed — top callers (covers 95% of billed calls): opening-night-poller.js 926, audit-show-review-gap.js 459, collect-review-texts.js 348, ingest-review-from-url.js 266, opening-night-lane.js 261"
+      "title": "Bright Data attribution: 100% attributed — top callers (covers 100% of billed calls): opening-night-poller.js 800, gather-reviews.js 524, audit-show-review-gap.js 522, ingest-review-from-url.js 338, collect-review-texts.js 278"
     },
     {
-      "title": "ScrapingBee attribution: 100% attributed — top callers (covers 100% of billed credits): opening-night-poller.js 4651cr, gather-reviews.js 4132cr, collect-review-texts.js 990cr, sweep-we-aggregators.js 940cr, discover-opening-night-reviews.js 755cr"
+      "title": "ScrapingBee attribution: 100% attributed — top callers (covers 93% of billed credits): opening-night-poller.js 3899cr, gather-reviews.js 3613cr, collect-review-texts.js 988cr, discover-opening-night-reviews.js 853cr, scrape-show-score-audience.js 335cr"
     },
     {
-      "title": "ScrapingDog attribution: 96% attributed — top callers (covers 82% of billed credits): gather-reviews.js 61677cr, audit-show-review-gap.js 16549cr, discover-opening-night-reviews.js 12943cr, opening-night-poller.js 6983cr, collect-review-texts.js 6029cr"
+      "title": "ScrapingDog attribution: 93% attributed — top callers (covers 75% of billed credits): gather-reviews.js 40217cr, discover-opening-night-reviews.js 13278cr, audit-show-review-gap.js 13236cr, collect-review-texts.js 5781cr, opening-night-poller.js 4966cr"
     },
     {
-      "title": "2026-11-17 · LLM APIs (metered estimate, not the full bill): Claude est $13.12 (2467 calls) · Gemini est $6.71 (8719 calls; 36 search-grounded, 14 repeats) · OpenAI est $5.28 (1012 calls; 171 search-grounded) · top: scripts/audit-city-hub-dual-model.js [Audit Review Quality] $4.02; scripts/collect-review-texts.js [Collect Review Texts] $3.63; scripts/extract-pull-quotes.js [Rebuild Reviews Data] $3.14"
+      "title": "⚠️ ScrapingDog top-caller coverage low: 75% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
+    },
+    {
+      "title": "2026-11-18 · LLM APIs (metered estimate, not the full bill): Claude est $10.91 (2038 calls) · Gemini est $1.51 (2354 calls; 13 repeats) · OpenAI est $0.51 (548 calls) · top: scripts/collect-review-texts.js [Collect Review Texts] $3.69; scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $1.69; scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $1.40"
     }
   ],
   "moreCount": 0
