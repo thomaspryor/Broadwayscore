@@ -28,6 +28,7 @@ const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article
 const { unwrapWaybackUrl } = require('./lib/unwrap-wayback-url');
 const { parseIngestLine, chooseIngestByline } = require('./lib/ingest-url-line');
 const { isPlausiblePersonName } = require('./lib/byline-recovery');
+const { classifyNewsPost } = require('./lib/news-post-guard');
 const { readPageByline, bylineConflictStands } = require('./lib/page-byline');
 
 // An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
@@ -299,6 +300,19 @@ async function main() {
       } catch (e) {
         if (verbose) console.log(`    ⚠️  Fetch failed: ${e.message}`);
         results.warnings.push(`Fetch failed for ${url}: ${e.message}`);
+      }
+    }
+
+    // BRO-7817: an announcement (closing date, opening date, anniversary) is not a review. Refuse it
+    // before any file is written; both the url slug and the short body must say so.
+    if (fullText) {
+      const news = classifyNewsPost({ url, text: fullText });
+      if (news.news) {
+        results.skipped++;
+        results.warnings.push(`${prefix} News post, not a review (${news.reason}): ${url}`);
+        console.log(`    ⏭  Skipped news post (${news.reason})`);
+        console.log('');
+        continue;
       }
     }
 
