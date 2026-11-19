@@ -47,6 +47,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const {
   pickTicketUrl, buildTicketQuery, platformForUrl, VENUE_SITES,
   venueHostForShow, pickChildSitemaps, extractSameHostLinks, pickVenuePageUrl,
+  needsListingConfirmation,
 } = require('./lib/ticket-link-discovery');
 const { parseSitemapLocs } = require('./lib/gap-url-find');
 const { parseSitemapLines } = require('./lib/sitemap-urls');
@@ -151,20 +152,32 @@ async function fetchVenueText(url) {
 /**
  * Every URL a venue host publishes about its shows: robots.txt Sitemap: lines
  * (else /sitemap.xml), up to 4 show-ish child sitemaps of an index, and the
- * /whats-on/ and homepage links. At most MAX_VENUE_FETCHES reads; a failed read is
- * skipped. fetchText is injectable so the tests drive it without a network.
+ * /whats-on/ and homepage links. Tries https://www.<host> first and falls back
+ * to the bare host when www. answers neither robots.txt nor sitemap.xml.
+ * At most MAX_VENUE_FETCHES reads; a failed read is skipped. Returns
+ * { all, listed }: `listed` is the subset seen on the listing pages.
+ * fetchText is injectable so the tests drive it without a network.
  */
 async function collectVenueUrls(host, fetchText = fetchVenueText, gapMs = VENUE_REQUEST_GAP_MS) {
-  const origin = `https://www.${host}`;
   let fetches = 0;
+  const seen = new Map();
   const read = async (url) => {
+    if (seen.has(url)) return seen.get(url);
     if (fetches >= MAX_VENUE_FETCHES) return null;
     if (fetches > 0 && gapMs > 0) await new Promise((r) => setTimeout(r, gapMs));
     fetches++;
-    try { return await fetchText(url); } catch { return null; }
+    let text = null;
+    try { text = await fetchText(url); } catch { text = null; }
+    seen.set(url, text);
+    return text;
   };
-  const urls = [];
-  const robots = await read(`${origin}/robots.txt`);
+  let origin = `https://www.${host}`;
+  let robots = await read(`${origin}/robots.txt`);
+  if (!robots && !(await read(`${origin}/sitemap.xml`))) {
+    origin = `https://${host}`;
+    robots = await read(`${origin}/robots.txt`);
+  }
+  const all = [];
   const roots = parseSitemapLines(robots || '').filter((u) => {
     try { return new URL(u).hostname.replace(/^www\./, '') === host; } catch { return false; }
   });
@@ -173,30 +186,37 @@ async function collectVenueUrls(host, fetchText = fetchVenueText, gapMs = VENUE_
     const xml = await read(root);
     if (!xml) continue;
     const locs = parseSitemapLocs(xml);
-    if (!/<sitemapindex/i.test(xml)) { urls.push(...locs); continue; }
+    if (!/<sitemapindex/i.test(xml)) { all.push(...locs); continue; }
     for (const child of pickChildSitemaps(locs)) {
       const childXml = await read(child);
-      if (childXml && !/<sitemapindex/i.test(childXml)) urls.push(...parseSitemapLocs(childXml));
+      if (childXml && !/<sitemapindex/i.test(childXml)) all.push(...parseSitemapLocs(childXml));
     }
   }
   // Listing pages last: the homepage features current shows that some CMSs
   // leave out of the sitemap (writerstheatre.org /events/the-royale).
+  const listed = [];
   for (const page of [`${origin}/whats-on/`, `${origin}/`]) {
     const html = await read(page);
-    if (html) urls.push(...extractSameHostLinks(html, page));
+    if (html) listed.push(...extractSameHostLinks(html, page));
   }
-  return urls;
+  all.push(...listed);
+  return { all, listed };
 }
 
 /**
  * SERP-free pick for one show: its allowlisted venue host's own pages.
- * `cache` (host → Promise<urls>) makes several shows at one venue cost one crawl.
+ * `cache` (host → Promise<{all, listed}>) makes several shows at one venue
+ * cost one crawl. `requireListed` (needsListingConfirmation: another run of
+ * the same title at this venue exists) accepts only a URL on the venue's
+ * current listing pages, so an undated archive page of the other run in the
+ * sitemap can never be picked; a miss falls through to SERP.
  */
-async function discoverVenuePage(show, { cache = new Map(), fetchText = fetchVenueText, gapMs } = {}) {
+async function discoverVenuePage(show, { cache = new Map(), fetchText = fetchVenueText, gapMs, requireListed = false } = {}) {
   const host = venueHostForShow(show);
   if (!host) return null;
   if (!cache.has(host)) cache.set(host, collectVenueUrls(host, fetchText, gapMs));
-  return pickVenuePageUrl(await cache.get(host), show);
+  const { all, listed } = await cache.get(host);
+  return pickVenuePageUrl(requireListed ? listed : all, show);
 }
 
 async function main() {
@@ -232,7 +252,8 @@ async function main() {
       break;
     }
     console.log(`\n${show.id}: venue host ${venueHostForShow(show)}`);
-    const pick = await discoverVenuePage(show, { cache: venueCache });
+    const requireListed = needsListingConfirmation(shows, show);
+    const pick = await discoverVenuePage(show, { cache: venueCache, requireListed });
     if (!pick) { console.log('  ✗ no matching page on the venue site'); continue; }
     const holder = findTicketUrlHolder(shows, show, pick.url);
     if (holder) { console.log(`  ✗ ${pick.url} is already ${holder.id}'s listing`); continue; }

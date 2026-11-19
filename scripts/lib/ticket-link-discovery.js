@@ -496,7 +496,9 @@ function pickVenuePageUrl(urls, show) {
   for (const raw of urls) {
     const url = String(raw || '').replace(/^http:/, 'https:').split(/[?#]/)[0];
     const h = hostOf(url);
-    if (!h || !hostMatches(h, host)) continue;
+    // The venue host itself (hostOf already drops www.), never shop./blog./
+    // archive. subdomains, which carry merchandise or past seasons.
+    if (!h || h !== host) continue;
     if (platformForUrl(url) === null || isRegionMismatch(url, show)) continue;
     const s = scoreVenuePage(url, show);
     if (s) scored.push(s);
@@ -508,7 +510,24 @@ function pickVenuePageUrl(urls, show) {
   return { url: scored[0].url, platform: platformForUrl(scored[0].url) };
 }
 
+/**
+ * True when another catalog row shares this show's title at the same venue
+ * host (an earlier or later run, e.g. an RSC Hamlet revival). An undated
+ * archive page for that other run stays in the venue sitemap and answers 200,
+ * so for these shows a sitemap-only hit is not evidence; the URL must also be
+ * on the venue's current listing pages (what's-on / homepage).
+ */
+function needsListingConfirmation(shows, show) {
+  const host = venueHostForShow(show);
+  if (!host || !Array.isArray(shows)) return false;
+  const norm = (t) => foldTitle(String(t || '').replace(/\([^)]*\)\s*$/, ''));
+  const title = norm(show.title);
+  return shows.some((o) => o && o !== show && o.id !== show.id
+    && norm(o.title) === title && venueHostForShow(o) === host);
+}
+
 module.exports = {
+  needsListingConfirmation,
   venueHostForShow,
   pickChildSitemaps,
   extractSameHostLinks,

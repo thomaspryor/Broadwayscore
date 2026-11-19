@@ -358,3 +358,9 @@ test('pickVenuePageUrl: archive and past-production sections are never a current
     'https://www.leedsplayhouse.org.uk/past-productions/august-wilsons-fences/',
   ]) assert.equal(pickVenuePageUrl([u], leedsFences), null, u);
 });
+
+test('pickVenuePageUrl: only the venue host itself or www., never a subdomain', () => {
+  const pick = pickVenuePageUrl(['https://shop.leedsplayhouse.org.uk/event/fences/'], { ...leedsFences, synopsis: '' });
+  assert.equal(pick, null);
+  assert.equal(pickVenuePageUrl(['https://leedsplayhouse.org.uk/event/fences/'], leedsFences).url, 'https://leedsplayhouse.org.uk/event/fences/');
+});
