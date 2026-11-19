@@ -102,7 +102,12 @@ async function dryRunGates(transcriptPath, env = process.env) {
 /** The row's `skeptic` field (BRO-7872): { runs, gapsFound, gapsAnswered, errors } for this session's
  *  skeptic-review --ship-check runs, so ignored gaps show in the ledger and the digest. null when unreadable. */
 async function skepticOutcome(transcriptPath) {
-  try { return require('./skeptic-gap-answers.js').skepticStats((await import('./transcript-scan.mjs')).walkTranscript(transcriptPath)); } catch { return null; }
+  try {
+    // The coverage gate's own matcher, so the retro counts exactly the runs review-coverage counts (BRO-7872).
+    const { isSkepticReviewCall } = await import('./review-coverage.mjs');
+    const events = (await import('./transcript-scan.mjs')).walkTranscript(transcriptPath);
+    return require('./skeptic-gap-answers.js').skepticStats(events, { isSkepticCall: isSkepticReviewCall });
+  } catch { return null; }
 }
 
 /** PURE. The row's `gates` field: only gates with activity; {} means measured, nothing hit. */

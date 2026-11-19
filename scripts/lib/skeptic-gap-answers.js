@@ -153,16 +153,17 @@ function answerInstructions(unanswered) {
   ].join('\n');
 }
 
-const SKEPTIC_SCRIPT_RE = /scripts\/lib\/skeptic-review-stop\.mjs\b[^\n]*--ship-check\b/;
 /**
  * PURE. Skeptic outcomes over a whole session, for the retro row and the digest.
- * isSkepticCall(command) decides what a run is (review-coverage.mjs passes isSkepticReviewCall; the default is a
- * plain pattern so CJS callers need no ESM import).
+ * isSkepticCall(command) decides what a run is. It is required: pass review-coverage.mjs isSkepticReviewCall, the one
+ * matcher the coverage gate uses. A looser text pattern here counted heredocs that only MENTION the reviewer (a test file
+ * written with `cat > x <<EOF`) as failed runs: BRO-7872's own session recorded 4 runs / 3 errors for 1 real run.
  * -> { runs, gapsFound, gapsAnswered, errors }
  *    runs = every skeptic --ship-check invocation (errors = those with no verdict); gapsFound = material gaps in the LAST report;
  *    gapsAnswered = how many of those have an accepted answer; errors = UNAVAILABLE reports.
  */
-function skepticStats(events, { isSkepticCall = (cmd) => SKEPTIC_SCRIPT_RE.test(cmd), lastMessage = '' } = {}) {
+function skepticStats(events, { isSkepticCall, lastMessage = '' } = {}) {
+  if (typeof isSkepticCall !== 'function') throw new TypeError('skepticStats: pass isSkepticCall (review-coverage.mjs isSkepticReviewCall)');
   const results = new Map();
   for (const e of events || []) if (e.kind === 'tool_result') results.set(e.tool_use_id, e);
   let runs = 0; let errors = 0; let first = -1; let last = -1; let lastText = '';

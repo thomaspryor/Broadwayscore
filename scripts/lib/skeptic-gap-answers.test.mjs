@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { shipCheckReport } from './skeptic-review-stop.mjs';
 
+import { isSkepticReviewCall } from './review-coverage.mjs';
 const { parseSkepticReport, answerLines, verifyRan, skepticStats, concreteReason } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
 
 test('parses the real ship-check report (round trip with shipCheckReport)', () => {
@@ -60,6 +61,7 @@ test('skepticStats counts runs, gaps found/answered and unavailable runs', () =>
   const two = 'SKEPTIC REVIEW: 2 material gap(s).\n1. a (b)\n   check: node scripts/q.js\n2. c (d)\n   check: node scripts/q.js --all';
   const events = [call('1'), out('1', 'SKEPTIC REVIEW UNAVAILABLE (timeout); this does not count as a review.'), call('2'), out('2', two),
     { kind: 'assistant_text', text: 'GAP 2: cannot run here: the full run spends real money on paid image APIs' }];
-  assert.deepEqual(skepticStats(events), { runs: 2, gapsFound: 2, gapsAnswered: 1, errors: 1 });
-  assert.deepEqual(skepticStats([]), { runs: 0, gapsFound: 0, gapsAnswered: 0, errors: 0 });
+  assert.deepEqual(skepticStats(events, { isSkepticCall: isSkepticReviewCall }), { runs: 2, gapsFound: 2, gapsAnswered: 1, errors: 1 });
+  assert.deepEqual(skepticStats([], { isSkepticCall: isSkepticReviewCall }), { runs: 0, gapsFound: 0, gapsAnswered: 0, errors: 0 });
+  assert.throws(() => skepticStats(events), /pass isSkepticCall/, 'no silent loose fallback matcher');
 });

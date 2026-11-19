@@ -313,6 +313,9 @@ test('BRO-7872: --record writes the skeptic outcome (runs, gaps found/answered, 
     row({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Bash', id: 'k1', input: { command: 'node scripts/lib/skeptic-review-stop.mjs --ship-check' } }] } }),
     row({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'k1', content: gaps }] } }),
     row({ type: 'assistant', message: { content: [{ type: 'text', text: 'GAP 2: cannot run here: the full run sends real email to subscribers' }] } }),
+    // A heredoc that only MENTIONS the reviewer is not a run (it once counted as 3 failed runs in BRO-7872's own session).
+    row({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Bash', id: 'k2', input: { command: "cat > scripts/x.test.mjs <<'EOF'\n// runs node scripts/lib/skeptic-review-stop.mjs --ship-check\nEOF" } }] } }),
+    row({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'k2', content: '' }] } }),
   ].join('\n') + '\n');
   const r = spawnSync('node', [path.join(path.dirname(new URL(import.meta.url).pathname), 'session-retro.js'), '--record', '--no-action=test fixture only', `--transcript=${file}`],
     { encoding: 'utf8', env: { ...process.env, SESSION_RETRO_LEDGER: ledger } });
