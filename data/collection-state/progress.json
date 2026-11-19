@@ -554,7 +554,12 @@
     "the-great-gatsby-west-end-2025/londontheatredirect--hay-brunsdon.json",
     "ceremonies-in-dark-old-men-off-broadway-2025/stagebuddy--elyse-trevers.json",
     "titanic-the-musical-regional-2025/chicagotheaterandarts--jodie-jacobs.json",
-    "irishtown-off-broadway-2025/front-row-center--david-walters.json"
+    "irishtown-off-broadway-2025/front-row-center--david-walters.json",
+    "much-ado-about-nothing-2026/nytg--unknown.json",
+    "the-heart-off-broadway-2026/mail-on-sunday--unknown.json",
+    "jenufa-off-broadway-2026/wsj--richard-sasanow.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json",
+    "here-there-are-blueberries-2026/exeunt-magazine--carol-rocamora.json"
   ],
   "failed": [
     "king-lear-off-broadway-2026/patch--lauren-traut.json",
@@ -850,7 +855,10 @@
     "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json",
     "the-brightening-air-west-end-2025/plays-to-see--wilder-gutterson.json",
     "all-the-worlds-a-stage-off-broadway-2025/theater-life--david-sheward.json",
-    "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json"
+    "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
+    "much-ado-about-nothing-2026/theater-news-online--jeremy-gerard.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1141,7 +1149,10 @@
       "takeaway-liverpool-everyman-regional-2025/number9reviews--view-my-complete.json",
       "the-great-gatsby-west-end-2025/londontheatredirect--hay-brunsdon.json",
       "titanic-the-musical-regional-2025/chicagotheaterandarts--jodie-jacobs.json",
-      "irishtown-off-broadway-2025/front-row-center--david-walters.json"
+      "irishtown-off-broadway-2025/front-row-center--david-walters.json",
+      "much-ado-about-nothing-2026/nytg--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json",
+      "here-there-are-blueberries-2026/exeunt-magazine--carol-rocamora.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1153,7 +1164,10 @@
       "data/review-texts/tosca-off-broadway-2026/wsj--heidi-waleson.json",
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
-      "data/review-texts/falsettos-regional-2026/nytimes--unknown.json"
+      "data/review-texts/falsettos-regional-2026/nytimes--unknown.json",
+      "data/review-texts/jenufa-off-broadway-2026/wsj--richard-sasanow.json",
+      "jenufa-off-broadway-2026/wsj--richard-sasanow.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1227,7 +1241,8 @@
       "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
       "art-of-leaving-off-broadway-2025/theatrely--joey-sims.json",
       "righ-iasgair-the-fisher-king-oran-mor-regional-2025/broadwayworld--natalie-odonoghue.json",
-      "dead-outlaw-2025/theatrely--juan-a-ramirez.json"
+      "dead-outlaw-2025/theatrely--juan-a-ramirez.json",
+      "the-heart-off-broadway-2026/mail-on-sunday--unknown.json"
     ],
     "brightdata": [
       "much-ado-about-nothing-2026/deadline--unknown.json",
@@ -1438,7 +1453,7 @@
     ]
   },
   "startTime": "2026-11-18T20:38:47.996Z",
-  "lastProcessed": "irishtown-off-broadway-2025/front-row-center--david-walters.json",
+  "lastProcessed": "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-18T20:39:51.013Z",
@@ -1571,6 +1586,50 @@
       "t": "2026-11-19T02:50:14.713Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T04:58:38.188Z",
+      "event": "bb-session",
+      "session": "8af33f76",
+      "url": "https://www.wsj.com/arts-culture/theater/jenufa-review-a-powerfully-grim-opera-a"
+    },
+    {
+      "t": "2026-11-19T04:58:38.648Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-19T05:00:32.778Z",
+      "event": "bb-session",
+      "session": "85a5c117",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-19T05:00:33.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T05:04:32.048Z",
+      "event": "bb-session",
+      "session": "6e68eeb7",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-19T05:04:32.606Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-19T05:05:37.665Z",
+      "event": "bb-session",
+      "session": "040b5e16",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-19T05:05:38.113Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
