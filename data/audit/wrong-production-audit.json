@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-19T18:10:25.467Z",
+  "timestamp": "2026-11-19T18:31:53.116Z",
   "stats": {
-    "totalReviews": 83030,
-    "alreadyFlagged": 22530,
-    "dateGuardCatches": 221,
+    "totalReviews": 83032,
+    "alreadyFlagged": 22523,
+    "dateGuardCatches": 222,
     "directorMismatch": 3786,
-    "tvFilmSignals": 2369,
+    "tvFilmSignals": 2371,
     "londonSignals": 3825,
     "offBroadwaySignals": 772,
     "yearMismatch": 386,
@@ -15865,6 +15865,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 7\""
+        }
+      ]
+    },
+    {
+      "showId": "danny-and-the-deep-blue-sea-off-broadway-2023",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "publishDate": "2023-11-14",
+      "url": "https://www.nytimes.com/2023/11/14/theater/danny-and-the-deep-blue-sea-review-aubrey-plaza.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -50030,6 +50043,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (5x) more than 2013 (0x). 2026 matches production: once-pitlochry-festival-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "one-day-the-musical-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2026-11-18",
+      "url": "https://www.whatsonstage.com/news/one-day-musical-exclusive-first-look-at-west-end-premiere_1737687/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -123505,6 +123531,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "other-bodies-off-broadway-2026",
+      "file": "theatermania--linda-buchwald.json",
+      "publishDate": "2026-10-05",
+      "url": "https://www.theatermania.com/news/martin-morans-other-bodies-to-have-world-premiere-with-the-barrow-group_1856131/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 45d before show (2026-10-05 vs 2026-11-19)"
         }
       ]
     },
