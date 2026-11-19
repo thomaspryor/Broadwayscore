@@ -240,7 +240,43 @@ function simulatedNightVerdict(record, nowMs) {
   return { status: 'pass', detail: `Simulated night passed ${age}: ${record.checks} checks, found-to-live median ${record.foundToLiveMedianMin} min over ${record.reviews} reviews.` };
 }
 
+/**
+ * BRO-7808: a show whose critics are held to a date well after the recorded openingDate (Now You See Me Live: first
+ * performance 2026-11-11, embargo lifted 2026-11-18) reads as "press night over" and gets no lane night. Signal that the
+ * night is really happening now: the recorded night is more than LATE_EMBARGO_MIN_DAYS old, yet at least
+ * LATE_EMBARGO_MIN_REVIEWS reviews share a publishDate within the last LATE_EMBARGO_RECENT_DAYS days (or a BWW
+ * "Review Roundup ... Opens" article is that recent). reviewEmbargoAt on the show records the real time and silences it.
+ * @param {object} show  shows.json row
+ * @param {Array} reviews  reviews for the show ({publishDate:'YYYY-MM-DD', outletId, url})
+ * @returns {{status:'pass'|'fail'|'skip', detail:string}}
+ */
+const LATE_EMBARGO_MIN_DAYS = 2;
+const LATE_EMBARGO_MIN_REVIEWS = 3;
+const LATE_EMBARGO_RECENT_DAYS = 2;
+function lateEmbargoVerdict(show, reviews, nowMs) {
+  if (!show || !show.openingDate) return { status: 'skip', detail: 'No opening date.' };
+  const openMs = Date.parse(`${show.openingDate}T12:00:00Z`);
+  if (!Number.isFinite(openMs) || nowMs - openMs <= LATE_EMBARGO_MIN_DAYS * 24 * HOUR) return { status: 'skip', detail: 'Press night is not more than 2 days old.' };
+  if (show.reviewEmbargoAt) return { status: 'skip', detail: `reviewEmbargoAt ${show.reviewEmbargoAt} already records the real embargo.` };
+  const recentFrom = nowMs - LATE_EMBARGO_RECENT_DAYS * 24 * HOUR;
+  const byDay = {};
+  let roundup = null;
+  for (const r of reviews || []) {
+    const t = Date.parse(`${r && r.publishDate}T12:00:00Z`);
+    if (!Number.isFinite(t) || t < recentFrom - 12 * HOUR || t <= openMs + LATE_EMBARGO_MIN_DAYS * 24 * HOUR) continue;
+    byDay[r.publishDate] = (byDay[r.publishDate] || 0) + 1;
+    if (/review-?roundup|roundup.*opens/i.test(`${r.url || ''} ${r.title || ''} ${r.outletId || ''}`)) roundup = r.publishDate;
+  }
+  const hot = Object.entries(byDay).filter(([, n]) => n >= LATE_EMBARGO_MIN_REVIEWS).sort().pop();
+  if (!hot && !roundup) return { status: 'skip', detail: 'No burst of new reviews after a long-past press night.' };
+  const day = hot ? hot[0] : roundup;
+  const why = hot ? `${hot[1]} reviews dated ${day}` : `a review roundup dated ${day}`;
+  return { status: 'fail', detail: `Recorded press night ${show.openingDate} is over, but ${why} just landed: the real embargo lifted later than openingDate, so no lane night or watchdog was set up. Set reviewEmbargoAt (ISO UTC) in shows.json and start a lane night / alert the coordinator now (BRO-7808).` };
+}
+
 module.exports = {
+  lateEmbargoVerdict,
+  LATE_EMBARGO_MIN_REVIEWS,
   SIM_NIGHT_MAX_AGE_H,
   simulatedNightVerdict,
   PIPELINE_PATHS,

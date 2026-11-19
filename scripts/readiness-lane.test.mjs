@@ -193,3 +193,17 @@ test('simulated night (BRO-7781): pass, stale, failed, crashed and missing recor
   assert.equal(L.simulatedNightVerdict(null, NOW).status, 'warn');
   assert.equal(L.simulatedNightVerdict({ at: new Date(NOW + 3600000).toISOString(), pass: true }, NOW).status, 'warn');
 });
+
+// BRO-7808: embargo lifted days after the recorded openingDate.
+test('late embargo: 3 same-day reviews 7 days after openingDate FAILS (Now You See Me Live)', () => {
+  const show = { id: 'now-you-see-me-live-2026', category: 'broadway', openingDate: '2026-11-11' };
+  const now = Date.parse('2026-11-19T03:30:00Z');
+  const rv = ['culturesauce', 'nytg', 'theatermania'].map((o) => ({ outletId: o, publishDate: '2026-11-18' }));
+  const v = L.lateEmbargoVerdict(show, rv, now);
+  assert.equal(v.status, 'fail');
+  assert.match(v.detail, /reviewEmbargoAt/);
+  assert.equal(L.lateEmbargoVerdict(show, rv.slice(0, 2), now).status, 'skip', 'two reviews is not a burst');
+  assert.equal(L.lateEmbargoVerdict(show, [{ outletId: 'bww', url: 'https://x/review-roundup-opens', publishDate: '2026-11-18' }], now).status, 'fail', 'roundup alone');
+  assert.equal(L.lateEmbargoVerdict({ ...show, reviewEmbargoAt: '2026-11-19T03:00:00Z' }, rv, now).status, 'skip', 'recorded embargo silences it');
+  assert.equal(L.lateEmbargoVerdict({ ...show, openingDate: '2026-11-17' }, rv, now).status, 'skip', 'press night under 2 days old');
+});
