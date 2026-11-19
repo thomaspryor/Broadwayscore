@@ -811,7 +811,23 @@ function itemFromSitemapEntry(g, src) {
   return { url: g.url, lastmod: g.publishDate || null };
 }
 
+/**
+ * BRO-7820: write a census JSON file unless the only difference from what is on disk is `generatedAt`.
+ * Every run stamps every file, so without this a weekly CI run would rewrite ~100 files for nothing.
+ * Returns true when the file was written.
+ */
+function writeJsonUnlessOnlyStampChanged(file, obj, indent) {
+  const nodeFs = require('fs');
+  try {
+    const old = JSON.parse(nodeFs.readFileSync(file, 'utf8'));
+    if (JSON.stringify({ ...old, generatedAt: null }) === JSON.stringify({ ...obj, generatedAt: null })) return false;
+  } catch { /* missing or unreadable: write it */ }
+  nodeFs.writeFileSync(file, JSON.stringify(obj, null, indent) + '\n');
+  return true;
+}
+
 module.exports = {
+  writeJsonUnlessOnlyStampChanged,
   itemFromSitemapEntry,
   blindOutlets,
   LONDON_SIGNAL_RE,

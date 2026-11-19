@@ -591,8 +591,9 @@ async function runOutlet(outletId, o, shared) {
   const manifest = { outletId, market: o.market, generatedAt: report.generatedAt, since: o.since, source: src.kind,
     items: results.map((r) => ({ url: r.url, publishDate: r.publishDate || null, dateSoft: r.dateSoft || undefined, headline: r.headline || null, bucket: r.bucket,
       matched: r.matchedIds && r.matchedIds.length ? r.matchedIds : undefined, itemMarket: r.itemMarket, venueHint: r.venueHint || undefined })) };
-  fs.writeFileSync(path.join(OUT_DIR, `${outletId}.manifest.json`), JSON.stringify(manifest, null, 1) + '\n');
-  fs.writeFileSync(path.join(OUT_DIR, `${outletId}.report.json`), JSON.stringify(report, null, 2) + '\n');
+  // BRO-7820: a timestamp-only difference leaves the file alone, so the weekly CI run commits only real changes.
+  census.writeJsonUnlessOnlyStampChanged(path.join(OUT_DIR, `${outletId}.manifest.json`), manifest, 1);
+  census.writeJsonUnlessOnlyStampChanged(path.join(OUT_DIR, `${outletId}.report.json`), report, 2);
   console.log(`  buckets ${JSON.stringify(summary.counts)} recall=${summary.recall}${report.source.incomplete ? ' (INCOMPLETE: ' + enumerated.notes.join('; ') + ')' : ''}`);
   console.log(`  corpus-side: ${uniqRows.length} held rows in window, ${report.corpusSide.notEnumerated} not enumerated, ${report.corpusSide.noUrl} without URL`);
   return report;
