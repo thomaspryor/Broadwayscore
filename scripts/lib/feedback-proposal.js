@@ -99,6 +99,26 @@ function findCatalogMatches(message, shows, limit = 6) {
   return out;
 }
 
+// Auto-close is only safe when the ask clearly names ONE catalog entry and is
+// not about reviews, a transfer or a revival of an old title. Anything else
+// stays with the planner and the owner. (BRO-7847 review)
+function selectAutoCloseMatch(message, submitterShow, shows) {
+  const matches = findCatalogMatches(`${message || ''} ${submitterShow || ''}`, shows);
+  if (matches.length === 0) return [];
+  const showNorm = norm(submitterShow);
+  const exact = showNorm ? matches.filter((m) => norm(m.title) === showNorm) : [];
+  if (exact.length === 1) return exact;
+  // Same title in several productions: keep the one whose place word the reader typed.
+  const text = ` ${norm(message)} `;
+  const placed = matches.filter((m) => {
+    const titleTok = new Set(norm(m.title).split(' '));
+    return String(m.id).split('-').some((t) => t.length > 3 && !titleTok.has(t) && !/^(regional|broadway|off|west|end|\d+)$/.test(t) && text.includes(` ${t} `));
+  });
+  if (placed.length === 1 && !/\b(reviews?|transfer|revival|revived)\b/i.test(String(message || ''))) return placed;
+  if (matches.length === 1 && !/\b(reviews?|west end|london|transfer|revival|revived|national tour|tour)\b/i.test(String(message || ''))) return matches;
+  return [];
+}
+
 const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 
 /**
@@ -113,7 +133,7 @@ function checkPlanAlreadyApplied(plan, shows) {
   let all = true;
   for (const a of edits) {
     const show = (shows || []).find((s) => s.id === a.showId);
-    if (show && same(show[a.field], a.newValue)) evidence.push(`${show.title}: ${a.field} already holds the proposed value`);
+    if (show && 'newValue' in a && same(show[a.field], a.newValue)) evidence.push(`${show.title}: ${a.field} already holds the proposed value`);
     else all = false;
   }
   return { fixed: all, evidence };
@@ -321,7 +341,7 @@ ${section(4, 'Reply to the reader', s4)}
 module.exports = {
   DAILY_CAP, LEDGER_PATH, SIMILAR_CHECKS,
   proposalsDisabled, loadLedger, saveLedger, decideSend, minutesBetween, recordSent,
-  findCatalogMatches, checkPlanAlreadyApplied, scanSimilar,
+  findCatalogMatches, selectAutoCloseMatch, checkPlanAlreadyApplied, scanSimilar,
   buildRootCauseUrl, buildReaderReplyDraft, buildProposalEmail,
   isContentAdditionBody, buildNeedsReviewDiagnosis,
 };

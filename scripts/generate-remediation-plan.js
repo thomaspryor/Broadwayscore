@@ -329,7 +329,7 @@ async function main() {
   // Content-addition asks: if the show is already in the catalog, say so and
   // let the workflow close the issue with a comment (#1190, #1124 pattern).
   if (diagnosis.needsReview && Proposal.isContentAdditionBody(issueBody)) {
-    const matches = Proposal.findCatalogMatches(`${diagnosis.originalMessage || ''} ${diagnosis.submitterShow || ''}`, shows);
+    const matches = Proposal.selectAutoCloseMatch(diagnosis.originalMessage, diagnosis.submitterShow, shows);
     if (matches.length > 0 && proposalOn) {
       try {
         await sendProposal({
@@ -535,7 +535,7 @@ Or if you cannot create an actionable plan:
       } catch (err) {
         console.error('Proposal email failed:', err.message);
       }
-    } else if (ownerEmail) {
+    } else if (ownerEmail && !diagnosis.needsReview) {
       const who = diagnosis.submitterName && diagnosis.submitterName !== 'Anonymous' ? diagnosis.submitterName : 'Someone';
       const showRef = diagnosis.submitterShow ? ` about <strong>${diagnosis.submitterShow}</strong>` : '';
 
@@ -667,7 +667,6 @@ ${diagnosis.originalMessage
 
   // 7. Send approval email
   const applied = Proposal.checkPlanAlreadyApplied(plan, shows);
-  if (applied.fixed) output('already_fixed', 'true');
   if (proposalOn) {
     try {
       await sendProposal({
@@ -678,10 +677,12 @@ ${diagnosis.originalMessage
         rejectUrl: applied.fixed ? null : rejectUrl,
         rootCause: plan.rootCause && plan.rootCause.summary ? plan.rootCause : null,
       });
+      // Close only after the owner was actually told (kill switch and cap never close).
+      if (applied.fixed) output('already_fixed', 'true');
     } catch (err) {
       console.error('Proposal email failed:', err.message);
     }
-  } else if (ownerEmail) {
+  } else if (ownerEmail && !diagnosis.needsReview) {
     const { subject, html } = buildFixApprovalEmail({
       // From the in-memory diagnosis, NOT planData.submitter — the persisted
       // plan is PII-redacted but the email to the owner keeps the full text.

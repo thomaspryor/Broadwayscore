@@ -151,3 +151,16 @@ test('the "fix applied" owner email joins the proposal thread only when a propos
     }
   }
 });
+
+test('auto-close needs one clear catalog match and no review/transfer ask (review fix)', () => {
+  const one = P.selectAutoCloseMatch('Please add 13 Going on 30 at Toronto, I saw it there', '', shows);
+  assert.ok(one.length === 1 && one[0].id === '13-going-on-30-toronto-regional-2026', JSON.stringify(one));
+  assert.deepEqual(P.selectAutoCloseMatch('Please add the missing reviews for Love, Love, Love', '', shows), []);
+  assert.deepEqual(P.selectAutoCloseMatch('add the West End transfer of Love, Love, Love', '', shows), []);
+  assert.deepEqual(P.selectAutoCloseMatch('', '', shows), []);
+});
+
+test('a plan edit with no newValue is never "already applied"', () => {
+  const s = shows.find((x) => x.status === 'closed');
+  assert.equal(P.checkPlanAlreadyApplied({ actions: [{ type: 'data-edit', showId: s.id, field: 'definitelyMissingField' }] }, shows).fixed, false);
+});

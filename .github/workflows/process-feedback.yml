@@ -264,7 +264,7 @@ jobs:
                 // step (GITHUB_TOKEN events never trigger issues.opened, so
                 // the dispatch is explicit). The reader store was pushed
                 // before this step, same as the bug-diagnosis dispatch below.
-                if (!willAutoDispatch && process.env.FEEDBACK_PROPOSAL_DISABLED !== 'true') {
+                if (!willAutoDispatch && String(process.env.FEEDBACK_PROPOSAL_DISABLED || '').toLowerCase() !== 'true' && process.env.STORE_PUSH_OUTCOME !== 'failure') {
                   try {
                     await github.rest.actions.createWorkflowDispatch({
                       owner: context.repo.owner,
