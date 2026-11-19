@@ -706,6 +706,9 @@ async function main() {
       // --after-file: the verdict file's mtime (BRO-7295). An unreadable file means no freshness bound.
       let after = args.after || null;
       if (!after && args['after-file']) { try { after = statSync(args['after-file']).mtime.toISOString(); } catch { /* no bound */ } }
+      // BRO-7873: the judge may wait on an LLM call (each provider has its own timeout); cap the whole scan here, not in the hook.
+      // Empty output already means "not approved" to the push gate, so a stalled scan fails toward asking.
+      setTimeout(() => process.exit(0), 11000);
       result = await queryApprovalOfJudged(events, hash, { after });
       break;
     }

@@ -297,11 +297,7 @@ if [ "$LEDGER_OK" = "true" ]; then
   exit 0
 fi
 
-# BRO-7873: a gray reply may wait on a short LLM call (each provider has its own timeout); this caps the whole scan.
-# Stock macOS has no `timeout` (pr-write-guard.sh, pre-push-land-preflight.sh): use gtimeout, else no wrapper, never a failing one.
-_SCAN_TO=""
-if command -v timeout >/dev/null 2>&1; then _SCAN_TO="timeout 12"; elif command -v gtimeout >/dev/null 2>&1; then _SCAN_TO="gtimeout 12"; fi
-APPROVAL_RESULT=$($_SCAN_TO node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" --after-file="$VERDICT_PATH" 2>/dev/null)  # BRO-7295: yes must be newer than the verdict
+APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" --after-file="$VERDICT_PATH" 2>/dev/null)  # BRO-7295: yes must be newer than the verdict
 APPROVED=$(echo "$APPROVAL_RESULT" | jq -r '.approved // false' 2>/dev/null)
 
 if [ "$APPROVED" != "true" ]; then
