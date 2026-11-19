@@ -235,6 +235,30 @@ export function digestLine(ledgerRows, { now = new Date() } = {}) {
   return `Yesterday ${s.total} code change${s.total === 1 ? '' : 's'} went live: ${parts.join(', ')}.`;
 }
 
+/** PURE. True when the ledger holds today's audit-ran marker (or any of today's rows). */
+export function hasAuditToday(ledgerRows, now = new Date()) {
+  const day = now.toISOString().slice(0, 10);
+  return ledgerRows.some((r) => r.auditDay === day);
+}
+
+/**
+ * BRO-7840: GitHub fires the 04:10 audit cron hours late (BRO-4800), so the 11:30 digest can run before today's row
+ * exists. When today's marker is missing, the digest runs the audit itself (dry-run: in-memory rows, nothing written,
+ * so the late cron's real row does not collide) and prints the line from those rows. runAudit(day) -> rows[] | null.
+ * Falls back to the stale-ledger line when the catch-up fails. Returns { line, caughtUp }.
+ */
+export function digestLineWithCatchUp(ledgerRows, { now = new Date(), runAudit = null } = {}) {
+  if (!hasAuditToday(ledgerRows, now) && runAudit) {
+    const day = now.toISOString().slice(0, 10);
+    let fresh = null;
+    try { fresh = runAudit(day); } catch { fresh = null; }
+    if (Array.isArray(fresh)) {
+      return { line: digestLine([...ledgerRows, ...fresh, runMarker(day)], { now }), caughtUp: true };
+    }
+  }
+  return { line: digestLine(ledgerRows, { now }), caughtUp: false };
+}
+
 /**
  * PURE. The command the audit may run itself to prove a not-run script, or null. A bare `node <file>` is never
  * accepted by the vetted read-only safe-form gate (autonomous-triage-core.js explainUnsafeCheckCommand, kind:shape), so
