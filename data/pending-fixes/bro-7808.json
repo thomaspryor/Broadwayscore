@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-7808",
+  "planId": "96e76410-a53a-4885-b5fd-c167587166cc",
+  "status": "pending",
+  "createdAt": "2026-11-19T03:16:41.463Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7808 cousin: heated-rivalry openingDate was the first preview (May 12); Playbill says it officially opened May 26, 2026",
+    "steps": [
+      "shows.json: heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026.openingDate",
+      "shows.json: heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026.previewsStartDate",
+      "shows.json: heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-05-12",
+        "newValue": "2026-05-26",
+        "description": "shows.json: heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-05-12",
+        "description": "shows.json: heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "playbill",
+        "description": "shows.json: heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026.openingDateSource"
+      }
+    ]
+  }
+}
