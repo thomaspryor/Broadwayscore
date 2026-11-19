@@ -59,3 +59,11 @@ test('flag-multishow-column-rescore accepts a divider column and still refuses a
   const noTitle = { ...column(), showTitle: undefined };
   assert.equal(flagMultiShowRescore(noTitle).ok, false);
 });
+
+test('a dash style difference between quote and text does not read as another show (no re-extract loop)', () => {
+  const dashText = fullText.replace('Invented Alpha is a sharp', 'Invented Alpha -- is a sharp');
+  const entry = { ...column(), fullText: dashText };
+  const emDashQuote = 'Invented Alpha — is a sharp and welcome surprise for anyone who loves a chamber piece.';
+  assert.equal(quoteOutsideTargetSection(emDashQuote, entry, 'Invented Alpha'), false);
+  assert.equal(quoteOutsideTargetSection(OTHER, entry, 'Invented Alpha'), true);
+});

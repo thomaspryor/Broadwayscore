@@ -753,7 +753,7 @@ function quoteOutsideTargetSection(quote, data, showTitle) {
   if (!quote || !data || typeof data.fullText !== 'string') return false;
   const section = pullQuoteSourceText(data, showTitle);
   if (section === data.fullText) return false;
-  const norm = (t) => foldDiacritics(String(t || '')).replace(/[‘’“”'"]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+  const norm = (t) => foldDiacritics(String(t || '')).replace(/[‘’“”'"]/g, '').replace(/[\u2013\u2014]|--/g, '-').replace(/\s+/g, ' ').trim().toLowerCase();
   return !norm(section).includes(norm(quote));
 }
 
