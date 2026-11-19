@@ -188,7 +188,8 @@
     "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
     "the-revlon-girl-off-west-end-2026/british-theatre--unknown.json",
     "the-revlon-girl-off-west-end-2026/londonpubtheatres--chris-lilly.json",
-    "cirque-berserk-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+    "cirque-berserk-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
   ],
   "failed": [
     "peter-pan-off-west-end-2026/times-uk--dominic-maxwell.json",
@@ -203,7 +204,6 @@
     "king-lear-off-broadway-2026/patch--lauren-traut.json",
     "medea-off-broadway-2026/express-uk--neil-norman.json",
     "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
-    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
     "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
     "the-fantasticks-2026/nytimes--maya-phillips.json",
     "the-fantasticks-2026/bobs-theater-blog--unknown.json",
@@ -343,7 +343,9 @@
     "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
     "phyl-off-broadway-2026/phusionpassenger--unknown.json",
     "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "heartbreak-house-regional-2026/la-drama-critics-circle--ladcc-critics.json"
+    "heartbreak-house-regional-2026/la-drama-critics-circle--ladcc-critics.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -456,7 +458,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/much-ado-about-nothing-2026/deadline--unknown.json",
-      "much-ado-about-nothing-2026/deadline--unknown.json"
+      "much-ado-about-nothing-2026/deadline--unknown.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -501,7 +504,8 @@
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "little-shop-of-horrors-off-broadway-2019/broadwaynews--jeremy-gerard.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
-      "wicked-2003/theatrely--kobi-kassal.json"
+      "wicked-2003/theatrely--kobi-kassal.json",
+      "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "brightdata": [
       "the-assembled-parties-2013/nytimes--ben-brantley.json"
@@ -555,7 +559,7 @@
     ]
   },
   "startTime": "2026-11-19T12:19:21.981Z",
-  "lastProcessed": "heartbreak-house-regional-2026/la-drama-critics-circle--ladcc-critics.json",
+  "lastProcessed": "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-11-19T12:56:17.311Z",
@@ -617,9 +621,87 @@
       "t": "2026-11-19T13:03:39.282Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T15:25:16.174Z",
+      "event": "bb-session",
+      "session": "2b5c31ec",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-19T15:25:16.418Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T15:25:32.577Z",
+      "event": "bb-session",
+      "session": "f253f915",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-19T15:25:32.828Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T15:26:55.036Z",
+      "event": "bb-session",
+      "session": "b2e7ad82",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-19T15:26:55.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T15:28:26.825Z",
+      "event": "bb-session",
+      "session": "842b21a5",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-19T15:28:27.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T15:28:43.101Z",
+      "event": "bb-session",
+      "session": "4ee4a4ae",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-19T15:28:43.342Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T15:32:05.738Z",
+      "event": "bb-session",
+      "session": "f68675a4",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-19T15:32:05.983Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-19T15:32:21.262Z",
+      "event": "bb-session",
+      "session": "c5025949",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-19T15:32:21.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
-    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
   ]
 }
