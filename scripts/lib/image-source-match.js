@@ -253,6 +253,12 @@ const isTodayTixAsset = (u) => typeof u === 'string' && TODAYTIX_ASSET_RE.test(u
 // another production's (BRO-7846: Follies 2011 carried the 2017 NT Live
 // banner, Grease 2007 an anti-vaping campaign).
 const TODAYTIX_FIRST_SALE = '2013-09-01';
+// TodayTix reached London's West End on 2015-06-01 (BusinessWire release that
+// day). handbagged-west-end-2014 (closed Aug 2014) carried the 2019 Kiln
+// revival's "comedy returns" key art. Other markets keep the earlier date,
+// which flags less.
+const TODAYTIX_FIRST_SALE_BY_MARKET = { 'west-end': '2015-06-01' };
+const todayTixFirstSale = (show) => TODAYTIX_FIRST_SALE_BY_MARKET[show && show.market] || TODAYTIX_FIRST_SALE;
 
 /**
  * Why a TodayTix catalogue file on this row is another production's, or null.
@@ -268,7 +274,7 @@ const TODAYTIX_FIRST_SALE = '2013-09-01';
 function wrongEraTodayTixReason(show, source) {
   if (!show || !isTodayTixAsset(source) || show.status !== 'closed') return null;
   const closed = String(show.closingDate || '').slice(0, 10);
-  if (closed && closed < TODAYTIX_FIRST_SALE) return 'TodayTix art on a row that closed before TodayTix sold tickets';
+  if (closed && closed < todayTixFirstSale(show)) return 'TodayTix art on a row that closed before TodayTix sold tickets';
   const images = show.images || {};
   if (!images.poster && !images.thumbnail && (show.rejectedImageUrls || []).some(isTodayTixAsset)) {
     return 'TodayTix art left after the same catalogue match\'s poster was rejected';
@@ -381,6 +387,7 @@ module.exports = {
   isTodayTixAsset,
   wrongEraTodayTixReason,
   TODAYTIX_FIRST_SALE,
+  TODAYTIX_FIRST_SALE_BY_MARKET,
   canReuseArchivedFile,
   mayServeDiskImage,
   thumbnailFallbackAction,
