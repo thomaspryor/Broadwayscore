@@ -718,5 +718,52 @@
       }
     ],
     "queuedAt": "2026-11-19T17:00:14.721Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:cloud-9-west-end-2026",
+    "title": "Content mismatch on Cloud 9",
+    "description": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Cloud 9' (3969 chars): https://www.thestage.co.uk/reviews/cloud-9-review-lyttelton-national-theatre-london",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T17:18:58.367Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-cloud-9-west-end-2026",
+    "title": "Unverified revival on Cloud 9",
+    "description": "cloud-9-west-end-2026 review text mentions \"revival\" 45x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-19T17:18:58.389Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:cloud-9-west-end-2026",
+    "title": "Opening-night email draft on hold: a quality check flagged a review",
+    "description": "The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Nothing is sent while it is on hold. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Cloud 9"
+      }
+    ],
+    "queuedAt": "2026-11-19T17:18:58.689Z"
   }
 ]
