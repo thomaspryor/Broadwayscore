@@ -1,89 +1,84 @@
 {
   "outletId": "dailybeast",
-  "generatedAt": "2026-10-28T20:45:32.735Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:45:39.098Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
-    "notes": [
-      "unreadable: no WordPress API; sitemap enumeration not yet configured"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "kind": "sitemap",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 798,
+    "inWindow": 798,
     "undated": 0,
-    "meta": null
+    "meta": {
+      "fetched": 798,
+      "failed": 0
+    }
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "not-review": 658,
+      "held": 110,
+      "held-unmatched": 18,
+      "gap": 1,
+      "out-of-window": 7,
+      "catalog-gap": 3,
+      "held-alt-url": 1
+    },
+    "viaTitleVariant": {
+      "held": 6,
+      "held-alt-url": 1
+    },
+    "recall": 0.991,
+    "recallWithCatalog": 0.965
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 19
+    },
+    "2025-26": {
+      "not-review": 99,
+      "held": 12,
+      "held-unmatched": 9
+    },
+    "2024-25": {
+      "not-review": 119,
+      "held": 21,
+      "held-unmatched": 5,
+      "gap": 1,
+      "out-of-window": 2
+    },
+    "2023-24": {
+      "not-review": 119,
+      "held": 15,
+      "out-of-window": 3,
+      "held-unmatched": 1,
+      "catalog-gap": 1
+    },
+    "2022-23": {
+      "not-review": 144,
+      "catalog-gap": 2,
+      "held": 35,
+      "out-of-window": 2,
+      "held-alt-url": 1
+    },
+    "2021-22": {
+      "not-review": 136,
+      "held": 26,
+      "held-unmatched": 3
+    },
+    "2020-21": {
+      "not-review": 22,
+      "held": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 271,
-    "notEnumerated": 196,
-    "noUrl": 4,
+    "rowsInWindow": 303,
+    "notEnumerated": 69,
+    "noUrl": 2,
     "samples": [
-      {
-        "showId": "1776-2022",
-        "url": "https://www.thedailybeast.com/in-1776-the-musical-the-drama-of-democracy-rings-truer-than-the-songs/",
-        "publishDate": "2022-10-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-        "url": "https://www.thedailybeast.com/a-beautiful-noise-the-neil-diamond-musical-is-a-broadway-concert-for-the-truly-devoted/",
-        "publishDate": "2022-12-04",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-christmas-carol-2022",
-        "url": "https://www.thedailybeast.com/a-christmas-carol-on-broadway-features-one-actor-50-characters-and-super-shocks?via=twitter_page",
-        "publishDate": "2022-11-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-dolls-house-2023",
-        "url": "https://www.thedailybeast.com/jessica-chastain-electrifies-a-no-frills-broadway-revival-of-a-dolls-house/#:~:text=Review%3A%20Jessica%20Chastain%20Electrifies%20Broadway,Revival%20of%20'A%20Doll's%20House'&text=%C2%A9%202025%20The%20Daily%20Beast,Company%20LLC",
-        "publishDate": "2023-03-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-strange-loop-2022",
-        "url": "https://www.thedailybeast.com/a-strange-loop-triumphs-uncompromisingly-on-broadway/",
-        "publishDate": "2022-04-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-        "url": "https://www.thedailybeast.com/broadway-review-a-wonderful-world-the-louis-armstrong-musical-goes-too-easy/",
-        "publishDate": "2024-11-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "all-in-comedy-about-love-2024",
-        "url": "https://www.thedailybeast.com/all-in-review-john-mulaney-and-co-hilariously-take-over-broadway/",
-        "publishDate": "2024-12-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "almost-famous-2022",
-        "url": "https://www.thedailybeast.com/almost-famous-on-broadway-is-a-rock-n-roll-nightmare/",
-        "publishDate": "2022-11-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "american-buffalo-2022",
-        "url": "https://www.thedailybeast.com/inside-the-all-star-revivals-of-cyrano-de-bergerac-and-american-buffalo?via=twitter_page",
-        "publishDate": "2022-04-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "an-enemy-of-the-people-2024",
-        "url": "https://www.thedailybeast.com/in-enemy-of-the-people-jeremy-strong-finds-his-way-from-succession-to-broadway/",
-        "publishDate": "2024-03-19",
-        "why": "not-enumerated"
-      },
       {
         "showId": "and-juliet-2022",
         "url": "https://www.thedailybeast.com/and-juliet-imagines-a-life-after-romeo-with-britney-spears-and-the-backstreet-boys/",
@@ -103,99 +98,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "appropriate-2023",
-        "url": "https://www.thedailybeast.com/broadway-review-sarah-paulson-takes-her-appropriate-family-to-the-edge",
-        "publishDate": "2023-12-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "art-2025",
-        "url": "https://www.thedailybeast.com/obsessed/art-review-james-corden-delivers-a-masterclass-of-broadway-comedy/#user-comments",
-        "publishDate": "2025-09-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "back-to-the-future-2023",
-        "url": "https://www.thedailybeast.com/review-back-to-the-future-the-musical-is-perfect-for-the-movies-fans",
-        "publishDate": "2023-08-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bad-cinderella-2023",
-        "url": "https://www.thedailybeast.com/bad-cinderella-on-broadway-sadly-the-title-says-it-all/",
-        "publishDate": "2023-03-24",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "between-riverside-and-crazy-2022",
-        "url": "https://www.thedailybeast.com/between-riverside-and-crazy-lies-dramatic-perfection-on-broadway/",
-        "publishDate": "2022-12-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "birthday-candles-2022",
-        "url": "https://www.thedailybeast.com/debra-messing-bakes-a-cake-in-birthday-candles-on-broadway?ref=scroll",
-        "publishDate": "2022-04-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bob-fosses-dancin-2023",
-        "url": "https://www.thedailybeast.com/bob-fosses-dancin-on-broadway-is-spectacular-mostly/?ref=home",
-        "publishDate": "2023-03-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "boop-2025",
-        "url": "https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie/",
-        "publishDate": "2025-04-07",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "buena-vista-social-club-2025",
-        "url": "https://www.thedailybeast.com/review-buena-vista-social-club-rouses-broadway-to-fabulous-life-and-we-had-a-world/",
-        "publishDate": "2025-03-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "buena-vista-social-club-off-broadway-2023",
-        "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
-        "publishDate": "2023-12-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bug-2026",
-        "url": "https://www.thedailybeast.com/obsessed/bug-broadway-review-carrie-coon-absolutely-loses-her-mind/",
-        "publishDate": "2026-01-08",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cabaret-2024",
-        "url": "https://www.thedailybeast.com/eddie-redmayne-excels-as-the-emcee-in-a-boozy-broadway-cabaret",
-        "publishDate": "2024-04-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "call-me-izzy-2025",
-        "url": "https://www.thedailybeast.com/obsessed/call-me-izzy-jean-smarts-one-woman-play-is-actually-a-bit-of-a-letdown/",
-        "publishDate": "2025-06-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "camelot-2023",
-        "url": "https://www.thedailybeast.com/review-camelot-on-broadway-is-a-magic-free-dull-dud/",
-        "publishDate": "2023-04-13",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "caroline-or-change-2021",
-        "url": "https://www.thedailybeast.com/how-caroline-or-change-rewrites-the-broadway-musical/",
-        "publishDate": "2021-10-28",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "chess-2025",
-        "url": "https://www.thedailybeast.com/obsessed/chess-review-theaters-most-notorious-strange-beast-finally-returns/",
-        "publishDate": "2025-11-16",
+        "showId": "black-odyssey-off-broadway-2023",
+        "url": "https://www.thedailybeast.com/black-odyssey-takes-homer-on-an-epically-engaging-ride-to-harlem",
+        "publishDate": "2023-02-26",
         "why": "not-enumerated"
       },
       {
@@ -205,15 +110,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "cost-of-living-2022",
-        "url": "https://www.thedailybeast.com/the-cost-of-living-on-broadway-is-absolutely-worth-it/",
-        "publishDate": "2022-10-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cult-of-love-2024",
-        "url": "https://www.thedailybeast.com/broadway-review-cult-of-love-wishes-you-a-not-so-merry-christmas/",
-        "publishDate": "2024-12-13",
+        "showId": "cornelia-street-off-broadway-2023",
+        "url": "https://www.thedailybeast.com/cornelia-street-tries-to-save-a-special-piece-of-new-york-city",
+        "publishDate": "2023-02-14",
         "why": "not-enumerated"
       },
       {
@@ -223,54 +122,578 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "dana-h-2021",
-        "url": "https://www.thedailybeast.com/dana-h-was-kidnapped-by-a-psychopath-now-her-ordeal-is-a-broadway-play?source=articles&via=rss",
-        "publishDate": "2021-10-17",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "dead-outlaw-2025",
-        "url": "https://www.thedailybeast.com/review-dead-outlaw-is-stunningand-broadways-most-insane-musical/",
-        "publishDate": "2025-04-27",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-becomes-her-2024",
-        "url": "https://www.thedailybeast.com/review-death-becomes-her-is-the-most-fun-night-out-on-broadway/",
-        "publishDate": "2024-11-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "death-of-a-salesman-2022",
-        "url": "https://www.thedailybeast.com/sharon-d-clarke-shines-in-death-of-a-salesman-on-broadway",
-        "publishDate": "2022-10-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "url": "https://www.thedailybeast.com/diana-the-musical-is-a-bonkers-mess-and-a-crazy-circus-of-truths/?via=twitter_page",
-        "publishDate": "2021-11-17",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "duke-and-roya-off-broadway-2025",
         "url": "https://www.thedailybeast.com/obsessed/duke-roya-swoon-over-this-summers-most-unlikely-love-story/",
         "publishDate": "2025-06-24",
         "why": "not-enumerated"
       },
       {
-        "showId": "elf-2024",
-        "url": "https://www.thedailybeast.com/review-elf-the-musical-brings-will-ferrells-merry-movie-to-broadway/",
-        "publishDate": "2024-11-18",
+        "showId": "flying-over-sunset-2021",
+        "url": "https://www.thedailybeast.com/cary-grant-is-high-on-lsd-in-flying-over-sunset-everyone-else-has-a-bad-trip/",
+        "publishDate": "2021-12-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "gettin-the-band-back-together-2018",
+        "url": "https://www.thedailybeast.com/jersey-boys-refuse-to-grow-up-review-of-gettin-the-band-back-together",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "ghost-of-john-mccain-off-broadway-2024",
+        "url": "https://www.thedailybeast.com/the-ghost-of-john-mccain-is-trappedand-it-isnt-funny",
+        "publishDate": "2024-09-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "girl-from-the-north-country-2022",
+        "url": "https://www.thedailybeast.com/bob-dylan-musical-girl-from-the-north-country-brilliantly-reborn-on-broadway/?via=twitter_page",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "glengarry-glen-ross-2025",
+        "url": "https://www.thedailybeast.com/review-kieran-culkins-glengarry-glen-ross-is-dangerously-offensive-and-dated/",
+        "publishDate": "2025-03-31",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "good-night-and-good-luck-2025",
+        "url": "https://www.thedailybeast.com/good-night-and-good-luck-review-george-clooney-issues-dire-warning-about-trumps-america/",
+        "publishDate": "2025-04-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "gruesome-playground-injuries-off-broadway-2025",
+        "url": "https://www.thedailybeast.com/obsessed/gruesome-playground-injuries-cousin-greg-from-succession-gets-bruised-and-bloodied",
+        "publishDate": "2025-11-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "head-over-heels-2018",
+        "url": "https://www.thedailybeast.com/their-lips-arent-sealed-the-go-gos-score-a-queer-broadway-hit-in-head-over-heels/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "here-lies-love-2023",
+        "url": "https://www.thedailybeast.com/review-david-byrnes-here-lies-love-is-a-weird-dictatorship-song-and-dance",
+        "publishDate": "2023-07-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "hold-on-to-me-darling-off-broadway-2024",
+        "url": "https://www.thedailybeast.com/review-will-adam-driver-explode-in-hold-on-to-me-darling/",
+        "publishDate": "2024-10-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "how-i-learned-to-drive-2022",
+        "url": "https://www.thedailybeast.com/mary-louise-parker-and-david-morse-are-stunning-in-how-i-learned-to-drive/?via=twitter_page",
+        "publishDate": "2022-04-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "how-to-defend-yourself-off-broadway-2023",
+        "url": "https://www.thedailybeast.com/new-yorks-new-must-see-plays-how-to-defend-yourself-and-the-coast-starlight",
+        "publishDate": "2023-03-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "i-can-get-it-for-you-wholesale-off-broadway-2023",
+        "url": "https://www.thedailybeast.com/review-i-can-get-it-for-you-wholesale-launched-barbra-streisand-now-its-gloriously-revived",
+        "publishDate": "2023-10-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "jitney-2017",
+        "url": "https://www.thedailybeast.com/how-august-wilson-heard-black-america-the-brilliance-of-jitney-on-broadway/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "john-proctor-is-the-villain-2025",
+        "url": "https://www.thedailybeast.com/john-proctor-is-the-villain-review-the-crucible-gets-a-fiery-metoo-rewrite/",
+        "publishDate": "2025-04-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "just-in-time-2025",
+        "url": "https://www.thedailybeast.com/just-in-time-review-jonathan-groff-is-a-wildly-entertaining-bobby-darin/",
+        "publishDate": "2025-04-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "liberation-2025",
+        "url": "https://www.thedailybeast.com/obsessed/review-brilliant-liberation-sheds-its-clothes-to-get-to-naked-truth/",
+        "publishDate": "2025-10-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "linda-vista-2019",
+        "url": "https://www.thedailybeast.com/tracy-letts-linda-vista-a-liberal-on-the-streets-a-douchebag-between-the-sheets/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "little-bear-ridge-road-2025",
+        "url": "https://www.thedailybeast.com/obsessed/review-a-towering-laurie-metcalf-unsettlesand-dazzlesin-little-bear-ridge/",
+        "publishDate": "2025-10-31",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "url": "https://www.thedailybeast.com/obsessed/can-mamma-mia-save-us-from-this-dreadful-summer/",
+        "publishDate": "2025-08-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "marjorie-prime-2025",
+        "url": "https://www.thedailybeast.com/obsessed/june-squibb-96-delivers-acting-tour-de-force-in-marjorie-prime/",
+        "publishDate": "2025-12-08",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "masquerade-off-broadway-2025",
+        "url": "https://www.thedailybeast.com/obsessed/masquerade-phantom-of-the-opera-like-youve-never-experienced-before/",
+        "publishDate": "2025-09-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "merrily-we-roll-along-off-broadway-2022",
+        "url": "https://www.thedailybeast.com/merrily-we-roll-along-a-slice-of-stunning-sondheim-starring-daniel-radcliffe?utm_campaign=owned_social&utm_source=twitter_owned_tdb&via=twitter_page&utm_medium=socialflow",
+        "publishDate": "2022-12-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "messy-white-gays-off-broadway-2025",
+        "url": "https://www.thedailybeast.com/obsessed/the-messy-white-gays-finally-get-their-comeuppance/",
+        "publishDate": "2025-11-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "url": "https://www.thedailybeast.com/mike-birbiglia-shows-how-to-make-death-very-funny-indeed-in-the-old-man-and-the-pool/",
+        "publishDate": "2022-11-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
+        "url": "https://www.thedailybeast.com/obsessed/can-i-be-frank-one-of-best-comics-youve-never-heard-of-gets-his-due/",
+        "publishDate": "2025-08-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mr-saturday-night-2022",
+        "url": "https://www.thedailybeast.com/billy-crystal-gives-mr-saturday-night-charm-laughs-and-no-drama/",
+        "publishDate": "2022-04-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "new-york-new-york-2023",
+        "url": "https://www.thedailybeast.com/review-new-york-new-york-needs-to-make-a-brand-new-start-of-it?via=twitter_page&utm_source=twitter_owned_tdb&utm_medium=socialflow&utm_campaign=owned_social",
+        "publishDate": "2023-04-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "once-upon-a-mattress-1996",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "othello-1982",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "picnic-at-hanging-rock-off-broadway-2025",
+        "url": "https://www.thedailybeast.com/obsessed/picnic-at-hanging-rock-haunting-australian-story-about-girls-disappearance/",
+        "publishDate": "2025-12-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "pictures-from-home-2023",
+        "url": "https://www.thedailybeast.com/nathan-lane-and-zoe-wanamaker-bring-life-to-fading-pictures-from-home/",
+        "publishDate": "2023-02-09",
         "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
-  "heldAltUrl": [],
+  "gaps": [
+    {
+      "url": "https://www.thedailybeast.com/obsessed/wicked-review-spectacular-musical-is-must-see-film-event-of-year",
+      "headline": "Spectacular ‘Wicked’ Movie Is the Must-See Event of the Year",
+      "publishDate": "2024-11-19",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "wicked-2003"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://www.thedailybeast.com/new-york-times-stands-by-kpop-broadway-review-producers-called-racist",
+      "headline": "NY Times Stands by ‘KPOP’ Review Producers Called Racist",
+      "publishDate": "2022-12-06",
+      "matched": [
+        "kpop-2022"
+      ],
+      "heldUrls": [
+        "https://www.thedailybeast.com/kpop-on-broadway-is-a-flashy-concert-in-search-of-a-fuller-story/?ref=home"
+      ]
+    }
+  ],
   "misfiles": [],
-  "heldUnmatched": [],
+  "heldUnmatched": [
+    {
+      "url": "https://www.thedailybeast.com/obsessed/queen-of-versaille-kristin-chenoweths-broadway-return-is-an-ostentatious-mess",
+      "headline": "Kristin Chenoweth’s Broadway Return Is an Ostentatious Mess",
+      "publishDate": "2025-11-10",
+      "via": null,
+      "held": [
+        "queen-versailles-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thedailybeast.com/review-dead-outlaw-is-stunningand-broadways-most-insane-musical",
+      "headline": "‘Dead Outlaw’ Is Stunning—and Broadway’s Most Insane Musical",
+      "publishDate": "2025-10-20",
+      "via": null,
+      "held": [
+        "dead-outlaw-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "dead-outlaw-2025",
+        "dead-outlaw-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/floyd-collins-review-musical-about-man-trapped-in-a-cave-for-14-days",
+      "headline": "The Musical About the Man Trapped in a Cave for 14 Days",
+      "publishDate": "2025-10-20",
+      "via": null,
+      "held": [
+        "floyd-collins-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "floyd-collins-2025"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie",
+      "headline": "Betty Boop Makes a Tap-Dancing Play at Being the Next Barbie",
+      "publishDate": "2025-04-08",
+      "via": null,
+      "held": [
+        "boop-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thedailybeast.com/review-denzel-washingtons-daughter-shines-in-broadways-wine-in-the-wilderness",
+      "headline": "Denzel’s Daughter’s Play Is the Real Must-See Theater Event",
+      "publishDate": "2025-10-20",
+      "via": null,
+      "held": [
+        "wine-in-the-wilderness-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "wine-in-the-wilderness-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/othello-on-broadway-denzel-washington-and-jake-gyllenhaals-tragic-misfire",
+      "headline": "Denzel’s ‘Othello’ Isn’t Worth Its $900 Ticket Prices",
+      "publishDate": "2025-10-20",
+      "via": null,
+      "held": [
+        "othello-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "othello-2025",
+        "othello-1970",
+        "othello-1982",
+        "othello-bedlam-off-broadway-2026",
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/the-new-jonathan-larson-musical-is-an-affront-to-the-rent-genius",
+      "headline": "The ‘Rent’ Creator’s New Musical Is an Affront to His Genius",
+      "publishDate": "2025-03-11",
+      "via": null,
+      "held": [
+        "the-jonathan-larson-project-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thedailybeast.com/review-idina-menzels-redwood-on-broadway-gets-lost-in-the-forest",
+      "headline": "Idina Menzel’s ‘Redwood’ on Broadway Gets Lost in the Forest",
+      "publishDate": "2025-10-20",
+      "via": null,
+      "held": [
+        "redwood-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "redwood-2025"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/english-review-the-broadway-play-everyone-needs-to-see-right-now",
+      "headline": "The Broadway Play Everyone Needs to See Right Now",
+      "publishDate": "2025-01-24",
+      "via": null,
+      "held": [
+        "english-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thedailybeast.com/all-in-review-john-mulaney-and-co-hilariously-take-over-broadway",
+      "headline": "John Mulaney Hilariously Takes Over Broadway in ‘All In’",
+      "publishDate": "2024-12-23",
+      "via": null,
+      "held": [
+        "all-in-comedy-about-love-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thedailybeast.com/broadway-review-audra-mcdonald-excels-in-mixed-gypsy-revival",
+      "headline": "Audra McDonald Excels in Mixed ‘Gypsy’ Revival on Broadway",
+      "publishDate": "2025-10-20",
+      "via": null,
+      "held": [
+        "gypsy-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "gypsy-2024",
+        "gypsy-2008",
+        "gypsy-2003",
+        "gypsy-1989",
+        "gypsy-1974"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/broadway-review-elton-johns-tammy-faye-musical-is-far-from-heaven",
+      "headline": "Elton John’s ‘Tammy Faye’ Musical Is Far From Heaven",
+      "publishDate": "2025-09-24",
+      "via": null,
+      "held": [
+        "tammy-faye-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "tammy-faye-2024"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/review-elf-the-musical-brings-will-ferrells-merry-movie-to-broadway",
+      "headline": "Review: ‘Elf: The Musical’ Brings Will Ferrell’s Merry Movie to Broadway",
+      "publishDate": "2024-11-18",
+      "via": null,
+      "held": [
+        "elf-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thedailybeast.com/broadway-review-our-town-gets-lost-reaching-for-the-stars",
+      "headline": "Broadway Review: ‘Our Town’ Gets Lost Reaching for the Stars",
+      "publishDate": "2025-10-20",
+      "via": null,
+      "held": [
+        "our-town-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "our-town-2024",
+        "our-town-2002",
+        "our-town-1988"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/eddie-redmayne-excels-as-the-emcee-in-a-boozy-broadway-cabaret",
+      "headline": "Eddie Redmayne Excels as the Emcee in a Boozy Broadway ‘Cabaret’",
+      "publishDate": "2024-04-22",
+      "via": null,
+      "held": [
+        "cabaret-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/for-colored-girls-beautifully-raises-black-womens-voices-on-broadway",
+      "headline": "‘For Colored Girls’ Raises Black Women’s Voices on Broadway",
+      "publishDate": "2022-04-21",
+      "via": null,
+      "held": [
+        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "voices-1972"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/mj-the-michael-jackson-broadway-musical-is-high-on-dazzle-low-on-depth",
+      "headline": "‘MJ,’ the Michael Jackson Broadway Musical, Is High on Dazzle, Low on Depth",
+      "publishDate": "2022-02-02",
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thedailybeast.com/the-musical-six-finally-fabulously-opens-on-broadway",
+      "headline": "The Musical ‘Six’ Finally, Fabulously, Opens on Broadway",
+      "publishDate": "2021-10-04",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
   "ambiguous": [],
-  "catalogGaps": [],
-  "outOfWindow": []
+  "catalogGaps": [
+    {
+      "url": "https://www.thedailybeast.com/review-melissa-etheridges-my-window-is-a-super-broadway-concert-not-theater",
+      "headline": "Review: Melissa Etheridge’s ‘My Window’ Is a Super Broadway Concert, Not Theater",
+      "publishDate": "2023-09-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thedailybeast.com/el-mago-pop-on-broadway-review-amazing-illusionsand-a-very-hard-sell",
+      "headline": "‘El Mago Pop’ on Broadway: Amazing Illusions—and a Very Hard Sell",
+      "publishDate": "2023-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thedailybeast.com/review-oscar-isaac-and-rachel-brosnahan-bring-sidney-brustein-to-broadway",
+      "headline": "Review: Oscar Isaac and Rachel Brosnahan Bring ‘Sidney Brustein’ to Broadway",
+      "publishDate": "2023-05-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://www.thedailybeast.com/your-monster-review-the-years-best-horror-rom-com-musical",
+      "headline": "‘Your Monster’ Is the Year’s Best Horror Rom-Com Musical",
+      "publishDate": "2024-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/obsessed/the-end-review-a-stunning-tilda-swinton-musical-about-apocalypse",
+      "headline": "There’s a Tilda Swinton Musical About the End of the World",
+      "publishDate": "2024-09-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "end-of-the-world-1984"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/obsessed/let-it-be-review-the-long-lost-beatles-doc-is-a-musical-treasure",
+      "headline": "The Long-Lost Beatles Doc ‘Let It Be’ Is a Musical Treasure",
+      "publishDate": "2024-05-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "long-lost-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/obsessed/mean-girls-2024-review-the-musical-remake-could-stand-to-be-nastier",
+      "headline": "The New ‘Mean Girls’ Don’t Bite, but They Sure Can Sing",
+      "publishDate": "2024-01-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mean-girls-2018"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/obsessed/the-color-purple-2023-review-a-musical-in-need-of-a-broader-palette",
+      "headline": "‘The Color Purple’ Should Have Used a Broader Palette",
+      "publishDate": "2023-12-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-color-purple-2015",
+        "the-color-purple-2005"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/obsessed/high-school-musical-the-musical-the-series-final-season-review",
+      "headline": "It’s Time for ‘High School Musical’ to Graduate for Good",
+      "publishDate": "2023-08-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-graduate-2002"
+      ]
+    },
+    {
+      "url": "https://www.thedailybeast.com/obsessed/sara-bareilles-waitress-musical-movie-review-not-the-real-thing",
+      "headline": "The Sara Bareilles ‘Waitress’ Musical Is Now a Movie Again",
+      "publishDate": "2023-06-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "waitress-2021",
+        "waitress-2016",
+        "the-real-thing-2014",
+        "the-real-thing-2000",
+        "the-real-thing-1984"
+      ]
+    }
+  ]
 }

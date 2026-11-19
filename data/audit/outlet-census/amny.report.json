@@ -1,44 +1,105 @@
 {
   "outletId": "amny",
-  "generatedAt": "2026-10-28T20:51:44.782Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:33:36.107Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
+    "status": "complete",
     "notes": [],
-    "enumerated": 462,
-    "inWindow": 462,
+    "incomplete": false,
+    "enumerated": 466,
+    "inWindow": 466,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 304,
-      "held": 90,
+      "not-review": 306,
+      "held": 115,
       "held-alt-url": 3,
-      "gap": 27,
-      "held-unmatched": 12,
-      "out-of-window": 18,
-      "catalog-gap": 8
+      "gap": 7,
+      "held-unmatched": 13,
+      "out-of-window": 16,
+      "catalog-gap": 6
     },
     "viaTitleVariant": {
       "held-alt-url": 2,
-      "gap": 4,
-      "held": 7
+      "gap": 2,
+      "held": 11
     },
-    "recall": 0.775,
-    "recallWithCatalog": 0.727
+    "recall": 0.944,
+    "recallWithCatalog": 0.901
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 10,
+      "held": 4,
+      "held-alt-url": 1
+    },
+    "2025-26": {
+      "not-review": 45,
+      "held": 27,
+      "gap": 3,
+      "held-unmatched": 2,
+      "out-of-window": 1,
+      "catalog-gap": 1
+    },
+    "2024-25": {
+      "not-review": 59,
+      "held": 25,
+      "held-unmatched": 3,
+      "catalog-gap": 1,
+      "out-of-window": 3,
+      "held-alt-url": 1
+    },
+    "2023-24": {
+      "not-review": 61,
+      "held": 13,
+      "catalog-gap": 1,
+      "out-of-window": 2,
+      "held-unmatched": 2,
+      "gap": 1
+    },
+    "2022-23": {
+      "not-review": 48,
+      "held": 25,
+      "out-of-window": 4,
+      "gap": 1,
+      "catalog-gap": 2,
+      "held-unmatched": 1,
+      "held-alt-url": 1
+    },
+    "2021-22": {
+      "out-of-window": 6,
+      "not-review": 78,
+      "held": 20,
+      "gap": 2,
+      "held-unmatched": 5
+    },
+    "2020-21": {
+      "not-review": 5,
+      "held": 1,
+      "catalog-gap": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 387,
-    "notEnumerated": 63,
-    "noUrl": 1,
+    "rowsInWindow": 464,
+    "notEnumerated": 52,
+    "noUrl": 4,
     "samples": [
       {
         "showId": "700-sundays-2013",
         "url": "https://www.amny.com/urbanite-1.812039/theater-review-700-sundays-4-stars-1.6431425",
         "publishDate": null,
         "why": "not-enumerated"
+      },
+      {
+        "showId": "a-bronx-tale-the-musical-2016",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
       },
       {
         "showId": "a-dolls-house-2023",
@@ -101,6 +162,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "clybourne-park-2012",
+        "url": "http://www.amny.com/urbanite-1.812039/theater-review-clybourne-park-4-stars-1.3671399",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "dana-h-2021",
         "url": "https://www.amny.com/entertainment/broadway/review-dana-h-tells-gruesome-tale-of-real-life-hostage-situation/",
         "publishDate": "2021-10-18",
@@ -119,15 +186,15 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "driving-miss-daisy-2010",
-        "url": "https://www.amny.com/urbanite-1.812039/driving-miss-daisy-rides-again-1.2401553",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
         "showId": "eurydice-off-broadway-2026",
         "url": "https://www.amny.com/entertainment/broadway/maya-hawke-radiant-eurydice/",
         "publishDate": "2025-06-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "every-brilliant-thing-2026",
+        "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
+        "publishDate": "2026-03-12",
         "why": "not-enumerated"
       },
       {
@@ -140,12 +207,6 @@
         "showId": "giant-2026",
         "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/",
         "publishDate": "2026-03-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "godspell-2011",
-        "url": "https://www.amny.com/urbanite-1.812039/theater-review-godspell-1-5-stars-1.3303484",
-        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -173,6 +234,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "home-2024",
+        "url": "https://www.amny.com/entertainment/broadway/idina-menzel-broadway-tommy-and-home-to-close/",
+        "publishDate": "2024-07-16",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "is-this-a-room-2021",
         "url": "https://www.amny.com/entertainment/broadway/review-fbi-transcript-inspires-broadway-drama-is-this-a-room/",
         "publishDate": "2021-10-11",
@@ -191,14 +258,14 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "macbeth-2013",
-        "url": "https://www.amny.com/urbanite-1.812039/theater-review-macbeth-2-stars-1.5114802",
+        "showId": "kinky-boots-2013",
+        "url": "http://www.amny.com/urbanite-1.812039/theater-review-kinky-boots-2-5-stars-1.5010417",
         "publishDate": null,
         "why": "not-enumerated"
       },
       {
-        "showId": "magicbird-2012",
-        "url": "https://www.amny.com/urbanite-1.812039/theater-review-magic-bird-2-stars-1.3655542",
+        "showId": "macbeth-2013",
+        "url": "https://www.amny.com/urbanite-1.812039/theater-review-macbeth-2-stars-1.5114802",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -227,21 +294,15 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "on-the-twentieth-century-2015",
-        "url": "https://www.amny.com/entertainment/on-the-twentieth-century-theater-review-3-stars-1.10063950",
-        "publishDate": null,
+        "showId": "oh-mary-2024",
+        "url": "https://www.amny.com/entertainment/broadway/oh-mary-broadway-cole-escola/",
+        "publishDate": "2024-12-08",
         "why": "not-enumerated"
       },
       {
         "showId": "once-upon-a-one-more-time-2023",
         "url": "https://www.amny.com/entertainment/broadway/britney-spears-musical-is-a-hot-mess/",
         "publishDate": "2023-06-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "orphans-2013",
-        "url": "https://www.amny.com/urbanite-1.812039/theater-review-orphans-2-5-stars-1.5101216",
-        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -267,12 +328,6 @@
         "url": "https://www.amny.com/entertainment/broadway/review-pirates-the-penzance-musical/",
         "publishDate": "2025-04-25",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "rain-2010",
-        "url": "https://www.amny.com/urbanite-1.812039/rain-not-such-a-fab-four-1.2404286",
-        "publishDate": null,
-        "why": "not-enumerated"
       }
     ]
   },
@@ -285,17 +340,6 @@
       "held": [],
       "matched": [
         "just-in-time-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/news/theater-review-are-you-now-or-have-you-ever-been/",
-      "headline": "Review | Blacklist drama makes unlikely but gripping summer theater",
-      "publishDate": "2026-07-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "are-you-now-or-have-you-ever-been-off-broadway-2026"
       ],
       "outOfWindow": []
     },
@@ -313,158 +357,16 @@
       ]
     },
     {
-      "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/",
-      "headline": "REVIEW | ‘Marcel on the Train’ finds the bravery behind the beret",
-      "publishDate": "2026-02-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "marcel-on-the-train-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/theater/kyoto-turns-climate-diplomacy-into-theater/",
-      "headline": "Review | ‘Kyoto’ turns climate diplomacy into theater — and too often, a lecture",
-      "publishDate": "2025-11-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "kyoto-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/broadway/review-trophy-boys-broadway/",
-      "headline": "Review | ‘Trophy Boys’ misses the prize",
-      "publishDate": "2025-07-06",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "trophy-boys-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/broadway/review-redwood-idina-menzel/",
-      "headline": "Review | ‘Redwood’ leaves Idina Menzel dangling",
-      "publishDate": "2025-02-16",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "redwood-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/broadway/review-english-broadway-2025/",
-      "headline": "Review | Lost and found in learning ‘English’",
-      "publishDate": "2025-01-26",
+      "url": "https://www.amny.com/entertainment/review-the-wild-party-is-worth-the-hangover/",
+      "headline": "Review | ‘The Wild Party’ is worth the hangover",
+      "publishDate": "2026-03-22",
       "via": "title-variant",
       "held": [],
       "matched": [
-        "english-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/theater/review-all-in-comedy-about-love/",
-      "headline": "Review | ‘All In: Comedy About Love’ is surprising enjoyable but not worth the price",
-      "publishDate": "2024-12-23",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "all-in-comedy-about-love-2024"
+        "encores-the-wild-party-off-broadway-2026"
       ],
       "outOfWindow": [
-        "the-price-2017",
-        "the-price-1999",
-        "the-price-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/news/review-cult-of-love-holiday-broadway/",
-      "headline": "Review | ‘Cult of Love’ reconceives the family holiday show",
-      "publishDate": "2024-12-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cult-of-love-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/theater/review-our-town-jim-parsons-katie-holmes/",
-      "headline": "Review | ‘Our Town’ in our time, with Jim Parsons and Katie Holmes",
-      "publishDate": "2024-10-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "our-town-2024"
-      ],
-      "outOfWindow": [
-        "our-town-2002",
-        "our-town-1988"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/entertainment/broadway/review-yellow-face-broadway-2024/",
-      "headline": "Review | ‘Yellow Face’ with Daniel Dae Kim unmasks identity politics",
-      "publishDate": "2024-10-06",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "yellow-face-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/theater/review-the-roommate-patti-lupone-mia-farrow/",
-      "headline": "Review | ‘The Roommate’ shows Patti LuPone and Mia Farrow as the new ‘Odd Couple’",
-      "publishDate": "2024-09-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-roommate-2024"
-      ],
-      "outOfWindow": [
-        "the-odd-couple-2005",
-        "the-odd-couple-1985"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/news/review-water-for-elephants-broadway/",
-      "headline": "Review | ‘Water for Elephants’ brings the circus to Broadway",
-      "publishDate": "2024-03-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "water-for-elephants-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/broadway/review-the-notebook-musical/",
-      "headline": "Review | ‘The Notebook’ musical is an aspiring tearjerker with issues",
-      "publishDate": "2024-03-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-notebook-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/broadway/review-doubt-revival-amy-ryan-liev-schreiber/",
-      "headline": "Review | No ‘Doubt’ about this Broadway revival that still asks powerful questions",
-      "publishDate": "2024-03-10",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "doubt-2024"
-      ],
-      "outOfWindow": [
-        "still-off-broadway-2024"
+        "the-wild-party-2000"
       ]
     },
     {
@@ -481,17 +383,6 @@
       ]
     },
     {
-      "url": "https://www.amny.com/entertainment/review-time-travel-gone-wrong-in-broadways-back-to-the-future/",
-      "headline": "Review | Time travel gone wrong in Broadway’s ‘Back to the Future’",
-      "publishDate": "2023-08-06",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "back-to-the-future-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.amny.com/entertainment/theater/new-york-new-york-goes-round-and-round/",
       "headline": "Review | ‘New York, New York’ goes round and round",
       "publishDate": "2023-04-26",
@@ -499,54 +390,6 @@
       "held": [],
       "matched": [
         "new-york-new-york-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/theater/thanksgiving-play-satirizes-attempt-at-cultural-sensitivity/",
-      "headline": "Review | ‘Thanksgiving Play’ satirizes attempt at cultural sensitivity",
-      "publishDate": "2023-04-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-thanksgiving-play-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/a-musically-glorious-and-starry-sweeney-todd-revival/",
-      "headline": "Review: A musically glorious and starry ‘Sweeney Todd’ revival",
-      "publishDate": "2023-03-27",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sweeney-todd-2023"
-      ],
-      "outOfWindow": [
-        "sweeney-todd-2005",
-        "sweeney-todd-1989",
-        "sweeney-todd-1979"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/entertainment/theater/review-1776-is-reconceived-for-2022-with-extremely-mixed-results/",
-      "headline": "Review | ‘1776’ is reconceived for 2022 with extremely mixed results",
-      "publishDate": "2022-10-06",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "1776-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/broadway-review-the-kite-runner/",
-      "headline": "Broadway review: ‘The Kite Runner’ doesn’t quite soar",
-      "publishDate": "2022-07-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-kite-runner-2022"
       ],
       "outOfWindow": []
     },
@@ -580,35 +423,6 @@
         "the-minutes-2022"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.amny.com/entertainment/reviews-american-buffalo-if-you-can-stand-mamet-is-damn-good/",
-      "headline": "Broadway reviews | American Buffalo, if you can stand David Mamet, is damn good; Harmony offers Barry Manilow sincerity",
-      "publishDate": "2022-04-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "american-buffalo-2022"
-      ],
-      "outOfWindow": [
-        "harmony-2023",
-        "american-buffalo-2008",
-        "american-buffalo-1983",
-        "american-buffalo-1977"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/entertainment/theater/review-take-me-out-hits-a-home-run/",
-      "headline": "Review | ‘Take Me Out’ hits a home run",
-      "publishDate": "2022-04-04",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "take-me-out-2022"
-      ],
-      "outOfWindow": [
-        "take-me-out-2003"
-      ]
     }
   ],
   "heldAltUrl": [
@@ -657,24 +471,7 @@
         "giulia-the-poison-queen-of-palermo-off-broadway-2026"
       ],
       "matched": [],
-      "outOfWindow": [
-        "still-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/news/review-la-cage-aux-folles-at-encores/",
-      "headline": "Review | ‘La Cage aux Folles’ at Encores! has ambition but rough execution",
-      "publishDate": "2026-06-21",
-      "via": null,
-      "held": [
-        "encores-la-cage-aux-folles-off-broadway-2026"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "la-cage-aux-folles-2010",
-        "la-cage-aux-folles-2004",
-        "la-cage-aux-folles-1983"
-      ]
+      "outOfWindow": []
     },
     {
       "url": "https://www.amny.com/entertainment/theater/spelling-bee-returns-nails-every-word/",
@@ -732,6 +529,28 @@
       "outOfWindow": []
     },
     {
+      "url": "https://www.amny.com/entertainment/theater/off-broadway-musical-dramatizes-cautionary-journalism-tragedy/",
+      "headline": "Review | New Off-Broadway musical dramatizes cautionary journalism tragedy",
+      "publishDate": "2024-02-06",
+      "via": null,
+      "held": [
+        "the-connector-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.amny.com/new-york/review-jim-parsons-leads-off-broadway-revival-of-great-importance/",
+      "headline": "Review | Jim Parsons leads Off-Broadway revival of great ‘Importance’",
+      "publishDate": "2022-10-30",
+      "via": null,
+      "held": [
+        "a-man-of-no-importance-off-broadway-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.amny.com/entertainment/broadway/review-half-a-century-on-for-colored-girls-shines-again/",
       "headline": "Review | Half a century on, ‘for colored girls’ shines again",
       "publishDate": "2022-04-20",
@@ -751,7 +570,9 @@
         "how-i-learned-to-drive-2022"
       ],
       "matched": [],
-      "outOfWindow": []
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
     },
     {
       "url": "https://www.amny.com/entertainment/broadway/review-poetic-and-contemplative-thoughts/",
@@ -817,15 +638,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.amny.com/entertainment/theater/off-broadway-musical-dramatizes-cautionary-journalism-tragedy/",
-      "headline": "Review | New Off-Broadway musical dramatizes cautionary journalism tragedy",
-      "publishDate": "2024-02-06",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.amny.com/entertainment/broadway/most-disappointing-broadway-shows-2022/",
       "headline": "Year in Review | The most disappointing Broadway and Off-Broadway shows of 2022",
       "publishDate": "2022-12-28",
@@ -844,15 +656,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.amny.com/new-york/review-jim-parsons-leads-off-broadway-revival-of-great-importance/",
-      "headline": "Review | Jim Parsons leads Off-Broadway revival of great ‘Importance’",
-      "publishDate": "2022-10-30",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://www.amny.com/entertainment/broadway/review-merry-wives-brings-fresh-take-to-shakespeare/",
       "headline": "Review: ‘Merry Wives’ brings fresh take to Shakespeare",
       "publishDate": "2021-08-09",
@@ -862,6 +665,7 @@
       "outOfWindow": []
     }
   ],
+  "otherMarketReviews": [],
   "outOfWindow": [
     {
       "url": "https://www.amny.com/entertainment/1776-theater-review-new-jersey-dc-philly/",
@@ -872,17 +676,6 @@
       "matched": [],
       "outOfWindow": [
         "still-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/entertainment/review-the-wild-party-is-worth-the-hangover/",
-      "headline": "Review | ‘The Wild Party’ is worth the hangover",
-      "publishDate": "2026-03-22",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-wild-party-2000"
       ]
     },
     {
@@ -962,7 +755,8 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "the-first-1981"
+        "the-first-1981",
+        "the-years-de-jaren-off-broadway-2027"
       ]
     },
     {
@@ -1045,17 +839,6 @@
       "matched": [],
       "outOfWindow": [
         "tribute-1978"
-      ]
-    },
-    {
-      "url": "https://www.amny.com/entertainment/theater/broadway-review-assassins-draws-historical-connection-to-january-6/",
-      "headline": "Broadway review | ‘Assassins’ draws historical connection to January 6",
-      "publishDate": "2021-11-14",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "assassins-2004"
       ]
     },
     {

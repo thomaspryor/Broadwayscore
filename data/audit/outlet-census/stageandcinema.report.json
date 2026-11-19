@@ -1,46 +1,102 @@
 {
   "outletId": "stageandcinema",
-  "generatedAt": "2026-10-28T20:42:31.646Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:34:21.990Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
+    "status": "complete",
     "notes": [],
-    "enumerated": 2062,
-    "inWindow": 2062,
+    "incomplete": false,
+    "enumerated": 2129,
+    "inWindow": 2129,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 1101,
-      "gap": 70,
-      "out-of-window": 717,
-      "held": 58,
-      "held-unmatched": 1,
-      "catalog-gap": 89,
-      "held-other-market": 20,
-      "held-alt-url": 5,
-      "ambiguous": 1
+      "not-review": 953,
+      "held": 124,
+      "out-of-window": 715,
+      "catalog-gap": 86,
+      "gap": 11,
+      "held-other-market": 235,
+      "held-unmatched": 2,
+      "held-alt-url": 3
     },
     "viaTitleVariant": {
-      "not-review": 144,
-      "held-other-market": 4,
-      "gap": 5,
-      "held-alt-url": 1
+      "held-other-market": 65,
+      "not-review": 73,
+      "gap": 1,
+      "held": 6
     },
-    "recall": 0.474,
-    "recallWithCatalog": 0.284
+    "recall": 0.92,
+    "recallWithCatalog": 0.567
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 63,
+      "held": 27,
+      "out-of-window": 30,
+      "catalog-gap": 5,
+      "gap": 2,
+      "held-other-market": 61,
+      "held-unmatched": 2
+    },
+    "2025-26": {
+      "not-review": 294,
+      "held-other-market": 123,
+      "held": 80,
+      "catalog-gap": 35,
+      "held-alt-url": 3,
+      "out-of-window": 180,
+      "gap": 2
+    },
+    "2024-25": {
+      "held-other-market": 33,
+      "out-of-window": 211,
+      "not-review": 262,
+      "catalog-gap": 26,
+      "held": 13,
+      "gap": 3
+    },
+    "2023-24": {
+      "not-review": 156,
+      "out-of-window": 161,
+      "held-other-market": 8,
+      "catalog-gap": 10,
+      "held": 2,
+      "gap": 1
+    },
+    "2022-23": {
+      "out-of-window": 80,
+      "not-review": 99,
+      "catalog-gap": 5,
+      "held": 1,
+      "gap": 1
+    },
+    "2021-22": {
+      "not-review": 72,
+      "out-of-window": 53,
+      "catalog-gap": 5,
+      "held": 1,
+      "held-other-market": 10,
+      "gap": 2
+    },
+    "2020-21": {
+      "not-review": 7
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 99,
-    "notEnumerated": 26,
+    "rowsInWindow": 178,
+    "notEnumerated": 33,
     "noUrl": 0,
     "samples": [
       {
         "showId": "all-the-beauty-in-the-world-off-broadway-2025",
         "url": "https://stageandcinema.com/2025/05/03/all-the-beauty-in-the-world/",
-        "publishDate": "2025-05-04",
+        "publishDate": "2025-05-03",
         "why": "not-enumerated"
       },
       {
@@ -80,6 +136,18 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "drag-the-musical-off-broadway-2024",
+        "url": "https://stageandcinema.com/2024/10/22/drag-the-musical-new-world-stages/",
+        "publishDate": "2024-10-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "everythings-fine-off-broadway-2022",
+        "url": "https://stageandcinema.com/2022/10/17/everythings-fine-review/",
+        "publishDate": "2022-10-17",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "fat-ham-2023",
         "url": "https://stageandcinema.com/2023/04/16/broadway-review-fat-ham/",
         "publishDate": "2023-04-16",
@@ -88,7 +156,7 @@
       {
         "showId": "funny-girl-2022",
         "url": "https://stageandcinema.com/2022/04/30/funny-girl-bway/",
-        "publishDate": "2022-05-01",
+        "publishDate": "2022-04-30",
         "why": "not-enumerated"
       },
       {
@@ -148,7 +216,7 @@
       {
         "showId": "life-of-pi-2023",
         "url": "https://stageandcinema.com/2023/04/17/life-of-pi-broadway-review/",
-        "publishDate": "2023-04-18",
+        "publishDate": "2023-04-17",
         "why": "not-enumerated"
       },
       {
@@ -158,9 +226,21 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "new-york-new-york-2023",
+        "url": "https://stageandcinema.com/2023/05/03/review-new-york-new-york-bway/",
+        "publishDate": "2023-05-03",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "ragtime-2025",
         "url": "https://stageandcinema.com/2025/10/17/ragtime-lincoln-center/",
         "publishDate": "2025-10-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "someone-spectacular-off-broadway-2024",
+        "url": "https://stageandcinema.com/2024/07/31/someone-spectacular-pershing-square/",
+        "publishDate": "2024-07-31",
         "why": "not-enumerated"
       },
       {
@@ -182,6 +262,18 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "the-chinese-lady-off-broadway-2022",
+        "url": "https://stageandcinema.com/2022/03/10/chinese-lady-public/",
+        "publishDate": "2022-03-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-coast-starlight-off-broadway-2023",
+        "url": "https://stageandcinema.com/2023/03/13/review-the-coast-starlight-lct/?fbclid=IwAR1UYHygzjrbsx3vaqjy0jwLLtKbYQaZkNGA_4al-sCKufpLrcejdA9_RMc",
+        "publishDate": "2023-03-13",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "the-comeuppance-off-broadway-2026",
         "url": "https://stageandcinema.com/2023/07/07/the-comeuppance-signature-review/",
         "publishDate": "2023-07-07",
@@ -192,436 +284,46 @@
         "url": "https://stageandcinema.com/2024/04/11/bway-review-the-outsiders/",
         "publishDate": "2024-04-11",
         "why": "not-enumerated"
+      },
+      {
+        "showId": "the-wanderers-off-broadway-2023",
+        "url": "https://stageandcinema.com/2023/02/16/the-wanderers-roundabout/",
+        "publishDate": "2023-02-16",
+        "why": "not-enumerated"
       }
     ]
   },
   "gaps": [
     {
-      "url": "https://stageandcinema.com/2026/10/26/aftermath-art-new-york-theatres-review/",
-      "headline": "Off-Broadway Review: AFTERMATH (A.R.T./New York Theatres)",
-      "publishDate": "2026-10-26",
+      "url": "https://stageandcinema.com/2026/11/16/here-there-are-blueberries-broadway-review/",
+      "headline": "Broadway Review: Tectonic Theater Project’s HERE THERE ARE BLUEBERRIES (Ethel Barrymore)",
+      "publishDate": "2026-11-16",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "aftermath-art-new-york-off-broadway-2026"
+        "here-there-are-blueberries-2026"
       ],
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2026/10/26/other-desert-cities-broadway-review/",
-      "headline": "Broadway Review: OTHER DESERT CITIES (Hudson Theatre)",
-      "publishDate": "2026-10-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "other-desert-cities-2026"
-      ],
-      "outOfWindow": [
-        "other-desert-cities-2011",
-        "other-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/10/11/creation-stories-important-importants-lct-review/",
-      "headline": "Off-Broadway Review: CREATION STORIES AND ALL THE IMPORTANT IMPORTANTS (Lincoln Center Theater / LCT3)",
-      "publishDate": "2026-10-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "creation-stories-and-all-the-important-importants-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/09/26/cherry-orchard-park-avenue-armory/",
-      "headline": "Off-Broadway Review: THE CHERRY ORCHARD (North American Premiere / Park Avenue Armory)",
-      "publishDate": "2026-09-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "the-cherry-orchard-2016",
-        "the-cherry-orchard-1997",
-        "the-cherry-orchard-1977"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/08/16/whole-sky-all-diamonds-loft-story-review/",
-      "headline": "Off-Off-Broadway Review: THE WHOLE SKY ALL DIAMONDS (Loft Story / Brooklyn)",
-      "publishDate": "2026-08-16",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-whole-sky-all-diamonds-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/08/04/the-pass-review-la-mama/",
-      "headline": "Off-Broadway Review: THE PASS (La MaMa E.T.C.)",
-      "publishDate": "2026-08-04",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-pass-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/17/romeo-and-juliet-review-shakespeare-in-the-park-2026/",
-      "headline": "Off-Broadway Review: ROMEO & JULIET (The Public Theater / Delacorte Theatre / Central Park)",
-      "publishDate": "2026-06-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "romeo-and-juliet-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "romeo-and-juliet-2013",
-        "romeo-and-juliet-1986",
-        "romeo-and-juliet-1977"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/13/fear-and-wonder-review-flux-theatre-ensemble/",
-      "headline": "Off-Broadway Review: FEAR & WONDER (Flux Theatre Ensemble / A.R.T./NY Theaters)",
-      "publishDate": "2026-06-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "fear-and-wonder-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/05/30/girls-chance-music-review-vineyard-theatre/",
-      "headline": "Off-Broadway Review: ||: GIRLS :||: CHANCE :||: MUSIC :|| (Vineyard Theatre)",
-      "publishDate": "2026-05-30",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "girls-chance-music-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/05/30/well-ill-let-you-go-review-studio-seaview/",
-      "headline": "Off-Broadway Review: WELL, I’LL LET YOU GO (Studio Seaview)",
-      "publishDate": "2026-05-30",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "well-ill-let-you-go-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/05/06/rocky-horror-show-review-roundabout/",
-      "headline": "Broadway Review: THE ROCKY HORROR SHOW (Roundabout Theatre Company / Studio 54)",
-      "publishDate": "2026-05-06",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-rocky-horror-show-2026"
-      ],
-      "outOfWindow": [
-        "rocky-2014",
-        "the-rocky-horror-show-1975",
-        "the-rocky-horror-show-2000"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/05/05/hamlet-review-bam/",
-      "headline": "Theater Review: HAMLET (National Theatre Company at BAM in Brooklyn)",
-      "publishDate": "2026-05-05",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "hamlet-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "hamlet-2009",
-        "hamlet-1995",
-        "hamlet-1975",
-        "hamlet-off-broadway-2024",
-        "hamlet-greenwich-house-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/05/01/kenrex-lucille-lortel-review/",
-      "headline": "Off-Broadway Review: KENREX (Lucille Lortel)",
-      "publishDate": "2026-05-01",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "kenrex-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/04/25/joe-turners-come-and-gone-broadway-review/",
-      "headline": "Broadway Review: JOE TURNER’S COME AND GONE (Barrymore Theatre)",
-      "publishDate": "2026-04-25",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "joe-turners-come-and-gone-2026"
-      ],
-      "outOfWindow": [
-        "joe-turners-come-and-gone-2009",
-        "joe-turners-come-and-gone-1988"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/04/17/milk-and-honey-j2-spotlight-review/",
-      "headline": "Off-Broadway Review: MILK AND HONEY (J2 Spotlight Theatre Company at AMT, NYC)",
-      "publishDate": "2026-04-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "milk-and-honey-amt-theater-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/04/14/becky-shaw-broadway-review/",
-      "headline": "Broadway Review: BECKY SHAW (Helen Hayes)",
-      "publishDate": "2026-04-14",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "becky-shaw-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/04/13/dog-day-afternoon-august-wilson-review/",
-      "headline": "Broadway Review: DOG DAY AFTERNOON (August Wilson Theatre)",
-      "publishDate": "2026-04-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "dog-day-afternoon-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/04/02/sexual-misconduct-middle-classes-review/",
-      "headline": "Off-Broadway Review: SEXUAL MISCONDUCT OF THE MIDDLE CLASSES (Minetta Lane Theatre)",
-      "publishDate": "2026-04-02",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/04/01/no-singing-in-the-navy-review-playwrights-horizons/",
-      "headline": "Theater Review: NO SINGING IN THE NAVY (Playwrights Horizons, NYC)",
-      "publishDate": "2026-04-01",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "no-singing-in-the-navy-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/03/14/the-paparazzi-amt-theater/",
-      "headline": "Off-Broadway Review: THE PAPARAZZI (AMT Theater)",
-      "publishDate": "2026-03-14",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-paparazzi-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/03/11/zack-mint-theater/",
-      "headline": "Off-Broadway Review: ZACK (Mint Theater Company)",
-      "publishDate": "2026-03-11",
+      "url": "https://stageandcinema.com/2026/10/28/the-dog-show-triad-theatre-review/",
+      "headline": "Off-Broadway Review: THE DOG SHOW (Triad Theater)",
+      "publishDate": "2026-10-28",
       "via": "title-variant",
       "held": [],
       "matched": [
-        "zack-off-broadway-2026"
+        "the-dog-show-come-sit-stay-off-broadway-2026"
       ],
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2026/03/11/off-broadway-review-bughouse-vineyard-theatre/",
-      "headline": "Off-Broadway Review: BUGHOUSE (Vineyard Theatre on East 15th St)",
-      "publishDate": "2026-03-11",
+      "url": "https://stageandcinema.com/2025/11/18/broadway-review-operation-mincemeat-golden-theatre/",
+      "headline": "Broadway Review: OPERATION MINCEMEAT (Golden Theatre)",
+      "publishDate": "2025-11-18",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "bughouse-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/03/07/our-house-tosos/",
-      "headline": "Off-Broadway Review: OUR HOUSE (TOSOS at A.R.T./New York Theatres)",
-      "publishDate": "2026-03-07",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "our-house-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/03/03/chinese-republicans-roundabout/",
-      "headline": "Off-Broadway Review: CHINESE REPUBLICANS (Roundabout Theatre Company)",
-      "publishDate": "2026-03-03",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "chinese-republicans-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/03/02/petit-rouge-company-xiv/",
-      "headline": "Off-Broadway Review: PETITE ROUGE (Company XIV at Théâtre XIV in Bushwick, Brooklyn)",
-      "publishDate": "2026-03-02",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "petite-rouge-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/02/26/meat-suit-second-stage/",
-      "headline": "Off-Broadway Review: MEAT SUIT, OR THE SHITSHOW OF MOTHERHOOD (Second Stage Theater)",
-      "publishDate": "2026-02-26",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/02/19/the-dinosaurs-playwrights-horizons/",
-      "headline": "Off-Broadway Review: THE DINOSAURS (Playwrights Horizons)",
-      "publishDate": "2026-02-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-dinosaurs-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/02/09/ai-yah-goy-vey/",
-      "headline": "Off-Broadway Review: AI YAH GOY VEY! – ADVENTURES OF A DIM SUN IN SEARCH OF HIS WANTON FATHER (A.R.T./New York Theatres)",
-      "publishDate": "2026-02-09",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "ai-yah-goy-vey-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "the-father-2016",
-        "the-father-1981"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/02/02/ulysses-elevator-repair-service-public-review/",
-      "headline": "Off-Broadway Review: ULYSSES (Elevator Repair Service at The Public Theater)",
-      "publishDate": "2026-02-02",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "ulysses-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/01/29/data-off-broadway-review-lucille-lortel/",
-      "headline": "Off-Broadway Review: DATA (Lucille Lortel Theatre)",
-      "publishDate": "2026-01-29",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "data-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/01/21/an-ark-the-shed-vr-review-nyc/",
-      "headline": "Theater Review: AN ARK (The Shed)",
-      "publishDate": "2026-01-21",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "an-ark-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/01/15/review-the-disappear-minetta-lane/",
-      "headline": "Off-Broadway Review: THE DISAPPEAR (Minetta Lane Theatre)",
-      "publishDate": "2026-01-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-disappear-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/12/23/review-anna-christie-st-anns/",
-      "headline": "Off-Broadway Review: ANNA CHRISTIE (St. Ann’s Warehouse)",
-      "publishDate": "2025-12-23",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "anna-christie-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "anna-christie-1977"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2025/12/16/review-tartuffe-new-york-theatre-workshop/",
-      "headline": "Off-Broadway Review: TARTUFFE (New York Theatre Workshop)",
-      "publishDate": "2025-12-16",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "tartuffe-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "tartuffe-2003",
-        "tartuffe-1996",
-        "tartuffe-1977"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2025/12/05/queens-manhattan-theatre-club-review/",
-      "headline": "Off-Broadway Review: QUEENS (Manhattan Theatre Club at New York City Center)",
-      "publishDate": "2025-12-05",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "queens-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/11/24/dirty-books-bated-breath/",
-      "headline": "Off-Off-Broadway Review: DIRTY BOOKS (Bated Breath)",
-      "publishDate": "2025-11-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "dirty-books-off-broadway-2025"
+        "operation-mincemeat-2025"
       ],
       "outOfWindow": []
     },
@@ -637,173 +339,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2025/11/14/richard-ii-michael-urie-astor-place/",
-      "headline": "Off-Broadway Review: RICHARD II (Red Bull Theater at Astor Place Theater)",
-      "publishDate": "2025-11-14",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "richard-ii-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/11/13/review-archduke-roundabout/",
-      "headline": "Off-Broadway Review: ARCHDUKE (Roundabout Theatre Company at Laura Pels)",
-      "publishDate": "2025-11-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "archduke-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/11/10/review-messy-white-gays-duke/",
-      "headline": "Off-Broadway Review: MESSY WHITE GAYS (The Duke)",
-      "publishDate": "2025-11-10",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "messy-white-gays-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/11/09/review-burning-cauldron-of-fiery-fire-vineyard-civilians/",
-      "headline": "Off-Broadway Review: THE BURNING CAULDRON OF FIERY FIRE (Vineyard Theatre and The Civilians)",
-      "publishDate": "2025-11-09",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-burning-cauldron-of-fiery-fire-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/11/08/review-44-the-musical-daryl-roth/",
-      "headline": "Off-Broadway Review: 44 – THE MUSICAL (Daryl Roth)",
-      "publishDate": "2025-11-08",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "44-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/11/07/reunions-city-center/",
-      "headline": "Off-Broadway Review: REUNIONS (New York City Center)",
-      "publishDate": "2025-11-07",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "reunions-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/08/09/ta-da-josh-sharp/",
-      "headline": "Off-Broadway Review: TA-DA! (Josh Sharp at Greenwich House)",
-      "publishDate": "2025-08-09",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "ta-da-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/07/30/review-rolling-thunder/",
-      "headline": "Off-Broadway Review: ROLLING THUNDER (New World Stages)",
-      "publishDate": "2025-07-30",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "rolling-thunder-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/07/25/ginger-twinsies-parent-trap-parody-orpheum/",
-      "headline": "Off-Broadway Review: GINGER TWINSIES (Orpheum Theatre)",
-      "publishDate": "2025-07-25",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "ginger-twinsies-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/07/24/off-broadway-review-joy-a-new-true-musical-laura-pels-theatre/",
-      "headline": "Off-Broadway Review: JOY: A NEW TRUE MUSICAL (Laura Pels Theatre",
-      "publishDate": "2025-07-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "joy-a-new-true-musical-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/07/05/bear-grease-st-lukes/",
-      "headline": "Off-Broadway Review: BEAR GREASE (St. Luke’s Theatre)",
-      "publishDate": "2025-07-05",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "bear-grease-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/07/03/dilaria-dr2/",
-      "headline": "Off-Broadway Review: DILARIA (DR2 Theatre in Union Square)",
-      "publishDate": "2025-07-03",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "dilaria-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/06/25/angry-alan/",
-      "headline": "Off-Broadway Review: ANGRY ALAN (Studio Seaview)",
-      "publishDate": "2025-06-25",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "angry-alan-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/06/18/prince-faggot-playwrights-horizon/",
-      "headline": "Off-Broadway Review: PRINCE FAGGOT (Playwrights Horizon)",
-      "publishDate": "2025-06-18",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "prince-faggot-playwrights-horizons-off-broadway-2025"
-      ],
-      "outOfWindow": [
-        "prince-faggot-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2025/05/11/bway-john-proctor-is-the-villain/",
-      "headline": "Broadway Review: JOHN PROCTOR IS THE VILLAIN (Booth)",
-      "publishDate": "2025-05-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "john-proctor-is-the-villain-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://stageandcinema.com/2025/04/28/stranger-things-the-first-shadow-marquis/",
       "headline": "Broadway Review: STRANGER THINGS: THE FIRST SHADOW (Marquis Theatre)",
       "publishDate": "2025-04-28",
@@ -812,9 +347,7 @@
       "matched": [
         "stranger-things-2024"
       ],
-      "outOfWindow": [
-        "the-first-1981"
-      ]
+      "outOfWindow": []
     },
     {
       "url": "https://stageandcinema.com/2025/04/22/little-shop-of-horrors-nocturne/",
@@ -830,17 +363,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2025/03/27/picture-of-dorian-gray-music-box/",
-      "headline": "Broadway Review: THE PICTURE OF DORIAN GRAY (Music Box)",
-      "publishDate": "2025-03-27",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-picture-of-dorian-gray-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://stageandcinema.com/2025/01/28/play-that-goes-wrong-la-mirada/",
       "headline": "Theater Review: THE PLAY THAT GOES WRONG (La Mirada Theatre for the Performing Arts)",
       "publishDate": "2025-01-28",
@@ -854,55 +376,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2024/12/15/once-upon-a-mattress-ahmanson/",
-      "headline": "Theater Review: ONCE UPON A MATTRESS (Broadway Production at The Ahmanson Theatre)",
-      "publishDate": "2024-12-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "once-upon-a-mattress-2024"
-      ],
-      "outOfWindow": [
-        "once-upon-a-mattress-1996"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2024/11/08/gatz-elevator-repair-service-public/",
-      "headline": "Theater Review: GATZ (Elevator Repair Service at The Public)",
-      "publishDate": "2024-11-08",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "gatz-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2024/06/28/little-night-music-in-concert-lincoln-center/",
-      "headline": "Theater Review: A LITTLE NIGHT MUSIC IN CONCERT (David Geffen Hall at Lincoln Center; World Premiere of Jonathan Tunick’s Orchestrations for Large Ensembles)",
-      "publishDate": "2024-06-28",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "david-a-new-musical-off-broadway-2024"
-      ],
-      "outOfWindow": [
-        "a-little-night-music-2009",
-        "a-little-night-music-1973"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2024/02/19/review-between-two-knees-pac-nyc/",
-      "headline": "Theater Review: BETWEEN TWO KNEES (PAC NYC)",
-      "publishDate": "2024-02-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "between-two-knees-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://stageandcinema.com/2023/09/12/half_god-of-rainfall-a-r-t/",
       "headline": "Theater Review: THE HALF-GOD OF RAINFALL (American Repertory Theater in a co-production with New York Theater Workshop in Cambridge, MA)",
       "publishDate": "2023-09-12",
@@ -910,28 +383,6 @@
       "held": [],
       "matched": [
         "the-half-god-of-rainfall-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2023/04/24/good-night-oscar-bway-review/",
-      "headline": "Broadway Review: GOOD NIGHT, OSCAR (Belasco)",
-      "publishDate": "2023-04-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "good-night-oscar-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2022/11/12/moulin-rouge-scfta/",
-      "headline": "Theater Review: MOULIN ROUGE! (North American Tour at SCFTA)",
-      "publishDate": "2022-11-12",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "moulin-rouge-2019"
       ],
       "outOfWindow": []
     },
@@ -949,48 +400,17 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2022/08/10/hadestown-tour-scfta/",
-      "headline": "Theater Review: HADESTOWN (North American Tour)",
-      "publishDate": "2022-08-10",
+      "url": "https://stageandcinema.com/2022/03/16/assassins-ewp/",
+      "headline": "Theater Review: ASSASSINS (East West Players)",
+      "publishDate": "2022-03-16",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "hadestown-2019"
+        "assassins-off-broadway-2021"
       ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2022/07/13/moulin-rouge-the-musical-tour/",
-      "headline": "Theater Review: MOULIN ROUGE! THE MUSICAL (North American Tour)",
-      "publishDate": "2022-07-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "moulin-rouge-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2022/06/23/bway-by-the-year-ziegfeld-moulin/",
-      "headline": "Theater Review: BROADWAY BY THE YEAR: “FROM ZIEGFELD TO MOULIN ROUGE!” (The Town Hall)",
-      "publishDate": "2022-06-23",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "moulin-rouge-2019"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2022/05/24/how-i-learned-to-drive-bway/",
-      "headline": "Broadway Review: HOW I LEARNED TO DRIVE (Manhattan Theatre Club at Samuel J. Friedman Theatre)",
-      "publishDate": "2022-05-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "how-i-learned-to-drive-2022"
-      ],
-      "outOfWindow": []
+      "outOfWindow": [
+        "assassins-2004"
+      ]
     },
     {
       "url": "https://stageandcinema.com/2022/03/13/slave-play-mtf/",
@@ -1000,17 +420,6 @@
       "held": [],
       "matched": [
         "slave-play-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2022/02/24/come-from-away-2022-tour/",
-      "headline": "Theater Review: COME FROM AWAY (North American Tour)",
-      "publishDate": "2022-02-24",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "come-from-away-2017"
       ],
       "outOfWindow": []
     }
@@ -1039,17 +448,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/03/24/antigone-in-analysis-review-lamama/",
-      "headline": "Off-Broadway Review: ANTIGONE IN ANALYSIS (Peculiar Works Project at La MaMa)",
-      "publishDate": "2026-03-24",
-      "matched": [
-        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
-      ],
-      "heldUrls": [
-        "https://stageandcinema.com/2026/03/11/antigone-this-play-i-read-in-high-school-public/"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/03/11/death-becomes-her-broadway-everything-to-know/",
       "headline": "Deep Dive into “Death Becomes Her” on Broadway: Review, Tickets, and Everything You Need to Know",
       "publishDate": "2026-03-11",
@@ -1059,21 +457,21 @@
       "heldUrls": [
         "https://stageandcinema.com/2024/11/25/death-becomes-her-lunt-fontanne/"
       ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/02/21/the-seagull-red-theater/",
-      "headline": "Theater Review: THE SEAGULL (Red Theater)",
-      "publishDate": "2026-02-21",
-      "matched": [
-        "seagull-true-story-off-broadway-2026"
-      ],
-      "heldUrls": [
-        "https://stageandcinema.com/2026/03/31/seagull-true-story-review-public-theater/"
-      ]
     }
   ],
   "misfiles": [],
   "heldUnmatched": [
+    {
+      "url": "https://stageandcinema.com/2026/11/05/catholic-guilt-kelly-mccaughan-review/",
+      "headline": "Off-Broadway Review: CATHOLIC GUILT (SoHo Playhouse)",
+      "publishDate": "2026-11-05",
+      "via": null,
+      "held": [
+        "kelly-mccaughan-catholic-guilt-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
     {
       "url": "https://stageandcinema.com/2026/10/20/copperfield-musical-off-broadway-review/",
       "headline": "Off-Broadway Review: COPPERFIELD! (The Duke on 42nd Street)",
@@ -1088,23 +486,35 @@
       ]
     }
   ],
-  "ambiguous": [
-    {
-      "url": "https://stageandcinema.com/2026/01/19/going-bacharach-songs-of-an-icon-review/",
-      "headline": "Theatre Review: GOING BACHARACH: THE SONGS OF AN ICON (Marjorie S. Deane Little Theater)",
-      "publishDate": "2026-01-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
-        "going-bacharach-off-broadway-2026"
-      ],
-      "outOfWindow": [
-        "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
-      ]
-    }
-  ],
+  "ambiguous": [],
   "catalogGaps": [
+    {
+      "url": "https://stageandcinema.com/2026/11/17/fashion-the-musical-review-replay-plaza-theatre/",
+      "headline": "Theater Review: FASHION, THE MUSICAL (rePLAY / Plaza Theatre / Palm Springs)",
+      "publishDate": "2026-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/11/class-ear-out-playhouse-review/",
+      "headline": "Off-Off-Broadway Review: CLASS (Ear Out Playhouse / Ear Inn)",
+      "publishDate": "2026-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/02/waiting-for-lefty-classic-stage-company-review/",
+      "headline": "Off-Broadway Review: WAITING FOR LEFTY (Classic Stage Company)",
+      "publishDate": "2026-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
     {
       "url": "https://stageandcinema.com/2026/10/17/the-bald-soprano-resident-acting-company-review/",
       "headline": "Off-Broadway Review: THE BALD SOPRANO (The Resident Acting Company)",
@@ -1217,15 +627,6 @@
       "url": "https://stageandcinema.com/2026/06/08/blooming-in-dry-season-review-wp-theatre/",
       "headline": "Off-Broadway Review: BLOOMING IN DRY SEASON (Woodie King Jr.’s New Federal Theatre & North Carolina Black Repertory Company / WP Theater)",
       "publishDate": "2026-06-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2026/05/22/pippin-review-signature-theatre-arlington/",
-      "headline": "Theater Review: PIPPIN (Signature Theatre / Arlington)",
-      "publishDate": "2026-05-22",
       "via": null,
       "held": [],
       "matched": [],
@@ -1412,27 +813,9 @@
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2025/11/04/tick-tick-boom-umbrella-stage/",
-      "headline": "Theater Review: TICK, TICK … BOOM! (Umbrella Stage Company in Concord, MA)",
-      "publishDate": "2025-11-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://stageandcinema.com/2025/11/02/bat-boy-the-musical-encores/",
       "headline": "Off-Broadway Review: BAT BOY: THE MUSICAL (Encores! at New York City Center)",
       "publishDate": "2025-11-02",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2025/10/16/prodigal-son-athenaeum/",
-      "headline": "Theater Review: PRODIGAL SON (Athenaeum Theatre)",
-      "publishDate": "2025-10-16",
       "via": null,
       "held": [],
       "matched": [],
@@ -1628,15 +1011,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2025/04/16/henry-johnson-victory-gardens/",
-      "headline": "Theater Review: HENRY JOHNSON (David Mamet Midwest Premiere at Victory Gardens)",
-      "publishDate": "2025-04-16",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://stageandcinema.com/2025/03/18/one-for-my-baby-all-roads/",
       "headline": "Theater Review: ONE FOR MY BABY (Broadway-Bound World-Premiere Musical at El Portal in North Hollywood)",
       "publishDate": "2025-03-18",
@@ -1709,15 +1083,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2024/08/23/soft-power-signature-theater/",
-      "headline": "Theater Review: SOFT POWER (Signature Theater, Arlington, VA)",
-      "publishDate": "2024-08-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://stageandcinema.com/2024/07/04/expatriated-hollywood-fringe/",
       "headline": "Theater Review: EXPATRIATED (The Broadwater Second Stage as Part of the Hollywood Fringe Festival)",
       "publishDate": "2024-07-04",
@@ -1754,18 +1119,27 @@
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2024/01/18/review-all-the-devils-are-here/",
-      "headline": "Off-Broadway Review: ALL THE DEVILS ARE HERE: HOW SHAKESPEARE INVENTED THE VILLAIN (Patrick Page at DR2)",
-      "publishDate": "2024-01-18",
+      "url": "https://stageandcinema.com/2024/02/28/review-the-ally-public-theater/",
+      "headline": "Off-Broadway Review: THE ALLY (Public Theater)",
+      "publishDate": "2024-02-28",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2024/01/14/formidable-aznavour-tour-review/",
-      "headline": "Theater Review: FORMIDABLE! (Aznavour 100th Anniversary World Tour at Town Hall in New York)",
-      "publishDate": "2024-01-14",
+      "url": "https://stageandcinema.com/2024/01/22/cocktail-hour-trinity-theatre/",
+      "headline": "Theater Review: THE COCKTAIL HOUR (Trinity Theatre in Mission Valley)",
+      "publishDate": "2024-01-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://stageandcinema.com/2024/01/18/review-all-the-devils-are-here/",
+      "headline": "Off-Broadway Review: ALL THE DEVILS ARE HERE: HOW SHAKESPEARE INVENTED THE VILLAIN (Patrick Page at DR2)",
+      "publishDate": "2024-01-18",
       "via": null,
       "held": [],
       "matched": [],
@@ -1808,15 +1182,6 @@
       "outOfWindow": []
     },
     {
-      "url": "https://stageandcinema.com/2023/07/09/last-summer-bluefish-cove-fountain-review/",
-      "headline": "Theater Review: LAST SUMMER AT BLUEFISH COVE (Fountain Theatre in Hollywood)",
-      "publishDate": "2023-07-09",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://stageandcinema.com/2023/05/20/a-new-brain-celebration-review/",
       "headline": "Theater Review: A NEW BRAIN (Celebration Theatre)",
       "publishDate": "2023-05-20",
@@ -1847,15 +1212,6 @@
       "url": "https://stageandcinema.com/2023/01/20/guess-whos-coming-to-dinner-theatre-40/",
       "headline": "Theater Review: GUESS WHO’S COMING TO DINNER? (Theatre 40)",
       "publishDate": "2023-01-20",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://stageandcinema.com/2022/08/11/prom-north-american-tour/",
-      "headline": "Theater Review: THE PROM (North American Tour)",
-      "publishDate": "2022-08-11",
       "via": null,
       "held": [],
       "matched": [],
@@ -1907,17 +1263,161 @@
       "outOfWindow": []
     }
   ],
+  "otherMarketReviews": [],
   "outOfWindow": [
     {
-      "url": "https://stageandcinema.com/2026/10/26/heartbreak-house-antaeus-theatre-company-review/",
-      "headline": "Theater Review: HEARTBREAK HOUSE (Antaeus Theatre Company / Glendale)",
-      "publishDate": "2026-10-26",
+      "url": "https://stageandcinema.com/2026/11/17/covenant-berkeley-rep-review/",
+      "headline": "Theater Review: COVENANT (Berkeley Rep)",
+      "publishDate": "2026-11-17",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "heartbreak-house-2006",
-        "heartbreak-house-1983"
+        "covenant-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/17/urinetown-musical-review-revolution-stage-company/",
+      "headline": "Theater Review: URINETOWN: THE MUSICAL (Revolution Stage Company / Palm Springs)",
+      "publishDate": "2026-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "urinetown-2001"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/14/beauty-queen-of-leenane-theater-uncorked-review/",
+      "headline": "Theater Review: THE BEAUTY QUEEN OF LEENANE (Theater UnCorked / Boston)",
+      "publishDate": "2026-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-beauty-queen-of-leenane-1998"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/08/hamlet-in-the-american-revolution-lighting-rod-theater/",
+      "headline": "Theater Review: HAMLET IN THE AMERICAN REVOLUTION (Lighting Rod Theater / McCadden Place Theatre / Los Angeles)",
+      "publishDate": "2026-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/06/sweeney-todd-pacific-opera-project-review/",
+      "headline": "Thaeter Review: SWEENEY TODD (Pacific Opera Project / Los Angeles)",
+      "publishDate": "2026-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sweeney-todd-2023",
+        "sweeney-todd-2005",
+        "sweeney-todd-1989",
+        "sweeney-todd-1979"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/05/recent-alien-abductions-sacred-fools-review/",
+      "headline": "Theater Review: RECENT ALIEN ABDUCTIONS (Sacred Fools Theater Company / Los Angeles)",
+      "publishDate": "2026-11-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/03/liberation-berkeley-rep-review/",
+      "headline": "Theater Review: LIBERATION (Berkeley Rep)",
+      "publishDate": "2026-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "liberation-2025",
+        "liberation-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/03/dracula-a-comedy-of-terrors-center-rep-review/",
+      "headline": "Theater Review: DRACULA: A COMEDY OF TERRORS (Center REP / Walnut Creek)",
+      "publishDate": "2026-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-a-comedy-of-terrors-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/02/the-minutes-cv-rep-review/",
+      "headline": "Theater Review: THE MINUTES (CV Rep / Cathedral City)",
+      "publishDate": "2026-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-minutes-2022"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/11/02/betrayal-marin-theatre-review/",
+      "headline": "Theater Review: BETRAYAL (Marin Theatre / Mill Valley)",
+      "publishDate": "2026-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "betrayal-2019",
+        "betrayal-2013",
+        "betrayal-1980",
+        "betrayal-2000"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/10/29/once-upon-a-one-more-time-ray-of-light-review/",
+      "headline": "Theater Review: ONCE UPON A ONE MORE TIME (Ray of Light Theatre / San Francisco)",
+      "publishDate": "2026-10-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "once-upon-a-one-more-time-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/10/28/come-from-away-a-noise-within-review/",
+      "headline": "Theater Review: COME FROM AWAY (A Noise Within / Pasadena)",
+      "publishDate": "2026-10-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "come-from-away-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/10/27/the-winters-tale-chicago-shakespeare-review/",
+      "headline": "Theater Review: THE WINTER’S TALE (Chicago Shakespeare Theater)",
+      "publishDate": "2026-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-winters-tale-off-broadway-2026"
       ]
     },
     {
@@ -1932,18 +1432,6 @@
         "into-the-woods-2002",
         "into-the-woods-1997",
         "into-the-woods-1987"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/10/23/rorschach-skylight-theatre-review/",
-      "headline": "Theater Review: RORSCHACH (Skylight Theatre Company / Los Angeles)",
-      "publishDate": "2026-10-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "skylight-2015",
-        "skylight-1996"
       ]
     },
     {
@@ -1965,8 +1453,6 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "dracula-1977",
-        "dracula-the-musical-2004",
         "dracula-a-comedy-of-terrors-off-broadway-2023"
       ]
     },
@@ -1994,30 +1480,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/10/05/kowalski-lookingglass-chicago-review/",
-      "headline": "Chicago Theater Review: KOWALSKI (Lookingglass Theatre Company)",
-      "publishDate": "2026-10-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "kowalski-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/10/05/all-my-sons-lyric-stage-boston/",
-      "headline": "Theater Review: ALL MY SONS (Lyric Stage, Boston)",
-      "publishDate": "2026-10-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "all-my-sons-2019",
-        "all-my-sons-2008",
-        "all-my-sons-1987"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/10/05/peter-pan-goes-wrong-san-francisco-playhouse/",
       "headline": "Theater Review: PETER PAN GOES WRONG (San Francisco Playhouse)",
       "publishDate": "2026-10-05",
@@ -2025,11 +1487,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "peter-pan-goes-wrong-2023",
-        "peter-pan-1991",
-        "peter-pan-1998",
-        "peter-pan-1999",
-        "peter-pan-1979"
+        "peter-pan-goes-wrong-2023"
       ]
     },
     {
@@ -2044,40 +1502,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/10/05/topdog-underdog-old-globe/",
-      "headline": "Theater Review: TOPDOG/UNDERDOG (The Old Globe / San Diego)",
-      "publishDate": "2026-10-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "topdog-underdog-2022",
-        "topdog-underdog-2002"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/10/04/covenant-speakeasy-stage/",
-      "headline": "Theater Review: COVENANT (SpeakEasy Stage Company / Boston)",
-      "publishDate": "2026-10-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "covenant-off-broadway-2023"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/09/26/come-from-away-north-shore-music-theatre/",
-      "headline": "Theater Review: COME FROM AWAY (North Shore Music Theatre / Beverly, MA)",
-      "publishDate": "2026-09-26",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "come-from-away-2017"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/09/23/women-of-lockerbie-actors-gang/",
       "headline": "Theater Review: THE WOMEN OF LOCKERBIE (The Actors’ Gang / Culver City)",
       "publishDate": "2026-09-23",
@@ -2087,17 +1511,6 @@
       "outOfWindow": [
         "the-women-2001",
         "the-women-1973"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/09/23/good-night-oscar-review-north-coast-rep/",
-      "headline": "Theater Review: GOOD NIGHT, OSCAR (North Coast Repertory Theatre / Solana Beach)",
-      "publishDate": "2026-09-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "good-night-oscar-2023"
       ]
     },
     {
@@ -2126,18 +1539,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/09/20/ma-raineys-black-bottom-round-house-review/",
-      "headline": "Theater Review: MA RAINEY’S BLACK BOTTOM (Round House Theatre / Bethesda, MD)",
-      "publishDate": "2026-09-20",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "ma-raineys-black-bottom-2003",
-        "ma-raineys-black-bottom-1984"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/09/20/glass-menagerie-center-rep-review/",
       "headline": "Theater Review: THE GLASS MENAGERIE (Center REP / Walnut Creek)",
       "publishDate": "2026-09-20",
@@ -2150,17 +1551,6 @@
         "the-glass-menagerie-1975",
         "the-glass-menagerie-2005",
         "the-glass-menagerie-1983"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/09/19/hangmen-long-beach-playhouse-review/",
-      "headline": "Theater Review: HANGMEN (Long Beach Playhouse)",
-      "publishDate": "2026-09-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "hangmen-2022"
       ]
     },
     {
@@ -2184,17 +1574,6 @@
       "outOfWindow": [
         "the-visit-2015",
         "the-visit-1973"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/09/17/dear-evan-hansen-cygnet-theatre/",
-      "headline": "Theater Review: DEAR EVAN HANSEN (Cygnet / San Diego)",
-      "publishDate": "2026-09-17",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "dear-evan-hansen-2016"
       ]
     },
     {
@@ -2231,30 +1610,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/09/09/the-arsonists-skylight-theatre-review/",
-      "headline": "Theater Review: THE ARSONISTS (Skylight Theatre / Los Angeles)",
-      "publishDate": "2026-09-09",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "skylight-2015",
-        "skylight-1996"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/09/09/ma-raineys-black-bottom-review/",
-      "headline": "Theater Review: MA RAINEY’S BLACK BOTTOM (A Noise Within / Pasadena)",
-      "publishDate": "2026-09-09",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "ma-raineys-black-bottom-2003",
-        "ma-raineys-black-bottom-1984"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/09/07/phantom-opera-san-diego-review/",
       "headline": "Theater Review: THE PHANTOM OF THE OPERA (National Tour / San Diego)",
       "publishDate": "2026-09-07",
@@ -2263,41 +1618,6 @@
       "matched": [],
       "outOfWindow": [
         "the-phantom-of-the-opera-1988"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/09/04/merrily-we-roll-along-signature-theatre-review/",
-      "headline": "Theater Review: MERRILY WE ROLL ALONG (Signature Theatre / Arlington, VA)",
-      "publishDate": "2026-09-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "merrily-we-roll-along-2023",
-        "merrily-we-roll-along-1981",
-        "merrily-we-roll-along-off-broadway-2022"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/09/04/theatre-people-scripps-ranch-theatre-review/",
-      "headline": "Theater Review: THEATRE PEOPLE, OR THE ANGEL NEXT DOOR (Scripps Ranch Theatre / San Diego)",
-      "publishDate": "2026-09-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "angel-1978"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/08/22/rhinoceros-american-repertory-theater/",
-      "headline": "Theater Review: RHINOCEROS (American Repertory Theater / Cambridge, MA)",
-      "publishDate": "2026-08-22",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "rhinoceros-2027"
       ]
     },
     {
@@ -2320,7 +1640,8 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "kimberly-akimbo-2022"
+        "kimberly-akimbo-2022",
+        "kimberly-akimbo-off-broadway-2021"
       ]
     },
     {
@@ -2346,18 +1667,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/08/11/dracula-musical-nocturne-theatre-review/",
-      "headline": "Theater Review: DRACULA: THE MUSICAL (The Nocturne Theatre / Glendale)",
-      "publishDate": "2026-08-11",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "dracula-1977",
-        "dracula-the-musical-2004"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/08/07/iphigenia-in-splott-review-shotgun-players/",
       "headline": "Theater Review: IPHIGENIA IN SPLOTT (Shotgun Players / Berkeley)",
       "publishDate": "2026-08-07",
@@ -2380,19 +1689,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/08/05/a-midsummer-nights-dream-review-commonwealth-shakespeare/",
-      "headline": "Theater Review: A MIDSUMMER NIGHT’S DREAM (Commonwealth Shakespeare Company / Boston)",
-      "publishDate": "2026-08-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-midsummer-nights-dream-1996",
-        "a-midsummer-nights-dream-1971",
-        "a-midsummer-nights-dream-off-broadway-2025"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/08/05/urinetown-review-ray-of-light-san-francisco/",
       "headline": "Theater Review: URINETOWN: THE MUSICAL (Ray of Light Theatre / San Francisco)",
       "publishDate": "2026-08-05",
@@ -2412,17 +1708,6 @@
       "matched": [],
       "outOfWindow": [
         "jagged-little-pill-2019"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/07/27/scapin-north-coast-rep-review/",
-      "headline": "Theater Review: SCAPIN (North Coast Repertory Theatre / Solana Beach)",
-      "publishDate": "2026-07-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "scapin-1973"
       ]
     },
     {
@@ -2503,7 +1788,8 @@
       "matched": [],
       "outOfWindow": [
         "suffs-2024",
-        "the-first-1981"
+        "the-first-1981",
+        "suffs-off-broadway-2022"
       ]
     },
     {
@@ -2515,52 +1801,6 @@
       "matched": [],
       "outOfWindow": [
         "epstein-1971"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/30/a-little-night-music-review-marriott/",
-      "headline": "Theater Review: A LITTLE NIGHT MUSIC (Marriott Theatre / Lincolnshire)",
-      "publishDate": "2026-06-30",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "a-little-night-music-2009",
-        "a-little-night-music-1973"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/28/what-became-of-us-review-signature-va/",
-      "headline": "Theater Review: WHAT BECAME OF US (Signature Theatre / Arlington, VA)",
-      "publishDate": "2026-06-28",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "what-became-of-us-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/26/delirium-review-arlekin-players/",
-      "headline": "Theater Review: DELIRIUM (Arlekin Players Theatre / Boston)",
-      "publishDate": "2026-06-26",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "players-1978",
-        "delirium-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/21/rise-and-fall-of-little-voice-review-backyard-renaissance/",
-      "headline": "Theater Review: THE RISE AND FALL OF LITTLE VOICE (Backyard Renaissance Theatre Company / Tenth Avenue Arts Center / San Diego)",
-      "publishDate": "2026-06-21",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-rise-and-fall-of-little-voice-1994"
       ]
     },
     {
@@ -2577,28 +1817,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/06/15/leopoldstadt-review-writers-theatre-glencoe/",
-      "headline": "Theater Review: LEOPOLDSTADT (Writers Theatre / Glencoe, Chicagoland)",
-      "publishDate": "2026-06-15",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "leopoldstadt-2022"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/12/anastasia-review-la-mirada-theatre/",
-      "headline": "Theater Review: ANASTASIA (La Mirada Theatre)",
-      "publishDate": "2026-06-12",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "anastasia-2017"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/06/10/jagged-little-pill-review-center-rep/",
       "headline": "Theater Review: ALANIS MORISSETTE’S JAGGED LITTLE PILL: THE MUSICAL (Center REP / Lesher Center for the Arts / Walnut Creek)",
       "publishDate": "2026-06-10",
@@ -2607,17 +1825,6 @@
       "matched": [],
       "outOfWindow": [
         "jagged-little-pill-2019"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/08/primary-trust-mark-taper-forum-review/",
-      "headline": "Theater Review: PRIMARY TRUST (Center Theatre Group / Mark Taper Forum)",
-      "publishDate": "2026-06-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "primary-trust-off-broadway-2023"
       ]
     },
     {
@@ -2641,41 +1848,6 @@
       "matched": [],
       "outOfWindow": [
         "players-1978"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/06/on-your-feet-review-north-shore-music-theatre/",
-      "headline": "Theater Review: ON YOUR FEET! THE STORY OF EMILIO & GLORIA ESTEFAN (North Shore Music Theatre / Beverly, MA)",
-      "publishDate": "2026-06-06",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "on-your-feet-2015",
-        "gloria-2026"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/05/damn-yankees-review-theo-ubique/",
-      "headline": "Theater Review: DAMN YANKEES (Theo Ubique Cabaret Theatre / Evanston)",
-      "publishDate": "2026-06-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "damn-yankees-1994",
-        "damn-yankees-2027"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/06/02/grangeville-review-ruskin-group-theatre/",
-      "headline": "Theater Review: GRANGEVILLE (Ruskin Group Theatre / Santa Monica)",
-      "publishDate": "2026-06-02",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "grangeville-off-broadway-2026"
       ]
     },
     {
@@ -2724,7 +1896,8 @@
         "othello-1970",
         "othello-1982",
         "othello-bedlam-off-broadway-2026",
-        "othello-off-broadway-2026"
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
       ]
     },
     {
@@ -2752,14 +1925,15 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/05/26/oedipus-el-rey-huntington/",
-      "headline": "Theater Review: OEDIPUS EL REY (Huntington Theatre Company / Boston)",
+      "url": "https://stageandcinema.com/2026/05/26/antigone-review-antaeus-theatre/",
+      "headline": "Theater Review: ANTIGONE (Antaeus Theatre Company / Glendale)",
       "publishDate": "2026-05-26",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "oedipus-2025"
+        "antigone-1971",
+        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
       ]
     },
     {
@@ -2785,18 +1959,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/05/24/ascent-review-skylight-theatre/",
-      "headline": "Theater Review: ASCENT (Skylight Theatre / L.A.)",
-      "publishDate": "2026-05-24",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "skylight-2015",
-        "skylight-1996"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/05/19/pictures-from-home-marin-theatre-review/",
       "headline": "Theater Review: PICTURES FROM HOME (Marin Theatre / Mill Valley)",
       "publishDate": "2026-05-19",
@@ -2808,31 +1970,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/05/19/la-cage-aux-folles-theatre-rhinoceros-review/",
-      "headline": "Theater Review: LA CAGE AUX FOLLES (Theatre Rhinoceros / San Francisco)",
-      "publishDate": "2026-05-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "la-cage-aux-folles-2010",
-        "la-cage-aux-folles-2004",
-        "la-cage-aux-folles-1983",
-        "rhinoceros-2027"
-      ]
-    },
-    {
-      "url": "https://stageandcinema.com/2026/05/18/brigadoon-pasadena-playhouse-review/",
-      "headline": "Theater Review: BRIGADOON (Pasadena Playhouse)",
-      "publishDate": "2026-05-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "brigadoon-1980"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/05/17/exit-the-king-a-noise-within-review/",
       "headline": "Theater Review: EXIT THE KING (A Noise Within / Pasadena)",
       "publishDate": "2026-05-17",
@@ -2841,6 +1978,17 @@
       "matched": [],
       "outOfWindow": [
         "exit-the-king-2009"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/05/16/man-of-no-importance-bent-review/",
+      "headline": "Theater Review: A MAN OF NO IMPORTANCE (The Bent / Palm Springs)",
+      "publishDate": "2026-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-man-of-no-importance-off-broadway-2022"
       ]
     },
     {
@@ -2888,17 +2036,6 @@
       ]
     },
     {
-      "url": "https://stageandcinema.com/2026/05/04/millennials-are-killing-musicals-colony-review/",
-      "headline": "Theater Review: MILLENNIALS ARE KILLING MUSICALS (World Premiere at The Colony Theatre)",
-      "publishDate": "2026-05-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "millennials-are-killing-musicals-off-broadway-2023"
-      ]
-    },
-    {
       "url": "https://stageandcinema.com/2026/04/27/flower-drum-song-east-west-players-review/",
       "headline": "Theater Review: FLOWER DRUM SONG (East West Players & JACCC at the Aratani Theatre)",
       "publishDate": "2026-04-27",
@@ -2908,6 +2045,17 @@
       "outOfWindow": [
         "flower-drum-song-2002",
         "players-1978"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/04/24/ernest-shackleton-loves-me-cvrep-review/",
+      "headline": "Theater Review: ERNEST SHACKLETON LOVES ME (Coachella Valley Repertory, Cathedral City)",
+      "publishDate": "2026-04-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ernest-shackleton-loves-me-off-broadway-2017"
       ]
     },
     {
@@ -2967,7 +2115,8 @@
       "matched": [],
       "outOfWindow": [
         "master-haroldand-the-boys-2003",
-        "master-haroldand-the-boys-1982"
+        "master-haroldand-the-boys-1982",
+        "master-harold-and-the-boys-off-broadway-2016"
       ]
     },
     {
@@ -3072,6 +2221,2589 @@
       "outOfWindow": [
         "the-goat-or-who-is-sylvia-2002",
         "players-1978"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/04/08/uncle-vanya-scenes-country-life-review-lamama/",
+      "headline": "Theater Review: UNCLE VANYA, SCENES FROM COUNTRY LIFE (La MaMa, NYC)",
+      "publishDate": "2026-04-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "uncle-vanya-2024",
+        "uncle-vanya-1995",
+        "uncle-vanya-1973",
+        "uncle-vanya-2000"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/04/07/lost-in-yonkers-review-lesher-center/",
+      "headline": "Theater Review: LOST IN YONKERS (Lesher Center for the Arts, Walnut Creek)",
+      "publishDate": "2026-04-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "lost-in-yonkers-1991"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/04/06/london-theatre-spring-2026-review/",
+      "headline": "London Theatre Reviews: THE TEMPEST; SUMMERFOLK; LES LIAISONS DANGEREUSES (The Globe and National Theatre)",
+      "publishDate": "2026-04-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "les-liaisons-dangereuses-2016",
+        "les-liaisons-dangereuses-2008",
+        "the-tempest-1995",
+        "les-liaisons-dangereuses-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/26/jesus-christ-superstar-nocturne-theatre-review/",
+      "headline": "Theater Review: JESUS CHRIST SUPERSTAR (Nocturne Theatre in Glendale)",
+      "publishDate": "2026-03-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jesus-christ-superstar-2012",
+        "jesus-christ-superstar-1977",
+        "jesus-christ-superstar-2000",
+        "jesus-christ-superstar-1971"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/26/ivanov-west-end-theater-review/",
+      "headline": "Off-Broadway Review: IVANOV (New American Ensemble at West End Theater)",
+      "publishDate": "2026-03-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ivanov-1997"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/26/beetlejuice-north-american-tour-review/",
+      "headline": "Theater Review: BEETLEJUICE (North American Tour at McCallum Theatre)",
+      "publishDate": "2026-03-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "beetlejuice-2025",
+        "beetlejuice-2022",
+        "beetlejuice-2019"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/24/you-cant-take-it-with-you-morgan-wixson-review/",
+      "headline": "Theater Review: YOU CAN’T TAKE IT WITH YOU (Morgan-Wixon Theatre in Santa Monica)",
+      "publishDate": "2026-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "you-cant-take-it-with-you-2014",
+        "you-cant-take-it-with-you-1983"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/24/antigone-in-analysis-review-lamama/",
+      "headline": "Off-Broadway Review: ANTIGONE IN ANALYSIS (Peculiar Works Project at La MaMa)",
+      "publishDate": "2026-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "antigone-1971",
+        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/20/the-color-purple-chromolume-review/",
+      "headline": "Theater Review: THE COLOR PURPLE (Zephyr Theatre, Chromolume Theatre Company)",
+      "publishDate": "2026-03-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-color-purple-2015",
+        "the-color-purple-2005"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/20/girls-chance-music-act-review/",
+      "headline": "Theater Review: ||: GIRLS :||: CHANCE :||: MUSIC :|| (American Conservatory Theater’s Strand Theater)",
+      "publishDate": "2026-03-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "girls-chance-music-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/17/sunset-blvd-palm-canyon-theatre/",
+      "headline": "Theater Review: SUNSET BLVD. (Palm Canyon Theatre)",
+      "publishDate": "2026-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sunset-boulevard-2024",
+        "sunset-boulevard-2017",
+        "sunset-boulevard-1994"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/14/an-act-of-god-roustabouts/",
+      "headline": "Theater Review: AN ACT OF GOD (Roustabouts Theatre Company at Scripps Ranch Theatre)",
+      "publishDate": "2026-03-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "an-act-of-god-2016"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/14/tale-of-the-allergists-wife-plaza-theatre/",
+      "headline": "Theater Review: THE TALE OF THE ALLERGIST’S WIFE (Plaza Theatre in Palm Springs)",
+      "publishDate": "2026-03-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tale-of-the-allergists-wife-2000"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/12/wait-until-dark-greater-boston-stage-company/",
+      "headline": "Theater Review: WAIT UNTIL DARK (Greater Boston Stage Company)",
+      "publishDate": "2026-03-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wait-until-dark-1998"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/12/the-antiquities-speakeasy-stage/",
+      "headline": "Theater Review: THE ANTIQUITIES (SpeakEasy Stage at Boston Center for the Arts)",
+      "publishDate": "2026-03-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-antiquities-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/11/hedda-gabler-the-old-globe/",
+      "headline": "Theater Review: HEDDA GABLER (The Old Globe)",
+      "publishDate": "2026-03-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hedda-gabler-2009",
+        "hedda-gabler-2001"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/11/guys-and-dolls-cv-rep/",
+      "headline": "Theater Review: GUYS AND DOLLS (CV Rep)",
+      "publishDate": "2026-03-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/10/meteor-shower-desert-ensemble-theatre/",
+      "headline": "Theater Review: METEOR SHOWER (Desert Ensemble Theatre at Camelot Theaters)",
+      "publishDate": "2026-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "meteor-shower-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/10/grey-arias-flea-theater/",
+      "headline": "Cabaret & Theater Review: GREY ARIAS (The Flea)",
+      "publishDate": "2026-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/10/virginias-woolf-scr-review/",
+      "headline": "Theater Review: WHO’S AFRAID OF VIRGINIA WOOLF? (South Coast Rep)",
+      "publishDate": "2026-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "whos-afraid-of-virginia-woolf-2012",
+        "whos-afraid-of-virginia-woolf-2020",
+        "whos-afraid-of-virginia-woolf-1976",
+        "whos-afraid-of-virginia-woolf-2005"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/09/the-shark-is-broken-laguna-playhouse/",
+      "headline": "Theater Review: THE SHARK IS BROKEN (Laguna Playhouse in Laguna Beach)",
+      "publishDate": "2026-03-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-shark-is-broken-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/08/inherit-the-wind-arena-stage-review/",
+      "headline": "Theater Review: INHERIT THE WIND (Arena Stage, Washington, DC)",
+      "publishDate": "2026-03-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "inherit-the-wind-2007",
+        "inherit-the-wind-1996"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/03/03/god-of-carnage-south-coast-rep/",
+      "headline": "Theater Review: GOD OF CARNAGE (South Coast Repertory in Costa Mesa)",
+      "publishDate": "2026-03-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "god-of-carnage-2009",
+        "god-of-carnage-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/26/richard-iii-a-noise-within/",
+      "headline": "Theater Review: RICHARD III (A Noise Within)",
+      "publishDate": "2026-02-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/25/m-butterfly-review-san-francisco-playhouse/",
+      "headline": "Theater Review: M. BUTTERFLY (San Francisco Playhouse)",
+      "publishDate": "2026-02-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "m-butterfly-2017",
+        "m-butterfly-1988"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/22/a-view-from-the-bridge-apollinaire/",
+      "headline": "Theater Review: A VIEW FROM THE BRIDGE (Apollinaire Theatre Company)",
+      "publishDate": "2026-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-view-from-the-bridge-2015",
+        "a-view-from-the-bridge-2010",
+        "a-view-from-the-bridge-1983",
+        "a-view-from-the-bridge-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/21/the-graduate-desert-theatreworks/",
+      "headline": "Theater Review: THE GRADUATE (Indio Performing Arts Center, Desert Theatreworks)",
+      "publishDate": "2026-02-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-graduate-2002"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/20/spamalot-north-american-tour/",
+      "headline": "Theater Review: MONTY PYTHON’S SPAMALOT (North American Tour)",
+      "publishDate": "2026-02-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "spamalot-2023",
+        "spamalot-2005"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/16/amadeus-pasadena-playhouse/",
+      "headline": "Theater Review: AMADEUS (Pasadena Playhouse)",
+      "publishDate": "2026-02-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "amadeus-1980",
+        "amadeus-1999"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/12/the-circle-greenway-court/",
+      "headline": "Theater Review: THE CIRCLE (Greenway Court)",
+      "publishDate": "2026-02-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-circle-1989"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/11/an-ideal-husband-storm-theatre/",
+      "headline": "Off-Broadway Review: AN IDEAL HUSBAND (Storm Theatre at A.R.T./New York Theatres)",
+      "publishDate": "2026-02-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "an-ideal-husband-1996"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/11/how-to-succeed-in-business/",
+      "headline": "Theater Review: HOW TO SUCCEED IN BUSINESS WITHOUT REALLY TRYING (San Diego Musical Theatre)",
+      "publishDate": "2026-02-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "how-to-succeed-in-business-without-really-trying-2011",
+        "how-to-succeed-in-business-without-really-trying-1995"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/09/of-mice-and-men-lamplighters/",
+      "headline": "Theater Review: OF MICE AND MEN (Lamplighters)",
+      "publishDate": "2026-02-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "of-mice-and-men-2014",
+        "of-mice-and-men-1974"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/07/review-the-cherry-orchard-marin-theatre/",
+      "headline": "Theater Review: THE CHERRY ORCHARD (Marin Theatre Company in Mill Valley)",
+      "publishDate": "2026-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/04/how-shakespeare-saved-my-life-berkeley-rep-review/",
+      "headline": "Theater Review: HOW SHAKESPEARE SAVED MY LIFE (Berkeley Repertory Theatre)",
+      "publishDate": "2026-02-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "how-shakespeare-saved-my-life-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/02/review-sweeney-todd-la-mirada/",
+      "headline": "Theater Review: SWEENEY TODD: THE DEMON BARBER OF FLEET STREET (La Mirada Theatre)",
+      "publishDate": "2026-02-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sweeney-todd-2023",
+        "sweeney-todd-2005",
+        "sweeney-todd-1989",
+        "sweeney-todd-1979"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/02/01/laughter-on-the-23rd-floor-desert-theatreworks-review/",
+      "headline": "Theater Review: LAUGHTER ON THE 23RD FLOOR (Desert Theatreworks in Indio)",
+      "publishDate": "2026-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "laughter-on-the-23rd-floor-1993"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/29/review-some-like-it-hot-boston/",
+      "headline": "Theater Review: SOME LIKE IT HOT (National Tour, Broadway in Boston)",
+      "publishDate": "2026-01-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "some-like-it-hot-2022"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/25/streetcar-named-desire-act-tour-review/",
+      "headline": "Theater Review: A STREETCAR NAMED DESIRE (The Streetcar Project Tour at A.C.T. in S.F.)",
+      "publishDate": "2026-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/25/the-trip-to-bountiful-lambs-players-review/",
+      "headline": "Theater Review: THE TRIP TO BOUNTIFUL (Lamb’s Players Theatre)",
+      "publishDate": "2026-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-trip-to-bountiful-2013",
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/24/hamlet-eddie-izzard-tour-review/",
+      "headline": "Theater Review: THE TRAGEDY OF HAMLET (Eddie Izzard; International Tour; Hollywood’s Montalbán)",
+      "publishDate": "2026-01-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/23/eureka-day-broadway-playhouse-review/",
+      "headline": "Theater Review: EUREKA DAY (TimeLine Theatre Company at Broadway Playhouse)",
+      "publishDate": "2026-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eureka-day-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/20/kid-gloves-skylight-theatre-review/",
+      "headline": "Theater Review: KID GLOVES (Skylight Theatre)",
+      "publishDate": "2026-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "skylight-2015",
+        "skylight-1996"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/20/assassins-revolution-stage-company-review/",
+      "headline": "Theater Review: ASSASSINS (Revolution Stage)",
+      "publishDate": "2026-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "assassins-2004",
+        "assassins-off-broadway-2021"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/19/one-man-two-guvnors-cv-rep-review/",
+      "headline": "Theater Review: ONE MAN, TWO GUVNORS (Coachella Valley Repertory)",
+      "publishDate": "2026-01-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "one-man-two-guvnors-2012"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/18/oklahoma-in-concert-carnegie-hall-review/",
+      "headline": "Concert | Theater Review: OKLAHOMA! IN CONCERT (Carnegie Hall)",
+      "publishDate": "2026-01-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oklahoma-2019",
+        "oklahoma-2002",
+        "oklahoma-1979"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/17/hms-pinafore-ny-gilbert-sullivan-players-review/",
+      "headline": "Off-Broadway Review: H.M.S. PINAFORE (New York Gilbert & Sullivan Players)",
+      "publishDate": "2026-01-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978",
+        "hms-pinafore-1976"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/16/eureka-day-dezart-playhouse-palm-springs/",
+      "headline": "Theater Review: EUREKA DAY (Dezart Performs)",
+      "publishDate": "2026-01-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eureka-day-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/16/review-finding-dorothy-parker-beechman/",
+      "headline": "Cabaret Theater Review: FINDING DOROTHY PARKER (Laurie Beechman Theatre)",
+      "publishDate": "2026-01-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2026/01/08/sound-of-music-national-tour-boston/",
+      "headline": "Theater Review: THE SOUND OF MUSIC (National Tour at the Citizens Opera House, Boston)",
+      "publishDate": "2026-01-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sound-of-music-1998",
+        "the-sound-of-music-2027"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/24/revolution-stage-songs-from-my-holiday-closet-lt-cousineau/",
+      "headline": "Cabaret Review: SONGS FROM MY HOLIDAY CLOSET (Revolution Stage Company in Palm Springs)",
+      "publishDate": "2025-12-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/23/sunday-in-the-park-with-george-shotgun-players/",
+      "headline": "Theater Review: SUNDAY IN THE PARK WITH GEORGE (Shotgun Players in Berkeley)",
+      "publishDate": "2025-12-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sunday-in-the-park-with-george-2017",
+        "sunday-in-the-park-with-george-2008",
+        "sunday-in-the-park-with-george-1994",
+        "players-1978",
+        "sunday-in-the-park-with-george-1984"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/16/guys-and-dolls-shakespeare-theatre-company/",
+      "headline": "Theater Review: GUYS AND DOLLS (Shakespeare Theatre Company)",
+      "publishDate": "2025-12-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/15/is-this-a-room-apollinaire-theatre/",
+      "headline": "Theater Review: IS THIS A ROOM (Apollinaire Theatre Company)",
+      "publishDate": "2025-12-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "is-this-a-room-2021"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/12/cabaret-oakland-theater-project/",
+      "headline": "Theater Review: CABARET (Oakland Theater Project)",
+      "publishDate": "2025-12-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/11/children-of-the-winter-kingdom-actors-gang/",
+      "headline": "Theater Review: CHILDREN OF THE WINTER KINGDOM — A BONKERS HOLIDAY FANTASY (Actors’ Gang in Culver City)",
+      "publishDate": "2025-12-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-children-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/10/peter-pan-panto-presidio-review/",
+      "headline": "Theater Review: PETER PAN (Panto in the Presidio)",
+      "publishDate": "2025-12-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-1991",
+        "peter-pan-1998",
+        "peter-pan-1999",
+        "peter-pan-1979"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/10/into-the-woods-sf-playhouse-2025/",
+      "headline": "Theater Review: INTO THE WOODS (SF Playhouse)",
+      "publishDate": "2025-12-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/10/review-die-heart-the-directors-cut-troubies/",
+      "headline": "Theater Review: DIE HEART: THE DIRECTOR’S CUT (Troubadour Theater Company at The Colony)",
+      "publishDate": "2025-12-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/06/a-christmas-story-musical-sdmt/",
+      "headline": "Theater Review: A CHRISTMAS STORY: THE MUSICAL (San Diego Musical Theatre)",
+      "publishDate": "2025-12-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-story-the-musical-2012"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/05/dear-evan-hansen-cv-rep/",
+      "headline": "Theater Review: DEAR EVAN HANSEN (CV Rep)",
+      "publishDate": "2025-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dear-evan-hansen-2016",
+        "dear-evan-hansen-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/05/a-christmas-carol-pac-nyc-review/",
+      "headline": "Off-Broadway Review: A CHRISTMAS CAROL (Perelman Performing Arts Center)",
+      "publishDate": "2025-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/12/04/off-broadway-review-gotta-dance-york-theatre/",
+      "headline": "Off-Broadway Review: GOTTA DANCE! (York Theatre)",
+      "publishDate": "2025-12-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "gotta-dance-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/30/sweeney-claus-gold-dust-orphans/",
+      "headline": "Theater Review: SWEENEY CLAUS: THE DEMON FATHER OF SLEET STREET (The Gold Dust Orphans)",
+      "publishDate": "2025-11-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "orphans-2013",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/28/much-ado-about-nothing-chicago-shakes/",
+      "headline": "Theater Review: MUCH ADO ABOUT NOTHING (Chicago Shakespeare Theater)",
+      "publishDate": "2025-11-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "much-ado-about-nothing-1984",
+        "much-ado-about-nothing-1972",
+        "much-ado-about-nothing-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/28/the-waverly-gallery-backyard-renaissance-theatre/",
+      "headline": "Theater Review: THE WAVERLY GALLERY (Backyard Renaissance Theatre Company in San Diego)",
+      "publishDate": "2025-11-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-waverly-gallery-2018"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/27/heisenberg-skylight-theatre/",
+      "headline": "Theater Review: HEISENBERG (Skylight Theatre)",
+      "publishDate": "2025-11-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "heisenberg-2016",
+        "skylight-2015",
+        "skylight-1996"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/23/theater-review-fun-home-the-huntington/",
+      "headline": "Theater Review: FUN HOME (The Huntington)",
+      "publishDate": "2025-11-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fun-home-2015"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/22/blood-brothers-theater-uncorked/",
+      "headline": "Theater Review: BLOOD BROTHERS (Theater UnCorked, Boston Center for the Arts)",
+      "publishDate": "2025-11-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "blood-brothers-1993"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/21/review-an-inspector-calls-theatre-40/",
+      "headline": "Theater Review: AN INSPECTOR CALLS (Theatre 40 / Beverly Hills)",
+      "publishDate": "2025-11-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "an-inspector-calls-1994"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/20/hedwig-angry-inch-rainbow-entertainment/",
+      "headline": "Theater Review: HEDWIG AND THE ANGRY INCH (Rainbow Entertainment at Palm Springs Cultural Center)",
+      "publishDate": "2025-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hedwig-and-the-angry-inch-2014"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/18/review-table-17-geffen-playhouse/",
+      "headline": "Theater Review: TABLE 17 (Geffen Playhouse)",
+      "publishDate": "2025-11-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "table-17-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/16/fiddler-on-the-roof-signature-dc/",
+      "headline": "Theater Review: FIDDLER ON THE ROOF (Signature Theatre in Arlington, VA)",
+      "publishDate": "2025-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fiddler-on-the-roof-2015",
+        "fiddler-on-the-roof-1990",
+        "fiddler-on-the-roof-2004",
+        "fiddler-on-the-roof-1976"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/16/roommate-desert-ensemble-theatre/",
+      "headline": "Theater Review: THE ROOMMATE (Desert Ensemble Theatre)",
+      "publishDate": "2025-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-roommate-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/16/master-class-roustabouts-scripps-ranch-theatre/",
+      "headline": "Theater Review: MASTER CLASS (A Joint Venture between Roustabouts and Scripps Ranch Theatre in San Diego)",
+      "publishDate": "2025-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "master-class-2011",
+        "master-class-1995"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/14/summer-1976-central-square-theater/",
+      "headline": "Theater Review: SUMMER, 1976 (Central Square Theater)",
+      "publishDate": "2025-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "summer-1976-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/11/review-arms-and-the-man-lambs-players/",
+      "headline": "Theater Review: ARMS AND THE MAN (Lamb’s Players Theatre in Coronado)",
+      "publishDate": "2025-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978",
+        "arms-and-the-man-1985",
+        "arms-and-the-man-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/10/the-beautiful-land-i-seek-teatro-chelsea/",
+      "headline": "Theater Review: THE BEAUTIFUL LAND I SEEK (LA LINDA TIERRA QUE BUSCO YO) (Teatro Chelsea)",
+      "publishDate": "2025-11-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-beautiful-land-i-seek-la-linda-tierra-que-busco-yo-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/10/review-heart-sellers-south-coast-rep/",
+      "headline": "Theater Review: THE HEART SELLERS (South Coast Rep)",
+      "publishDate": "2025-11-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-sellers-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/08/review-the-hills-of-california-berkeley-rep/",
+      "headline": "Theater Review: THE HILLS OF CALIFORNIA (Berkeley Repertory Theatre)",
+      "publishDate": "2025-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-hills-of-california-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/08/review-44-the-musical-daryl-roth/",
+      "headline": "Off-Broadway Review: 44 – THE MUSICAL (Daryl Roth)",
+      "publishDate": "2025-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "44-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/06/review-peter-pan-goes-wrong-la-mirada/",
+      "headline": "Theater Review: PETER PAN GOES WRONG (La Mirada Theatre for the Performing Arts)",
+      "publishDate": "2025-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-goes-wrong-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/04/tick-tick-boom-umbrella-stage/",
+      "headline": "Theater Review: TICK, TICK … BOOM! (Umbrella Stage Company in Concord, MA)",
+      "publishDate": "2025-11-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tick-tick-boom-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/11/03/cirque-le-swing-swing-46-club/",
+      "headline": "Off-Broadway Review: CIRQUE LE SWING (Immersive Supper Club Experience at Swing 46)",
+      "publishDate": "2025-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "swing-1999"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/28/hello-dolly-musical-theatre-west/",
+      "headline": "Theater Review: HELLO, DOLLY! (Musical Theatre West in Long Beach)",
+      "publishDate": "2025-10-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hello-dolly-2017",
+        "hello-dolly-1995",
+        "hello-dolly-1978",
+        "hello-dolly-1975"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/27/jekyll-and-hyde-kokandy/",
+      "headline": "Theater Review: JEKYLL & HYDE (Kokandy Productions)",
+      "publishDate": "2025-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jekyll-and-hyde-2013",
+        "jekyll-and-hyde-1997"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/27/addams-family-desert-theatricals/",
+      "headline": "Theater Review: THE ADDAMS FAMILY, THE MUSICAL (Desert Theatricals)",
+      "publishDate": "2025-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-addams-family-2010"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/26/strategic-love-play-signature-arlington/",
+      "headline": "Theater Review: STRATEGIC LOVE PLAY (Signature Theatre in Arlington, VA)",
+      "publishDate": "2025-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "strategic-love-play-off-broadway-2024",
+        "arlington-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/26/priscilla-queen-of-the-desert-palm-canyon/",
+      "headline": "Theater Review: PRISCILLA, QUEEN OF THE DESERT — THE MUSICAL (Palm Canyon Theatre)",
+      "publishDate": "2025-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "priscilla-queen-of-the-desert-2011",
+        "priscilla-queen-of-the-desert-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/25/cher-show-north-shore-music-theatre/",
+      "headline": "Theater Review: THE CHER SHOW (North Shore Music Theatre In Boston)",
+      "publishDate": "2025-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cher-show-2018"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/24/cymbeline-antaeus-theatre/",
+      "headline": "Theater Review: CYMBELINE (Antaeus Theatre Company in Glendale)",
+      "publishDate": "2025-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cymbeline-2007"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/22/tinheritance-part-2-the-bent/",
+      "headline": "Theater Review: THE INHERITANCE, PART 2 (The Bent)",
+      "publishDate": "2025-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-inheritance-2019"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/19/joe-turners-come-and-gone-a-noise-within/",
+      "headline": "Theater Review: JOE TURNER’S COME AND GONE (A Noise Within in Pasadena)",
+      "publishDate": "2025-10-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "joe-turners-come-and-gone-2026",
+        "joe-turners-come-and-gone-2009",
+        "joe-turners-come-and-gone-1988"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/19/misery-merrimack-rep/",
+      "headline": "Theater Review: MISERY (Merrimack Repertory Theatre)",
+      "publishDate": "2025-10-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "misery-2015"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/16/house-of-the-exquisite-corpse/",
+      "headline": "Theater Review: HOUSE OF THE EXQUISITE CORPSE V: BLOOD AND PUPPETS (Rough House at Steppenwolf)",
+      "publishDate": "2025-10-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "corpse-1986"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/15/paranormal-inside-east-west-players/",
+      "headline": "Theater Review: PARANORMAL INSIDE (East West Players)",
+      "publishDate": "2025-10-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/14/jekyll-hyde-sdmt/",
+      "headline": "Theater Review: JEKYLL & HYDE (San Diego Musical Theatre)",
+      "publishDate": "2025-10-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jekyll-and-hyde-2013",
+        "jekyll-and-hyde-1997"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/11/noises-off-sf-playhouse/",
+      "headline": "Theater Review: NOISES OFF (San Francisco Playhouse)",
+      "publishDate": "2025-10-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "noises-off-2016",
+        "noises-off-2001",
+        "noises-off-1983"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/08/charlie-chocolate-factory-palm-canyon-theater/",
+      "headline": "Theater Review: CHARLIE AND THE CHOCOLATE FACTORY (Palm Canyon Theater)",
+      "publishDate": "2025-10-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "charlie-and-the-chocolate-factory-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/08/jajas-african-hair-braiding-ctg/",
+      "headline": "Theater Review: JAJA’S AFRICAN HAIR BRAIDING (Mark Taper Forum)",
+      "publishDate": "2025-10-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jajas-african-hair-braiding-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/07/theater-review-macbeth-actors-shakespeare-project/",
+      "headline": "Theater Review: MACBETH (Actors’ Shakespeare Project)",
+      "publishDate": "2025-10-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/05/come-from-away-paramount/",
+      "headline": "Theater Review: COME FROM AWAY (Paramount Theatre)",
+      "publishDate": "2025-10-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "come-from-away-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/05/sardines-300-paintings/",
+      "headline": "Theater Reviews: SARDINES (The Huntington’s Maso Studio) & 300 PAINTINGS (A.R.T.’s Farkas Hall)",
+      "publishDate": "2025-10-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "300-paintings-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/04/small-old-globe/",
+      "headline": "Theater Review: SMALL (The Old Globe in San Diego)",
+      "publishDate": "2025-10-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/10/01/the-counter-umbrella-stage/",
+      "headline": "Theater Review: THE COUNTER (Umbrella Stage Company in Concord, MA)",
+      "publishDate": "2025-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-counter-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/29/into-the-woods-spreckels/",
+      "headline": "Theater Review: INTO THE WOODS (Spreckels Theatre Company in Rohnert Park)",
+      "publishDate": "2025-09-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/27/night-of-the-iguana-boston-court/",
+      "headline": "Theater Review: THE NIGHT OF THE IGUANA (Boston Court)",
+      "publishDate": "2025-09-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-night-of-the-iguana-1988",
+        "the-night-of-the-iguana-1976"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/27/the-mountaintop-front-porch-arts/",
+      "headline": "Theater Review: THE MOUNTAINTOP (Front Porch Arts Collective)",
+      "publishDate": "2025-09-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-mountaintop-2011"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/23/come-from-away-la-mirada/",
+      "headline": "Theater Review: COME FROM AWAY (La Mirada Theatre)",
+      "publishDate": "2025-09-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "come-from-away-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/22/damn-yankees-arena-stage/",
+      "headline": "Theater Review: DAMN YANKEES (Arena Stage)",
+      "publishDate": "2025-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "damn-yankees-1994",
+        "damn-yankees-2027"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/22/our-town-lyric-stage/",
+      "headline": "Theater Review: OUR TOWN (Lyric Stage Company of Boston)",
+      "publishDate": "2025-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "our-town-2024",
+        "our-town-2002",
+        "our-town-1988"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/22/gentlemans-guide-laguna-playhouse/",
+      "headline": "Theater Review: A GENTLEMAN’S GUIDE TO LOVE & MURDER (Laguna Playhouse)",
+      "publishDate": "2025-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-gentlemans-guide-to-love-and-murder-2013"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/20/west-side-story-la-opera/",
+      "headline": "Theater Review: WEST SIDE STORY (Los Angeles Opera)",
+      "publishDate": "2025-09-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "west-side-story-2020",
+        "west-side-story-2009",
+        "west-side-story-1980"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/19/les-mis-tour/",
+      "headline": "Theater Review: LES MISÉRABLES (National Tour in San Diego)",
+      "publishDate": "2025-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "les-miserables-2014",
+        "les-miserables-2006",
+        "les-miserables-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/19/one-man-two-guvnors-a-noise-within/",
+      "headline": "Theater Review: ONE MAN, TWO GUVNORS (A Noise Within)",
+      "publishDate": "2025-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "one-man-two-guvnors-2012"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/19/the-reservoir-berkeley-rep/",
+      "headline": "Theater Review: THE RESERVOIR (Berkeley Repertory Theatre)",
+      "publishDate": "2025-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-reservoir-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/18/indecent-centerrep/",
+      "headline": "Theater Review: INDECENT (CenterREP at the Lesher Center)",
+      "publishDate": "2025-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "indecent-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/15/follies-cygnet/",
+      "headline": "Theater Review: FOLLIES (Cygnet Theatre in San Diego)",
+      "publishDate": "2025-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "follies-2011",
+        "follies-1971",
+        "follies-2001"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/15/primary-trust-speakeasy/",
+      "headline": "Theater Review: PRIMARY TRUST (SpeakEasy Stage Company at Calderwood Pavilion in Boston)",
+      "publishDate": "2025-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "primary-trust-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/15/eureka-day-pasadena-playhouse/",
+      "headline": "Theater Review: EUREKA DAY (Pasadena Playhouse)",
+      "publishDate": "2025-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eureka-day-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/13/my-first-ex-husband-huntington/",
+      "headline": "Theater Review: MY FIRST EX-HUSBAND (The Huntington at Calderwood Pavilion, Boston)",
+      "publishDate": "2025-09-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "my-first-ex-husband-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/11/addams-family-berkeley-playhouse/",
+      "headline": "Theater Review: THE ADDAMS FAMILY (Berkeley Playhouse)",
+      "publishDate": "2025-09-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-addams-family-2010"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/09/9-to-5-ray-of-light/",
+      "headline": "Theater Review: 9 TO 5: THE MUSICAL (Ray of Light Theatre)",
+      "publishDate": "2025-09-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "9-to-5-2009"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/08/night-with-janis-joplin-sonoma-arts/",
+      "headline": "Theater Review: A NIGHT WITH JANIS JOPLIN (Sonoma Arts Live Theatre Company at Andrews Hall)",
+      "publishDate": "2025-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-night-with-janis-joplin-2013"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/08/the-heart-la-jolla-playhouse/",
+      "headline": "Theater Review: THE HEART (La Jolla Playhouse)",
+      "publishDate": "2025-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/08/just-another-day-odyssey/",
+      "headline": "Theater Review: JUST ANOTHER DAY (Dan Lauria and Patty McCormack at Odyssey Theatre Ensemble)",
+      "publishDate": "2025-09-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "just-another-day-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/06/eureka-day-marin-theatre/",
+      "headline": "Theater Review: EUREKA DAY (Marin Theatre Company)",
+      "publishDate": "2025-09-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eureka-day-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/09/02/lettice-lovage-lamplighters/",
+      "headline": "Theater Review: LETTICE & LOVAGE (Lamplighters Community Theatre in San Diego)",
+      "publishDate": "2025-09-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "lettice-and-lovage-1990"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/08/27/achilles-in-arcadia/",
+      "headline": "Theater Review: ACHILLES IN ARCADIA (Skylight Theatre)",
+      "publishDate": "2025-08-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "arcadia-2011",
+        "arcadia-1995",
+        "arcadia-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/08/22/shucked-tour-hollywood/",
+      "headline": "Theater Review: SHUCKED (National Tour in Hollywood)",
+      "publishDate": "2025-08-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "shucked-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/08/14/the-wiz-north-american-tour/",
+      "headline": "Theater Review: THE WIZ (North American Tour at Boston’s Emerson Colonial Theatre)",
+      "publishDate": "2025-08-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-wiz-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/08/14/shucked-tour-san-diego/",
+      "headline": "Theater Review: SHUCKED (National Tour at San Diego Civic)",
+      "publishDate": "2025-08-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "shucked-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/08/14/heidi-chronicles-group-rep/",
+      "headline": "Theater Review: THE HEIDI CHRONICLES (Group Rep)",
+      "publishDate": "2025-08-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heidi-chronicles-2015",
+        "the-heidi-chronicles-1989"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/08/13/head-over-heels-coronado/",
+      "headline": "Theater Review: HEAD OVER HEELS (Coronado Playhouse)",
+      "publishDate": "2025-08-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "head-over-heels-2018"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/08/01/some-like-it-hot-tour-hollywood/",
+      "headline": "Theater Review: SOME LIKE IT HOT (National Tour, Hollywood)",
+      "publishDate": "2025-08-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "some-like-it-hot-2022"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/25/review-noises-off-old-globe/",
+      "headline": "Theater Review: NOISES OFF (The Old Globe)",
+      "publishDate": "2025-07-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "noises-off-2016",
+        "noises-off-2001",
+        "noises-off-1983"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/23/the-fantasticks-ruskin-group/",
+      "headline": "Theater Review: THE FANTASTICKS (Ruskin Group Theatre)",
+      "publishDate": "2025-07-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-fantasticks-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/22/gentlemans-guide-north-coast-rep/",
+      "headline": "Theater Review: A GENTLEMAN’S GUIDE TO LOVE AND MURDER (North Coast Rep)",
+      "publishDate": "2025-07-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-gentlemans-guide-to-love-and-murder-2013"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/15/guys-and-dolls-ogunquit/",
+      "headline": "Theater Review: GUYS AND DOLLS (Ogunquit Playhouse, Maine)",
+      "publishDate": "2025-07-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/14/a-funny-thing-madkap-skokie/",
+      "headline": "Theater Review: A FUNNY THING HAPPENED ON THE WAY TO THE FORUM (MadKap Productions at Skokie Theatre)",
+      "publishDate": "2025-07-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-funny-thing-happened-on-the-way-to-the-forum-1996",
+        "a-funny-thing-happened-on-the-way-to-the-forum-1972"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/14/dirty-rotten-scoundrels-sonoma-arts/",
+      "headline": "Theater Review: DIRTY ROTTEN SCOUNDRELS (Sonoma Arts Live Theatre Company at Andrews Hall)",
+      "publishDate": "2025-07-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dirty-rotten-scoundrels-2005"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/13/steel-magnolias-lamplighters/",
+      "headline": "Theater Review: STEEL MAGNOLIAS (Lamplighters Community Theatre in San Diego)",
+      "publishDate": "2025-07-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "steel-magnolias-2005"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/13/my-fair-lady-sf-playhouse/",
+      "headline": "Theater Review: MY FAIR LADY (San Francisco Playhouse)",
+      "publishDate": "2025-07-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "my-fair-lady-2018",
+        "my-fair-lady-1993",
+        "my-fair-lady-1976",
+        "my-fair-lady-1981"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/12/falsettos-palm-canyon-theatre/",
+      "headline": "Theater Review: FALSETTOS (Palm Canyon Theatre)",
+      "publishDate": "2025-07-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "falsettos-2016",
+        "falsettos-1992"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/12/evita-reagle-music-theatre/",
+      "headline": "Theater Review: EVITA (Reagle Music Theatre of Greater Boston in Waltham, MA)",
+      "publishDate": "2025-07-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "evita-2012",
+        "evita-1979",
+        "evita-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/07/03/streetcar-named-desire-backyard-renaissance/",
+      "headline": "Theater Review: A STREETCAR NAMED DESIRE (Backyard Renaissance Theatre Company)",
+      "publishDate": "2025-07-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/27/the-reservoir-geffen-playhouse/",
+      "headline": "Theater Review: THE RESERVOIR (Geffen Playhouse)",
+      "publishDate": "2025-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-reservoir-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/24/oklahoma-cygnet/",
+      "headline": "Theater Review: OKLAHOMA! (Cygnet Theatre in San Diego)",
+      "publishDate": "2025-06-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oklahoma-2019",
+        "oklahoma-2002",
+        "oklahoma-1979"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/24/annunciation-word-for-word/",
+      "headline": "Theater Review: ANNUNCIATION (Word for Word & Z Space)",
+      "publishDate": "2025-06-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-annunciation-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/23/letter-to-lyndon-b-johnson-or-god/",
+      "headline": "Theater Review: A LETTER TO LYNDON B. JOHNSON OR GOD: WHOEVER READS THIS FIRST (SoHo Playhouse & Edinburgh Fringe)",
+      "publishDate": "2025-06-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/19/alls-well-that-ends-well-old-globe/",
+      "headline": "Theater Review: ALL’S WELL THAT ENDS WELL (Old Globe)",
+      "publishDate": "2025-06-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "alls-well-that-ends-well-1983"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/19/reservoir-dolls/",
+      "headline": "Theater Review: RESERVOIR DOLLS: THE WOMEN OF QUENTIN TARANTINO (Broadwater Studio)",
+      "publishDate": "2025-06-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973",
+        "the-reservoir-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/18/smile-story-of-charlie-chaplin/",
+      "headline": "Theater Review: SMILE: THE STORY OF CHARLIE CHAPLIN (Broadwater Main Stage)",
+      "publishDate": "2025-06-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "chaplin-2012",
+        "smile-1986"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/13/sound-of-music-berkeley-playhouse/",
+      "headline": "Theater Review: THE SOUND OF MUSIC (Berkeley Playhouse)",
+      "publishDate": "2025-06-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sound-of-music-1998",
+        "the-sound-of-music-2027"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/10/mrs-warrens-profession-central-square/",
+      "headline": "Theater Review: MRS. WARREN’S PROFESSION (Central Square)",
+      "publishDate": "2025-06-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mrs-warrens-profession-2010",
+        "mrs-warrens-profession-1976"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/09/oh-fuck-an-iceberg/",
+      "headline": "Theater Review: OH, FUCK! AN ICEBERG! ONE WOMAN TITANIC (Part of the Hollywood Fringe Festival atActors Space",
+      "publishDate": "2025-06-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/09/birthday-candles-north-coast-rep/",
+      "headline": "Theater Review: BIRTHDAY CANDLES (North Coast Rep)",
+      "publishDate": "2025-06-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "birthday-candles-2022"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/08/the-wedding-singer-colony/",
+      "headline": "Theater Review: THE WEDDING SINGER (Colony Theatre in Burbank)",
+      "publishDate": "2025-06-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-wedding-singer-2006"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/05/next-to-normal-ray-of-light/",
+      "headline": "Theater Review: NEXT TO NORMAL (Ray of Light Theatre at San Francisco’s Victoria Theater)",
+      "publishDate": "2025-06-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "next-to-normal-2009"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/04/life-of-pi-national-tour/",
+      "headline": "Theater Review: LIFE OF PI (National Tour at Segerstrom Hall)",
+      "publishDate": "2025-06-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "life-of-pi-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/03/paradise-blue-studio-theatre/",
+      "headline": "Theater Review: PARADISE BLUE (Studio Theatre)",
+      "publishDate": "2025-06-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "paradise-blue-off-broadway-2018"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/03/rumors-sonoma-arts-live/",
+      "headline": "Theater Review: RUMORS (Sonoma Arts Live)",
+      "publishDate": "2025-06-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "rumors-1988"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/03/twelfth-night-folger/",
+      "headline": "Theater Review: TWELFTH NIGHT (Folger Shakespeare Library)",
+      "publishDate": "2025-06-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/02/pirates-of-penzance-6th-street-playhouse/",
+      "headline": "Theater Review: THE PIRATES OF PENZANCE (6th Street Playhouse in Santa Rosa)",
+      "publishDate": "2025-06-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-pirates-of-penzance-1981",
+        "the-pirates-of-penzance-1976"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/01/pacific-overtures-kunoichi-productions/",
+      "headline": "Theater Review: PACIFIC OVERTURES (Kunoichi Productions)",
+      "publishDate": "2025-06-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pacific-overtures-1976",
+        "pacific-overtures-2004",
+        "pacific-overtures-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/06/01/frankenstein-shakespeare-theatre-company/",
+      "headline": "Theater Review: FRANKENSTEIN (Shakespeare Theatre Company / Washington, D.C.)",
+      "publishDate": "2025-06-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frankenstein-1981"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/30/two-strangers-carry-a-cake-across-ny-art/",
+      "headline": "Theater Review: TWO STRANGERS (CARRY A CAKE ACROSS NEW YORK) (American Repertory Theater",
+      "publishDate": "2025-05-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "two-strangers-bway-2025"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/25/the-chinese-lady-chance/",
+      "headline": "Theater Review: THE CHINESE LADY (Chance Theater / Anaheim)",
+      "publishDate": "2025-05-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-chinese-lady-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/21/the-winters-tale-skylight/",
+      "headline": "Theater Review: THE WINTER’S TALE (Play On Shakespeare at Skylight Theatre)",
+      "publishDate": "2025-05-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "skylight-2015",
+        "skylight-1996",
+        "the-winters-tale-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/19/hello-dolly-lyric-stage-co/",
+      "headline": "Theater Review: HELLO, DOLLY! (Lyric Stage Co. Boston)",
+      "publishDate": "2025-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hello-dolly-2017",
+        "hello-dolly-1995",
+        "hello-dolly-1978",
+        "hello-dolly-1975"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/19/the-counter-moxie/",
+      "headline": "Theater Review: THE COUNTER (Moxie Theatre in San Diego)",
+      "publishDate": "2025-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-counter-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/17/the-light-in-the-piazza-huntington/",
+      "headline": "Theater Review: THE LIGHT IN THE PIAZZA (Huntington)",
+      "publishDate": "2025-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-light-in-the-piazza-2005"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/17/theater-review-roald-dahls-matilda-the-musical-novato-theatre-company/",
+      "headline": "Theater Review: ROALD DAHL’S MATILDA THE MUSICAL (Novato Theatre Company)",
+      "publishDate": "2025-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "matilda-the-musical-2013",
+        "matilda-the-musical-theatre-row-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/14/the-inheritance-part-one-the-bent/",
+      "headline": "Theater Review: THE INHERITANCE, PART ONE (The Bent)",
+      "publishDate": "2025-05-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-inheritance-2019"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/13/bright-star-lamplighters/",
+      "headline": "Theater Review: BRIGHT STAR (Lamplighters Community Theatre in San Diego)",
+      "publishDate": "2025-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "bright-star-2016"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/13/the-book-of-will-ross-valley-players/",
+      "headline": "Theater Review: THE BOOK OF WILL (Ross Valley Players)",
+      "publishDate": "2025-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/11/man-of-no-importance-anw/",
+      "headline": "Theater Review: A MAN OF NO IMPORTANCE (A Noise Within)",
+      "publishDate": "2025-05-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-man-of-no-importance-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/10/curious-incident-dognight-time-sf-playhouse/",
+      "headline": "Theater Review: THE CURIOUS INCIDENT OF THE DOG IN THE NIGHT-TIME (San Francisco Playhouse)",
+      "publishDate": "2025-05-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-curious-incident-of-the-dog-in-the-nighttime-2014",
+        "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/07/the-glass-menagerie-antaeus/",
+      "headline": "Theater Review: THE GLASS MENAGERIE (Antaeus Theatre)",
+      "publishDate": "2025-05-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-glass-menagerie-2017",
+        "the-glass-menagerie-2013",
+        "the-glass-menagerie-1975",
+        "the-glass-menagerie-2005",
+        "the-glass-menagerie-1983"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/06/crumbs-from-the-table-of-joy-aurora-theatre/",
+      "headline": "Theater Review: CRUMBS FROM THE TABLE OF JOY (Aurora Theatre in Berkeley)",
+      "publishDate": "2025-05-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "crumbs-from-the-table-of-joy-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/04/jajas-african-hair-braiding-speakeasy/",
+      "headline": "Theater Review: JAJA’S AFRICAN HAIR BRAIDING (SpeakEasy Stage Company at Calderwood Pavilion in Boston)",
+      "publishDate": "2025-05-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jajas-african-hair-braiding-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/03/shark-is-broken-north-shore-music-theatre/",
+      "headline": "Theater Review: THE SHARK IS BROKEN (North Shore Music Theatre in Beverly, MA)",
+      "publishDate": "2025-05-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-shark-is-broken-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/02/crumbs-from-the-table-of-joy-aurora/",
+      "headline": "Theater Review: CRUMBS FROM THE TABLE OF JOY (Aurora Theatre in Berkeley)",
+      "publishDate": "2025-05-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "crumbs-from-the-table-of-joy-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/05/01/mean-girls-tour-boston/",
+      "headline": "Theater Review: MEAN GIRLS (National Tour in Boston)",
+      "publishDate": "2025-05-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mean-girls-2018"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/30/hedwig-and-the-angry-inch-signature/",
+      "headline": "Theater Review: HEDWIG AND THE ANGRY INCH (Signature Theatre in Arlington, VA)",
+      "publishDate": "2025-04-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hedwig-and-the-angry-inch-2014"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/29/other-desert-cities-masquers-lucky-penny/",
+      "headline": "Theater Reviews: OTHER DESERT CITIES (Masquers Playhouse in Point Richmond and Lucky Penny in Napa)",
+      "publishDate": "2025-04-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-desert-cities-2011",
+        "other-desert-cities-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/27/legally-blonde-la-mirada/",
+      "headline": "Theater Review: LEGALLY BLONDE THE MUSICAL (La Mirada Theatre for the Performing Arts)",
+      "publishDate": "2025-04-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "legally-blonde-2007"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/24/other-desert-cities-cv-rep/",
+      "headline": "Theater Review: OTHER DESERT CITIES (CV Rep)",
+      "publishDate": "2025-04-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-desert-cities-2011",
+        "other-desert-cities-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/23/two-trains-running-acting-company-act/",
+      "headline": "Theater Review: TWO TRAINS RUNNING (The Acting Company at American Conservatory Theater)",
+      "publishDate": "2025-04-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "two-trains-running-1992"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/22/one-flew-over-the-cuckoos-nest-palm-canyon/",
+      "headline": "Theater Review: ONE FLEW OVER THE CUCKOO’S NEST (Palm Canyon Theatre)",
+      "publishDate": "2025-04-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "one-flew-over-the-cuckoos-nest-2001"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/22/beyond-therapy-desert-ensemble-theater/",
+      "headline": "Theater Review: BEYOND THERAPY (Desert Ensemble Theater)",
+      "publishDate": "2025-04-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "beyond-therapy-1982"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/21/falsettos-dezart-performs/",
+      "headline": "Theater Review: FALSETTOS (Dezart Performs in Palm Springs)",
+      "publishDate": "2025-04-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "falsettos-2016",
+        "falsettos-1992"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/21/cyrano-los-altos-stage/",
+      "headline": "Theater Review: CYRANO (Los Altos Stage Company)",
+      "publishDate": "2025-04-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyrano-the-musical-1993",
+        "cyrano-1973"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/21/jersey-boys-palo-alto-players/",
+      "headline": "Theater Review: JERSEY BOYS (Palo Alto Players)",
+      "publishDate": "2025-04-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jersey-boys-2005",
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/20/cordially-invited-to-end-of-world-scr/",
+      "headline": "Theater Review: YOU ARE CORDIALLY INVITED TO THE END OF THE WORLD! (South Coast Rep in Costa Mesa)",
+      "publishDate": "2025-04-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "end-of-the-world-1984"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/17/here-there-are-blueberries-berkeley-rep/",
+      "headline": "Theater Review: HERE THERE ARE BLUEBERRIES (Tectonic Theater Project at Berkeley Repertory Theatre)",
+      "publishDate": "2025-04-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/15/hillary-and-clinton-onword-theatre/",
+      "headline": "Theater Review: HILLARY AND CLINTON (OnWord Theatre at the Alma Hotel in San Diego)",
+      "publishDate": "2025-04-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hillary-and-clinton-2019"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/13/midsummer-nights-dream-actors-shakespeare-project/",
+      "headline": "Theater Review: A MIDSUMMER NIGHT’S DREAM (Actors’ Shakespeare Project)",
+      "publishDate": "2025-04-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-midsummer-nights-dream-1996",
+        "a-midsummer-nights-dream-1971",
+        "a-midsummer-nights-dream-off-broadway-2025",
+        "a-midsummer-nights-dream-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/12/hairspray-desert-theatricals/",
+      "headline": "Theater Review: HAIRSPRAY (Desert Theatricals)",
+      "publishDate": "2025-04-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hairspray-2002"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/08/izzard-hamlet-act-sf/",
+      "headline": "Theater Review: HAMLET (A.C.T.’s Strand Theatre)",
+      "publishDate": "2025-04-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/08/the-heart-sellers-theatreworks/",
+      "headline": "Theater Review: THE HEART SELLERS (TheatreWorks)",
+      "publishDate": "2025-04-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-sellers-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/06/fat-ham-san-francisco-playhouse/",
+      "headline": "Theater Review: FAT HAM (San Francisco Playhouse)",
+      "publishDate": "2025-04-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/04/05/carousel-boston-lyric-opera/",
+      "headline": "Theater Review: CAROUSEL (Boston Lyric Opera)",
+      "publishDate": "2025-04-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carousel-2018",
+        "carousel-1994"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/31/sister-act-fords-theater/",
+      "headline": "Theater Review: SISTER ACT (Ford’s Theater in D.C.)",
+      "publishDate": "2025-03-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sister-act-2011"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/30/true-west-roustabouts/",
+      "headline": "Theater Review: TRUE WEST (Roustabouts Theatre Company at Diversionary Theatre in San Diego)",
+      "publishDate": "2025-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "true-west-2019",
+        "true-west-2000"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/30/into-the-woods-musical-theatre-west/",
+      "headline": "Theater Review: INTO THE WOODS (Musical Theatre West)",
+      "publishDate": "2025-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/29/25th-annual-putnam-county-spelling-bee-wisteria/",
+      "headline": "Theater Review: THE 25TH ANNUAL PUTNAM COUNTY SPELLING BEE (Wisteria Theater in North Hollywood)",
+      "publishDate": "2025-03-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-25th-annual-putnam-county-spelling-bee-2005",
+        "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/24/cabaret-ntc-playhouse/",
+      "headline": "Theater Review: CABARET (NTC Playhouse in Novato)",
+      "publishDate": "2025-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/23/the-unraveling-ghost-road/",
+      "headline": "Theater Review: THE UNRAVELING (Ghost Road Theatre)",
+      "publishDate": "2025-03-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghost-the-musical-2012",
+        "the-unraveling-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/18/how-to-succeed-revolution-stage/",
+      "headline": "Theater Review: HOW TO SUCCEED IN BUSINESS WITHOUT REALLY TRYING (Revolution Stage Company in Palm Springs)",
+      "publishDate": "2025-03-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "how-to-succeed-in-business-without-really-trying-2011",
+        "how-to-succeed-in-business-without-really-trying-1995"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/18/what-the-constitution-means-to-me-ncr/",
+      "headline": "Theater Review: WHAT THE CONSTITUTION MEANS TO ME (North Coast Rep)",
+      "publishDate": "2025-03-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "what-the-constitution-means-to-me-2019"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/18/curtains-coronado-playhouse/",
+      "headline": "Theater Review: CURTAINS (Coronado Playhouse, San Diego)",
+      "publishDate": "2025-03-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "curtains-2007",
+        "curtains-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/18/victor-victoria-palm-canyon-theatre/",
+      "headline": "Theater Review: VICTOR/VICTORIA (Palm Canyon Theatre)",
+      "publishDate": "2025-03-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "victor-victoria-1995"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/17/art-shotgun-players/",
+      "headline": "Theater Review: ART (Shotgun Players, Ashby Stage in Berkeley)",
+      "publishDate": "2025-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/14/triumph-of-love-huntington/",
+      "headline": "Theater Review: THE TRIUMPH OF LOVE (Huntington, Boston)",
+      "publishDate": "2025-03-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "triumph-of-love-1997"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/10/tootsie-desert-theatreworks/",
+      "headline": "Theater Review: TOOTSIE (Desert TheatreWorks in Indio)",
+      "publishDate": "2025-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tootsie-2019"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/08/the-age-of-innocence-arena-dc/",
+      "headline": "Theater Review: THE AGE OF INNOCENCE (Arena Stage, DC)",
+      "publishDate": "2025-03-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "innocence-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://stageandcinema.com/2025/03/08/such-small-hands-chance/",
+      "headline": "Theater Review: SUCH SMALL HANDS (Chance Theater)",
+      "publishDate": "2025-03-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
       ]
     }
   ]

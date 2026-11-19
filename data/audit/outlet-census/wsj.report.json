@@ -1,22 +1,22 @@
 {
   "outletId": "wsj",
   "market": "nyc",
-  "generatedAt": "2026-11-19T07:00:58.228Z",
+  "generatedAt": "2026-11-19T10:49:36.357Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
     "status": "complete",
     "notes": [],
     "incomplete": false,
-    "enumerated": 1495,
-    "inWindow": 1420,
+    "enumerated": 1496,
+    "inWindow": 1421,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held-unmatched": 188,
+      "held-unmatched": 189,
       "not-review": 1002,
       "held": 24,
       "held-other-market": 4,
@@ -38,7 +38,7 @@
   },
   "seasons": {
     "2025-26": {
-      "held-unmatched": 55,
+      "held-unmatched": 56,
       "not-review": 39,
       "held": 8,
       "held-other-market": 2,
@@ -86,7 +86,7 @@
     }
   },
   "corpusSide": {
-    "rowsInWindow": 497,
+    "rowsInWindow": 499,
     "notEnumerated": 37,
     "noUrl": 1,
     "samples": [
@@ -490,6 +490,21 @@
     }
   ],
   "heldUnmatched": [
+    {
+      "url": "https://www.wsj.com/arts-culture/theater/jenufa-review-a-powerfully-grim-opera-at-the-met-9ae7d922",
+      "headline": "jenufa review a powerfully grim opera at the met 9ae7d922",
+      "publishDate": "2026-01-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "jenufa-off-broadway-2026",
+        "tosca-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "jenufa-off-broadway-2026"
+      ]
+    },
     {
       "url": "https://www.wsj.com/articles/the-fantasticks-review-boy-meets-boy-on-broadway-68553e05",
       "headline": "the fantasticks review boy meets boy on broadway 68553e05",
@@ -5433,7 +5448,8 @@
       "matched": [],
       "outOfWindow": [
         "alice-in-wonderland-1982",
-        "alice-in-wonderland-off-broadway-2026"
+        "alice-in-wonderland-off-broadway-2026",
+        "alice-in-wonderland-off-broadway-2027"
       ]
     },
     {

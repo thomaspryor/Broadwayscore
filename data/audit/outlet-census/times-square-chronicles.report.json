@@ -1,12 +1,16 @@
 {
   "outletId": "times-square-chronicles",
-  "generatedAt": "2026-10-28T20:45:32.721Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:50:10.365Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "sitemap (t2conline.com/sitemap.xml, read direct) lists about 1.2k URLs with no section, a fraction of the archive",
     "notes": [
-      "unreadable: site answers HTTP 429/503/202 challenge pages to the census client"
+      "unreadable: sitemap (t2conline.com/sitemap.xml, read direct) lists about 1.2k URLs with no section, a fraction of the archive"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,11 +23,18 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 83,
-    "notEnumerated": 51,
+    "rowsInWindow": 147,
+    "notEnumerated": 61,
     "noUrl": 0,
     "samples": [
+      {
+        "showId": "a-few-good-men-2026",
+        "url": "https://t2conline.com/a-few-good-men-michael-ardens-brilliant-broadway-revival-is-a-masterclass-in-theatrical-precision/",
+        "publishDate": "2026-11-04",
+        "why": "not-enumerated"
+      },
       {
         "showId": "a-walk-on-the-moon-off-broadway-2026",
         "url": "https://t2conline.com/a-walk-on-the-moon-explores-love-liberation-and-longing-during-a-summer-that-changed-america/",
@@ -40,6 +51,12 @@
         "showId": "animal-wisdom-off-broadway-2022",
         "url": "https://t2conline.com/heather-christians-animal-wisdom-turns-signature-theatre-into-something-holy/",
         "publishDate": "2026-05-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bandstand-2017",
+        "url": "https://t2conline.com/she-says-bandstand-lost-in-translation/",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -97,6 +114,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "empire-the-musical-off-broadway-2024",
+        "url": "https://t2conline.com/empire-the-musical-wants-to-be-what-it-is-not/",
+        "publishDate": "2024-07-12",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024",
         "url": "https://t2conline.com/forbidden-broadway-merrily-we-stole-a-song-and-a-laugh-or-two/",
         "publishDate": "2024-09-20",
@@ -145,6 +168,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "here-there-are-blueberries-2026",
+        "url": "https://t2conline.com/here-there-are-blueberries-the-banality-of-evil-captured-in-a-photograph/",
+        "publishDate": "2026-11-15",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "hold-on-to-me-darling-off-broadway-2024",
         "url": "https://t2conline.com/hold-on-to-me-darling-brings-adam-drivers-electric-charisma-to-the-stage/",
         "publishDate": "2024-10-17",
@@ -187,12 +216,6 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "marvins-room-2017",
-        "url": "https://t2conline.com/marvins-room-seems-outdated/",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
         "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
         "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-a-beautifully-decadent-world-with-a-star-at-its-center/",
         "publishDate": "2026-10-16",
@@ -202,6 +225,12 @@
         "showId": "midnight-off-broadway-2026",
         "url": "https://t2conline.com/midnight-todrick-hall-has-created-a-musical-masterpiece-that-broadway-cannot-afford-to-ignore/",
         "publishDate": "2026-10-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "msblackforpresident-off-broadway-2026",
+        "url": "https://t2conline.com/ms-blakk-for-president-all-that-glitter-is-not-political-gold/",
+        "publishDate": "2026-11-09",
         "why": "not-enumerated"
       },
       {
@@ -239,30 +268,6 @@
         "url": "https://t2conline.com/rolling-thunder-a-musical-journey-overpowers-the-message/",
         "publishDate": "2025-07-25",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "safe-house-off-broadway-2026",
-        "url": "https://t2conline.com/safe-house-when-protection-becomes-another-kind-of-prison/",
-        "publishDate": "2026-09-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "slam-frank-off-broadway-2026",
-        "url": "https://t2conline.com/slam-frank-brilliant-offensive-confusing-and-impossible-to-stop-talking-about/",
-        "publishDate": "2026-10-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "soon-off-broadway-2026",
-        "url": "https://t2conline.com/soon-when-the-end-of-the-world-is-easier-than-opening-the-door/",
-        "publishDate": "2026-10-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "spellbound-off-broadway-2026",
-        "url": "https://t2conline.com/spellbound-indeed-suhani-shah-reads-minds-and-steals-hearts-at-soho-playhouse/",
-        "publishDate": "2026-09-05",
-        "why": "not-enumerated"
       }
     ]
   },
@@ -272,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

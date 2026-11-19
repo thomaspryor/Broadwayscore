@@ -1,12 +1,16 @@
 {
   "outletId": "observer",
-  "generatedAt": "2026-10-28T20:45:32.701Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:50:10.349Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "only a two-day news sitemap (observer.com/news-sitemap.xml) in robots.txt; no archive sitemap",
     "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
+      "unreadable: only a two-day news sitemap (observer.com/news-sitemap.xml) in robots.txt; no archive sitemap"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,15 +23,28 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 163,
-    "notEnumerated": 99,
-    "noUrl": 1,
+    "rowsInWindow": 221,
+    "notEnumerated": 142,
+    "noUrl": 2,
     "samples": [
       {
         "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
         "url": "https://observer.com/2022/12/review-a-beautiful-noise-is-a-portrait-of-the-rock-star-as-depressed-senior-citizen/",
         "publishDate": "2022-12-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-behanding-in-spokane-2010",
+        "url": "https://observer.com/2010/culture/raindrops-keep-falling-their-heads?page=1",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-case-for-the-existence-of-god-off-broadway-2022",
+        "url": "https://observer.com/2022/05/review-a-case-for-the-existence-of-god-finds-holiness-in-humanity-and-what-connects-us-all/",
+        "publishDate": "2022-05-04",
         "why": "not-enumerated"
       },
       {
@@ -40,6 +57,12 @@
         "showId": "a-knock-on-the-roof-off-broadway-2025",
         "url": "https://observer.com/2025/01/review-a-knock-on-the-roof-lays-bare-the-absurdities-of-life-during-wartime/",
         "publishDate": "2025-01-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-life-in-the-theatre-2010",
+        "url": "https://www.observer.com/2010/culture/mo-mamet-mo-problems-david-mamets-early-work-life-theater-more-exercise-play#",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -79,6 +102,18 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "art-2025",
+        "url": "https://observer.com/2025/09/art-review-james-corden-neil-patrick-harris-bobby-cannavale/",
+        "publishDate": "2025-09-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "assassins-off-broadway-2021",
+        "url": "https://observer.com/2021/11/american-psychos-assassins-takes-wobbly-aim-off-broadway-review/",
+        "publishDate": "2021-11-15",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "ava-the-secret-conversations-off-broadway-2025",
         "url": "https://observer.com/2025/08/rex-reed-theater-revews-ava-the-secret-conversations/",
         "publishDate": "2025-08-11",
@@ -91,6 +126,18 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "brief-encounter-2010",
+        "url": "https://observer.com/2010/culture/brief-encounter-%E2%80%A6-again",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "brooklyn-laundry-off-broadway-2024",
+        "url": "https://observer.com/2024/03/review-it-all-comes-out-in-the-wash-at-john-patrick-shanleys-brooklyn-laundry/",
+        "publishDate": "2024-03-04",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "buena-vista-social-club-off-broadway-2023",
         "url": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/",
         "publishDate": "2023-12-19",
@@ -99,7 +146,7 @@
       {
         "showId": "cabaret-2024",
         "url": "https://observer.com/2024/04/cabaret-theater-review-this-is-the-worst-version-of-cabaret/",
-        "publishDate": "2024-04-21",
+        "publishDate": "2024-04-24",
         "why": "not-enumerated"
       },
       {
@@ -112,12 +159,6 @@
         "showId": "camelot-2023",
         "url": "https://observer.com/2023/04/review-camelots-round-table-looks-pretty-square-at-lincoln-center/",
         "publishDate": "2023-04-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "carmen-off-broadway-2025",
-        "url": "https://observer.com/2024/01/review-carmen-aigul-akhmetshina-met-opera/",
-        "publishDate": "2024-01-04",
         "why": "not-enumerated"
       },
       {
@@ -139,6 +180,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "cornelia-street-off-broadway-2023",
+        "url": "https://observer.com/2023/02/review-send-west-village-cafe-musical-cornelia-street-back-to-the-kitchen/",
+        "publishDate": "2023-02-14",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "corruption-off-broadway-2024",
         "url": "https://observer.com/2024/03/review-new-drama-about-the-murdoch-phone-hacking-scandal/",
         "publishDate": "2024-03-11",
@@ -148,6 +195,24 @@
         "showId": "dana-h-2021",
         "url": "https://observer.com/2021/10/deirdre-oconnell-holds-us-utterly-captive-in-dana-h/",
         "publishDate": "2021-10-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "danny-and-the-deep-blue-sea-off-broadway-2023",
+        "url": "https://observer.com/2023/11/review-stage-newbie-aubrey-plaza-dips-her-toe-into-danny-and-the-deep-blue-sea/",
+        "publishDate": "2023-11-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "days-of-wine-and-roses-off-broadway-2023",
+        "url": "https://observer.com/2023/06/the-days-of-wine-and-roses-review-love-on-the-rocks-with-an-iffy-musical-twist/",
+        "publishDate": "2023-06-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dead-outlaw-2025",
+        "url": "https://observer.com/2025/04/review-dead-outlaw-is-an-exquisite-corpse-and-killer-close-to-the-broadway-season/",
+        "publishDate": "2025-04-27",
         "why": "not-enumerated"
       },
       {
@@ -163,105 +228,45 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "doubt-2024",
+        "url": "https://observer.com/2024/03/review-a-priest-and-a-nun-walk-into-a-war-in-contemporary-classic-doubt/",
+        "publishDate": "2024-03-01",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "driving-miss-daisy-2010",
+        "url": "https://observer.com/2010/culture/ive-just-seen-face-rain-diving-miss-daisy-spirit-control-and-wings",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "english-2025",
         "url": "https://observer.com/2025/01/review-english-speaks-eloquently-of-language-and-loss/",
         "publishDate": "2025-01-23",
         "why": "not-enumerated"
       },
       {
-        "showId": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024",
-        "url": "https://observer.com/2024/09/review-forbidden-broadway-mercilessly-mauls-the-hits/",
-        "publishDate": "2024-09-20",
+        "showId": "english-off-broadway-2022",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "eureka-day-2024",
+        "url": "https://observer.com/2024/12/review-libs-own-themselves-in-the-sharp-and-infectiously-funny-eureka-day/",
+        "publishDate": "2024-12-17",
         "why": "not-enumerated"
       },
       {
-        "showId": "funny-girl-2022",
-        "url": "https://observer.com/2022/04/review-beanie-feldstein-grabs-the-spotlight-unsteadily-in-funny-girl/",
-        "publishDate": "2022-04-25",
+        "showId": "eureka-day-2024",
+        "url": "https://observer.com/2024/12/to-v-or-not-to-v-eureka-day-brings-the-vax-debate-to-the-broadway-stage/",
+        "publishDate": "2024-12-16",
         "why": "not-enumerated"
       },
       {
-        "showId": "glengarry-glen-ross-2025",
-        "url": "https://observer.com/2025/04/review-does-kieran-culkin-close-the-deal-in-glengarry-glen-ross/",
-        "publishDate": "2025-04-01",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "good-night-oscar-2023",
-        "url": "https://observer.com/2023/04/rex-reed-theater-review-sean-hayes-good-night-oscar/",
-        "publishDate": "2023-04-25",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "grangeville-off-broadway-2026",
-        "url": "https://observer.com/2025/02/review-half-brotherly-love-is-a-struggle-against-darkness-in-grangeville/",
-        "publishDate": "2025-02-24",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "grey-house-2023",
-        "url": "https://observer.com/2023/06/review-broadways-grey-house-raids-the-grave-for-horror-cliches/",
-        "publishDate": "2023-06-01",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "grief-camp-off-broadway-2025",
-        "url": "https://observer.com/2025/04/review-not-such-happy-campers-vacation-with-bereavement-in-grief-camp/",
-        "publishDate": "2025-04-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gutenberg-2023",
-        "url": "https://observer.com/2023/10/review-of-gutenberg-the-musical-print-is-hilariously-not-dead/",
-        "publishDate": "2023-10-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "gypsy-2024",
-        "url": "https://observer.com/2024/12/review-audra-mcdonald-is-one-mother-of-a-rose-in-a-stupendous-gypsy/",
-        "publishDate": "2024-12-20",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "hangmen-2022",
-        "url": "https://observer.com/2022/04/review-martin-mcdonaghs-satirical-hangmen-thin-thread-bottom-heavy/",
-        "publishDate": "2022-04-21",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "harmony-2023",
-        "url": "https://observer.com/2023/11/review-barry-manilow-writes-the-songs-that-make-harmony-sing/",
-        "publishDate": "2023-11-01",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "heathers-the-musical-off-broadway-2025",
-        "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
-        "publishDate": "2025-07-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "here-we-are-off-broadway-2023",
-        "url": "https://observer.com/2023/10/review-sondheims-swan-song-is-goofy-satirical-and-a-joy-to-hear/",
-        "publishDate": "2023-10-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "how-i-learned-to-drive-2022",
-        "url": "https://observer.com/2022/04/review-paula-vogels-how-i-learned-to-drive-finally-parks-on-broadway/",
-        "publishDate": "2022-04-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "how-to-dance-in-ohio-2023",
-        "url": "https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth-under-the-disco-ball/",
-        "publishDate": "2023-12-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "i-need-that-2023",
-        "url": "https://observer.com/2023/11/review-danny-devito-hoards-laughter-and-tears-in-i-need-that/",
-        "publishDate": "2023-11-02",
+        "showId": "floyd-collins-2025",
+        "url": "https://observer.com/2025/04/floyd-collins-review-adam-guettels-uneven-debut-at-lincoln-center/",
+        "publishDate": null,
         "why": "not-enumerated"
       }
     ]
@@ -272,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }
