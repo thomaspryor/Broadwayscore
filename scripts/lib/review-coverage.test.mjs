@@ -634,5 +634,8 @@ test('stampReceipt: amends only the message, once, never a commit already on mai
   assert.equal(g('show', '--name-only', '--format=', 'HEAD').stdout.trim(), 'a', 'the staged file stays out of the amended commit');
   assert.equal(stampReceipt({ cwd: dir, evidence }).reason, 'HEAD already carries a receipt');
   assert.equal(stampReceipt({ cwd: dir, evidence: null }).stamped, false);
+  g('rm', '-q', '--cached', 'b');
+  g('commit', '-q', '--allow-empty', '-m', 'empty');
+  assert.equal(stampReceipt({ cwd: dir, evidence }).stamped, true, 'an empty HEAD commit (merge-only or marker commit) still takes the trailer');
   fs.rmSync(dir, { recursive: true, force: true });
 });
