@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-19T03:25:30.520Z",
+  "timestamp": "2026-11-19T04:00:30.297Z",
   "stats": {
-    "totalReviews": 82716,
-    "alreadyFlagged": 22493,
+    "totalReviews": 82725,
+    "alreadyFlagged": 22494,
     "dateGuardCatches": 220,
-    "directorMismatch": 3762,
+    "directorMismatch": 3765,
     "tvFilmSignals": 2356,
     "londonSignals": 3801,
     "offBroadwaySignals": 769,
@@ -36436,6 +36436,19 @@
     },
     {
       "showId": "jagged-little-pill-tour-2022",
+      "file": "la-excites--imaan-jalali.json",
+      "publishDate": "2022-09-15",
+      "url": "https://laexcites.com/2022/09/16/review-alanis-morissette-jagged-little-pill-pantages-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "jagged-little-pill-tour-2022",
       "file": "minneapolis-star-tribune--rohan-preston.json",
       "score": 79,
       "publishDate": "2023-08-09",
@@ -45306,6 +45319,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (3x) more than 2022 (0x). 2019 matches production: moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "san-jose-mercury-news--karen-dsouza.json",
+      "publishDate": "2022-09-14",
+      "url": "https://www.mercurynews.com/2022/09/14/review-moulin-rouge-musical-is-flash-over-substance-but-what-flash/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
         }
       ]
     },
@@ -88048,6 +88074,19 @@
       "score": 89,
       "publishDate": "2026-01-16",
       "url": "https://onstagepittsburgh.com/2026/01/16/review-defying-expectations-and-dazzling-audiences-wicked-remains-wonderful/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "file": "picture-this-post--lauren-katz.json",
+      "publishDate": "2022-10-01",
+      "url": "https://www.picturethispost.com/broadway-in-chicago-wicked-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
