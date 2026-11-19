@@ -405,7 +405,7 @@ function extractSameHostLinks(html, baseUrl) {
 }
 
 // Path segments that mark editorial / admin pages, never a production page.
-const NON_SHOW_SEGMENT_RE = /^(blog|news|press|press-kit|people|bios?|about(-us)?|education|learning|learn|creative-learning|jobs|careers|podcasts?|journal|articles?|stories|support(-us)?|donate|membership|hire|venue-hire|contact(-us)?|access|basket|checkout|account|my-account)$/;
+const NON_SHOW_SEGMENT_RE = /^(blog|news|press|press-kit|people|bios?|about(-us)?|education|learning|learn|creative-learning|jobs|careers|podcasts?|journal|articles?|stories|support(-us)?|donate|membership|hire|venue-hire|contact(-us)?|access|basket|checkout|account|my-account|archives?|past[a-z-]*)$/;
 const SHOW_SECTION_RE = /^(whats-?on|whats-?playing|events?|shows?|productions?|stage|performances?|plays?)$/;
 
 function showYear(show) {

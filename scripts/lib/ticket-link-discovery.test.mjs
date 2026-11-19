@@ -350,3 +350,11 @@ test('pickVenuePageUrl: bare numbers are content (hamlet-2 is not Hamlet; Part 1
   assert.equal(pickVenuePageUrl(urls, part1).url, 'https://www.rsc.org.uk/whats-on/henry-iv-part-1');
   assert.equal(pickVenuePageUrl(urls.slice(0, 1), part1), null);
 });
+
+test('pickVenuePageUrl: archive and past-production sections are never a current show page (BRO-7368)', () => {
+  for (const u of [
+    'https://www.leedsplayhouse.org.uk/archive/august-wilsons-fences/',
+    'https://www.leedsplayhouse.org.uk/whats-on/past-shows/august-wilsons-fences/',
+    'https://www.leedsplayhouse.org.uk/past-productions/august-wilsons-fences/',
+  ]) assert.equal(pickVenuePageUrl([u], leedsFences), null, u);
+});
