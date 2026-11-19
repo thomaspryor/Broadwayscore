@@ -255,19 +255,27 @@ const LATE_EMBARGO_MIN_REVIEWS = 3;
 const LATE_EMBARGO_RECENT_DAYS = 2;
 function lateEmbargoVerdict(show, reviews, nowMs) {
   if (!show || !show.openingDate) return { status: 'skip', detail: 'No opening date.' };
+  // Only open Broadway shows: the lane covers nothing else, and a closed show's stray rows are not a press night.
+  if ((show.category || 'broadway') !== 'broadway' || (show.status && !['open', 'previews'].includes(show.status))) return { status: 'skip', detail: 'Not an open Broadway show.' };
   const openMs = Date.parse(`${show.openingDate}T12:00:00Z`);
   if (!Number.isFinite(openMs) || nowMs - openMs <= LATE_EMBARGO_MIN_DAYS * 24 * HOUR) return { status: 'skip', detail: 'Press night is not more than 2 days old.' };
   if (show.reviewEmbargoAt) return { status: 'skip', detail: `reviewEmbargoAt ${show.reviewEmbargoAt} already records the real embargo.` };
   const recentFrom = nowMs - LATE_EMBARGO_RECENT_DAYS * 24 * HOUR;
   const byDay = {};
   let roundup = null;
+  let dated = 0;
   for (const r of reviews || []) {
     const t = Date.parse(`${r && r.publishDate}T12:00:00Z`);
-    if (!Number.isFinite(t) || t < recentFrom - 12 * HOUR || t <= openMs + LATE_EMBARGO_MIN_DAYS * 24 * HOUR) continue;
+    if (!Number.isFinite(t)) continue;
+    dated++;
+    if (t < recentFrom - 12 * HOUR || t <= openMs + LATE_EMBARGO_MIN_DAYS * 24 * HOUR) continue;
     byDay[r.publishDate] = (byDay[r.publishDate] || 0) + 1;
-    if (/review-?roundup|roundup.*opens/i.test(`${r.url || ''} ${r.title || ''} ${r.outletId || ''}`)) roundup = r.publishDate;
+    // A BWW roundup only: other outlets (Theatrely) publish unrelated "review roundup" posts.
+    if (/broadwayworld\.com\/[^\s]*review-?roundup/i.test(String(r.url || '')) || /^bww-?roundup/i.test(String(r.outletId || ''))) roundup = r.publishDate;
   }
-  const hot = Object.entries(byDay).filter(([, n]) => n >= LATE_EMBARGO_MIN_REVIEWS).sort().pop();
+  // A burst is an embargo lift only when it is the bulk of the show's coverage: a week-one trickle sits on top of a
+  // press night's worth of earlier reviews (schmigadoon, dog-day-afternoon), the late embargo does not.
+  const hot = Object.entries(byDay).filter(([, n]) => n >= LATE_EMBARGO_MIN_REVIEWS && n >= dated - n).sort().pop();
   if (!hot && !roundup) return { status: 'skip', detail: 'No burst of new reviews after a long-past press night.' };
   const day = hot ? hot[0] : roundup;
   const why = hot ? `${hot[1]} reviews dated ${day}` : `a review roundup dated ${day}`;

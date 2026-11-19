@@ -207,3 +207,16 @@ test('late embargo: 3 same-day reviews 7 days after openingDate FAILS (Now You S
   assert.equal(L.lateEmbargoVerdict({ ...show, reviewEmbargoAt: '2026-11-19T03:00:00Z' }, rv, now).status, 'skip', 'recorded embargo silences it');
   assert.equal(L.lateEmbargoVerdict({ ...show, openingDate: '2026-11-17' }, rv, now).status, 'skip', 'press night under 2 days old');
 });
+
+test('late embargo (BRO-7808 review): no false positives on ordinary shows', () => {
+  const show = { id: 's', category: 'broadway', status: 'open', openingDate: '2026-04-20' };
+  const now = Date.parse('2026-04-26T12:00:00Z');
+  const early = Array.from({ length: 12 }, (_, i) => ({ outletId: `o${i}`, publishDate: '2026-04-21' }));
+  const trickle = ['a', 'b', 'c'].map((o) => ({ outletId: o, publishDate: '2026-04-25' }));
+  assert.equal(L.lateEmbargoVerdict(show, [...early, ...trickle], now).status, 'skip', 'week-one trickle on top of a full press night');
+  assert.equal(L.lateEmbargoVerdict(show, [{ outletId: 'theatrely', url: 'https://theatrely.com/post/a-september-review-roundup', publishDate: '2026-04-25' }], now).status, 'skip', 'unrelated roundup');
+  assert.equal(L.lateEmbargoVerdict({ ...show, category: 'off-broadway' }, trickle.slice().concat(trickle), now).status, 'skip', 'non-lane market');
+  assert.equal(L.lateEmbargoVerdict({ ...show, status: 'closed' }, trickle, now).status, 'skip', 'closed show');
+  assert.equal(L.lateEmbargoVerdict(show, trickle.map((r) => ({ ...r, publishDate: undefined })), now).status, 'skip', 'no dates');
+  assert.equal(L.lateEmbargoVerdict(show, [{ outletId: 'x', url: 'https://www.broadwayworld.com/article/Review-Roundup-X-Opens-on-Broadway', publishDate: '2026-04-25' }], now).status, 'fail', 'BWW roundup');
+});

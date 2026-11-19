@@ -549,7 +549,7 @@ async function runChecks() {
     const mine = (allReviews.reviews || allReviews).filter((r) => r.showId === SHOW_ID);
     const late = RL.lateEmbargoVerdict(show, mine, nowMs);
     if (late.status !== 'skip') emit('Late embargo (reviews after press night)', late);
-  } catch { /* no reviews file: nothing to compare */ }
+  } catch (e) { if (e.code !== 'ENOENT') throw e; /* no reviews file: nothing to compare */ }
 
   // The lane only publishes shows LANE_ONLY_MARKETS covers; for any other show a disarmed lane or a missing night run
   // is not a risk and must not exit 1 (West End, off-Broadway). Read from the lane-switch ledger (cloud gets 403 on
