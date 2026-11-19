@@ -364,7 +364,7 @@ test('(BRO-5844) a visual file after 5 text-only files is not hidden by the head
 
 // BRO-7849: non-rendering .tsx edits (an analytics guard inside useEffect) need no owner approval; rendering ones are
 // still blocked, and the block message carries the one-run land checklist.
-const EFFECT_BASE = "import { useEffect } from 'react';\nexport default function P() {\n  useEffect(() => {\n    const f = { beforeSend(e: unknown) {\n      void e;\n      return e;\n    } };\n    void f;\n  }, []);\n  return <p className=\"a\">Words</p>;\n}\n";
+const EFFECT_BASE = "import { useEffect } from 'react';\nexport default function P() {\n  useEffect(() => {\n    const f = { x: 1 };\n    Sentry.init({ beforeSend(e: unknown) {\n      void e;\n      return e;\n    } });\n    void f;\n  }, []);\n  return <p className=\"a\">Words</p>;\n}\n";
 test('(BRO-7849) an added guard inside an inert beforeSend filter -> exit 0, exemption logged', (t) => {
   const fx = makeFixture(t, { uiBranch: false });
   assertGateLive(fx);
