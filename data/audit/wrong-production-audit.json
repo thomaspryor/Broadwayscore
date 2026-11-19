@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-19T05:33:19.255Z",
+  "timestamp": "2026-11-19T06:52:00.278Z",
   "stats": {
-    "totalReviews": 82744,
+    "totalReviews": 82749,
     "alreadyFlagged": 22496,
     "dateGuardCatches": 220,
     "directorMismatch": 3766,
-    "tvFilmSignals": 2357,
-    "londonSignals": 3803,
+    "tvFilmSignals": 2358,
+    "londonSignals": 3804,
     "offBroadwaySignals": 769,
     "yearMismatch": 385,
     "noPublishDate": 8259
@@ -52531,6 +52531,7 @@
     {
       "showId": "passing-strange-regional-2026",
       "file": "stage-raw--f-kathleen-foley.json",
+      "score": 75,
       "publishDate": "2026-11-17",
       "url": "https://stageraw.com/stage-raw-review-passing-strange",
       "findings": [
@@ -57830,6 +57831,20 @@
       "score": 65,
       "publishDate": "October 24, 2024",
       "url": "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-juliet-2024",
+      "file": "slantmagazine--dan-rubins.json",
+      "score": 65,
+      "publishDate": "2024-10-24",
+      "url": "https://www.slantmagazine.com/theater/romeo-and-juliet-review-rachel-zegler-kit-connor/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -113363,6 +113378,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "file": "theatreandtonic--jasmine.json",
+      "publishDate": "2026-11-18",
+      "url": "https://theatreandtonic.co.uk/blog/julius-caesar-sam-wanamaker-playhouse-london-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
