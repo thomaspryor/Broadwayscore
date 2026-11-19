@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-11-18T11:09:46.278Z",
-  "scope": "2 opening window(s): la-distance-bam-off-broadway-2026 (2026-11-18), its-a-wonderful-life-a-live-radio-play-2026 (2026-11-18)",
+  "generatedAt": "2026-11-19T11:29:51.500Z",
+  "scope": "2 opening window(s): much-ado-about-nothing-2026 (2026-11-19), la-distance-bam-off-broadway-2026 (2026-11-18)",
   "degraded": null,
   "windows": [
     {
-      "showId": "la-distance-bam-off-broadway-2026",
-      "openingDate": "2026-11-18",
-      "from": "2026-11-17T00:00:00.000Z",
-      "to": "2026-11-22T23:59:59.999Z"
+      "showId": "much-ado-about-nothing-2026",
+      "openingDate": "2026-11-19",
+      "from": "2026-11-18T00:00:00.000Z",
+      "to": "2026-11-23T23:59:59.999Z"
     },
     {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "showId": "la-distance-bam-off-broadway-2026",
       "openingDate": "2026-11-18",
       "from": "2026-11-17T00:00:00.000Z",
       "to": "2026-11-22T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 265249,
+  "logEntryCount": 240930,
   "logOldestEntryAt": "2026-11-15T15:33:59.806Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
     "evaluated": 0,
-    "inFlight": 0,
+    "inFlight": 1,
     "compliant": 0,
     "compliancePct": null,
     "p50Ms": null,
@@ -35,5 +35,17 @@
     "breaches": [],
     "byBasis": {}
   },
-  "records": []
+  "records": [
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "outletId": "latimes",
+      "reviewKey": "latimes:unknown:https://www.latimes.com/entertainment/arts/la-et-cm-review-much-ado-about-nothing-20150811-story.html",
+      "basis": null,
+      "firstSeenAt": "2026-11-19T07:27:37.929Z",
+      "liveAt": null,
+      "pipelineMinutes": null,
+      "publishedToLiveMinutes": null,
+      "stuckAtStage": "review-first-seen"
+    }
+  ]
 }
