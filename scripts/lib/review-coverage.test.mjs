@@ -722,5 +722,5 @@ test('BRO-7872: --record CLI refuses with unanswered skeptic gaps (exit 3, nothi
   assert.equal(rec.status, 3);
   assert.match(rec.stderr, /NOT recording a pass\. The skeptic reviewer listed 2 gap\(s\)/);
   assert.doesNotMatch(rec.stdout, /"recorded":true/);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
