@@ -6,6 +6,7 @@
  *
  *   node scripts/audit-city-hub-dual-model.js inventory --city=washington-dc
  *   node scripts/audit-city-hub-dual-model.js shows|images|reviews|coverage|tours|ingest-plan --city=... [--limit=N] [--max-usd=4] [--refresh-days=N]
+ *     images: [--recheck=id,id] re-asks those shows (rows from before posterHash; a changed poster file is re-asked on its own)
  *   node scripts/audit-city-hub-dual-model.js pages --city=...        (live hub + app feed vs shows.json, no LLM)
  *   node scripts/audit-city-hub-dual-model.js report --city=... [--write]  (scorecard; --write saves JSON + MD)
  *
@@ -224,16 +225,22 @@ async function runShows(L, limit) {
 
 function posterPathFor(s) { return s.images && typeof s.images === 'object' ? s.images.poster || null : null; }
 
+const posterFileFor = (s) => { const pp = posterPathFor(s); return pp ? path.join(ROOT, 'public', pp.replace(/^\//, '')) : null; };
+const fileHash = (p) => { try { return crypto.createHash('sha1').update(fs.readFileSync(p)).digest('hex').slice(0, 10); } catch (_) { return null; } };
+
 async function runImages(L, limit) {
-  const cache = loadCache(L.city, 'images'); const todo = L.shows.filter((s) => !cache.has(s.id) || (cache.get(s.id) || {}).missing).slice(0, limit);
+  // --recheck=id,id re-asks shows whose cached row predates posterHash (BRO-7265).
+  const recheck = new Set(String(arg('recheck', '') || '').split(',').filter(Boolean));
+  const cache = loadCache(L.city, 'images');
+  const todo = L.shows.filter((s) => A.imageNeedsCheck(cache.get(s.id), fileHash(posterFileFor(s)), recheck.has(s.id))).slice(0, limit);
   console.log(`images: ${todo.length} to check`);
   await pool(todo, 4, async (s) => {
     const posterPath = posterPathFor(s); // the show's own images.poster (webp or jpg), never an assumed filename
-    const p = posterPath && path.join(ROOT, 'public', posterPath.replace(/^\//, ''));
+    const p = posterFileFor(s);
     if (!p || !fs.existsSync(p)) { const row = { id: s.id, missing: true, poster: posterPath || null }; appendCache(L.city, 'images', row); return row; }
     const image = { mime: /\.jpe?g$/i.test(p) ? 'image/jpeg' : 'image/webp', b64: fs.readFileSync(p).toString('base64') };
     const ex = await both(imagePrompt(s), { image });
-    const row = { id: s.id, ...ex }; appendCache(L.city, 'images', row); return row;
+    const row = { id: s.id, posterHash: fileHash(p), ...ex }; appendCache(L.city, 'images', row); return row;
   });
 }
 

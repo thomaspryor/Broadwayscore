@@ -41,3 +41,17 @@ test('Signature page url: season from the opening date, slug from the title', ()
   assert.equal(slug("The Colored Museum's Kin"), 'the-colored-museums-kin');
   assert.ok(v.genericImage.test('https://res.cloudinary.com/x/v1/Sig_Building_Email_Header'));
 });
+
+test('BRO-7265 DC/LA houses resolve to their own sites; renting houses and look-alikes do not', () => {
+  for (const [venue, domain] of [
+    ['Olney Theatre Center, Olney, MD', 'olneytheatre.org'], ['Round House Theatre, Bethesda, MD', 'roundhousetheatre.org'],
+    ['GALA Hispanic Theatre, Washington, DC', 'galatheatre.org'],
+    ['Theatre 40 at The Reuben Cordova Theatre, Beverly Hills, CA', 'theatre40.org'],
+    ['Long Beach Playhouse, Long Beach, CA', 'lbplayhouse.org'], ['South Coast Repertory, Costa Mesa, CA', 'scr.org'],
+    ['The Road on Magnolia, North Hollywood, CA', 'roadtheatre.org'], ['The Nocturne Theater, Glendale, CA', 'thenocturnetheatre.com'],
+    ['Antaeus Theater, Glendale, CA', 'antaeus.org'],
+  ]) assert.equal(imageOnlyVenue(venue)?.domain, domain, venue);
+  for (const other of ['Woolly Mammoth Theatre, Washington, DC', 'El Portal Theatre, North Hollywood, CA', 'Madnani Theater, Los Angeles, CA',
+    'Gunston Arts Center, Arlington, VA', 'Pasadena Playhouse, Pasadena, CA', 'Theatre 4 All', 'Road Runner Stage'])
+    assert.equal(imageOnlyVenue(other), null, other);
+});

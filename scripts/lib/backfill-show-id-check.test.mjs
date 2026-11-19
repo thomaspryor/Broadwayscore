@@ -98,3 +98,10 @@ test('an id with no year is never a show id: reported, with same-title ids', () 
   ]);
   assert.match(r.reason, /all \(not a show id/);
 });
+
+test('BRO-7265: a city-hub slug is a valid --images target, and only with --images', () => {
+  const hubSlugs = new Set(['washington-dc']);
+  assert.equal(backfillShowIdNearMisses('node scripts/lib/verify-data-backfill.js --show=washington-dc --images', { showIds: KNOWN, hubSlugs }), null);
+  const bare = backfillShowIdNearMisses('node scripts/lib/verify-data-backfill.js --show=washington-dc', { showIds: KNOWN, hubSlugs });
+  assert.equal(bare.blocking, true);
+});

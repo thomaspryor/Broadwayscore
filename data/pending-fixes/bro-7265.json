@@ -1,0 +1,456 @@
+{
+  "issueNumber": "bro-7265",
+  "planId": "fa749a9b-b381-4572-9640-13c778bc177e",
+  "status": "pending",
+  "createdAt": "2026-11-19T17:21:40.207Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "DC + LA hub regional shows: point images at key art hand-verified on each production's own page (theatre/producer site or its theatreWashington listing); files land in public/images/shows/<id>/ with this plan; sources in data/image-sources.json; manifest data/audit/city-hub-dual/key-art-bro-7265.json (part 1 of 2)",
+    "steps": [
+      "a-fine-madness-regional-2026: key art from the production's own page (Woolly Mammoth key art on its theatreWashington listing, May 30-Jun 14 2026), BRO-7265",
+      "get-down-tonight-classic-funk-regional-2026: key art from the production's own page (Signature Theatre production page og:image), BRO-7265",
+      "a-gentlemans-guide-to-love-and-murder-regional-2026: key art from the production's own page (Olney Theatre Center show art, Jul-Aug 2026 run), BRO-7265",
+      "ghost-limb-regional-2026: key art from the production's own page (Avant Bard at Gunston Arts Center, theatreWashington listing Apr 30-May 23 2026), BRO-7265",
+      "or-regional-2026: key art from the production's own page (Constellation Theatre at Atlas, May 15-Jun 7 2026), BRO-7265",
+      "precarious-regional-2026: key art from the production's own page (Mosaic Theater production page title art), BRO-7265",
+      "sally-and-tom-regional-2026: key art from the production's own page (Round House production page og:image), BRO-7265",
+      "aguardiente-where-magic-transcends-borders-regional-2026: key art from the production's own page (GALA Hispanic Theatre production page), BRO-7265",
+      "somewhere-over-the-border-regional-2026: key art from the production's own page (Mosaic Theater production page title art (same art on atlasarts.org)), BRO-7265",
+      "ma-raineys-black-bottom-regional-2026-round-house-theatre: key art from the production's own page (Round House web banner on theatreWashington, Sep 9-Oct 18 2026), BRO-7265",
+      "adrift-a-medieval-wayward-folly-regional-2026: key art from the production's own page (Round House production page og:image), BRO-7265",
+      "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026: key art from the production's own page (Silver Spring Stage production page, May 8-24 2026), BRO-7265",
+      "the-roaring-girl-regional-2026: key art from the production's own page (Theatre Prometheus at Spooky Action, Jun 5-27 2026), BRO-7265",
+      "the-mannequin-regional-2026: key art from the production's own page (Capitol Hill Arts Workshop art, May 22-Jun 6), BRO-7265",
+      "stonewalls-bust-regional-2026: key art from the production's own page (Best Medicine Rep, Oct 9-25 2026), BRO-7265",
+      "venus-regional-2026: key art from the production's own page (Woolly Mammoth key art, Sep 9-Oct 4 2026), BRO-7265",
+      "richard-obriens-the-rocky-horror-show-regional-2026: key art from the production's own page (Monumental Theatre title art, Aug 22-Sep 6 2026), BRO-7265",
+      "no-exit-regional-2026: key art from the production's own page (Scena Theatre main show graphic, Jun 27-Jul 19), BRO-7265",
+      "the-colored-museum-regional-2026: key art from the production's own page (Silver Spring Stage production page, Jun 26-Jul 19 2026), BRO-7265",
+      "garbo-the-actor-who-saved-the-world-regional-2026: key art from the production's own page (GALA Hispanic Theatre production page), BRO-7265",
+      "bronte-sister-house-party-regional-2026: key art from the production's own page (Nu Sass Productions art, Aug 14-Sep 12 2026), BRO-7265",
+      "all-the-worlds-a-stage-regional-2026: key art from the production's own page (Signature Theatre production page og:image), BRO-7265",
+      "some-like-it-hot-regional-2026: key art from the production's own page (Olney Theatre Center show art), BRO-7265",
+      "where-dead-women-go-to-dance-regional-2026: key art from the production's own page (Theatre Prometheus ticket page art), BRO-7265",
+      "the-visit-regional-2026: key art from the production's own page (Pasadena Playhouse key art; replaces the M. Night Shyamalan film poster), BRO-7265"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-fine-madness-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-fine-madness-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/a-fine-madness-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/a-fine-madness-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/a-fine-madness-regional-2026/hero.webp"
+        },
+        "description": "a-fine-madness-regional-2026: key art from the production's own page (Woolly Mammoth key art on its theatreWashington listing, May 30-Jun 14 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "get-down-tonight-classic-funk-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/get-down-tonight-classic-funk-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/get-down-tonight-classic-funk-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/get-down-tonight-classic-funk-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/get-down-tonight-classic-funk-regional-2026/hero.webp"
+        },
+        "description": "get-down-tonight-classic-funk-regional-2026: key art from the production's own page (Signature Theatre production page og:image), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-gentlemans-guide-to-love-and-murder-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/a-gentlemans-guide-to-love-and-murder-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/a-gentlemans-guide-to-love-and-murder-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/a-gentlemans-guide-to-love-and-murder-regional-2026/hero.webp"
+        },
+        "description": "a-gentlemans-guide-to-love-and-murder-regional-2026: key art from the production's own page (Olney Theatre Center show art, Jul-Aug 2026 run), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ghost-limb-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/ghost-limb-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/ghost-limb-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/ghost-limb-regional-2026/hero.webp"
+        },
+        "description": "ghost-limb-regional-2026: key art from the production's own page (Avant Bard at Gunston Arts Center, theatreWashington listing Apr 30-May 23 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "or-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/or-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/or-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/or-regional-2026/hero.webp"
+        },
+        "description": "or-regional-2026: key art from the production's own page (Constellation Theatre at Atlas, May 15-Jun 7 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "precarious-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/precarious-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/precarious-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/precarious-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/precarious-regional-2026/hero.webp"
+        },
+        "description": "precarious-regional-2026: key art from the production's own page (Mosaic Theater production page title art), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sally-and-tom-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/sally-and-tom-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": "/images/shows/sally-and-tom-regional-2026/hero.jpg"
+        },
+        "newValue": {
+          "poster": "/images/shows/sally-and-tom-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/sally-and-tom-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/sally-and-tom-regional-2026/hero.webp"
+        },
+        "description": "sally-and-tom-regional-2026: key art from the production's own page (Round House production page og:image), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aguardiente-where-magic-transcends-borders-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/aguardiente-where-magic-transcends-borders-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/aguardiente-where-magic-transcends-borders-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/aguardiente-where-magic-transcends-borders-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/aguardiente-where-magic-transcends-borders-regional-2026/hero.webp"
+        },
+        "description": "aguardiente-where-magic-transcends-borders-regional-2026: key art from the production's own page (GALA Hispanic Theatre production page), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "somewhere-over-the-border-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/somewhere-over-the-border-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/somewhere-over-the-border-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/somewhere-over-the-border-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/somewhere-over-the-border-regional-2026/hero.webp"
+        },
+        "description": "somewhere-over-the-border-regional-2026: key art from the production's own page (Mosaic Theater production page title art (same art on atlasarts.org)), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ma-raineys-black-bottom-regional-2026-round-house-theatre/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/ma-raineys-black-bottom-regional-2026-round-house-theatre/poster.webp",
+          "thumbnail": "/images/shows/ma-raineys-black-bottom-regional-2026-round-house-theatre/thumbnail.webp",
+          "hero": "/images/shows/ma-raineys-black-bottom-regional-2026-round-house-theatre/hero.webp"
+        },
+        "description": "ma-raineys-black-bottom-regional-2026-round-house-theatre: key art from the production's own page (Round House web banner on theatreWashington, Sep 9-Oct 18 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "adrift-a-medieval-wayward-folly-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/adrift-a-medieval-wayward-folly-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/adrift-a-medieval-wayward-folly-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/adrift-a-medieval-wayward-folly-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/adrift-a-medieval-wayward-folly-regional-2026/hero.webp"
+        },
+        "description": "adrift-a-medieval-wayward-folly-regional-2026: key art from the production's own page (Round House production page og:image), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026/hero.webp"
+        },
+        "description": "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026: key art from the production's own page (Silver Spring Stage production page, May 8-24 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-roaring-girl-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-roaring-girl-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/the-roaring-girl-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/the-roaring-girl-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/the-roaring-girl-regional-2026/hero.webp"
+        },
+        "description": "the-roaring-girl-regional-2026: key art from the production's own page (Theatre Prometheus at Spooky Action, Jun 5-27 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mannequin-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-mannequin-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/the-mannequin-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/the-mannequin-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/the-mannequin-regional-2026/hero.webp"
+        },
+        "description": "the-mannequin-regional-2026: key art from the production's own page (Capitol Hill Arts Workshop art, May 22-Jun 6), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stonewalls-bust-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/stonewalls-bust-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/stonewalls-bust-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/stonewalls-bust-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/stonewalls-bust-regional-2026/hero.webp"
+        },
+        "description": "stonewalls-bust-regional-2026: key art from the production's own page (Best Medicine Rep, Oct 9-25 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "venus-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/venus-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/venus-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/venus-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/venus-regional-2026/hero.webp"
+        },
+        "description": "venus-regional-2026: key art from the production's own page (Woolly Mammoth key art, Sep 9-Oct 4 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "richard-obriens-the-rocky-horror-show-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/richard-obriens-the-rocky-horror-show-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/richard-obriens-the-rocky-horror-show-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/richard-obriens-the-rocky-horror-show-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/richard-obriens-the-rocky-horror-show-regional-2026/hero.webp"
+        },
+        "description": "richard-obriens-the-rocky-horror-show-regional-2026: key art from the production's own page (Monumental Theatre title art, Aug 22-Sep 6 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "no-exit-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/no-exit-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/no-exit-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/no-exit-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/no-exit-regional-2026/hero.webp"
+        },
+        "description": "no-exit-regional-2026: key art from the production's own page (Scena Theatre main show graphic, Jun 27-Jul 19), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-colored-museum-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-colored-museum-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/the-colored-museum-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/the-colored-museum-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/the-colored-museum-regional-2026/hero.webp"
+        },
+        "description": "the-colored-museum-regional-2026: key art from the production's own page (Silver Spring Stage production page, Jun 26-Jul 19 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "garbo-the-actor-who-saved-the-world-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/garbo-the-actor-who-saved-the-world-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/garbo-the-actor-who-saved-the-world-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/garbo-the-actor-who-saved-the-world-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/garbo-the-actor-who-saved-the-world-regional-2026/hero.webp"
+        },
+        "description": "garbo-the-actor-who-saved-the-world-regional-2026: key art from the production's own page (GALA Hispanic Theatre production page), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bronte-sister-house-party-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bronte-sister-house-party-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/bronte-sister-house-party-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/bronte-sister-house-party-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/bronte-sister-house-party-regional-2026/hero.webp"
+        },
+        "description": "bronte-sister-house-party-regional-2026: key art from the production's own page (Nu Sass Productions art, Aug 14-Sep 12 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-worlds-a-stage-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/all-the-worlds-a-stage-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/all-the-worlds-a-stage-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/all-the-worlds-a-stage-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/all-the-worlds-a-stage-regional-2026/hero.webp"
+        },
+        "description": "all-the-worlds-a-stage-regional-2026: key art from the production's own page (Signature Theatre production page og:image), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "some-like-it-hot-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/some-like-it-hot-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": "/images/shows/some-like-it-hot-regional-2026/hero.jpg"
+        },
+        "newValue": {
+          "poster": "/images/shows/some-like-it-hot-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/some-like-it-hot-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/some-like-it-hot-regional-2026/hero.webp"
+        },
+        "description": "some-like-it-hot-regional-2026: key art from the production's own page (Olney Theatre Center show art), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "where-dead-women-go-to-dance-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/where-dead-women-go-to-dance-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/where-dead-women-go-to-dance-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/where-dead-women-go-to-dance-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/where-dead-women-go-to-dance-regional-2026/hero.webp"
+        },
+        "description": "where-dead-women-go-to-dance-regional-2026: key art from the production's own page (Theatre Prometheus ticket page art), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-visit-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-visit-regional-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-visit-regional-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/the-visit-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/the-visit-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/the-visit-regional-2026/hero.webp"
+        },
+        "description": "the-visit-regional-2026: key art from the production's own page (Pasadena Playhouse key art; replaces the M. Night Shyamalan film poster), BRO-7265"
+      }
+    ]
+  }
+}

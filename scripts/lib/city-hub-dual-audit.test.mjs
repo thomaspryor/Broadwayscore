@@ -206,3 +206,13 @@ test('showRunEndFinding sees the theatre own page (replay hayward-regional-2026 
   assert.equal(r.kind, 'theatre-page');
   assert.ok(!r.unconfirmed); // deterministic: the weekly driver auto-plans it
 });
+
+test('BRO-7265: a replaced poster is re-asked; an unchanged one is served from cache', () => {
+  assert.equal(A.imageNeedsCheck(undefined, 'abc', false), true);
+  assert.equal(A.imageNeedsCheck({ missing: true }, 'abc', false), true);
+  assert.equal(A.imageNeedsCheck({ posterHash: 'abc', gemini: {} }, 'abc', false), false);
+  assert.equal(A.imageNeedsCheck({ posterHash: 'old', gemini: {} }, 'new', false), true);
+  // rows from before posterHash: only an explicit --recheck re-asks them
+  assert.equal(A.imageNeedsCheck({ gemini: {} }, 'new', false), false);
+  assert.equal(A.imageNeedsCheck({ gemini: {} }, 'new', true), true);
+});

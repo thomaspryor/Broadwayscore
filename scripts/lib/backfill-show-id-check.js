@@ -63,7 +63,7 @@ function nearMissIds(id, knownIds) {
 
 /**
  * @param {string} cmd acceptance command
- * @param {{repoRoot?: string, showIds?: string[]}} [opts] showIds overrides shows.json (tests)
+ * @param {{repoRoot?: string, showIds?: string[], hubSlugs?: Set<string>}} [opts] showIds/hubSlugs override the data files (tests)
  * @returns {{reason: string, misses: Array<{id: string, suggestions: string[]}>}|null}
  *   null when the command is another form, every id exists, or shows.json is
  *   unreadable (fail open: a CI runner without the data repo).
@@ -81,9 +81,12 @@ function backfillShowIdNearMisses(cmd, opts = {}) {
     }
   }
   const knownSet = new Set(known);
+  // BRO-7265: with --images a city-hub slug (washington-dc) is a valid target: the probe
+  // checks that hub's dual-model image audit. Without --images it still cannot pass.
+  const hubs = /\s--images\b/.test(String(cmd)) ? (opts.hubSlugs || readHubSlugs(opts.repoRoot)) : new Set();
   const misses = [];
   for (const id of new Set(m[1].split(',').filter(Boolean))) {
-    if (knownSet.has(id)) continue;
+    if (knownSet.has(id) || hubs.has(id)) continue;
     const suggestions = nearMissIds(id, known);
     if (suggestions.length || !HAS_YEAR_RE.test(id)) misses.push({ id, suggestions });
   }
@@ -97,6 +100,15 @@ function backfillShowIdNearMisses(cmd, opts = {}) {
     blocking: misses.some((x) => !HAS_YEAR_RE.test(x.id)),
     reason: `verify-data-backfill names show id(s) that do not exist: ${misses.map((x) => (x.suggestions.length ? `${x.id} (did you mean ${x.suggestions.join(' or ')}?)` : `${x.id} (not a show id: ids end in their year)`)).join('; ')}`,
   };
+}
+
+function readHubSlugs(repoRoot) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(repoRoot || path.join(__dirname, '..', '..'), 'data', 'city-hubs.json'), 'utf8'));
+    return new Set(Object.keys(raw.hubs || {}));
+  } catch {
+    return new Set();
+  }
 }
 
 module.exports = { backfillShowIdNearMisses, nearMissIds, idCore };

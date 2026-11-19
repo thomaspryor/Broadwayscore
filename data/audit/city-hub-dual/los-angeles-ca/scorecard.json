@@ -1,45 +1,33 @@
 {
  "city": "los-angeles-ca",
- "today": "2026-11-17",
+ "today": "2026-11-19",
  "models": {
   "gemini": "gemini-2.5-flash",
   "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
   "shows": 67,
-  "images": 58,
-  "publishedReviews": 242,
+  "images": 79,
+  "publishedReviews": 238,
   "excludedFiles": 15,
   "reviewsWithoutText": 17,
   "tourStops": 14,
   "coverageShows": 43,
-  "totalShows": 74,
-  "totalPublished": 249
+  "totalShows": 82,
+  "totalPublished": 274
  },
- "flaggedByGemini": 98,
- "flaggedByOpenAI": 79,
- "flaggedLocalChecks": 23,
- "flaggedAny": 130,
- "flaggedByBoth": 63,
- "triagedItems": 138,
- "confirmed": 56,
- "falsePositives": 82,
- "fixed": 12,
+ "flaggedByGemini": 88,
+ "flaggedByOpenAI": 72,
+ "flaggedLocalChecks": 40,
+ "flaggedAny": 138,
+ "flaggedByBoth": 55,
+ "triagedItems": 141,
+ "confirmed": 57,
+ "falsePositives": 84,
+ "fixed": 26,
  "remaining": [
   {
-   "item": "image:the-visit-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
    "item": "image:act-your-age-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:crossing-delancey-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:fremont-ave-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
   {
@@ -59,23 +47,7 @@
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
   {
-   "item": "image:lakefront-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
    "item": "image:painted-ponies-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:a-dolls-house-part-2-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:dracula-the-musical-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:melt-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
   {
@@ -84,30 +56,6 @@
   },
   {
    "item": "image:aktion-t4-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:hangman-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:kaiju-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:crone-creed-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:saint-megan-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:rorschach-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:heartbreak-house-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
   {
@@ -203,16 +151,8 @@
    "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
   }
  ],
- "untriaged": 19,
+ "untriaged": 37,
  "flags": [
-  {
-   "kind": "image",
-   "id": "the-visit-regional-2026",
-   "label": "The Visit",
-   "model": "gemini",
-   "code": "image-not-key-art",
-   "detail": "A movie poster for 'The Visit' by M. Night Shyamalan, featuring 'Grandma's Rules' and bloody handprints on a cross-stitch background."
-  },
   {
    "kind": "show",
    "id": "exit-the-king-regional-2026",
@@ -438,14 +378,6 @@
    "detail": "image text \"TWO ROADS THEATRE\" / show \"Act Your Age\""
   },
   {
-   "kind": "image",
-   "id": "crossing-delancey-regional-2026",
-   "label": "Crossing Delancey",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "fremont-ave-regional-2026",
    "label": "Fremont Ave.",
@@ -476,30 +408,6 @@
    "model": "openai",
    "code": "preview-date-missing",
    "detail": "page 2026-04-25, ours empty"
-  },
-  {
-   "kind": "image",
-   "id": "fremont-ave-regional-2026",
-   "label": "Fremont Ave.",
-   "model": "gemini",
-   "code": "image-not-key-art",
-   "detail": "A night shot of the South Coast Repertory theatre building with its name illuminated above a reflective body of water."
-  },
-  {
-   "kind": "image",
-   "id": "fremont-ave-regional-2026",
-   "label": "Fremont Ave.",
-   "model": "openai",
-   "code": "image-not-key-art",
-   "detail": "Nighttime photo of the South Coast Repertory theatre building with its lights reflected in a pool."
-  },
-  {
-   "kind": "image",
-   "id": "fremont-ave-regional-2026",
-   "label": "Fremont Ave.",
-   "model": "openai",
-   "code": "image-other-title",
-   "detail": "image text \"SOUTH COAST\" / show \"Fremont Ave.\""
   },
   {
    "kind": "image",
@@ -654,14 +562,6 @@
    "detail": "ours 2026-08-04 / page 2026-07-23"
   },
   {
-   "kind": "image",
-   "id": "lakefront-regional-2026",
-   "label": "Lakefront",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "how-high-the-moon-regional-2026",
    "label": "How High the Moon",
@@ -758,14 +658,6 @@
    "detail": "page 2026-07-16, ours empty"
   },
   {
-   "kind": "image",
-   "id": "a-dolls-house-part-2-regional-2026",
-   "label": "A Doll's House Part 2",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
    "label": "Ma Rainey's Black Bottom",
@@ -836,38 +728,6 @@
    "model": "gemini",
    "code": "closing-date",
    "detail": "ours 2026-08-23 / page 2025-08-31"
-  },
-  {
-   "kind": "image",
-   "id": "dracula-the-musical-regional-2026",
-   "label": "Dracula: The Musical",
-   "model": "gemini",
-   "code": "image-not-key-art",
-   "detail": "The logo for The Nocturne Theatre features a golden, ornate crescent moon on a black background."
-  },
-  {
-   "kind": "image",
-   "id": "dracula-the-musical-regional-2026",
-   "label": "Dracula: The Musical",
-   "model": "gemini",
-   "code": "image-other-title",
-   "detail": "image text \"THE NOCTURNE THEATRE\" / show \"Dracula: The Musical\""
-  },
-  {
-   "kind": "image",
-   "id": "dracula-the-musical-regional-2026",
-   "label": "Dracula: The Musical",
-   "model": "openai",
-   "code": "image-not-key-art",
-   "detail": "A stylized gold crescent moon logo with ornate filigree and the words 'The Nocturne Theatre' on a black background."
-  },
-  {
-   "kind": "image",
-   "id": "dracula-the-musical-regional-2026",
-   "label": "Dracula: The Musical",
-   "model": "openai",
-   "code": "image-other-title",
-   "detail": "image text \"The Nocturne Theatre\" / show \"Dracula: The Musical\""
   },
   {
    "kind": "show",
@@ -1198,14 +1058,6 @@
    "detail": "ours 2026-09-20 / page 2026-08-29"
   },
   {
-   "kind": "image",
-   "id": "hangman-regional-2026",
-   "label": "Hangmen",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "kaiju-regional-2026",
    "label": "Kaiju",
@@ -1230,36 +1082,12 @@
    "detail": "page 2026-09-22, ours empty"
   },
   {
-   "kind": "image",
-   "id": "kaiju-regional-2026",
-   "label": "Kaiju",
-   "model": "gemini",
-   "code": "image-not-key-art",
-   "detail": "A man holding a microphone sits next to a woman with curly red hair who is pointing."
-  },
-  {
    "kind": "show",
    "id": "kaiju-regional-2026",
    "label": "Kaiju",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "image",
-   "id": "crone-creed-regional-2026",
-   "label": "Crone Creed",
-   "model": "gemini",
-   "code": "image-not-key-art",
-   "detail": "An exterior view of the El Portal Theatre marquee and sidewalk at dusk."
-  },
-  {
-   "kind": "image",
-   "id": "crone-creed-regional-2026",
-   "label": "Crone Creed",
-   "model": "openai",
-   "code": "image-not-key-art",
-   "detail": "Street-level photo of a historic theater marquee and entrance on a palm-lined boulevard."
   },
   {
    "kind": "show",
@@ -1289,25 +1117,9 @@
    "kind": "image",
    "id": "saint-megan-regional-2026",
    "label": "Saint Megan",
-   "model": "gemini",
-   "code": "image-not-key-art",
-   "detail": "An exterior shot of the Matrix Theatre building, featuring its name on the roof and marquee, with blank panels where show titles would be displayed."
-  },
-  {
-   "kind": "image",
-   "id": "saint-megan-regional-2026",
-   "label": "Saint Megan",
-   "model": "openai",
-   "code": "image-not-key-art",
-   "detail": "Photograph of the Matrix Theatre entrance and marquee reading 'Matrix Theatre Company' with blank poster panels."
-  },
-  {
-   "kind": "image",
-   "id": "saint-megan-regional-2026",
-   "label": "Saint Megan",
    "model": "openai",
    "code": "image-other-title",
-   "detail": "image text \"MATRIX THEATRE COMPANY\" / show \"Saint Megan\""
+   "detail": "image text \"GOD HATES\" / show \"Saint Megan\""
   },
   {
    "kind": "show",
@@ -1334,22 +1146,6 @@
    "detail": "page 2026-10-15, ours empty"
   },
   {
-   "kind": "image",
-   "id": "rorschach-regional-2026",
-   "label": "Rorschach",
-   "model": "gemini",
-   "code": "image-not-key-art",
-   "detail": "An audience claps for a person seated on a couch on stage in an intimate theatre setting."
-  },
-  {
-   "kind": "image",
-   "id": "rorschach-regional-2026",
-   "label": "Rorschach",
-   "model": "openai",
-   "code": "image-not-key-art",
-   "detail": "A generic photo of a small black-box theatre audience and a couch onstage, not specific promotional art for a particular production."
-  },
-  {
    "kind": "show",
    "id": "rorschach-regional-2026",
    "label": "Rorschach",
@@ -1372,30 +1168,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-10-11, ours empty"
-  },
-  {
-   "kind": "image",
-   "id": "heartbreak-house-regional-2026",
-   "label": "Heartbreak House",
-   "model": "gemini",
-   "code": "image-not-key-art",
-   "detail": "A black and white logo featuring a stylized white figure in a dynamic pose within a black square, with the word 'ANTAEUS' below."
-  },
-  {
-   "kind": "image",
-   "id": "heartbreak-house-regional-2026",
-   "label": "Heartbreak House",
-   "model": "openai",
-   "code": "image-not-key-art",
-   "detail": "Black-and-white Antaeus Theatre logo with a stylized human figure, serving as a company logo rather than key art for Heartbreak House."
-  },
-  {
-   "kind": "image",
-   "id": "heartbreak-house-regional-2026",
-   "label": "Heartbreak House",
-   "model": "openai",
-   "code": "image-other-title",
-   "detail": "image text \"ANTAEUS\" / show \"Heartbreak House\""
   },
   {
    "kind": "show",
@@ -1486,6 +1258,14 @@
    "detail": "closingDateSource missing"
   },
   {
+   "kind": "image",
+   "id": "barefoot-in-the-park-regional-2026",
+   "label": "Barefoot In The Park",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
    "kind": "show",
    "id": "barefoot-in-the-park-regional-2026",
    "label": "Barefoot In The Park",
@@ -1500,6 +1280,14 @@
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "image",
+   "id": "the-laugh-track-regional-2026",
+   "label": "The Laugh Track",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
   },
   {
    "kind": "show",
@@ -1534,6 +1322,14 @@
    "detail": "closingDateSource missing"
   },
   {
+   "kind": "image",
+   "id": "recent-alien-abductions-regional-2026",
+   "label": "Recent Alien Abductions",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
    "kind": "show",
    "id": "recent-alien-abductions-regional-2026",
    "label": "Recent Alien Abductions",
@@ -1545,6 +1341,30 @@
    "kind": "show",
    "id": "thistles-regional-2026",
    "label": "Thistles",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "falsettos-regional-2026",
+   "label": "Falsettos",
+   "model": "local",
+   "code": "no-closing-date",
+   "detail": "open show without closingDate"
+  },
+  {
+   "kind": "show",
+   "id": "carmen-regional-2026",
+   "label": "Carmen",
+   "model": "local",
+   "code": "no-closing-date",
+   "detail": "open show without closingDate"
+  },
+  {
+   "kind": "show",
+   "id": "destiny-of-desire-regional-2026",
+   "label": "Destiny of Desire",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
@@ -1564,30 +1384,6 @@
    "model": "openai",
    "code": "wrong-production",
    "detail": "A Case for the Existence of God is presented by and at Rogue Machine Theatre through October 11, 2026."
-  },
-  {
-   "kind": "review",
-   "id": "barefoot-in-the-park-regional-2026|http://curtainup.com/barefootinthepark.html|",
-   "label": "Barefoot In The Park | CurtainUp / null",
-   "model": "gemini",
-   "code": "wrong-production",
-   "detail": "Fortunately Amanda Peet... doesn?t have to prove much beyond being perky and quirky in this her Broadway debut."
-  },
-  {
-   "kind": "review",
-   "id": "barefoot-in-the-park-regional-2026|http://curtainup.com/barefootinthepark.html|",
-   "label": "Barefoot In The Park | CurtainUp / null",
-   "model": "openai",
-   "code": "wrong-production",
-   "detail": "the current revival offers little to either revive or support that response"
-  },
-  {
-   "kind": "review",
-   "id": "barefoot-in-the-park-regional-2026|http://curtainup.com/barefootinthepark.html|",
-   "label": "Barefoot In The Park | CurtainUp / null",
-   "model": "openai",
-   "code": "score-vs-text",
-   "detail": "text reads pan, score 44"
   },
   {
    "kind": "review",
@@ -1644,22 +1440,6 @@
    "model": "local",
    "code": "pull-quote-not-in-text",
    "detail": "It's all très charmant (but also très talky), which is why audiences will thank producer Charles A. Duncombe and director Frédérique Michel "
-  },
-  {
-   "kind": "review",
-   "id": "little-women-regional-2026|https://rachelsreviewstheatre.com/2026/11/11/little-women-at-centerpoint-has-astonishing-talent-review|",
-   "label": "Little Women | Rachel Reviews Theatre / null",
-   "model": "gemini",
-   "code": "wrong-production",
-   "detail": "LITTLE WOMEN at Centerpoint has astonishing talent (Review) November 11, 2026 | Rachel's Reviews When I heard Centerpoint Legacy was going to be putting on Little Women I knew I was in store for something special."
-  },
-  {
-   "kind": "review",
-   "id": "little-women-regional-2026|https://rachelsreviewstheatre.com/2026/11/11/little-women-at-centerpoint-has-astonishing-talent-review|",
-   "label": "Little Women | Rachel Reviews Theatre / null",
-   "model": "openai",
-   "code": "wrong-production",
-   "detail": "“Centerpoint Legacy was going to be putting on Little Women”"
   },
   {
    "kind": "review",
@@ -1748,6 +1528,126 @@
    "model": "openai",
    "code": "excluded-looks-valid",
    "detail": "The Case-Book of C. Auguste Dupin at Theatre 40 at The Reuben Cordova Theatre 241 Moreno Drive Beverly Hills | flags on file: partial_text"
+  },
+  {
+   "kind": "review",
+   "id": "confederates-regional-2026-fountain-theatre|https://hollywoodprogressive.com/stage/confederates-at-the-fountain-theatre|dick price",
+   "label": "confederates-regional-2026-fountain-theatre | Hollywood Progressive",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://hollywoodprogressive.com/stage/confederates-at-the-fountain-theatre"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://www.broadwayworld.com/los-angeles/article/review-dear-evan-hansen-at-la-mirada-theatre-20261109|michael quintos",
+   "label": "dear-evan-hansen-la-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/los-angeles/article/Review-DEAR-EVAN-HANSEN-at-La-Mirada-Theatre-20261109"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://www.newyorktheatreguide.com/reviews/dear-evan-hansen|margret echeverria",
+   "label": "dear-evan-hansen-la-regional-2026 | New York Theatre Guide",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.newyorktheatreguide.com/reviews/dear-evan-hansen"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://stagescenela.com/2026/11/dear-evan-hansen-2|",
+   "label": "dear-evan-hansen-la-regional-2026 | StageSceneLA",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stagescenela.com/2026/11/dear-evan-hansen-2"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://www.whittierdailynews.com/2026/11/03/review-dear-evan-hansen-is-a-soaring-triumph-at-la-mirada-theatre|christopher smith",
+   "label": "dear-evan-hansen-la-regional-2026 | Whittier Daily News",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.whittierdailynews.com/2026/11/03/review-dear-evan-hansen-is-a-soaring-triumph-at-la-mirada-theatre/"
+  },
+  {
+   "kind": "review",
+   "id": "destiny-of-desire-regional-2026|https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier|imaan jalali",
+   "label": "destiny-of-desire-regional-2026 | LA Excites",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier/"
+  },
+  {
+   "kind": "review",
+   "id": "destiny-of-desire-regional-2026|https://splashmags.com/2026/11/destiny-of-desire-a-laugh-out-loud-telenovela-with-music|elaine mura",
+   "label": "destiny-of-desire-regional-2026 | Splash Magazines",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://splashmags.com/2026/11/destiny-of-desire-a-laugh-out-loud-telenovela-with-music/"
+  },
+  {
+   "kind": "review",
+   "id": "nacho-ate-spiderman-regional-2026|https://www.discoverhollywood.com/nacho-ate-spiderman-ruskin-group-theatre|amalisha hueck",
+   "label": "nacho-ate-spiderman-regional-2026 | Discover Hollywood",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.discoverhollywood.com/nacho-ate-spiderman-ruskin-group-theatre"
+  },
+  {
+   "kind": "review",
+   "id": "passing-strange-regional-2026|https://stageraw.com/stage-raw-review-passing-strange|f kathleen foley",
+   "label": "passing-strange-regional-2026 | Stage Raw",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageraw.com/stage-raw-review-passing-strange"
+  },
+  {
+   "kind": "review",
+   "id": "radio-galaxy-regional-2026|https://www.latheatrix.com/post/review-stellar-radio-galaxy-at-the-wallis|anita w harris",
+   "label": "radio-galaxy-regional-2026 | LA Theatrix",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.latheatrix.com/post/review-stellar-radio-galaxy-at-the-wallis"
+  },
+  {
+   "kind": "review",
+   "id": "the-39-steps-regional-2026|https://www.onthereels.com/p/wheezing-with-laughter-the-39-steps|r c samo",
+   "label": "the-39-steps-regional-2026 | OnTheReels",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.onthereels.com/p/wheezing-with-laughter-the-39-steps"
+  },
+  {
+   "kind": "review",
+   "id": "the-laugh-track-regional-2026|https://www.discoverhollywood.com/the-laugh-track-ict-beverly-oneill-theater|amalisha hueck",
+   "label": "the-laugh-track-regional-2026 | Discover Hollywood",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.discoverhollywood.com/the-laugh-track-ict-beverly-oneill-theater/"
+  },
+  {
+   "kind": "review",
+   "id": "the-laugh-track-regional-2026|https://lbpost.com/esd/eat-see-do-2/see/theater-review-the-laugh-track-i-love-lucy-madelyn-pugh-wendy-macleod|anita w harris",
+   "label": "the-laugh-track-regional-2026 | Long Beach Post",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://lbpost.com/esd/eat-see-do-2/see/theater-review-the-laugh-track-i-love-lucy-madelyn-pugh-wendy-macleod"
+  },
+  {
+   "kind": "review",
+   "id": "the-laugh-track-regional-2026|https://stageraw.com/stage-raw-review-the-laugh-track|julyza commodore",
+   "label": "the-laugh-track-regional-2026 | Stage Raw",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageraw.com/stage-raw-review-the-laugh-track/"
+  },
+  {
+   "kind": "review",
+   "id": "the-laugh-track-regional-2026|https://stagescenela.com/2026/11/the-laugh-track|",
+   "label": "the-laugh-track-regional-2026 | StageSceneLA",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stagescenela.com/2026/11/the-laugh-track"
   },
   {
    "kind": "tour",
@@ -2897,25 +2797,36 @@
    "kind": "coverage",
    "id": "confederates-regional-2026-fountain-theatre",
    "label": "Confederates",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "Hollywood Progressive / Ed Rampell 2026-10-31 https://www.hollywoodprogressive.com/gone-with-the-racism/"
-  },
-  {
-   "kind": "coverage",
-   "id": "confederates-regional-2026-fountain-theatre",
-   "label": "Confederates",
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Hollywood Times / Robert St. Martin 2026-11-01 https://hollywoodtimes.net/confederates-a-thought-provoking-play-about-institutional-racism-and-its-impact-on-black-women/"
-  },
-  {
-   "kind": "coverage",
-   "id": "confederates-regional-2026-fountain-theatre",
-   "label": "Confederates",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Hollywood Progressive / Ed Rampell 2026-10-31 https://hollywoodprogressive.com/stage/gone-with-the-racism"
   }
- ]
+ ],
+ "pages": {
+  "hub": {
+   "problems": [],
+   "status": 200,
+   "counts": {
+    "now": 22,
+    "soon": 11,
+    "closed": 26
+   },
+   "expectedLocal": {
+    "now": 21,
+    "soon": 0,
+    "closedRecent": 12,
+    "archive": 49
+   }
+  },
+  "app": {
+   "feedStatus": 200,
+   "feedCount": 81,
+   "webCount": 82,
+   "problems": [],
+   "byDesignUnscoredClosed": [
+    "into-the-woods-regional-2026",
+    "come-from-away-noise-regional-2026"
+   ]
+  }
+ }
 }

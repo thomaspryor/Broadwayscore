@@ -272,6 +272,17 @@ function recordHash(rec, fields) {
   const o = {}; for (const f of fields) o[f] = rec && rec[f] !== undefined ? rec[f] : null;
   return require('crypto').createHash('sha1').update(JSON.stringify(o)).digest('hex').slice(0, 10);
 }
+/**
+ * BRO-7265: does the images check need to (re)ask the models for this show? A cached verdict
+ * judged the poster file that existed then; a replaced poster (new art, same path) kept being
+ * scored from the old verdict. Rows now carry posterHash; a row without one (older rows) is
+ * re-asked only when named in --recheck.
+ */
+function imageNeedsCheck(row, posterHash, recheck) {
+  if (!row || row.missing) return true;
+  if (recheck === true) return true;
+  return !!(row.posterHash && posterHash && row.posterHash !== posterHash);
+}
 const SHOW_RECORD_FIELDS = ['title', 'venue', 'openingDate', 'closingDate', 'previewsStartDate', 'closingDateSource', 'category', 'status', 'image', 'officialUrl'];
 const REVIEW_RECORD_FIELDS = ['criticName', 'publishDate', 'assignedScore', 'originalRating', 'outlet', 'isNonReview', 'wrongProduction', 'wrongShow'];
 
@@ -280,5 +291,5 @@ module.exports = { recordHash, SHOW_RECORD_FIELDS, REVIEW_RECORD_FIELDS,
   laterRunEnd, showRunEndFinding,
   addDays, daysBetween, hubPhase, sectionHubShows, fold, parseJson, starsFromRating, bandForStars,
   starBandProblem, verdictProblem, quoteInText, bylineMatches, dateDiffDays, reviewFlags, showFlags,
-  imageFlags, parseLiveHub, RECENT_DAYS, CLOSED_LIMIT,
+  imageFlags, imageNeedsCheck, parseLiveHub, RECENT_DAYS, CLOSED_LIMIT,
 };

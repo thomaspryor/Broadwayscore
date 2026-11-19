@@ -249,34 +249,8 @@ async function downloadImageDirect(url) {
 // /images/shows/<id>/ paths (the persist step keeps those verbatim).
 // ---------------------------------------------------------------------------
 
-/**
- * Portrait card (poster/thumbnail) from arbitrary key art. Venue og:images
- * are usually landscape title-art; a straight 2:3 attention-crop amputates
- * the title ("BLACK SWAN" → "BLAC SWA", user report 2026-07-12). Strategy:
- *   - trim uniform borders (white-background promo shoots read as whitespace
- *     in small cards otherwise);
- *   - portrait-ish source (w/h ≤ 0.85) → tight cover/attention crop;
- *   - landscape/square source → CONTAIN the full art over a blurred,
- *     darkened cover of itself (the standard letterbox-poster treatment) so
- *     no text is ever cut.
- */
-async function portraitCardFromKeyArt(sharpLib, buffer, w, h, quality) {
-  let src = buffer;
-  try {
-    const trimmed = await sharpLib(buffer).trim({ threshold: 25 }).toBuffer({ resolveWithObject: true });
-    // Only adopt the trim when it kept a meaningful image (guards against
-    // aggressive trims of low-contrast art collapsing to slivers).
-    if (trimmed.info.width > 200 && trimmed.info.height > 200) src = trimmed.data;
-  } catch { /* keep original */ }
-  const meta = await sharpLib(src).metadata();
-  const ratio = (meta.width || 1) / (meta.height || 1);
-  if (ratio <= 0.85) {
-    return sharpLib(src).resize(w, h, { fit: 'cover', position: 'attention' }).webp({ quality }).toBuffer();
-  }
-  const bg = await sharpLib(src).resize(w, h, { fit: 'cover' }).blur(30).modulate({ brightness: 0.5, saturation: 1.15 }).toBuffer();
-  const fg = await sharpLib(src).resize(w - 24, h - 24, { fit: 'inside' }).toBuffer();
-  return sharpLib(bg).composite([{ input: fg, gravity: 'centre' }]).webp({ quality }).toBuffer();
-}
+// portraitCardFromKeyArt / writeRegionalFormats live in scripts/lib/regional-key-art.js (BRO-7265).
+const { regionalLocalPaths, writeRegionalFormats } = require('./lib/regional-key-art');
 
 async function fetchFromRegionalVenue(show, verifyCtx) {
   let sharpLib;
@@ -284,11 +258,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
   const { REGIONAL_FEEDER_VENUES } = require('./lib/aggregator-candidate-extract');
   const venueEntry = REGIONAL_FEEDER_VENUES.find(v => v.re.test(show.venue || '')) || require('./lib/regional-image-venues').imageOnlyVenue(show.venue);
 
-  const localPaths = {
-    poster: `/images/shows/${show.id}/poster.webp`,
-    thumbnail: `/images/shows/${show.id}/thumbnail.webp`,
-    hero: `/images/shows/${show.id}/hero.webp`,
-  };
+  const localPaths = regionalLocalPaths(show.id);
 
   // Existing real files win unless --force: re-runs (default local run, manual
   // dispatch with only_missing=false, --show=<id>) must not silently replace
@@ -365,10 +335,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       // Honor --dry-run exactly like the other local-write paths. (ship-check P1)
       const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
       const dir = path.join(outputBase, show.id);
-      fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(path.join(dir, 'poster.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 480, 720, 82));
-      fs.writeFileSync(path.join(dir, 'thumbnail.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 300, 450, 80));
-      await sharpLib(buffer).resize(1600, 1000, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'hero.webp'));
+      await writeRegionalFormats(sharpLib, buffer, dir);
       console.log(`   ✓ regional images written (poster/thumbnail/hero) from ${src.label}${dryRunMode ? ' [dry-run dir]' : ''}`);
       const _fileSources = {};
       for (const format of ['poster', 'thumbnail', 'hero']) _fileSources[format] = { path: localPaths[format], source: ogImage };

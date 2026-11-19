@@ -1,0 +1,90 @@
+{
+  "issueNumber": "bro-7265-b",
+  "planId": "e521cd4d-d4be-444d-b89b-3a58ed045e90",
+  "status": "pending",
+  "createdAt": "2026-11-19T17:21:40.207Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "DC + LA hub regional shows: point images at key art hand-verified on each production's own page (theatre/producer site or its theatreWashington listing); files land in public/images/shows/<id>/ with this plan; sources in data/image-sources.json; manifest data/audit/city-hub-dual/key-art-bro-7265.json (part 2 of 2)",
+    "steps": [
+      "crossing-delancey-regional-2026: key art from the production's own page (Theatre 40 production page), BRO-7265",
+      "lakefront-regional-2026: key art from the production's own page (Theatre 40 production page), BRO-7265",
+      "a-dolls-house-part-2-regional-2026: key art from the production's own page (Long Beach Playhouse event page, Jul 18-Aug 15 2026), BRO-7265",
+      "hangman-regional-2026: key art from the production's own page (Long Beach Playhouse event page, Aug 29-Sep 26 2026), BRO-7265"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "crossing-delancey-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/crossing-delancey-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/crossing-delancey-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/crossing-delancey-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/crossing-delancey-regional-2026/hero.webp"
+        },
+        "description": "crossing-delancey-regional-2026: key art from the production's own page (Theatre 40 production page), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lakefront-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/lakefront-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/lakefront-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/lakefront-regional-2026/hero.webp"
+        },
+        "description": "lakefront-regional-2026: key art from the production's own page (Theatre 40 production page), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-part-2-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/a-dolls-house-part-2-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/a-dolls-house-part-2-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/a-dolls-house-part-2-regional-2026/hero.webp"
+        },
+        "description": "a-dolls-house-part-2-regional-2026: key art from the production's own page (Long Beach Playhouse event page, Jul 18-Aug 15 2026), BRO-7265"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hangman-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/hangman-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/hangman-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/hangman-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/hangman-regional-2026/hero.webp"
+        },
+        "description": "hangman-regional-2026: key art from the production's own page (Long Beach Playhouse event page, Aug 29-Sep 26 2026), BRO-7265"
+      }
+    ]
+  }
+}
