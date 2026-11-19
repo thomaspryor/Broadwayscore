@@ -25,14 +25,14 @@ test('nightly needsRescore drain passes --batch unless DISABLE_BATCH_SCORING=1',
   assert.match(s, /index\.ts[^\n]*\$DRAIN_BATCH/);
 });
 
-test('comparative-rescore invocations carry the batch flag on scheduled runs only', () => {
+test('comparative-rescore invocations carry the batch flag decided by rescore-batch-policy.js (BRO-7807)', () => {
   const s = stepBody('Comparative within-band rescore (WE/OWE anchored-v6, capped)');
   const calls = s.split('\n').filter((l) => l.includes('comparative-rescore.ts') && l.includes('npx'));
   assert.ok(calls.length >= 2);
   for (const l of calls) assert.match(l, /\$CMP_BATCH/, l);
-  assert.match(s, /event_name \}\}" == "schedule"/);
-  assert.match(s, /DISABLE_BATCH_SCORING/);
-  assert.match(s, /chain/);
+  assert.match(s, /scripts\/lib\/rescore-batch-policy\.js\)" == "true"/);
+  assert.match(s, /DISABLE_BATCH_SCORING/); // kill switch still reaches the policy
+  assert.match(s, /SHOW_ID="\$\{INPUT_SHOW_ID\}"/); // per-show runs stay sync (decided in the policy)
 });
 
 const NOW = Date.parse('2026-11-15T12:00:00Z');
