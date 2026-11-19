@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { createRequire } from 'node:module';
 import { isMainModule } from './lib/is-main-module.mjs';
+import { devServerReachable } from './lib/dev-server-reachable.mjs';
 
 const { exitFlushed } = createRequire(import.meta.url)('./lib/exit-flushed.js');
 
@@ -32,22 +33,26 @@ export function freePort() {
   });
 }
 
-/** Pages the caller wants (default "/"); the first one doubles as the readiness probe. */
-export function firstPath(args) {
+/**
+ * Ready = "/" passes the SAME check visual-qa.mjs runs (HTTP 200, >1KB HTML; BRO-7849: it used to probe only the first
+ * --paths page with any status under 500, then visual-qa fetched "/" with a 5s timeout and failed on a cold compile).
+ * Once "/" is up, each requested page is fetched once to warm its compile.
+ */
+export async function waitReady(base, paths, child, { totalMs = READY_TIMEOUT_MS, reachable = devServerReachable, fetchImpl = fetch } = {}) {
+  const r = await reachable(`${base}/`, { totalMs, shouldAbort: () => child.exitCode !== null });
+  if (!r.ok) return false;
+  for (const p of paths) {
+    try { await fetchImpl(base + p, { signal: AbortSignal.timeout(120000) }); } catch { /* warming only; visual-qa reports real failures */ }
+  }
+  return true;
+}
+
+/** Every page named by --paths (default "/"). */
+export function allPaths(args) {
   const a = args.find((x) => x.startsWith('--paths='));
   const i = args.indexOf('--paths');
   const v = a ? a.slice(8) : (i >= 0 ? args[i + 1] : '/');
-  return (v || '/').split(',')[0] || '/';
-}
-
-async function waitReady(url, child) {
-  const end = Date.now() + READY_TIMEOUT_MS;
-  while (Date.now() < end) {
-    if (child.exitCode !== null) return false;
-    try { const r = await fetch(url, { signal: AbortSignal.timeout(60000) }); if (r.status < 500) return true; } catch { /* still compiling */ }
-    await new Promise((r) => setTimeout(r, 2000));
-  }
-  return false;
+  return (v || '/').split(',').map((x) => x.trim()).filter(Boolean);
 }
 
 async function main() {
@@ -65,7 +70,7 @@ async function main() {
   process.on('SIGTERM', () => { stop(); exitFlushed(143); });
   let code = 3; let started = false;
   try {
-    const ok = await waitReady(base + firstPath(args), dev);
+    const ok = await waitReady(base, allPaths(args), dev);
     if (!ok) console.error(`[cloud-visual-qa] dev server not ready within ${READY_TIMEOUT_MS / 1000}s. Last output:\n${tail}`);
     else {
       started = true;
