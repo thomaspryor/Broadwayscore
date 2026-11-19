@@ -32,6 +32,19 @@ on:
         required: false
         default: ''
         type: string
+      redispatched:
+        # redispatch-after-hours: 2  (BRO-7402: GitHub fired this 3h cron about every 6-10h (2026-11-17/18: 03:54,
+        #   16:00, 00:57, 11:42). The Good Thief's Front Row Center review went up at 01:26 UTC and sat unread until
+        #   the hourly audit-aggregator-gap sweep (re-dispatched at 1h) found it at 10:27, so it counted as a
+        #   first-pass miss. With a 2h band the next read comes within about 2.5h of the last run. Cost: up to ~12
+        #   runs/day while a show is in the window, each capped at max_paid=8 paid fetches; outside the window a run
+        #   exits before any fetch. Kill switch OPENING_WINDOW_DISABLED. Paging band stays 12h.
+        #   Guard: tests/unit/first-pass-redispatch.test.mjs.)
+        # Set by scripts/cron-redispatch.js when GitHub dropped the schedule. Nothing here branches on how the run
+        # started, and every other input keeps its default, so the run is the same as a scheduled one.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
 
 concurrency:
   group: outlet-listing-poller-window
