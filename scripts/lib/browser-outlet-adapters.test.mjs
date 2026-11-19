@@ -180,8 +180,12 @@ test('renew-cookies: telegraph is local-only with an automatic login, and a brow
   const p = COOKIE_PROBES.telegraph;
   assert.equal(p.url, A.ADAPTERS.telegraph.testUrl);
   assert.equal(p.browserOnly, true);
-  const cls = (html) => classifyWalledProbe({ withCookies: { html, body: p.extractBody(html) || '' }, minBody: p.minBody, wallMarker: p.wallMarker, gateMarker: p.gateMarker });
-  assert.equal(cls(fx('logged-in.html')), 'logged-in');
+  const cls = (html) => classifyWalledProbe({ withCookies: { html, body: p.extractBody(html) || '' }, minBody: p.minBody, wallMarker: p.wallMarker, gateMarker: p.gateMarker, subscriberMarker: p.subscriberMarker });
+  // The captured fixture predates the reader class; live subscriber pages
+  // carry it on the article renderer (measured 2026-11-19).
+  const sub = fx('logged-in.html').replace('<body', '<body><div class="articleRendererHTML logged-in--true is-subscriber--true"></div');
+  assert.equal(cls(sub), 'logged-in');
+  assert.equal(cls(fx('logged-in.html')), 'error', 'full body without the subscriber class is not proof of a login');
   assert.equal(cls(fx('walled.html')), 'logged-out');
   assert.equal(cls(fx('bot-block.html')), 'error', 'a bot page is never read as logged out');
 });

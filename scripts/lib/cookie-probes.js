@@ -44,7 +44,13 @@ const COOKIE_PROBES = {
     wallMarker: /class="[^"]*martech-paywall__blur/i,
     // is-subscriber--false: the site names the reader a non-subscriber (also
     // on a metered free read, which has no paywall element).
-    gateMarker: /martech-paywall__blur|data-js="martech-paywall"|martech-regwall|is-subscriber--false/i,
+    // Only inside a rendered class attribute, never CSS/bundle text.
+    gateMarker: /martech-paywall__blur|data-js="martech-paywall"|martech-regwall|class="[^"]*\bis-subscriber--false\b/i,
+    // Evidence required before adopting cookies or spending a login: the
+    // rendered paywall itself, never the reader class alone (review
+    // 2026-11-19: a subscriber page captured before its class flips must not
+    // start a login).
+    loginWallMarker: /class="[^"]*martech-paywall__blur|data-js="martech-paywall"|class="[^"]*martech-regwall/i,
     browserOnly: true,
     extractBody: (html) => require('./browser-outlet-adapters').extractTelegraphBody(html),
     // Metered: about 1 in 4 fresh anonymous loads read the full article
@@ -52,7 +58,7 @@ const COOKIE_PROBES = {
     // a live renewal. The page names the reader instead: subscriber page
     // carries is-subscriber--true, every anonymous load (free read or
     // walled) is-subscriber--false.
-    subscriberMarker: /is-subscriber--true/,
+    subscriberMarker: /class="[^"]*\bis-subscriber--true\b/,
   },
   // BRO-7705 probes. Every number below was measured live on 2026-11-17 on
   // the SAME url with the subscriber session and with none (the control), so
@@ -93,8 +99,8 @@ const COOKIE_PROBES = {
     // data-testid="paywall-bar-thin"; the subscriber page has no bar. The bare
     // word InContentBarrier is in the strings bundle of BOTH pages, so it only
     // counts inside a rendered attribute.
-    wallMarker: /data-testid="paywall-bar/,
-    loginWallMarker: /data-testid="paywall-bar|JOURNEY_PAYWALL|(?:class|data-testid)="[^"]*InContentBarrier/,
+    wallMarker: /data-testid="paywall-bar(?:-[a-z]+)?"/,
+    loginWallMarker: /data-testid="paywall-bar(?:-[a-z]+)?"|JOURNEY_PAYWALL|(?:class|data-testid)="[^"]*InContentBarrier/,
   },
   ft: {
     url: 'https://www.ft.com/content/681beb68-5155-11df-bed9-00144feab49a',

@@ -64,7 +64,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
-const { COOKIE_PROBES, classifyWalledProbe } = require('./lib/cookie-probes');
+const { COOKIE_PROBES } = require('./lib/cookie-probes');
 const renew = require('./lib/cookie-renew');
 const {
   RENEW_OUTLETS, profileDir, profileNameFor, emptyOutletState, decideLogin, classifyLoginFailure,
@@ -277,7 +277,7 @@ async function runOutlet(outlet, all, opts) {
   if (!probe.browserOnly) {
     try {
       const [withCookies, withoutCookies] = [await fetchProbe(probe, localCookies), await fetchProbe(probe, null)];
-      probeStatus = classifyWalledProbe({ withCookies, withoutCookies, minBody: probe.minBody, wallMarker: probe.wallMarker, gateMarker: probe.gateMarker });
+      probeStatus = bprobe.classify(probe, withCookies, withoutCookies); // same fields as the browser path (incl. subscriberMarker)
       console.log(`${outlet} probe: ${probeStatus} (with cookies ${withCookies.body.length} chars, without ${withoutCookies.body.length}, floor ${probe.minBody})`);
       // BRO-7716: a bot-walled fetch probe falls back to the in-browser probe.
       const mode = resolveProbeMode({ browserOnly: false, probeStatus });
