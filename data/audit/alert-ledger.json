@@ -33559,25 +33559,23 @@
       "resolveReason": "absent"
     },
     "workflow-alert:lighthouse-regression": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Lighthouse regression detected on broadwayscorecard.com",
       "firstSeen": "2026-10-30T21:28:02.257Z",
-      "incidentOpenedAt": "2026-10-30T21:28:02.257Z",
-      "lastSeen": "2026-10-30T21:28:02.257Z",
-      "lastNotifiedAt": "2026-10-30T21:28:02.257Z",
+      "incidentOpenedAt": "2026-11-19T17:31:25.522Z",
+      "lastSeen": "2026-11-19T17:31:25.522Z",
+      "lastNotifiedAt": "2026-11-19T17:31:25.522Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-6665",
+      "linearIdentifier": "BRO-7852",
       "dispatch": {
-        "requestedAt": "2026-10-30T21:28:02.257Z",
+        "requestedAt": "2026-11-19T17:31:25.522Z",
         "mode": "dispatch-at-filing",
-        "runId": "41130845005",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41130845005"
-      },
-      "resolvedAt": "2026-10-30T22:21:38.114Z",
-      "resolveReason": "clear in latest run"
+        "runId": "44577150153",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44577150153"
+      }
     },
     "land:land/bro-6663-lane-recording-import": {
       "status": "resolved",
