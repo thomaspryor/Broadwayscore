@@ -97,15 +97,15 @@ function decideCommercialContaminationAlert(out) {
 
 /**
  * audit-image-source-rejected.js --strict.
- * @param {{rows:Array<{id,format,path,source}>, showsCount:number, sourcesCount:number}} out
+ * @param {{rows:Array<{id,format,path,source,why}>, showsCount:number, sourcesCount:number}} out
  */
 function decideImageSourceRejectedAlert(out) {
   if (!out || !(out.showsCount > 0) || !(out.sourcesCount > 0)) return [];
   return [buildAuditAlert({
     conditionKey: KEYS.imageSourceRejected,
-    rows: (out.rows || []).map((r) => `${r.id}.${r.format}: ${r.path}, ${r.why || 'recorded from rejected'} ${r.source}`),
-    title: (n) => `Show art: ${plural(n, 'image field points', 'image fields point')} at art from a rejected URL`,
-    intro: 'The image fetch run found show poster/thumbnail/hero files whose recorded source in data/image-sources.json is one of that show\'s own rejectedImageUrls: wrong-production art, or a hand fix whose source map was never updated.',
+    rows: (out.rows || []).map((r) => `${r.id}.${r.format}: ${r.path} (${r.why || 'recorded from rejected'}): ${r.source}`),
+    title: (n) => `Show art: ${plural(n, 'image field points', 'image fields point')} at rejected or wrong-production art`,
+    intro: 'The image fetch run found show poster/thumbnail/hero files whose recorded source in data/image-sources.json is one of that show\'s own rejectedImageUrls, or is TodayTix catalogue art on a closed row that cannot be its production (closed before TodayTix sold tickets, or left after the same match\'s poster was rejected): wrong-production art, or a hand fix whose source map was never updated.',
     hint: 'For each row look at the image. If it is wrong, clear the field; if it is right, record the real source (or "manual:<note>") in data/image-sources.json. Done when node scripts/audit-image-source-rejected.js --strict exits 0.',
     resolveReason: 'no in-use art from a rejected URL',
   })];

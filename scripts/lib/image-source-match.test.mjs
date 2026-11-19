@@ -272,6 +272,21 @@ test('findRejectedSourcesInUse lists TodayTix art that cannot be the row\'s own 
   assert.deepEqual(findRejectedSourcesInUse([{ ...follies, images: { hero: null } }], TT_SOURCES), []);
 });
 
+test('findRejectedSourcesInUse judges a borrowed file by the row that owns it', () => {
+  // legally-blonde-tour-2022 served the 2007 row's wrong TodayTix hero. The
+  // tour itself is recent and rejected nothing, so only the owner shows it.
+  const lb2007 = { id: 'legally-blonde-2007', status: 'closed', closingDate: '2008-10-19',
+    images: { hero: null }, rejectedImageUrls: [] };
+  const tour = { id: 'legally-blonde-tour-2022', status: 'closed', closingDate: '2023-06-30',
+    images: { hero: '/images/shows/legally-blonde-2007/hero.webp' }, rejectedImageUrls: [] };
+  const sources = { 'legally-blonde-2007': { hero: TT('LB-header') } };
+  const rows = findRejectedSourcesInUse([lb2007, tour], sources);
+  assert.deepEqual(rows.map(r => `${r.id}.${r.format}`), ['legally-blonde-tour-2022.hero']);
+  assert.match(rows[0].why, /closed before TodayTix/);
+  // Owner missing from the list: judged by the borrower alone (no crash).
+  assert.deepEqual(findRejectedSourcesInUse([tour], sources), []);
+});
+
 test('wrongEraTodayTixReason keeps running rows, post-2013 rows with no rejection, and non-TodayTix sources', () => {
   const running = { id: 'x', status: 'open', closingDate: null, rejectedImageUrls: [TT('old')] };
   assert.equal(wrongEraTodayTixReason(running, TT('new')), null, 'a running row may take by-id catalogue art');

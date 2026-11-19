@@ -286,6 +286,7 @@ function wrongEraTodayTixReason(show, source) {
  */
 function findRejectedSourcesInUse(shows, sources) {
   const out = [];
+  const byId = new Map((shows || []).filter(Boolean).map((s) => [s.id, s]));
   for (const show of shows || []) {
     if (!show || !show.images) continue;
     for (const format of ['poster', 'thumbnail', 'hero']) {
@@ -295,7 +296,13 @@ function findRejectedSourcesInUse(shows, sources) {
       if (!source) continue;
       if (isRejectedImage({ [format]: source }, show)) out.push({ id: show.id, format, path: p, source, why: 'recorded from rejected' });
       else {
-        const why = wrongEraTodayTixReason(show, source);
+        // A row can serve another row's file (a tour borrowing its parent's
+        // hero). Judge the art by the row that owns the file too: the borrower
+        // may be a recent tour, but the art is still the 2007 row's wrong
+        // TodayTix match (legally-blonde-tour-2022, BRO-7846).
+        const owner = byId.get(imagePathOwner(p));
+        const why = wrongEraTodayTixReason(show, source)
+          || (owner && owner !== show ? wrongEraTodayTixReason(owner, source) : null);
         if (why) out.push({ id: show.id, format, path: p, source, why });
       }
     }
