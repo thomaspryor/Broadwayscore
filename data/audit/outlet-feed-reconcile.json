@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T05:22:53.793Z",
+  "generatedAt": "2026-11-19T06:40:49.451Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -184,21 +184,16 @@
     {
       "outletId": "fringereview",
       "error": "HTTP 500 for https://fringereview.co.uk/feed/"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 880,
-  "matchedGaps": 1,
+  "itemsScanned": 876,
+  "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
-      "title": "It’s A Wonderful Life: A Live Radio Play",
-      "level": "matched",
-      "outletId": "theater-scene",
-      "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
-      "headline": "It’s a Wonderful Life: A Live Radio Play",
-      "publishDate": "2026-11-18"
-    },
     {
       "showId": "annie-regional-2026-drury-lane-oakbrook",
       "title": "Annie",
