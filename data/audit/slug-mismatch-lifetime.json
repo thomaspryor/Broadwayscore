@@ -1,18 +1,15 @@
 {
-  "updatedAt": "2026-11-18T11:09:21.161Z",
-  "scanned": 4876,
-  "showsWithViolations": 202,
-  "totalViolations": 231,
-  "newSinceLastRun": 2,
+  "updatedAt": "2026-11-19T11:29:24.606Z",
+  "scanned": 4887,
+  "showsWithViolations": 203,
+  "totalViolations": 232,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026::https://www.dailymail.co.uk/tvshowbiz/article-11733039/Alex-casts-spell-female-Prospero-PATRICK-MARMION-reviews-Tempest.html"
+    "invisible-thread-off-broadway-2015::http://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/"
   ],
   "actionableViolations": 4,
-  "newActionableSinceLastRun": 1,
-  "newActionableKeys": [
-    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html"
-  ],
+  "newActionableSinceLastRun": 0,
+  "newActionableKeys": [],
   "openActionableCount": 1,
   "actionableOpen": {
     "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html": "2026-11-18T11:09:17.947Z"
@@ -213,6 +210,7 @@
     "marry-harry-off-broadway-2017::https://www.wolfentertainmentguide.com/viewpage.aspx?record=7113&cat=theater",
     "ring-twice-for-miranda-off-broadway-2017::https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7042",
     "hadestown-off-broadway-2016::https://broadwayandme.blogspot.com/2016/06/is-helluva-fine-destination.html",
+    "invisible-thread-off-broadway-2015::http://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
     "cloud-nine-off-broadway-2015::http://letstalkoffbroadway.com/2015/09/churchill-macdonald-atlantic.html",
     "steve-off-broadway-2015::https://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
     "these-paper-bullets-off-broadway-2015::https://www.wolfentertainmentguide.com/viewpage.aspx?record=6701&cat=theater",
@@ -2856,6 +2854,21 @@
           "criticName": "Janice C. Simpson",
           "url": "https://broadwayandme.blogspot.com/2016/06/is-helluva-fine-destination.html",
           "urlSlug": "2016 06 is-helluva-fine-destination",
+          "namesOtherShow": null
+        }
+      ]
+    },
+    {
+      "showId": "invisible-thread-off-broadway-2015",
+      "title": "Invisible Thread",
+      "openingDate": "2015-12-02",
+      "message": "Review URL for as-her-world-turns/Erica Meyer does not mention show slug (checked: invisible-thread-off-broadway-2015, invisible-thread, invisible-thread-off-broadway, invisible, thread, invisiblethread): http://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
+      "violations": [
+        {
+          "outletId": "as-her-world-turns",
+          "criticName": "Erica Meyer",
+          "url": "http://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
+          "urlSlug": "winter-2015-16-nyc-theater-guide",
           "namesOtherShow": null
         }
       ]
