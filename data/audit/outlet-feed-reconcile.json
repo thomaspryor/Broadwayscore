@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T22:54:38.572Z",
+  "generatedAt": "2026-11-19T00:01:04.533Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -39,11 +39,6 @@
       "openingDate": "2026-11-15"
     },
     {
-      "id": "the-kings-critique-off-broadway-2026",
-      "title": "The King's Critique",
-      "openingDate": "2026-11-12"
-    },
-    {
       "id": "pride-bridge-theatre-off-west-end-2026",
       "title": "Pride - Bridge Theatre",
       "openingDate": "2026-11-14"
@@ -57,6 +52,11 @@
       "id": "top-gunchained-off-west-end-2026",
       "title": "Top Gunchained",
       "openingDate": "2026-11-17"
+    },
+    {
+      "id": "elektra-off-broadway-2026",
+      "title": "Elektra",
+      "openingDate": "2026-11-20"
     },
     {
       "id": "its-a-wonderful-life-a-live-radio-play-2026",
@@ -84,11 +84,6 @@
       "openingDate": "2026-11-13"
     },
     {
-      "id": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "openingDate": "2026-11-12"
-    },
-    {
       "id": "nutty-nattys-magic-puppet-show-off-broadway-2026",
       "title": "Nutty Natty's Magic Puppet Show",
       "openingDate": "2026-11-14"
@@ -112,16 +107,6 @@
       "id": "our-town-regional-2026",
       "title": "Our Town",
       "openingDate": "2026-11-15"
-    },
-    {
-      "id": "barefoot-in-the-park-regional-2026",
-      "title": "Barefoot In The Park",
-      "openingDate": "2026-11-12"
-    },
-    {
-      "id": "nacho-ate-spiderman-regional-2026",
-      "title": "Nacho Ate Spiderman",
-      "openingDate": "2026-11-12"
     },
     {
       "id": "radio-galaxy-regional-2026",
@@ -161,16 +146,16 @@
   ],
   "skipped": [
     {
-      "showId": "first-and-last-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "the-winters-tale-mrs-regional-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 86,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -196,7 +181,7 @@
       "error": "HTTP 500 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 876,
+  "itemsScanned": 877,
   "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
