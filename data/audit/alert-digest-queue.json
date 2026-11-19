@@ -349,5 +349,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-19T11:27:09.232Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7402-mwner6k4",
+    "title": "Landing blocked: scripts-lib-tests red on land/job/linear-BRO-7402-mwner6k4",
+    "description": "land.yml did not land land/job/linear-BRO-7402-mwner6k4: the scripts-lib-tests gate went red at 6b97407044. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44511213376",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7402-mwner6k4"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "6b9740704404c5eeb9553ce0446c5904f1c61141"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44511213376"
+      }
+    ],
+    "queuedAt": "2026-11-19T11:36:29.351Z"
   }
 ]
