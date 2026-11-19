@@ -493,7 +493,7 @@ export function stampReceipt({ cwd, evidence, run = execFileSync }) {
       g(['merge-base', '--is-ancestor', 'HEAD', 'origin/main']);
       return { stamped: false, reason: 'HEAD is already on origin/main (commit first, then record)' };
     } catch { /* not on main: safe to amend */ }
-    g(['commit', '--amend', '--only', '--no-verify', '--cleanup=verbatim', '-m', `${msg}\n\n${line}`]);
+    g(['commit', '--amend', '--only', '--allow-empty', '--no-verify', '--cleanup=verbatim', '-m', `${msg}\n\n${line}`]);
     return { stamped: true, reason: line };
   } catch (e) {
     return { stamped: false, reason: `git failed: ${String(e && e.message).split('\n')[0]}` };
