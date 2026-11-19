@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-19T06:38:02.716Z",
+  "generatedAt": "2026-11-19T11:16:55.368Z",
   "date": "2026-11-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 219972,
+  "entryCount": 239831,
   "shows": [
     {
       "showId": "beetlejuice-2025",
@@ -483,13 +483,13 @@
     },
     {
       "showId": "julius-caesar-globe-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 13,
       "median_e2e_ms": 75513225,
       "p90_e2e_ms": 75513225,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 375691,
-        "scored-to-rebuilt": 420933,
+        "scored-to-rebuilt": 329571,
         "rebuilt-to-deployed": 74404189
       },
       "reviews_over_15min": 1,
@@ -5765,13 +5765,13 @@
     },
     {
       "showId": "9-circles-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 871512,
-        "scored-to-rebuilt": 728056,
+        "scored-to-rebuilt": 398393,
         "rebuilt-to-deployed": 61166719
       },
       "reviews_over_15min": 0,
@@ -6020,13 +6020,13 @@
     },
     {
       "showId": "theater-of-the-mind-regional-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 798360,
-        "scored-to-rebuilt": 408119,
+        "scored-to-rebuilt": 351330,
         "rebuilt-to-deployed": 37952903
       },
       "reviews_over_15min": 0,
@@ -7277,13 +7277,13 @@
     },
     {
       "showId": "frankenstein-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 602310,
+        "scored-to-rebuilt": 258367,
         "rebuilt-to-deployed": 28139922
       },
       "reviews_over_15min": 0,
@@ -8624,13 +8624,13 @@
     },
     {
       "showId": "eurotrash-off-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 828150,
+        "scored-to-rebuilt": 555153,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8714,7 +8714,7 @@
     },
     {
       "showId": "much-ado-about-nothing-2026",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8976,6 +8976,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1062996,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
