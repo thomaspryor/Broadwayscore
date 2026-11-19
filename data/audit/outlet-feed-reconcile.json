@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T03:02:02.980Z",
+  "generatedAt": "2026-11-19T04:22:30.678Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -42,6 +42,11 @@
       "id": "pride-bridge-theatre-off-west-end-2026",
       "title": "Pride - Bridge Theatre",
       "openingDate": "2026-11-14"
+    },
+    {
+      "id": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "openingDate": "2026-11-16"
     },
     {
       "id": "blue-man-group-a-new-holiday-surprise-2026",
@@ -153,32 +158,12 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
       "outletId": "viewfromthegods",
       "error": "Timeout fetching https://viewfromthegods.co.uk/feed/"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
       "outletId": "fringereview",
@@ -193,7 +178,7 @@
       "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 823,
+  "itemsScanned": 856,
   "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [
