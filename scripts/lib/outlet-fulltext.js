@@ -51,7 +51,9 @@ function isFull(r, tier) {
   return (r.fullText || '').length >= 1500 && !/truncat|excerpt|stub|invalid/.test(tier || '');
 }
 
-const norm = (s) => String(s || '').toLowerCase()
+const { foldDiacritics } = require('./title-match');
+// Fold accents first so "Amélie" compares as "amelie", not "am lie" (task #648 guard).
+const norm = (s) => foldDiacritics(String(s || '')).toLowerCase()
   .replace(/[‘’‚‛′`]/g, "'").replace(/[“”„″]/g, '"')
   .replace(/[–—]/g, '-').replace(/[^a-z0-9' -]+/g, ' ').replace(/\s+/g, ' ').trim();
 

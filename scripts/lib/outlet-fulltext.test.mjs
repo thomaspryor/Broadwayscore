@@ -100,6 +100,12 @@ test('digest line: names outlets below target and stale unattempted gaps; silent
   assert.equal(N.outletFloorLine(s), 'Major outlets below the full-text target: times-uk 92.3% (target 98%); 2 major-outlet reviews missing text for over a week with no recovery attempt yet.');
 });
 
+// Accents fold before comparing (diacritics guard, 2026-11-19).
+test('critic names with accents match their unaccented spelling, not each other', () => {
+  assert.equal(F.sameCritic({ criticName: 'Aleks Sierz' }, { criticName: 'Aleks Siérz' }), true);
+  assert.equal(F.sameCritic({ criticName: 'Amélie Roy' }, { criticName: 'Amlie Roy' }), false);
+});
+
 // Review 2026-11-19: the window rolls with the calendar (was hardcoded 2025/2026).
 test('recent productions = this year and last, by the clock', () => {
   const at = (iso) => Date.parse(iso);
