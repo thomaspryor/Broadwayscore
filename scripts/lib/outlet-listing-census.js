@@ -215,7 +215,11 @@ async function sitemapFileItems(url, src, cutoff, { fetchText, log, status }, de
     }
     return out;
   }
-  return parseSitemapXml(xml, cutoff, src.urlFilter);
+  const got = parseSitemapXml(xml, cutoff, src.urlFilter);
+  // ignoreLastmod (Slant, BRO-7812): its lastmod is touched in bulk (a whole archive on one day), so it is only
+  // good enough to drop stale entries. Never let it stand in for the publish date: undated items are dated from
+  // the page by confirmOnPage, so an old review cannot be filed as this week's.
+  return src.ignoreLastmod ? got.map((i) => ({ ...i, publishDate: null })) : got;
 }
 
 /**

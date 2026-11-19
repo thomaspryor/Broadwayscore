@@ -637,7 +637,7 @@ function summaryTable(market = 'nyc') {
 /** Outlets with many corpus reviews and no readable listing (BRO-7812). Empty string when none. */
 function blindOutletTable() {
   const files = fs.readdirSync(OUT_DIR).filter((f) => f.endsWith('.report.json'));
-  const blind = census.blindOutlets(files.map((f) => JSON.parse(fs.readFileSync(path.join(OUT_DIR, f), 'utf8'))));
+  const blind = census.blindOutlets(files.flatMap((f) => { try { return [JSON.parse(fs.readFileSync(path.join(OUT_DIR, f), 'utf8'))]; } catch { return []; } }));
   if (!blind.length) return '';
   return ['Blind outlets (the census cannot see a gap here):', '', '| Outlet | Source | Corpus rows | Why |', '|---|---|---|---|',
     ...blind.map((b) => `| ${b.outletId} | ${b.kind} | ${b.rows} | ${b.why} |`)].join('\n');

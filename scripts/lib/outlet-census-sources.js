@@ -97,6 +97,7 @@ const SOURCES = {
   slantmagazine: {
     kind: 'sitemap', url: 'https://www.slantmagazine.com/sitemap_index.xml', proxyRetry: true,
     childFilter: /post-sitemap\d*\.xml/, urlFilter: /slantmagazine\.com\/theater\/[^/]+\/?$/, headlineFromSlug: true,
+    ignoreLastmod: true, // sitemap lastmod is bulk-touched: poller arm dates items from the page, not lastmod
     tailChildren: 2, // the poller's census arm reads the newest 2 children only (see sitemapFileItems)
   },
   // UK paper: only slugs naming a New York house or Broadway can be NYC reviews.

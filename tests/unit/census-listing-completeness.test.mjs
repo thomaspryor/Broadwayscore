@@ -67,6 +67,19 @@ test('BRO-7812: tailChildren reads only the newest sitemap children (Slant polle
   assert.equal(read.length, 1 + 34);
 });
 
+test('BRO-7812: ignoreLastmod keeps a bulk-touched lastmod from becoming the publish date (old Slant review cannot be filed as new)', async () => {
+  const idx = '<sitemapindex><loc>https://e.test/post-sitemap1.xml</loc></sitemapindex>';
+  const urlset = `<urlset><url><loc>https://e.test/p/old-show-review/</loc><lastmod>${day(1)}T10:00:00+00:00</lastmod></url><url><loc>https://e.test/p/stale-review/</loc><lastmod>${day(90)}T10:00:00+00:00</lastmod></url></urlset>`;
+  const fetchText = async (u) => (u.endsWith('sitemap_index.xml') ? idx : urlset);
+  const run = (extra) => census.enumerateCensusItemsDetailed('sm', cutoff, { sourceOverrides: { sources: { sm: { ...sources.sm, childFilter: /post-sitemap\d*\.xml/, ...extra } }, londonSources: {} }, log: () => {}, fetchText });
+  const plain = await run({});
+  assert.equal(plain.items.length, 1);
+  assert.equal(plain.items[0].publishDate, day(1)); // default: lastmod is trusted
+  const guarded = await run({ ignoreLastmod: true });
+  assert.equal(guarded.items.length, 1); // stale entries are still dropped
+  assert.equal(guarded.items[0].publishDate, null); // but the date is read from the page later
+});
+
 test('F03: a healthy, long-span feed is still reconciled against the listing on a rotation', () => {
   const fine = { newestFiltered: day(1), filteredCount: 10, newestAny: day(1), oldestAny: day(30) };
   const reasons = new Set();
