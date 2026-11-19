@@ -28,6 +28,9 @@ const { isReviewTextFile } = require('./review-text-sidecars');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
 
 const REVIEW_TEXT_EDITABLE_FIELDS = [
+  // BRO-7841: the outlet pulled the review (its url 404s). urlDead withholds the link only; the text and
+  // score stay. Reversible: a plan can clear it (false) when the outlet republishes. See review-url-dead.js.
+  'urlDead', 'urlDeadAt', 'urlDeadUrl', 'urlDeadStatus',
   // byline / metadata
   'criticName', 'publishDate', 'designation',
   // provenance of publishDate (BRO-5090): a date fix re-labels a provisional
@@ -253,6 +256,10 @@ const FIELD_VALUE_CHECKS = {
     }
     return storedLabelRelabelError(v, record);
   },
+  urlDead: (v) => (v === true || v === false ? null : 'urlDead must be true or false'),
+  urlDeadAt: (v) => (v === null || (typeof v === 'string' && !Number.isNaN(Date.parse(v))) ? null : 'urlDeadAt must be an ISO date or null'),
+  urlDeadUrl: (v, record) => (v === null || v === record.url ? null : 'urlDeadUrl must equal the record url (or null)'),
+  urlDeadStatus: (v) => (v === null || v === 404 || v === 410 ? null : 'urlDeadStatus must be 404, 410 or null'),
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
   allowCrossShowUrl: (v) => (v === true ? null : 'allowCrossShowUrl may only be set to true'),
   _auditAllowCrossMarket: (v) => (v === true ? null : '_auditAllowCrossMarket may only be set to true'),
