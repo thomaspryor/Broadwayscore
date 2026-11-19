@@ -26279,7 +26279,7 @@
       "resolveReason": "job-green"
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
       "firstSeen": "2026-10-24T13:07:31.042Z",
@@ -26290,7 +26290,9 @@
       "lastSurfacedAt": "2026-11-19T03:00:05.071Z",
       "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-19T09:20:26.183Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-6101-aggregator-repair": {
       "status": "resolved",
@@ -29492,13 +29494,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-12T18:06:57.835Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-19T03:00:05.162Z",
+      "lastSeen": "2026-11-19T09:20:24.894Z",
       "lastNotifiedAt": "2026-11-18T15:34:20.364Z",
       "lastSurfacedAt": "2026-11-15T07:37:10.094Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": "BRO-7503",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -38015,13 +38017,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-17T04:47:52.691Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-19T03:00:05.142Z",
+      "lastSeen": "2026-11-19T09:20:24.879Z",
       "lastNotifiedAt": "2026-11-18T13:11:45.385Z",
       "lastSurfacedAt": "2026-11-18T13:11:45.385Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39140,13 +39142,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-12T08:06:56.360Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-19T03:00:03.698Z",
+      "lastSeen": "2026-11-19T09:20:24.362Z",
       "lastNotifiedAt": "2026-11-18T13:11:44.577Z",
       "lastSurfacedAt": "2026-11-15T00:33:12.642Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": "BRO-7499",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -45451,13 +45453,13 @@
       "firstSeen": "2026-11-18T13:11:44.559Z",
       "incidentOpenedAt": "2026-11-18T13:11:44.559Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-19T03:00:03.668Z",
+      "lastSeen": "2026-11-19T09:20:24.344Z",
       "lastNotifiedAt": "2026-11-18T13:11:44.559Z",
       "lastSurfacedAt": "2026-11-18T13:11:44.559Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026": {
       "status": "open",
@@ -45644,13 +45646,13 @@
       "firstSeen": "2026-11-18T17:58:55.876Z",
       "incidentOpenedAt": "2026-11-18T17:58:55.876Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-19T03:00:05.095Z",
+      "lastSeen": "2026-11-19T09:20:24.850Z",
       "lastNotifiedAt": "2026-11-18T17:58:55.876Z",
       "lastSurfacedAt": "2026-11-18T17:58:55.876Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-7789-compact-sync": {
       "status": "resolved",
@@ -45783,12 +45785,13 @@
       "firstSeen": "2026-11-19T03:00:05.119Z",
       "incidentOpenedAt": "2026-11-19T03:00:05.119Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-19T03:00:05.119Z",
+      "lastSeen": "2026-11-19T09:20:24.865Z",
       "lastNotifiedAt": "2026-11-19T03:00:05.119Z",
       "lastSurfacedAt": "2026-11-19T03:00:05.119Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-lane-summary:its-a-wonderful-life-a-live-radio-play-2026:2026-11-18": {
       "status": "open",
