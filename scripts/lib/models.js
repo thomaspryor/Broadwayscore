@@ -65,6 +65,9 @@ module.exports = {
   // shape per model lives in scripts/lib/llm-batch.js OPENAI_REQUEST_PROFILES.
   // BRO-7537: flipped gpt-4o -> gpt-5.6-luna (same BRO-7529 A/B audit file).
   SCORING_OPENAI: 'gpt-5.6-luna',
+  // BRO-7873: owner-reply judge for the visual push gate (owner-reply-judge.mjs). Its own pin so a scoring A/B flip
+  // never silently changes what the push gate asks a model. Needs a profile in llm-batch.js OPENAI_REQUEST_PROFILES.
+  OWNER_REPLY_OPENAI: 'gpt-5.6-luna',
   COMPARATIVE_OPENAI: 'gpt-4o',
   GPT4O_MINI: 'gpt-4o-mini',
   // Cheaper gpt-4o candidate evaluated in task #504 (2026-07-26) — API id
