@@ -1639,10 +1639,17 @@ async function main() {
       const rows = fs.readFileSync(ledger, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
       // BRO-7840: the audit cron can fire hours late (BRO-4800); run the audit in-memory when today's row is missing.
       const runAudit = (day) => {
-        const r = require('child_process').spawnSync(process.execPath, [path.join(REPO, 'scripts/landed-change-proof-audit.js'),
-          `--date=${day}`, '--dry-run', '--json', '--no-safe-run', '--no-dispatch'], { cwd: REPO, encoding: 'utf8', timeout: 5 * 60 * 1000, maxBuffer: 256 * 1024 * 1024 });
-        if (r.status !== 0) return null;
-        return JSON.parse(r.stdout.slice(r.stdout.indexOf('{'))).rows;
+        // stdout goes to a file, not a pipe: the audit ends with process.exit and a pipe truncates its JSON at 64KB.
+        const tmp = path.join(require('os').tmpdir(), `landed-proof-catchup-${process.pid}.json`);
+        const fd = fs.openSync(tmp, 'w');
+        try {
+          const r = require('child_process').spawnSync(process.execPath, [path.join(REPO, 'scripts/landed-change-proof-audit.js'),
+            `--date=${day}`, '--dry-run', '--json', '--no-safe-run', '--no-dispatch'], { cwd: REPO, stdio: ['ignore', fd, 'ignore'], timeout: 8 * 60 * 1000 });
+          if (r.status !== 0) return null;
+        } finally { fs.closeSync(fd); }
+        const out = fs.readFileSync(tmp, 'utf8');
+        fs.rmSync(tmp, { force: true });
+        return JSON.parse(out.slice(out.indexOf('{'))).rows;
       };
       const proofLine = (await import('./lib/landed-change-proof.mjs')).digestLineWithCatchUp(rows, { runAudit }).line;
       if (proofLine) improvementLine = improvementLine ? `${improvementLine} ${proofLine}` : proofLine;
