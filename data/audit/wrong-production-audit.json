@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-19T20:00:38.485Z",
+  "timestamp": "2026-11-19T20:31:20.534Z",
   "stats": {
-    "totalReviews": 83155,
-    "alreadyFlagged": 22548,
+    "totalReviews": 83159,
+    "alreadyFlagged": 22546,
     "dateGuardCatches": 221,
     "directorMismatch": 3787,
     "tvFilmSignals": 2373,
-    "londonSignals": 3825,
+    "londonSignals": 3826,
     "offBroadwaySignals": 773,
     "yearMismatch": 386,
-    "noPublishDate": 8277
+    "noPublishDate": 8274
   },
   "findings": [
     {
@@ -108790,7 +108790,6 @@
     {
       "showId": "hangmen-west-end-2015",
       "file": "daily-mail--quentin-letts.json",
-      "score": 66,
       "publishDate": "2015-12-08",
       "url": "https://www.dailymail.com/tvshowbiz/article-3350430/Comedy-dash-darkness-QUENTIN-LETTS-gives-night-review-Martin-McDonagh-s-new-play-Hangmen.html",
       "findings": [
@@ -123649,6 +123648,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "daily-mail--georgina-brown.json",
+      "score": 80,
+      "publishDate": "2025-11-14",
+      "url": "https://www.dailymail.com/tvshowbiz/article-15292119/One-Day-star-Ambika-Mod-puts-astonishing-performance-Porn-Play-reviewed-GEORGINA-BROWN.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -141161,7 +141174,6 @@
     {
       "showId": "the-red-barn-west-end-2016",
       "file": "daily-mail--quentin-letts.json",
-      "score": 78,
       "publishDate": "2016-10-18",
       "url": "https://www.dailymail.com/tvshowbiz/article-3846012/Filled-tension-chiller-thriller-s-ice-cool-QUENTIN-LETTS-night-review-Red-Barn.html",
       "findings": [
