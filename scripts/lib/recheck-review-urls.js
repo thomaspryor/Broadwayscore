@@ -47,7 +47,9 @@ async function recheck({ reviewTextsDir, probe, apply = false, now = Date.now(),
       (decision.action === 'mark' ? marked : restored).push(entry);
       if (apply) {
         applyDecision(c.rec, decision, new Date(now).toISOString());
-        fs.writeFileSync(c.file, JSON.stringify(c.rec, null, 2) + '\n');
+        // Through the write guard like every review-text writer (review-write-safety.test.mjs).
+        const w = require('./review-write-guard').safeWriteReview(c.file, c.rec);
+        if (w && w.wrote === false) log(`not written ${c.f}: ${w.skipped || 'guard'}`);
       }
     }
   }
