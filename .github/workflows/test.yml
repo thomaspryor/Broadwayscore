@@ -3353,6 +3353,7 @@ on:
       # clears it). New scripts/lib/ pure fn with colocated *.test.mjs
       # (auto-run by the lib-test glob step); path-listed here so a solo
       # edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/rescore-batch-policy.js' # BRO-7807: bulk-rescore batch-only policy; pinned by scripts/rescore-batch-api.test.mjs
       - 'scripts/llm-scoring/index.ts'
       # Batch API infrastructure (task #505): pure assembly/parse/merge/resume
       # logic + vendor client wrappers for the future nightly --batch mode.
