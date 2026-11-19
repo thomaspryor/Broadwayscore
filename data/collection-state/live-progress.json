@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-19T01:27:55.713Z",
-  "processed": 282,
-  "failed": 190,
-  "successRate": "59.7%",
+  "updatedAt": "2026-11-19T01:40:31.301Z",
+  "processed": 375,
+  "failed": 217,
+  "successRate": "63.3%",
   "tierBreakdown": {
-    "playwright": 173,
+    "playwright": 218,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 0,
-    "scrapingdog": 28,
-    "scrapingbee": 15,
+    "scrapingdog": 35,
+    "scrapingbee": 20,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 67
+    "archive": 103
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-11-18T20:39:51.013Z",
@@ -90,6 +90,28 @@
     },
     {
       "t": "2026-11-19T00:45:15.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T01:37:08.611Z",
+      "event": "bb-session",
+      "session": "5b715e0c",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-19T01:37:09.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T01:37:27.108Z",
+      "event": "bb-session",
+      "session": "0967c1cc",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-19T01:37:27.885Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
