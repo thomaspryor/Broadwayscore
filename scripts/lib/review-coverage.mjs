@@ -482,7 +482,8 @@ function stopHookMain() {
  * HEAD is not already on origin/main, does not already carry one, and only the message changes (--only keeps any
  * staged files out). Never throws. -> { stamped, reason }
  */
-export function stampReceipt({ cwd, evidence, run = execFileSync }) {
+export function stampReceipt({ cwd, evidence, run = execFileSync, env = process.env }) {
+  if (env.REVIEW_RECEIPT_STAMP === '0') return { stamped: false, reason: 'REVIEW_RECEIPT_STAMP=0 (opt-out)' };
   const g = (args) => String(run('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
   try {
     const line = createRequire(import.meta.url)('./review-receipt.js').formatReceipt(evidence);
