@@ -24,6 +24,7 @@ const KEYS = Object.freeze({
   commercialContamination: 'commercial-contamination:strict',
   imageSourceRejected: 'image-source-rejected:in-use',
   appliedFixPlans: 'applied-fix-plans:no-includable-row',
+  crossShowUrlFlags: 'cross-show-url-flags:unreviewed',
 });
 
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
@@ -127,6 +128,23 @@ function decideAppliedFixPlansAlert(out) {
   })];
 }
 
+/**
+ * audit-cross-show-url-flags.js (BRO-7815). --strict fails on unreviewed suspects:
+ * gather "Same URL correctly belongs in" flags the file's own date/title contradicts.
+ * @param {{scanned:number, items:Array<{file,otherShowId,reasons}>}} out
+ */
+function decideCrossShowUrlFlagAlert(out) {
+  if (!out || !(out.scanned > 0)) return [];
+  return [buildAuditAlert({
+    conditionKey: KEYS.crossShowUrlFlags,
+    rows: (out.items || []).map((s) => `${s.file}: flagged as belonging to ${s.otherShowId} (${(s.reasons || []).join(', ')})`),
+    title: (n) => `${plural(n, 'review', 'reviews')} hidden by a cross-show URL flag the file itself contradicts`,
+    intro: 'The daily corpus-drift run found reviews flagged wrongProduction ("Same URL correctly belongs in") whose own date or title points back at the show they sit in.',
+    hint: 'Read each text. Wrong flag: clear it with scripts/new-fix-plan.js --review-edit=<file>:wrongProduction=false and run execute-approved-fix.yml. Flag stands: add it to data/audit/cross-show-url-flags-reviewed.json. Done when node scripts/audit-cross-show-url-flags.js --strict exits 0.',
+    resolveReason: 'no unreviewed contradicted cross-show URL flags',
+  })];
+}
+
 module.exports = {
   KEYS,
   decideSiblingCastAlert,
@@ -135,4 +153,5 @@ module.exports = {
   decideCommercialContaminationAlert,
   decideImageSourceRejectedAlert,
   decideAppliedFixPlansAlert,
+  decideCrossShowUrlFlagAlert,
 };

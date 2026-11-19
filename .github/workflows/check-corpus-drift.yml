@@ -261,7 +261,7 @@ jobs:
           echo "$OUT3" | tail -6
           [ "$RC3" != "0" ] && echo "::warning::UK Show Score ratings on US shows. Fix: node scripts/purge-uk-show-score-audience.js --apply"
           # BRO-7815: a gather-written "Same URL correctly belongs in" flag that the file's own date/title contradicts.
-          RC4=0; OUT4=$(node scripts/audit-cross-show-url-flags.js --strict 2>&1) || RC4=$?
+          RC4=0; OUT4=$(node scripts/audit-cross-show-url-flags.js --strict --alert 2>&1) || RC4=$?
           echo "$OUT4" | tail -12
           [ "$RC4" != "0" ] && echo "::warning::cross-show URL flag audit: a wrongProduction flag may hide a correct review. Read each text, then clear it with new-fix-plan.js or add it to data/audit/cross-show-url-flags-reviewed.json. Run: node scripts/audit-cross-show-url-flags.js"
           exit 0

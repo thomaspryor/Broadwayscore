@@ -217,6 +217,14 @@ test('applied fix plans: no rebuild lists means nothing was checked, so no decis
   assert.deepEqual(A.decideAppliedFixPlansAlert({ reported: [], plansRead: 0, sawRebuild: true }), []);
 });
 
+test('cross-show URL flags (BRO-7815): unreviewed suspects route, none resolve, empty scan decides nothing', () => {
+  const items = [{ file: 'les-liaisons-dangereuses-2016/wnyc--x.json', otherShowId: 'les-liaisons-dangereuses-west-end-2026', reasons: ['own-date-fits-own-run'] }];
+  const alert = assertRoute(A.decideCrossShowUrlFlagAlert({ scanned: 30000, items }), A.KEYS.crossShowUrlFlags, 1);
+  assert.match(alert.description, /wnyc--x\.json: flagged as belonging to les-liaisons-dangereuses-west-end-2026 \(own-date-fits-own-run\)/);
+  assertResolve(A.decideCrossShowUrlFlagAlert({ scanned: 30000, items: [] }), A.KEYS.crossShowUrlFlags);
+  assert.deepEqual(A.decideCrossShowUrlFlagAlert({ scanned: 0, items: [] }), []);
+});
+
 test('rows never carry multi-line free text', () => {
   const alert = assertRoute(A.decideUtcShiftAlert({ scanned: 1, found: [{ file: 'a\nb', publishDate: 'x', corrected: 'y', source: 's' }] }), A.KEYS.utcShift, 1);
   assert.doesNotMatch(alert.description.split('\n\n')[1], /a\nb/);

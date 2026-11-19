@@ -24,7 +24,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const argv = process.argv.slice(2);
 if (hasHelpFlag(argv)) {
-  console.log('audit-cross-show-url-flags.js [--show=a,b] [--json] [--strict] [--all]');
+  console.log('audit-cross-show-url-flags.js [--show=a,b] [--json] [--strict] [--all] [--alert]');
   process.exit(0);
 }
 const arg = (k) => { const a = argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
@@ -79,4 +79,12 @@ if (argv.includes('--json')) {
     console.log('Read each text. Wrong flag: clear it with scripts/new-fix-plan.js --review-edit=<file>:wrongProduction=false. Flag stands: add the file to data/audit/cross-show-url-flags-reviewed.json with the reason.');
   }
 }
-if (argv.includes('--strict') && fresh.length) process.exit(1);
+(async () => {
+  if (argv.includes('--alert') && !onlyShows) {
+    // BRO-7182 pattern: file/refresh one worker card, resolve it when clean.
+    const { decideCrossShowUrlFlagAlert } = require('./lib/strict-audit-alerts');
+    const { routeAuditDecisions } = require('./lib/audit-alert');
+    await routeAuditDecisions(decideCrossShowUrlFlagAlert({ scanned, items: fresh }), 'audit-cross-show-url-flags');
+  }
+  if (argv.includes('--strict') && fresh.length) process.exit(1);
+})().catch((e) => { console.error(e && e.stack || e); process.exit(1); });
