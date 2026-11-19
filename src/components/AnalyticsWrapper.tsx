@@ -11,6 +11,7 @@ import { gaInitScript } from '@/lib/analytics/ga-init-script';
 import { applyAnalyticsUser, flushUgcOutbox, reportStaleDeployReload } from '@/lib/ugc-analytics';
 import { installStaleDeployReload } from '@/lib/stale-deploy-reload';
 import { sampledForReplay } from '@/lib/analytics/replay-sample';
+import { isTruncatedChunkError } from '@/lib/analytics/truncated-chunk-error';
 
 interface SentryEvent {
   exception?: { values?: Array<{ stacktrace?: { frames?: Array<{ filename?: string }> } }> };
@@ -237,6 +238,8 @@ export default function AnalyticsWrapper() {
               const frames =
                 event?.exception?.values?.[0]?.stacktrace?.frames;
               if (!frames || frames.length === 0) return null;
+              // A SyntaxError inside a built chunk is a cut-off download, not a bug (BRO-7809).
+              if (isTruncatedChunkError(event)) return null;
               const hasOurCode = frames.some((f) =>
                 f.filename &&
                 /broadwayscorecard\.(com|vercel\.app)/.test(f.filename)
