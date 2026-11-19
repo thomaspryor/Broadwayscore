@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { detectDrift, formatMessage, checkDir } = require('./installed-deps-drift.js');
+const { detectDrift, formatMessage, checkDir, missingInstallMessage } = require('./installed-deps-drift.js');
 
 const lock = {
   packages: {
@@ -114,4 +114,19 @@ test('--session-start: prints but exits 0 on drift; silent inside a worktree pat
   const w = spawnSync('node', [cli, '--session-start', wt], { encoding: 'utf8' });
   assert.equal(w.status, 0);
   assert.equal(w.stdout, '');
+});
+
+test('lockfile with no install anywhere is reported as missing, not silent (2026-11-19)', () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'idd-'));
+  assert.equal(missingInstallMessage(d), '');
+  fs.writeFileSync(path.join(d, 'package-lock.json'), JSON.stringify(lock));
+  fs.mkdirSync(path.join(d, 'node_modules')); // empty dir, the incident shape
+  assert.match(missingInstallMessage(d), /NODE_MODULES MISSING/);
+  const cli = new URL('./installed-deps-drift.js', import.meta.url).pathname;
+  const ss = spawnSync('node', [cli, '--session-start', d], { encoding: 'utf8' });
+  assert.equal(ss.status, 0);
+  assert.match(ss.stdout, /NODE_MODULES MISSING[\s\S]*npm ci/);
+  assert.equal(spawnSync('node', [cli, d]).status, 1);
+  fs.mkdirSync(path.join(d, 'node_modules', '.bin'));
+  assert.equal(missingInstallMessage(d), '');
 });

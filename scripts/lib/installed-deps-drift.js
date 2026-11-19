@@ -10,7 +10,8 @@
  * Nothing named the real cause.
  *
  * Pure core: detectDrift(). I/O wrapper: checkDir(). CLI:
- *   node scripts/lib/installed-deps-drift.js [repoDir]   exit 1 on drift, 0 otherwise
+ *   node scripts/lib/installed-deps-drift.js [repoDir]   exit 1 on drift or no install, 0 otherwise
+ *   Callers: .claude/hooks/session-start.sh (--session-start, always exit 0), scripts/hooks/pre-push (|| true).
  */
 'use strict';
 
@@ -107,7 +108,24 @@ function checkDir(dir) {
   return detectDrift(lock, read);
 }
 
-module.exports = { detectDrift, formatMessage, checkDir, findNodeModules, majorOf };
+/**
+ * A lockfile with no install anywhere above it means every local tsc/lint/test fails
+ * on missing packages (2026-11-19: a cloud session started with an empty node_modules,
+ * so land-local-check and a worker's tests failed with "Cannot find package 'next'"
+ * while this check stayed silent). checkDir keeps returning null there (not drift);
+ * this says so instead.
+ */
+function missingInstallMessage(dir) {
+  if (!fs.existsSync(path.join(dir, 'package-lock.json'))) return '';
+  if (findNodeModules(dir)) return '';
+  return (
+    `🔶 NODE_MODULES MISSING: ${dir} has a package-lock.json but no installed packages.\n` +
+    `   Local tsc/lint/tests and land-local-check will fail on missing modules, not on your change.\n` +
+    `   Fix: cd ${dir} && npm ci --no-audit --no-fund`
+  );
+}
+
+module.exports = { detectDrift, formatMessage, checkDir, findNodeModules, majorOf, missingInstallMessage };
 
 if (require.main === module) {
   const args = process.argv.slice(2);
@@ -117,7 +135,8 @@ if (require.main === module) {
   if (sessionStart && dir.includes('/.claude/worktrees/')) process.exit(0);
   let r = null;
   try { r = checkDir(dir); } catch { /* fail-open */ }
-  const msg = r ? formatMessage(r, dir) : '';
+  let msg = r ? formatMessage(r, dir) : '';
+  if (!msg) { try { msg = missingInstallMessage(dir); } catch { /* fail-open */ } }
   if (msg) {
     console.log(sessionStart ? `\n${msg}\n` : msg);
     process.exit(sessionStart ? 0 : 1);
