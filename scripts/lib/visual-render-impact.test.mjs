@@ -280,3 +280,36 @@ test('an added project import is exempt only when the module is declaration-only
   git('add', '-A'); git('commit', '-qm', 'impure2');
   assert.deepEqual(filterRange('base0...HEAD', ['src/c.tsx'], dir), ['src/c.tsx']);
 });
+
+// Third round.
+test('a local function named init, or one whose result is used, is not a telemetry host', () => {
+  const loc = (g) => `const init = (o: any) => o.beforeSend({ a: 1 });\nexport default function P() {\n  const v = init({\n    beforeSend(e: any) {\n${g}      return e;\n    },\n  });\n  return <div>{v ? 'Tickets on sale' : 'SOLD OUT'}</div>;\n}\n`;
+  assert.equal(ex(loc('      if (e.a === 2) return null;\n'), loc('      if (e.a === 1) return null;\n')).exempt, false);
+  const mem = (g) => `const Cfg: any = { init: (o: any) => o.beforeSend({ a: 1 }) };\nexport default function P() {\n  const v = Cfg.init({\n    beforeSend(e: any) {\n${g}      return e;\n    },\n  });\n  return <div>{v ? 'on' : 'off'}</div>;\n}\n`;
+  assert.equal(ex(mem(''), mem('      if (e.a === 1) return null;\n')).exempt, false);
+  const stmt = (g) => `const Cfg: any = { init: (o: any) => o.beforeSend({ a: 1 }) };\nexport default function P() {\n  Cfg.init({\n    beforeSend(e: any) {\n${g}      return e;\n    },\n  });\n  return <div>x</div>;\n}\n`;
+  assert.equal(ex(stmt(''), stmt('      if (e.a === 1) return null;\n')).exempt, false);
+});
+test('declaration-only check rejects load-time code in unary operands, object methods, Function()', () => {
+  const ts = createRequire(import.meta.url)('typescript');
+  const { filterRange } = createRequire(import.meta.url)('./visual-render-impact.js');
+  const dir = mkdtempSync(join(tmpdir(), 'vri3-'));
+  const git = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  git('init', '-q', '-b', 'main'); git('config', 'user.email', 't@t'); git('config', 'user.name', 't');
+  const w = (pth, src) => { const full = join(dir, pth); execFileSync('mkdir', ['-p', dirname(full)]); writeFileSync(full, src); };
+  const comp = (imp, g) => `${imp}export default function A() {\n  Sentry.init({ beforeSend(e) {\n${g}    return e;\n  } });\n  return <p>x</p>;\n}\n`;
+  w('src/c.tsx', comp('', '')); git('add', '-A'); git('commit', '-qm', 'base'); git('branch', 'base0');
+  w('src/c.tsx', comp("import { isA } from '@/lib/e';\n", '    if (isA(e)) return null;\n'));
+  for (const body of [
+    "export const isA = (e: any) => !!e;\nexport const z = -{ valueOf: () => 1 };\n",
+    "export const isA = (e: any) => !!e;\nexport const z = { m() { return 1; } };\n",
+    "export const isA = (e: any) => !!e;\nexport const z = { f: () => 1 };\n",
+    "export const isA = (e: any) => Function('return 1')();\n",
+  ]) {
+    w('src/lib/e.ts', body); git('add', '-A'); git('commit', '-qm', 'x', '--allow-empty');
+    assert.deepEqual(filterRange('base0...HEAD', ['src/c.tsx'], dir), ['src/c.tsx'], body);
+  }
+  w('src/lib/e.ts', 'export const isA = (e: any) => !!e;\nexport const PATTERNS = [/a/, "b", -1];\n'); git('add', '-A'); git('commit', '-qm', 'ok');
+  assert.deepEqual(filterRange('base0...HEAD', ['src/c.tsx'], dir), []);
+  assert.ok(ts);
+});

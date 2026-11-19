@@ -34,13 +34,14 @@ const SAFE_METHODS = new Set(['test', 'includes', 'startsWith', 'endsWith', 'has
 // when their whole body is inert (see inertFn). Anything else (event handlers, effect bodies) is never a guard host.
 const FILTER_HOOKS = new Set(['beforeSend', 'beforeSendTransaction', 'beforeBreadcrumb', 'beforeSendSpan']);
 // Config properties whose value is a list of patterns that only suppress telemetry.
+const TELEMETRY_GLOBALS = new Set(['Sentry', 'posthog']);
 const PATTERN_LISTS = new Set(['ignoreErrors', 'denyUrls', 'allowUrls', 'ignoreTransactions']);
 // Array methods that are pure when given an inert callback; string/regexp tests that are pure on any input.
 const CALLBACK_METHODS = new Set(['some', 'every', 'filter', 'map', 'find', 'findIndex']);
 // Imported helpers called in a guard condition must be named like predicates.
 const PREDICATE_NAME = /^(is|has|should|can|matches)[A-Z0-9_]|(Scrub|Redact|Sanitize)$/;
 // Extra markers that make a function body non-pure for the declaration-only module check.
-const IMPURE_RE = /\b(window|globalThis|self|localStorage|sessionStorage|navigator|fetch|XMLHttpRequest|require|import)\b/;
+const IMPURE_RE = /\b(window|globalThis|self|localStorage|sessionStorage|navigator|fetch|XMLHttpRequest|require|import|Function|eval|Reflect|Proxy)\b/;
 // Changed lines matching any of these can alter what is on screen even inside an effect: state setters, DOM writes,
 // class/style writes, imperative render calls.
 const FORBIDDEN_LINE_RE = new RegExp([
@@ -216,6 +217,23 @@ function inertFn(ts, fn, ctx, sf) {
  */
 function guardRanges(ts, sf) {
   const out = [];
+  const fileDeclared = declaredNames(ts, sf);
+  const strip = (e) => { while (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e)) e = e.expression; return e; };
+  const globalRef = (e) => { // window.Sentry / globalThis.posthog / bare Sentry that this file does not declare
+    e = strip(e);
+    if (ts.isIdentifier(e)) return TELEMETRY_GLOBALS.has(e.text) && !fileDeclared.has(e.text);
+    if (ts.isPropertyAccessExpression(e) && TELEMETRY_GLOBALS.has(e.name.text)) { const r = strip(e.expression); return ts.isIdentifier(r) && (r.text === 'window' || r.text === 'globalThis') && !fileDeclared.has(r.text); }
+    return false;
+  };
+  const aliasDecls = new Map();
+  (function collect(n) { if (ts.isVariableDeclaration(n) && ts.isIdentifier(n.name)) aliasDecls.set(n.name.text, [...(aliasDecls.get(n.name.text) || []), n]); ts.forEachChild(n, collect); })(sf);
+  const telemetryReceiver = (e) => {
+    e = strip(e);
+    if (globalRef(e)) return true;
+    if (!ts.isIdentifier(e)) return false;
+    const ds = aliasDecls.get(e.text) || [];
+    return ds.length === 1 && !!ds[0].initializer && globalRef(ds[0].initializer);
+  };
   const nameOf = (n) => (n.name && (ts.isIdentifier(n.name) || ts.isStringLiteral(n.name)) ? n.name.text : '');
   const fromOptions = (obj) => {
     for (const pr of obj.properties) {
@@ -239,7 +257,11 @@ function guardRanges(ts, sf) {
     if (ts.isCallExpression(n)) {
       const c = n.expression;
       const name = ts.isIdentifier(c) ? c.text : (ts.isPropertyAccessExpression(c) ? c.name.text : '');
-      if (name === 'init') for (const a of n.arguments) if (ts.isObjectLiteralExpression(a)) fromOptions(a);
+      // Only `X.init({...})` as a bare statement (result discarded, so nothing the hook returns can reach render output) where X
+      // is a telemetry global (Sentry, posthog; directly, via window, or a single const alias of window.<global>).
+      if (name === 'init' && ts.isPropertyAccessExpression(c) && ts.isExpressionStatement(n.parent) && telemetryReceiver(c.expression)) {
+        for (const a of n.arguments) if (ts.isObjectLiteralExpression(a)) fromOptions(a);
+      }
     }
     ts.forEachChild(n, visit);
   };
@@ -269,16 +291,21 @@ function isDeclarationOnly(ts, file, text) {
   if (!Array.isArray(sf.parseDiagnostics) || sf.parseDiagnostics.length) return false;
   const K = ts.SyntaxKind;
   const pureFn = (n) => !FORBIDDEN_LINE_RE.test(n.getText(sf)) && !IMPURE_RE.test(n.getText(sf));
-  const pureInit = (e) => {
-    if (!e) return true;
-    if (ts.isArrowFunction(e) || ts.isFunctionExpression(e)) return pureFn(e);
-    if (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isSatisfiesExpression?.(e) || ts.isNonNullExpression(e)) return pureInit(e.expression);
+  // Values that run nothing when the module loads: primitives, regexes, and arrays/objects made only of them.
+  const pureLit = (e) => {
+    if (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e)) return pureLit(e.expression);
     if (ts.isStringLiteral(e) || ts.isNumericLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e) || ts.isRegularExpressionLiteral(e)) return true;
     if (e.kind === K.TrueKeyword || e.kind === K.FalseKeyword || e.kind === K.NullKeyword) return true;
-    if (ts.isPrefixUnaryExpression(e)) return pureInit(e.operand);
-    if (ts.isArrayLiteralExpression(e)) return e.elements.every(pureInit);
-    if (ts.isObjectLiteralExpression(e)) return e.properties.every((pr) => ts.isPropertyAssignment(pr) && !ts.isComputedPropertyName(pr.name) && pureInit(pr.initializer));
+    if (ts.isPrefixUnaryExpression(e)) return e.operator === K.MinusToken && ts.isNumericLiteral(e.operand);
+    if (ts.isArrayLiteralExpression(e)) return e.elements.every(pureLit);
+    if (ts.isObjectLiteralExpression(e)) return e.properties.every((pr) => ts.isPropertyAssignment(pr) && !ts.isComputedPropertyName(pr.name) && pureLit(pr.initializer));
     return false;
+  };
+  const pureInit = (e) => {
+    if (!e) return true;
+    if (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e)) return pureInit(e.expression);
+    if (ts.isArrowFunction(e) || ts.isFunctionExpression(e)) return pureFn(e);
+    return pureLit(e);
   };
   return sf.statements.every((st) => {
     if (ts.isInterfaceDeclaration(st) || ts.isTypeAliasDeclaration(st)) return true;
