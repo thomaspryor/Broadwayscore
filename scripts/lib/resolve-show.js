@@ -192,6 +192,8 @@ function resolveShow(name, shows) {
  * mentions ("the six reviews I read"), and the form's show field remains the
  * primary signal for them.
  */
+const MARKET_WORD_TITLE_RE = /^(broadway|off broadway|west end|off west end|national tour|tour)$/i;
+
 function extractShowTitlesFromText(message, shows) {
   if (!message || !Array.isArray(shows)) return [];
   const msgNorm = normalizeShowName(message);
@@ -201,6 +203,14 @@ function extractShowTitlesFromText(message, shows) {
     const titleCore = normalizeTitleCore(show.title);
     if (titleCore.length >= MIN_FUZZY_LEN && tokenSequenceIncludes(msgNorm, titleCore)) {
       matched.add(show.title);
+    }
+  }
+  // A show literally titled after a market ("Broadway", 1987) matches every
+  // "the Broadway production of X" (feedback #1192 cousin). When another title
+  // was also named, the market word is describing that show, so drop it.
+  if (matched.size > 1) {
+    for (const t of Array.from(matched)) {
+      if (MARKET_WORD_TITLE_RE.test(normalizeTitleCore(t))) matched.delete(t);
     }
   }
   // Drop a title whose every mention sits inside a longer matched title:

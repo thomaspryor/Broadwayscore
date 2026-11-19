@@ -29,7 +29,14 @@ async function main() {
   const dryRun = args.includes('--dry-run');
   const limitArg = args.find((a) => a.startsWith('--limit='));
   const limit = limitArg ? Number(limitArg.split('=')[1]) : 5; // per run; the 10-min cron drains a backlog quickly
-  const issues = await gh('GET', `/repos/${REPO}/issues?state=open&labels=${PARKED_LABEL}&sort=created&direction=asc&per_page=100`);
+  // Carded issues stay open with the needs-review label until done, so walk every
+  // page: a single page of 100 would hide new requests behind old carded ones.
+  const issues = [];
+  for (let page = 1; page <= 20; page++) {
+    const batch = await gh('GET', `/repos/${REPO}/issues?state=open&labels=${PARKED_LABEL}&sort=created&direction=asc&per_page=100&page=${page}`);
+    issues.push(...batch);
+    if (batch.length < 100) break;
+  }
   const parked = selectParkedIssues(issues).sort((a, b) => a.number - b.number).slice(0, limit);
   console.log(`parked feedback issues needing a card: ${parked.length}`);
   for (const issue of parked) {
