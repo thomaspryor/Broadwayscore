@@ -136,6 +136,18 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
 }
 
 /**
+ * BRO-7810: the cloud Stop gate [VE:RETROCOV] bounced about half of all landing sessions once at the very end
+ * (31 of 68 sessions, 36 blocks, data/audit/session-retro.jsonl). Printing the exact record command at LANDED
+ * lets the session do it in the same turn. Only in a cloud session (CLAUDE_CODE_REMOTE=true), where the gate runs.
+ * The Stop gate stays as the backstop. Returns '' outside cloud.
+ */
+function retroPrompt(env = process.env) {
+  if (env.CLAUDE_CODE_REMOTE !== 'true') return '';
+  return 'RETRO: before you close, record this session: node scripts/lib/session-retro.js --record --fixes=BRO-N,<sha> '
+    + '(or --no-action="<why no finding needs a fix>"). The Stop gate [VE:RETROCOV] blocks SAFE TO ARCHIVE without it.';
+}
+
+/**
  * Decide whether --prod has to watch production at all. mainSha is
  * origin/main's tip after LANDED (null when it could not be read); siteFiles
  * the deploy-gate paths the land branch itself changes, or null when unknown
@@ -464,6 +476,8 @@ async function waitLoop(args, deadline) {
         const before = v.before ? ` before this wait started; its last land run ${run.id} ${run.conclusion}` : '';
         console.log(`${stamp()} LANDED: ${args.ref} is gone from origin${before} (land.yml deletes it after the fast-forward)`);
         const tip = v.before ? (run && run.head_sha) || null : lastSha;
+        const retro = retroPrompt();
+        if (retro) console.log(`${stamp()} ${retro}`);
         if (!args.prodMin) {
           await reportLandedSha(tip);
           return 0;
@@ -479,6 +493,8 @@ async function waitLoop(args, deadline) {
         const found = findLandedOnMain(args.ref, run);
         if (found.landed) {
           console.log(`${stamp()} LANDED: ${args.ref} is gone from origin and ${found.sha} is on main (${found.via}) (${COMMIT_URL}${found.sha})`);
+          const retro = retroPrompt();
+          if (retro) console.log(`${stamp()} ${retro}`);
           if (args.prodMin) return waitForProd({ siteFiles: null, prodMin: args.prodMin });
           return 0;
         }
@@ -514,4 +530,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { refusedMessage, nextRef, readRefusalCause, prodDetail, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };
+module.exports = { retroPrompt, refusedMessage, nextRef, readRefusalCause, prodDetail, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };

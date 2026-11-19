@@ -612,9 +612,10 @@ for (const show of visibleShows) {
     if (buzz.sources) {
       // Minified key map for mobile app payload
       const KEY_MAP = { showScore: 'ss', mezzanine: 'mz', reddit: 'rd', theatr: 'th', broadwayCom: 'bc', seatplan: 'sp', lbo: 'lb' };
-      // Per-source minimum-volume gates (mirrors scripts/lib/audience-weighting.js).
-      // Without these, sources with too little signal (e.g., Theatr with 1 vote)
-      // render as misleading "100% / 1 vote" cards next to real data.
+      // Per-source minimum-volume gate, read from scripts/lib/audience-weighting.js
+      // so the app shows exactly the sources the web counts. Since BRO-7805
+      // MIN_THEATR_VOTES is 1: every vote shows; the cross-source minReviews
+      // total gates the grade.
       const { MIN_THEATR_VOTES } = require('./lib/audience-weighting');
       const sources = {};
       for (const [key, data] of Object.entries(buzz.sources)) {

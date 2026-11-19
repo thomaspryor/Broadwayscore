@@ -1632,6 +1632,18 @@ async function main() {
     console.error(`[digest] WARN done-claims-held line skipped: ${String(err.message).slice(0, 120)}`);
   }
 
+  // BRO-7790: landed-change proof audit, one plain line on the same internal line. Fail-soft.
+  try {
+    const ledger = path.join(REPO, 'data/audit/landed-change-proof.jsonl');
+    if (fs.existsSync(ledger)) {
+      const rows = fs.readFileSync(ledger, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      const proofLine = (await import('./lib/landed-change-proof.mjs')).digestLine(rows);
+      if (proofLine) improvementLine = improvementLine ? `${improvementLine} ${proofLine}` : proofLine;
+    }
+  } catch (err) {
+    console.error(`[digest] WARN landed-change proof line skipped: ${String(err.message).slice(0, 120)}`);
+  }
+
   const problemsNote = describeProblems(problems);
 
   // "What changed while you slept" — fail-soft; a broken collector must

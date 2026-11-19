@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7780-d",
+  "planId": "8016945a-1ffc-42e6-8738-6be52a06f7f7",
+  "status": "applied",
+  "createdAt": "2026-11-18T18:25:59.007Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7780 TheaterMania after-sweep: Oh, Mary! tour (Ahmanson, LA) review credited to David Gordon; the live page's author tag names Jonas Schwartz and the page no longer mentions David Gordon",
+    "steps": [
+      "oh-mary-tour-2026/theatermania--david-gordon.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-tour-2026/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Jonas Schwartz",
+        "description": "oh-mary-tour-2026/theatermania--david-gordon.json: criticName"
+      }
+    ]
+  },
+  "executedAt": "2026-11-18T18:35:15.431Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-tour-2026/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Jonas Schwartz\""
+    }
+  ],
+  "executedIn": "ci"
+}

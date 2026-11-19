@@ -133,7 +133,7 @@ test('drainPlan: only entries the lane did not finish go back to ingest-urls', (
   assert.equal(lines.length, 2); assert.ok(lines[0].includes(URL1));
 });
 
-function laneNight({ entries, fetchDate, maxPasses = 1 }) {
+function laneNight({ entries, fetchDate, maxPasses = 1, fetchOutletId = 'theatermania' }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7741-night-'));
   let doc = { reviews: [] };
   const marks = [];
@@ -141,7 +141,7 @@ function laneNight({ entries, fetchDate, maxPasses = 1 }) {
     show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses, passIntervalMs: 0,
     adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => [] }],
     fetchText: async () => '',
-    fetchReview: async () => ({ outletId: 'theatermania', outlet: 'TheaterMania', criticName: '', fullText: 'A full review of the production. '.repeat(40), publishDate: fetchDate }),
+    fetchReview: async () => ({ ...(fetchOutletId ? { outletId: fetchOutletId } : {}), outlet: 'TheaterMania', criticName: '', fullText: 'A full review of the production. '.repeat(40), publishDate: fetchDate }),
     scoreReview: async () => 72,
     readInbox: async () => (typeof entries === 'function' ? entries() : entries),
     markInbox: async (updates) => { marks.push(...updates); },
@@ -168,6 +168,16 @@ test('the lane publishes an inbox URL no adapter found, stamped manual, and mark
   assert.equal(trust.isLaneReview(row, { openingDate: NIGHT }), true, 'publish.js accepts it');
   for (const g of trust.LANE_BYPASSED_GUARDS) assert.equal(trust.laneBypasses(row, g, { openingDate: NIGHT }), false, `no ${g} bypass for a manual row`);
   assert.ok(marks.some((m) => m.id === entry().id && m.status === 'published'), JSON.stringify(marks));
+});
+
+// BRO-7781 (simulated opening night): the real fetchReview (inline-score.js) returns no outletId; a bare inbox URL, the way
+// a person adds one with no --outlet, must still publish with the outlet its URL names.
+test('a bare inbox URL (no --outlet) publishes with the outlet resolved from its URL', async () => {
+  const { doc, marks } = await laneNight({ entries: [entry()], fetchDate: NIGHT, fetchOutletId: null });
+  const row = doc.reviews.find((r) => r.url === URL1);
+  assert.ok(row, 'published: ' + JSON.stringify(marks));
+  assert.equal(row.outletId, 'theatermania');
+  assert.ok(marks.some((m) => m.status === 'published'), JSON.stringify(marks));
 });
 
 test('an inbox URL dated far from the night is rejected and recorded, not published', async () => {

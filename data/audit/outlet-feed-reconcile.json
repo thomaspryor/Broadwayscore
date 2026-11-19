@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T17:41:27.682Z",
+  "generatedAt": "2026-11-19T05:22:53.793Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -39,14 +39,14 @@
       "openingDate": "2026-11-15"
     },
     {
-      "id": "the-kings-critique-off-broadway-2026",
-      "title": "The King's Critique",
-      "openingDate": "2026-11-12"
-    },
-    {
       "id": "pride-bridge-theatre-off-west-end-2026",
       "title": "Pride - Bridge Theatre",
       "openingDate": "2026-11-14"
+    },
+    {
+      "id": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "openingDate": "2026-11-16"
     },
     {
       "id": "blue-man-group-a-new-holiday-surprise-2026",
@@ -57,6 +57,16 @@
       "id": "top-gunchained-off-west-end-2026",
       "title": "Top Gunchained",
       "openingDate": "2026-11-17"
+    },
+    {
+      "id": "elektra-off-broadway-2026",
+      "title": "Elektra",
+      "openingDate": "2026-11-20"
+    },
+    {
+      "id": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "openingDate": "2026-11-18"
     },
     {
       "id": "a-christmas-story-the-musical-tour-2026",
@@ -77,11 +87,6 @@
       "id": "potus-off-broadway-2026",
       "title": "POTUS",
       "openingDate": "2026-11-13"
-    },
-    {
-      "id": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "title": "Hamlet Hail to the Thief",
-      "openingDate": "2026-11-12"
     },
     {
       "id": "nutty-nattys-magic-puppet-show-off-broadway-2026",
@@ -107,16 +112,6 @@
       "id": "our-town-regional-2026",
       "title": "Our Town",
       "openingDate": "2026-11-15"
-    },
-    {
-      "id": "barefoot-in-the-park-regional-2026",
-      "title": "Barefoot In The Park",
-      "openingDate": "2026-11-12"
-    },
-    {
-      "id": "nacho-ate-spiderman-regional-2026",
-      "title": "Nacho Ate Spiderman",
-      "openingDate": "2026-11-12"
     },
     {
       "id": "radio-galaxy-regional-2026",
@@ -156,20 +151,16 @@
   ],
   "skipped": [
     {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "first-and-last-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "the-winters-tale-mrs-regional-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 86,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -195,62 +186,17 @@
       "error": "HTTP 500 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 879,
-  "matchedGaps": 6,
+  "itemsScanned": 880,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
     {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
       "level": "matched",
-      "outletId": "the-recs",
-      "url": "https://therecs.co.uk/desire-under-the-elms-almeida-theatre/",
-      "headline": "Desire Under The Elms &#8211; Almeida Theatre ★★★★★",
-      "publishDate": "2026-11-18"
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "level": "matched",
-      "outletId": "viewfromthegods",
-      "url": "https://viewfromthegods.co.uk/2026/11/18/desire-under-the-elms-almeida-islington/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=desire-under-the-elms-almeida-islington",
-      "headline": "&#8220;Desire Under the Elms&#8221; Almeida Theatre, Islington",
-      "publishDate": "2026-11-18"
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-desire-under-the-elms-almeida-theatre",
-      "headline": "Review: Desire Under The Elms (Almeida Theatre)",
-      "publishDate": "2026-11-18"
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/desire-under-th-almeida-theatre-26219",
-      "headline": "Desire Under the Elms",
-      "publishDate": "2026-11-18"
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "level": "matched",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/nov/18/desire-under-the-elms-review-almeida-theatre-london",
-      "headline": "Kelly Gough is simply astounding as Desire Under the Elms reaches the heights of Greek tragedy",
-      "publishDate": "2026-11-18"
-    },
-    {
-      "showId": "top-gunchained-off-west-end-2026",
-      "title": "Top Gunchained",
-      "level": "matched",
-      "outletId": "everything-theatre",
-      "url": "https://everything-theatre.co.uk/2026/11/review-top-gunchained-wiltons-music-hall/",
-      "headline": "Review: Top Gunchained, Wilton’s Music Hall",
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
+      "headline": "It’s a Wonderful Life: A Live Radio Play",
       "publishDate": "2026-11-18"
     },
     {

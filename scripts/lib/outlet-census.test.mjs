@@ -366,12 +366,31 @@ test('BRO-6514: a wp-json walk that stopped on a failed page is incomplete; only
   for (const s of [200, 400, 403, 404]) assert.equal(census.isTransientFetch(s), false, String(s));
 });
 
-test('BRO-6514: Slant Magazine (403 to every direct fetch) is enumerated through SERP', () => {
+test('BRO-7812: Slant Magazine (403 to direct fetches) is enumerated from its sitemap through the proxy chain, not paid search', () => {
   const { SOURCES } = require('./outlet-census-sources.js');
+  const { censusSourceFor } = require('./outlet-listing-census.js');
   const s = SOURCES.slantmagazine;
-  assert.equal(s.kind, 'serp');
-  assert.equal(s.urlFilter.test('https://www.slantmagazine.com/theater/review-oh-mary-cole-escola/'), true);
+  // Class guard: Google returns ~10 results a query, so a serp source cannot list a 14-year archive and
+  // Dan Rubins's Call Me Izzy review stayed missing. Reverting to serp must fail here.
+  assert.equal(s.kind, 'sitemap');
+  assert.equal(s.proxyRetry, true);
+  assert.ok(censusSourceFor('slantmagazine'), 'the poller census arm can read Slant');
+  assert.ok(s.tailChildren > 0, 'the poller arm must read only the newest sitemap children (proxy cost)');
+  assert.equal(s.urlFilter.test('https://www.slantmagazine.com/theater/call-me-izzy-review-jean-smart/'), true);
   assert.equal(s.urlFilter.test('https://www.slantmagazine.com/film/review-x/'), false);
+  assert.equal(s.childFilter.test('https://www.slantmagazine.com/post-sitemap12.xml'), true);
+  assert.equal(s.childFilter.test('https://www.slantmagazine.com/author-sitemap.xml'), false);
+});
+
+test('BRO-7812: blindOutlets flags big outlets whose listing cannot be read, and Slant on paid search would be one', () => {
+  const rep = (outletId, kind, rows, status) => ({ outletId, source: { kind, status }, corpusSide: { rowsInWindow: rows } });
+  const blind = census.blindOutlets([
+    rep('slantmagazine', 'serp', 300), rep('nytimes', 'unreadable', 995), rep('theatermania', 'wp-json', 679),
+    rep('tiny', 'unreadable', 10), rep('vulture', 'sitemap-years', 605, 'incomplete'),
+  ]);
+  assert.deepEqual(blind.map((b) => b.outletId), ['nytimes', 'slantmagazine']);
+  assert.equal(census.blindOutlets([rep('slantmagazine', 'sitemap', 300)]).length, 0);
+  assert.deepEqual(census.blindOutlets(undefined), []);
 });
 
 test('an archival film review naming an old year is not a gap; a show titled with a year still is (Vulture, BRO-6485)', () => {

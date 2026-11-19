@@ -100,6 +100,7 @@ function syncStateFile(env = process.env) {
  */
 function syncDrift({ dir, checkoutSha, fetch = true, stateFile = null }) {
   if (fetch) {
+    // depth1-fetch-ok: review-texts clone in CI, synced to the fetched tip (BRO-7789)
     git(dir, ['fetch', 'origin', '+main:refs/remotes/origin/main', '--depth=1', '--quiet']);
   }
   const tipSha = git(dir, ['rev-parse', 'refs/remotes/origin/main']).trim();

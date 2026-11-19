@@ -118,7 +118,7 @@ elif [ -d "$CORE_DATA_DIR/.git" ]; then
   UPDATE_OK=0
   UPDATE_ERR=""
   for attempt in 1 2 3; do
-    if UPDATE_ERR="$(cd "$CORE_DATA_DIR" && { git fetch origin main --depth 1 && git reset --hard origin/main; } 2>&1)"; then
+    if UPDATE_ERR="$(cd "$CORE_DATA_DIR" && { git fetch origin main --depth 1 && git reset --hard origin/main; } 2>&1)"; then  # depth1-fetch-ok: separate core-data clone, reset to origin/main
       UPDATE_OK=1
       break
     fi

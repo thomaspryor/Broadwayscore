@@ -7,7 +7,7 @@ import { formatShowDate } from '@/lib/date-utils';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getCriticConsensus } from '@/lib/data-guides';
 import { getAudienceBuzz } from '@/lib/data-audience';
-import { getAudienceGrade, getAudienceGradeClasses } from '@/lib/audience-grade-utils';
+import { getAudienceGrade, getAudienceGradeClasses, hasEnoughAudienceReviews } from '@/lib/audience-grade-utils';
 import { getShowAwards } from '@/lib/data-awards';
 import { getShowGrosses } from '@/lib/data-grosses';
 import { getAllComparisonSlugs, parseComparisonSlug } from '@/config/comparisons';
@@ -200,10 +200,13 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
   const scoreWinnerB = scoreA !== null && scoreB !== null && scoreB > scoreA;
 
   // Audience grades
-  const gradeA = buzzA ? getAudienceGrade(buzzA.combinedScore) : null;
-  const gradeB = buzzB ? getAudienceGrade(buzzB.combinedScore) : null;
-  const gradeClassesA = buzzA ? getAudienceGradeClasses(buzzA.combinedScore) : null;
-  const gradeClassesB = buzzB ? getAudienceGradeClasses(buzzB.combinedScore) : null;
+  // Same 10-review bar as the show page before a grade is shown (BRO-7805).
+  const gradedA = buzzA && hasEnoughAudienceReviews(buzzA) ? buzzA : null;
+  const gradedB = buzzB && hasEnoughAudienceReviews(buzzB) ? buzzB : null;
+  const gradeA = gradedA ? getAudienceGrade(gradedA.combinedScore) : null;
+  const gradeB = gradedB ? getAudienceGrade(gradedB.combinedScore) : null;
+  const gradeClassesA = gradedA ? getAudienceGradeClasses(gradedA.combinedScore) : null;
+  const gradeClassesB = gradedB ? getAudienceGradeClasses(gradedB.combinedScore) : null;
 
   // Ticket prices
   const minPriceA = getMinPrice(showA);

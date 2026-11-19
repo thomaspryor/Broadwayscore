@@ -206,3 +206,161 @@ test('BRO-5455: regional venue hosts do not attach to look-alike NYC venues', ()
     assert.equal(pickTicketUrl([{ title: 'Hedda Gabler', url }], { title: 'Hedda Gabler', venue, market: 'broadway' }), null);
   }
 });
+
+// BRO-7368: SERP-independent venue-host lookup. URL shapes below are real
+// sitemap / listing entries read from each venue site on 2026-11-19.
+const {
+  venueHostForShow,
+  pickChildSitemaps,
+  extractSameHostLinks,
+  pickVenuePageUrl,
+} = require('./ticket-link-discovery.js');
+
+const leedsFences = {
+  id: 'fences-leeds-regional-2026', title: 'Fences', venue: 'Leeds Playhouse, Leeds',
+  category: 'regional', market: 'regional', openingDate: '2026-09-17',
+  synopsis: "August Wilson's Pulitzer Prize-winning drama, part of his Pittsburgh Cycle.",
+};
+const ravenLoop = {
+  id: 'a-strange-loop-regional-2026', title: 'A Strange Loop', venue: 'Raven Theatre, Chicago, IL',
+  category: 'regional', market: 'regional', openingDate: '2026-10-15', synopsis: 'Usher writes a musical.',
+};
+const writersRoyale = {
+  id: 'the-royale-regional-2026', title: 'The Royale', venue: 'Writers Theatre, Glencoe, IL',
+  category: 'regional', market: 'regional', openingDate: '2026-10-30', synopsis: 'A boxer in 1905.',
+};
+const oranContact = {
+  id: 'contact-oran-mor-regional-2026', title: 'Contact', venue: 'Òran Mór, Glasgow',
+  category: 'regional', market: 'regional', openingDate: '2026-10-07', synopsis: 'A lunchtime play.',
+};
+
+test('venueHostForShow maps a show to its allowlisted venue host (diacritics folded)', () => {
+  assert.equal(venueHostForShow(leedsFences), 'leedsplayhouse.org.uk');
+  assert.equal(venueHostForShow(oranContact), 'oran-mor.co.uk');
+  assert.equal(venueHostForShow({ venue: 'The Matrix, Los Angeles, CA' }), null);
+  assert.equal(venueHostForShow({}), null);
+});
+
+test('pickChildSitemaps keeps show shards first and drops editorial ones', () => {
+  const picked = pickChildSitemaps([
+    'https://www.leedsplayhouse.org.uk/post-sitemap.xml',
+    'https://www.leedsplayhouse.org.uk/page-sitemap.xml',
+    'https://www.leedsplayhouse.org.uk/event-sitemap.xml',
+    'https://www.leedsplayhouse.org.uk/people-sitemap.xml',
+    'https://www.leedsplayhouse.org.uk/job-sitemap.xml',
+    'https://bristololdvic.org.uk/sitemaps-1-section-whatsOn-1-sitemap.xml',
+  ]);
+  assert.deepEqual(picked, [
+    'https://www.leedsplayhouse.org.uk/event-sitemap.xml',
+    'https://bristololdvic.org.uk/sitemaps-1-section-whatsOn-1-sitemap.xml',
+    'https://www.leedsplayhouse.org.uk/page-sitemap.xml',
+  ]);
+  assert.equal(pickChildSitemaps(Array.from({ length: 9 }, (_, i) => `https://x.org/event-${i}.xml`)).length, 4);
+});
+
+test('extractSameHostLinks resolves relative links and drops other hosts, queries, fragments', () => {
+  const html = '<a href="/events/the-royale">x</a><a href="https://secure.rsc.org.uk/events/a?d=1">y</a>'
+    + '<a href="https://www.writerstheatre.org/events/the-royale?utm=1#top">z</a><a href="mailto:a@b.c">m</a>';
+  assert.deepEqual(extractSameHostLinks(html, 'https://www.writerstheatre.org/'), [
+    'https://www.writerstheatre.org/events/the-royale',
+  ]);
+});
+
+test('pickVenuePageUrl: playwright-prefixed slug passes when the synopsis names the prefix', () => {
+  const pick = pickVenuePageUrl([
+    'https://www.leedsplayhouse.org.uk/event/hamlet/',
+    'https://www.leedsplayhouse.org.uk/event/august-wilsons-fences/',
+  ], leedsFences);
+  assert.deepEqual(pick, { url: 'https://www.leedsplayhouse.org.uk/event/august-wilsons-fences/', platform: 'Venue Box Office' });
+});
+
+test('pickVenuePageUrl: run-together slug matches, side pages do not', () => {
+  const urls = [
+    'https://www.raventheatre.com/a-strange-loop-content-warnings/',
+    'https://www.raventheatre.com/astrangeloopevents/',
+    'https://www.raventheatre.com/stage/astrangeloop/',
+  ];
+  assert.equal(pickVenuePageUrl(urls, ravenLoop).url, 'https://www.raventheatre.com/stage/astrangeloop/');
+  assert.equal(pickVenuePageUrl(urls.slice(0, 2), ravenLoop), null);
+});
+
+test('pickVenuePageUrl: main event page beats access/childcare sub-pages; sub-pages alone never match', () => {
+  const subPages = [
+    'https://www.writerstheatre.org/events/the-royale-childcare-matinee',
+    'https://www.writerstheatre.org/events/the-royale-access-performances',
+    'https://www.writerstheatre.org/events/the-final-word-the-royale',
+  ];
+  assert.equal(pickVenuePageUrl(subPages, writersRoyale), null);
+  assert.equal(
+    pickVenuePageUrl([...subPages, 'https://www.writerstheatre.org/events/the-royale'], writersRoyale).url,
+    'https://www.writerstheatre.org/events/the-royale',
+  );
+});
+
+test('pickVenuePageUrl: one-word title needs a production section ("/contact" is not "Contact")', () => {
+  assert.equal(pickVenuePageUrl(['https://www.oran-mor.co.uk/contact/'], oranContact), null);
+  assert.equal(pickVenuePageUrl(['https://www.oran-mor.co.uk/contact-us'], oranContact), null);
+  assert.equal(
+    pickVenuePageUrl(['https://www.oran-mor.co.uk/whats-on/contact/'], oranContact).url,
+    'https://www.oran-mor.co.uk/whats-on/contact/',
+  );
+});
+
+test('pickVenuePageUrl: rejects another host, editorial paths, an old-year production, and a CMS hash is tolerated', () => {
+  const iron = { id: 'iron-home-regional-2026', title: 'Iron', venue: 'HOME, Manchester', openingDate: '2026-09-17', category: 'regional' };
+  assert.equal(pickVenuePageUrl(['https://www.leedsplayhouse.org.uk/event/iron/'], iron), null, 'not the venue host');
+  assert.equal(pickVenuePageUrl(['https://www.homemcr.org/news/whats-on/iron'], iron), null, 'editorial path');
+  assert.equal(pickVenuePageUrl(['https://www.homemcr.org/whats-on/iron-2019'], iron), null, 'old production');
+  assert.equal(pickVenuePageUrl(['https://www.homemcr.org/whats-on/iron-maiden-tribute'], iron), null, 'different show');
+  assert.equal(pickVenuePageUrl(['https://www.homemcr.org/whats-on/iron-x7k2'], iron).url, 'https://www.homemcr.org/whats-on/iron-x7k2');
+  assert.equal(pickVenuePageUrl(['http://www.homemcr.org/whats-on/iron?x=1'], iron).url, 'https://www.homemcr.org/whats-on/iron');
+});
+
+test('pickChildSitemaps skips whole editorial words only (stage/posttype-page survive)', () => {
+  assert.deepEqual(pickChildSitemaps([
+    'https://citz.co.uk/sitemap-posttype-post.2026.xml',
+    'https://citz.co.uk/sitemap-posttype-page.xml',
+    'https://citz.co.uk/sitemap-author.xml',
+    'https://x.org/stage-sitemap.xml',
+    'https://bristololdvic.org.uk/sitemaps-1-section-pastProductions-1-sitemap.xml',
+    'https://bristololdvic.org.uk/sitemaps-1-section-workshopsEvents-1-sitemap.xml',
+  ]), ['https://x.org/stage-sitemap.xml', 'https://citz.co.uk/sitemap-posttype-page.xml']);
+});
+
+// BRO-7368 review: archived productions and numbered sequels/parts.
+test('pickVenuePageUrl: an older year in ANY path segment rejects (archived production)', () => {
+  const hamlet = { id: 'hamlet-rsc-regional-2026', title: 'Hamlet', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon', openingDate: '2026-10-01', category: 'regional' };
+  assert.equal(pickVenuePageUrl(['https://www.rsc.org.uk/whats-on/2019/hamlet'], hamlet), null);
+  const grinch = { id: 'grinch-old-globe-regional-2026', title: 'How the Grinch Stole Christmas', venue: 'The Old Globe, San Diego, CA', openingDate: '2026-11-15', category: 'regional' };
+  assert.equal(pickVenuePageUrl(['https://www.theoldglobe.org/tickets-and-events/2016-season/how-the-grinch-stole-christmas/'], grinch), null);
+  // The current season still matches.
+  assert.equal(
+    pickVenuePageUrl(['https://www.theoldglobe.org/tickets-and-events/2026-season/how-the-grinch-stole-christmas/'], grinch).url,
+    'https://www.theoldglobe.org/tickets-and-events/2026-season/how-the-grinch-stole-christmas/',
+  );
+});
+
+test('pickVenuePageUrl: bare numbers are content (hamlet-2 is not Hamlet; Part 1 is not Part 2)', () => {
+  const hamlet = { id: 'hamlet-rsc-regional-2026', title: 'Hamlet', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon', openingDate: '2026-10-01', category: 'regional', synopsis: 'Act 2 of 5.' };
+  assert.equal(pickVenuePageUrl(['https://www.rsc.org.uk/shows/hamlet-2'], hamlet), null);
+  assert.equal(pickVenuePageUrl(['https://www.rsc.org.uk/shows/hamlet-2', 'https://www.rsc.org.uk/shows/hamlet'], hamlet).url,
+    'https://www.rsc.org.uk/shows/hamlet');
+  const part1 = { id: 'henry-iv-part-1-rsc-regional-2026', title: 'Henry IV, Part 1', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon', openingDate: '2026-10-01', category: 'regional' };
+  const urls = ['https://www.rsc.org.uk/whats-on/henry-iv-part-2', 'https://www.rsc.org.uk/whats-on/henry-iv-part-1'];
+  assert.equal(pickVenuePageUrl(urls, part1).url, 'https://www.rsc.org.uk/whats-on/henry-iv-part-1');
+  assert.equal(pickVenuePageUrl(urls.slice(0, 1), part1), null);
+});
+
+test('pickVenuePageUrl: archive and past-production sections are never a current show page (BRO-7368)', () => {
+  for (const u of [
+    'https://www.leedsplayhouse.org.uk/archive/august-wilsons-fences/',
+    'https://www.leedsplayhouse.org.uk/whats-on/past-shows/august-wilsons-fences/',
+    'https://www.leedsplayhouse.org.uk/past-productions/august-wilsons-fences/',
+  ]) assert.equal(pickVenuePageUrl([u], leedsFences), null, u);
+});
+
+test('pickVenuePageUrl: only the venue host itself or www., never a subdomain', () => {
+  const pick = pickVenuePageUrl(['https://shop.leedsplayhouse.org.uk/event/fences/'], { ...leedsFences, synopsis: '' });
+  assert.equal(pick, null);
+  assert.equal(pickVenuePageUrl(['https://leedsplayhouse.org.uk/event/fences/'], leedsFences).url, 'https://leedsplayhouse.org.uk/event/fences/');
+});

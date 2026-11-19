@@ -182,10 +182,14 @@ function makePathsOnMain({ repo = path.join(__dirname, '..', '..'), ref = 'origi
   const { execFileSync } = require('child_process');
   const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
   const { extractCheckPaths } = require('./check-paths.js');
+  const { repoDepthArgs } = require('./shallow-fetch-args.js');
   return function pathsOnMain(cmd) {
     const paths = extractCheckPaths(cmd).filter((p) => p && !p.startsWith('-') && !/[*?]/.test(p));
     if (!paths.length) return { missing: [] };
-    try { runGitOrThrow(['fetch', '-q', '--no-tags', '--depth=1', 'origin', 'main'], { cwd: repo, stdio: 'ignore', timeout: 20000 }); } catch { /* best effort: stale ref only risks an advisory warning */ }
+    // BRO-7789: never `--depth=1` here; it grafts origin/main's tip as a parentless root in the
+    // main checkout, which then can never fast-forward. repoDepthArgs keeps ancestry.
+    // unbounded-fetch-ok: repoDepthArgs IS the bound; the lint can't evaluate a spread.
+    try { runGitOrThrow(['fetch', '-q', '--no-tags', ...repoDepthArgs({ repoRoot: repo }), 'origin', 'main'], { cwd: repo, stdio: 'ignore', timeout: 20000 }); } catch { /* best effort: stale ref only risks an advisory warning */ }
     try { execFileSync('git', ['rev-parse', '--verify', '-q', ref], { cwd: repo, stdio: 'ignore', timeout: 10000 }); } catch { return { missing: [] }; }
     const missing = [];
     for (const p of paths) {

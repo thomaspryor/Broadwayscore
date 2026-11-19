@@ -160,7 +160,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
       // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', LANDREFUSED_GATE_MODE: 'off', ...env, HOME: fakeHomeDir },
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', LANDREFUSED_GATE_MODE: 'off', LANDUNCHECKED_REMOTE_CHECK: '0', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -933,6 +933,37 @@ for (const [label, calls, allowed] of WFL_LANDUNCHECKED_CASES) {
     const r = runHook(transcript, 'Landed via land.yml.\n\nSAFE TO ARCHIVE — landed and verified.');
     if (allowed) assertAllowed(r, label);
     else { assertBlocked(r, label); assert.match(r.stderr, /wait-for-land\.js/, `got: ${r.stderr.slice(0, 300)}`); }
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  });
+}
+
+// BRO-7811: the gate re-fired every turn on refs that were never pushed (text inside fixtures/echo), already landed,
+// or already waived by a NO-VERIFY. Each case below fails with the matching hook change reverted.
+const sh = (command, result = '') => toolUse('Bash', { command }, result);
+const REMOTE_GONE = { LANDUNCHECKED_REMOTE_CHECK: '1', LANDUNCHECKED_LS_REMOTE_CMD: 'true' }; // ls-remote prints nothing: ref deleted by land.yml
+const REMOTE_HAS = { LANDUNCHECKED_REMOTE_CHECK: '1', LANDUNCHECKED_LS_REMOTE_CMD: 'echo abc123' }; // ref still on origin
+const REMOTE_ERR = { LANDUNCHECKED_REMOTE_CHECK: '1', LANDUNCHECKED_LS_REMOTE_CMD: 'false' }; // offline: unknown, stay unchecked
+const NO_VERIFY_EARLIER = { type: 'text', text: 'Not waiting on land.yml.\nNO-VERIFY: land check skipped, container restarts lose the waiter, run confirmed on main' };
+const B7811_CASES = [
+  ['heredoc fixture mentioning a land push is not a push', [sh("cat > /tmp/t.sh <<'EOF'\ngit push origin HEAD:refs/heads/land/x\nEOF")], {}, true],
+  ['node -e test string mentioning a land push is not a push', [sh('node -e "run(\'git push origin HEAD:refs/heads/land/fix-x\')"')], {}, true],
+  ['echo text mentioning a land push is not a push', [sh('echo "then git push origin HEAD:refs/heads/land/sweep-image-variants"')], {}, true],
+  ['land/$r template is not a ref', [sh('for r in a b; do git push origin HEAD:refs/heads/land/$r; done')], {}, true],
+  ['bash -c script that really pushes still counts', [sh("bash -c 'git push origin HEAD:refs/heads/land/fix-x'")], {}, false],
+  ['a plain real push still blocks (remote still has the ref)', [LAND_PUSH], REMOTE_HAS, false],
+  ['pushed ref already gone from origin counts as checked', [LAND_PUSH], REMOTE_GONE, true],
+  ['ls-remote failing keeps the ref unchecked', [LAND_PUSH], REMOTE_ERR, false],
+  ['a backgrounded push is never cleared by an empty ls-remote', [{ ...LAND_PUSH, input: { ...LAND_PUSH.input, run_in_background: true } }], REMOTE_GONE, false],
+  ['an unrelated NO-VERIFY does not waive a land push', [LAND_PUSH, { type: 'text', text: 'NO-VERIFY: docs only' }], {}, false],
+  ['an earlier NO-VERIFY covering the pending push suppresses the re-ask', [LAND_PUSH, NO_VERIFY_EARLIER], {}, true],
+  ['a NEW push after the earlier NO-VERIFY is asked about', [LAND_PUSH, NO_VERIFY_EARLIER, LAND_PUSH_B], {}, false],
+];
+for (const [label, calls, env, allowed] of B7811_CASES) {
+  test(`BRO-7811 LANDUNCHECKED: ${label} → ${allowed ? 'ALLOWED' : 'BLOCKED'}`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('land-7811');
+    const transcript = writeTranscript(dir, [...calls, LINEAR_CLOSEOUT_DONE]);
+    const r = runHook(transcript, 'Landed via land.yml.\n\nSAFE TO ARCHIVE — landed and verified.', env);
+    if (allowed) assertAllowed(r, label); else { assertBlocked(r, label); assert.match(r.stderr, /Unchecked land push|wait-for-land/, `got: ${r.stderr.slice(0, 300)}`); }
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
 }

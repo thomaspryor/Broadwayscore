@@ -30,7 +30,7 @@ const path = require('path');
 const { NOOP_HEALTH, indexBodyProblem, feedBodyProblem } = require('./source-health');
 const { findBWWRoundupLinkOnHomepage } = require('../bww-homepage-scan');
 const { findDTLIShowLinkOnHomepage } = require('../dtli-homepage-scan');
-const { parseFeedItems, titleMatchesShow, urlSlugMatchesShow } = require('../rss-discovery');
+const { parseFeedItems, titleMatchesShow, itemNamesShow } = require('../rss-discovery');
 const { resolveOutletFromUrl, URL_HOST_ALIASES } = require('../review-normalization');
 
 // Old host -> current host for outlets that serve one article on both (BRO-6872: The Independent was scored twice,
@@ -255,7 +255,7 @@ const REVIEW_WITHOUT_WORD_HOSTS = ['theaterpizzazz.com', 'nystagereview.com', 'o
 /** A review-only outlet's page about this show: its host is in REVIEW_WITHOUT_WORD_HOSTS and the show's title is in the headline or slug. */
 function hostSignalsReview(url, title, showTitle) {
   if (!showTitle || !hostMatches(hostOf(url), REVIEW_WITHOUT_WORD_HOSTS)) return false;
-  return titleMatchesShow(title || '', showTitle, laneMatchOpts()) || urlSlugMatchesShow(url, showTitle, laneMatchOpts());
+  return itemNamesShow(title || '', url, showTitle, laneMatchOpts());
 }
 
 /**
@@ -282,13 +282,28 @@ function hasReviewSignal(url, title) {
  */
 function nearMissFind(item, show, budget, extra = {}) {
   if (!item || !item.url || budget.left <= 0) return null;
-  const outlet = resolveOutletFromUrl(item.url);
+  // BRO-7793: a Google News item's link is a news.google.com wrapper; extra.outletUrl (the item's <source url>) names the
+  // outlet and carries the review signal, while item.url (the wrapper) is what the alert shows.
+  const basis = extra.outletUrl || item.url;
+  const outlet = resolveOutletFromUrl(basis);
   if (!outlet) return null;
-  if (!(extra.reviewSignalGiven || hasReviewSignal(item.url, item.title) || hostMatches(hostOf(item.url), REVIEW_WITHOUT_WORD_HOSTS))) return null;
-  const signals = nearMiss.nearMissSignals(item, show);
+  const ownSignal = extra.reviewSignalGiven || hasReviewSignal(basis, item.title);
+  if (!(ownSignal || hostMatches(hostOf(basis), REVIEW_WITHOUT_WORD_HOSTS))) return null;
+  // When the review signal is the host alone (a review-without-word outlet), its news, gallery or homepage URLs are not
+  // reviews: an extension story naming the show ("Blue Man Group ... extends through January", nystagereview
+  // /news/extension-news/, BRO-7781 sim night) would page as a missed review. Items with their own review word or a
+  // reviews-only feed are not refused here: TheaterMania and WhatsOnStage file real reviews under /news/.
+  if (!ownSignal) {
+    // nonReviewReason throws on a "//" path or a malformed %-escape; an index page's nav anchors reach here, and one throw
+    // would discard the whole adapter's pass (Promise.allSettled). On a throw, err toward alerting.
+    let why = null;
+    try { why = nonReviewReason(basis, { vettedOutlet: true }); } catch { why = null; }
+    if (nearMiss.INTENDED_REJECTIONS.has(why)) return null;
+  }
+  const signals = nearMiss.nearMissSignals({ ...item, url: basis }, show);
   if (!signals.length) return null;
   budget.left -= 1;
-  return { url: item.url, title: item.title || '', source: 'outlet-index', outletId: extra.outletId || outlet.outletId, via: extra.via, nearMiss: signals };
+  return { url: item.url, title: item.title || '', source: extra.source || 'outlet-index', outletId: extra.outletId || outlet.outletId, via: extra.via, nearMiss: signals };
 }
 const nearMissBudget = () => ({ left: nearMiss.MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER });
 
@@ -724,7 +739,7 @@ function rssAdapter({ feeds, matchOpts } = {}) {
         for (const it of items) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
-          if (!titleMatchesShow(it.title, show.title, mo) && !urlSlugMatchesShow(it.link, show.title, mo)) {
+          if (!itemNamesShow(it.title, it.link, show.title, mo)) {
             const nm = hostOf(it.link) === hostOf(feed.url) && nearMissFind({ url: it.link, title: it.title }, show, budget, { via: feed.name || feed.url, outletId: feed.outletId, reviewSignalGiven: feed.reviewsOnly });
             if (nm) out.push(nm);
             continue;
@@ -784,7 +799,7 @@ function sectionIndexAdapter({ outlets, matchOpts } = {}) {
         }
         for (const a of extractAnchors(indexScope(html), o.indexUrl)) {
           if (hostOf(a.url) !== host || new URL(a.url).pathname === new URL(o.indexUrl).pathname) continue;
-          if (!titleMatchesShow(a.text, show.title, mo) && !urlSlugMatchesShow(a.url, show.title, mo)) {
+          if (!itemNamesShow(a.text, a.url, show.title, mo)) {
             const nm = nearMissFind({ url: a.url, title: a.text }, show, budget, { via: o.indexUrl, outletId: o.outletId });
             if (nm) out.push(nm);
             continue;
@@ -974,6 +989,8 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       // A site search that fails costs only its own outlet this pass; the main search failing still fails the adapter.
       const siteXml = await Promise.all(sites.map(async (host) => (await Promise.all(googleNewsSiteQueries(show, host).map((q) => searchFetch(`https://news.google.com/rss/search?${new URLSearchParams({ q, ...locale })}`).catch(() => '')))).join('\n')));
       const items = [];
+      const nearMisses = []; // reported beside the results, never admitted
+      const nearBudget = nearMissBudget();
       const seenLinks = new Set();
       for (const [feedXml, site] of [[xml, null], ...siteXml.map((x, i) => [x, sites[i]])]) {
         for (const m of String(feedXml).matchAll(/<item[\s>]([\s\S]*?)<\/item>/gi)) {
@@ -983,15 +1000,22 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
           const sourceUrl = ((m[1].match(/<source[^>]*\burl=["']([^"']+)["']/i) || [])[1] || '').trim();
           const outlet = sourceUrl && resolveOutletFromUrl(sourceUrl);
           if (hostOf(link) !== 'news.google.com' || !outlet || seenLinks.has(link)) continue; // unknown publishers are never ingested blind
+          // Window first (BRO-7793): an old production's review headline must not become a near-miss or spend its budget.
+          if (outsideNightWindow(grab('pubDate'), night, timeZone)) continue;
           if (site) {
             if (!hostMatches(hostOf(sourceUrl), [site])) continue; // a site search keeps only that outlet's items
-          } else if (!headlineNamesShow(title, show)) continue; // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
+          } else if (!headlineNamesShow(title, show)) {
+            // BRO-7793: a refusal here was silent; a review-like headline from a known outlet that still partly names the
+            // show is reported (never admitted), as the feed and index paths do.
+            const nm = nearMissFind({ url: link, title }, show, nearBudget, { outletUrl: sourceUrl, outletId: outlet.outletId, via: 'google-news', source: 'google-news' });
+            if (nm) nearMisses.push(nm);
+            continue;
+          } // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
           // An item Google dates outside the night window is never opened (BRO-6872). The School Girls replay's New York
           // Sun review sat behind about 40 such items (2017 Variety, 2023 Guardian, unrelated Sun stories) and waited three
           // passes for a decode. It also stops an old Google date from claiming a URL first: decoded, that find was kept
           // over a later feed or section-index sighting and refused for good as outside-night-window, so the in-window
           // sighting was never judged. Checked before seenLinks, so a skipped copy cannot shadow a same-link copy.
-          if (outsideNightWindow(grab('pubDate'), night, timeZone)) continue;
           seenLinks.add(link);
           items.push({ title, link, sourceUrl, pubDate: grab('pubDate'), tier: outletTier(outlet.outletId), siteQuery: !!site });
         }
@@ -1055,7 +1079,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       // Wrappers left for the next pass because too little of this one remained are counted apart, so a pass whose searches
       // keep eating the time shows as such instead of as failed unwraps.
       if (decodes || toUnwrap.length) log(`  google-news: decoded ${decoded}/${decodes}, unwrapped ${unwrappedOk}/${toUnwrap.length - lateSkipped} wrapper link(s)${lateSkipped ? `, ${lateSkipped} left for the next pass (under ${Math.round(minUnwrapMs / 1000)} s left)` : ''}`);
-      const out = [];
+      const out = [...nearMisses];
       for (const it of items) {
         const r = resolved.get(it.link);
         if (!r || !r.url) continue;
@@ -1271,7 +1295,7 @@ function serpAdapter({ search, domainFor, ledgerDir, now = Date.now } = {}) {
         } catch (e) { failures++; lastError = e; continue; }
         for (const r of results || []) {
           if (!r || !r.url || !(hostOf(r.url) === dom || (hostOf(r.url) || '').endsWith(`.${dom}`))) continue;
-          if (!titleMatchesShow(r.title || '', show.title, laneMatchOpts()) && !urlSlugMatchesShow(r.url, show.title, laneMatchOpts())) {
+          if (!itemNamesShow(r.title || '', r.url, show.title, laneMatchOpts())) {
             const nm = nearMissFind({ url: r.url, title: r.title }, show, budget, { via: 'serp', outletId: id.includes('.') ? undefined : id });
             if (nm) nearMisses.push(nm);
             continue;
@@ -1422,7 +1446,8 @@ async function runDiscoveryPass({
   const collect = (candidates, adapterName) => {
     for (const c of candidates || []) {
       if (!c || !c.url) continue;
-      const key = canonicalUrl(c.url);
+      // A near-miss may be a Google News wrapper link (BRO-7793): no canonical form, so the wrapper itself is its key.
+      const key = canonicalUrl(c.url) || (c.nearMiss && c.source === 'google-news' ? String(c.url) : null);
       if (!key) { if (!c.nearMiss) rejected.push({ url: c.url, adapter: adapterName, reason: 'wrapped-url' }); continue; }
       if (c.nearMiss) {
         if (!nearMissByKey.has(key)) nearMissByKey.set(key, { key, url: c.url, title: c.title || '', outletId: c.outletId, adapter: adapterName, via: c.via, signals: c.nearMiss });
@@ -1692,7 +1717,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate, roundupPageDate, MAX_FEEDS_PER_PASS, MAX_DIRECT_FEEDS_PER_PASS, looksReviewLike,
-  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, googleNewsSiteQueries, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, nearMissFind, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, googleNewsSiteQueries, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, LATE_DATE_CHECK_STARTS, loadSeen, recordDiscovered, PREFETCHED_PAGE,
 };

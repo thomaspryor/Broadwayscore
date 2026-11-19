@@ -74,3 +74,87 @@ test('isVenueSiteHost matches venue domains and subdomains only', () => {
 // which runs in test.yml's continue-on-error network-dependent step — never in
 // this blocking batch (second-opinion review: third-party flake must not gate
 // every push to main).
+
+// BRO-7368: the free venue-host crawl, driven through an injected fetchText.
+const { collectVenueUrls, discoverVenuePage } = require('./enrich-fallback-ticket-links.js');
+const { needsListingConfirmation } = require('./lib/ticket-link-discovery.js');
+
+function fakeSite(pages) {
+  const calls = [];
+  const fetchText = async (url) => {
+    calls.push(url);
+    if (!(url in pages)) throw new Error('Direct fetch failed: 404');
+    return pages[url];
+  };
+  return { fetchText, calls };
+}
+
+test('collectVenueUrls: robots Sitemap -> index -> show shard, plus listing links, bounded reads', async () => {
+  const { fetchText, calls } = fakeSite({
+    'https://www.tron.co.uk/robots.txt': 'User-agent: *\nSitemap: https://www.tron.co.uk/sitemap.xml\n',
+    'https://www.tron.co.uk/sitemap.xml': '<sitemapindex><sitemap><loc>https://www.tron.co.uk/post-sitemap.xml</loc></sitemap>'
+      + '<sitemap><loc>https://www.tron.co.uk/shows-sitemap.xml</loc></sitemap></sitemapindex>',
+    'https://www.tron.co.uk/shows-sitemap.xml': '<urlset><url><loc>https://www.tron.co.uk/shows/antigone/</loc></url></urlset>',
+    'https://www.tron.co.uk/': '<a href="/shows/panto/">p</a>',
+  });
+  const { all, listed } = await collectVenueUrls("tron.co.uk", fetchText, 0);
+  assert.deepEqual(all, ['https://www.tron.co.uk/shows/antigone/', 'https://www.tron.co.uk/shows/panto/']);
+  assert.deepEqual(listed, ['https://www.tron.co.uk/shows/panto/']);
+  assert.ok(!calls.includes('https://www.tron.co.uk/post-sitemap.xml'), 'editorial shard skipped');
+  assert.ok(calls.length <= 8);
+});
+
+test('discoverVenuePage: picks the show page and crawls a shared venue host once', async () => {
+  const { fetchText, calls } = fakeSite({
+    'https://www.tron.co.uk/sitemap.xml': '<urlset><url><loc>https://www.tron.co.uk/shows/antigone/</loc></url></urlset>',
+  });
+  const cache = new Map();
+  const antigone = { id: 'antigone-tron-regional-2026', title: 'Antigone', venue: 'Tron Theatre, Glasgow', category: 'regional', openingDate: '2026-09-22' };
+  const pick = await discoverVenuePage(antigone, { cache, fetchText, gapMs: 0 });
+  assert.deepEqual(pick, { url: 'https://www.tron.co.uk/shows/antigone/', platform: 'Venue Box Office' });
+  const before = calls.length;
+  assert.equal(await discoverVenuePage({ ...antigone, title: "Medea" }, { cache, fetchText, gapMs: 0 }), null);
+  assert.equal(calls.length, before, 'second show at the same host reuses the crawl');
+  assert.equal(await discoverVenuePage({ title: 'X', venue: 'Unknown Hall' }, { cache, fetchText }), null);
+});
+
+test('collectVenueUrls: waits gapMs between consecutive reads of one host', async () => {
+  const stamps = [];
+  const fetchText = async () => { stamps.push(Date.now()); throw new Error('404'); };
+  await collectVenueUrls('tron.co.uk', fetchText, 40);
+  assert.ok(stamps.length >= 3);
+  for (let i = 1; i < stamps.length; i++) assert.ok(stamps[i] - stamps[i - 1] >= 35, `gap ${i} was ${stamps[i] - stamps[i - 1]}ms`);
+});
+
+test('collectVenueUrls: falls back to the bare host when www. answers nothing', async () => {
+  const { fetchText } = fakeSite({
+    'https://citz.co.uk/sitemap.xml': '<urlset><url><loc>https://citz.co.uk/whats-on/1984/</loc></url></urlset>',
+  });
+  const { all } = await collectVenueUrls('citz.co.uk', fetchText, 0);
+  assert.deepEqual(all, ['https://citz.co.uk/whats-on/1984/']);
+});
+
+// Undated archive page of an earlier run (same title, same venue) must not be
+// picked for a revival unless the venue's listing pages still show it.
+const rscHamlet = { id: 'hamlet-rsc-regional-2026', title: 'Hamlet', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon', category: 'regional', openingDate: '2026-10-01' };
+const rscHamletOld = { ...rscHamlet, id: 'hamlet-rsc-regional-2022', openingDate: '2022-04-01', status: 'closed' };
+
+test('needsListingConfirmation: true only for another same-title run at the same venue host', () => {
+  assert.equal(needsListingConfirmation([rscHamlet, rscHamletOld], rscHamlet), true);
+  assert.equal(needsListingConfirmation([rscHamlet], rscHamlet), false);
+  assert.equal(needsListingConfirmation([rscHamlet, { ...rscHamletOld, venue: 'Leeds Playhouse, Leeds' }], rscHamlet), false);
+  assert.equal(needsListingConfirmation([rscHamlet, { ...rscHamletOld, title: 'Macbeth' }], rscHamlet), false);
+});
+
+test('discoverVenuePage: requireListed rejects a sitemap-only (archived) hit, accepts a listed one', async () => {
+  const sitemapOnly = fakeSite({
+    'https://www.rsc.org.uk/sitemap.xml': '<urlset><url><loc>https://www.rsc.org.uk/whats-on/hamlet/</loc></url></urlset>',
+  });
+  assert.equal(await discoverVenuePage(rscHamlet, { fetchText: sitemapOnly.fetchText, gapMs: 0, requireListed: true }), null);
+  assert.equal((await discoverVenuePage(rscHamlet, { fetchText: sitemapOnly.fetchText, gapMs: 0 })).url, 'https://www.rsc.org.uk/whats-on/hamlet/');
+  const listed = fakeSite({
+    'https://www.rsc.org.uk/sitemap.xml': '<urlset><url><loc>https://www.rsc.org.uk/whats-on/hamlet/</loc></url></urlset>',
+    'https://www.rsc.org.uk/whats-on/': '<a href="/whats-on/hamlet/">Hamlet</a>',
+  });
+  assert.equal((await discoverVenuePage(rscHamlet, { fetchText: listed.fetchText, gapMs: 0, requireListed: true })).url, 'https://www.rsc.org.uk/whats-on/hamlet/');
+});

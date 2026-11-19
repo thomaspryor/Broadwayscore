@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-11-18T18:18:20.026Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-19T05:37:57.352Z",
+  "processed": 560,
+  "failed": 297,
+  "successRate": "65.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 290,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 44,
+    "scrapingbee": 26,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 197
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-11-19T00:45:15.016Z",
+      "event": "bb-session",
+      "session": "c55fa4d8",
+      "url": "https://www.nytimes.com/theater-streaming-falsettos-stoll-stoppard-school-girls"
+    },
+    {
+      "t": "2026-11-19T00:45:15.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T01:37:08.611Z",
+      "event": "bb-session",
+      "session": "5b715e0c",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-19T01:37:09.429Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T01:37:27.108Z",
+      "event": "bb-session",
+      "session": "0967c1cc",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-19T01:37:27.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T02:15:42.385Z",
+      "event": "bb-session",
+      "session": "cd13988a",
+      "url": "https://www.wsj.com/arts-culture/theater/jenufa-review-a-powerfully-grim-opera-a"
+    },
+    {
+      "t": "2026-11-19T02:15:42.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-19T02:49:58.198Z",
+      "event": "bb-session",
+      "session": "5a2d555a",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-19T02:49:58.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T02:50:14.489Z",
+      "event": "bb-session",
+      "session": "76e791a8",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-19T02:50:14.713Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T04:58:38.188Z",
+      "event": "bb-session",
+      "session": "8af33f76",
+      "url": "https://www.wsj.com/arts-culture/theater/jenufa-review-a-powerfully-grim-opera-a"
+    },
+    {
+      "t": "2026-11-19T04:58:38.648Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-19T05:00:32.778Z",
+      "event": "bb-session",
+      "session": "85a5c117",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-19T05:00:33.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-19T05:04:32.048Z",
+      "event": "bb-session",
+      "session": "6e68eeb7",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-19T05:04:32.606Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-19T05:05:37.665Z",
+      "event": "bb-session",
+      "session": "040b5e16",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-19T05:05:38.113Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }

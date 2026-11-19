@@ -779,7 +779,28 @@ function catalogGapMarkdown(groups, topPlaces = 25) {
   return lines.join('\n');
 }
 
+/**
+ * Outlets the census cannot read: no listing was enumerated (unreadable, or a paid-search source that
+ * returns ~10 results a query) yet the corpus holds many of their reviews. A gap there is invisible: this
+ * is how Slant's Call Me Izzy review stayed missing (BRO-7812). Advisory: the --summary prints these.
+ * reports: parsed *.report.json objects. Returns [{ outletId, kind, rows, why }], biggest corpus first.
+ */
+function blindOutlets(reports, { minRows = 100 } = {}) {
+  const out = [];
+  for (const r of reports || []) {
+    const src = r.source || {};
+    const rows = (r.corpusSide && r.corpusSide.rowsInWindow) || 0;
+    if (rows < minRows) continue;
+    const unreadable = src.kind === 'unreadable' || src.status === 'unreadable';
+    const searchOnly = src.kind === 'serp';
+    if (!unreadable && !searchOnly) continue;
+    out.push({ outletId: r.outletId, kind: src.kind, rows, why: unreadable ? 'no listing can be read' : 'search results only (~10 per query), cannot list an archive' });
+  }
+  return out.sort((a, b) => b.rows - a.rows || a.outletId.localeCompare(b.outletId));
+}
+
 module.exports = {
+  blindOutlets,
   LONDON_SIGNAL_RE,
   catalogGapMarkdown,
   groupCatalogGaps,

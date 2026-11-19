@@ -15,11 +15,12 @@
  *
  * Error contract (single channel — the client checks body.ok, never status):
  * HTTP 200 with {ok:false, error: 'invalid_query'|'unauthorized'|
- * 'rate_limited'|'upstream_auth'|'internal'} for all handled failures;
+ * 'rate_limited'|'upstream_auth'|'upstream_unavailable'|'internal'} for all
+ * handled failures (errorOutcome() in parse-client.mjs);
  * non-200 only for bugs. Mirrored by MezzanineSearchResponse in
  * src/lib/mezzanine-search.ts.
  */
-import { findShowsByTitle, findProductionsForShow } from './parse-client.mjs';
+import { findShowsByTitle, findProductionsForShow, errorOutcome } from './parse-client.mjs';
 import { productionToCandidate, rankCandidates, normalizeQuery } from './classify.mjs';
 
 const MAX_CALLS_PER_HOUR = 20;
@@ -141,11 +142,8 @@ Deno.serve(async (req) => {
 
     return json(req, { ok: true, candidates: ranked, truncated: candidates.length > ranked.length });
   } catch (e) {
-    if ((e as { authFailed?: boolean }).authFailed) {
-      console.error('mezzanine-search upstream auth failure:', e);
-      return json(req, { ok: false, error: 'upstream_auth' });
-    }
-    console.error('mezzanine-search error:', e);
-    return json(req, { ok: false, error: 'internal' }, 500);
+    const outcome = errorOutcome(e);
+    console.error(`mezzanine-search ${outcome.body.error}:`, e);
+    return json(req, outcome.body, outcome.status);
   }
 });

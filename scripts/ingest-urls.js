@@ -25,7 +25,6 @@ const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout')
 const { resolveOutletFromUrl, findExistingReviewFile } = require('./lib/review-normalization');
 const { findStaleFieldsAfterUpdate } = require('./lib/stale-merge-check');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
-const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { unwrapWaybackUrl } = require('./lib/unwrap-wayback-url');
 const { parseIngestLine, chooseIngestByline } = require('./lib/ingest-url-line');
 const { isPlausiblePersonName } = require('./lib/byline-recovery');
@@ -281,7 +280,7 @@ async function main() {
                 if (datedText && datedText.length >= 200) {
                   fullText = require('./lib/page-furniture').stripPageFurniture(datedText);
                   fetchMethod = dated.source;
-                  try { criticName = extractAuthorFromHtml(dated.content, datedText, { url: ob.url }) || null; } catch { criticName = null; }
+                  try { criticName = readPageByline({ html: dated.content, text: datedText, url: ob.url, outletId }).criticName || null; } catch { criticName = null; }
                   bylineConflict = null;
                   try { publishDate = extractPublishDate(dated.content, ob.url) || null; } catch { publishDate = null; }
                   originalUrl = url;

@@ -7,7 +7,9 @@
  *
  * It is the land.yml sequence, run on HEAD in this checkout with the same CLIs:
  *   1. land-gauntlet.sh on HEAD (GAUNTLET_GATES = the chosen gates)
- *   2. land-gate-delta.js --red-gates: which gates are red on HEAD
+ *   2. land-gate-delta.js --red-gates: which gates are red on HEAD; a red node test gate whose
+ *      failures sit in a few files of a finished batch re-runs those files alone on HEAD, and the
+ *      base runs the same files alone (BRO-7752: a timing failure no longer forces a full base)
  *   3. land-gauntlet.sh on the merge-base with origin/main, failing test files only when
  *      safely identifiable (otherwise full red gates), in a throwaway
  *      detached worktree (BRO-6252: never in this checkout, which keeps committing meanwhile)
@@ -24,7 +26,8 @@
  *   --max-wait-minutes  give up waiting for the mutex after N min (default 20): exit 4 with a
  *            warning, so a worker is never stranded behind another check
  * Exit: 0 no new failures | 1 new failures (printed) | 2 usage | 3 not ready (tracked
- *       changes, under 4 GB free disk (BRO-7186, BRO-7467), no common history with origin/main, or no local core data) | 4 skipped
+ *       changes, under 4 GB free disk (BRO-7186, BRO-7467), no common history with origin/main even after bounded
+ *       --deepen rounds on a shallow clone (BRO-7731: prints the cut-new-branch recipe), or no local core data) | 4 skipped
  *       (mutex wait timed out)
  */
 'use strict';
@@ -35,7 +38,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const R = require('./codex-runner.js');
 const { lowDiskMessage, freeBytesOf, envFailureLogs } = require('./land-check-resources.js');
-const { GATES, ADVISORY_GATES, readGateResult, parseGateFailures } = require('./land-gate-delta.js');
+const { GATES, ADVISORY_GATES, readGateResult, readGateFiles, parseGateFailures, computeRerunScope } = require('./land-gate-delta.js');
 
 // Blocking gates left out of the default run, each with its reason. Every other gate land.yml
 // blocks on runs by default, so a new blocking gate is checked locally the day it is armed
@@ -125,6 +128,67 @@ function nodeModulesRemedy(root, commonDir) {
   return `Link them first: ln -sfn ${path.join(main, 'node_modules')} node_modules`;
 }
 
+// BRO-7731: a shallow cloud checkout whose branch was cut from an older base has no merge-base
+// with origin/main inside the fetched history, so the run refused with a bare "shares no history".
+// Deepen in bounded rounds instead. `git fetch --deepen=N origin main` deepens every shallow point
+// the client holds, HEAD's own cut-off root included (checked on a scratch repo whose depth-1
+// branch root is not on main). Each round is bounded in time (DEEPEN_TIMEOUT_MS) and in size:
+// without a partial-clone (promisor) remote every blob of every commit comes down, so the last
+// and largest round runs only when blobs can be left behind with --filter=blob:none.
+const DEEPEN_TIMEOUT_MS = 120_000;
+/** -> the fetch rounds to try, smallest first: [{ depth, args }] */
+function deepenRounds({ promisor = false } = {}) {
+  const depths = promisor ? [200, 1000, 5000] : [200, 1000];
+  return depths.map((depth) => ({ depth, args: ['fetch', '-q', `--deepen=${depth}`, ...(promisor ? ['--filter=blob:none'] : []), 'origin', 'main'] }));
+}
+
+/**
+ * Pure decision for the next step when HEAD and origin/main share no merge-base.
+ * state: { shallow, mergeBase, round (rounds tried so far), rounds, last: { ok, progressed } | null }
+ * -> { action: 'done' } | { action: 'deepen', round } | { action: 'give-up', reason }
+ */
+function nextHistoryStep({ shallow, mergeBase, round = 0, rounds = [], last = null }) {
+  if (mergeBase) return { action: 'done' };
+  if (!shallow) return { action: 'give-up', reason: 'not-shallow' };
+  if (last && !last.ok) return { action: 'give-up', reason: 'fetch-failed' };
+  // A round that moved no shallow point will not be helped by a bigger one: stop, don't burn fetches.
+  if (last && !last.progressed) return { action: 'give-up', reason: 'no-progress' };
+  if (round >= rounds.length) return { action: 'give-up', reason: 'rounds-exhausted' };
+  return { action: 'deepen', round: rounds[round] };
+}
+
+const GIVE_UP_REASONS = {
+  'not-shallow': 'this is a full clone, so HEAD and origin/main really share no commit',
+  'fetch-failed': 'a bounded deepen fetch failed or timed out',
+  'no-progress': 'a deepen fetch brought no older history',
+  'rounds-exhausted': 'the bounded deepen rounds did not reach a common commit',
+};
+
+/**
+ * The recipe that moves a branch's own commits onto current origin/main.
+ * commits: oldest first, the output of `git rev-list --reverse origin/main..HEAD`; only trusted
+ * (and so only printed) when a merge-base exists. Without one that range is HEAD's whole fetched
+ * history, not the branch's commits, so the recipe has the reader find them by hand.
+ * cutOffRoots: shallow points HEAD's own history still ends at.
+ */
+function noCommonHistoryRecipe({ branch, mergeBase = '', commits = [], cutOffRoots = [], reason = '' } = {}) {
+  const name = `${branch && branch !== 'HEAD' ? branch : 'my-branch'}-v2`;
+  const lines = [];
+  if (!mergeBase) {
+    lines.push(`land-local-check: HEAD shares no history with origin/main${reason ? ` (${GIVE_UP_REASONS[reason] || reason})` : ''}.`);
+    if (cutOffRoots.length) lines.push(`  HEAD's own history is cut off at ${cutOffRoots.map((s) => s.slice(0, 10)).join(', ')} (a shallow clone boundary), so its base commit is not here.`);
+  }
+  lines.push('  Move your commits onto current origin/main:', '    git fetch origin main', `    git switch -c ${name} origin/main`);
+  if (mergeBase && commits.length && commits.length <= 20) {
+    lines.push(`    git cherry-pick ${commits.join(' ')}`); // keep-run-ok: printed advice for a human, never executed
+  } else {
+    lines.push(`    git log --oneline -n 20 ${branch && branch !== 'HEAD' ? branch : '<old-branch>'}   # find your own commits (newest first)`,
+      '    git cherry-pick <your oldest sha>^..<your newest sha>   # or list them, oldest first'); // keep-run-ok: printed advice for a human, never executed
+  }
+  lines.push('  then re-run this check from the new branch.');
+  return lines.join('\n');
+}
+
 /** -> { gates, maxWaitMs } or { error } */
 function parseArgs(argv) {
   let gates = DEFAULT_GATES;
@@ -148,6 +212,41 @@ function run(cmd, args, opts = {}) {
   return { code: r.status === null ? 1 : r.status, stdout: (r.stdout || '').trim(), stderr: (r.stderr || '').trim() };
 }
 const git = (...args) => run('git', args);
+
+/** -> the shallow-boundary commits the repo at cwd holds ([] in a full clone) */
+function shallowPoints(cwd = ROOT) {
+  const file = path.resolve(cwd, run('git', ['rev-parse', '--git-path', 'shallow'], { cwd }).stdout || '.git/shallow');
+  try { return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).sort(); } catch { return []; }
+}
+
+/** -> shallow-boundary commits in HEAD's own history (where HEAD itself is cut off) */
+function headShallowRoots(head, cwd = ROOT) {
+  const points = new Set(shallowPoints(cwd));
+  if (!points.size) return [];
+  return run('git', ['rev-list', head], { cwd }).stdout.split('\n').filter((c) => points.has(c));
+}
+
+/** -> { base, reason, deepened }: the merge-base with origin/main, deepening a shallow clone in bounded rounds */
+function findMergeBase(head, { cwd = ROOT, rounds = null, timeoutMs = DEEPEN_TIMEOUT_MS, log = (m) => console.error(m) } = {}) {
+  const g = (...args) => run('git', args, { cwd });
+  let plan = rounds;
+  let round = 0;
+  let last = null;
+  for (;;) {
+    const mergeBase = g('merge-base', head, 'origin/main').stdout;
+    if (mergeBase) return { base: mergeBase, deepened: round };
+    // Only a missing merge-base pays for the shallow and promisor lookups.
+    if (!plan) plan = deepenRounds({ promisor: g('config', '--get', 'remote.origin.promisor').stdout === 'true' });
+    const step = nextHistoryStep({ shallow: g('rev-parse', '--is-shallow-repository').stdout === 'true', mergeBase, round, rounds: plan, last });
+    if (step.action === 'done') return { base: mergeBase, deepened: round };
+    if (step.action === 'give-up') return { base: '', reason: step.reason, deepened: round };
+    const before = shallowPoints(cwd).join('\n');
+    log(`land-local-check: no merge-base with origin/main in this shallow clone; git fetch --deepen=${step.round.depth} (up to ${Math.round(timeoutMs / 1000)}s)`);
+    const r = run('git', step.round.args, { cwd, timeout: timeoutMs });
+    last = { ok: r.code === 0, progressed: shallowPoints(cwd).join('\n') !== before };
+    round += 1;
+  }
+}
 
 class MutexTimeout extends Error {}
 
@@ -194,6 +293,49 @@ function newFailureFiles(deltaText) {
   }
   if ([...failGates].some((g) => !newGates.has(g))) return null;
   return [...files];
+}
+
+// BRO-7752: a load timing failure (testTimeoutFailure) in a HEAD batch made --rerun-scope pick a
+// FULL base gate, and the base unit gates in full pushed the check past the 30 min background
+// limit. As the Codex runner does (BRO-7134, daily-runner.js isolatedBranchRuns), re-run the
+// failing files alone on HEAD too and scope the base to the same files: alone vs alone.
+// Above this many files a shared break is likelier than a few flaky files: keep today's path.
+const MAX_ISOLATED_FILES = 25;
+
+/**
+ * Pure. Red node gates whose failures can be judged by re-running the failing files alone on both
+ * sides -> [{ gate, files }] (files as the batch listed them). computeRerunScope({isolated}) decides:
+ * every failure located in a file the finished batch ran (a killed batch keeps the full base).
+ */
+function isolatedRecheckPlan(red, branchDir, { read = readGateResult, readFiles = readGateFiles, maxFiles = MAX_ISOLATED_FILES } = {}) {
+  const plans = [];
+  for (const gate of red) {
+    if (!NODE_RERUN_GATES.has(gate)) continue;
+    const scope = computeRerunScope({ gate, branch: read(branchDir, gate), branchFiles: readFiles(branchDir, gate), isolated: true });
+    if (scope.scoped && scope.files.length && scope.files.length <= maxFiles) plans.push({ gate, files: scope.files });
+  }
+  return plans;
+}
+
+/** Pure. An alone re-run counts only when it finished: an exit code and node's final `# tests N` line.
+ * Anything else (killed, crashed, no result) keeps the batch verdict. */
+function aloneRunFinished(result) {
+  return !!result && (result.exit === 0 || result.exit === 1) && /^# tests \d+\s*$/m.test(result.text || '');
+}
+
+/** Write <dir>/<gate>.files for each plan (land-gauntlet.sh GAUNTLET_SCOPE_DIR format). */
+function writeScopeFiles(dir, plans) {
+  fs.mkdirSync(dir, { recursive: true });
+  for (const { gate, files } of plans) fs.writeFileSync(path.join(dir, `${gate}.files`), `${files.join('\n')}\n`);
+}
+
+/** Make the alone result <gate>'s branch verdict; the batch result stays as <gate>.batch.{log,exit}. */
+function adoptAloneResult(branchDir, aloneDir, gate) {
+  for (const ext of ['log', 'exit']) {
+    const cur = path.join(branchDir, `${gate}.${ext}`);
+    if (fs.existsSync(cur)) fs.renameSync(cur, path.join(branchDir, `${gate}.batch.${ext}`));
+    fs.copyFileSync(path.join(aloneDir, `${gate}.${ext}`), cur);
+  }
 }
 
 // The base run checks out an older tree, so the gauntlet runs from a copy outside it. That copy
@@ -413,10 +555,19 @@ function main(argv = process.argv.slice(2)) {
   const head = git('rev-parse', 'HEAD').stdout;
   // Judge against the main commit HEAD sits on: main moves every few minutes, so demanding the
   // newest one would refuse nearly every run. Rebase conflicts are land-preflight.mjs's job.
-  const base = git('merge-base', head, 'origin/main').stdout;
-  if (!base) { console.error('land-local-check: HEAD shares no history with origin/main'); return 3; }
+  const { base, reason, deepened } = findMergeBase(head);
+  const branch = git('rev-parse', '--abbrev-ref', 'HEAD').stdout;
+  if (!base) {
+    console.error(noCommonHistoryRecipe({ branch, reason, cutOffRoots: headShallowRoots(head) }));
+    return 3;
+  }
+  if (deepened) console.log(`land-local-check: deepened the shallow history ${deepened} time(s) to find the merge-base with origin/main`);
   const behind = Number(git('rev-list', '--count', `${head}..origin/main`).stdout) || 0;
-  if (behind > 200) console.error(`land-local-check: HEAD is ${behind} commits behind origin/main; rebase for a closer match to what land.yml judges`);
+  if (behind > 200) {
+    const commits = git('rev-list', '--reverse', '--max-count=21', `origin/main..${head}`).stdout.split('\n').filter(Boolean);
+    console.error(`land-local-check: HEAD is ${behind} commits behind origin/main; rebase for a closer match to what land.yml judges\n`
+      + noCommonHistoryRecipe({ branch, mergeBase: base, commits }));
+  }
 
   const dev = clearStaleDevTypes(ROOT);
   if (dev.removed) console.log('land-local-check: removed .next/dev (stale `next dev` types fail the tsc gate with TS6053)');
@@ -440,8 +591,29 @@ function main(argv = process.argv.slice(2)) {
       const restored = restorePrebuildResidue(ROOT);
       if (restored.length) console.log(`land-local-check: restored ${restored.join(', ')} (regenerated by the gauntlet)`);
       if (!fs.existsSync(path.join(branchDir, 'meta.json'))) { console.error(`land-local-check: the gauntlet wrote no result (exit ${b.code}); see ${branchDir}`); return 1; }
-      const red = run('node', ['scripts/lib/land-gate-delta.js', '--red-gates', branchDir, '--gates', opts.gates.join(',')]).stdout;
+      const redGatesNow = () => run('node', ['scripts/lib/land-gate-delta.js', '--red-gates', branchDir, '--gates', opts.gates.join(',')]).stdout;
+      let red = redGatesNow();
       if (red) printRedGates(branchDir, red.split(','), 'HEAD');
+      // BRO-7752: failing files re-run alone on HEAD, through the same gauntlet code path the base uses.
+      const isolated = [];
+      const plans = red ? isolatedRecheckPlan(red.split(','), branchDir) : [];
+      if (plans.length) {
+        const isoScope = path.join(out, 'isolated-scope');
+        const aloneDir = path.join(out, 'branch-alone');
+        writeScopeFiles(isoScope, plans);
+        const { GAUNTLET_PARALLEL: _p, ...aloneEnv } = env;
+        run('bash', ['scripts/lib/land-gauntlet.sh', aloneDir], { env: { ...aloneEnv, GAUNTLET_GATES: plans.map((p) => p.gate).join(','), GAUNTLET_SCOPE_DIR: isoScope }, stdio: ['ignore', 'ignore', 'inherit'] }); // no spawn timeout: it would kill bash and orphan node --test (per-test --test-timeout bounds it)
+        const residue = restorePrebuildResidue(ROOT);
+        if (residue.length) console.log(`land-local-check: restored ${residue.join(', ')} (regenerated by the alone re-run)`);
+        for (const p of plans) {
+          const r = readGateResult(aloneDir, p.gate);
+          if (!aloneRunFinished(r)) { console.log(`land-local-check: ${p.gate}: the alone re-run of ${p.files.length} file(s) did not finish; keeping the batch verdict`); continue; }
+          adoptAloneResult(branchDir, aloneDir, p.gate);
+          isolated.push(p);
+          console.log(`land-local-check: ${p.gate}: ${p.files.length} failing file(s) re-run alone on HEAD: ${r.exit === 0 ? 'all pass (failed only under batch load, not counted; land.yml still judges the full batch)' : 'still failing, judged alone against the same files alone on base'} (batch log: ${path.join(branchDir, `${p.gate}.batch.log`)})`);
+        }
+        if (isolated.length) red = redGatesNow();
+      }
       // BRO-6114: the base worktree shares this checkout's node_modules (never reinstalled, see
       // withBaseWorktree), so with changed deps the base would be judged on HEAD's packages and a
       // dependency regression would read as "red on base too". Skip it: with no base result
@@ -453,12 +625,17 @@ function main(argv = process.argv.slice(2)) {
         const copy = stageGauntletHarness(ROOT, out);
         const scope = path.join(out, 'scope');
         const scoped = run('node', ['scripts/lib/land-gate-delta.js', '--rerun-scope', branchDir, '--gates', red, '--out', scope]);
-        console.log(scoped.stdout);
+        // BRO-7752: an alone-judged gate runs the same files alone on base, whatever --rerun-scope chose.
+        const aloneRed = isolated.filter((p) => red.split(',').includes(p.gate));
+        console.log(scoped.stdout.split('\n').filter((l) => !aloneRed.some((p) => l.startsWith(`${p.gate}: `))).join('\n'));
+        writeScopeFiles(scope, aloneRed);
+        for (const p of aloneRed) console.log(`${p.gate}: base re-check scoped to the ${p.files.length} file(s) re-run alone on HEAD (BRO-7752)`);
+        const scopeDir = scoped.code === 0 || aloneRed.length ? scope : '';
         console.log(`land-local-check: red on HEAD: ${red}; running them on the base to tell new failures from old`);
         // A separate worktree on the merge-base: this checkout may commit while the base runs.
         try {
           withBaseWorktree(ROOT, base, path.join(out, 'basewt'), (wt) => {
-            run('bash', [copy, baseDir], { cwd: wt, env: { ...env, GAUNTLET_GATES: red, GAUNTLET_SCOPE_DIR: scoped.code === 0 ? scope : '' }, stdio: ['ignore', 'ignore', 'inherit'] });
+            run('bash', [copy, baseDir], { cwd: wt, env: { ...env, GAUNTLET_GATES: red, GAUNTLET_SCOPE_DIR: scopeDir }, stdio: ['ignore', 'ignore', 'inherit'] });
             printRedGates(baseDir, red.split(',').filter((gate) => readGateResult(baseDir, gate)?.exit !== 0), 'base');
           });
         } catch (e) {
@@ -501,7 +678,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { cleanupStaleRuns, staleRunDecision, processCwds, liveProcessIn, parseWorktreeList, clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { deepenRounds, nextHistoryStep, noCommonHistoryRecipe, findMergeBase, headShallowRoots, DEEPEN_TIMEOUT_MS, isolatedRecheckPlan, aloneRunFinished, writeScopeFiles, adoptAloneResult, MAX_ISOLATED_FILES, cleanupStaleRuns, staleRunDecision, processCwds, liveProcessIn, parseWorktreeList, clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.
