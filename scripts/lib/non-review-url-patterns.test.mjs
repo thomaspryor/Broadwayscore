@@ -185,7 +185,7 @@ test('NAMED_NON_REVIEW_URL_PATTERNS: every entry has a host regex and a reason s
 });
 
 // ── task #1073: classifyReviewUrl — THE canonical candidate gate ──────────────
-const { classifyReviewUrl, hostOf, registrableHost } = require('./non-review-url-patterns.js');
+const { hostOf, registrableHost } = require('./non-review-url-patterns.js');
 const domainFilters = require('./domain-filters.js');
 const { isRoundupUrl } = require('./review-guards.js');
 const { isProfileUrl } = require('./review-normalization.js');
