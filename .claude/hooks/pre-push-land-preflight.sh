@@ -38,6 +38,14 @@ fi
 # (BRO-6083). Builtins only: the macOS test's PATH is node, git, bash, cat, dirname.
 out=$(printf '%s' "$input" | "${TO[@]}" node "$LIB" --hook)
 rc=$?
-[ "$rc" -eq 2 ] && exit 2
+if [ "$rc" -eq 2 ]; then
+  # BRO-7849: every other land requirement in one list, so the next push is not blocked by the next gate (report-only; errors print nothing).
+  _LR="$HERE/../../scripts/land-ready.mjs"
+  if [ -f "$_LR" ]; then
+    printf '%s\n' "--- land checklist (npm run land:ready for the full run) ---" >&2
+    "${TO[@]}" node "$_LR" --hook --no-judge 2>/dev/null >&2 || true
+  fi
+  exit 2
+fi
 [ -n "$out" ] && printf '%s\n' "$out"
 exit 0
