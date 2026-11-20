@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-20T18:33:50.788Z",
+  "timestamp": "2026-11-20T18:49:36.143Z",
   "stats": {
-    "totalReviews": 83483,
+    "totalReviews": 83488,
     "alreadyFlagged": 22597,
     "dateGuardCatches": 222,
     "directorMismatch": 3795,
-    "tvFilmSignals": 2379,
-    "londonSignals": 3847,
+    "tvFilmSignals": 2380,
+    "londonSignals": 3849,
     "offBroadwaySignals": 775,
     "yearMismatch": 387,
     "noPublishDate": 8289
@@ -21471,6 +21471,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "publishDate": "2026-11-20",
+      "url": "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -101884,6 +101897,19 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "north-west-end--phil-meikle.json",
+      "publishDate": "2026-11-20",
+      "url": "https://northwestend.com/desire-under-the-elms-almedia-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "observer--katherine-cowles.json",
       "score": 77,
       "publishDate": "2026-11-20",
@@ -103990,6 +104016,19 @@
       "score": 88,
       "publishDate": "2026-11-20",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "thereviewshub--unknown.json",
+      "publishDate": "2026-11-20",
+      "url": "https://www.thereviewshub.com/eurotrash-young-vic-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
