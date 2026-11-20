@@ -456,11 +456,9 @@
     "charges-the-supplicants-regional-2026/chicago-reader--rob-silverman-ascher.json",
     "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
     "waiting-for-godot-citizens-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
-    "the-laugh-track-regional-2026/la-drama-critics-circle--ladcc-critics.json",
-    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-    "theater-of-the-mind-regional-2026/chicagotribune--chris-jones.json",
-    "menopause-the-musical-tour-2026/oazis--unknown.json",
-    "wicked-tour-2021/phenomnaltwincities--stephanie-kwong.json"
+    "elektra-off-broadway-2026/broadwayworld--richard-sasanow.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json",
@@ -717,7 +715,14 @@
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
     "spread-off-broadway-2026/whatsonstage--michael-coveney.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "eurotrash-off-west-end-2026/times-uk--clive-davis.json"
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json",
+    "downstate-2026/nydailynews--unknown.json",
+    "downstate-2026/pages-on-stages--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -949,14 +954,14 @@
       "the-amazing-sex-life-of-rabbits-off-broadway-2026/front-row-center--david-walters.json",
       "night-side-songs-off-broadway-2026/timeout--tim-teeman.json",
       "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
-      "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-      "theater-of-the-mind-regional-2026/chicagotribune--chris-jones.json",
-      "wicked-tour-2021/phenomnaltwincities--stephanie-kwong.json"
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/much-ado-about-nothing-2026/deadline--unknown.json",
-      "much-ado-about-nothing-2026/deadline--unknown.json"
+      "much-ado-about-nothing-2026/deadline--unknown.json",
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1205,12 +1210,58 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
       "broken-glass-off-west-end-2026/theatre-weekly--unknown.json",
       "charges-the-supplicants-regional-2026/chicago-reader--rob-silverman-ascher.json",
-      "waiting-for-godot-citizens-regional-2026/thereviewshub--the-reviews-hub-scotland.json"
+      "waiting-for-godot-citizens-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
+      "elektra-off-broadway-2026/broadwayworld--richard-sasanow.json"
     ]
   },
   "startTime": "2026-11-19T22:01:42.526Z",
-  "lastProcessed": "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-  "log": [],
+  "lastProcessed": "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-20T04:40:29.620Z",
+      "event": "bb-session",
+      "session": "68f6e2a5",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T04:40:30.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T04:42:07.827Z",
+      "event": "bb-session",
+      "session": "8367b72e",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-20T04:42:08.468Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T04:44:47.582Z",
+      "event": "bb-session",
+      "session": "ecd3e0a1",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T04:44:48.234Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T04:45:05.548Z",
+      "event": "bb-session",
+      "session": "e0a68131",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T04:45:06.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ],
   "recoveredAfterFailure": [
     "now-you-see-me-live-2026/culturesauce--thom-geier.json",
     "nacho-ate-spiderman-regional-2026/la-drama-critics-circle--ladcc-critics.json",

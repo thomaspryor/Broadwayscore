@@ -1,19 +1,64 @@
 {
-  "updatedAt": "2026-11-20T04:44:44.745Z",
-  "processed": 456,
-  "failed": 257,
-  "successRate": "64.0%",
+  "updatedAt": "2026-11-20T04:47:37.499Z",
+  "processed": 459,
+  "failed": 264,
+  "successRate": "63.5%",
   "tierBreakdown": {
-    "playwright": 230,
+    "playwright": 228,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 59,
     "scrapingbee": 25,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 153
+    "archive": 154
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-11-20T04:40:29.620Z",
+      "event": "bb-session",
+      "session": "68f6e2a5",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T04:40:30.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T04:42:07.827Z",
+      "event": "bb-session",
+      "session": "8367b72e",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-20T04:42:08.468Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T04:44:47.582Z",
+      "event": "bb-session",
+      "session": "ecd3e0a1",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T04:44:48.234Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T04:45:05.548Z",
+      "event": "bb-session",
+      "session": "e0a68131",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T04:45:06.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
