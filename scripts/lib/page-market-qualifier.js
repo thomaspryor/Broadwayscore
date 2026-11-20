@@ -147,6 +147,7 @@ function decideCrossMarketConflict({ showCategory, siblingCategories, signal }) 
     // production. Corpus 2026-11-20: 2 pages, both wrong (Hayes 1968 under
     // the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026, Golden 2022
     // under topdog-underdog-regional-2026); 0 legitimate.
+    // Intentionally NOT isBroadwayCategory: `signal` is a page-text classification, not a show record.
     return signal.category === 'broadway' && signal.strength === 'jsonld-location' ? { rule: 'measured-pair' } : null;
   }
   const trusted = (NO_SIBLING_CONFLICT_PAIRS[showCategory] || {})[signal.category];
