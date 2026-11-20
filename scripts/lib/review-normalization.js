@@ -2094,6 +2094,11 @@ function findCrossOutletUrlOwner(showDir, files, url, outletName) {
   if ((isRoundupUrl(url) || {}).isRoundup) return null;
   const incoming = normalizeOutlet(outletName);
   if (!incoming || getOutletFromRegistry(incoming)) return null;
+  // Only a placeholder outlet minted from the URL's own host ("columbiaspectator-com") is adopted: that name says nothing
+  // the owner file contradicts. A real but unregistered outlet name stays a separate review (review P1, BRO-7890).
+  let hostSlug = '';
+  try { hostSlug = new URL(url).hostname.toLowerCase().replace(/^www\./, '').replace(/\./g, '-'); } catch { return null; }
+  if (incoming !== hostSlug && incoming !== hostSlug.replace(/-[a-z]+$/, '')) return null;
   const owners = [];
   for (const file of files) {
     const filePath = path.join(showDir, file);

@@ -61,3 +61,22 @@ test('classifyPublishDateFormat: only YYYY-MM-DD and YYYY-MM are stored shapes',
   assert.equal(classifyPublishDateFormat('2026-11-20T03:00:00.000Z'), 'other');
   assert.equal(classifyPublishDateFormat('November 19, 2026'), 'other');
 });
+
+test('tzForShow: a regional show is dated in its own city zone, not New York (BRO-7890 review P1)', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { tzForShow } = req('../../scripts/lib/local-date.js');
+  const { normalizeDate } = req(LIB);
+  assert.equal(tzForShow({ category: 'regional', city: 'glasgow-uk' }), 'Europe/London');
+  assert.equal(tzForShow({ category: 'regional', city: 'chicago-il' }), 'America/Chicago');
+  assert.equal(tzForShow({ category: 'regional', city: 'los-angeles-ca' }), 'America/Los_Angeles');
+  assert.equal(tzForShow({ category: 'regional', city: 'boston-ma' }), 'America/New_York');
+  assert.equal(tzForShow({ category: 'regional' }), null); // no city: fall back to the publisher host
+  assert.equal(tzForShow({ category: 'west-end' }), 'Europe/London');
+  assert.equal(tzForShow({ category: 'off-west-end' }), 'Europe/London');
+  assert.equal(tzForShow({ category: 'broadway' }), 'America/New_York');
+  // 03:00 GMT is still the 20th in Glasgow, the 19th in Chicago.
+  const stamp = 'Thu, 20 Nov 2026 03:00:00 GMT';
+  assert.equal(normalizeDate(stamp, { timeZone: tzForShow({ category: 'regional', city: 'glasgow-uk' }) }), '2026-11-20');
+  assert.equal(normalizeDate(stamp, { timeZone: tzForShow({ category: 'regional', city: 'chicago-il' }) }), '2026-11-19');
+});
