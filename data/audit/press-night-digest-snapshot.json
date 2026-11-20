@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-11-20T03:25:57.719Z",
-  "night": "2026-11-18",
+  "generatedAt": "2026-11-20T08:02:14.182Z",
+  "night": "2026-11-19",
   "counts": {
     "total": 2,
     "passed": 0,
-    "failed": 0,
-    "notGraded": 2
+    "failed": 2,
+    "notGraded": 0
   },
   "lines": [
     {
-      "verdict": "UNKNOWN",
-      "line": "It’s A Wonderful Life: A Live Radio Play: published by the new lane; 1 of 1 review live by 1:59am; reviews came out at 11:59pm, not the expected 10:00pm, so they were timed from 11:59pm; no opening-night email draft yet (the site has 0 of the 12 reviews a draft needs). Not graded: could not check the critics list at the 2-hour mark or which reviews came in that night."
+      "verdict": "FAIL",
+      "line": "A Homo Alone 2: Yikes, We Did It Again!: published by the regular pipeline; 6 of 8 reviews live by 6:00pm; Operationlivetheatre not live by 9:59pm; Theatre Weekly not live by 9:59pm. Failed."
     },
     {
-      "verdict": "UNKNOWN",
-      "line": "La Distance: not graded, no reviews were published overnight."
+      "verdict": "FAIL",
+      "line": "Much Ado About Nothing: reviews not graded yet, still being checked; opening-night email draft is out of date (built with score 78 from 18 reviews, the site shows score 77 from 20 reviews); Reddit draft emailed to you is out of date (score 78 from 18 reviews, the site shows score 77 from 20 reviews). Failed."
     }
   ],
   "scoreboard": {
@@ -22,5 +22,9 @@
     "passed": 3,
     "passedOnOwn": 2
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026|2026-11-19|review:operationlivetheatre:Xi Ye": "2026-11-20T08:02:14.182Z",
+    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026|2026-11-19|review:theatre-weekly:Staff Writer": "2026-11-20T08:02:14.182Z",
+    "much-ado-about-nothing-2026|2026-11-19|email:reddit:stale": "2026-11-20T08:02:14.182Z"
+  }
 }

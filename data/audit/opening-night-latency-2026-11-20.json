@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-20T03:25:32.499Z",
+  "generatedAt": "2026-11-20T08:01:55.607Z",
   "date": "2026-11-20",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 198064,
+  "entryCount": 219083,
   "shows": [
     {
       "showId": "relative-motion-off-west-end-2026",
@@ -461,7 +461,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 62552420,
+        "collected-to-scored": 47912757,
         "scored-to-rebuilt": 230150,
         "rebuilt-to-deployed": null
       },
@@ -1535,21 +1535,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "ghost-notes-off-broadway-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
       "reviewCount": 2,
       "median_e2e_ms": null,
@@ -1618,21 +1603,6 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 628041,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "a-christmas-carol-2019",
-      "reviewCount": 24,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2376,13 +2346,13 @@
     },
     {
       "showId": "a-few-good-men-2026",
-      "reviewCount": 39,
+      "reviewCount": 40,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 532684,
+        "collected-to-scored": 14729726,
+        "scored-to-rebuilt": 354412,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2451,13 +2421,13 @@
     },
     {
       "showId": "i-became-we-off-broadway-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 14144812,
+        "scored-to-rebuilt": 176135,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2946,13 +2916,13 @@
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
-      "reviewCount": 27,
+      "reviewCount": 28,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 12478198,
+        "scored-to-rebuilt": 176135,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3591,7 +3561,7 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4057,6 +4027,21 @@
     {
       "showId": "revolution-days-citizens-regional-2026",
       "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "even-these-things-royal-exchange-regional-2026",
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4551,13 +4536,13 @@
     },
     {
       "showId": "heroes-of-the-fourth-turning-red-regional-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 49764,
+        "scored-to-rebuilt": 284689,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -5195,6 +5180,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "mamma-mia-2025",
+      "reviewCount": 23,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 184997,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "reviewCount": 24,
       "median_e2e_ms": null,
@@ -5233,21 +5233,6 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 754543,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "reviewCount": 23,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 184997,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -5391,7 +5376,7 @@
     },
     {
       "showId": "rolling-thunder-off-broadway-2025",
-      "reviewCount": 17,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5796,13 +5781,13 @@
     },
     {
       "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 718974,
-        "scored-to-rebuilt": 337672,
+        "scored-to-rebuilt": 334892,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -6216,13 +6201,13 @@
     },
     {
       "showId": "long-days-journey-into-night-off-broadway-2022",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1098215,
+        "scored-to-rebuilt": 726085,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8151,13 +8136,13 @@
     },
     {
       "showId": "much-ado-about-nothing-2026",
-      "reviewCount": 5,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 534175,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8811,12 +8796,12 @@
     },
     {
       "showId": "guys-and-dolls-2009",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 17014318,
         "scored-to-rebuilt": 550205,
         "rebuilt-to-deployed": null
       },
@@ -8871,13 +8856,13 @@
     },
     {
       "showId": "radio-galaxy-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1265997,
+        "scored-to-rebuilt": 877815,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8886,13 +8871,13 @@
     },
     {
       "showId": "goblin-off-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 821621,
+        "scored-to-rebuilt": 428292,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -9881,8 +9866,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 9205993,
+        "scored-to-rebuilt": 1000178,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -10265,8 +10250,38 @@
       "slowest_reviews": []
     },
     {
-      "showId": "hundred-days-regional-2026",
-      "reviewCount": 6,
+      "showId": "the-second-best-school-shooting-regional-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 6411441,
+        "scored-to-rebuilt": 1000184,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1000177,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "menopause-the-musical-tour-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10280,14 +10295,44 @@
       "slowest_reviews": []
     },
     {
-      "showId": "the-second-best-school-shooting-regional-2026",
-      "reviewCount": 1,
+      "showId": "high-noon-west-end-2025",
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-visit-2015",
+      "reviewCount": 28,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1119469,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "illinoise-2024",
+      "reviewCount": 24,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1331712,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
