@@ -190,3 +190,11 @@ test('a change to scripts/lib/land-*.js or .github/ selects undriven-rebase-lint
   assert.ok(pick(['.github/workflows/land.yml']).includes(lintTest), 'land.yml');
   assert.ok(!pick(['scripts/lib/widget-maker.js']).includes(lintTest), 'unrelated file');
 });
+
+test('a .github change selects tests that scan .github through fs without naming the file (BRO-7814 cousins)', () => {
+  const u = { nodeSet: new Set(['tests/unit/scan.test.mjs', 'tests/unit/other.test.mjs']), tsxSet: new Set(), libFiles: [] };
+  const t = { 'tests/unit/scan.test.mjs': "const W = path.join(root, '.github', 'workflows'); fs.readdirSync(W)", 'tests/unit/other.test.mjs': 'nothing here' };
+  const pick = (changed) => F.selectFastTests({ changed, universe: u, readText: (f) => t[f], invariants: [], slow: new Set() }).files.map((f) => f.file);
+  assert.deepEqual(pick(['.github/workflows/land.yml']), ['tests/unit/scan.test.mjs']);
+  assert.deepEqual(pick(['scripts/lib/widget-maker.js']), [], 'a non-.github change does not pull it in');
+});
