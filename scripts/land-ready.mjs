@@ -149,14 +149,17 @@ export async function gather({ cwd = process.cwd(), base = 'origin/main', doctor
     } catch { v = { exists: true, schemaOk: false }; }
     try { v.currentPatchId = require('./lib/visual-approval-durable.js').uiPatchId(cwd, 'HEAD', base); } catch { v.currentPatchId = null; }
     f.verdict = v;
-    // BRO-7888: same fix-only rule as the push hook, same copy (the main checkout's, so a branch cannot loosen it), same range base.
+    // BRO-7888: same fix-only rule as the push hook, same copy (the main checkout's only; missing = no self-clear), same range base,
+    // and the same verdict requirements (a contentHash, like the hook).
     try {
-      let cls = path.join(HERE, 'lib', 'visual-design-diff.js');
-      const cand = canon && path.join(canon, 'scripts', 'lib', 'visual-design-diff.js');
-      if (cand && existsSync(cand)) cls = cand;
-      const r = spawnSync('node', [cls, '--self-clear', `--range=${range}`, `--verdict=${vp}`], { cwd, encoding: 'utf8', timeout: 30000, env });
-      let j = {}; try { j = JSON.parse(r.stdout || '{}'); } catch { /* fail closed */ }
-      f.fixOnly = { allowed: r.status === 0 && j.allowed === true, reason: j.reason || '' };
+      const cls = canon && path.join(canon, 'scripts', 'lib', 'visual-design-diff.js');
+      if (!cls || !existsSync(cls)) throw new Error('canonical classifier missing');
+      if (!v.hash) { f.fixOnly = { allowed: false, reason: 'verdict has no contentHash' }; }
+      else {
+        const r = spawnSync('node', [cls, '--self-clear', `--range=${range}`, `--verdict=${vp}`], { cwd, encoding: 'utf8', timeout: 30000, env });
+        let j = {}; try { j = JSON.parse(r.stdout || '{}'); } catch { /* fail closed */ }
+        f.fixOnly = { allowed: r.status === 0 && j.allowed === true, reason: j.reason || '' };
+      }
     } catch { f.fixOnly = { allowed: false, reason: 'classifier did not run' }; }
     let approved = false;
     try {
