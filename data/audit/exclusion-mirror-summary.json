@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-20T18:04:29.342Z",
-  "totalScanned": 83786,
-  "totalExcluded": 31245,
+  "generatedAt": "2026-11-20T18:33:31.438Z",
+  "totalScanned": 83801,
+  "totalExcluded": 31250,
   "ruleCounts": {
-    "wrongProduction": 20411,
+    "wrongProduction": 20414,
     "duplicateOf": 2344,
     "rejectionReason": 1580,
-    "wrongShow": 1358,
+    "wrongShow": 1360,
     "nonReview": 901,
     "unverifiableWebSearchRow": 882,
     "noTextOrScoreSignal": 874,
@@ -18,7 +18,7 @@
     "knownSyndicationSecondary": 228,
     "isSyndicatedDuplicate": 173,
     "bodylessAggregatorScoreUncorroborated": 172,
-    "listingPageUrl": 170,
+    "listingPageUrl": 171,
     "previewPlaceholder": 114,
     "namedNonReviewUrl": 107,
     "scoreStatusToBeCalculated": 80,
@@ -34,7 +34,7 @@
     "fullTextWrongAuthorNoExcerpt": 16,
     "wrongContentFlagsUncleared": 16,
     "tourContaminationInText": 14,
-    "lateDateMismatch": 11,
+    "lateDateMismatch": 10,
     "outletDomainUnvalidated": 3,
     "prematureForUnopenedShow": 3,
     "previewFirstLookPiece": 2,
@@ -44,18 +44,17 @@
     "registrationWallStub": 1
   },
   "ruleDeltas": {
-    "wrongProduction": -3,
-    "noTextOrScoreSignal": 2,
-    "wrongContentFlagsUncleared": -1,
-    "tourContaminationInText": -1,
-    "lateDateMismatch": 1
+    "wrongProduction": 3,
+    "wrongShow": 2,
+    "listingPageUrl": 1,
+    "lateDateMismatch": -1
   },
-  "previousGeneratedAt": "2026-11-20T17:38:02.351Z",
+  "previousGeneratedAt": "2026-11-20T18:04:29.342Z",
   "mirror": {
-    "comparedShows": 4844,
-    "comparedFiles": 83156,
-    "agreeExcluded": 31217,
-    "agreeIncluded": 51427,
+    "comparedShows": 4845,
+    "comparedFiles": 83170,
+    "agreeExcluded": 31223,
+    "agreeIncluded": 51435,
     "mirrorOnly": 183,
     "rebuildOnly": 329,
     "disagreements": 512,
@@ -90,7 +89,7 @@
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 56,
-    "notComparedFiles": 630
+    "notComparedFiles": 631
   },
   "previousDisagreementRate": 0.0062
 }

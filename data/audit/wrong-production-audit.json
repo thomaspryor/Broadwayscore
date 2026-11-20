@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-20T18:04:52.502Z",
+  "timestamp": "2026-11-20T18:33:50.788Z",
   "stats": {
-    "totalReviews": 83469,
-    "alreadyFlagged": 22593,
+    "totalReviews": 83483,
+    "alreadyFlagged": 22597,
     "dateGuardCatches": 222,
     "directorMismatch": 3795,
-    "tvFilmSignals": 2378,
-    "londonSignals": 3845,
+    "tvFilmSignals": 2379,
+    "londonSignals": 3847,
     "offBroadwaySignals": 775,
     "yearMismatch": 387,
-    "noPublishDate": 8288
+    "noPublishDate": 8289
   },
   "findings": [
     {
@@ -21471,6 +21471,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "british-theatre--vera-liber.json",
+      "score": 92,
+      "publishDate": "2026-11-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -103902,6 +103916,20 @@
     },
     {
       "showId": "eurotrash-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 57,
+      "publishDate": "2026-11-20",
+      "url": "https://www.theguardian.com/stage/2026/nov/20/ben-whishaw-kathryn-hunter-eurotrash-review-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 83,
       "publishDate": "2026-11-20",
@@ -103931,7 +103959,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "nytimes--houman-barekat.json",
-      "score": 72,
+      "score": 79,
       "publishDate": "2026-11-20",
       "url": "https://www.nytimes.com/2026/11/20/theater/eurotrash-young-vic-london-review.html",
       "findings": [
@@ -103948,6 +103976,20 @@
       "score": 74,
       "publishDate": "2026-11-17",
       "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-eurotrash.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "thereviewshub--richard-maguire.json",
+      "score": 88,
+      "publishDate": "2026-11-20",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
