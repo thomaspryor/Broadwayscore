@@ -184,6 +184,19 @@ function recorderFromEnv(env) {
  * BRO-7741: the real inbox ports. The read is async (a slow fetch never stalls the publish timers); the status write is
  * a compare-and-swap push, once a pass and only when something changed, and prints a notice per entry for the job log.
  */
+/**
+ * BRO-7891 review: a failed or rejected inbox URL must reach someone the same night. The press-night channel (the
+ * signals notifier: Discord + the coordinator card, built by the CLI) carries it as an 'inbox-problem' line; routeAlert
+ * 'digest' would only surface it the next morning, and 'human' is downgraded to digest for any key off the page-worthy
+ * allowlist. With no notifier wired (replays), routeAlert digest is the fallback so it is still recorded.
+ */
+function inboxAlertRoute({ show, night, notifyPressSignals, routeAlert }) {
+  if (typeof notifyPressSignals === 'function') {
+    return (p, u = {}) => notifyPressSignals({ show, night, nearMisses: [], gaps: [], sourceHealth: [{ kind: 'inbox-problem', key: p.conditionKey, url: u.url || null, status: u.status, reason: u.reason || null, description: p.description }] });
+  }
+  return (p) => routeAlert({ severity: 'warn', disposition: 'digest', cooldownHours: 12, ...p });
+}
+
 // BRO-7891: how long one inbox alert may take before the lane stops waiting on it (it is never awaited by the pass).
 const INBOX_ALERT_TIMEOUT_MS = 20 * 1000;
 
@@ -194,11 +207,11 @@ function realManualInbox({ repoDir, show, log = console.log, env = process.env, 
   const io = store || inbox; // tests pass {readForShow, markSync}
   // BRO-7891: a failed or rejected URL is alerted after its status is written, fire-and-forget and time-bounded. Its
   // error is swallowed: a throw here would make flushInbox re-queue the batch and alert again on the next pass.
-  const fire = (p) => {
+  const fire = (p, update) => {
     if (typeof alert !== 'function' || !p) return;
     let timer;
     const bounded = new Promise((resolve) => { timer = setTimeout(() => resolve('timeout'), alertTimeoutMs); if (timer.unref) timer.unref(); });
-    Promise.race([Promise.resolve().then(() => alert(p)), bounded])
+    Promise.race([Promise.resolve().then(() => alert(p, update)), bounded])
       .then((r) => { if (r === 'timeout') log(`opening-night lane: inbox alert timed out: ${p.title}`); })
       .catch((e) => log(`opening-night lane: inbox alert failed (${String(e && e.message).slice(0, 160)}): ${p.title}`))
       .finally(() => clearTimeout(timer));
@@ -209,7 +222,10 @@ function realManualInbox({ repoDir, show, log = console.log, env = process.env, 
       const res = io.markSync({ repoDir }, updates);
       if (!res.ok) throw new Error(`inbox status write ${res.reason}: ${res.detail || ''}`);
       for (const u of updates) log(`::notice::lane inbox: ${u.id} ${u.status}${u.reason ? ` (${u.reason})` : ''}`);
-      for (const u of updates) { try { fire(inbox.inboxAlertFor(u)); } catch { /* an alert never fails the write */ } }
+      // Only statuses the store took (markStatus `applied`): an update for an expired entry or an earlier generation
+      // changed nothing, so it alerts nothing.
+      const applied = new Set(res.applied || []);
+      for (const u of updates) { if (!applied.has(u.id)) continue; try { fire(inbox.inboxAlertFor(u), u); } catch { /* an alert never fails the write */ } }
     },
   };
 }
@@ -266,7 +282,7 @@ function buildRealLaneDeps({
         search: realSerpSearch(env), decodeImpl: require('../google-news-decode').decodeGoogleNewsLink,
         // BRO-7741: the manual-URL inbox (ingest-urls.yml routes a leased show's URLs there), read every pass.
         // BRO-7891: a failed/rejected inbox URL alerts through the CLI's router (kept out of laneCodeHash, see above).
-        manualInbox: realManualInbox({ repoDir, show, env, alert: (p) => routeAlert({ severity: 'warn', disposition: 'digest', cooldownHours: 12, ...p }) }),
+        manualInbox: realManualInbox({ repoDir, show, env, alert: inboxAlertRoute({ show, night, notifyPressSignals, routeAlert }) }),
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
         windowMs: (() => { const m = Number(preembargo && env.OPENING_NIGHT_LANE_WINDOW_PREEMBARGO_MIN) || Number(env.OPENING_NIGHT_LANE_WINDOW_MIN); return m > 0 ? m * 60 * 1000 : undefined; })(),
       })({ shouldStop, abandonPending });
@@ -347,4 +363,4 @@ function wireLaneNight({
   };
 }
 
-module.exports = { realManualInbox, recorderFromEnv, HEARTBEAT_MS, LEASE_TTL_MS, TUNING_KEYS, runProductionLane, buildRealLaneDeps, wireLaneNight, onDiskUrlsFor, onDiskRowsFor };
+module.exports = { realManualInbox, inboxAlertRoute, recorderFromEnv, HEARTBEAT_MS, LEASE_TTL_MS, TUNING_KEYS, runProductionLane, buildRealLaneDeps, wireLaneNight, onDiskUrlsFor, onDiskRowsFor };

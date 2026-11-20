@@ -243,9 +243,9 @@ test('markStatus counts drains; a drained URL can be queued again', () => {
 // skipped by drain and sweep), not 'already-in'; a dropped row is 'failed', not 'published'; failed/rejected alert.
 const { realManualInbox } = require('../../scripts/lib/opening-night-lane/driver.js');
 
-function laneNight2({ entries, fetchFor, maxPasses = 1, isLive = () => true, regenMissing = () => [], onDiskRows = [], onDiskUrls = [] }) {
+function laneNight2({ entries, fetchFor, maxPasses = 1, isLive = () => true, regenMissing = () => [], onDiskRows = [], onDiskUrls = [], initialDoc = null }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-night-'));
-  let doc = { reviews: [] };
+  let doc = initialDoc || { reviews: [] };
   const marks = []; const scored = [];
   const run = runLaneNight({
     show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses, passIntervalMs: 0, publishTimeoutMs: 5, pollMs: 1,
@@ -354,7 +354,7 @@ test('BRO-7891: failed and rejected inbox URLs alert per generation; a failing o
   for (const s of ['queued', 'published', 'already-in', 'held-copy', 'drained']) assert.equal(inbox.inboxAlertFor({ id: 'x', status: s }), null);
 
   const sent = []; const logs = [];
-  const store = { readForShow: async () => [], markSync: () => ({ ok: true }) };
+  const store = { readForShow: async () => [], markSync: (_o, ups) => ({ ok: true, applied: ups.map((u) => u.id) }) };
   const ok = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: (l) => logs.push(l), store, alert: async (p) => { sent.push(p); } });
   await ok.markInbox([{ id: 'x|1', addedAt: 'g1', status: 'failed', url: URL1, show: SHOW.id }, { id: 'x|2', status: 'published' }]);
   await new Promise((r) => setTimeout(r, 5));
@@ -386,7 +386,8 @@ test('BRO-7891: aggregatorParity reports cited reviews not live after 15 min, ke
   ]);
   assert.equal(nearMiss.aggregatorParity(cited, new Set(['a.com/1', 'a.com/2']), { now }), null, 'all due ones are live');
   const p = nearMiss.aggregatorParity(cited, new Set(['a.com/1']), { now });
-  assert.equal(p.key, 'aggregator-parity|2'); assert.equal(p.aggregatorCount, 2); assert.equal(p.ours, 1);
+  assert.match(p.key, /^aggregator-parity\|[0-9a-f]{12}$/); assert.equal(p.aggregatorCount, 2); assert.equal(p.ours, 1);
+  assert.deepEqual(p.newKeys, ['a.com/2']);
   assert.deepEqual(p.missing.map((m) => m.url), ['https://a.com/2']);
   const msg = nearMiss.formatPressSignals({ id: SHOW.id }, NIGHT, { sourceHealth: [p] });
   assert.match(msg.title, /aggregators ahead \(1\/2 live\)/);
@@ -432,4 +433,56 @@ test('BRO-7891 (self-review): a copy pulled from the queue by its original, then
   assert.equal(last(c2) && last(c2).status, 'held-copy', JSON.stringify(marks));
   assert.equal(last(p).status, 'published');
   assert.ok(!doc.reviews.some((r) => r.url === DN));
+});
+
+// ---- BRO-7891 independent review of 8b70c9d70 ----
+const { inboxAlertRoute } = require('../../scripts/lib/opening-night-lane/driver.js');
+
+test('BRO-7891 review 1: inbox failed/rejected alerts go to the press-night channel the same night, not the morning digest', async () => {
+  const sig = []; const routed = [];
+  const route = inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: async (x) => { sig.push(x); }, routeAlert: async (p) => { routed.push(p); } });
+  const p = inbox.inboxAlertFor({ id: `${SHOW.id}|abc`, addedAt: 'g1', status: 'rejected', reason: 'night-window', url: URL1, show: SHOW.id });
+  await route(p, { url: URL1, status: 'rejected', reason: 'night-window' });
+  assert.equal(routed.length, 0, 'not the digest');
+  assert.equal(sig.length, 1); assert.equal(sig[0].sourceHealth[0].kind, 'inbox-problem');
+  const msg = nearMiss.formatPressSignals(SHOW, NIGHT, sig[0]);
+  assert.match(msg.title, /1 inbox URL\(s\) not published/); assert.ok(!/source problem/.test(msg.title));
+  assert.ok(msg.description.includes('INBOX URL REJECTED') && msg.description.includes(URL1) && msg.description.includes('--force'));
+  // No notifier wired (a replay): still recorded through the router.
+  await inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: null, routeAlert: async (x) => { routed.push(x); } })(p, {});
+  assert.equal(routed.length, 1); assert.equal(routed[0].conditionKey, p.conditionKey);
+});
+
+test('BRO-7891 review 2: parity alerts once per newly missing review, not again as the count grows or a gap persists', () => {
+  const now = T0; const old = now - 20 * 60000;
+  const alerted = new Set();
+  const cited = new Map([['k1', { firstSeenMs: old, url: 'https://a.com/1' }], ['k2', { firstSeenMs: old, url: 'https://a.com/2' }]]);
+  const live = new Set(['k1']);
+  const first = nearMiss.aggregatorParity(cited, live, { now, alerted });
+  assert.deepEqual(first.newKeys, ['k2']); for (const k of first.newKeys) alerted.add(k);
+  assert.equal(nearMiss.aggregatorParity(cited, live, { now: now + 600000, alerted }), null, 'same gap, next pass: quiet');
+  cited.set('k3', { firstSeenMs: old, url: 'https://a.com/3' }); live.add('k3');
+  assert.equal(nearMiss.aggregatorParity(cited, live, { now, alerted }), null, 'count grew but nothing new is missing: quiet');
+  cited.set('k4', { firstSeenMs: old, url: 'https://a.com/4' });
+  const again = nearMiss.aggregatorParity(cited, live, { now, alerted });
+  assert.deepEqual(again.newKeys, ['k4']); assert.notEqual(again.key, first.key);
+  // Liveness is a predicate: the runner counts a key live by critic+outlet (publish's merge key) as well as by URL.
+  assert.equal(nearMiss.aggregatorParity(cited, (k) => k !== 'k9', { now, alerted: new Set() }), null);
+});
+
+test('BRO-7891 review 4: only statuses the store applied alert', async () => {
+  const sent = [];
+  const box = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, alert: async (p) => { sent.push(p); },
+    store: { markSync: () => ({ ok: true, applied: ['x|1'] }) } });
+  await box.markInbox([{ id: 'x|1', addedAt: 'g2', status: 'failed' }, { id: 'x|2', addedAt: 'g1', status: 'failed' }]);
+  await new Promise((r) => setTimeout(r, 5));
+  assert.deepEqual(sent.map((p) => p.conditionKey), ['opening-night-lane-inbox:x|1@g2']);
+});
+
+test('BRO-7891 review 5: an inbox URL the merge folds into an existing same-critic row says so, not "this URL"', async () => {
+  const existing = { showId: SHOW.id, outlet: 'TheaterMania', outletId: 'theatermania', criticName: 'A Critic', url: 'https://www.theatermania.com/other-url/', assignedScore: 70, manualEntry: true };
+  const { marks } = await laneNight2({ entries: [entry()], fetchFor: tm, initialDoc: { reviews: [existing] } });
+  const m = marks.find((x) => x.status === 'already-in');
+  assert.ok(m, JSON.stringify(marks));
+  assert.match(m.reason, /by this critic for this outlet/);
 });

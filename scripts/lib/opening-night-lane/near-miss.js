@@ -158,21 +158,26 @@ function gapCandidates(sightings, { firstSeen, now, afterMs = GAP_AFTER_MS }) {
 /**
  * BRO-7891 item 3: aggregator parity. On the Much Ado night the aggregators listed reviews before the lane had them on
  * the site. The lane already reads the roundups every pass and admits what they cite; this reports when the
- * aggregators' count is ahead of ours: reviews an aggregator has cited for at least `afterMs` (every pass, admitted or
- * not, so a review stuck between scoring and live counts too) against those of them on the site. One alert per
- * aggregator count (key `aggregator-parity|N`), so a growing roundup alerts again and a steady one does not.
+ * aggregators are ahead of the site: reviews an aggregator has cited for at least `afterMs` (every pass, admitted or
+ * not, so a review stuck between scoring and live counts too) that are not live.
+ * Alerts only on a real change: when a review not yet alerted joins the missing set (`alerted` holds keys already
+ * reported; the caller adds them after recording). The key is the hash of those new keys, so a restart re-sending the
+ * same set is deduped by the signals file. A count that merely grows, or a gap that persists, does not re-alert.
  * @param cited Map reviewKey -> {firstSeenMs, url, outletId?, via?} (every aggregator-cited review seen tonight)
- * @param liveKeys Set of review keys on the site (reviews.json before tonight plus verified live)
- * @returns {null | {kind:'aggregator-parity', key, url, aggregatorCount, ours, missing:[{url, outletId, via, ageMin}]}}
+ * @param isLive (reviewKey) -> boolean: on the site by URL, or by the critic+outlet match publish merges on
+ * @returns {null | {kind:'aggregator-parity', key, url, aggregatorCount, ours, missing:[...], newKeys:[...]}}
  */
-function aggregatorParity(cited, liveKeys, { now, afterMs = GAP_AFTER_MS } = {}) {
+function aggregatorParity(cited, isLive, { now, afterMs = GAP_AFTER_MS, alerted = new Set() } = {}) {
+  const live = typeof isLive === 'function' ? isLive : (k) => isLive.has(k);
   const due = [...(cited || new Map())].filter(([, v]) => v && Number.isFinite(v.firstSeenMs) && now - v.firstSeenMs >= afterMs);
-  const missing = due.filter(([k]) => !liveKeys.has(k));
-  if (!missing.length) return null;
+  const missing = due.filter(([k]) => !live(k));
+  const newKeys = missing.map(([k]) => k).filter((k) => !alerted.has(k)).sort();
+  if (!newKeys.length) return null;
   return {
-    kind: 'aggregator-parity', key: `aggregator-parity|${due.length}`, url: (missing[0][1] && missing[0][1].url) || missing[0][0], adapter: 'aggregator-parity',
-    aggregatorCount: due.length, ours: due.length - missing.length,
-    missing: missing.map(([k, v]) => ({ url: v.url || k, outletId: v.outletId || null, via: v.via || null, ageMin: Math.round((now - v.firstSeenMs) / 60000) })),
+    kind: 'aggregator-parity', key: `aggregator-parity|${require('crypto').createHash('sha1').update(newKeys.join('\n')).digest('hex').slice(0, 12)}`,
+    url: (missing[0][1] && missing[0][1].url) || missing[0][0], adapter: 'aggregator-parity',
+    aggregatorCount: due.length, ours: due.length - missing.length, newKeys,
+    missing: missing.map(([k, v]) => ({ key: k, url: v.url || k, outletId: v.outletId || null, via: v.via || null, ageMin: Math.round((now - v.firstSeenMs) / 60000) })),
   };
 }
 
@@ -259,6 +264,10 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHea
     lines.push(`${windowMismatch(g) ? 'WINDOW-MISMATCH' : 'GAP'} (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${why})`, ...(c.wrapper ? ['  open the Google link, then add the outlet\'s own article URL with opening-night-lane-inbox.js add'] : [`  add it: \`${c.primary}\``]), ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
   }
   for (const h of sourceHealth) {
+    if (h.kind === 'inbox-problem') { // BRO-7891: a person's inbox URL the lane could not publish
+      lines.push(`INBOX URL ${String(h.status || 'failed').toUpperCase()}: ${h.url || '(no url)'}`, `  ${h.description || h.reason || ''}`);
+      continue;
+    }
     if (h.kind === 'aggregator-parity') {
       lines.push(`AGGREGATORS AHEAD: aggregators cite ${h.aggregatorCount} review(s) of this show for 15+ min; ${h.ours} of them are live on the site`,
         ...(h.missing || []).slice(0, 8).map((m) => `  not live (${m.outletId || 'outlet?'}${m.via ? `, cited by ${m.via}` : ''}, ${m.ageMin} min): ${m.url}\n    ${ingestCommand(show.id, m).primary ? `add it: \`${ingestCommand(show.id, m).primary}\`` : 'open the Google link, then add the outlet\'s own article URL with opening-night-lane-inbox.js add'}`));
@@ -268,8 +277,9 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHea
     else lines.push(`SOURCE NOT READ (${h.adapter || 'lane'}${h.outletId ? `, ${h.outletId}` : ''}): ${h.url}`, `  not read for ${h.idleMin} min (last try ${h.lastAttemptAt || 'never tonight'}). Reviews it lists are not being seen.`);
   }
   const parity = sourceHealth.filter((h) => h.kind === 'aggregator-parity');
-  const problems = sourceHealth.length - parity.length;
-  const title = `Press night ${show.id} ${night}: ${nearMisses.length} near-miss, ${gaps.length} found-not-live${problems ? `, ${problems} source problem(s)` : ''}${parity.length ? `, aggregators ahead (${parity[0].ours}/${parity[0].aggregatorCount} live)` : ''}`;
+  const inboxProblems = sourceHealth.filter((h) => h.kind === 'inbox-problem');
+  const problems = sourceHealth.length - parity.length - inboxProblems.length;
+  const title = `Press night ${show.id} ${night}: ${nearMisses.length} near-miss, ${gaps.length} found-not-live${problems ? `, ${problems} source problem(s)` : ''}${parity.length ? `, aggregators ahead (${parity[0].ours}/${parity[0].aggregatorCount} live)` : ''}${inboxProblems.length ? `, ${inboxProblems.length} inbox URL(s) not published` : ''}`;
   return { title, description: lines.join('\n') };
 }
 

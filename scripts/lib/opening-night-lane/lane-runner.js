@@ -127,6 +127,8 @@ async function runLaneNight({
   const admittedKeys = new Set(); // review keys scored this run (queued, in flight, live or pulled as a copy)
   const copySkipped = new Map(); // review key -> {takenKey, primary}: a syndicated copy skipped this run
   const aggregatorCited = new Map(); // BRO-7891 item 3: review key -> first sighting of an aggregator citing it
+  const parityAlerted = new Set(); // review keys already in an aggregator-parity alert
+  const keyTaken = new Map(); // review key -> critic|outlet of the row the lane built for it this run
 
   // BRO-7238 part 1: copies the lane already put on the site whose original has scored since (a Yahoo reprint published
   // in pass N, the TheWrap original in pass N+2). `livePublished` = what this lane published tonight, by critic|outlet;
@@ -252,9 +254,10 @@ async function runLaneNight({
       const droppedKeys = new Set(res.dropped || []);
       for (const r of batch) {
         if (!manualByKey.has(r.key) || verified.has(r.key) || missing.has(r.key)) continue;
-        // dropped: never goes live; else the merge kept the site's own row for this URL (a human correction won)
+        // dropped: never goes live; else the merge kept the site's own row (same outlet+critic, or same URL)
         if (droppedKeys.has(r.key)) noteInbox(manualByKey.get(r.key), 'failed', 'landed in reviews.json but not in the regenerated show JSON');
-        else noteInbox(manualByKey.get(r.key), 'already-in', 'reviews.json already has this URL; the merge kept that row');
+        // The merge matches on outlet+critic first, then URL (publish.js mergeShowRows), so the kept row may be another URL.
+        else noteInbox(manualByKey.get(r.key), 'already-in', 'reviews.json already has a review by this critic for this outlet (or this URL); the merge kept that row');
       }
       settleHeldCopies();
       pending.push(...batch.filter((r) => missing.has(r.key) && !pending.some((q) => q.key === r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
@@ -343,10 +346,15 @@ async function runLaneNight({
         if (s.rejectedFor && nearMiss.INTENDED_REJECTIONS.has(s.rejectedFor) && !nearMiss.windowMismatch(s)) continue;
         aggregatorCited.set(s.key, { firstSeenMs: stamp, url: s.url, outletId: s.outletId, via: s.via || s.adapter });
       }
-      const liveNow = new Set(liveKeys);
-      for (const [k, c] of copySkipped) if (liveTaken.has(c.takenKey)) liveNow.add(k);
-      const parity = nearMiss.aggregatorParity(aggregatorCited, liveNow, { now: stamp });
-      if (parity) health.push(...nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'aggregator-parity', items: [parity], now: stamp }));
+      // Live by URL, or by critic+outlet (the key publish merges on, so a cited URL the site carries under another URL
+      // counts), or a copy whose original is live.
+      const isLiveNow = (k) => liveKeys.has(k) || (keyTaken.has(k) && liveTaken.has(keyTaken.get(k)))
+        || (copySkipped.has(k) && liveTaken.has(copySkipped.get(k).takenKey));
+      const parity = nearMiss.aggregatorParity(aggregatorCited, isLiveNow, { now: stamp, alerted: parityAlerted });
+      if (parity) {
+        health.push(...nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'aggregator-parity', items: [parity], now: stamp }));
+        for (const k of parity.newKeys) parityAlerted.add(k);
+      }
       // Not awaited here: the admitted reviews below are the lane's job and must not wait on Discord or Linear.
       if ((nearMisses.length || gaps.length || health.length) && onPressSignals) {
         const p = Promise.resolve().then(() => onPressSignals({ show, night, nearMisses, gaps, sourceHealth: health }))
@@ -494,6 +502,7 @@ async function runLaneNight({
           else pending.push({ key: sib.key, row: sibRow, scoredAt: now(), rescored: true });
         }
         taken.add(`${criticKey(row.criticName)}|${row.outletId}`);
+        keyTaken.set(a.key, `${criticKey(row.criticName)}|${row.outletId}`);
         seen.add(a.key);
         awaiting.delete(a.key);
         admitted.push(a);
