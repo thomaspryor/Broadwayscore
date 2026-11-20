@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-19T11:27:10.536Z",
+  "generatedAt": "2026-11-20T10:26:29.740Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 6087,
-  "flaggedShows": 48,
-  "flaggedFiles": 163,
+  "scannedShows": 6091,
+  "flaggedShows": 47,
+  "flaggedFiles": 160,
   "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
@@ -17,7 +17,7 @@
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 27,
+    "likely-contamination": 26,
     "needs-human-review": 21
   },
   "shows": [
@@ -2041,69 +2041,6 @@
       ]
     },
     {
-      "showId": "nine-night-off-west-end-2026",
-      "title": "Nine Night",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Kiln Theatre",
-      "previewsStartDate": "2026-11-12",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 3,
-        "distinctYears": [
-          2018,
-          2022
-        ],
-        "spanDays": 1617,
-        "flaggedCount": 3,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--nastazja-domaradzka.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Nastazja Domaradzka",
-          "publishDate": "2018-05-07",
-          "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--phil-willmott.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Phil Willmott",
-          "publishDate": "2018-06-23",
-          "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-west-end-transfer",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--chris-bartlett.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Chris Bartlett",
-          "publishDate": "2022-10-10",
-          "url": "https://www.thestage.co.uk/reviews/nine-night-review-at-leeds-playhouse",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "romeo-and-juliet-west-end-2027",
       "title": "Romeo & Juliet",
       "market": "west-end",
@@ -2368,7 +2305,7 @@
       "showId": "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026",
       "title": "Feeling Afraid As If Something Terrible Is Going To Happen",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "The Other Palace - Main Theatre",
       "previewsStartDate": "2026-11-19",
       "openingDate": null,

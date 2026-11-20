@@ -1,15 +1,15 @@
 {
   "system": "commercial",
-  "status": "pass",
-  "lastChecked": "2026-11-19T10:27:03.028Z",
+  "status": "warn",
+  "lastChecked": "2026-11-20T10:11:00.932Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Commercial: rows held for a person",
-      "status": "pass",
-      "message": "20 row(s) held for a person, none past 7 days."
+      "status": "warn",
+      "message": "5 row(s) in data/commercial-pending-review.json held for a person past 7 days: the-rocky-horror-show (8 days): the record carries a human-reviewed designation: a person must decide; the-rocky-horror-show-2026 (8 days): the record carries a human-reviewed designation: a person must decide; death-of-a-salesman-2026 (8 days): the record carries a human-reviewed designation: a person must decide; two-strangers-bway-2025 (8 days): the record carries a human-reviewed designation: a person must decide; billy-crystal-860-2026 (8 days): record validation: commercial.json: \"billy-crystal-860\" has designation \"Easy Winner\" but recouped=null (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md)."
     },
     {
       "name": "Commercial: season share cards",

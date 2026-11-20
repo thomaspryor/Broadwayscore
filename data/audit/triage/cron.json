@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-11-19T10:27:03.028Z",
+  "lastChecked": "2026-11-20T10:11:00.932Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,27 +9,27 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "18h ago, success"
+      "message": "17h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "3h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Test Suite",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Opening Night Broadcast",
@@ -39,12 +39,12 @@
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "15h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "12h ago, success"
+      "message": "1d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -59,22 +59,22 @@
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "17h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "21h ago, success"
+      "message": "20h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Weekly Show Origins",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
@@ -84,12 +84,12 @@
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "15h ago, ran (success; liveness-only check)"
+      "message": "14h ago, ran (failure; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: Cloud Memory Reconcile",
@@ -99,12 +99,12 @@
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "3 of 140 exempt scheduled workflow(s) stopped starting: audit-time-bomb-tests.yml (last start 395h ago, limit 192h); detect-revivals-ibdb.yml (last start 691h ago, limit 192h); scrape-bww-reviews.yml (last start 762h ago, limit 192h)."
+      "message": "3 of 141 exempt scheduled workflow(s) stopped starting: audit-time-bomb-tests.yml (last start 419h ago, limit 192h); detect-revivals-ibdb.yml (last start 714h ago, limit 192h); scrape-bww-reviews.yml (last start 786h ago, limit 192h)."
     },
     {
       "name": "Cron: failing every scheduled run",
       "status": "warn",
-      "message": "3 of 145 scheduled workflow(s) failed their last 3 scheduled runs: check-corpus-drift.yml (5+ in a row, last 2026-11-18); clear-stale-suspected-misattribution-flags.yml (3+ in a row, last 2026-11-18); social-video.yml (3+ in a row, last 2026-11-19)."
+      "message": "3 of 145 scheduled workflow(s) failed their last 3 scheduled runs: check-corpus-drift.yml (5+ in a row, last 2026-11-19); clear-stale-suspected-misattribution-flags.yml (3+ in a row, last 2026-11-18); social-video.yml (5+ in a row, last 2026-11-20)."
     }
   ]
 }
