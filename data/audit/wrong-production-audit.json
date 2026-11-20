@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-20T04:05:19.203Z",
+  "timestamp": "2026-11-20T04:22:31.369Z",
   "stats": {
-    "totalReviews": 83308,
-    "alreadyFlagged": 22569,
+    "totalReviews": 83312,
+    "alreadyFlagged": 22572,
     "dateGuardCatches": 221,
-    "directorMismatch": 3794,
-    "tvFilmSignals": 2375,
-    "londonSignals": 3832,
+    "directorMismatch": 3795,
+    "tvFilmSignals": 2378,
+    "londonSignals": 3833,
     "offBroadwaySignals": 775,
     "yearMismatch": 387,
-    "noPublishDate": 8249
+    "noPublishDate": 8233
   },
   "findings": [
     {
@@ -43110,6 +43110,20 @@
     },
     {
       "showId": "master-class-2011",
+      "file": "talkinbroadway--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/world/MasterClass2011.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leonard foglia\" from master-class-1995"
+        }
+      ]
+    },
+    {
+      "showId": "master-class-2011",
       "file": "village-voice--michael-musto.json",
       "score": 74,
       "publishDate": "2011-07-07T19:42:32-04:00",
@@ -45884,6 +45898,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-2021",
+      "file": "talkinbroadway--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/world/MrsDoubtfire.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -48821,6 +48849,34 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2025 (4x) more than 2014 (0x). 2025 matches production: of-mice-and-men-octagon-regional-2025"
+        }
+      ]
+    },
+    {
+      "showId": "of-mice-and-men-2014",
+      "file": "npr--unknown.json",
+      "score": null,
+      "publishDate": "2014-05-29",
+      "url": "https://www.npr.org/2014/05/29/317038734/from-the-screen-to-broadway-chris-odowd-takes-on-of-mice-and-men",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "of-mice-and-men-2014",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2014-04-26",
+      "url": "https://newyorktheater.me/2014/04/26/of-mice-and-men-review-james-franco-chris-odowd-relive-the-great-depression/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -123131,6 +123187,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 152d before show (2026-06-18 vs 2026-11-17)"
+        }
+      ]
+    },
+    {
+      "showId": "one-day-the-musical-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-11-19",
+      "url": "https://theatreweekly.com/first-look-production-images-released-as-one-day-the-musical-opens-at-the-garrick-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
