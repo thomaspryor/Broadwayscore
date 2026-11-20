@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-20T18:40:05.867Z",
+  "generatedAt": "2026-11-20T19:08:31.057Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 51,
+    "avgScoreDiff": 5
   },
   "syndicationPairs": [
     {
@@ -162,7 +162,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Massimo Iacoboni",
+      "showId": "saint-joan-2018",
+      "primaryOutlet": "nytg",
+      "secondaryOutlet": "front-row-center",
+      "primaryFile": "nytg--massimo-iacoboni.json",
+      "secondaryFile": "front-row-center--massimo-iacoboni.json",
+      "similarity": 51,
+      "primaryScore": 58,
+      "secondaryScore": 63,
+      "scoreDiff": 5
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T18:49:53.694Z",
+  "generatedAt": "2026-11-20T19:16:28.816Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1740,17 +1740,17 @@
       "status": "open",
       "slug": "a-homo-alone-2-yikes-we-did-it-again-off-west-end",
       "thumbnail": "/images/shows/a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/thumbnail.webp",
-      "siteScore": 67.01,
+      "siteScore": 67.23,
       "liveScore": 67,
-      "scoreDrift": -0.010000000000005116,
+      "scoreDrift": -0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 11,
       "t1": 1,
       "t2": 2,
-      "t3": 7,
-      "positive": 9,
+      "t3": 8,
+      "positive": 10,
       "mixed": 1,
       "negative": 0,
       "readiness": {
@@ -1758,7 +1758,7 @@
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1971,6 +1971,18 @@
           "t2": 2,
           "t3": 7,
           "p": 9,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-20T19:16:28.816Z",
+          "rc": 11,
+          "s": 67.23,
+          "t1": 1,
+          "t2": 2,
+          "t3": 8,
+          "p": 10,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -3397,9 +3409,9 @@
       "status": "open",
       "slug": "eurotrash-off-west-end",
       "thumbnail": "/images/shows/eurotrash-off-west-end-2026/thumbnail.webp",
-      "siteScore": 75.72,
+      "siteScore": 75.82,
       "liveScore": 76,
-      "scoreDrift": 0.28000000000000114,
+      "scoreDrift": 0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -3413,7 +3425,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3432,10 +3444,6 @@
         },
         {
           "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
           "isDualMarket": true
         },
         {
@@ -3634,6 +3642,18 @@
           "t": "2026-11-20T18:49:53.694Z",
           "rc": 19,
           "s": 75.72,
+          "t1": 6,
+          "t2": 6,
+          "t3": 7,
+          "p": 17,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-20T19:16:28.816Z",
+          "rc": 19,
+          "s": 75.82,
           "t1": 6,
           "t2": 6,
           "t3": 7,
