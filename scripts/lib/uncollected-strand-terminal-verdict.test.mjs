@@ -121,3 +121,11 @@ test('hasTerminalVerdict itself ignores same-URL siblings (poller shares it)', (
   const b = { url: URL, fullText: 'x'.repeat(300), contentTier: 'excerpt' };
   assert.equal(hasTerminalVerdict(a, new Map([['a', a], ['b', b]])), false);
 });
+
+test('exact same-URL fetched sibling (text present) exempts the stub', () => {
+  const r = assessShow(show, [
+    { file: 'a.json', review: canonical },
+    { file: 'b.json', review: stub() },
+  ], { nowMs });
+  assert.equal(r.stranded.length, 0);
+});
