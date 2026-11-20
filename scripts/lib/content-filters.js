@@ -146,10 +146,31 @@ function curtainupSuffixYear(url, now = new Date()) {
   return year >= 1996 && year <= currentYear + 1 ? year : null;
 }
 
+/**
+ * New York Theatre Guide's old review pages carry the same two-digit year
+ * suffix (newyorktheatreguide.com/reviews/stuffed16.htm). BRO-5545: Playbill
+ * Verdict listed that 2016 New York review for the 2026 off-West End Stuffed and
+ * the year check could not read it. Only the old .htm/.html form is read; the
+ * current slug form (/reviews/<title>-broadway-review) never ends in one. Same
+ * numbered-title and lifespan rules as CurtainUp (NYTG reviews from 1996).
+ * Over reviews.json: 14 rows have this form, all inside their show's window.
+ * @param {string} url
+ * @param {Date} [now]
+ * @returns {number|null}
+ */
+function nytgSuffixYear(url, now = new Date()) {
+  let u;
+  try { u = new URL(String(url || '')); } catch { return null; }
+  if (!/(^|\.)newyorktheatreguide\.com$/i.test(u.hostname)) return null;
+  if (!/^\/reviews\/[^/]+\.html?$/i.test(u.pathname)) return null;
+  // Same parsing as CurtainUp: re-run it on a CurtainUp-host copy of the path.
+  return curtainupSuffixYear(`https://www.curtainup.com${u.pathname}`, now);
+}
+
 function isUrlYearOutsideWindow(url, openingYear, closingYear) {
   if (!url || !openingYear) return false;
   const m = url.match(/\/((?:19|20)\d{2})\//);
-  const urlYear = m ? parseInt(m[1]) : curtainupSuffixYear(url);
+  const urlYear = m ? parseInt(m[1]) : (curtainupSuffixYear(url) || nytgSuffixYear(url));
   if (!urlYear) return false;
   // If show is still running (no closingYear), allow up to current year + 1
   const currentYear = new Date().getFullYear();
@@ -439,6 +460,7 @@ module.exports = {
   isNotBroadway,
   isUrlYearOutsideWindow,
   curtainupSuffixYear,
+  nytgSuffixYear,
   TRYOUT_URL_MARKERS,
   hasTryoutUrlMarker,
   NON_MET_OPERA_URL_MARKERS,

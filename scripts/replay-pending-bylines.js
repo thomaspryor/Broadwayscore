@@ -459,6 +459,20 @@ async function processShow(showId, deps = {}) {
       kept++;
       continue;
     }
+    // BRO-7078: a stub filed at an off-topic section URL (film/TV review
+    // section, sport, obituary) before discovery refused them is never a
+    // review: skip it without a fetch and never report it unrecoverable.
+    const offTopic = require('./lib/non-review-url-patterns').offTopicSectionReason(data.url);
+    if (offTopic) {
+      console.log(`  [${file}] ${offTopic} URL — not a review, skipped without fetch`);
+      if (!dry) {
+        data.promoteSkippedReason = `${offTopic} URL, not a review (BRO-7078)`;
+        data.promoteSkippedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      kept++;
+      continue;
+    }
     // BRO-6321: an rss-discovery stub whose headline AND url slug do not name the
     // show (celebrity-baby news filed under the musical "Baby") is junk, not a
     // stuck review. Tag it like the sweep does so it never reaches the alert.

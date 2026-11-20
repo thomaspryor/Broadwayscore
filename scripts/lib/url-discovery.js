@@ -1806,6 +1806,11 @@ function urlYearOf(url) {
   if (/(^|\.)theartsdesk\.com$/.test(host)) return null;
   // BRO-4548: CurtainUp's only year is a two-digit filename suffix.
   if (/(^|\.)curtainup\.com$/.test(host)) return require('./content-filters').curtainupSuffixYear(withoutSeasons);
+  // BRO-5545: NYTG's old /reviews/<slug>NN.htm pages carry the same suffix.
+  if (/(^|\.)newyorktheatreguide\.com$/.test(host)) {
+    const y = require('./content-filters').nytgSuffixYear(withoutSeasons);
+    if (y) return y;
+  }
   const token = withoutSeasons.match(URL_YEAR_PATTERN);
   return token ? parseInt(token[1], 10) : null;
 }
