@@ -14,13 +14,15 @@ function showDir(files) {
   for (const [name, data] of Object.entries(files)) fs.writeFileSync(path.join(dir, name), JSON.stringify(data));
   return dir;
 }
-const URL_SPEC = 'https://www.columbiaspectator.com/arts-and-culture/2026/11/19/review-much-ado/';
+// A made-up unregistered campus paper: the real Columbia Spectator is in the outlet registry now, and a registered
+// outlet never adopts by URL. The case under test is the unregistered one.
+const URL_SPEC = 'https://www.quadtownherald.com/arts-and-culture/2026/11/19/review-much-ado/';
 
 test('an unregistered site under two outlet spellings: the existing file is found by URL', () => {
-  const dir = showDir({ 'columbia-spectator--jane-doe.json': { outletId: 'columbia-spectator', criticName: 'Jane Doe', url: URL_SPEC, fullText: 'x'.repeat(3000) } });
-  const hit = findExistingReviewFile(dir, 'columbiaspectator-com', 'Light Dohrne', URL_SPEC);
+  const dir = showDir({ 'quad-town-herald--jane-doe.json': { outletId: 'quad-town-herald', criticName: 'Jane Doe', url: URL_SPEC, fullText: 'x'.repeat(3000) } });
+  const hit = findExistingReviewFile(dir, 'quadtownherald-com', 'Light Dohrne', URL_SPEC);
   assert.ok(hit, 'existing file must be matched');
-  assert.equal(hit.filename, 'columbia-spectator--jane-doe.json');
+  assert.equal(hit.filename, 'quad-town-herald--jane-doe.json');
 });
 
 test('a registered outlet never adopts another outlet\'s file by URL (pass-0 contract holds)', () => {
@@ -46,11 +48,11 @@ test('two files already on the URL: ambiguous, nothing adopted', () => {
     'a-site--x.json': { outletId: 'a-site', criticName: 'X', url: URL_SPEC },
     'b-site--y.json': { outletId: 'b-site', criticName: 'Y', url: URL_SPEC },
   });
-  assert.equal(findExistingReviewFile(dir, 'columbiaspectator-com', 'Z', URL_SPEC), null);
+  assert.equal(findExistingReviewFile(dir, 'quadtownherald-com', 'Z', URL_SPEC), null);
 });
 
 test('an unregistered outlet name that is NOT the URL host placeholder is never adopted', () => {
-  const dir = showDir({ 'columbia-spectator--jane-doe.json': { outletId: 'columbia-spectator', criticName: 'Jane Doe', url: URL_SPEC } });
+  const dir = showDir({ 'quad-town-herald--jane-doe.json': { outletId: 'quad-town-herald', criticName: 'Jane Doe', url: URL_SPEC } });
   assert.equal(findExistingReviewFile(dir, 'Some Theatre Blog', 'Light Dohrne', URL_SPEC), null);
-  assert.ok(findExistingReviewFile(dir, 'columbiaspectator', 'Light Dohrne', URL_SPEC), 'host without TLD is the same placeholder');
+  assert.ok(findExistingReviewFile(dir, 'quadtownherald', 'Light Dohrne', URL_SPEC), 'host without TLD is the same placeholder');
 });
