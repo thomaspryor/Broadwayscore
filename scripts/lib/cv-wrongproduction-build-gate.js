@@ -67,8 +67,20 @@ function buildGrandfatherSet(reviews, norm = {}) {
   return set;
 }
 
+// BRO-7894: the gate armed 2026-11-10T19:01Z (BRO-7296). Grandfathering protects a row whose verdict the gate
+// already saw at arm time. A verdict stamped AFTER that on a row that shipped unverified (collect, ship, then
+// the verifier flips it) is a new decision, so it is not grandfathered: otherwise every such row lives on as
+// "grandfathered" and re-fires the daily lifetime-sweep row (5 files verified 2026-11-12..17 were still live).
+// A verdict with no usable verifiedAt keeps the old behaviour.
+const GRANDFATHER_VERDICT_CUTOFF_MS = Date.parse('2026-11-10T19:01:45Z');
+function verdictPostdatesGate(data) {
+  const t = Date.parse(data && data.contentVerification && data.contentVerification.verifiedAt);
+  return Number.isFinite(t) && t > GRANDFATHER_VERDICT_CUTOFF_MS;
+}
+
 function isGrandfathered(grandfather, showId, data, norm = {}) {
   if (!grandfather) return false;
+  if (verdictPostdatesGate(data)) return false;
   return shippedKeys(showId, data, norm).some((k) => grandfather.has(k));
 }
 
@@ -104,4 +116,4 @@ function decideCvWrongProductionHold(data, show, opts = {}) {
     : { hold: true, reason: 'cv-wrongproduction-unhandled' };
 }
 
-module.exports = { decideCvWrongProductionHold, buildGrandfatherSet, isGrandfathered, shippedKeys, criticKey };
+module.exports = { GRANDFATHER_VERDICT_CUTOFF_MS, verdictPostdatesGate, decideCvWrongProductionHold, buildGrandfatherSet, isGrandfathered, shippedKeys, criticKey };

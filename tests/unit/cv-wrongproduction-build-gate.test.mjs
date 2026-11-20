@@ -130,3 +130,13 @@ test('BRO-7310: no writer\'s string stamp clears the CV gate; clear flags are re
     assert.ok(!/!!\s*\w+\.wrongProductionAutoCleared\b|!\s*\w+\.wrongProductionAutoCleared\b/.test(src), `${f}: truthy read of wrongProductionAutoCleared`);
   }
 });
+
+test('BRO-7894: a verdict stamped after the gate armed is not grandfathered, even on a live row', () => {
+  const live = (d) => buildGrandfatherSet([{ showId: show.id, url: d.url, outletId: d.outletId, criticName: d.criticName }]);
+  const late = released(); late.contentVerification.verifiedAt = '2026-11-17T09:00:00.000Z';
+  assert.deepEqual(decide(late, { grandfather: live(late) }), { hold: true, reason: 'cv-wrongproduction-unhandled' });
+  const early = released(); early.contentVerification.verifiedAt = '2026-10-28T09:00:00.000Z';
+  assert.equal(decide(early, { grandfather: live(early) }).reason, 'grandfathered');
+  const undated = released();
+  assert.equal(decide(undated, { grandfather: live(undated) }).reason, 'grandfathered');
+});
