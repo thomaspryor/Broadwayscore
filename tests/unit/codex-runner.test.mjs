@@ -1066,13 +1066,14 @@ test('slim sparse patterns: a real git worktree drops the image trees, keeps the
   try {
     sh(dir, 'init', '-q');
     sh(dir, 'config', 'user.email', 't@t.t'); sh(dir, 'config', 'user.name', 't');
-    for (const f of [...r.SLIM_EXCLUDED_DIRS.map((d) => `${d}/a.txt`), 'public/data/keep.json', 'public/images/theaters/t.txt', 'README.md']) {
+    for (const f of [...r.SLIM_EXCLUDED_DIRS.map((d) => `${d}/a.txt`), ...r.SLIM_EXCLUDED_FILES, 'data/audit/keep.json', 'public/data/keep.json', 'public/images/theaters/t.txt', 'README.md']) {
       fs.mkdirSync(join(dir, dirname(f)), { recursive: true }); writeFileSync(join(dir, f), 'x');
     }
     sh(dir, 'add', '-A'); sh(dir, 'commit', '-qm', 'x');
     sh(dir, ...r.treeModeArgs('slim'));
     for (const d of r.SLIM_EXCLUDED_DIRS) assert.equal(fs.existsSync(join(dir, d)), false, d);
-    for (const f of ['public/data/keep.json', 'public/images/theaters/t.txt', 'README.md']) assert.equal(fs.existsSync(join(dir, f)), true, f);
+    for (const f of r.SLIM_EXCLUDED_FILES) assert.equal(fs.existsSync(join(dir, f)), false, f);
+    for (const f of ['data/audit/keep.json', 'public/data/keep.json', 'public/images/theaters/t.txt', 'README.md']) assert.equal(fs.existsSync(join(dir, f)), true, f);
     // Repeating the setup on a slim tree is a no-op (setupWorktree runs it every card).
     sh(dir, ...r.treeModeArgs('slim'));
     assert.ok(r.measureTreeBytes(dir) > 0);
@@ -1085,6 +1086,7 @@ test('slim sparse patterns: a real git worktree drops the image trees, keeps the
     sh(dir, ...r.treeModeArgs('full'));
     assert.equal(r.isSlimTree(dir), false);
     for (const d of r.SLIM_EXCLUDED_DIRS) assert.equal(fs.existsSync(join(dir, d, 'a.txt')), true, d);
+    for (const f of r.SLIM_EXCLUDED_FILES) assert.equal(fs.existsSync(join(dir, f)), true, f);
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
@@ -1930,4 +1932,14 @@ test('BRO-7467: land-local-check refuses under 4 GB free and runs the check befo
   assert.equal(res.lowDiskMessage(4 * 1024 ** 3), null);
   const src = fs.readFileSync(new URL('../../scripts/lib/land-local-check.js', import.meta.url), 'utf8');
   const g = src.indexOf('lowDiskMessage(freeBytesOf(ROOT))'); assert.ok(g > 0 && g < src.indexOf("const baseDir = path.join(out, 'base')"));
+});
+
+test('BRO-7097 class guard: nothing in tests/, scripts/ or src/ reads a path the slim worktree drops (audit snapshots and 2015 census)', () => {
+  const dropped = [...r.SLIM_EXCLUDED_FILES, 'data/audit/outlet-census-2015'].map((p) => p.split('/').pop().replace(/\.json$/, ''));
+  const hits = spawnSync('grep', ['-rlF', ...dropped.flatMap((d) => ['-e', d]), 'scripts', 'src', 'tests', '--include=*.js', '--include=*.ts', '--include=*.tsx', '--include=*.mjs', '--exclude=codex-runner.js', '--exclude=codex-runner.test.mjs', '--exclude=check-file-sizes-post-stage.test.mjs'], { encoding: 'utf8' }).stdout.trim();
+  assert.equal(hits, '', `these read a slim-excluded path: move it out of SLIM_EXCLUDED_*\n${hits}`);
+});
+
+test('BRO-7097 acceptance: the slim estimate is at most 40% of the full estimate, both in bytes', () => {
+  assert.ok(r.SLIM_WORKTREE_BYTES / r.FULL_WORKTREE_BYTES <= 0.40, `${r.SLIM_WORKTREE_BYTES} / ${r.FULL_WORKTREE_BYTES}`);
 });

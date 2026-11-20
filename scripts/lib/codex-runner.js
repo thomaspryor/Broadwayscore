@@ -1801,13 +1801,16 @@ function holdsIgnoredWork(wt) {
 }
 
 // A full worktree (tracked files + data copies, du measured 2026-11-07: 1,773 MB).
-const FULL_WORKTREE_BYTES = 1.77e9;
+// du -sm printed MiB; 1,773 MiB = 1.859e9 bytes (BRO-7097: the old 1.77e9 read MiB as MB, so the summary overstated slim as 51%).
+const FULL_WORKTREE_BYTES = 1773 * 1048576;
 // BRO-7097: a slim worktree skips these image trees (show images 808 MB, video-review images 128 MB, transcripts 116 MB, deleted-images archive 19 MB of a 1,773 MB tree, measured 2026-11-07).
-const SLIM_EXCLUDED_DIRS = ['public/images/shows', 'public/images/video-reviews', 'data/video-reviews-transcripts', 'data/audit/deleted-images'];
-// Non-cone sparse-checkout patterns: everything, minus the excluded directories.
-const SLIM_SPARSE_PATTERNS = ['/*', ...SLIM_EXCLUDED_DIRS.map((d) => `!/${d}/`)];
+// Re-measured 2026-11-20: 722 MB of 1,773 MB (40.7%), just over the card's 40% bar, so the unreferenced 2026-04-29 audit snapshots and the 2015 census join the list (about 20 MB, nothing in tests/ scripts/ src/ reads them).
+const SLIM_EXCLUDED_DIRS = ['public/images/shows', 'public/images/video-reviews', 'data/video-reviews-transcripts', 'data/audit/deleted-images', 'data/audit/outlet-census-2015'];
+const SLIM_EXCLUDED_FILES = ['data/audit/shows-pre-backfill-2026-04-29.json', 'data/audit/shows-pre-ob-backfill-v2-2026-04-29.json'];
+// Non-cone sparse-checkout patterns: everything, minus the excluded directories and files.
+const SLIM_SPARSE_PATTERNS = ['/*', ...SLIM_EXCLUDED_DIRS.map((d) => `!/${d}/`), ...SLIM_EXCLUDED_FILES.map((f) => `!/${f}`)];
 // What the slim estimate is when nothing was measured: the full size less the excluded images.
-const SLIM_WORKTREE_BYTES = 0.72e9;
+const SLIM_WORKTREE_BYTES = 701 * 1048576; // du -sm of a real slim tree, 2026-11-20
 // Card text that means the card reads or edits show images, or runs a script that does: it gets a full tree.
 const IMAGE_CARD_RE = /public\/images|\bimages?\b|\bhero\b|\bposter\b|\bthumbnail|\bvideo[- ]?reviews?\b|\btranscripts?\b|deleted-images|rename[- ]show|show[- ]id|retitle|validate-data|image-pointer|image-null|\bphotos?\b/i;
 /** Does this card need the image trees? text = title + description + verify command. A conservative match: a false yes only costs disk. */
@@ -2062,7 +2065,7 @@ module.exports = {
   CODEX_SLOT_WORKTREE,
   LATER_CARD_DISCOUNT_MS,
   slotsForDisk,
-  SLIM_SPARSE_PATTERNS, SLIM_EXCLUDED_DIRS, SLIM_WORKTREE_BYTES, FULL_WORKTREE_BYTES,
+  SLIM_SPARSE_PATTERNS, SLIM_EXCLUDED_DIRS, SLIM_EXCLUDED_FILES, SLIM_WORKTREE_BYTES, FULL_WORKTREE_BYTES,
   cardNeedsImages, treeModeArgs, isSlimTree, worktreeSummaryLine, worktreeBytesFor, measureTreeBytes,
   isDiskFailure,
   DISK_FULL_RE, DISK_STOP_RE, runStoppedForDisk,
