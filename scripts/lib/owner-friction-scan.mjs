@@ -8,6 +8,7 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isMainModule } from './is-main-module.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -54,7 +55,7 @@ export function scan({ root = ROOT, files = null, read = (f) => readFileSync(pat
   return hits;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   const hits = scan();
   for (const h of hits) console.log(`${h.file}:${h.line} [${h.id}] ${h.text}`);
   console.log(`owner-friction-scan: ${hits.length} hit(s) across ${scanFiles().length} file(s)${hits.length ? '' : ' (clean)'}`);
