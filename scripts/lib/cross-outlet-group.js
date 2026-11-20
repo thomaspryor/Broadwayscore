@@ -211,13 +211,15 @@ function excerptContainmentFlags(entries, opts = {}) {
 
 /**
  * Conservative keeper check for callers without the rebuild's full probe: a
- * keeper flagged wrong production/show/url, with distrusted fullText, or an
- * invalid tier never absorbs a quote.
+ * keeper flagged wrong production/show/url/attribution, itself a flagged copy,
+ * with distrusted fullText, or an invalid tier never absorbs a quote.
  */
 function defaultKeeperIncludable(data) {
   if (!data) return false;
   if (data.wrongProduction === true || data.wrongShow === true || data.wrongUrl === true) return false;
   if (data.contentTier === 'invalid') return false;
+  // BRO-7903: wrongAttribution = the text is another outlet's; a flagged copy is not a root keeper (no chains).
+  if (data.wrongAttribution === true || data.crossOutletDuplicate === true) return false;
   if (require('./review-guards').isFullTextWrongAuthorActive(data)) return false;
   return true;
 }

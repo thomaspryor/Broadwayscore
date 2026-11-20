@@ -111,7 +111,7 @@ function trigramSimilarity(text1, text2) {
   return union === 0 ? 0 : Math.round(100 * intersection / union);
 }
 
-const { getBestText, resolveFingerprintGroup, excerptCopySide } = require('./lib/cross-outlet-group');
+const { getBestText, resolveFingerprintGroup, excerptCopySide, defaultKeeperIncludable } = require('./lib/cross-outlet-group');
 
 // ============================================================
 // LLM Confirmation (Layer 3)
@@ -273,6 +273,8 @@ async function main() {
           fingerprint: contentFingerprint(text),
           score: data.llmScore?.score || data.assignedScore || null,
           pointerAcross: pointerAcross ? pointerAcross.target : null,
+          // BRO-7903: kept for the excerpt-containment keeper probe (same one the rebuild rule uses).
+          keeperIncludable: defaultKeeperIncludable(data),
         });
         stats.reviewsScanned++;
       } catch { /* skip corrupt */ }
@@ -346,6 +348,9 @@ async function main() {
         // BRO-7663: an excerpt-only row whose quote sits inside another outlet's
         // fullText is that review re-filed under the wrong outlet (Jaccard misses it).
         const contained = excerptCopySide(r1, r2);
+        // BRO-7903: a keeper the rebuild drops (wrongProduction/wrongShow/wrongUrl/invalid)
+        // never absorbs a quote; hiding the quote would lose the review entirely.
+        if (contained && !(contained.copy === 'a' ? r2 : r1).keeperIncludable) continue;
         const sim = contained ? 100 : trigramSimilarity(r1.text, r2.text);
         if (sim < THRESHOLD) continue;
 
