@@ -158,7 +158,7 @@ test('fan-out counts quotes an earlier run already flagged against the same keep
   assert.deepEqual(held[0].alreadyFlagged, ['nydailynews--unknown.json']);
 });
 
-test('excludeAsCrossOutletCopy: an excerpt-containment flag is stale when its keeper is gone or excluded; other methods unchanged', () => {
+test('excludeAsCrossOutletCopy: an excerpt-containment flag is stale only when its keeper file is gone; other methods unchanged', () => {
   const { excludeAsCrossOutletCopy } = require(path.join(ROOT, 'scripts/lib/cross-outlet-cycle.js'));
   const fp = `/x/${SHOW}/nydailynews--unknown.json`;
   const flagged = (method) => quoteRec({ crossOutletDuplicate: true, crossOutletMethod: method, crossOutletPrimaryFile: `${SHOW}/nytimes--jesse-green.json` });
@@ -168,7 +168,8 @@ test('excludeAsCrossOutletCopy: an excerpt-containment flag is stale when its ke
   const keeperExcluded = (d) => d.outletId === 'nytimes';
   assert.equal(excludeAsCrossOutletCopy(flagged('excerpt-containment'), fp, neverExcluded, keeperOk), true);
   assert.equal(excludeAsCrossOutletCopy(flagged('excerpt-containment'), fp, neverExcluded, gone), false);
-  assert.equal(excludeAsCrossOutletCopy(flagged('excerpt-containment'), fp, keeperExcluded, keeperOk), false);
+  // An excluded keeper does not revive the quote: same text, wrong outlet credit.
+  assert.equal(excludeAsCrossOutletCopy(flagged('excerpt-containment'), fp, keeperExcluded, keeperOk), true);
   assert.equal(excludeAsCrossOutletCopy(flagged('similarity'), fp, neverExcluded, gone), true);
   assert.equal(excludeAsCrossOutletCopy(flagged('similarity'), fp, keeperExcluded, keeperOk), true);
 });

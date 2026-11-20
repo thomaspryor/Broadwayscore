@@ -104,12 +104,12 @@ test('rebuild: fan-out hold spans runs (second outlet\'s quote arrives in a late
   assert.match(r2.out, /\[EXCERPT CONTAINMENT HELD\] operation-mincemeat-2025\/nytimes--jesse-green\.json.*already flagged: nydailynews--unknown\.json/);
 });
 
-test('rebuild: a containment-flagged quote goes live again when its keeper is excluded later', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+test('rebuild: a containment-flagged quote stays excluded when its keeper is excluded later (same text, wrong credit)', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
   const r1 = rebuild({ 'nytimes--jesse-green.json': fullRec(), 'nydailynews--unknown.json': quoteRec() });
   assert.equal(r1.included, 1);
   assert.equal(r1.read('nydailynews--unknown.json').crossOutletDuplicate, true);
   const r2 = rebuild({ 'nytimes--jesse-green.json': { ...fullRec(), wrongProduction: true, wrongProductionReason: 'test: other production' } }, r1.root);
-  assert.equal(r2.included, 1, 'the quote ships once its keeper no longer does: ' + r2.out.slice(-800));
+  assert.equal(r2.included, 0, 'neither the excluded keeper nor its re-credited quote ships: ' + r2.out.slice(-800));
 });
 
 test('rebuild: a containment-flagged quote goes live again when its keeper file is gone', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {

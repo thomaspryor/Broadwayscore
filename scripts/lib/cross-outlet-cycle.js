@@ -106,7 +106,7 @@ function excludeAsCrossOutletCopy(data, filePath, excludedOtherwise, readSibling
   const read = readSibling || ((f) => {
     try { return JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')); } catch { return null; }
   });
-  if (isStaleExcerptContainmentFlag(data, showDir, showId, read, excludedOtherwise)) return false;
+  if (isStaleExcerptContainmentFlag(data, showDir, showId, read)) return false;
   const partner = crossOutletCyclePartner(data, file, showId, read);
   if (!partner) return true;
   const partnerPath = path.join(showDir, partner.file);
@@ -119,19 +119,19 @@ function excludeAsCrossOutletCopy(data, filePath, excludedOtherwise, readSibling
 
 /**
  * BRO-7684: an 'excerpt-containment' flag (bylineless quote lifted from a
- * sibling's fullText; set by the rebuild pre-pass and the weekly detector) only
- * holds while its keeper ships. When the keeper file is gone or is itself
- * excluded (same probe as the cycle tiebreak), hiding the quote would drop the
- * review entirely, so the quote stays live. Scoped to that method only: the
- * detector's similarity/fingerprint flags are unchanged.
+ * sibling's fullText; set by the rebuild pre-pass and the weekly detector) is
+ * stale only when its keeper file is gone: then the quote is the last copy of
+ * that review and stays live. A keeper that is merely EXCLUDED (wrongAttribution,
+ * wrongProduction, personalRepost ...) does not revive the quote: it is the same
+ * text under a wrong outlet credit, so the same reason applies to it
+ * (dog-day-afternoon-2026 nytimes--unknown holds Theatrely's words).
+ * Scoped to that method only: the detector's other flags are unchanged.
  */
-function isStaleExcerptContainmentFlag(data, showDir, showId, read, excludedOtherwise) {
+function isStaleExcerptContainmentFlag(data, showDir, showId, read) {
   if (!data || data.crossOutletMethod !== 'excerpt-containment') return false;
   const p = parsePointer(data.crossOutletPrimaryFile);
   if (!p || (p.showId !== null && p.showId !== showId)) return false;
-  const keeper = read(p.file);
-  if (!keeper) return true;
-  return Boolean(excludedOtherwise(keeper, path.join(showDir, p.file)));
+  return !read(p.file);
 }
 
 /**
