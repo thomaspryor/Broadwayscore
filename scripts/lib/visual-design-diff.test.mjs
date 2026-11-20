@@ -7,6 +7,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, symlinkSync, realpathSync, appendFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
@@ -146,7 +147,7 @@ function runHook(fx, { env = {}, hook = HOOK } = {}) {
   const cmd = 'git push origin HEAD:refs/heads/land/bro-7888-x';
   const tr = join(fx.root, 'transcript.jsonl'); // neutral: no owner yes anywhere
   writeFileSync(tr, JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: 'please fix the header bug' }] } }) + '\n');
-  const r = spawnSync('bash', [hook], { cwd: fx.repo, input: JSON.stringify({ tool_input: { command: cmd }, session_id: 's-7888', transcript_path: tr, tool_use_id: 'tu1' }), encoding: 'utf8', env: cleanEnv({ HOME: fx.home, CLAUDE_LOG_DIR: fx.logs, ...env }), timeout: 120_000 });
+  const r = spawnSyncStdinFile('bash', [hook], { cwd: fx.repo, input: JSON.stringify({ tool_input: { command: cmd }, session_id: 's-7888', transcript_path: tr, tool_use_id: 'tu1' }), encoding: 'utf8', env: cleanEnv({ HOME: fx.home, CLAUDE_LOG_DIR: fx.logs, ...env }), timeout: 120_000 });
   if (r.error) throw r.error;
   return r;
 }
