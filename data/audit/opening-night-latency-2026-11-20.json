@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-20T08:01:55.607Z",
+  "generatedAt": "2026-11-20T12:15:38.440Z",
   "date": "2026-11-20",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 219083,
+  "entryCount": 239918,
   "shows": [
     {
       "showId": "relative-motion-off-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 546032,
-        "scored-to-rebuilt": 215466,
+        "scored-to-rebuilt": 373405,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -516,13 +516,13 @@
     },
     {
       "showId": "destiny-of-desire-regional-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 644428,
-        "scored-to-rebuilt": 873409,
+        "scored-to-rebuilt": 677089,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1701,13 +1701,13 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1198312,
-        "scored-to-rebuilt": 289422,
+        "collected-to-scored": 725288,
+        "scored-to-rebuilt": 288149,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2061,13 +2061,13 @@
     },
     {
       "showId": "eurotrash-off-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 547920,
-        "scored-to-rebuilt": 369829,
+        "collected-to-scored": 1171368,
+        "scored-to-rebuilt": 689834,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -4521,13 +4521,13 @@
     },
     {
       "showId": "florence-off-west-end-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 593377,
-        "scored-to-rebuilt": 261133,
+        "collected-to-scored": 608673,
+        "scored-to-rebuilt": 263051,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -5721,13 +5721,13 @@
     },
     {
       "showId": "passing-strange-regional-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1062996,
+        "scored-to-rebuilt": 1009160,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -5752,6 +5752,21 @@
     {
       "showId": "its-a-wonderful-life-a-live-radio-play-2026",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "club-nvrlnd-off-west-end-2026",
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8136,13 +8151,13 @@
     },
     {
       "showId": "much-ado-about-nothing-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 534175,
+        "collected-to-scored": 384306,
+        "scored-to-rebuilt": 481130,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8211,13 +8226,13 @@
     },
     {
       "showId": "the-fantasticks-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 630876,
-        "scored-to-rebuilt": 581624,
+        "scored-to-rebuilt": 566325,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -10333,6 +10348,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1331712,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "my-english-persian-kitchen-regional-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 891327,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
