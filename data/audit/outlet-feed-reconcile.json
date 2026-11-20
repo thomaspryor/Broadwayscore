@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T03:07:30.175Z",
+  "generatedAt": "2026-11-20T04:11:44.396Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -155,6 +155,14 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -167,73 +175,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 864,
-  "matchedGaps": 8,
-  "possibleGaps": 2,
+  "itemsScanned": 862,
+  "matchedGaps": 1,
+  "possibleGaps": 1,
   "gaps": [
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/much-ado-about-nothing-tom-hiddleston-broadway-review/",
-      "headline": "Tom Hiddleston and Hayley Atwell make sparks and confetti fly in ‘Much Ado About Nothing’ (Broadway review)",
-      "publishDate": "2026-11-19"
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "level": "matched",
-      "outletId": "nyt-theater",
-      "url": "https://newyorktheater.me/2026/11/19/much-ado-about-nothing-broadway-review/",
-      "headline": "Much Ado About Nothing Broadway Review",
-      "publishDate": "2026-11-19"
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "level": "matched",
-      "outletId": "nypost",
-      "url": "https://nypost.com/2026/11/19/entertainment/much-ado-about-nothing-review-tom-hiddlestons-shakespeare-party-is-the-most-fun-show-on-broadway/",
-      "headline": "‘Much Ado About Nothing’ review: Tom Hiddleston&#8217;s Shakespeare party is the most fun show on Broadway",
-      "publishDate": "2026-11-19"
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "level": "matched",
-      "outletId": "chicagotribune",
-      "url": "https://www.chicagotribune.com/2026/11/19/review-much-ado-about-nothing-broadway/",
-      "headline": "Review: ‘Much Ado About Nothing’ becomes an irresistible pink confetti musical on Broadway",
-      "publishDate": "2026-11-19"
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "level": "matched",
-      "outletId": "slantmagazine",
-      "url": "https://www.slantmagazine.com/theater/much-ado-about-nothing-review-tom-hiddleston-hayley-atwell/",
-      "headline": "‘Much Ado About Nothing’ Review: Tom Hiddleston and Hayley Atwell Spark Amid a Confetti Storm",
-      "publishDate": "2026-11-19"
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "level": "matched",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-tom-hiddleston-and-hayley-atwell-are-a-marvelous-duo-in-a-very-pink-much-ado-about-nothing_1860070/",
-      "headline": "Review: Tom Hiddleston and Hayley Atwell Are a Marvelous Duo in a Very Pink Much Ado About Nothing",
-      "publishDate": "2026-11-19"
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "level": "matched",
-      "outletId": "thewrap",
-      "url": "https://www.thewrap.com/creative-content/theater/much-ado-about-nothing-broadway-review-tom-hiddleston-hayley-atwell/",
-      "headline": "&#8216;Much Ado About Nothing&#8217; Broadway Review: Tom Hiddleston Puts the &#8216;Shake&#8217; Back in Shakespeare",
-      "publishDate": "2026-11-19"
-    },
     {
       "showId": "radio-galaxy-regional-2026",
       "title": "Radio Galaxy",
@@ -242,15 +187,6 @@
       "url": "https://stageandcinema.com/2026/11/17/radio-galaxy-the-wallis-review/",
       "headline": "Theater Review: RADIO GALAXY (The Wallis / Beverly Hills)",
       "publishDate": "2026-11-18"
-    },
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "level": "possible",
-      "outletId": "nytg",
-      "url": "https://newyorktheatreguide.com/reviews/much-ado-about-nothing-broadway-review-tom-hiddleston-hayley-atwell",
-      "headline": "'Much Ado About Nothing' Broadway review — Tom Hiddleston and Hayley Atwell make this Shakespeare revival something to see",
-      "publishDate": null
     },
     {
       "showId": "much-ado-about-nothing-2026",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T03:07:08.640Z",
+  "generatedAt": "2026-11-20T04:11:21.640Z",
   "windowDays": 45,
   "showsScanned": 284,
   "gaps": [
@@ -18,13 +18,13 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=eurotrash-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/eurotrash-review-ben-whishaw-8qxcm3q95 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-20T00:28:26.546Z",
-      "fileAgeHours": 2.641474166666667,
+      "fileAgeHours": 3.7148169444444443,
       "gapSeenAt": "2026-11-20T03:07:08.640Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 1.0702777777777779,
       "needsManualRecovery": false
     },
     {
@@ -42,9 +42,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 260.0797513888889,
+      "fileAgeHours": 261.153095,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 237.53453888888887,
+      "nonTerminalAgeHours": 238.60481666666666,
       "needsManualRecovery": true
     },
     {
@@ -62,9 +62,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 229.311675,
+      "fileAgeHours": 230.38500916666666,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 228.17009388888889,
+      "nonTerminalAgeHours": 229.24037166666668,
       "needsManualRecovery": true
     },
     {
@@ -75,20 +75,16 @@
       "outletId": "broadwaynews",
       "tier": 1,
       "type": "empty-body",
-      "recoverable": true,
+      "recoverable": false,
       "url": "https://www.broadwaynews.com/andrew-rannells-megan-hilty-and-tituss-burgess-to-star-in-broadways-its-a-wonderful-life-a-live-radio-play.md",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=its-a-wonderful-life-a-live-radio-play-2026 --url=https://www.broadwaynews.com/andrew-rannells-megan-hilty-and-tituss-burgess-to-star-in-broadways-its-a-wonderful-life-a-live-radio-play.md --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-19T08:38:24.451Z",
-      "fileAgeHours": 18.478783333333332,
+      "fileAgeHours": 19.549064444444443,
       "gapSeenAt": "2026-11-20T00:13:40.042Z",
-      "nonTerminalAgeHours": 2.891277222222222,
+      "nonTerminalAgeHours": 3.961555,
       "needsManualRecovery": false
     }
   ],
