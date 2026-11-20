@@ -59,6 +59,8 @@ function skeleton(ts, sf) {
   // Inside quiet roots a state setter or timer still decides what shows (setS(true), a 99999ms delay): recorded in full.
   const STATE_CALL = /^(?:[\w$.?]*\.)?(set[A-Z]\w*|dispatch|setTimeout|setInterval|requestAnimationFrame)$/;
   let quiet = 0;
+  const FORMAT_NAME = /^format[A-Z0-9_]\w*$/;
+  const hasJsx = (n) => { let f = false; const w = (x) => { if (f) return; if (ts.isJsxElement(x) || ts.isJsxSelfClosingElement(x) || ts.isJsxFragment(x)) { f = true; return; } ts.forEachChild(x, w); }; w(n); return f; };
   const isQuietRoot = (n) => (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && /^use(Layout|Insertion)?Effect$/.test(n.expression.text))
     || (ts.isJsxAttribute(n) && (QUIET_ATTR.test(n.name.getText(sf)) || (QUIET_DOM_ATTR.test(n.name.getText(sf)) && /^[a-z]/.test(n.parent.parent.tagName.getText(sf)))));
   const visit = (n) => {
@@ -69,6 +71,15 @@ function skeleton(ts, sf) {
     // `class X extends A`: the base class is an expression, not a type.
     const heritage = ts.isExpressionWithTypeArguments(n) && n.parent && n.parent.token === ts.SyntaxKind.ExtendsKeyword && ts.isClassLike(n.parent.parent);
     if (heritage) { out.push('extends', n.expression.getText(sf)); return; }
+    // BRO-7902: a text-formatting helper (format*, no JSX, no DOM/class writes) changes the characters shown, not the layout.
+    // Only its name is recorded: its body (date strings, month tables) and a `const formatX = formatY` alias are skipped.
+    // Call sites stay in the skeleton in full, and a body that contains JSX or touches style/class stays design.
+    const vdecl = ts.isVariableStatement(n) && n.declarationList.declarations.length === 1 ? n.declarationList.declarations[0] : null;
+    const fmtName = (ts.isFunctionDeclaration(n) && n.name && n.name.text)
+      || (vdecl && ts.isIdentifier(vdecl.name) && vdecl.initializer
+        && (ts.isArrowFunction(vdecl.initializer) || ts.isFunctionExpression(vdecl.initializer) || ts.isIdentifier(vdecl.initializer)) && vdecl.name.text);
+    if (fmtName && FORMAT_NAME.test(fmtName) && !quiet && !hasJsx(n) && !DOM_WRITE.test(n.getText(sf))
+      && !(ts.isFunctionDeclaration(n) && n.modifiers && n.modifiers.some((m) => m.kind === K.DefaultKeyword))) { out.push(`fmt ${fmtName}`); return; }
     if (ts.isTypeNode(n) || ts.isInterfaceDeclaration(n) || ts.isTypeAliasDeclaration(n)) return;
     if (ts.isImportDeclaration(n)) {
       const mod = ts.isStringLiteral(n.moduleSpecifier) ? n.moduleSpecifier.text : '?';
