@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { computeOutletFulltext, evaluateFloors, recentYears } = require('./lib/outlet-fulltext');
 const { INERT_STRATEGIES } = require('./lib/gap-recovery-ledger');
+const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 
 const argv = process.argv.slice(2);
 const opt = (k, d) => { const a = argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : d; };
@@ -28,7 +29,8 @@ function main() {
   // Same corpus the gap driver works on (review-texts-dir resolves worktrees and the sibling clone).
   const root = process.env.REVIEW_TEXTS_DIR || require('./lib/review-texts-dir').resolveReviewTextsDir();
   const base = fs.existsSync(path.join(root, 'data', 'review-texts')) ? path.join(root, 'data', 'review-texts') : root;
-  if (!fs.existsSync(base)) { console.error(`check-outlet-fulltext-floors: no review-texts corpus at ${base}`); return 2; }
+  // A missing or empty corpus would score every outlet on zero rows and read as a pass (BRO-7193).
+  try { assertReviewTextCorpus(base); } catch (e) { return exitIfCorpusNotScanned(e, { prefix: 'check-outlet-fulltext-floors: ' }); }
   const ledger = opt('ledger', process.env.GAP_RECOVERY_LEDGER_PATH || path.join(__dirname, '..', 'data', 'audit', 'gap-recovery-attempts.jsonl'));
   const attemptedKeys = new Set();
   let ledgerRows = 0;

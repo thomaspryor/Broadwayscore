@@ -699,6 +699,19 @@ const AUDITS = [
     args: ['--check', '--max-rule-delta=200', '--max-rate-rise=0.01'],
     crashCodes: [],            // 0 ok / 1 = rule moved > 200, rate rose > 1pt, or summary missing/stale
   },
+  {
+    // BRO-7702: major outlets' full-text floors on the last two years' productions
+    // (wsj/times-uk/standard/washpost 98%, other majors 95%) and "no gap older than
+    // 7 days without a logged recovery attempt". A live-corpus statistic that moves
+    // with every collection run, so it lives here (advisory FYI line), not in test.yml
+    // (BRO-3535). The Mac nightly also records the same verdict in its nightly row.
+    name: 'outlet-fulltext-floors',
+    healPathRequired: false,
+    label: 'major-outlet full text below floor, or a gap >7d old with no logged recovery attempt',
+    script: 'check-outlet-fulltext-floors.js',
+    args: [],
+    crashCodes: [2],           // 0 ok / 1 below floor or stale unattempted gap / 2 = corpus or ledger unreadable
+  },
 ];
 
 function runAudit(audit) {

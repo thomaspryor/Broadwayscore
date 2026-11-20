@@ -340,3 +340,27 @@ import { createRequire as _cr0 } from 'node:module';
     _a0.ok(p.skipped.some((k) => k.strategy === 'PAID_FETCH' && k.reason === 'no_paid_tier'));
   });
 }
+
+// BRO-7702: a row with no stored url, or a garbage page whose refetch was
+// abandoned, used to get NO route and sat unattempted past the floor guard's
+// stale window. URL_FIND (needs no url) is now its last route.
+{
+  const req = _cr0(import.meta.url);
+  const { selectStrategy } = req('./gap-strategy-table.js');
+  _t0('selectStrategy: GARBAGE_PAGE with no url -> URL_FIND', () => {
+    const r = selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: false, hasAdapter: false, recency: 'recent' });
+    _a0.equal(r.strategy, 'URL_FIND');
+  });
+  _t0('selectStrategy: GARBAGE_PAGE with an abandoned stored url -> URL_FIND', () => {
+    const r = selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: true, hasAdapter: false, recency: 'recent', eligible: (s) => (s === 'REFETCH_FREE' ? { ok: false, reason: 'abandoned' } : { ok: true, reason: 'ok' }) });
+    _a0.equal(r.strategy, 'URL_FIND');
+  });
+  _t0('selectStrategy: any routed class with no url falls back to URL_FIND; unrouted classes stay unrouted', () => {
+    for (const gapClass of ['TRUNCATED_OTHER', 'SHORT_UNVERIFIED', 'BLOCKED', 'PAYWALL_PAGE']) {
+      _a0.equal(selectStrategy({ gapClass, hasUrl: false, hasAdapter: false, recency: 'recent' }).strategy, 'URL_FIND', gapClass);
+    }
+    _a0.equal(selectStrategy({ gapClass: 'UNCLASSIFIED', hasUrl: false, hasAdapter: false, recency: 'recent' }).strategy, null);
+    // a url-holding truncated row keeps its refetch route
+    _a0.equal(selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, recency: 'recent' }).strategy, 'REFETCH_FREE');
+  });
+}

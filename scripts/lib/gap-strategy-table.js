@@ -52,7 +52,10 @@ const CLASS_STRATEGIES = Object.freeze({
   NEVER_FETCHED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
   BLOCKED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
   DEFERRED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
-  GARBAGE_PAGE: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'URL_REDISCOVER'],
+  // A garbage page whose stored url keeps returning garbage (refetch abandoned)
+  // is usually the wrong url (BRO-7702: variety a-few-good-men, washpost ha-ha),
+  // so URL_FIND looks for the real one last instead of leaving the row unrouted.
+  GARBAGE_PAGE: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'URL_REDISCOVER', 'URL_FIND'],
   // A dead url is often one an old web-search recovery invented (Stage 4: 56
   // of 64 dead links); URL_FIND looks for the real one.
   URL_DEAD: ['ARCHIVE', 'URL_FIND', 'URL_REDISCOVER'],
@@ -100,6 +103,10 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
   // the page (BRO-7171, 31 such rows on 2026-11-16). Skip it, and keep the
   // capped paid fetch (BD_REQ_BUDGET) as this url's last route.
   if (!freeTierOk && paidTierOk && order.includes('REFETCH_FREE') && !order.includes('PAID_FETCH')) order = [...order, 'PAID_FETCH'];
+  // No stored url: every url-based route skips, so a row of any routed class
+  // would sit unattempted forever (BRO-7702: 2 floor gaps older than 7 days had
+  // no route at all). URL_FIND needs no url; it is the last route for such rows.
+  if (!hasUrl && order.length && !order.includes('URL_FIND')) order = [...order, 'URL_FIND'];
   const skipped = [];
   for (const s of order) {
     if (only && s !== only) continue;
