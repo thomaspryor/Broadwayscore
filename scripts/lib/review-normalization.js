@@ -2080,6 +2080,37 @@ function isExemptFlaggedMergeTarget(data, incomingCritic, fileCritic) {
 }
 
 /**
+ * BRO-7890 pass 0b: the same article URL filed under a DIFFERENT outlet id. The lane inbox drain sent the Columbia
+ * Spectator URL to ingest-urls under a host-derived outlet ("columbiaspectator-com"), pass 0 skipped the existing
+ * file (other outlet id) and the writer minted an empty columbiaspectator-com--light-dohrne.json beside it.
+ * Pass 0 is same-outlet on purpose (aggregator roundup URLs back several outlets' star-stubs), so this adopts the
+ * other file only when that cannot be a shared roundup: the URL is not a roundup, exactly ONE unflagged file holds
+ * it, and NEITHER outlet id is in the registry (two spellings of one unregistered site). A registered outlet on another
+ * outlet's URL keeps the pass-0 contract (never merges; see review-normalization-pass0.test.mjs). Reads the show dir only.
+ */
+function findCrossOutletUrlOwner(showDir, files, url, outletName) {
+  const { isRoundupUrl } = require('./review-guards');
+  const { sameArticleUrl } = require('./review-url-collision');
+  if ((isRoundupUrl(url) || {}).isRoundup) return null;
+  const incoming = normalizeOutlet(outletName);
+  if (!incoming || getOutletFromRegistry(incoming)) return null;
+  const owners = [];
+  for (const file of files) {
+    const filePath = path.join(showDir, file);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch { continue; }
+    if (!data || !data.url || !sameArticleUrl(data.url, url)) continue;
+    if (data.wrongProduction || data.duplicateOf) continue;
+    owners.push({ path: filePath, filename: file, data });
+  }
+  if (owners.length !== 1) return null;
+  const owner = owners[0];
+  const ownerOutlet = normalizeOutlet(owner.data.outletId || owner.filename.split('--')[0]);
+  if (ownerOutlet === incoming) return null; // pass 0 already decided same-outlet files
+  return getOutletFromRegistry(ownerOutlet) ? null : owner;
+}
+
+/**
  * Find an existing review file for the same outlet in a show directory.
  * Checks all filename variants: normalized outlet ID, raw slug, with/without critic.
  * Returns { path, data } if found, null if no existing file for this outlet.
@@ -2144,6 +2175,8 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
         } catch { /* unreadable — skip */ }
       }
       if (folded) return folded;
+      const crossOutlet = findCrossOutletUrlOwner(showDir, files, url, outletName);
+      if (crossOutlet) return crossOutlet;
     }
   }
 
