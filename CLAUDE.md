@@ -125,13 +125,13 @@ See `memory/email-broadcast-rules.md` for full history.
 - **NEVER send to any Resend audience with >5 real contacts for testing**
 
 ### 18. Review BEFORE editing shared infrastructure (owner decision 2026-08-05, #1079)
-Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, the review gates, `.github/workflows/**`, `~/.claude/hooks/**`: run `/second-opinion` (`/plan-review` if structural) FIRST, then `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_CODE_SESSION_ID`. `infra-plan-review-gate.sh` blocks the first edit without it; a fail stands until a re-reviewed plan passes, recorded with `--note="<what changed>"`. Scope: `infra-review-scope.js`.
+Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, the review gates, `.github/workflows/**`, `~/.claude/hooks/**`: run `/second-opinion` (`/plan-review` if structural) FIRST, then `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_CODE_SESSION_ID`. `infra-plan-review-gate.sh` blocks the first edit without it; a fail stands until a revised pass with `--note="<what changed>"`. Scope: `infra-review-scope.js`.
 
 ### 19. New blocking CI gates land advisory first (BRO-2123)
 New `--strict`/`--gate` test.yml steps: `continue-on-error: true` (or own baseline, or `# gate-arm-ok: <proof>`), blocking later. `audit-new-gate-arming.js` enforces; `memory/feedback_new_gates_land_advisory.md`.
 
 ### 20. Three-Tier Planning (BRO-6246)
-**Substantial** (new system: 4th new file in a new dir, new workflow/secret) = plan + `/plan-review` + the owner's yes (owner decision 2026-10-25), asked once as one DECISION NEEDED; build only after it. The hook lifts on a plan-review verdict too, the yes is still owed. **Moderate** = `/second-opinion`. **Simple** = go. Warns, blocks from 2026-11-07.
+**Substantial** (4th new file in a new dir, new workflow/secret) = plan + `/plan-review` + owner's yes (2026-10-25), one DECISION NEEDED; build only after it (the hook won't wait for it). **Moderate** = `/second-opinion`. **Simple** = go. Blocks since 2026-11-07.
 
 ### 21. Every fix, three parts: cousins, root cause, keep improving (owner 2026-11-07)
 (1) **Cousins:** search site, `data/`, code for the same bug; fix all. (2) **Root cause:** land a class guard that fails with the fix reverted. (3) **Improve the system:** fix the check that missed it. Close with `ROOT-CAUSE:`, `CLASS-GUARD: <path>` (or `PREVENTION: <path>`), `RED-THEN-GREEN:`, `COUSINS:`, or `NO-ROOT-CAUSE: <reason>` (spot), plus `EFFECT:` real before/after numbers (new check: past-input dry-run hit rate) or `NO-EFFECT-CHECK: <reason>`. BRO-7103/7138.

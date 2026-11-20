@@ -76,7 +76,7 @@ test('pinned: the planning-tier message names exactly what isApproved() accepts,
   const user = JSON.stringify({ type: 'user', message: { role: 'user', content: 'OWNER-PLAN-APPROVED: "yes, build it"' } });
   assert.equal(pt.isApproved({ verdicts: [], sessionId: 's', transcriptText: user }).ok, true);
   assert.equal(pt.isApproved({ verdicts: [{ phase: 'plan', reviewer: 'second-opinion', result: 'pass', sessionId: 's', ts: new Date().toISOString() }], sessionId: 's' }).ok, false);
-  assert.match(read('CLAUDE.md'), /### 20\.[^\n]*\n[^\n]*build only after it\. The hook lifts on a plan-review verdict too, the yes is still owed/);
+  assert.match(read('CLAUDE.md'), /### 20\.[^\n]*\n[^\n]*build only after it \(the hook won't wait for it\)/);
 });
 
 test('advisory: full scan hit list (fails only with OWNER_FRICTION_STRICT=1)', () => {
