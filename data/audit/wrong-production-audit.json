@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-11-20T14:12:55.908Z",
+  "timestamp": "2026-11-20T15:02:53.847Z",
   "stats": {
-    "totalReviews": 83373,
-    "alreadyFlagged": 22589,
+    "totalReviews": 83372,
+    "alreadyFlagged": 22588,
     "dateGuardCatches": 221,
     "directorMismatch": 3795,
     "tvFilmSignals": 2378,
-    "londonSignals": 3841,
-    "offBroadwaySignals": 776,
+    "londonSignals": 3843,
+    "offBroadwaySignals": 775,
     "yearMismatch": 387,
     "noPublishDate": 8229
   },
@@ -43395,9 +43395,9 @@
           "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
         },
         {
-          "type": "OFF_BROADWAY_SIGNAL",
+          "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -120275,6 +120275,20 @@
       "score": 93,
       "publishDate": "2026-11-19",
       "url": "https://theverdictnyc.wixsite.com/theverdict/post/review-much-ado-about-nothing",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "whatsonstage--pete-hempstead.json",
+      "score": 92,
+      "publishDate": "2026-11-20",
+      "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-with-hayley-atwell-and-tom-hiddleston-moves-to-broadway-review_1737885/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
