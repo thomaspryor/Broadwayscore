@@ -81,3 +81,12 @@ test('an unreadable diff never reads as "No owner approval needed" (BRO-7849 fin
   assert.equal(r.owner.line, 'Ask the owner now: no');
   assert.ok(r.missing.some((m) => m.id === 'diff'));
 });
+
+test('BRO-7888: a fix-only UI diff with a current passing verdict needs no owner approval; a design diff still asks', () => {
+  const ui = { uiFiles: ['src/a.tsx'], gatedFiles: ['src/a.tsx'], verdict: { exists: true, schemaOk: true, overallPass: true, uiPatchId: 'p', currentPatchId: 'p' } };
+  const fix = evaluate({ ...base, ...ui, fixOnly: { allowed: true, reason: 'fix-only UI change' } });
+  assert.equal(fix.owner.line, 'No owner approval needed');
+  assert.match(fix.owner.why, /fix-only/);
+  assert.equal(evaluate({ ...base, ...ui, fixOnly: { allowed: false, reason: 'design change' } }).owner.line, 'Ask the owner now: yes');
+  assert.equal(evaluate({ ...base, ...ui }).owner.line, 'Ask the owner now: yes'); // classifier absent: fail closed
+});

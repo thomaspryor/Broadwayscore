@@ -59,6 +59,7 @@ export function evaluate(f) {
   if (f.diffError) owner = { line: 'Ask the owner now: no', why: 'the diff could not be read, so nothing can be judged yet' };
   else if (!needsVisual) owner = { line: 'No owner approval needed', why: `diff class is ${cls}` };
   else if (f.approval?.approved) owner = { line: 'No owner approval needed', why: 'this UI diff is already approved' };
+  else if (f.fixOnly?.allowed) owner = { line: 'No owner approval needed', why: `fix-only UI change (BRO-7888): ${f.fixOnly.reason}` };
   else if (missing.length) owner = { line: 'Ask the owner now: no', why: `${missing.length} item(s) above are still open; finish them first so the owner is asked once` };
   else owner = { line: 'Ask the owner now: yes', why: 'everything else is done: send ONE message with the screenshots; any clear yes after it clears the gate' };
   return { items, missing, cls, owner };
@@ -148,6 +149,15 @@ export async function gather({ cwd = process.cwd(), base = 'origin/main', doctor
     } catch { v = { exists: true, schemaOk: false }; }
     try { v.currentPatchId = require('./lib/visual-approval-durable.js').uiPatchId(cwd, 'HEAD', base); } catch { v.currentPatchId = null; }
     f.verdict = v;
+    // BRO-7888: same fix-only rule as the push hook, same copy (the main checkout's, so a branch cannot loosen it), same range base.
+    try {
+      let cls = path.join(HERE, 'lib', 'visual-design-diff.js');
+      const cand = canon && path.join(canon, 'scripts', 'lib', 'visual-design-diff.js');
+      if (cand && existsSync(cand)) cls = cand;
+      const r = spawnSync('node', [cls, '--self-clear', `--range=${range}`, `--verdict=${vp}`], { cwd, encoding: 'utf8', timeout: 30000, env });
+      let j = {}; try { j = JSON.parse(r.stdout || '{}'); } catch { /* fail closed */ }
+      f.fixOnly = { allowed: r.status === 0 && j.allowed === true, reason: j.reason || '' };
+    } catch { f.fixOnly = { allowed: false, reason: 'classifier did not run' }; }
     let approved = false;
     try {
       if (v.currentPatchId && require('./lib/visual-approval-durable.js').hasDurableApproval(cwd, v.currentPatchId)) approved = true;
