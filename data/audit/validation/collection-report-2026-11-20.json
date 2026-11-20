@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-20T18:41:20.906Z",
+  "runDate": "2026-11-20T18:42:23.711Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "desire-under-the-elms-off-west-end-2026",
+    "showFilter": "eurotrash-off-west-end-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 0,
+    "processed": 4,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,8 +28,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 6,
+    "tier1Success": 6,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -44,7 +44,7 @@
     "tier3_6Success": 0,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 0,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 0,
+    "processed": 4,
+    "failed": 2,
     "shows": [
-      "desire-under-the-elms-off-west-end-2026"
+      "eurotrash-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,21 +66,33 @@
     }
   },
   "processed": [
-    "desire-under-the-elms-off-west-end-2026/north-west-end--unknown.json",
-    "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+    "eurotrash-off-west-end-2026/thereviewshub--unknown.json",
+    "eurotrash-off-west-end-2026/british-theatre--unknown.json",
+    "eurotrash-off-west-end-2026/firstnightmagazine--unknown.json",
+    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
   ],
-  "failed": [],
+  "failed": [
+    "eurotrash-off-west-end-2026/thestage--sam-marlowe.json",
+    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "desire-under-the-elms-off-west-end-2026/north-west-end--unknown.json",
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+      "eurotrash-off-west-end-2026/thereviewshub--unknown.json",
+      "eurotrash-off-west-end-2026/british-theatre--unknown.json",
+      "eurotrash-off-west-end-2026/firstnightmagazine--unknown.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
     ],
-    "failed": []
+    "failed": [
+      "eurotrash-off-west-end-2026/thestage--sam-marlowe.json",
+      "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+    ]
   },
   "tierDetails": {
     "playwright": [
-      "desire-under-the-elms-off-west-end-2026/north-west-end--unknown.json",
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+      "eurotrash-off-west-end-2026/thereviewshub--unknown.json",
+      "eurotrash-off-west-end-2026/british-theatre--unknown.json",
+      "eurotrash-off-west-end-2026/firstnightmagazine--unknown.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
     ],
     "amp": [],
     "browserbase": [],
