@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T08:31:04.830Z",
+  "generatedAt": "2026-11-20T10:10:30.480Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -143,16 +143,8 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
-    },
-    {
-      "outletId": "theatre-reviews-limited",
-      "error": "Timeout fetching https://www.theatrereviews.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "cote-notices",
@@ -169,12 +161,29 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 866,
-  "matchedGaps": 1,
-  "possibleGaps": 1,
+  "itemsScanned": 823,
+  "matchedGaps": 2,
+  "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "florence-off-west-end-2026",
+      "title": "Florence",
+      "level": "matched",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/11/20/review-florence-2/",
+      "headline": "REVIEW: Florence",
+      "publishDate": "2026-11-20"
+    },
     {
       "showId": "radio-galaxy-regional-2026",
       "title": "Radio Galaxy",
@@ -183,6 +192,15 @@
       "url": "https://stageandcinema.com/2026/11/17/radio-galaxy-the-wallis-review/",
       "headline": "Theater Review: RADIO GALAXY (The Wallis / Beverly Hills)",
       "publishDate": "2026-11-18"
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "level": "possible",
+      "outletId": "london-theatre",
+      "url": "https://londontheatre.co.uk/reviews/eurotrash-review-young-vic",
+      "headline": "'Eurotrash' review — Ben Whishaw and Kathryn Hunter are riveting in this fantastical family drama",
+      "publishDate": null
     },
     {
       "showId": "much-ado-about-nothing-2026",
