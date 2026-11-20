@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-20T02:42:14.446Z",
+  "timestamp": "2026-11-20T03:19:36.499Z",
   "stats": {
-    "totalReviews": 83294,
+    "totalReviews": 83296,
     "alreadyFlagged": 22567,
     "dateGuardCatches": 221,
     "directorMismatch": 3793,
     "tvFilmSignals": 2375,
-    "londonSignals": 3831,
+    "londonSignals": 3832,
     "offBroadwaySignals": 775,
     "yearMismatch": 387,
     "noPublishDate": 8249
@@ -90608,6 +90608,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "file": "theatreandtonic--george.json",
+      "publishDate": "2026-11-19",
+      "url": "https://theatreandtonic.co.uk/blog/a-homo-alone-2-at-the-other-palace-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
