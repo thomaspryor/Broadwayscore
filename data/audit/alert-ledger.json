@@ -45107,7 +45107,7 @@
       "resolvedAt": "2026-11-17T22:37:56.048Z"
     },
     "cookie-health:live-access-failed:nytimes": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "nytimes login cookies fail the live access check: T1 reviews will score on paywall-truncated text",
       "firstSeen": "2026-11-17T22:00:28.889Z",
@@ -45117,10 +45117,12 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7717"
+      "linearIdentifier": "BRO-7717",
+      "resolvedAt": "2026-11-20T21:46:22.571Z",
+      "resolveReason": "cookies healthy again"
     },
     "cookie-health:live-access-failed:wapo": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "wapo login cookies fail the live access check: reviews will score on paywall-truncated text",
       "firstSeen": "2026-11-17T22:00:31.362Z",
@@ -45130,10 +45132,12 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7718"
+      "linearIdentifier": "BRO-7718",
+      "resolvedAt": "2026-11-20T21:46:22.592Z",
+      "resolveReason": "cookies healthy again"
     },
     "cookie-health:live-access-failed:ft": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "ft login cookies fail the live access check: reviews will score on paywall-truncated text",
       "firstSeen": "2026-11-17T22:00:35.712Z",
@@ -45143,7 +45147,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7719"
+      "linearIdentifier": "BRO-7719",
+      "resolvedAt": "2026-11-20T21:46:22.613Z",
+      "resolveReason": "cookies healthy again"
     },
     "opening-night-placeholder-synopsis-my-english-persian-kitchen-regional-2026": {
       "status": "open",
@@ -46710,6 +46716,19 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1
+    },
+    "cookie-health:live-access-failed:thestage": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "thestage login cookies fail the live access check: reviews will score on paywall-truncated text",
+      "firstSeen": "2026-11-20T21:46:20.664Z",
+      "incidentOpenedAt": "2026-11-20T21:46:20.664Z",
+      "lastSeen": "2026-11-20T21:46:20.664Z",
+      "lastNotifiedAt": "2026-11-20T21:46:20.664Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7908"
     }
   }
 }
