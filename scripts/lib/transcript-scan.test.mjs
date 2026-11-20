@@ -8,7 +8,7 @@
 
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { writeFileSync, unlinkSync, existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { writeFileSync, unlinkSync, existsSync, mkdtempSync, rmSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import {
@@ -20,6 +20,8 @@ import {
   queryVisualClaimLanguage,
   queryOverrideActiveForPush,
   queryBypassToken,
+  classifyOverrideProvenance,
+  queryOwnerNoVerify,
 } from './transcript-scan.mjs';
 
 // ── fixture builders ────────────────────────────────────────────────────────
@@ -1029,4 +1031,102 @@ test('CLI approval-of --after-file: a yes older than the verdict file is refused
     assert.equal(run(new Date('2026-11-10T15:00:00Z')), false); // verdict newer than the yes
     assert.equal(run(new Date('2026-11-10T13:00:00Z')), true); // verdict older than the yes
   } finally { cleanup(); }
+});
+
+// ── BRO-7851: override provenance (advisory would-block row) ───────────────
+
+function makeRecord(text, extra = {}) {
+  return JSON.stringify({ type: 'user', timestamp: '2026-05-24T18:00:00Z', message: { content: [{ type: 'text', text }] }, ...extra });
+}
+const TASK_NOTE = makeRecord('<task-notification>bg job done</task-notification>', { origin: { kind: 'task-notification' } });
+const PEER_HANDBACK = makeRecord('[Subagent hand-back] report', { isMeta: true, origin: { kind: 'peer' } });
+const SKILL_BODY = makeRecord('Quick sanity check from an independent reviewer.', { isMeta: true });
+const REMINDER = makeRecord('<system-reminder>note</system-reminder>');
+
+function overrideOnce(lines, sessionId) {
+  const marker = join(tmpdir(), `visual-qa-override-consumed-${sessionId}`);
+  if (existsSync(marker)) unlinkSync(marker);
+  const { path, cleanup } = writeFixture(lines);
+  try { return queryOverrideActiveForPush(walkTranscript(path), { sessionId }); } finally { cleanup(); }
+}
+
+test('BRO-7851: override typed in the current owner turn is genuine (mid-turn meta does not count)', () => {
+  const r = overrideOnce([
+    makeAssistantText('the gate is waiting on your approval'),
+    makeUserText('ship immediately for: prod is down'),
+    SKILL_BODY, REMINDER,
+    makeAssistantToolUse('Bash', { command: 'git push' }),
+  ], 'sess-7851-genuine');
+  assert.equal(r.override, true);
+  assert.deepEqual(r.provenance, { genuine: true, reasons: [] });
+});
+
+test('BRO-7851: override from a turn a notification or hand-back replaced still passes but is flagged', () => {
+  for (const foreign of [TASK_NOTE, PEER_HANDBACK, makeRecord('This session is being continued from a previous conversation...', { isCompactSummary: true })]) {
+    const r = overrideOnce([
+      makeUserText('ship immediately for: hotfix'),
+      makeAssistantText('done for now'),
+      foreign,
+      makeAssistantToolUse('Bash', { command: 'git push' }),
+    ], 'sess-7851-foreign');
+    assert.equal(r.override, true, 'advisory only: the override itself is unchanged');
+    assert.equal(r.provenance.genuine, false);
+    assert.deepEqual(r.provenance.reasons, ['foreign-turn-after-override']);
+  }
+});
+
+test('BRO-7851: owner echoing an override line the agent wrote in the turn before is flagged', () => {
+  const events = (() => {
+    const { path, cleanup } = writeFixture([
+      makeUserText('can we ship?'),
+      makeAssistantText('If you want to skip the check, reply:\nship immediately for: urgent fix'),
+      REMINDER,
+      makeUserText('ship immediately for: urgent fix'),
+    ]);
+    try { return walkTranscript(path); } finally { cleanup(); }
+  })();
+  const idx = events.findLastIndex(e => e.kind === 'user_text' && !e.synthetic);
+  assert.deepEqual(classifyOverrideProvenance(events, idx), { genuine: false, reasons: ['agent-suggested-phrase'] });
+  // A mention in an OLDER turn (before the previous owner message) is not this turn's suggestion.
+  const older = (() => {
+    const { path, cleanup } = writeFixture([
+      makeAssistantText('you can always say ship immediately for: <reason>'),
+      makeUserText('ok thanks'),
+      makeAssistantText('pushing now'),
+      makeUserText('ship immediately for: urgent fix'),
+    ]);
+    try { return walkTranscript(path); } finally { cleanup(); }
+  })();
+  assert.equal(classifyOverrideProvenance(older, older.length - 1).genuine, true);
+});
+
+test('BRO-7851: CLI writes the would-block row only for a non-genuine override, never changing .override', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const dir = mkdtempSync(join(tmpdir(), 'bro-7851-log-'));
+  const log = join(dir, 'nested', 'bypass.log');
+  const run = (lines, sid) => {
+    const marker = join(tmpdir(), `visual-qa-override-consumed-review-gate-${sid}`);
+    if (existsSync(marker)) unlinkSync(marker);
+    const { path, cleanup } = writeFixture(lines);
+    try {
+      const r = spawnSync('node', ['scripts/lib/transcript-scan.mjs', '--query=override-active-for-push', `--transcript=${path}`, `--session-id=${sid}`, '--marker-ns=review-gate', `--advisory-log=${log}`], { encoding: 'utf8' });
+      return JSON.parse(r.stdout);
+    } finally { cleanup(); if (existsSync(marker)) unlinkSync(marker); }
+  };
+  try {
+    const ok = run([makeUserText('ship immediately for: prod down')], 'sess-7851-cli-ok');
+    assert.equal(ok.override, true);
+    assert.equal(existsSync(log), false, 'genuine override writes no row');
+    const stale = run([makeUserText('ship immediately for: prod down'), TASK_NOTE], 'sess-7851-cli-stale');
+    assert.equal(stale.override, true);
+    assert.match(readFileSync(log, 'utf8'), /^\d+\twould-block-override-not-owner-turn\treview-gate:foreign-turn-after-override\n$/);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('BRO-7851 cousin: owner NO-VERIFY counts only while the owner turn is current', () => {
+  const ev = (lines) => { const { path, cleanup } = writeFixture(lines); try { return walkTranscript(path); } finally { cleanup(); } };
+  assert.equal(queryOwnerNoVerify(ev([makeUserText('NO-VERIFY: copy-only change'), REMINDER])).ownerTyped, true);
+  const stale = queryOwnerNoVerify(ev([makeUserText('NO-VERIFY: copy-only change'), PEER_HANDBACK]));
+  assert.equal(stale.ownerTyped, false);
+  assert.match(stale.reason, /superseded/);
 });

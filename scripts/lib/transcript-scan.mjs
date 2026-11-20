@@ -17,13 +17,15 @@
 //     override-active-for-push     true iff last user msg contains "ship immediately for: <reason>"
 //                                  AND no consume marker exists for current session
 //                                  (caller writes marker via --consume after using)
+//                                  BRO-7851 advisory: logs would-block-override-not-owner-turn when the
+//                                  override is from a superseded turn or echoes the agent's own text
 //
 // Exit: 0 + JSON to stdout on success; 1 bad args; 2 transcript not found.
 
-import { readFileSync, existsSync, realpathSync, writeFileSync, appendFileSync, statSync, openSync, writeSync, closeSync } from 'node:fs';
+import { readFileSync, existsSync, realpathSync, writeFileSync, appendFileSync, mkdirSync, statSync, openSync, writeSync, closeSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { tmpdir } from 'node:os';
+import { tmpdir, homedir } from 'node:os';
 import { isMainModule } from './is-main-module.mjs';
 import { classifyOwnerReply, classifyOwnerReplyTier } from './owner-reply-classifier.mjs';
 
@@ -183,6 +185,18 @@ export function isSyntheticRecord(r, text) {
   return SYNTHETIC_TEXT_RE.test(text || '');
 }
 
+/** BRO-7851: a synthetic record that STARTS a turn the owner did not start (a notification, peer or subagent
+ *  hand-back, wake, cross-session message, compaction). Mid-turn harness text (system reminders, skill bodies,
+ *  slash-command echoes, Stop hook feedback, interrupt markers) is synthetic but does not end the owner's turn. */
+const FOREIGN_TURN_TEXT_RE = /^\s*(?:This session is being continued from a previous conversation|<task-notification>|<wake\b|<agent-message\b|<cross-session-message\b|\[SYSTEM NOTIFICATION)/i;
+export function isForeignTurnRecord(r, text) {
+  if (!isSyntheticRecord(r, text)) return false;
+  if (r && r.isCompactSummary) return true;
+  const origin = r && (r.origin || r.attachment?.origin);
+  if (origin && !HUMAN_ORIGIN_KINDS.has(origin.kind)) return true;
+  return FOREIGN_TURN_TEXT_RE.test(text || '');
+}
+
 /** BRO-7738: the user turn a blocking Stop hook leaves after a closing message (walkTranscript marks it synthetic).
  *  A compaction summary that quotes one starts with "This session is being continued", so it does not match. */
 const STOP_HOOK_FEEDBACK_RE = /^\s*Stop hook feedback:/;
@@ -255,7 +269,7 @@ export function walkTranscript(transcriptPath) {
       for (const c of content) {
         if (!c || typeof c !== 'object') {
           // raw string content — treat as user text
-          if (typeof c === 'string') events.push({ kind: 'user_text', text: c, ts, messageId, synthetic: isSyntheticRecord(r, c) });
+          if (typeof c === 'string') events.push({ kind: 'user_text', text: c, ts, messageId, synthetic: isSyntheticRecord(r, c), foreignTurn: isForeignTurnRecord(r, c) });
           continue;
         }
         if (c.type === 'tool_result') {
@@ -266,7 +280,7 @@ export function walkTranscript(transcriptPath) {
             events.push({ kind: 'attachment', detail: 'tool_result_image', ts, messageId });
           }
         } else if (c.type === 'text') {
-          events.push({ kind: 'user_text', text: c.text || '', ts, messageId, synthetic: isSyntheticRecord(r, c.text || '') });
+          events.push({ kind: 'user_text', text: c.text || '', ts, messageId, synthetic: isSyntheticRecord(r, c.text || ''), foreignTurn: isForeignTurnRecord(r, c.text || '') });
           if (containsImageAttachment(c.text || '')) {
             events.push({ kind: 'attachment', detail: 'user_text_image_marker', ts, messageId });
           }
@@ -582,11 +596,44 @@ export function queryBypassToken(events, { token, toolUseId } = {}) {
  * cannot excuse a later agent-typed bypass. Fenced code is stripped like queryBypassToken.
  */
 export function queryOwnerNoVerify(events) {
-  let last = null;
-  for (const e of events) if (e.kind === 'user_text' && !e.synthetic) last = e;
+  let last = null, lastIdx = -1;
+  events.forEach((e, i) => { if (e.kind === 'user_text' && !e.synthetic) { last = e; lastIdx = i; } });
   if (!last) return { ownerTyped: false, reason: 'no user text' };
   const stripped = String(last.text || '').replace(/```[\s\S]*?```/g, '');
-  return { ownerTyped: /NO-VERIFY:\s+\S/.test(stripped) };
+  if (!/NO-VERIFY:\s+\S/.test(stripped)) return { ownerTyped: false };
+  // BRO-7851 cousin: an owner NO-VERIFY from a turn a notification/hand-back/compaction has since replaced
+  // does not cover a bypass typed in the later, agent-driven turn.
+  if (events.slice(lastIdx + 1).some(e => e.kind === 'user_text' && e.synthetic && e.foreignTurn)) {
+    return { ownerTyped: false, reason: 'owner NO-VERIFY is from a superseded turn' };
+  }
+  return { ownerTyped: true };
+}
+
+/**
+ * BRO-7851 (advisory, CLAUDE.md 19): did the override the gate is about to honor come from the owner's CURRENT
+ * turn, in their own words? queryOverrideActiveForPush reads only the last owner message, so an override from a turn
+ * that a notification, hand-back, wake or compaction has since replaced still passes, and so does a line the agent
+ * wrote for the owner to paste back. Never changes `.override`; the CLI logs a would-block row when not genuine.
+ * @param {Array} events walkTranscript output
+ * @param {number} ownerIdx index in `events` of the owner user_text that matched the override
+ * @returns {{genuine: boolean, reasons: string[]}}
+ */
+export function classifyOverrideProvenance(events, ownerIdx) {
+  const reasons = [];
+  if (!(ownerIdx >= 0) || !events[ownerIdx]) return { genuine: false, reasons: ['no-owner-message'] };
+  if (events.slice(ownerIdx + 1).some(e => e.kind === 'user_text' && e.synthetic && e.foreignTurn)) {
+    reasons.push('foreign-turn-after-override');
+  }
+  // The assistant turn just before the owner message (back to the previous turn start, owner or foreign).
+  for (let i = ownerIdx - 1; i >= 0; i--) {
+    const e = events[i];
+    if (e.kind === 'user_text' && (!e.synthetic || e.foreignTurn)) break;
+    if (e.kind === 'assistant_text' && /ship immediately for:\s*\S/i.test(e.text || '')) {
+      reasons.push('agent-suggested-phrase');
+      break;
+    }
+  }
+  return { genuine: reasons.length === 0, reasons };
 }
 
 export function queryOverrideActiveForPush(events, { sessionId, consume = false, markerNs = null } = {}) {
@@ -599,9 +646,11 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false,
   let preview = '';
   let text = '';
   let matchIndex = -1;
+  let ownerIdx = -1;
   for (let i = events.length - 1; i >= 0; i--) {
     const e = events[i];
     if (e.kind === 'user_text' && !e.synthetic) {
+      ownerIdx = i;
       text = e.text || '';
       const m = OVERRIDE_RE.exec(text);
       if (m) {
@@ -618,7 +667,8 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false,
     }
   }
   if (!matched) return { override: false, reason: 'no override phrase in last user text (or matched but negated)' };
-  if (!sessionId) return { override: true, reason: 'matched but no sessionId — caller must scope per-session' };
+  const provenance = classifyOverrideProvenance(events, ownerIdx);
+  if (!sessionId) return { override: true, reason: 'matched but no sessionId — caller must scope per-session', provenance };
   const marker = markerPath(sessionId, markerNs);
   if (existsSync(marker)) return { override: false, reason: 'override already consumed for this session', marker };
   if (consume) {
@@ -628,13 +678,13 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false,
       const fd = openSync(marker, 'wx');
       writeSync(fd, JSON.stringify({ ts: new Date().toISOString(), preview }));
       closeSync(fd);
-      return { override: true, consumed: true, marker };
+      return { override: true, consumed: true, marker, provenance };
     } catch (err) {
       // EEXIST: another process won the race
       return { override: false, reason: 'override race lost — another consumer claimed marker', marker };
     }
   }
-  return { override: true, consumed: false, marker, preview };
+  return { override: true, consumed: false, marker, preview, provenance };
 }
 
 // markerNs gives each gate its own one-shot consume marker: without it, the
@@ -689,6 +739,8 @@ Queries:
     --session-id=<id>                 required for override scoping
     --marker-ns=<ns>                  namespace the consume marker (one per gate)
     --consume                         write the consume marker if matched
+    --advisory-log=<path>             (BRO-7851) where the would-block row goes when the override is not from the
+                                       owner's current turn (default \$CLAUDE_LOG_DIR or ~/.claude/logs/visual-gate-bypass.log)
 
 All queries print JSON to stdout. Exit 0 success / 1 bad args / 2 transcript missing.`);
 }
@@ -750,6 +802,15 @@ async function main() {
         markerNs: args['marker-ns'] || null,
         consume: args.consume === '' || args.consume === 'true' || (args.consume !== undefined && args.consume !== 'false'),
       });
+      // Advisory (BRO-7851): an override honored from a stale or agent-suggested turn gets a would-block row.
+      // Written here (default log beside the gate's bypass log) so no hook changes; never affects `.override`.
+      if (result.override === true && result.provenance && result.provenance.genuine === false) {
+        try {
+          const logPath = args['advisory-log'] || join(process.env.CLAUDE_LOG_DIR || join(homedir(), '.claude', 'logs'), 'visual-gate-bypass.log');
+          mkdirSync(dirname(logPath), { recursive: true });
+          appendFileSync(logPath, `${Math.floor(Date.now() / 1000)}\twould-block-override-not-owner-turn\t${args['marker-ns'] || 'visual-gate'}:${result.provenance.reasons.join(',')}\n`);
+        } catch { /* advisory only */ }
+      }
       break;
     default:
       console.error(`ERROR: unknown query "${args.query}"`);
