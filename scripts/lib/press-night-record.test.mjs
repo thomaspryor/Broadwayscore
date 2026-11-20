@@ -555,6 +555,7 @@ test('same-night-completeness ignores preview-period (non-night) live rows as pr
 test('same-night-completeness: grace edge, night-2 counts and night-3 does not', () => {
   for (const [pub, want] of [['2026-10-20', 'pass'], ['2026-10-19', 'fail']]) {
     const r = nightRec({ Vulture: 10 }, [file('vulture', 5, { publishDate: pub })]);
+    r.perReview[0].critic = null;
     r.perReview[0].publishAt = pub;
     assert.equal(sn(r).status, want, pub);
   }
@@ -988,12 +989,14 @@ test('probeIncompleteReason: full window is null; skipped or short probes get a 
 test('same-night-completeness: a day-before-dated review first seen in the window counts when live (Theatre Weekly case)', () => {
   const r = nightRec({ Vulture: 10 }, [file('vulture', 5, { publishDate: '2026-10-21' })]);
   r.perReview[0].baseline = true;
+  r.perReview[0].critic = null;
   r.perReview[0].publishAt = '2026-10-21';
   assert.equal(sn(r).status, 'pass', sn(r).detail);
 });
 
 test('same-night-completeness: a day-before-dated review that goes live late is "late", not "never live" (Operationlivetheatre case)', () => {
   const r = nightRec({ Vulture: 150 }, [file('vulture', 100, { publishDate: '2026-10-21' })]);
+  r.perReview[0].critic = null;
   r.perReview[0].publishAt = '2026-10-21';
   const g = sn(r);
   assert.equal(g.status, 'fail');
