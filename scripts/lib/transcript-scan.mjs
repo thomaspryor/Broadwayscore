@@ -20,7 +20,7 @@
 //
 // Exit: 0 + JSON to stdout on success; 1 bad args; 2 transcript not found.
 
-import { readFileSync, existsSync, realpathSync, writeFileSync, statSync, openSync, writeSync, closeSync } from 'node:fs';
+import { readFileSync, existsSync, realpathSync, writeFileSync, appendFileSync, statSync, openSync, writeSync, closeSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
@@ -738,6 +738,11 @@ async function main() {
       break;
     case 'owner-no-verify':
       result = queryOwnerNoVerify(events);
+      // Advisory (BRO-7850): the push gate passes --advisory-log so the would-block row is written here
+      // (keeps the hook file at its line ceiling). Any failure here is swallowed; it never affects the push.
+      if (args['advisory-log'] && result.ownerTyped === false) {
+        try { appendFileSync(args['advisory-log'], `${Math.floor(Date.now() / 1000)}\twould-block-agent-typed-no-verify\t${String(args.note || '').slice(0, 160)}\n`); } catch { /* advisory only */ }
+      }
       break;
     case 'override-active-for-push':
       result = queryOverrideActiveForPush(events, {
