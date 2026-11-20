@@ -542,6 +542,17 @@ async function runOutlet(outletId, o, shared) {
     const full = { ...it, aliasKey, outletId, sourceSaysReview, requireNycSignal: !!src.requireNycSignal };
     return { ...full, ...census.bucketItem(full, ctx) };
   });
+  // Sitemap-only outlets (Slant) carry no page date, so every revival of a title matched. Read the
+  // page date for just those items and bucket them again (BRO-7885).
+  const needDate = results.filter(census.dateWouldResolve);
+  if (needDate.length && !o.fromCache) {
+    await fillMeta(outletId, needDate, o);
+    needDate.forEach((r) => {
+      delete r.sameTitleCandidates;
+      Object.assign(r, census.bucketItem(r, ctx));
+    });
+    console.log(`  ambiguous undated: ${needDate.length} read for a publish date, ${needDate.filter((r) => r.bucket !== 'ambiguous').length} resolved`);
+  }
 
   const enumeratedKeys = new Set(enumerated.items.map((i) => urlKey(i.url)));
   for (const r of results) if (r.aliasKey) enumeratedKeys.add(r.aliasKey);

@@ -519,3 +519,48 @@ test('BRO-7820: shouldKeepPreviousReport keeps a complete report over an unreada
   assert.equal(k({ source: { status: 'unreadable' } }, { source: { status: 'unreadable' } }), false);
   assert.equal(k(null, { source: { status: 'unreadable' } }), false);
 });
+
+// BRO-7885: same-title productions were "ambiguous" forever (55 rows). Real Slant / Illinoise data.
+const wss = (id, open, close) => ({ id, title: 'West Side Story', market: 'broadway', openingDate: open, closingDate: close });
+const wssShows = [wss('west-side-story-2020', '2020-02-20', '2020-03-11'), wss('west-side-story-2009', '2009-03-19', '2011-01-02'), wss('west-side-story-1980', '1980-02-14', '1980-11-30')];
+const slantWss = { outletId: 'slantmagazine', url: 'https://www.slantmagazine.com/theater/west-side-story-review-ivo-van-hove/', headline: 'west side story review ivo van hove', sourceSaysReview: true };
+
+test('BRO-7885: an undated same-title item stays ambiguous and asks for its page date', () => {
+  const r = census.bucketItem(slantWss, ctxFor([], wssShows));
+  assert.equal(r.bucket, 'ambiguous');
+  assert.equal(r.sameTitleCandidates, true);
+  assert.equal(census.dateWouldResolve({ ...r, publishDate: undefined }), true);
+});
+
+test('BRO-7885: the page date picks the one production on stage', () => {
+  const r = census.bucketItem({ ...slantWss, publishDate: '2020-03-11' }, ctxFor([], wssShows));
+  assert.equal(r.bucket, 'gap');
+  assert.deepEqual(r.matchedIds, ['west-side-story-2020']);
+  assert.equal(r.matchVia, 'poller-matcher');
+});
+
+test('BRO-7885: two overlapping runs resolve by which is live, not by the 60-day tail', () => {
+  const arm = { id: 'illinoise-off-broadway-2024', title: 'Illinoise', market: 'broadway', previewsStartDate: '2024-03-02', openingDate: '2024-03-07', closingDate: '2024-03-23' };
+  const stj = { id: 'illinoise-2024', title: 'Illinoise', market: 'broadway', previewsStartDate: '2024-04-24', openingDate: '2024-04-24', closingDate: '2024-08-10' };
+  const item = { outletId: 'nytg', headline: "'Illinoise' review: Sufjan Stevens musical", url: 'https://example.com/illinoise-broadway-review', publishDate: '2024-04-29', sourceSaysReview: true };
+  assert.deepEqual(census.bucketItem(item, ctxFor([], [arm, stj])).matchedIds, ['illinoise-2024']);
+  // a review dated while the Armory run was on goes to the Armory
+  assert.deepEqual(census.bucketItem({ ...item, publishDate: '2024-03-10' }, ctxFor([], [arm, stj])).matchedIds, ['illinoise-off-broadway-2024']);
+});
+
+test('BRO-7885: different titles (a two-show roundup) are never split by date', () => {
+  const a = { id: 'eureka-day-2024', title: 'Eureka Day', market: 'broadway', openingDate: '2024-12-03', closingDate: '2025-03-02' };
+  const b = { id: 'cult-of-love-2024', title: 'Cult of Love', market: 'broadway', openingDate: '2024-12-05', closingDate: '2025-02-02' };
+  assert.equal(census.resolveSameTitleByDate([a, b], '2024-12-28'), null);
+  const r = census.bucketItem({ outletId: 'frontmezzjunkies', headline: 'Broadway: Cult of Love, Eureka Day', url: 'https://example.com/x', publishDate: '2024-12-28', sourceSaysReview: true }, ctxFor([], [a, b]));
+  assert.equal(r.bucket, 'ambiguous');
+  assert.notEqual(r.sameTitleCandidates, true);
+});
+
+test('BRO-7885: a lastmod-only (soft) date does not break a tie between overlapping runs', () => {
+  const arm = { id: 'illinoise-off-broadway-2024', title: 'Illinoise', market: 'broadway', openingDate: '2024-03-07', closingDate: '2024-03-23' };
+  const stj = { id: 'illinoise-2024', title: 'Illinoise', market: 'broadway', openingDate: '2024-04-24', closingDate: '2024-08-10' };
+  const item = { outletId: 'nytg', headline: "'Illinoise' review", url: 'https://example.com/illinoise-review', publishDate: '2024-04-29', sourceSaysReview: true };
+  assert.equal(census.bucketItem({ ...item, dateSoft: true }, ctxFor([], [arm, stj])).bucket, 'ambiguous');
+  assert.equal(census.bucketItem(item, ctxFor([], [arm, stj])).bucket, 'gap');
+});

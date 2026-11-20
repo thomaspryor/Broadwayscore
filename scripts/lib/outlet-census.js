@@ -83,6 +83,36 @@ function inRunWindow(show, publishDate) {
   return y >= new Date().getUTCFullYear() || pub < Date.UTC(y + 2, 0, 1);
 }
 
+// A review of a run lands while it is on or just after it closes; the 60-day tail only catches
+// late cast-change re-reviews. Used to pick between same-title productions (BRO-7885).
+const LIVE_TAIL_DAYS = 14;
+function inLiveWindow(show, publishDate) {
+  const pub = toDateMs(publishDate);
+  const w = runWindowMs(show);
+  if (Number.isNaN(pub) || !w) return false;
+  const close = toDateMs(show.closingDate);
+  return pub >= w[0] && (Number.isNaN(close) || pub <= close + LIVE_TAIL_DAYS * DAY_MS);
+}
+
+/**
+ * Several in-window productions of ONE show (Illinoise at the Armory then St. James, Slant's
+ * Sweeney Todd across four revivals): when the publish date puts exactly one of them on stage,
+ * that is the production reviewed (BRO-7885). Different titles are a multi-show article, which a
+ * date cannot split, so they stay ambiguous. Returns the single show or null.
+ */
+function resolveSameTitleByDate(candidates, publishDate) {
+  if (!candidates || candidates.length < 2 || Number.isNaN(toDateMs(publishDate))) return null;
+  const titles = new Set(candidates.map((s) => normTitle(s.title)));
+  if (titles.size !== 1) return null;
+  const live = candidates.filter((s) => inLiveWindow(s, publishDate));
+  return live.length === 1 ? live[0] : null;
+}
+
+/** An undated item (or one dated only by sitemap lastmod) whose candidates are all one show: its page date would decide. */
+function dateWouldResolve(result) {
+  return result.bucket === 'ambiguous' && (!result.publishDate || result.dateSoft) && !!result.sameTitleCandidates;
+}
+
 /**
  * url -> Set(showId) for everything we hold. Each entry: {showId, url, altUrls?}.
  * Review files (flagged or not) and reviews.json both feed it; a URL filed under two
@@ -573,7 +603,23 @@ function bucketItem(item, ctx) {
     if (other && other.length) out.altUrls = other.slice(0, 3);
     return out;
   }
-  if (inIds.length > 1) { out.bucket = 'ambiguous'; return out; }
+  if (inIds.length > 1) {
+    const byId = new Map(ctx.shows.map((s) => [s.id, s]));
+    const cands = inIds.map((id) => byId.get(id)).filter(Boolean);
+    const pick = resolveSameTitleByDate(cands, item.publishDate);
+    if (pick && !item.dateSoft) {
+      out.matchedIds = [pick.id];
+      out.matchVia = 'date-resolved';
+      out.outOfWindowIds = [...out.outOfWindowIds, ...inIds.filter((id) => id !== pick.id)];
+      const other = ctx.outletShowUrls && ctx.outletShowUrls.get(`${item.outletId}|${pick.id}`);
+      out.bucket = other && other.length ? 'held-alt-url' : 'gap';
+      if (other && other.length) out.altUrls = other.slice(0, 3);
+      return out;
+    }
+    out.bucket = 'ambiguous';
+    if (cands.length === inIds.length && new Set(cands.map((s) => normTitle(s.title))).size === 1) out.sameTitleCandidates = true;
+    return out;
+  }
   // A London item naming a regional venue is an other-market review, whatever a same-titled
   // West End show's dates say ("Calendar Girls at New Wolsey Theatre").
   if (out.outOfWindowIds.length > 0 && !(market !== 'nyc' && sig === 'other-market')) { out.bucket = 'out-of-window'; return out; }
@@ -835,6 +881,7 @@ function writeJsonUnlessOnlyStampChanged(file, obj, indent) {
 }
 
 module.exports = {
+  resolveSameTitleByDate, inLiveWindow, dateWouldResolve,
   writeJsonUnlessOnlyStampChanged, shouldKeepPreviousReport,
   itemFromSitemapEntry,
   blindOutlets,
