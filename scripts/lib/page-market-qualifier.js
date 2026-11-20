@@ -79,6 +79,14 @@ function hasBroadwayEventLocation(html) {
   return false;
 }
 
+// BWW drops the "| BroadwayWorld" title suffix on long show names
+// ("FOR COLORED GIRLS WHO HAVE ... Broadway Reviews"), so the canonical host
+// counts too (BRO-7819: 5 wrong-production pages missed on the title alone).
+function isBroadwayWorldPage(title, href) {
+  if (/\bBroadway\s*World\b/i.test(title)) return true;
+  try { return /(^|\.)broadwayworld\.com$/i.test(new URL(href).hostname); } catch { return false; }
+}
+
 function canonicalHref(html) {
   const m = String(html || '').match(/<link[^>]+rel=["']canonical["'][^>]*>/i);
   return m ? (m[0].match(/href=["']([^"']+)["']/i) || [])[1] || '' : '';
@@ -104,7 +112,7 @@ function detectPageMarketSignal(html, pageTitle) {
   if (hit.category !== 'broadway') return { category: hit.category, strength: 'explicit' };
   if (BROADWAY_TITLE_EXPLICIT.test(title)) return { category: 'broadway', strength: 'explicit' };
   if (BROADWAY_CANONICAL_PATH.test(href)) return { category: 'broadway', strength: 'canonical-path' };
-  if (/\bBroadway\s*World\b/i.test(title) && hasBroadwayEventLocation(html)) return { category: 'broadway', strength: 'jsonld-location' };
+  if (isBroadwayWorldPage(title, href) && hasBroadwayEventLocation(html)) return { category: 'broadway', strength: 'jsonld-location' };
   return { category: 'broadway', strength: 'boilerplate' };
 }
 
@@ -134,8 +142,12 @@ const NO_SIBLING_CONFLICT_PAIRS = {
 function decideCrossMarketConflict({ showCategory, siblingCategories, signal }) {
   if (!signal || !showCategory || signal.category === showCategory) return null;
   if (showCategory === 'regional') {
-    return Array.isArray(siblingCategories) && siblingCategories.includes(signal.category)
-      ? { rule: 'regional-sibling' } : null;
+    if (Array.isArray(siblingCategories) && siblingCategories.includes(signal.category)) return { rule: 'regional-sibling' };
+    // BRO-7819: a BWW TheaterEvent at a Broadway house is never a regional
+    // production. Corpus 2026-11-20: 2 pages, both wrong (Hayes 1968 under
+    // the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026, Golden 2022
+    // under topdog-underdog-regional-2026); 0 legitimate.
+    return signal.category === 'broadway' && signal.strength === 'jsonld-location' ? { rule: 'measured-pair' } : null;
   }
   const trusted = (NO_SIBLING_CONFLICT_PAIRS[showCategory] || {})[signal.category];
   return trusted && trusted.includes(signal.strength) ? { rule: 'measured-pair' } : null;

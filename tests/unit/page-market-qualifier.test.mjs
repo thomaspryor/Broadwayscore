@@ -89,6 +89,11 @@ test('regional keeps the original rule: any qualifier, only with a same-title si
     signal: { category: 'broadway', strength: 'explicit' } }), null);
   assert.equal(decideCrossMarketConflict({ showCategory: 'regional', siblingCategories: [],
     signal: { category: 'off-broadway', strength: 'explicit' } }), null);
+  // BRO-7819: the BWW JSON-LD Broadway venue needs no sibling (topdog-underdog-regional-2026).
+  assert.deepEqual(decideCrossMarketConflict({ showCategory: 'regional', siblingCategories: [],
+    signal: { category: 'broadway', strength: 'jsonld-location' } }), { rule: 'measured-pair' });
+  assert.equal(decideCrossMarketConflict({ showCategory: 'regional', siblingCategories: [],
+    signal: { category: 'broadway', strength: 'boilerplate' } }), null);
 });
 
 test('no category or no signal: no conflict (single-show callers unchanged)', () => {
@@ -111,6 +116,20 @@ test('BWW TheaterEvent Broadway locations reject wrong productions', () => {
     assert.deepEqual(decideCrossMarketConflict({ showCategory: category, signal }), { rule: 'measured-pair' });
     assert.equal(verdict(html, title, category).reason, 'cross-market-sibling');
   }
+});
+
+// BRO-7819: BWW drops the "| BroadwayWorld" suffix on long titles; the
+// canonical host still identifies the page (for-colored-girls-...-off-west-end-2026,
+// Booth Theatre (Broadway) 2022). A non-BWW page with the same JSON-LD stays boilerplate.
+test('BWW page identified by canonical host when the title suffix is truncated', () => {
+  const ld = `<script type="application/ld+json">${JSON.stringify({ '@type': 'TheaterEvent', location: { name: 'Booth Theatre (Broadway)' } })}</script>`;
+  const title = 'FOR COLORED GIRLS WHO HAVE CONSIDERED SUICIDE / WHEN THE RAINBOW IS ENUF Broadway Reviews';
+  const bww = page(title, 'https://www.broadwayworld.com/reviews/For-Colored-Girls') + ld;
+  assert.deepEqual(detectPageMarketSignal(bww, title), { category: 'broadway', strength: 'jsonld-location' });
+  assert.equal(verdict(bww, 'For Colored Girls', 'off-west-end').reason, 'cross-market-sibling');
+  const other = page(title, 'https://www.example.com/reviews/For-Colored-Girls') + ld;
+  assert.equal(detectPageMarketSignal(other, title).strength, 'boilerplate');
+  assert.equal(detectPageMarketSignal(page(title, 'not a url') + ld, title).strength, 'boilerplate');
 });
 
 test('unrelated or invalid structured data does not establish a Broadway location', () => {
