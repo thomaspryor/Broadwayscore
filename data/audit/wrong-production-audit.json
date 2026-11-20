@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-20T11:39:48.640Z",
+  "timestamp": "2026-11-20T12:08:33.236Z",
   "stats": {
-    "totalReviews": 83363,
-    "alreadyFlagged": 22580,
+    "totalReviews": 83364,
+    "alreadyFlagged": 22581,
     "dateGuardCatches": 221,
     "directorMismatch": 3795,
     "tvFilmSignals": 2378,
-    "londonSignals": 3839,
+    "londonSignals": 3840,
     "offBroadwaySignals": 776,
     "yearMismatch": 387,
-    "noPublishDate": 8234
+    "noPublishDate": 8233
   },
   "findings": [
     {
@@ -103933,6 +103933,20 @@
       "score": 16,
       "publishDate": "2026-11-19",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/eurotrash-review-ben-whishaw-8qxcm3q95",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "west-end-best-friend--jeff-mostyn.json",
+      "score": 88,
+      "publishDate": "2026-11-20",
+      "url": "https://www.westendbestfriend.co.uk/news/review-eurotrash-young-vic-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
