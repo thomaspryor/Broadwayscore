@@ -76,3 +76,22 @@ test('rebuild: a quote with its own url is left alone (two reviews)', { skip: !h
   assert.equal(r.read('nydailynews--unknown.json').crossOutletDuplicate, undefined);
   assert.equal(r.included, 2);
 });
+
+test('rebuild: a quote is not hidden behind a keeper the rebuild itself drops (wrongProduction)', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+  const r = rebuild({
+    'nytimes--jesse-green.json': { ...fullRec(), wrongProduction: true, wrongProductionReason: 'test: other production' },
+    'nydailynews--unknown.json': quoteRec(),
+  });
+  assert.equal(r.read('nydailynews--unknown.json').crossOutletDuplicate, undefined, r.out.slice(-800));
+});
+
+test('rebuild: one keeper absorbing quotes from 2+ outlets is held and logged, nothing flagged', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+  const r = rebuild({
+    'nytimes--jesse-green.json': fullRec(),
+    'nydailynews--unknown.json': quoteRec(),
+    'nypost--unknown.json': quoteRec({ outlet: 'New York Post', outletId: 'nypost' }),
+  });
+  assert.match(r.out, /\[EXCERPT CONTAINMENT HELD\] operation-mincemeat-2025\/nytimes--jesse-green\.json/);
+  assert.equal(r.read('nydailynews--unknown.json').crossOutletDuplicate, undefined);
+  assert.equal(r.read('nypost--unknown.json').crossOutletDuplicate, undefined);
+});

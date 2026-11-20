@@ -74,7 +74,7 @@ const quoteRec = (extra = {}) => ({
 
 // --- the pure rule ---
 test('a bylineless url-less quote inside a sibling fullText is flagged against that file', () => {
-  const flags = excerptContainmentFlags([
+  const { flags } = excerptContainmentFlags([
     { file: 'nytimes--jesse-green.json', data: fullRec() },
     { file: 'nydailynews--unknown.json', data: quoteRec() },
   ]);
@@ -94,7 +94,7 @@ test('a quote with its own url, a named critic, or a human clear is never flagge
     { criticName: 'Joe Dziemianowicz' },
     { crossOutletDuplicate: false, crossOutletClearReason: 'human: different review' },
   ]) {
-    const flags = excerptContainmentFlags([
+    const { flags } = excerptContainmentFlags([
       { file: 'nytimes--jesse-green.json', data: fullRec() },
       { file: 'nydailynews--unknown.json', data: quoteRec(extra) },
     ]);
@@ -103,10 +103,44 @@ test('a quote with its own url, a named critic, or a human clear is never flagge
 });
 
 test('a quote that is not inside the sibling fullText is not flagged', () => {
-  const flags = excerptContainmentFlags([
+  const { flags } = excerptContainmentFlags([
     { file: 'nytimes--jesse-green.json', data: fullRec() },
     { file: 'nydailynews--unknown.json', data: quoteRec({ bwwExcerpt: 'A clumsy, overlong evening whose jokes land with a thud and whose songs vanish from memory before the curtain call has even finished.' }) },
   ]);
   assert.deepEqual(flags, []);
 });
 
+// --- review findings (BRO-7684 ship-check) ---
+test('a keeper that is not includable never absorbs a quote', () => {
+  for (const extra of [
+    { wrongProduction: true }, { wrongShow: true }, { wrongUrl: true },
+    { fullTextWrongAuthor: true }, { contentTier: 'invalid' },
+  ]) {
+    const { flags } = excerptContainmentFlags([
+      { file: 'nytimes--jesse-green.json', data: { ...fullRec(), ...extra } },
+      { file: 'nydailynews--unknown.json', data: quoteRec() },
+    ]);
+    assert.deepEqual(flags, [], JSON.stringify(extra));
+  }
+});
+
+test('the caller probe decides keeper eligibility (rebuild passes isIncludableForRebuild)', () => {
+  const entries = [
+    { file: 'nytimes--jesse-green.json', data: fullRec() },
+    { file: 'nydailynews--unknown.json', data: quoteRec() },
+  ];
+  assert.deepEqual(excerptContainmentFlags(entries, { isKeeperIncludable: () => false }).flags, []);
+  assert.equal(excerptContainmentFlags(entries, { isKeeperIncludable: () => true }).flags.length, 1);
+});
+
+test('one keeper holding quotes credited to 2+ other outlets is held (roundup-shaped), not flagged', () => {
+  const { flags, held } = excerptContainmentFlags([
+    { file: 'nytimes--jesse-green.json', data: fullRec() },
+    { file: 'nydailynews--unknown.json', data: quoteRec() },
+    { file: 'nypost--unknown.json', data: quoteRec({ outlet: 'New York Post', outletId: 'nypost' }) },
+  ]);
+  assert.deepEqual(flags, []);
+  assert.equal(held.length, 1);
+  assert.equal(held[0].primaryFile, 'nytimes--jesse-green.json');
+  assert.deepEqual(held[0].files.sort(), ['nydailynews--unknown.json', 'nypost--unknown.json']);
+});

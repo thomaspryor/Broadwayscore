@@ -1554,7 +1554,7 @@ const leaseGuard = require('./lib/opening-night-lane/lease-guard');
 // named in trust-model LANE_BYPASSED_GUARDS. Every gate below calls this one predicate, never re-derives it.
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { laneRowSource } = require('./lib/opening-night-lane/trust-model'); // BRO-6623
-if (!SHOW_FILTER) leaseGuard.syncIfMissing(); // a CI job that skipped the lease-sync action must not read "nothing leased" (2026-11-17); --show= runs are diagnostic and never write
+if (!SHOW_FILTER) leaseGuard.syncIfMissing(); // a CI job that skipped the lease-sync action must not read "nothing leased" (2026-11-17); --show= runs are diagnostic and skip every aggregate write (per-file normalization pre-passes, BRO-7684 excerpt containment included, still write that show's files; see the --show= note above)
 const leasedShowIds = new Set(leaseGuard.leasedShowIds());
 if (leasedShowIds.size) console.log(`Opening-night lease: not rebuilding ${[...leasedShowIds].join(', ')}; existing rows carried over`);
 const showDirs = listShowDirs(reviewTextsDir)
@@ -2418,6 +2418,7 @@ const crossShowFingerprints = new Map();
 {
   const { excerptContainmentFlags, applyExcerptContainmentFlag } = require('./lib/cross-outlet-group');
   let excerptContainmentFlagged = 0;
+  let excerptContainmentHeld = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
     let entries;
@@ -2427,7 +2428,14 @@ const crossShowFingerprints = new Map();
       }).filter(Boolean);
     } catch { continue; }
     if (entries.length < 2) continue;
-    for (const flag of excerptContainmentFlags(entries)) {
+    // Same probe the crossOutletDuplicate gate's cycle check uses: a keeper the rebuild would drop never absorbs a quote.
+    const isKeeperIncludable = (d, f) => isIncludableForRebuild(d, showById[sid], path.join(sDir, f), { ignoreCrossOutletDuplicate: true });
+    const { flags, held } = excerptContainmentFlags(entries, { isKeeperIncludable });
+    for (const h of held) {
+      excerptContainmentHeld++;
+      console.log(`  [EXCERPT CONTAINMENT HELD] ${sid}/${h.primaryFile} holds quotes credited to ${h.outlets.length} outlets (${h.files.join(', ')}) — roundup-shaped, not flagged; check isRoundupArticle`);
+    }
+    for (const flag of flags) {
       const entry = entries.find(e => e.file === flag.file);
       const r = safeWriteReview(path.join(sDir, flag.file), applyExcerptContainmentFlag({ ...entry.data }, sid, flag));
       if (r && r.wrote !== false) {
@@ -2437,7 +2445,9 @@ const crossShowFingerprints = new Map();
     }
   }
   if (excerptContainmentFlagged > 0) console.log(`Excerpt-containment pre-pass: flagged ${excerptContainmentFlagged} bylineless quote(s) as cross-outlet copies`);
+  if (excerptContainmentHeld > 0) console.log(`Excerpt-containment pre-pass: held ${excerptContainmentHeld} roundup-shaped keeper group(s) (not flagged)`);
   stats.excerptContainmentFlagged = excerptContainmentFlagged;
+  stats.excerptContainmentHeld = excerptContainmentHeld;
 }
 
 // URL-domain mismatch guard: detect reviews where URL domain doesn't match outlet's registered domain.

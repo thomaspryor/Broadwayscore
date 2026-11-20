@@ -113,12 +113,28 @@ function excerptCopySide(a, b) {
  * rule as detect-cross-outlet-duplicates.js Layer 2 for an excerptCopySide hit.
  * Stricter than the detector on purpose: a row a person cleared
  * (crossOutletDuplicate false or crossOutletClearReason) is never re-flagged,
- * and the keeper must not itself be a flagged copy (no copy-of-a-copy chains).
+ * the keeper must not itself be a flagged copy (no copy-of-a-copy chains), and
+ * the keeper must be a row the rebuild would actually ship (opts.isKeeperIncludable;
+ * hiding a quote behind an excluded keeper would drop the review entirely).
+ * A keeper that would absorb quotes credited to 2+ other outlets is
+ * roundup-shaped (a fullText that quotes many critics but is not flagged
+ * isRoundupArticle, e.g. master-class-1995 philadelphia-inquirer--howard-shapiro):
+ * nothing in that group is flagged, it is returned in `held` for a person.
+ *
+ * Byline note: criticName is judged as stored on disk, before the rebuild's own
+ * critic enrichment / normalization runs; a placeholder that a later step in the
+ * same rebuild would resolve to a real name can still be flagged here (the
+ * detector reads the same on-disk value).
  *
  * @param {Array<{file:string, data:object}>} entries  every review file in the show dir
- * @returns {Array<{file:string, primaryFile:string, containment:number}>}
+ * @param {{isKeeperIncludable?: (data:object, file:string) => boolean}} [opts]
+ *   rebuild passes isIncludableForRebuild(..., { ignoreCrossOutletDuplicate: true });
+ *   the default is a conservative flag check (defaultKeeperIncludable).
+ * @returns {{flags: Array<{file:string, primaryFile:string, containment:number}>,
+ *            held: Array<{primaryFile:string, files:string[], outlets:string[]}>}}
  */
-function excerptContainmentFlags(entries) {
+function excerptContainmentFlags(entries, opts = {}) {
+  const isKeeperIncludable = opts.isKeeperIncludable || defaultKeeperIncludable;
   const { crossOutletPointer, skipAsAlreadyFlagged, excludeFromCrossOutletCompare } = require('./cross-outlet-pointer');
   const { classifyCrossOutletPair } = require('./cross-outlet-pair-policy');
   const byFile = new Map((entries || []).map(e => [e.file, e.data]));
@@ -141,7 +157,7 @@ function excerptContainmentFlags(entries) {
       text, textSource: source,
     });
   }
-  const flags = [];
+  const candidates = [];
   for (const ex of rows) {
     if (ex.textSource !== 'excerpts') continue;
     if (typeof ex.data.crossOutletDuplicate === 'boolean' || ex.data.crossOutletClearReason) continue;
@@ -151,6 +167,7 @@ function excerptContainmentFlags(entries) {
       if (full.outletId === ex.outletId) continue;
       if (ex.criticName && full.criticName && ex.criticName.toLowerCase() === full.criticName.toLowerCase()) continue;
       if (full.data.crossOutletDuplicate === true) continue;
+      if (!isKeeperIncludable(full.data, full.file)) continue;
       const hit = excerptCopySide(ex, full);
       if (!hit || hit.copy !== 'a') continue;
       const verdict = classifyCrossOutletPair(ex, full, { similarity: 100 });
@@ -159,9 +176,34 @@ function excerptContainmentFlags(entries) {
         best = { file: ex.file, primaryFile: full.file, containment: hit.containment, len: full.text.length };
       }
     }
-    if (best) flags.push({ file: best.file, primaryFile: best.primaryFile, containment: best.containment });
+    if (best) candidates.push({ file: best.file, primaryFile: best.primaryFile, containment: best.containment, outletId: ex.outletId });
   }
-  return flags;
+  const outletsByKeeper = new Map();
+  for (const c of candidates) {
+    if (!outletsByKeeper.has(c.primaryFile)) outletsByKeeper.set(c.primaryFile, new Set());
+    outletsByKeeper.get(c.primaryFile).add(c.outletId);
+  }
+  const flags = [];
+  const held = [];
+  for (const [primaryFile, outlets] of outletsByKeeper) {
+    const group = candidates.filter(c => c.primaryFile === primaryFile);
+    if (outlets.size >= 2) { held.push({ primaryFile, files: group.map(c => c.file), outlets: [...outlets] }); continue; }
+    for (const c of group) flags.push({ file: c.file, primaryFile: c.primaryFile, containment: c.containment });
+  }
+  return { flags, held };
+}
+
+/**
+ * Conservative keeper check for callers without the rebuild's full probe: a
+ * keeper flagged wrong production/show/url, with distrusted fullText, or an
+ * invalid tier never absorbs a quote.
+ */
+function defaultKeeperIncludable(data) {
+  if (!data) return false;
+  if (data.wrongProduction === true || data.wrongShow === true || data.wrongUrl === true) return false;
+  if (data.contentTier === 'invalid') return false;
+  if (require('./review-guards').isFullTextWrongAuthorActive(data)) return false;
+  return true;
 }
 
 /**
@@ -178,4 +220,4 @@ function applyExcerptContainmentFlag(data, showId, flag, now = new Date()) {
   return data;
 }
 
-module.exports = { getBestText, resolveFingerprintGroup, excerptContainment, excerptCopySide, excerptContainmentFlags, applyExcerptContainmentFlag, CONTAINMENT_MATCH };
+module.exports = { getBestText, resolveFingerprintGroup, excerptContainment, excerptCopySide, excerptContainmentFlags, applyExcerptContainmentFlag, defaultKeeperIncludable, CONTAINMENT_MATCH };
