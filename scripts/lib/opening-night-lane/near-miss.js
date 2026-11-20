@@ -156,6 +156,27 @@ function gapCandidates(sightings, { firstSeen, now, afterMs = GAP_AFTER_MS }) {
 }
 
 /**
+ * BRO-7891 item 3: aggregator parity. On the Much Ado night the aggregators listed reviews before the lane had them on
+ * the site. The lane already reads the roundups every pass and admits what they cite; this reports when the
+ * aggregators' count is ahead of ours: reviews an aggregator has cited for at least `afterMs` (every pass, admitted or
+ * not, so a review stuck between scoring and live counts too) against those of them on the site. One alert per
+ * aggregator count (key `aggregator-parity|N`), so a growing roundup alerts again and a steady one does not.
+ * @param cited Map reviewKey -> {firstSeenMs, url, outletId?, via?} (every aggregator-cited review seen tonight)
+ * @param liveKeys Set of review keys on the site (reviews.json before tonight plus verified live)
+ * @returns {null | {kind:'aggregator-parity', key, url, aggregatorCount, ours, missing:[{url, outletId, via, ageMin}]}}
+ */
+function aggregatorParity(cited, liveKeys, { now, afterMs = GAP_AFTER_MS } = {}) {
+  const due = [...(cited || new Map())].filter(([, v]) => v && Number.isFinite(v.firstSeenMs) && now - v.firstSeenMs >= afterMs);
+  const missing = due.filter(([k]) => !liveKeys.has(k));
+  if (!missing.length) return null;
+  return {
+    kind: 'aggregator-parity', key: `aggregator-parity|${due.length}`, url: (missing[0][1] && missing[0][1].url) || missing[0][0], adapter: 'aggregator-parity',
+    aggregatorCount: due.length, ours: due.length - missing.length,
+    missing: missing.map(([k, v]) => ({ url: v.url || k, outletId: v.outletId || null, via: v.via || null, ageMin: Math.round((now - v.firstSeenMs) / 60000) })),
+  };
+}
+
+/**
  * Does an article's own text name the show (BRO-7743)? The title (whole, or its lead before a subtitle) AND the venue or
  * a cast member. Corroboration only: the alert fires either way, since a page behind a bot wall must not hide a review.
  * @returns {boolean|null} null when there is no text to judge
@@ -238,15 +259,22 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHea
     lines.push(`${windowMismatch(g) ? 'WINDOW-MISMATCH' : 'GAP'} (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${why})`, ...(c.wrapper ? ['  open the Google link, then add the outlet\'s own article URL with opening-night-lane-inbox.js add'] : [`  add it: \`${c.primary}\``]), ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
   }
   for (const h of sourceHealth) {
+    if (h.kind === 'aggregator-parity') {
+      lines.push(`AGGREGATORS AHEAD: aggregators cite ${h.aggregatorCount} review(s) of this show for 15+ min; ${h.ours} of them are live on the site`,
+        ...(h.missing || []).slice(0, 8).map((m) => `  not live (${m.outletId || 'outlet?'}${m.via ? `, cited by ${m.via}` : ''}, ${m.ageMin} min): ${m.url}\n    ${ingestCommand(show.id, m).primary ? `add it: \`${ingestCommand(show.id, m).primary}\`` : 'open the Google link, then add the outlet\'s own article URL with opening-night-lane-inbox.js add'}`));
+      continue;
+    }
     if (h.kind === 'fetch-failing') lines.push(`SOURCE FAILING (${h.adapter || 'lane'}${h.outletId ? `, ${h.outletId}` : ''}): ${h.url}`, `  ${h.fails} reads in a row failed (last: ${h.lastError || 'unknown'}); last good read ${h.lastOkAt || 'never tonight'}. Reviews it lists are not being seen.`);
     else lines.push(`SOURCE NOT READ (${h.adapter || 'lane'}${h.outletId ? `, ${h.outletId}` : ''}): ${h.url}`, `  not read for ${h.idleMin} min (last try ${h.lastAttemptAt || 'never tonight'}). Reviews it lists are not being seen.`);
   }
-  const title = `Press night ${show.id} ${night}: ${nearMisses.length} near-miss, ${gaps.length} found-not-live${sourceHealth.length ? `, ${sourceHealth.length} source problem(s)` : ''}`;
+  const parity = sourceHealth.filter((h) => h.kind === 'aggregator-parity');
+  const problems = sourceHealth.length - parity.length;
+  const title = `Press night ${show.id} ${night}: ${nearMisses.length} near-miss, ${gaps.length} found-not-live${problems ? `, ${problems} source problem(s)` : ''}${parity.length ? `, aggregators ahead (${parity[0].ours}/${parity[0].aggregatorCount} live)` : ''}`;
   return { title, description: lines.join('\n') };
 }
 
 module.exports = {
   isGoogleWrapper,
   GAP_AFTER_MS, WINDOW_MISMATCH_MAX_DAYS, MAX_NEAR_MISSES_PER_ADAPTER, MAX_NEAR_MISS_CANDIDATES_PER_ADAPTER, INTENDED_REJECTIONS,
-  leadTitle, leadWord, nearMissSignals, windowMismatch, pageNamesShow, gapCandidates, recordNew, signalsPath, ingestCommand, formatPressSignals,
+  leadTitle, leadWord, nearMissSignals, windowMismatch, pageNamesShow, gapCandidates, aggregatorParity, recordNew, signalsPath, ingestCommand, formatPressSignals,
 };

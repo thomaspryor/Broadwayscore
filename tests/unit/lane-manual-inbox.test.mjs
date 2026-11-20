@@ -236,3 +236,200 @@ test('markStatus counts drains; a drained URL can be queued again', () => {
   assert.equal(st.leases[id].drainCount, 2);
   assert.deepEqual(inbox.addEntries(st, { show: SHOW.id, lines: [{ url: URL1 }], now: T0 + 1000 }).added, [id]);
 });
+
+// ---------------------------------------------------------------------------------------------------------------------
+// BRO-7891 (Much Ado press night follow-ups): an inbox entry is 'already-in' only for a review a reader can see; a URL
+// the lane already scored this run rides along with it (no second score); a syndicated copy is 'held-copy' (final,
+// skipped by drain and sweep), not 'already-in'; a dropped row is 'failed', not 'published'; failed/rejected alert.
+const { realManualInbox } = require('../../scripts/lib/opening-night-lane/driver.js');
+
+function laneNight2({ entries, fetchFor, maxPasses = 1, isLive = () => true, regenMissing = () => [], onDiskRows = [], onDiskUrls = [] }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-night-'));
+  let doc = { reviews: [] };
+  const marks = []; const scored = [];
+  const run = runLaneNight({
+    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses, passIntervalMs: 0, publishTimeoutMs: 5, pollMs: 1,
+    adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => [] }],
+    fetchText: async () => '',
+    fetchReview: async (c) => ({ fullText: 'A full review of the production. '.repeat(40), publishDate: NIGHT, ...fetchFor(c.url) }),
+    scoreReview: async (row) => { scored.push(row.url); return 72; },
+    readInbox: async () => (typeof entries === 'function' ? entries() : entries),
+    markInbox: async (updates) => { marks.push(...updates); },
+    onDiskRows, onDiskUrls,
+    publishPorts: {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; return out; },
+      regenShow: async (s, urls) => ({ missing: regenMissing(urls) }),
+      deploy: async () => {},
+      fetchLiveShow: async () => ({ rv: isLive() ? doc.reviews.map((r) => ({ u: r.url })) : [] }),
+    },
+    now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+  });
+  return run.then((res) => ({ res, doc, marks, scored })).finally(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+}
+const tm = () => ({ outletId: 'theatermania', outlet: 'TheaterMania', criticName: 'A Critic' });
+
+test('BRO-7891: a URL re-added while its scored row is not yet live rides along (queued -> published), scored once', async () => {
+  let reads = 0; let live = false;
+  const first = entry();
+  const second = entry({ addedAt: new Date(Date.parse(first.addedAt) + 60000).toISOString() });
+  const { marks, scored } = await laneNight2({
+    entries: () => { reads += 1; if (reads >= 3) live = true; return reads === 1 ? [first] : [second]; },
+    fetchFor: tm, maxPasses: 3, isLive: () => live,
+  });
+  const forSecond = marks.filter((m) => m.addedAt === second.addedAt).map((m) => m.status);
+  assert.ok(!forSecond.includes('already-in'), `not 'already-in' while not live: ${JSON.stringify(marks)}`);
+  assert.deepEqual(forSecond, ['queued', 'published'], JSON.stringify(marks));
+  assert.equal(scored.length, 1, 'the review is scored once');
+});
+
+test('BRO-7891: a URL already in reviews.json is already-in without a fetch or score', async () => {
+  const { marks, scored } = await laneNight2({ entries: [entry()], fetchFor: tm, onDiskUrls: [URL1] });
+  assert.deepEqual(marks.map((m) => m.status), ['already-in']);
+  assert.equal(scored.length, 0);
+});
+
+test('BRO-7891: a re-run lane re-scores a ledger-scored URL that never went live, instead of calling it already-in', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-ledger-'));
+  try {
+    const ledger = require('../../scripts/lib/opening-night-lane/ledger.js');
+    const discovery = require('../../scripts/lib/opening-night-lane/discovery.js');
+    ledger.appendEvent(dir, { show: SHOW.id, night: NIGHT, reviewKey: discovery.canonicalUrl(URL1), stage: 'scored', at: Date.now() });
+    const marks = []; let doc = { reviews: [] };
+    await runLaneNight({
+      show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses: 1, passIntervalMs: 0,
+      adapters: [], fetchText: async () => '',
+      fetchReview: async () => ({ ...tm(), fullText: 'A full review of the production. '.repeat(40), publishDate: NIGHT }),
+      scoreReview: async () => 70, readInbox: async () => [entry()], markInbox: async (u) => { marks.push(...u); },
+      publishPorts: { updateReviews: async (fn) => { const o = fn(doc); doc = o.doc; return o; }, regenShow: async () => ({}), deploy: async () => {}, fetchLiveShow: async () => ({ rv: doc.reviews.map((r) => ({ u: r.url })) }) },
+      now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+    });
+    assert.deepEqual(marks.map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+const TRIB = 'https://www.chicagotribune.com/2026/11/19/review-test-show/';
+const DN = 'https://www.nydailynews.com/2026/11/19/review-test-show/';
+const jones = (url) => (url.includes('chicagotribune')
+  ? { outletId: 'chicagotribune', outlet: 'Chicago Tribune', criticName: 'Chris Jones' }
+  : { outletId: 'nydailynews', outlet: 'New York Daily News', criticName: 'Chris Jones' });
+
+test('BRO-7891: a syndicated copy whose original is queued tonight is held-copy once the original is live, never already-in', async () => {
+  const p = entry({ id: `${SHOW.id}|trib`, url: TRIB, critic: 'Chris Jones' });
+  const c = entry({ id: `${SHOW.id}|dn`, url: DN, critic: 'Chris Jones' });
+  const { marks, doc } = await laneNight2({ entries: [p, c], fetchFor: jones });
+  const copy = marks.filter((m) => m.id === c.id).map((m) => m.status);
+  assert.ok(!copy.includes('already-in'), JSON.stringify(marks));
+  assert.equal(copy.at(-1), 'held-copy', JSON.stringify(marks));
+  assert.ok(doc.reviews.some((r) => r.url === TRIB) && !doc.reviews.some((r) => r.url === DN));
+});
+
+test('BRO-7891: a syndicated copy whose original is on the site is held-copy at once', async () => {
+  const c = entry({ id: `${SHOW.id}|dn`, url: DN, critic: 'Chris Jones' });
+  const { marks } = await laneNight2({ entries: [c], fetchFor: jones, onDiskRows: [{ criticName: 'Chris Jones', outletId: 'chicagotribune' }] });
+  assert.deepEqual(marks.map((m) => m.status), ['held-copy'], JSON.stringify(marks));
+});
+
+test('BRO-7891: held-copy is final; drain and sweep never send it to ingest-urls', () => {
+  assert.ok(inbox.FINAL_STATUSES.includes('held-copy'));
+  assert.deepEqual(drainPlan([{ id: 'h', url: DN, status: 'held-copy' }]).open, []);
+  const now = T0 + 24 * 3600000;
+  const state = { leases: { h: { holder: inbox.HOLDER, show: SHOW.id, url: DN, addedAt: new Date(now - STALE_OPEN_MS - 1).toISOString(), status: 'held-copy', statusAt: new Date(now - RECHECK_MS - 1).toISOString() } } };
+  assert.deepEqual(sweepPlan(state, { now, onSite: () => false, held: () => false }), []);
+  const s = inbox.addEntries({ leases: {} }, { show: SHOW.id, lines: [{ url: DN }], now: T0 });
+  const st = inbox.markStatus(s.state, { updates: [{ id: s.added[0], status: 'held-copy' }], now: T0 }).state;
+  assert.equal(inbox.markStatus(st, { updates: [{ id: s.added[0], status: 'queued' }], now: T0 }).state.leases[s.added[0]].status, 'held-copy');
+});
+
+test('BRO-7891: an inbox row dropped by the show regen is failed, not published', async () => {
+  const { marks } = await laneNight2({ entries: [entry()], fetchFor: tm, regenMissing: (urls) => urls });
+  assert.deepEqual(marks.map((m) => m.status), ['queued', 'failed'], JSON.stringify(marks));
+});
+
+test('BRO-7891: failed and rejected inbox URLs alert per generation; a failing or hung alert never fails the write', async () => {
+  const a = inbox.inboxAlertFor({ id: `${SHOW.id}|abc`, addedAt: 'g1', status: 'rejected', reason: 'night-window', url: URL1, show: SHOW.id });
+  const b = inbox.inboxAlertFor({ id: `${SHOW.id}|abc`, addedAt: 'g2', status: 'failed', url: URL1, show: SHOW.id });
+  assert.equal(a.conditionKey, `opening-night-lane-inbox:${SHOW.id}|abc@g1`);
+  assert.notEqual(a.conditionKey, b.conditionKey, 'a re-added generation is its own condition');
+  assert.ok(a.description.includes('--force') && a.description.includes(URL1));
+  for (const s of ['queued', 'published', 'already-in', 'held-copy', 'drained']) assert.equal(inbox.inboxAlertFor({ id: 'x', status: s }), null);
+
+  const sent = []; const logs = [];
+  const store = { readForShow: async () => [], markSync: () => ({ ok: true }) };
+  const ok = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: (l) => logs.push(l), store, alert: async (p) => { sent.push(p); } });
+  await ok.markInbox([{ id: 'x|1', addedAt: 'g1', status: 'failed', url: URL1, show: SHOW.id }, { id: 'x|2', status: 'published' }]);
+  await new Promise((r) => setTimeout(r, 5));
+  assert.deepEqual(sent.map((p) => p.conditionKey), ['opening-night-lane-inbox:x|1@g1']);
+
+  const throwing = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: (l) => logs.push(l), store, alert: async () => { throw new Error('router down'); } });
+  await throwing.markInbox([{ id: 'x|1', status: 'rejected' }]);
+  const hung = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: (l) => logs.push(l), store, alertTimeoutMs: 5, alert: () => new Promise(() => {}) });
+  const t = Date.now();
+  await hung.markInbox([{ id: 'x|1', status: 'failed' }]);
+  assert.ok(Date.now() - t < 1000, 'the write never waits on the alert');
+  await new Promise((r) => setTimeout(r, 20));
+  assert.ok(logs.some((l) => /alert failed \(router down\)/.test(l)) && logs.some((l) => /alert timed out/.test(l)), JSON.stringify(logs));
+  const failingWrite = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, store: { markSync: () => ({ ok: false, reason: 'push' }) }, alert: async (p) => { sent.push(p); } });
+  await assert.rejects(failingWrite.markInbox([{ id: 'x|9', status: 'failed' }]));
+  assert.ok(!sent.some((p) => p.conditionKey.includes('x|9')), 'no alert for a status that was not written');
+});
+
+// BRO-7891 item 3: aggregators listed reviews before the lane had them live. The lane reads the roundups every pass; a
+// parity alert now says when the aggregators' count of cited reviews is ahead of what is live, once per count.
+const nearMiss = require('../../scripts/lib/opening-night-lane/near-miss.js');
+
+test('BRO-7891: aggregatorParity reports cited reviews not live after 15 min, keyed by the aggregator count', () => {
+  const now = T0;
+  const cited = new Map([
+    ['a.com/1', { firstSeenMs: now - 20 * 60000, url: 'https://a.com/1', outletId: 'guardian', via: 'bww-roundup' }],
+    ['a.com/2', { firstSeenMs: now - 20 * 60000, url: 'https://a.com/2', outletId: 'nypost', via: 'dtli' }],
+    ['a.com/3', { firstSeenMs: now - 60000, url: 'https://a.com/3' }], // too fresh: publish is still working on it
+  ]);
+  assert.equal(nearMiss.aggregatorParity(cited, new Set(['a.com/1', 'a.com/2']), { now }), null, 'all due ones are live');
+  const p = nearMiss.aggregatorParity(cited, new Set(['a.com/1']), { now });
+  assert.equal(p.key, 'aggregator-parity|2'); assert.equal(p.aggregatorCount, 2); assert.equal(p.ours, 1);
+  assert.deepEqual(p.missing.map((m) => m.url), ['https://a.com/2']);
+  const msg = nearMiss.formatPressSignals({ id: SHOW.id }, NIGHT, { sourceHealth: [p] });
+  assert.match(msg.title, /aggregators ahead \(1\/2 live\)/);
+  assert.ok(!/source problem/.test(msg.title), 'parity is not counted as a source problem');
+  assert.match(msg.description, /AGGREGATORS AHEAD/); assert.ok(msg.description.includes('https://a.com/2'));
+});
+
+test('BRO-7891: the lane runner sends one aggregator-parity alert for a roundup-cited review not live after 15 min', async () => {
+  const night = '2026-11-17';
+  const show = { id: 'test-show-2026', title: 'Test Show', category: 'broadway', market: 'broadway', openingDate: night, venue: 'Nowhere Theatre' };
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-parity-'));
+  const CITED = 'https://www.theguardian.com/stage/2026/nov/17/test-show-review-broadway';
+  let t = Date.parse(`${night}T23:00:00Z`);
+  const calls = [];
+  try {
+    await runLaneNight({
+      show, night, openingDate: night, ledgerDir: dir, maxPasses: 4,
+      fetchText: async () => '<html><body>no date here</body></html>',
+      adapters: [{ name: 'bww-roundup', kind: 'aggregator', phase: 'main', discover: async () => [
+        { url: CITED, title: 'Test Show review', outletId: 'guardian', source: 'aggregator', aggregatorCited: true, via: 'bww-roundup' },
+      ] }],
+      fetchReview: async () => { throw new Error('not admitted in this test'); }, scoreReview: async () => 80,
+      publishPorts: { updateReviews: async () => {}, regenShow: async () => {}, deploy: async () => {}, fetchLiveShow: async () => ({ rv: [] }) },
+      now: () => t, wait: async (ms) => { t += Math.max(ms || 0, 8 * 60000); }, abandonPending: () => true,
+      onPressSignals: async (sig) => { calls.push(sig); },
+    });
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  const parity = calls.flatMap((c) => c.sourceHealth || []).filter((h) => h.kind === 'aggregator-parity');
+  assert.equal(parity.length, 1, JSON.stringify(calls).slice(0, 1500));
+  assert.equal(parity[0].aggregatorCount, 1); assert.equal(parity[0].ours, 0);
+});
+
+test('BRO-7891 (self-review): a copy pulled from the queue by its original, then added again, is held-copy, not stuck queued', async () => {
+  // Pass 1: the Daily News copy is scored first (held in the queue as a possible copy), then the Tribune original pulls
+  // it. Pass 2: the copy is added again (a new generation). Admitted-but-pulled must not ride along as 'queued'.
+  let reads = 0;
+  const c1 = entry({ id: `${SHOW.id}|dn`, url: DN, critic: 'Chris Jones' });
+  const p = entry({ id: `${SHOW.id}|trib`, url: TRIB, critic: 'Chris Jones' });
+  const c2 = { ...c1, addedAt: new Date(Date.parse(c1.addedAt) + 120000).toISOString() };
+  const { marks, doc } = await laneNight2({ entries: () => (++reads === 1 ? [c1, p] : [p, c2]), fetchFor: jones, maxPasses: 2 });
+  const last = (e) => marks.filter((m) => m.id === e.id && m.addedAt === e.addedAt).at(-1);
+  assert.equal(last(c1) && last(c1).status, 'held-copy', JSON.stringify(marks));
+  assert.equal(last(c2) && last(c2).status, 'held-copy', JSON.stringify(marks));
+  assert.equal(last(p).status, 'published');
+  assert.ok(!doc.reviews.some((r) => r.url === DN));
+});

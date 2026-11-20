@@ -12,7 +12,9 @@
  *
  * Entry: {holder:'manual-inbox', show, url, outletId?, critic?, force?, addedAt, addedBy, acquiredAt, heartbeatAt,
  *   expiresAt, status?, statusAt?, reason?}. No status = waiting for the lane. Status is written back by the lane
- *   (queued, published, failed, rejected, already-in) or by the drain after the lane ends (drained).
+ *   (queued, published, failed, rejected, already-in, held-copy) or by the drain after the lane ends (drained).
+ *   held-copy (BRO-7891): a syndicated copy whose original is on the site; it never goes on the site itself, so the
+ *   drain and the sweep leave it alone (re-sending it to ingest-urls would be futile).
  *
  * Pure transitions (addEntries, markStatus) are tested on their own; the git wrappers reuse lease-store.
  */
@@ -24,7 +26,9 @@ const INBOX_FILE = 'data/opening-night/inbox.json';
 const HOLDER = 'manual-inbox';
 const ENTRY_TTL_MS = 72 * 60 * 60 * 1000;
 // A status the lane or the drain will never act on again.
-const FINAL_STATUSES = Object.freeze(['published', 'failed', 'rejected', 'already-in', 'drained']);
+const FINAL_STATUSES = Object.freeze(['published', 'failed', 'rejected', 'already-in', 'held-copy', 'drained']);
+// BRO-7891: outcomes a person must hear about the same night (their link did not go live).
+const ALERT_STATUSES = Object.freeze(['failed', 'rejected']);
 const STATUSES = Object.freeze(['queued', ...FINAL_STATUSES]);
 const GIT_TIMEOUT_MS = 20000;
 
@@ -107,6 +111,26 @@ function entriesFor(state, show) {
     .sort((a, b) => String(a.addedAt).localeCompare(String(b.addedAt)));
 }
 
+/**
+ * BRO-7891: the alert for a lane status write, or null. One condition per entry generation (id@addedAt), so the router's
+ * cooldown on an earlier generation never silences a URL re-added (say with --force) after its rejection.
+ * @param update {id, addedAt?, status, reason?, url?, show?}
+ */
+function inboxAlertFor(update) {
+  if (!update || !ALERT_STATUSES.includes(update.status)) return null;
+  const show = update.show || String(update.id || '').split('|')[0];
+  const url = update.url || update.id;
+  const why = update.reason ? `: ${String(update.reason).slice(0, 300)}` : '';
+  const fix = update.status === 'rejected'
+    ? `If it is tonight's review, add it again with --force: node scripts/opening-night-lane-inbox.js add --show=${show} --url='${url}' --force`
+    : `The drain sends it to ingest-urls.yml after the lane ends; to retry now: node scripts/opening-night-lane-inbox.js add --show=${show} --url='${url}'`;
+  return {
+    conditionKey: `opening-night-lane-inbox:${update.id}@${update.addedAt || ''}`,
+    title: `Lane inbox URL ${update.status} for ${show}`,
+    description: `The opening-night lane ${update.status === 'rejected' ? 'rejected' : 'could not publish'} ${url}${why}. ${fix}`,
+  };
+}
+
 /** Entries the lane should still act on: no final status. */
 const isOpen = (e) => !e.status || !FINAL_STATUSES.includes(e.status);
 
@@ -158,6 +182,6 @@ async function readForShow({ repoDir, remote = 'origin', show }) {
 }
 
 module.exports = {
-  INBOX_BRANCH, INBOX_FILE, HOLDER, ENTRY_TTL_MS, FINAL_STATUSES, STATUSES,
-  normalizeUrl, entryId, addEntries, markStatus, entriesFor, isOpen, addSync, markSync, readSync, readForShow,
+  INBOX_BRANCH, INBOX_FILE, HOLDER, ENTRY_TTL_MS, FINAL_STATUSES, STATUSES, ALERT_STATUSES,
+  normalizeUrl, entryId, addEntries, markStatus, entriesFor, isOpen, inboxAlertFor, addSync, markSync, readSync, readForShow,
 };

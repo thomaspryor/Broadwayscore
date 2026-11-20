@@ -120,6 +120,13 @@ async function runLaneNight({
   // `${critic}|${outletId}` of every row on the site or queued tonight, for the syndication check below. Seeded from
   // reviews.json: a primary the regular pipeline already published must still stop the lane publishing its copy.
   const taken = new Set(onDiskRows.filter((r) => r && r.criticName && r.outletId).map((r) => `${criticKey(r.criticName)}|${r.outletId}`));
+  // BRO-7891: what a reader can see now, as opposed to `taken`/`seen`, which also hold rows only queued tonight (or
+  // scored by an earlier run that never went live). An inbox entry is 'already-in' only against these.
+  const liveKeys = new Set(onDiskUrls.map((u) => discovery.canonicalUrl(u)).filter(Boolean)); // review keys on the site
+  const liveTaken = new Set(taken); // critic|outlet on the site
+  const admittedKeys = new Set(); // review keys scored this run (queued, in flight, live or pulled as a copy)
+  const copySkipped = new Map(); // review key -> {takenKey, primary}: a syndicated copy skipped this run
+  const aggregatorCited = new Map(); // BRO-7891 item 3: review key -> first sighting of an aggregator citing it
 
   // BRO-7238 part 1: copies the lane already put on the site whose original has scored since (a Yahoo reprint published
   // in pass N, the TheWrap original in pass N+2). `livePublished` = what this lane published tonight, by critic|outlet;
@@ -140,8 +147,26 @@ async function runLaneNight({
   const failedKeys = () => new Set(failed.map((f) => f.key));
   const noteInbox = (entry, status, reason) => {
     if (!entry || manualClosed.has(gen(entry))) return;
-    if (status === 'queued') manualQueued.add(gen(entry)); else manualClosed.add(gen(entry));
-    inboxUpdates.push({ id: entry.id, ...(entry.addedAt ? { addedAt: entry.addedAt } : {}), status, ...(reason ? { reason: String(reason).slice(0, 300) } : {}) });
+    if (status === 'queued') { if (manualQueued.has(gen(entry))) return; manualQueued.add(gen(entry)); } else manualClosed.add(gen(entry));
+    // url/show ride along for the driver's failed/rejected alert (markStatus ignores them).
+    inboxUpdates.push({ id: entry.id, ...(entry.addedAt ? { addedAt: entry.addedAt } : {}), status, ...(reason ? { reason: String(reason).slice(0, 300) } : {}), url: entry.url, show: show.id });
+  };
+  // BRO-7891: an inbox entry for a syndicated copy whose original is only queued tonight stays 'queued' until the
+  // original is verified live ('held-copy', final: drain and sweep skip it). Never live by the end: it stays open and
+  // the drain hands it to ingest-urls, where the rebuild's own syndication rule decides.
+  const heldCopies = []; // {entry, takenKey, primary}
+  const holdCopy = (entry, takenKey, primary, criticName) => {
+    if (liveTaken.has(takenKey)) { noteInbox(entry, 'held-copy', `syndicated copy of the ${primary} review by ${criticName}, which is on the site`); return; }
+    noteInbox(entry, 'queued');
+    if (!heldCopies.some((h) => gen(h.entry) === gen(entry))) heldCopies.push({ entry, takenKey, primary, criticName });
+  };
+  const settleHeldCopies = () => {
+    for (let i = heldCopies.length - 1; i >= 0; i--) {
+      const h = heldCopies[i];
+      if (!liveTaken.has(h.takenKey)) continue;
+      heldCopies.splice(i, 1);
+      noteInbox(h.entry, 'held-copy', `syndicated copy of the ${h.primary} review by ${h.criticName}, which is on the site`);
+    }
   };
   const flushInbox = async () => {
     if (!markInbox || !inboxUpdates.length) return;
@@ -165,9 +190,18 @@ async function runLaneNight({
       if (!e || !e.id || manualClosed.has(gen(e)) || (e.status && e.status !== 'queued')) continue;
       const key = discovery.canonicalUrl(e.url);
       if (!key) { noteInbox(e, 'rejected', 'not an http(s) URL'); continue; }
-      // Already scored tonight (or on the site before tonight): nothing to add. A key that failed earlier is tried again.
-      if (manualQueued.has(gen(e))) continue; // scored tonight, waiting for its publish
-      if (seen.has(key) && !failedNow.has(key)) { noteInbox(e, 'already-in', 'the lane already has this review'); continue; }
+      if (manualQueued.has(gen(e))) continue; // scored tonight (or a held copy), waiting for its publish
+      // BRO-7891: 'already-in' only for a review a reader can see (reviews.json before tonight, or verified live).
+      if (liveKeys.has(key)) { noteInbox(e, 'already-in', 'this review is on the site'); continue; }
+      // Scored this run and still queued or publishing: ride along with it (publishBatch marks it published once live)
+      // rather than re-offering it, which would fetch and score the same review twice.
+      // A syndicated copy the lane skipped, pulled from the queue or took off the site this run: held against its
+      // original, not re-fetched. Checked before the ride-along: a pulled copy is admitted but will never publish.
+      if (copySkipped.has(key)) { const c = copySkipped.get(key); holdCopy(e, c.takenKey, c.primary, c.criticName); continue; }
+      if (admittedKeys.has(key) && !failedNow.has(key)) { manualByKey.set(key, e); noteInbox(e, 'queued'); continue; }
+      // Anything else is worked: a key that failed this run, or one an earlier run of tonight's lane scored but never
+      // got live (a restart). That re-scores it (model credits, and a settle run against settleMaxRuns): the price of
+      // not leaving a person's URL unpublished on the strength of a ledger line.
       manualByKey.set(key, e);
       out.push({ url: e.url, key, source: trust.MANUAL_SOURCE, adapter: 'manual-inbox', via: 'manual-inbox', publishDate: null,
         // The outlet comes from the URL when the person did not name one: inline-score's fetchReview never returns one
@@ -195,6 +229,10 @@ async function runLaneNight({
         if (notLive.has(x.primaryKey)) continue;
         stagedRemovals.splice(stagedRemovals.indexOf(x), 1);
         livePublished.delete(`${criticKey(x.criticName)}|${x.outletId}`);
+        // BRO-7891: the copy is off the site now; a later inbox add of it is held against its original, not 'already-in'.
+        liveKeys.delete(x.key);
+        liveTaken.delete(`${criticKey(x.criticName)}|${x.outletId}`);
+        copySkipped.set(x.key, { takenKey: `${criticKey(x.criticName)}|${x.primaryOutlet}`, primary: x.primaryOutlet, criticName: x.criticName });
         removedCopies.push({ key: x.key, reason: `syndicated copy of the ${x.primaryOutlet} review by ${x.criticName}, taken down when the original was published` });
       }
       for (const key of res.dropped || []) failed.push({ key, reason: 'landed in reviews.json but not in the regenerated show JSON' });
@@ -202,7 +240,23 @@ async function runLaneNight({
       // never went live: try again with the next batch. A re-queued row restarts its mid-pass wait, or the 30 s timer
       // below would retry a failing publish every 30 s instead of about once a pass (BRO-7159 review).
       for (const r of batch) if (!missing.has(r.key)) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
-      for (const r of batch) if (!missing.has(r.key) && manualByKey.has(r.key)) noteInbox(manualByKey.get(r.key), 'published', dryRun ? 'dry run' : null);
+      // BRO-7891: only a verified-live row is on the site. A dropped row (landed in reviews.json, not in the show JSON)
+      // is in neither `missing` nor `verified`: it is not published, and its inbox entry is left to fail and alert.
+      const verified = new Set(res.verified || []);
+      for (const r of batch) {
+        if (!verified.has(r.key)) continue;
+        liveKeys.add(r.key);
+        liveTaken.add(`${criticKey(r.row.criticName)}|${r.row.outletId}`);
+        if (manualByKey.has(r.key)) noteInbox(manualByKey.get(r.key), 'published', dryRun ? 'dry run' : null);
+      }
+      const droppedKeys = new Set(res.dropped || []);
+      for (const r of batch) {
+        if (!manualByKey.has(r.key) || verified.has(r.key) || missing.has(r.key)) continue;
+        // dropped: never goes live; else the merge kept the site's own row for this URL (a human correction won)
+        if (droppedKeys.has(r.key)) noteInbox(manualByKey.get(r.key), 'failed', 'landed in reviews.json but not in the regenerated show JSON');
+        else noteInbox(manualByKey.get(r.key), 'already-in', 'reviews.json already has this URL; the merge kept that row');
+      }
+      settleHeldCopies();
       pending.push(...batch.filter((r) => missing.has(r.key) && !pending.some((q) => q.key === r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
     } catch (e) {
       errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
@@ -282,6 +336,17 @@ async function runLaneNight({
       const nearMisses = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'near-miss', items: pass.nearMisses || [], now: stamp, perAdapter: nearMiss.MAX_NEAR_MISSES_PER_ADAPTER });
       const gaps = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'gap', items: nearMiss.gapCandidates(pass.sightings || [], { firstSeen: firstSightings, now: stamp }), now: stamp });
       const health = nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'source-health', items: sourceHealth.alerts(stamp), now: stamp });
+      // BRO-7891 item 3: aggregators ahead of the site. Every review a roundup cites tonight (admitted or not), timed from
+      // its first sighting; a copy held against a live original counts as live. Rides with the source-health alerts.
+      for (const s of pass.sightings || []) {
+        if (!s || !s.aggregatorCited || !s.knownOutlet || aggregatorCited.has(s.key)) continue;
+        if (s.rejectedFor && nearMiss.INTENDED_REJECTIONS.has(s.rejectedFor) && !nearMiss.windowMismatch(s)) continue;
+        aggregatorCited.set(s.key, { firstSeenMs: stamp, url: s.url, outletId: s.outletId, via: s.via || s.adapter });
+      }
+      const liveNow = new Set(liveKeys);
+      for (const [k, c] of copySkipped) if (liveTaken.has(c.takenKey)) liveNow.add(k);
+      const parity = nearMiss.aggregatorParity(aggregatorCited, liveNow, { now: stamp });
+      if (parity) health.push(...nearMiss.recordNew(ledgerDir, { showId: show.id, night, kind: 'aggregator-parity', items: [parity], now: stamp }));
       // Not awaited here: the admitted reviews below are the lane's job and must not wait on Discord or Linear.
       if ((nearMisses.length || gaps.length || health.length) && onPressSignals) {
         const p = Promise.resolve().then(() => onPressSignals({ show, night, nearMisses, gaps, sourceHealth: health }))
@@ -343,7 +408,11 @@ async function runLaneNight({
           seen.add(a.key);
           awaiting.delete(a.key);
           skipped.push({ key: a.key, reason: `syndicated copy of the ${copyOf} review by ${row.criticName}` });
-          if (entry) { manualByKey.delete(a.key); noteInbox(entry, 'already-in', `syndicated copy of the ${copyOf} review, which the lane has`); }
+          const takenKey = `${criticKey(row.criticName)}|${copyOf}`;
+          copySkipped.set(a.key, { takenKey, primary: copyOf, criticName: row.criticName });
+          // BRO-7891: not 'already-in' (the sweep would re-send a copy URL that never reaches the site, and the original
+          // may only be queued): held against its original until that is live.
+          if (entry) { manualByKey.delete(a.key); holdCopy(entry, takenKey, copyOf, row.criticName); }
           continue;
         }
         if (row.assignedScore == null) { await wait(latency.scoreMs || 0); const scored = await scoreReview(row, fetched);
@@ -399,8 +468,12 @@ async function runLaneNight({
         for (let i = pending.length - 1; i >= 0; i--) {
           const q = pending.at(i).row;
           if (criticKey(q.criticName) !== criticKey(row.criticName) || !getSyndicationPrimaries(q.criticName, q.outletId).includes(row.outletId)) continue;
-          skipped.push({ key: pending.at(i).key, reason: `syndicated copy of the ${row.outletId} review by ${row.criticName}` });
+          const pulled = pending.at(i);
+          skipped.push({ key: pulled.key, reason: `syndicated copy of the ${row.outletId} review by ${row.criticName}` });
           pending.splice(i, 1);
+          const takenKey = `${criticKey(row.criticName)}|${row.outletId}`;
+          copySkipped.set(pulled.key, { takenKey, primary: row.outletId, criticName: row.criticName });
+          if (manualByKey.has(pulled.key)) { const e = manualByKey.get(pulled.key); manualByKey.delete(pulled.key); holdCopy(e, takenKey, row.outletId, row.criticName); }
         }
         for (const [k, live] of livePublished) {
           const q = live.row;
@@ -424,6 +497,7 @@ async function runLaneNight({
         seen.add(a.key);
         awaiting.delete(a.key);
         admitted.push(a);
+        admittedKeys.add(a.key);
         await maybePublish({ midPass: true }); // a long pass publishes what it has (see maybePublish)
       } catch (e) {
         if (e && e.awaiting) { awaiting.add(a.key); continue; } // held for evidence: not seen, not an error, re-offered next pass
