@@ -2,12 +2,15 @@
   "processed": [
     "eurotrash-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
     "eurotrash-off-west-end-2026/times-uk--clive-davis.json",
-    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json",
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "much-ado-about-nothing-2026/deadline--unknown.json",
+    "much-ado-about-nothing-2026/talkinbroadway--unknown.json"
   ],
   "failed": [
-    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json"
   ],
-  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -15,17 +18,30 @@
       "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/much-ado-about-nothing-2026/deadline--unknown.json",
+      "much-ado-about-nothing-2026/deadline--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
+    ],
     "brightdata": [
-      "eurotrash-off-west-end-2026/times-uk--clive-davis.json"
+      "eurotrash-off-west-end-2026/times-uk--clive-davis.json",
+      "much-ado-about-nothing-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-11-20T08:07:16.101Z",
-  "lastProcessed": "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json",
-  "log": []
+  "lastProcessed": "much-ado-about-nothing-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-20T08:37:28.933Z",
+      "event": "bb-session",
+      "session": "f61adfe0",
+      "url": "https://deadline.com/2026/11/broadway-box-office-much-ado-about-nothing-billy-cr"
+    }
+  ]
 }
