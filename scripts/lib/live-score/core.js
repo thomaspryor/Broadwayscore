@@ -103,7 +103,8 @@ function mergePointer({ prev, updates, now = Date.now(), ttlMs = POINTER_TTL_MS,
   for (const [id, e] of Object.entries(old)) {
     const expired = now - (e.at || 0) > ttlMs;
     const covered = Number.isFinite(live[id]) && live[id] >= e.rev;
-    const tooOld = now - (e.at || 0) > Math.max(ttlMs, POINTER_MAX_AGE_MS);
+    // Tombstones (takedowns, t:1) are exempt: their rev is the purge time, not a data rev, so no deploy "covers" them.
+    const tooOld = !e.t && now - (e.at || 0) > Math.max(ttlMs, POINTER_MAX_AGE_MS);
     if ((expired && covered) || tooOld) continue;
     shows[id] = e;
   }

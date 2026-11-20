@@ -221,6 +221,12 @@ describe('7. publisher', () => {
     const m = core.mergePointer({ prev, updates: {}, now, live: {} });
     assert.equal(m.shows.old, undefined); assert.ok(m.shows.mid);
   });
+  test('BRO-7831: a purge tombstone survives the hard cap', async () => {
+    const st = memStorage(); await purge({ storage: st, showId: 'x-2026', rev: 9000, now: 1000 });
+    const prev = JSON.parse(st.m.get('p.json'));
+    const m = core.mergePointer({ prev, updates: {}, now: prev.shows['x-2026'].at + 30 * 86400000, live: {} });
+    assert.ok(m.shows['x-2026'], 'tombstone kept');
+  });
   test('BRO-7831: eligibility window is wider than the publisher hot set', () => {
     assert.ok(core.ELIGIBLE_DAYS > core.HOT_DAYS);
     const now = Date.parse('2026-11-19T12:00:00Z');

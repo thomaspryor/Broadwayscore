@@ -69,7 +69,7 @@ async function purge({ storage, showId, rev, now = Date.now() }) {
   });
   const path = payloadPath(showId, built.v);
   await storage.put(path, built.text, { cacheSeconds: 31536000 });
-  const next = mergePointer({ prev, updates: { [showId]: { v: built.v, c: built.c, rev, n: built.n, rc: 0 } }, now });
+  const next = mergePointer({ prev, updates: { [showId]: { v: built.v, c: built.c, rev, n: built.n, rc: 0, t: 1 } }, now });
   await storage.put('p.json', JSON.stringify(next), { cacheSeconds: 20 });
   if (old && old.v && old.v !== built.v) await storage.remove(payloadPath(showId, old.v));
   return { purged: showId, v: built.v };
