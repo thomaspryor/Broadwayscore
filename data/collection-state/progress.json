@@ -1,34 +1,69 @@
 {
   "processed": [
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "much-ado-about-nothing-2026/npr--unknown.json",
     "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "florence-off-west-end-2026/thereviewshub--unknown.json",
     "florence-off-west-end-2026/a-youngish-perspective--unknown.json",
-    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
+    "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
+    "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
+    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json",
+    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
   ],
   "failed": [
-    "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
     "much-ado-about-nothing-2026/timeout--unknown.json",
-    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json"
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
+    "a-christmas-story-the-musical-tour-2026/nuvo--nuvo.json",
+    "eurotrash-off-west-end-2026/thestage--unknown.json",
+    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json",
+    "top-gunchained-off-west-end-2026/british-theatre--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "much-ado-about-nothing-2026/npr--unknown.json",
       "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
       "florence-off-west-end-2026/thereviewshub--unknown.json",
-      "florence-off-west-end-2026/a-youngish-perspective--unknown.json"
+      "florence-off-west-end-2026/a-youngish-perspective--unknown.json",
+      "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [
-      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-20T10:36:27.037Z",
-  "lastProcessed": "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
-  "log": []
+  "startTime": "2026-11-20T11:22:32.709Z",
+  "lastProcessed": "top-gunchained-off-west-end-2026/british-theatre--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-20T11:27:05.074Z",
+      "event": "bb-session",
+      "session": "94dbdb27",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T11:27:05.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

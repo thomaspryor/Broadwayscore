@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-11-20T10:42:55.986Z",
-  "processed": 4,
-  "failed": 3,
-  "successRate": "57.1%",
+  "updatedAt": "2026-11-20T11:30:37.761Z",
+  "processed": 11,
+  "failed": 10,
+  "successRate": "52.4%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-11-20T11:27:05.074Z",
+      "event": "bb-session",
+      "session": "94dbdb27",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T11:27:05.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
