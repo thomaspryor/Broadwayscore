@@ -4,9 +4,8 @@
  * Import this instead of hardcoding model strings. A model retirement
  * becomes a 1-line change here rather than a 50-file sed sweep.
  *
- * DO NOT add versioned evaluation pins here (e.g. claude-sonnet-4-5-20250929,
- * claude-3-5-haiku-20241022). Those are intentionally frozen for eval
- * reproducibility and live inline in scripts/llm-scoring/.
+ * Do not pin a retired or retiring Claude id anywhere, including
+ * scripts/llm-scoring/ (scripts/tests/no-retired-claude-pins.test.mjs, BRO-7510).
  */
 module.exports = {
   GEMINI_FLASH: 'gemini-2.5-flash',
