@@ -32,8 +32,10 @@ test('house/stage venue: heading naming the house confirms the derived variant',
   }
 });
 
-test('the stage name alone also confirms', () => {
-  assert.ok(run('Playwrights Horizons/Judith O. Rubin Theater', 'Mary Page Marlowe at Judith O. Rubin Theater'));
+test('a stage name alone is too weak to confirm; a longer different venue is rejected', () => {
+  assert.equal(run('Playwrights Horizons/Judith O. Rubin Theater', 'Mary Page Marlowe at Judith O. Rubin Theater'), null);
+  assert.equal(run('The Public Theater/Newman Theater', 'Mary Page Marlowe at Newman Theater Chicago'), null);
+  assert.equal(run('The Public Theater/Newman Theater', 'Mary Page Marlowe review: Pittsburgh Public Theater'), null);
 });
 
 test('a title another show shares needs the whole venue name, not just the house', () => {

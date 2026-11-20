@@ -454,12 +454,18 @@ function matchDerivedTitleVariant(showTitle, headingText, options = {}) {
   // theater" sits inside "Pittsburgh Public Theater"), so they count only for a variant no other
   // shows.json row shares (clashIds empty); a clashing variant still needs the whole venue name.
   const wholePhrase = normalizePhrase(venueName);
-  const formPhrases = venueForms({ venue: venueName }).map(normalizePhrase).filter((p) => p && p !== wholePhrase); // venue-write-guard-ok: read-only literal passed to venueForms, nothing is written
+  // Only the HOUSE form (text before the "/" or " - " stage suffix), and only when a heading names it
+  // right after at/in/from/by or at its start: "Pittsburgh Public Theater" must not read as "The
+  // Public Theater". Stage-only forms ("Newman Theater") are too short to prove a venue.
+  const houseRaw = String(venueName || '').split(/\/|\s[-–—]\s|\(/)[0];
+  const housePhrase = normalizePhrase(houseRaw);
+  const houseOk = housePhrase && housePhrase !== wholePhrase && housePhrase.includes(' ')
+    && venueForms({ venue: venueName }).map(normalizePhrase).includes(housePhrase); // venue-write-guard-ok: read-only literal passed to venueForms, nothing is written
   if (!wholePhrase || venueTokens(show).length === 0) return null;
   const headingPhrase = ` ${normalizePhrase(headingText)} `;
-  const named = (p) => headingPhrase.includes(` ${p} `);
-  const wholeHit = named(wholePhrase);
-  const formHit = formPhrases.some(named);
+  const wholeHit = headingPhrase.includes(` ${wholePhrase} `);
+  const formHit = !!houseOk && (new RegExp(` (at|in|from|by|presented by|returns to) (the )?${housePhrase} `).test(headingPhrase)
+    || headingPhrase.startsWith(` ${housePhrase} `));
   if (!wholeHit && !formHit) return null;
   let variants;
   try { variants = titleVariantInfo(show, { titles: options.titles }); } catch (_) { return null; }
