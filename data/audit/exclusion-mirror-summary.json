@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-20T01:13:53.013Z",
-  "totalScanned": 83606,
-  "totalExcluded": 31167,
+  "generatedAt": "2026-11-20T01:55:20.303Z",
+  "totalScanned": 83608,
+  "totalExcluded": 31170,
   "ruleCounts": {
-    "wrongProduction": 20381,
+    "wrongProduction": 20383,
     "duplicateOf": 2330,
-    "rejectionReason": 1568,
-    "wrongShow": 1356,
-    "nonReview": 902,
+    "rejectionReason": 1569,
+    "wrongShow": 1357,
+    "nonReview": 901,
     "unverifiableWebSearchRow": 882,
     "noTextOrScoreSignal": 853,
     "wrongAttribution": 350,
@@ -17,11 +17,11 @@
     "crossOutletDuplicate": 243,
     "knownSyndicationSecondary": 228,
     "bodylessAggregatorScoreUncorroborated": 173,
-    "isSyndicatedDuplicate": 170,
+    "isSyndicatedDuplicate": 171,
     "listingPageUrl": 170,
     "previewPlaceholder": 114,
     "namedNonReviewUrl": 107,
-    "scoreStatusToBeCalculated": 81,
+    "scoreStatusToBeCalculated": 80,
     "roundupPageAsReview": 62,
     "submissionRefusedUrl": 52,
     "contentTierInvalid": 49,
@@ -45,17 +45,18 @@
   },
   "ruleDeltas": {
     "wrongProduction": 2,
-    "duplicateOf": 2,
-    "rejectionReason": -3,
-    "nonReview": 1,
-    "noTextOrScoreSignal": -4
+    "rejectionReason": 1,
+    "wrongShow": 1,
+    "nonReview": -1,
+    "isSyndicatedDuplicate": 1,
+    "scoreStatusToBeCalculated": -1
   },
-  "previousGeneratedAt": "2026-11-20T00:57:11.971Z",
+  "previousGeneratedAt": "2026-11-20T01:13:53.013Z",
   "mirror": {
-    "comparedShows": 4838,
-    "comparedFiles": 82970,
-    "agreeExcluded": 31153,
-    "agreeIncluded": 51303,
+    "comparedShows": 4837,
+    "comparedFiles": 82937,
+    "agreeExcluded": 31086,
+    "agreeIncluded": 51337,
     "mirrorOnly": 186,
     "rebuildOnly": 328,
     "disagreements": 514,
@@ -88,8 +89,8 @@
       "skippedWrongShow": 1
     },
     "rebuildEntriesUnscanned": 0,
-    "notComparedShows": 57,
-    "notComparedFiles": 636
+    "notComparedShows": 58,
+    "notComparedFiles": 671
   },
   "previousDisagreementRate": 0.0062
 }
