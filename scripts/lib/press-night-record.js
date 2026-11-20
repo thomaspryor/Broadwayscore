@@ -356,11 +356,23 @@ function firstOutletPublish(rec) {
  * published 10-05, made every review "already live at the first sample")? A review with no
  * publish date counts only if the probe saw it go live (not at the first sample).
  */
-function isNightReview(p, night) {
+function isNightReview(p, night, graceDays = 0) {
   if (!night) return true;
-  if (p.publishAt) return String(p.publishAt).slice(0, 10) >= night;
+  if (p.publishAt) return String(p.publishAt).slice(0, 10) >= shiftDay(night, -graceDays);
   return !p.baseline;
 }
+
+/** YYYY-MM-DD shifted by whole days (UTC), for the publish-date grace window. */
+function shiftDay(day, delta) {
+  if (!delta) return String(day).slice(0, 10);
+  const ms = Date.parse(`${String(day).slice(0, 10)}T00:00:00Z`);
+  return Number.isNaN(ms) ? String(day).slice(0, 10) : new Date(ms + delta * 86400000).toISOString().slice(0, 10);
+}
+
+// BRO-7892: a review dated the day before the night (a UK outlet's evening-before post, a studio's final-preview
+// piece) that the pipeline first saw INSIDE the night window is still a press-night review. Its live time counts.
+// Anything older (BRO-6067: singleticket, published weeks before) stays preview-period and proves nothing.
+const NEAR_PRIOR_GRACE_DAYS = 2;
 
 // A review published more than a year before the press night cannot be this production's (BRO-6819: 2018 HuffPost/
 // Observer pages of an earlier Tosca were live at the first sample, then the rebuild purged them and deleted the
@@ -649,12 +661,12 @@ const critKey = (c) => foldDiacritics(String(c || '')).toLowerCase().replace(/[^
  * which also folds in the lane shadow's finer polls). Preview-period rows are skipped: a review live weeks
  * before the embargo is not proof that another critic's night review is live (BRO-6070 review).
  */
-function outletLiveMs(rec) {
+function outletLiveMs(rec, graceDays = 0) {
   const byCritic = new Map();
   const byOutlet = new Map();
   const min = (m, k, ms) => { if (!m.has(k) || ms < m.get(k)) m.set(k, ms); };
   for (const p of rec.perReview) {
-    if (!isNightReview(p, rec.night)) continue;
+    if (!isNightReview(p, rec.night, graceDays)) continue;
     const oid = outletIdOf(p.outlet); const ms = toMs(p.firstLiveAt);
     if (!oid || ms == null) continue;
     min(byCritic, `${oid}|${critKey(p.critic)}`, ms);
@@ -690,8 +702,11 @@ function sameNightCheck(rec, g) {
   const fsnap = rec.fileState;
   if (embMs == null) return { status: 'unknown', detail: 'no embargo time' };
   if (!fsnap || !Array.isArray(fsnap.files)) return { status: 'unknown', detail: 'no review-file snapshot in the record (private review texts were not available at capture), so late or missing reviews cannot be named' };
-  const { byCritic, byOutlet } = outletLiveMs(rec);
+  const strict = outletLiveMs(rec);
+  const near = outletLiveMs(rec, NEAR_PRIOR_GRACE_DAYS);
   const t2 = embMs + 2 * HOUR;
+  const nearPrior = (f) => !!(f.publishDate && rec.night && String(f.publishDate).slice(0, 10) < rec.night
+    && String(f.publishDate).slice(0, 10) >= shiftDay(rec.night, -NEAR_PRIOR_GRACE_DAYS));
   const nightFiles = fsnap.files.filter((f) => f.includable && f.outletId && toMs(f.firstSeenAt) != null
     && toMs(f.firstSeenAt) >= embMs - g.nightStartH * HOUR && toMs(f.firstSeenAt) <= embMs + g.sameNightEndH * HOUR);
   const perOutletFiles = new Map();
@@ -699,6 +714,7 @@ function sameNightCheck(rec, g) {
   // Live time of this file's review. By critic when the file names one. The outlet-level time (which includes
   // the lane shadow) stands in only when the outlet has a single night file, so it cannot vouch for a second critic.
   const liveOf = (f) => {
+    const { byCritic, byOutlet } = nearPrior(f) ? near : strict;
     const ck = critKey(f.critic);
     const c = ck && ck !== 'unknown' ? byCritic.get(`${f.outletId}|${ck}`) : undefined;
     const o = (!ck || ck === 'unknown' || perOutletFiles.get(f.outletId) === 1) ? byOutlet.get(f.outletId) : undefined;
@@ -745,7 +761,7 @@ function sameNightCheck(rec, g) {
   for (const o of missA.keys()) {
     if (items.some((x) => x.outletId === o)) continue;
     const named = fsnap.files.find((f) => f.outletId === o && f.outlet) || rec.perReview.find((p) => outletIdOf(p.outlet) === o);
-    const liveAt = byOutlet.get(o);
+    const liveAt = strict.byOutlet.get(o);
     items.push({ outletId: o, outlet: named ? named.outlet : null, critic: null, seenAt: null, liveAt: iso(liveAt), status: liveAt == null ? 'missing' : 'late' });
   }
   // Night reviews live by +2h that no file row covers (no first-seen time in the snapshot, or seen before the

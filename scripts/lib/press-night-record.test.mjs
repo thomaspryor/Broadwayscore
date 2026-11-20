@@ -974,3 +974,27 @@ test('probeIncompleteReason: full window is null; skipped or short probes get a 
   assert.match(lib.probeIncompleteReason(mk(null)), /no samples/);
   assert.equal(lib.probeIncompleteReason(null), null);
 });
+
+// ---- BRO-7892: a review dated the day before the night, first seen inside the night window ----
+test('same-night-completeness: a day-before-dated review first seen in the window counts when live (Theatre Weekly case)', () => {
+  const r = nightRec({ Vulture: 10 }, [file('vulture', 5, { publishDate: '2026-10-21' })]);
+  r.perReview[0].baseline = true;
+  r.perReview[0].publishAt = '2026-10-21';
+  assert.equal(sn(r).status, 'pass', sn(r).detail);
+});
+
+test('same-night-completeness: a day-before-dated review that goes live late is "late", not "never live" (Operationlivetheatre case)', () => {
+  const r = nightRec({ Vulture: 150 }, [file('vulture', 100, { publishDate: '2026-10-21' })]);
+  r.perReview[0].publishAt = '2026-10-21';
+  const g = sn(r);
+  assert.equal(g.status, 'fail');
+  assert.match(g.detail, /after \+2h|more than|live at|min later/);
+  assert.doesNotMatch(g.detail, /never live/);
+});
+
+test('same-night-completeness: weeks-old publish dates stay preview-period even with a publishDate on the file', () => {
+  const r = nightRec({ singleticket: 10 }, [file('singleticket', 5, { publishDate: '2026-10-05' })]);
+  r.perReview[0].baseline = true;
+  r.perReview[0].publishAt = '2026-10-05';
+  assert.equal(sn(r).status, 'fail');
+});
