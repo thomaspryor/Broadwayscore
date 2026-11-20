@@ -43,8 +43,8 @@ const quoteRec = (extra = {}) => ({
 
 // --- the pure rule ---
 // --- the pipeline: same rebuild run ---
-function rebuild(files) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7684-'));
+// `root` from an earlier call reruns the rebuild on the same tree (files given are written over it).
+function rebuild(files, root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7684-'))) {
   const texts = path.join(root, 'review-texts');
   const dir = path.join(texts, SHOW);
   fs.mkdirSync(dir, { recursive: true });
@@ -55,7 +55,7 @@ function rebuild(files) {
   });
   const included = Number((/(\d+) review\(s\) would be included/.exec(out) || [])[1]);
   const read = (n) => JSON.parse(fs.readFileSync(path.join(dir, n), 'utf8'));
-  return { included, out, read };
+  return { included, out, read, root };
 }
 
 test('rebuild: a fresh bylineless quote inside a sibling fullText is flagged and dropped in the same run', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
@@ -94,4 +94,27 @@ test('rebuild: one keeper absorbing quotes from 2+ outlets is held and logged, n
   assert.match(r.out, /\[EXCERPT CONTAINMENT HELD\] operation-mincemeat-2025\/nytimes--jesse-green\.json/);
   assert.equal(r.read('nydailynews--unknown.json').crossOutletDuplicate, undefined);
   assert.equal(r.read('nypost--unknown.json').crossOutletDuplicate, undefined);
+});
+
+test('rebuild: fan-out hold spans runs (second outlet\'s quote arrives in a later run)', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+  const r1 = rebuild({ 'nytimes--jesse-green.json': fullRec(), 'nydailynews--unknown.json': quoteRec() });
+  assert.equal(r1.read('nydailynews--unknown.json').crossOutletDuplicate, true, r1.out.slice(-800));
+  const r2 = rebuild({ 'nypost--unknown.json': quoteRec({ outlet: 'New York Post', outletId: 'nypost' }) }, r1.root);
+  assert.equal(r2.read('nypost--unknown.json').crossOutletDuplicate, undefined, 'the later quote is held, not flagged');
+  assert.match(r2.out, /\[EXCERPT CONTAINMENT HELD\] operation-mincemeat-2025\/nytimes--jesse-green\.json.*already flagged: nydailynews--unknown\.json/);
+});
+
+test('rebuild: a containment-flagged quote goes live again when its keeper is excluded later', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+  const r1 = rebuild({ 'nytimes--jesse-green.json': fullRec(), 'nydailynews--unknown.json': quoteRec() });
+  assert.equal(r1.included, 1);
+  assert.equal(r1.read('nydailynews--unknown.json').crossOutletDuplicate, true);
+  const r2 = rebuild({ 'nytimes--jesse-green.json': { ...fullRec(), wrongProduction: true, wrongProductionReason: 'test: other production' } }, r1.root);
+  assert.equal(r2.included, 1, 'the quote ships once its keeper no longer does: ' + r2.out.slice(-800));
+});
+
+test('rebuild: a containment-flagged quote goes live again when its keeper file is gone', { skip: !haveShow && 'data/shows.json lacks the fixture show' }, () => {
+  const r1 = rebuild({ 'nytimes--jesse-green.json': fullRec(), 'nydailynews--unknown.json': quoteRec() });
+  fs.rmSync(path.join(r1.root, 'review-texts', SHOW, 'nytimes--jesse-green.json'));
+  const r2 = rebuild({}, r1.root);
+  assert.equal(r2.included, 1, r2.out.slice(-800));
 });

@@ -106,6 +106,7 @@ function excludeAsCrossOutletCopy(data, filePath, excludedOtherwise, readSibling
   const read = readSibling || ((f) => {
     try { return JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')); } catch { return null; }
   });
+  if (isStaleExcerptContainmentFlag(data, showDir, showId, read, excludedOtherwise)) return false;
   const partner = crossOutletCyclePartner(data, file, showId, read);
   if (!partner) return true;
   const partnerPath = path.join(showDir, partner.file);
@@ -114,6 +115,23 @@ function excludeAsCrossOutletCopy(data, filePath, excludedOtherwise, readSibling
     { file: partner.file, data: partner.data, excludedOtherwise: excludedOtherwise(partner.data, partnerPath) },
   );
   return keeper !== file;
+}
+
+/**
+ * BRO-7684: an 'excerpt-containment' flag (bylineless quote lifted from a
+ * sibling's fullText; set by the rebuild pre-pass and the weekly detector) only
+ * holds while its keeper ships. When the keeper file is gone or is itself
+ * excluded (same probe as the cycle tiebreak), hiding the quote would drop the
+ * review entirely, so the quote stays live. Scoped to that method only: the
+ * detector's similarity/fingerprint flags are unchanged.
+ */
+function isStaleExcerptContainmentFlag(data, showDir, showId, read, excludedOtherwise) {
+  if (!data || data.crossOutletMethod !== 'excerpt-containment') return false;
+  const p = parsePointer(data.crossOutletPrimaryFile);
+  if (!p || (p.showId !== null && p.showId !== showId)) return false;
+  const keeper = read(p.file);
+  if (!keeper) return true;
+  return Boolean(excludedOtherwise(keeper, path.join(showDir, p.file)));
 }
 
 /**
@@ -126,6 +144,7 @@ function wouldCloseCrossOutletCycle(primaryData, showId, secondaryFile) {
 
 module.exports = {
   parsePointer,
+  isStaleExcerptContainmentFlag,
   crossOutletCyclePartner,
   crossOutletCycleKeeper,
   textCarriesOwnByline,

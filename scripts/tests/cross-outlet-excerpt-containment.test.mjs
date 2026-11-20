@@ -144,3 +144,31 @@ test('one keeper holding quotes credited to 2+ other outlets is held (roundup-sh
   assert.equal(held[0].primaryFile, 'nytimes--jesse-green.json');
   assert.deepEqual(held[0].files.sort(), ['nydailynews--unknown.json', 'nypost--unknown.json']);
 });
+
+test('fan-out counts quotes an earlier run already flagged against the same keeper', () => {
+  const prior = quoteRec({ crossOutletDuplicate: true, crossOutletMethod: 'excerpt-containment', crossOutletPrimaryFile: `${SHOW}/nytimes--jesse-green.json` });
+  const { flags, held } = excerptContainmentFlags([
+    { file: 'nytimes--jesse-green.json', data: fullRec() },
+    { file: 'nydailynews--unknown.json', data: prior },
+    { file: 'nypost--unknown.json', data: quoteRec({ outlet: 'New York Post', outletId: 'nypost' }) },
+  ]);
+  assert.deepEqual(flags, []);
+  assert.equal(held.length, 1);
+  assert.deepEqual(held[0].files, ['nypost--unknown.json']);
+  assert.deepEqual(held[0].alreadyFlagged, ['nydailynews--unknown.json']);
+});
+
+test('excludeAsCrossOutletCopy: an excerpt-containment flag is stale when its keeper is gone or excluded; other methods unchanged', () => {
+  const { excludeAsCrossOutletCopy } = require(path.join(ROOT, 'scripts/lib/cross-outlet-cycle.js'));
+  const fp = `/x/${SHOW}/nydailynews--unknown.json`;
+  const flagged = (method) => quoteRec({ crossOutletDuplicate: true, crossOutletMethod: method, crossOutletPrimaryFile: `${SHOW}/nytimes--jesse-green.json` });
+  const keeperOk = () => fullRec();
+  const gone = () => null;
+  const neverExcluded = () => false;
+  const keeperExcluded = (d) => d.outletId === 'nytimes';
+  assert.equal(excludeAsCrossOutletCopy(flagged('excerpt-containment'), fp, neverExcluded, keeperOk), true);
+  assert.equal(excludeAsCrossOutletCopy(flagged('excerpt-containment'), fp, neverExcluded, gone), false);
+  assert.equal(excludeAsCrossOutletCopy(flagged('excerpt-containment'), fp, keeperExcluded, keeperOk), false);
+  assert.equal(excludeAsCrossOutletCopy(flagged('similarity'), fp, neverExcluded, gone), true);
+  assert.equal(excludeAsCrossOutletCopy(flagged('similarity'), fp, keeperExcluded, keeperOk), true);
+});

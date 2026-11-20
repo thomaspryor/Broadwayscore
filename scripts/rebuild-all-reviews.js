@@ -2433,7 +2433,7 @@ const crossShowFingerprints = new Map();
     const { flags, held } = excerptContainmentFlags(entries, { isKeeperIncludable });
     for (const h of held) {
       excerptContainmentHeld++;
-      console.log(`  [EXCERPT CONTAINMENT HELD] ${sid}/${h.primaryFile} holds quotes credited to ${h.outlets.length} outlets (${h.files.join(', ')}) — roundup-shaped, not flagged; check isRoundupArticle`);
+      console.log(`  [EXCERPT CONTAINMENT HELD] ${sid}/${h.primaryFile} holds quotes credited to ${h.outlets.length} outlets (${h.files.join(', ')})${h.alreadyFlagged.length ? `; already flagged: ${h.alreadyFlagged.join(', ')}` : ''} — roundup-shaped, new quotes not flagged; check isRoundupArticle`);
     }
     for (const flag of flags) {
       const entry = entries.find(e => e.file === flag.file);

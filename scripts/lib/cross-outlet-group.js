@@ -131,7 +131,7 @@ function excerptCopySide(a, b) {
  *   rebuild passes isIncludableForRebuild(..., { ignoreCrossOutletDuplicate: true });
  *   the default is a conservative flag check (defaultKeeperIncludable).
  * @returns {{flags: Array<{file:string, primaryFile:string, containment:number}>,
- *            held: Array<{primaryFile:string, files:string[], outlets:string[]}>}}
+ *            held: Array<{primaryFile:string, files:string[], outlets:string[], alreadyFlagged:string[]}>}}
  */
 function excerptContainmentFlags(entries, opts = {}) {
   const isKeeperIncludable = opts.isKeeperIncludable || defaultKeeperIncludable;
@@ -179,15 +179,31 @@ function excerptContainmentFlags(entries, opts = {}) {
     if (best) candidates.push({ file: best.file, primaryFile: best.primaryFile, containment: best.containment, outletId: ex.outletId });
   }
   const outletsByKeeper = new Map();
-  for (const c of candidates) {
-    if (!outletsByKeeper.has(c.primaryFile)) outletsByKeeper.set(c.primaryFile, new Set());
-    outletsByKeeper.get(c.primaryFile).add(c.outletId);
+  const addOutlet = (keeper, outletId) => {
+    if (!outletsByKeeper.has(keeper)) outletsByKeeper.set(keeper, new Set());
+    outletsByKeeper.get(keeper).add(outletId);
+  };
+  for (const c of candidates) addOutlet(c.primaryFile, c.outletId);
+  // Quotes an earlier run already flagged against a keeper count toward its
+  // fan-out, so the 2+ outlet hold does not depend on which quote arrived first.
+  const priorByKeeper = new Map();
+  for (const { file, data } of entries || []) {
+    if (!data || data.crossOutletDuplicate !== true || data.crossOutletMethod !== 'excerpt-containment') continue;
+    const keeper = String(data.crossOutletPrimaryFile || '').split('/').pop();
+    if (!keeper || !outletsByKeeper.has(keeper)) continue;
+    addOutlet(keeper, data.outletId || file.split('--')[0]);
+    if (!priorByKeeper.has(keeper)) priorByKeeper.set(keeper, []);
+    priorByKeeper.get(keeper).push(file);
   }
   const flags = [];
   const held = [];
   for (const [primaryFile, outlets] of outletsByKeeper) {
     const group = candidates.filter(c => c.primaryFile === primaryFile);
-    if (outlets.size >= 2) { held.push({ primaryFile, files: group.map(c => c.file), outlets: [...outlets] }); continue; }
+    if (outlets.size >= 2) {
+      // Earlier flags are left as they are; only the new quotes are held.
+      held.push({ primaryFile, files: group.map(c => c.file), outlets: [...outlets], alreadyFlagged: priorByKeeper.get(primaryFile) || [] });
+      continue;
+    }
     for (const c of group) flags.push({ file: c.file, primaryFile: c.primaryFile, containment: c.containment });
   }
   return { flags, held };
