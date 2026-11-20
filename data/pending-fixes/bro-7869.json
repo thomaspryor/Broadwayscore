@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-7869",
+  "planId": "2c261c42-4384-4f92-b870-f472bd470132",
+  "status": "pending",
+  "createdAt": "2026-11-20T19:05:29.851Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear Daily Mail urls that point at an older production's review on Theatre Record print rows (Tempest Globe 2026 + 3 cousins) and delete the misfiled the-tempest-1995 copy",
+    "steps": [
+      "BRO-7869: Theatre Record print row (Globe 2026 text, TR 2026-01-30) holds the Drury Lane Tempest page article-14212015 (DM page dated 2024-12-20, 0.00 shingle overlap with the stored text). No DM web page for the Globe review exists: the 2026-01-20..02-10 day archives hold only one Marmion theatre article (American Psycho, 0.00 overlap). Clear to '' (print-only review).",
+      "BRO-7869: misfiled copy of the Globe 2026 Tempest print review (same TR row 37280, same text) under the 1995 Broadway show, already invalid/wrongProduction, holding the Drury Lane 2024 url. The real file lives in the-tempest-globe-off-west-end-2026.",
+      "BRO-7869 cousin: TR print row (2026-09-04) holds DM article-1317668, the 2010 A Month in the Country review (page dated 2010-10-04, 0.00 overlap). Id predates print date by >1 year (dailyMailUrlPredatesReview).",
+      "BRO-7869 cousin: TR print row (2023-07-14, West End) holds DM article-10450549, the Bristol Old Vic Jan 2022 review (page dated 2022-01-28, 0.00 overlap with the stored text).",
+      "BRO-7869 cousin: TR print row (2025-10-03) holds DM article-1025594, the 2008 Stratford East first-night review (0.00 overlap). Id predates print date by >1 year (dailyMailUrlPredatesReview)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-tempest-globe-off-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "url",
+        "oldValue": "https://www.dailymail.co.uk/tvshowbiz/article-14212015/PATRICK-MARMION-reviews-Tempest-Sigourney-Weaver.html",
+        "newValue": "",
+        "description": "BRO-7869: Theatre Record print row (Globe 2026 text, TR 2026-01-30) holds the Drury Lane Tempest page article-14212015 (DM page dated 2024-12-20, 0.00 shingle overlap with the stored text). No DM web page for the Globe review exists: the 2026-01-20..02-10 day archives hold only one Marmion theatre article (American Psycho, 0.00 overlap). Clear to '' (print-only review)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-tempest-1995/daily-mail--patrick-marmion.json",
+        "description": "BRO-7869: misfiled copy of the Globe 2026 Tempest print review (same TR row 37280, same text) under the 1995 Broadway show, already invalid/wrongProduction, holding the Drury Lane 2024 url. The real file lives in the-tempest-globe-off-west-end-2026.",
+        "destinationPath": null
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-month-in-the-country-off-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "url",
+        "oldValue": "https://www.dailymail.com/tvshowbiz/reviews/article-1317668/Theatre-review-Ivan-Turgenevs-A-Month-In-The-Country-charming.html",
+        "newValue": "",
+        "description": "BRO-7869 cousin: TR print row (2026-09-04) holds DM article-1317668, the 2010 A Month in the Country review (page dated 2010-10-04, 0.00 overlap). Id predates print date by >1 year (dailyMailUrlPredatesReview)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/daily-mail--patrick-marmion.json",
+        "field": "url",
+        "oldValue": "https://www.dailymail.com/tvshowbiz/article-10450549/Mark-Rylances-doomed-doctor-modern-message-PATRICK-MARMION-reviews-Dr-Semmelweis.html",
+        "newValue": "",
+        "description": "BRO-7869 cousin: TR print row (2023-07-14, West End) holds DM article-10450549, the Bristol Old Vic Jan 2022 review (page dated 2022-01-28, 0.00 overlap with the stored text)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-harder-they-come-off-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "url",
+        "oldValue": "https://www.dailymail.com/tvshowbiz/article-1025594/First-Night-Review-The-Harder-They-Come.html",
+        "newValue": "",
+        "description": "BRO-7869 cousin: TR print row (2025-10-03) holds DM article-1025594, the 2008 Stratford East first-night review (0.00 overlap). Id predates print date by >1 year (dailyMailUrlPredatesReview)."
+      }
+    ]
+  }
+}

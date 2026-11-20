@@ -366,7 +366,15 @@ const FIELD_VALUE_CHECKS = {
     // to the review's real url; the collector then refetches and verifies it.
     const { isUnverifiableWebSearchRow, isLegacyWebSearchOnly } = require('./review-guards');
     const unverifiedSearchUrl = isLegacyWebSearchOnly(record) && isUnverifiableWebSearchRow(record);
+    // BRO-7869: a Theatre Record print row (its publishDate is TR's, not read off
+    // the url) holding a Daily Mail url whose article id dates the page more than
+    // a year before that print date: the url is an older review of another
+    // production (Globe 2026 Tempest text on the Drury Lane Dec 2024 page).
+    const printRow = record.source === 'theatre-record' || !!record.theatreRecordUrl;
+    const dmUrlPredatesPrint = printRow && !!current
+      && !!require('./dailymail-url-discovery').dailyMailUrlPredatesReview(current, record.publishDate);
     const currentWrong = currentAggregator
+      || dmUrlPredatesPrint
       || (current && classifyReviewUrl(current).ok === false)
       // A tag / category / author index (theatermania.com/tags/<show>/): the
       // rebuild already drops a row on it (rebuild-all-reviews.js listingPageUrlReason),
@@ -387,7 +395,6 @@ const FIELD_VALUE_CHECKS = {
         return 'url: the current url carries a human lock (urlVerified/urlManualOverride)';
       }
       const garbage = current && ['not-http-url', 'unparseable-url'].includes(classifyReviewUrl(current).reason);
-      const printRow = record.source === 'theatre-record' || !!record.theatreRecordUrl;
       return currentAggregator || garbage || printRow
         ? null : 'url: clearing to "" is only for an aggregator url, a malformed url, or a wrong url on a Theatre Record print row';
     }
