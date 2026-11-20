@@ -1,15 +1,63 @@
 {
-  "generatedAt": "2026-11-19T14:38:20.735Z",
-  "total": 416,
-  "armedCount": 391,
-  "refusedCount": 25,
+  "generatedAt": "2026-11-20T14:16:18.415Z",
+  "total": 411,
+  "armedCount": 387,
+  "refusedCount": 24,
   "byKind": {
-    "no-section": 2,
-    "shape": 19,
+    "no-section": 3,
+    "shape": 17,
     "no-command": 3,
     "basename": 1
   },
   "refused": [
+    {
+      "id": "BRO-7899",
+      "name": "Opening-night audit 2026-11-20",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7899/opening-night-audit-2026-11-20",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7898",
+      "name": "Byline-less BWW stub stays live when the outlet's real review is excluded as syndicated duplicate (Much Ado NYDN)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7898/byline-less-bww-stub-stays-live-when-the-outlets-real-review-is",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --show=much-ado-about-nothing-2026 (after fix + rebuild, live /data/shows/much-ado)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7878",
+      "name": "Board-worker stall sweep cannot call the session lookup tool; add theatreWashington listing source for DC key art",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7878/board-worker-stall-sweep-cannot-call-the-session-lookup-tool-add",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7877",
+      "name": "Multi-show column scores: Vulture Ava (scored on whole 3-show text) + Finkle columns not yet rescored",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7877/multi-show-column-scores-vulture-ava-scored-on-whole-3-show-text",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7870",
+      "name": "Proposal ledger: merge-safe concurrent writes, and handle id-less legacy needs-review issues",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7870/proposal-ledger-merge-safe-concurrent-writes-and-handle-id-less-legacy",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/test-feedback-proposal-email.js)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7856",
+      "name": "CHILDWATCH stop gate false-positive: any 'session' word in a KEEP OPEN clause counts as waiting on a child",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7856/childwatch-stop-gate-false-positive-any-session-word-in-a-keep-open",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
     {
       "id": "BRO-7842",
       "name": "Triage 153 baseline unhandled CV.wrongProduction reviews (lifetime sweep)",
@@ -35,52 +83,12 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-7801",
-      "name": "Closing date audit: 1 show need review (2026-11-18)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7801/closing-date-audit-1-show-need-review-2026-11-18",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-7797",
-      "name": "Opening-night lane: one dead feed raises SOURCE FAILING once per show (4 shows = 4 identical alarms); dedupe per night",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7797/opening-night-lane-one-dead-feed-raises-source-failing-once-per-show-4",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/integration/simulated-opening-night.test.mjs (passes with a per-night check) and node scripts/lib/game)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-7788",
       "name": "Land preflight: refuse or warn when node_modules is unresolvable, so targeted guard tests are not silently skipped",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7788/land-preflight-refuse-or-warn-when-node-modules-is-unresolvable-so",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/cloud-doctor.js --quick)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-7769",
-      "name": "Stub review slot accepts unrelated same-outlet news URLs (Good Thief TheaterMania/Linda Buchwald)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7769/stub-review-slot-accepts-unrelated-same-outlet-news-urls-good-thief",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const r=require('/home/user/Broadwayscore/data/review-texts/the-good-thief-off-broadway-2026/theatermania--lind)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7754",
-      "name": "Feedback autopilot requeues items already fixed on main forever",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7754/feedback-autopilot-requeues-items-already-fixed-on-main-forever",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-7753",
-      "name": "Older-years audit residuals: unfetchable blocked-host rows and a-few-good-men-2026 TheaterMania stale-merge refusal",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7753/older-years-audit-residuals-unfetchable-blocked-host-rows-and-a-few",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
     },
     {
       "id": "BRO-7751",
@@ -99,14 +107,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-7418",
-      "name": "Social video: add the compare format to the automatic TikTok + YouTube lane (BRO-7414 follow-up)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7418/social-video-add-the-compare-format-to-the-automatic-tiktok-youtube",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test tests/unit/ scripts/social-autopost/ 2>&1 | grep -E \"^# fail 0\")",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-7385",
       "name": "Migrate pinned models before shutdown: claude-sonnet-4-5 (2026-11-30), gemini-2.5-flash/pro (2026-12-01), retired claude-3-5-sonnet/haiku fallbacks",
       "priority": null,
@@ -120,14 +120,6 @@
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7382/review-forecast-v3-earlier-run-blend-as-private-shadow-in-nightly",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/test-review-forecast-privacy-guard.js)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-7381",
-      "name": "Off-Broadway cast backfill is unscheduled (~46 of 130 NYC preview/open shows have no cast) and the Show Score 'wrong-page' flag is a heuristic",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7381/off-broadway-cast-backfill-is-unscheduled-46-of-130-nyc-previewopen",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: grep -q 'schedule:' .github/workflows/backfill-cast-web.yml)",
       "kind": "shape"
     },
     {
@@ -212,8 +204,8 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 285,
-    "checked": 285,
+    "total": 284,
+    "checked": 284,
     "complete": true,
     "cards": [
       {
@@ -234,30 +226,39 @@
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-7841",
-      "name": "IAWL: TheaterScene review pulled by outlet (404); hide dead-link reviews + recheck new review URLs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7841/iawl-theaterscene-review-pulled-by-outlet-404-hide-dead-link-reviews",
-      "cmd": "node --test scripts/tests/review-dead-link-recheck.test.mjs",
+      "id": "BRO-7902",
+      "name": "Visual-approval gate: don't ask the owner about text-only formatting changes",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7902/visual-approval-gate-dont-ask-the-owner-about-text-only-formatting",
+      "cmd": "node --test tests/unit/visual-gate-formatting-exemption.test.mjs",
       "missingPaths": [
-        "scripts/tests/review-dead-link-recheck.test.mjs"
+        "tests/unit/visual-gate-formatting-exemption.test.mjs"
       ]
     },
     {
-      "id": "BRO-7809",
-      "name": "Sentry BROADWAY-SCORECARD-37: drop truncated-chunk SyntaxErrors (posthog chunk, bot/proxy downloads)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7809/sentry-broadway-scorecard-37-drop-truncated-chunk-syntaxerrors-posthog",
-      "cmd": "npx tsx --test tests/unit/truncated-chunk-error.test.ts",
+      "id": "BRO-7888",
+      "name": "Visual gate: fix-only UI changes ship on own visual QA (owner decision)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7888/visual-gate-fix-only-ui-changes-ship-on-own-visual-qa-owner-decision",
+      "cmd": "node --test scripts/lib/visual-design-diff.test.mjs",
       "missingPaths": [
-        "tests/unit/truncated-chunk-error.test.ts"
+        "scripts/lib/visual-design-diff.test.mjs"
       ]
     },
     {
-      "id": "BRO-7807",
-      "name": "Make rescore runs batch-only (half-price) and finish the gpt-4o to cheaper-model A/B",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7807/make-rescore-runs-batch-only-half-price-and-finish-the-gpt-4o-to",
-      "cmd": "node --test scripts/rescore-batch-api.test.mjs",
+      "id": "BRO-7874",
+      "name": "ingest-urls.js turns news posts into review files (FRC closing-dates post, 3 Theater Pizzazz notices merged into existing records); add a non-review guard and test it on real HTML",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7874/ingest-urlsjs-turns-news-posts-into-review-files-frc-closing-dates",
+      "cmd": "node --test tests/unit/ingest-news-post-guard.test.mjs",
       "missingPaths": [
-        "scripts/rescore-batch-api.test.mjs"
+        "tests/unit/ingest-news-post-guard.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7754",
+      "name": "Feedback autopilot requeues items already fixed on main forever",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7754/feedback-autopilot-requeues-items-already-fixed-on-main-forever",
+      "cmd": "node --test scripts/feedback/requeue-logic.test.mjs",
+      "missingPaths": [
+        "scripts/feedback/requeue-logic.test.mjs"
       ]
     },
     {
@@ -375,15 +376,6 @@
       "cmd": "node --test tests/unit/git-temp-pack-reap.test.mjs",
       "missingPaths": [
         "tests/unit/git-temp-pack-reap.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7341",
-      "name": "Move the scoring ensemble's OpenAI leg off gpt-4o / gpt-4.1 before OpenAI shuts them down 2027-01-14",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7341/move-the-scoring-ensembles-openai-leg-off-gpt-4o-gpt-41-before-openai",
-      "cmd": "node --test tests/unit/scoring-openai-pin-live.test.mjs",
-      "missingPaths": [
-        "tests/unit/scoring-openai-pin-live.test.mjs"
       ]
     },
     {
