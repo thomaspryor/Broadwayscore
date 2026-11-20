@@ -1,8 +1,10 @@
 name: Social Video
 run-name: Social Video
 
-# BRO-7414: automatic TikTok + YouTube Shorts. A "how did it do" video (one show's Critic Score) goes out for a qualifying
-# show, at most one per network per New York day, through Buffer (scripts/social-autopost/video-run.js). The voice is
+# BRO-7414 / BRO-7418: automatic TikTok + YouTube Shorts. Two formats: a "how did it do" video (one show's Critic Score) and
+# a compare video (the New York show against its London run). A qualifying show (socialNotable) gets both; at most one video
+# per network per New York day across the two, the compare first, the score video on the next free day. A monthly make cap
+# (config.js VIDEO.maxMakesPerMonth, counted from the ledger) bounds the OpenAI voice spend. Posted through Buffer (scripts/social-autopost/video-run.js). The voice is
 # OpenAI text-to-speech, the picture is the Playwright + ffmpeg render in scripts/video-proto, captions are
 # channel-captions.js unchanged. Every run first reads earlier posts back from Buffer and records sent or failed.
 # Kill switch: repository variable SOCIAL_VIDEO_DISABLED=true; cancel_queued deletes videos not yet sent.
