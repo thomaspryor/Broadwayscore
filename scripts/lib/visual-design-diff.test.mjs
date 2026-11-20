@@ -37,6 +37,7 @@ for (const [sha, want, why] of [
   test(`real commit ${sha} classifies as ${want} (${why})`, { skip: SKIP_TS || (!commitKnown(sha) && `commit ${sha} not in this clone (shallow)`) }, () => {
     const r = replay(sha);
     assert.equal(r.length > 0, want === 'design', JSON.stringify(r));
+    if (sha === 'b7303ef89') assert.ok(r.some((f) => /CallTheScore/.test(f.file)), 'the wrapper element file is the design one: ' + JSON.stringify(r));
   });
 }
 
@@ -68,6 +69,17 @@ const DESIGN_CASES = {
   'DOM class write in an effect': [`useEffect(()=>{ el.classList.add("a"); },[]); return <A/>;`, `useEffect(()=>{ el.classList.add("b"); },[]); return <A/>;`],
   'BigInt literal changed': [`const n = 10n; return <A n={n}/>;`, `const n = 20n; return <A n={n}/>;`],
   'regex literal changed': [`const r = /a+/; return <A r={r}/>;`, `const r = /b+/; return <A r={r}/>;`],
+  're-export retargeted': [`return <A/>;`, `return <A/>;`, "export { default } from './NewCard'; import {A} from 'a';"],
+  'unary sign flipped': [`return <div style={{marginTop:-8}}/>;`, `return <div style={{marginTop:+8}}/>;`],
+  'state setter value in an effect': [`useEffect(()=>{ setS(true) },[]); return <A/>;`, `useEffect(()=>{ setS(false) },[]); return <A/>;`],
+  'state setter arg negated in an effect': [`useEffect(()=>{ setS(a) },[]); return <A/>;`, `useEffect(()=>{ setS(!a) },[]); return <A/>;`],
+  'layout effect height': [`useLayoutEffect(()=>{ setH(200) },[]); return <A/>;`, `useLayoutEffect(()=>{ setH(800) },[]); return <A/>;`],
+  'dialog show vs close in an effect': [`useEffect(()=>{ r.current.showModal(); },[]); return <A/>;`, `useEffect(()=>{ r.current.close(); },[]); return <A/>;`],
+  'timer delay in an effect': [`useEffect(()=>{ setTimeout(f,0) },[]); return <A/>;`, `useEffect(()=>{ setTimeout(f,99999) },[]); return <A/>;`],
+  'ref callback hidden flag': [`return <div ref={el=>{ if(el) el.hidden=false }}/>;`, `return <div ref={el=>{ if(el) el.hidden=true }}/>;`],
+  'custom component name prop': [`return <A name={s}/>;`, `return <A name={c}/>;`],
+  'render prop attributes': [`return <A onRenderItem={()=> <B big={true} n={2}/>}/>;`, `return <A onRenderItem={()=> <B big={false} n={9}/>}/>;`],
+  'base class swapped': [`class P extends A {} return <A/>;`, `class P extends B {} return <A/>;`],
   'module-level constant changed': [`return <A/>;`, `return <A/>;`, "import {A} from 'a'; const W = 4;"],
 };
 for (const [name, [a, b, headB]] of Object.entries(DESIGN_CASES)) {
@@ -80,6 +92,7 @@ const FIX_CASES = {
   'reworded copy': [`return <p>Hello</p>;`, `return <p>Hi there</p>;`],
   'changed href expression': [`return <a href={u(x)}>go</a>;`, `return <a href={u(y)}>go</a>;`],
   'changed inline handler logic': [`return <button onClick={()=>{ if(!a) return; run(a); }}/>;`, `return <button onClick={()=>{ if(!a||!b) return; run(a); }}/>;`],
+  'effect added with an early return null': [`return <A/>;`, `useEffect(()=>{ if (u()) return null; },[]); return <A/>;`],
   'changed key expression': [`return <ul>{L.map(i=><li key={i.id}/>)}</ul>;`, `return <ul>{L.map(i=><li key={i.slug}/>)}</ul>;`],
   'effect gains a call and an early return null': [`return <A/>;`, `useEffect(()=>{ if (u()) return null; },[]); return <A/>;`],
 };
