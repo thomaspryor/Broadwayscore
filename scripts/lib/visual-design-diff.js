@@ -53,16 +53,22 @@ function skeleton(ts, sf) {
   const out = [];
   const imports = new Map(); // local binding -> "module::importedName"
   const K = ts.SyntaxKind;
-  const QUIET_ATTR = /^(on[A-Z]\w*|key|ref|href|to|name|htmlFor)$/;
-  const DOM_WRITE = /\b(style|className|classList|cssText|dataset|innerHTML|outerHTML|textContent|insertAdjacentHTML)\b|\.(setProperty|setAttribute|toggle|add|remove)\(/;
+  const QUIET_ATTR = /^(on[A-Z]\w*|key|ref|href|to)$/;
+  const QUIET_DOM_ATTR = /^(name|htmlFor)$/; // quiet on intrinsic (lowercase) tags only: <Icon name={x}/> picks what draws
+  const DOM_WRITE = /\b(style|className|classList|cssText|dataset|innerHTML|outerHTML|textContent|insertAdjacentHTML|hidden|open|scrollTop|scrollLeft)\b|\.(setProperty|setAttribute|toggle|add|remove|showModal|close|show|scrollTo)\(/;
+  // Inside quiet roots a state setter or timer still decides what shows (setS(true), a 99999ms delay): recorded in full.
+  const STATE_CALL = /^(?:[\w$.?]*\.)?(set[A-Z]\w*|dispatch|setTimeout|setInterval|requestAnimationFrame)$/;
   let quiet = 0;
   const isQuietRoot = (n) => (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && /^use(Layout|Insertion)?Effect$/.test(n.expression.text))
-    || (ts.isJsxAttribute(n) && QUIET_ATTR.test(n.name.getText(sf)));
+    || (ts.isJsxAttribute(n) && (QUIET_ATTR.test(n.name.getText(sf)) || (QUIET_DOM_ATTR.test(n.name.getText(sf)) && /^[a-z]/.test(n.parent.parent.tagName.getText(sf)))));
   const visit = (n) => {
     if (isQuietRoot(n)) { quiet++; try { inner(n); } finally { quiet--; } return; }
     inner(n);
   };
   const inner = (n) => {
+    // `class X extends A`: the base class is an expression, not a type.
+    const heritage = ts.isExpressionWithTypeArguments(n) && n.parent && n.parent.token === ts.SyntaxKind.ExtendsKeyword && ts.isClassLike(n.parent.parent);
+    if (heritage) { out.push('extends', n.expression.getText(sf)); return; }
     if (ts.isTypeNode(n) || ts.isInterfaceDeclaration(n) || ts.isTypeAliasDeclaration(n)) return;
     if (ts.isImportDeclaration(n)) {
       const mod = ts.isStringLiteral(n.moduleSpecifier) ? n.moduleSpecifier.text : '?';
@@ -76,20 +82,28 @@ function skeleton(ts, sf) {
       if (/\.(css|scss|sass)$/.test(mod)) out.push(`import ${mod}`);
       return;
     }
-    if (ts.isExportDeclaration(n)) return;
+    if (ts.isExportDeclaration(n)) { out.push(`export ${n.moduleSpecifier ? n.moduleSpecifier.getText(sf) : ''} ${norm(n.exportClause ? n.exportClause.getText(sf) : '*')}`); return; }
     if (ts.isJsxText(n)) return; // copy is not design
     // `useEffect(...)` as a statement: adding or removing one draws nothing, so the statement wrapper is not recorded.
     if (ts.isExpressionStatement(n) && !quiet && isQuietRoot(n.expression)) { visit(n.expression); return; }
     if (quiet) {
       // Logic only: strings still count (a class set through the DOM), and so does any DOM style/class write.
       if (ts.isExpressionStatement(n) && DOM_WRITE.test(n.getText(sf))) { out.push(`dom ${norm(n.getText(sf))}`); return; }
+      if (ts.isCallExpression(n) && STATE_CALL.test(n.expression.getText(sf))) { out.push(`call ${norm(n.getText(sf))}`); return; }
       if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(`"${norm(n.text)}"`);
       else if (ts.isTemplateExpression(n)) out.push(`\`${[n.head.text, ...n.templateSpans.map((x) => x.literal.text)].map(norm).join('${}')}\``);
-      else if (ts.isJsxOpeningElement(n) || ts.isJsxSelfClosingElement(n)) out.push(`<${n.tagName.getText(sf)}`);
+      else if (ts.isJsxOpeningElement(n) || ts.isJsxSelfClosingElement(n)) {
+        // A render prop (onRenderItem={() => <B big={true}/>}) draws: its element's own attributes count in full.
+        out.push(`<${n.tagName.getText(sf)}`);
+        const q = quiet; quiet = 0;
+        try { ts.forEachChild(n, visit); } finally { quiet = q; }
+        return;
+      }
       ts.forEachChild(n, visit);
       return;
     }
     out.push(K[n.kind]);
+    if (ts.isPrefixUnaryExpression(n) || ts.isPostfixUnaryExpression(n)) out.push(`op${n.operator}`);
     if (ts.isIdentifier(n) || ts.isPrivateIdentifier(n)) out.push(n.text);
     else if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(norm(n.text));
     else if (ts.isNumericLiteral(n) || ts.isBigIntLiteral(n) || ts.isRegularExpressionLiteral(n)) out.push(n.text);
