@@ -701,6 +701,7 @@ on:
       - 'scripts/collect-review-texts-v2.js'
       - 'scripts/detect-critic-typos.js'
       - 'scripts/detect-syndicated-duplicates.js'
+      - 'scripts/detect-cross-outlet-duplicates.js'
       - 'scripts/discard-stuck-broadcast-drafts.js'
       - 'scripts/discover-dtli-slugs.js'
       - 'scripts/discover-historical-shows.js'
