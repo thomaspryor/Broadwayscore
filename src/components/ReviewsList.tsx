@@ -9,6 +9,7 @@ import { getReviewBadgePresentation } from '../../scripts/lib/review-breakdown';
 import { getReviewKey } from '../../scripts/lib/review-list-key';
 import { catchEarlyImgError } from '@/lib/img-early-error';
 import { isLondonMarket } from '@/lib/market-utils';
+import { formatReviewDate } from '@/lib/date-utils';
 import { TIER_DISPLAY, TIER_LIST, tierPercent, type OutletTier } from '@/config/tier-display';
 import { TIER_CHIP_BOX, TIER_CHIP_BOX_TIGHT, TierBars, tierChipTextClass } from '@/components/show-cards/OutletTierChip';
 import { nestQuotes } from '@/lib/nest-quotes';
@@ -98,25 +99,8 @@ function ChevronUpIcon({ className }: { className?: string }) {
   );
 }
 
-// Use UTC-based formatting to avoid timezone-related display issues
-function formatDate(dateStr: string | null | undefined): string {
-  // Return empty string for null/undefined/empty dates
-  if (!dateStr) {
-    return '';
-  }
-
-  // Strip ordinal suffixes (1st, 2nd, 3rd, 4th, etc.) that break Date parsing
-  const cleanedDateStr = dateStr.replace(/(\d+)(st|nd|rd|th)/gi, '$1');
-  const date = new Date(cleanedDateStr);
-
-  // Check for invalid date or Unix epoch (which indicates missing date)
-  if (isNaN(date.getTime()) || date.getFullYear() < 1990) {
-    return ''; // Hide date instead of showing garbage
-  }
-
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
-}
+// BRO-7890: one shared formatter; month-only publishDates render as "Mar 2016", never an invented day.
+const formatDate = formatReviewDate;
 
 
 function OutletLogo({ outlet, badge }: { outlet: string; badge?: OutletBadge | null }) {
