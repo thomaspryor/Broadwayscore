@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-20T10:10:30.139Z",
+  "generatedAt": "2026-11-20T11:15:30.429Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 364,
-  "clean": 364,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 362,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "florence-off-west-end-2026",
+      "title": "Florence",
+      "openingDate": "2026-11-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.22 vs local 74.44 (Δ0.22)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-20T11:15:19.859Z"
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "openingDate": "2026-11-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 65.03 vs local 60.95 (Δ4.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-20T11:15:19.859Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
