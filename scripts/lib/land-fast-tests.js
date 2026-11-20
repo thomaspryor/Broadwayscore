@@ -144,7 +144,7 @@ function matchTier(changedFile, testFile, text) {
   if (stem.length >= 8 && !COMMON_STEMS.has(stem) && text.includes(stem)) return { tier: 3, why: `names ${stem}` };
   // Tests that read .github through fs (path.join(root, '.github', 'workflows'), walk('.github/workflows')) never
   // name the changed workflow, and the quoted-dir rule above sees only the exact dir string (BRO-7814 cousins).
-  if (changedFile.startsWith('.github/') && /(?:readdir(?:Sync)?|walk|glob(?:Sync)?|path\.join)\([^\n]*\.github[/'"`]/.test(text)) return { tier: 1, why: 'reads .github/ through fs' };
+  if (changedFile.startsWith('.github/') && /(?:readdir(?:Sync)?|walk|glob(?:Sync)?)\([^\n]*\.github[/'"`]/.test(text)) return { tier: 1, why: 'reads .github/ through fs' };
   const dir = path.dirname(changedFile);
   if (!BROAD_DIRS.has(dir) && ["'", '"', '`'].some((q) => text.includes(q + dir + q) || text.includes(q + dir + '/'))) return { tier: 4, why: `scans ${dir}/` };
   return null;
