@@ -1943,3 +1943,9 @@ test('BRO-7097 class guard: nothing in tests/, scripts/ or src/ reads a path the
 test('BRO-7097 acceptance: the slim estimate is at most 40% of the full estimate, both in bytes', () => {
   assert.ok(r.SLIM_WORKTREE_BYTES / r.FULL_WORKTREE_BYTES <= 0.40, `${r.SLIM_WORKTREE_BYTES} / ${r.FULL_WORKTREE_BYTES}`);
 });
+
+test('BRO-7097 class guard: the cloud disk reserve is three full worktrees in real bytes (fails if MiB is read as MB again)', () => {
+  const { LANES } = require('../../scripts/lib/codex-runner-grading.js');
+  assert.equal(LANES.cloud.diskReserveBytes, 3 * r.FULL_WORKTREE_BYTES);
+  assert.ok(LANES.cloud.diskReserveBytes > 3 * 1.77e9);
+});
