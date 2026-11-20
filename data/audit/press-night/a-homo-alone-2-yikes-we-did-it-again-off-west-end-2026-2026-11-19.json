@@ -7,25 +7,25 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-19T20:30:04.881Z",
-    "endedAt": null,
+    "endedAt": "2026-11-20T03:00:53.860Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 77,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-19T22:55:13.810Z",
-    "lastOkSampleAt": "2026-11-19T22:55:13.810Z"
+    "lastSampleAt": "2026-11-20T02:59:31.423Z",
+    "lastOkSampleAt": "2026-11-20T02:59:31.423Z"
   },
   "firstLiveAt": "2026-11-19T20:30:04.881Z",
   "firstLiveBaseline": true,
-  "lastLiveAt": "2026-11-19T21:00:07.187Z",
-  "liveCount": 7,
+  "lastLiveAt": "2026-11-19T23:34:20.446Z",
+  "liveCount": 8,
   "liveCountAt": {
     "1h": 7,
-    "2h": null,
+    "2h": 7,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-19T22:00:10.448Z",
-    "2h": null,
+    "2h": "2026-11-19T23:09:19.479Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -45,7 +45,8 @@
       "firstLiveAt": "2026-11-19T20:30:04.881Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": true,
+      "scoredAt": "2026-11-19T12:42:33.795Z"
     },
     {
       "key": "whatsonstage|sonny waheed",
@@ -57,7 +58,8 @@
       "firstLiveAt": "2026-11-19T20:30:04.881Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": true,
+      "scoredAt": "2026-11-19T12:42:36.731Z"
     },
     {
       "key": "the reviews hub|rebecca clifton",
@@ -81,7 +83,8 @@
       "firstLiveAt": "2026-11-19T20:30:04.881Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": true,
+      "scoredAt": "2026-11-19T19:19:36.964Z"
     },
     {
       "key": "the recs|erik gunther",
@@ -117,7 +120,21 @@
       "firstLiveAt": "2026-11-19T21:00:07.187Z",
       "prevOkSampleAt": "2026-11-19T20:55:06.641Z",
       "baseline": false,
-      "liveNow": true
+      "liveNow": true,
+      "scoredAt": "2026-11-19T20:44:55.245Z"
+    },
+    {
+      "key": "operationlivetheatre|xi ye",
+      "outlet": "Operationlivetheatre",
+      "critic": "Xi Ye",
+      "tier": 3,
+      "publishAt": "2026-11-18",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-19T23:34:20.446Z",
+      "prevOkSampleAt": "2026-11-19T23:29:20.249Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-19T23:13:07.046Z"
     }
   ],
   "dropped": [],
@@ -132,6 +149,17 @@
       "liveCount": 7,
       "fetchedAt": "2026-11-19T23:00:28.488Z",
       "censusNote": "archive only"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 8,
+      "fetchedAt": "2026-11-20T03:00:39.613Z",
+      "censusNote": "archive only"
     }
   },
   "manualActions": [],
@@ -144,11 +172,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-20T03:00:39.692Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-19T23:00:29.273Z",
+    "capturedAt": "2026-11-20T03:00:40.321Z",
     "files": [
       {
         "file": "all-that-dazzles-uk--all-that-dazzles.json",
@@ -161,7 +195,8 @@
         "url": "allthatdazzles.co.uk/post/review-a-homo-alone-2-yikes-we-did-it-again-the-other-palace",
         "includable": true,
         "reason": null,
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": null
       },
       {
         "file": "all-that-dazzles-uk--unknown.json",
@@ -174,7 +209,8 @@
         "url": "allthatdazzles.co.uk/post/review-a-homo-alone-2-yikes-we-did-it-again-the-other-palace",
         "includable": false,
         "reason": "duplicateOf",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": null
       },
       {
         "file": "fairypoweredproductions--fairypoweredproductions.json",
@@ -187,7 +223,8 @@
         "url": "fairypoweredproductions.com/are-you-thirsty-for-more-kevin-is-back-at-the-other-palace-for-a-homo-alone-2-yikes-we-did-it-again",
         "includable": false,
         "reason": "wrongProduction",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
       },
       {
         "file": "londontheatredirect--london-theatre-direct-limited.json",
@@ -200,7 +237,8 @@
         "url": "londontheatredirect.com/musical/a-homo-alone-2-yikes-we-did-it-again-tickets",
         "includable": false,
         "reason": "namedNonReviewUrl",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
       },
       {
         "file": "oazis--unknown.json",
@@ -213,7 +251,8 @@
         "url": "oazis.app/en/event/a-homo-alone-2-yikes-we-did-it-again-a-naughty-outrageous",
         "includable": false,
         "reason": "wrongProduction",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
       },
       {
         "file": "operationlivetheatre--xi-ye.json",
@@ -221,12 +260,13 @@
         "outlet": "Operationlivetheatre",
         "critic": "Xi Ye",
         "firstSeenAt": "2026-11-19T22:40:33.074Z",
-        "scoredAt": null,
+        "scoredAt": "2026-11-19T23:13:07.046Z",
         "publishDate": "2026-11-18",
         "url": "operationlivetheatre.com/post/a-homo-alone-2-yikes-we-did-it-again",
         "includable": true,
         "reason": null,
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
       },
       {
         "file": "the-recs--erik-gunther.json",
@@ -239,7 +279,8 @@
         "url": "therecs.co.uk/a-homo-alone-2-yikes-we-did-it-again-the-other-palace",
         "includable": true,
         "reason": null,
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
       },
       {
         "file": "the-recs--unknown.json",
@@ -252,7 +293,8 @@
         "url": "therecs.co.uk/a-homo-alone-2-yikes-we-did-it-again-the-other-palace",
         "includable": false,
         "reason": "duplicateOf",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
       },
       {
         "file": "theatre-weekly--greg-stewart.json",
@@ -265,7 +307,8 @@
         "url": "theatreweekly.com/review-a-homo-alone-2-yikes-we-did-it-again-at-the-other-palace-studio",
         "includable": true,
         "reason": null,
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
       },
       {
         "file": "theatrebookings--tube.json",
@@ -278,7 +321,8 @@
         "url": "theatrebookings.com/musical/a-homo-alone-2-yikes-we-did-it-again",
         "includable": false,
         "reason": "wrongShow",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
       },
       {
         "file": "thereviewshub--rebecca-clifton.json",
@@ -291,7 +335,8 @@
         "url": "thereviewshub.com/a-homo-alone-2-yikes-we-did-it-again-the-other-palace-london",
         "includable": true,
         "reason": null,
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
       },
       {
         "file": "thereviewshub--unknown.json",
@@ -304,7 +349,8 @@
         "url": "thereviewshub.com/a-homo-alone-2-yikes-we-did-it-again-the-other-palace-london",
         "includable": false,
         "reason": "duplicateOf",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
       },
       {
         "file": "thestage--paul-vale.json",
@@ -317,7 +363,8 @@
         "url": "thestage.co.uk/reviews/homo-alone-2-yikes-we-did-it-again-review-the-other-palace-london",
         "includable": true,
         "reason": null,
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
       },
       {
         "file": "west-end-best-friend--heidi-downing.json",
@@ -330,7 +377,8 @@
         "url": "westendbestfriend.co.uk/news/review-a-homo-alone-2-yikes-we-did-it-again-the-other-palace-studio",
         "includable": true,
         "reason": null,
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
       },
       {
         "file": "west-end-wilma--westendwilma.json",
@@ -343,7 +391,8 @@
         "url": "westendwilma.com/a-homo-alone-2-yikes-we-did-it-again-the-other-palace-2026",
         "includable": false,
         "reason": "rejectionReason",
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
       },
       {
         "file": "whatsonstage--sonny-waheed.json",
@@ -356,7 +405,2458 @@
         "url": "whatsonstage.com/news/a-homo-alone-2-yikes-we-did-it-again-at-the-other-palace-review_1737649",
         "includable": true,
         "reason": null,
-        "syndicatedUnder": null
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      }
+    ]
+  },
+  "pipelineRuns": {
+    "capturedAt": "2026-11-20T03:00:53.792Z",
+    "window": {
+      "from": "2026-11-19T19:00:00Z",
+      "to": "2026-11-20T00:00:00Z"
+    },
+    "complete": true,
+    "runs": [
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-19T18:08:30Z",
+        "updatedAt": "2026-11-19T22:30:57Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-19T18:08:32Z",
+        "updatedAt": "2026-11-19T22:47:50Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-19T18:09:47Z",
+        "updatedAt": "2026-11-19T19:42:35Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-19T18:10:09Z",
+        "updatedAt": "2026-11-19T19:04:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44589894780)",
+        "startedAt": "2026-11-19T18:41:42Z",
+        "updatedAt": "2026-11-19T19:02:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — florence-off-west-end-2026",
+        "startedAt": "2026-11-19T18:45:10Z",
+        "updatedAt": "2026-11-19T19:10:57Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T18:45:33Z",
+        "updatedAt": "2026-11-19T19:06:36Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T18:48:55Z",
+        "updatedAt": "2026-11-19T19:05:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T18:49:52Z",
+        "updatedAt": "2026-11-19T19:15:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T18:50:42Z",
+        "updatedAt": "2026-11-19T19:13:14Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T18:52:41Z",
+        "updatedAt": "2026-11-19T19:16:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T18:53:48Z",
+        "updatedAt": "2026-11-19T19:15:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44591764556)",
+        "startedAt": "2026-11-19T18:53:59Z",
+        "updatedAt": "2026-11-19T19:09:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T18:54:10Z",
+        "updatedAt": "2026-11-19T19:17:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T18:55:11Z",
+        "updatedAt": "2026-11-19T19:22:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T18:56:54Z",
+        "updatedAt": "2026-11-19T19:20:01Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-fantasticks-2026",
+        "startedAt": "2026-11-19T18:59:16Z",
+        "updatedAt": "2026-11-19T19:09:40Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026 (west-end)",
+        "startedAt": "2026-11-19T19:00:08Z",
+        "updatedAt": "2026-11-19T23:27:56Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — the-fantasticks-2026",
+        "startedAt": "2026-11-19T19:01:23Z",
+        "updatedAt": "2026-11-19T19:01:46Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:01:33Z",
+        "updatedAt": "2026-11-19T19:23:14Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — the-fantasticks-2026",
+        "startedAt": "2026-11-19T19:01:43Z",
+        "updatedAt": "2026-11-19T19:05:46Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-19T19:03:44Z",
+        "updatedAt": "2026-11-19T19:22:01Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T19:04:38Z",
+        "updatedAt": "2026-11-19T19:37:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:05:13Z",
+        "updatedAt": "2026-11-19T19:25:48Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-fantasticks-2026",
+        "startedAt": "2026-11-19T19:05:43Z",
+        "updatedAt": "2026-11-19T19:15:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44592420379)",
+        "startedAt": "2026-11-19T19:07:32Z",
+        "updatedAt": "2026-11-19T19:26:39Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:07:36Z",
+        "updatedAt": "2026-11-19T19:26:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:09:30Z",
+        "updatedAt": "2026-11-19T19:26:53Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:09:37Z",
+        "updatedAt": "2026-11-19T19:10:55Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:10:53Z",
+        "updatedAt": "2026-11-19T19:29:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:14:10Z",
+        "updatedAt": "2026-11-19T19:31:33Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-19T19:14:25Z",
+        "updatedAt": "2026-11-19T19:25:45Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:14:56Z",
+        "updatedAt": "2026-11-19T19:32:40Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:15:57Z",
+        "updatedAt": "2026-11-19T19:36:31Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:16:48Z",
+        "updatedAt": "2026-11-19T19:37:16Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:19:18Z",
+        "updatedAt": "2026-11-19T19:37:01Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-19T19:19:55Z",
+        "updatedAt": "2026-11-19T20:17:18Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44595628278)",
+        "startedAt": "2026-11-19T19:22:10Z",
+        "updatedAt": "2026-11-19T19:39:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-19T19:23:20Z",
+        "updatedAt": "2026-11-19T19:31:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:23:20Z",
+        "updatedAt": "2026-11-19T19:45:13Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:25:42Z",
+        "updatedAt": "2026-11-19T19:45:23Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:27:37Z",
+        "updatedAt": "2026-11-19T19:46:40Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:28:20Z",
+        "updatedAt": "2026-11-19T19:47:40Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:29:17Z",
+        "updatedAt": "2026-11-19T19:48:40Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:30:52Z",
+        "updatedAt": "2026-11-19T19:49:47Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:30:57Z",
+        "updatedAt": "2026-11-19T19:31:35Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:31:32Z",
+        "updatedAt": "2026-11-19T19:45:13Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:31:44Z",
+        "updatedAt": "2026-11-19T19:48:32Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — club-nvrlnd-off-west-end-2026",
+        "startedAt": "2026-11-19T19:32:00Z",
+        "updatedAt": "2026-11-19T19:45:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — nixon-in-china-regional-2026",
+        "startedAt": "2026-11-19T19:32:02Z",
+        "updatedAt": "2026-11-19T19:46:04Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — 9-circles-regional-2026",
+        "startedAt": "2026-11-19T19:32:03Z",
+        "updatedAt": "2026-11-19T19:40:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-few-good-men-2026",
+        "startedAt": "2026-11-19T19:32:05Z",
+        "updatedAt": "2026-11-19T19:40:58Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T19:32:06Z",
+        "updatedAt": "2026-11-19T19:46:56Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — cinderella-lyric-hammersmith-off-west-end-2026",
+        "startedAt": "2026-11-19T19:32:07Z",
+        "updatedAt": "2026-11-19T19:45:36Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — club-nvrlnd-off-west-end-2026",
+        "startedAt": "2026-11-19T19:32:09Z",
+        "updatedAt": "2026-11-19T19:41:30Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44598208584)",
+        "startedAt": "2026-11-19T19:34:09Z",
+        "updatedAt": "2026-11-19T19:53:01Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — radio-galaxy-regional-2026",
+        "startedAt": "2026-11-19T19:36:03Z",
+        "updatedAt": "2026-11-19T19:53:29Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-winters-tale-mrs-regional-2026",
+        "startedAt": "2026-11-19T19:36:04Z",
+        "updatedAt": "2026-11-19T19:52:06Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — theater-of-the-mind-regional-2026",
+        "startedAt": "2026-11-19T19:36:05Z",
+        "updatedAt": "2026-11-19T19:54:35Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — radio-galaxy-regional-2026",
+        "startedAt": "2026-11-19T19:40:34Z",
+        "updatedAt": "2026-11-19T19:41:32Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — nixon-in-china-regional-2026",
+        "startedAt": "2026-11-19T19:40:36Z",
+        "updatedAt": "2026-11-19T19:41:31Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — the-winters-tale-mrs-regional-2026",
+        "startedAt": "2026-11-19T19:40:37Z",
+        "updatedAt": "2026-11-19T19:41:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — club-nvrlnd-off-west-end-2026",
+        "startedAt": "2026-11-19T19:41:27Z",
+        "updatedAt": "2026-11-19T19:54:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — nixon-in-china-regional-2026",
+        "startedAt": "2026-11-19T19:41:28Z",
+        "updatedAt": "2026-11-19T19:42:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — radio-galaxy-regional-2026",
+        "startedAt": "2026-11-19T19:41:30Z",
+        "updatedAt": "2026-11-19T19:42:12Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — the-winters-tale-mrs-regional-2026",
+        "startedAt": "2026-11-19T19:41:31Z",
+        "updatedAt": "2026-11-19T19:42:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — theater-of-the-mind-regional-2026",
+        "startedAt": "2026-11-19T19:41:32Z",
+        "updatedAt": "2026-11-19T19:44:27Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — radio-galaxy-regional-2026",
+        "startedAt": "2026-11-19T19:42:09Z",
+        "updatedAt": "2026-11-19T20:06:10Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — nixon-in-china-regional-2026",
+        "startedAt": "2026-11-19T19:42:10Z",
+        "updatedAt": "2026-11-19T19:53:41Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-winters-tale-mrs-regional-2026",
+        "startedAt": "2026-11-19T19:42:12Z",
+        "updatedAt": "2026-11-19T19:57:00Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:43:37Z",
+        "updatedAt": "2026-11-19T19:57:05Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:43:40Z",
+        "updatedAt": "2026-11-19T19:59:57Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — much-ado-about-nothing-2026",
+        "startedAt": "2026-11-19T19:43:45Z",
+        "updatedAt": "2026-11-19T19:54:57Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — florence-off-west-end-2026",
+        "startedAt": "2026-11-19T19:44:23Z",
+        "updatedAt": "2026-11-19T19:58:44Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — theater-of-the-mind-regional-2026",
+        "startedAt": "2026-11-19T19:44:25Z",
+        "updatedAt": "2026-11-19T20:01:54Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:45:10Z",
+        "updatedAt": "2026-11-19T19:57:05Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:45:59Z",
+        "updatedAt": "2026-11-19T19:46:53Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:46:51Z",
+        "updatedAt": "2026-11-19T19:52:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44601565022)",
+        "startedAt": "2026-11-19T19:47:26Z",
+        "updatedAt": "2026-11-19T20:06:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:47:30Z",
+        "updatedAt": "2026-11-19T20:06:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:50:02Z",
+        "updatedAt": "2026-11-19T20:08:34Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:52:03Z",
+        "updatedAt": "2026-11-19T19:53:28Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T19:52:59Z",
+        "updatedAt": "2026-11-19T20:24:57Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:53:26Z",
+        "updatedAt": "2026-11-19T19:54:33Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:54:31Z",
+        "updatedAt": "2026-11-19T19:54:55Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:54:53Z",
+        "updatedAt": "2026-11-19T20:08:55Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — florence-off-west-end-2026",
+        "startedAt": "2026-11-19T19:55:05Z",
+        "updatedAt": "2026-11-19T20:04:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:56:09Z",
+        "updatedAt": "2026-11-19T20:08:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T19:56:52Z",
+        "updatedAt": "2026-11-19T20:10:22Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:57:19Z",
+        "updatedAt": "2026-11-19T19:58:43Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T19:58:40Z",
+        "updatedAt": "2026-11-19T20:17:47Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-19T19:58:45Z",
+        "updatedAt": "2026-11-19T21:00:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44603220532)",
+        "startedAt": "2026-11-19T19:59:38Z",
+        "updatedAt": "2026-11-19T20:15:35Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-19T20:00:07Z",
+        "updatedAt": "2026-11-19T20:01:58Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — florence-off-west-end-2026",
+        "startedAt": "2026-11-19T20:00:17Z",
+        "updatedAt": "2026-11-19T20:08:04Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:02:41Z",
+        "updatedAt": "2026-11-19T20:11:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:05:20Z",
+        "updatedAt": "2026-11-19T20:17:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:07:40Z",
+        "updatedAt": "2026-11-19T20:18:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44603849834)",
+        "startedAt": "2026-11-19T20:10:00Z",
+        "updatedAt": "2026-11-19T20:25:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:11:11Z",
+        "updatedAt": "2026-11-19T20:25:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:15:13Z",
+        "updatedAt": "2026-11-19T20:26:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:16:26Z",
+        "updatedAt": "2026-11-19T20:28:37Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-19T20:16:31Z",
+        "updatedAt": "2026-11-19T20:27:57Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:20:48Z",
+        "updatedAt": "2026-11-19T20:32:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — 3-summers-of-lincoln-regional-2025",
+        "startedAt": "2026-11-19T20:21:34Z",
+        "updatedAt": "2026-11-19T20:33:21Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T20:24:20Z",
+        "updatedAt": "2026-11-19T20:36:46Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44608332112)",
+        "startedAt": "2026-11-19T20:26:51Z",
+        "updatedAt": "2026-11-19T20:44:36Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:27:05Z",
+        "updatedAt": "2026-11-19T20:40:43Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T20:27:52Z",
+        "updatedAt": "2026-11-19T20:30:40Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T20:30:37Z",
+        "updatedAt": "2026-11-19T20:48:00Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — tosca-off-broadway-2026",
+        "startedAt": "2026-11-19T20:32:00Z",
+        "updatedAt": "2026-11-19T20:40:53Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-19T20:33:04Z",
+        "updatedAt": "2026-11-19T21:31:57Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T20:33:14Z",
+        "updatedAt": "2026-11-19T21:03:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:33:14Z",
+        "updatedAt": "2026-11-19T20:44:38Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — destiny-of-desire-regional-2026",
+        "startedAt": "2026-11-19T20:34:32Z",
+        "updatedAt": "2026-11-19T20:45:37Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-19T20:34:33Z",
+        "updatedAt": "2026-11-19T20:45:24Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-39-steps-regional-2026",
+        "startedAt": "2026-11-19T20:34:34Z",
+        "updatedAt": "2026-11-19T20:43:29Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-christmas-story-the-musical-tour-2026",
+        "startedAt": "2026-11-19T20:34:36Z",
+        "updatedAt": "2026-11-19T20:39:52Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-19T20:34:38Z",
+        "updatedAt": "2026-11-19T20:49:21Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-39-steps-regional-2026",
+        "startedAt": "2026-11-19T20:34:39Z",
+        "updatedAt": "2026-11-19T20:48:40Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — tosca-off-broadway-2026",
+        "startedAt": "2026-11-19T20:34:40Z",
+        "updatedAt": "2026-11-19T20:46:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "skipped",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:37:02Z",
+        "updatedAt": "2026-11-19T20:37:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44609391047)",
+        "startedAt": "2026-11-19T20:37:42Z",
+        "updatedAt": "2026-11-19T20:55:31Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:38:05Z",
+        "updatedAt": "2026-11-19T20:49:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — tosca-off-broadway-2026",
+        "startedAt": "2026-11-19T20:38:13Z",
+        "updatedAt": "2026-11-19T20:42:00Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T20:40:49Z",
+        "updatedAt": "2026-11-19T20:41:59Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T20:40:59Z",
+        "updatedAt": "2026-11-19T21:29:27Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T20:41:56Z",
+        "updatedAt": "2026-11-19T20:43:29Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T20:43:27Z",
+        "updatedAt": "2026-11-19T20:45:23Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T20:45:19Z",
+        "updatedAt": "2026-11-19T20:45:36Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T20:45:33Z",
+        "updatedAt": "2026-11-19T21:00:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-39-steps-regional-2026",
+        "startedAt": "2026-11-19T20:45:40Z",
+        "updatedAt": "2026-11-19T20:53:27Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — destiny-of-desire-regional-2026",
+        "startedAt": "2026-11-19T20:45:42Z",
+        "updatedAt": "2026-11-19T20:52:40Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — destiny-of-desire-regional-2026",
+        "startedAt": "2026-11-19T20:47:37Z",
+        "updatedAt": "2026-11-19T20:56:12Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:48:23Z",
+        "updatedAt": "2026-11-19T20:57:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:49:31Z",
+        "updatedAt": "2026-11-19T20:59:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44611921726)",
+        "startedAt": "2026-11-19T20:49:34Z",
+        "updatedAt": "2026-11-19T21:07:47Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:50:35Z",
+        "updatedAt": "2026-11-19T21:00:37Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:52:53Z",
+        "updatedAt": "2026-11-19T21:03:51Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T20:56:25Z",
+        "updatedAt": "2026-11-19T21:10:55Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T20:58:40Z",
+        "updatedAt": "2026-11-19T21:09:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:00:01Z",
+        "updatedAt": "2026-11-19T21:10:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44613719096)",
+        "startedAt": "2026-11-19T21:01:02Z",
+        "updatedAt": "2026-11-19T21:19:46Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:02:04Z",
+        "updatedAt": "2026-11-19T21:12:31Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — julius-caesar-globe-off-west-end-2026",
+        "startedAt": "2026-11-19T21:04:49Z",
+        "updatedAt": "2026-11-19T21:16:36Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — nero-off-west-end-2026",
+        "startedAt": "2026-11-19T21:04:50Z",
+        "updatedAt": "2026-11-19T21:14:59Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:06:23Z",
+        "updatedAt": "2026-11-19T21:16:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:08:19Z",
+        "updatedAt": "2026-11-19T21:19:16Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:09:34Z",
+        "updatedAt": "2026-11-19T21:19:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:10:58Z",
+        "updatedAt": "2026-11-19T21:23:51Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — nero-off-west-end-2026",
+        "startedAt": "2026-11-19T21:13:11Z",
+        "updatedAt": "2026-11-19T21:22:51Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T21:14:56Z",
+        "updatedAt": "2026-11-19T21:24:15Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-19T21:15:49Z",
+        "updatedAt": "2026-11-19T22:14:39Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44616834929)",
+        "startedAt": "2026-11-19T21:16:08Z",
+        "updatedAt": "2026-11-19T21:32:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — nero-off-west-end-2026",
+        "startedAt": "2026-11-19T21:17:16Z",
+        "updatedAt": "2026-11-19T21:27:06Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T21:18:18Z",
+        "updatedAt": "2026-11-19T21:56:34Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:19:41Z",
+        "updatedAt": "2026-11-19T21:30:12Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:20:19Z",
+        "updatedAt": "2026-11-19T21:31:01Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:20:50Z",
+        "updatedAt": "2026-11-19T21:32:56Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:21:36Z",
+        "updatedAt": "2026-11-19T21:33:07Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T21:22:48Z",
+        "updatedAt": "2026-11-19T21:35:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44618169607)",
+        "startedAt": "2026-11-19T21:25:25Z",
+        "updatedAt": "2026-11-19T21:42:42Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T21:27:02Z",
+        "updatedAt": "2026-11-19T21:45:42Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:34:16Z",
+        "updatedAt": "2026-11-19T21:45:11Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-19T21:34:23Z",
+        "updatedAt": "2026-11-19T21:37:38Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44618882564)",
+        "startedAt": "2026-11-19T21:36:05Z",
+        "updatedAt": "2026-11-19T21:54:55Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:36:19Z",
+        "updatedAt": "2026-11-19T21:49:38Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:37:08Z",
+        "updatedAt": "2026-11-19T21:48:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:42:59Z",
+        "updatedAt": "2026-11-19T21:53:14Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:43:47Z",
+        "updatedAt": "2026-11-19T21:53:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T21:45:49Z",
+        "updatedAt": "2026-11-19T22:21:31Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:47:08Z",
+        "updatedAt": "2026-11-19T21:57:12Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:50:19Z",
+        "updatedAt": "2026-11-19T22:00:25Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T21:52:59Z",
+        "updatedAt": "2026-11-19T22:04:30Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — parcel-from-america-off-broadway-2026",
+        "startedAt": "2026-11-19T21:55:01Z",
+        "updatedAt": "2026-11-19T22:05:15Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:00:51Z",
+        "updatedAt": "2026-11-19T22:12:42Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:01:48Z",
+        "updatedAt": "2026-11-19T22:11:40Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:01:48Z",
+        "updatedAt": "2026-11-19T22:12:56Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-19T22:03:12Z",
+        "updatedAt": "2026-11-19T23:07:36Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T22:03:22Z",
+        "updatedAt": "2026-11-19T22:43:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:03:37Z",
+        "updatedAt": "2026-11-19T22:12:49Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:05:12Z",
+        "updatedAt": "2026-11-19T22:16:25Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — takes-all-kinds-regional-2026",
+        "startedAt": "2026-11-19T22:05:50Z",
+        "updatedAt": "2026-11-19T22:16:45Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44625166784)",
+        "startedAt": "2026-11-19T22:06:09Z",
+        "updatedAt": "2026-11-19T22:25:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:06:28Z",
+        "updatedAt": "2026-11-19T22:17:39Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:07:19Z",
+        "updatedAt": "2026-11-19T22:16:01Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — takes-all-kinds-regional-2026",
+        "startedAt": "2026-11-19T22:08:21Z",
+        "updatedAt": "2026-11-19T22:14:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:09:28Z",
+        "updatedAt": "2026-11-19T22:20:49Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — takes-all-kinds-regional-2026",
+        "startedAt": "2026-11-19T22:14:21Z",
+        "updatedAt": "2026-11-19T22:22:52Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:16:42Z",
+        "updatedAt": "2026-11-19T22:26:23Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44627069441)",
+        "startedAt": "2026-11-19T22:17:51Z",
+        "updatedAt": "2026-11-19T22:36:42Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:20:46Z",
+        "updatedAt": "2026-11-19T22:34:28Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:21:23Z",
+        "updatedAt": "2026-11-19T22:33:26Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — west-side-story-2020",
+        "startedAt": "2026-11-19T22:22:43Z",
+        "updatedAt": "2026-11-19T22:33:07Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T22:23:32Z",
+        "updatedAt": "2026-11-19T22:33:46Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — takes-all-kinds-regional-2026",
+        "startedAt": "2026-11-19T22:23:34Z",
+        "updatedAt": "2026-11-19T22:27:47Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:24:09Z",
+        "updatedAt": "2026-11-19T22:33:08Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "failure",
+        "displayTitle": "LLM Ensemble Score Reviews — a-case-for-the-existence-of-god-off-broadway-2022",
+        "startedAt": "2026-11-19T22:26:26Z",
+        "updatedAt": "2026-11-19T22:42:41Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-sign-of-the-times-off-broadway-2024",
+        "startedAt": "2026-11-19T22:26:30Z",
+        "updatedAt": "2026-11-19T22:40:47Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — birthday-candles-2022",
+        "startedAt": "2026-11-19T22:26:34Z",
+        "updatedAt": "2026-11-19T22:38:10Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — days-of-wine-and-roses-2024",
+        "startedAt": "2026-11-19T22:26:38Z",
+        "updatedAt": "2026-11-19T22:37:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — dear-evan-hansen-2016",
+        "startedAt": "2026-11-19T22:26:41Z",
+        "updatedAt": "2026-11-19T22:40:27Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — evanston-salt-costs-climbing-off-broadway-2022",
+        "startedAt": "2026-11-19T22:26:45Z",
+        "updatedAt": "2026-11-19T22:36:21Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — side-show-2014",
+        "startedAt": "2026-11-19T22:26:45Z",
+        "updatedAt": "2026-11-19T22:39:35Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted much-ado-about-nothing-2026 (broadway)",
+        "startedAt": "2026-11-19T22:30:08Z",
+        "updatedAt": "2026-11-20T01:00:12Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — much-ado-about-nothing-2026",
+        "startedAt": "2026-11-19T22:31:05Z",
+        "updatedAt": "2026-11-19T23:01:55Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:33:03Z",
+        "updatedAt": "2026-11-19T22:41:21Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:33:42Z",
+        "updatedAt": "2026-11-19T22:36:18Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:33:51Z",
+        "updatedAt": "2026-11-19T22:43:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44629675186)",
+        "startedAt": "2026-11-19T22:33:54Z",
+        "updatedAt": "2026-11-19T22:48:52Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:36:16Z",
+        "updatedAt": "2026-11-19T22:37:19Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T22:36:38Z",
+        "updatedAt": "2026-11-19T23:11:54Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:36:58Z",
+        "updatedAt": "2026-11-19T22:38:10Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — gutenberg-2023",
+        "startedAt": "2026-11-19T22:37:42Z",
+        "updatedAt": "2026-11-19T22:50:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — harry-potter-2021",
+        "startedAt": "2026-11-19T22:37:46Z",
+        "updatedAt": "2026-11-19T22:48:44Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — i-love-you-so-much-i-could-die-off-broadway-2024",
+        "startedAt": "2026-11-19T22:37:49Z",
+        "updatedAt": "2026-11-19T22:49:36Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — illinoise-off-broadway-2024",
+        "startedAt": "2026-11-19T22:37:52Z",
+        "updatedAt": "2026-11-19T22:47:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:37:57Z",
+        "updatedAt": "2026-11-19T22:48:50Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:38:07Z",
+        "updatedAt": "2026-11-19T22:39:33Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:39:30Z",
+        "updatedAt": "2026-11-19T22:40:25Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:40:22Z",
+        "updatedAt": "2026-11-19T22:40:45Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:40:41Z",
+        "updatedAt": "2026-11-19T22:52:40Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:40:42Z",
+        "updatedAt": "2026-11-19T22:51:48Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — its-only-a-play-2014",
+        "startedAt": "2026-11-19T22:41:03Z",
+        "updatedAt": "2026-11-19T22:52:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — last-call-off-broadway-2025",
+        "startedAt": "2026-11-19T22:41:06Z",
+        "updatedAt": "2026-11-19T22:53:09Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — mary-gets-hers-off-broadway-2023",
+        "startedAt": "2026-11-19T22:41:10Z",
+        "updatedAt": "2026-11-19T22:53:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:42:46Z",
+        "updatedAt": "2026-11-19T22:58:04Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44630854818)",
+        "startedAt": "2026-11-19T22:43:52Z",
+        "updatedAt": "2026-11-19T22:58:58Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:46:44Z",
+        "updatedAt": "2026-11-19T23:00:43Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:47:44Z",
+        "updatedAt": "2026-11-19T22:48:42Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:48:39Z",
+        "updatedAt": "2026-11-19T22:49:35Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — on-sugarland-off-broadway-2022",
+        "startedAt": "2026-11-19T22:49:30Z",
+        "updatedAt": "2026-11-19T23:01:38Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:49:33Z",
+        "updatedAt": "2026-11-19T22:50:32Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — sesame-street-the-musical-off-broadway-2023",
+        "startedAt": "2026-11-19T22:49:34Z",
+        "updatedAt": "2026-11-19T22:59:30Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator targeted a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026 (west-end)",
+        "startedAt": "2026-11-19T22:50:06Z",
+        "updatedAt": "2026-11-19T22:51:40Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — florence-off-west-end-2026",
+        "startedAt": "2026-11-19T22:50:08Z",
+        "updatedAt": "2026-11-19T22:57:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:50:23Z",
+        "updatedAt": "2026-11-19T23:06:35Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:50:30Z",
+        "updatedAt": "2026-11-19T23:02:48Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — florence-off-west-end-2026",
+        "startedAt": "2026-11-19T22:51:52Z",
+        "updatedAt": "2026-11-19T23:02:30Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:52:13Z",
+        "updatedAt": "2026-11-19T23:06:56Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:52:35Z",
+        "updatedAt": "2026-11-19T22:53:06Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T22:52:37Z",
+        "updatedAt": "2026-11-19T23:36:40Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:53:04Z",
+        "updatedAt": "2026-11-19T22:53:54Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — soft-power-off-broadway-2019",
+        "startedAt": "2026-11-19T22:53:47Z",
+        "updatedAt": "2026-11-19T23:04:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-coast-starlight-off-broadway-2023",
+        "startedAt": "2026-11-19T22:53:50Z",
+        "updatedAt": "2026-11-19T23:04:38Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T22:53:51Z",
+        "updatedAt": "2026-11-19T23:15:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:54:14Z",
+        "updatedAt": "2026-11-19T23:09:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44632333056)",
+        "startedAt": "2026-11-19T22:54:19Z",
+        "updatedAt": "2026-11-19T23:11:37Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:54:53Z",
+        "updatedAt": "2026-11-19T23:17:14Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:55:05Z",
+        "updatedAt": "2026-11-19T23:13:59Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:56:56Z",
+        "updatedAt": "2026-11-19T23:17:12Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-inheritance-2019",
+        "startedAt": "2026-11-19T22:58:02Z",
+        "updatedAt": "2026-11-19T23:10:41Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-streets-of-new-york-off-broadway-2021",
+        "startedAt": "2026-11-19T22:58:05Z",
+        "updatedAt": "2026-11-19T23:13:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T22:58:10Z",
+        "updatedAt": "2026-11-19T23:18:54Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T22:58:12Z",
+        "updatedAt": "2026-11-19T23:18:10Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T22:58:13Z",
+        "updatedAt": "2026-11-19T23:13:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:00:58Z",
+        "updatedAt": "2026-11-19T23:19:38Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:01:09Z",
+        "updatedAt": "2026-11-19T23:19:16Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T23:04:10Z",
+        "updatedAt": "2026-11-19T23:04:37Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-welkin-off-broadway-2024",
+        "startedAt": "2026-11-19T23:04:23Z",
+        "updatedAt": "2026-11-19T23:17:05Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-wrong-man-off-broadway-2019",
+        "startedAt": "2026-11-19T23:04:26Z",
+        "updatedAt": "2026-11-19T23:16:36Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T23:04:34Z",
+        "updatedAt": "2026-11-19T23:10:38Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44632829756)",
+        "startedAt": "2026-11-19T23:07:10Z",
+        "updatedAt": "2026-11-19T23:22:12Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "failure",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-19T23:07:39Z",
+        "updatedAt": "2026-11-19T23:29:23Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:09:00Z",
+        "updatedAt": "2026-11-19T23:20:42Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T23:10:36Z",
+        "updatedAt": "2026-11-19T23:13:04Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T23:13:03Z",
+        "updatedAt": "2026-11-19T23:13:46Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T23:13:23Z",
+        "updatedAt": "2026-11-19T23:13:31Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T23:13:29Z",
+        "updatedAt": "2026-11-19T23:24:25Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T23:13:44Z",
+        "updatedAt": "2026-11-19T23:14:13Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "skipped",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:13:49Z",
+        "updatedAt": "2026-11-19T23:13:50Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T23:14:10Z",
+        "updatedAt": "2026-11-19T23:27:05Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — titanique-off-broadway-2022",
+        "startedAt": "2026-11-19T23:14:22Z",
+        "updatedAt": "2026-11-19T23:23:10Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — wine-in-the-wilderness-off-broadway-2025",
+        "startedAt": "2026-11-19T23:14:26Z",
+        "updatedAt": "2026-11-19T23:25:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:14:32Z",
+        "updatedAt": "2026-11-19T23:25:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:15:39Z",
+        "updatedAt": "2026-11-19T23:27:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44635891345)",
+        "startedAt": "2026-11-19T23:16:40Z",
+        "updatedAt": "2026-11-19T23:34:16Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — cinderella-lyric-hammersmith-off-west-end-2026",
+        "startedAt": "2026-11-19T23:17:06Z",
+        "updatedAt": "2026-11-19T23:26:57Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — much-ado-about-nothing-2026",
+        "startedAt": "2026-11-19T23:17:41Z",
+        "updatedAt": "2026-11-19T23:52:38Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T23:18:05Z",
+        "updatedAt": "2026-11-19T23:26:55Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:19:39Z",
+        "updatedAt": "2026-11-19T23:32:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — cinderella-lyric-hammersmith-off-west-end-2026",
+        "startedAt": "2026-11-19T23:23:14Z",
+        "updatedAt": "2026-11-19T23:31:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:24:49Z",
+        "updatedAt": "2026-11-19T23:35:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:26:32Z",
+        "updatedAt": "2026-11-19T23:36:18Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T23:26:52Z",
+        "updatedAt": "2026-11-19T23:35:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44637722944)",
+        "startedAt": "2026-11-19T23:28:03Z",
+        "updatedAt": "2026-11-19T23:44:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:29:21Z",
+        "updatedAt": "2026-11-19T23:38:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:31:53Z",
+        "updatedAt": "2026-11-19T23:43:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-19T23:32:00Z",
+        "updatedAt": "2026-11-19T23:41:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:32:39Z",
+        "updatedAt": "2026-11-19T23:42:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:33:20Z",
+        "updatedAt": "2026-11-19T23:48:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:39:06Z",
+        "updatedAt": "2026-11-19T23:48:55Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:39:31Z",
+        "updatedAt": "2026-11-19T23:48:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-christmas-story-the-musical-tour-2026",
+        "startedAt": "2026-11-19T23:40:32Z",
+        "updatedAt": "2026-11-19T23:52:18Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:40:39Z",
+        "updatedAt": "2026-11-19T23:51:43Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:42:57Z",
+        "updatedAt": "2026-11-19T23:53:23Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-christmas-story-the-musical-tour-2026",
+        "startedAt": "2026-11-19T23:45:32Z",
+        "updatedAt": "2026-11-19T23:55:52Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:46:41Z",
+        "updatedAt": "2026-11-19T23:57:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:47:31Z",
+        "updatedAt": "2026-11-19T23:57:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:51:31Z",
+        "updatedAt": "2026-11-20T00:01:05Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-19T23:51:57Z",
+        "updatedAt": "2026-11-20T00:18:32Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-19T23:52:15Z",
+        "updatedAt": "2026-11-20T00:01:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 44641206091)",
+        "startedAt": "2026-11-19T23:53:23Z",
+        "updatedAt": "2026-11-20T00:10:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:58:01Z",
+        "updatedAt": "2026-11-19T23:58:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-19T23:59:16Z",
+        "updatedAt": "2026-11-20T00:15:56Z"
       }
     ]
   }
