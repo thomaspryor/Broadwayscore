@@ -60,6 +60,17 @@ function skeleton(ts, sf) {
   const STATE_CALL = /^(?:[\w$.?]*\.)?(set[A-Z]\w*|dispatch|setTimeout|setInterval|requestAnimationFrame)$/;
   let quiet = 0;
   const FORMAT_NAME = /^format[A-Z0-9_]\w*$/;
+  // Element builders without JSX syntax, and helpers whose result feeds class/style or a component prop (the result then draws).
+  const ELEMENT_BUILD = /\b(createElement|cloneElement|jsxs?|jsxDEV)\b|\bh\(/;
+  const visualUse = new Set();
+  const scanUse = (x, inVisual) => {
+    let v = inVisual;
+    if (ts.isJsxAttribute(x)) { const tag = x.parent.parent.tagName.getText(sf); v = /^(className|class|style)$/.test(x.name.getText(sf)) || /^[A-Z]/.test(tag) || tag.includes('.'); }
+    else if (ts.isJsxSpreadAttribute(x)) v = true;
+    if (v && ts.isIdentifier(x)) visualUse.add(x.text);
+    ts.forEachChild(x, (c) => scanUse(c, v));
+  };
+  scanUse(sf, false);
   const hasJsx = (n) => { let f = false; const w = (x) => { if (f) return; if (ts.isJsxElement(x) || ts.isJsxSelfClosingElement(x) || ts.isJsxFragment(x)) { f = true; return; } ts.forEachChild(x, w); }; w(n); return f; };
   const isQuietRoot = (n) => (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && /^use(Layout|Insertion)?Effect$/.test(n.expression.text))
     || (ts.isJsxAttribute(n) && (QUIET_ATTR.test(n.name.getText(sf)) || (QUIET_DOM_ATTR.test(n.name.getText(sf)) && /^[a-z]/.test(n.parent.parent.tagName.getText(sf)))));
@@ -77,8 +88,8 @@ function skeleton(ts, sf) {
     const vdecl = ts.isVariableStatement(n) && n.declarationList.declarations.length === 1 ? n.declarationList.declarations[0] : null;
     const fmtName = (ts.isFunctionDeclaration(n) && n.name && n.name.text)
       || (vdecl && ts.isIdentifier(vdecl.name) && vdecl.initializer
-        && (ts.isArrowFunction(vdecl.initializer) || ts.isFunctionExpression(vdecl.initializer) || ts.isIdentifier(vdecl.initializer)) && vdecl.name.text);
-    if (fmtName && FORMAT_NAME.test(fmtName) && !quiet && !hasJsx(n) && !DOM_WRITE.test(n.getText(sf))
+        && (ts.isArrowFunction(vdecl.initializer) || ts.isFunctionExpression(vdecl.initializer) || (ts.isIdentifier(vdecl.initializer) && FORMAT_NAME.test(vdecl.initializer.text))) && vdecl.name.text);
+    if (fmtName && FORMAT_NAME.test(fmtName) && !quiet && n.parent === sf && !hasJsx(n) && !DOM_WRITE.test(n.getText(sf)) && !ELEMENT_BUILD.test(n.getText(sf)) && !visualUse.has(fmtName)
       && !(ts.isFunctionDeclaration(n) && n.modifiers && n.modifiers.some((m) => m.kind === K.DefaultKeyword))) { out.push(`fmt ${fmtName}`); return; }
     if (ts.isTypeNode(n) || ts.isInterfaceDeclaration(n) || ts.isTypeAliasDeclaration(n)) return;
     if (ts.isImportDeclaration(n)) {

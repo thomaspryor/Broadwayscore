@@ -39,19 +39,26 @@ export default function X({ d }: { d: string }) { return <div className="p-2 tex
   assert.equal(cls(BASE, next).design, false);
 });
 
-for (const [name, next] of [
-  ['class color change', BASE.replace('text-sm', 'text-red-500')],
-  ['spacing change', BASE.replace('p-2', 'p-6')],
-  ['new component/element', BASE.replace('<div className="p-2 text-sm">', '<div className="p-2 text-sm"><Badge/>')],
-  ['call site changed to a different helper', BASE.replace('{formatDate(d)}', '{formatOther(d)}')],
-  ['helper that renders JSX', BASE.replace("return m[0] + ' ' + d;", 'return <b className="text-red-500">{d}</b>;')],
-  ['helper that writes style', BASE.replace("return m[0]", "document.body.style.color = 'red'; return m[0]")],
-  ['non-format helper body (class picker)', `function pickClass(){ return 'a'; }\nexport default function X(){ return <div className={pickClass()}/>; }`
-    .replace("'a'", "'a'") ],
+const CALL = '<div className="p-2 text-sm">{formatDate(d)}</div>';
+const USE_CLASS = BASE.replace('className="p-2 text-sm"', 'className={formatDate(d)}');
+const USE_PROP = BASE.replace(CALL, '<Tag tone={formatDate(d)}/>');
+const BODY = "m[0] + ' ' + d";
+const NESTED = (body) => `export default function X({ d }: { d: string }) { const formatDate = (x: string) => ${body}; return <div className="p-2">{formatDate(d)}</div>; }`;
+for (const [name, a, b] of [
+  ['class color change', BASE, BASE.replace('text-sm', 'text-red-500')],
+  ['spacing change', BASE, BASE.replace('p-2', 'p-6')],
+  ['new component/element', BASE, BASE.replace('<div className="p-2 text-sm">', '<div className="p-2 text-sm"><Badge/>')],
+  ['call site changed to a different helper', BASE, BASE.replace('{formatDate(d)}', '{formatOther(d)}')],
+  ['helper that renders JSX', BASE, BASE.replace(`return ${BODY};`, 'return <b className="text-red-500">{d}</b>;')],
+  ['helper that writes style', BASE, BASE.replace('return m[0]', "document.body.style.color = 'red'; return m[0]")],
+  ['alias to an arbitrary component', BASE, `import { Huge } from '@/c/Huge';\nconst formatDate = Huge;\nexport default function X({ d }: { d: string }) { return ${CALL}; }`],
+  ['format helper result used as className', USE_CLASS, USE_CLASS.replace(BODY, "'bg-red-900'")],
+  ['format helper result passed to a component prop', USE_PROP, USE_PROP.replace(BODY, "'loud'")],
+  ['helper builds elements without JSX', BASE, BASE.replace(`return ${BODY};`, 'return React.createElement(Badge, {}, d);')],
+  ['helper nested inside the component', NESTED('x'), NESTED('React.createElement(B)')],
+  ['non-format helper body (class picker)', `function pickClass(){ return 'a'; }\nexport default function X(){ return <div className={pickClass()}/>; }`, `function pickClass(){ return 'text-red-500'; }\nexport default function X(){ return <div className={pickClass()}/>; }`],
 ]) {
   test(`still design: ${name}`, { skip: SKIP }, () => {
-    const old = name.startsWith('non-format') ? next : BASE;
-    const nw = name.startsWith('non-format') ? next.replace("'a'", "'text-red-500'") : next;
-    assert.equal(cls(old, nw).design, true);
+    assert.equal(cls(a, b).design, true);
   });
 }
