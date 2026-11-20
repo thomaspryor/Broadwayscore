@@ -10,15 +10,17 @@
 //   1. it is a .tsx/.jsx file present on both sides (CSS/SCSS, Tailwind/PostCSS config, new/deleted files = design);
 //   2. both sides parse cleanly;
 //   3. its page SKELETON is identical before and after. The skeleton is: every JSX tag in order, every attribute
-//      name, the value of every literal attribute (string, number, boolean, object literal), the full expression of
-//      any style attribute (className, class, style, sx, tw, css, variant, size, ...), every string literal anywhere
-//      in the file that holds a Tailwind-like utility token, every className/style object key, CSS imports and
-//      'use client'/'use server' directives. JSX text (copy) and the logic inside {expressions} are NOT in it, so
-//      a changed condition, handler, href or data path is a fix; a moved, added or removed element, a changed
-//      class or style, or a changed literal prop is design.
+//      name, the full expression of every attribute except handlers/key/ref/href/id/data-/aria-, every string,
+//      number, true/false/null literal in the file (not types, not import paths; numbers/booleans/null inside effect
+//      callbacks and on* handlers are logic and skipped), what every JSX tag identifier points at (its import path or
+//      const initializer), CSS imports and 'use client'/'use server'. JSX text (copy) and other logic are NOT in it,
+//      so reworded copy, a changed handler, href or data path is a fix; a moved, added or removed element, a changed
+//      class, style, literal or tag target is design.
 //
-// One entry point (selfClear) is shared by .claude/hooks/pre-push-visual-gate.sh, scripts/land-ready.mjs and
-// scripts/visual-approval.js so the three never disagree. Kill switch: VISUAL_FIX_SELF_CLEAR_DISABLED=1.
+// One entry point (selfClear) is shared by .claude/hooks/pre-push-visual-gate.sh and scripts/land-ready.mjs, both
+// running the main checkout's copy (a branch cannot loosen it), so the two never disagree.
+// Trust level: verdict.json is written by the session itself (unsigned), the same trust as the '# NO-VERIFY:' bypass.
+// The real protection is this classifier being strict: literals, tag identity and non-handler props all count. Kill switch: VISUAL_FIX_SELF_CLEAR_DISABLED=1.
 
 const fs = require('fs');
 const path = require('path');
@@ -27,8 +29,9 @@ const { execFileSync } = require('child_process');
 let _ts = null;
 function loadTs() {
   if (_ts) return _ts;
-  // Only this checkout's parser: a pushed branch must not supply it.
-  try { _ts = require(require.resolve('typescript', { paths: [__dirname] })); return _ts; } catch { return null; }
+  // node_modules is untracked, so a pushed branch cannot supply the parser: this copy's, else the session checkout's
+  // (the canonical-root copy of this file, run by the hook, has no node_modules of its own in a cloud container).
+  try { _ts = require(require.resolve('typescript', { paths: [__dirname, process.cwd()] })); return _ts; } catch { return null; }
 }
 
 const STYLE_ATTR = /^(className|class|style|sx|tw|css|variant|size|tone|color|layout|align|position|width|height|src|srcSet|fill|priority|sizes|columns|cols|rows|gap|as)$/;
@@ -58,6 +61,13 @@ function isLiteral(ts, e) {
 /** The layout/style skeleton of one source file, as an array of tokens. */
 function skeleton(ts, sf) {
   const out = [];
+  // Identifiers rendered as JSX tags (<Comp/>, <Foo.Bar/>): what they point at is page structure.
+  const tagRoots = new Set();
+  const collect = (n) => {
+    if (ts.isJsxOpeningElement(n) || ts.isJsxSelfClosingElement(n)) tagRoots.add(n.tagName.getText(sf).split('.')[0]);
+    ts.forEachChild(n, collect);
+  };
+  collect(sf);
   const attr = (a) => {
     if (ts.isJsxSpreadAttribute(a)) { out.push(`{...${norm(a.expression.getText(sf))}}`); return; }
     const name = a.name.getText(sf);
@@ -65,10 +75,40 @@ function skeleton(ts, sf) {
     if (!init) { out.push(name); return; }
     if (ts.isStringLiteral(init)) { out.push(`${name}=${JSON.stringify(init.text)}`); return; }
     const e = ts.isJsxExpression(init) ? init.expression : init;
-    if (STYLE_ATTR.test(name) || isLiteral(ts, e)) out.push(`${name}={${e ? norm(e.getText(sf)) : ''}}`);
+    // Handlers, keys, refs, links and data/aria attributes carry logic, not looks: their expression is not recorded
+    // (literals inside them still are, below). Every other attribute (compact={!isM}, show={cond}) can change what
+    // renders, so its whole expression is part of the skeleton.
+    const logicAttr = /^(on[A-Z]\w*|key|ref|href|to|id|name|htmlFor|data-[\w-]+|aria-[\w-]+)$/.test(name);
+    const fnValue = e && (ts.isArrowFunction(e) || ts.isFunctionExpression(e));
+    if (STYLE_ATTR.test(name) || isLiteral(ts, e) || (!logicAttr && !fnValue)) out.push(`${name}={${e ? norm(e.getText(sf)) : ''}}`);
     else out.push(`${name}={}`);
   };
+  // Inside an effect callback or an on* handler nothing is drawn by the code itself, so a changed null/true/false/number
+  // there (an early `return null`, a retry count) is logic. Strings still count everywhere (a class set via the DOM).
+  let quiet = 0;
+  const isQuietRoot = (n) => (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && /^use(Layout|Insertion)?Effect$/.test(n.expression.text))
+    || (ts.isJsxAttribute(n) && /^on[A-Z]/.test(n.name.getText(sf)));
   const visit = (n) => {
+    if (isQuietRoot(n)) { quiet++; try { visitInner(n); } finally { quiet--; } return; }
+    visitInner(n);
+  };
+  const visitInner = (n) => {
+    // Types never render.
+    if (ts.isTypeNode(n) || ts.isInterfaceDeclaration(n) || ts.isTypeAliasDeclaration(n)) return;
+    if (ts.isImportDeclaration(n)) {
+      const c = n.importClause;
+      const names = [];
+      if (c) {
+        if (c.name) names.push(c.name.text);
+        if (c.namedBindings) { if (ts.isNamespaceImport(c.namedBindings)) names.push(c.namedBindings.name.text); else c.namedBindings.elements.forEach((el) => names.push(el.name.text)); }
+      }
+      const hit = names.filter((x) => tagRoots.has(x));
+      if (hit.length && ts.isStringLiteral(n.moduleSpecifier)) out.push(`import ${hit.join(',')} from ${n.moduleSpecifier.text}`);
+      if (ts.isStringLiteral(n.moduleSpecifier) && /\.(css|scss|sass)$/.test(n.moduleSpecifier.text)) out.push(`import ${n.moduleSpecifier.text}`);
+      return;
+    }
+    if (ts.isExportDeclaration(n)) return;
+    if (ts.isVariableDeclaration(n) && ts.isIdentifier(n.name) && tagRoots.has(n.name.text) && n.initializer) out.push(`decl ${n.name.text}=${norm(n.initializer.getText(sf))}`);
     if (ts.isJsxOpeningElement(n) || ts.isJsxSelfClosingElement(n)) {
       out.push(`<${n.tagName.getText(sf)}`);
       for (const a of n.attributes.properties) attr(a);
@@ -90,13 +130,14 @@ function skeleton(ts, sf) {
       out.push('}');
       return;
     }
-    if ((ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) && hasUtilityToken(n.text)) out.push(`"${norm(n.text)}"`);
-    if (ts.isTemplateExpression(n)) {
-      const parts = [n.head.text, ...n.templateSpans.map((s) => s.literal.text)];
-      if (parts.some(hasUtilityToken)) out.push(`\`${norm(n.getText(sf))}\``);
-    }
+    // Every literal that is not a type or an import path (a class name, a colour, a list length, true/false) can change a pixel.
+    const K = ts.SyntaxKind;
+    if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(`"${norm(n.text)}"`);
+    else if (quiet) { /* logic only: see above */ }
+    else if (ts.isNumericLiteral(n)) out.push(`#${n.text}`);
+    else if (n.kind === K.TrueKeyword || n.kind === K.FalseKeyword || n.kind === K.NullKeyword) out.push(`@${n.getText(sf)}`);
+    if (ts.isTemplateExpression(n)) out.push(`\`${[n.head.text, ...n.templateSpans.map((x) => x.literal.text)].map(norm).join('${}')}\``);
     if (ts.isPropertyAssignment(n) && /^['"]?(className|class|style)['"]?$/.test(n.name.getText(sf))) out.push(`${n.name.getText(sf)}:${norm(n.initializer.getText(sf))}`);
-    if (ts.isImportDeclaration(n) && ts.isStringLiteral(n.moduleSpecifier) && /\.(css|scss|sass)$/.test(n.moduleSpecifier.text)) out.push(`import ${n.moduleSpecifier.text}`);
     if (ts.isExpressionStatement(n) && ts.isStringLiteral(n.expression) && /^use (client|server)$/.test(n.expression.text)) out.push(`'${n.expression.text}'`);
     ts.forEachChild(n, visit);
   };

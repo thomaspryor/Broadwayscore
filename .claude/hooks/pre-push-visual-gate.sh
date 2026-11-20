@@ -259,11 +259,20 @@ if [ ! -f "$VERDICT_PATH" ] && [ "$SESSION_ROOT" != "$CANONICAL_ROOT" ]; then
   VERDICT_PATH="$CANONICAL_ROOT/.claude/visual-qa/$BRANCH/verdict.json"
 fi
 
+_FIX="$CANONICAL_ROOT/scripts/lib/visual-design-diff.js"  # BRO-7888: canonical copy only
+# One plain line telling the session who decides this push (fix-only: do not ask the owner; design: owner's yes).
+_FIX_LINE() {
+  [ -f "$_FIX" ] && command -v timeout >/dev/null 2>&1 || return 0
+  [ "${VISUAL_FIX_SELF_CLEAR_DISABLED:-0}" = "1" ] && return 0
+  (cd "$SESSION_ROOT" && timeout 30 node "$_FIX" --explain --range="origin/main...$DIFF_REF" ${1:+--verdict="$1"} 2>/dev/null) || true
+}
+
 if [ ! -f "$VERDICT_PATH" ]; then
   {
     echo "🛑 BLOCKED: push of UI changes without a visual-qa verdict (branch $BRANCH)."
     echo "UI files: $(echo "$UI_FILES_CHANGED" | tr '\n' ' ')"
     [ -n "$_RIL_DETECTOR_LINE" ] && echo "$_RIL_DETECTOR_LINE"
+    _FIX_LINE
     echo "Run /visual-qa (screenshots at 390 and 1440). Do NOT ask the owner until every item below is done; then send ONE message with the screenshots. Any clear yes after that message clears the gate."
     _LAND_SUMMARY
   } >&2
@@ -285,6 +294,21 @@ if [ -z "$VERDICT_HASH" ]; then
   exit 2
 fi
 
+# BRO-7888 (owner decision 2026-11-20): a UI diff that changes no design (a logic fix or wording change, as
+# scripts/lib/visual-design-diff.js classifies it) ships on the session's own passing, current visual-qa verdict with no
+# owner yes. Any design file, or a mix of fix and design, still falls through to the owner approval below. Runs the CANONICAL
+# ROOT copy only (a pushed branch cannot supply a looser classifier). Fail closed: a missing copy, timeout, crash or
+# disabled switch means no self-clear. Kill switch VISUAL_FIX_SELF_CLEAR_DISABLED=1. Never mints a durable approval (those
+# are owner-approved only). Every use is logged to visual-gate-bypass.log.
+# >>> BRO-7888 self-clear (the replay test strips this block to prove the red case)
+if [ "${VISUAL_FIX_SELF_CLEAR_DISABLED:-0}" != "1" ] && [ -f "$_FIX" ] && command -v timeout >/dev/null 2>&1; then
+  if (cd "$SESSION_ROOT" && timeout 30 node "$_FIX" --self-clear --range="origin/main...$DIFF_REF" --verdict="$VERDICT_PATH" >/dev/null 2>&1); then
+    _logdir="${CLAUDE_LOG_DIR:-$HOME/.claude/logs}"; mkdir -p "$_logdir" 2>/dev/null
+    printf '%s\tfix-only-self-clear\t%s\n' "$(date +%s)" "$DIFF_REF $(printf '%s' "$UI_FILES_CHANGED" | tr '\n' ' ')" >> "$_logdir/visual-gate-bypass.log" 2>/dev/null
+    exit 0
+  fi
+fi
+# <<< BRO-7888 self-clear
 # Ledger check — ALWAYS uses CANONICAL_ROOT so the shared ledger at
 # .claude/visual-qa/approvals.jsonl is visible to both worktree sessions
 # (when they record approvals) and main-repo sessions (when they push after
@@ -310,6 +334,7 @@ if [ "$APPROVED" != "true" ]; then
     echo "🛑 BLOCKED: a passing visual-qa verdict exists (overallPass=$OVERALL_PASS) but the owner has not approved it yet (branch $BRANCH)."
     echo "UI files: $(echo "$UI_FILES_CHANGED" | tr '\n' ' ')"
     [ -n "$_RIL_DETECTOR_LINE" ] && echo "$_RIL_DETECTOR_LINE"
+    _FIX_LINE "$VERDICT_PATH"
     echo "Do NOT ask the owner until every item below is done; then send ONE message with the screenshots. Any clear yes after that message clears the gate (\"ship it\", \"looks good\", \"yes\", \"go\", ...): the reader (transcript-scan.mjs, BRO-7848) accepts all of them. NEVER ask the owner to type, copy or paste a hash/token/APPROVED: string. Other bypasses (you, not the owner): \"ship immediately for: <reason>\" | NO-VERIFY: <reason>."
     _LAND_SUMMARY
   } >&2
