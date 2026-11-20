@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T17:07:58.135Z",
+  "generatedAt": "2026-11-20T18:11:02.264Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -39,9 +39,19 @@
       "openingDate": "2026-11-18"
     },
     {
+      "id": "goblin-off-west-end-2026",
+      "title": "Goblin",
+      "openingDate": "2026-11-19"
+    },
+    {
       "id": "much-ado-about-nothing-2026",
       "title": "Much Ado About Nothing",
       "openingDate": "2026-11-19"
+    },
+    {
+      "id": "bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026",
+      "title": "Bigfoot Ripped My Dog In Half I Saw It",
+      "openingDate": "2026-11-20"
     },
     {
       "id": "downstate-2026",
@@ -111,7 +121,7 @@
     {
       "id": "nixon-in-china-regional-2026",
       "title": "Nixon in China",
-      "openingDate": "2026-11-16"
+      "openingDate": "2026-11-15"
     },
     {
       "id": "entre-dos-sombras-regional-2026",
@@ -139,7 +149,12 @@
       "openingDate": "2026-11-16"
     }
   ],
-  "skipped": [],
+  "skipped": [
+    {
+      "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
+      "reason": "no data/review-texts directory for this show"
+    }
+  ],
   "feedsChecked": 86,
   "feedsFailed": [
     {
@@ -167,12 +182,12 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
+      "outletId": "the-knockturnal",
+      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 864,
-  "matchedGaps": 6,
+  "itemsScanned": 861,
+  "matchedGaps": 7,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -203,12 +218,21 @@
       "publishDate": "2026-11-20"
     },
     {
-      "showId": "downstate-2026",
-      "title": "Downstate",
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
       "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/downstate-bruce-norris-broadway-review/",
-      "headline": "‘Downstate’ is a pitch-black, pitch-perfect look at the monsters in our midst (Broadway review)",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/11/20/review-of-eurotrash-2026-young-vic-stage-adaptation-of-krafts-novel-is-full-of-rubbish-but-thats-no-reason-to-dump-it/",
+      "headline": "Review of &#8216;Eurotrash&#8217; (2026, Young Vic): &#8220;Stage adaptation of Kraft&#8217;s novel is full of rubbish, but that&#8217;s no reason to dump it&#8221;",
+      "publishDate": "2026-11-20"
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228",
+      "headline": "Eurotrash",
       "publishDate": "2026-11-20"
     },
     {
