@@ -29,3 +29,16 @@ test('null when there is no Fusion payload or the body is short', () => {
   const short = `<script>Fusion.globalContent=${JSON.stringify({ content_elements: [{ type: 'text', content: 'tiny' }] })};</script>`;
   assert.equal(extractArcFusionBody(short), null);
 });
+
+test('tolerates whitespace around the assignment', () => {
+  const spaced = page.replace('Fusion.globalContent=', 'Fusion.globalContent = ');
+  assert.match(extractArcFusionBody(spaced), /^First para/);
+});
+
+test('a page whose markup already holds the body keeps the markup text (Fusion is last resort)', () => {
+  const body = '<article>' + Array.from({ length: 6 }, (_, i) => `<p>Markup paragraph ${i} ${filler}</p>`).join('') + '</article>';
+  const teaser = `<script>Fusion.globalContent=${JSON.stringify({ content_elements: [{ type: 'text', content: `Teaser only ${filler} ${filler}` }] })};</script>`;
+  const t = extractArticleTextFromUrl(`<html><body>${body}${teaser}</body></html>`, 'https://www.example-arc-site.com/x/');
+  assert.match(t, /Markup paragraph 0/);
+  assert.doesNotMatch(t, /Teaser only/);
+});
