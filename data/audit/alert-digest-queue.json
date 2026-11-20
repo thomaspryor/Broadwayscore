@@ -1112,5 +1112,19 @@
       }
     ],
     "queuedAt": "2026-11-20T04:13:04.805Z"
+  },
+  {
+    "conditionKey": "opening-night-lane-auto-fallback:much-ado-about-nothing-2026:2026-11-19",
+    "title": "Opening-night lane died for much-ado-about-nothing-2026 (2026-11-19); the old path took over",
+    "description": "The lane watchdog found the lane dead (lane run never claimed the lease within 30 min of its start). It released the dead lease (none was held) and dispatched the old path (opening-night-orchestrator.yml for this show) once. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44678314864",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44678314864",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-20T06:12:35.832Z"
   }
 ]
