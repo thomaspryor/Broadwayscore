@@ -104,6 +104,7 @@ const key = s => { const l = String(s).toLowerCase().replace(/[’']/g, '').repl
   if (b && NUMW[a] >= 20 && NUMW[b] < 10) return String(NUMW[a] + NUMW[b]);
   return a in NUMW ? String(NUMW[a]) : w.replace(/-/g, ''); };
 const { reviewHash } = require('./copyreview.js');
+const { fuzzyFind, quoteCue } = require('./cue-match.js');
 function loadVoice(n) {
   const VO = process.env.VO_DIR, base = process.env.VO_NAME || n;
   if (!VO) throw new Error(`set VO_DIR (and VO_NAME) to the folder with ${base}.plan.json, .mp3 and .words.json`);
@@ -129,10 +130,10 @@ function loadVoice(n) {
   const at = (phrase, { from } = {}) => { const want = phrase.split(/\s+/).map(key).filter(Boolean), start = from == null ? cur : from;
     for (let i = 0; i < tk.length; i++) if (tk[i].a >= start - 1e-6 && want.every((t, k) => tk[i + k] && tk[i + k].k === t)) { if (from == null) cur = tk[i].a; return tk[i].a; }
     if (process.env.VO_FUZZY_CUES === '1' && want[0] && want[0].length >= 5) { // unattended lane (BRO-7414): TTS/whisper may say "audience is graded" for "audiences grade it"; time the cue on the first word's stem
-      const stem = t => t.replace(/s$/, ''), hit = tk.find(x => x.a >= start - 1e-6 && stem(x.k) === stem(want[0]));
+      const hi = fuzzyFind(tk, want[0], start), hit = hi < 0 ? null : tk[hi]; // exact stem first, then Whisper's by-ear spellings (BRO-7909)
       if (hit) { if (from == null) cur = hit.a; return hit.a; } }
     throw new Error(`${base}: the voiceover never says "${phrase}"${start ? ' after ' + start.toFixed(1) + 's' : ''} (script and data disagree)`); };
-  return { plan, words, at, last: words[words.length - 1].b, vo: path.join(VO, base + '.mp3') };
+  return { plan, words, at, cur: () => cur, last: words[words.length - 1].b, vo: path.join(VO, base + '.mp3') };
 }
 const norm1 = s => s.replace(/[’‘]/g, "'").replace(/[“”]/g, '"');
 const outletCue = o => o.replace(/^The /, '');
@@ -143,7 +144,7 @@ function planQuotes(V, rv) {
     const full = norm1(r.q.trim()), ex = norm1(q.ex), i = full.indexOf(ex);
     if (i < 0) throw new Error(`plan excerpt for ${q.o} is not in the review's quote: "${q.ex}"`);
     const tail = full.slice(i + ex.length).replace(/^[\s.…]+$/, '');
-    return { o: r.o, cn: r.cn, s: r.s, q: (i > 0 ? '…' : '') + q.ex + (tail ? '…' : ''), t: V.at(outletCue(q.say)) }; });
+    return { o: r.o, cn: r.cn, s: r.s, q: (i > 0 ? '…' : '') + q.ex + (tail ? '…' : ''), t: quoteCue(V, q, outletCue) }; });
 }
 const TALLY = [['rave', 'raves', 'rave'], ['positive', 'positive', 'positive'], ['mixed', 'mixed', 'mixed'], ['negative', 'negative', 'negative']];
 function voicedFromPlan(n) {
