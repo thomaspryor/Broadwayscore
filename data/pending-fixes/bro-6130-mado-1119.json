@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6130-mado-1119",
   "planId": "a0c0f6f2-ab72-4792-b094-63e82ce78d32",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-20T06:32:04.045Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "much-ado-about-nothing-2026/nysr--melissa-rose-bernardo--on-2026-11-19.json: llmPullQuote"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-20T06:41:32.068Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/nysr--melissa-rose-bernardo--on-2026-11-19.json llmPullQuote: null -> \"Atwell and Hiddleston may be the draw—and they’re an absolute delight as the bickering Beatrice and Benedick, two self-proclaimed singletons engaged in a long-running battle of wits—but there are abundant pleasures to be found in director Jamie Lloyd’s gloriously giddy pretty-in-hot-pink production.\""
+    }
+  ],
+  "executedIn": "ci"
 }
