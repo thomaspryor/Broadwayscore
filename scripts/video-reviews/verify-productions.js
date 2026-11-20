@@ -38,6 +38,7 @@ const { listShowDirs } = require('../lib/list-show-dirs');
 const { foldDiacritics } = require('../lib/title-match');
 const { describeProduction, videoPredatesProduction, productionStartDate, isStaleDateFlag } = require('../lib/video-production-context');
 const { GPT4O, CLAUDE_SONNET, GEMINI_FLASH } = require('../lib/models');
+const { openaiChatBody } = require('../lib/llm-batch');
 const { invalidateWrongProductionAutoClear } = require('../lib/review-write-guard');
 
 const ROOT = path.resolve(__dirname, '../..');
@@ -105,7 +106,7 @@ async function ask(user) {
       signal: AbortSignal.timeout(300000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
-      body: JSON.stringify({ model: MODEL, temperature: 0, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: PROMPT }, { role: 'user', content: user }] }),
+      body: JSON.stringify({ ...openaiChatBody({ model: MODEL, temperature: 0, maxTokens: null, messages: [{ role: 'system', content: PROMPT }, { role: 'user', content: user }] }), response_format: { type: 'json_object' } }),
     });
     if (!resp.ok) throw new Error(`OpenAI ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
     return (await resp.json()).choices[0].message.content;

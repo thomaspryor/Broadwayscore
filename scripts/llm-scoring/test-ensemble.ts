@@ -19,6 +19,8 @@
 
 import { EnsembleReviewScorer } from './ensemble-scorer';
 import { buildScoringInput, ReviewInputData } from './input-builder';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { SCORING_OPENAI } = require('../lib/models'); // gpt-4o shuts down 2027-01-14 (BRO-7341)
 
 // ========================================
 // TEST REVIEWS
@@ -134,7 +136,7 @@ async function runTests() {
     undefined, // openrouterApiKey (Kimi K2.5)
     {
       claudeModel: 'claude-sonnet-4-6',
-      openaiModel: 'gpt-4o',
+      openaiModel: SCORING_OPENAI,
       geminiModel: 'gemini-2.5-flash',
       verbose: true
     }

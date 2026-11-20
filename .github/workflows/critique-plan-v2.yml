@@ -48,10 +48,10 @@ jobs:
             const res = await fetch('https://api.openai.com/v1/chat/completions', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
-              body: JSON.stringify({ model: 'gpt-4o', messages: [{ role: 'user', content: prompt }], max_tokens: 4000 })
+              body: JSON.stringify({ model: 'gpt-5.6-luna', reasoning_effort: 'none', messages: [{ role: 'user', content: prompt }], max_completion_tokens: 4000 }) // gpt-4o shuts down 2027-01-14 (BRO-7341)
             });
             const data = await res.json();
-            console.log('=== OPENAI GPT-4o CRITIQUE ===\n');
+            console.log('=== OPENAI CRITIQUE ===\n');
             console.log(data.choices?.[0]?.message?.content || JSON.stringify(data.error));
           }
 

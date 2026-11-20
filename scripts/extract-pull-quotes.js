@@ -32,6 +32,7 @@ const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInS
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 const negCache = require('./lib/pull-quote-negative-cache');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -202,15 +203,15 @@ function callOpenAI(systemPrompt, userPrompt) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
-  const body = JSON.stringify({
+  const body = JSON.stringify(openaiChatBody({
     model: GPT4O_MINI,
     temperature: 0.1,
-    max_tokens: 300,
+    maxTokens: 300,
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt }
     ]
-  });
+  }));
 
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.openai.com/v1/chat/completions', {

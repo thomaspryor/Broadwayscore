@@ -56,7 +56,12 @@ module.exports = {
   // (data/audit/scoring-ab-2026-11-cheaper-legs.json). Rollback = this line.
   SCORING_SONNET: 'claude-sonnet-5-5',
   SCORING_OPUS: 'claude-opus-4-7', // video-reviews/score-video-reviews.js
-  GPT4O: 'gpt-4o',
+  // GPT4O / GPT4O_MINI: legacy key names for the general OpenAI utility callers
+  // (classifiers, extractors, audits). gpt-4o and gpt-4o-mini shut down 2027-01-14
+  // (research-cost.js MODEL_SHUTDOWNS), so BRO-7341 moved both to gpt-5.6-luna (live
+  // check 2026-11-20: text, json_object, vision, 10-token answers). luna rejects
+  // max_tokens, so every caller builds its body with llm-batch.js openaiChatBody.
+  GPT4O: 'gpt-5.6-luna',
   // Review-SCORING OpenAI pins (same rule as SCORING_SONNET above): the
   // ensemble's OpenAI leg (ensemble-scorer.ts, index.ts) and the comparative
   // within-band rescore. Each moves only after its own A/B (CLAUDE.md §13);
@@ -68,8 +73,11 @@ module.exports = {
   // BRO-7873: owner-reply judge for the visual push gate (owner-reply-judge.mjs). Its own pin so a scoring A/B flip
   // never silently changes what the push gate asks a model. Needs a profile in llm-batch.js OPENAI_REQUEST_PROFILES.
   OWNER_REPLY_OPENAI: 'gpt-5.6-luna',
-  COMPARATIVE_OPENAI: 'gpt-4o',
-  GPT4O_MINI: 'gpt-4o-mini',
+  // BRO-7341: flipped gpt-4o -> gpt-5.6-luna after its own rule-13 A/B passed
+  // (data/audit/comparative-openai-ab-2026-11.json: 26 reviews, mean drift 0.00,
+  // bucket shift 0pp). Rollback = this line, only until gpt-4o shuts down 2027-01-14.
+  COMPARATIVE_OPENAI: 'gpt-5.6-luna',
+  GPT4O_MINI: 'gpt-5.6-luna',
   // Cheaper gpt-4o candidate evaluated in task #504 (2026-07-26) — API id
   // confirmed live via GET /v1/models. NOT the ensemble default: its A/B
   // (n=24 real reviews) failed the rule-13 gate (Mixed bucket 29%->0%, max

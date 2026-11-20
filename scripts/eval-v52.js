@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { SCORING_SONNET, GPT4O, GEMINI_FLASH } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 const { claudeSamplingParams } = require('./lib/llm-batch');
 
 // Load .env file manually (source .env doesn't work in all environments)
@@ -192,15 +193,15 @@ async function scoreWithOpenAI(reviewText, context) {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${OPENAI_API_KEY}`
     },
-    body: JSON.stringify({
+    body: JSON.stringify(openaiChatBody({
       model: GPT4O,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT_V5 },
         { role: 'user', content: prompt }
       ],
-      max_tokens: 500,
+      maxTokens: 500,
       temperature: 0.3
-    })
+    }))
   });
 
   if (!response.ok) return null;

@@ -25,6 +25,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { GEMINI_FLASH, GPT4O } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -86,12 +87,12 @@ function htmlToText(html) {
 }
 
 async function callOpenAI(prompt, { model = GPT4O, maxTokens = 500 } = {}) {
-  const body = JSON.stringify({
+  const body = JSON.stringify(openaiChatBody({
     model,
     messages: [{ role: 'user', content: prompt }],
-    max_tokens: maxTokens,
+    maxTokens,
     temperature: 0
-  });
+  }));
 
   return new Promise((resolve, reject) => {
     const req = https.request({

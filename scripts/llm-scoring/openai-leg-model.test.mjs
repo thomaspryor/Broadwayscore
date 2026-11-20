@@ -8,8 +8,8 @@
  * sending a field the new model rejects.
  *
  * History: task #504 (2026-07-26) A/B'd gpt-5.4-mini on n=24 and failed the
- * rule-13 gate (Mixed 29%->0%), so the pins stay gpt-4o until a full-pipeline
- * A/B passes.
+ * rule-13 gate (Mixed 29%->0%). BRO-7537 moved the ensemble leg to gpt-5.6-luna
+ * and BRO-7341 moved the comparative rescore, each after its own A/B.
  */
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
@@ -27,9 +27,9 @@ const { openaiChatBody, openaiScoringModels, buildOpenAIBatchLine } = require('.
 const MSGS = [{ role: 'system', content: 's' }, { role: 'user', content: 'u' }];
 
 describe('OpenAI scoring pins', () => {
-  test('the ensemble leg is gpt-5.6-luna (BRO-7537, A/B data/audit/scoring-ab-2026-11-cheaper-legs.json); the comparative rescore stays on gpt-4o until its own A/B passes', () => {
+  test('the ensemble leg is gpt-5.6-luna (BRO-7537, A/B data/audit/scoring-ab-2026-11-cheaper-legs.json); the comparative rescore is gpt-5.6-luna (BRO-7341, A/B data/audit/comparative-openai-ab-2026-11.json)', () => {
     assert.equal(models.SCORING_OPENAI, 'gpt-5.6-luna', 'flip SCORING_OPENAI only with a passing rule-13 A/B (cite its data/audit file here)');
-    assert.equal(models.COMPARATIVE_OPENAI, 'gpt-4o', 'comparative-rescore rewrites published scores: it moves only after its own check');
+    assert.equal(models.COMPARATIVE_OPENAI, 'gpt-5.6-luna', 'comparative-rescore rewrites published scores: it moves only after its own check (cite its data/audit file here)');
   });
 
   test('both pins have a request profile', () => {
@@ -42,6 +42,11 @@ describe('OpenAI scoring pins', () => {
 });
 
 describe('openaiChatBody (the one builder)', () => {
+  test('null maxTokens / temperature leave the field out (utility callers that never set them, BRO-7341)', () => {
+    const b = openaiChatBody({ model: 'gpt-5.6-luna', messages: MSGS, maxTokens: null, temperature: null });
+    assert.deepEqual(b, { model: 'gpt-5.6-luna', messages: MSGS, reasoning_effort: 'none' });
+  });
+
   test('gpt-4o body: same fields the sync scorer sent before (no reasoning field)', () => {
     assert.deepEqual(openaiChatBody({ model: 'gpt-4o', messages: MSGS, maxTokens: 500, temperature: 0.3 }), {
       model: 'gpt-4o', messages: MSGS, max_completion_tokens: 500, temperature: 0.3,

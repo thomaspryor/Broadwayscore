@@ -147,7 +147,10 @@ function openaiChatBody({ model, messages, maxTokens = 500, temperature = 0.3 })
     throw new Error(`openaiChatBody: no request profile for OpenAI model "${model}" (known: ${openaiScoringModels().join(', ')}). Add it to OPENAI_REQUEST_PROFILES in scripts/lib/llm-batch.js after an A/B (CLAUDE.md rule 13).`);
   }
   if (!Array.isArray(messages) || messages.length === 0) throw new Error('openaiChatBody: messages are required');
-  const body = { model, messages, max_completion_tokens: maxTokens, temperature };
+  // null = leave the field out (API default), for utility callers that never set it (BRO-7341).
+  const body = { model, messages };
+  if (maxTokens !== null) body.max_completion_tokens = maxTokens;
+  if (temperature !== null) body.temperature = temperature;
   if (profile.reasoning_effort) body.reasoning_effort = profile.reasoning_effort;
   return body;
 }

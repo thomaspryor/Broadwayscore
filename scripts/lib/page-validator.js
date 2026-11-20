@@ -30,6 +30,7 @@ const { titleWordsMatchWithConfidence } = require('./show-matching');
 const { findContainingTitleSibling } = require('./title-containment');
 const { titleVariantInfo, venueTokens } = require('./show-title-tokens');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
+const { openaiChatBody } = require('./llm-batch');
 
 // Confidence threshold below which the LLM tiebreaker fires
 const LLM_CONFIDENCE_THRESHOLD = 0.75;
@@ -82,12 +83,12 @@ function callOpenAI(prompt) {
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
   return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
+    const body = JSON.stringify(openaiChatBody({
       model: GPT4O_MINI,
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 20,
+      maxTokens: 20,
       temperature: 0.1
-    });
+    }));
 
     const req = https.request('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

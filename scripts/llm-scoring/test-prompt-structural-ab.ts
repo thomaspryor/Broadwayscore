@@ -39,6 +39,8 @@ import {
   BUCKET_RANGES,
 } from './config';
 import { Bucket, ModelScore, EnsembleResult, SimplifiedLLMResult } from './types';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { SCORING_OPENAI } = require('../lib/models'); // gpt-4o shuts down 2027-01-14 (BRO-7341)
 
 // Load .env so API keys are available in raw `node`/`ts-node` runs
 try {
@@ -483,7 +485,7 @@ async function main() {
 
   const scorers = {
     claude: new ReviewScorer(claudeKey, { model: 'claude-sonnet-4-6', verbose: false }),
-    openai: new OpenAIReviewScorer(openaiKey, { model: 'gpt-4o', verbose: false }),
+    openai: new OpenAIReviewScorer(openaiKey, { model: SCORING_OPENAI, verbose: false }),
     // gemini-2.5-flash has separate quota pool from 2.0-flash; A/B uses 2.5
     // because the production 2.0 quota is exhausted by daily CI cycles.
     // Production scorer still uses 2.0-flash — slight model mismatch in A/B

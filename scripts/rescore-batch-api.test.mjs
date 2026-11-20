@@ -100,8 +100,16 @@ describe('cheaper-model A/B evidence (CLAUDE.md rule 13)', () => {
     const shifts = Object.values(ab.gates.bucketShiftPp.value).map(Math.abs);
     assert.ok(Math.max(...shifts) < ab.gates.bucketShiftPp.limit);
   });
-  test('ensemble leg is on the A/B-validated cheaper model; comparative stays gpt-4o until its own A/B', () => {
+  test('ensemble leg and comparative rescore are on the A/B-validated cheaper model', () => {
     assert.equal(models.SCORING_OPENAI, 'gpt-5.6-luna');
-    assert.equal(models.COMPARATIVE_OPENAI, 'gpt-4o');
+    assert.equal(models.COMPARATIVE_OPENAI, 'gpt-5.6-luna');
+  });
+  test('comparative A/B (BRO-7341) passed rule 13 on its own sample', () => {
+    const cab = JSON.parse(readFileSync(join(root, 'data/audit/comparative-openai-ab-2026-11.json'), 'utf8'));
+    assert.equal(cab.allPass, true);
+    assert.equal(cab.candidate, models.COMPARATIVE_OPENAI);
+    assert.ok(cab.reviews >= 20, 'A/B sample too small');
+    assert.ok(Math.abs(cab.candidateVsControl.meanDrift.value) <= 5);
+    assert.ok(Math.max(...Object.values(cab.candidateVsControl.bucketShiftPp.value).map(Math.abs)) <= 5);
   });
 });

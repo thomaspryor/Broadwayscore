@@ -11,6 +11,10 @@ import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as fs from 'fs';
 import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { SCORING_OPENAI } = require('../lib/models'); // gpt-4o shuts down 2027-01-14 (BRO-7341)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { openaiChatBody } = require('../lib/llm-batch.js');
 const { MAIN_REPO_ROOT } = require('../lib/repo-root.js') as { MAIN_REPO_ROOT: string };
 
 const PROPOSALS = fs.readFileSync(path.join(MAIN_REPO_ROOT, 'data', 'audit', 'llm-scoring-proposals.md'), 'utf8');
@@ -52,11 +56,12 @@ async function getCritique(model: string, client: any): Promise<string> {
       return response.content[0].type === 'text' ? response.content[0].text : '';
     }
     else if (model === 'GPT-4o') {
-      const response = await client.chat.completions.create({
-        model: 'gpt-4o',
-        max_tokens: 2000,
+      const response = await client.chat.completions.create(openaiChatBody({
+        model: SCORING_OPENAI,
+        maxTokens: 2000,
+        temperature: null,
         messages: [{ role: 'user', content: CRITIQUE_PROMPT }]
-      });
+      }));
       return response.choices[0].message.content || '';
     }
     else if (model === 'Gemini') {

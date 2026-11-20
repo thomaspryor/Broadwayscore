@@ -72,6 +72,7 @@ const https = require('https');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { CLAUDE_HAIKU, GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -475,15 +476,15 @@ function callClaude(systemPrompt, userPrompt) {
 function callOpenAI(systemPrompt, userPrompt) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
-  const body = JSON.stringify({
+  const body = JSON.stringify(openaiChatBody({
     model: GPT4O_MINI,
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt },
     ],
-    max_tokens: 400,
+    maxTokens: 400,
     temperature: 0.1,
-  });
+  }));
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

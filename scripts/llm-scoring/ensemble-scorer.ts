@@ -9,7 +9,7 @@ import { ReviewScorer } from './scorer';
 import { OpenAIReviewScorer } from './openai-scorer';
 import { GeminiScorer } from './gemini-scorer';
 import { KimiScorer } from './kimi-scorer';
-import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, EnsembleResult as EnsembleResultType } from './types';
+import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, EnsembleResult as EnsembleResultType, OpenAIScoringModel } from './types';
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5, buildSystemPromptV6, clampScoreToBand, ScoreBand } from './config';
 import { buildScoringInput, ReviewInputData, ScoringInput } from './input-builder';
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
@@ -23,7 +23,7 @@ import { ensembleScore, toModelScore, applyTailStretch } from './ensemble';
 
 export interface EnsembleScoringOptions {
   claudeModel: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-3-5-haiku-20241022';
-  openaiModel: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
+  openaiModel: OpenAIScoringModel;
   geminiModel: 'gemini-2.5-flash' | 'gemini-2.5-flash' | 'gemini-1.5-flash';
   kimiModel: string;
   maxDelta: number;  // Maximum acceptable difference between models
@@ -45,7 +45,7 @@ export interface EnsembleScoringOptions {
    * differs from the control ONLY in the OpenAI leg. Unset in production.
    */
   shadowClaudeModel?: 'claude-sonnet-4-6' | 'claude-sonnet-5-5';
-  shadowOpenaiModel?: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
+  shadowOpenaiModel?: OpenAIScoringModel;
 }
 
 /**

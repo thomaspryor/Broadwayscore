@@ -72,7 +72,7 @@ import {
 import { runCalibration, runEnsembleCalibration } from './calibration';
 import { runValidation } from './validation';
 import { findGroundTruthReviews, calculateGroundTruthCalibration, printGroundTruthReport } from './ground-truth';
-import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './types';
+import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary, OpenAIScoringModel } from './types';
 
 // Import content quality module for garbage detection
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -684,7 +684,7 @@ function parseArgs(): ScoringPipelineOptions & {
   ensembleCalibrateOnly: boolean;
   upgradeEnsemble: boolean;
   retryEmergency: boolean;
-  openaiModel: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
+  openaiModel: OpenAIScoringModel;
   checkpointInterval: number;
   shard?: number;
   totalShards?: number;
@@ -738,7 +738,7 @@ function parseArgs(): ScoringPipelineOptions & {
     console.error(`--openai-model=${openaiModelRaw} is not a known OpenAI scoring model (known: ${openaiScoringModels().join(', ')})`);
     process.exit(2);
   }
-  const openaiModel = openaiModelRaw as 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
+  const openaiModel = openaiModelRaw as OpenAIScoringModel;
 
   const ensembleSourceArg = args.find(a => a.startsWith('--ensemble-source='));
   const ensembleSource = ensembleSourceArg ? ensembleSourceArg.split('=')[1] : undefined;

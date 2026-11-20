@@ -25,6 +25,7 @@ const path = require('path');
 const fs = require('fs');
 const { normalizeLlmResult: sharedNormalizeLlmResult, LETTER_GRADES } = require('./score-parsers');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
+const { openaiChatBody } = require('./llm-batch');
 const { publishesNoCriticRating } = require('./score-extractors');
 const { isGalleryCounterRating } = require('./gallery-counter');
 
@@ -240,15 +241,15 @@ function callOpenAI(systemPrompt, userPrompt) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
-  const body = JSON.stringify({
+  const body = JSON.stringify(openaiChatBody({
     model: GPT4O_MINI,
     temperature: 0.0,
-    max_tokens: 200,
+    maxTokens: 200,
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt }
     ]
-  });
+  }));
 
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.openai.com/v1/chat/completions', {

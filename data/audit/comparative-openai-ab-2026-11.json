@@ -1,0 +1,525 @@
+{
+  "generatedAt": "2026-11-20T00:57:46.143Z",
+  "card": "BRO-7341",
+  "job": "comparative within-band rescore (models.js COMPARATIVE_OPENAI)",
+  "control": "gpt-4o",
+  "candidate": "gpt-5.6-luna",
+  "seed": "20261120",
+  "method": "Seeded settled 3-4 review band groups, stratified by band. Gemini called once per group and shared; production rescoreGroup combine + bucket clamp; OpenAI leg on control, candidate and control again (noise floor). Claude leg omitted in every arm.",
+  "groups": 8,
+  "skippedGroups": 0,
+  "reviews": 26,
+  "gates": {
+    "meanDriftPts": 5,
+    "bucketShiftPp": 5
+  },
+  "candidateVsControl": {
+    "n": 26,
+    "meanDrift": {
+      "value": 0,
+      "limit": 5,
+      "pass": true
+    },
+    "meanAbsDrift": 1.23,
+    "maxAbsDrift": 6,
+    "bucketShiftPp": {
+      "value": {
+        "Rave": 0,
+        "Positive": 0,
+        "Mixed": 0,
+        "Negative": 0,
+        "Pan": 0
+      },
+      "limit": 5,
+      "pass": true
+    },
+    "openaiLegMeanAbsDiff": {
+      "value": 2.88,
+      "n": 26
+    }
+  },
+  "noiseFloor": {
+    "n": 26,
+    "meanDrift": {
+      "value": -0.27,
+      "limit": 5,
+      "pass": true
+    },
+    "meanAbsDrift": 0.5,
+    "maxAbsDrift": 5,
+    "bucketShiftPp": {
+      "value": {
+        "Rave": 0,
+        "Positive": 0,
+        "Mixed": 0,
+        "Negative": 0,
+        "Pan": 0
+      },
+      "limit": 5,
+      "pass": true
+    },
+    "openaiLegMeanAbsDiff": {
+      "value": 1.69,
+      "n": 26
+    }
+  },
+  "allPass": true,
+  "usage": {
+    "gpt-4o": {
+      "input": 44798,
+      "output": 2470
+    },
+    "gpt-5.6-luna": {
+      "input": 22391,
+      "output": 1734
+    }
+  },
+  "costUsd": {
+    "gpt-4o": 0.5468,
+    "gpt-5.6-luna": 0.0066
+  },
+  "rows": [
+    {
+      "showId": "the-prince-of-egypt-west-end-2020",
+      "band": "31-50",
+      "file": "guardian--arifa-akbar.json",
+      "isolated": 42,
+      "published": 42,
+      "final": {
+        "control": 43,
+        "candidate": 39,
+        "controlRerun": 38
+      },
+      "openaiLeg": {
+        "control": 45,
+        "candidate": 38,
+        "controlRerun": 36
+      }
+    },
+    {
+      "showId": "the-prince-of-egypt-west-end-2020",
+      "band": "31-50",
+      "file": "london-theatre--mark-shenton.json",
+      "isolated": 34,
+      "published": 34,
+      "final": {
+        "control": 33,
+        "candidate": 31,
+        "controlRerun": 32
+      },
+      "openaiLeg": {
+        "control": 35,
+        "candidate": 31,
+        "controlRerun": 32
+      }
+    },
+    {
+      "showId": "the-prince-of-egypt-west-end-2020",
+      "band": "31-50",
+      "file": "times-uk--clive-davis.json",
+      "isolated": 35,
+      "published": 35,
+      "final": {
+        "control": 43,
+        "candidate": 44,
+        "controlRerun": 43
+      },
+      "openaiLeg": {
+        "control": 40,
+        "candidate": 42,
+        "controlRerun": 40
+      }
+    },
+    {
+      "showId": "jeeves-takes-charge-off-west-end-2026",
+      "band": "51-70",
+      "file": "daily-mail--patrick-marmion.json",
+      "isolated": 55,
+      "published": 55,
+      "final": {
+        "control": 55,
+        "candidate": 55,
+        "controlRerun": 55
+      },
+      "openaiLeg": {
+        "control": 55,
+        "candidate": 53,
+        "controlRerun": 51
+      }
+    },
+    {
+      "showId": "jeeves-takes-charge-off-west-end-2026",
+      "band": "51-70",
+      "file": "pinkprincetheatre--neill-kovacic-clarke.json",
+      "isolated": 66,
+      "published": 66,
+      "final": {
+        "control": 65,
+        "candidate": 64,
+        "controlRerun": 65
+      },
+      "openaiLeg": {
+        "control": 65,
+        "candidate": 62,
+        "controlRerun": 65
+      }
+    },
+    {
+      "showId": "jeeves-takes-charge-off-west-end-2026",
+      "band": "51-70",
+      "file": "unmissabletheatre--megan-oneill.json",
+      "isolated": 60,
+      "published": 60,
+      "final": {
+        "control": 59,
+        "candidate": 58,
+        "controlRerun": 59
+      },
+      "openaiLeg": {
+        "control": 60,
+        "candidate": 58,
+        "controlRerun": 60
+      }
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "band": "71-90",
+      "file": "london-box-office--stuart-king.json",
+      "isolated": 79,
+      "published": 79,
+      "final": {
+        "control": 79,
+        "candidate": 79,
+        "controlRerun": 78
+      },
+      "openaiLeg": {
+        "control": 82,
+        "candidate": 82,
+        "controlRerun": 81
+      }
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "band": "71-90",
+      "file": "london-theatre--marianka-swain.json",
+      "isolated": 88,
+      "published": 88,
+      "final": {
+        "control": 88,
+        "candidate": 87,
+        "controlRerun": 87
+      },
+      "openaiLeg": {
+        "control": 90,
+        "candidate": 88,
+        "controlRerun": 89
+      }
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "band": "71-90",
+      "file": "timeout-london--caroline-mcginn.json",
+      "isolated": 80,
+      "published": 80,
+      "final": {
+        "control": 82,
+        "candidate": 79,
+        "controlRerun": 82
+      },
+      "openaiLeg": {
+        "control": 85,
+        "candidate": 78,
+        "controlRerun": 84
+      }
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "band": "71-90",
+      "file": "whatsonstage--alex-wood.json",
+      "isolated": 88,
+      "published": 88,
+      "final": {
+        "control": 88,
+        "candidate": 89,
+        "controlRerun": 88
+      },
+      "openaiLeg": {
+        "control": 88,
+        "candidate": 90,
+        "controlRerun": 87
+      }
+    },
+    {
+      "showId": "liberation-2025",
+      "band": "91-100",
+      "file": "culturesauce--thom-geier.json",
+      "isolated": 93,
+      "published": 93,
+      "final": {
+        "control": 94,
+        "candidate": 95,
+        "controlRerun": 94
+      },
+      "openaiLeg": {
+        "control": 93,
+        "candidate": 95,
+        "controlRerun": 92
+      }
+    },
+    {
+      "showId": "liberation-2025",
+      "band": "91-100",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "isolated": 99,
+      "published": 99,
+      "final": {
+        "control": 100,
+        "candidate": 100,
+        "controlRerun": 100
+      },
+      "openaiLeg": {
+        "control": 100,
+        "candidate": 100,
+        "controlRerun": 100
+      }
+    },
+    {
+      "showId": "liberation-2025",
+      "band": "91-100",
+      "file": "timeout--adam-feldman.json",
+      "isolated": 95,
+      "published": 95,
+      "final": {
+        "control": 95,
+        "candidate": 94,
+        "controlRerun": 94
+      },
+      "openaiLeg": {
+        "control": 96,
+        "candidate": 94,
+        "controlRerun": 95
+      }
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2024",
+      "band": "31-50",
+      "file": "bbc-news--hugh-montgomery.json",
+      "isolated": 35,
+      "published": 35,
+      "final": {
+        "control": 35,
+        "candidate": 36,
+        "controlRerun": 35
+      },
+      "openaiLeg": {
+        "control": 31,
+        "candidate": 35,
+        "controlRerun": 31
+      }
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2024",
+      "band": "31-50",
+      "file": "independent--tim-bano.json",
+      "isolated": 36,
+      "published": 36,
+      "final": {
+        "control": 36,
+        "candidate": 42,
+        "controlRerun": 38
+      },
+      "openaiLeg": {
+        "control": 34,
+        "candidate": 42,
+        "controlRerun": 34
+      }
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2024",
+      "band": "31-50",
+      "file": "londonpubtheatres--anna-clart.json",
+      "isolated": 35,
+      "published": 35,
+      "final": {
+        "control": 35,
+        "candidate": 35,
+        "controlRerun": 35
+      },
+      "openaiLeg": {
+        "control": 36,
+        "candidate": 32,
+        "controlRerun": 33
+      }
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "band": "51-70",
+      "file": "londontheatre1--fiona-gilbert.json",
+      "isolated": 56,
+      "published": 56,
+      "final": {
+        "control": 55,
+        "candidate": 58,
+        "controlRerun": 55
+      },
+      "openaiLeg": {
+        "control": 54,
+        "candidate": 61,
+        "controlRerun": 55
+      }
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "band": "51-70",
+      "file": "theatre-weekly--james-hattan.json",
+      "isolated": 58,
+      "published": 58,
+      "final": {
+        "control": 60,
+        "candidate": 59,
+        "controlRerun": 60
+      },
+      "openaiLeg": {
+        "control": 60,
+        "candidate": 58,
+        "controlRerun": 60
+      }
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "band": "51-70",
+      "file": "thestage--holly-omahony.json",
+      "isolated": 66,
+      "published": 66,
+      "final": {
+        "control": 67,
+        "candidate": 67,
+        "controlRerun": 67
+      },
+      "openaiLeg": {
+        "control": 65,
+        "candidate": 66,
+        "controlRerun": 65
+      }
+    },
+    {
+      "showId": "2-22-a-ghost-story-west-end-2023",
+      "band": "71-90",
+      "file": "express-uk--george-simpson.json",
+      "isolated": 82,
+      "published": 82,
+      "final": {
+        "control": 82,
+        "candidate": 82,
+        "controlRerun": 82
+      },
+      "openaiLeg": {
+        "control": 76,
+        "candidate": 79,
+        "controlRerun": 85
+      }
+    },
+    {
+      "showId": "2-22-a-ghost-story-west-end-2023",
+      "band": "71-90",
+      "file": "london-theatre--matt-wolf.json",
+      "isolated": 80,
+      "published": 80,
+      "final": {
+        "control": 80,
+        "candidate": 80,
+        "controlRerun": 80
+      },
+      "openaiLeg": {
+        "control": 86,
+        "candidate": 86,
+        "controlRerun": 90
+      }
+    },
+    {
+      "showId": "2-22-a-ghost-story-west-end-2023",
+      "band": "71-90",
+      "file": "times-uk--rachel-halliburton.json",
+      "isolated": 82,
+      "published": 82,
+      "final": {
+        "control": 82,
+        "candidate": 82,
+        "controlRerun": 82
+      },
+      "openaiLeg": {
+        "control": 81,
+        "candidate": 83,
+        "controlRerun": 80
+      }
+    },
+    {
+      "showId": "cruise-west-end-2022",
+      "band": "91-100",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "isolated": 98,
+      "published": 98,
+      "final": {
+        "control": 98,
+        "candidate": 100,
+        "controlRerun": 99
+      },
+      "openaiLeg": {
+        "control": 96,
+        "candidate": 100,
+        "controlRerun": 98
+      }
+    },
+    {
+      "showId": "cruise-west-end-2022",
+      "band": "91-100",
+      "file": "everything-theatre--gabriel-wilding.json",
+      "isolated": 98,
+      "published": 98,
+      "final": {
+        "control": 99,
+        "candidate": 98,
+        "controlRerun": 99
+      },
+      "openaiLeg": {
+        "control": 100,
+        "candidate": 98,
+        "controlRerun": 100
+      }
+    },
+    {
+      "showId": "cruise-west-end-2022",
+      "band": "91-100",
+      "file": "micablackwell--unknown.json",
+      "isolated": 96,
+      "published": 96,
+      "final": {
+        "control": 96,
+        "candidate": 95,
+        "controlRerun": 95
+      },
+      "openaiLeg": {
+        "control": 98,
+        "candidate": 96,
+        "controlRerun": 96
+      }
+    },
+    {
+      "showId": "cruise-west-end-2022",
+      "band": "91-100",
+      "file": "shy-strange-manic--kariss-ainsworth.json",
+      "isolated": 95,
+      "published": 95,
+      "final": {
+        "control": 95,
+        "candidate": 96,
+        "controlRerun": 95
+      },
+      "openaiLeg": {
+        "control": 94,
+        "candidate": 95,
+        "controlRerun": 94
+      }
+    }
+  ]
+}

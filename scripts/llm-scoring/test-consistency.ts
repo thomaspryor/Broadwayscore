@@ -12,6 +12,8 @@ import { ReviewScorer } from './scorer';
 import { OpenAIReviewScorer } from './openai-scorer';
 import { GeminiScorer } from './gemini-scorer';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+const { SCORING_OPENAI } = require('../lib/models'); // gpt-4o shuts down 2027-01-14 (BRO-7341)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
 
 interface TestReview {
@@ -61,7 +63,7 @@ async function main() {
   }
 
   const claudeScorer = new ReviewScorer(claudeKey, { model: 'claude-sonnet-4-6', verbose: false });
-  const openaiScorer = new OpenAIReviewScorer(openaiKey, { model: 'gpt-4o', verbose: false });
+  const openaiScorer = new OpenAIReviewScorer(openaiKey, { model: SCORING_OPENAI, verbose: false });
   const geminiScorer = geminiKey ? new GeminiScorer(geminiKey, { model: 'gemini-2.5-flash', verbose: false }) : null;
 
   const testReviews = findTestReviews(5);

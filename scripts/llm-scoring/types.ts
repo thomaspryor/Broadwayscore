@@ -83,6 +83,13 @@ export interface ReviewEntry {
 export type Bucket = 'Rave' | 'Positive' | 'Mixed' | 'Negative' | 'Pan';
 
 /**
+ * OpenAI models the scoring code can be pointed at: the keys of llm-batch.js OPENAI_REQUEST_PROFILES
+ * (index.ts checks --openai-model against them at runtime). gpt-4o / gpt-4o-mini shut down 2027-01-14 and stay
+ * only as A/B controls until then; production pins are models.js SCORING_OPENAI / COMPARATIVE_OPENAI.
+ */
+export type OpenAIScoringModel = 'gpt-5.6-luna' | 'gpt-5.6-sol' | 'gpt-6-luna' | 'gpt-5.4-mini' | 'gpt-4o' | 'gpt-4o-mini';
+
+/**
  * Valid rejection reasons for unscorable text (v5.2+)
  */
 export type RejectionReason = 'wrong_show' | 'wrong_production' | 'not_a_review' | 'garbage_text';

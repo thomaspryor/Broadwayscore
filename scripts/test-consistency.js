@@ -7,6 +7,7 @@ const Anthropic = require('@anthropic-ai/sdk').default;
 const OpenAI = require('openai').default;
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { SCORING_SONNET, GPT4O, GEMINI_FLASH } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 const { claudeSamplingParams } = require('./lib/llm-batch');
 const fs = require('fs');
 const path = require('path');
@@ -75,11 +76,12 @@ async function scoreWithClaude(client, text) {
 }
 
 async function scoreWithOpenAI(client, text) {
-  const response = await client.chat.completions.create({
+  const response = await client.chat.completions.create(openaiChatBody({
     model: GPT4O,
-    max_tokens: 100,
+    maxTokens: 100,
+    temperature: null,
     messages: [{ role: 'user', content: PROMPT + text }]
-  });
+  }));
   const content = response.choices[0].message.content.trim();
   try {
     return JSON.parse(content.replace(/```json\n?|\n?```/g, ''));

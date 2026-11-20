@@ -136,8 +136,10 @@ async function main() {
     { name: `Anthropic / ${MODELS.CLAUDE_HAIKU}`, fn: () => anthropicKey ? checkAnthropicModel(MODELS.CLAUDE_HAIKU, anthropicKey) : Promise.resolve({ status: 'skip', message: 'ANTHROPIC_API_KEY not set' }) },
     { name: `Anthropic / ${MODELS.CLAUDE_OPUS}`, fn: () => anthropicKey ? checkAnthropicModel(MODELS.CLAUDE_OPUS, anthropicKey) : Promise.resolve({ status: 'skip', message: 'ANTHROPIC_API_KEY not set' }) },
     { name: `Gemini / ${MODELS.GEMINI_FLASH}`, fn: () => geminiKey ? checkGeminiModel(MODELS.GEMINI_FLASH, geminiKey) : Promise.resolve({ status: 'skip', message: 'GEMINI_API_KEY not set' }) },
-    { name: `OpenAI / ${MODELS.GPT4O}`, fn: () => openaiKey ? checkOpenAIModel(MODELS.GPT4O, openaiKey) : Promise.resolve({ status: 'skip', message: 'OPENAI_API_KEY not set' }) },
-    { name: `OpenAI / ${MODELS.GPT4O_MINI}`, fn: () => openaiKey ? checkOpenAIModel(MODELS.GPT4O_MINI, openaiKey) : Promise.resolve({ status: 'skip', message: 'OPENAI_API_KEY not set' }) },
+    // Every distinct OpenAI chat pin (BRO-7341: several now share one id, so dedupe).
+    ...[...new Set([MODELS.SCORING_OPENAI, MODELS.COMPARATIVE_OPENAI, MODELS.GPT4O, MODELS.GPT4O_MINI])].map((id) => (
+      { name: `OpenAI / ${id}`, fn: () => openaiKey ? checkOpenAIModel(id, openaiKey) : Promise.resolve({ status: 'skip', message: 'OPENAI_API_KEY not set' }) }
+    )),
     { name: `OpenRouter / ${MODELS.KIMI}`, fn: () => openrouterKey ? checkOpenRouterModel(MODELS.KIMI, openrouterKey) : Promise.resolve({ status: 'skip', message: 'OPENROUTER_API_KEY not set' }) },
   ];
 

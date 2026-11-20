@@ -300,9 +300,10 @@ function parseAdjudication(text, criticName) {
 function callGpt4oMini(prompt) {
   const https = require('https');
   const { GPT4O_MINI } = require('./lib/models');
+  const { openaiChatBody } = require('./lib/llm-batch');
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return Promise.reject(new Error('OPENAI_API_KEY not set'));
-  const body = JSON.stringify({ model: GPT4O_MINI, temperature: 0, messages: [{ role: 'user', content: prompt }] });
+  const body = JSON.stringify(openaiChatBody({ model: GPT4O_MINI, temperature: 0, maxTokens: null, messages: [{ role: 'user', content: prompt }] }));
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
