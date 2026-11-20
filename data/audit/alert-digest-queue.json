@@ -538,33 +538,6 @@
     "queuedAt": "2026-11-19T16:49:33.175Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red:run-autoclear-vs-ensemble-corpus-test-needs-review-texts",
-    "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts)",
-    "description": "The \"Run autoclear-vs-ensemble corpus test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-    "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44570638717",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Job",
-        "value": "Data Validation"
-      },
-      {
-        "name": "Step",
-        "value": "Run autoclear-vs-ensemble corpus test (needs review-texts)"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44570638717)"
-      }
-    ],
-    "queuedAt": "2026-11-19T17:00:14.721Z"
-  },
-  {
     "conditionKey": "opening-night-fulltext-mentions-show:cloud-9-west-end-2026",
     "title": "Content mismatch on Cloud 9",
     "description": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Cloud 9' (3969 chars): https://www.thestage.co.uk/reviews/cloud-9-review-lyttelton-national-theatre-london",
@@ -1342,5 +1315,32 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-20T15:43:36.388Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-autoclear-vs-ensemble-corpus-test-needs-review-texts",
+    "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts) — still happening after 1 days",
+    "description": "Filed BRO-7906: this has been happening for 1+ days without clearing.\n\nThe \"Run autoclear-vs-ensemble corpus test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44777486713",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7906",
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run autoclear-vs-ensemble corpus test (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44777486713)"
+      }
+    ],
+    "queuedAt": "2026-11-20T17:01:57.291Z"
   }
 ]
