@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-20T21:17:01.793Z",
-  "totalScanned": 83843,
-  "totalExcluded": 31273,
+  "generatedAt": "2026-11-20T21:51:58.976Z",
+  "totalScanned": 83844,
+  "totalExcluded": 31274,
   "ruleCounts": {
     "wrongProduction": 20419,
     "duplicateOf": 2349,
     "rejectionReason": 1580,
     "wrongShow": 1361,
     "nonReview": 901,
-    "noTextOrScoreSignal": 884,
+    "noTextOrScoreSignal": 885,
     "unverifiableWebSearchRow": 882,
     "wrongAttribution": 349,
     "isRoundupArticle": 313,
@@ -43,12 +43,14 @@
     "personalRepost": 1,
     "registrationWallStub": 1
   },
-  "ruleDeltas": {},
-  "previousGeneratedAt": "2026-11-20T21:01:58.393Z",
+  "ruleDeltas": {
+    "noTextOrScoreSignal": 1
+  },
+  "previousGeneratedAt": "2026-11-20T21:17:01.793Z",
   "mirror": {
     "comparedShows": 4846,
-    "comparedFiles": 83212,
-    "agreeExcluded": 31213,
+    "comparedFiles": 83213,
+    "agreeExcluded": 31214,
     "agreeIncluded": 51487,
     "mirrorOnly": 183,
     "rebuildOnly": 329,
