@@ -22786,22 +22786,20 @@
       "resolvedAt": "2026-10-20T22:22:57.440Z"
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
-      "incidentOpenedAt": "2026-11-06T19:00:33.756Z",
+      "incidentOpenedAt": "2026-11-20T17:31:09.555Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-06T19:00:33.756Z",
-      "lastNotifiedAt": "2026-11-06T19:00:33.756Z",
-      "lastSurfacedAt": "2026-11-06T19:00:33.756Z",
-      "notifyCount": 14,
+      "lastSeen": "2026-11-20T17:31:09.555Z",
+      "lastNotifiedAt": "2026-11-20T17:31:09.555Z",
+      "lastSurfacedAt": "2026-11-20T17:31:09.555Z",
+      "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 13,
-      "sweptTracker": "BRO-7012",
-      "resolvedAt": "2026-11-06T20:47:26.998Z",
-      "resolveReason": "live-data test green"
+      "sweptTracker": "BRO-7012"
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -29490,13 +29488,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-12T18:06:57.835Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T15:52:46.850Z",
+      "lastSeen": "2026-11-20T17:31:09.574Z",
       "lastNotifiedAt": "2026-11-20T13:18:48.291Z",
       "lastSurfacedAt": "2026-11-20T13:18:48.291Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": "BRO-7455",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -38012,13 +38010,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-17T04:47:52.691Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T15:52:46.564Z",
+      "lastSeen": "2026-11-20T17:31:09.196Z",
       "lastNotifiedAt": "2026-11-19T18:03:56.949Z",
       "lastSurfacedAt": "2026-11-19T18:03:56.949Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": "BRO-7855",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39135,13 +39133,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-20T03:22:30.956Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T15:52:46.488Z",
+      "lastSeen": "2026-11-20T17:31:09.116Z",
       "lastNotifiedAt": "2026-11-20T03:22:30.956Z",
       "lastSurfacedAt": "2026-11-20T03:22:30.956Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "resolved",
@@ -42344,13 +42342,13 @@
       "firstSeen": "2026-11-11T15:05:44.026Z",
       "incidentOpenedAt": "2026-11-20T13:18:48.265Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T15:52:46.830Z",
+      "lastSeen": "2026-11-20T17:31:09.537Z",
       "lastNotifiedAt": "2026-11-20T13:18:48.265Z",
       "lastSurfacedAt": "2026-11-20T13:18:48.265Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-7373-cost": {
       "status": "open",
@@ -45488,13 +45486,12 @@
       "firstSeen": "2026-11-18T13:11:44.559Z",
       "incidentOpenedAt": "2026-11-18T13:11:44.559Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T15:52:46.464Z",
-      "lastNotifiedAt": "2026-11-19T15:59:32.303Z",
-      "lastSurfacedAt": "2026-11-19T15:59:32.303Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-20T17:31:09.093Z",
+      "lastNotifiedAt": "2026-11-20T17:31:09.093Z",
+      "lastSurfacedAt": "2026-11-20T17:31:09.093Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7
+      "linearIdentifier": null
     },
     "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026": {
       "status": "open",
@@ -45681,13 +45678,13 @@
       "firstSeen": "2026-11-18T17:58:55.876Z",
       "incidentOpenedAt": "2026-11-18T17:58:55.876Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T15:52:46.545Z",
+      "lastSeen": "2026-11-20T17:31:09.179Z",
       "lastNotifiedAt": "2026-11-19T18:03:56.923Z",
       "lastSurfacedAt": "2026-11-19T18:03:56.923Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-7789-compact-sync": {
       "status": "resolved",
@@ -46266,13 +46263,13 @@
       "firstSeen": "2026-11-19T18:03:56.896Z",
       "incidentOpenedAt": "2026-11-19T18:03:56.896Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T15:52:46.506Z",
+      "lastSeen": "2026-11-20T17:31:09.136Z",
       "lastNotifiedAt": "2026-11-19T18:03:56.896Z",
       "lastSurfacedAt": "2026-11-19T18:03:56.896Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-7847-ledger-persist": {
       "status": "resolved",
@@ -46604,13 +46601,13 @@
       "firstSeen": "2026-11-20T13:18:47.633Z",
       "incidentOpenedAt": "2026-11-20T13:18:47.633Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T15:52:46.525Z",
+      "lastSeen": "2026-11-20T17:31:09.154Z",
       "lastNotifiedAt": "2026-11-20T13:18:47.633Z",
       "lastSurfacedAt": "2026-11-20T13:18:47.633Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::live history (when data/reviews.json is present): every on-time outlet has a source or a gap": {
       "status": "open",
@@ -46619,13 +46616,13 @@
       "firstSeen": "2026-11-20T13:18:48.237Z",
       "incidentOpenedAt": "2026-11-20T13:18:48.237Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T15:52:46.810Z",
+      "lastSeen": "2026-11-20T17:31:09.517Z",
       "lastNotifiedAt": "2026-11-20T13:18:48.237Z",
       "lastSurfacedAt": "2026-11-20T13:18:48.237Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-7888-fix-self-clear": {
       "status": "resolved",

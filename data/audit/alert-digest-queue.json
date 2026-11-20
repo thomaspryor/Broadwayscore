@@ -414,21 +414,6 @@
     "queuedAt": "2026-11-19T13:27:27.433Z"
   },
   {
-    "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
-    "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): [\n{\n\"file\": \"circle-jerk-off-broadway-2022/theatrely--christian-lewis.json\",\n\"criticName\": \"Christian Lewis\",\n\"defaultCriticOf\": [\n\"into\",\n\"queer-voices\"\n],\n\"source\": \"ingest-urls\",\n\"url\": \"https://www.theatrely.com/post/this-circle-jerk-is-back-and-better-than-ever-review\",\n\"mode\": \"fulltext\"\n},\n{\n\"file\": \"wicked-2003/theatermania--david-gordon.json\",\n\"criticName\": \"Peter Filichia\",\n\"defaultCriticOf\": [\n\"broadwayselect\"\n],\n\"source\": \"playbill-verdict\",\n\"url\": \"https://www.theatermania.com/news/wicked-good-or-wicked-bad_4041/\",\n\"mode\": \"fulltext\"\n}\n]\n\n2 !== 0\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
-    "fields": [],
-    "queuedAt": "2026-11-19T15:59:32.306Z"
-  },
-  {
     "conditionKey": "corpus-drift:contradicted-flag-basis",
     "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
     "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 4887 shows scanned, 1 match(es).\n  [wrongProduction] the-bookstore-off-broadway-2026/theater-life--alix-cohen.json\n      basis cites 2017-01-17 but record is dated 2026-01-17, inside run 2026-01-10..2026-02-22\n\nFAIL: 1 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
@@ -1329,5 +1314,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-20T17:17:48.496Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
+    "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): [\n{\n\"file\": \"wicked-2003/theatermania--david-gordon.json\",\n\"criticName\": \"Peter Filichia\",\n\"defaultCriticOf\": [\n\"broadwayselect\"\n],\n\"source\": \"playbill-verdict\",\n\"url\": \"https://www.theatermania.com/news/wicked-good-or-wicked-bad_4041/\",\n\"mode\": \"fulltext\"\n}\n]\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
+    "fields": [],
+    "queuedAt": "2026-11-20T17:31:09.096Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'Charles Isherwood',\n+     outletId: 'broadwaynews',\n+     showId: 'time-and-the-conways-2017'\n+   }\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "fields": [],
+    "queuedAt": "2026-11-20T17:31:09.555Z"
   }
 ]
