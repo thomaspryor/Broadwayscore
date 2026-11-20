@@ -27,6 +27,9 @@ test('patterns: each BRO-7881 phrasing is caught; owner-chosen DECISION NEEDED w
   assert.deepEqual(hit('overturning it is the owner\'s call, recorded as owner-override'), ['fail-needs-owner-override']);
   assert.deepEqual(hit('then ask the owner to approve the approach'), ['ask-owner-to-approve']);
   assert.deepEqual(hit('Ask once, as one DECISION NEEDED block with the plan summary and your recommendation.'), []);
+  assert.deepEqual(hit('Never ask the owner to approve or "yes" a schedule.'), []);
+  assert.deepEqual(hit("don't ask the owner for approval on a fix"), []);
+  assert.deepEqual(hit('Never mind the old text. Should I proceed?'), ['should-i-proceed']);
   assert.deepEqual(hit('Social posts: the owner approves the exact words before anything is posted.'), []);
   assert.deepEqual(hit('pause and confirm with the owner before continuing'), ['confirm-with-owner']);
   assert.deepEqual(hit('Want me to proceed with option B?'), ['should-i-proceed']);

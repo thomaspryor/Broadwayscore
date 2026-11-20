@@ -25,6 +25,9 @@ export const PATTERNS = [
   { id: 'owner-signoff', re: /\b(get|wait for) (the )?(owner|user)('s)? (sign-?off|approval|go-?ahead|confirmation)\b/i },
 ];
 
+// A match right after one of these is the rule against the friction, not the friction itself.
+const NEGATED = /\b(never|don'?t|do not|not|no need to|without)\b[^.;:]*$/i;
+
 // Owner-chosen cases. A hit here is kept on purpose; `why` names the owner decision.
 export const ALLOWLIST = [
   { file: '.claude/commands/what-else.md', id: 'confirm-with-owner', why: 'more than ~8 dispatches costs money (paid sessions); owner rule 2026-07-24, cap raised by owner 2026-09-08' },
@@ -46,7 +49,9 @@ export function scan({ root = ROOT, files = null, read = (f) => readFileSync(pat
     const lines = read(file).split('\n');
     lines.forEach((text, i) => {
       for (const p of PATTERNS) {
-        if (!p.re.test(text)) continue;
+        const m = text.match(p.re);
+        if (!m) continue;
+        if (NEGATED.test(text.slice(Math.max(0, m.index - 30), m.index))) continue; // "Never ask the owner to approve" is the rule, not the friction
         if (ALLOWLIST.some((a) => a.file === file && a.id === p.id && a.why)) continue;
         hits.push({ file, line: i + 1, id: p.id, text: text.trim().slice(0, 140) });
       }
