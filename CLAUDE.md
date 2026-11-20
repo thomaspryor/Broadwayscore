@@ -16,7 +16,7 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 Git builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`. **Owner says ASAP → `/go-live-now`, unasked.**
 - **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; off: `DEPLOY_GATE_DISABLED=true`). Never dispatch by hand (only `/go-live-now`). Core-data-only changes ride the next rebuild/6h backstop.
 - **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` polls; ~10 min after landing). Only a READY prod deployment counts (a cancel-cascade run can say success while CANCELED).
-- **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`). Detail: `memory/feedback_github_polling_rate_limit.md`.
+- **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`).
 
 ### 3. Core Data Rules
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.
@@ -37,13 +37,13 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **When adding new shared components or tokens**, update `memory/design-system.md`.
 
 ### 5. Visual QA (MANDATORY for UI Changes — gate ENFORCES)
-**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`; not routes): Pre-push blocks `git push`/`gh pr merge` until the owner replies a plain "yes / ship it". Never ask for a hash. In chat: their "yes"/"Approved" IS the approval; push `land/<name>` yourself, never send them to tap, then `record-owner-answer.js BRO-N --choice void` on any held ask. No owner (worker): `visual-approval.js request --issue=BRO-N --what=...`. **Data/scraper-only diffs: no approval** (`request` refuses them). **Fix-only UI diffs (owner 2026-11-20, BRO-7888) need no yes:** if `scripts/lib/visual-design-diff.js` finds no layout, style, literal or tag change (logic or wording only), a passing current `/visual-qa` verdict ships it; any design file, or a mix, still waits for the yes. Off: `VISUAL_FIX_SELF_CLEAR_DISABLED=1`. Score badges sacred (`w-20 sm:w-24`). `memory/feedback_local_preview_before_push.md`
+**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`; not routes): Pre-push blocks `git push`/`gh pr merge` until the owner replies a plain "yes / ship it". Never ask for a hash. In chat: their "yes"/"Approved" IS the approval; push `land/<name>` yourself, never send them to tap, then `record-owner-answer.js BRO-N --choice void` on any held ask. No owner (worker): `visual-approval.js request --issue=BRO-N --what=...`. **Data/scraper-only diffs: no approval** (`request` refuses them). **Fix-only UI diffs need no yes**: `visual-design-diff.js` finds no design change and a passing current verdict exists. Off: `VISUAL_FIX_SELF_CLEAR_DISABLED=1`. Score badges sacred (`w-20 sm:w-24`). `memory/feedback_local_preview_before_push.md`
 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
 **Linear is the source of truth.** Notion is retired (froze 2026-08-20). Flow: `memory/linear-board-workflow.md`.
 - **Session start:** `linear-brain.js create "<title>" --self|--dispatch|--park "<reason>" --notes "..."`; output the URL. `--self` = you do it now (In Progress); technical `--park` refused. **End:** comment the Outcome (what/why) + Key Files, then `linear-brain.js update BRO-N --state Done`. Paused/refused: `linear-session.js report --status=paused`.
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line.
-- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log. Cap ~8/session.
+- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Cap ~8/session.
 - **Owner answered? `record-owner-answer.js` that turn. Read the card before asking or claiming owner waits (BRO-6411).**
 - **Board:** paste `node scripts/board-report.js --markdown`, never hand-built.
 - **If Linear is down:** warn, continue untracked, print the Outcome. No Notion fallback.
@@ -124,7 +124,7 @@ See `memory/email-broadcast-rules.md` for full history.
 - **NEVER broadcast to test/validate anything** — use `--send-to=your@email.com` (transactional, never broadcast)
 - **NEVER send to any Resend audience with >5 real contacts for testing**
 
-### 18. Review BEFORE editing shared infrastructure (owner decision 2026-08-05, #1079)
+### 18. Review BEFORE editing shared infrastructure
 Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, the review gates, `.github/workflows/**`, `~/.claude/hooks/**`: run `/second-opinion` (`/plan-review` if structural) FIRST, then `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_CODE_SESSION_ID`. `infra-plan-review-gate.sh` blocks the first edit without it; a fail stands until a revised pass with `--note="<what changed>"`. Scope: `infra-review-scope.js`.
 
 ### 19. New blocking CI gates land advisory first (BRO-2123)
@@ -133,7 +133,7 @@ New `--strict`/`--gate` test.yml steps: `continue-on-error: true` (or own baseli
 ### 20. Three-Tier Planning (BRO-6246)
 **Substantial** (4th new file in a new dir, new workflow/secret) = plan + `/plan-review` + owner's yes (2026-10-25), one DECISION NEEDED; build only after it (the hook won't wait for it). **Moderate** = `/second-opinion`. **Simple** = go. Blocks since 2026-11-07.
 
-### 21. Every fix, three parts: cousins, root cause, keep improving (owner 2026-11-07)
+### 21. Every fix, three parts: cousins, root cause, keep improving
 (1) **Cousins:** search site, `data/`, code for the same bug; fix all. (2) **Root cause:** land a class guard that fails with the fix reverted. (3) **Improve the system:** fix the check that missed it. Close with `ROOT-CAUSE:`, `CLASS-GUARD: <path>` (or `PREVENTION: <path>`), `RED-THEN-GREEN:`, `COUSINS:`, or `NO-ROOT-CAUSE: <reason>` (spot), plus `EFFECT:` real before/after numbers (new check: past-input dry-run hit rate) or `NO-EFFECT-CHECK: <reason>`. BRO-7103/7138.
 
 ---
