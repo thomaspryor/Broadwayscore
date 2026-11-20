@@ -346,6 +346,9 @@ export function cardBody(rows, { auditDay }) {
     '## Changes',
     ...rows.slice(0, 60).map(fmt),
     '',
+    '## Why each was not run by the audit',
+    ...[...new Set(rows.flatMap((r) => r.files.filter((f) => f.noRunReason).map((f) => `- ${f.file}: ${f.noRunReason}`)))].slice(0, 30),
+    '',
     '## Cloud-session misses (the session Stop check scripts/lib/live-run-stop.mjs should have asked for a run)',
     ...(cloud.length ? cloud.slice(0, 30).map((r) => `- ${r.sha.slice(0, 10)} ${r.session || ''}: ${r.files.map((f) => f.file).slice(0, 3).join(', ')}`) : ['- none']),
     '',
@@ -355,4 +358,45 @@ export function cardBody(rows, { auditDay }) {
     '## Acceptance criteria',
     `VERIFY: node scripts/landed-change-proof-audit.js --dry-run --sha=${rows.map((r) => r.sha.slice(0, 10)).slice(0, 10).join(',')} --expect-proven`,
   ].join('\n');
+}
+
+/** PURE. `session_01...` from a Claude-Session trailer value (a claude.ai URL or a bare id), or null. */
+export const webSessionOf = (v) => (String(v || '').match(/session_[A-Za-z0-9]+/) || [])[0] || null;
+
+/**
+ * BRO-7910, advisory (CLAUDE.md section 19): web sessions that landed code on `landedDay` and have no session-retro row.
+ * A retro row matches by its `webSessionId`, or (rows written before that field existed) by a commit sha in `links`.
+ * rows: this audit's rows (cloud source, `session` trailer); retroRows: data/audit/session-retro.jsonl.
+ * -> { landed: n distinct web sessions, covered: n, missing: [{ session, shas: [] }] }
+ */
+export function retroCoverageGaps(rows, retroRows, landedDay) {
+  const have = new Set(retroRows.map((r) => r.webSessionId).filter(Boolean));
+  const linked = [];
+  for (const r of retroRows) for (const l of r.links || []) if (/^[0-9a-f]{7,40}$/.test(l)) linked.push(l);
+  const by = new Map();
+  for (const r of rows) {
+    if (r.landedDay !== landedDay || r.marker) continue;
+    const id = webSessionOf(r.session);
+    if (!id) continue;
+    (by.get(id) || by.set(id, []).get(id)).push(r.sha);
+  }
+  const missing = [];
+  for (const [session, shas] of by) {
+    if (have.has(session) || shas.some((sha) => linked.some((l) => sha.startsWith(l)))) continue;
+    missing.push({ session, shas: shas.map((x) => x.slice(0, 10)) });
+  }
+  return { landed: by.size, covered: by.size - missing.length, missing };
+}
+
+/**
+ * BRO-7910: why a not-run file got no run tonight (neither a safe test run nor a dispatch). Recorded on the ledger row so
+ * "nobody ran it" is never silent: a commit that cannot be run says why, and the card lists the reason.
+ * f: a not_run file entry (kind, workflows, safeRun, dispatch). -> string | null (null when a run or dispatch exists).
+ */
+export function noRunReason(f) {
+  if (f.verdict !== 'not_run' || f.safeRun || f.dispatch) return null;
+  if (f.kind === 'workflow') return 'workflow file: only its own next run proves it (dispatch it or wait for its cron)';
+  const wfs = f.workflows || [];
+  if (wfs.length && !wfs.some((w) => DISPATCH_ALLOWLIST.has(w))) return `no colocated unit test, and its workflow (${wfs.slice(0, 2).join(', ')}) is not on the no-spend dispatch allowlist (spends, emails or writes data); add a unit test or wait for its scheduled run`;
+  return 'no colocated unit test, and no workflow runs it';
 }

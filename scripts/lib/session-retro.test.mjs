@@ -324,3 +324,21 @@ test('BRO-7872: --record writes the skeptic outcome (runs, gaps found/answered, 
   assert.deepEqual(rec.skeptic, { runs: 1, gapsFound: 2, gapsAnswered: 1, errors: 0 });
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// BRO-7910: the row records the claude.ai web session id so retro coverage can be checked against commit trailers.
+test('BRO-7910: --record writes webSessionId (session_01 form) from CLAUDE_CODE_REMOTE_SESSION_ID; null when unset', async () => {
+  const { spawnSync } = await import('node:child_process');
+  assert.equal(R.webSessionId({ CLAUDE_CODE_REMOTE_SESSION_ID: 'cse_01ABC' }), 'session_01ABC');
+  assert.equal(R.webSessionId({ CLAUDE_CODE_REMOTE_SESSION_ID: 'session_01ABC' }), 'session_01ABC');
+  assert.equal(R.webSessionId({}), null);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-web-'));
+  const tr = path.join(dir, 't.jsonl');
+  const ledger = path.join(dir, 'ledger.jsonl');
+  fs.writeFileSync(tr, [tool('Edit', { file_path: 'a' }, '2026-01-01T00:00:00Z')].join('\n') + '\n');
+  const run = (env) => spawnSync('node', [path.join(path.dirname(new URL(import.meta.url).pathname), 'session-retro.js'), `--transcript=${tr}`, '--record', '--no-action=fixture session, nothing to fix here'], { env: { ...process.env, CLAUDE_CODE_REMOTE_SESSION_ID: '', SESSION_RETRO_LEDGER: ledger, ...env }, encoding: 'utf8' });
+  assert.equal(run({ CLAUDE_CODE_REMOTE_SESSION_ID: 'cse_01XYZ' }).status, 0);
+  assert.equal(run({}).status, 0);
+  const rows = fs.readFileSync(ledger, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+  assert.equal(rows[0].webSessionId, 'session_01XYZ');
+  assert.equal(rows[1].webSessionId, null);
+});

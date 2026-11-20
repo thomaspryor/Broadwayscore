@@ -340,6 +340,14 @@ function findTranscript() {
   return all.sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs)[0] || null;
 }
 
+/** BRO-7910: the claude.ai web session id (`session_01...`), the form commit trailers carry (`Claude-Session: .../session_01...`).
+ *  The container env holds the same id as `cse_01...`; normalize so a row can be matched to commits. null outside cloud. */
+function webSessionId(env = process.env) {
+  const raw = String(env.CLAUDE_CODE_REMOTE_SESSION_ID || '').trim();
+  const m = raw.match(/^(?:cse|session)_(\w+)$/);
+  return m ? `session_${m[1]}` : null;
+}
+
 async function main(argv) {
   const opt = Object.fromEntries(argv.filter((a) => a.startsWith('--')).map((a) => { const eq = a.indexOf('='); return eq < 0 ? [a.slice(2), true] : [a.slice(2, eq), a.slice(eq + 1)]; }));
   if (opt.rollup) { rollup(Number(opt.days) || 7, !!opt['file-card'], { ifDue: !!opt['if-due'] }); return 0; }
@@ -357,7 +365,7 @@ async function main(argv) {
     const skeptic = await skepticOutcome(file);
     const gatesErrors = [...(cacheDir ? [] : ['cache: could not resolve the hook checkout (git rev-parse failed)']), ...dry.errors];
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
-    fs.appendFileSync(LEDGER, JSON.stringify({ v: 2, sessionId: r.sessionId, gates: r.gates, ...(skeptic ? { skeptic } : {}), ...(gatesErrors.length ? { gatesErrors } : {}), endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
+    fs.appendFileSync(LEDGER, JSON.stringify({ v: 2, sessionId: r.sessionId, webSessionId: webSessionId(), gates: r.gates, ...(skeptic ? { skeptic } : {}), ...(gatesErrors.length ? { gatesErrors } : {}), endAt: r.endAt, recordedAt: new Date().toISOString(), hours: r.hours, activeHours: r.activeHours, hookBlockCount: r.hookBlockCount, restarts: r.restarts, bypassCount: r.bypassCount, landRefusalCount: r.landRefusals.length, landPushes: r.landPushes, signals: signals(r), triggers: r.triggers, links: pl.links, noAction: pl.noAction }) + '\n');
     r.links = pl.links; r.noAction = pl.noAction;
   }
   console.log(opt.json ? JSON.stringify(r, null, 2) : report(r));
@@ -373,4 +381,4 @@ async function main(argv) {
 if (require.main === module) {
   main(process.argv.slice(2)).then((c) => require('./exit-flushed').exitFlushed(c), (e) => { console.error(`session-retro: ${e && e.stack}`); require('./exit-flushed').exitFlushed(1); });
 }
-module.exports = { main, STOP_GATES, logHits, dryRunGates, skepticOutcome, mergeGateActivity, gateRollup, hookCacheDir, rollup, analyze, report, signals, T, hookLabel, triggersFor, parseLinks, retroStatus, readLedger, LEDGER };
+module.exports = { main, webSessionId, STOP_GATES, logHits, dryRunGates, skepticOutcome, mergeGateActivity, gateRollup, hookCacheDir, rollup, analyze, report, signals, T, hookLabel, triggersFor, parseLinks, retroStatus, readLedger, LEDGER };

@@ -218,6 +218,13 @@ async function main() {
     if (!dryRun && process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `dispatch_workflows=${dispatchWorkflows.join(',')}\n`);
   }
 
+  for (const r of rows) for (const f of r.files) { const why = lib.noRunReason(f); if (why) f.noRunReason = why; }
+
+  // BRO-7910 (advisory): web sessions that landed code the day before this audit with no retro row.
+  const retroRows = readLedger(path.join(ROOT, 'data/audit/session-retro.jsonl'));
+  const retroGap = lib.retroCoverageGaps(rows.filter((r) => r.source === 'cloud'), retroRows, lib.dayMinus(auditDay, 1));
+  console.error(`[landed-proof] retro coverage (advisory) for ${lib.dayMinus(auditDay, 1)}: ${retroGap.landed} web session(s) landed code, ${retroGap.covered} with a retro row, ${retroGap.missing.length} without${retroGap.missing.length ? ': ' + retroGap.missing.map((m) => m.session).join(' ') : ''}`);
+
   const s = lib.summarize(rows);
   const byDay = {};
   for (const r of rows) (byDay[r.landedDay] ||= []).push(r);
@@ -246,7 +253,7 @@ async function main() {
     const id = fileCard(lib.cardBody(follow, { auditDay }), auditDay, follow.length);
     for (const r of follow) r.card = id;
   }
-  const add = lib.newRows(existing, [...rows, lib.runMarker(auditDay, { codeCommits: s.total, incomplete: incomplete.size, ghCalls })]);
+  const add = lib.newRows(existing, [...rows, lib.runMarker(auditDay, { retroMissing: retroGap.missing.length, retroLanded: retroGap.landed, codeCommits: s.total, incomplete: incomplete.size, ghCalls })]);
   fs.mkdirSync(path.dirname(ledger), { recursive: true });
   if (add.length) fs.appendFileSync(ledger, add.map((r) => JSON.stringify(r)).join('\n') + '\n');
   console.log(`[landed-proof] appended ${add.length} row(s) to ${lib.LEDGER_PATH}`);

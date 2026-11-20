@@ -268,3 +268,27 @@ test('BRO-7840: digest runs the audit when today\'s marker is missing (late cron
   assert.match(c.line, /not measured this morning/, 'failed catch-up degrades to the stale line');
   assert.equal(hasAuditToday(old, now), false);
 });
+
+// BRO-7910: retro coverage (advisory) and the recorded reason a not-run file got no run.
+import { retroCoverageGaps, webSessionOf, noRunReason } from './landed-change-proof.mjs';
+test('retroCoverageGaps lists web sessions with no retro row; matches by webSessionId or a linked sha', () => {
+  const rows = [
+    { sha: 'aaaaaaaaaa11', landedDay: '2026-11-20', session: 'https://claude.ai/code/session_01AAA' },
+    { sha: 'bbbbbbbbbb22', landedDay: '2026-11-20', session: 'https://claude.ai/code/session_01BBB' },
+    { sha: 'cccccccccc33', landedDay: '2026-11-20', session: 'https://claude.ai/code/session_01CCC' },
+    { sha: 'dddddddddd44', landedDay: '2026-11-19', session: 'https://claude.ai/code/session_01DDD' },
+    { sha: 'eeeeeeeeee55', landedDay: '2026-11-20', session: null },
+  ];
+  const retro = [{ webSessionId: 'session_01AAA', links: [] }, { sessionId: 'old', links: ['bbbbbbb'] }];
+  const g = retroCoverageGaps(rows, retro, '2026-11-20');
+  assert.equal(g.landed, 3);
+  assert.equal(g.covered, 2);
+  assert.deepEqual(g.missing, [{ session: 'session_01CCC', shas: ['cccccccccc'] }]);
+  assert.equal(webSessionOf('Claude-Session: https://claude.ai/code/session_01XyZ'), 'session_01XyZ');
+});
+test('noRunReason: says why a not-run file got no run; null when it was run or dispatched', () => {
+  assert.match(noRunReason({ verdict: 'not_run', kind: 'lib', workflows: ['x.yml'] }), /not on the no-spend dispatch allowlist/);
+  assert.match(noRunReason({ verdict: 'not_run', kind: 'workflow', workflows: ['x.yml'] }), /workflow file/);
+  assert.equal(noRunReason({ verdict: 'not_run', kind: 'lib', workflows: [], safeRun: { ok: true } }), null);
+  assert.equal(noRunReason({ verdict: 'proven' }), null);
+});
