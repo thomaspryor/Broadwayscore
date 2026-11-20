@@ -564,3 +564,18 @@ test('BRO-7885: a lastmod-only (soft) date does not break a tie between overlapp
   assert.equal(census.bucketItem({ ...item, dateSoft: true }, ctxFor([], [arm, stj])).bucket, 'ambiguous');
   assert.equal(census.bucketItem(item, ctxFor([], [arm, stj])).bucket, 'gap');
 });
+
+test('BRO-7885: date-resolved path is reached, tags matchVia, and honours held alt URLs', () => {
+  const arm = { id: 'illinoise-off-broadway-2024', title: 'Illinoise', market: 'broadway', previewsStartDate: '2024-03-02', openingDate: '2024-03-07', closingDate: '2024-03-23' };
+  const stj = { id: 'illinoise-2024', title: 'Illinoise', market: 'broadway', previewsStartDate: '2024-04-24', openingDate: '2024-04-24', closingDate: '2024-08-10' };
+  const item = { outletId: 'nytg', headline: "'Illinoise' review", url: 'https://example.com/illinoise-review', publishDate: '2024-04-29', sourceSaysReview: true };
+  const r = census.bucketItem(item, ctxFor([], [arm, stj]));
+  assert.equal(r.matchVia, 'date-resolved');
+  assert.equal(r.bucket, 'gap');
+  assert.deepEqual(r.matchedIds, ['illinoise-2024']);
+  const held = [{ showId: 'illinoise-2024', outletId: 'nytg', url: 'https://example.com/other-url', source: 'reviews.json' }];
+  assert.equal(census.bucketItem(item, ctxFor(held, [arm, stj])).bucket, 'held-alt-url');
+  // two open-ended runs: nothing is live alone, stays ambiguous
+  const a2 = { ...arm, closingDate: undefined }; const b2 = { ...stj, closingDate: undefined };
+  assert.equal(census.resolveSameTitleByDate([a2, b2], '2024-04-29'), null);
+});

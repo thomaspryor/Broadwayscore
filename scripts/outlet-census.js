@@ -546,12 +546,19 @@ async function runOutlet(outletId, o, shared) {
   // page date for just those items and bucket them again (BRO-7885).
   const needDate = results.filter(census.dateWouldResolve);
   if (needDate.length && !o.fromCache) {
-    await fillMeta(outletId, needDate, o);
-    needDate.forEach((r) => {
-      delete r.sameTitleCandidates;
+    // refresh:false keeps the outlet's full meta cache instead of truncating it to these items.
+    await fillMeta(outletId, needDate, { ...o, refresh: false });
+    const KEEP = ['bucket', 'classifyReason', 'matchVia', 'held', 'matchedIds', 'outOfWindowIds', 'venueMismatchIds', 'altUrls', 'itemMarket', 'venueHint', 'nycSignal', 'sameTitleCandidates'];
+    let resolved = 0; let outOfPeriod = 0;
+    for (const r of needDate) {
+      KEEP.forEach((k) => delete r[k]);
       Object.assign(r, census.bucketItem(r, ctx));
-    });
-    console.log(`  ambiguous undated: ${needDate.length} read for a publish date, ${needDate.filter((r) => r.bucket !== 'ambiguous').length} resolved`);
+      // A page date older than the census period leaves the period, like any dated item.
+      if (r.publishDate && !r.dateSoft && Date.parse(r.publishDate) < sinceMs) { r.dropped = true; outOfPeriod++; continue; }
+      if (r.bucket !== 'ambiguous') resolved++;
+    }
+    for (let i = results.length - 1; i >= 0; i--) if (results[i].dropped) results.splice(i, 1);
+    console.log(`  ambiguous undated: ${needDate.length} read for a publish date, ${resolved} resolved, ${outOfPeriod} before --since`);
   }
 
   const enumeratedKeys = new Set(enumerated.items.map((i) => urlKey(i.url)));
