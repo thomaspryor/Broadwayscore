@@ -1,63 +1,71 @@
 {
-  "runDate": "2026-11-20T10:40:12.729Z",
+  "runDate": "2026-11-20T11:31:36.170Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 60,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "florence-off-west-end-2026",
-    "aggressive": true,
+    "showFilter": "the-good-thief-off-broadway-2026,eurotrash-off-west-end-2026,la-distance-bam-off-broadway-2026,florence-off-west-end-2026,much-ado-about-nothing-2026,blue-man-group-a-new-holiday-surprise-2026,a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026,top-gunchained-off-west-end-2026,its-a-wonderful-life-a-live-radio-play-2026,a-christmas-story-the-musical-tour-2026",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 1,
+    "processed": 11,
+    "failed": 10,
     "skipped": 0,
-    "successRate": "75.0%"
+    "successRate": "52.4%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 3,
+    "tier1Attempts": 18,
+    "tier1Success": 15,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 3,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier2Attempts": 7,
+    "tier2Success": 4,
+    "tier3Attempts": 4,
+    "tier3Success": 2,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 9,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 9,
+    "scrapingBeePageCredits": 15,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.1,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 1,
+    "processed": 11,
+    "failed": 10,
     "shows": [
-      "florence-off-west-end-2026"
+      "a-christmas-story-the-musical-tour-2026",
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "blue-man-group-a-new-holiday-surprise-2026",
+      "eurotrash-off-west-end-2026",
+      "florence-off-west-end-2026",
+      "its-a-wonderful-life-a-live-radio-play-2026",
+      "much-ado-about-nothing-2026",
+      "the-good-thief-off-broadway-2026",
+      "top-gunchained-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,38 +74,98 @@
     }
   },
   "processed": [
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "much-ado-about-nothing-2026/npr--unknown.json",
     "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "florence-off-west-end-2026/thereviewshub--unknown.json",
-    "florence-off-west-end-2026/a-youngish-perspective--unknown.json"
+    "florence-off-west-end-2026/a-youngish-perspective--unknown.json",
+    "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
+    "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
+    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json",
+    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
   ],
   "failed": [
-    "florence-off-west-end-2026/daily-mail--joanna-crawley.json"
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
+    "a-christmas-story-the-musical-tour-2026/nuvo--nuvo.json",
+    "eurotrash-off-west-end-2026/thestage--unknown.json",
+    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json",
+    "top-gunchained-off-west-end-2026/british-theatre--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "much-ado-about-nothing-2026/npr--unknown.json",
       "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
       "florence-off-west-end-2026/thereviewshub--unknown.json",
-      "florence-off-west-end-2026/a-youngish-perspective--unknown.json"
+      "florence-off-west-end-2026/a-youngish-perspective--unknown.json",
+      "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
+      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
     ],
     "failed": [
-      "florence-off-west-end-2026/daily-mail--joanna-crawley.json"
+      "much-ado-about-nothing-2026/timeout--unknown.json",
+      "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+      "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+      "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
+      "a-christmas-story-the-musical-tour-2026/nuvo--nuvo.json",
+      "eurotrash-off-west-end-2026/thestage--unknown.json",
+      "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json",
+      "top-gunchained-off-west-end-2026/british-theatre--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "much-ado-about-nothing-2026/npr--unknown.json",
       "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
       "florence-off-west-end-2026/thereviewshub--unknown.json",
-      "florence-off-west-end-2026/a-youngish-perspective--unknown.json"
+      "florence-off-west-end-2026/a-youngish-perspective--unknown.json",
+      "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "columbiaspectator-com": {
+      "count": 1,
+      "domain": "columbiaspectator.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Broadway News": {
+      "count": 1,
+      "domain": "broadwaynews.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
