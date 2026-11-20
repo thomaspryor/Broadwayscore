@@ -55,6 +55,20 @@ const DESIGN_CASES = {
   'helper returns another class': [`const g=()=>"card"; return <div className={g()}/>;`, `const g=()=>"card-premium"; return <div className={g()}/>;`],
   'added element': [`return <div><A/></div>;`, `return <div><A/><A/></div>;`],
   'early return null in the component itself': [`return <A/>;`, `if (x) return null; return <A/>;`],
+  'imported component swapped (same local name)': [`return <A/>;`, `return <A/>;`, "import {A} from 'other';"],
+  'imported binding now another export': [`return <A/>;`, `return <A/>;`, "import {B as A} from 'a';"],
+  'children identifier swapped': [`return <div>{a && <A/>}</div>;`, `return <div>{b && <A/>}</div>;`],
+  'conditional identifier swapped': [`return <div>{a ? <A/> : <B/>}</div>;`, `return <div>{c ? <A/> : <B/>}</div>;`],
+  'ternary class swapped': [`return <div className={on ? "p-2" : "p-4"}/>;`, `return <div className={on ? "p-4" : "p-2"}/>;`],
+  'aria attribute changed': [`return <div aria-hidden="true"/>;`, `return <div aria-hidden="false"/>;`],
+  'aria expression changed': [`return <div aria-hidden={a}/>;`, `return <div aria-hidden={b}/>;`],
+  'data attribute changed (css can select on it)': [`return <div data-state="open"/>;`, `return <div data-state="closed"/>;`],
+  'id attribute changed (css can select on it)': [`return <div id="x"/>;`, `return <div id="y"/>;`],
+  'DOM style write in an effect': [`useEffect(()=>{ el.style.width = 100; },[]); return <A/>;`, `useEffect(()=>{ el.style.width = 200; },[]); return <A/>;`],
+  'DOM class write in an effect': [`useEffect(()=>{ el.classList.add("a"); },[]); return <A/>;`, `useEffect(()=>{ el.classList.add("b"); },[]); return <A/>;`],
+  'BigInt literal changed': [`const n = 10n; return <A n={n}/>;`, `const n = 20n; return <A n={n}/>;`],
+  'regex literal changed': [`const r = /a+/; return <A r={r}/>;`, `const r = /b+/; return <A r={r}/>;`],
+  'module-level constant changed': [`return <A/>;`, `return <A/>;`, "import {A} from 'a'; const W = 4;"],
 };
 for (const [name, [a, b, headB]] of Object.entries(DESIGN_CASES)) {
   test(`design (fail closed): ${name}`, { skip: SKIP_TS }, () => {
@@ -65,8 +79,8 @@ for (const [name, [a, b, headB]] of Object.entries(DESIGN_CASES)) {
 const FIX_CASES = {
   'reworded copy': [`return <p>Hello</p>;`, `return <p>Hi there</p>;`],
   'changed href expression': [`return <a href={u(x)}>go</a>;`, `return <a href={u(y)}>go</a>;`],
-  'changed handler logic': [`const f=()=>{ if(!a) return; run(a); }; return <button onClick={f}/>;`, `const f=()=>{ if(!a||!b) return; run(a); }; return <button onClick={f}/>;`],
-  'changed condition identifier': [`return <div>{a && <A/>}</div>;`, `return <div>{b && <A/>}</div>;`],
+  'changed inline handler logic': [`return <button onClick={()=>{ if(!a) return; run(a); }}/>;`, `return <button onClick={()=>{ if(!a||!b) return; run(a); }}/>;`],
+  'changed key expression': [`return <ul>{L.map(i=><li key={i.id}/>)}</ul>;`, `return <ul>{L.map(i=><li key={i.slug}/>)}</ul>;`],
   'effect gains a call and an early return null': [`return <A/>;`, `useEffect(()=>{ if (u()) return null; },[]); return <A/>;`],
 };
 for (const [name, [a, b]] of Object.entries(FIX_CASES)) {
@@ -82,8 +96,8 @@ test('CSS, new files and deleted files are always design', { skip: SKIP_TS }, ()
 // ---------- Part 3: the real hook in a scratch repo ----------
 const BRANCH = 'feat-ui';
 const FILE = 'src/components/Foo.tsx';
-const BASE_SRC = `export default function Foo({a,b}: any){ return <div className="p-4">{a && <p>Hi</p>}</div>; }\n`;
-const FIX_SRC = BASE_SRC.replace('{a &&', '{b &&');
+const BASE_SRC = `export default function Foo({a,b}: any){ return <div className="p-4"><button onClick={() => { if (a) run(a); }}>Hi</button></div>; }\n`;
+const FIX_SRC = BASE_SRC.replace('if (a)', 'if (a && b)');
 const DESIGN_SRC = BASE_SRC.replace('p-4', 'p-8');
 const MIX_FILE2 = 'src/components/Bar.tsx';
 const BAR_BASE = `export default function Bar(){ return <div className="m-2">x</div>; }\n`;

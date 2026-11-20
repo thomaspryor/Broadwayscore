@@ -18,7 +18,7 @@
 //      class, style, literal or tag target is design.
 //
 // One entry point (selfClear) is shared by .claude/hooks/pre-push-visual-gate.sh and scripts/land-ready.mjs, both
-// running the main checkout's copy (a branch cannot loosen it), so the two never disagree.
+// running the main checkout's copy (the pushing checkout runs the main checkout copy of the hook and this file, so a pushed branch cannot loosen it), so the two never disagree.
 // Trust level: verdict.json is written by the session itself (unsigned), the same trust as the '# NO-VERIFY:' bypass.
 // The real protection is this classifier being strict: literals, tag identity and non-handler props all count. Kill switch: VISUAL_FIX_SELF_CLEAR_DISABLED=1.
 
@@ -34,14 +34,7 @@ function loadTs() {
   try { _ts = require(require.resolve('typescript', { paths: [__dirname, process.cwd()] })); return _ts; } catch { return null; }
 }
 
-const STYLE_ATTR = /^(className|class|style|sx|tw|css|variant|size|tone|color|layout|align|position|width|height|src|srcSet|fill|priority|sizes|columns|cols|rows|gap|as)$/;
-// A whitespace-separated token that reads as a utility class (after variant prefixes such as sm: or hover:).
-const UTIL_TOKEN = /^-?(?:(?:bg|text|border|ring|shadow|rounded|p[xytrbl]?|m[xytrbl]?|w|h|size|min-w|max-w|min-h|max-h|gap(?:-[xy])?|space-[xy]|grid-cols|grid-rows|col-span|row-span|font|leading|tracking|opacity|z|top|left|right|bottom|inset(?:-[xy])?|translate-[xy]|scale|rotate|order|basis|line-clamp|divide(?:-[xy])?|outline|fill|stroke|from|to|via|aspect|columns|decoration|underline-offset|items|justify|self|content|place-(?:items|content|self)|whitespace|overflow(?:-[xy])?|object|transition|duration|ease|delay|animate|cursor|select|pointer-events|shrink|grow|flex|grid|blur|backdrop|drop-shadow|ms|me|ps|pe|start|end)-[\w./\[\]%#():,-]+|flex|grid|hidden|block|inline|inline-flex|inline-block|inline-grid|contents|table|truncate|italic|uppercase|lowercase|capitalize|underline|sr-only|not-sr-only|absolute|relative|fixed|sticky|static|visible|invisible|container|grow|shrink|antialiased)$/;
 const norm = (s) => String(s).replace(/\s+/g, ' ').trim();
-
-function hasUtilityToken(s) {
-  return String(s).split(/\s+/).some((t) => t && UTIL_TOKEN.test(t.replace(/^(?:[\w-]+:|\[[^\]]*\]:)+/, '').replace(/^!/, '')));
-}
 
 function parse(ts, file, text) {
   const kind = /\.jsx$/.test(file) ? ts.ScriptKind.JSX : ts.ScriptKind.TSX;
@@ -50,98 +43,62 @@ function parse(ts, file, text) {
   return sf;
 }
 
-function isLiteral(ts, e) {
-  if (!e) return false;
-  const K = ts.SyntaxKind;
-  return ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e) || ts.isNumericLiteral(e) || ts.isObjectLiteralExpression(e)
-    || ts.isArrayLiteralExpression(e) || e.kind === K.TrueKeyword || e.kind === K.FalseKeyword || e.kind === K.NullKeyword
-    || (ts.isPrefixUnaryExpression(e) && ts.isNumericLiteral(e.operand));
-}
-
-/** The layout/style skeleton of one source file, as an array of tokens. */
+/**
+ * The drawing skeleton of one source file: an array of tokens (with an .imports map attached).
+ * Everything that can draw is recorded as node kind + identifier/literal text. Only code that cannot draw is skipped:
+ * types, comments, JSX text (copy), import/export statements (compared separately), and the inside of "quiet" roots
+ * (effect callbacks, on* handlers, key/ref/href/to/name/htmlFor props), where only strings and DOM style/class writes count.
+ */
 function skeleton(ts, sf) {
   const out = [];
-  // Identifiers rendered as JSX tags (<Comp/>, <Foo.Bar/>): what they point at is page structure.
-  const tagRoots = new Set();
-  const collect = (n) => {
-    if (ts.isJsxOpeningElement(n) || ts.isJsxSelfClosingElement(n)) tagRoots.add(n.tagName.getText(sf).split('.')[0]);
-    ts.forEachChild(n, collect);
-  };
-  collect(sf);
-  const attr = (a) => {
-    if (ts.isJsxSpreadAttribute(a)) { out.push(`{...${norm(a.expression.getText(sf))}}`); return; }
-    const name = a.name.getText(sf);
-    const init = a.initializer;
-    if (!init) { out.push(name); return; }
-    if (ts.isStringLiteral(init)) { out.push(`${name}=${JSON.stringify(init.text)}`); return; }
-    const e = ts.isJsxExpression(init) ? init.expression : init;
-    // Handlers, keys, refs, links and data/aria attributes carry logic, not looks: their expression is not recorded
-    // (literals inside them still are, below). Every other attribute (compact={!isM}, show={cond}) can change what
-    // renders, so its whole expression is part of the skeleton.
-    const logicAttr = /^(on[A-Z]\w*|key|ref|href|to|id|name|htmlFor|data-[\w-]+|aria-[\w-]+)$/.test(name);
-    const fnValue = e && (ts.isArrowFunction(e) || ts.isFunctionExpression(e));
-    if (STYLE_ATTR.test(name) || isLiteral(ts, e) || (!logicAttr && !fnValue)) out.push(`${name}={${e ? norm(e.getText(sf)) : ''}}`);
-    else out.push(`${name}={}`);
-  };
-  // Inside an effect callback or an on* handler nothing is drawn by the code itself, so a changed null/true/false/number
-  // there (an early `return null`, a retry count) is logic. Strings still count everywhere (a class set via the DOM).
+  const imports = new Map(); // local binding -> "module::importedName"
+  const K = ts.SyntaxKind;
+  const QUIET_ATTR = /^(on[A-Z]\w*|key|ref|href|to|name|htmlFor)$/;
+  const DOM_WRITE = /\b(style|className|classList|cssText|dataset|innerHTML|outerHTML|textContent|insertAdjacentHTML)\b|\.(setProperty|setAttribute|toggle|add|remove)\(/;
   let quiet = 0;
   const isQuietRoot = (n) => (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && /^use(Layout|Insertion)?Effect$/.test(n.expression.text))
-    || (ts.isJsxAttribute(n) && /^on[A-Z]/.test(n.name.getText(sf)));
+    || (ts.isJsxAttribute(n) && QUIET_ATTR.test(n.name.getText(sf)));
   const visit = (n) => {
-    if (isQuietRoot(n)) { quiet++; try { visitInner(n); } finally { quiet--; } return; }
-    visitInner(n);
+    if (isQuietRoot(n)) { quiet++; try { inner(n); } finally { quiet--; } return; }
+    inner(n);
   };
-  const visitInner = (n) => {
-    // Types never render.
+  const inner = (n) => {
     if (ts.isTypeNode(n) || ts.isInterfaceDeclaration(n) || ts.isTypeAliasDeclaration(n)) return;
     if (ts.isImportDeclaration(n)) {
+      const mod = ts.isStringLiteral(n.moduleSpecifier) ? n.moduleSpecifier.text : '?';
       const c = n.importClause;
-      const names = [];
-      if (c) {
-        if (c.name) names.push(c.name.text);
-        if (c.namedBindings) { if (ts.isNamespaceImport(c.namedBindings)) names.push(c.namedBindings.name.text); else c.namedBindings.elements.forEach((el) => names.push(el.name.text)); }
+      if (!c) { out.push(`import ${mod}`); return; } // side-effect import (CSS etc.)
+      if (c.name) imports.set(c.name.text, `${mod}::default`);
+      if (c.namedBindings) {
+        if (ts.isNamespaceImport(c.namedBindings)) imports.set(c.namedBindings.name.text, `${mod}::*`);
+        else c.namedBindings.elements.forEach((el) => imports.set(el.name.text, `${mod}::${(el.propertyName || el.name).text}`));
       }
-      const hit = names.filter((x) => tagRoots.has(x));
-      if (hit.length && ts.isStringLiteral(n.moduleSpecifier)) out.push(`import ${hit.join(',')} from ${n.moduleSpecifier.text}`);
-      if (ts.isStringLiteral(n.moduleSpecifier) && /\.(css|scss|sass)$/.test(n.moduleSpecifier.text)) out.push(`import ${n.moduleSpecifier.text}`);
+      if (/\.(css|scss|sass)$/.test(mod)) out.push(`import ${mod}`);
       return;
     }
     if (ts.isExportDeclaration(n)) return;
-    if (ts.isVariableDeclaration(n) && ts.isIdentifier(n.name) && tagRoots.has(n.name.text) && n.initializer) out.push(`decl ${n.name.text}=${norm(n.initializer.getText(sf))}`);
-    if (ts.isJsxOpeningElement(n) || ts.isJsxSelfClosingElement(n)) {
-      out.push(`<${n.tagName.getText(sf)}`);
-      for (const a of n.attributes.properties) attr(a);
-      out.push(ts.isJsxSelfClosingElement(n) ? '/>' : '>');
-      // Attribute expressions can hold nested JSX (render props): walk them too, but only the JSX inside.
-      for (const a of n.attributes.properties) {
-        const e = ts.isJsxSpreadAttribute(a) ? a.expression : a.initializer;
-        if (e) ts.forEachChild(e, visit);
-      }
-      return;
-    }
-    if (ts.isJsxClosingElement(n)) { out.push(`</${n.tagName.getText(sf)}>`); return; }
-    if (ts.isJsxOpeningFragment(n)) { out.push('<>'); return; }
-    if (ts.isJsxClosingFragment(n)) { out.push('</>'); return; }
     if (ts.isJsxText(n)) return; // copy is not design
-    if (ts.isJsxExpression(n) && n.parent && (ts.isJsxElement(n.parent) || ts.isJsxFragment(n.parent))) {
-      out.push('{');
+    // `useEffect(...)` as a statement: adding or removing one draws nothing, so the statement wrapper is not recorded.
+    if (ts.isExpressionStatement(n) && !quiet && isQuietRoot(n.expression)) { visit(n.expression); return; }
+    if (quiet) {
+      // Logic only: strings still count (a class set through the DOM), and so does any DOM style/class write.
+      if (ts.isExpressionStatement(n) && DOM_WRITE.test(n.getText(sf))) { out.push(`dom ${norm(n.getText(sf))}`); return; }
+      if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(`"${norm(n.text)}"`);
+      else if (ts.isTemplateExpression(n)) out.push(`\`${[n.head.text, ...n.templateSpans.map((x) => x.literal.text)].map(norm).join('${}')}\``);
+      else if (ts.isJsxOpeningElement(n) || ts.isJsxSelfClosingElement(n)) out.push(`<${n.tagName.getText(sf)}`);
       ts.forEachChild(n, visit);
-      out.push('}');
       return;
     }
-    // Every literal that is not a type or an import path (a class name, a colour, a list length, true/false) can change a pixel.
-    const K = ts.SyntaxKind;
-    if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(`"${norm(n.text)}"`);
-    else if (quiet) { /* logic only: see above */ }
-    else if (ts.isNumericLiteral(n)) out.push(`#${n.text}`);
-    else if (n.kind === K.TrueKeyword || n.kind === K.FalseKeyword || n.kind === K.NullKeyword) out.push(`@${n.getText(sf)}`);
-    if (ts.isTemplateExpression(n)) out.push(`\`${[n.head.text, ...n.templateSpans.map((x) => x.literal.text)].map(norm).join('${}')}\``);
-    if (ts.isPropertyAssignment(n) && /^['"]?(className|class|style)['"]?$/.test(n.name.getText(sf))) out.push(`${n.name.getText(sf)}:${norm(n.initializer.getText(sf))}`);
-    if (ts.isExpressionStatement(n) && ts.isStringLiteral(n.expression) && /^use (client|server)$/.test(n.expression.text)) out.push(`'${n.expression.text}'`);
+    out.push(K[n.kind]);
+    if (ts.isIdentifier(n) || ts.isPrivateIdentifier(n)) out.push(n.text);
+    else if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(norm(n.text));
+    else if (ts.isNumericLiteral(n) || ts.isBigIntLiteral(n) || ts.isRegularExpressionLiteral(n)) out.push(n.text);
+    else if (ts.isTemplateHead(n) || ts.isTemplateMiddle(n) || ts.isTemplateTail(n)) out.push(norm(n.text));
+    else if (ts.isExpressionStatement(n) && ts.isStringLiteral(n.expression) && /^use (client|server)$/.test(n.expression.text)) out.push(n.expression.text);
     ts.forEachChild(n, visit);
   };
   visit(sf);
+  out.imports = imports;
   return out;
 }
 
@@ -159,6 +116,8 @@ function classifyFile({ file, oldSource, newSource }) {
     if (!a || !b) return design('does not parse (fail closed)');
     const sa = skeleton(ts, a);
     const sb = skeleton(ts, b);
+    // A binding present on both sides that now points somewhere else (a swapped icon, component or constant) changes what draws.
+    for (const [name, target] of sa.imports) if (sb.imports.has(name) && sb.imports.get(name) !== target) return design(`import ${name} now points at a different module or export`);
     if (sa.length === sb.length && sa.every((t, i) => t === sb[i])) return { design: false, reason: 'page structure and style tokens unchanged' };
     let i = 0;
     while (i < sa.length && i < sb.length && sa[i] === sb[i]) i++;
@@ -224,7 +183,7 @@ function explain(r) {
   return `Owner yes needed: ${r.reason}.`;
 }
 
-module.exports = { classifyFile, designFiles, selfClear, explain, hasUtilityToken, _skeleton: skeleton, _parse: parse, _loadTs: loadTs };
+module.exports = { classifyFile, designFiles, selfClear, explain, _skeleton: skeleton, _parse: parse, _loadTs: loadTs };
 
 if (require.main === module) {
   const opt = {};
