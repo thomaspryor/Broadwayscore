@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T14:00:13.702Z",
+  "generatedAt": "2026-11-20T15:43:58.768Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -169,19 +169,59 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 853,
-  "matchedGaps": 2,
+  "itemsScanned": 851,
+  "matchedGaps": 6,
   "possibleGaps": 1,
   "gaps": [
+    {
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/downstate-bruce-norris-broadway-review/",
+      "headline": "‘Downstate’ is a pitch-black, pitch-perfect look at the monsters in our midst (Broadway review)",
+      "publishDate": "2026-11-20"
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "level": "matched",
+      "outletId": "liamodell",
+      "url": "https://liamodell.com/2026/11/20/eurotrash-review-young-vic-theatre-london-kathryn-hunter-ben-whishaw-christian-kracht/",
+      "headline": "‘Eurotrash’ review &#8211; Whishaw and Hunter are the perfect double act in outrageously funny road trip",
+      "publishDate": "2026-11-20"
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "level": "matched",
+      "outletId": "nytimes",
+      "url": "https://www.nytimes.com/2026/11/20/theater/eurotrash-young-vic-london-review.html",
+      "headline": "“Eurotrash” Review: Who Knew a Toxic Family Road Trip Could Be So Fun?",
+      "publishDate": "2026-11-20"
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/nov/20/ben-whishaw-kathryn-hunter-eurotrash-review-young-vic",
+      "headline": "Ben Whishaw and Kathryn Hunter are a dynamite duo on the road to nowhere in Eurotrash",
+      "publishDate": "2026-11-20"
+    },
     {
       "showId": "much-ado-about-nothing-2026",
       "title": "Much Ado About Nothing",
       "level": "matched",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-with-hayley-atwell-and-tom-hiddleston-moves-to-broadway-review_1737885/",
-      "headline": "Much Ado About Nothing with Hayley Atwell and Tom Hiddleston moves to Broadway – review",
+      "outletId": "totaltheater1",
+      "url": "https://totaltheater1.wordpress.com/2026/11/20/much-ado-about-nothing/",
+      "headline": "Much Ado About Nothing",
       "publishDate": "2026-11-20"
     },
     {
