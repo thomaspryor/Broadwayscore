@@ -118,7 +118,9 @@ function countGeminiModelRows(text) {
 /** Quoted claude-* ids in a source file, folded to the base alias. */
 function referencedAnthropicIds(source) {
   const out = new Set();
-  for (const m of String(source).matchAll(/['"`](claude-[a-z0-9][a-z0-9.-]*[a-z0-9])['"`]/g)) out.add(anthropicBaseId(m[1]));
+  // Whole-line comments are skipped: a quoted id in prose is not a call site (BRO-7510).
+  const code = String(source).split('\n').filter((l) => !/^\s*(\/\/|\*|\/\*|#)/.test(l)).join('\n');
+  for (const m of code.matchAll(/['"`](claude-[a-z0-9][a-z0-9.-]*[a-z0-9])['"`]/g)) out.add(anthropicBaseId(m[1]));
   return out;
 }
 

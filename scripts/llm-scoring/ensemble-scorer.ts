@@ -22,7 +22,7 @@ import { ensembleScore, toModelScore, applyTailStretch } from './ensemble';
 // ========================================
 
 export interface EnsembleScoringOptions {
-  claudeModel: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-3-5-haiku-20241022';
+  claudeModel: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-haiku-4-5-20251001';
   openaiModel: OpenAIScoringModel;
   geminiModel: 'gemini-2.5-flash' | 'gemini-2.5-flash' | 'gemini-1.5-flash';
   kimiModel: string;

@@ -23,7 +23,7 @@ const { getBestTextForScoring } = require('../lib/text-quality');
 // ========================================
 
 interface ScoringOptions {
-  model: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-3-5-haiku-20241022' | 'claude-haiku-4-5-20251001';
+  model: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-haiku-4-5-20251001';
   maxRetries: number;
   verbose: boolean;
 }

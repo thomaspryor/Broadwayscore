@@ -512,7 +512,7 @@ export interface ScoringPipelineOptions {
   minTextLength: number;
 
   /** Claude model to use */
-  model: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-3-5-haiku-20241022';
+  model: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-haiku-4-5-20251001';
 
   /** Dry run - don't save results */
   dryRun: boolean;
