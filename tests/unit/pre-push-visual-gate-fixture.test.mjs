@@ -409,3 +409,13 @@ test('(BRO-7850) owner typed NO-VERIFY in their latest message -> exit 0, no wou
   assert.match(log, /NO-VERIFY-in-command/);
   assert.doesNotMatch(log, /would-block-agent-typed-no-verify/);
 });
+
+test('(BRO-7850) queryOwnerNoVerify: true only for the latest non-synthetic owner message', async () => {
+  const { queryOwnerNoVerify } = await import('../../scripts/lib/transcript-scan.mjs');
+  const u = (text, synthetic = false) => ({ kind: 'user_text', text, synthetic });
+  assert.equal(queryOwnerNoVerify([u('NO-VERIFY: owner says skip it this once')]).ownerTyped, true);
+  assert.equal(queryOwnerNoVerify([u('NO-VERIFY: old message'), u('looks fine')]).ownerTyped, false, 'an older owner NO-VERIFY does not count');
+  assert.equal(queryOwnerNoVerify([u('plain'), u('NO-VERIFY: from a harness prompt', true)]).ownerTyped, false);
+  assert.equal(queryOwnerNoVerify([u('```\nNO-VERIFY: quoted example\n```')]).ownerTyped, false);
+  assert.equal(queryOwnerNoVerify([]).ownerTyped, false);
+});
