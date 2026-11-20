@@ -1169,20 +1169,6 @@
     "queuedAt": "2026-11-20T11:17:56.358Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-20.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-20T12:40:14.531Z"
-  },
-  {
     "conditionKey": "opening-night-publish-date-pre-opening:missing:much-ado-about-nothing-2026",
     "title": "Shipped review missing publishDate on Much Ado About Nothing",
     "description": "nydailynews/null SHIPPED with no publishDate — cannot confirm post-opening: null",
@@ -1297,5 +1283,19 @@
     "tracked": "BRO-7455",
     "fields": [],
     "queuedAt": "2026-11-20T13:18:52.532Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-20.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-20T13:59:50.041Z"
   }
 ]

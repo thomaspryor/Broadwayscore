@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-20T12:39:40.912Z",
+  "generatedAt": "2026-11-20T13:59:38.319Z",
   "windowDays": 1095,
-  "targets": 276,
-  "auditedThisRun": 17,
-  "carriedForward": 2767,
+  "targets": 273,
+  "auditedThisRun": 13,
+  "carriedForward": 2771,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 665,
-    "missingCurrentRun": 1458,
+    "missingCurrentRun": 1460,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 877,
-    "totalRecoverable": 48,
+    "totalRecoverable": 49,
     "totalRecovered": 105,
-    "humanExcluded": 32,
+    "humanExcluded": 33,
     "automatedExcluded": 972,
-    "automatedExcludedListed": 710,
-    "priorProductionCitations": 8880
+    "automatedExcludedListed": 709,
+    "priorProductionCitations": 8902
   },
   "results": [
     {
@@ -3534,7 +3534,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -3544,7 +3544,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 5,
             "accepted": 2,
             "error": null
           },
@@ -3554,7 +3554,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -3574,7 +3574,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 5,
             "accepted": 1,
             "error": null
           }
@@ -3585,12 +3585,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 13,
         "byReason": {
-          "non-review-host": 12,
-          "aggregator-internal-nav": 1,
+          "non-review-host": 9,
           "no-review-evidence": 1,
-          "news-roundup-site": 1
+          "aggregator-internal-nav": 1,
+          "news-roundup-site": 1,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -3620,7 +3621,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=voicemag.uk): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=voicemag.uk): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  ScrapingBee failed ("
         },
         {
           "url": "https://www.theguardian.com/stage/jul/9-circles-review-park-theatre-london",
@@ -3697,7 +3698,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-19T22:57:56.426Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -10551,10 +10552,12 @@
         "http://tvline.com/2017/12/17/a-christmas-story-live-review-best-worst-moments/",
         "https://www.avclub.com/a-christmas-story-live-at-least-manages-not-to-shoot-i-1821370368",
         "https://www.onstagentx.com/reviews/a-christmas-story-the-musical-bass-performance-hall-pafw",
+        "https://www.marriotttheatre.com/review/a-christmas-story-stage-musical-not-quite-as-warm-and-fuzzy-as-the-movie-but-still-a-treat",
         "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-boch-center-wang-theatre-boston-ma-review",
+        "https://offbookcincinnati.substack.com/p/review-a-christmas-story-the-musical",
+        "https://sacculturalhub.com/entertainment/articles/a-christmas-story-the-musical-prompts-laughs-and-a-tear-a-review/",
         "https://www.nuvo.net/arts/review-a-christmas-story-the-musical-at-civic-theatre",
         "https://stamfordmoms.com/event/a-christmas-story-the-musical",
-        "https://www.marriotttheatre.com/review/a-christmas-story-stage-musical-not-quite-as-warm-and-fuzzy-as-the-movie-but-still-a-treat",
         "https://www.uticatheater.com/reviews/customer-reviews/a-christmas-story",
         "https://www.dallas-theater.com/reviews/customer-reviews/a-christmas-story",
         "https://aroundthetownchicago.com/theatre-reviews/a-christmas-story-the-musical-3/"
@@ -10837,8 +10840,8 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://stamfordmoms.com/event/a-christmas-story-the-musical",
-          "host": "stamfordmoms.com",
+          "url": "https://www.marriotttheatre.com/review/a-christmas-story-stage-musical-not-quite-as-warm-and-fuzzy-as-the-movie-but-still-a-treat",
+          "host": "marriotttheatre.com",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -10849,8 +10852,20 @@
           ]
         },
         {
-          "url": "https://www.marriotttheatre.com/review/a-christmas-story-stage-musical-not-quite-as-warm-and-fuzzy-as-the-movie-but-still-a-treat",
-          "host": "marriotttheatre.com",
+          "url": "https://sacculturalhub.com/entertainment/articles/a-christmas-story-the-musical-prompts-laughs-and-a-tear-a-review/",
+          "host": "sacculturalhub.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://stamfordmoms.com/event/a-christmas-story-the-musical",
+          "host": "stamfordmoms.com",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -10902,17 +10917,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"A Christmas Story The Musical\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"A Christmas Story The Musical\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"A Christmas Story The Musical\" review american",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "A Christmas Story The Musical North American Tour review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "A Christmas Story The Musical North American Tour review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "A Christmas Story The Musical North American Tour review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 5,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 871,
+        "count": 883,
         "byReason": {
-          "non-review-host": 83,
-          "aggregator-internal-nav": 604,
+          "non-review-host": 91,
+          "no-review-evidence": 1,
+          "aggregator-internal-nav": 607,
+          "roundup-page": 4,
           "not-http-url": 164,
           "aggregator-section-root": 12,
-          "roundup-page": 4,
           "podcast-episode": 3,
           "unparseable-url": 1
         }
@@ -10930,6 +11003,16 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-A-CHRISTMAS-STORY-Embarks-on-National-Tour-20251217",
           "publishDate": "2025-12-17"
+        }
+      ],
+      "nonReviewCandidates": [
+        {
+          "url": "https://offbookcincinnati.substack.com/p/review-a-christmas-story-the-musical",
+          "host": "offbookcincinnati.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2017-12-05"
         }
       ],
       "automatedExcludedListed": 0,
@@ -11083,15 +11166,22 @@
           "censusGateOn": true
         },
         {
-          "url": "https://stamfordmoms.com/event/a-christmas-story-the-musical",
-          "host": "stamfordmoms.com",
+          "url": "https://www.marriotttheatre.com/review/a-christmas-story-stage-musical-not-quite-as-warm-and-fuzzy-as-the-movie-but-still-a-treat",
+          "host": "marriotttheatre.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
         },
         {
-          "url": "https://www.marriotttheatre.com/review/a-christmas-story-stage-musical-not-quite-as-warm-and-fuzzy-as-the-movie-but-still-a-treat",
-          "host": "marriotttheatre.com",
+          "url": "https://sacculturalhub.com/entertainment/articles/a-christmas-story-the-musical-prompts-laughs-and-a-tear-a-review/",
+          "host": "sacculturalhub.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://stamfordmoms.com/event/a-christmas-story-the-musical",
+          "host": "stamfordmoms.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -11133,18 +11223,25 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "stamfordmoms.com",
-            "outlet": "stamfordmoms.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stamfordmoms.com/event/a-christmas-story-the-musical"
-          },
-          {
             "outletId": "marriotttheatre.com",
             "outlet": "marriotttheatre.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.marriotttheatre.com/review/a-christmas-story-stage-musical-not-quite-as-warm-and-fuzzy-as-the-movie-but-still-a-treat"
+          },
+          {
+            "outletId": "sacculturalhub.com",
+            "outlet": "sacculturalhub.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://sacculturalhub.com/entertainment/articles/a-christmas-story-the-musical-prompts-laughs-and-a-tear-a-review/"
+          },
+          {
+            "outletId": "stamfordmoms.com",
+            "outlet": "stamfordmoms.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stamfordmoms.com/event/a-christmas-story-the-musical"
           },
           {
             "outletId": "uticatheater.com",
@@ -11183,18 +11280,25 @@
             "firstSeenAt": "2026-11-19T12:19:56.794Z"
           },
           {
-            "url": "https://stamfordmoms.com/event/a-christmas-story-the-musical",
-            "outletId": "stamfordmoms.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-17T01:45:40.416Z"
-          },
-          {
             "url": "https://www.marriotttheatre.com/review/a-christmas-story-stage-musical-not-quite-as-warm-and-fuzzy-as-the-movie-but-still-a-treat",
             "outletId": "marriotttheatre.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-19T19:31:45.140Z"
+          },
+          {
+            "url": "https://sacculturalhub.com/entertainment/articles/a-christmas-story-the-musical-prompts-laughs-and-a-tear-a-review/",
+            "outletId": "sacculturalhub.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-20T13:59:38.319Z"
+          },
+          {
+            "url": "https://stamfordmoms.com/event/a-christmas-story-the-musical",
+            "outletId": "stamfordmoms.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-17T01:45:40.416Z"
           },
           {
             "url": "https://www.uticatheater.com/reviews/customer-reviews/a-christmas-story",
@@ -11219,11 +11323,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://offbookcincinnati.substack.com/p/review-a-christmas-story-the-musical",
+            "host": "offbookcincinnati.substack.com",
+            "reason": "page-date-before-run"
+          }
+        ],
         "liveCount": 2,
-        "candidateCount": 7
+        "candidateCount": 8
       },
-      "computedAt": "2026-11-20T08:30:23.834Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "a-dark-wood-regional-2026",
@@ -50402,7 +50512,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-20T08:30:23.834Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "art-2025",
@@ -93864,20 +93974,40 @@
       "category": "off-west-end",
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello",
+        "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical",
         "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818",
-        "https://www.broadwayworld.com/article/Review-Roundup-CINDERELLA-Opens-on-Broadway-Updating-LIVE-20130303"
+        "https://www.broadwayworld.com/article/Review-Roundup-CINDERELLA-Opens-on-Broadway-Updating-LIVE-20130303",
+        "https://www.broadwayworld.com/article/Review-Roundup-CINDERELLA-at-The-MUNY-What-Did-The-Critics-Think-20190711"
       ],
       "aggregatorListedUrls": [
+        "https://www.theatlantic.com/culture/archive/2021/09/cinderella-movie-review-amazon-prime/619942/",
+        "https://www.avclub.com/camila-cabello-leads-a-cinderella-for-the-mamma-mia-cr-1847581527",
+        "https://chicago.suntimes.com/movies-and-tv/2021/9/1/22650541/cinderella-review-amazon-camila-cabelo-movie-billy-porter-musical",
+        "https://www.theguardian.com/film/2021/sep/01/cinderella-review-musical-camila-cabello-james-corden",
+        "https://www.hollywoodreporter.com/movies/movie-reviews/camila-cabello-and-billy-porter-in-cinderella-1235004893/",
+        "https://www.indiewire.com/2021/09/cinderella-2021-review-camila-cabello-1234660175/",
+        "https://www.vulture.com/article/camila-cabellos-cinderella-movie-review-girlboss-version.html",
+        "https://datebook.sfchronicle.com/movies-tv/review-in-cinderella-starring-camila-cabello-incoherence-isnt-quite-bliss",
+        "https://www.smh.com.au/culture/movies/woke-cinderella-missing-the-magic-20210901-p58nt9.html",
+        "https://variety.com/2021/film/reviews/cinderella-review-1235053392/",
+        "https://www.thewrap.com/cinderella-film-review-camila-cabello-billy-porter-idina-menzel/",
+        "https://theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
+        "https://www.dailymail.co.uk/tvshowbiz/article-9906831/The-night-Cinderella-finally-went-ball-West-End-stage-opens-month-later-planned.html",
+        "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
         "https://www.nytimes.com/2021/08/19/theater/andrew-lloyd-webber-cinderella.html",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
+        "https://inews.co.uk/culture/cinderella-gillian-lynne-theatre-review-sugary-so-called-feminist-take-that-sets-women-against-each-other-1158145",
+        "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
+        "https://www.londontheatre1.com/reviews/cinderella-the-musical-gillian-lynne-theatre-london-review/",
+        "https://mytheatremates.com/cinderella-gillian-lynne-theatre-mark/",
+        "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
         "https://www.telegraph.co.uk/theatre/what-to-see/cinderella-review-happy-ever-andrew-lloyd-webbers-long-awaited/",
+        "https://www.timeout.com/london/theatre/cinderella-review-2",
+        "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
         "https://www.theguardian.com/stage/2021/aug/18/cinderella-review-not-so-much-a-ball-as-a-blast",
         "https://www.whatsonstage.com/london-theatre/reviews/cinderella-andrew-lloyd-webbers-musical_54726.html",
         "https://www.thetimes.co.uk/article/andrew-lloyd-webbers-cinderella-review-if-only-the-show-could-go-on-dp7wmr8kk",
-        "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
-        "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
-        "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
-        "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
         "https://www.theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
         "http://theater.nytimes.com/2013/03/04/theater/reviews/rodgers-hammersteins-cinderella-at-broadway-theater.html",
         "http://online.wsj.com/article/AP95c59055d4bc4e6693e455d9d492d1bb.html",
@@ -93889,12 +94019,200 @@
         "http://blogs.villagevoice.com/dailymusto/2013/03/is_cinderella_e.php",
         "http://www.vulture.com/2013/03/theater-review-cinderella.html",
         "http://www.northjersey.com/arts_entertainment/theater/194743211_Theater_review___Cinderella_.html",
-        "http://www.ew.com/ew/article/0,,20364394_20678949,00.html"
+        "http://www.ew.com/ew/article/0,,20364394_20678949,00.html",
+        "http://www.criticalblast.com/articles/2019/07/09/cinderella-political-idealist-muny-production",
+        "https://www.stltoday.com/entertainment/arts-and-theatre/reviews/muny-s-updated-cinderella-is-a-fun-flashy-fairy-tale/article_d6c78fcc-036b-52cd-bd6b-dabb36191d47.html"
       ],
       "dirFiles": 6,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.theatlantic.com/culture/archive/2021/09/cinderella-movie-review-amazon-prime/619942/",
+          "host": "theatlantic.com",
+          "knownOutletId": "theatlantic",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.avclub.com/camila-cabello-leads-a-cinderella-for-the-mamma-mia-cr-1847581527",
+          "host": "avclub.com",
+          "knownOutletId": "av-club",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicago.suntimes.com/movies-and-tv/2021/9/1/22650541/cinderella-review-amazon-camila-cabelo-movie-billy-porter-musical",
+          "host": "suntimes.com",
+          "knownOutletId": "chicago-sun-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/sep/01/cinderella-review-musical-camila-cabello-james-corden",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/camila-cabello-and-billy-porter-in-cinderella-1235004893/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.indiewire.com/2021/09/cinderella-2021-review-camila-cabello-1234660175/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/camila-cabellos-cinderella-movie-review-girlboss-version.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-in-cinderella-starring-camila-cabello-incoherence-isnt-quite-bliss",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.smh.com.au/culture/movies/woke-cinderella-missing-the-magic-20210901-p58nt9.html",
+          "host": "smh.com.au",
+          "knownOutletId": "smh",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/cinderella-review-1235053392/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/cinderella-film-review-camila-cabello-billy-porter-idina-menzel/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-9906831/The-night-Cinderella-finally-went-ball-West-End-stage-opens-month-later-planned.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "mail-on-sunday",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ]
+        },
         {
           "url": "https://www.nytimes.com/2021/08/19/theater/andrew-lloyd-webber-cinderella.html",
           "host": "nytimes.com",
@@ -93902,6 +94220,100 @@
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ]
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ]
+        },
+        {
+          "url": "https://inews.co.uk/culture/cinderella-gillian-lynne-theatre-review-sugary-so-called-feminist-take-that-sets-women-against-each-other-1158145",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ]
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/cinderella-the-musical-gillian-lynne-theatre-london-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mytheatremates.com/cinderella-gillian-lynne-theatre-mark/",
+          "host": "mytheatremates.com",
+          "knownOutletId": null,
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
             {
               "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
@@ -93913,6 +94325,40 @@
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph",
           "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/cinderella-review-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical"
+            },
             {
               "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
@@ -93959,71 +94405,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "sunday-times",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ]
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ]
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818"
-            }
-          ]
         },
         {
           "url": "https://www.theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
@@ -94180,6 +94561,32 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.criticalblast.com/articles/2019/07/09/cinderella-political-idealist-muny-production",
+          "host": "criticalblast.com",
+          "knownOutletId": "critical-blast",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CINDERELLA-at-The-MUNY-What-Did-The-Critics-Think-20190711"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.stltoday.com/entertainment/arts-and-theatre/reviews/muny-s-updated-cinderella-is-a-fun-flashy-fairy-tale/article_d6c78fcc-036b-52cd-bd6b-dabb36191d47.html",
+          "host": "stltoday.com",
+          "knownOutletId": "st-louis-post-dispatch",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CINDERELLA-at-The-MUNY-What-Did-The-Critics-Think-20190711"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [],
@@ -94191,18 +94598,29 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 576,
+        "count": 1092,
         "byReason": {
-          "not-http-url": 102,
-          "non-review-host": 56,
-          "aggregator-internal-nav": 401,
-          "aggregator-section-root": 8,
-          "roundup-page": 7,
-          "podcast-episode": 2
+          "non-review-host": 123,
+          "aggregator-internal-nav": 728,
+          "roundup-page": 10,
+          "non-stage-review": 3,
+          "not-http-url": 181,
+          "production-database-listing": 23,
+          "aggregator-section-root": 20,
+          "podcast-episode": 3,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-cinderella-movie-musical-starring-camila-cabello",
+          "publishDate": "2021-09-02"
+        },
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-andrew-lloyd-webbers-new-cinderella-musical",
+          "publishDate": "2021-08-19"
+        },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Andrew-Lloyd-Webbers-CINDERELLA-Opens-On-the-West-End--See-What-the-Critics-Are-Saying-20210818",
           "publishDate": "2021-08-18"
@@ -94210,11 +94628,113 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-CINDERELLA-Opens-on-Broadway-Updating-LIVE-20130303",
           "publishDate": "2013-03-03"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-CINDERELLA-at-The-MUNY-What-Did-The-Critics-Think-20190711",
+          "publishDate": "2019-07-11"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.theatlantic.com/culture/archive/2021/09/cinderella-movie-review-amazon-prime/619942/",
+          "host": "theatlantic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.avclub.com/camila-cabello-leads-a-cinderella-for-the-mamma-mia-cr-1847581527",
+          "host": "avclub.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://chicago.suntimes.com/movies-and-tv/2021/9/1/22650541/cinderella-review-amazon-camila-cabelo-movie-billy-porter-musical",
+          "host": "suntimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/sep/01/cinderella-review-musical-camila-cabello-james-corden",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/camila-cabello-and-billy-porter-in-cinderella-1235004893/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.indiewire.com/2021/09/cinderella-2021-review-camila-cabello-1234660175/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/camila-cabellos-cinderella-movie-review-girlboss-version.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-in-cinderella-starring-camila-cabello-incoherence-isnt-quite-bliss",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.smh.com.au/culture/movies/woke-cinderella-missing-the-magic-20210901-p58nt9.html",
+          "host": "smh.com.au",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2021/film/reviews/cinderella-review-1235053392/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/cinderella-film-review-camila-cabello-billy-porter-idina-menzel/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/cinderella-gillian-lynne-theatre-review-spectacular-show-hits-and-misses",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-9906831/The-night-Cinderella-finally-went-ball-West-End-stage-opens-month-later-planned.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://www.nytimes.com/2021/08/19/theater/andrew-lloyd-webber-cinderella.html",
           "host": "nytimes.com",
@@ -94223,8 +94743,64 @@
           "censusGateOn": true
         },
         {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://inews.co.uk/culture/cinderella-gillian-lynne-theatre-review-sugary-so-called-feminist-take-that-sets-women-against-each-other-1158145",
+          "host": "inews.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/cinderella-the-musical-gillian-lynne-theatre-london-review/",
+          "host": "londontheatre1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://mytheatremates.com/cinderella-gillian-lynne-theatre-mark/",
+          "host": "mytheatremates.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/cinderella-review-happy-ever-andrew-lloyd-webbers-long-awaited/",
           "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/cinderella-review-2",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
+          "host": "thetimes.co.uk",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -94246,41 +94822,6 @@
         {
           "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webbers-cinderella-review-if-only-the-show-could-go-on-dp7wmr8kk",
           "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
-          "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/cinderella-musical-review-andrew-lloyd-webber-b951361.html",
-          "host": "standard.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/andrew-lloyd-webbers-cinderella-the-musical-carrie-hope-fletcher",
-          "host": "londontheatre.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cinderella-review-andrew-lloyd-webber-b1905217.html",
-          "host": "independent.co.uk",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -94368,6 +94909,20 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
+        },
+        {
+          "url": "http://www.criticalblast.com/articles/2019/07/09/cinderella-political-idealist-muny-production",
+          "host": "criticalblast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.stltoday.com/entertainment/arts-and-theatre/reviews/muny-s-updated-cinderella-is-a-fun-flashy-fairy-tale/article_d6c78fcc-036b-52cd-bd6b-dabb36191d47.html",
+          "host": "stltoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [],
@@ -94382,7 +94937,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-20T10:09:50.928Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "cinderella-regional-2023",
@@ -133797,7 +134352,8 @@
         "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-premiere-of-bruce-norris-downstate",
         "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf",
         "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115",
-        "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115"
+        "https://www.broadwayworld.com/article/Review-Roundup-DOWNSTATE-Opens-on-Broadway-Updating-Live-20261115",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Steppenwolfs-DOWNSTATE-20181004"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/downstate-bruce-norris-broadway-review/",
@@ -133833,11 +134389,15 @@
         "https://www.dailyherald.com/entlife/20181004/steppenwolfs-provoking-downstate-offers-an-unflinching-look-at-predators",
         "https://www.newcitystage.com/2018/10/03/i-believe-you-bruce-a-review-of-downstate-at-steppenwolf-theatre-company/",
         "https://www.nytimes.com/2018/10/03/theater/downstate-review-bruce-norris-steppenwolf.html",
+        "https://splashmags.com/index.php/2018/10/04/downstate-review-a-morality-play-with-a-striking-message-by-steppenwolf-theatre-company/",
+        "https://www.stageandcinema.com/2018/10/01/downstate-steppenwolf/",
+        "https://thebroadwayblog.com/steppenwolf-downstate-review/",
         "https://www.vulture.com/article/theater-review-downstate-bruce-norris-broadway.html",
         "https://pagesonstages.com/2026/11/17/downstate/",
         "https://pagesonstages.com/2026/11/17/other-desert-cities/",
-        "https://www.vulture.com/theater-review-downstate-bruce-norris-broadway",
         "https://deadline.com/2026/11/downstate-broadway-review-1237220229",
+        "https://www.vulture.com/theater-review-downstate-bruce-norris-broadway",
+        "https://1minutecritic.com/downstate-bruce-norris-broadway-review",
         "https://www.theguardian.com/stage/nov/downstate-play-review",
         "https://www.timeout.com/theater/downstate-review-off-broadway-bruce-norris",
         "https://stagezine.com/events/downstate-booth-theatre/",
@@ -134001,6 +134561,10 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Steppenwolfs-DOWNSTATE-20181004"
             }
           ],
           "priorRun": true,
@@ -134014,6 +134578,49 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Steppenwolfs-DOWNSTATE-20181004"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://splashmags.com/index.php/2018/10/04/downstate-review-a-morality-play-with-a-striking-message-by-steppenwolf-theatre-company/",
+          "host": "splashmags.com",
+          "knownOutletId": "splash-magazines",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Steppenwolfs-DOWNSTATE-20181004"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.stageandcinema.com/2018/10/01/downstate-steppenwolf/",
+          "host": "stageandcinema.com",
+          "knownOutletId": "stageandcinema",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Steppenwolfs-DOWNSTATE-20181004"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thebroadwayblog.com/steppenwolf-downstate-review/",
+          "host": "thebroadwayblog.com",
+          "knownOutletId": "broadway-blog",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Steppenwolfs-DOWNSTATE-20181004"
             }
           ],
           "priorRun": true,
@@ -134143,6 +134750,10 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Steppenwolfs-DOWNSTATE-20181004"
             }
           ],
           "reverify": false
@@ -134173,6 +134784,10 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-reviews-for-pulitzer-winner-bruce-norris-downstate-at-steppenwolf"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Steppenwolfs-DOWNSTATE-20181004"
             }
           ],
           "reverify": false
@@ -134272,20 +134887,92 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Downstate\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Downstate\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Downstate\" review booth",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Downstate\" Norris review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Downstate Booth Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Downstate Booth Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Downstate Booth Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 8,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 896,
+        "count": 1190,
         "byReason": {
-          "non-review-host": 117,
-          "aggregator-internal-nav": 561,
-          "not-http-url": 152,
-          "production-database-listing": 32,
-          "aggregator-section-root": 21,
+          "non-review-host": 157,
+          "census-junk-host": 2,
+          "aggregator-internal-nav": 763,
+          "ticketing-listing": 1,
+          "ticketing-reseller": 2,
+          "bare-host": 1,
+          "roundup-page": 6,
           "non-stage-review": 3,
-          "roundup-page": 8,
-          "podcast-episode": 2
+          "not-http-url": 193,
+          "production-database-listing": 32,
+          "aggregator-section-root": 25,
+          "podcast-episode": 3,
+          "show-listing-page": 2
         }
       },
       "dedupedVariants": [],
@@ -134301,6 +134988,10 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Bruce-Norris-DOWNSTATE-Gets-NY-Premiere-At-Playwrights-Horizons-20221115",
           "publishDate": "2022-11-15"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Steppenwolfs-DOWNSTATE-20181004",
+          "publishDate": "2018-10-04"
         }
       ],
       "automatedExcludedListed": 2,
@@ -134379,6 +135070,27 @@
         {
           "url": "https://www.nytimes.com/2018/10/03/theater/downstate-review-bruce-norris-steppenwolf.html",
           "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://splashmags.com/index.php/2018/10/04/downstate-review-a-morality-play-with-a-striking-message-by-steppenwolf-theatre-company/",
+          "host": "splashmags.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.stageandcinema.com/2018/10/01/downstate-steppenwolf/",
+          "host": "stageandcinema.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://thebroadwayblog.com/steppenwolf-downstate-review/",
+          "host": "thebroadwayblog.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -134582,16 +135294,22 @@
             "firstSeenAt": "2026-11-18T14:17:37.972Z"
           },
           {
+            "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T16:28:25.966Z"
+          },
+          {
             "url": "https://www.vulture.com/theater-review-downstate-bruce-norris-broadway",
             "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-11-16T10:22:47.131Z"
           },
           {
-            "url": "https://deadline.com/2026/11/downstate-broadway-review-1237220229",
-            "outletId": "deadline.com",
+            "url": "https://1minutecritic.com/downstate-bruce-norris-broadway-review",
+            "outletId": "1minutecritic.com",
             "state": "live",
-            "firstSeenAt": "2026-11-16T16:28:25.966Z"
+            "firstSeenAt": "2026-11-20T13:59:38.319Z"
           },
           {
             "url": "https://www.theguardian.com/stage/nov/downstate-play-review",
@@ -134651,7 +135369,7 @@
         "liveCount": 17,
         "candidateCount": 22
       },
-      "computedAt": "2026-11-20T08:30:23.834Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
@@ -154643,6 +155361,7 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.thestage.co.uk/reviews/father-christmas-review-at-lyric-hammersmith-london",
+        "https://northernartsreview.co.uk/central-north/raymond-briggs-father-christmas-returns-to-waterside-this-festive-season/",
         "https://surrey.muddystilettos.co.uk/where-to-meet-santa-father-christmas-surrey"
       ],
       "dirFiles": 0,
@@ -154724,14 +155443,88 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Father Christmas\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Father Christmas\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Father Christmas\" review lyric",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Father Christmas Lyric Hammersmith review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Father Christmas Lyric Hammersmith review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Father Christmas Lyric Hammersmith review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 6,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 16,
+        "byReason": {
+          "non-review-host": 6,
+          "census-junk-host": 2,
+          "no-review-evidence": 4,
+          "roundup-page": 1,
+          "non-stage-review": 2,
+          "write-path-blocked": 1
+        }
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://northernartsreview.co.uk/central-north/raymond-briggs-father-christmas-returns-to-waterside-this-festive-season/",
+          "host": "northernartsreview.co.uk",
+          "knownOutletId": "northernartsreview",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2025-10-13"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
@@ -154783,11 +155576,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://northernartsreview.co.uk/central-north/raymond-briggs-father-christmas-returns-to-waterside-this-festive-season/",
+            "host": "northernartsreview.co.uk",
+            "reason": "page-date-before-run"
+          }
+        ],
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-20T10:09:50.928Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "father-time-off-broadway-2026",
@@ -231351,12 +232150,86 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"It’s A Wonderful Life: A Live Radio Play\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"It’s A Wonderful Life: A Live Radio Play\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"It’s A Wonderful Life: A Live Radio Play\" review broadhurst",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"It’s A Wonderful Life: A Live Radio Play\" Landry review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "It’s A Wonderful Life: A Live Radio Play Broadhurst Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "It’s A Wonderful Life: A Live Radio Play Broadhurst Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "It’s A Wonderful Life: A Live Radio Play Broadhurst Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 24,
+        "byReason": {
+          "non-review-host": 13,
+          "aggregator-internal-nav": 4,
+          "ticketing-reseller": 4,
+          "roundup-page": 1,
+          "write-path-blocked": 1,
+          "tag-index-page": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -231513,7 +232386,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-20T10:09:50.928Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "its-a-wonderful-life-live-in-chicago-regional-2023",
@@ -257844,21 +258717,92 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"La Distance\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"La Distance\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"La Distance\" review harvey",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"La Distance\" Rodrigues review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "La Distance BAM Harvey Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "La Distance BAM Harvey Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "La Distance BAM Harvey Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 113,
+        "count": 141,
         "byReason": {
-          "not-http-url": 6,
-          "non-review-host": 20,
+          "non-review-host": 37,
+          "census-junk-host": 1,
+          "no-review-evidence": 4,
+          "non-review-path": 2,
           "aggregator-internal-nav": 67,
-          "aggregator-section-root": 4,
+          "ticketing-reseller": 4,
+          "bare-host": 1,
           "roundup-page": 2,
-          "production-database-listing": 11,
           "non-stage-review": 1,
-          "non-review-path": 1,
-          "bare-host": 1
+          "not-http-url": 6,
+          "production-database-listing": 11,
+          "aggregator-section-root": 4,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
@@ -257896,7 +258840,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-20T10:09:50.928Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "la-fille-du-regiment-off-broadway-2025",
@@ -291072,46 +292016,63 @@
       "category": "broadway",
       "previewsStartDate": "2024-10-16",
       "aggregatorArticles": [
+        "https://playbill.com/article/read-the-broadway-reviews-for-maybe-happy-ending",
         "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
-        "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
-        "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
-        "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
-        "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
+        "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
+        "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
         "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
-        "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
-        "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
-        "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
+        "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
+        "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
+        "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
+        "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
         "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
-        "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
-        "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
+        "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
         "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
+        "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
+        "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
+        "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
+        "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
+        "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
+        "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
+        "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
+        "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
+        "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
+        "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
+        "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
+        "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
+        "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
         "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
         "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
-        "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
-        "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
         "https://www.talkinbroadway.com/page/world/MaybeHappyEnding.html",
         "https://www.theaterscene.net/musicals/broadway/maybe-happy-ending/victor-gluck/",
         "https://www.theatrereviews.com/broadway-review-maybe-happy-ending-at-the-belasco-theatre-currently-on/",
-        "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
         "https://culturesauce.com/2024/11/12/maybe-happy-ending-broadway-review/",
         "https://pagesonstages.wordpress.com/2024/11/12/maybe-happy-ending/",
-        "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
-        "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-        "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
-        "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
-        "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
-        "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
-        "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review"
+        "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html"
       ],
       "dirFiles": 65,
       "dirClean": 42,
       "inReviewsJson": 42,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-broadway-reviews-for-maybe-happy-ending"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [
         {
           "host": "broadwaynews.com",
@@ -291192,6 +292153,10 @@
           "sources": [
             {
               "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-broadway-reviews-for-maybe-happy-ending"
+            },
+            {
+              "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112"
             },
             {
@@ -291240,10 +292205,6 @@
             {
               "source": "show-score",
               "sourceUrl": "https://www.show-score.com/broadway-shows/maybe-happy-ending-broadway"
-            },
-            {
-              "source": "serp-census",
-              "sourceUrl": null
             }
           ],
           "listingDate": "2024-11-12",
@@ -291266,7 +292227,7 @@
               "urlInDir": "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/"
             }
           ],
-          "exclusion": "automatedExcluded",
+          "exclusion": "humanExcluded",
           "basis": [
             "nonReview"
           ],
@@ -291282,7 +292243,7 @@
           ],
           "listingDate": "2024-11-13",
           "listingSource": "show-score",
-          "reverify": true
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -291292,12 +292253,17 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 291,
+        "count": 407,
         "byReason": {
-          "not-http-url": 45,
-          "non-review-host": 19,
-          "aggregator-internal-nav": 223,
-          "aggregator-section-root": 4
+          "non-review-host": 53,
+          "aggregator-internal-nav": 263,
+          "bare-host": 1,
+          "roundup-page": 2,
+          "non-stage-review": 1,
+          "not-http-url": 56,
+          "production-database-listing": 11,
+          "aggregator-section-root": 8,
+          "podcast-episode": 12
         }
       },
       "dedupedVariants": [
@@ -291309,51 +292275,51 @@
           "reason": "same outlet \"pages-on-stages\" already held at pagesonstages.com; pagesonstages.wordpress.com is a registered alias of it"
         }
       ],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: live page is the site's not-found template; no archive.org capture"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "culturesauce",
+            "outlet": "culturesauce",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/"
+          },
           {
             "outletId": "variety",
             "outlet": "variety",
             "critic": "Unknown",
             "stars": null,
             "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/"
-          },
-          {
-            "outletId": "observer",
-            "outlet": "observer",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
-            "outletId": "nytimes.com",
+            "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
+            "outletId": "cititour.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
             "url": "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
@@ -291362,52 +292328,22 @@
             "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
-            "url": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
-            "outletId": "usatoday.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
-            "outletId": "nystagereview.com",
+            "url": "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
+            "outletId": "deadline.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
-            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
-            "outletId": "nystagereview.com",
+            "url": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
+            "outletId": "ew.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
-            "outletId": "newyorktheatreguide.com",
+            "url": "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
+            "outletId": "thefrontrowcenter.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T14:18:07.998Z"
-          },
-          {
-            "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
-            "outletId": "washingtonpost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
             "url": "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
@@ -291416,16 +292352,94 @@
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
+            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
+            "outletId": "showbiz411.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
+            "outletId": "slantmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
-            "outletId": "lightingandsoundamerica.com",
+            "url": "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
+            "outletId": "theatrely.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
+            "outletId": "usatoday.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
+            "outletId": "washingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T14:18:07.998Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
@@ -291452,12 +292466,6 @@
             "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
-            "url": "https://newyorktheater.me/2024/11/13/maybe-happy-ending-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
             "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-broadway-review/",
             "outletId": "culturesauce.com",
             "state": "live",
@@ -291476,51 +292484,15 @@
             "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
-            "url": "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
             "url": "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
-            "outletId": "showbiz411.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
-            "outletId": "slantmagazine.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
-            "outletId": "theatrely.com",
-            "state": "live",
+            "outletId": "culturesauce",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
             "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
             "outletId": "variety",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
-            "outletId": "observer",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
@@ -291532,12 +292504,17 @@
             "url": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
             "host": "nydailynews.com",
             "reason": "confirmed-non-review"
+          },
+          {
+            "url": "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
+            "host": "observer.com",
+            "reason": "collected-and-excluded"
           }
         ],
         "liveCount": 27,
         "candidateCount": 29
       },
-      "computedAt": "2026-11-07T20:21:28.962Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
@@ -325762,12 +326739,78 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Nutty Natty's Magic Puppet Show\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Nutty Natty's Magic Puppet Show\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Nutty Natty's Magic Puppet Show\" review jerry",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Nutty Natty's Magic Puppet Show The Theater Center / Jerry Orbach Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Nutty Natty's Magic Puppet Show The Theater Center / Jerry Orbach Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Nutty Natty's Magic Puppet Show The Theater Center / Jerry Orbach Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 15,
+        "byReason": {
+          "non-review-host": 3,
+          "census-junk-host": 2,
+          "no-review-evidence": 4,
+          "non-review-path": 2,
+          "aggregator-internal-nav": 1,
+          "ticketing-listing": 1,
+          "ticketing-reseller": 1,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -325781,7 +326824,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-20T08:30:23.834Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "nye-west-end-2024",
@@ -361994,6 +363037,7 @@
       ],
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://monstagigz.com/2026/11/14/theatre-review-pride-the-musical-starring-samuel-barnett-at-the-bridge-theatre/comment-page-1/",
         "https://monstagigz.com/2026/11/14/theatre-review-pride-the-musical-starring-samuel-barnett-at-the-bridge-theatre/",
         "https://scotsgayarts.com/2026/11/17/pride-the-musical-bridge-theatre-london-review/",
         "https://www.theatremonkey.com/show/pride-bridge-theatre-november-2026",
@@ -362204,12 +363248,86 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Pride - Bridge Theatre\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Pride - Bridge Theatre\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Pride - Bridge Theatre\" review bridge",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Pride - Bridge Theatre\" Beresford review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 6,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Pride - Bridge Theatre Bridge Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Pride - Bridge Theatre Bridge Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Pride - Bridge Theatre Bridge Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 20,
+        "byReason": {
+          "non-review-host": 13,
+          "non-review-path": 1,
+          "ticketing-reseller": 3,
+          "roundup-page": 1,
+          "non-stage-review": 1,
+          "show-hub": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -362291,6 +363409,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://monstagigz.com/2026/11/14/theatre-review-pride-the-musical-starring-samuel-barnett-at-the-bridge-theatre/comment-page-1/",
+            "outletId": "monstagigz.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-20T13:59:38.319Z"
+          },
+          {
             "url": "https://monstagigz.com/2026/11/14/theatre-review-pride-the-musical-starring-samuel-barnett-at-the-bridge-theatre/",
             "outletId": "monstagigz.com",
             "state": "live",
@@ -362330,7 +363454,7 @@
         "liveCount": 1,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-20T08:30:23.834Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "pride-theatre-dorfman-west-end-2026",
@@ -511050,7 +512174,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-20T08:30:23.834Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "the-sound-inside-2019",
@@ -526100,30 +527224,21 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.buzznews.net/theatre/theatre-reviews/item/6830-theater-of-the-mind-not-your-typical-juggernaut.html",
+        "https://www.broadwayworld.com/chicago/article/Review-THEATER-OF-THE-MIND-Presented-by-Goodman-Theatre-20261103",
+        "https://www.chicagotribune.com/2026/11/17",
         "https://aroundthetownchicago.com/theatre-reviews/theater-of-the-mind-reviewed-by-paul-lisnek/",
+        "https://1minutecritic.com/theater-of-the-mind-david-byrne-review/",
+        "https://chicagoreader.com/theater-of-the-mind-david-byrne-goodman-theatre",
+        "https://www.letsplaytheatricalreview.com/blog/theater-of-the-mind",
+        "https://www.buzznews.net/theatre/theatre-reviews/item/6830-theater-of-the-mind-not-your-typical-juggernaut.html",
         "https://thefourthwalsh.com/2026/11/theater-of-the-mind-goodman-theatre-david-byrne-and-mala-gaonkars-trippy-experience-gets-five-new-faces-for-an-extended-holiday-run/",
         "https://aroundthetownchicago.com/theater-of-the-mind-reviewed-by-paul-lisnek",
-        "https://www.broadwayworld.com/chicago/article/Review-THEATER-OF-THE-MIND-Presented-by-Goodman-Theatre-20261103",
-        "https://www.chicago-theater.com/reviews/customer-reviews/theater-of-the-mind",
-        "https://chicagoreader.com/theater-of-the-mind-david-byrne-goodman-theatre"
+        "https://www.chicago-theater.com/reviews/customer-reviews/theater-of-the-mind"
       ],
       "dirFiles": 7,
-      "dirClean": 5,
-      "inReviewsJson": 5,
+      "dirClean": 4,
+      "inReviewsJson": 4,
       "missing": [
-        {
-          "url": "https://www.chicago-theater.com/reviews/customer-reviews/theater-of-the-mind",
-          "host": "chicago-theater.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://chicagoreader.com/theater-of-the-mind-david-byrne-goodman-theatre",
           "host": "chicagoreader.com",
@@ -526135,15 +527250,56 @@
               "sourceUrl": null
             }
           ]
-        }
-      ],
-      "dirOnly": [
+        },
         {
-          "host": "suntimes.com",
-          "count": 1
+          "url": "https://www.chicago-theater.com/reviews/customer-reviews/theater-of-the-mind",
+          "host": "chicago-theater.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
         }
       ],
-      "flaggedMisses": [],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.chicagotribune.com/2026/11/17",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "recoverable": true,
+          "recoverableFile": "chicagotribune--chris-jones.json",
+          "recoverableOutletId": "chicagotribune",
+          "recoverableCritic": "Chris Jones",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "chicagotribune--chris-jones.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.chicagotribune.com/2026/11/17/chicago-theater-report-david-byrne/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -526157,7 +527313,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 4,
             "accepted": 1,
             "error": null
           },
@@ -526167,8 +527323,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 0,
+            "results": 1,
+            "accepted": 1,
             "error": null
           },
           {
@@ -526187,7 +527343,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -526197,27 +527353,44 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 5,
-            "accepted": 0,
+            "results": 6,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 10,
         "byReason": {
-          "non-review-host": 11,
-          "bare-host": 1,
+          "non-review-host": 7,
           "census-junk-host": 1,
           "no-review-evidence": 1,
-          "show-hub": 1
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://1minutecritic.com/theater-of-the-mind-david-byrne-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-03-28"
+        },
+        {
+          "url": "https://www.letsplaytheatricalreview.com/blog/theater-of-the-mind",
+          "host": "letsplaytheatricalreview.com",
+          "knownOutletId": "letsplaytheatricalreview",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-03-27"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
@@ -526247,37 +527420,56 @@
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.chicagotribune.com/2026/11/17",
+          "host": "chicagotribune.com",
+          "file": "chicagotribune--chris-jones.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture",
+          "recoveryCount": 1
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "chicago-theater.com",
-            "outlet": "chicago-theater.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.chicago-theater.com/reviews/customer-reviews/theater-of-the-mind"
-          },
           {
             "outletId": "chicago-reader",
             "outlet": "chicago-reader",
             "critic": "Unknown",
             "stars": null,
             "url": "https://chicagoreader.com/theater-of-the-mind-david-byrne-goodman-theatre"
+          },
+          {
+            "outletId": "chicago-theater.com",
+            "outlet": "chicago-theater.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.chicago-theater.com/reviews/customer-reviews/theater-of-the-mind"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.buzznews.net/theatre/theatre-reviews/item/6830-theater-of-the-mind-not-your-typical-juggernaut.html",
-            "outletId": "buzznews.net",
+            "url": "https://www.broadwayworld.com/chicago/article/Review-THEATER-OF-THE-MIND-Presented-by-Goodman-Theatre-20261103",
+            "outletId": "broadwayworld.com",
             "state": "live",
-            "firstSeenAt": "2026-11-19T09:17:10.986Z"
+            "firstSeenAt": "2026-11-18T18:39:45.762Z"
           },
           {
             "url": "https://aroundthetownchicago.com/theatre-reviews/theater-of-the-mind-reviewed-by-paul-lisnek/",
             "outletId": "aroundthetownchicago.com",
             "state": "live",
             "firstSeenAt": "2026-11-18T05:05:19.144Z"
+          },
+          {
+            "url": "https://www.buzznews.net/theatre/theatre-reviews/item/6830-theater-of-the-mind-not-your-typical-juggernaut.html",
+            "outletId": "buzznews.net",
+            "state": "live",
+            "firstSeenAt": "2026-11-19T09:17:10.986Z"
           },
           {
             "url": "https://thefourthwalsh.com/2026/11/theater-of-the-mind-goodman-theatre-david-byrne-and-mala-gaonkars-trippy-experience-gets-five-new-faces-for-an-extended-holiday-run/",
@@ -526292,10 +527484,11 @@
             "firstSeenAt": "2026-11-18T18:39:45.762Z"
           },
           {
-            "url": "https://www.broadwayworld.com/chicago/article/Review-THEATER-OF-THE-MIND-Presented-by-Goodman-Theatre-20261103",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-18T18:39:45.762Z"
+            "url": "https://chicagoreader.com/theater-of-the-mind-david-byrne-goodman-theatre",
+            "outletId": "chicago-reader",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-19T09:17:10.986Z"
           },
           {
             "url": "https://www.chicago-theater.com/reviews/customer-reviews/theater-of-the-mind",
@@ -526303,21 +527496,30 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-19T09:17:10.986Z"
-          },
-          {
-            "url": "https://chicagoreader.com/theater-of-the-mind-david-byrne-goodman-theatre",
-            "outletId": "chicago-reader",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-19T09:17:10.986Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://1minutecritic.com/theater-of-the-mind-david-byrne-review/",
+            "host": "1minutecritic.com",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.letsplaytheatricalreview.com/blog/theater-of-the-mind",
+            "host": "letsplaytheatricalreview.com",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.chicagotribune.com/2026/11/17",
+            "host": "chicagotribune.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 4,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-20T00:13:00.736Z"
+      "computedAt": "2026-11-20T13:59:38.319Z"
     },
     {
       "showId": "theatre-people-or-the-angel-next-door-regional-2026",
@@ -573393,27 +574595,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-20T12:39:40.912Z",
+    "at": "2026-11-20T13:59:38.318Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "assassins-regional-2026",
-      "peter-pan-goes-wrong-regional-2026",
-      "potus-off-broadway-2026"
+      "9-circles-regional-2026",
+      "theater-of-the-mind-regional-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "oh-mary-2024"
+      "maybe-happy-ending-2024"
     ],
     "neverAuditedDueAtStart": 26,
     "oldestDueRowAtStart": {
       "showId": "blood-of-my-blood-west-end-2026",
       "computedAt": "2026-10-31T17:07:08.919Z",
-      "ageHours": 475.1
+      "ageHours": 476.5
     },
     "oldestDueRowAfterRun": {
       "showId": "blood-of-my-blood-west-end-2026",
       "computedAt": "2026-10-31T17:07:08.919Z",
-      "ageHours": 475.5
+      "ageHours": 476.9
     }
   }
 }

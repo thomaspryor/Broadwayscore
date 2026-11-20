@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-20T12:43:12.038Z",
+  "generatedAt": "2026-11-20T14:00:13.229Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 364,
-  "clean": 363,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "much-ado-about-nothing-2026",
-      "title": "Much Ado About Nothing",
-      "openingDate": "2026-11-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.72 vs local 77.53 (Δ0.19)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 21,
-      "firstDefectAt": "2026-11-20T12:43:08.023Z"
-    }
-  ],
+  "clean": 364,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
