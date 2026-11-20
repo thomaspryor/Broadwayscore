@@ -63,6 +63,22 @@ const PAGE_MARKET_QUALIFIERS = [
 const BROADWAY_TITLE_EXPLICIT = /\(broadway\)|\bon broadway\b/i;
 const BROADWAY_CANONICAL_PATH = /\/broadway-shows\//i;
 
+// Only the TheaterEvent's own location is evidence; review text and other
+// structured data can mention unrelated Broadway venues.
+function hasBroadwayEventLocation(html) {
+  const scripts = String(html || '').matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script\s*>/gi);
+  for (const match of scripts) {
+    let data;
+    try { data = JSON.parse(match[1]); } catch { continue; }
+    const nodes = Array.isArray(data) ? data : [data];
+    for (const node of nodes.flatMap(n => n && Array.isArray(n['@graph']) ? n['@graph'] : [n])) {
+      if (!node || !(Array.isArray(node['@type']) ? node['@type'] : [node['@type']]).includes('TheaterEvent')) continue;
+      if (typeof node.location?.name === 'string' && /\(Broadway\)/i.test(node.location.name)) return true;
+    }
+  }
+  return false;
+}
+
 function canonicalHref(html) {
   const m = String(html || '').match(/<link[^>]+rel=["']canonical["'][^>]*>/i);
   return m ? (m[0].match(/href=["']([^"']+)["']/i) || [])[1] || '' : '';
@@ -71,11 +87,12 @@ function canonicalHref(html) {
 /**
  * @param {string} html
  * @param {string} pageTitle
- * @returns {null|{category:string, strength:'explicit'|'canonical-path'|'boilerplate'}}
+ * @returns {null|{category:string, strength:'explicit'|'canonical-path'|'jsonld-location'|'boilerplate'}}
  *   category: same answer detectPageMarketQualifier() has always given.
  *   strength (only meaningful for 'broadway'; other categories are always
  *   'explicit'): 'explicit' = title says "(Broadway)"/"on Broadway";
  *   'canonical-path' = only a /broadway-shows/ canonical URL;
+ *   'jsonld-location' = BWW TheaterEvent location names a Broadway venue;
  *   'boilerplate' = only "Broadway Reviews" page-type wording.
  */
 function detectPageMarketSignal(html, pageTitle) {
@@ -87,6 +104,7 @@ function detectPageMarketSignal(html, pageTitle) {
   if (hit.category !== 'broadway') return { category: hit.category, strength: 'explicit' };
   if (BROADWAY_TITLE_EXPLICIT.test(title)) return { category: 'broadway', strength: 'explicit' };
   if (BROADWAY_CANONICAL_PATH.test(href)) return { category: 'broadway', strength: 'canonical-path' };
+  if (/\bBroadway\s*World\b/i.test(title) && hasBroadwayEventLocation(html)) return { category: 'broadway', strength: 'jsonld-location' };
   return { category: 'broadway', strength: 'boilerplate' };
 }
 
@@ -101,10 +119,10 @@ function detectPageMarketQualifier(html, pageTitle) {
 // (non-broadway qualifiers are always 'explicit').
 const NO_SIBLING_CONFLICT_PAIRS = {
   broadway: { 'off-broadway': ['explicit'] },
-  'off-broadway': { broadway: ['explicit'] },
-  'west-end': { 'off-broadway': ['explicit'], broadway: ['explicit', 'canonical-path'] },
-  'off-west-end': { 'off-broadway': ['explicit'], broadway: ['explicit', 'canonical-path'] },
-  tour: { 'off-broadway': ['explicit'], broadway: ['explicit', 'canonical-path'] },
+  'off-broadway': { broadway: ['explicit', 'jsonld-location'] },
+  'west-end': { 'off-broadway': ['explicit'], broadway: ['explicit', 'canonical-path', 'jsonld-location'] },
+  'off-west-end': { 'off-broadway': ['explicit'], broadway: ['explicit', 'canonical-path', 'jsonld-location'] },
+  tour: { 'off-broadway': ['explicit'], broadway: ['explicit', 'canonical-path', 'jsonld-location'] },
 };
 
 /**

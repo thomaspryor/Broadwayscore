@@ -96,3 +96,30 @@ test('no category or no signal: no conflict (single-show callers unchanged)', ()
   assert.equal(decideCrossMarketConflict({ showCategory: 'broadway', signal: null }), null);
   assert.equal(verdict(BWW_OFF, 'A Streetcar Named Desire').ok, true);
 });
+
+test('BWW TheaterEvent Broadway locations reject wrong productions', () => {
+  for (const [title, venue, category] of [
+    ['A View from the Bridge', 'Lyceum Theatre (Broadway)', 'off-broadway'],
+    ['August: Osage County', 'Music Box Theatre (Broadway)', 'west-end'],
+    ['Example', 'Example Theatre (Broadway)', 'off-west-end'],
+    ['Example', 'Example Theatre (Broadway)', 'tour'],
+  ]) {
+    const html = page(`${title} Broadway Reviews | BroadwayWorld`) +
+      `<script type="application/ld+json">${JSON.stringify({ '@graph': [{ '@type': 'TheaterEvent', location: { name: venue } }] })}</script>`;
+    const signal = detectPageMarketSignal(html, `${title} Broadway Reviews | BroadwayWorld`);
+    assert.deepEqual(signal, { category: 'broadway', strength: 'jsonld-location' });
+    assert.deepEqual(decideCrossMarketConflict({ showCategory: category, signal }), { rule: 'measured-pair' });
+    assert.equal(verdict(html, title, category).reason, 'cross-market-sibling');
+  }
+});
+
+test('unrelated or invalid structured data does not establish a Broadway location', () => {
+  const title = 'Example Broadway Reviews | BroadwayWorld';
+  for (const json of [
+    '{bad json',
+    JSON.stringify({ '@type': 'Review', location: { name: 'Lyceum Theatre (Broadway)' } }),
+    JSON.stringify({ '@type': 'TheaterEvent', location: { name: 'New York Theatre Workshop' }, description: 'Lyceum Theatre (Broadway)' }),
+  ]) {
+    assert.equal(detectPageMarketSignal(page(title) + `<script type="application/ld+json">${json}</script>`, title).strength, 'boilerplate');
+  }
+});
