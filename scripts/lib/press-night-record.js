@@ -268,13 +268,20 @@ function applySample(rec, sample) {
     np.pairChecked = true;
     // BRO-7900: compare canonical outlet ids, so a display-name fix mid-night ("columbiaspectator" ->
     // "Columbia Daily Spectator") pairs as a rename instead of reading as a drop plus a new review.
-    const outletKey = outletIdentity(np.outlet);
-    const gone = rec.perReview.filter((q) => q !== np && q.liveNow && !liveKeys.has(q.key) && outletIdentity(q.outlet) === outletKey);
-    const sameOutletNew = fresh.filter((f) => outletIdentity(f.outlet) === outletKey);
+    // Same label: old rule (any critic change, e.g. null -> name). Different label, same outlet id: the critics
+    // must agree or one side be unbylined, so two critics under an alias (NY Mag / Vulture) never merge.
+    const label = (x) => String(x || '').toLowerCase();
+    const unbylined = (c) => !c || label(c) === 'unknown';
+    const pairs = (q, n) => label(q.outlet) === label(n.outlet)
+      || (outletIdentity(q.outlet) === outletIdentity(n.outlet)
+        && (label(q.critic) === label(n.critic) || unbylined(q.critic) || unbylined(n.critic)));
+    const gone = rec.perReview.filter((q) => q !== np && q.liveNow && !liveKeys.has(q.key) && pairs(q, np));
+    const sameOutletNew = fresh.filter((f) => pairs(gone[0] || np, f));
     if (gone.length === 1 && sameOutletNew.length === 1) {
       const q = gone[0];
       q.renamedFrom = q.key;
       q.key = np.key;
+      q.outlet = np.outlet;
       q.critic = np.critic;
       q.liveNow = true;
       if (np.publishPrecision === 'exact' && q.publishPrecision !== 'exact') { q.publishAt = np.publishAt; q.publishPrecision = np.publishPrecision; }
@@ -372,8 +379,11 @@ function outletIdOf(name) {
 }
 
 /** Canonical outlet id, falling back to the lowercased label when the registry does not know it. */
+const OUTLET_IDENTITY_CACHE = new Map(); // normalizeOutlet is ~0.6 ms for labels the registry does not know
 function outletIdentity(name) {
-  return outletIdOf(name) || String(name || '').toLowerCase();
+  const k = String(name || '');
+  if (!OUTLET_IDENTITY_CACHE.has(k)) OUTLET_IDENTITY_CACHE.set(k, outletIdOf(k) || k.toLowerCase());
+  return OUTLET_IDENTITY_CACHE.get(k);
 }
 
 /**

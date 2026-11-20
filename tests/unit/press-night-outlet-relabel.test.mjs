@@ -45,3 +45,19 @@ test('a real drop (different critic, same outlet) still fails', () => {
   const st = (out.gates || out).find((g) => g.name === 'stability');
   assert.equal(st.status, 'fail');
 });
+
+test('alias outlets with different critics do not merge (NY Mag -> Vulture)', () => {
+  const r = rec();
+  pnr.applySample(r, { at: '2026-11-20T03:00:00Z', reviews: [rv('New York Magazine', 'Sara Holdren')] });
+  pnr.applySample(r, { at: '2026-11-20T03:05:00Z', reviews: [rv('Vulture', 'Jackson McHenry')] });
+  assert.equal(r.dropped.length, 1);
+  assert.equal(r.dropped[0].critic, 'Sara Holdren');
+});
+
+test('a paired relabel takes the new outlet label', () => {
+  const r = rec();
+  pnr.applySample(r, { at: '2026-11-20T07:04:00Z', reviews: [rv('columbiaspectator', 'Light Dohrn')] });
+  pnr.applySample(r, { at: '2026-11-20T07:54:00Z', reviews: [rv('Columbia Daily Spectator', 'Light Dohrn')] });
+  assert.equal(r.perReview.length, 1);
+  assert.equal(r.perReview[0].outlet, 'Columbia Daily Spectator');
+});
