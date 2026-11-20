@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7702",
   "planId": "7d462b12-8446-4621-ba98-632569ba83ac",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-20T03:08:05.451Z",
   "submitter": {
     "name": null,
@@ -140,5 +140,79 @@
         "description": "two-strangers-bway-2025/nytimes--unknown.json: duplicateOf"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-20T04:37:40.693Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/variety--unknown.json duplicateOf: null -> \"variety--frank-rizzo.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-cohen-broad-strokes-off-broadway-2026/nytimes--unknown.json duplicateOf: null -> \"nytimes--jason-zinoman.json\" (write guard stripped cloned nycTheatreExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-cohen-broad-strokes-off-broadway-2026/vulture--unknown.json duplicateOf: null -> \"vulture--jackson-mchenry.json\" (write guard stripped cloned nycTheatreExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/wsj--unknown.json duplicateOf: null -> \"wsj--charles-isherwood.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-in-time-2025/vulture--unknown.json duplicateOf: null -> \"vulture--jackson-mchenry.json\" (write guard stripped cloned nycTheatreExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marjorie-prime-2025/nytimes--unknown.json duplicateOf: null -> \"nytimes--elisabeth-vincentelli.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/variety--unknown.json duplicateOf: null -> \"variety--frank-rizzo.json\" (write guard stripped cloned nycTheatreExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "other-desert-cities-2026/variety--unknown.json duplicateOf: null -> \"variety--aramide-tinubu.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-2026/variety--unknown.json duplicateOf: null -> \"variety--frank-rizzo.json\" (write guard stripped cloned nycTheatreExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/vulture--unknown.json duplicateOf: null -> \"vulture--sara-holdren.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-rocky-horror-show-2026/vulture--unknown.json duplicateOf: null -> \"vulture--sara-holdren.json\" (write guard stripped cloned nycTheatreExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/variety--unknown.json duplicateOf: null -> \"variety--frank-rizzo.json\" (write guard stripped cloned nycTheatreExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/vulture--unknown.json duplicateOf: null -> \"vulture--sara-holdren.json\" (write guard stripped cloned nycTheatreExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-bway-2025/nytimes--unknown.json duplicateOf: null -> \"nytimes--laura-collins-hughes.json\" (write guard stripped cloned nycTheatreExcerpt)"
+    }
+  ],
+  "executedIn": "ci"
 }
