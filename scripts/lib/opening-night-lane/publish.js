@@ -130,7 +130,9 @@ function createReviewsFilePort(file, { attempts = 5, beforeWrite = null, beforeR
  */
 function toCalendarDay(row, timeZone) {
   if (!row || typeof row.publishDate !== 'string' || /^\d{4}-\d{2}-\d{2}$/.test(row.publishDate)) return row;
-  const day = calendarDateIn(row.publishDate, timeZone || undefined);
+  // A zoneless timestamp has no instant to convert: keep its written day.
+  const day = calendarDateIn(row.publishDate, timeZone || undefined)
+    || (/^\d{4}-\d{2}-\d{2}T/.test(row.publishDate) ? row.publishDate.slice(0, 10) : null);
   return day ? { ...row, publishDate: day } : row;
 }
 
