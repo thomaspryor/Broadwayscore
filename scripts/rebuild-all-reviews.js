@@ -2408,6 +2408,38 @@ const crossShowFingerprints = new Map();
   stats.staleOutletSkippedFlagged = skippedFlaggedCount;
 }
 
+// BRO-7684: a bylineless, url-less aggregator quote that sits inside another
+// outlet's fullText (>=85% trigram containment) is that review filed under the
+// wrong outlet. Flag it here, no LLM, so it never counts as a second review
+// while it waits for the weekly detect-cross-outlet-duplicates.js. Runs on every
+// rebuild, so a quote whose sibling fullText arrives later is caught then too.
+// Persisted (same fields as the detector) so explainExclusion and every other
+// reader agree; the main loop's crossOutletDuplicate gate then excludes it.
+{
+  const { excerptContainmentFlags, applyExcerptContainmentFlag } = require('./lib/cross-outlet-group');
+  let excerptContainmentFlagged = 0;
+  for (const sid of showDirs) {
+    const sDir = path.join(reviewTextsDir, sid);
+    let entries;
+    try {
+      entries = fs.readdirSync(sDir).filter(x => isReviewTextFile(x)).map((file) => {
+        try { return { file, data: JSON.parse(fs.readFileSync(path.join(sDir, file), 'utf8')) }; } catch { return null; }
+      }).filter(Boolean);
+    } catch { continue; }
+    if (entries.length < 2) continue;
+    for (const flag of excerptContainmentFlags(entries)) {
+      const entry = entries.find(e => e.file === flag.file);
+      const r = safeWriteReview(path.join(sDir, flag.file), applyExcerptContainmentFlag({ ...entry.data }, sid, flag));
+      if (r && r.wrote !== false) {
+        excerptContainmentFlagged++;
+        console.log(`  [EXCERPT CONTAINMENT] ${sid}/${flag.file}: ${flag.containment}% inside ${flag.primaryFile} — flagged crossOutletDuplicate`);
+      }
+    }
+  }
+  if (excerptContainmentFlagged > 0) console.log(`Excerpt-containment pre-pass: flagged ${excerptContainmentFlagged} bylineless quote(s) as cross-outlet copies`);
+  stats.excerptContainmentFlagged = excerptContainmentFlagged;
+}
+
 // URL-domain mismatch guard: detect reviews where URL domain doesn't match outlet's registered domain.
 // Audit-only — logs mismatches but does NOT write wrongUrl to files. The wrongUrl flag should be
 // applied by a dedicated script (e.g., audit-wrong-urls.js) after human review, not during rebuild.

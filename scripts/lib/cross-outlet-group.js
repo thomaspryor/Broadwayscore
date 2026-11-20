@@ -106,4 +106,76 @@ function excerptCopySide(a, b) {
   return null;
 }
 
-module.exports = { getBestText, resolveFingerprintGroup, excerptContainment, excerptCopySide, CONTAINMENT_MATCH };
+/**
+ * BRO-7684: the excerpt-containment flags for one show dir, with no LLM, so the
+ * rebuild can set them in the same run a bare quote (or its sibling's fullText)
+ * lands, instead of waiting for the weekly detector. Same row filters and pair
+ * rule as detect-cross-outlet-duplicates.js Layer 2 for an excerptCopySide hit.
+ * Stricter than the detector on purpose: a row a person cleared
+ * (crossOutletDuplicate false or crossOutletClearReason) is never re-flagged,
+ * and the keeper must not itself be a flagged copy (no copy-of-a-copy chains).
+ *
+ * @param {Array<{file:string, data:object}>} entries  every review file in the show dir
+ * @returns {Array<{file:string, primaryFile:string, containment:number}>}
+ */
+function excerptContainmentFlags(entries) {
+  const { crossOutletPointer, skipAsAlreadyFlagged, excludeFromCrossOutletCompare } = require('./cross-outlet-pointer');
+  const { classifyCrossOutletPair } = require('./cross-outlet-pair-policy');
+  const byFile = new Map((entries || []).map(e => [e.file, e.data]));
+  const readSibling = (f) => byFile.get(f) || null;
+  const rows = [];
+  for (const { file, data } of entries || []) {
+    if (!data || data.rejectionReason) continue;
+    if (excludeFromCrossOutletCompare(data)) continue;
+    const { text, source } = getBestText(data);
+    if (!text || text.length < 50) continue;
+    if (skipAsAlreadyFlagged(data, file, readSibling)) continue;
+    // A pointer to another outlet's file is report-only in the detector.
+    if (crossOutletPointer(data, file, readSibling)) continue;
+    rows.push({
+      file, data,
+      outletId: data.outletId || file.split('--')[0],
+      outlet: data.outlet || data.outletId || '',
+      criticName: data.criticName || '',
+      hasUrl: Boolean(data.url),
+      text, textSource: source,
+    });
+  }
+  const flags = [];
+  for (const ex of rows) {
+    if (ex.textSource !== 'excerpts') continue;
+    if (typeof ex.data.crossOutletDuplicate === 'boolean' || ex.data.crossOutletClearReason) continue;
+    let best = null;
+    for (const full of rows) {
+      if (full === ex || full.textSource !== 'fullText') continue;
+      if (full.outletId === ex.outletId) continue;
+      if (ex.criticName && full.criticName && ex.criticName.toLowerCase() === full.criticName.toLowerCase()) continue;
+      if (full.data.crossOutletDuplicate === true) continue;
+      const hit = excerptCopySide(ex, full);
+      if (!hit || hit.copy !== 'a') continue;
+      const verdict = classifyCrossOutletPair(ex, full, { similarity: 100 });
+      if (verdict.action === 'review' || (verdict.copy && verdict.copy !== 'a')) continue;
+      if (!best || hit.containment > best.containment || (hit.containment === best.containment && full.text.length > best.len)) {
+        best = { file: ex.file, primaryFile: full.file, containment: hit.containment, len: full.text.length };
+      }
+    }
+    if (best) flags.push({ file: best.file, primaryFile: best.primaryFile, containment: best.containment });
+  }
+  return flags;
+}
+
+/**
+ * Set the detector's crossOutlet* fields on `data` for one excerptContainmentFlags
+ * hit. Only the fields clearCrossOutletFields (cascade-clear-duplicate-refs.js)
+ * removes, so a later clear leaves nothing stale behind.
+ */
+function applyExcerptContainmentFlag(data, showId, flag, now = new Date()) {
+  data.crossOutletDuplicate = true;
+  data.crossOutletPrimaryFile = `${showId}/${flag.primaryFile}`;
+  data.crossOutletSimilarity = 100; // what the detector records for a containment pair
+  data.crossOutletMethod = 'excerpt-containment';
+  data.crossOutletFlaggedAt = now.toISOString();
+  return data;
+}
+
+module.exports = { getBestText, resolveFingerprintGroup, excerptContainment, excerptCopySide, excerptContainmentFlags, applyExcerptContainmentFlag, CONTAINMENT_MATCH };
