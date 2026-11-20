@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-20T06:38:20.300Z",
+  "generatedAt": "2026-11-20T08:17:09.877Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 77,
+    "avgScoreDiff": 2
   },
   "syndicationPairs": [
     {
@@ -17,7 +17,7 @@
       "secondaryOutlets": [
         "nydailynews"
       ],
-      "count": 0
+      "count": 1
     },
     {
       "critic": "kathleen campion",
@@ -162,7 +162,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Chris Jones",
+      "showId": "much-ado-about-nothing-2026",
+      "primaryOutlet": "chicagotribune",
+      "secondaryOutlet": "nydailynews",
+      "primaryFile": "chicagotribune--chris-jones--on-2026-11-19.json",
+      "secondaryFile": "nydailynews--chris-jones.json",
+      "similarity": 77,
+      "primaryScore": 79,
+      "secondaryScore": 77,
+      "scoreDiff": 2
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

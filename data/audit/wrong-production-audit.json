@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-20T06:45:27.352Z",
+  "timestamp": "2026-11-20T08:26:23.053Z",
   "stats": {
-    "totalReviews": 83340,
-    "alreadyFlagged": 22575,
+    "totalReviews": 83346,
+    "alreadyFlagged": 22576,
     "dateGuardCatches": 221,
     "directorMismatch": 3795,
     "tvFilmSignals": 2378,
-    "londonSignals": 3836,
+    "londonSignals": 3838,
     "offBroadwaySignals": 776,
     "yearMismatch": 387,
-    "noPublishDate": 8230
+    "noPublishDate": 8232
   },
   "findings": [
     {
@@ -101855,6 +101855,20 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "observer--katherine-cowles.json",
+      "score": 77,
+      "publishDate": "2026-11-20",
+      "url": "https://observer.co.uk/culture/theatre/article/desire-under-the-elms-oedipus-wrecks-in-a-feverish-southern-gothic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "rolandcat--roviews.json",
       "score": 55,
       "publishDate": "2026-11-14",
@@ -103891,6 +103905,20 @@
       "score": 74,
       "publishDate": "2026-11-17",
       "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-eurotrash.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2026-11-19",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/eurotrash-review-ben-whishaw-8qxcm3q95",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -120173,8 +120201,8 @@
     {
       "showId": "much-ado-about-nothing-2026",
       "file": "nysr--frank-scheck--on-2026-11-19.json",
-      "score": 79,
-      "publishDate": "2026-11-20T03:00:24.000Z",
+      "score": 77,
+      "publishDate": "2026-11-19",
       "url": "https://nystagereview.com/2026/11/19/much-ado-about-nothing-party-like-its-1599/",
       "findings": [
         {
@@ -120188,7 +120216,7 @@
       "showId": "much-ado-about-nothing-2026",
       "file": "theatermania--pete-hempstead--on-2026-11-19.json",
       "score": 92,
-      "publishDate": "2026-11-20T03:00:00.000Z",
+      "publishDate": "2026-11-19",
       "url": "https://www.theatermania.com/news/review-tom-hiddleston-and-hayley-atwell-are-a-marvelous-duo-in-a-very-pink-much-ado-about-nothing_1860070/",
       "findings": [
         {
