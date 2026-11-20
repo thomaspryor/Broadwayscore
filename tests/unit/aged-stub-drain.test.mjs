@@ -96,7 +96,7 @@ test('audit: findAgedStubs flags closed-show stubs the live-only strand check ig
     { file: 'undated.json', review: stub({}) },
     { file: 'tried.json', review: stub({ firstSeenAt: hoursAgo(72), fetchAttempts: [{ at: 'x' }] }) },
     { file: 'dup.json', review: stub({ firstSeenAt: hoursAgo(72), duplicateOf: 'old.json' }) },
-    { file: 'text.json', review: stub({ firstSeenAt: hoursAgo(72), fullText: 'body' }) },
+    { file: 'text.json', review: stub({ url: 'https://x.test/other', firstSeenAt: hoursAgo(72), fullText: 'body' }) },
   ];
   const aged = findAgedStubs(files, { nowMs: NOW }).map(a => a.file).sort();
   assert.deepEqual(aged, ['old.json', 'undated.json']);
