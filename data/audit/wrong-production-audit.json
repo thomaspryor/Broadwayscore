@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-20T15:17:47.650Z",
+  "timestamp": "2026-11-20T16:00:05.503Z",
   "stats": {
-    "totalReviews": 83372,
+    "totalReviews": 83377,
     "alreadyFlagged": 22588,
     "dateGuardCatches": 221,
     "directorMismatch": 3795,
-    "tvFilmSignals": 2378,
-    "londonSignals": 3843,
+    "tvFilmSignals": 2379,
+    "londonSignals": 3844,
     "offBroadwaySignals": 775,
     "yearMismatch": 387,
     "noPublishDate": 8229
@@ -21471,6 +21471,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 86,
+      "publishDate": "2026-11-20",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/eurotrash-young-vic-ben-whishaw-review-b3088606.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -103889,7 +103903,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 86,
+      "score": 83,
       "publishDate": "2026-11-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/eurotrash-young-vic-review",
       "findings": [
@@ -103903,7 +103917,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 78,
+      "score": 74,
       "publishDate": "2026-11-20",
       "url": "https://londontheatre.co.uk/reviews/eurotrash-review-young-vic",
       "findings": [
@@ -103920,6 +103934,20 @@
       "score": 74,
       "publishDate": "2026-11-17",
       "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-eurotrash.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 84,
+      "publishDate": "2026-11-20",
+      "url": "https://www.timeout.com/london/news/eurotrash-ben-whishaw-young-vic-review-112026",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
