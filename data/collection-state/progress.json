@@ -2,10 +2,13 @@
   "processed": [
     "florence-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "florence-off-west-end-2026/thereviewshub--unknown.json",
-    "florence-off-west-end-2026/a-youngish-perspective--unknown.json"
+    "florence-off-west-end-2026/a-youngish-perspective--unknown.json",
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
   ],
   "failed": [
-    "florence-off-west-end-2026/daily-mail--joanna-crawley.json"
+    "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -18,12 +21,14 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-11-20T10:36:27.037Z",
-  "lastProcessed": "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
+  "lastProcessed": "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
   "log": []
 }
