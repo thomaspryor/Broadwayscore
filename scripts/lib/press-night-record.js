@@ -266,9 +266,11 @@ function applySample(rec, sample) {
   const fresh = rec.perReview.filter((p) => p.firstLiveAt === at && !p.renamedFrom && p.liveNow && !p.pairChecked);
   for (const np of fresh) {
     np.pairChecked = true;
-    const outletKey = String(np.outlet || '').toLowerCase();
-    const gone = rec.perReview.filter((q) => q !== np && q.liveNow && !liveKeys.has(q.key) && String(q.outlet || '').toLowerCase() === outletKey);
-    const sameOutletNew = fresh.filter((f) => String(f.outlet || '').toLowerCase() === outletKey);
+    // BRO-7900: compare canonical outlet ids, so a display-name fix mid-night ("columbiaspectator" ->
+    // "Columbia Daily Spectator") pairs as a rename instead of reading as a drop plus a new review.
+    const outletKey = outletIdentity(np.outlet);
+    const gone = rec.perReview.filter((q) => q !== np && q.liveNow && !liveKeys.has(q.key) && outletIdentity(q.outlet) === outletKey);
+    const sameOutletNew = fresh.filter((f) => outletIdentity(f.outlet) === outletKey);
     if (gone.length === 1 && sameOutletNew.length === 1) {
       const q = gone[0];
       q.renamedFrom = q.key;
@@ -367,6 +369,20 @@ function outletIdOf(name) {
   if (!name) return null;
   const { normalizeOutlet } = require('./review-normalization');
   return normalizeOutlet(String(name)) || null;
+}
+
+/** Canonical outlet id, falling back to the lowercased label when the registry does not know it. */
+function outletIdentity(name) {
+  return outletIdOf(name) || String(name || '').toLowerCase();
+}
+
+/** BRO-7900: true when the dropped review is live under another key with the same canonical outlet and critic. */
+function isLiveUnderNewLabel(rec, d) {
+  const critic = String(d.critic || '').toLowerCase();
+  const outlet = outletIdentity(d.outlet);
+  if (!critic || !outlet) return false; // no byline: two reviews from one outlet cannot be told apart
+  return (rec.perReview || []).some((p) => p.liveNow && p.key !== d.key
+    && String(p.critic || '').toLowerCase() === critic && outletIdentity(p.outlet) === outlet);
 }
 
 /**
@@ -900,7 +916,9 @@ function gradeNight(rec, g) {
     // The date alone never excuses an outlet that has an includable file: that review is the current production's.
     const includableOutlets = new Set(((rec.fileState && rec.fileState.files) || []).filter((f) => f.includable && f.outletId).map((f) => f.outletId));
     const isExcluded = (d) => excl.has(outletIdOf(d.outlet)) || (priorRun.has(d.key) && !includableOutlets.has(outletIdOf(d.outlet)));
-    const open = rec.dropped.filter((d) => !d.restoredAt);
+    // BRO-7900: a drop whose review is live now under a relabelled key (same canonical outlet + critic) never
+    // left the site. Covers records written before the rename pairing compared canonical outlet ids.
+    const open = rec.dropped.filter((d) => !d.restoredAt && !isLiveUnderNewLabel(rec, d));
     const excused = open.filter(isExcluded);
     const stuck = open.filter((d) => !isExcluded(d));
     const flapped = rec.dropped.length - open.length;
