@@ -1936,7 +1936,7 @@ test('BRO-7467: land-local-check refuses under 4 GB free and runs the check befo
 
 test('BRO-7097 class guard: nothing in tests/, scripts/ or src/ reads a path the slim worktree drops (audit snapshots and 2015 census)', () => {
   const dropped = [...r.SLIM_EXCLUDED_FILES, 'data/audit/outlet-census-2015'].map((p) => p.split('/').pop().replace(/\.json$/, ''));
-  const hits = spawnSync('grep', ['-rlF', ...dropped.flatMap((d) => ['-e', d]), 'scripts', 'src', 'tests', '--include=*.js', '--include=*.ts', '--include=*.tsx', '--include=*.mjs', '--exclude=codex-runner.js', '--exclude=codex-runner.test.mjs', '--exclude=check-file-sizes-post-stage.test.mjs'], { encoding: 'utf8' }).stdout.trim();
+  const hits = spawnSync('grep', ['-rlF', ...dropped.flatMap((d) => ['-e', d]), 'scripts', 'src', 'tests', '.github', '--include=*.yml', '--include=*.sh', '--include=*.py', '--include=*.js', '--include=*.ts', '--include=*.tsx', '--include=*.mjs', '--exclude=codex-runner.js', '--exclude=codex-runner.test.mjs', '--exclude=check-file-sizes-post-stage.test.mjs'], { encoding: 'utf8' }).stdout.trim();
   assert.equal(hits, '', `these read a slim-excluded path: move it out of SLIM_EXCLUDED_*\n${hits}`);
 });
 
