@@ -1123,5 +1123,36 @@
     "testId": "scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
     "fields": [],
     "queuedAt": "2026-11-20T03:22:30.956Z"
+  },
+  {
+    "conditionKey": "land:land/not-before-cards",
+    "title": "Landing blocked: unit-tests-node red on land/not-before-cards",
+    "description": "land.yml did not land land/not-before-cards: the unit-tests-node gate went red at 8f1a4a4ff7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44672378298",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/not-before-cards"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8f1a4a4ff73d5257c62cb5c0a2a867bf5f69f39f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44672378298"
+      }
+    ],
+    "queuedAt": "2026-11-20T04:13:04.805Z"
   }
 ]
