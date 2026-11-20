@@ -1456,6 +1456,7 @@ const showClosingDateMap = {};
 const showStatusMap = {};
 const showTitleMap = {};
 const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway')
+const showTimeZoneMap = {};  // BRO-7890: showId -> IANA zone of the show (market, or a regional show's city), for publishDate days
 const showLongRunWE = new Set();  // WE shows with openingDate before 2015 — skip pre-opening guard
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 const skipCrossShowDupeIds = new Set(showsData.shows.filter(s => s._skipCrossShowDupe).map(s => s.id));
@@ -1470,6 +1471,7 @@ for (const s of showsData.shows) {
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
   showCategoryMap[s.id] = s.category || 'broadway';
+  showTimeZoneMap[s.id] = require('./lib/local-date').tzForShow(s);
   // Long-run WE shows: decades of valid reviews → 90-day pre-opening guard
   // shouldn't apply and CV shouldn't flag wide publishDate ranges. The
   // classifier lives in scripts/lib/long-runner-registry.js so content-verifier
@@ -5814,7 +5816,7 @@ showDirs.forEach(showId => {
         // BRO-3366: a winner with no URL inherits its duplicateOf loser's URL.
         // BRO-7841: an outlet-pulled review (url 404s) keeps its text and score but publishes no link.
         url: require('./lib/review-url-dead').publishedUrl(data, inheritUrlFromDuplicateLosers(file, data, allJsonFiles, _loadDupCycleSibling)),
-        publishDate: normalizePublishDate(data.publishDate, { market: showCategoryMap[showId], url: data.url }) || (() => {
+        publishDate: normalizePublishDate(data.publishDate, { timeZone: showTimeZoneMap[showId], url: data.url }) || (() => {
           // Backfill when source file has no publishDate (BRO-4252: article-id URL digits lose to a later text date)
           const urlDate = resolveBackfillPublishDate(data);
           if (urlDate && urlDate.date) {

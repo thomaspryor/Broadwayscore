@@ -48,3 +48,9 @@ test('two files already on the URL: ambiguous, nothing adopted', () => {
   });
   assert.equal(findExistingReviewFile(dir, 'columbiaspectator-com', 'Z', URL_SPEC), null);
 });
+
+test('an unregistered outlet name that is NOT the URL host placeholder is never adopted', () => {
+  const dir = showDir({ 'columbia-spectator--jane-doe.json': { outletId: 'columbia-spectator', criticName: 'Jane Doe', url: URL_SPEC } });
+  assert.equal(findExistingReviewFile(dir, 'Some Theatre Blog', 'Light Dohrne', URL_SPEC), null);
+  assert.ok(findExistingReviewFile(dir, 'columbiaspectator', 'Light Dohrne', URL_SPEC), 'host without TLD is the same placeholder');
+});

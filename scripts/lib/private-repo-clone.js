@@ -11,7 +11,7 @@
 const { execFileSync } = require('child_process');
 
 function hasGhCli() {
-  try { execFileSync('gh', ['--version'], { stdio: 'ignore' }); return true; } catch { return false; }
+  try { execFileSync('gh', ['--version'], { stdio: 'ignore', timeout: 10000 }); return true; } catch { return false; }
 }
 
 function planPrivateRepoClone(repo, dir, { env = process.env, ghAvailable } = {}) {
@@ -32,7 +32,15 @@ function planPrivateRepoClone(repo, dir, { env = process.env, ghAvailable } = {}
 function clonePrivateRepo(repo, dir, opts = {}) {
   const plan = planPrivateRepoClone(repo, dir, opts);
   if (!plan) throw new Error('No way to clone a private repo: set REVIEW_TEXTS_TOKEN, run in a cloud session, or install gh.');
-  execFileSync(plan.cmd, plan.args, { stdio: 'pipe', env: { ...process.env, ...(plan.env || {}) } });
+  try {
+    execFileSync(plan.cmd, plan.args, { stdio: 'pipe', env: { ...process.env, ...(plan.env || {}) } });
+  } catch (e) {
+    // execFileSync's message and stderr echo the argv, which holds the token on the token path: redact for every caller.
+    const redact = (v) => String(v || '').replace(/x-access-token:[^@\s]+@/g, 'x-access-token:***@');
+    throw new Error(`${plan.method} clone of ${repo} failed: ${redact(e.message)} ${redact(e.stderr)}`.trim());
+  }
+  // Do not leave the token in <dir>/.git/config, where any later git command or log could print it (review P2).
+  if (plan.method === 'token') execFileSync('git', ['-C', dir, 'remote', 'set-url', 'origin', `https://github.com/${repo}.git`], { stdio: 'ignore' });
   return plan.method;
 }
 

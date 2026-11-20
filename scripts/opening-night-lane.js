@@ -32,7 +32,7 @@ async function main() {
   const hours = Number(arg('max-age-hours'));
   const deps = driver.buildRealLaneDeps({
     show, night, holder, repoDir, coreDir: path.resolve(coreDir),
-    openingDate: show.openingDate, timeZone: show.market === 'west-end' ? 'Europe/London' : 'America/New_York',
+    openingDate: show.openingDate, timeZone: require('./lib/local-date').tzForShow(show) || 'America/New_York', // BRO-7890: same zone the rebuild dates rows in
     ledgerDir: path.resolve(arg('ledger-dir') || path.join(repoDir, 'data', 'opening-night', 'ledger')),
     recordFile: require('./lib/opening-night-lane/rehearsal').rehearsalRecordFile(repoDir, 'recorded'), // BRO-6619: a synthetic pass never arms
     maxAgeMs: hours > 0 ? hours * 60 * 60 * 1000 : undefined,

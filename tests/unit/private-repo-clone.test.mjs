@@ -31,3 +31,11 @@ test('no script clones a private repo with a bare `gh repo clone` call', () => {
   const sh = fs.readFileSync(new URL('../../scripts/setup-local-data.sh', import.meta.url), 'utf8');
   assert.ok(sh.indexOf('AUTH_METHOD="proxy"') < sh.indexOf('AUTH_METHOD="gh"'), 'setup-local-data.sh must try the cloud proxy before gh');
 });
+
+test('a failed token clone never puts the token in the thrown error', () => {
+  const { clonePrivateRepo } = require('../../scripts/lib/private-repo-clone.js');
+  assert.throws(
+    () => clonePrivateRepo('nobody-x9/does-not-exist-x9', '/proc/no-write-here/x', { env: { GH_TOKEN: 'SEKRET123' } }),
+    (e) => !String(e.message).includes('SEKRET123') && /token clone/.test(e.message),
+  );
+});
