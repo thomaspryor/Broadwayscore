@@ -893,6 +893,40 @@ function extractLondonTheatreBody(html) {
  * Each entry: [hostnameMatch, regex or text extractor function, minLength].
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
  */
+/**
+ * Arc XP (Fusion) sites that render the story client-side (columbiaspectator.com, BRO-7884):
+ * the served HTML has only page chrome, and the body lives in `Fusion.globalContent={...};`
+ * as content_elements[] of type "text". Join those paragraphs. Null when absent or short.
+ */
+function extractArcFusionBody(html) {
+  const marker = 'Fusion.globalContent=';
+  const at = html.indexOf(marker);
+  if (at < 0) return null;
+  const start = at + marker.length;
+  if (html[start] !== '{') return null;
+  let depth = 0; let inStr = false; let esc = false; let end = -1;
+  for (let i = start; i < html.length; i++) {
+    const c = html[i];
+    if (inStr) {
+      if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false;
+      continue;
+    }
+    if (c === '"') inStr = true;
+    else if (c === '{') depth++;
+    else if (c === '}') { depth--; if (depth === 0) { end = i + 1; break; } }
+  }
+  if (end < 0) return null;
+  let content;
+  try { content = JSON.parse(html.slice(start, end)); } catch { return null; }
+  const els = Array.isArray(content && content.content_elements) ? content.content_elements : [];
+  const paras = els
+    .filter((e) => e && e.type === 'text' && typeof e.content === 'string')
+    .map((e) => stripHtml(e.content).trim())
+    .filter(Boolean);
+  const text = paras.join('\n\n');
+  return text.length >= 300 ? text : null;
+}
+
 const PATTERNS = [
   // LondonTheatre.co.uk: see extractLondonTheatreBody (BRO-5904).
   ['londontheatre.co.uk', extractLondonTheatreBody, 300],
@@ -1431,6 +1465,8 @@ function extractArticleTextUnchecked(html, hostname, criticHint, { outletOnly = 
   // unconditional-return fix above exists to prevent (ship-check task #919,
   // adversarial review 2026-08-14 caught this falling-through for WSJ).
   if (isDedicatedHost || matchedDedicatedPattern || outletOnly) return null;
+  const arcFusionText = extractArcFusionBody(html);
+  if (arcFusionText) return arcFusionText;
   const commonClassText = extractByCommonClass(html);
   if (commonClassText) return commonClassText;
   return extractByParagraphDensity(html);
@@ -1708,4 +1744,4 @@ function isExclusiveExtractorHost(urlOrHost) {
   return /(?:^|\.)theartsdesk\.com$/i.test(h);
 }
 
-module.exports = { extractAllBalancedDivsByClass, hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, stripHtmlKeepParagraphs, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };
+module.exports = { extractAllBalancedDivsByClass, hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, stripHtmlKeepParagraphs, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues, extractArcFusionBody };
