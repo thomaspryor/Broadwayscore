@@ -215,6 +215,28 @@ describe('7. publisher', () => {
     const m2 = core.mergePointer({ prev, updates: {}, now, live: {} });
     assert.ok(m2.shows.b, 'expired but no live deploy covers it -> kept');
   });
+  test('BRO-7831: an uncovered entry older than the hard cap is dropped; a younger uncovered one is kept', () => {
+    const day = 86400000; const now = 10 * day;
+    const prev = { seq: 1, shows: { old: { v: '1', c: 'c', rev: 5, at: now - 8 * day }, mid: { v: '2', c: 'c', rev: 5, at: now - 3 * day } } };
+    const m = core.mergePointer({ prev, updates: {}, now, live: {} });
+    assert.equal(m.shows.old, undefined); assert.ok(m.shows.mid);
+  });
+  test('BRO-7831: eligibility window is wider than the publisher hot set', () => {
+    assert.ok(core.ELIGIBLE_DAYS > core.HOT_DAYS);
+    const now = Date.parse('2026-11-19T12:00:00Z');
+    const sh = [{ id: 'soon', openingDate: '2026-11-23' }];
+    assert.equal(core.selectHotShows({ now, shows: sh }).length, 0);
+    assert.equal(core.selectHotShows({ now, shows: sh, days: core.ELIGIBLE_DAYS }).length, 1);
+  });
+  test('BRO-7831: consensus text that landed after the build shows through the overlay; absent field keeps static', () => {
+    const { applyHeroOverlay } = require('../../scripts/lib/live-score/apply');
+    const props = { show: { criticScore: {} }, consensusText: null, reviewAgeNote: null, hasAudience: false };
+    const view = { score: 80, reviewCount: 1, tier1Count: 0, tier2Count: 0, showTBD: false, reviewsRemaining: 0, noReviewsExpected: false, criticsTakeMode: 'consensus', reviewArrival: null };
+    assert.equal(applyHeroOverlay(props, { view: { ...view, consensusText: 'Critics loved it.' }, reviews: [] }).consensusText, 'Critics loved it.');
+    assert.equal(applyHeroOverlay({ ...props, consensusText: 'static' }, { view, reviews: [] }).consensusText, 'static');
+    const bad = validatePayload({ payload: { schema: core.SCHEMA, showId: 'x', v: 'v', rev: 9, view: { ...view, consensusText: 5 }, reviews: [{}] }, entry: { v: 'v', rev: 9 }, showId: 'x', staticRev: 1, staticReviewCount: 0 });
+    assert.equal(bad.reason, 'bad-consensus');
+  });
   test('hot set: opening +/-3d or fresh review; cold shows excluded', () => {
     const now = Date.parse('2026-11-19T12:00:00Z');
     const ids = core.selectHotShows({ now, shows: [{ id: 'open', openingDate: '2026-11-19' }, { id: 'old', openingDate: '2025-01-01' }, { id: 'rev', openingDate: '2024-01-01' }], reviewDatesByShow: { rev: ['2026-11-18'], old: ['2026-01-01'] } });

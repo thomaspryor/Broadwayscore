@@ -55,7 +55,7 @@ async function main() {
     try {
       const show = all.find((s) => s.id === id);
       if (!show) throw new Error(`unknown show ${id}`);
-      plan.push({ showId: id, view: buildScoreRegionView(show as never, !!getCriticConsensus(id)), reviews: getReviewListItems(show) });
+      plan.push({ showId: id, view: buildScoreRegionView(show as never, !!getCriticConsensus(id), undefined, getCriticConsensus(id)?.text ?? null), reviews: getReviewListItems(show) });
     } catch (e: any) {
       console.error(`skip ${id}: ${e.message || e}`);
       process.exitCode = 1;

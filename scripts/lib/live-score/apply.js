@@ -29,6 +29,8 @@ function applyHeroOverlay(props, overlay) {
     reviewsRemaining: view.reviewsRemaining,
     noReviewsExpected: view.noReviewsExpected,
     criticsTakeMode: view.criticsTakeMode,
+    // Consensus that landed after the build; an older payload without the field keeps the static text.
+    consensusText: typeof view.consensusText === 'string' && view.consensusText ? view.consensusText : props.consensusText,
     reviewArrival: view.reviewArrival,
     // The age note is only meaningful once a score shows; static value stays otherwise.
     reviewAgeNote: view.showTBD ? null : props.reviewAgeNote,

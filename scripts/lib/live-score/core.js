@@ -16,6 +16,13 @@ const crypto = require('crypto');
 const { SCHEMA } = require('./schema');
 const POINTER_TTL_MS = 48 * 3600 * 1000;
 const HOT_DAYS = 3;
+// A pointer entry is dropped after this age even when no deploy is confirmed to cover it (BRO-7831 #1).
+// Safe: the client only applies an entry whose rev is newer than the page's static rev, and any deploy
+// in 7 days carries newer data, so an entry this old can only be dead weight.
+const POINTER_MAX_AGE_MS = 7 * 86400000;
+// Build-time eligibility is wider than the publisher's hot set so a show that turns hot after a build
+// (builds run at most every ~6h) still fetches the pointer (BRO-7831 #3).
+const ELIGIBLE_DAYS = HOT_DAYS + 1;
 
 function stable(value) {
   if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
@@ -96,7 +103,8 @@ function mergePointer({ prev, updates, now = Date.now(), ttlMs = POINTER_TTL_MS,
   for (const [id, e] of Object.entries(old)) {
     const expired = now - (e.at || 0) > ttlMs;
     const covered = Number.isFinite(live[id]) && live[id] >= e.rev;
-    if (expired && covered) continue;
+    const tooOld = now - (e.at || 0) > Math.max(ttlMs, POINTER_MAX_AGE_MS);
+    if ((expired && covered) || tooOld) continue;
     shows[id] = e;
   }
   for (const [id, e] of Object.entries(updates || {})) {
@@ -113,7 +121,7 @@ function mergePointer({ prev, updates, now = Date.now(), ttlMs = POINTER_TTL_MS,
 }
 
 module.exports = {
-  SCHEMA, POINTER_TTL_MS, HOT_DAYS,
+  SCHEMA, POINTER_TTL_MS, POINTER_MAX_AGE_MS, HOT_DAYS, ELIGIBLE_DAYS,
   stable, hash16, contentHash, buildPayload, payloadPath,
   selectHotShows, shouldPublish, mergePointer,
 };
