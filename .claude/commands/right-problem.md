@@ -157,7 +157,7 @@ After presenting both reviews:
 
 ### Phase 6: Decide and proceed
 
-State the recommendation in plain English and go ahead with it. Choosing an approach is a technical call, so it is yours (owner rule: decide technical calls yourself, `docs/owner-escalation.md`). Do not ask the owner to approve it.
+State the recommendation in plain English and go ahead with it. Choosing an approach is a technical call, so it is yours (owner rule: decide technical calls yourself, `docs/owner-escalation.md`), with no approval step for the owner.
 
 Ask the owner only when the recommendation itself is their call: money, something irreversible, a public post, an email to real people, a product or taste choice, or a substantial new system (CLAUDE.md §20, owner decision 2026-10-25). Then use one DECISION NEEDED block with your recommendation.
 
