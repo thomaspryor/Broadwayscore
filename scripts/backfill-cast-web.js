@@ -496,7 +496,7 @@ async function main() {
     } catch { return true; }
   });
 
-  // BRO-7381: --rotate starts each ISO week at a different offset, so shows that keep failing
+  // BRO-7381: --rotate starts each week (7-day epoch bucket) at a different offset, so shows that keep failing
   // (never get a cast file) cannot hold the same --limit slots in every unattended run.
   if (args.includes('--rotate') && shows.length > 1 && limit > 0) {
     const week = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));
