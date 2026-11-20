@@ -221,7 +221,7 @@ async function main() {
   for (const r of rows) for (const f of r.files) { const why = lib.noRunReason(f); if (why) f.noRunReason = why; }
 
   // BRO-7910 (advisory): web sessions that landed code the day before this audit with no retro row.
-  const retroRows = readLedger(path.join(ROOT, 'data/audit/session-retro.jsonl'));
+  const retroRows = readLedger(require('./lib/session-retro.js').LEDGER);
   const retroGap = lib.retroCoverageGaps(rows.filter((r) => r.source === 'cloud'), retroRows, lib.dayMinus(auditDay, 1));
   console.error(`[landed-proof] retro coverage (advisory) for ${lib.dayMinus(auditDay, 1)}: ${retroGap.landed} web session(s) landed code, ${retroGap.covered} with a retro row, ${retroGap.missing.length} without${retroGap.missing.length ? ': ' + retroGap.missing.map((m) => m.session).join(' ') : ''}`);
 
