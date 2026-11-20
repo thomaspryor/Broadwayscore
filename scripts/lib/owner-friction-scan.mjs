@@ -20,12 +20,15 @@ export const PATTERNS = [
   { id: 'revised-plan-ask', re: /Want to go with the revised plan/i },
   { id: 'ask-owner-to-approve', re: /\bask (the )?(owner|user) (to approve|for (their )?approval|for sign-?off)\b/i },
   { id: 'fail-needs-owner-override', re: /(overturning it is the owner's call|fail stands until an? `?owner-override)/i },
+  { id: 'confirm-with-owner', re: /\bconfirm with the (owner|user)\b/i },
+  { id: 'owner-signoff', re: /\b(get|wait for) (the )?(owner|user)('s)? (sign-?off|approval|go-?ahead|confirmation)\b/i },
 ];
 
 // Owner-chosen cases. A hit here is kept on purpose; `why` names the owner decision.
 export const ALLOWLIST = [
-  // (empty today: the owner-chosen asks, e.g. §20 substantial plans, social posts, email broadcasts, are written as
-  // DECISION NEEDED / owner-decision text that none of PATTERNS matches.)
+  { file: '.claude/commands/what-else.md', id: 'confirm-with-owner', why: 'more than ~8 dispatches costs money (paid sessions); owner rule 2026-07-24, cap raised by owner 2026-09-08' },
+  // Other owner-chosen asks (§20 substantial plans, social posts, email broadcasts) are written as DECISION NEEDED /
+  // owner-decision text that none of PATTERNS matches.
 ];
 
 export function scanFiles(root = ROOT) {
@@ -43,7 +46,7 @@ export function scan({ root = ROOT, files = null, read = (f) => readFileSync(pat
     lines.forEach((text, i) => {
       for (const p of PATTERNS) {
         if (!p.re.test(text)) continue;
-        if (ALLOWLIST.some((a) => a.file === file && a.id === p.id)) continue;
+        if (ALLOWLIST.some((a) => a.file === file && a.id === p.id && a.why)) continue;
         hits.push({ file, line: i + 1, id: p.id, text: text.trim().slice(0, 140) });
       }
     });

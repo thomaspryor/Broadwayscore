@@ -9,7 +9,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
-import { scan, PATTERNS, scanFiles } from './owner-friction-scan.mjs';
+import { scan, PATTERNS, ALLOWLIST, scanFiles } from './owner-friction-scan.mjs';
 
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -27,7 +27,10 @@ test('patterns: each BRO-7881 phrasing is caught; owner-chosen DECISION NEEDED w
   assert.deepEqual(hit('then ask the owner to approve the approach'), ['ask-owner-to-approve']);
   assert.deepEqual(hit('Ask once, as one DECISION NEEDED block with the plan summary and your recommendation.'), []);
   assert.deepEqual(hit('Social posts: the owner approves the exact words before anything is posted.'), []);
-  assert.ok(PATTERNS.length >= 7);
+  assert.deepEqual(hit('pause and confirm with the owner before continuing'), ['confirm-with-owner']);
+  assert.deepEqual(hit('wait for the owner\'s go-ahead, then push'), ['owner-signoff']);
+  assert.ok(PATTERNS.length >= 9);
+  for (const a of ALLOWLIST) assert.ok(a.why && a.why.length > 20, `allowlist entry ${a.file}/${a.id} must name the owner decision`);
 });
 
 test('pinned: the files BRO-7881 fixed carry no owner-friction phrasing', () => {
