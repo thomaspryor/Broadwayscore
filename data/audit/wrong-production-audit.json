@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-20T03:19:36.499Z",
+  "timestamp": "2026-11-20T04:05:19.203Z",
   "stats": {
-    "totalReviews": 83296,
-    "alreadyFlagged": 22567,
+    "totalReviews": 83308,
+    "alreadyFlagged": 22569,
     "dateGuardCatches": 221,
-    "directorMismatch": 3793,
+    "directorMismatch": 3794,
     "tvFilmSignals": 2375,
     "londonSignals": 3832,
     "offBroadwaySignals": 775,
@@ -45564,6 +45564,19 @@
     },
     {
       "showId": "moulin-rouge-tour-2022",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2022-04-22",
+      "url": "https://chicago.suntimes.com/2022/4/22/23035729/moulin-rouge-stage-musical-review-chicago-theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
       "file": "columbus-dispatch--michael-grossberg.json",
       "publishDate": "2023-12-28",
       "url": "https://www.dispatch.com/story/entertainment/theater/2023/12/28/moulin-rouge-musical-set-to-open-in-columbus-for-2-week-run/71960495007/",
@@ -90614,6 +90627,7 @@
     {
       "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
       "file": "theatreandtonic--george.json",
+      "score": 89,
       "publishDate": "2026-11-19",
       "url": "https://theatreandtonic.co.uk/blog/a-homo-alone-2-at-the-other-palace-review",
       "findings": [
