@@ -523,7 +523,8 @@
     "eurydice-off-broadway-2026/timeout--raven-snook.json",
     "neighborhood-watch-regional-2025/chicago-reader--amanda-finn.json",
     "endgame-regional-2025/chicago-reader--rob-silverman-ascher.json",
-    "after-the-act-west-end-2025/times-uk--clive-davis.json"
+    "after-the-act-west-end-2025/times-uk--clive-davis.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json",
@@ -807,7 +808,17 @@
     "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
     "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
     "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
-    "stereophonic-west-end-2025/nytimes--unknown.json"
+    "stereophonic-west-end-2025/nytimes--unknown.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json",
+    "downstate-2026/nydailynews--unknown.json",
+    "downstate-2026/pages-on-stages--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1066,7 +1077,8 @@
       "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
       "always-something-there-regional-2025/chicagotheaterandarts--jodie-jacobs.json",
       "stereophonic-west-end-2025/islingtontribune--unknown.json",
-      "eurydice-off-broadway-2026/timeout--raven-snook.json"
+      "eurydice-off-broadway-2026/timeout--raven-snook.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1364,8 +1376,75 @@
     ]
   },
   "startTime": "2026-11-19T22:01:42.526Z",
-  "lastProcessed": "after-the-act-west-end-2025/times-uk--clive-davis.json",
-  "log": [],
+  "lastProcessed": "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-20T05:49:45.135Z",
+      "event": "bb-session",
+      "session": "83cf7c2b",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T05:49:45.778Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T05:50:02.792Z",
+      "event": "bb-session",
+      "session": "9534703b",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T05:50:03.392Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T05:50:56.074Z",
+      "event": "bb-session",
+      "session": "1189507f",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-20T05:50:56.791Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T05:51:13.996Z",
+      "event": "bb-session",
+      "session": "39606aa5",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-20T05:51:14.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T05:53:29.134Z",
+      "event": "bb-session",
+      "session": "86576a16",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T05:53:29.785Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T05:53:47.414Z",
+      "event": "bb-session",
+      "session": "0aced66c",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T05:53:47.976Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ],
   "recoveredAfterFailure": [
     "now-you-see-me-live-2026/culturesauce--thom-geier.json",
     "nacho-ate-spiderman-regional-2026/la-drama-critics-circle--ladcc-critics.json",
