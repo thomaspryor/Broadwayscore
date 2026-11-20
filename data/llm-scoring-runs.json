@@ -1,31 +1,5 @@
 [
   {
-    "startedAt": "2026-11-18T23:19:26.191Z",
-    "completedAt": "2026-11-18T23:19:31.104Z",
-    "totalReviews": 9,
-    "processed": 0,
-    "skipped": 8,
-    "errors": 11,
-    "tokensUsed": {
-      "input": 24532,
-      "output": 602,
-      "cacheRead": 10836,
-      "cacheWrite": 5315,
-      "total": 57811
-    },
-    "costUsd": 0.06568725,
-    "runId": "44419314997",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "hamilton-west-end-2021",
-        "outletId": "standard",
-        "error": "resume_input_hash_mismatch"
-      }
-    ],
-    "logKeepsSince": "2026-11-17T00:00:00.000Z"
-  },
-  {
     "startedAt": "2026-11-18T23:24:30.822Z",
     "completedAt": "2026-11-18T23:24:30.825Z",
     "totalReviews": 0,
@@ -106441,6 +106415,26 @@
     },
     "costUsd": 0,
     "runId": "44644084320",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-19T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-20T00:33:22.965Z",
+    "completedAt": "2026-11-20T00:33:22.973Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "44646351054",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-19T00:00:00.000Z"
