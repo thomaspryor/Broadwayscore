@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-20T00:20:03.908Z",
+    "generatedAt": "2026-11-20T00:48:43.131Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 157,
+    "totalFlagged": 158,
     "highConfidence": 7,
-    "mediumConfidence": 150,
+    "mediumConfidence": 151,
     "lowConfidence": 0,
     "reassignable": 50
   },
@@ -460,6 +460,21 @@
         "modern references: masks"
       ],
       "textSnippet": "A new generation of cats just took over Broadway. Simply said, Julie Taymor’s staging of Disney’s “The Lion King” is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity.\n\n"
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "showTitle": "The Lion King",
+      "showYear": 1997,
+      "file": "vulture--bilge-ebiri.json",
+      "outlet": "Vulture",
+      "criticName": "Bilge Ebiri",
+      "publishDate": "2024-12-19",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2024 is 27 years after original opening 1997"
+      ],
+      "textSnippet": "Barry Jenkins’s prequel to the 2019 “live-action” remake of the 1994 Disney animated classic leaves much to be desired. Photo: Disney Enterprises\n\nI will say this for Mufasa : Those lions are cute as "
     },
     {
       "showId": "the-lion-king-1997",

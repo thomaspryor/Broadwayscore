@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T00:30:13.006Z",
+  "generatedAt": "2026-11-20T00:57:52.617Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1479,6 +1479,10 @@
         {
           "name": "Time Out London",
           "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
         },
         {
           "name": "The Mail on Sunday",
@@ -3113,28 +3117,28 @@
       "status": "open",
       "slug": "eurotrash-off-west-end",
       "thumbnail": "/images/shows/eurotrash-off-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 91,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 87.35,
+      "liveScore": 87,
+      "scoreDrift": -0.3499999999999943,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 3,
-      "positive": 3,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:3/6"
+          "T2:1/2",
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3248,10 +3252,6 @@
         {
           "name": "LondonTheatre1",
           "isDualMarket": false
-        },
-        {
-          "name": "London Box Office",
-          "isDualMarket": false
         }
       ],
       "timeline": [
@@ -3275,6 +3275,18 @@
           "t2": 0,
           "t3": 3,
           "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-20T00:57:52.617Z",
+          "rc": 4,
+          "s": 87.35,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 4,
           "m": 0,
           "n": 0,
           "bc": "waiting"
