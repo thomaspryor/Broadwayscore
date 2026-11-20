@@ -318,7 +318,11 @@
     "wicked-2003/trib-live--alexis-papalia.json",
     "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json"
+    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+    "downstate-2026/nydailynews--unknown.json",
+    "downstate-2026/pages-on-stages--unknown.json",
+    "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
+    "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -462,26 +466,6 @@
       "the-lion-king-tour-2021/ground--unknown.json",
       "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
     ],
-    "scrapingbee": [
-      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-      "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json",
-      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json",
-      "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
-      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
-      "roleplay-off-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json",
-      "the-holes-off-broadway-2026/broadwayworld--unknown.json",
-      "water-for-elephants-tour-2025/broadwayworld--christina-mancuso.json",
-      "oh-mary-2024/broadwaynews--brittani-samuel.json",
-      "oh-mary-2024/cititour--unknown.json",
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-      "little-shop-of-horrors-off-broadway-2019/broadwaynews--jeremy-gerard.json",
-      "hadestown-2019/theatrely--theatrely-staff.json",
-      "wicked-2003/theatrely--kobi-kassal.json"
-    ],
-    "brightdata": [
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
-    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
@@ -532,7 +516,7 @@
     ]
   },
   "startTime": "2026-11-20T12:57:19.642Z",
-  "lastProcessed": "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+  "lastProcessed": "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-20T13:05:00.572Z",
@@ -610,6 +594,72 @@
       "t": "2026-11-20T13:50:45.008Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-20T15:11:01.953Z",
+      "event": "bb-session",
+      "session": "c26d6734",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T15:11:02.550Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T15:11:19.661Z",
+      "event": "bb-session",
+      "session": "542540d1",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T15:11:20.283Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T15:12:45.655Z",
+      "event": "bb-session",
+      "session": "feebba3a",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-20T15:12:46.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T15:14:01.723Z",
+      "event": "bb-session",
+      "session": "87d855df",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T15:14:02.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T15:14:19.449Z",
+      "event": "bb-session",
+      "session": "52556f1d",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T15:14:20.041Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T15:17:39.020Z",
+      "event": "bb-session",
+      "session": "0d172935",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-20T15:17:39.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
