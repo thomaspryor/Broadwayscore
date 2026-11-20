@@ -423,9 +423,10 @@ function main() {
           flags.push(`${key}-over-${Math.abs(gap)}`);
         }
 
-        // Wrong page detection
+        // Zero critics listed in the archive while we hold 6+ reviews: either a stale snapshot or a
+        // wrong page. This heuristic cannot tell which (BRO-7381: The Ripple was stale), so say so.
         if (data.reviewCount === 0 && local.total > 5) {
-          flags.push(`${key}-wrong-page`);
+          flags.push(`${key}-zero-critics-listed-stale-or-wrong-page`);
         }
       } else if (data.error === 'wrong-show') {
         // Archive exists but is another show's page: not "never searched".

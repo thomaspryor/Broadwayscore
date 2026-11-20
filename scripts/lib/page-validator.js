@@ -29,6 +29,7 @@ const cheerio = require('cheerio');
 const { titleWordsMatchWithConfidence } = require('./show-matching');
 const { findContainingTitleSibling } = require('./title-containment');
 const { titleVariantInfo, venueTokens } = require('./show-title-tokens');
+const { venueForms } = require('./outlet-listing-helpers');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 const { openaiChatBody } = require('./llm-batch');
 
@@ -447,12 +448,17 @@ function matchDerivedTitleVariant(showTitle, headingText, options = {}) {
   // clashIds only means no other shows.json row shares the short title, and a
   // single venue word ("classic", "performing", a city) proves nothing.
   const venueName = typeof show.venue === 'string' ? show.venue : show.venue && show.venue.name;
-  const venuePhrase = normalizePhrase(venueName);
-  if (!venuePhrase || venueTokens(show).length === 0) return null;
+  // BRO-7381: a house billed with its stage ("The Public Theater/Newman Theater", "The Other Palace
+  // - Main Theatre") is named by headings as the house only, so the whole string never matches.
+  // venueForms (outlet-listing-helpers, the BRO-7372 fix) yields the whole name plus the house and
+  // stage forms; each is a 2+ word proper name, the same proof strength as the whole venue.
+  const venuePhrases = [...new Set([normalizePhrase(venueName),
+    ...venueForms({ venue: venueName }).map(normalizePhrase)])].filter(Boolean);
+  if (!venuePhrases.length || venueTokens(show).length === 0) return null;
   const headingPhrase = ` ${normalizePhrase(headingText)} `;
-  if (!headingPhrase.includes(` ${venuePhrase} `)) return null;
+  if (!venuePhrases.some((p) => headingPhrase.includes(` ${p} `))) return null;
   let variants;
-  try { variants = titleVariantInfo(show); } catch (_) { return null; }
+  try { variants = titleVariantInfo(show, { titles: options.titles }); } catch (_) { return null; }
   for (const v of variants) {
     if (v.kind !== 'derived' || v.labelHead) continue;
     const m = titleWordsMatchWithConfidence(v.title, headingText);
