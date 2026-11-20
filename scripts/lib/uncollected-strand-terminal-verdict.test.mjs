@@ -41,7 +41,8 @@ test('a plain never-attempted file with no verdict is still a strand', () => {
 });
 
 test('non-review verdicts resolve a never-attempted file; fallible production guesses and empty pointers do not', () => {
-  const sib = new Map([['a.json', canonical]]);
+  // BRO-7901: a different-URL sibling, so only the verdict (not a same-URL fetch) is under test.
+  const sib = new Map([['a.json', { ...canonical, url: 'https://example.com/unrelated' }]]);
   assert.equal(hasTerminalVerdict(stub({ rejectionReason: 'not_a_review' }), sib), true);
   assert.equal(hasTerminalVerdict(stub({ isNonReview: true }), sib), true);
   assert.equal(hasTerminalVerdict(stub({ duplicateOf: 'a.json' }), sib), true);
@@ -77,4 +78,30 @@ test('the St. Ann\'s Warehouse venue show page is a non-review on both the write
   const { classifyReviewUrl } = req('./non-review-url-patterns.js');
   assert.equal(isBlockedReviewUrl('https://stannswarehouse.org/show/kramer-fauci/'), true);
   assert.equal(classifyReviewUrl('https://stannswarehouse.org/show/kramer-fauci/').ok, false);
+});
+
+// BRO-7901: re-seeded stub beside a same-URL file that was already fetched/judged.
+test('a stub whose URL a sibling already fetched (even if judged wrong-production) is not stranded', () => {
+  const judged = { url: URL, fullText: '', incompleteReason: 'wrong_content', wrongProduction: true, textFetchedAt: '2026-10-14T00:00:00Z' };
+  const r = assessShow(show, [
+    { file: 'chicago-reader--kelly-kleiman.json', review: judged },
+    { file: 'chicago-reader--unknown.json', review: stub({ url: URL + '/' }) },
+  ], { nowMs });
+  assert.equal(r.stranded.length, 0);
+});
+
+test('same-URL siblings that are both never-attempted are each still stranded', () => {
+  const r = assessShow(show, [
+    { file: 'a.json', review: stub() },
+    { file: 'b.json', review: stub() },
+  ], { nowMs });
+  assert.equal(r.stranded.length, 2);
+});
+
+test('a different-URL fetched sibling does not exempt a stub', () => {
+  const r = assessShow(show, [
+    { file: 'a.json', review: canonical },
+    { file: 'b.json', review: stub({ url: 'https://example.com/other' }) },
+  ], { nowMs });
+  assert.equal(r.stranded.length, 1);
 });

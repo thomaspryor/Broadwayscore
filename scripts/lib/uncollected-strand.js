@@ -99,7 +99,32 @@ function hasTerminalVerdict(review, siblings) {
   // can be fallible pre-fetch guesses and must stay visible.
   if (review.rejectionReason === 'not_a_review') return true;
   if (review.isNonReview === true || review.isNotReview === true) return true;
-  return duplicateHasCanonical(review, siblings);
+  return duplicateHasCanonical(review, siblings) || urlAlreadyHandledBySibling(review, siblings);
+}
+
+function normUrl(u) {
+  return String(u || '').trim().toLowerCase().replace(/#.*$/, '').replace(/\/+$/, '');
+}
+
+/**
+ * BRO-7901: a never-attempted stub whose URL is already held by ANOTHER file in
+ * the same show folder that WAS attempted (fetched, judged, quarantined) is a
+ * leftover pointer, not an uncollected URL. The outlet-listing-poller re-seeds
+ * `chicago-reader--unknown.json` after the fetch renamed the first file to
+ * `chicago-reader--kelly-kleiman.json`, and the re-seeded stub carries no
+ * duplicateOf, so it read as stranded every hour although the URL was fetched.
+ * A sibling that is itself never-attempted does not count (the URL stays
+ * reported, exactly once per file as before).
+ */
+function urlAlreadyHandledBySibling(review, siblings) {
+  const key = normUrl(review.url);
+  if (!key || !siblings) return false;
+  for (const other of siblings.values()) {
+    if (!other || other === review || !other.url) continue;
+    if (normUrl(other.url) !== key) continue;
+    if (!isNeverAttempted(other)) return true;
+  }
+  return false;
 }
 
 function duplicateHasCanonical(review, siblings) {
