@@ -1094,5 +1094,34 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-20T03:07:08.642Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-20.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-20T03:04:46.871Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
+    "title": "Live-data test failing: BRO-93 acceptance: current shows.json produces zero stale announced flags (scripts/audit-stale-announced-shows.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-93 acceptance: current shows.json produces zero stale announced flags\" in scripts/audit-stale-announced-shows.test.mjs is red against the live corpus.\n\nexpected zero stale announced shows, got: [\n{\n\"id\": \"is-anything-ok-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"miracle-on-south-division-street-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"stories-from-the-brink-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"heavenly-baba-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"pea-dinneen-raising-her-voice-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n}\n]\n+ actual - expected\n\n+ [\n+   {\n+     id: 'is-anything-ok-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'miracle-on-south-division-street-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'stories-from-the-brink-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'heavenly-baba-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'pea-dinneen-raising-her-voice-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   }\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
+    "fields": [],
+    "queuedAt": "2026-11-20T03:22:30.956Z"
   }
 ]
