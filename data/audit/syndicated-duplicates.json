@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-20T22:12:13.288Z",
+  "generatedAt": "2026-11-20T23:13:59.432Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 89,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -159,10 +159,23 @@
       "secondaryOutlets": [
         "totaltheater1"
       ],
-      "count": 0
+      "count": 1
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "David Sheward",
+      "showId": "much-ado-about-nothing-2026",
+      "primaryOutlet": "theater-life",
+      "secondaryOutlet": "totaltheater1",
+      "primaryFile": "theater-life--david-sheward.json",
+      "secondaryFile": "totaltheater1--david-sheward.json",
+      "similarity": 89,
+      "primaryScore": 92,
+      "secondaryScore": 93,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
