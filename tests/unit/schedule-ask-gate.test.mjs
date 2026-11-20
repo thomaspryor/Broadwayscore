@@ -59,6 +59,8 @@ test('the kill switch and NO-VERIFY let it through this gate', () => {
 });
 
 const PASSES = [
+  // Real (BRO-7880 parent, 2026-11-20T03:46Z): a report that QUOTES the old ask is not an ask.
+  'Each change has to be run against real past sessions:\n\n1. Scheduling fix: replay real past sessions. This session\'s "reply yes to schedule it" must now be blocked. A real money question must still go through to you.\n\nNothing needed from you.\n\nKEEP OPEN: waiting on the two workers; background watchers wake this session when either reports back.',
   // A real money/taste decision.
   'The new lane would cost about $40 a night in scraping.\n\nDECISION NEEDED: turn on the paid fetch fallback for West End press nights?\nWhy this is your call: it spends money every night.\nOption A — turn it on: catches 3 more reviews a night / about $40 a night.\nOption B — leave it off: free / misses those reviews.\nMy recommendation: A because the reviews are the product.\nDefault: stays off.\n\nACTION NEEDED FROM YOU — pick A or B.',
   // Describing the rule is not an ask.

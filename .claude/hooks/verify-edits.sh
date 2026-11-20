@@ -1612,9 +1612,18 @@ _SCHEDULE_ASK_RE = re.compile(
     r"|\b(?:want|should|shall)\s+(?:me|I)\s+(?:to\s+)?(?:set up|schedule|arm|create)\b[^.\n]{0,40}?\b" + _SCHED_NOUN + r"\b",
     re.IGNORECASE)
 
+_SCHED_ASK_LINE_RE = re.compile(
+    r"^[ \t>*_-]*(?:you need to|action needed|keep open|decision needed|default|my recommendation|option [a-d]\b)",
+    re.IGNORECASE)
+
 def _schedule_ask(text):
     """The closing asks the owner to approve/allow/"yes" a schedule (BRO-7880)."""
-    text = _VERDICT_TOKEN_RE.sub(' ', text or '')
+    # Only lines that address the owner count: "You need to:", the verdict /
+    # DECISION lines, and questions. A report that quotes an old ask ("this
+    # session's 'reply yes to schedule it' is now blocked") is not an ask.
+    text = '\n'.join(l for l in (text or '').splitlines()
+                     if _SCHED_ASK_LINE_RE.match(l) or l.rstrip().endswith('?'))
+    text = _VERDICT_TOKEN_RE.sub(' ', text)
     for m in _SCHEDULE_ASK_RE.finditer(text):
         clause = re.split(r'[.;:!?\n\u2014\u2013]', text[max(0, m.start() - 40):m.start()])[-1]
         if not _NEGATION_RE.search(clause) and not _NEGATION_RE.search(m.group(0)):
