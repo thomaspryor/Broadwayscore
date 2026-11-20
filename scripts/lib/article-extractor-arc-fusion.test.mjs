@@ -42,3 +42,11 @@ test('a page whose markup already holds the body keeps the markup text (Fusion i
   assert.match(t, /Markup paragraph 0/);
   assert.doesNotMatch(t, /Teaser only/);
 });
+
+test('drops trailing staff-contact and promo lines', () => {
+  const body = 'A synthetic review sentence about a revival and its stars on stage tonight. '.repeat(6).trim();
+  const els = [body, 'Staff writer Jo can be contacted at jo@example.com .', 'Follow Spectator on X @ColumbiaSpec .', 'Want to keep up with breaking news? Subscribe to our email newsletter.']
+    .map((c) => ({ type: 'text', content: c }));
+  const html = `<script>Fusion.globalContent=${JSON.stringify({ content_elements: els })};</script>`;
+  assert.equal(extractArcFusionBody(html), body);
+});

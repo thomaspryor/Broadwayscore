@@ -898,6 +898,7 @@ function extractLondonTheatreBody(html) {
  * the served HTML has only page chrome, and the body lives in `Fusion.globalContent={...};`
  * as content_elements[] of type "text". Join those paragraphs. Null when absent or short.
  */
+const ARC_FURNITURE_RE = /(can be contacted at\s+\S+@|^Follow \S.{0,60} on (X|Twitter|Instagram|Facebook)\b|^Want to keep up with breaking news\?|Subscribe to our (email )?newsletter)/i;
 function extractArcFusionBody(html) {
   const m = /Fusion\.globalContent\s*=\s*\{/.exec(html);
   if (!m) return null;
@@ -920,7 +921,9 @@ function extractArcFusionBody(html) {
   const paras = els
     .filter((e) => e && e.type === 'text' && typeof e.content === 'string')
     .map((e) => stripHtml(e.content).trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    // Trailing staff-contact and promo lines are text elements too (BRO-7884 review).
+    .filter((p) => !ARC_FURNITURE_RE.test(p));
   const text = paras.join('\n\n');
   return text.length >= 300 ? text : null;
 }
