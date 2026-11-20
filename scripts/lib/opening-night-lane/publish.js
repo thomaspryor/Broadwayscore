@@ -22,7 +22,7 @@ const { execFileSync } = require('child_process');
 const ledger = require('./ledger');
 const { canonicalUrl } = require('./discovery');
 const { keyOf, urlKeyOf, resolveConflict } = require('../merge-reviews-json');
-const { isLaneReview } = require('./trust-model');
+const { isLaneReview, calendarDateIn } = require('./trust-model');
 const { criticFileSlug } = require('../syndication-pairs');
 
 const DEFAULT_POLL_MS = 15 * 1000;
@@ -122,7 +122,20 @@ function createReviewsFilePort(file, { attempts = 5, beforeWrite = null, beforeR
  *   deploy(), fetchLiveShow(showId)}, now?(), sleep?(ms), pollMs, timeoutMs
  * @returns {{merge, verified, missing, dropped, timedOut, ms}}
  */
-async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS, openingDate, dryRun = false, remove } = {}) {
+/**
+ * BRO-7884: rows reach reviews.json without the rebuild's date normaliser, so a page's full timestamp
+ * ("2026-11-20T03:00:00.000Z") went out as-is and the iOS app showed "Invalid Date" (the site showed Nov 20 for a
+ * Nov 19 press night). Publish the calendar day in the show's market time zone. Mutates in place on purpose: the
+ * caller matches merge.applied against these same row objects.
+ */
+function toCalendarDay(row, timeZone) {
+  if (!row || typeof row.publishDate !== 'string' || /^\d{4}-\d{2}-\d{2}$/.test(row.publishDate)) return row;
+  const day = calendarDateIn(row.publishDate, timeZone || undefined);
+  if (day) row.publishDate = day;
+  return row;
+}
+
+async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS, openingDate, dryRun = false, remove, timeZone } = {}) {
   if (!show || !night || !ledgerDir || !ports) throw new Error('publish: show, night, ledgerDir and ports are required');
   if (!Array.isArray(rows) || !rows.length) return { merge: { added: 0, replaced: 0, kept: 0 }, verified: [], missing: [], dropped: [], timedOut: false, ms: 0 };
   for (const p of ['updateReviews', 'regenShow', 'deploy', 'fetchLiveShow']) if (typeof ports[p] !== 'function') throw new Error(`publish: port "${p}" is required`);
@@ -136,6 +149,7 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
   const t0 = now();
   const log = (key, stage, meta) => ledger.appendEvent(ledgerDir, { show, night, reviewKey: key, stage, at: now(), ...(meta ? { meta } : {}) });
 
+  for (const r of rows) toCalendarDay(r && r.row, timeZone);
   const merge = await ports.updateReviews((doc) => mergeShowRows(doc, show, rows.map((r) => r.row), { openingDate, remove }));
   const landed = new Set(merge.applied);
   if (ports.pushData) {
@@ -228,6 +242,7 @@ function dryRunDeploy({ publicDir, liveDir, showId, delayMs = 0 }) {
 }
 
 module.exports = {
+  toCalendarDay,
   DEFAULT_POLL_MS, DEFAULT_TIMEOUT_MS, mergeShowRows, createReviewsFilePort, publishLaneReviews,
   regenShowViaScript, fetchLiveShowFrom, startStaticServer, dryRunDeploy,
 };

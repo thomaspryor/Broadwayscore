@@ -187,7 +187,7 @@ async function runLaneNight({
     try {
       const res = await publish.publishLaneReviews({
         show: show.id, night, rows: batch, ...(remove.length ? { remove: remove.map(({ criticName, outletId, primaryOutlet }) => ({ criticName, outletId, primaryOutletId: primaryOutlet })) } : {}), ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
-        openingDate, dryRun, ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
+        openingDate, dryRun, ...(timeZone ? { timeZone } : {}), ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
       });
       published.push(res);
       const notLive = new Set([...(res.missing || [])]);
