@@ -1040,6 +1040,20 @@
     "queuedAt": "2026-11-19T23:23:22.690Z"
   },
   {
+    "conditionKey": "opening-night-lane-summary:much-ado-about-nothing-2026:2026-11-19",
+    "title": "Opening-night lane for much-ado-about-nothing-2026: 0 unpublished, 3 failed, 45 errors",
+    "description": "passes 125, admitted 18\nfailed: https://playbill.com/article/reviews-critics-sound-off-on-much-ado-about-nothing-broadway-revival (score failed for good after 1 attempt(s): not a review: roundup page (Playbill Verdict roundup article (multi-outlet quote compilation)))\nfailed: https://broadwayworld.com/article/Review-Roundup-Tom-Hiddleston-and-Hayley-Atwell-Star-in-MUCH-ADO-ABOUT-NOTHING-on-Broadway-20261119 (score failed for good after 1 attempt(s): not a review: roundup page (BroadwayWorld Review-Roundup article (multi-outlet quote compilation)))\nfailed: https://columbiaspectator.com/arts-and-culture/2026/11/19/review-jamie-lloyds-much-ado-about-nothing-is-the-times-square-of-shakespeare (fetch failed for good after 5 attempt(s): no extractable text (0 chars) and no aggregator score or paywall excerpt to fall back on)\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-20T06:11:02.875Z"
+  },
+  {
     "conditionKey": "bd-circuit-breaker-web_unlocker2",
     "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2239/1750 reqs)",
     "description": "Zone web_unlocker2 billed 2239 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n34 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (1065), gather-reviews.js (689), opening-night-lane.js (397).",
@@ -1052,20 +1066,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-19T23:58:10.289Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-20.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-20T03:04:46.871Z"
   },
   {
     "conditionKey": "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
@@ -1081,34 +1081,6 @@
     "testId": "scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
     "fields": [],
     "queuedAt": "2026-11-20T03:22:30.956Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
-    "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-20T03:58:38.199Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:well-see-off-broadway-2026",
-    "title": "1 review(s) for well-see-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--6991e48c.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/well-see/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-20T03:58:42.107Z"
   },
   {
     "conditionKey": "land:land/not-before-cards",
@@ -1140,19 +1112,5 @@
       }
     ],
     "queuedAt": "2026-11-20T04:13:04.805Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-20.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-20T05:16:48.332Z"
   }
 ]
