@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-20T16:37:23.152Z",
+  "timestamp": "2026-11-20T17:23:48.792Z",
   "stats": {
-    "totalReviews": 83383,
-    "alreadyFlagged": 22589,
+    "totalReviews": 83466,
+    "alreadyFlagged": 22596,
     "dateGuardCatches": 221,
     "directorMismatch": 3795,
-    "tvFilmSignals": 2379,
-    "londonSignals": 3844,
+    "tvFilmSignals": 2378,
+    "londonSignals": 3845,
     "offBroadwaySignals": 775,
     "yearMismatch": 387,
-    "noPublishDate": 8229
+    "noPublishDate": 8293
   },
   "findings": [
     {
@@ -21477,7 +21477,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 86,
+      "score": 84,
       "publishDate": "2026-11-20",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/eurotrash-young-vic-ben-whishaw-review-b3088606.html",
       "findings": [
@@ -73051,22 +73051,8 @@
     },
     {
       "showId": "the-heiress-2012",
-      "file": "vulture--jesse-green.json",
-      "score": 66,
-      "publishDate": "November 2, 2012",
-      "url": "https://www.vulture.com/2012/11/theater-review-the-heiress-jessica-chastain.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "the-heiress-2012",
       "file": "vulture--scott-brown.json",
-      "score": 72,
+      "score": 66,
       "publishDate": "November 2, 2012",
       "url": "https://www.vulture.com/2012/11/theater-review-the-heiress-jessica-chastain.html",
       "findings": [
@@ -80312,6 +80298,20 @@
       ]
     },
     {
+      "showId": "the-snow-geese-2013",
+      "file": "vulture--jesse-green.json",
+      "score": 38,
+      "publishDate": "2013-10-24T21:19:02-04:00",
+      "url": "https://www.vulture.com/2013/10/theater-review-the-snow-geese.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 7\""
+        }
+      ]
+    },
+    {
       "showId": "the-snow-goose-regional-2026",
       "file": "hartford-courant--christopher-arnott.json",
       "score": 45,
@@ -80521,20 +80521,6 @@
       "score": 85,
       "publishDate": "2017-08-17",
       "url": "https://www.stagezine.com/michael-moores-terms-of-my-surrender/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-terms-of-my-surrender-2017",
-      "file": "village-voice--alan-scherstuhl.json",
-      "score": 52,
-      "publishDate": null,
-      "url": "https://www.villagevoice.com/michael-moore-broadway-show-terms-surrender-review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -103917,9 +103903,23 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 74,
+      "score": 76,
       "publishDate": "2026-11-20",
       "url": "https://londontheatre.co.uk/reviews/eurotrash-review-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "nytimes--houman-barekat.json",
+      "score": 72,
+      "publishDate": "2026-11-20",
+      "url": "https://www.nytimes.com/2026/11/20/theater/eurotrash-young-vic-london-review.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -103945,7 +103945,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 84,
+      "score": 86,
       "publishDate": "2026-11-20",
       "url": "https://www.timeout.com/london/news/eurotrash-ben-whishaw-young-vic-review-112026",
       "findings": [
@@ -144517,7 +144517,7 @@
       "showId": "time-and-the-conways-2017",
       "file": "dailybeast--tim-teeman.json",
       "score": 52,
-      "publishDate": null,
+      "publishDate": "2017-10-10T19:50:19-04:00",
       "url": "https://www.thedailybeast.com/downton-abbey-just-landed-on-broadway-kind-of-time-and-the-conways-measure-for-measure-and-the-home-place",
       "findings": [
         {

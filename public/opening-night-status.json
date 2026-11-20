@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T16:37:40.617Z",
+  "generatedAt": "2026-11-20T17:24:06.911Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-20",
-      "status": "upcoming",
+      "status": "open",
       "slug": "bigfoot-ripped-my-dog-in-half-i-saw-it",
       "thumbnail": "/images/shows/bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -385,7 +385,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-20",
-      "status": "previews",
+      "status": "open",
       "slug": "elektra",
       "thumbnail": "/images/shows/elektra-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -761,7 +761,7 @@
       "category": "tour",
       "type": "musical",
       "openingDate": "2026-11-20",
-      "status": "upcoming",
+      "status": "open",
       "slug": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
       "thumbnail": "/images/shows/the-unauthorized-hallmark-ish-parody-musical-tour-2026/thumbnail.webp",
       "siteScore": null,
@@ -1131,6 +1131,163 @@
       ]
     },
     {
+      "id": "goblin-off-west-end-2026",
+      "title": "Goblin",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-11-19",
+      "status": "open",
+      "slug": "goblin-off-west-end",
+      "thumbnail": "/images/shows/goblin-off-west-end-2026/thumbnail.jpg",
+      "siteScore": 72.37,
+      "liveScore": 72,
+      "scoreDrift": -0.37000000000000455,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 3,
+      "t1": 0,
+      "t2": 2,
+      "t3": 1,
+      "positive": 3,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "3/8 total",
+          "T1:0/3",
+          "hi-conf:3/6"
+        ],
+        "highConfidence": 3,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-20T17:24:06.911Z",
+          "rc": 3,
+          "s": 72.37,
+          "t1": 0,
+          "t2": 2,
+          "t3": 1,
+          "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
       "id": "much-ado-about-nothing-2026",
       "title": "Much Ado About Nothing",
       "market": "broadway",
@@ -1140,23 +1297,23 @@
       "status": "open",
       "slug": "much-ado-about-nothing",
       "thumbnail": "/images/shows/much-ado-about-nothing-2026/thumbnail.webp",
-      "siteScore": 78.13,
-      "liveScore": 78,
-      "scoreDrift": -0.12999999999999545,
+      "siteScore": 79.34,
+      "liveScore": 79,
+      "scoreDrift": -0.3400000000000034,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 21,
+      "total": 23,
       "t1": 5,
-      "t2": 13,
-      "t3": 3,
-      "positive": 18,
+      "t2": 14,
+      "t3": 4,
+      "positive": 20,
       "mixed": 1,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 23,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1233,10 +1390,6 @@
         },
         {
           "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
-          "name": "Cititour",
           "isDualMarket": false
         },
         {
@@ -1529,6 +1682,18 @@
           "t2": 13,
           "t3": 3,
           "p": 18,
+          "m": 1,
+          "n": 2,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-11-20T17:24:06.911Z",
+          "rc": 23,
+          "s": 79.34,
+          "t1": 5,
+          "t2": 14,
+          "t3": 4,
+          "p": 20,
           "m": 1,
           "n": 2,
           "bc": "complete"
@@ -3202,23 +3367,23 @@
       "status": "open",
       "slug": "eurotrash-off-west-end",
       "thumbnail": "/images/shows/eurotrash-off-west-end-2026/thumbnail.webp",
-      "siteScore": 73.43,
-      "liveScore": 73,
-      "scoreDrift": -0.4300000000000068,
+      "siteScore": 73.63,
+      "liveScore": 74,
+      "scoreDrift": 0.37000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
-      "t1": 4,
+      "total": 14,
+      "t1": 5,
       "t2": 3,
-      "t3": 5,
-      "positive": 10,
+      "t3": 6,
+      "positive": 12,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 11,
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3407,6 +3572,18 @@
           "t2": 3,
           "t3": 5,
           "p": 10,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-20T17:24:06.911Z",
+          "rc": 14,
+          "s": 73.63,
+          "t1": 5,
+          "t2": 3,
+          "t3": 6,
+          "p": 12,
           "m": 1,
           "n": 1,
           "bc": "waiting"
