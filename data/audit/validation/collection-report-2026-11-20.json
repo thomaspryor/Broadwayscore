@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-20T08:09:07.669Z",
+  "runDate": "2026-11-20T08:42:02.617Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 60,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "desire-under-the-elms-off-west-end-2026",
-    "aggressive": true,
+    "showFilter": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 1,
     "failed": 0,
     "skipped": 0,
     "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,8 +28,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
+    "processed": 1,
     "failed": 0,
     "shows": [
-      "desire-under-the-elms-off-west-end-2026"
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,21 +66,18 @@
     }
   },
   "processed": [
-    "desire-under-the-elms-off-west-end-2026/observer--unknown.json",
-    "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
   ],
   "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "desire-under-the-elms-off-west-end-2026/observer--unknown.json",
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
     ],
     "failed": []
   },
   "tierDetails": {
     "playwright": [
-      "desire-under-the-elms-off-west-end-2026/observer--unknown.json",
-      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
     ],
     "amp": [],
     "browserbase": [],
