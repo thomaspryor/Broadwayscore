@@ -5814,7 +5814,7 @@ showDirs.forEach(showId => {
         // BRO-3366: a winner with no URL inherits its duplicateOf loser's URL.
         // BRO-7841: an outlet-pulled review (url 404s) keeps its text and score but publishes no link.
         url: require('./lib/review-url-dead').publishedUrl(data, inheritUrlFromDuplicateLosers(file, data, allJsonFiles, _loadDupCycleSibling)),
-        publishDate: normalizePublishDate(data.publishDate) || (() => {
+        publishDate: normalizePublishDate(data.publishDate, { market: showCategoryMap[showId], url: data.url }) || (() => {
           // Backfill when source file has no publishDate (BRO-4252: article-id URL digits lose to a later text date)
           const urlDate = resolveBackfillPublishDate(data);
           if (urlDate && urlDate.date) {

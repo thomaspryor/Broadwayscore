@@ -7,7 +7,8 @@
  * Handles:
  *  - Ordinal suffixes: "February 11th, 2026" → "February 11, 2026"
  *  - UK date format: "11 February 2026" → valid Date
- *  - ISO timestamps: "2026-02-11T05:00:00Z" → "2026-02-11"
+ *  - ISO timestamps: "2026-02-11T05:00:00Z" → "2026-02-11" (the calendar day in
+ *    the market's time zone, BRO-7890; see normalizeDate's opts)
  *  - Already-normalized: "2026-02-11" → pass-through
  *  - Sentinel strings: "For a previous production" → null
  *  - Invalid dates: "March 32, 2011" → null (not silently wrong)
@@ -75,7 +76,17 @@ function validateCalendarDate(year, month, day) {
  * @param {string|null|undefined} dateStr - Raw date string from review data
  * @returns {string|null} - YYYY-MM-DD or null
  */
-function normalizeDate(dateStr) {
+// BRO-7890: a zoned instant ("2026-11-20T03:00:00Z", "Wed, 19 Nov 2026 22:00:00 -0500") is
+// converted to the market's calendar day, never the UTC day. A New York review posted at
+// 10pm ET is 03:00Z the next day; taking the UTC date stored it a day late.
+const ZONED_TIME_RE = /\d{1,2}:\d{2}(?::\d{2})?(?:\.\d+)?\s*(?:[AP]\.?M\.?\s*)?(?:Z\b|[+-]\d{2}:?\d{2}\b|\b(?:GMT|UTC|UT|E[SD]T|C[SD]T|M[SD]T|P[SD]T|BST)\b)/i;
+
+function zoneFor(opts) {
+  const { tzForMarket } = require('./local-date');
+  return (opts && (opts.timeZone || tzForMarket(opts.market))) || undefined;
+}
+
+function normalizeDate(dateStr, opts = {}) {
   if (!dateStr || typeof dateStr !== 'string') return null;
 
   const trimmed = dateStr.trim();
@@ -90,10 +101,15 @@ function normalizeDate(dateStr) {
     return validateCalendarDate(y, m, d);
   }
 
-  // ISO timestamp: 2026-02-11T05:00:00Z → 2026-02-11
+  // ISO timestamp: 2026-02-11T05:00:00Z → 2026-02-11. A UTC stamp is converted to the market's
+  // calendar day (opts.timeZone, opts.market, else the publisher host in opts.url, else New York);
+  // an explicit local offset or a zoneless stamp keeps its written day (local-date.js rules).
   const isoTs = trimmed.match(/^(\d{4}-\d{2}-\d{2})T/);
   if (isoTs) {
-    const [y, m, d] = isoTs[1].split('-').map(Number);
+    const { publishedStampToLocalDate } = require('./local-date');
+    const local = publishedStampToLocalDate(trimmed, opts && opts.url, { tz: zoneFor(opts) });
+    const day = local && /^\d{4}-\d{2}-\d{2}$/.test(local) ? local : isoTs[1];
+    const [y, m, d] = day.split('-').map(Number);
     return validateCalendarDate(y, m, d);
   }
 
@@ -131,7 +147,16 @@ function normalizeDate(dateStr) {
       const mn = MONTH_TO_NUM[stated[1].toLowerCase()] || MONTH_ABBR_TO_NUM[stated[1].toLowerCase()];
       if (mn && Number(stated[2]) > new Date(Number(stated[3]), Number(mn), 0).getDate()) return null;
     }
-    return parsed.toISOString().slice(0, 10);
+    // BRO-7890: a zoned instant is the market's calendar day; a zoneless written time was parsed in
+    // the machine's zone, so its local getters give back the day that was written (never the UTC day).
+    if (ZONED_TIME_RE.test(cleaned)) {
+      // Only a UTC-written midnight is a date-only value; "19 Nov 2026 19:00 -0500" is 00:00Z but a real evening time.
+      const { localDateString, tzForUrl } = require('./local-date');
+      const utcWritten = /(?:\bZ\b|[+-]00:?00\b|\b(?:GMT|UTC|UT)\b)/i.test(cleaned);
+      if (utcWritten && parsed.getUTCHours() === 0 && parsed.getUTCMinutes() === 0 && parsed.getUTCSeconds() === 0) return parsed.toISOString().slice(0, 10);
+      return localDateString(parsed, zoneFor(opts) || tzForUrl(opts && opts.url));
+    }
+    return validateCalendarDate(parsed.getFullYear(), parsed.getMonth() + 1, parsed.getDate());
   }
 
   return null;
@@ -194,4 +219,15 @@ function toDateMs(value) {
   return d ? d.getTime() : NaN;
 }
 
-module.exports = { maxPlausibleYear, normalizeDate, parseDate, parseHistoricalDate, stripOrdinals, validateCalendarDate, toDateMs };
+/**
+ * BRO-7890: the shape of a stored review publishDate. 'day' = YYYY-MM-DD, 'month' = YYYY-MM (a deliberate
+ * month-only date), 'other' = anything else (a raw timestamp, a written date): never valid in reviews.json.
+ */
+function classifyPublishDateFormat(value) {
+  const s = String(value == null ? '' : value);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return 'day';
+  if (/^\d{4}-\d{2}$/.test(s)) return 'month';
+  return 'other';
+}
+
+module.exports = { classifyPublishDateFormat, maxPlausibleYear, normalizeDate, parseDate, parseHistoricalDate, stripOrdinals, validateCalendarDate, toDateMs };

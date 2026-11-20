@@ -2752,13 +2752,17 @@ function validateReviewsJson() {
     info(`${needsReviewCount} reviews flagged needsReview`);
   }
 
-  // publishDate format check: all non-null dates should be ISO 8601
-  const nonIsoDates = reviews.filter(r => r.publishDate && !/^\d{4}-\d{2}-\d{2}$/.test(r.publishDate));
-  if (nonIsoDates.length) {
-    warn(`${nonIsoDates.length} reviews have non-ISO publishDate format:`);
-    nonIsoDates.slice(0, 5).forEach(r => warn(`  ${r.showId}: "${r.publishDate}"`));
+  // publishDate format check (BRO-7890): a calendar day (YYYY-MM-DD) or a deliberate month-only date (YYYY-MM).
+  // Anything else is a raw timestamp the app shows as "Invalid Date" and the rebuild mis-days. Advisory (CLAUDE.md
+  // §19) until the two Blue Man Group lane rows from 2026-11-18 are repaired; then make it error().
+  const { classifyPublishDateFormat } = require('./lib/date-utils');
+  const badDates = reviews.filter(r => r.publishDate && classifyPublishDateFormat(r.publishDate) === 'other');
+  const monthOnly = reviews.filter(r => r.publishDate && classifyPublishDateFormat(r.publishDate) === 'month');
+  if (badDates.length) {
+    warn(`[publishDate-format] ${badDates.length} review(s) have a publishDate that is not YYYY-MM-DD or YYYY-MM:`);
+    badDates.slice(0, 10).forEach(r => warn(`  ${r.showId}/${r.outletId}: "${r.publishDate}"`));
   } else {
-    ok('All publishDate values are ISO 8601 format');
+    ok(`All publishDate values are YYYY-MM-DD (or month-only YYYY-MM: ${monthOnly.length})`);
   }
 
   // Phase 1 quality flag validation: check that new flags exist on review-text files

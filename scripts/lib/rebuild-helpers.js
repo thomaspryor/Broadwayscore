@@ -260,8 +260,9 @@ function isPublishedRatingEvidence(raw, data) {
 }
 
 const { normalizeDate } = require('./date-utils');
-function normalizePublishDate(dateStr) {
-  return normalizeDate(dateStr);
+// BRO-7890: opts {market, url, timeZone} pick the calendar day a zoned timestamp falls on.
+function normalizePublishDate(dateStr, opts) {
+  return normalizeDate(dateStr, opts);
 }
 
 function fixMojibake(text) {
