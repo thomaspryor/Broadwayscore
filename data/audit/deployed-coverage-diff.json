@@ -1,30 +1,46 @@
 {
-  "generatedAt": "2026-11-19T23:01:15.255Z",
+  "generatedAt": "2026-11-20T00:14:04.330Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 365,
-  "clean": 364,
-  "defective": 1,
+  "checked": 361,
+  "clean": 359,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "harry-potter-2021",
-      "title": "Harry Potter and the Cursed Child",
-      "openingDate": "2018-04-22",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "openingDate": "2026-11-06",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 84.63 vs local 84.77 (Δ0.14)"
+          "detail": "deployed cs 72.55 vs local 72.98 (Δ0.43)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 67,
-      "deployedCount": 68,
-      "firstDefectAt": "2026-11-19T23:01:11.170Z"
+      "localCount": 17,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-11-20T00:13:53.736Z"
+    },
+    {
+      "showId": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "openingDate": "2026-11-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.98 vs local 71.3 (Δ2.32)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-20T00:13:53.736Z"
     }
   ],
   "persistentDefective": 0,

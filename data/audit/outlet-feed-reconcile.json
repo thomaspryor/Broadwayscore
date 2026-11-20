@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T23:01:15.639Z",
+  "generatedAt": "2026-11-20T00:14:04.714Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -69,6 +69,11 @@
       "openingDate": "2026-11-19"
     },
     {
+      "id": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "title": "Cinderella",
+      "openingDate": "2026-11-21"
+    },
+    {
       "id": "top-gunchained-off-west-end-2026",
       "title": "Top Gunchained",
       "openingDate": "2026-11-17"
@@ -89,39 +94,9 @@
       "openingDate": "2026-11-17"
     },
     {
-      "id": "dolly-partons-smoky-mountain-christmas-carol-tour-2026",
-      "title": "Dolly Parton’s Smoky Mountain Christmas Carol",
-      "openingDate": "2026-11-13"
-    },
-    {
-      "id": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
-      "title": "Traitorz: The Unauthorized Musical Parody",
-      "openingDate": "2026-11-13"
-    },
-    {
-      "id": "potus-off-broadway-2026",
-      "title": "POTUS",
-      "openingDate": "2026-11-13"
-    },
-    {
       "id": "nutty-nattys-magic-puppet-show-off-broadway-2026",
       "title": "Nutty Natty's Magic Puppet Show",
       "openingDate": "2026-11-14"
-    },
-    {
-      "id": "peter-pan-goes-wrong-regional-2026",
-      "title": "Peter Pan Goes Wrong",
-      "openingDate": "2026-11-13"
-    },
-    {
-      "id": "annie-regional-2026-drury-lane-oakbrook",
-      "title": "Annie",
-      "openingDate": "2026-11-13"
-    },
-    {
-      "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
-      "title": "The Elaborate Entrance of Chad Deity",
-      "openingDate": "2026-11-13"
     },
     {
       "id": "our-town-regional-2026",
@@ -149,11 +124,6 @@
       "openingDate": "2026-11-16"
     },
     {
-      "id": "the-39-steps-regional-2026",
-      "title": "The 39 Steps",
-      "openingDate": "2026-11-13"
-    },
-    {
       "id": "the-winters-tale-mrs-regional-2026",
       "title": "The Winter's Tale",
       "openingDate": "2026-11-15"
@@ -173,12 +143,8 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "cote-notices",
@@ -195,21 +161,20 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 868,
+  "itemsScanned": 823,
   "matchedGaps": 0,
-  "possibleGaps": 3,
+  "possibleGaps": 1,
   "gaps": [
-    {
-      "showId": "annie-regional-2026-drury-lane-oakbrook",
-      "title": "Annie",
-      "level": "possible",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/annie-the-brindley/",
-      "headline": "Annie &#8211; The Brindley",
-      "publishDate": "2026-11-17"
-    },
     {
       "showId": "much-ado-about-nothing-2026",
       "title": "Much Ado About Nothing",
@@ -218,15 +183,6 @@
       "url": "https://standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "headline": "Much Ado About Nothing review: A deliciously detailed take",
       "publishDate": null
-    },
-    {
-      "showId": "potus-off-broadway-2026",
-      "title": "POTUS",
-      "level": "possible",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/nov/19/donald-review-trump-ustinov-studio-bath",
-      "headline": "Is Donald Trump beyond caricature? Not at all – here’s his hilarious origin story",
-      "publishDate": "2026-11-19"
     }
   ]
 }
