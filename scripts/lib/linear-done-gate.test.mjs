@@ -159,3 +159,28 @@ test('applyCmdExecution: infra-timeout verdict keeps its own reason, no "execute
   assert.equal(r.verdict, 'verify-cmd-infra-timeout');
   assert.equal(r.reason, 'checkout timed out; re-run');
 });
+
+// BRO-7879: evaluate the current UX card's own comments without a Linear key.
+test('UX resolution uses this finding and fails closed for missing or malformed evidence', () => {
+  const previous = process.env.LINEAR_API_KEY;
+  delete process.env.LINEAR_API_KEY;
+  try {
+    const key = '23609b65bef01ceb61605265e71412bc';
+    const base = {
+      targetStateType: 'completed', title: 'UX audit: Add a show button',
+      description: `UX-FINDING: ${key}\nVERIFY: node scripts/lib/ux-walkthrough-resolution.js --key=${key}`,
+      verifyCmdEvidence: () => ({ allowed: false, verdict: 'own-verify-unverifiable', reason: 'credential-withheld' }),
+    };
+    const reason = 'UX-RESOLUTION: noise: Checked the mobile watchlist and the button opens the date picker.';
+    assert.equal(checkLinearDoneTransition({ ...base, existingComments: [reason] }).allowed, true);
+    assert.equal(checkLinearDoneTransition({ ...base, commentText: reason }).allowed, true);
+    for (const comments of [[], ['UX-RESOLUTION: noise: done'], [reason, 'UX-RESOLUTION: unresolved: Still broken']]) {
+      assert.equal(checkLinearDoneTransition({ ...base, existingComments: comments }).allowed, false);
+    }
+    assert.equal(checkLinearDoneTransition({ ...base, title: 'Other card', existingComments: [reason] }).allowed, false);
+    assert.equal(checkLinearDoneTransition({ ...base, description: base.description.replace(`UX-FINDING: ${key}`, `UX-FINDING: ${'b'.repeat(32)}`), existingComments: [reason] }).allowed, false);
+  } finally {
+    if (previous === undefined) delete process.env.LINEAR_API_KEY;
+    else process.env.LINEAR_API_KEY = previous;
+  }
+});
