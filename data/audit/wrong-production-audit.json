@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-20T10:24:53.022Z",
+  "timestamp": "2026-11-20T10:50:42.868Z",
   "stats": {
-    "totalReviews": 83354,
+    "totalReviews": 83359,
     "alreadyFlagged": 22578,
     "dateGuardCatches": 221,
     "directorMismatch": 3795,
     "tvFilmSignals": 2378,
-    "londonSignals": 3838,
+    "londonSignals": 3839,
     "offBroadwaySignals": 776,
     "yearMismatch": 387,
-    "noPublishDate": 8232
+    "noPublishDate": 8234
   },
   "findings": [
     {
@@ -103901,6 +103901,19 @@
     },
     {
       "showId": "eurotrash-off-west-end-2026",
+      "file": "london-theatre--holly-omahony.json",
+      "publishDate": "2026-11-20",
+      "url": "https://londontheatre.co.uk/reviews/eurotrash-review-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
       "file": "partially-obstructed-view--nick730.json",
       "score": 74,
       "publishDate": "2026-11-17",
@@ -120200,7 +120213,7 @@
     },
     {
       "showId": "much-ado-about-nothing-2026",
-      "file": "nysr--frank-scheck--on-2026-11-19.json",
+      "file": "nysr--frank-scheck.json",
       "score": 77,
       "publishDate": "2026-11-19",
       "url": "https://nystagereview.com/2026/11/19/much-ado-about-nothing-party-like-its-1599/",
@@ -120214,7 +120227,7 @@
     },
     {
       "showId": "much-ado-about-nothing-2026",
-      "file": "theatermania--pete-hempstead--on-2026-11-19.json",
+      "file": "theatermania--pete-hempstead.json",
       "score": 92,
       "publishDate": "2026-11-19",
       "url": "https://www.theatermania.com/news/review-tom-hiddleston-and-hayley-atwell-are-a-marvelous-duo-in-a-very-pink-much-ado-about-nothing_1860070/",
@@ -120228,7 +120241,7 @@
     },
     {
       "showId": "much-ado-about-nothing-2026",
-      "file": "theatrely--joey-sims--on-2026-11-19.json",
+      "file": "theatrely--joey-sims.json",
       "score": 75,
       "publishDate": "2026-11-19",
       "url": "https://www.theatrely.com/post/pink-is-the-word-much-ado-about-nothing-on-broadway-review",
