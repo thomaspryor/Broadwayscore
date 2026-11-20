@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-20T15:17:47.606Z",
-  "processed": 193,
-  "failed": 128,
-  "successRate": "60.1%",
+  "updatedAt": "2026-11-20T15:25:12.252Z",
+  "processed": 210,
+  "failed": 140,
+  "successRate": "60.0%",
   "tierBreakdown": {
-    "playwright": 108,
+    "playwright": 121,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 23,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 43
+    "archive": 46
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-20T13:07:28.692Z",
@@ -124,7 +124,29 @@
     {
       "t": "2026-11-20T15:17:39.620Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-20T15:03:16.575Z",
+      "event": "bb-session",
+      "session": "82fcc16e",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-20T15:03:17.340Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T15:03:34.292Z",
+      "event": "bb-session",
+      "session": "d40e6985",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-20T15:03:34.929Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
