@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-20T20:03:06.728Z",
+  "timestamp": "2026-11-20T21:02:16.083Z",
   "stats": {
-    "totalReviews": 83520,
+    "totalReviews": 83525,
     "alreadyFlagged": 22603,
     "dateGuardCatches": 222,
     "directorMismatch": 3795,
     "tvFilmSignals": 2380,
-    "londonSignals": 3849,
+    "londonSignals": 3851,
     "offBroadwaySignals": 775,
     "yearMismatch": 387,
     "noPublishDate": 8297
@@ -21504,7 +21504,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 84,
+      "score": 86,
       "publishDate": "2026-11-20",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/eurotrash-young-vic-ben-whishaw-review-b3088606.html",
       "findings": [
@@ -21521,6 +21521,25 @@
       "score": 88,
       "publishDate": "2026-11-18",
       "url": "https://monstagigz.com/2026/11/18/theatre-review-eurotrash-starring-ben-whishaw-and-kathryn-hunter-at-the-young-vic/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "telegraph--unknown.json",
+      "score": 82,
+      "publishDate": "2026-11-20",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/eurotrash-young-vic-review-ben-whishaw/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26525,19 +26544,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "goblin-off-west-end-2026",
-      "file": "theatre-news--unknown.json",
-      "publishDate": null,
-      "url": "https://www.theatre-news.com/news/UK/130296/White-Gold-Pink-Rabbit-and-Goblin-lead-exciting-London-Fringe-lineup-this-season",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -101801,7 +101807,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "artsdesk--helen-hawkins.json",
-      "score": 66,
+      "score": 63,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/desire-under-elms-almeida-theatre-review-dour-tragedy-recast-dynamic-musical-drama",
       "findings": [
@@ -101954,7 +101960,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2026-11-19",
       "url": "https://standard.co.uk/culture/theatre/desire-under-the-elms-review-b1305513.html",
       "findings": [
@@ -101968,7 +101974,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "standard--unknown.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2026-11-19",
       "url": "https://standard.co.uk/culture/theatre/desire-under-the-elms-review-b1305513.html",
       "findings": [
@@ -102004,6 +102010,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "theatreandtonic--david.json",
+      "score": 61,
+      "publishDate": "2026-11-19",
+      "url": "https://theatreandtonic.co.uk/blog/desire-under-the-elms-at-almeida-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
