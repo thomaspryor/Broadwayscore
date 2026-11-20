@@ -1,28 +1,29 @@
 {
   "processed": [
-    "eurotrash-off-west-end-2026/london-theatre--unknown.json",
-    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "much-ado-about-nothing-2026/new-york-sun--unknown.json"
   ],
   "failed": [
-    "eurotrash-off-west-end-2026/thestage--unknown.json",
-    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "eurotrash-off-west-end-2026/london-theatre--unknown.json",
-      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
+    ],
+    "brightdata": [
+      "much-ado-about-nothing-2026/new-york-sun--unknown.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-20T10:34:30.529Z",
-  "lastProcessed": "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json",
+  "startTime": "2026-11-20T10:34:28.235Z",
+  "lastProcessed": "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
   "log": []
 }
