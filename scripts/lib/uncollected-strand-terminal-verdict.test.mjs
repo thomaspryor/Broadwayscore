@@ -105,3 +105,19 @@ test('a different-URL fetched sibling does not exempt a stub', () => {
   ], { nowMs });
   assert.equal(r.stranded.length, 1);
 });
+
+test('a sibling that never fetched anything (awaiting-text-collection / bot_blocked) does not hide the stub', () => {
+  for (const reason of ['awaiting-text-collection', 'bot_blocked', undefined]) {
+    const r = assessShow(show, [
+      { file: 'a.json', review: { url: URL, fullText: '', incompleteReason: reason } },
+      { file: 'b.json', review: stub() },
+    ], { nowMs });
+    assert.equal(r.stranded.length, 1, String(reason));
+  }
+});
+
+test('hasTerminalVerdict itself ignores same-URL siblings (poller shares it)', () => {
+  const a = { url: URL, fullText: 'x'.repeat(300), contentTier: 'excerpt' };
+  const b = { url: URL, fullText: 'x'.repeat(300), contentTier: 'excerpt' };
+  assert.equal(hasTerminalVerdict(a, new Map([['a', a], ['b', b]])), false);
+});

@@ -99,7 +99,7 @@ function hasTerminalVerdict(review, siblings) {
   // can be fallible pre-fetch guesses and must stay visible.
   if (review.rejectionReason === 'not_a_review') return true;
   if (review.isNonReview === true || review.isNotReview === true) return true;
-  return duplicateHasCanonical(review, siblings) || urlAlreadyHandledBySibling(review, siblings);
+  return duplicateHasCanonical(review, siblings);
 }
 
 function normUrl(u) {
@@ -116,13 +116,22 @@ function normUrl(u) {
  * A sibling that is itself never-attempted does not count (the URL stays
  * reported, exactly once per file as before).
  */
+// Positive proof the URL was fetched: text, quarantined text, an archive copy or a fetch timestamp.
+// "Not never-attempted" is too loose (bot_blocked, awaiting-text-collection never fetched anything).
+function wasFetched(r) {
+  return (r.fullText || '').length > 0 || (r.wrongFullText || '').length > 0
+    || !!r.textFetchedAt || !!r.archivePath;
+}
+
+// Only assessShow/findAgedStubs call this, never hasTerminalVerdict: the opening-night
+// poller (poller-needs-collection.js) also uses hasTerminalVerdict on already-attempted files.
 function urlAlreadyHandledBySibling(review, siblings) {
   const key = normUrl(review.url);
   if (!key || !siblings) return false;
   for (const other of siblings.values()) {
     if (!other || other === review || !other.url) continue;
     if (normUrl(other.url) !== key) continue;
-    if (!isNeverAttempted(other)) return true;
+    if (wasFetched(other)) return true;
   }
   return false;
 }
@@ -279,7 +288,7 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
     if (review && review.url && !isOtherProductionEvidence(show, review)) discovered++;
     if (review && (review.fullText || '').length > 200) usable++;
     if (!isNeverAttempted(review)) continue;
-    if (hasTerminalVerdict(review, siblings)) continue;
+    if (hasTerminalVerdict(review, siblings) || urlAlreadyHandledBySibling(review, siblings)) continue;
     const ageHours = strandAgeHours(review, nowMs);
     // An undatable strand still counts — a missing timestamp must not buy a
     // file an exemption, which is the same "null field silences the check"
@@ -339,7 +348,7 @@ function findAgedStubs(files, { nowMs, maxAgeHours = AGED_STUB_MAX_AGE_HOURS } =
   for (const { file, review } of files || []) {
     if (!isNeverAttempted(review)) continue;
     if (Array.isArray(review.fetchAttempts) && review.fetchAttempts.length > 0) continue;
-    if (hasTerminalVerdict(review, siblings)) continue;
+    if (hasTerminalVerdict(review, siblings) || urlAlreadyHandledBySibling(review, siblings)) continue;
     const ageHours = strandAgeHours(review, nowMs);
     if (ageHours === null || ageHours >= maxAgeHours) {
       out.push({ file, url: review.url, outlet: review.outlet || null, ageHours });
