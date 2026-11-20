@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T21:59:12.247Z",
+  "generatedAt": "2026-11-20T23:28:04.792Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -171,10 +171,6 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
-    },
-    {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
@@ -189,24 +185,30 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londonpubtheatres",
-      "error": "Timeout fetching https://www.londonpubtheatres.com/feed/rss2"
-    },
-    {
-      "outletId": "fringereview",
-      "error": "Timeout fetching https://fringereview.co.uk/feed/"
-    },
-    {
-      "outletId": "lighting-and-sound-america",
-      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 836,
-  "matchedGaps": 0,
+  "itemsScanned": 874,
+  "matchedGaps": 2,
   "possibleGaps": 1,
   "gaps": [
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "level": "matched",
+      "outletId": "plays-international",
+      "url": "https://playsinternational.org.uk/desire-under-the-elms-almeida-theatre/",
+      "headline": "“Desire Under the Elms” at Almeida Theatre",
+      "publishDate": "2026-11-20"
+    },
+    {
+      "showId": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/11/20/now-you-see-me-live-its-magic/",
+      "headline": "Now You See Me Live: It’s Magic",
+      "publishDate": "2026-11-20"
+    },
     {
       "showId": "much-ado-about-nothing-2026",
       "title": "Much Ado About Nothing",
