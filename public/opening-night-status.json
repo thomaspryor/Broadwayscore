@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T11:05:01.210Z",
+  "generatedAt": "2026-11-20T11:40:02.780Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2136,9 +2136,9 @@
       "status": "open",
       "slug": "florence-off-west-end",
       "thumbnail": "/images/shows/florence-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 74.22,
+      "siteScore": 74.42,
       "liveScore": 74,
-      "scoreDrift": -0.21999999999999886,
+      "scoreDrift": -0.4200000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2154,7 +2154,7 @@
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2315,6 +2315,18 @@
           "t": "2026-11-20T10:50:54.900Z",
           "rc": 9,
           "s": 74.22,
+          "t1": 0,
+          "t2": 3,
+          "t3": 6,
+          "p": 9,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-20T11:40:02.780Z",
+          "rc": 9,
+          "s": 74.42,
           "t1": 0,
           "t2": 3,
           "t3": 6,
@@ -3158,26 +3170,25 @@
       "status": "open",
       "slug": "eurotrash-off-west-end",
       "thumbnail": "/images/shows/eurotrash-off-west-end-2026/thumbnail.webp",
-      "siteScore": 65.03,
-      "liveScore": 65,
-      "scoreDrift": -0.030000000000001137,
+      "siteScore": 64.4,
+      "liveScore": 64,
+      "scoreDrift": -0.4000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 1,
+      "total": 8,
+      "t1": 2,
       "t2": 2,
       "t3": 4,
       "positive": 6,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
-          "T1:1/3"
+          "T1:2/3"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3351,6 +3362,18 @@
           "t3": 4,
           "p": 6,
           "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-20T11:40:02.780Z",
+          "rc": 8,
+          "s": 64.4,
+          "t1": 2,
+          "t2": 2,
+          "t3": 4,
+          "p": 6,
+          "m": 1,
           "n": 1,
           "bc": "waiting"
         }
