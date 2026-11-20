@@ -454,7 +454,7 @@ function matchDerivedTitleVariant(showTitle, headingText, options = {}) {
   // theater" sits inside "Pittsburgh Public Theater"), so they count only for a variant no other
   // shows.json row shares (clashIds empty); a clashing variant still needs the whole venue name.
   const wholePhrase = normalizePhrase(venueName);
-  const formPhrases = venueForms({ venue: venueName }).map(normalizePhrase).filter((p) => p && p !== wholePhrase);
+  const formPhrases = venueForms({ venue: venueName }).map(normalizePhrase).filter((p) => p && p !== wholePhrase); // venue-write-guard-ok: read-only literal passed to venueForms, nothing is written
   if (!wholePhrase || venueTokens(show).length === 0) return null;
   const headingPhrase = ` ${normalizePhrase(headingText)} `;
   const named = (p) => headingPhrase.includes(` ${p} `);
