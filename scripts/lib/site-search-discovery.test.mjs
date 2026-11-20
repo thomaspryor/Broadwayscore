@@ -303,6 +303,7 @@ test('BRO-7531: a clean free no-match skips the paid render for off-Broadway / o
   const json = (v) => ({ status: 200, body: JSON.stringify(v) });
   const noise = (n) => Array.from({ length: n }, (_, i) => ({ id: 100 + i, url: `https://deadline.com/2026/11/box-office-weekend-${i}-1/`, link: `https://deadline.com/2026/11/box-office-weekend-${i}-1/` }));
   const bounded = (u) => /\/wp\/v2\/posts\?/.test(u);
+  const candidate0 = () => ({ id: 9, url: 'https://deadline.com/2026/11/petra-something-1/', link: 'https://deadline.com/2026/11/petra-something-1/' });
 
   // 1. short page, nothing the paid filter would accept: the no-match stands
   let r = await run(async () => json([]), ob);
@@ -319,6 +320,22 @@ test('BRO-7531: a clean free no-match skips the paid render for off-Broadway / o
   assert.deepEqual([r.urls, r.paid], [[], 0], 'full page + complete clean bounded answer skips the paid render');
   const b = r.asked.find(bounded);
   assert.match(b, /after=2026-09-26T00:00:00&before=2027-03-10T00:00:00&per_page=100/, 'bounded to opening -45d .. +120d');
+
+  // 2b. BRO-7532 recheck: no opening date yet, but previews have started. The
+  // previews date anchors the bounded re-ask, so a full page can still be proven clean.
+  const day = 86400000;
+  const isoDay = (ms) => new Date(ms).toISOString().slice(0, 10);
+  const prevMs = Date.parse(isoDay(Date.now() - 6 * day)); // previews began 6 days ago (relative, never goes stale)
+  const obPreviews = { ...ob, previewsStartDate: isoDay(prevMs) };
+  r = await run(async (u) => json(bounded(u) ? noise(7) : noise(20)), obPreviews, null);
+  assert.deepEqual([r.urls, r.paid], [[], 0], 'full page + previews date + clean bounded answer skips the paid render');
+  assert.ok(r.asked.find(bounded).includes(`after=${isoDay(prevMs - 45 * day)}T00:00:00&before=${isoDay(prevMs + 120 * day)}T00:00:00`), 'bounded to previews -45d .. +120d');
+  r = await run(async (u) => json(bounded(u) ? noise(7) : noise(20)), { ...ob, previewsStartDate: isoDay(Date.now() - 200 * day) }, null);
+  assert.equal(r.paid, 1, 'previews began 200 days ago with no opening date: paid render as before');
+  r = await run(async (u) => json(bounded(u) ? [candidate0()] : noise(20)), obPreviews, null);
+  assert.deepEqual([r.urls, r.paid], [[paidReview], 1], 'previews-anchored bounded answer holding a candidate keeps the paid render');
+  r = await run(async () => json(noise(20)), { ...ob, previewsStartDate: 'TBA' }, null);
+  assert.equal(r.paid, 1, 'unparseable previews date: no anchor, paid render as before');
 
   // 3. anything unclear keeps the paid render, exactly as before
   const candidate = { id: 9, url: 'https://deadline.com/2026/11/petra-something-1/', link: 'https://deadline.com/2026/11/petra-something-1/' };

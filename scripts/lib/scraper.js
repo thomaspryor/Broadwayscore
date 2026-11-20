@@ -1693,13 +1693,18 @@ async function fetchPage(url, options = {}) {
     console.log('  → Trying direct DTLI fetch...');
     try {
       const response = await fetch(url, { headers: { 'User-Agent': DIRECT_USER_AGENT }, signal: AbortSignal.timeout(10000) });
-      if (response.ok) {
-        const content = await response.text();
-        if (!_isChallengeOrGarbage(content) && /<\/html\s*>/i.test(content) &&
-            /<div class="(?:poster-)?review-item">/.test(content)) {
-          const checked = _checkAndReturn({ content, format: 'html', source: 'direct' }, 'Direct');
-          if (checked) return checked;
-        }
+      const content = response.status === 200 || response.status === 404 ? await response.text() : '';
+      // BRO-7532: a genuine DTLI "Page not found" (show page not created yet) is
+      // the same document the paid chain would return as a success; answer with
+      // it instead of paying. Every other non-page answer still falls through.
+      const outcome = _isChallengeOrGarbage(content) ? 'fallback'
+        : require('./free-first-fetch').dtliDirectOutcome(response.status, content);
+      if (outcome === 'page' || (outcome === 'not-found' && process.env.DTLI_DIRECT_404_PAID !== '1')) {
+        if (outcome === 'not-found') console.log('  ℹ️  DTLI has no page for this show yet (direct 404), paid chain skipped');
+        const checked = _checkAndReturn({ content, format: 'html', source: 'direct' }, 'Direct');
+        if (checked) return checked;
+      } else {
+        console.log(`  ⚠️  Direct DTLI fetch not usable (HTTP ${response.status}), trying provider chain...`);
       }
     } catch (error) {
       console.log(`  ⚠️  Direct DTLI fetch failed: ${error.message}`);

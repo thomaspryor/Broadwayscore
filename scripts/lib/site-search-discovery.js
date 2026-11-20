@@ -30,7 +30,7 @@ const { recordSbCall } = require('./provider-telemetry');
 const {
   buildWpSearchUrl, parseWpSearchResults, decideFreeSearch, isCurrentProductionPost, buildWpPostDateUrl,
   buildWpBoundedSearchUrl, parseWpPostsResults, isCleanFreeNoMatch, trustCleanFreeNoMatch,
-  wpRawCount, buildWpCanaryUrl, shouldAuditCleanNoMatch, urlDatedBeforeProduction,
+  wpRawCount, buildWpCanaryUrl, shouldAuditCleanNoMatch, urlDatedBeforeProduction, freeSearchAnchorDate,
   WP_BOUNDED_PAGE_SIZE, WP_SEARCH_PAGE_SIZE,
 } = require('./free-first-fetch');
 
@@ -1658,7 +1658,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
       // every unclear answer, still gets the paid render.
       const freeInfo = { wantCleanCheck: trustCleanFreeNoMatch(show), cleanNoMatch: false };
       const freeResults = config.freeWp && config.requiresJs
-        ? await tryFreeWpSearch(config, outletId, searchTitle, showTitle, options._deps, verbose, { openingDate, market, info: freeInfo })
+        ? await tryFreeWpSearch(config, outletId, searchTitle, showTitle, options._deps, verbose, { openingDate: freeSearchAnchorDate(openingDate, show), market, info: freeInfo })
         : null;
       const cleanNoMatch = !freeResults && freeInfo.wantCleanCheck && freeInfo.cleanNoMatch === true;
       // Audit sample: a small share of clean no-matches still pays for the render,
@@ -1704,7 +1704,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
     // The free search called this a clean no-match and the audit render disagrees:
     // always logged, so a blind spot in the free search is visible in the job log.
     if (auditedCleanNoMatch) {
-      const missed = results.filter(r => !urlDatedBeforeProduction(r.url, openingDate));
+      const missed = results.filter(r => !urlDatedBeforeProduction(r.url, freeSearchAnchorDate(openingDate, show)));
       if (missed.length) console.warn(`FREE-WP-CLEAN-MISS [${config.name}] "${showTitle}": paid render found ${missed.length} result(s) the free search did not: ${missed.slice(0, 3).map(r => r.url).join(' ')}`);
     }
 

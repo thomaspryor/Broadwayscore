@@ -169,3 +169,33 @@ test('BRO-7531: clean no-match helpers', () => {
   for (const show of [{ category: 'broadway' }, { category: 'west-end' }, { category: 'regional' }, { category: 'tour' }, {}, null]) assert.equal(ff.trustCleanFreeNoMatch(show, {}), false);
   assert.equal(ff.trustCleanFreeNoMatch({ category: 'off-broadway' }, { FREE_WP_NO_MATCH_PAID: '1' }), false);
 });
+
+test('BRO-7532 recheck: freeSearchAnchorDate prefers the opening date, then previews, else null', () => {
+  assert.equal(f.freeSearchAnchorDate('2026-11-12', { previewsStartDate: '2026-10-01' }), '2026-11-12');
+  assert.equal(f.freeSearchAnchorDate(null, { previewsStartDate: '2026-11-14' }), '2026-11-14');
+  assert.equal(f.freeSearchAnchorDate(undefined, { previewsStartDate: '2026-11-14' }), '2026-11-14');
+  assert.equal(f.freeSearchAnchorDate('TBA', { previewsStartDate: '2026-11-14' }), '2026-11-14');
+  assert.equal(f.freeSearchAnchorDate(null, { previewsStartDate: 'TBA' }), null);
+  assert.equal(f.freeSearchAnchorDate(null, {}), null);
+  assert.equal(f.freeSearchAnchorDate(null, null), null);
+  const nov20 = Date.parse('2026-11-20');
+  assert.equal(f.freeSearchAnchorDate(null, { previewsStartDate: '2026-11-14' }, nov20), '2026-11-14');
+  assert.equal(f.freeSearchAnchorDate(null, { previewsStartDate: '2026-07-01' }, nov20), null, 'previews began >120 days ago: a review could fall outside the window');
+  assert.equal(f.freeSearchAnchorDate('2025-01-01', { previewsStartDate: '2024-01-01' }, nov20), '2025-01-01', 'a known opening date is always used');
+});
+
+test('BRO-7532 recheck: dtliDirectOutcome trusts only a real page or DTLI\'s own 404 document', () => {
+  const page = '<html><head><title>Ragtime - Did They Like It?</title></head><body><div class="review-item">x</div></body></html>';
+  const notFound = '<html><head><title>Page not found - Did They Like It?</title></head><body>Sorry</body></html>';
+  assert.equal(f.dtliDirectOutcome(200, page), 'page');
+  assert.equal(f.dtliDirectOutcome(404, notFound), 'not-found');
+  // Everything else falls back to the paid chain.
+  assert.equal(f.dtliDirectOutcome(404, 'Not found'), 'fallback', 'bare 404 without the site document');
+  assert.equal(f.dtliDirectOutcome(404, notFound.replace('</html>', '')), 'fallback', 'truncated 404');
+  assert.equal(f.dtliDirectOutcome(404, '<html><title>Page not found</title></html>'), 'fallback', 'some other site\'s 404');
+  assert.equal(f.dtliDirectOutcome(404, page), 'fallback', '404 status carrying review blocks is contradictory');
+  assert.equal(f.dtliDirectOutcome(200, notFound), 'fallback', '200 without review blocks');
+  assert.equal(f.dtliDirectOutcome(403, notFound), 'fallback', '403 is a block, not a miss');
+  assert.equal(f.dtliDirectOutcome(503, page), 'fallback');
+  assert.equal(f.dtliDirectOutcome(404, undefined), 'fallback');
+});

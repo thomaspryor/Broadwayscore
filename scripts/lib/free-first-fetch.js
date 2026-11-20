@@ -217,6 +217,45 @@ function trustCleanFreeNoMatch(show, env = process.env) {
 }
 
 /**
+ * Date that anchors the free search's production window (hit date gate and the
+ * date-bounded re-ask). The opening date when known; otherwise the previews
+ * start date. BRO-7532 recheck 2026-11-20: off-market shows still in previews
+ * with no opening date (Peter Pan, Santa's First Christmas, Do Not Try This at
+ * Home) could never prove a clean no-match on a common title, so they paid
+ * about 57 Deadline/THR renders a day. Neither date usable (or previews began
+ * more than maxDays ago) => null, and the caller keeps the paid render as before.
+ */
+function freeSearchAnchorDate(openingDate, show, now = Date.now(), maxDays = 120) {
+  if (Number.isFinite(Date.parse(openingDate))) return openingDate;
+  const previews = show && show.previewsStartDate;
+  const p = Date.parse(previews);
+  if (!Number.isFinite(p)) return null;
+  // The window ends maxDays after the anchor. A show still in previews past that
+  // point could get reviewed outside the window, so it keeps the paid render.
+  return now <= p + maxDays * 86400000 ? previews : null;
+}
+
+/**
+ * DTLI direct-GET outcome for a /shows/<slug>/ page:
+ *  'page'      - 200, closed HTML, review blocks present: use it.
+ *  'not-found' - DTLI's own "Page not found" document (HTTP 404, closed HTML,
+ *                the site's 404 title). The show has no DTLI page yet. The paid
+ *                chain fetches this same 404 document and returns it as a
+ *                "success" (BRO-7532 recheck: "Extracted 0 critic blocks" after
+ *                every Bright Data call for an unopened show, ~400 calls a day
+ *                for one show), so answering with it changes nothing for the
+ *                caller and the next poll asks again.
+ *  'fallback'  - anything else (403, bare 404, challenge, truncated): paid chain.
+ */
+const DTLI_404_TITLE = /<title>\s*Page not found\s*[-–|]\s*Did They Like It\?\s*<\/title>/i;
+function dtliDirectOutcome(status, content) {
+  if (typeof content !== 'string' || !/<\/html\s*>/i.test(content)) return 'fallback';
+  if (status === 200 && /<div class="(?:poster-)?review-item">/.test(content)) return 'page';
+  if (status === 404 && DTLI_404_TITLE.test(content) && !/review-item/.test(content)) return 'not-found';
+  return 'fallback';
+}
+
+/**
  * theatre.reviews direct-first gate. Accept only a real page: 200, not a
  * challenge, closed document, and a positive content marker for the path
  * (a CleanTalk interstitial can come back 200; the site's own pages mention
@@ -253,6 +292,8 @@ module.exports = {
   parseWpPostsResults,
   isCleanFreeNoMatch,
   trustCleanFreeNoMatch,
+  freeSearchAnchorDate,
+  dtliDirectOutcome,
   wpRawCount,
   buildWpCanaryUrl,
   shouldAuditCleanNoMatch,
