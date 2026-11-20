@@ -1,0 +1,144 @@
+{
+  "issueNumber": "bro-7702",
+  "planId": "7d462b12-8446-4621-ba98-632569ba83ac",
+  "status": "pending",
+  "createdAt": "2026-11-20T03:08:05.451Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Mark excerpt rows as duplicates when their text matches the complete named review from the same outlet",
+    "steps": [
+      "buena-vista-social-club-2025/variety--unknown.json: duplicateOf",
+      "cat-cohen-broad-strokes-off-broadway-2026/nytimes--unknown.json: duplicateOf",
+      "cat-cohen-broad-strokes-off-broadway-2026/vulture--unknown.json: duplicateOf",
+      "every-brilliant-thing-2026/wsj--unknown.json: duplicateOf",
+      "just-in-time-2025/vulture--unknown.json: duplicateOf",
+      "marjorie-prime-2025/nytimes--unknown.json: duplicateOf",
+      "operation-mincemeat-2025/variety--unknown.json: duplicateOf",
+      "other-desert-cities-2026/variety--unknown.json: duplicateOf",
+      "paranormal-activity-2026/variety--unknown.json: duplicateOf",
+      "punch-2025/vulture--unknown.json: duplicateOf",
+      "the-rocky-horror-show-2026/vulture--unknown.json: duplicateOf",
+      "titanique-2026/variety--unknown.json: duplicateOf",
+      "titanique-2026/vulture--unknown.json: duplicateOf",
+      "two-strangers-bway-2025/nytimes--unknown.json: duplicateOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/variety--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--frank-rizzo.json",
+        "description": "buena-vista-social-club-2025/variety--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/nytimes--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--jason-zinoman.json",
+        "description": "cat-cohen-broad-strokes-off-broadway-2026/nytimes--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/vulture--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--jackson-mchenry.json",
+        "description": "cat-cohen-broad-strokes-off-broadway-2026/vulture--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-2026/wsj--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "wsj--charles-isherwood.json",
+        "description": "every-brilliant-thing-2026/wsj--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-in-time-2025/vulture--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--jackson-mchenry.json",
+        "description": "just-in-time-2025/vulture--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marjorie-prime-2025/nytimes--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--elisabeth-vincentelli.json",
+        "description": "marjorie-prime-2025/nytimes--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/variety--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--frank-rizzo.json",
+        "description": "operation-mincemeat-2025/variety--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "other-desert-cities-2026/variety--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--aramide-tinubu.json",
+        "description": "other-desert-cities-2026/variety--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-2026/variety--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--frank-rizzo.json",
+        "description": "paranormal-activity-2026/variety--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/vulture--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "punch-2025/vulture--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-rocky-horror-show-2026/vulture--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "the-rocky-horror-show-2026/vulture--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/variety--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--frank-rizzo.json",
+        "description": "titanique-2026/variety--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/vulture--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "titanique-2026/vulture--unknown.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-strangers-bway-2025/nytimes--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--laura-collins-hughes.json",
+        "description": "two-strangers-bway-2025/nytimes--unknown.json: duplicateOf"
+      }
+    ]
+  }
+}

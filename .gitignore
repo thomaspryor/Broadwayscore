@@ -91,6 +91,7 @@ data/followers.json
 # files ({issue}.json, digit-leading) are trackable again; everything else in
 # the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
 data/pending-fixes/*
+!data/pending-fixes/bro-7702.json
 !data/pending-fixes/bro-7434.json
 !data/pending-fixes/bro-7572.json
 !data/pending-fixes/bro-4856.json
