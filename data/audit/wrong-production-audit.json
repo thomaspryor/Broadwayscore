@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-20T23:25:09.681Z",
+  "timestamp": "2026-11-20T23:41:09.771Z",
   "stats": {
-    "totalReviews": 83540,
-    "alreadyFlagged": 22605,
+    "totalReviews": 83541,
+    "alreadyFlagged": 22607,
     "dateGuardCatches": 222,
     "directorMismatch": 3801,
     "tvFilmSignals": 2380,
-    "londonSignals": 3854,
+    "londonSignals": 3855,
     "offBroadwaySignals": 775,
     "yearMismatch": 388,
     "noPublishDate": 8293
@@ -104028,6 +104028,7 @@
     {
       "showId": "eurotrash-off-west-end-2026",
       "file": "a-youngish-perspective--ayoungishperspective1.json",
+      "score": 71,
       "publishDate": "2026-11-20",
       "url": "https://ayoungishperspective.co.uk/2026/11/20/review-eurotrash/",
       "findings": [
@@ -112007,6 +112008,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-off-west-end-2026",
+      "file": "rolandcat--roviews.json",
+      "publishDate": "2026-11-20",
+      "url": "https://rolandcat.substack.com/p/review-ilford-boy-donmar-warehouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
