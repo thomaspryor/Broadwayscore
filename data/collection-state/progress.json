@@ -525,7 +525,8 @@
     "endgame-regional-2025/chicago-reader--rob-silverman-ascher.json",
     "after-the-act-west-end-2025/times-uk--clive-davis.json",
     "now-you-see-me-live-2026/culturesauce--unknown.json",
-    "much-ado-about-nothing-2026/talkinbroadway--unknown.json"
+    "much-ado-about-nothing-2026/talkinbroadway--unknown.json",
+    "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json"
   ],
   "failed": [
     "destiny-of-desire-regional-2026/la-drama-critics-circle--ladcc-critics.json",
@@ -821,7 +822,8 @@
     "the-kings-critique-off-broadway-2026/stagebuddy--unknown.json",
     "the-kings-critique-off-broadway-2026/talkinbroadway--unknown.json",
     "much-ado-about-nothing-2026/timeout--unknown.json",
-    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json"
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "here-there-are-blueberries-2026/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1086,7 +1088,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/much-ado-about-nothing-2026/deadline--unknown.json",
-      "much-ado-about-nothing-2026/deadline--unknown.json"
+      "much-ado-about-nothing-2026/deadline--unknown.json",
+      "data/review-texts/here-there-are-blueberries-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1182,7 +1185,8 @@
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
       "art-of-leaving-off-broadway-2025/theatrely--joey-sims.json",
       "righ-iasgair-the-fisher-king-oran-mor-regional-2025/broadwayworld--natalie-odonoghue.json",
-      "wallace-oran-mor-regional-2025/broadwayworld--natalie-odonoghue.json"
+      "wallace-oran-mor-regional-2025/broadwayworld--natalie-odonoghue.json",
+      "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json"
     ],
     "brightdata": [
       "farinelli-and-the-king-2017/variety--marilyn-stasio.json",
@@ -1380,7 +1384,7 @@
     ]
   },
   "startTime": "2026-11-19T22:01:42.526Z",
-  "lastProcessed": "much-ado-about-nothing-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "here-there-are-blueberries-2026/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-11-20T05:49:45.135Z",
@@ -1447,6 +1451,83 @@
       "t": "2026-11-20T05:53:47.976Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T06:54:33.162Z",
+      "event": "bb-session",
+      "session": "4708f5fa",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T06:54:33.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T06:54:49.455Z",
+      "event": "bb-session",
+      "session": "45f1bd37",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T06:54:49.683Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T06:56:12.852Z",
+      "event": "bb-session",
+      "session": "b8dd89f5",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-20T06:56:13.071Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T06:57:37.246Z",
+      "event": "bb-session",
+      "session": "403ba976",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T06:57:37.476Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T06:57:53.598Z",
+      "event": "bb-session",
+      "session": "32c4bf8d",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T06:57:53.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T07:01:30.906Z",
+      "event": "bb-session",
+      "session": "cb393062",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655767"
+    },
+    {
+      "t": "2026-11-20T07:01:31.143Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-20T07:01:41.212Z",
+      "event": "bb-session",
+      "session": "8d46d4d2",
+      "url": "https://www.wsj.com/articles/here-there-are-blueberries-review-the-holocaust-jus"
+    },
+    {
+      "t": "2026-11-20T07:01:41.475Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ],
   "recoveredAfterFailure": [
