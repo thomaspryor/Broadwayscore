@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7884-dates",
   "planId": "603f96df-9546-4449-8ea6-934d1b8982de",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-20T06:49:06.017Z",
   "submitter": {
     "name": null,
@@ -158,5 +158,89 @@
         "description": "much-ado-about-nothing-2026/wsj--charles-isherwood.json: publishDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-20T06:59:45.091Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/chicagotribune--chris-jones--on-2026-11-19.json publishDate: \"2026-11-20T03:00:04.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/culturesauce--thom-geier--on-2026-11-19.json publishDate: \"2026-11-20T03:00:00.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/deadline--greg-evans--on-2026-11-19.json publishDate: \"2026-11-20T03:00:00.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/ew--shania-russell--on-2026-11-19.json publishDate: \"2026-11-20T03:00:00.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/nypost--johnny-oleksinski--on-2026-11-19.json publishDate: \"2026-11-20T03:00:00.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/nysr--frank-scheck--on-2026-11-19.json publishDate: \"2026-11-20T03:00:24.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/nysr--melissa-rose-bernardo--on-2026-11-19.json publishDate: \"2026-11-20T03:17:48.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/nyt-theater--jonathan-mandell--on-2026-11-19.json publishDate: \"2026-11-20T03:08:19.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/nytg--joe-dziemianowicz--on-2026-11-19.json publishDate: \"2026-11-20T03:00:09.514Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/nytimes--helen-shaw--on-2026-11-19.json publishDate: \"2026-11-20T03:00:08.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/slantmagazine--dan-rubins--on-2026-11-19.json publishDate: \"2026-11-20T03:00:00.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/theatermania--pete-hempstead--on-2026-11-19.json publishDate: \"2026-11-20T03:00:00.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/thewrap--robert-hofler--on-2026-11-19.json publishDate: \"2026-11-20T03:00:00.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/timeout--adam-feldman--on-2026-11-19.json publishDate: \"2026-11-20T03:04:03.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/vulture--sara-holdren--on-2026-11-19.json publishDate: \"2026-11-20T03:00:43.000Z\" -> \"2026-11-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-2026/wsj--charles-isherwood.json publishDate: \"2026-11-20T03:00:00.000Z\" -> \"2026-11-19\""
+    }
+  ],
+  "executedIn": "ci"
 }
