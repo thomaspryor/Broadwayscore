@@ -165,11 +165,13 @@ After presenting both reviews:
    - **What it intentionally does NOT include** (and why that's OK for now)
    - **Upgrade trigger** (specific condition for when to reconsider)
 
-### Phase 6: Ask the user
+### Phase 6: Decide and proceed
 
-Present the recommendation and ask: "Does this approach make sense? Should I proceed to detailed planning with this approach, adjust it, or explore a different direction?"
+State the recommendation in plain English and go ahead with it. Choosing an approach is a technical call, so it is yours (owner rule: decide technical calls yourself, `docs/owner-escalation.md`), with no approval step for the owner.
 
-If the user approves, recommend the next step based on project size:
+Ask the owner only when the recommendation itself is their call: money, something irreversible, a public post, an email to real people, a product or taste choice, or a substantial new system (CLAUDE.md §20, owner decision 2026-10-25). Then use one DECISION NEEDED block with your recommendation.
+
+Next step by project size:
 - **1 session / <5 files:** Skip `/plan-tasks`. Run `/second-opinion` or `/plan-review` on the approach, then implement directly. Sprint planning adds documentation overhead without discovery value at this scale.
 - **2-4 sessions:** `/plan-tasks` helps with task ordering and commit discipline. Recommended.
 - **5+ sessions / multiple workstreams:** `/plan-tasks` is essential for parallelism and dependencies.

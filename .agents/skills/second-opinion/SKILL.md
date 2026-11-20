@@ -142,7 +142,7 @@ node scripts/lib/review-gate.mjs --query=record-plan --reviewer=second-opinion \
   --result=pass --session-id="$CLAUDE_CODE_SESSION_ID" --note="<one line: what the review changed>"
 ```
 
-This is what `~/.claude/hooks/infra-plan-review-gate.sh` checks before the session's first edit to shared infrastructure (task #1079, owner decision 2026-08-05). Without it the session stays blocked no matter how good the review was. `--result=fail` if you found blockers — a fail verdict does NOT unblock, and overturning it is the owner's call, recorded as `--reviewer=owner-override`.
+This is what `~/.claude/hooks/infra-plan-review-gate.sh` checks before the session's first edit to shared infrastructure (task #1079, owner decision 2026-08-05). Without it the session stays blocked no matter how good the review was. `--result=fail` if you found blockers. A fail verdict does NOT unblock: revise the plan, re-review it, and record the new pass with `--note="<what changed since the fail>"` (`review-gate.mjs` refuses a pass after a fail without one). `--reviewer=owner-override` is only for the owner overturning a fail without a revision.
 
 **If Part 0 (framing) fired an escalation:** prefix the `--note` with `restructure-flag: adopted — <what shrank>` or `restructure-flag: dismissed — <why the scope stood>`. `scripts/lib/infra-review-digest.js` counts that prefix so this check's real hit rate shows up in the daily digest instead of vanishing at session end (task #1218).
 
@@ -157,7 +157,7 @@ After presenting findings and fixes, give the user **the actual plan in plain En
 >
 > **Size:** [S/M/L]
 
-The user is approving THE PLAN, not a diff. Describe it the way you'd explain it to someone who hasn't been in this conversation.
+This reports the plan; it does not ask for approval. A technical plan is yours to decide (`docs/owner-escalation.md`). Describe it the way you'd explain it to someone who hasn't been in this conversation.
 
 **Sprint-plan recommendation:** Based on the plan's scope, recommend whether `/plan-tasks` is needed:
 - **1 session / <5 files:** "Small enough to implement directly. Skip `/plan-tasks`."
