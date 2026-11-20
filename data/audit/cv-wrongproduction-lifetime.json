@@ -1,21 +1,25 @@
 {
-  "updatedAt": "2026-11-19T11:26:35.782Z",
-  "scanned": 4887,
+  "updatedAt": "2026-11-20T10:25:59.270Z",
+  "scanned": 4899,
   "showsWithViolations": 124,
   "totalViolations": 153,
-  "newSinceLastRun": 0,
+  "newSinceLastRun": 2,
   "handled": {
-    "temporal-override-low-confidence": 972,
-    "not-shipped": 62,
+    "not-shipped": 66,
+    "temporal-override-low-confidence": 974,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
-    "self-healed": 72,
+    "self-healed": 74,
     "prior-run-or-tour-leg": 43
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "the-hills-of-california-2024::broadway-and-me--janice-c-simpson.json",
+    "operation-mincemeat-west-end-2024::the-recs--alexandra-taylor.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
+    "the-hills-of-california-2024::broadway-and-me--janice-c-simpson.json",
     "hells-kitchen-2024::theater-life--samuel-l-leiter.json",
     "appropriate-2023::pages-on-stages--mason-pilevsky.json",
     "the-sign-in-sidney-brusteins-window-2023::nytg--brian-scott-lipton.json",
@@ -68,7 +72,7 @@
     "blood-of-my-blood-west-end-2026::guardian--unknown.json",
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-off-west-end-2026::musical-theatre-review--unknown.json",
-    "operation-mincemeat-west-end-2024::the-recs--unknown.json",
+    "operation-mincemeat-west-end-2024::the-recs--alexandra-taylor.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
     "burlesque-off-west-end-2026::telegraph--claire-allfree.json",
     "mass-off-west-end-2026::artsdesk--demetrios-matheou.json",
@@ -107,7 +111,6 @@
     "a-small-and-quiet-light-off-west-end-2026::plays-international--maryam-philpott.json",
     "sylvia-west-end-2023::standard--nick-curtis.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
-    "top-gunchained-off-west-end-2026::londonpubtheatres--paul-maidment.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
     "spamalot-tour-2025::the-moderate-voice--dough-bursch.json",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2024::broadwayworld--jarrod-michael.json",
@@ -187,6 +190,27 @@
           "cvIssues": [
             "Wrong production: Review is of an Off-Broadway production at the Perelman Performing Arts Center.",
             "Truncated: The scraped content ends mid-sentence."
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "title": "The Hills of California",
+      "openingDate": "2024-09-29",
+      "message": "broadway-and-me/Janice C. Simpson (broadway-and-me--janice-c-simpson.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review content describes a Jez Butterworth play about the Webb sisters, their mother Veronica, a seaside hotel in Bl — https://broadwayandme.blogspot.com/2024/10/the-splendors-of-hills-of-california.html",
+      "violations": [
+        {
+          "filename": "broadway-and-me--janice-c-simpson.json",
+          "url": "https://broadwayandme.blogspot.com/2024/10/the-splendors-of-hills-of-california.html",
+          "outletId": "broadway-and-me",
+          "criticName": "Janice C. Simpson",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "The review content describes a Jez Butterworth play about the Webb sisters, their mother Veronica, a seaside hotel in Bl",
+          "cvIssues": [
+            "Review is about a different production entirely — the content describes 'Butterworth's play' about the Webb sisters in Blackpool, England, directed by Sam Mendes, which is 'The Ferryman' or another Butterworth work, NOT 'The Hills of California'",
+            "The scraped text makes no mention of 'The Hills of California' anywhere in the 4484 characters"
           ]
         }
       ]
@@ -861,7 +885,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The article reviews the 2019 Chichester Festival Theatre production of Shadowlands that transferred to the Aldwych Theat — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This review evaluates the Chichester Festival Theatre's 2019 production of Shadowlands, which is a pre-West End regional — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -870,10 +894,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "The article reviews the 2019 Chichester Festival Theatre production of Shadowlands that transferred to the Aldwych Theat",
+          "cvReasoning": "This review evaluates the Chichester Festival Theatre's 2019 production of Shadowlands, which is a pre-West End regional",
           "cvIssues": [
-            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End run opening 2026-02-12",
-            "Opening sentence explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — the critic is reviewing the transferred Chichester production, not a new West End staging"
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End production opening 2026-02-12",
+            "Article explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — the critic is reviewing the Chichester run that transferred, not attending the West End opening performance"
           ]
         }
       ]
@@ -1196,13 +1220,13 @@
       "showId": "operation-mincemeat-west-end-2024",
       "title": "Operation Mincemeat",
       "openingDate": "2023-05-09",
-      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/",
+      "message": "the-recs/Alexandra Taylor (the-recs--alexandra-taylor.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/",
       "violations": [
         {
-          "filename": "the-recs--unknown.json",
+          "filename": "the-recs--alexandra-taylor.json",
           "url": "https://therecs.co.uk/operation-mincemeat-touring/",
           "outletId": "the-recs",
-          "criticName": "Unknown",
+          "criticName": "Alexandra Taylor",
           "matchedBy": "url",
           "cvConfidence": "high",
           "cvReasoning": "This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur",
@@ -1911,27 +1935,6 @@
           "cvIssues": [
             "Review end-date mismatch: review states show 'continues its London run until 23rd September' but expected publish date is 2026-09-29 (6 days after closing)",
             "Content truncated: scraped text ends with incomplete footer fragment ('100% Honest Reviews. All show reviews are written by independent theatregoers, directors')"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "top-gunchained-off-west-end-2026",
-      "title": "Top Gunchained",
-      "openingDate": "2026-11-17",
-      "message": "londonpubtheatres/Paul Maidment (londonpubtheatres--paul-maidment.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of Richard Marsh's 'Top Gunchained,' but it is NOT a review of a current Off-West End production  — https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
-      "violations": [
-        {
-          "filename": "londonpubtheatres--paul-maidment.json",
-          "url": "https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
-          "outletId": "londonpubtheatres",
-          "criticName": "Paul Maidment",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "This is a valid review of Richard Marsh's 'Top Gunchained,' but it is NOT a review of a current Off-West End production ",
-          "cvIssues": [
-            "Review does not name Wilton's Music Hall or any specific Off-West End venue as the performance location",
-            "Reviewer states 'A few years back, for London Pub Theatres, I saw and and reviewed Richard Marsh's...' indicating this is a past review being republished, not a current Off-West End production review"
           ]
         }
       ]

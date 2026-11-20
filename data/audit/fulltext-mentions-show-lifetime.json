@@ -1,22 +1,27 @@
 {
-  "updatedAt": "2026-11-19T11:27:15.205Z",
-  "scanned": 4887,
-  "showsWithViolations": 561,
-  "totalViolations": 784,
-  "newSinceLastRun": 6,
+  "updatedAt": "2026-11-20T10:26:34.257Z",
+  "scanned": 4899,
+  "showsWithViolations": 563,
+  "totalViolations": 786,
+  "newSinceLastRun": 7,
   "newViolationKeys": [
-    "doubt-2024::thestage--lane-williamson.json",
-    "les-liaisons-dangereuses-2016::plays-to-see--paul-meltzer.json",
-    "titanique-west-end-2024::sunday-times--unknown.json",
-    "return-to-the-forest-off-west-end-2026::bachtrack--maggie-foyer.json",
-    "top-gunchained-off-west-end-2026::thereviewshub--scott-matthewman.json",
-    "water-for-elephants-tour-2025::chicago-sun-times--graham-meyer.json"
+    "romeo-and-juliet-2013::financialtimes--brendan-lemon.json",
+    "romeo-and-juliet-2013::nytimes--ben-brantley.json",
+    "picnic-2013::bloomberg--jeremy-gerard.json",
+    "picnic-2013::nydailynews--joe-dziemianowicz.json",
+    "master-class-2011::financialtimes--brendan-lemon.json",
+    "master-class-2011::nydailynews--joe-dziemianowicz.json",
+    "lowcountry-off-broadway-2025::exeunt-magazine--unknown.json"
   ],
-  "actionableViolations": 8,
-  "newActionableSinceLastRun": 0,
-  "newActionableKeys": [],
-  "openActionableCount": 0,
-  "actionableOpen": {},
+  "actionableViolations": 9,
+  "newActionableSinceLastRun": 1,
+  "newActionableKeys": [
+    "lowcountry-off-broadway-2025::exeunt-magazine--unknown.json"
+  ],
+  "openActionableCount": 1,
+  "actionableOpen": {
+    "lowcountry-off-broadway-2025::exeunt-magazine--unknown.json": "2026-11-20T10:26:30.020Z"
+  },
   "actionableKeys": [
     "schmigadoon-2026::nytimes--jesse-green.json",
     "stranger-things-2024::nytimes--houman-barekat.json",
@@ -25,7 +30,8 @@
     "the-winslow-boy-2013::amny--matt-windman.json",
     "avenue-q-west-end-2026::theupcoming--benedetta-mancusi.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
-    "pride-and-prejudice-sort-of-west-end-2021::timeout-london--andrzej-lukowski.json"
+    "pride-and-prejudice-sort-of-west-end-2021::timeout-london--andrzej-lukowski.json",
+    "lowcountry-off-broadway-2025::exeunt-magazine--unknown.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -81,8 +87,6 @@
     "children-of-a-lesser-god-2018::amny--matt-windman.json",
     "children-of-a-lesser-god-2018::thestage--mark-shenton.json",
     "three-tall-women-2018::thestage--mark-shenton.json",
-    "farinelli-and-the-king-2017::newsday--barbara-schuler.json",
-    "farinelli-and-the-king-2017::variety--marilyn-stasio.json",
     "the-parisian-woman-2017::bobs-theater-blog--robert-sholiton.json",
     "the-bands-visit-2017::adriandimanlig--adrian-dimanlig.json",
     "the-terms-of-my-surrender-2017::act-three-the-reviews--doug-marino.json",
@@ -130,17 +134,19 @@
     "big-fish-2013::ap--mark-kennedy.json",
     "big-fish-2013::variety--marilyn-stasio.json",
     "the-glass-menagerie-2013::bloomberg--jeremy-gerard.json",
+    "romeo-and-juliet-2013::financialtimes--brendan-lemon.json",
+    "romeo-and-juliet-2013::nytimes--ben-brantley.json",
     "jekyll-and-hyde-2013::bloomberg--philip-boroff.json",
     "orphans-2013::nydailynews--joe-dziemianowicz.json",
     "orphans-2013::theater-life--eric-march.json",
     "the-assembled-parties-2013::hollywood-reporter--david-rooney.json",
-    "the-assembled-parties-2013::nytimes--ben-brantley.json",
     "the-big-knife-2013::new-jersey-newsroom--michael-sommers.json",
     "breakfast-at-tiffanys-2013::ap--mark-kennedy.json",
     "ann-2013::ny1--roma-torre.json",
     "cat-on-a-hot-tin-roof-2013::northjerseycom--robert-feldberg.json",
     "cat-on-a-hot-tin-roof-2013::usatoday--elysa-gardner.json",
-    "the-other-place-2013::hollywood-reporter--david-rooney.json",
+    "picnic-2013::bloomberg--jeremy-gerard.json",
+    "picnic-2013::nydailynews--joe-dziemianowicz.json",
     "the-other-place-2013::nydailynews--joe-dziemianowicz.json",
     "the-other-place-2013::nytimes--charles-isherwood.json",
     "the-anarchist-2012::ew--lisa-schwarzbaum.json",
@@ -170,7 +176,8 @@
     "man-and-boy-2011::yonkers-tribune--john-simon.json",
     "follies-2011::chicagotribune--chris-jones.json",
     "master-class-2011::ew--melissa-rose-bernardo.json",
-    "master-class-2011::newsday--linda-winer.json",
+    "master-class-2011::financialtimes--brendan-lemon.json",
+    "master-class-2011::nydailynews--joe-dziemianowicz.json",
     "baby-its-you-2011::nydailynews--joe-dziemianowicz.json",
     "the-normal-heart-2011::sfgate--mark-kennedy.json",
     "the-normal-heart-2011::wsj--terry-teachout.json",
@@ -640,6 +647,7 @@
     "death-of-england-closing-time-west-end-2024::london-box-office--stuart-king.json",
     "ballet-shoes-west-end-2024::guardian--arifa-akbar.json",
     "ghosts-off-broadway-2025::thewrap--robert-hofler.json",
+    "lowcountry-off-broadway-2025::exeunt-magazine--unknown.json",
     "44-off-broadway-2025::nysr--david-finkle.json",
     "44-off-broadway-2025::nytg--kyle-turner.json",
     "44-off-broadway-2025::theater-scene--victor-gluck.json",
@@ -1991,46 +1999,6 @@
       ]
     },
     {
-      "showId": "farinelli-and-the-king-2017",
-      "title": "Farinelli and the King",
-      "openingDate": "2017-12-17",
-      "message": "newsday/Barbara Schuler (newsday--barbara-schuler.json) SHIPPED but fullText never mentions 'Farinelli and the King' (303 chars): https://www.newsday.com/entertainment/theater/farinelli-and-the-king-review-1.15472253\nvariety/Marilyn Stasio (variety--marilyn-stasio.json) SHIPPED but fullText never mentions 'Farinelli and the King' (303 chars): http://variety.com/2017/legit/reviews/farinelli-and-the-king-review-mark-rylance-1202643427/",
-      "violations": [
-        {
-          "filename": "newsday--barbara-schuler.json",
-          "url": "https://www.newsday.com/entertainment/theater/farinelli-and-the-king-review-1.15472253",
-          "outletId": "newsday",
-          "criticName": "Barbara Schuler",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "variety--marilyn-stasio.json",
-          "url": "http://variety.com/2017/legit/reviews/farinelli-and-the-king-review-mark-rylance-1202643427/",
-          "outletId": "variety",
-          "criticName": "Marilyn Stasio",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "the-parisian-woman-2017",
       "title": "The Parisian Woman",
       "openingDate": "2017-11-30",
@@ -3095,6 +3063,46 @@
       ]
     },
     {
+      "showId": "romeo-and-juliet-2013",
+      "title": "Romeo and Juliet",
+      "openingDate": "2013-09-19",
+      "message": "financialtimes/Brendan Lemon (financialtimes--brendan-lemon.json) SHIPPED but fullText never mentions 'Romeo and Juliet' (303 chars): https://www.ft.com/cms/s/2/234a9692-210e-11e3-8aff-00144feab7de.html#axzz2fNqeiEaF\nnytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'Romeo and Juliet' (303 chars): http://theater.nytimes.com/2013/09/20/theater/reviews/orlando-bloom-and-condola-rashad-in-romeo-and-juliet.html?pagewanted=all",
+      "violations": [
+        {
+          "filename": "financialtimes--brendan-lemon.json",
+          "url": "https://www.ft.com/cms/s/2/234a9692-210e-11e3-8aff-00144feab7de.html#axzz2fNqeiEaF",
+          "outletId": "financialtimes",
+          "criticName": "Brendan Lemon",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "nytimes--ben-brantley.json",
+          "url": "http://theater.nytimes.com/2013/09/20/theater/reviews/orlando-bloom-and-condola-rashad-in-romeo-and-juliet.html?pagewanted=all",
+          "outletId": "nytimes",
+          "criticName": "Ben Brantley",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "jekyll-and-hyde-2013",
       "title": "Jekyll & Hyde",
       "openingDate": "2013-04-18",
@@ -3162,29 +3170,13 @@
       "showId": "the-assembled-parties-2013",
       "title": "The Assembled Parties",
       "openingDate": "2013-04-17",
-      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'The Assembled Parties' (303 chars): http://www.hollywoodreporter.com/review/assembled-parties-theater-review-441557\nnytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'The Assembled Parties' (303 chars): http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-the-samuel-j-friedman-theater.html?pagewanted=all&_r=0",
+      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'The Assembled Parties' (303 chars): http://www.hollywoodreporter.com/review/assembled-parties-theater-review-441557",
       "violations": [
         {
           "filename": "hollywood-reporter--david-rooney.json",
           "url": "http://www.hollywoodreporter.com/review/assembled-parties-theater-review-441557",
           "outletId": "hollywood-reporter",
           "criticName": "David Rooney",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "nytimes--ben-brantley.json",
-          "url": "http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-the-samuel-j-friedman-theater.html?pagewanted=all&_r=0",
-          "outletId": "nytimes",
-          "criticName": "Ben Brantley",
           "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
@@ -3311,16 +3303,32 @@
       ]
     },
     {
-      "showId": "the-other-place-2013",
-      "title": "The Other Place",
-      "openingDate": "2013-01-10",
-      "message": "hollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'The Other Place' (303 chars): http://www.hollywoodreporter.com/review/place-theater-review-410891\nnydailynews/Joe Dziemianowicz (nydailynews--joe-dziemianowicz.json) SHIPPED but fullText never mentions 'The Other Place' (303 chars): http://www.nydailynews.com/entertainment/music-arts/theater-review-place-article-1.1236693?localLinksEnabled=false\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'The Other Place' (303 chars): http://theater.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html?_r=0",
+      "showId": "picnic-2013",
+      "title": "Picnic",
+      "openingDate": "2013-01-13",
+      "message": "bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) SHIPPED but fullText never mentions 'Picnic' (303 chars, textIssues flag set): http://www.businessweek.com/news/2013-01-13/hunky-drifter-stirs-local-biddies-in-picnic-review\nnydailynews/Joe Dziemianowicz (nydailynews--joe-dziemianowicz.json) SHIPPED but fullText never mentions 'Picnic' (303 chars): http://www.nydailynews.com/entertainment/music-arts/theater-review-picnic-broadway-article-1.1238476?localLinksEnabled=false",
       "violations": [
         {
-          "filename": "hollywood-reporter--david-rooney.json",
-          "url": "http://www.hollywoodreporter.com/review/place-theater-review-410891",
-          "outletId": "hollywood-reporter",
-          "criticName": "David Rooney",
+          "filename": "bloomberg--jeremy-gerard.json",
+          "url": "http://www.businessweek.com/news/2013-01-13/hunky-drifter-stirs-local-biddies-in-picnic-review",
+          "outletId": "bloomberg",
+          "criticName": "Jeremy Gerard",
+          "haystackLength": 303,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "nydailynews--joe-dziemianowicz.json",
+          "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-picnic-broadway-article-1.1238476?localLinksEnabled=false",
+          "outletId": "nydailynews",
+          "criticName": "Joe Dziemianowicz",
           "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
@@ -3331,7 +3339,15 @@
             "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
-        },
+        }
+      ]
+    },
+    {
+      "showId": "the-other-place-2013",
+      "title": "The Other Place",
+      "openingDate": "2013-01-10",
+      "message": "nydailynews/Joe Dziemianowicz (nydailynews--joe-dziemianowicz.json) SHIPPED but fullText never mentions 'The Other Place' (303 chars): http://www.nydailynews.com/entertainment/music-arts/theater-review-place-article-1.1236693?localLinksEnabled=false\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'The Other Place' (303 chars): http://theater.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html?_r=0",
+      "violations": [
         {
           "filename": "nydailynews--joe-dziemianowicz.json",
           "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-place-article-1.1236693?localLinksEnabled=false",
@@ -3938,7 +3954,7 @@
       "showId": "master-class-2011",
       "title": "Master Class",
       "openingDate": "2011-07-07",
-      "message": "ew/Melissa Rose Bernardo (ew--melissa-rose-bernardo.json) SHIPPED but fullText never mentions 'Master Class' (829 chars): https://www.ew.com/ew/article/0,,20364394_20508561,00.html8\nnewsday/Linda Winer (newsday--linda-winer.json) SHIPPED but fullText never mentions 'Master Class' (500 chars): https://www.newsday.com/entertainment/theater/tyne-daly-stars-in-master-class-1.3008591",
+      "message": "ew/Melissa Rose Bernardo (ew--melissa-rose-bernardo.json) SHIPPED but fullText never mentions 'Master Class' (829 chars): https://www.ew.com/ew/article/0,,20364394_20508561,00.html8\nfinancialtimes/Brendan Lemon (financialtimes--brendan-lemon.json) SHIPPED but fullText never mentions 'Master Class' (303 chars): https://www.ft.com/cms/s/2/5ba2e8a8-a877-11e0-8a97-00144feabdc0.html#axzz1RVmSvnJe\nnydailynews/Joe Dziemianowicz (nydailynews--joe-dziemianowicz.json) SHIPPED but fullText never mentions 'Master Class' (303 chars): http://www.nydailynews.com/entertainment/music/2011/07/08/2011-07-08_master_class_review_tyne_daly_delights_with_a_masterful_performance_as_maria_cal.html\n⚠️  newsday/Linda Winer (newsday--linda-winer.json) also too short to assess (0 chars): http://www.newsday.com/entertainment/theater/tyne-daly-stars-in-master-class-1.3008591",
       "violations": [
         {
           "filename": "ew--melissa-rose-bernardo.json",
@@ -3957,11 +3973,27 @@
           }
         },
         {
-          "filename": "newsday--linda-winer.json",
-          "url": "https://www.newsday.com/entertainment/theater/tyne-daly-stars-in-master-class-1.3008591",
-          "outletId": "newsday",
-          "criticName": "Linda Winer",
-          "haystackLength": 500,
+          "filename": "financialtimes--brendan-lemon.json",
+          "url": "https://www.ft.com/cms/s/2/5ba2e8a8-a877-11e0-8a97-00144feabdc0.html#axzz1RVmSvnJe",
+          "outletId": "financialtimes",
+          "criticName": "Brendan Lemon",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "nydailynews--joe-dziemianowicz.json",
+          "url": "http://www.nydailynews.com/entertainment/music/2011/07/08/2011-07-08_master_class_review_tyne_daly_delights_with_a_masterful_performance_as_maria_cal.html",
+          "outletId": "nydailynews",
+          "criticName": "Joe Dziemianowicz",
+          "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -7906,14 +7938,14 @@
       "showId": "return-to-the-forest-off-west-end-2026",
       "title": "Return to the Forest",
       "openingDate": "2026-05-28",
-      "message": "bachtrack/Maggie Foyer (bachtrack--maggie-foyer.json) SHIPPED but fullText never mentions 'Return to the Forest' (860 chars, textIssues flag set): https://bachtrack.com/review-return-to-the-forest-theatre-rites-gregory-maqoma-sadlers-wells-east-london-may-2026",
+      "message": "bachtrack/Maggie Foyer (bachtrack--maggie-foyer.json) SHIPPED but fullText never mentions 'Return to the Forest' (851 chars, textIssues flag set): https://bachtrack.com/review-return-to-the-forest-theatre-rites-gregory-maqoma-sadlers-wells-east-london-may-2026",
       "violations": [
         {
           "filename": "bachtrack--maggie-foyer.json",
           "url": "https://bachtrack.com/review-return-to-the-forest-theatre-rites-gregory-maqoma-sadlers-wells-east-london-may-2026",
           "outletId": "bachtrack",
           "criticName": "Maggie Foyer",
-          "haystackLength": 860,
+          "haystackLength": 851,
           "textIssuesFlag": true,
           "triage": {
             "bucket": "truncated",
@@ -13935,6 +13967,30 @@
       ]
     },
     {
+      "showId": "lowcountry-off-broadway-2025",
+      "title": "Lowcountry",
+      "openingDate": "2025-06-10",
+      "message": "exeunt-magazine/Unknown (exeunt-magazine--unknown.json) SHIPPED but fullText never mentions 'Lowcountry' (4217 chars): https://exeuntnyc.com/reviews/review-lowcountry-at-atlantic-theater-company/",
+      "violations": [
+        {
+          "filename": "exeunt-magazine--unknown.json",
+          "url": "https://exeuntnyc.com/reviews/review-lowcountry-at-atlantic-theater-company/",
+          "outletId": "exeunt-magazine",
+          "criticName": "Unknown",
+          "haystackLength": 4217,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "wrong-production",
+            "evidence": [
+              "wrongProduction=true"
+            ],
+            "nextStep": "verify-production-and-existing-flags",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "44-off-broadway-2025",
       "title": "44",
       "openingDate": "2025-11-06",
@@ -17848,10 +17904,10 @@
     }
   ],
   "triage": {
-    "total": 784,
+    "total": 786,
     "counts": {
-      "excerpt": 189,
-      "wrong-production": 8,
+      "excerpt": 190,
+      "wrong-production": 9,
       "unresolved": 530,
       "truncated": 57
     },
@@ -18467,9 +18523,9 @@
       },
       {
         "outletId": "bloomberg",
-        "total": 6,
+        "total": 7,
         "counts": {
-          "excerpt": 5,
+          "excerpt": 6,
           "unresolved": 1
         },
         "requiresArticleReview": true,
@@ -18517,6 +18573,15 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "picnic-2013/bloomberg--jeremy-gerard.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -19275,6 +19340,25 @@
         ]
       },
       {
+        "outletId": "exeunt-magazine",
+        "total": 1,
+        "counts": {
+          "wrong-production": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "lowcountry-off-broadway-2025/exeunt-magazine--unknown.json",
+            "bucket": "wrong-production",
+            "evidence": [
+              "wrongProduction=true"
+            ],
+            "nextStep": "verify-production-and-existing-flags",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
         "outletId": "express-uk",
         "total": 5,
         "counts": {
@@ -19351,9 +19435,9 @@
       },
       {
         "outletId": "financialtimes",
-        "total": 13,
+        "total": 15,
         "counts": {
-          "excerpt": 4,
+          "excerpt": 6,
           "unresolved": 8,
           "truncated": 1
         },
@@ -19393,6 +19477,24 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "master-class-2011/financialtimes--brendan-lemon.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "romeo-and-juliet-2013/financialtimes--brendan-lemon.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -20847,10 +20949,10 @@
       },
       {
         "outletId": "hollywood-reporter",
-        "total": 12,
+        "total": 11,
         "counts": {
           "unresolved": 6,
-          "excerpt": 6
+          "excerpt": 5
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -20951,15 +21053,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "the-other-place-2013/hollywood-reporter--david-rooney.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         ]
@@ -21398,9 +21491,9 @@
       },
       {
         "outletId": "newsday",
-        "total": 7,
+        "total": 5,
         "counts": {
-          "excerpt": 7
+          "excerpt": 5
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -21423,25 +21516,7 @@
             "requiresArticleReview": true
           },
           {
-            "file": "farinelli-and-the-king-2017/newsday--barbara-schuler.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
             "file": "grease-2007/newsday--linda-winer.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "master-class-2011/newsday--linda-winer.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -21682,9 +21757,9 @@
       },
       {
         "outletId": "nydailynews",
-        "total": 8,
+        "total": 10,
         "counts": {
-          "excerpt": 7,
+          "excerpt": 9,
           "unresolved": 1
         },
         "requiresArticleReview": true,
@@ -21708,6 +21783,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "master-class-2011/nydailynews--joe-dziemianowicz.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
             "file": "merrily-we-roll-along-1981/nydailynews--joe-dzieminaowicz.json",
             "bucket": "excerpt",
             "evidence": [
@@ -21718,6 +21802,15 @@
           },
           {
             "file": "orphans-2013/nydailynews--joe-dziemianowicz.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "picnic-2013/nydailynews--joe-dziemianowicz.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -21951,6 +22044,15 @@
             "requiresArticleReview": true
           },
           {
+            "file": "romeo-and-juliet-2013/nytimes--ben-brantley.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
             "file": "schmigadoon-2026/nytimes--jesse-green.json",
             "bucket": "wrong-production",
             "evidence": [
@@ -21966,15 +22068,6 @@
               "wrongProduction=true"
             ],
             "nextStep": "verify-production-and-existing-flags",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "the-assembled-parties-2013/nytimes--ben-brantley.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -25503,11 +25596,11 @@
       },
       {
         "outletId": "variety",
-        "total": 11,
+        "total": 10,
         "counts": {
           "wrong-production": 1,
           "unresolved": 5,
-          "excerpt": 5
+          "excerpt": 4
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -25536,15 +25629,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "farinelli-and-the-king-2017/variety--marilyn-stasio.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
