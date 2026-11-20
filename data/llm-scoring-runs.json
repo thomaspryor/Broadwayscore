@@ -264468,8 +264468,28 @@
     "logKeepsSince": "2026-11-19T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-20T17:10:52.807Z",
-    "completedAt": "2026-11-20T17:10:52.811Z",
+    "startedAt": "2026-11-20T17:10:52.616Z",
+    "completedAt": "2026-11-20T17:10:56.430Z",
+    "totalReviews": 66,
+    "processed": 1,
+    "skipped": 65,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 6576,
+      "output": 415,
+      "cacheRead": 0,
+      "cacheWrite": 5418,
+      "total": 17420
+    },
+    "costUsd": 0.0331472,
+    "runId": "44780211972",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-19T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-20T17:15:55.393Z",
+    "completedAt": "2026-11-20T17:15:55.431Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -264482,7 +264502,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "44780207863",
+    "runId": "44780211972",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-19T00:00:00.000Z"
