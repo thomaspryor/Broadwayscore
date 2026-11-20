@@ -129,3 +129,11 @@ test('exact same-URL fetched sibling (text present) exempts the stub', () => {
   ], { nowMs });
   assert.equal(r.stranded.length, 0);
 });
+
+test('a short excerpt sibling (<=200 chars, never fetched from the outlet) does not hide the stub', () => {
+  const r = assessShow(show, [
+    { file: 'a.json', review: { url: URL, fullText: 'short aggregator excerpt', incompleteReason: 'excerpt' } },
+    { file: 'b.json', review: stub() },
+  ], { nowMs });
+  assert.equal(r.stranded.length, 1);
+});

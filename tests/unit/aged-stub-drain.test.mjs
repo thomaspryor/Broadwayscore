@@ -107,7 +107,7 @@ test('audit: findAgedStubs flags closed-show stubs the live-only strand check ig
 test('audit: a stub is not aged when a same-URL sibling holds fetched text (BRO-7901); a fetched file never ages itself', () => {
   const stub = (extra) => ({ url: 'https://x.test/r', outlet: 'Guardian', incompleteReason: 'not_attempted', fetchAttempts: [], firstSeenAt: hoursAgo(72), ...extra });
   const files = [
-    { file: 'a.json', review: stub({ fullText: 'body' }) },
+    { file: 'a.json', review: stub({ fullText: 'x'.repeat(300) }) },
     { file: 'b.json', review: stub({}) },
   ];
   assert.deepEqual(findAgedStubs(files, { nowMs: NOW }), []);

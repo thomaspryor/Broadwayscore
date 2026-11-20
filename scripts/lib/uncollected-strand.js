@@ -119,7 +119,7 @@ function normUrl(u) {
 // Positive proof the URL was fetched: text, quarantined text, an archive copy or a fetch timestamp.
 // "Not never-attempted" is too loose (bot_blocked, awaiting-text-collection never fetched anything).
 function wasFetched(r) {
-  return (r.fullText || '').length > 0 || (r.wrongFullText || '').length > 0
+  return (r.fullText || '').length > 200 || (r.wrongFullText || '').length > 0
     || !!r.textFetchedAt || !!r.archivePath;
 }
 
