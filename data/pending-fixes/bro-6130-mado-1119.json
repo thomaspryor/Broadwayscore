@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6130-mado-1119",
+  "planId": "a0c0f6f2-ab72-4792-b094-63e82ce78d32",
+  "status": "pending",
+  "createdAt": "2026-11-20T06:32:04.045Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Much Ado About Nothing NYSR (Bernardo, 5/5): replace a pull quote that reads as a knock on a rave with the review's evaluative verbatim line (opening-night watch 2026-11-19)",
+    "steps": [
+      "much-ado-about-nothing-2026/nysr--melissa-rose-bernardo--on-2026-11-19.json: llmPullQuote"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-2026/nysr--melissa-rose-bernardo--on-2026-11-19.json",
+        "field": "llmPullQuote",
+        "oldValue": null,
+        "newValue": "Atwell and Hiddleston may be the draw—and they’re an absolute delight as the bickering Beatrice and Benedick, two self-proclaimed singletons engaged in a long-running battle of wits—but there are abundant pleasures to be found in director Jamie Lloyd’s gloriously giddy pretty-in-hot-pink production.",
+        "description": "much-ado-about-nothing-2026/nysr--melissa-rose-bernardo--on-2026-11-19.json: llmPullQuote"
+      }
+    ]
+  }
+}
