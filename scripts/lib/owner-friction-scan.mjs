@@ -13,7 +13,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 
 // Phrasings that hand the owner a technical approval or point at a route the code no longer requires.
 export const PATTERNS = [
-  { id: 'should-i-proceed', re: /\bShould I (proceed|go ahead|continue)\b/i },
+  { id: 'should-i-proceed', re: /\b(Should I|Want me to|Shall I) (proceed|go ahead|continue)\b/i },
   { id: 'does-this-make-sense-ask', re: /\bDoes this approach make sense\?/i },
   { id: 'user-approving-plan', re: /\b(user|owner) is approving (THE )?plan\b/i },
   { id: 'after-user-approves-plan', re: /\bAfter the (user|owner) approves (a|the) plan\b/i },

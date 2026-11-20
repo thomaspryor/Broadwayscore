@@ -157,7 +157,7 @@ After presenting findings and fixes, give the user **the actual plan in plain En
 >
 > **Size:** [S/M/L]
 
-This reports the plan; it does not ask for approval. A technical plan is yours to decide (`docs/owner-escalation.md`). Describe it the way you'd explain it to someone who hasn't been in this conversation.
+This reports the plan; it does not ask for approval. A technical plan is yours to decide (`docs/owner-escalation.md`); the owner decides only a substantial new system (CLAUDE.md §20), money, an irreversible step, a public post, an email to real people, or a product/taste choice. Describe it the way you'd explain it to someone who hasn't been in this conversation.
 
 **Sprint-plan recommendation:** Based on the plan's scope, recommend whether `/plan-tasks` is needed:
 - **1 session / <5 files:** "Small enough to implement directly. Skip `/plan-tasks`."

@@ -349,7 +349,7 @@ This reports the plan to the owner; it is not an approval request unless Phase 7
 
 Go with the revised plan. Picking between the original and the revision is a technical call, so it is yours.
 
-Ask the owner only when the plan is a substantial new system (CLAUDE.md §20: the owner chose on 2026-10-25 that substantial efforts get a plan, /plan-review and their yes) or involves money, an irreversible step, a public post, an email to real people, or a product/taste choice. Ask once, as one DECISION NEEDED block with the plan summary and your recommendation.
+Ask the owner only when the plan is a substantial new system (CLAUDE.md §20: the owner chose on 2026-10-25 that substantial efforts get a plan, /plan-review and their yes) or involves money, an irreversible step, a public post, an email to real people, or a product/taste choice. Ask once, as one DECISION NEEDED block with the plan summary and your recommendation, and do not start building it until the owner answers (the planning-tier hook lifts on your plan-review verdict alone, so it will not hold you).
 
 ### Record the plan-phase verdict (BWSC repo — MANDATORY)
 

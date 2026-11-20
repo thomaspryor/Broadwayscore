@@ -5,7 +5,8 @@
 //     list and only fails with OWNER_FRICTION_STRICT=1.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -28,6 +29,7 @@ test('patterns: each BRO-7881 phrasing is caught; owner-chosen DECISION NEEDED w
   assert.deepEqual(hit('Ask once, as one DECISION NEEDED block with the plan summary and your recommendation.'), []);
   assert.deepEqual(hit('Social posts: the owner approves the exact words before anything is posted.'), []);
   assert.deepEqual(hit('pause and confirm with the owner before continuing'), ['confirm-with-owner']);
+  assert.deepEqual(hit('Want me to proceed with option B?'), ['should-i-proceed']);
   assert.deepEqual(hit('wait for the owner\'s go-ahead, then push'), ['owner-signoff']);
   assert.ok(PATTERNS.length >= 9);
   for (const a of ALLOWLIST) assert.ok(a.why && a.why.length > 20, `allowlist entry ${a.file}/${a.id} must name the owner decision`);
@@ -45,11 +47,18 @@ test('pinned: right-problem and plan-review decide technical plans and keep the 
   const pr = read('.claude/commands/plan-review.md');
   assert.match(pr, /### Phase 7: Decide, or ask only when it is the owner's call/);
   assert.match(pr, /owner chose on 2026-10-25 that substantial efforts get a plan, \/plan-review and their yes/);
+  assert.match(pr, /do not start building it until the owner answers/);
 });
 
-test('pinned: a fail verdict is cleared the way review-gate.mjs really clears it (re-reviewed pass with --note)', () => {
-  const gate = read('scripts/lib/review-gate.mjs');
-  assert.match(gate, /record the pass with '\s*\n?\s*\+ '--note=/, 'review-gate.mjs no longer accepts --note after a fail: update the docs below too');
+test('pinned: a fail verdict is cleared the way review-gate.mjs really clears it (re-reviewed pass with --note)', async () => {
+  const { recordPlanVerdict } = await import('./review-gate.mjs');
+  const dir = mkdtempSync(path.join(tmpdir(), 'ofs-'));
+  const rec = (o) => recordPlanVerdict({ repoRoot: dir, ledgerRoot: dir, reviewer: 'second-opinion', sessionId: 's', ...o });
+  try {
+    assert.equal(rec({ result: 'fail' }).recorded, true);
+    assert.equal(rec({ result: 'pass' }).recorded, false, 'a pass after a fail must need --note, or the docs below are wrong');
+    assert.equal(rec({ result: 'pass', note: 'revised' }).recorded, true, 'a noted pass must clear a fail, or the docs below are wrong');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
   for (const f of ['CLAUDE.md', '.claude/commands/second-opinion.md', '.claude/commands/plan-review.md']) {
     assert.match(read(f), /--note="<what changed/, `${f} must name the --note route`);
   }
@@ -67,7 +76,7 @@ test('pinned: the planning-tier message names exactly what isApproved() accepts,
   const user = JSON.stringify({ type: 'user', message: { role: 'user', content: 'OWNER-PLAN-APPROVED: "yes, build it"' } });
   assert.equal(pt.isApproved({ verdicts: [], sessionId: 's', transcriptText: user }).ok, true);
   assert.equal(pt.isApproved({ verdicts: [{ phase: 'plan', reviewer: 'second-opinion', result: 'pass', sessionId: 's', ts: new Date().toISOString() }], sessionId: 's' }).ok, false);
-  assert.match(read('CLAUDE.md'), /### 20\.[^\n]*\n[^\n]*the hook lifts on the plan-review verdict, the yes is still owed/);
+  assert.match(read('CLAUDE.md'), /### 20\.[^\n]*\n[^\n]*build only after it\. The hook lifts on a plan-review verdict too, the yes is still owed/);
 });
 
 test('advisory: full scan hit list (fails only with OWNER_FRICTION_STRICT=1)', () => {
