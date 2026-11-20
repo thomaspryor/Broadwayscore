@@ -376,14 +376,19 @@ function outletIdentity(name) {
   return outletIdOf(name) || String(name || '').toLowerCase();
 }
 
-/** BRO-7900: true when the dropped review is live under another key with the same canonical outlet and critic. */
-function isLiveUnderNewLabel(rec, d) {
+/**
+ * BRO-7900: true when the drop is a relabel: in the same sample the review vanished, a review with the same
+ * canonical outlet and critic appeared under another key (and, for the gate, is still live).
+ */
+function isRelabelDrop(rec, d, { requireLiveNow = false } = {}) {
   const critic = String(d.critic || '').toLowerCase();
   const outlet = outletIdentity(d.outlet);
   if (!critic || !outlet) return false; // no byline: two reviews from one outlet cannot be told apart
-  return (rec.perReview || []).some((p) => p.liveNow && p.key !== d.key
+  return (rec.perReview || []).some((p) => p.key !== d.key && p.firstLiveAt === d.droppedAt
+    && (!requireLiveNow || p.liveNow)
     && String(p.critic || '').toLowerCase() === critic && outletIdentity(p.outlet) === outlet);
 }
+const isLiveUnderNewLabel = (rec, d) => isRelabelDrop(rec, d, { requireLiveNow: true });
 
 /**
  * Outlets whose only review files the rebuild excludes (wrong-show / wrong-production / syndicated copy),
@@ -562,7 +567,7 @@ function coverageAt(rec, census, asOfMs, { fetchedAt = null, excluded = [], defe
     const ms = toMs(p.firstLiveAt);
     if (ms == null || ms > asOfMs) continue;
     const oid = outletIdOf(p.outlet);
-    const gone = rec.dropped.find((d) => d.key === p.key && toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs));
+    const gone = rec.dropped.find((d) => d.key === p.key && toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs) && !isRelabelDrop(rec, d));
     if (gone) { if (oid) droppedNow.add(oid); continue; }
     if (oid) liveSet.add(oid);
   }
@@ -1055,7 +1060,7 @@ function observedCoverage2h(rec, obsMs) {
   if (!ref2 || ref2.coverage == null || !Array.isArray(ref2.missing)) return null;
   const asOfMs = obsMs + 2 * HOUR;
   if (toMs(ref2.asOf || ref2.fetchedAt) == null || toMs(ref2.asOf || ref2.fetchedAt) > asOfMs) return null;
-  const openDrop = (rec.dropped || []).some((d) => toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs));
+  const openDrop = (rec.dropped || []).some((d) => toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs) && !isRelabelDrop(rec, d));
   if (openDrop) return null;
   const ids = [...new Set([...ref2.missing, ...(ref2.suppressedMissing || []), ...(ref2.deferredToLateRule || [])])];
   const base = { ...ref2, asOf: new Date(asOfMs).toISOString(), method: 'timeline', derivedFrom: `the +2h census as of ${ref2.asOf || ref2.fetchedAt}` };
