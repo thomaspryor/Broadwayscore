@@ -1,46 +1,30 @@
 {
-  "generatedAt": "2026-11-20T11:15:30.429Z",
+  "generatedAt": "2026-11-20T12:43:12.038Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 364,
-  "clean": 362,
-  "defective": 2,
+  "clean": 363,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "florence-off-west-end-2026",
-      "title": "Florence",
-      "openingDate": "2026-11-18",
+      "showId": "much-ado-about-nothing-2026",
+      "title": "Much Ado About Nothing",
+      "openingDate": "2026-11-19",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 74.22 vs local 74.44 (Δ0.22)"
+          "detail": "deployed cs 77.72 vs local 77.53 (Δ0.19)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-11-20T11:15:19.859Z"
-    },
-    {
-      "showId": "eurotrash-off-west-end-2026",
-      "title": "Eurotrash",
-      "openingDate": "2026-11-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 65.03 vs local 60.95 (Δ4.08)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-20T11:15:19.859Z"
+      "localCount": 20,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-11-20T12:43:08.023Z"
     }
   ],
   "persistentDefective": 0,

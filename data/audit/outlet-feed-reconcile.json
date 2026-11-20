@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T11:15:30.743Z",
+  "generatedAt": "2026-11-20T12:43:12.415Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -143,22 +143,43 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 847,
-  "matchedGaps": 1,
+  "itemsScanned": 862,
+  "matchedGaps": 2,
   "possibleGaps": 1,
   "gaps": [
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "title": "Much Ado About Nothing",
+      "level": "matched",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-with-hayley-atwell-and-tom-hiddleston-moves-to-broadway-review_1737885/",
+      "headline": "Much Ado About Nothing with Hayley Atwell and Tom Hiddleston moves to Broadway – review",
+      "publishDate": "2026-11-20"
+    },
     {
       "showId": "radio-galaxy-regional-2026",
       "title": "Radio Galaxy",
