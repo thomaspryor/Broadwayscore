@@ -50,6 +50,8 @@ const CATEGORIES = [
   { key: 'paused', label: 'Paused', handlers: [] },
   { key: 'ready', label: 'Ready, a worker will pick it up', handlers: ['wake-board-worker', 'close-stuck-verified-cards'] },
   { key: 'cooling-off', label: 'Cooling off after recent activity', handlers: ['wake-board-worker'] },
+  // BRO-7880: a "check this again later" card (NOT-BEFORE line); a worker takes it once the time passes.
+  { key: 'scheduled', label: 'Scheduled check, a worker takes it at its time', handlers: ['wake-board-worker'] },
   { key: 'codex-bounced', label: 'Second-check reviewer rejected it, short wait', handlers: ['codex-runner'] },
   { key: 'owner-gated-no-question', label: 'Held for you, but no question written yet', handlers: ['owner-hold-sweep'] },
   { key: 'app-repo', label: 'iPhone-app card (automatic workers cannot open it)', handlers: [] },
@@ -62,7 +64,7 @@ const GROUPS = [
   { key: 'needs-you', title: 'Needs you', blurb: 'Waiting for a yes or no from you.',
     keys: ['waiting-owner'] },
   { key: 'moving', title: 'Moving', blurb: 'Nothing to do. Workers pick these up and dated ones restart on their own.',
-    keys: ['being-worked', 'ready', 'cooling-off', 'dated-future'] },
+    keys: ['being-worked', 'ready', 'cooling-off', 'scheduled', 'dated-future'] },
   { key: 'stuck', title: 'Stuck, the system is handling it', blurb: 'A daily job reclaims, rechecks or asks again. Nothing to do unless one is Urgent.',
     keys: ['started-idle', 'dated-past', 'dated-past-failed', 'needs-safe-check', 'codex-bounced', 'owner-gated-no-question', 'parked-owner-wording', 'parked-no-reason', 'parked-prose-wait'] },
   { key: 'parked', title: 'Parked on purpose', blurb: 'Held until the block clears. Nothing to do.',
@@ -194,6 +196,7 @@ function cardTraits(issue, { nowMs, secret = null, lastRecheckStatus = null } = 
 
   const why = skip || history;
   if (why === 'ios-app-repo') traits.add('app-repo');
+  if (skip === 'not-before') traits.add('scheduled');
   if (NEEDS_SAFE_CHECK_REASONS.has(why)) traits.add('needs-safe-check');
 
   const reason = skip || history || (bounced ? 'codex-bounced' : null) || `state-${stateType || 'unknown'}`;
