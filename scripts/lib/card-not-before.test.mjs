@@ -34,6 +34,19 @@ test('parser: reads the line, newest valid wins, junk is ignored', () => {
   assert.equal(nb.parseNotBeforeMs('NOT-BEFORE: 2026-11-21'), Date.parse('2026-11-21T00:00:00Z'));
 });
 
+test('parser: bullets, backticks, bold, escapes and space-separated times read; fences, quotes and impossible days do not', () => {
+  const at = (d) => { const t = nb.parseNotBeforeMs(d); return t === null ? null : new Date(t).toISOString(); };
+  assert.equal(at('- NOT-BEFORE: 2099-01-01'), '2099-01-01T00:00:00.000Z');
+  assert.equal(at('NOT-BEFORE: `2099-01-01`'), '2099-01-01T00:00:00.000Z');
+  assert.equal(at('**NOT-BEFORE:** 2099-01-01T00:00:00Z'), '2099-01-01T00:00:00.000Z');
+  assert.equal(at('NOT\\-BEFORE: 2099-01-01'), '2099-01-01T00:00:00.000Z');
+  assert.equal(at('NOT-BEFORE: 2026-11-21 01:40Z'), '2026-11-21T01:40:00.000Z');
+  assert.equal(at('example:\n```\nNOT-BEFORE: 2099-01-01\n```\nNOT-BEFORE: 2026-11-21T01:40:00Z'), '2026-11-21T01:40:00.000Z');
+  assert.equal(at('> NOT-BEFORE: 2099-01-01'), null);
+  assert.equal(at('NOT-BEFORE: 2026-02-30'), null);
+  assert.equal(at('NOT-BEFORE:\n2099-01-01'), null);
+});
+
 test('hold reason: future holds, past and absent do not', () => {
   assert.equal(nb.notBeforeHoldReason(card(`NOT-BEFORE: ${FUTURE}\n${BODY}`), NOW), 'not-before');
   assert.equal(nb.notBeforeHoldReason(card(`NOT-BEFORE: ${PAST}\n${BODY}`), NOW), null);
@@ -140,7 +153,7 @@ function fakeBoard(open = []) {
     listOpenIssueTitles: async () => board.open,
     listRecentIssues: async () => [],
     addComment: async (id, body) => { board.comments.push({ id, body }); },
-    createIssue: async (input) => { const i = { id: 'n1', identifier: 'BRO-N1', title: input.title, description: input.description, state: { name: 'Todo', type: 'unstarted' } }; board.created.push(i); return i; },
+    createIssue: async (input) => { const i = { id: 'n1', identifier: 'BRO-N1', title: input.title, description: input.description, priority: input.priority, state: { name: 'Todo', type: 'unstarted' } }; board.created.push(i); return i; },
   };
   return board;
 }
@@ -159,6 +172,11 @@ test('createLinearIssue notBefore: writes the line first, needs --dispatch, refu
     await assert.rejects(createLinearIssue({ title: `${tag} p`, description: notes, park: 'needs the owner call on spend', notBefore: FUTURE, client: fakeBoard().client }), /use it with --dispatch/);
     await assert.rejects(createLinearIssue({ title: `${tag} bad`, description: notes, dispatch: true, notBefore: 'tomorrow', client: fakeBoard().client }), /--not-before needs a date/);
     await assert.rejects(createLinearIssue({ title: `${tag} nv`, description: '## Problem\nno verify', dispatch: true, notBefore: FUTURE, client: fakeBoard().client, reuseTwin: true }), /never be picked once due \(no-safe-verify\)/);
+    // Priority: unset defaults to High; Medium/Low are refused (no picker takes them reliably).
+    const dflt = fakeBoard();
+    await createLinearIssue({ title: `${tag} dflt`, description: notes, dispatch: true, notBefore: FUTURE, client: dflt.client, reuseTwin: true, source: 'session' });
+    assert.equal(dflt.created[0].priority, 2);
+    await assert.rejects(createLinearIssue({ title: `${tag} low`, description: notes, dispatch: true, priority: 3, notBefore: FUTURE, client: fakeBoard().client, reuseTwin: true }), /needs --priority 1 or 2/);
     // An exact-title open twin: the hold must not become a comment no picker reads.
     const twin = fakeBoard([{ id: 'o1', identifier: 'BRO-50', title: `${tag} twin`, state: { name: 'Todo', type: 'unstarted' } }]);
     await createLinearIssue({ title: `${tag} twin`, description: notes, dispatch: true, priority: 1, notBefore: FUTURE, client: twin.client, reuseTwin: true, source: 'session' }).catch((e) => assert.match(e.message, /already open/));

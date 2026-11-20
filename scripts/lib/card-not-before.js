@@ -15,28 +15,55 @@
  * selectDrainCandidates (the Mac drain) and linear-next.js (refuses without
  * --force).
  *
- * The newest valid NOT-BEFORE line wins (an edit that pushes the check later
- * appends a line). A line whose value does not parse is ignored, so a typo can
- * never hold a card forever; linear-brain.js validates the value it writes.
+ * The LATEST valid time wins, wherever its line is (appending a later line
+ * pushes the check back; to bring it forward, edit the old line or dispatch
+ * with linear-next.js --force). A line whose value does not parse is ignored,
+ * so a typo can never hold a card forever; linear-brain.js validates the value
+ * it writes. Lines inside fenced code blocks or blockquotes are examples, not
+ * holds, and are skipped.
  */
 
-// Tolerates bold markers and Linear's markdown escaping ("NOT\-BEFORE").
-const NOT_BEFORE_RE = /^[ \t>*_]*NOT\\?-BEFORE[*_]*\s*:[*_\s]*([0-9][^\s*_|]*)/gim;
+// Tolerates bold markers, a list bullet, backticks and Linear's markdown
+// escaping ("NOT\-BEFORE"). The value may be "2026-11-21 01:40Z" by hand.
+const NOT_BEFORE_RE = /^[ \t]*(?:[-*+][ \t]+)?[*_`]*NOT\\?-BEFORE[*_`]*[ \t]*:[*_`\t ]*([0-9][^\s*_|`]*(?:[ \t]\d{2}:\d{2}[^\s*_|`]*)?)/gim;
 // Date-only, or a date-time with an explicit zone (Z or +hh:mm). A zone-less
 // date-time would be read in the machine's local zone, which differs between
 // the Mac and CI, so it is refused at filing time.
 const ACCEPTED_RE = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2}))?$/i;
 
 function parseValue(raw) {
-  const v = String(raw || '').trim();
+  const v = String(raw || '').trim().replace(/^(\d{4}-\d{2}-\d{2})[ \t]+(?=\d)/, '$1T');
   if (!ACCEPTED_RE.test(v)) return NaN;
+  // Date.parse rolls 2026-02-30 over to March 2; refuse impossible days.
+  const [y, mo, d] = v.slice(0, 10).split('-').map(Number);
+  const day = new Date(Date.UTC(y, mo - 1, d));
+  if (day.getUTCFullYear() !== y || day.getUTCMonth() !== mo - 1 || day.getUTCDate() !== d) return NaN;
   return Date.parse(v);
+}
+
+/** The description with fenced code blocks and blockquote lines blanked out. */
+function stripQuoted(description) {
+  const out = [];
+  let fence = null;
+  for (const line of String(description || '').split('\n')) {
+    const m = line.match(/^[ \t]*(`{3,}|~{3,})/);
+    if (fence) {
+      if (m && m[1][0] === fence[0] && m[1].length >= fence.length) fence = null;
+      out.push('');
+    } else if (m) {
+      fence = m[1];
+      out.push('');
+    } else {
+      out.push(/^[ \t]*>/.test(line) ? '' : line);
+    }
+  }
+  return out.join('\n');
 }
 
 /** The card's hold time in ms (latest valid NOT-BEFORE line), or null when it has none. */
 function parseNotBeforeMs(description) {
   let best = null;
-  for (const m of String(description || '').matchAll(NOT_BEFORE_RE)) {
+  for (const m of stripQuoted(description).matchAll(NOT_BEFORE_RE)) {
     const t = parseValue(m[1]);
     if (Number.isFinite(t) && (best === null || t > best)) best = t;
   }

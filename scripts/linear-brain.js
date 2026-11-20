@@ -88,6 +88,7 @@ Usage:
           or with an offset (-05:00); a bare date means 00:00 UTC (the evening
           before in New York). Don't write "tomorrow"/"after the next cron" in
           the notes: they read as an async wait and the card would never run.
+          Priority defaults to 2 (High); 3/4 are refused (workers skip them).
           For "run this command after day X" use --park with RECHECK-AFTER.
           --model stamps "Model: Opus|Sonnet" on the card; the worker that
           picks it up uses that model (an Opus line spends the daily Opus

@@ -1593,6 +1593,45 @@ if os.environ.get('PASSIVEOFFER_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
+# ─── Schedule-ask gate (SCHEDULEASK, BRO-7880, 2026-11-20) ──────────────────
+# Owner friction: sessions that want a check later end "ACTION NEEDED FROM YOU:
+# reply yes, schedule it" or ask the owner to approve a create_trigger prompt.
+# Asking the owner was also the cheapest way past WAKELESS (an owner ask needs no
+# wake). A NOT-BEFORE card (linear-brain.js create --dispatch --not-before) does
+# the same with no tap, so a closing that asks the owner to approve, allow, tap
+# or "yes" a schedule / trigger / reminder / check-in / wake is blocked, and
+# WAKELESS no longer counts it as an owner ask. Real DECISION NEEDED blocks
+# (money, irreversible, taste) do not name a schedule and still pass. Negated
+# mentions ("never ask the owner to approve a schedule") do not count.
+# Kill switch SCHEDULEASK_GATE_DISABLE=1. Fail-open.
+_SCHED_NOUN = r"(?:schedul\w*|scheduled task|(?:create_)?trigger|send_later|reminder|check-?in|wake-?up|routine|cron)"
+_SCHEDULE_ASK_RE = re.compile(
+    r"\b(?:approve|allow|tap|accept|confirm|authori[sz]e|ok(?:ay)?)\b[^.\n]{0,60}?\b" + _SCHED_NOUN + r"\b"
+    r"|\b(?:reply|say|answer|respond)(?:\s+with)?\s+[\"'\u201c]?yes\b[^.\n]{0,60}?\b" + _SCHED_NOUN + r"\b"
+    r"|\bschedule it\b"
+    r"|\b(?:want|should|shall)\s+(?:me|I)\s+(?:to\s+)?(?:set up|schedule|arm|create)\b[^.\n]{0,40}?\b" + _SCHED_NOUN + r"\b",
+    re.IGNORECASE)
+
+def _schedule_ask(text):
+    """The closing asks the owner to approve/allow/"yes" a schedule (BRO-7880)."""
+    text = _VERDICT_TOKEN_RE.sub(' ', text or '')
+    for m in _SCHEDULE_ASK_RE.finditer(text):
+        clause = re.split(r'[.;:!?\n\u2014\u2013]', text[max(0, m.start() - 40):m.start()])[-1]
+        if not _NEGATION_RE.search(clause) and not _NEGATION_RE.search(m.group(0)):
+            return True
+    return False
+
+if os.environ.get('SCHEDULEASK_GATE_DISABLE', '0') != '1':
+    try:
+        _sa_text, _sa_last = _closing()
+        if ('NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('SCHEDULEASK')
+                and _schedule_ask(_sa_text + '\n' + _sa_last)):
+            _ve_block("SCHEDULEASK")
+    except SystemExit:
+        raise
+    except Exception:
+        pass
+
 # ─── Wake gate (WAKELESS, BRO-5881, 2026-10-22) ─────────────────────────────
 # Owner: sessions end "NOT SAFE TO EXIT — waiting on X" and never come back;
 # a day later X is long done and nobody checked. Real case (session 014vS4Wn,
@@ -1613,7 +1652,7 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
         _wk_text, _wk_last = _closing()
         if (_KEEP_RE.match(_wk_last) and 'NO-VERIFY:' not in (_last_msg or '')
                 and not _ve_seen('WAKELESS')):
-            _wk_owner = _owner_must_act(_wk_text) or bool(re.search(r'\bfires into this session\b', _wk_last, re.I))  # routine host (BRO-6020)
+            _wk_owner = (_owner_must_act(_wk_text) and not _schedule_ask(_wk_text)) or bool(re.search(r'\bfires into this session\b', _wk_last, re.I))  # routine host (BRO-6020)
             _lw = _live_work()
             if not _wk_owner and not (_lw['triggers'] or _lw['agents'] or _lw['children']
                                       or _lw['waits'] or _lw['pr_watch']):
@@ -2722,6 +2761,11 @@ fi
 
 if [[ "$result" == "CLEARCLOSE" ]]; then
   echo "🛑 BLOCKED: the closing message is not clear enough for the owner, who reads only its end (BRO-5910, owner 2026-10-22). Rewrite the end of the message as: one or two plain sentences on what changed for them; Still running: <what, and what wakes you> (or Nothing is still running.); You need to: <the one thing> (or Nothing needed from you.); then one verdict: SAFE TO ARCHIVE — <why>, KEEP OPEN — <what is pending and what wakes you>, or ACTION NEEDED FROM YOU — <what they must do>. Keep card ids, commit hashes, file paths and code out of those last lines (they belong in the Linear comment). Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "SCHEDULEASK" ]]; then
+  echo "🛑 BLOCKED: your closing asks the owner to approve or say yes to a schedule (a scheduled task, trigger, reminder or check-in). Never do that: each one is a tap on the owner's phone (BRO-4236), and a check later needs no owner at all (BRO-7880). File a held card instead: node scripts/linear-brain.js create \"<title>\" --dispatch --priority 1 --not-before <ISO time, e.g. 2026-11-21T01:40:00Z> --notes \"<what to check, with a VERIFY: line>\" . Every board worker leaves it until that time and takes it after. Then say in plain words when the check will happen and end SAFE TO ARCHIVE (or KEEP OPEN if something in this turn is still running). For a wait inside this session, start a Bash with run_in_background: true or a Monitor. Bypass: NO-VERIFY: <reason>. Kill switch SCHEDULEASK_GATE_DISABLE=1." >&2
   exit 2
 fi
 

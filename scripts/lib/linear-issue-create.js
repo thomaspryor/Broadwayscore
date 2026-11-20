@@ -329,6 +329,16 @@ async function createLinearIssue({ title, description, dispatch, park, self, pri
     }
     const nb = require('./card-not-before.js');
     const iso = nb.normalizeNotBefore(notBefore);
+    // Only P0/P1/P2 cards are taken by the board workers (the Mac drain, the
+    // watchdog and red-first take P0/P1 only; the cloud worker takes P2 when
+    // the P0/P1 queue is empty). Unset defaults to High, not the usual Medium.
+    const unsetPriority = (priority === undefined || priority === null || priority === '' || Number(priority) === 0)
+      && priorityFromTitle(title) === null;
+    if (unsetPriority) priority = 2;
+    const heldPriority = effectiveCreatePriority({ priority, mode, title }).priority;
+    if (heldPriority > 2) {
+      throw new Error(`--not-before needs --priority 1 or 2 (got ${heldPriority}): the board workers do not take Medium/Low cards reliably, so a held card at that priority could sit in Todo after its time. Nothing was filed.`);
+    }
     body = `${nb.notBeforeLine(iso)}\n\n${body}`.trim();
     let unfit = null;
     try {
