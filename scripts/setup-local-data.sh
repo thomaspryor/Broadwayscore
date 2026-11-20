@@ -55,11 +55,9 @@ if [ "$LINK_ONLY" = 1 ]; then
 elif [ -n "$TOKEN" ]; then
   echo "Using token (REVIEW_TEXTS_TOKEN/GH_TOKEN) for authentication..."
   AUTH_METHOD="token"
-elif command -v gh &>/dev/null; then
-  echo "Using GitHub CLI for authentication..."
-  AUTH_METHOD="gh"
 elif [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
-  # Cloud Claude Code session: no token, no gh CLI. Cloud sessions route ALL git
+  # BRO-7890: checked BEFORE gh. Cloud has a gh binary, but `gh repo clone` goes through GraphQL and 403s there.
+  # Cloud Claude Code session: no token. Cloud sessions route ALL git
   # operations through Anthropic's GitHub proxy, which authenticates with the
   # connected account's credential for ANY repo that account can see — including
   # this private core-data repo. So a plain, tokenless clone works here even
@@ -68,6 +66,9 @@ elif [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
   # See .claude/CLOUD.md. If this path fails, the caller falls back to a stub.
   echo "Cloud session detected — cloning via GitHub proxy (no token needed)..."
   AUTH_METHOD="proxy"
+elif command -v gh &>/dev/null; then
+  echo "Using GitHub CLI for authentication..."
+  AUTH_METHOD="gh"
 else
   echo "ERROR: No authentication method available."
   echo ""

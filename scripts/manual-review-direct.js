@@ -157,9 +157,11 @@ const coreDataDir = '/tmp/core-data-direct';
 console.log('1. Cloning core-data repo...');
 try {
   execSync(`rm -rf ${coreDataDir}`, { stdio: 'pipe' });
-  execSync(`gh repo clone thomaspryor/broadway-scorecard-data ${coreDataDir} -- --depth 1`, { stdio: 'pipe' });
+  // BRO-7890: the gh CLI clone 403s in cloud (GraphQL); the shared helper picks token / cloud proxy / gh.
+  const method = require('./lib/private-repo-clone').clonePrivateRepo('thomaspryor/broadway-scorecard-data', coreDataDir);
+  console.log(`   cloned via ${method}`);
 } catch (e) {
-  console.error('Failed to clone core-data:', e.message);
+  console.error('Failed to clone core-data:', String(e.message).replace(/x-access-token:[^@]+@/g, 'x-access-token:***@'));
   process.exit(1);
 }
 
