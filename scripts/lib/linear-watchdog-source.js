@@ -200,6 +200,8 @@ function ineligibleReason(issue, opts = {}) {
   if (stateType === 'started') return 'already-started';
   if (!priorityOf(issue)) return 'not-p0-p1';
   if (isAutofixFiledIssue(issue)) return 'autofix-filed-tracker';
+  // BRO-7880: a NOT-BEFORE card waits for its time (a claim now is a guaranteed linear-next refusal).
+  if (require('./card-not-before.js').notBeforeHoldReason(issue, opts.nowMs === undefined ? Date.now() : opts.nowMs)) return 'not-before';
   // BRO-3924 (R3): checked BEFORE the armed/headless checks below —
   // sweep-open-backlog-acceptance.js only ever records an id in its
   // `alreadyDone` report after confirming it clears BOTH of those gates

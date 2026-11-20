@@ -809,6 +809,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.error(`[linear-next] REFUSING to dispatch ${identifier}: ${pausedRefusal}`);
     process.exit(1);
   }
+  // BRO-7880: a NOT-BEFORE card waits for its time.
+  const notBeforeRefusal = ld.notBeforeGuard(issue, args);
+  if (notBeforeRefusal) {
+    console.error(`[linear-next] REFUSING to dispatch ${identifier}: ${notBeforeRefusal}`);
+    process.exit(1);
+  }
 
   // BRO-7116: headless runs no longer move the card after the run, so cap
   // back-to-back runs that end with no report (see ld.strandedRepeatGuard).

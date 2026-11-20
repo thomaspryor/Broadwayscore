@@ -52,7 +52,7 @@ Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --self | --child "<what>" | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
-    [--no-verify "<reason>"] [--mac-only "<what needs the Mac and why>"] [--covers-row "<digest row title>"]
+    [--not-before <ISO time>] [--no-verify "<reason>"] [--mac-only "<what needs the Mac and why>"] [--covers-row "<digest row title>"]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js get <BRO-N>
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
@@ -80,6 +80,15 @@ Usage:
           A session card with no safe VERIFY (and no real-block park or
           owner-judgment marker) prints VERIFY-ADVISORY; --no-verify
           "<reason>" files it with the reason on the card.
+          --not-before <time> (BRO-7880, with --dispatch only): "check this
+          again later" with no owner tap. Writes a NOT-BEFORE line; every board
+          picker (cloud worker, Codex runner, Mac drain, linear-next) leaves the
+          card until then and takes it after. Use it instead of send_later /
+          create_trigger, which prompt the owner's phone. Time: 2026-11-21T01:40:00Z
+          or with an offset (-05:00); a bare date means 00:00 UTC (the evening
+          before in New York). Don't write "tomorrow"/"after the next cron" in
+          the notes: they read as an async wait and the card would never run.
+          For "run this command after day X" use --park with RECHECK-AFTER.
           --model stamps "Model: Opus|Sonnet" on the card; the worker that
           picks it up uses that model (an Opus line spends the daily Opus
           budget, BRO-6684; a card that failed before still moves up to Opus).
@@ -834,6 +843,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.error('--self and --mac-only conflict: a self-claimed card is worked now by this session. Use --dispatch --mac-only for Mac work.');
     process.exit(1);
   }
+  // BRO-7880: --not-before files a held Todo card (validated in createLinearIssue).
+  const notBeforeArg = args['not-before'] === undefined ? undefined : String(args['not-before']);
+  if (args['not-before'] === true) {
+    console.error('--not-before needs a time, e.g. --not-before 2026-11-21T01:40:00Z');
+    process.exit(2);
+  }
+  if (notBeforeArg !== undefined && !args.dispatch) {
+    console.error('--not-before files a Todo card the board workers take after that time: use it with --dispatch (not --self, --child or --park).');
+    process.exit(2);
+  }
   let notes = newAnyway ? `${args.notes || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : (args.notes || '');
   if (noVerify) notes = `${notes}\n\nFiled with --no-verify: ${noVerify}`.trim();
   // BRO-6067: the morning-after audit card must not read "no fixes needed" over a FAIL/UNKNOWN press-night record.
@@ -887,6 +906,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       newAnyway: newAnyway || undefined,
       noVerify: noVerify || undefined,
       macOnly: macOnly === undefined ? undefined : String(macOnly),
+      notBefore: notBeforeArg,
       coversRow: typeof args['covers-row'] === 'string' ? args['covers-row'] : undefined,
       dedupeOptOut: typeof args['dedupe-opt-out'] === 'string' ? args['dedupe-opt-out'] : undefined,
     });
@@ -917,6 +937,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       }
       console.log(lsr.buildIssueIdMarker(result.issue.id));
       console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, claimed by this session (${childArg !== undefined ? '--child' : '--self'})`);
+    } else if (result.mode === 'dispatch' && notBeforeArg !== undefined) {
+      const when = require('./lib/card-not-before.js').normalizeNotBefore(notBeforeArg);
+      const past = Date.parse(when) <= Date.now();
+      console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, HELD until ${when} (NOT-BEFORE). `
+        + (past ? 'That time has already passed, so it is ordinary Todo work now.' : 'Do not run linear-next on it: the board workers take it after that time. This counts as dispatched.'));
     } else if (result.mode === 'dispatch') {
       console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, not yet running (bsc-next Linear support pending #1303)`);
     } else if (result.autoTodo) {

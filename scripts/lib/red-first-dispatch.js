@@ -166,6 +166,8 @@ function selectRedFirstCandidates(issues, { journal = [], openJobTaskIds = new S
     const last = latestJournalRow(journal, id);
     if (last && now - Date.parse(last.ts) < cooldownMs) { skipped.push({ identifier: id, reason: `recent-attempt:${last.event}` }); continue; }
     if (!hasSafeVerifyCommand(iss)) { skipped.push({ identifier: id, reason: 'no-safe-verify' }); continue; }
+    // BRO-7880: a NOT-BEFORE card waits for its time.
+    if (require('./card-not-before.js').notBeforeHoldReason(iss, now)) { skipped.push({ identifier: id, reason: 'not-before' }); continue; }
     eligible.push(iss);
   }
   eligible.sort((a, b) => issueNumber(a.identifier) - issueNumber(b.identifier));

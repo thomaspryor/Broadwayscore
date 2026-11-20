@@ -276,7 +276,7 @@ function vacuousVerifyReason(body, existsFn = defaultExistsOnOriginMain) {
     + 'check-workflow-run-status.js for a workflow, check-remote-branch-absent.js for a branch';
 }
 
-async function createLinearIssue({ title, description, dispatch, park, self, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly, child, coversRow }) {
+async function createLinearIssue({ title, description, dispatch, park, self, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly, child, coversRow, notBefore }) {
   if (dedupeOptOut !== undefined && !Object.prototype.hasOwnProperty.call(cardDedupe.DEDUPE_OPT_OUTS, dedupeOptOut)) {
     throw new Error(`createLinearIssue: dedupeOptOut "${dedupeOptOut}" is not in card-dedupe.js DEDUPE_OPT_OUTS; add it there with its reason, or drop it`);
   }
@@ -316,6 +316,32 @@ async function createLinearIssue({ title, description, dispatch, park, self, pri
     // so without one the card would sit in Todo forever.
     if (!require('./verify-gate.js').evaluateVerifiability(body, []).cmd) {
       throw new Error('--mac-only needs a safe "VERIFY: <cmd>" line on its own line in the notes (the Mac drain takes nothing else, and the cloud worker skips mac-only cards). Nothing was filed.');
+    }
+  }
+
+  // BRO-7880: "check this again later" with no owner tap. A Todo card no picker
+  // takes before its NOT-BEFORE time (scripts/lib/card-not-before.js). The line
+  // goes first, like MAC-ONLY, and the card must be one a worker would take once
+  // the time passes, or it would sit in Todo forever.
+  if (notBefore !== undefined) {
+    if (mode !== 'dispatch') {
+      throw new Error('--not-before files a Todo card the board workers take after that time; use it with --dispatch, not --park/--self/--child');
+    }
+    const nb = require('./card-not-before.js');
+    const iso = nb.normalizeNotBefore(notBefore);
+    body = `${nb.notBeforeLine(iso)}\n\n${body}`.trim();
+    let unfit = null;
+    try {
+      unfit = require('./cloud-worker-pick.js').headlessUnfitReason({ title, description: body });
+    } catch (e) {
+      console.warn(`[linear-issue-create] NOT-BEFORE pickability check failed open: ${e.message}`);
+    }
+    if (unfit && unfit !== 'mac-only') {
+      const hint = require('./cloud-worker-pick.js').START_NOW_FIX_HINTS[unfit]
+        || 'remove what the reason names from the notes (time words like "after the next cron" or "tomorrow" read as an async wait: the NOT-BEFORE line already says when)';
+      const err = new Error(`NOT-BEFORE card would never be picked once due (${unfit}): ${hint}. Nothing was filed.`);
+      err.notBeforeUnpickable = unfit;
+      throw err;
     }
   }
 
@@ -369,7 +395,8 @@ async function createLinearIssue({ title, description, dispatch, park, self, pri
   // BRO-6080: never for a mac-only filing. A twin gets the notes as a comment,
   // which no picker reads, so it would keep no MAC-ONLY line; the dispatch-mode
   // near-duplicate check below still refuses an open match instead.
-  if (reuseTwin && macOnly === undefined && !selfFiled) {
+  // BRO-7880: nor for a NOT-BEFORE filing: a twin would get the hold as a comment, which no picker reads.
+  if (reuseTwin && macOnly === undefined && notBefore === undefined && !selfFiled) {
     const reused = await reuseOpenTwin({ title, body, client, mode });
     if (reused) return reused;
   }

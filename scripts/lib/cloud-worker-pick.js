@@ -133,8 +133,12 @@ function hasStartNowLine(issue) {
 // stamps "START-NOW-SINCE: <iso>"; the window then runs from that stamp, not
 // from filing. The newest stamp wins.
 const START_NOW_SINCE_RE = /^\s*START-NOW-SINCE\s*:\s*(\S+)/gim;
+// BRO-7880: a NOT-BEFORE hold restarts the window, so a START-NOW card held for
+// more than 48 h still goes first once it is due.
 function startNowAnchorMs(issue) {
   let best = Date.parse(issue && issue.createdAt);
+  const held = require('./card-not-before.js').parseNotBeforeMs(issue && issue.description);
+  if (held !== null && !(held <= best)) best = held;
   for (const m of String((issue && issue.description) || '').matchAll(START_NOW_SINCE_RE)) {
     const t = Date.parse(m[1]);
     if (Number.isFinite(t) && !(t <= best)) best = t;
@@ -402,6 +406,9 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
   const parkedDrainable = (fallback ? isFallbackTechnicalPark(issue) : drain.isSessionParkedDrainable(issue))
     || isStaleAutomationParked(issue, nowMs);
   if (type !== 'unstarted' && !parkedDrainable && !isPausedBacklog(issue)) return type === 'backlog' ? 'parked-or-backlog' : `state-${type}`;
+  // BRO-7880: "check this again later" (a NOT-BEFORE line) waits for its time at every tier, START-NOW included.
+  const NB = require('./card-not-before.js');
+  if (NB.notBeforeHoldReason(issue, nowMs)) return 'not-before';
   const unfit = headlessUnfitReason(issue, { allowParkedSentinel: parkedDrainable });
   if (unfit) return unfit;
   const updatedMs = effectiveTouchMs(issue);
@@ -412,7 +419,11 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
   const CR = codex && require('./codex-runner.js');
   // A carried fix round or a retry note (BRO-6260) is the newest comment, which makes the card look recently touched.
   const carry = codex && (CR.parseSwfCarry(issue.comments && issue.comments.nodes, nowMs) || CR.parseCodexRetry(issue.comments && issue.comments.nodes));
-  if (nowMs - updatedMs < IDLE_MS && (fallback || !(isStartNow(issue, nowMs) || isOwnerTaskResume(issue, nowMs))) && !carry) return 'recent-activity';
+  // BRO-7880: filing a held card is not activity once the hold has passed; the idle wait only
+  // counts touches after the NOT-BEFORE time, so a short hold is not stretched to 6 h.
+  const heldUntil = NB.parseNotBeforeMs(issue.description);
+  const touchedAfterHold = heldUntil === null || updatedMs > heldUntil;
+  if (touchedAfterHold && nowMs - updatedMs < IDLE_MS && (fallback || !(isStartNow(issue, nowMs) || isOwnerTaskResume(issue, nowMs))) && !carry) return 'recent-activity';
   return null;
 }
 
@@ -475,7 +486,7 @@ function isP3FallbackCandidate(issue, nowMs) {
  * bounce marker and the retry signal pickModel reads.
  */
 function needsComments(issue, nowMs) {
-  if (!/^(malformed|not-p0-p1)$/.test(skipReason(issue, nowMs) || '')) return true;
+  if (!/^(malformed|not-p0-p1|not-before)$/.test(skipReason(issue, nowMs) || '')) return true;
   if (isP2FallbackCandidate(issue, nowMs) || isP3FallbackCandidate(issue, nowMs)) return true;
   const { issueNumber } = require('./linear-drain-parked.js');
   return !!(issue && issue.identifier)
@@ -898,5 +909,5 @@ module.exports = {
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
   AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, isOwnerTaskResume, ownerWaitHolds, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, noDispatchHold, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
-  findResumeCandidates, findResumeCard, headlessUnfitReason, AWAITING_OWNER_RE, namesOwnerHold, FALLBACK_PARK_DENY_RE,
+  findResumeCandidates, findResumeCard, headlessUnfitReason, START_NOW_FIX_HINTS, AWAITING_OWNER_RE, namesOwnerHold, FALLBACK_PARK_DENY_RE,
 };

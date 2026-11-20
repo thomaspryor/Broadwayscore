@@ -890,6 +890,20 @@ function pausedHoldGuard(issue, opts, nowMs = Date.now()) {
     + 'Refusing to dispatch; read the latest session report first. Re-run with --force if this card really should run now.';
 }
 
+// -- notBeforeGuard (BRO-7880) -----------------------------------------------
+// A card filed "check this again later" carries a NOT-BEFORE line
+// (scripts/lib/card-not-before.js). Every board picker leaves it until then;
+// this refuses a direct dispatch too, so no caller runs it early by accident.
+function notBeforeGuard(issue, opts, nowMs = Date.now()) {
+  const o = opts || {};
+  if (o.force || o['dry-run'] || o['print-prompt']) return null;
+  const nb = require('./card-not-before.js');
+  if (!nb.notBeforeHoldReason(issue, nowMs)) return null;
+  const when = new Date(nb.parseNotBeforeMs(issue.description)).toISOString();
+  return `${(issue && issue.identifier) || '(unknown)'} is held until ${when} by its NOT-BEFORE line; the board workers take it after that. `
+    + 'Re-run with --force if this card really should run now.';
+}
+
 // -- strandedRepeatGuard (BRO-7116) ------------------------------------------
 //
 // A headless run that ends with no worker report gets a "Headless worker ended
@@ -1317,6 +1331,7 @@ module.exports = {
   buildOpenIssuesWithDescriptionsQuery,
   buildIssueCommentsByNumberQuery,
   pausedHoldGuard,
+  notBeforeGuard,
   pausedHoldReason,
   PAUSED_HOLD_REASONS,
   findOpenIssueForTerm,
