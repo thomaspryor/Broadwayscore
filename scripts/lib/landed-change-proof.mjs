@@ -347,7 +347,7 @@ export function cardBody(rows, { auditDay }) {
     ...rows.slice(0, 60).map(fmt),
     '',
     '## Why each was not run by the audit',
-    ...[...new Set(rows.flatMap((r) => r.files.filter((f) => f.noRunReason).map((f) => `- ${f.file}: ${f.noRunReason}`)))].slice(0, 30),
+    ...((m) => (m.length ? m : ['- n/a (failed runs, not unrun files)']))([...new Set(rows.flatMap((r) => r.files.filter((f) => f.noRunReason).map((f) => `- ${f.file}: ${f.noRunReason}`)))].slice(0, 30)),
     '',
     '## Cloud-session misses (the session Stop check scripts/lib/live-run-stop.mjs should have asked for a run)',
     ...(cloud.length ? cloud.slice(0, 30).map((r) => `- ${r.sha.slice(0, 10)} ${r.session || ''}: ${r.files.map((f) => f.file).slice(0, 3).join(', ')}`) : ['- none']),
@@ -394,9 +394,12 @@ export function retroCoverageGaps(rows, retroRows, landedDay) {
  * f: a not_run file entry (kind, workflows, safeRun, dispatch). -> string | null (null when a run or dispatch exists).
  */
 export function noRunReason(f) {
-  if (f.verdict !== 'not_run' || f.safeRun || f.dispatch) return null;
+  if (f.verdict !== 'not_run' || f.dispatch || f.safeRun?.ok || f.safeRun?.wouldRun) return null;
+  if (f.safeRun) return `its unit test (${f.safeRun.cmd || 'colocated test'}) ran and failed (exit ${f.safeRun.exit}): fix it`;
+  if (f.kind === 'src') return 'site code not live in the READY Vercel production deploy yet: the next deploy proves it';
   if (f.kind === 'workflow') return 'workflow file: only its own next run proves it (dispatch it or wait for its cron)';
   const wfs = f.workflows || [];
-  if (wfs.length && !wfs.some((w) => DISPATCH_ALLOWLIST.has(w))) return `no colocated unit test, and its workflow (${wfs.slice(0, 2).join(', ')}) is not on the no-spend dispatch allowlist (spends, emails or writes data); add a unit test or wait for its scheduled run`;
-  return 'no colocated unit test, and no workflow runs it';
+  if (wfs.some((w) => DISPATCH_ALLOWLIST.has(w))) return 'its workflow is on the dispatch allowlist but was not dispatched tonight (cap, an earlier request, or --no-dispatch): the next night retries';
+  if (wfs.length) return `no usable unit test, and its workflow (${wfs.slice(0, 2).join(', ')}) is not on the no-spend dispatch allowlist (spends, emails or writes data); add a unit test or wait for its scheduled run`;
+  return 'no usable unit test, and no workflow runs it';
 }

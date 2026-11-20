@@ -292,3 +292,12 @@ test('noRunReason: says why a not-run file got no run; null when it was run or d
   assert.equal(noRunReason({ verdict: 'not_run', kind: 'lib', workflows: [], safeRun: { ok: true } }), null);
   assert.equal(noRunReason({ verdict: 'proven' }), null);
 });
+test('noRunReason covers src, allowlisted-not-dispatched, failed safe run; cardBody lists reasons or n/a', async () => {
+  const { cardBody } = await import('./landed-change-proof.mjs');
+  assert.match(noRunReason({ verdict: 'not_run', kind: 'src' }), /Vercel/);
+  assert.match(noRunReason({ verdict: 'not_run', kind: 'lib', workflows: ['check-cutoff-freshness.yml'] }), /allowlist but was not dispatched/);
+  assert.match(noRunReason({ verdict: 'not_run', kind: 'lib', safeRun: { ok: false, exit: 1, cmd: 'node --test x' } }), /failed/);
+  const row = (files) => ({ sha: 'a'.repeat(12), source: 'cloud', verdict: 'not_run', subject: 's', files });
+  assert.match(cardBody([row([{ file: 'f.js', verdict: 'not_run', noRunReason: 'why-x' }])], { auditDay: 'd' }), /f\.js: why-x/);
+  assert.match(cardBody([row([{ file: 'g.js', verdict: 'failed' }])], { auditDay: 'd' }), /n\/a/);
+});
