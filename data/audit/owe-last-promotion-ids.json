@@ -1,6 +1,12 @@
 {
-  "generatedAt": "2026-11-19T22:44:07.587Z",
-  "promoted": [],
+  "generatedAt": "2026-11-20T22:17:56.986Z",
+  "promoted": [
+    {
+      "id": "jack-and-the-beanstalk-off-west-end-2027",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": "https://www.stratfordeast.com/whats-on"
+    }
+  ],
   "rejected": [
     {
       "title": "Desire Under the Elms",
@@ -427,6 +433,14 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Feeling Afraid",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as feeling-afraid-off-west-end-2026 (normalized-equal)"
+    },
+    {
       "title": "A Homo Alone 2 Yikes We Did It Again",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
@@ -441,14 +455,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
-    },
-    {
-      "title": "Feeling Afraid",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as feeling-afraid-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Ayla A New Musical",
@@ -1441,14 +1447,6 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-27))"
-    },
-    {
-      "title": "High School Musical",
-      "venue": "Troubadour Wembley Park Theatre",
-      "source": "venue-page:troubadour-wembley-park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as high-school-musical-off-west-end-2026 (normalized-equal)"
     }
   ]
 }
