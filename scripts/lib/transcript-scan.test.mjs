@@ -1120,7 +1120,7 @@ test('BRO-7851: CLI writes the would-block row only for a non-genuine override, 
     const stale = run([makeUserText('ship immediately for: prod down'), TASK_NOTE], 'sess-7851-cli-stale');
     assert.equal(stale.override, true);
     assert.match(readFileSync(log, 'utf8'), /^\d+\twould-block-override-not-owner-turn\treview-gate:foreign-turn-after-override\n$/);
-  } finally { rmSync(dir, { recursive: true, force: true }); }
+  } finally { rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('BRO-7851 cousin: owner NO-VERIFY counts only while the owner turn is current', () => {
