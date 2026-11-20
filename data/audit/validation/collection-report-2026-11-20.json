@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-11-20T08:42:02.617Z",
+  "runDate": "2026-11-20T09:56:14.467Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+    "showFilter": "blue-man-group-a-new-holiday-surprise-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -17,27 +17,27 @@
     "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
@@ -45,7 +45,7 @@
     "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -57,7 +57,7 @@
     "processed": 1,
     "failed": 0,
     "shows": [
-      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026"
+      "blue-man-group-a-new-holiday-surprise-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,24 +66,24 @@
     }
   },
   "processed": [
-    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
   ],
   "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
     ],
     "failed": []
   },
   "tierDetails": {
-    "playwright": [
-      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
