@@ -1007,3 +1007,10 @@ test('same-night-completeness: weeks-old publish dates stay preview-period even 
   r.perReview[0].publishAt = '2026-10-05';
   assert.equal(sn(r).status, 'fail');
 });
+
+test('same-night-completeness: a named critic\'s earlier piece cannot vouch for a different critic\'s file (BRO-7892)', () => {
+  const r = nightRec({ Vulture: 10 }, [file('vulture', 5, { critic: 'Y', publishDate: '2026-10-21' })]);
+  r.perReview[0].critic = 'X';
+  r.perReview[0].publishAt = '2026-10-20';
+  assert.equal(sn(r).status, 'fail');
+});

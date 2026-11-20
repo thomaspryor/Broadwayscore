@@ -369,7 +369,7 @@ function shiftDay(day, delta) {
   return Number.isNaN(ms) ? String(day).slice(0, 10) : new Date(ms + delta * 86400000).toISOString().slice(0, 10);
 }
 
-// BRO-7892: a review dated the day before the night (a UK outlet's evening-before post, a studio's final-preview
+// BRO-7892: a review dated up to NEAR_PRIOR_GRACE_DAYS before the night (a UK outlet's evening-before post, a studio's final-preview
 // piece) that the pipeline first saw INSIDE the night window is still a press-night review. Its live time counts.
 // Anything older (BRO-6067: singleticket, published weeks before) stays preview-period and proves nothing.
 const NEAR_PRIOR_GRACE_DAYS = 2;
@@ -670,7 +670,10 @@ function outletLiveMs(rec, graceDays = 0) {
     const oid = outletIdOf(p.outlet); const ms = toMs(p.firstLiveAt);
     if (!oid || ms == null) continue;
     min(byCritic, `${oid}|${critKey(p.critic)}`, ms);
-    min(byOutlet, oid, ms);
+    // A grace-window row (dated before the night) may vouch for the outlet only when it names no critic: a named
+    // critic's earlier piece must not vouch for a different critic's file (BRO-7892 review).
+    const ck = critKey(p.critic);
+    if (isNightReview(p, rec.night) || !ck || ck === 'unknown') min(byOutlet, oid, ms);
   }
   const ls = rec.laneShadow;
   if (ls && Array.isArray(ls.liveFirstSeen)) {
