@@ -71,7 +71,9 @@ function buildGrandfatherSet(reviews, norm = {}) {
 // already saw at arm time. A verdict stamped AFTER that on a row that shipped unverified (collect, ship, then
 // the verifier flips it) is a new decision, so it is not grandfathered: otherwise every such row lives on as
 // "grandfathered" and re-fires the daily lifetime-sweep row (5 files verified 2026-11-12..17 were still live).
-// A verdict with no usable verifiedAt keeps the old behaviour.
+// Any verdict (re)stamped after arm time counts, including a refetch re-confirming an old one: a row the verifier
+// still calls the wrong production should not ride on grandfathering. About 42 live rows were affected on
+// 2026-11-20 (one-time score move, intended). A verdict with no usable verifiedAt keeps the old behaviour.
 const GRANDFATHER_VERDICT_CUTOFF_MS = Date.parse('2026-11-10T19:01:45Z');
 function verdictPostdatesGate(data) {
   const t = Date.parse(data && data.contentVerification && data.contentVerification.verifiedAt);
