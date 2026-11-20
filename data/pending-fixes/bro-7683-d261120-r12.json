@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7683-d261120-r12",
   "planId": "d6cab103-4bf0-4802-b9ac-8f3b1aa4c915",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-20T19:03:37.798Z",
   "submitter": {
     "name": null,
@@ -43,5 +43,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-20T19:12:52.957Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fiddler-on-the-roof-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
