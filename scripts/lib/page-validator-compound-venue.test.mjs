@@ -11,11 +11,11 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { matchDerivedTitleVariant } = require('./page-validator.js');
 
-const mk = (venue) => ({ id: 'mpm', title: "Tracy Letts' Mary Page Marlowe", venue, category: 'off-broadway' });
+const mk = (venue) => ({ id: 'mpm', title: "Tracy Letts' Mary Page Marlowe", venue, category: 'off-broadway', creativeTeam: [{ name: 'Tracy Letts' }] });
 const rival = { id: 'mpm-regional', title: 'Mary Page Marlowe', venue: 'Steppenwolf Theatre Company', category: 'regional' };
-const run = (venue, heading) => {
+const run = (venue, heading, clash = false) => {
   const show = mk(venue);
-  const titles = new Map([['mary page marlowe', new Set(['mpm-regional'])]]);
+  const titles = new Map(clash ? [['mary page marlowe', new Set(['mpm-regional'])]] : []);
   return matchDerivedTitleVariant(show.title, heading, { show, shows: [show, rival], titles });
 };
 
@@ -34,6 +34,13 @@ test('house/stage venue: heading naming the house confirms the derived variant',
 
 test('the stage name alone also confirms', () => {
   assert.ok(run('Playwrights Horizons/Judith O. Rubin Theater', 'Mary Page Marlowe at Judith O. Rubin Theater'));
+});
+
+test('a title another show shares needs the whole venue name, not just the house', () => {
+  const v = 'The Public Theater/Newman Theater';
+  assert.equal(run(v, 'Mary Page Marlowe review: Pittsburgh Public Theater', true), null);
+  assert.equal(run(v, 'Mary Page Marlowe review at The Public Theater', true), null);
+  assert.ok(run(v, 'Mary Page Marlowe review at The Public Theater/Newman Theater', true));
 });
 
 test('a heading that names a different house still does not confirm', () => {

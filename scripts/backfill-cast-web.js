@@ -13,6 +13,7 @@
  *   --category=CAT     Filter: off-broadway, west-end (default: both)
  *   --dry-run          Show what would be processed
  *   --force            Re-process shows with existing cast files
+ *   --rotate           Rotate the show order by week before --limit (unattended runs)
  *   --show-filter=ID   Process a single show, or several as a comma-separated list (no spaces)
  *   --limit=N          Max shows to process (default: unlimited)
  *
@@ -495,6 +496,13 @@ async function main() {
     } catch { return true; }
   });
 
+  // BRO-7381: --rotate starts each ISO week at a different offset, so shows that keep failing
+  // (never get a cast file) cannot hold the same --limit slots in every unattended run.
+  if (args.includes('--rotate') && shows.length > 1 && limit > 0) {
+    const week = Math.floor(Date.now() / (7 * 24 * 3600 * 1000));
+    const off = (week * limit) % shows.length;
+    shows = shows.slice(off).concat(shows.slice(0, off));
+  }
   if (limit > 0) shows = shows.slice(0, limit);
 
   console.log(`  Shows to process: ${shows.length}`);

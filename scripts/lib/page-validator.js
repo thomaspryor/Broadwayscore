@@ -450,17 +450,22 @@ function matchDerivedTitleVariant(showTitle, headingText, options = {}) {
   const venueName = typeof show.venue === 'string' ? show.venue : show.venue && show.venue.name;
   // BRO-7381: a house billed with its stage ("The Public Theater/Newman Theater", "The Other Palace
   // - Main Theatre") is named by headings as the house only, so the whole string never matches.
-  // venueForms (outlet-listing-helpers, the BRO-7372 fix) yields the whole name plus the house and
-  // stage forms; each is a 2+ word proper name, the same proof strength as the whole venue.
-  const venuePhrases = [...new Set([normalizePhrase(venueName),
-    ...venueForms({ venue: venueName }).map(normalizePhrase)])].filter(Boolean);
-  if (!venuePhrases.length || venueTokens(show).length === 0) return null;
+  // venueForms (the BRO-7372 fix) adds the house and stage forms. They are weaker proof ("public
+  // theater" sits inside "Pittsburgh Public Theater"), so they count only for a variant no other
+  // shows.json row shares (clashIds empty); a clashing variant still needs the whole venue name.
+  const wholePhrase = normalizePhrase(venueName);
+  const formPhrases = venueForms({ venue: venueName }).map(normalizePhrase).filter((p) => p && p !== wholePhrase);
+  if (!wholePhrase || venueTokens(show).length === 0) return null;
   const headingPhrase = ` ${normalizePhrase(headingText)} `;
-  if (!venuePhrases.some((p) => headingPhrase.includes(` ${p} `))) return null;
+  const named = (p) => headingPhrase.includes(` ${p} `);
+  const wholeHit = named(wholePhrase);
+  const formHit = formPhrases.some(named);
+  if (!wholeHit && !formHit) return null;
   let variants;
   try { variants = titleVariantInfo(show, { titles: options.titles }); } catch (_) { return null; }
   for (const v of variants) {
     if (v.kind !== 'derived' || v.labelHead) continue;
+    if (!wholeHit && v.clashIds.length > 0) continue;
     const m = titleWordsMatchWithConfidence(v.title, headingText);
     if (!m.matched || m.confidence < LLM_CONFIDENCE_THRESHOLD || m.matchCount < (m.words || []).length) continue;
     if (findContainingTitleSibling(headingText, v.title, { shows: options.shows })) continue;
