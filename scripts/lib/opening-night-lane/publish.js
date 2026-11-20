@@ -125,14 +125,13 @@ function createReviewsFilePort(file, { attempts = 5, beforeWrite = null, beforeR
 /**
  * BRO-7884: rows reach reviews.json without the rebuild's date normaliser, so a page's full timestamp
  * ("2026-11-20T03:00:00.000Z") went out as-is and the iOS app showed "Invalid Date" (the site showed Nov 20 for a
- * Nov 19 press night). Publish the calendar day in the show's market time zone. Mutates in place on purpose: the
- * caller matches merge.applied against these same row objects.
+ * Nov 19 press night). The published copy carries the calendar day in the show's market time zone. Returns the same
+ * object when nothing changes; never mutates, so the lane's own row keeps the instant for later checks.
  */
 function toCalendarDay(row, timeZone) {
   if (!row || typeof row.publishDate !== 'string' || /^\d{4}-\d{2}-\d{2}$/.test(row.publishDate)) return row;
   const day = calendarDateIn(row.publishDate, timeZone || undefined);
-  if (day) row.publishDate = day;
-  return row;
+  return day ? { ...row, publishDate: day } : row;
 }
 
 async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS, openingDate, dryRun = false, remove, timeZone } = {}) {
@@ -149,9 +148,10 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
   const t0 = now();
   const log = (key, stage, meta) => ledger.appendEvent(ledgerDir, { show, night, reviewKey: key, stage, at: now(), ...(meta ? { meta } : {}) });
 
-  for (const r of rows) toCalendarDay(r && r.row, timeZone);
-  const merge = await ports.updateReviews((doc) => mergeShowRows(doc, show, rows.map((r) => r.row), { openingDate, remove }));
-  const landed = new Set(merge.applied);
+  const original = new Map(); // published copy -> the lane's row (merge.applied holds the copies)
+  const toPublish = rows.map((r) => { const c = toCalendarDay(r.row, timeZone); original.set(c, r.row); return c; });
+  const merge = await ports.updateReviews((doc) => mergeShowRows(doc, show, toPublish, { openingDate, remove }));
+  const landed = new Set((merge.applied || []).map((x) => original.get(x) || x));
   if (ports.pushData) {
     const pushed = await ports.pushData();
     if (pushed && pushed.ok === false) throw new Error(`publish: pushing core data failed: ${String(pushed.stderr || '').slice(0, 200)}`);

@@ -11,6 +11,12 @@ test('press-night timestamp becomes the New York day', () => {
 test('London lane uses the London day', () => {
   assert.equal(toCalendarDay({ publishDate: '2026-11-20T03:00:00Z' }, 'Europe/London').publishDate, '2026-11-20');
 });
+test('never mutates the lane row', () => {
+  const r = { publishDate: '2026-11-20T03:00:43.000Z' };
+  const out = toCalendarDay(r);
+  assert.notEqual(out, r);
+  assert.equal(r.publishDate, '2026-11-20T03:00:43.000Z');
+});
 test('a plain day and a missing date are left alone; the same object is returned', () => {
   const r = { publishDate: '2026-11-19' };
   assert.equal(toCalendarDay(r), r);
