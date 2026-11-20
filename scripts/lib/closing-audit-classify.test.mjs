@@ -151,7 +151,7 @@ test('both audits pass openingDate to the classifier (wiring guard)', async () =
   for (const f of ['audit-closing-dates.js', 'audit-we-closing-dates.js']) {
     const src = readFileSync(new URL('../' + f, import.meta.url), 'utf8');
     const call = src.slice(src.indexOf('classifyMissingSchedule({'));
-    assert.match(call.slice(0, 400), /openingDate:/, f);
+    assert.match(call.slice(0, 400), /openingDate: (show\.openingDate|\s*show\.openingDate)/, f);
   }
 });
 
