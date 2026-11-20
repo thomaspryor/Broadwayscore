@@ -1,13 +1,14 @@
 {
-  "generatedAt": "2026-11-20T01:41:22.254Z",
+  "generatedAt": "2026-11-20T03:07:29.721Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 361,
-  "clean": 355,
-  "defective": 6,
+  "clean": 359,
+  "defective": 2,
   "byType": {
-    "score-drift": 6
+    "score-drift": 2,
+    "missing-from-prod": 1
   },
   "shows": [
     {
@@ -17,94 +18,36 @@
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 74.52 vs local 70.08 (Δ4.44)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-11-20T01:41:16.143Z"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "openingDate": "2026-11-08",
-      "ok": false,
-      "defects": [
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: oazis"
+        },
         {
           "type": "score-drift",
-          "detail": "deployed cs 70.1 vs local 69.66 (Δ0.44)"
+          "detail": "deployed cs 70.08 vs local 74.52 (Δ4.44)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-11-20T01:41:16.143Z"
-    },
-    {
-      "showId": "the-imaginary-invalid-2026",
-      "title": "The Imaginary Invalid",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.46 vs local 69.03 (Δ0.43)"
-        }
+      "missingFromProd": [
+        "oazis"
       ],
-      "missingFromProd": [],
-      "localCount": 32,
-      "deployedCount": 33,
-      "firstDefectAt": "2026-11-20T01:41:16.143Z"
-    },
-    {
-      "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
-      "title": "Our Sinatra: A Musical Celebration",
-      "openingDate": "2026-09-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.69 vs local 75.09 (Δ3.6)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 3,
+      "localCount": 5,
       "deployedCount": 4,
       "firstDefectAt": "2026-11-20T01:41:16.143Z"
     },
     {
-      "showId": "the-rocky-horror-show-2026",
-      "title": "The Rocky Horror Show",
-      "openingDate": "2026-04-23",
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "openingDate": "2026-11-06",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.46 vs local 72.04 (Δ0.42)"
+          "detail": "deployed cs 73.26 vs local 72.44 (Δ0.82)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 37,
-      "deployedCount": 38,
-      "firstDefectAt": "2026-11-20T01:41:16.143Z"
-    },
-    {
-      "showId": "schmigadoon-2026",
-      "title": "Schmigadoon!",
-      "openingDate": "2026-04-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.26 vs local 79.16 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 42,
-      "deployedCount": 43,
-      "firstDefectAt": "2026-11-20T01:41:16.143Z"
+      "localCount": 17,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-11-20T03:07:24.526Z"
     }
   ],
   "persistentDefective": 0,
