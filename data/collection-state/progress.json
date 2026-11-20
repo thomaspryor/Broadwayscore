@@ -1,29 +1,56 @@
 {
   "processed": [
-    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-    "much-ado-about-nothing-2026/totaltheater1--unknown.json"
+    "eurotrash-off-west-end-2026/nytimes--unknown.json",
+    "eurotrash-off-west-end-2026/liamodell--unknown.json",
+    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
   ],
   "failed": [
-    "much-ado-about-nothing-2026/timeout--unknown.json",
-    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json"
+    "eurotrash-off-west-end-2026/guardian--unknown.json",
+    "eurotrash-off-west-end-2026/thestage--sam-marlowe.json",
+    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "much-ado-about-nothing-2026/totaltheater1--unknown.json"
+      "eurotrash-off-west-end-2026/liamodell--unknown.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
+    "scrapingbee": [],
+    "brightdata": [
+      "eurotrash-off-west-end-2026/nytimes--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-20T16:26:40.051Z",
-  "lastProcessed": "much-ado-about-nothing-2026/totaltheater1--unknown.json",
-  "log": []
+  "startTime": "2026-11-20T16:26:54.217Z",
+  "lastProcessed": "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json",
+  "log": [
+    {
+      "t": "2026-11-20T16:27:21.221Z",
+      "event": "bb-session",
+      "session": "744feae1",
+      "url": "https://www.nytimes.com/2026/11/20/theater/eurotrash-young-vic-london-review.htm"
+    },
+    {
+      "t": "2026-11-20T16:27:21.699Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T16:27:38.220Z",
+      "event": "bb-session",
+      "session": "d85d1db8",
+      "url": "https://www.nytimes.com/2026/11/20/theater/eurotrash-young-vic-london-review.htm"
+    },
+    {
+      "t": "2026-11-20T16:27:38.634Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
