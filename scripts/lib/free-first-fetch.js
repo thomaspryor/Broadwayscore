@@ -232,6 +232,8 @@ function freeSearchAnchorDate(openingDate, show, now = Date.now(), maxDays = 120
   if (!Number.isFinite(p)) return null;
   // The window ends maxDays after the anchor. A show still in previews past that
   // point could get reviewed outside the window, so it keeps the paid render.
+  // A previews date still in the future may be wrong or postponed: keep the paid render.
+  if (now < p) return null;
   return now <= p + maxDays * 86400000 ? previews : null;
 }
 

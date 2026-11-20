@@ -182,6 +182,7 @@ test('BRO-7532 recheck: freeSearchAnchorDate prefers the opening date, then prev
   assert.equal(f.freeSearchAnchorDate(null, { previewsStartDate: '2026-11-14' }, nov20), '2026-11-14');
   assert.equal(f.freeSearchAnchorDate(null, { previewsStartDate: '2026-07-01' }, nov20), null, 'previews began >120 days ago: a review could fall outside the window');
   assert.equal(f.freeSearchAnchorDate('2025-01-01', { previewsStartDate: '2024-01-01' }, nov20), '2025-01-01', 'a known opening date is always used');
+  assert.equal(f.freeSearchAnchorDate(null, { previewsStartDate: '2026-12-05' }, nov20), null, 'future previews date may be wrong or postponed: keep the paid render');
 });
 
 test('BRO-7532 recheck: dtliDirectOutcome trusts only a real page or DTLI\'s own 404 document', () => {
