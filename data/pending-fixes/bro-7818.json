@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-7818",
+  "planId": "b717a509-78c4-406d-80a9-5b82e898e526",
+  "status": "pending",
+  "createdAt": "2026-11-20T06:56:11.498Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7818: delete the 97 aggregator-archive pages that fail their own category check (4 new poisoned pages plus 93 cross-market pages). Delete only, no tombstone, so the next scrape can fetch the right page.",
+    "steps": [
+      "Delete aggregator-archive pages that fail the category check"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Delete aggregator-archive pages that fail the category check",
+        "script": "quarantine-poisoned-aggregator-archive.js",
+        "args": "--delete --expect=97"
+      }
+    ]
+  }
+}
