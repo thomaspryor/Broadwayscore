@@ -1,63 +1,64 @@
 {
-  "runDate": "2026-11-20T11:53:34.191Z",
+  "runDate": "2026-11-20T12:12:08.834Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 60,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "eurotrash-off-west-end-2026",
-    "aggressive": true,
+    "showFilter": "a-christmas-story-the-musical-tour-2026,top-gunchained-off-west-end-2026",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 2,
+    "processed": 1,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 2,
+    "processed": 1,
+    "failed": 3,
     "shows": [
-      "eurotrash-off-west-end-2026"
+      "a-christmas-story-the-musical-tour-2026",
+      "top-gunchained-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,37 +67,44 @@
     }
   },
   "processed": [
-    "eurotrash-off-west-end-2026/west-end-best-friend--unknown.json",
-    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+    "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json"
   ],
   "failed": [
-    "eurotrash-off-west-end-2026/thestage--unknown.json",
-    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+    "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
+    "a-christmas-story-the-musical-tour-2026/nuvo--nuvo.json",
+    "top-gunchained-off-west-end-2026/british-theatre--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "eurotrash-off-west-end-2026/west-end-best-friend--unknown.json",
-      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json"
     ],
     "failed": [
-      "eurotrash-off-west-end-2026/thestage--unknown.json",
-      "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+      "top-gunchained-off-west-end-2026/thereviewshub--scott-matthewman.json",
+      "a-christmas-story-the-musical-tour-2026/nuvo--nuvo.json",
+      "top-gunchained-off-west-end-2026/british-theatre--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "eurotrash-off-west-end-2026/west-end-best-friend--unknown.json",
-      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "a-christmas-story-the-musical-tour-2026/broadwaynews--lee-damato.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Nuvo": {
+      "count": 1,
+      "domain": "nuvo.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
