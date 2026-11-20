@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-11-20T15:56:40.213Z",
-  "processed": 305,
-  "failed": 155,
-  "successRate": "66.3%",
+  "updatedAt": "2026-11-20T16:17:48.359Z",
+  "processed": 340,
+  "failed": 170,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 168,
+    "playwright": 184,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 33,
-    "scrapingbee": 2,
+    "scrapingdog": 36,
+    "scrapingbee": 4,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 82
+    "archive": 98
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-11-20T13:05:00.572Z",
-      "event": "bb-session",
-      "session": "7257085f",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-20T13:05:01.245Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-11-20T13:05:18.266Z",
       "event": "bb-session",
@@ -112,6 +101,28 @@
     },
     {
       "t": "2026-11-20T15:03:34.929Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T16:16:24.490Z",
+      "event": "bb-session",
+      "session": "ac17f1e0",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-20T16:16:25.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T16:16:42.373Z",
+      "event": "bb-session",
+      "session": "41acfe28",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-20T16:16:43.018Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
