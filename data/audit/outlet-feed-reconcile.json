@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20T18:11:02.264Z",
+  "generatedAt": "2026-11-20T20:51:46.593Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -147,6 +147,11 @@
       "id": "destiny-of-desire-regional-2026",
       "title": "Destiny of Desire",
       "openingDate": "2026-11-16"
+    },
+    {
+      "id": "fiddler-on-the-roof-regional-2026",
+      "title": "Fiddler on the Roof",
+      "openingDate": "2026-11-19"
     }
   ],
   "skipped": [
@@ -170,6 +175,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "theatre-vibe",
+      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -180,79 +189,12 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "the-knockturnal",
-      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 861,
-  "matchedGaps": 7,
+  "itemsScanned": 873,
+  "matchedGaps": 0,
   "possibleGaps": 1,
   "gaps": [
-    {
-      "showId": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
-      "title": "A Homo Alone 2: Yikes, We Did It Again!",
-      "level": "matched",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/a-homo-alone-2-yikes-we-did-it-again-the-other-palace/",
-      "headline": "A Homo Alone 2: Yikes, We Did It Again! &#8211; The Other Palace",
-      "publishDate": "2026-11-20"
-    },
-    {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "title": "Cinderella",
-      "level": "matched",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/nov/20/northern-ballet-cinderella-review-norwich-theatre",
-      "headline": "You shall go to the panto! Northern Ballet’s Cinderella spices the fairytale with festive fun – and a sweet twist",
-      "publishDate": "2026-11-20"
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "title": "Desire Under the Elms",
-      "level": "matched",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/desire-under-the-elms-almedia-theatre/",
-      "headline": "Desire Under the Elms &#8211; Almeida Theatre",
-      "publishDate": "2026-11-20"
-    },
-    {
-      "showId": "eurotrash-off-west-end-2026",
-      "title": "Eurotrash",
-      "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/11/20/review-of-eurotrash-2026-young-vic-stage-adaptation-of-krafts-novel-is-full-of-rubbish-but-thats-no-reason-to-dump-it/",
-      "headline": "Review of &#8216;Eurotrash&#8217; (2026, Young Vic): &#8220;Stage adaptation of Kraft&#8217;s novel is full of rubbish, but that&#8217;s no reason to dump it&#8221;",
-      "publishDate": "2026-11-20"
-    },
-    {
-      "showId": "eurotrash-off-west-end-2026",
-      "title": "Eurotrash",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/eurotrash-young-vic-26228",
-      "headline": "Eurotrash",
-      "publishDate": "2026-11-20"
-    },
-    {
-      "showId": "eurotrash-off-west-end-2026",
-      "title": "Eurotrash",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/eurotrash-young-vic-london/",
-      "headline": "Eurotrash – Young Vic, London",
-      "publishDate": "2026-11-20"
-    },
-    {
-      "showId": "radio-galaxy-regional-2026",
-      "title": "Radio Galaxy",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/17/radio-galaxy-the-wallis-review/",
-      "headline": "Theater Review: RADIO GALAXY (The Wallis / Beverly Hills)",
-      "publishDate": "2026-11-18"
-    },
     {
       "showId": "much-ado-about-nothing-2026",
       "title": "Much Ado About Nothing",

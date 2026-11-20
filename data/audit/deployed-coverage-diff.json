@@ -1,13 +1,80 @@
 {
-  "generatedAt": "2026-11-20T18:11:01.877Z",
+  "generatedAt": "2026-11-20T20:51:46.200Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 364,
-  "clean": 364,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 365,
+  "clean": 361,
+  "defective": 4,
+  "byType": {
+    "score-drift": 4
+  },
+  "shows": [
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "title": "Eurotrash",
+      "openingDate": "2026-11-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.46 vs local 76.31 (Δ0.15)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-11-20T20:51:36.689Z"
+    },
+    {
+      "showId": "relative-motion-off-west-end-2026",
+      "title": "Relative Motion",
+      "openingDate": "2026-11-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.87 vs local 73.75 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-11-20T20:51:36.689Z"
+    },
+    {
+      "showId": "orlando-off-west-end-2026",
+      "title": "Orlando: A Pornobiography",
+      "openingDate": "2026-11-10",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.39 vs local 78.18 (Δ1.21)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-11-20T20:51:36.689Z"
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "openingDate": "2026-11-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 71.09 vs local 71.15 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-11-20T20:51:36.689Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
