@@ -327,7 +327,7 @@ If issues are found, fix them and note what was fixed.
 
 ### Phase 6: Plain-language summary
 
-Before asking the user to decide, present **the actual plan in plain English** — not just what changed, but what they're agreeing to:
+Present **the actual plan in plain English**, not just what changed:
 
 > **The plan:**
 > [2-4 sentences: what will be built, how it works from the user's perspective, what the end result looks like]
@@ -338,20 +338,22 @@ Before asking the user to decide, present **the actual plan in plain English** �
 >
 > **Size:** [S/M/L — how many sessions, roughly how many files]
 
-The user is approving THE PLAN, not a diff. They need to see the plan. No jargon, no task IDs. Describe it the way you'd explain it to someone who hasn't been in this conversation.
+This reports the plan to the owner; it is not an approval request unless Phase 7 says so. No jargon, no task IDs. Describe it the way you'd explain it to someone who hasn't been in this conversation.
 
 **Sprint-plan recommendation:** Based on the revised plan's scope, recommend whether `/plan-tasks` is needed:
 - **1 session / <5 files:** "This is small enough to implement directly from this plan. No need for `/plan-tasks`."
 - **2-4 sessions:** "Recommend running `/plan-tasks` to break this into atomic tasks with verify steps."
 - **5+ sessions / multiple workstreams:** "`/plan-tasks` is essential here — task ordering and parallelism matter."
 
-### Phase 7: Ask the user
+### Phase 7: Decide, or ask only when it is the owner's call
 
-Present the revised plan and ask: "Want to go with the revised plan, keep the original, or adjust further?"
+Go with the revised plan. Picking between the original and the revision is a technical call, so it is yours.
+
+Ask the owner only when the plan is a substantial new system (CLAUDE.md §20: the owner chose on 2026-10-25 that substantial efforts get a plan, /plan-review and their yes) or involves money, an irreversible step, a public post, an email to real people, or a product/taste choice. Ask once, as one DECISION NEEDED block with the plan summary and your recommendation.
 
 ### Record the plan-phase verdict (BWSC repo — MANDATORY)
 
-As soon as the critique is complete — before the user answers Phase 7, and whether or not the plan changes — record it:
+As soon as the critique is complete, before Phase 7 and whether or not the plan changes — record it:
 
 ```bash
 node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review \
@@ -360,10 +362,10 @@ node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review \
 
 `~/.claude/hooks/infra-plan-review-gate.sh` reads this before the session's first edit to shared infrastructure — the dispatch layer, spend guards, concurrency primitives, the review gates, CI workflows and hooks (task #1079, owner decision 2026-08-05, scope in `scripts/lib/infra-review-scope.js`). Without the record the session stays blocked no matter how thorough the review was.
 
-Use `--result=fail` when the reviewers found P0 blockers the plan does not resolve. A fail verdict does not unblock; overturning it is the owner's call, recorded as `--reviewer=owner-override`.
+Use `--result=fail` when the reviewers found P0 blockers the plan does not resolve. A fail verdict does not unblock: revise the plan, re-review it, and record the new pass with `--note="<what changed since the fail>"` (`review-gate.mjs` refuses a pass after a fail without one). `--reviewer=owner-override` is only for the owner overturning a fail without a revision.
 
 ### Linear Update (BWSC projects only)
 
-After the user approves a plan, comment on the session's Linear issue (`node scripts/linear-brain.js update BRO-N --comment "..."`):
-1. Comment: `### Plan approved\n[1-line summary of approach, scope (S/M/L), key changes from review]`
+Once the plan is settled (decided by you, or by the owner when Phase 7 asked them), comment on the session's Linear issue (`node scripts/linear-brain.js update BRO-N --comment "..."`):
+1. Comment: `### Plan settled\n[1-line summary of approach, scope (S/M/L), key changes from review]`
 2. If the plan was rejected or needs major rework, note that too — it's a decision worth recording.
