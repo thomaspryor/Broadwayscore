@@ -549,6 +549,15 @@ test('same-night-completeness ignores preview-period (non-night) live rows as pr
   r.perReview[0].baseline = true;
   r.perReview[0].publishAt = '2026-10-05';
   assert.equal(sn(r).status, 'fail');
+  assert.match(sn(r).detail, /never live/);
+});
+
+test('same-night-completeness: grace edge, night-2 counts and night-3 does not', () => {
+  for (const [pub, want] of [['2026-10-20', 'pass'], ['2026-10-19', 'fail']]) {
+    const r = nightRec({ Vulture: 10 }, [file('vulture', 5, { publishDate: pub })]);
+    r.perReview[0].publishAt = pub;
+    assert.equal(sn(r).status, want, pub);
+  }
 });
 
 test('same-night-completeness is unknown when the snapshot predates embargo +3h +30 min, but a named miss still fails', () => {
