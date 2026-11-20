@@ -386,3 +386,26 @@ test('(BRO-7849) setState added inside the same effect -> blocked, with detector
   assert.match(r.stderr, /do NOT ask the owner until every item below is done|Do NOT ask the owner until every item below is done/);
   assert.match(r.stderr, /land checklist/);
 });
+
+// BRO-7850 (advisory): an agent-typed "# NO-VERIFY:" in the push command still passes, but a would-block row is
+// logged unless the owner's latest message typed NO-VERIFY. The push is never blocked in this mode.
+const NV_CMD = `${PUSH_CMD}  # NO-VERIFY: agent typed this reason itself`;
+test('(BRO-7850) agent-typed NO-VERIFY with no owner text -> exit 0, would-block row logged', (t) => {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  const r = runHook(fx, writeTranscript(fx, NEUTRAL_USER), { command: NV_CMD });
+  assert.equal(r.status, 0, `stderr: ${r.stderr}`);
+  const log = readFileSync(join(fx.logs, 'visual-gate-bypass.log'), 'utf8');
+  assert.match(log, /NO-VERIFY-in-command/);
+  assert.match(log, /would-block-agent-typed-no-verify/);
+});
+
+test('(BRO-7850) owner typed NO-VERIFY in their latest message -> exit 0, no would-block row', (t) => {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  const r = runHook(fx, writeTranscript(fx, 'NO-VERIFY: owner says skip the screenshots this once'), { command: NV_CMD });
+  assert.equal(r.status, 0, `stderr: ${r.stderr}`);
+  const log = readFileSync(join(fx.logs, 'visual-gate-bypass.log'), 'utf8');
+  assert.match(log, /NO-VERIFY-in-command/);
+  assert.doesNotMatch(log, /would-block-agent-typed-no-verify/);
+});

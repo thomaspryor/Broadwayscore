@@ -576,6 +576,19 @@ export function queryBypassToken(events, { token, toolUseId } = {}) {
   };
 }
 
+/**
+ * BRO-7850 (advisory): did the OWNER, in their latest message, type "NO-VERIFY: <reason>"?
+ * Scoped to the last non-synthetic user_text so an old owner NO-VERIFY (for another gate)
+ * cannot excuse a later agent-typed bypass. Fenced code is stripped like queryBypassToken.
+ */
+export function queryOwnerNoVerify(events) {
+  let last = null;
+  for (const e of events) if (e.kind === 'user_text' && !e.synthetic) last = e;
+  if (!last) return { ownerTyped: false, reason: 'no user text' };
+  const stripped = String(last.text || '').replace(/```[\s\S]*?```/g, '');
+  return { ownerTyped: /NO-VERIFY:\s+\S/.test(stripped) };
+}
+
 export function queryOverrideActiveForPush(events, { sessionId, consume = false, markerNs = null } = {}) {
   // Find LAST user_text. Check for "ship immediately for: <reason>".
   // Per /ship-check round 2 P0-3, reject matches that are negated in the same
@@ -671,6 +684,7 @@ Queries:
   bypass-token                      check in-flight turn for a "<TOKEN>: <reason ≥15 chars>" line
     --token=<TOKEN>                   e.g. NO-SHIP-CHECK
     --tool-use-id=<id>                scope to the in-flight turn containing this tool_use
+  owner-no-verify                   (advisory, BRO-7850) did the owner's latest message type NO-VERIFY: <reason>
   override-active-for-push          check for "ship immediately for: <reason>"
     --session-id=<id>                 required for override scoping
     --marker-ns=<ns>                  namespace the consume marker (one per gate)
@@ -721,6 +735,9 @@ async function main() {
     case 'bypass-token':
       if (!args.token) { console.error('ERROR: bypass-token needs --token='); process.exit(1); }
       result = queryBypassToken(events, { token: args.token, toolUseId: args['tool-use-id'] });
+      break;
+    case 'owner-no-verify':
+      result = queryOwnerNoVerify(events);
       break;
     case 'override-active-for-push':
       result = queryOverrideActiveForPush(events, {

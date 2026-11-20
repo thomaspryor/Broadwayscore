@@ -201,6 +201,13 @@ if [ -n "$_NV_MATCH" ]; then
   _logdir="${CLAUDE_LOG_DIR:-$HOME/.claude/logs}"
   mkdir -p "$_logdir" 2>/dev/null
   printf '%s\tNO-VERIFY-in-command\t%s\n' "$(date +%s)" "${_NV_MATCH:0:160}" >> "$_logdir/visual-gate-bypass.log" 2>/dev/null
+  # BRO-7850 ADVISORY (CLAUDE.md 19): an agent-typed bypass with no owner NO-VERIFY in the owner's
+  # latest message is what a future block would refuse. Log it for a week, never block. Any failure
+  # (old scanner, missing transcript, timeout) leaves the result empty and writes nothing.
+  _OWN=$(timeout 10 node "$SCAN" --query=owner-no-verify --transcript="$transcript" 2>/dev/null | jq -r '.ownerTyped' 2>/dev/null)
+  if [ "$_OWN" = "false" ]; then
+    printf '%s\twould-block-agent-typed-no-verify\t%s\n' "$(date +%s)" "${_NV_MATCH:0:160}" >> "$_logdir/visual-gate-bypass.log" 2>/dev/null
+  fi
   exit 0
 fi
 
