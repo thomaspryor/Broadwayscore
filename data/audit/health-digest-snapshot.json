@@ -1,18 +1,13 @@
 {
-  "generatedAt": "2026-11-19T10:32:20.134Z",
-  "subject": "BSC URGENT (day 111): 2 unresolved errors",
-  "bannerText": "2 errors, 24 warnings",
-  "consecutiveErrorDays": 111,
+  "generatedAt": "2026-11-20T10:11:05.573Z",
+  "subject": "BSC Daily: 1 internal issue, no visitor-facing errors (day 112)",
+  "bannerText": "1 error, 29 warnings",
+  "consecutiveErrorDays": 112,
   "errors": [
     {
       "name": "Push-retry deadman",
-      "message": "11 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x6, Opening Night Poller x3, Collect WE/OB Review Texts x1, Collect Review Texts x1]. Most recent reason: retries-exhausted(deadline). 68 committed file(s) discarded across 11 run(s). 295 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line).",
+      "message": "30 push-retry failure(s) in the last 7d across Broadwayscore:main [Opening Night Poller x9, LLM Ensemble Score Reviews x9, Collect Review Texts x7, Rebuild Reviews (Fast) x1, Rebuild Reviews Data x1, Gather Review Data x1, Scrape New Aggregators x1, Land x1]. Most recent reason: api-fallback-exhausted(race-or-other,early-fallback). 202 committed file(s) discarded across 30 run(s). 268 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line).",
       "firstSeen": "1970-01-01T00:00:00.000Z"
-    },
-    {
-      "name": "Data: live show with zero critic reviews on site",
-      "message": "1 live show(s) have discovered review URL(s) but NOTHING collected. First: menopause-the-musical-tour-2026",
-      "firstSeen": "2026-11-13T09:36:20.750Z"
     }
   ],
   "warns": [
@@ -32,13 +27,8 @@
       "firstSeen": "2026-11-19T10:27:03.024Z"
     },
     {
-      "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "message": "1 NEW unhandled CV.wrongProduction review(s) since last run (153 total across 124 show(s), 23h ago)",
-      "firstSeen": "1970-01-01T00:00:00.000Z"
-    },
-    {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "message": "1 cross-show URL mismatch(es) with contamination evidence open (1 new since last run; 231 total across 202 show(s), 23h ago)",
+      "message": "1 cross-show URL mismatch(es) with contamination evidence open (0 new since last run; 232 total across 203 show(s), 23h ago)",
       "firstSeen": "2026-11-19T10:27:03.024Z"
     },
     {
@@ -47,23 +37,43 @@
       "firstSeen": "2026-11-14T09:07:36.576Z"
     },
     {
+      "name": "Coverage: SERP census recall",
+      "message": "Review coverage dropped — a plain Google search now finds 20% vs 35% recently (across 5 recent opening(s); 46 review pages any of our searches could find). New shows may be going live with published reviews missing.",
+      "firstSeen": "1970-01-01T00:00:00.000Z"
+    },
+    {
       "name": "Coverage: adversarial probe",
       "message": "The naive search found 3 review URL(s) this pipeline hasn't discovered yet: the-moth-off-west-end-2026, the-feel-good-story-america-needs-right-now-regional-2026, desire-under-the-elms-off-west-end-2026",
       "firstSeen": "2026-11-17T10:48:55.951Z"
     },
     {
-      "name": "Quality: expected critics missing",
-      "message": "1 usual-critic review(s) the automatic search could not settle (12 more still being searched for automatically): TheaterMania on Tosca: no review on the site, and the automatic search has not looked for it yet.",
-      "firstSeen": "2026-11-09T09:53:09.444Z"
+      "name": "Commercial: rows held for a person",
+      "message": "5 row(s) in data/commercial-pending-review.json held for a person past 7 days: the-rocky-horror-show (8 days): the record carries a human-reviewed designation: a person must decide; the-rocky-horror-show-2026 (8 days): the record carries a human-reviewed designation: a person must decide; death-of-a-salesman-2026 (8 days): the record carries a human-reviewed designation: a person must decide; two-strangers-bway-2025 (8 days): the record carries a human-reviewed designation: a person must decide; billy-crystal-860-2026 (8 days): record validation: commercial.json: \"billy-crystal-860\" has designation \"Easy Winner\" but recouped=null (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md).",
+      "firstSeen": "2026-11-20T10:11:00.929Z"
     },
     {
-      "name": "Data freshness: shows missing poster/synopsis/tickets",
-      "message": "116 open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.",
+      "name": "Credits: ScrapingBee",
+      "message": "37k credits left (15%) · 15k/day burn · exhausts in ~3d (renews Dec 5)",
+      "firstSeen": "2026-11-20T10:11:00.929Z"
+    },
+    {
+      "name": "Codex runner: landing cards",
+      "message": "Codex runner crashed on 2 cards: 35 run(s), 2 card(s) landed, 2 crashed mid-card, Claude check $9.18 ($4.59 per landed card) in the last 24h.",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     },
     {
+      "name": "Data freshness: shows missing poster/synopsis/tickets",
+      "message": "118 open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.",
+      "firstSeen": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "name": "Data: uncollected live review strands",
+      "message": "2 discovered review URL(s) across 2 live show(s) were never fetched. First: stranger-things-the-first-shadow-west-end-2023 (1 stranded)",
+      "firstSeen": "2026-11-18T10:17:10.370Z"
+    },
+    {
       "name": "Data: undispatchable Linear backlog cards",
-      "message": "27 of 423 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7769 Stub review slot accepts unrelated same-outlet news URLs (Good Thief TheaterMania/Linda Buchwald)",
+      "message": "25 of 416 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7842 Triage 153 baseline unhandled CV.wrongProduction reviews (lifetime sweep)",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     },
     {
@@ -73,31 +83,51 @@
     },
     {
       "name": "Data: review coverage holes",
-      "message": "80 review(s) with no usable text, 69 rejected although verified as a review, 22 never scored, 38 with a blocked URL (0 published on the site), across 740 current shows",
+      "message": "81 review(s) with no usable text, 66 rejected although verified as a review, 33 never scored, 38 with a blocked URL (0 published on the site), across 737 current shows",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "Press night: openings not watched",
-      "message": "7 opening(s) in the next 14 days have no press-night watch (no embargo hour for their market, so no lane or probe runs; reviews arrive only through the daily sweeps): The Unauthorized Hallmark(ish) Parody Musical (tour, tomorrow); Arrowhead (regional, in 2 days); Adia & Clora Snatch Joy (regional, in 5 days); Cygnet's A Magical Holiday (regional, in 5 days); Frozen (regional, in 8 days); 13 Going on 30 (regional, in 12 days); A CHRISTMAS CAROL A Musical Ghost Story (regional, in 14 days)",
+      "message": "7 opening(s) in the next 14 days have no press-night watch (no embargo hour for their market, so no lane or probe runs; reviews arrive only through the daily sweeps): The Unauthorized Hallmark(ish) Parody Musical (tour, tonight); Arrowhead (regional, tomorrow); Adia & Clora Snatch Joy (regional, in 4 days); Cygnet's A Magical Holiday (regional, in 4 days); Frozen (regional, in 7 days); 13 Going on 30 (regional, in 11 days); A CHRISTMAS CAROL A Musical Ghost Story (regional, in 13 days)",
       "firstSeen": "2026-11-19T10:27:03.024Z"
     },
     {
       "name": "Press night: score gate undecided",
-      "message": "4 special or short-run show(s) open within 7 days with no score-gate decision, so few reviews may keep the Critic Score hidden: Much Ado About Nothing (short run (52 days), opens tonight); The Afronauts (short run (26 days), opens in 4 days); A Christmas Carol (short run (46 days), opens in 5 days); The Dead, 1904 (special, opens in 5 days)",
+      "message": "3 special or short-run show(s) open within 7 days with no score-gate decision, so few reviews may keep the Critic Score hidden: The Afronauts (short run (26 days), opens in 3 days); A Christmas Carol (short run (46 days), opens in 4 days); The Dead, 1904 (special, opens in 4 days)",
       "firstSeen": "2026-11-19T10:27:03.024Z"
     },
     {
       "name": "Workflow coverage: invalid files",
       "message": "Run list was truncated (300-run cap or a failed page), so an invalid workflow file could be missed",
       "firstSeen": "2026-11-11T00:06:00.569Z"
-    },
-    {
-      "name": "Data: T1/T2 silent review gaps",
-      "message": "1 discovered review(s) not reaching the composite score (0 T1). Oldest: nacho-ate-spiderman-regional-2026 — broadwayworld (unscored)",
-      "firstSeen": "1970-01-01T00:00:00.000Z"
     }
   ],
   "cleared": {
+    "Data quality: cv-wrongproduction lifetime sweep": {
+      "at": "2026-11-20T10:11:00.929Z",
+      "firstSeen": "1970-01-01T00:00:00.000Z",
+      "status": "warn"
+    },
+    "Quality: expected critics missing": {
+      "at": "2026-11-20T10:11:00.929Z",
+      "firstSeen": "2026-11-09T09:53:09.444Z",
+      "status": "warn"
+    },
+    "Cron: Test Suite": {
+      "at": "2026-11-20T10:11:00.929Z",
+      "firstSeen": "1970-01-01T00:00:00.000Z",
+      "status": "warn"
+    },
+    "Data: live show with zero critic reviews on site": {
+      "at": "2026-11-20T10:11:00.929Z",
+      "firstSeen": "2026-11-13T09:36:20.750Z",
+      "status": "error"
+    },
+    "Data: T1/T2 silent review gaps": {
+      "at": "2026-11-20T10:11:00.929Z",
+      "firstSeen": "1970-01-01T00:00:00.000Z",
+      "status": "warn"
+    },
     "Quality: outlet domain moves": {
       "at": "2026-11-19T10:27:03.024Z",
       "firstSeen": "2026-11-08T09:07:13.279Z",
@@ -119,11 +149,6 @@
       "status": "warn"
     },
     "Stuck pipeline items": {
-      "at": "2026-11-19T10:27:03.024Z",
-      "firstSeen": "2026-11-18T10:17:10.370Z",
-      "status": "warn"
-    },
-    "Data: uncollected live review strands": {
       "at": "2026-11-19T10:27:03.024Z",
       "firstSeen": "2026-11-18T10:17:10.370Z",
       "status": "warn"
@@ -166,21 +191,6 @@
     "Workflow repeat-failure: Test Suite / E2E Tests / Run E2E tests": {
       "at": "2026-11-18T10:17:10.370Z",
       "firstSeen": "2026-11-17T10:48:55.951Z",
-      "status": "warn"
-    },
-    "Workflow repeat-failure: Test Suite / Test Summary / Check results": {
-      "at": "2026-11-18T10:17:10.370Z",
-      "firstSeen": "2026-11-17T10:48:55.951Z",
-      "status": "warn"
-    },
-    "Coverage: SERP census recall": {
-      "at": "2026-11-17T10:48:55.951Z",
-      "firstSeen": "1970-01-01T00:00:00.000Z",
-      "status": "warn"
-    },
-    "Cron: Rebuild Reviews": {
-      "at": "2026-11-17T10:48:55.951Z",
-      "firstSeen": "1970-01-01T00:00:00.000Z",
       "status": "warn"
     },
     "Cron: Collect Review Texts": {
@@ -253,11 +263,6 @@
       "firstSeen": "1970-01-01T00:00:00.000Z",
       "status": "error"
     },
-    "Codex runner: landing cards": {
-      "at": "2026-11-14T09:07:36.576Z",
-      "firstSeen": "1970-01-01T00:00:00.000Z",
-      "status": "warn"
-    },
     "Data: reviewed shows missing from shows.json": {
       "at": "2026-11-14T09:07:36.576Z",
       "firstSeen": "2026-11-11T00:06:00.569Z",
@@ -276,34 +281,17 @@
   },
   "queued": [
     {
-      "conditionKey": "land:land/bro-7637-land-precheck",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7637-land-precheck",
-      "description": "land.yml did not land land/bro-7637-land-precheck: the unit-tests-node gate went red at e82d08125b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44283197517",
-      "severity": "error",
+      "conditionKey": "pending-unrecoverable:now-you-see-me-live-2026",
+      "title": "1 review(s) for now-you-see-me-live-2026 stuck in _pending with no text and no byline",
+      "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- us-atgtickets-com--55855322.json (us-atgtickets-com): fetch failed: All scraping methods failed https://us.atgtickets.com/events/now-you-see-me-live/al-hirschfeld-theatre/calendar",
+      "severity": "warning",
       "url": null,
       "decision": false,
       "info": false,
       "decisionPrompt": null,
       "model": null,
       "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7637-land-precheck"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "e82d08125b740f00d4295d0d82098db3b31fac4c"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44283197517"
-        }
-      ]
+      "fields": []
     },
     {
       "conditionKey": "coverage-holes:iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -332,6 +320,19 @@
       "fields": []
     },
     {
+      "conditionKey": "coverage-holes:much-ado-about-nothing-2026",
+      "title": "much-ado-about-nothing-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+      "description": "- rejected as not-a-review, verification says review: much-ado-about-nothing-2026/whatsonstage--sarah-crompton.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
       "conditionKey": "coverage-holes:hamlet-hail-to-the-thief-off-west-end-2026",
       "title": "hamlet-hail-to-the-thief-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "description": "- rejected as not-a-review, verification says review: hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
@@ -345,27 +346,14 @@
       "fields": []
     },
     {
-      "conditionKey": "guard-audit:bd-web_unlocker2",
-      "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
-      "description": "bd-circuit-breaker-web_unlocker2 ceiling 1750 (opening-window-reserve) is below 1.5x the 14-day median demand 1797. A guard that trips more than 2 days a week is mis-sized (or its provider needs an owner-accepted exemption in scripts/config/provider-spend-thresholds.json acceptedDailyTrip). Rerouted spend on trip days: $0.00.",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
       "conditionKey": "provider-spend:overspend",
       "title": "Scraping spend over budget (still open — BRO-6867)",
-      "description": "Still firing after 59 notifications since it was filed. Tracked at BRO-6867.\n\nDay 2026-11-17. Over budget: scrapingbee on pace to run out before renewal: ~13185 credits/day (7-day average) x 17 days to 2026-12-05 = 224152 > 57937 left. 2026-11-17 · Browserbase: $1.14 (191 sessions, 236.65min) · 2026-11-17 · Bright Data: $3.59 (270 serp / 2121 unlocker) · ScrapingBee: 11169 credits (192063 this cycle) · ScrapingDog: 126853 credits (1151023 this cycle) · Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): collect-review-texts.js 112, bww-rr-discover.js 83, sweep-we-aggregators.js:the-stage 8, opening-night-lane 4, collect-talkinbroadway-index.js 1 · Bright Data attribution: 100% attributed — top callers (covers 95% of billed calls): opening-night-poller.js 926, audit-show-review-gap.js 459, collect-review-texts.js 348, ingest-review-from-url.js 266, opening-night-lane.js 261 · ScrapingBee attribution: 100% attributed — top callers (covers 100% of billed credits): opening-night-poller.js 4651cr, gather-reviews.js 4132cr, collect-review-texts.js 990cr, sweep-we-aggregators.js 940cr, discover-opening-night-reviews.js 755cr · ScrapingDog attribution: 96% attributed — top callers (covers 82% of billed credits): gather-reviews.js 61677cr, audit-show-review-gap.js 16549cr, discover-opening-night-reviews.js 12943cr, opening-night-poller.js 6983cr, collect-review-texts.js 6029cr · 2026-11-17 · LLM APIs (metered estimate, not the full bill): Claude est $13.12 (2467 calls) · Gemini est $6.71 (8719 calls; 36 search-grounded, 14 repeats) · OpenAI est $5.28 (1012 calls; 171 search-grounded) · top: scripts/audit-city-hub-dual-model.js [Audit Review Quality] $4.02; scripts/collect-review-texts.js [Collect Review Texts] $3.63; scripts/extract-pull-quotes.js [Rebuild Reviews Data] $3.14. Verification streak reset to 0.",
+      "description": "Still firing after 60 notifications since it was filed. Tracked at BRO-6867.\n\nDay 2026-11-18. Over budget: scrapingbee on pace to run out before renewal: ~12515 credits/day (7-day average) x 16 days to 2026-12-05 = 200240 > 47537 left. 2026-11-18 · Browserbase: $0.84 (148 sessions, 84.45min) · 2026-11-18 · Bright Data: $3.63 (511 serp / 1908 unlocker) · ScrapingBee: 10400 credits (202463 this cycle) · ScrapingDog: 103037 credits (1254060 this cycle) · Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): bww-rr-discover.js 100, collect-review-texts.js 46, collect-talkinbroadway-index.js 2, opening-night-lane 2, sweep-we-aggregators.js:the-stage 1 · Bright Data attribution: 100% attributed — top callers (covers 100% of billed calls): opening-night-poller.js 800, gather-reviews.js 524, audit-show-review-gap.js 522, ingest-review-from-url.js 338, collect-review-texts.js 278 · ScrapingBee attribution: 100% attributed — top callers (covers 93% of billed credits): opening-night-poller.js 3899cr, gather-reviews.js 3613cr, collect-review-texts.js 988cr, discover-opening-night-reviews.js 853cr, scrape-show-score-audience.js 335cr · ScrapingDog attribution: 93% attributed — top callers (covers 75% of billed credits): gather-reviews.js 40217cr, discover-opening-night-reviews.js 13278cr, audit-show-review-gap.js 13236cr, collect-review-texts.js 5781cr, opening-night-poller.js 4966cr · ⚠️ ScrapingDog top-caller coverage low: 75% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · 2026-11-18 · LLM APIs (metered estimate, not the full bill): Claude est $10.91 (2038 calls) · Gemini est $1.51 (2354 calls; 13 repeats) · OpenAI est $0.51 (548 calls) · top: scripts/collect-review-texts.js [Collect Review Texts] $3.69; scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $1.69; scripts/llm-scoring/index.ts [LLM Ensemble Score Reviews] $1.40. Verification streak reset to 0.",
       "severity": "error",
       "url": null,
       "decision": true,
       "info": false,
-      "decisionPrompt": "Scraping spend over budget: scrapingbee on pace to run out before renewal: ~13185 credits/day (7-day average) x 17 days to 2026-12-05 = 224152 > 57937 left. Should I buy more credits (or raise the Bright Data line), or do you want scraping volume cut to stay within it?",
+      "decisionPrompt": "Scraping spend over budget: scrapingbee on pace to run out before renewal: ~12515 credits/day (7-day average) x 16 days to 2026-12-05 = 200240 > 47537 left. Should I buy more credits (or raise the Bright Data line), or do you want scraping volume cut to stay within it?",
       "model": null,
       "tracked": "BRO-6867",
       "fields": []
@@ -373,19 +361,19 @@
     {
       "conditionKey": "llm-scoring:daily-cost-breach",
       "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
-      "description": "Still firing after 27 notifications since it was filed. Tracked at BRO-6732.\n\nLLM scoring daily spend over budget: averaging $18.27/day over the last 7 measured days, above the $10 llmScoringDailyUsd line (2026-11-17: $1.73).",
+      "description": "Still firing after 28 notifications since it was filed. Tracked at BRO-6732.\n\nLLM scoring daily spend over budget: averaging $17.91/day over the last 7 measured days, above the $10 llmScoringDailyUsd line (2026-11-18: $2.85).",
       "severity": "warning",
       "url": null,
       "decision": true,
       "info": false,
-      "decisionPrompt": "LLM scoring daily spend over budget: about $18.27/day for the last 7 days against a $10/day line. Raise the line to what scoring new reviews really costs, or cut how many reviews get scored each day?",
+      "decisionPrompt": "LLM scoring daily spend over budget: about $17.91/day for the last 7 days against a $10/day line. Raise the line to what scoring new reviews really costs, or cut how many reviews get scored each day?",
       "model": null,
       "tracked": "BRO-6732",
       "fields": []
     },
     {
-      "conditionKey": "express-retry-still-thin:orlando-off-west-end-2026",
-      "title": "Opening Night Express retry still found thin review coverage for orlando-off-west-end-2026",
+      "conditionKey": "express-retry-still-thin:the-conversation-off-broadway-2026",
+      "title": "Opening Night Express retry still found thin review coverage for the-conversation-off-broadway-2026",
       "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
       "severity": "warn",
       "url": null,
@@ -397,857 +385,8 @@
       "fields": []
     },
     {
-      "conditionKey": "land:land/job/linear-BRO-7765-mwlz7m2u",
-      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7765-mwlz7m2u",
-      "description": "land.yml did not land land/job/linear-BRO-7765-mwlz7m2u: the unit-tests-node gate went red at 71732dfd8e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44289749731",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/job/linear-BRO-7765-mwlz7m2u"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "71732dfd8e71a9836fc4554b712428cfbec85c49"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44289749731"
-        }
-      ]
-    },
-    {
-      "conditionKey": "aggregator-health:thestage-roundups:coverage-drop",
-      "title": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 58% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
-      "description": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 58% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "aggregator-health:bww-roundups:workflow-stale:scrape-bww-reviews.yml",
-      "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 30 days ago",
-      "description": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 30 days ago\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "aggregator-health:theatre-reviews:coverage-drop",
-      "title": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
-      "description": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "outlet-ground-truth:king-lear-off-broadway-2026:https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
-      "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
-      "description": "theatermania lists a review we don't hold (https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/), and automatic ingest did not recover it.",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
-      "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
-      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): [\n{\n\"file\": \"wicked-2003/theatermania--david-gordon.json\",\n\"criticName\": \"Peter Filichia\",\n\"defaultCriticOf\": [\n\"broadwayselect\"\n],\n\"source\": \"playbill-verdict\",\n\"url\": \"https://www.theatermania.com/news/wicked-good-or-wicked-bad_4041/\",\n\"mode\": \"fulltext\"\n}\n]\n\n1 !== 0\n",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
-      "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
-      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'review: Bree Samani-McGrath (1) -> Bree Samani (2) [extra words, both pages sizeable]'\n+ ]\n- []\n",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)",
-      "title": "Live-data test failing: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) (tests/unit/opening-night-lane-sources.test.mjs)",
-      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)\" in tests/unit/opening-night-lane-sources.test.mjs is red against the live corpus.\n\non-time outlets with no lane source:\n2026-10-18  other-desert-cities-2026                          41 outlets   31 polled   7 gaps   3 missing: blogcritics, reclining-standards, showmosexualsguide (ON TIME)\n\n1 !== 0\n",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "watchdog-park:linear:BRO-7655",
-      "title": "Watchdog parked #linear:BRO-7655 — redispatch never produced a launch",
-      "description": "Watchdog: card \"Root cause: \"Corpus drift: one Show Score URL mapped to + showIds\" keeps coming back (3 cards in 30 days)\" was claimed for redispatch at 2026-11-18T13:22:31.854Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7655), then re-arm with node scripts/linear-next.js --id BRO-7655 --force once fixed.",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026",
-      "title": "Auto-remediation gave up on the-good-thief-off-broadway-2026",
-      "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-good-thief-off-broadway-2026\"}",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "opening-night-remediation-exhausted-t1-missing:blue-man-group-a-new-holiday-surprise-2026",
-      "title": "Auto-remediation gave up on blue-man-group-a-new-holiday-surprise-2026",
-      "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"blue-man-group-a-new-holiday-surprise-2026\"}",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "opening-night-remediation-exhausted-empty-cast:elektra-off-broadway-2026",
-      "title": "Auto-remediation gave up on elektra-off-broadway-2026",
-      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"elektra-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "pending-unrecoverable:speculations-off-west-end-2026",
-      "title": "1 review(s) for speculations-off-west-end-2026 stuck in _pending with no text and no byline",
-      "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--2b0f3c6f.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "corpus-drift:orphan-review-folders",
-      "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it) — escalated after 15 notifications",
-      "description": "Filed BRO-7782 for owner triage after 15 repeats with no tracker.\n\ncheck-corpus-drift.js audit \"orphan-review-folders\" (node scripts/report-orphan-review-folders.js --strict) has been drifting. Latest output:\n\nOrphan review-text folders: 1 (1 files)\n  no-date: 1\n  of which retired ids (stranded by a retirement): 1 folders, 1 files\n  RETIRED cloud-9-national-west-end-2026 (1) BRO-5489: duplicate stub minted by the lbo-sitemap roundup path for the National Theatre Cloud 9 alr\n  cloud-9-national-west-end-2026 (1)",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": "BRO-7782",
-      "fields": []
-    },
-    {
-      "conditionKey": "cookie-renew:stuck-uncertain:nytimes",
-      "title": "Cookie renew: nytimes login state unreadable for 12h+",
-      "description": "renew-cookies.js has not been able to tell whether nytimes is logged in since 2026-11-17T21:06:18.278Z (last: anonymous control failed: control hit a bot challenge (HTTP 403) (vacuity unverified; not writing cookies)). It will not log in on an uncertain reading. Check: node scripts/verify-cookie-login.js --outlets=nytimes",
-      "severity": "error",
-      "url": "https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html",
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "test-yml:data-validation-red:run-data-validation",
-      "title": "Data audit failing: Run data validation",
-      "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-      "severity": "warning",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44333780737",
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "Job",
-          "value": "Data Validation"
-        },
-        {
-          "name": "Step",
-          "value": "Run data validation"
-        },
-        {
-          "name": "Run",
-          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44333780737)"
-        }
-      ]
-    },
-    {
-      "conditionKey": "land:land/bro-7780-byline",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7780-byline",
-      "description": "land.yml did not land land/bro-7780-byline: the unit-tests-node gate went red at ea6f40e3fe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44337652216",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7780-byline"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "ea6f40e3fe732b9a2dc573d0bdd7557021be7199"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44337652216"
-        }
-      ]
-    },
-    {
-      "conditionKey": "land:land/bro-7781-sim-night",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7781-sim-night",
-      "description": "land.yml did not land land/bro-7781-sim-night: the unit-tests-node gate went red at 58bd1e4b1c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44337921505",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7781-sim-night"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "58bd1e4b1c696b25a0d0932a0753f9707a2354e2"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44337921505"
-        }
-      ]
-    },
-    {
-      "conditionKey": "land:land/bro-7766-r3-prewarm",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7766-r3-prewarm",
-      "description": "land.yml did not land land/bro-7766-r3-prewarm: the unit-tests-node gate went red at 3c9665e993. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44342144909",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7766-r3-prewarm"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "3c9665e99371f9fc3a782f8a9ba0218a8650ffdd"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44342144909"
-        }
-      ]
-    },
-    {
-      "conditionKey": "land:land/bro-7779b-source-health",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7779b-source-health",
-      "description": "land.yml did not land land/bro-7779b-source-health: the unit-tests-node gate went red at 9480aac264. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44344411462",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7779b-source-health"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "9480aac264be88e5c55120066b32d658432924fb"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44344411462"
-        }
-      ]
-    },
-    {
-      "conditionKey": "live-data-test:tests/unit/enrichment-target-reach-live.test.mjs::daily synopsis passes reach every flagged open show within a month",
-      "title": "Live-data test failing: daily synopsis passes reach every flagged open show within a month (tests/unit/enrichment-target-reach-live.test.mjs)",
-      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"daily synopsis passes reach every flagged open show within a month\" in tests/unit/enrichment-target-reach-live.test.mjs is red against the live corpus.\n\nthe daily synopsis enricher never reaches 1 of 60 flagged show(s) on any day of the month (BRO-7437: a bare slice() of a file-ordered, mostly-closed candidate list starves exactly the rows the health check reddens over, so the gap count can never fall and the card is refiled forever)\n+ actual - expected\n\n+ [\n+   'ted-talks-and-talks-regional-2026'\n+ ]\n- []\n",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "land:land/worktree-enforce-cd",
-      "title": "Landing blocked: unit-tests-node red on land/worktree-enforce-cd",
-      "description": "land.yml did not land land/worktree-enforce-cd: the unit-tests-node gate went red at 9145d114b6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44351867681",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/worktree-enforce-cd"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "9145d114b6f46f7afb958f226c3ab3c23ae9235e"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44351867681"
-        }
-      ]
-    },
-    {
-      "conditionKey": "opening-night-cv-wrongproduction-unhandled-top-gunchained-off-west-end-2026",
-      "title": "Unhandled CV.wrongProduction on Top Gunchained",
-      "description": "londonpubtheatres/Paul Maidment (londonpubtheatres--paul-maidment.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of Richard Marsh's 'Top Gunchained,' but it is NOT a review of a current Off-West End production  — https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "opening-night-fulltext-mentions-show:top-gunchained-off-west-end-2026",
-      "title": "Content mismatch on Top Gunchained",
-      "description": "thereviewshub/Scott Matthewman (thereviewshub--scott-matthewman.json) SHIPPED but fullText never mentions 'Top Gunchained' (2947 chars): https://www.thereviewshub.com/top-gunchained-wiltons-music-hall-london/\n⚠️  south-london/Michael Holland (south-london--unknown.json) also too short to assess (0 chars): https://southlondon.co.uk/lifestyle/review-top-gunchained-at-wiltons/",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "opening-night-placeholder-synopsis-top-gunchained-off-west-end-2026",
-      "title": "Placeholder synopsis on Top Gunchained",
-      "description": "synopsis for top-gunchained-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "live-data-test:tests/unit/book-of-mormon-2011-criticname.test.mjs::BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors",
-      "title": "Live-data test failing: BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors (tests/unit/book-of-mormon-2011-criticname.test.mjs)",
-      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors\" in tests/unit/book-of-mormon-2011-criticname.test.mjs is red against the live corpus.\n\nENOENT: no such file or directory, open '<root>/data/review-texts/book-of-mormon-2011/guardian--david-cote.json'",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "land:land/bro-7789-compact-sync",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7789-compact-sync",
-      "description": "land.yml did not land land/bro-7789-compact-sync: the unit-tests-node gate went red at ed9ec744ac. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44361567389",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7789-compact-sync"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "ed9ec744acd70b88172dcdbfb931576e51ab3e99"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44361567389"
-        }
-      ]
-    },
-    {
-      "conditionKey": "land:land/bro-7794-nearmiss-news",
-      "title": "Landing blocked: rebase red on land/bro-7794-nearmiss-news",
-      "description": "land.yml did not land land/bro-7794-nearmiss-news: the rebase gate went red at 2211ba5bb4. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7794-nearmiss-news @ 2211ba5bb4 (origin/land/bro-7794-nearmiss-news) → origin/main @ 2d7e73f19b REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 2d7e73f19b: Rebasing (1/2) error: could not apply 0e02d86f302... BRO-7794: lane near-miss skips show news when the host is the only review signal hint: Resolve all conflicts manually, mark them as resolved with hint: \"gi Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44377011273",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7794-nearmiss-news"
-        },
-        {
-          "name": "gate",
-          "value": "rebase"
-        },
-        {
-          "name": "tip",
-          "value": "2211ba5bb4cf21ddb26d41c7d3d6b8f63ddaba9e"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44377011273"
-        }
-      ]
-    },
-    {
-      "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
-      "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
-      "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "pending-unrecoverable:well-see-off-broadway-2026",
-      "title": "1 review(s) for well-see-off-broadway-2026 stuck in _pending with no text and no byline",
-      "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--6991e48c.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/well-see/",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "land:land/bro-7798",
-      "title": "Landing blocked: rebase red on land/bro-7798",
-      "description": "land.yml did not land land/bro-7798: the rebase gate went red at bdc01fda73. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7798 @ bdc01fda73 (origin/land/bro-7798) → origin/main @ 8db389bb97 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 8db389bb97: Rebasing (1/1) error: could not apply bdc01fda736... fix(byline): backfill/replay/ingest critic names go through the shared reader (BRO-7798) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44396535236",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7798"
-        },
-        {
-          "name": "gate",
-          "value": "rebase"
-        },
-        {
-          "name": "tip",
-          "value": "bdc01fda7366171441b90a14b169a010777dcd0a"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44396535236"
-        }
-      ]
-    },
-    {
-      "conditionKey": "ux-walkthrough:high-priority",
-      "title": "UX walkthrough: high-priority finding(s) filed",
-      "description": "- [2/3] Destructive action (delete) uses the same color as non-destructive actions, making it unclear. Example: trash icon in mobile__watchlist_list.\n- [2/3] Date for the same show is styled differently in grid vs. list view. For 'SIX', the date 'Dec 18' is yellow text in the list view but a red badge on the poster in the grid view.",
-      "severity": "info",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44402386841",
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "land:land/bro-7798-v2",
-      "title": "Landing blocked: rebase red on land/bro-7798-v2",
-      "description": "land.yml did not land land/bro-7798-v2: the rebase gate went red at 94ee41595c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44409281814",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7798-v2"
-        },
-        {
-          "name": "gate",
-          "value": "rebase"
-        },
-        {
-          "name": "tip",
-          "value": "94ee41595cb60cd055bdfdd1faf467455a402312"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44409281814"
-        }
-      ]
-    },
-    {
-      "conditionKey": "land:land/job/linear-BRO-7802-mwmnsczp",
-      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7802-mwmnsczp",
-      "description": "land.yml did not land land/job/linear-BRO-7802-mwmnsczp: the unit-tests-node gate went red at 24d7b978bc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44411593982",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/job/linear-BRO-7802-mwmnsczp"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "24d7b978bc1fa0b91fe1143c580c9b85404114dc"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44411593982"
-        }
-      ]
-    },
-    {
-      "conditionKey": "opening-night-lane-summary:its-a-wonderful-life-a-live-radio-play-2026:2026-11-18",
-      "title": "Opening-night lane for its-a-wonderful-life-a-live-radio-play-2026: 0 unpublished, 1 failed, 47 errors",
-      "description": "passes 124, admitted 1\nfailed: https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway (score failed for good after 1 attempt(s): scorer rejected the review: not_a_review)\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: rss: https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway: fetch deferred (pre-embargo direct-only window), retry at 2026-11-19T01:34:39.181Z: short page (559 chars) fetched direct-only\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: rss: https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway: fetch deferred (pre-embargo direct-only window), retry at 2026-11-19T01:38:52.397Z: short page (559 chars) fetched direct-only",
-      "severity": "warn",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "watchdog-park:linear:BRO-7804",
-      "title": "Watchdog parked #linear:BRO-7804 — redispatch never produced a launch",
-      "description": "Watchdog: card \"Landed-change audit blames commits for workflows that were already red before they landed\" was claimed for redispatch at 2026-11-18T22:28:12.089Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7804), then re-arm with node scripts/linear-next.js --id BRO-7804 --force once fixed.",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "land:land/audience-theatr-any-volume",
-      "title": "Landing blocked: unit-tests-node red on land/audience-theatr-any-volume",
-      "description": "land.yml did not land land/audience-theatr-any-volume: the unit-tests-node gate went red at 3152537b1d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44420955275",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/audience-theatr-any-volume"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "3152537b1deb2bfb1a3a791ef84508c73426696b"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44420955275"
-        }
-      ]
-    },
-    {
-      "conditionKey": "test-yml:data-validation-red:audit-review-contamination",
-      "title": "Data audit failing: Audit review contamination",
-      "description": "The \"Audit review contamination\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-      "severity": "warning",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44421797088",
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "Job",
-          "value": "Data Validation"
-        },
-        {
-          "name": "Step",
-          "value": "Audit review contamination"
-        },
-        {
-          "name": "Run",
-          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44421797088)"
-        }
-      ]
-    },
-    {
-      "conditionKey": "land:land/bmg-retro",
-      "title": "Landing blocked: rebase red on land/bmg-retro",
-      "description": "land.yml did not land land/bmg-retro: the rebase gate went red at 9e909e0532. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44427944501",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bmg-retro"
-        },
-        {
-          "name": "gate",
-          "value": "rebase"
-        },
-        {
-          "name": "tip",
-          "value": "9e909e0532fbb8975b5745ed481f9fc409c5f32a"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44427944501"
-        }
-      ]
-    },
-    {
-      "conditionKey": "opening-night-placeholder-synopsis-arrowhead-regional-2026",
-      "title": "Placeholder synopsis on Arrowhead",
-      "description": "synopsis for arrowhead-regional-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "land:land/bro-7731-shallow-landcheck",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7731-shallow-landcheck",
-      "description": "land.yml did not land land/bro-7731-shallow-landcheck: the unit-tests-node gate went red at d515c9a6a9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44439502748",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": [
-        {
-          "name": "branch",
-          "value": "land/bro-7731-shallow-landcheck"
-        },
-        {
-          "name": "gate",
-          "value": "unit-tests-node"
-        },
-        {
-          "name": "tip",
-          "value": "d515c9a6a93b15524f23079c92843f5269bdc84a"
-        },
-        {
-          "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44439502748"
-        }
-      ]
-    },
-    {
-      "conditionKey": "opening-night-backup-trigger-dispatch-failed",
-      "title": "Opening-night backup trigger: orchestrator dispatch failed ( broadway)",
-      "description": "gh workflow run failed from the Mac Studio (see data/opening-night-monitor/backup-trigger.log). GitHub-native crons remain the fallback.",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "corpus-drift:cv-flag-contradiction",
-      "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff) (still open — BRO-5563)",
-      "description": "Still firing after 29 notifications since it was filed. Tracked at BRO-5563.\n\ncheck-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 314 shows in the last 30d window, 9 contradiction(s) found.\n  [wrongProduction] girls-off-west-end-2026/london-box-office--christian-durham.json (459w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] nine-night-off-west-end-2026/thestage--chris-bartlett.json (420w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\n  [wrongProduction] much-ado-about-nothing-2026/london-theatre--marianka-swain.json (793w)\n  [wrongProduction] harry-potter-and-the-cursed-child-one-part-west-end-2026/deadline--joe-utichi.json (1603w)\n  [wrongProduction] a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json (618w)\nCoverage: examined 210 of 6087 corpus show(s) (2728 review file(s) parsed).\n  --window=30d selected 314 show(s): 188 already opened, 126 not yet opened (the window filter has no upper bound).\n  104 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  5877 corpus show(s) were NOT examined, of which 436 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(8 baselined, 1 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] nine-night-off-west-end-2026/thestage--chris-bartlett.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": "BRO-5563",
-      "fields": []
-    },
-    {
-      "conditionKey": "live-data-test:scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)",
-      "title": "Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
-      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no class-A cross-market leaks (a show showing another production's reviews)\" in scripts/verify-contamination-gate.test.mjs is red against the live corpus.\n\n1 cross-market leak(s) — a user is being shown another production's reviews. Run `node scripts/audit-review-contamination.js --gate` and read the A_cross_market block.\n\n1 !== 0\n",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "live-data-test:tests/unit/compute-critic-score.test.mjs::real-data smoke test — a Gold-List-worthy show produces a plausible score",
-      "title": "Live-data test failing: real-data smoke test — a Gold-List-worthy show produces a plausible score (tests/unit/compute-critic-score.test.mjs)",
-      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real-data smoke test — a Gold-List-worthy show produces a plausible score\" in tests/unit/compute-critic-score.test.mjs is red against the live corpus.\n\nparity drift: gold-list has 87.5 but compute now gives 86.85 for downstate-2026",
-      "severity": "error",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "express-retry-still-thin:la-distance-bam-off-broadway-2026",
-      "title": "Opening Night Express retry still found thin review coverage for la-distance-bam-off-broadway-2026",
+      "conditionKey": "express-retry-still-thin:one-day-the-musical-west-end-2026",
+      "title": "Opening Night Express retry still found thin review coverage for one-day-the-musical-west-end-2026",
       "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
       "severity": "warn",
       "url": null,
@@ -1259,9 +398,9 @@
       "fields": []
     },
     {
-      "conditionKey": "land:land/bro-7791",
-      "title": "Landing blocked: rebase red on land/bro-7791",
-      "description": "land.yml did not land land/bro-7791: the rebase gate went red at 9584bdd7c2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44473900449",
+      "conditionKey": "land:land/bro-7820-arm-guard",
+      "title": "Landing blocked: rebase red on land/bro-7820-arm-guard",
+      "description": "land.yml did not land land/bro-7820-arm-guard: the rebase gate went red at 265e2757d4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44509671611",
       "severity": "error",
       "url": null,
       "decision": false,
@@ -1272,7 +411,7 @@
       "fields": [
         {
           "name": "branch",
-          "value": "land/bro-7791"
+          "value": "land/bro-7820-arm-guard"
         },
         {
           "name": "gate",
@@ -1280,11 +419,11 @@
         },
         {
           "name": "tip",
-          "value": "9584bdd7c2ade5673c1d091b14c086eb6ac1d941"
+          "value": "265e2757d4cf95193f35814e9c44a021294ca1f9"
         },
         {
           "name": "run",
-          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44473900449"
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44509671611"
         }
       ]
     },
@@ -1349,19 +488,6 @@
       ]
     },
     {
-      "conditionKey": "t1-gaps:needs-manual-recovery",
-      "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-19.",
-      "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-      "severity": "info",
-      "url": null,
-      "decision": false,
-      "info": true,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
       "conditionKey": "land:land/bro-7820-census-weekly",
       "title": "Landing blocked: unit-tests-node red on land/bro-7820-census-weekly",
       "description": "land.yml did not land land/bro-7820-census-weekly: the unit-tests-node gate went red at d3d5c50d13. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44489723340",
@@ -1392,9 +518,851 @@
       ]
     },
     {
-      "conditionKey": "corpus-drift:monitor-only",
-      "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-19.",
-      "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+      "conditionKey": "land:land/bro-7803",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7803",
+      "description": "land.yml did not land land/bro-7803: the unit-tests-node gate went red at 763d74119f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44511274072",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-7803"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "763d74119f5c0cee1bea9bc5ba41b6a8e2ba4316"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44511274072"
+        }
+      ]
+    },
+    {
+      "conditionKey": "aggregator-health:thestage-roundups:coverage-drop",
+      "title": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 58% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
+      "description": "The Stage roundups: archive coverage 27% in 2026Q2+2026Q3 vs 58% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "aggregator-health:bww-roundups:workflow-stale:scrape-bww-reviews.yml",
+      "title": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 31 days ago",
+      "description": "BroadwayWorld roundups (London): scrape-bww-reviews.yml last succeeded 31 days ago\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "aggregator-health:theatre-reviews:coverage-drop",
+      "title": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
+      "description": "theatre.reviews: archive coverage 54% in 2026Q2+2026Q3 vs 89% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/job/linear-BRO-7402-mwner6k4",
+      "title": "Landing blocked: scripts-lib-tests red on land/job/linear-BRO-7402-mwner6k4",
+      "description": "land.yml did not land land/job/linear-BRO-7402-mwner6k4: the scripts-lib-tests gate went red at 6b97407044. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44511213376",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-7402-mwner6k4"
+        },
+        {
+          "name": "gate",
+          "value": "scripts-lib-tests"
+        },
+        {
+          "name": "tip",
+          "value": "6b9740704404c5eeb9553ce0446c5904f1c61141"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44511213376"
+        }
+      ]
+    },
+    {
+      "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
+      "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed cross-outlet suspects remain (first 5): [\n{\n\"file\": \"the-lion-king-1997/jasonraize--frank-scheck.json\",\n\"criticName\": \"Frank Scheck\",\n\"defaultCriticOf\": [\n\"scheckontheater\",\n\"reuters\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_spt112197.html\"\n},\n{\n\"file\": \"the-lion-king-1997/jasonraize--michael-sommers.json\",\n\"criticName\": \"Michael Sommers\",\n\"defaultCriticOf\": [\n\"the-kalamazoo-gazette\",\n\"journaltimes\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_njsl111497.html\"\n}\n]\n\n2 !== 0\n",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)",
+      "title": "Live-data test failing: plain wording: no visitor-facing health check shows its raw name (BRO-7047) (tests/unit/morning-digest-quiet.test.mjs)",
+      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"plain wording: no visitor-facing health check shows its raw name (BRO-7047)\" in tests/unit/morning-digest-quiet.test.mjs is red against the live corpus.\n\nPress night: openings not watched still shows its raw check name: add a PLAIN_HEALTH entry",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-snowman-off-west-end-2026",
+      "title": "Auto-remediation gave up on the-snowman-off-west-end-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-snowman-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "opening-night-remediation-exhausted-empty-cast:cinderella-lyric-hammersmith-off-west-end-2026",
+      "title": "Auto-remediation gave up on cinderella-lyric-hammersmith-off-west-end-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"cinderella-lyric-hammersmith-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "opening-night-remediation-exhausted-empty-cast:arrowhead-regional-2026",
+      "title": "Auto-remediation gave up on arrowhead-regional-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"arrowhead-regional-2026\",\"category\":\"regional\",\"force\":\"true\"}",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/bro-7841-dead-links",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7841-dead-links",
+      "description": "land.yml did not land land/bro-7841-dead-links: the unit-tests-node gate went red at e83c82f3e8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44533469464",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-7841-dead-links"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "e83c82f3e806095c9e8efedc0e1b79173fee8ad7"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44533469464"
+        }
+      ]
+    },
+    {
+      "conditionKey": "watchdog-park:linear:BRO-7839",
+      "title": "Watchdog parked #linear:BRO-7839 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Skeptic review at session close: an independent reviewer asks 'is this fully tested?' and the session must close the gaps\" was claimed for redispatch at 2026-11-19T13:11:22.456Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7839), then re-arm with node scripts/linear-next.js --id BRO-7839 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
+      "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): [\n{\n\"file\": \"circle-jerk-off-broadway-2022/theatrely--christian-lewis.json\",\n\"criticName\": \"Christian Lewis\",\n\"defaultCriticOf\": [\n\"into\",\n\"queer-voices\"\n],\n\"source\": \"ingest-urls\",\n\"url\": \"https://www.theatrely.com/post/this-circle-jerk-is-back-and-better-than-ever-review\",\n\"mode\": \"fulltext\"\n},\n{\n\"file\": \"wicked-2003/theatermania--david-gordon.json\",\n\"criticName\": \"Peter Filichia\",\n\"defaultCriticOf\": [\n\"broadwayselect\"\n],\n\"source\": \"playbill-verdict\",\n\"url\": \"https://www.theatermania.com/news/wicked-good-or-wicked-bad_4041/\",\n\"mode\": \"fulltext\"\n}\n]\n\n2 !== 0\n",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "corpus-drift:contradicted-flag-basis",
+      "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
+      "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 4887 shows scanned, 1 match(es).\n  [wrongProduction] the-bookstore-off-broadway-2026/theater-life--alix-cohen.json\n      basis cites 2017-01-17 but record is dated 2026-01-17, inside run 2026-01-10..2026-02-22\n\nFAIL: 1 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/feedback-parked-cards",
+      "title": "Landing blocked: merged-tree-tests red on land/feedback-parked-cards",
+      "description": "land.yml did not land land/feedback-parked-cards: the merged-tree-tests gate went red at 8d5e04669c. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/feedback-parked-cards @ 8d5e04669c (origin/land/feedback-parked-cards) → origin/main @ 1b593c951f [land] attempt 1/3: rebased onto 1b593c951f, 12 file(s) changed — running checks [land] verified-base: main moved d7f1432a83 → 1b593c951f across 198 file(s), substantive — re-checking on the merged tree (+4 test file(s) changed on main since the verified base); full re-check: branch and ma Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44553457396",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/feedback-parked-cards"
+        },
+        {
+          "name": "gate",
+          "value": "merged-tree-tests"
+        },
+        {
+          "name": "tip",
+          "value": "8d5e04669c3dd7240969762c4598368b743e9a1e"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44553457396"
+        }
+      ]
+    },
+    {
+      "conditionKey": "land:land/bro-7841-retro",
+      "title": "Landing blocked: rebase red on land/bro-7841-retro",
+      "description": "land.yml did not land land/bro-7841-retro: the rebase gate went red at 3fd1bc3d51. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44561817072",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-7841-retro"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "3fd1bc3d515a76b171af234e5226a110172abeb6"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44561817072"
+        }
+      ]
+    },
+    {
+      "conditionKey": "opening-night-remediation-exhausted-t1-missing:its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "Auto-remediation gave up on its-a-wonderful-life-a-live-radio-play-2026",
+      "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"its-a-wonderful-life-a-live-radio-play-2026\"}",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "feedback-requests-stuck:missing-show:the way we get by:2026-10-19T05:04:34.150097+00:00",
+      "title": "1 user request(s) stuck — not live after 3 days",
+      "description": "\"The Way We Get By\" was asked for 31 day(s) ago and is still not on the site. Its most recent run since then on 2026-10-19 ended as failure.\n  That run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39211864891\n  Tracking issue: https://github.com/thomaspryor/Broadwayscore/issues/1123",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39211864891",
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Stuck",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "conditionKey": "test-yml:data-validation-red:run-autoclear-vs-ensemble-corpus-test-needs-review-texts",
+      "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts)",
+      "description": "The \"Run autoclear-vs-ensemble corpus test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+      "severity": "warning",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44570638717",
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Job",
+          "value": "Data Validation"
+        },
+        {
+          "name": "Step",
+          "value": "Run autoclear-vs-ensemble corpus test (needs review-texts)"
+        },
+        {
+          "name": "Run",
+          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44570638717)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "opening-night-fulltext-mentions-show:cloud-9-west-end-2026",
+      "title": "Content mismatch on Cloud 9",
+      "description": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Cloud 9' (3969 chars): https://www.thestage.co.uk/reviews/cloud-9-review-lyttelton-national-theatre-london",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "opening-night-revival-unverified-cloud-9-west-end-2026",
+      "title": "Unverified revival on Cloud 9",
+      "description": "cloud-9-west-end-2026 review text mentions \"revival\" 45x but isRevival is not true — verify and set isRevival if this is a revival",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "broadcast-gate:checklist:cloud-9-west-end-2026",
+      "title": "Opening-night email draft on hold: a quality check flagged a review",
+      "description": "The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Nothing is sent while it is on hold. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Show",
+          "value": "Cloud 9"
+        }
+      ]
+    },
+    {
+      "conditionKey": "corpus-drift:autoclear-vs-ensemble",
+      "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
+      "description": "check-corpus-drift.js audit \"autoclear-vs-ensemble\" (node scripts/audit-autoclear-vs-ensemble.js --strict) has been drifting. Latest output:\n\nautoclear-vs-ensemble audit: 83009 files scanned.\n  wrongProduction violations: 1\n    assassins-off-broadway-2021/stageandcinema--tony-frankel.json :: rebuild: other-production url no longer detected (was: Date guard: review 2022-03-16 is 43d after 2022-01-25 (close+7d) — likely different production)\n  wrongShow violations: 0\n\nFAIL: 1 autoclear-vs-ensemble violation(s) found.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/bro-7846-archiver-guard",
+      "title": "Landing blocked: rebase red on land/bro-7846-archiver-guard",
+      "description": "land.yml did not land land/bro-7846-archiver-guard: the rebase gate went red at cab773b5cf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44577730178",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-7846-archiver-guard"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "cab773b5cf20ee760f4443d7ce66318e26e17a1d"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44577730178"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cookie-renew:probe-vacuous:newyorker",
+      "title": "Cookie renew: newyorker probe URL is no longer walled",
+      "description": "https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain shows the full article to a browser with no session. Pick a recent walled article in scripts/lib/cookie-probes.js.",
+      "severity": "error",
+      "url": "https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain",
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "cookie-renew:probe-vacuous:telegraph",
+      "title": "Cookie renew: telegraph probe URL is no longer walled",
+      "description": "https://www.telegraph.co.uk/theatre/what-to-see/romeo-and-juliet-review-sadie-sink-noah-jupe/ shows the full article to a browser with no session. Pick a recent walled article in scripts/lib/cookie-probes.js.",
+      "severity": "error",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/romeo-and-juliet-review-sadie-sink-noah-jupe/",
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/bro-7849-render-impact",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7849-render-impact",
+      "description": "land.yml did not land land/bro-7849-render-impact: the unit-tests-node gate went red at 87e1d89bfb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44582712468",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-7849-render-impact"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "87e1d89bfb934ca21b16b63b494643d44faeae65"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44582712468"
+        }
+      ]
+    },
+    {
+      "conditionKey": "live-data-test:scripts/lib/autoclear-vs-ensemble.test.mjs::corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)",
+      "title": "Live-data test failing: corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow) (scripts/lib/autoclear-vs-ensemble.test.mjs)",
+      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)\" in scripts/lib/autoclear-vs-ensemble.test.mjs is red against the live corpus.\n\n1 wrongProduction auto-clear-vs-ensemble violation(s) — see scripts/audit-autoclear-vs-ensemble.js --fix\n+ actual - expected\n\n+ [\n+   'assassins-off-broadway-2021/stageandcinema--tony-frankel.json (rebuild: other-production url no longer detected (was: Date guard: review 2022-03-16 is 43d after 2022-01-25 (close+7d) — likely different production))'\n+ ]\n- []\n",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "live-data-test:tests/unit/book-of-mormon-2011-criticname.test.mjs::BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors",
+      "title": "Live-data test failing: BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors (tests/unit/book-of-mormon-2011-criticname.test.mjs)",
+      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-4163 private corpus retains the verified Guardian byline and distinct sibling authors\" in tests/unit/book-of-mormon-2011-criticname.test.mjs is red against the live corpus.\n\nENOENT: no such file or directory, open '<root>/data/review-texts/book-of-mormon-2011/guardian--david-cote.json'",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/bro-7847-ledger-persist",
+      "title": "Landing blocked: scripts-lib-tests red on land/bro-7847-ledger-persist",
+      "description": "land.yml did not land land/bro-7847-ledger-persist: the scripts-lib-tests gate went red at 99c5f6ad44. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44584220474",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-7847-ledger-persist"
+        },
+        {
+          "name": "gate",
+          "value": "scripts-lib-tests"
+        },
+        {
+          "name": "tip",
+          "value": "99c5f6ad4488abf51717c4519311d9efee09a7d9"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44584220474"
+        }
+      ]
+    },
+    {
+      "conditionKey": "land:land/job/linear-BRO-7853-mwnu1aee",
+      "title": "Landing blocked: merged-tree-tests red on land/job/linear-BRO-7853-mwnu1aee",
+      "description": "land.yml did not land land/job/linear-BRO-7853-mwnu1aee: the merged-tree-tests gate went red at da5185f9c7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7853-mwnu1aee @ da5185f9c7 (origin/land/job/linear-BRO-7853-mwnu1aee) → origin/main @ 2544d51b4f [land] attempt 1/3: rebased onto 310eef9d1f, 2 file(s) changed — running checks [land] verified-base: main moved bb6cfa5432 → 310eef9d1f across 391 file(s), substantive — re-checking on the merged tree (+6 test file(s) changed on main since the verified base); full re-check:  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44584271663",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-7853-mwnu1aee"
+        },
+        {
+          "name": "gate",
+          "value": "merged-tree-tests"
+        },
+        {
+          "name": "tip",
+          "value": "da5185f9c7874b69e7e2ff5e8ba4e3fa531ffdd7"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44584271663"
+        }
+      ]
+    },
+    {
+      "conditionKey": "land:land/bro-7849-wrapup",
+      "title": "Landing blocked: rebase red on land/bro-7849-wrapup",
+      "description": "land.yml did not land land/bro-7849-wrapup: the rebase gate went red at ef1036c7fc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44596141364",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-7849-wrapup"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "ef1036c7fcf605e7d6a6d2ddf72283eb4b459ac0"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44596141364"
+        }
+      ]
+    },
+    {
+      "conditionKey": "feedback-outcomes:2026-11-19T19:34:01.276401+00:00",
+      "title": "Feedback: 1 submission(s), all handled automatically",
+      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nLove, Love, Love — Not a problem report — a thank-you went back to the person who sent it.\n  They wrote: \"Pipeline timing test for the proposal email. Please ignore. The Love, Love, Love cast list looks incomplete.\"",
+      "severity": "info",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44599646594",
+      "decision": false,
+      "info": true,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Submissions",
+          "value": "1"
+        },
+        {
+          "name": "Need you",
+          "value": "0"
+        },
+        {
+          "name": "Pipeline status",
+          "value": "success"
+        }
+      ]
+    },
+    {
+      "conditionKey": "feedback-outcomes:2026-11-19T19:43:43.672164+00:00",
+      "title": "Feedback: 1 submission(s), all handled automatically",
+      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nLove, Love, Love — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"The Love, Love, Love page lists the 2016 Roundabout production but the opening night date looks wrong to me. I think it opened on a different night. Can you check?\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1193",
+      "severity": "info",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44601316856",
+      "decision": false,
+      "info": true,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Submissions",
+          "value": "1"
+        },
+        {
+          "name": "Need you",
+          "value": "0"
+        },
+        {
+          "name": "Pipeline status",
+          "value": "success"
+        }
+      ]
+    },
+    {
+      "conditionKey": "watchdog-park:linear:BRO-6751",
+      "title": "Watchdog parked #linear:BRO-6751 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Gap audit runs ~4-8x/day, not hourly: daily slow-market rechecks and the 30-day cap can't hold at ~13 shows/run\" was claimed for redispatch at 2026-11-19T19:30:41.706Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-6751), then re-arm with node scripts/linear-next.js --id BRO-6751 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "watchdog-park:linear:BRO-7078",
+      "title": "Watchdog parked #linear:BRO-7078 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Opening retro: reviews stuck in pending or live late cannot recur\" was claimed for redispatch at 2026-11-19T19:30:43.498Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7078), then re-arm with node scripts/linear-next.js --id BRO-7078 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/bro-7872",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7872",
+      "description": "land.yml did not land land/bro-7872: the unit-tests-node gate went red at 7c974e067e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44628993175",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-7872"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "7c974e067ed20ea4bf4fc19ffdd6fec8c8b86327"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44628993175"
+        }
+      ]
+    },
+    {
+      "conditionKey": "land:land/bro-7873-retro-row",
+      "title": "Landing blocked: rebase red on land/bro-7873-retro-row",
+      "description": "land.yml did not land land/bro-7873-retro-row: the rebase gate went red at 491748c13c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44636544501",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-7873-retro-row"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "491748c13c2c6a86ea1b0007a94273dad075f3b7"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44636544501"
+        }
+      ]
+    },
+    {
+      "conditionKey": "opening-night-lane-summary:much-ado-about-nothing-2026:2026-11-19",
+      "title": "Opening-night lane for much-ado-about-nothing-2026: 0 unpublished, 3 failed, 45 errors",
+      "description": "passes 125, admitted 18\nfailed: https://playbill.com/article/reviews-critics-sound-off-on-much-ado-about-nothing-broadway-revival (score failed for good after 1 attempt(s): not a review: roundup page (Playbill Verdict roundup article (multi-outlet quote compilation)))\nfailed: https://broadwayworld.com/article/Review-Roundup-Tom-Hiddleston-and-Hayley-Atwell-Star-in-MUCH-ADO-ABOUT-NOTHING-on-Broadway-20261119 (score failed for good after 1 attempt(s): not a review: roundup page (BroadwayWorld Review-Roundup article (multi-outlet quote compilation)))\nfailed: https://columbiaspectator.com/arts-and-culture/2026/11/19/review-jamie-lloyds-much-ado-about-nothing-is-the-times-square-of-shakespeare (fetch failed for good after 5 attempt(s): no extractable text (0 chars) and no aggregator score or paywall excerpt to fall back on)\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: talkin-broadway: every Talkin' Broadway index failed",
+      "severity": "warn",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "bd-circuit-breaker-web_unlocker2",
+      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2239/1750 reqs)",
+      "description": "Zone web_unlocker2 billed 2239 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n34 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (1065), gather-reviews.js (689), opening-night-lane.js (397).",
+      "severity": "critical",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags",
+      "title": "Live-data test failing: BRO-93 acceptance: current shows.json produces zero stale announced flags (scripts/audit-stale-announced-shows.test.mjs)",
+      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-93 acceptance: current shows.json produces zero stale announced flags\" in scripts/audit-stale-announced-shows.test.mjs is red against the live corpus.\n\nexpected zero stale announced shows, got: [\n{\n\"id\": \"is-anything-ok-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"miracle-on-south-division-street-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"stories-from-the-brink-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"heavenly-baba-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n},\n{\n\"id\": \"pea-dinneen-raising-her-voice-off-broadway-2026\",\n\"reasons\": [\n\"data/review-texts/ has collected review file(s)\"\n]\n}\n]\n+ actual - expected\n\n+ [\n+   {\n+     id: 'is-anything-ok-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'miracle-on-south-division-street-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'stories-from-the-brink-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'heavenly-baba-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   },\n+   {\n+     id: 'pea-dinneen-raising-her-voice-off-broadway-2026',\n+     reasons: [\n+       'data/review-texts/ has collected review file(s)'\n+     ]\n+   }\n+ ]\n- []\n",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/not-before-cards",
+      "title": "Landing blocked: unit-tests-node red on land/not-before-cards",
+      "description": "land.yml did not land land/not-before-cards: the unit-tests-node gate went red at 8f1a4a4ff7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44672378298",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/not-before-cards"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "8f1a4a4ff73d5257c62cb5c0a2a867bf5f69f39f"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44672378298"
+        }
+      ]
+    },
+    {
+      "conditionKey": "review-gap:opening-window:much-ado-about-nothing-2026",
+      "title": "Review gap — \"Much Ado About Nothing\" missing 14 cited review(s)",
+      "description": "Much Ado About Nothing (much-ado-about-nothing-2026): 14 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=much-ado-about-nothing-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "opening-night-lane-auto-fallback:much-ado-about-nothing-2026:2026-11-19",
+      "title": "Opening-night lane died for much-ado-about-nothing-2026 (2026-11-19); the old path took over",
+      "description": "The lane watchdog found the lane dead (lane run never claimed the lease within 30 min of its start). It released the dead lease (none was held) and dispatched the old path (opening-night-orchestrator.yml for this show) once. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44678314864",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44678314864",
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "t1-gaps:needs-manual-recovery",
+      "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-20.",
+      "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
       "severity": "info",
       "url": null,
       "decision": false,
@@ -1403,9 +1371,22 @@
       "model": null,
       "tracked": null,
       "fields": []
+    },
+    {
+      "conditionKey": "opening-night-remediation-exhausted-empty-cast:a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "title": "Auto-remediation gave up on a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
     }
   ],
-  "autoFixedCount": 0,
-  "passedCount": 126,
-  "totalCount": 157
+  "autoFixedCount": 1,
+  "passedCount": 127,
+  "totalCount": 162
 }
