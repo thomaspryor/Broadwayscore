@@ -128,6 +128,9 @@ async function runLaneNight({
   const copySkipped = new Map(); // review key -> {takenKey, primary}: a syndicated copy skipped this run
   const aggregatorCited = new Map(); // BRO-7891 item 3: review key -> first sighting of an aggregator citing it
   const parityAlerted = new Set(); // review keys already in an aggregator-parity alert
+  const inflightKeys = new Set(); // review keys in a batch publishing now
+  const keptKeys = new Set(); // review keys whose publish the merge kept out (the site's row for that review won)
+  const KEPT_REASON = 'reviews.json already has a review by this critic for this outlet (or this URL); the merge kept that row';
   const keyTaken = new Map(); // review key -> critic|outlet of the row the lane built for it this run
 
   // BRO-7238 part 1: copies the lane already put on the site whose original has scored since (a Yahoo reprint published
@@ -200,7 +203,10 @@ async function runLaneNight({
       // A syndicated copy the lane skipped, pulled from the queue or took off the site this run: held against its
       // original, not re-fetched. Checked before the ride-along: a pulled copy is admitted but will never publish.
       if (copySkipped.has(key)) { const c = copySkipped.get(key); holdCopy(e, c.takenKey, c.primary, c.criticName); continue; }
-      if (admittedKeys.has(key) && !failedNow.has(key)) { manualByKey.set(key, e); noteInbox(e, 'queued'); continue; }
+      // The merge kept the site's own row for this review earlier tonight: nothing of ours will go live for it.
+      if (keptKeys.has(key)) { noteInbox(e, 'already-in', KEPT_REASON); continue; }
+      // Ride along only while a publish for it is still coming (queued or in flight); anything else is worked again.
+      if (admittedKeys.has(key) && !failedNow.has(key) && (inflightKeys.has(key) || pending.some((q) => q.key === key))) { manualByKey.set(key, e); noteInbox(e, 'queued'); continue; }
       // Anything else is worked: a key that failed this run, or one an earlier run of tonight's lane scored but never
       // got live (a restart). That re-scores it (model credits, and a settle run against settleMaxRuns): the price of
       // not leaving a person's URL unpublished on the strength of a ledger line.
@@ -220,6 +226,7 @@ async function runLaneNight({
     // merged or about to be: a copy in flight or re-queued as missing is still on the site when its original scores
     for (const r of batch) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
     const remove = stagedRemovals.filter((x) => batchKeys.has(x.primaryKey));
+    for (const k of batchKeys) inflightKeys.add(k);
     try {
       const res = await publish.publishLaneReviews({
         show: show.id, night, rows: batch, ...(remove.length ? { remove: remove.map(({ criticName, outletId, primaryOutlet }) => ({ criticName, outletId, primaryOutletId: primaryOutlet })) } : {}), ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
@@ -252,19 +259,20 @@ async function runLaneNight({
         if (manualByKey.has(r.key)) noteInbox(manualByKey.get(r.key), 'published', dryRun ? 'dry run' : null);
       }
       const droppedKeys = new Set(res.dropped || []);
+      for (const r of batch) if (!verified.has(r.key) && !missing.has(r.key) && !droppedKeys.has(r.key)) keptKeys.add(r.key);
       for (const r of batch) {
         if (!manualByKey.has(r.key) || verified.has(r.key) || missing.has(r.key)) continue;
         // dropped: never goes live; else the merge kept the site's own row (same outlet+critic, or same URL)
         if (droppedKeys.has(r.key)) noteInbox(manualByKey.get(r.key), 'failed', 'landed in reviews.json but not in the regenerated show JSON');
         // The merge matches on outlet+critic first, then URL (publish.js mergeShowRows), so the kept row may be another URL.
-        else noteInbox(manualByKey.get(r.key), 'already-in', 'reviews.json already has a review by this critic for this outlet (or this URL); the merge kept that row');
+        else noteInbox(manualByKey.get(r.key), 'already-in', KEPT_REASON);
       }
       settleHeldCopies();
       pending.push(...batch.filter((r) => missing.has(r.key) && !pending.some((q) => q.key === r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
     } catch (e) {
       errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
       pending.unshift(...batch.map((r) => ({ ...r, scoredAt: clock.now() }))); // scored: losing them to a failed push would drop reviews silently
-    }
+    } finally { for (const k of batchKeys) inflightKeys.delete(k); }
   };
   // A row that may be a syndicated copy (its critic has a primary outlet) is held until the end of the pass: its primary
   // can still be scored later in the same pass, and then the copy must be pulled from the queue, not already published
@@ -551,6 +559,13 @@ async function runLaneNight({
     }
   }
   await Promise.allSettled([...alerting]);
+  // BRO-7891: an inbox entry still 'queued' when the lane ends never went live (a stand-down dropped the queue, or
+  // publishes kept failing). 'failed' alerts the person and the drain sends it to ingest-urls. A held copy stays
+  // 'queued' (its original never went live either; the drain sends it on and the rebuild decides).
+  for (const e of new Set(manualByKey.values())) {
+    if (!manualQueued.has(gen(e)) || manualClosed.has(gen(e))) continue;
+    noteInbox(e, 'failed', abandonPending() ? 'the lane stood down before publishing it; the drain sends it to ingest-urls' : 'not live when the lane ended; the drain sends it to ingest-urls');
+  }
   await flushInbox();
   return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped,
     inbox: readInbox ? { worked: [...manualByKey.values()].map((e) => e.id), closed: [...manualClosed].map((g) => g.split('@')[0]), unwritten: inboxUpdates.length } : null, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };

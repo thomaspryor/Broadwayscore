@@ -121,9 +121,10 @@ function inboxAlertFor(update) {
   const show = update.show || String(update.id || '').split('|')[0];
   const url = update.url || update.id;
   const why = update.reason ? `: ${String(update.reason).slice(0, 300)}` : '';
+  const q = (v) => `'${String(v).replace(/'/g, `'\\''`)}'`; // copy-paste safe, as near-miss ingestCommand
   const fix = update.status === 'rejected'
-    ? `If it is tonight's review, add it again with --force: node scripts/opening-night-lane-inbox.js add --show=${show} --url='${url}' --force`
-    : `The drain sends it to ingest-urls.yml after the lane ends; to retry now: node scripts/opening-night-lane-inbox.js add --show=${show} --url='${url}'`;
+    ? `If it is tonight's review, add it again with --force: node scripts/opening-night-lane-inbox.js add --show=${show} --url=${q(url)} --force`
+    : `The drain sends it to ingest-urls.yml after the lane ends; to retry now: node scripts/opening-night-lane-inbox.js add --show=${show} --url=${q(url)}`;
   return {
     conditionKey: `opening-night-lane-inbox:${update.id}@${update.addedAt || ''}`,
     title: `Lane inbox URL ${update.status} for ${show}`,

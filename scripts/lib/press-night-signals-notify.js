@@ -84,7 +84,11 @@ function createPressSignalsNotifier({ env = process.env, log = console.log, disc
     if (!msg) return { discord: false, comment: false, text: null };
     const text = `${msg.title}\n${msg.description}${run ? `\nlane run: ${run}` : ''}`;
     log(`[press-signals] ${text}`);
-    console.log(`::warning title=Press-night ${nearMisses.length ? 'near-miss' : gaps.length ? 'found-not-live' : 'source problem'}::⚠️ ${msg.title} (details in the log above)`);
+    // BRO-7891: lane inbox URLs and aggregator parity ride in sourceHealth but are not source problems.
+    const kinds = new Set(sourceHealth.map((h) => h && h.kind));
+    const label = nearMisses.length ? 'near-miss' : gaps.length ? 'found-not-live'
+      : kinds.size === 1 && kinds.has('inbox-problem') ? 'inbox URL not published' : kinds.size === 1 && kinds.has('aggregator-parity') ? 'aggregators ahead' : 'source problem';
+    console.log(`::warning title=Press-night ${label}::⚠️ ${msg.title} (details in the log above)`);
     const out = { discord: false, comment: false, text };
     if (env.DISCORD_WEBHOOK_ALERTS) {
       // Discord caps a message at 2,000 characters: send whole lines in chunks so no item is cut off (review of BRO-7748).

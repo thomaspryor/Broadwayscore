@@ -355,7 +355,7 @@ test('BRO-7891: failed and rejected inbox URLs alert per generation; a failing o
 
   const sent = []; const logs = [];
   const store = { readForShow: async () => [], markSync: (_o, ups) => ({ ok: true, applied: ups.map((u) => u.id) }) };
-  const ok = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: (l) => logs.push(l), store, alert: async (p) => { sent.push(p); } });
+  const ok = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: (l) => logs.push(l), store, alert: async (items) => { sent.push(...items.map((x) => x.p)); } });
   await ok.markInbox([{ id: 'x|1', addedAt: 'g1', status: 'failed', url: URL1, show: SHOW.id }, { id: 'x|2', status: 'published' }]);
   await new Promise((r) => setTimeout(r, 5));
   assert.deepEqual(sent.map((p) => p.conditionKey), ['opening-night-lane-inbox:x|1@g1']);
@@ -368,7 +368,7 @@ test('BRO-7891: failed and rejected inbox URLs alert per generation; a failing o
   assert.ok(Date.now() - t < 1000, 'the write never waits on the alert');
   await new Promise((r) => setTimeout(r, 20));
   assert.ok(logs.some((l) => /alert failed \(router down\)/.test(l)) && logs.some((l) => /alert timed out/.test(l)), JSON.stringify(logs));
-  const failingWrite = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, store: { markSync: () => ({ ok: false, reason: 'push' }) }, alert: async (p) => { sent.push(p); } });
+  const failingWrite = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, store: { markSync: () => ({ ok: false, reason: 'push' }) }, alert: async (items) => { sent.push(...items.map((x) => x.p)); } });
   await assert.rejects(failingWrite.markInbox([{ id: 'x|9', status: 'failed' }]));
   assert.ok(!sent.some((p) => p.conditionKey.includes('x|9')), 'no alert for a status that was not written');
 });
@@ -440,16 +440,17 @@ const { inboxAlertRoute } = require('../../scripts/lib/opening-night-lane/driver
 
 test('BRO-7891 review 1: inbox failed/rejected alerts go to the press-night channel the same night, not the morning digest', async () => {
   const sig = []; const routed = [];
-  const route = inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: async (x) => { sig.push(x); }, routeAlert: async (p) => { routed.push(p); } });
+  const notifier = async (x) => { sig.push(x); return { discord: true, comment: false, text: 'x' }; };
+  const route = inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: notifier, routeAlert: async (p) => { routed.push(p); } });
   const p = inbox.inboxAlertFor({ id: `${SHOW.id}|abc`, addedAt: 'g1', status: 'rejected', reason: 'night-window', url: URL1, show: SHOW.id });
-  await route(p, { url: URL1, status: 'rejected', reason: 'night-window' });
+  await route([{ p, u: { url: URL1, status: 'rejected', reason: 'night-window' } }]);
   assert.equal(routed.length, 0, 'not the digest');
   assert.equal(sig.length, 1); assert.equal(sig[0].sourceHealth[0].kind, 'inbox-problem');
   const msg = nearMiss.formatPressSignals(SHOW, NIGHT, sig[0]);
   assert.match(msg.title, /1 inbox URL\(s\) not published/); assert.ok(!/source problem/.test(msg.title));
   assert.ok(msg.description.includes('INBOX URL REJECTED') && msg.description.includes(URL1) && msg.description.includes('--force'));
   // No notifier wired (a replay): still recorded through the router.
-  await inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: null, routeAlert: async (x) => { routed.push(x); } })(p, {});
+  await inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: null, routeAlert: async (x) => { routed.push(x); } })([{ p, u: {} }]);
   assert.equal(routed.length, 1); assert.equal(routed[0].conditionKey, p.conditionKey);
 });
 
@@ -472,7 +473,7 @@ test('BRO-7891 review 2: parity alerts once per newly missing review, not again 
 
 test('BRO-7891 review 4: only statuses the store applied alert', async () => {
   const sent = [];
-  const box = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, alert: async (p) => { sent.push(p); },
+  const box = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, alert: async (items) => { sent.push(...items.map((x) => x.p)); },
     store: { markSync: () => ({ ok: true, applied: ['x|1'] }) } });
   await box.markInbox([{ id: 'x|1', addedAt: 'g2', status: 'failed' }, { id: 'x|2', addedAt: 'g1', status: 'failed' }]);
   await new Promise((r) => setTimeout(r, 5));
@@ -485,4 +486,72 @@ test('BRO-7891 review 5: an inbox URL the merge folds into an existing same-crit
   const m = marks.find((x) => x.status === 'already-in');
   assert.ok(m, JSON.stringify(marks));
   assert.match(m.reason, /by this critic for this outlet/);
+});
+
+// ---- BRO-7891 ship-check of 68e03e941 ----
+test('BRO-7891 ship-check 1: a ride-along entry never stays queued all night (merge kept the row, or the lane stood down)', async () => {
+  // (a) The merge kept the site's row in pass 1; the URL re-added in pass 2 is already-in at once, not queued.
+  const existing = { showId: SHOW.id, outlet: 'TheaterMania', outletId: 'theatermania', criticName: 'A Critic', url: 'https://www.theatermania.com/other-url/', assignedScore: 70, manualEntry: true };
+  let reads = 0;
+  const first = entry(); const second = entry({ addedAt: new Date(Date.parse(first.addedAt) + 60000).toISOString() });
+  const kept = await laneNight2({ entries: () => (++reads === 1 ? [first] : [second]), fetchFor: tm, maxPasses: 2, initialDoc: { reviews: [existing] } });
+  const s2 = kept.marks.filter((m) => m.addedAt === second.addedAt).map((m) => m.status);
+  assert.deepEqual(s2, ['already-in'], JSON.stringify(kept.marks));
+  assert.equal(kept.scored.length, 1, 'not scored again');
+
+  // (b) A stand-down drops the queue: the entry ends 'failed' (alerted, drained), not 'queued'.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-standdown-'));
+  const marks = []; let stood = false;
+  try {
+    await runLaneNight({
+      show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses: 1, passIntervalMs: 0,
+      adapters: [], fetchText: async () => '',
+      fetchReview: async () => ({ ...tm(), fullText: 'A full review of the production. '.repeat(40), publishDate: NIGHT }),
+      scoreReview: async () => { stood = true; return 70; }, abandonPending: () => stood,
+      readInbox: async () => [entry()], markInbox: async (u) => { marks.push(...u); },
+      publishPorts: { updateReviews: async () => { throw new Error('should not publish'); }, regenShow: async () => ({}), deploy: async () => {}, fetchLiveShow: async () => ({ rv: [] }) },
+      now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+    });
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  assert.deepEqual(marks.map((m) => m.status), ['queued', 'failed'], JSON.stringify(marks));
+  assert.match(marks[1].reason, /stood down/);
+  assert.equal(drainPlan([{ id: 'x', url: URL1, status: 'failed' }]).open.length, 1, 'the drain picks it up');
+});
+
+test('BRO-7891 ship-check 3: one flush with several failed URLs is ONE alert listing them, capped', async () => {
+  const calls = [];
+  const box = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, alert: async (items) => { calls.push(items); },
+    store: { markSync: (_o, ups) => ({ ok: true, applied: ups.map((u) => u.id) }) } });
+  const ups = Array.from({ length: 14 }, (_, i) => ({ id: `x|${i}`, addedAt: 'g', status: 'failed', url: `https://x.com/${i}`, show: SHOW.id }));
+  await box.markInbox(ups);
+  await new Promise((r) => setTimeout(r, 5));
+  assert.equal(calls.length, 1); assert.equal(calls[0].length, 14);
+  const msg = nearMiss.formatPressSignals(SHOW, NIGHT, { sourceHealth: calls[0].map(({ p, u }) => ({ kind: 'inbox-problem', url: u.url, status: u.status, description: p.description })) });
+  assert.equal((msg.description.match(/^INBOX URL/gm) || []).length, 10);
+  assert.match(msg.description, /and 4 more inbox URL/);
+  // The run-log label for an inbox-only message is not "source problem".
+  const logs = []; const orig = console.log; console.log = (l) => logs.push(String(l));
+  try {
+    const { createPressSignalsNotifier } = require('../../scripts/lib/press-night-signals-notify.js');
+    await createPressSignalsNotifier({ env: {}, log: () => {}, card: null, fetchPage: async () => '' })({ show: SHOW, night: NIGHT, sourceHealth: [{ kind: 'inbox-problem', url: URL1, status: 'failed', description: 'd' }] });
+  } finally { console.log = orig; }
+  assert.ok(logs.some((l) => /::warning title=Press-night inbox URL not published::/.test(l)), logs.join('\n'));
+});
+
+test('BRO-7891 ship-check 4: with PRESS_SIGNALS_OFF (or no channel reached) inbox alerts fall back to the router', async () => {
+  const routed = [];
+  const { createPressSignalsNotifier } = require('../../scripts/lib/press-night-signals-notify.js');
+  const off = createPressSignalsNotifier({ env: { PRESS_SIGNALS_OFF: '1' }, log: () => {}, card: null });
+  const route = inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: off, routeAlert: async (x) => { routed.push(x); } });
+  const p1 = inbox.inboxAlertFor({ id: 'x|1', addedAt: 'g', status: 'failed', url: URL1, show: SHOW.id });
+  const p2 = inbox.inboxAlertFor({ id: 'x|2', addedAt: 'g', status: 'rejected', url: 'https://x.com/2', show: SHOW.id });
+  await route([{ p: p1, u: {} }, { p: p2, u: {} }]);
+  assert.equal(routed.length, 1, 'one routed alert for the batch');
+  assert.match(routed[0].conditionKey, /^opening-night-lane-inbox:batch:/);
+  assert.ok(routed[0].description.includes(URL1) && routed[0].description.includes('https://x.com/2'));
+});
+
+test('BRO-7891 ship-check 7: the retry command quotes the URL safely', () => {
+  const p = inbox.inboxAlertFor({ id: 'x|1', status: 'failed', url: "https://x.com/it's-a-review", show: SHOW.id });
+  assert.ok(p.description.includes("--url='https://x.com/it'\\''s-a-review'"), p.description);
 });

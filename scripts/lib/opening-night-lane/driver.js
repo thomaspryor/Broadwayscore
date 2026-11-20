@@ -191,11 +191,24 @@ function recorderFromEnv(env) {
  * allowlist. With no notifier wired (replays), routeAlert digest is the fallback so it is still recorded.
  */
 function inboxAlertRoute({ show, night, notifyPressSignals, routeAlert }) {
-  if (typeof notifyPressSignals === 'function') {
-    return (p, u = {}) => notifyPressSignals({ show, night, nearMisses: [], gaps: [], sourceHealth: [{ kind: 'inbox-problem', key: p.conditionKey, url: u.url || null, status: u.status, reason: u.reason || null, description: p.description }] });
-  }
-  return (p) => routeAlert({ severity: 'warn', disposition: 'digest', cooldownHours: 12, ...p });
+  // One alert per status flush (`items` = [{p, u}]), never one post per URL.
+  const digest = (items) => {
+    const one = items.length === 1;
+    const key = one ? items[0].p.conditionKey
+      : `opening-night-lane-inbox:batch:${require('crypto').createHash('sha1').update(items.map((x) => x.p.conditionKey).sort().join('\n')).digest('hex').slice(0, 12)}`;
+    return routeAlert({ severity: 'warn', disposition: 'digest', cooldownHours: 12, conditionKey: key,
+      title: one ? items[0].p.title : `${items.length} lane inbox URLs not published for ${show.id}`,
+      description: items.slice(0, INBOX_ALERT_MAX_LINES).map((x) => x.p.description).join('\n') + (items.length > INBOX_ALERT_MAX_LINES ? `\n...and ${items.length - INBOX_ALERT_MAX_LINES} more (opening-night-lane-inbox.js list --show=${show.id})` : '') });
+  };
+  if (typeof notifyPressSignals !== 'function') return digest;
+  return async (items) => {
+    const out = await notifyPressSignals({ show, night, nearMisses: [], gaps: [], sourceHealth: items.map(({ p, u = {} }) => ({ kind: 'inbox-problem', key: p.conditionKey, url: u.url || null, status: u.status, reason: u.reason || null, description: p.description })) });
+    // PRESS_SIGNALS_OFF=1 (text null) or no channel reached: the router still records it, so it is never silent.
+    if (!out || !out.text || (!out.discord && !out.comment)) return digest(items);
+    return out;
+  };
 }
+const INBOX_ALERT_MAX_LINES = 10;
 
 // BRO-7891: how long one inbox alert may take before the lane stops waiting on it (it is never awaited by the pass).
 const INBOX_ALERT_TIMEOUT_MS = 20 * 1000;
@@ -207,13 +220,14 @@ function realManualInbox({ repoDir, show, log = console.log, env = process.env, 
   const io = store || inbox; // tests pass {readForShow, markSync}
   // BRO-7891: a failed or rejected URL is alerted after its status is written, fire-and-forget and time-bounded. Its
   // error is swallowed: a throw here would make flushInbox re-queue the batch and alert again on the next pass.
-  const fire = (p, update) => {
-    if (typeof alert !== 'function' || !p) return;
+  const fire = (items) => {
+    if (typeof alert !== 'function' || !items.length) return;
+    const what = items.map((x) => x.p.title).join('; ').slice(0, 200);
     let timer;
     const bounded = new Promise((resolve) => { timer = setTimeout(() => resolve('timeout'), alertTimeoutMs); if (timer.unref) timer.unref(); });
-    Promise.race([Promise.resolve().then(() => alert(p, update)), bounded])
-      .then((r) => { if (r === 'timeout') log(`opening-night lane: inbox alert timed out: ${p.title}`); })
-      .catch((e) => log(`opening-night lane: inbox alert failed (${String(e && e.message).slice(0, 160)}): ${p.title}`))
+    Promise.race([Promise.resolve().then(() => alert(items)), bounded])
+      .then((r) => { if (r === 'timeout') log(`opening-night lane: inbox alert timed out: ${what}`); })
+      .catch((e) => log(`opening-night lane: inbox alert failed (${String(e && e.message).slice(0, 160)}): ${what}`))
       .finally(() => clearTimeout(timer));
   };
   return {
@@ -225,7 +239,10 @@ function realManualInbox({ repoDir, show, log = console.log, env = process.env, 
       // Only statuses the store took (markStatus `applied`): an update for an expired entry or an earlier generation
       // changed nothing, so it alerts nothing.
       const applied = new Set(res.applied || []);
-      for (const u of updates) { if (!applied.has(u.id)) continue; try { fire(inbox.inboxAlertFor(u), u); } catch { /* an alert never fails the write */ } }
+      try {
+        const items = updates.filter((u) => applied.has(u.id)).map((u) => ({ p: inbox.inboxAlertFor(u), u })).filter((x) => x.p);
+        fire(items); // one alert for the whole flush
+      } catch { /* an alert never fails the write */ }
     },
   };
 }

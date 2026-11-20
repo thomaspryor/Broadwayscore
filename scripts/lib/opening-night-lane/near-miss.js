@@ -249,6 +249,8 @@ function ingestCommand(showId, item, { inbox = fs.existsSync(INBOX_SCRIPT) } = {
   return { primary: `node scripts/opening-night-lane-inbox.js add --show=${showId} --url=${q(item.url)}${outlet}`, fallback: workflow };
 }
 
+const MAX_INBOX_LINES = 10;
+
 /** Alert text for new near-misses and gaps (one message per pass). Null when there is nothing new. */
 function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHealth = [] }) {
   if (!nearMisses.length && !gaps.length && !sourceHealth.length) return null;
@@ -263,9 +265,12 @@ function formatPressSignals(show, night, { nearMisses = [], gaps = [], sourceHea
     const why = windowMismatch(g) ? `${g.aggregatorCited ? 'an aggregator cites it' : 'the outlet lists it as a review'} but it is dated ${Number.isFinite(g.rejectedDayOffset) ? `${g.rejectedDayOffset > 0 ? '+' : ''}${g.rejectedDayOffset} day(s) from` : 'outside'} tonight: check the show's openingDate${g.rejectedDayOffset < 0 ? ' (or it is a preview-period review or another production)' : ''}` : g.rejectedFor ? `lane refused it: ${g.rejectedFor}` : 'lane has not dated it yet: backlog or a blocked page';
     lines.push(`${windowMismatch(g) ? 'WINDOW-MISMATCH' : 'GAP'} (${g.outletId || 'known outlet'}, ${g.aggregatorCited ? 'cited by an aggregator' : `listed by ${g.adapter}`}): ${g.url}`, `  seen ${g.ageMin} min ago, still not live (${why})`, ...(c.wrapper ? ['  open the Google link, then add the outlet\'s own article URL with opening-night-lane-inbox.js add'] : [`  add it: \`${c.primary}\``]), ...(c.fallback ? [`  or: \`${c.fallback}\``] : []));
   }
+  let inboxShown = 0;
+  const inboxTotal = sourceHealth.filter((h) => h.kind === 'inbox-problem').length;
   for (const h of sourceHealth) {
-    if (h.kind === 'inbox-problem') { // BRO-7891: a person's inbox URL the lane could not publish
-      lines.push(`INBOX URL ${String(h.status || 'failed').toUpperCase()}: ${h.url || '(no url)'}`, `  ${h.description || h.reason || ''}`);
+    if (h.kind === 'inbox-problem') { // BRO-7891: a person's inbox URL the lane could not publish (capped per message)
+      if (inboxShown++ < MAX_INBOX_LINES) lines.push(`INBOX URL ${String(h.status || 'failed').toUpperCase()}: ${h.url || '(no url)'}`, `  ${h.description || h.reason || ''}`);
+      else if (inboxShown === MAX_INBOX_LINES + 1) lines.push(`...and ${inboxTotal - MAX_INBOX_LINES} more inbox URL(s) (opening-night-lane-inbox.js list --show=${show.id})`);
       continue;
     }
     if (h.kind === 'aggregator-parity') {
