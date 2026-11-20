@@ -180,12 +180,12 @@ test('BRO-7903: detector skips excerpt-containment flags whose keeper is non-inc
   const fs = await import('node:fs');
   const os = await import('node:os');
   const { spawnSync } = await import('node:child_process');
-  const run = (keeperExtra) => {
+  const run = (keeperExtra, quoteExtra = {}) => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7903-'));
     const rt = path.join(tmp, 'review-texts'); const audit = path.join(tmp, 'audit');
     fs.mkdirSync(path.join(rt, SHOW), { recursive: true });
     fs.writeFileSync(path.join(rt, SHOW, 'nytimes--jesse-green.json'), JSON.stringify({ ...fullRec(), ...keeperExtra }));
-    fs.writeFileSync(path.join(rt, SHOW, 'nydailynews--unknown.json'), JSON.stringify(quoteRec()));
+    fs.writeFileSync(path.join(rt, SHOW, 'nydailynews--unknown.json'), JSON.stringify(quoteRec(quoteExtra)));
     const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/detect-cross-outlet-duplicates.js'), '--report', '--skip-llm'],
       { env: { ...process.env, REVIEW_TEXTS_DIR: rt, CROSS_OUTLET_AUDIT_DIR: audit }, encoding: 'utf8' });
     assert.equal(r.status, 0, r.stderr);
@@ -201,4 +201,6 @@ test('BRO-7903: detector skips excerpt-containment flags whose keeper is non-inc
   for (const bad of [{ wrongProduction: true }, { wrongShow: true }, { wrongUrl: true }, { contentTier: 'invalid' }, { wrongAttribution: true }, { crossOutletDuplicate: true, crossOutletPrimaryFile: `${SHOW}/other--x.json` }]) {
     assert.deepEqual(run(bad), [], JSON.stringify(bad));
   }
+  // A quote a person cleared is not re-flagged by the weekly pass.
+  assert.deepEqual(run({}, { crossOutletDuplicate: false, crossOutletClearReason: 'human: different review' }), []);
 });

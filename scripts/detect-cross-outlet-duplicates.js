@@ -273,8 +273,9 @@ async function main() {
           fingerprint: contentFingerprint(text),
           score: data.llmScore?.score || data.assignedScore || null,
           pointerAcross: pointerAcross ? pointerAcross.target : null,
-          // BRO-7903: kept for the excerpt-containment keeper probe (same one the rebuild rule uses).
+          // BRO-7903: excerpt-containment probes. The keeper check is the shared conservative default (the rebuild adds isIncludableForRebuild on top; its stale-flag handling covers the rest).
           keeperIncludable: defaultKeeperIncludable(data),
+          humanCleared: typeof data.crossOutletDuplicate === 'boolean' || Boolean(data.crossOutletClearReason),
         });
         stats.reviewsScanned++;
       } catch { /* skip corrupt */ }
@@ -351,6 +352,8 @@ async function main() {
         // BRO-7903: a keeper the rebuild drops (wrongProduction/wrongShow/wrongUrl/invalid)
         // never absorbs a quote; hiding the quote would lose the review entirely.
         if (contained && !(contained.copy === 'a' ? r2 : r1).keeperIncludable) continue;
+        // A quote a person cleared is never re-flagged (same rule as the rebuild's excerptContainmentFlags).
+        if (contained && (contained.copy === 'a' ? r1 : r2).humanCleared) continue;
         const sim = contained ? 100 : trigramSimilarity(r1.text, r2.text);
         if (sim < THRESHOLD) continue;
 
