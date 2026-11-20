@@ -1,8 +1,23 @@
 {
- "generatedAt": "2026-11-19T22:07:38.354Z",
- "today": "2026-11-19",
+ "generatedAt": "2026-11-20T21:52:44.991Z",
+ "today": "2026-11-20",
  "checked": 1003,
- "written": [],
+ "written": [
+  {
+   "id": "the-royale-regional-2026",
+   "from": "2026-11-29",
+   "to": "2026-12-05",
+   "kind": "theatre-page",
+   "source": "theatre's own page \"through 2026-12-05\" (https://www.writerstheatre.org/events/the-royale)"
+  },
+  {
+   "id": "frankenstein-regional-2026",
+   "from": null,
+   "to": "2026-11-01",
+   "kind": "text",
+   "source": "review text \"through 2026-11-01\" (https://chicagoonstage.com/manual-cinemas-frankenstein-is-genius/ ; https://www.newcitystage.com/2026/10/28/homo-ex-machina-in-manual-cinemas-frankenstein/)"
+  }
+ ],
  "pinned": [],
  "listings": {
   "detroit-67-regional-2026": {
@@ -296,6 +311,16 @@
   "hundred-days-regional-2026": {
    "date": "2026-11-08",
    "url": "https://keegantheatre.com/portfolio/hundred-days/",
+   "how": "range"
+  },
+  "the-royale-regional-2026": {
+   "date": "2026-12-05",
+   "url": "https://www.writerstheatre.org/events/the-royale",
+   "how": "jsonld"
+  },
+  "les-miserables-regional-2026": {
+   "date": "2027-01-31",
+   "url": "https://www.olneytheatre.org/whats-playing/les-miserables",
    "how": "range"
   }
  }
