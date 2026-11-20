@@ -1,26 +1,115 @@
 {
   "processed": [
-    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
+    "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+    "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json",
+    "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "much-ado-about-nothing-2026/timeout--unknown.json",
-    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json"
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "king-lear-off-broadway-2026/patch--lauren-traut.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+      "now-you-see-me-live-2026/culturesauce--thom-geier.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [
-      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+      "the-fantasticks-2026/broadwaynews--ruthie-fierberg.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-11-20T12:57:19.642Z",
-  "lastProcessed": "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
-  "log": []
+  "lastProcessed": "downstate-2026/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-20T13:05:00.572Z",
+      "event": "bb-session",
+      "session": "7257085f",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T13:05:01.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T13:05:18.266Z",
+      "event": "bb-session",
+      "session": "40642865",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-20T13:05:18.880Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T13:07:11.108Z",
+      "event": "bb-session",
+      "session": "4f1cf345",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-20T13:07:11.716Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T13:07:28.692Z",
+      "event": "bb-session",
+      "session": "3d8b620e",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-20T13:07:29.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T13:09:54.292Z",
+      "event": "bb-session",
+      "session": "8151a8a0",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T13:09:54.870Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-20T13:10:12.572Z",
+      "event": "bb-session",
+      "session": "65a6701a",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-20T13:10:13.141Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
