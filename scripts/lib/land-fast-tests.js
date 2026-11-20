@@ -138,13 +138,14 @@ function matchTier(changedFile, testFile, text) {
   const mirror = MIRRORED_SOURCES.find(([re, t]) => t === testFile && re.test(changedFile));
   if (mirror) return { tier: 1, why: mirror[2] };
   if (text.includes(changedFile)) return { tier: 1, why: `names ${changedFile}` };
+  // Tests that read .github through fs never name the changed workflow: they build the path on one line
+  // (path.join(root, '.github', 'workflows')) and readdir/walk it on another. The quoted-dir rule below sees
+  // only the exact dir string (BRO-7814 cousins), and tier 2-3 would cap such a test at MAX_TARGETED.
+  if (changedFile.startsWith('.github/') && /['"`]\.github['"`/]/.test(text) && /\b(?:readdir(?:Sync)?|walk|glob(?:Sync)?)\(/.test(text)) return { tier: 1, why: 'reads .github/ through fs' };
   const bn = path.basename(changedFile);
   if (bn.length >= 6 && text.includes(bn)) return { tier: 2, why: `names ${bn}` };
   const stem = bn.replace(/\.[^.]+$/, '').replace(/\.test$/, '');
   if (stem.length >= 8 && !COMMON_STEMS.has(stem) && text.includes(stem)) return { tier: 3, why: `names ${stem}` };
-  // Tests that read .github through fs (path.join(root, '.github', 'workflows'), walk('.github/workflows')) never
-  // name the changed workflow, and the quoted-dir rule above sees only the exact dir string (BRO-7814 cousins).
-  if (changedFile.startsWith('.github/') && /(?:readdir(?:Sync)?|walk|glob(?:Sync)?)\([^\n]*\.github[/'"`]/.test(text)) return { tier: 1, why: 'reads .github/ through fs' };
   const dir = path.dirname(changedFile);
   if (!BROAD_DIRS.has(dir) && ["'", '"', '`'].some((q) => text.includes(q + dir + q) || text.includes(q + dir + '/'))) return { tier: 4, why: `scans ${dir}/` };
   return null;
