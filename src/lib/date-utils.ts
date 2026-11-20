@@ -200,6 +200,38 @@ export function formatShowDate(
 }
 
 /**
+ * Format a critic review's publishDate for display (BRO-7890 item 5).
+ * publishDate is day-precision ("2016-03-05" -> "Mar 5, 2016"), month-precision on purpose ("2016-03" -> "Mar 2016",
+ * never an invented "Mar 1"), or year-only ("2016"). A full timestamp renders as the New York calendar day, the same
+ * rule scripts/lib/date-utils.js applies when the rebuild normalizes it. Anything else (missing, garbage, pre-1990
+ * epoch-style values) renders as '' so the UI hides the date instead of printing a wrong one.
+ */
+export function formatReviewDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return '';
+  const s = dateStr.trim().replace(/(\d+)(st|nd|rd|th)\b/gi, '$1');
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const ym = s.match(/^(\d{4})-(\d{2})$/);
+  if (ym) {
+    const m = Number(ym[2]);
+    return Number(ym[1]) >= 1990 && m >= 1 && m <= 12 ? `${months[m - 1]} ${ym[1]}` : '';
+  }
+  if (/^\d{4}$/.test(s)) return Number(s) >= 1990 ? s : '';
+  let day = /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : '';
+  if (!day) {
+    const t = new Date(s);
+    if (Number.isNaN(t.getTime())) return '';
+    const zoned = /(?:Z|[+-]\d{2}:?\d{2}|GMT|UTC)$/i.test(s) || /T\d{2}:\d{2}.*(?:Z|[+-]\d{2}:?\d{2})/i.test(s);
+    day = zoned
+      ? new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(t)
+      : `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+  }
+  const [y, m, d] = day.split('-').map(Number);
+  const check = new Date(Date.UTC(y, m - 1, d));
+  if (y < 1990 || check.getUTCMonth() !== m - 1 || check.getUTCDate() !== d) return '';
+  return `${months[m - 1]} ${d}, ${y}`;
+}
+
+/**
  * Get the duration suffix for a market category. `venue` lets a UK regional
  * show (RSC, Chichester, ...) say where it plays instead of "in tryout": it is
  * not a Broadway tryout (BRO-5103).
