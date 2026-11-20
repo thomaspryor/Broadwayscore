@@ -1114,6 +1114,34 @@
     "queuedAt": "2026-11-20T04:13:04.805Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:much-ado-about-nothing-2026",
+    "title": "Review gap — \"Much Ado About Nothing\" missing 14 cited review(s)",
+    "description": "Much Ado About Nothing (much-ado-about-nothing-2026): 14 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=much-ado-about-nothing-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-20T06:32:22.774Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-20.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-20T06:32:49.203Z"
+  },
+  {
     "conditionKey": "opening-night-lane-auto-fallback:much-ado-about-nothing-2026:2026-11-19",
     "title": "Opening-night lane died for much-ado-about-nothing-2026 (2026-11-19); the old path took over",
     "description": "The lane watchdog found the lane dead (lane run never claimed the lease within 30 min of its start). It released the dead lease (none was held) and dispatched the old path (opening-night-orchestrator.yml for this show) once. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44678314864",
