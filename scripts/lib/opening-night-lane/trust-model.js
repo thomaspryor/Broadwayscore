@@ -127,7 +127,11 @@ function calendarDateIn(publishDate, timeZone = DEFAULT_TIME_ZONE) {
   if (!/(Z|[+-]\d{2}:?\d{2})$/i.test(raw)) return null;
   const t = Date.parse(raw);
   if (Number.isNaN(t)) return null;
-  return fmt(t);
+  // BRO-7890: one rule with the rebuild (date-utils.normalizeDate via local-date.js): an explicit local offset keeps
+  // its written day and exactly 00:00:00 UTC is a date-only value, else a lane-published day flips on the next rebuild.
+  const { publishedStampToLocalDate } = require('../local-date');
+  const local = publishedStampToLocalDate(raw, null, { tz: timeZone });
+  return local && isDay(local) ? local : fmt(t);
 }
 
 /**
