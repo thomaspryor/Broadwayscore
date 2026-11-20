@@ -401,6 +401,7 @@ async function main() {
           minDays: POSSIBLY_CLOSED_MIN_DAYS,
           allowlisted: isAllowlisted(show.id, show.closingDate),
           kind,
+          openingDate: show.openingDate || null,
         });
         if (verdict.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
           const titleMismatchFlags = ambiguous.filter(x => x.missingScheduleKind === 'title_mismatch').length;

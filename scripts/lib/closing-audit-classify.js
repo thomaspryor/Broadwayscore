@@ -15,6 +15,8 @@
  * so both routes go through this one classifier.
  */
 
+const RECENTLY_OPENED_DAYS = 30;
+
 /**
  * Classify a show whose broadway.com schedule gave us no usable future
  * dates — either the page no longer matches the show's title
@@ -26,13 +28,25 @@
  * @param {string} opts.todayStr - YYYY-MM-DD
  * @param {number} opts.minDays - POSSIBLY_CLOSED_MIN_DAYS threshold
  * @param {boolean} opts.allowlisted - human-verified false positive
+ * @param {string|null} [opts.openingDate] - stored YYYY-MM-DD opening, or null
  * @param {'title_mismatch'|'empty_schedule'} opts.kind
  * @returns {{action: 'POSSIBLY_CLOSED_NEEDS_REVIEW'|'ERROR', daysUntilStored: number|null, reason: string}}
  */
-function classifyMissingSchedule({ closingDate, todayStr, minDays, allowlisted, kind }) {
+function classifyMissingSchedule({ closingDate, todayStr, minDays, allowlisted, kind, openingDate }) {
   const daysUntilStored = closingDate
     ? Math.round((new Date(closingDate) - new Date(todayStr)) / 86400000)
     : null;
+  // A show that opened (or opens) within RECENTLY_OPENED_DAYS cannot have
+  // closed and had its page removed: a title_mismatch is a not-yet-live page or
+  // a slug collision, so it goes to errors (SLUG_OVERRIDE hint), not a review
+  // card. BRO-7275 / BRO-7801: It's A Wonderful Life opened 2026-11-18, flagged
+  // POSSIBLY-CLOSED two days later while running through 2027-01-03.
+  if (kind === 'title_mismatch' && openingDate) {
+    const sinceOpen = Math.round((new Date(todayStr) - new Date(openingDate)) / 86400000);
+    if (sinceOpen <= RECENTLY_OPENED_DAYS) {
+      return { action: 'ERROR', daysUntilStored, reason: 'broadway_com_title_mismatch_recently_opened' };
+    }
+  }
   if (closingDate && daysUntilStored >= minDays && !allowlisted) {
     return { action: 'POSSIBLY_CLOSED_NEEDS_REVIEW', daysUntilStored, reason: kind };
   }

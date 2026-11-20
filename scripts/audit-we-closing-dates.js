@@ -137,6 +137,7 @@ async function auditOneShow(show) {
       minDays: POSSIBLY_CLOSED_MIN_DAYS,
       allowlisted: isAllowlisted(show.id, stored),
       kind,
+      openingDate: show.openingDate || null,
     });
     if (verdict.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
       return {

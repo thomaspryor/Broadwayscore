@@ -119,3 +119,38 @@ test('press agreement, no stored close: past press date → auto-apply (Baluster
 test('press agreement, no stored close: FUTURE press date → no auto-apply (calendar gap on a running show)', () => {
   assert.equal(possiblyClosedPressAgreement(null, '2026-08-02', { kind: 'empty_schedule', todayStr: TODAY }), false);
 });
+
+// BRO-7275 / BRO-7801: a recently opened show cannot be a "page removed after closing".
+test('title_mismatch on a show that opened 2 days ago → ERROR, not POSSIBLY_CLOSED (BRO-7801)', () => {
+  const v = classifyMissingSchedule({
+    closingDate: '2027-01-03', todayStr: '2026-11-20', minDays: MIN_DAYS,
+    allowlisted: false, kind: 'title_mismatch', openingDate: '2026-11-18',
+  });
+  assert.equal(v.action, 'ERROR');
+  assert.equal(v.reason, 'broadway_com_title_mismatch_recently_opened');
+});
+
+test('title_mismatch on a show that opened 60 days ago still → POSSIBLY_CLOSED', () => {
+  const v = classifyMissingSchedule({
+    closingDate: '2027-01-03', todayStr: '2026-11-20', minDays: MIN_DAYS,
+    allowlisted: false, kind: 'title_mismatch', openingDate: '2026-09-20',
+  });
+  assert.equal(v.action, 'POSSIBLY_CLOSED_NEEDS_REVIEW');
+});
+
+test('empty_schedule on a recently opened show is unchanged (page matched, zero dates)', () => {
+  const v = classifyMissingSchedule({
+    closingDate: '2027-01-03', todayStr: '2026-11-20', minDays: MIN_DAYS,
+    allowlisted: false, kind: 'empty_schedule', openingDate: '2026-11-18',
+  });
+  assert.equal(v.action, 'POSSIBLY_CLOSED_NEEDS_REVIEW');
+});
+
+test('both audits pass openingDate to the classifier (wiring guard)', async () => {
+  const { readFileSync } = await import('node:fs');
+  for (const f of ['audit-closing-dates.js', 'audit-we-closing-dates.js']) {
+    const src = readFileSync(new URL('../' + f, import.meta.url), 'utf8');
+    const call = src.slice(src.indexOf('classifyMissingSchedule({'));
+    assert.match(call.slice(0, 400), /openingDate:/, f);
+  }
+});
