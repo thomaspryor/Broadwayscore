@@ -15,7 +15,7 @@
  * so both routes go through this one classifier.
  */
 
-const RECENTLY_OPENED_DAYS = 30;
+const RECENTLY_OPENED_DAYS = 14;
 
 /**
  * Classify a show whose broadway.com schedule gave us no usable future
@@ -43,7 +43,7 @@ function classifyMissingSchedule({ closingDate, todayStr, minDays, allowlisted, 
   // POSSIBLY-CLOSED two days later while running through 2027-01-03.
   if (kind === 'title_mismatch' && openingDate) {
     const sinceOpen = Math.round((new Date(todayStr) - new Date(openingDate)) / 86400000);
-    if (sinceOpen <= RECENTLY_OPENED_DAYS) {
+    if (sinceOpen >= -7 && sinceOpen <= RECENTLY_OPENED_DAYS) {
       return { action: 'ERROR', daysUntilStored, reason: 'broadway_com_title_mismatch_recently_opened' };
     }
   }

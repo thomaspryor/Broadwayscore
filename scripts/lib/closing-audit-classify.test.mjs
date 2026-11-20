@@ -154,3 +154,12 @@ test('both audits pass openingDate to the classifier (wiring guard)', async () =
     assert.match(call.slice(0, 400), /openingDate:/, f);
   }
 });
+
+test('recently-opened window boundary: day 14 → ERROR, day 15 → POSSIBLY_CLOSED; null openingDate unchanged', () => {
+  const base = { closingDate: '2027-01-03', todayStr: '2026-11-20', minDays: MIN_DAYS, allowlisted: false, kind: 'title_mismatch' };
+  assert.equal(classifyMissingSchedule({ ...base, openingDate: '2026-11-06' }).action, 'ERROR');
+  assert.equal(classifyMissingSchedule({ ...base, openingDate: '2026-11-05' }).action, 'POSSIBLY_CLOSED_NEEDS_REVIEW');
+  assert.equal(classifyMissingSchedule({ ...base, openingDate: null }).action, 'POSSIBLY_CLOSED_NEEDS_REVIEW');
+  // far-future placeholder openingDate does not hide the show
+  assert.equal(classifyMissingSchedule({ ...base, openingDate: '2027-03-01' }).action, 'POSSIBLY_CLOSED_NEEDS_REVIEW');
+});
