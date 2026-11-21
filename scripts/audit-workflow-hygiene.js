@@ -576,6 +576,117 @@ function findShortRebuildTimeoutSteps(raw) {
 }
 
 /**
+ * Rule (y2) (advisory, BRO-8012): a step that runs scripts/rebuild-all-reviews.js
+ * with no restore of the fingerprint memo (.cache/rebuild-fp-cache.json) earlier
+ * in the same job. Cold, the rebuild re-runs ~165s+ of cleanText work and took
+ * 12-34 min on the opening-night poller, past its 10-min step timeout, which
+ * paged the owner on every review night. A wall-clock budget is flaky on shared
+ * runners; a cold rebuild is the structural cause, so this flags that instead.
+ * Exempt a job with `# hygiene-rebuild-memo-ok: <reason>` anywhere in it.
+ */
+const MEMO_PATH_RE = /rebuild-fp-cache\.json/;
+
+// Split an `if:` expression on top-level `&&` (outside parentheses).
+function splitTopLevel(expr, op) {
+  const parts = [];
+  let depth = 0;
+  let cur = '';
+  for (let i = 0; i < expr.length; i++) {
+    const c = expr[i];
+    if (c === '(') depth++;
+    if (c === ')') depth--;
+    if (depth === 0 && expr.startsWith(op, i)) {
+      parts.push(cur);
+      cur = '';
+      i += op.length - 1;
+      continue;
+    }
+    cur += c;
+  }
+  parts.push(cur);
+  return parts.map((p) => p.trim().replace(/\s+/g, ' ')).filter(Boolean);
+}
+function stripOuterParens(expr) {
+  if (!expr.startsWith('(') || !expr.endsWith(')')) return expr;
+  let depth = 0;
+  for (let i = 0; i < expr.length; i++) {
+    if (expr[i] === '(') depth++;
+    if (expr[i] === ')') depth--;
+    if (depth === 0 && i < expr.length - 1) return expr;
+  }
+  return expr.slice(1, -1).trim();
+}
+function conjuncts(ifExpr) {
+  if (!ifExpr) return [];
+  const e = ifExpr.replace(/^\$\{\{\s*|\s*\}\}$/g, '').trim();
+  return splitTopLevel(e, '&&');
+}
+/**
+ * True when the restore step runs whenever the rebuild step runs, judged
+ * conservatively from their `if:` lines: every top-level conjunct of the
+ * restore's condition must be a top-level conjunct of the rebuild's, or a
+ * parenthesized `a || b` with one disjunct that is.
+ */
+function restoreCoversRebuild(restoreIf, rebuildIf) {
+  const have = new Set(conjuncts(rebuildIf));
+  return conjuncts(restoreIf).every((c) => {
+    if (have.has(c)) return true;
+    const inner = stripOuterParens(c);
+    return inner !== c && splitTopLevel(inner, '||').some((d) => have.has(d));
+  });
+}
+
+/** Step bounds and single-line `if:` for the step that contains line i. */
+function stepAt(lines, i, jobStart) {
+  let start = i;
+  while (start > jobStart && !/^ {6}- /.test(lines[start])) start--;
+  let end = i + 1;
+  while (end < lines.length && !/^ {6}- /.test(lines[end]) && !/^ {0,2}\S/.test(lines[end])) end++;
+  let ifExpr = null;
+  for (let k = start; k < end; k++) {
+    const m = lines[k].match(/^ {6}(?:- | {2})if:\s*(.+?)\s*$/);
+    if (m) { ifExpr = m[1].replace(/^['"]|['"]$/g, ''); break; }
+  }
+  return { start, ifExpr };
+}
+
+function findRebuildWithoutMemoRestore(raw) {
+  const violations = [];
+  const lines = raw.split('\n');
+  let inJobs = false;
+  let jobName = null;
+  let jobStart = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (/^\S/.test(line)) { inJobs = /^jobs:\s*$/.test(line); jobName = null; continue; }
+    const jm = inJobs && line.match(/^ {2}([A-Za-z0-9_-]+):\s*(?:#.*)?$/);
+    if (jm) { jobName = jm[1]; jobStart = i; continue; }
+    if (!jobName || line.trimStart().startsWith('#') || !REBUILD_CALL_RE.test(line)) continue;
+    let jobEnd = i + 1;
+    while (jobEnd < lines.length && !/^ {0,2}\S/.test(lines[jobEnd])) jobEnd++;
+    if (lines.slice(jobStart, jobEnd).join('\n').includes('hygiene-rebuild-memo-ok:')) continue;
+    const rebuildStep = stepAt(lines, i, jobStart);
+    let covered = false;
+    let gated = false;
+    for (let k = jobStart; k < rebuildStep.start && !covered; k++) {
+      if (lines[k].trimStart().startsWith('#') || !MEMO_PATH_RE.test(lines[k])) continue;
+      const restoreStep = stepAt(lines, k, jobStart);
+      if (restoreCoversRebuild(restoreStep.ifExpr, rebuildStep.ifExpr)) covered = true;
+      else gated = true;
+    }
+    if (!covered) {
+      violations.push({
+        job: jobName,
+        lineNum: i + 1,
+        text: line.trim(),
+        reason: gated ? 'memo restore is gated on a condition the rebuild step does not share' : 'no memo restore earlier in the job',
+      });
+    }
+  }
+  return violations;
+}
+
+/**
  * Rule (p): stage, then push-with-retry.sh, with no commit in between (BRO-4897).
  * Step-scoped, same step parsing as rule (i). Comment lines are ignored.
  */
@@ -933,6 +1044,8 @@ async function main() {
   // Rule (o) is advisory too (same posture; see its doc comment).
   const fullBlobCheckoutFindings = [];
   const shortCoreDataTimeoutFindings = [];
+  // Rule (y2) (BRO-8012) is advisory too (CLAUDE.md §19): cold rebuild, no memo.
+  const rebuildNoMemoFindings = [];
   // Rule (z) (BRO-5972) is advisory too: workflows and composite actions.
   const unboundedGitFindings = [];
   const gitNetBeforeSourceFindings = [];
@@ -1153,6 +1266,12 @@ async function main() {
       if (hits.length > 0) fullBlobCheckoutFindings.push({ file, hits });
     }
 
+    // ── Rule (y2): rebuild-all-reviews.js with no fingerprint-memo restore (advisory) ─
+    {
+      const hits = findRebuildWithoutMemoRestore(raw);
+      if (hits.length > 0) rebuildNoMemoFindings.push({ file, hits });
+    }
+
     // ── Rule (r): core-data job with a job timeout too short for the checkout (advisory) ─
     {
       const hits = findShortCoreDataJobTimeouts(raw);
@@ -1227,6 +1346,18 @@ async function main() {
     for (const { file, hits } of fullBlobCheckoutFindings) {
       console.log(`   • ${file}`);
       for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
+    }
+  }
+
+  // ── Rule (y2): cold rebuilds, no fingerprint memo (advisory — never counts toward `total`) ─
+  if (rebuildNoMemoFindings.length > 0) {
+    const n = rebuildNoMemoFindings.reduce((acc, { hits }) => acc + hits.length, 0);
+    console.log(
+      `ℹ️  rebuild-all-reviews.js runs with no fingerprint-memo restore: ${n} across ${rebuildNoMemoFindings.length} workflow(s). A cold rebuild re-cleans every text and outgrew the poller's 10-min step (BRO-8012). Add an actions/cache/restore of .cache/rebuild-fp-cache.json earlier in the job (see opening-night-poller.yml "Restore fingerprint memo") or \`# hygiene-rebuild-memo-ok: <reason>\` in the job.`,
+    );
+    for (const { file, hits } of rebuildNoMemoFindings) {
+      console.log(`   • ${file}`);
+      for (const h of hits) console.log(`       job ${h.job}, line ${h.lineNum}: ${h.text} (${h.reason})`);
     }
   }
 
@@ -1749,6 +1880,8 @@ module.exports = {
   findStageWithoutCommitSteps,
   findShortBatchPollTimeoutSteps,
   findShortRebuildTimeoutSteps,
+  findRebuildWithoutMemoRestore,
+  restoreCoversRebuild,
   BATCH_MODE_POLL_MINUTES,
   INLINE_POLL_MINUTES,
   findUnescapedApostrophesInSingleQuotedEval,

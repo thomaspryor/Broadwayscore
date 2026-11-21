@@ -76,8 +76,30 @@ function verifyScoreStage({ failed = 0, total = 0 } = {}) {
   return verifyCountedStage('score', { failed, total });
 }
 
-function verifyRebuildStage({ attempted = true, outcome } = {}) {
-  return verifyStepStage('rebuild', { attempted, outcome });
+/**
+ * BRO-8012: off the fast path, the poller's own rebuild only feeds the
+ * readiness check. The rebuild that updates the site is rebuild-reviews.yml,
+ * dispatched by the "Trigger rebuild + deploy (legacy)" step (or owned by the
+ * lane pipeline when the lane-only gate suppressed that dispatch). A slow or
+ * crashed readiness rebuild therefore delays the readiness check by one poll;
+ * it does not keep reviews off the site, so it is degraded, not a page.
+ * It stays a hard failure when the real rebuild was not handed off either.
+ *
+ * `fastPath`: the rebuild step IS the real rebuild, so its outcome is final.
+ * `dispatchOutcome`: GH step outcome of the legacy rebuild dispatch.
+ * `laneSuppressed`: the lane-only gate skipped that dispatch on purpose.
+ */
+function verifyRebuildStage({ attempted = true, outcome, fastPath = true, dispatchOutcome, laneSuppressed = false } = {}) {
+  const verdict = verifyStepStage('rebuild', { attempted, outcome });
+  if (verdict.ok || fastPath) return verdict;
+  const handedOff = dispatchOutcome === 'success' || (laneSuppressed && dispatchOutcome === 'skipped');
+  if (!handedOff) return verdict;
+  const owner = dispatchOutcome === 'success' ? 'rebuild-reviews.yml was dispatched' : 'the lane pipeline owns the rebuild';
+  return {
+    ok: true,
+    degraded: true,
+    reason: `rebuild: local readiness rebuild did not finish (outcome '${outcome || 'unknown'}'); ${owner}, so the readiness check read the previous reviews.json and the broadcast may wait one poll`,
+  };
 }
 
 /**

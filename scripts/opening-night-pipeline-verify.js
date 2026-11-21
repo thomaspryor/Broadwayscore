@@ -50,6 +50,10 @@ function buildStageResults(env) {
     verifyRebuildStage({
       attempted: env.REBUILD_ATTEMPTED === undefined ? true : bool(env.REBUILD_ATTEMPTED),
       outcome: env.REBUILD_OUTCOME,
+      // BRO-8012: unset FAST_PATH keeps the old strict behavior.
+      fastPath: env.FAST_PATH === undefined ? true : bool(env.FAST_PATH),
+      dispatchOutcome: env.LEGACY_REBUILD_OUTCOME,
+      laneSuppressed: bool(env.LANE_ONLY_SUPPRESS),
     }),
     verifyDeployStage({
       attempted: env.DEPLOY_ATTEMPTED === undefined ? true : bool(env.DEPLOY_ATTEMPTED),
