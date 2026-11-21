@@ -1829,5 +1829,36 @@
       }
     ],
     "queuedAt": "2026-11-21T06:33:59.310Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-lane-outlets-refresh",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-lane-outlets-refresh",
+    "description": "land.yml did not land land/worktree-lane-outlets-refresh: the unit-tests-node gate went red at 5a631e51a4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/44878725680",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-lane-outlets-refresh"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5a631e51a4167b4d18f27bfb9546bc378b5e7626"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44878725680"
+      }
+    ],
+    "queuedAt": "2026-11-21T07:12:11.107Z"
   }
 ]
