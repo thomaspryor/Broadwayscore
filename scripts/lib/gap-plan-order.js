@@ -131,6 +131,51 @@ function identicalRefetchProof(liveRows, { need = IDENTICAL_REFETCH_PROOF, revie
   return { ok: false, hash: null, n: 0 };
 }
 
+
+// BRO-7997: what a logged-in subscriber-browser read proves. Bright Data cannot
+// log in, so once the subscriber browser has read this review's stored url the
+// other routes add nothing:
+//   complete    the browser's text equals the stored text (not_longer, equal
+//               length, stored text unchanged since): the stored text IS the
+//               article the subscriber sees. Close the gap, no escalation.
+//   wrong_page  the browser read the stored url and it is not this show's
+//               review (show_not_mentioned / wrong_article): re-fetching the
+//               same url by any other route reads the same wrong page. Only a
+//               new url (URL_FIND, then the browser on it) can help.
+const SUBSCRIBER_WRONG_PAGE_REASONS = new Set(['show_not_mentioned', 'wrong_article']);
+const sha16 = (t) => require('crypto').createHash('sha1').update(String(t || '').replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 16);
+
+/** True when the gate's not_longer message says both lengths are equal: "(2455 >= 2455)". */
+function equalLengthNotLonger(code, reason) {
+  if (code !== 'not_longer') return false;
+  const m = /\((\d+) >= (\d+)\)/.exec(String(reason || ''));
+  return !!m && m[1] === m[2];
+}
+
+/** Extra ledger detail for a BROWSER_SESSION gate refusal, so a later run can prove the above. */
+function subscriberReadDetail({ code, reason, storedText }) {
+  return { storedHash: sha16(storedText), ...(equalLengthNotLonger(code, reason) ? { equalToStored: true } : {}) };
+}
+
+/**
+ * @returns {{kind:'complete'|'wrong_page'|null, ts:string|null}} from the review's
+ * LATEST conclusive BROWSER_SESSION refusal at the stored url.
+ */
+function subscriberReadProof(liveRows, { reviewUrl = null, storedText = '' } = {}) {
+  const { urlCanonicallyChanged } = require('./url-change-invariant');
+  const mine = (liveRows || []).filter((r) => r.strategy === 'BROWSER_SESSION' && r.outcome === 'rejected' && r.url
+    && !(reviewUrl && urlCanonicallyChanged(r.url, reviewUrl)));
+  for (let i = mine.length - 1; i >= 0; i--) {
+    const r = mine[i];
+    if (r.reason === 'not_longer') {
+      if (r.detail && r.detail.equalToStored && r.detail.storedHash === sha16(storedText)) return { kind: 'complete', ts: r.ts };
+      continue; // a shorter browser text proves nothing
+    }
+    if (SUBSCRIBER_WRONG_PAGE_REASONS.has(r.reason)) return { kind: 'wrong_page', ts: r.ts };
+  }
+  return { kind: null, ts: null };
+}
+
 /** Retry vs new-item slot split over the work list (a retry has a live ledger row). */
 function slotSplit(work) {
   let retry = 0; let fresh = 0;
@@ -216,7 +261,7 @@ function groupBrowserSessions(work, adapterNameOf) {
 
 module.exports = {
   groupBrowserSessions,
-  bandOf, attemptFacts, compareByBand, noGainStreak, backoffHours, backoffGate, identicalRefetchProof,
+  bandOf, attemptFacts, compareByBand, noGainStreak, backoffHours, backoffGate, identicalRefetchProof, subscriberReadProof, subscriberReadDetail, equalLengthNotLonger,
   slotSplit, urlFindSliceMs, urlFindSliceExhausted, urlFindSliceOpts, runBudgetMin,
   BACKOFF_BASE_H, BACKOFF_CAP_H, IDENTICAL_REFETCH_PROOF,
 };

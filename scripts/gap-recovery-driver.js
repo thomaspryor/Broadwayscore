@@ -147,6 +147,10 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
         const proof = PO.identicalRefetchProof(live, { reviewUrl: review.url || null });
         if (proof.ok) return { ok: false, reason: 'identical_refetch_complete' };
       }
+      // BRO-7997: a logged-in subscriber read settles what the other routes would only guess at.
+      const sp = PO.subscriberReadProof(live, { reviewUrl: review.url || null, storedText: review.fullText });
+      if (sp.kind === 'complete') return { ok: false, reason: 'subscriber_read_complete' };
+      if (sp.kind === 'wrong_page' && strategy !== 'BROWSER_SESSION' && ['REFETCH_FREE', 'ARCHIVE', 'PAID_FETCH'].includes(strategy)) return { ok: false, reason: 'subscriber_read_wrong_page' };
       const bo = PO.backoffGate(live, strategy, { reviewUrl: review.url || null, baseH: Number(process.env.GAP_BACKOFF_BASE_H) || undefined });
       if (!bo.ok) return { ok: false, reason: bo.reason };
       return e;
@@ -159,6 +163,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       gapClass: row.gapClass,
       hasUrl: !!review.url,
       hasAdapter: adapterUsable(review.outletId, { explicitOutlets: OPTS.outlets }),
+      hasAnyAdapter: !!require('./lib/browser-outlet-adapters').adapterFor(review.outletId),
       freeTierOk: !review.url || require('./lib/scraper').freeTiersForUrl(review.url).length > 0,
       paidTierOk: !review.url || require('./lib/scraper').paidTierAvailable(review.url),
       // An unknown show date counts as 'recent' for ordering, but such shows
@@ -214,6 +219,11 @@ function printPlan(cands) {
   const recent = cands.filter((c) => c.recency === 'recent');
   console.log(`\nOpen gaps planned: ${cands.length} (recent ${recent.length}); with a strategy: ${cands.filter((c) => c.strategy).length}`);
   console.log('\nby strategy:', JSON.stringify(byStrategy));
+  // BRO-7997: the paid scraper cannot log in; list who still gets it and whether a browser adapter exists.
+  const paid = {};
+  const { adapterFor: adFor } = require('./lib/browser-outlet-adapters');
+  for (const c of cands) if (c.strategy === 'PAID_FETCH') bump(paid, `${c.outletId}${adFor(c.outletId) ? '(adapter,nightly-off)' : ''}`);
+  console.log('\nPAID_FETCH planned by outlet:', JSON.stringify(paid));
   console.log('\nclass x strategy:');
   for (const [k, v] of Object.entries(byClassStrategy).sort((a, b) => byClass[b[0]] - byClass[a[0]])) {
     console.log(`  ${k.padEnd(26)} ${String(byClass[k]).padStart(5)}  ${Object.entries(v).map(([s, n]) => `${s}=${n}`).join(' ')}`);
@@ -684,7 +694,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
         // URL_FIND: the found link was refused by the live gate (LLM identity
         // check included); its method stays un-done so the next night tries
         // the other links (this url is skipped from now on).
-        const detail = { via: got.via, llmAsked: !!r.llmAsked, ...(got.rawText ? { fetchedHash: require('crypto').createHash('sha1').update(String(got.rawText).replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 16) } : {}), ...(urlFindDetail ? { ...urlFindDetail, methods: { ...urlFindDetail.methods, [got.foundBy]: 'found_refused_live' } } : {}) };
+        const detail = { via: got.via, llmAsked: !!r.llmAsked, ...(strategy === 'BROWSER_SESSION' ? PO.subscriberReadDetail({ code: r.code, reason: r.reason, storedText: readJson(c.filePath).fullText }) : {}), ...(got.rawText ? { fetchedHash: require('crypto').createHash('sha1').update(String(got.rawText).replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 16) } : {}), ...(urlFindDetail ? { ...urlFindDetail, methods: { ...urlFindDetail.methods, [got.foundBy]: 'found_refused_live' } } : {}) };
         record(c, strategy, { outcome, reason: r.code, ...L.refusalDiagnostics({ c, got, r }), detail });
         continue;
       }

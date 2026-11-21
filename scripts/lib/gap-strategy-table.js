@@ -86,12 +86,21 @@ const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'P
 // Classes the blanket PAID_FETCH fallback must not reach (BRO-7943 review).
 const NO_PAID_CLASSES = new Set(['URL_DEAD']);
 
+/** Can the logged-in browser route run tonight? (flag on, run gate open) */
+function browserRouteUsable(flags, runGates) {
+  const f = flags && flags.BROWSER_SESSION;
+  if (!f || !f.enabled) return false;
+  const g = runGates && runGates.BROWSER_SESSION;
+  return !(g && !g.ok);
+}
+
 /**
  * Pick the first usable strategy for one candidate.
  * @param {object} a
  * @param {string} a.gapClass
  * @param {boolean} a.hasUrl
  * @param {boolean} a.hasAdapter     a browser adapter exists for the outlet
+ * @param {boolean} [a.hasAnyAdapter] an adapter exists even if the unattended run does not use it (nightly:false); paid cannot log in there either (BRO-7997)
  * @param {boolean} [a.freeTierOk]   a free fetch tier can run for the stored url (default true)
  * @param {boolean} [a.paidTierOk]   Bright Data can be asked for the stored url (default true)
  * @param {(strategy:string) => {ok:boolean, reason:string}} [a.eligible] ledger/file gates
@@ -101,7 +110,7 @@ const NO_PAID_CLASSES = new Set(['URL_DEAD']);
  * @param {string|null} [a.only] restrict to one strategy
  * @returns {{strategy: string|null, skipped: Array<{strategy:string, reason:string}>}}
  */
-function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidTierOk = true, recency = null, showAgeDays = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
+function selectStrategy({ gapClass, hasUrl, hasAdapter, hasAnyAdapter = hasAdapter, freeTierOk = true, paidTierOk = true, recency = null, showAgeDays = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
   let order = CLASS_STRATEGIES[gapClass] || [];
   // Subscriber outlet (Stage 4): a free refetch of a hard-paywalled page
   // returns the teaser, so the browser goes first; the free refetch stays as
@@ -149,6 +158,13 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
     if (s === 'REFETCH_FREE' && !freeTierOk) { skipped.push({ strategy: s, reason: 'no_free_tier' }); continue; }
     // same for the paid route: no token, or Bright Data tier-skipped for the host
     if (s === 'PAID_FETCH' && !paidTierOk) { skipped.push({ strategy: s, reason: 'no_paid_tier' }); continue; }
+    // BRO-7997: Bright Data cannot log in. On an outlet with a usable subscriber
+    // browser it went 0/19 (wsj, thestage, times-uk, nytimes); the browser is the
+    // route that can read the page, so paid stays only as the fallback when the
+    // browser route is unusable (flag off, or a run gate such as auth expired /
+    // no GUI, which the driver re-applies after a mid-run session failure).
+    // An explicit --strategy=PAID_FETCH run is the operator's choice and passes.
+    if (s === 'PAID_FETCH' && !only && (hasAdapter || hasAnyAdapter) && browserRouteUsable(flags, runGates)) { skipped.push({ strategy: s, reason: 'subscriber_outlet_paid_blind' }); continue; }
     if (s === 'URL_FIND' && hasUrl && order.includes('REFETCH_FREE') && !CLASS_STRATEGIES[gapClass].includes('URL_FIND')) {
       // Judged from REFETCH_FREE's own state, not the skipped list, so a
       // --strategy=URL_FIND run (which never visits REFETCH_FREE) still sees it.
@@ -242,4 +258,4 @@ function liveEnvironmentGates({ showsJsonReadable, cookieJarExists }) {
   return { fatal, runGates };
 }
 
-module.exports = { STRATEGY_FLAGS, CLASS_STRATEGIES, selectStrategy, compareCandidates, liveEnvironmentGates, storedUrlWorthRetry, collectorRefetchGate };
+module.exports = { browserRouteUsable, STRATEGY_FLAGS, CLASS_STRATEGIES, selectStrategy, compareCandidates, liveEnvironmentGates, storedUrlWorthRetry, collectorRefetchGate };
