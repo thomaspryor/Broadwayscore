@@ -35,7 +35,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { walkTranscript } from './transcript-scan.mjs';
-import { landedPushIndices, claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex } from './review-coverage.mjs';
+import { landedPushIndices, claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex, CMD_WRAPPER_PREFIX } from './review-coverage.mjs';
 import { shellEditsCode } from './retro-coverage-stop.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
 import { isUsageOnlyOutput } from './usage-output.mjs';
@@ -73,7 +73,8 @@ const RESULT_READ_CMD_RE = /\b(?:wait-for-run\.sh|gh\s+run\s+view)\b|\bcloud-dis
 // Review P1: a dispatch only runs the new code once the land has merged, so a wait-for-land read must come first.
 const LAND_DONE_CMD_RE = /\bwait-for-land\.js\b/;
 // A command, not text that mentions one (echo/grep of the script name): it must start the command or follow a separator.
-const CMD_START = '(?:^|[;&|(\\n])\\s*';
+// A wrapper before the interpreter (timeout 300, FOO=1, nohup, nice -n 10, env, time) still runs it.
+const CMD_START = `(?:^|[;&|(\\n])\\s*(?:${CMD_WRAPPER_PREFIX}\\s+)*`;
 const FAILED_OUTPUT_RE = /^\s*(?:\w*Error|Error \[\w+\]):|Traceback \(most recent call last\)|\bUnhandled(?:PromiseRejection)?\b|\b(?:404|422) Not Found|\bNot Found\b/m;
 const NOT_A_RUN_RE = /(?:^|\s)(?:--help|-h|--version)(?:\s|$)/;
 
