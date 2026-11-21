@@ -238,7 +238,8 @@ const ADAPTERS = Object.freeze({
     // work for url rediscovery, not the session. Off for the nightly.
     // BRO-7943 re-pilot 2026-11-21: 2/8 = 25% (3 not_longer + 1
     // not_materially_longer: the stored text already is the whole review;
-    // 2 real 404s). Still under the 30% bar: stays off.
+    // 2 real 404s). Top-up run the same day: 3/16 = 19% overall. Still under
+    // the 30% bar: stays off.
     nightly: false,
     outletIds: ['wsj'],
     cookieDomain: 'wsj.com',
