@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-7938",
+  "planId": "4b7d17c2-cc48-47d7-b1d8-5b2c1bacbf10",
+  "status": "pending",
+  "createdAt": "2026-11-21T06:09:45.980Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Catarina (NT Dorfman) closed 2026-09-26; mark closed",
+    "steps": [
+      "shows.json: catarina-and-the-beauty-of-killing-fascists-west-end-2026.closingDate",
+      "shows.json: catarina-and-the-beauty-of-killing-fascists-west-end-2026.status"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-26",
+        "description": "shows.json: catarina-and-the-beauty-of-killing-fascists-west-end-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: catarina-and-the-beauty-of-killing-fascists-west-end-2026.status"
+      }
+    ]
+  }
+}
