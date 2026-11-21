@@ -127,9 +127,11 @@ const ACCEPTED_SHUTDOWNS = {
   // and a voice/timing A/B before changing the social-video voiceover.
   // https://developers.openai.com/api/docs/deprecations (checked 2026-11-16).
   'gpt-4o-mini-tts': '2027-01-06',
-  // BRO-7511: Flash powers review scoring (gemini-scorer.ts, ensemble-scorer.ts);
+  // BRO-7511: review scoring moved to gemini-3.5-flash-lite (models.js SCORING_GEMINI,
+  // A/B data/audit/scoring-ab-2026-11-target.json). 2.5-flash stays accepted for the
+  // GEMINI_FLASH utility callers and the comparative rescore until they move;
   // Pro powers review-factcheck/check.js and visual-qa.mjs. Keep their pins until
-  // scoring A/B and fact-check/visual validation cover Google's replacements:
+  // fact-check/visual validation cover Google's replacements:
   // Flash -> gemini-3.5-flash-lite; Pro -> gemini-3.8-flash.
   // https://ai.google.dev/gemini-api/docs/deprecations (checked 2026-11-16).
   'gemini-2.5-flash': '2026-12-01',

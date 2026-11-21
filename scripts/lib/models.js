@@ -51,9 +51,18 @@ module.exports = {
   // scores corpus-wide, so these move only after the A/B gate passes. Every
   // call site that scores reviews uses these, never CLAUDE_SONNET/CLAUDE_OPUS
   // (tests/unit/model-table-single-source.test.mjs enforces).
-  // BRO-7537: flipped 4.6 -> 5.5 after the BRO-7529 A/B passed every §13 gate
-  // (data/audit/scoring-ab-2026-11-cheaper-legs.json). Rollback = this line.
-  SCORING_SONNET: 'claude-sonnet-5-5',
+  // BRO-7537 flipped 4.6 -> 5.5 after its own A/B passed. The combined A/B
+  // (owner 2026-11-21, data/audit/scoring-ab-2026-11-combined.json) found 5.5
+  // together with gpt-5.6-luna fails the §13 bucket gate (Rave +7 to +9pp; the
+  // two legs' shifts add). Owner chose: back to 4.6, keep luna. Verified in
+  // data/audit/scoring-ab-2026-11-target.json. Rollback = this line.
+  SCORING_SONNET: 'claude-sonnet-4-6',
+  // Review-SCORING Gemini pin (BRO-7511): gemini-2.5-flash shuts down 2026-12-01.
+  // gemini-3.5-flash-lite passed every gate alone and in the target ensemble
+  // (same A/B files). It rejects thinkingBudget, so every request takes
+  // llm-batch.js geminiThinkingOff(model). The comparative rescore keeps its own
+  // pin (comparative-batch.js COMPARATIVE_PARAMS) until its own check.
+  SCORING_GEMINI: 'gemini-3.5-flash-lite',
   SCORING_OPUS: 'claude-opus-4-7', // video-reviews/score-video-reviews.js
   // GPT4O / GPT4O_MINI: legacy key names for the general OpenAI utility callers
   // (classifiers, extractors, audits). gpt-4o and gpt-4o-mini shut down 2027-01-14

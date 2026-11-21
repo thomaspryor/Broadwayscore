@@ -73,3 +73,11 @@ test('scoring paths are fixed: sync scorer, batch builder, comparative (red-then
   const line = buildGeminiBatchRequest({ customId: 'c', systemPrompt: 's', userPrompt: 'u', model: 'gemini-3.5-flash-lite' });
   assert.equal('thinkingBudget' in line.request.generationConfig.thinkingConfig, false);
 });
+
+test('every scoring pin is priced by the spend meter (an unpriced pin hides its cost)', () => {
+  const { estimateCostUsd } = require('../../scripts/lib/gemini-usage-ledger.js');
+  const { SCORING_GEMINI, SCORING_SONNET, SCORING_OPENAI } = require('../../scripts/lib/models.js');
+  assert.ok(estimateCostUsd(SCORING_GEMINI, 1e6, 1e6) > 0, SCORING_GEMINI);
+  assert.ok(estimateCostUsd(SCORING_SONNET, 1e6, 1e6, { provider: 'anthropic' }) > 0, SCORING_SONNET);
+  assert.ok(estimateCostUsd(SCORING_OPENAI, 1e6, 1e6, { provider: 'openai' }) > 0, SCORING_OPENAI);
+});
