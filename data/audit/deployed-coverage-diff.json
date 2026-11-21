@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-21T18:19:13.378Z",
+  "generatedAt": "2026-11-21T18:43:47.336Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 370,
+  "checked": 371,
   "clean": 369,
-  "defective": 1,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
@@ -18,13 +18,29 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 84.43 vs local 85.23 (Δ0.8)"
+          "detail": "deployed cs 77.07 vs local 78.99 (Δ1.92)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-21T18:19:10.062Z"
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-21T17:41:59.927Z"
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "title": "Titanique",
+      "openingDate": "2025-01-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.37 vs local 79.57 (Δ0.2)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-11-21T18:43:41.556Z"
     }
   ],
   "persistentDefective": 0,
