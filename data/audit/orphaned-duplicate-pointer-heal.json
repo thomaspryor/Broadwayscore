@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-21T01:24:17.767Z",
+  "generated": "2026-11-21T01:58:51.603Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 61,
+  "count": 58,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -78,20 +78,6 @@
       "loserFile": "ap--unknown.json",
       "targetFile": "ap--mark-kennedy.json",
       "reason": "orphaned-duplicate-heal: ap--mark-kennedy.json was flagged invalid after ap--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "loserFile": "british-theatre--unknown.json",
-      "targetFile": "british-theatre--karen-bussell.json",
-      "reason": "orphaned-duplicate-heal: british-theatre--karen-bussell.json was flagged invalid after british-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "loserFile": "pinkprincetheatre--unknown.json",
-      "targetFile": "pinkprincetheatre--neill-kovacic-clarke.json",
-      "reason": "orphaned-duplicate-heal: pinkprincetheatre--neill-kovacic-clarke.json was flagged invalid after pinkprincetheatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -422,13 +408,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "loserFile": "pinkprincetheatre--unknown.json",
-      "targetFile": "pinkprincetheatre--neill-kovacic-clarke.json",
-      "reason": "orphaned-duplicate-heal: pinkprincetheatre--neill-kovacic-clarke.json was flagged invalid after pinkprincetheatre--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T01:33:53.423Z",
+  "timestamp": "2026-11-21T02:08:11.849Z",
   "stats": {
-    "totalReviews": 83545,
-    "alreadyFlagged": 22611,
+    "totalReviews": 83548,
+    "alreadyFlagged": 22614,
     "dateGuardCatches": 222,
     "directorMismatch": 3802,
     "tvFilmSignals": 2380,
-    "londonSignals": 3855,
+    "londonSignals": 3857,
     "offBroadwaySignals": 775,
     "yearMismatch": 388,
-    "noPublishDate": 8294
+    "noPublishDate": 8293
   },
   "findings": [
     {
@@ -101913,7 +101913,7 @@
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-11-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-DESIRE-UNDER-THE-ELMS-Almeida-Theatre-20261118",
       "findings": [
@@ -101999,6 +101999,33 @@
       "score": 77,
       "publishDate": "2026-11-20",
       "url": "https://observer.co.uk/culture/theatre/article/desire-under-the-elms-oedipus-wrecks-in-a-feverish-southern-gothic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "score": 76,
+      "publishDate": "2026-11-20",
+      "url": "https://playsinternational.org.uk/desire-under-the-elms-almeida-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "plays-to-see--unknown.json",
+      "publishDate": "2026-11-19",
+      "url": "https://playstosee.com/reviews/desire-under-the-elms/?utm_source=rss&utm_medium=rss&utm_campaign=desire-under-the-elms",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
