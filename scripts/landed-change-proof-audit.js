@@ -222,9 +222,9 @@ async function main() {
 
   // BRO-7910 (advisory): web sessions that landed code the day before this audit with no retro row.
   const retroRows = readLedger(require('./lib/session-retro.js').LEDGER);
-  let ledgerShas = [];
-  try { ledgerShas = require('child_process').execFileSync('git', ['log', 'origin/main', `--since=${lib.dayMinus(auditDay, 3)}`, '--format=%H', '--', 'data/audit/session-retro.jsonl'], { cwd: ROOT, encoding: 'utf8', timeout: 30000 }).split('\n').filter(Boolean); } catch { /* advisory: fall back to id and link matching */ }
-  const retroGap = lib.retroCoverageGaps(rows.filter((r) => r.source === 'cloud'), retroRows, lib.dayMinus(auditDay, 1), ledgerShas);
+  let ledgerSessions = [];
+  try { ledgerSessions = require('child_process').execFileSync('git', ['log', 'origin/main', `--since=${lib.dayMinus(auditDay, 3)}`, '--format=%(trailers:key=Claude-Session,valueonly,separator=%x20)', '--', 'data/audit/session-retro.jsonl'], { cwd: ROOT, encoding: 'utf8', timeout: 30000 }).split('\n').filter(Boolean); } catch { /* advisory: fall back to id and link matching */ }
+  const retroGap = lib.retroCoverageGaps(rows.filter((r) => r.source === 'cloud'), retroRows, lib.dayMinus(auditDay, 1), ledgerSessions);
   console.error(`[landed-proof] retro coverage (advisory) for ${lib.dayMinus(auditDay, 1)}: ${retroGap.landed} web session(s) landed code, ${retroGap.covered} with a retro row, ${retroGap.missing.length} without${retroGap.missing.length ? ': ' + retroGap.missing.map((m) => m.session).join(' ') : ''}`);
 
   const s = lib.summarize(rows);

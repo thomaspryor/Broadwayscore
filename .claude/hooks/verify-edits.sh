@@ -62,7 +62,7 @@ if [ "$stop_hook_active" = "true" ]; then
   { : >> "$_ve_chain_file"; } 2>/dev/null || exit 0
   if [ "$({ wc -l < "$_ve_chain_file"; } 2>/dev/null || echo 0)" -ge "$VE_CHAIN_BLOCK_CAP" ]; then
     # BRO-7911: the cap spent on earlier gates used to exit before [VE:RETROCOV] ran (2026-11-20: board firings landed code, closed SAFE TO ARCHIVE with no retro row). The retro gate has its own 3-nudge budget, so it cannot loop.
-    if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${RETRO_COVERAGE_STOP_DISABLE:-0}" != "1" ] && [ -f "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)/scripts/lib/retro-coverage-stop.mjs" ] && command -v node >/dev/null 2>&1; then
+    if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${RETRO_COVERAGE_STOP_DISABLE:-0}" != "1" ] && [ -f "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)/scripts/lib/retro-coverage-stop.mjs" ] && command -v node >/dev/null 2>&1; then
       _rcv_err=$(printf '%s' "$input" | timeout 15 node "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/lib/retro-coverage-stop.mjs" --stop-hook 2>&1 >/dev/null); [ $? -eq 2 ] && { printf '%s\n[VE:RETROCOV]\n' "$_rcv_err" >&2; exit 2; }
     fi
     exit 0
