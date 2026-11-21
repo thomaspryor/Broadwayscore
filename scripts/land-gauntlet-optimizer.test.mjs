@@ -45,7 +45,7 @@ test('land.yml wires the plan into the expensive steps', () => {
   const checks = y.slice(y.indexOf('\n  checks:'), y.indexOf('\n  land:'));
   const blocks = checks.split('\n      - ').slice(1);
   assert.match(checks, /id: plan/);
-  for (const id of ['deps', 'coredata', 'manifests', 'actionlint', 'harness', 'basekey', 'base_cache', 'base_artifact', 'base_run', 'branch_run', 'delta', 'tipkey']) {
+  for (const id of ['deps', 'coredata', 'manifests', 'actionlint', 'harness', 'basekey', 'base_cache', 'base_artifact', 'base_run', 'branch_run', 'node_shard', 'delta', 'tipkey']) {
     const b = blocks.find((x) => new RegExp(`\\n        id: ${id}\\n`).test(x + '\n'));
     assert.ok(b, `step ${id} exists`);
     assert.match(b, /if:[^\n]*steps\.plan\.outputs\.skip_gauntlet != 'true'/, `step ${id} must be gated on skip_gauntlet`);

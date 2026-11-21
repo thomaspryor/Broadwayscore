@@ -39,11 +39,14 @@ test('replay 2026-10-11: sweep prefers the stranded main-red lane', () => {
 
 // BRO-5194: an in-runner sleep-poll job between Checks and Land held ~6 runners
 // and starved test.yml on main. Main-red priority lives in the mutex ticket.
-test('workflow wiring: no sleep-poll admit job; Land needs only checks; main-red tickets sort first', () => {
+test('workflow wiring: no sleep-poll admit job; Land needs checks (+dispatch-guard), never checks-shard; main-red tickets sort first', () => {
   const y = readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
   assert.ok(!/\n  admit:/.test(y), 'no admit job (BRO-5194)');
   assert.ok(!/land-admit/.test(y));
-  assert.match(y, /\n  land:\n    name: Land\n    needs: checks\n    if: \$\{\{ !cancelled\(\) && needs\.checks\.result == 'success' \}\}/);
+  // BRO-7324: Land also reads dispatch-guard's shard flag; never checks-shard.
+  assert.match(y, /\n  land:\n    name: Land\n(?:    #[^\n]*\n)*    needs: \[dispatch-guard, checks\]\n    if: \$\{\{ !cancelled\(\) && needs\.checks\.result == 'success' && \(needs\.dispatch-guard\.outputs\.shard != 'true' \|\| needs\.checks\.outputs\.node_shard != '' \|\| needs\.checks\.outputs\.skip_gauntlet == 'true'\) \}\}/);
+  const landJob = y.slice(y.indexOf('\n  land:\n'), y.indexOf('\n  alert-red:\n'));
+  assert.ok(!/needs:[^\n]*checks-shard/.test(landJob), 'Land never needs checks-shard (A merges or runs part 2)');
   const { ticketName } = require('./land-mutex.js');
   const t = (mainRed) => ticketName({ mainRed, enqueuedAt: 1, runId: '1', attempt: 1 });
   assert.ok(t(true) < t(false), 'main-red ticket sorts ahead of an ordinary one');

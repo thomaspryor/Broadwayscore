@@ -109,6 +109,13 @@ jobs:
     name: Dispatch guard
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    # BRO-7324: the two-runner split. `shard` turns on the "Checks (shard 2/2)"
+    # job; `base` is the main sha both runners rebase onto, so both parts judge
+    # the same tree. An unreadable main turns the split off (A runs every gate
+    # unsplit, as before). Kill switch: repo variable LAND_NODE_SHARD_DISABLED=1.
+    outputs:
+      shard: ${{ steps.shard.outputs.shard }}
+      base: ${{ steps.shard.outputs.base }}
     steps:
       - name: Checkout the guard
         if: github.event_name == 'workflow_dispatch'
@@ -125,6 +132,27 @@ jobs:
           REPO: ${{ github.repository }}
           LAND_DISPATCH_GUARD_DISABLED: ${{ vars.LAND_DISPATCH_GUARD_DISABLED }}
         run: node scripts/lib/land-dispatch-guard.js
+
+      - name: Pin the base and decide the node shard (BRO-7324)
+        id: shard
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LAND_NODE_SHARD_DISABLED: ${{ vars.LAND_NODE_SHARD_DISABLED }}
+        run: |
+          SHARD=true
+          if [ "$LAND_NODE_SHARD_DISABLED" = "1" ]; then SHARD=false; echo "node shard off (LAND_NODE_SHARD_DISABLED=1)"; fi
+          BASE=""
+          if OUT=$(timeout 60 git ls-remote "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" refs/heads/main); then
+            BASE=$(printf '%s\n' "$OUT" | awk '$2 == "refs/heads/main" {print $1}' | head -1)
+          fi
+          if ! printf '%s' "$BASE" | grep -Eq '^[0-9a-f]{40}$'; then
+            echo "::warning::could not read main's sha; node shard off, Checks runs every gate unsplit"
+            SHARD=false; BASE=""
+          fi
+          echo "shard=$SHARD" >> "$GITHUB_OUTPUT"
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          echo "node shard: $SHARD; pinned base: ${BASE:-none (Checks rebases onto main as it is then)}"
 
   checks:
     name: Checks
@@ -163,6 +191,9 @@ jobs:
       hook_seed: ${{ steps.hookseed.outputs.seed }}
       receipt: ${{ steps.receipt.outputs.receipt }}
       timing: ${{ steps.gatetiming.outputs.timing }}
+      # BRO-7324: the land job refuses a sharded run whose part 2 was never merged.
+      node_shard: ${{ steps.node_shard.outputs.node_shard || steps.node_shard.outputs.source }}
+      skip_gauntlet: ${{ steps.plan.outputs.skip_gauntlet }}
     steps:
       - name: Checkout the land branch
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -198,12 +229,22 @@ jobs:
         # handed to the land job (--verified-base) so land.js can tell an
         # inert move of main from a substantive one and only re-run the
         # gauntlet for the latter.
+        env:
+          # BRO-7324: with the node shard on, both runners rebase onto the main
+          # sha dispatch-guard pinned, so part 1 and part 2 judge one tree.
+          PINNED_BASE: ${{ needs.dispatch-guard.outputs.shard == 'true' && needs.dispatch-guard.outputs.base || '' }}
         run: |
           # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           TIP=$(git rev-parse HEAD)
           git_net 180 fetch origin main
-          BASE=$(git rev-parse origin/main)
+          if [ -n "$PINNED_BASE" ]; then
+            git cat-file -e "${PINNED_BASE}^{commit}" 2>/dev/null || git_net 180 fetch origin "$PINNED_BASE"
+            BASE=$(git rev-parse --verify "${PINNED_BASE}^{commit}") || { echo "::error::pinned base ${PINNED_BASE:0:10} not fetchable"; exit 1; }
+            echo "node shard: rebasing onto the pinned base ${BASE:0:10} (origin/main now @ $(git rev-parse --short origin/main))"
+          else
+            BASE=$(git rev-parse origin/main)
+          fi
           echo "tip=$TIP" >> "$GITHUB_OUTPUT"
           echo "base=$BASE" >> "$GITHUB_OUTPUT"
           echo "branch $BRANCH @ ${TIP:0:10} → rebase onto origin/main @ ${BASE:0:10}"
@@ -500,12 +541,38 @@ jobs:
           GAUNTLET_PARALLEL: ${{ vars.LAND_GAUNTLET_PARALLEL_DISABLED != 'true' && '1' || '0' }}
           LAND_BASE: ${{ steps.rebase.outputs.base }}
           REBASED: ${{ steps.rebase.outputs.rebased }}
+          # BRO-7324: part 1 of 2 when the node shard is on (step-level only:
+          # the base, confirm and fast-fail runs are never sharded).
+          NODE_SHARD: ${{ needs.dispatch-guard.outputs.shard }}
         run: |
           if [ "$(git rev-parse HEAD)" != "$REBASED" ]; then
             echo "::error::HEAD $(git rev-parse --short HEAD) is not the rebased tip ${REBASED:0:10} — refusing to judge the wrong tree"
             exit 1
           fi
+          if [ "$NODE_SHARD" = "true" ]; then
+            GAUNTLET_GATES=$(node scripts/lib/land-shard.js gates 1) && [ -n "$GAUNTLET_GATES" ] \
+              || { echo "::error::node shard on but land-shard.js gates 1 gave no list"; exit 1; }
+            export GAUNTLET_GATES GAUNTLET_SHARD=1/2
+            echo "node shard: part 1/2 here: $GAUNTLET_GATES (unit-tests-node slice 1/2)"
+          fi
           bash scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet/branch"
+
+      # BRO-7324: part 2/2 ran on "Checks (shard 2/2)"; fetch its result and
+      # merge it into the branch dir BEFORE any gate is judged. Fail closed:
+      # when that part is missing, late, cancelled or unreadable, this step runs
+      # part 2 itself on this runner (scripts/lib/land-shard.js collect). A
+      # merge refusal or a failed local run fails the step (gate node-shard).
+      - name: Collect the node shard (part 2/2)
+        if: steps.plan.outputs.skip_gauntlet != 'true' && needs.dispatch-guard.outputs.shard == 'true'
+        id: node_shard
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          node scripts/lib/land-shard.js collect --repo="$GITHUB_REPOSITORY" \
+            --run-id="$GITHUB_RUN_ID" --attempt="$GITHUB_RUN_ATTEMPT" \
+            --out="$RUNNER_TEMP/land-node-shard" --merge-into="$RUNNER_TEMP/land-gauntlet/branch" \
+            --harness="$RUNNER_TEMP/land-gauntlet.sh" --wait-min=12
 
       # ── Lazy base (BRO-5670): a gate green on the branch passes whatever the
       # base says (land-gate-delta.js decideGateDelta), so the base is looked
@@ -748,6 +815,7 @@ jobs:
             "harness:${{ steps.harness.outcome }}" \
             "fast-fail:${{ steps.fast.outcome }}" \
             "branch-gauntlet:${{ steps.branch_run.outcome }}" \
+            "node-shard:${{ steps.node_shard.outcome }}" \
             "need:${{ steps.need.outcome }}" \
             "base-key:${{ steps.basekey.outcome }}" \
             "base-restore:${{ steps.base_cache.outcome }}" \
@@ -1048,8 +1116,11 @@ jobs:
 
   land:
     name: Land
-    needs: checks
-    if: ${{ !cancelled() && needs.checks.result == 'success' }}
+    # BRO-7324: not checks-shard. Checks merges part 2 (or runs it itself), so
+    # a skipped or cancelled shard job never blocks or passes a landing; a
+    # sharded run lands only with node_shard set (part 2 merged).
+    needs: [dispatch-guard, checks]
+    if: ${{ !cancelled() && needs.checks.result == 'success' && (needs.dispatch-guard.outputs.shard != 'true' || needs.checks.outputs.node_shard != '' || needs.checks.outputs.skip_gauntlet == 'true') }}
     runs-on: ubuntu-latest
     # Per branch (BRO-5112): a newer run for the same land/** branch queues
     # behind this one (its older tip would be refused by --expect-tip
@@ -1580,3 +1651,225 @@ jobs:
           else
             echo "No ledger changes to commit."
           fi
+
+  # BRO-7324: runner B of the two-runner split. Runs part 2/2 of the branch
+  # gauntlet (scripts/lib/land-shard.js gates 2, with the node unit batch slice
+  # 2/2) on the same pinned base as Checks and uploads the result. Checks (A)
+  # collects and merges it before judging; when this part is missing, late or
+  # failed, A runs part 2 itself, so nothing here can pass or refuse a landing
+  # on its own (land needs only checks). Kill switch: LAND_NODE_SHARD_DISABLED=1.
+  checks-shard:
+    name: Checks (shard 2/2)
+    needs: dispatch-guard
+    if: needs.dispatch-guard.outputs.shard == 'true'
+    runs-on: ubuntu-latest
+    # Mirrors the checks group. Cancelling B is safe: A never trusts a missing
+    # part, it falls back to running part 2 itself, so no gate is lost.
+    concurrency:
+      group: land-checks-${{ github.event_name }}-${{ github.event.inputs.branch || github.ref_name }}-shard
+      # concurrency-cancel-ok: per-branch group on land/** pushes only (never
+      # main); a superseded tip is never landed, and Checks runs part 2 itself
+      # when this part is missing, so cancelling it loses no validation. Read by
+      # scripts/audit-workflow-concurrency.js.
+      cancel-in-progress: true
+    timeout-minutes: 40
+    steps:
+      # Checks may already be over (a fast-fail refusal, or a re-run of failed
+      # jobs only): then this part is not needed. Needs only scripts/lib.
+      - name: Checkout the shard helper
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.event.inputs.branch && format('refs/heads/{0}', github.event.inputs.branch) || github.ref }}
+          path: .land-shard-helper
+          sparse-checkout: scripts/lib/
+          sparse-checkout-cone-mode: false
+
+      - name: Is Checks already done
+        id: early
+        # Advisory: a crash here just runs part 2 (done stays unset).
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          node .land-shard-helper/scripts/lib/land-shard.js checks-done --repo="$GITHUB_REPOSITORY" \
+            --run-id="$GITHUB_RUN_ID" --attempt="$GITHUB_RUN_ATTEMPT"
+
+      - name: Checkout the land branch
+        if: steps.early.outputs.done != 'true'
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.event.inputs.branch && format('refs/heads/{0}', github.event.inputs.branch) || github.ref }}
+          # Full commit graph (the rebase below needs the merge-base with
+          # main) but NO historical blobs — this repo's data/*.json history
+          # makes a plain fetch-depth: 0 take ~35 min (autonomous-merge.yml,
+          # BRO-423). Blobs are fetched on demand for the trees touched.
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Configure git
+        if: steps.early.outputs.done != 'true'
+        id: gitcfg
+        run: |
+          # BRO-7324: job start for the gate-timing record (a restored base older than this is not counted).
+          echo "t0=$(date +%s%3N)" >> "$GITHUB_OUTPUT"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # The gauntlet's temp-git-repo tests rm their repos in teardown;
+          # detached auto-maintenance writing into them makes that ENOTEMPTY.
+          # Global (not GIT_CONFIG_COUNT env, which git strips for local
+          # receive-pack). BRO-4749; guard tests/unit/ci-git-auto-maintenance-off.test.mjs.
+          git config --global gc.auto 0
+          git config --global gc.autoDetach false
+          git config --global maintenance.auto false
+          git config --global receive.autogc false
+
+      - name: Rebase onto origin/main
+        if: steps.early.outputs.done != 'true'
+        id: rebase
+        # The gates below judge the branch AS IT WOULD LAND — rebased onto the
+        # main of right now — not the branch's own stale base. The base sha is
+        # handed to the land job (--verified-base) so land.js can tell an
+        # inert move of main from a substantive one and only re-run the
+        # gauntlet for the latter.
+        env:
+          # BRO-7324: with the node shard on, both runners rebase onto the main
+          # sha dispatch-guard pinned, so part 1 and part 2 judge one tree.
+          PINNED_BASE: ${{ needs.dispatch-guard.outputs.shard == 'true' && needs.dispatch-guard.outputs.base || '' }}
+        run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          TIP=$(git rev-parse HEAD)
+          git_net 180 fetch origin main
+          if [ -n "$PINNED_BASE" ]; then
+            git cat-file -e "${PINNED_BASE}^{commit}" 2>/dev/null || git_net 180 fetch origin "$PINNED_BASE"
+            BASE=$(git rev-parse --verify "${PINNED_BASE}^{commit}") || { echo "::error::pinned base ${PINNED_BASE:0:10} not fetchable"; exit 1; }
+            echo "node shard: rebasing onto the pinned base ${BASE:0:10} (origin/main now @ $(git rev-parse --short origin/main))"
+          else
+            BASE=$(git rev-parse origin/main)
+          fi
+          echo "tip=$TIP" >> "$GITHUB_OUTPUT"
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          echo "branch $BRANCH @ ${TIP:0:10} → rebase onto origin/main @ ${BASE:0:10}"
+          # Run the BASE tree's copy (the land branch may predate the script)
+          # and its classifier; retries a blobless lazy-fetch failure and
+          # reports it apart from a real conflict (BRO-4165).
+          HELPER="$RUNNER_TEMP/land-rebase"; mkdir -p "$HELPER"
+          for f in land-rebase.sh promisor-fetch-failure.js; do
+            # HEAD fallback: the very landing that introduces the script.
+            git show "$BASE:scripts/lib/$f" > "$HELPER/$f" 2>/dev/null || { echo "::warning::scripts/lib/$f not readable from origin/main @ ${BASE:0:10} — using the branch's copy"; git show "HEAD:scripts/lib/$f" > "$HELPER/$f"; } || { echo "::error::scripts/lib/$f exists on neither origin/main @ ${BASE:0:10} nor the branch"; exit 1; }
+          done
+          BRANCH="$BRANCH" bash "$HELPER/land-rebase.sh" "$BASE" "$BRANCH" || exit $?
+          echo "rebased=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          # A dependency change means the installed node_modules are the
+          # branch's; the base gauntlet must reinstall its own (see
+          # land-gauntlet.sh --deps-changed).
+          if git diff --name-only "$BASE"...HEAD -- package.json package-lock.json | grep -q .; then
+            echo "deps_changed=true" >> "$GITHUB_OUTPUT"; echo "package.json/package-lock.json changed — the base run reinstalls its own node_modules"
+          else
+            echo "deps_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
+          git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
+
+      - name: Plan the gauntlet (skip when the diff is inert-only)
+        if: steps.early.outputs.done != 'true'
+        id: plan
+        env:
+          BASE: ${{ steps.rebase.outputs.base }}
+          LAND_STRICT_GATES: ${{ vars.LAND_STRICT_GATES }}
+          LAND_GAUNTLET_SKIP_INERT: ${{ vars.LAND_GAUNTLET_SKIP_INERT }}
+        run: |
+          if [ -f scripts/lib/land-gauntlet-optimizer.js ]; then
+            node scripts/lib/land-gauntlet-optimizer.js --base "$BASE" --head HEAD --github-output "$GITHUB_OUTPUT"
+          else
+            echo "optimizer not on this tree — full gauntlet"; echo "skip_gauntlet=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node.js
+        if: steps.early.outputs.done != 'true' && steps.plan.outputs.skip_gauntlet != 'true'
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        id: deps
+        if: steps.early.outputs.done != 'true' && steps.plan.outputs.skip_gauntlet != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Checkout core data
+        if: steps.early.outputs.done != 'true' && steps.plan.outputs.skip_gauntlet != 'true'
+        id: coredata
+        # src/lib/data-*.ts import data/*.json via resolveJsonModule; tsc and
+        # the unit batches need the private core data exactly as test.yml's
+        # typescript-check and unit-tests jobs do.
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Generate gitignored manifests
+        if: steps.early.outputs.done != 'true' && steps.plan.outputs.skip_gauntlet != 'true'
+        id: manifests
+        run: |
+          node scripts/build-actor-slugs-manifest.js
+          node scripts/build-cast-manifest.js
+
+      - name: Install actionlint
+        if: steps.early.outputs.done != 'true' && steps.plan.outputs.skip_gauntlet != 'true'
+        id: actionlint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ACTIONLINT_VERSION=1.7.7
+          bash scripts/lib/install-release-binary.sh rhysd/actionlint "v${ACTIONLINT_VERSION}" "actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" actionlint
+
+      - name: Stage the branch's gauntlet harness
+        if: steps.early.outputs.done != 'true' && steps.plan.outputs.skip_gauntlet != 'true'
+        id: harness
+        # Both runs use the BRANCH's copy of the harness: the base tree may
+        # predate scripts/lib/land-gauntlet.sh entirely (the first landing of
+        # this workflow) or carry an older one. Only the tree under test
+        # changes between the two runs, never the harness.
+        # Mirrors HARNESS_FILES in scripts/lib/land-local-check.js: the gauntlet's
+        # siblings must sit next to the copy (BRO-6152); the test enforces the list.
+        run: cp scripts/lib/land-gauntlet.sh scripts/lib/tsc-node-options.sh "$RUNNER_TEMP/"
+
+      - name: Run part 2/2 of the gauntlet on the rebased branch
+        if: steps.early.outputs.done != 'true' && steps.plan.outputs.skip_gauntlet != 'true'
+        id: gauntlet
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+          GAUNTLET_PARALLEL: '0'
+        run: |
+          if [ "$(git rev-parse HEAD)" != "$REBASED" ]; then
+            echo "::error::HEAD $(git rev-parse --short HEAD) is not the rebased tip ${REBASED:0:10} — refusing to judge the wrong tree"
+            exit 1
+          fi
+          GAUNTLET_GATES=$(node scripts/lib/land-shard.js gates 2) && [ -n "$GAUNTLET_GATES" ] \
+            || { echo "::error::land-shard.js gates 2 gave no list"; exit 1; }
+          export GAUNTLET_GATES GAUNTLET_SHARD=2/2
+          echo "node shard: part 2/2 here: $GAUNTLET_GATES (unit-tests-node slice 2/2)"
+          MARKER="$RUNNER_TEMP/land-node-shard.stopped"
+          # watch stops the gauntlet once Checks has completed (its result no
+          # longer needs this part), writes the marker and exits 0.
+          node scripts/lib/land-shard.js watch --repo="$GITHUB_REPOSITORY" \
+            --run-id="$GITHUB_RUN_ID" --attempt="$GITHUB_RUN_ATTEMPT" --stopped-marker="$MARKER" \
+            -- bash "$RUNNER_TEMP/land-gauntlet.sh" "$RUNNER_TEMP/land-node-shard"
+          if [ -e "$MARKER" ]; then
+            echo "stopped=true" >> "$GITHUB_OUTPUT"; echo "stopped: Checks already completed; nothing to upload"
+          else
+            echo "stopped=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload part 2/2 for Checks
+        # A stopped (partial) run is never uploaded; Checks then runs part 2 itself.
+        if: steps.gauntlet.outcome == 'success' && steps.gauntlet.outputs.stopped == 'false'
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: land-node-shard-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/land-node-shard
+          retention-days: 1
+          if-no-files-found: error
