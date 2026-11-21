@@ -1,0 +1,4 @@
+# BRO-7943 state (2026-11-21)
+Done (tested, committed on job/linear-BRO-7943-mwq2cdvx): FT adapter, ARCHIVE minShowAgeDays=60, PAID_FETCH last, URL_FIND after spent refetch, CF host no free tier, terminal routeFingerprint, GAP_PILOT_ENABLE hook, scripts/lib/gap-routes.test.mjs.
+Not done: live pilots (adapters wsj/times/ft/telegraph >=3 recoveries each, ARCHIVE 20-item, URL_REDISCOVER 20-item) - run lock was held by nightly then gap-recovery-batch. Pilot script: /tmp/bro7943-pilots.sh (ln -s ~/Broadwayscore/data/cookies data/cookies first).
+Landing blocked: merge-worktree-to-main.sh post-merge floor reported 1 failing test of 20127 (name not captured; baseline timed out). Next: bash scripts/merge-worktree-to-main.sh, find the failing test, fix or MERGE_SKIP_POST_MERGE_TEST_GATE=1 if pre-existing.
