@@ -767,3 +767,22 @@ test('real corpus: the An Ark interview is refused; two real tv-radio/life-style
     if (t) assert.equal(interviewTextSignals(t).interview, false, f);
   }
 });
+
+// ── BRO-7996: folder wins over a stale showId field (same as the rebuild) ──
+test('buildAcceptanceContext judges a record against its FOLDER show, not a disagreeing showId field', () => {
+  const shows = path.join(TMP, 'shows-7996.json');
+  fs.writeFileSync(shows, JSON.stringify([
+    { id: 'spies-west-end-2025', title: 'The Comedy About Spies', previewsStartDate: '2025-04-14', openingDate: '2025-05-13' },
+    { id: 'spies-west-end-2026', title: 'The Comedy About Spies', previewsStartDate: '2026-08-01', openingDate: '2026-08-10' },
+  ]));
+  const dir = path.join(fs.mkdtempSync(path.join(TMP, 'f-')), 'spies-west-end-2025');
+  fs.mkdirSync(dir);
+  const filePath = path.join(dir, 'times-uk--clive-davis.json');
+  const existing = { showId: 'spies-west-end-2026', outletId: 'times-uk', publishDate: '2025-05-14', url: 'https://www.thetimes.com/x', fullText: 'Short.', contentTier: 'excerpt' };
+  fs.writeFileSync(filePath, JSON.stringify(existing));
+  const ctx = gate.buildAcceptanceContext(filePath, existing, existing.url, { showsPath: shows });
+  assert.equal(ctx.showId, 'spies-west-end-2025');
+  assert.equal(ctx.show.id, 'spies-west-end-2025');
+  const d = acceptRecoveredText(existing, { rawText: GOOD.replace(/Joe Turner's Come and Gone/g, 'The Comedy About Spies'), pageDate: '2025-05-14' }, ctx);
+  assert.notEqual(d.code, 'date_implausible');
+});

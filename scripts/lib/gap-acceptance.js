@@ -603,7 +603,8 @@ function outletDomainsFor(outletId) {
  */
 function buildAcceptanceContext(filePath, existing, candidateUrl, opts = {}) {
   const showDir = path.dirname(filePath);
-  const showId = existing.showId || path.basename(showDir);
+  // Folder wins, same as rebuild-all-reviews (BRO-7996): a stale showId field must not pick the wrong show.
+  const showId = path.basename(showDir) || existing.showId;
   const outletId = existing.outletId || path.basename(filePath).split('--')[0];
   const ctx = {
     showId,
@@ -657,7 +658,7 @@ function fabricatedFlagClearDecision({ filePath, preDiscovery, fetchedText, url,
   if (ctx.urlChangeRefusal) return { clear: false, via: null, reason: `url change refused: ${ctx.urlChangeRefusal}` };
   const late = pageDateRefusal(pagePublishDate(html, url), preDiscovery, ctx.show);
   if (late) return { clear: false, via: null, reason: `date implausible: ${late}` };
-  const showId = preDiscovery.showId || path.basename(path.dirname(filePath));
+  const showId = path.basename(path.dirname(filePath)) || preDiscovery.showId;
   const cleaned = cleanCandidateText(fetchedText, { url, showId }).text || '';
   const p = proveIdentity(preDiscovery, cleaned, url, ctx);
   return p.proven
