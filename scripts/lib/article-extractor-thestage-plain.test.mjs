@@ -118,3 +118,12 @@ test('"Book great value tickets" promo line just before the bio is not part of t
   const tx = extractArticleText(html, 'thestage.co.uk');
   assert.ok(tx && tx.includes('criss-crossing') && !/Book great value/.test(tx));
 });
+
+test('a bio-shaped sentence inside the review does not cut the review short', () => {
+  const card = '<div>' + '<span>card</span>'.repeat(1800) + '</div>';
+  const long = BODY.map((x) => x + ' ' + x.slice(0, 90));
+  const mid = 'Bartlett is a writer who knows exactly how to unsettle an audience, and he does it again here with quiet menace.';
+  const html = `<html><body><h1>T</h1>${ps(long.slice(0, 3))}<p>${mid}</p>${ps(long.slice(3))}${card}<p>Mark Shenton is a theatre critic and writes about West End shows every week.</p>${card}<p>Invest in The Stage today with a subscription starting at £1.</p></body></html>`;
+  const tx = extractArticleText(html, 'thestage.co.uk');
+  assert.ok(tx && tx.includes('criss-crossing') && tx.includes(long[0].slice(0, 40)) && !/Mark Shenton/.test(tx));
+});

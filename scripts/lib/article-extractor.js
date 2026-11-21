@@ -341,10 +341,14 @@ function extractStageBody(html) {
     // Only trailers that appear after a review count as anchors (bio, subscribe, copyright); "Login Register" or
     // "Related Articles" can sit in page chrome above the review, so they never anchor here. Try each anchor in
     // page order and take the first with a real run of prose before it.
-    const isAnchor = (t) => isPlainBio(t) || isAuthorBio(t) || /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) || /^©\s*Copyright/.test(t);
+    const isFooterAnchor = (t) => isPlainBio(t) || /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) || /^©\s*Copyright/.test(t);
+    // An ordinary bio-shaped line ("Mark Shenton is a theatre critic ...") only ends the review when the next
+    // paragraph is far away (the author card) or is itself a footer line; mid-review it may be prose ("Bartlett is a writer who ...").
+    const isAnchorAt = (i) => isFooterAnchor(found[i].t)
+      || (isAuthorBio(found[i].t) && (i === found.length - 1 || found[i + 1].at - found[i].end > 5000 || isFooterAnchor(found[i + 1].t)));
     paras = null;
     for (let trailerAt = 0; trailerAt < found.length && !paras; trailerAt++) {
-      if (!isAnchor(found[trailerAt].t)) continue;
+      if (!isAnchorAt(trailerAt)) continue;
       if (trailerAt === 0) continue;
       // The author-card markup between the review and its trailer can be tens of thousands of characters
       // (live: 30k to the bio, 75k to the subscribe line on pages with no bio), so the gap rule applies inside the
@@ -352,7 +356,7 @@ function extractStageBody(html) {
       // from the run when the run is substantial prose (>=4 paragraphs, >=1200 chars); the bio may always.
       const farGap = found[trailerAt].at - found[trailerAt - 1].end > 5000;
       let from = trailerAt - 1;
-      while (from > 0 && found[from].at - found[from - 1].end <= 5000 && !isAnchor(found[from - 1].t)) from--;
+      while (from > 0 && found[from].at - found[from - 1].end <= 5000 && !isAnchorAt(from - 1)) from--;
       const run = found.slice(from, trailerAt).map((x) => x.t).filter((t) => !isTrailingNoise(t) && !/^Book (?:great value )?tickets\b/i.test(t));
       const runLen = run.join('\n\n').length;
       const farOk = !farGap || isPlainBio(found[trailerAt].t) || (run.length >= 4 && runLen >= 1200);
