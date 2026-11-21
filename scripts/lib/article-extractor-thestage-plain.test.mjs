@@ -38,3 +38,23 @@ test('short chrome-only page stays null', () => {
 test('page without an h1 stays null', () => {
   assert.equal(extractArticleText(page(ps(BODY), ''), 'thestage.co.uk'), null);
 });
+
+test('listing/404-style page with teaser paragraphs but no author bio, subscribe or copyright trailer stays null', () => {
+  const teasers = Array.from({ length: 6 }, (_, i) => `Teaser ${i}: a short blurb about another production currently playing somewhere in London tonight.`);
+  assert.equal(extractArticleText(page(ps(teasers)), 'thestage.co.uk'), null);
+});
+
+test('sidebar paragraphs after the trailer are not part of the body', () => {
+  const t = extractArticleText(page(ps(BODY) + TRAIL + '<p>Another headline paragraph from a sidebar teaser about something else entirely.</p>'), 'thestage.co.uk');
+  assert.ok(t && !t.includes('sidebar'));
+});
+
+test('"THIS IS NOT A PAYWALL" gate page stays null', () => {
+  assert.equal(extractArticleText(page(ps(BODY) + TRAIL + '<p>THIS IS NOT A PAYWALL</p>'), 'thestage.co.uk'), null);
+});
+
+test('modern IntroText layout is unchanged and still drops the bio', () => {
+  const html = `<html><body><h1>T</h1><div class="aos-Article-IntroText">Standfirst.</div>${ps(BODY)}<p>Sam Marlowe is reviews editor for The Stage and writes about theatre.</p></body></html>`;
+  const t = extractArticleText(html, 'thestage.co.uk');
+  assert.ok(t && t.includes('criss-crossing'));
+});

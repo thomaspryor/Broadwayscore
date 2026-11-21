@@ -296,7 +296,7 @@ function extractStageBody(html) {
   // BRO-6487: older (2016-era) review pages have no IntroText block: the review is a run of plain
   // <p> after the <h1>, then the author bio, subscribe line and copyright. Fall back to that shape,
   // but only on a logged-in page (the registration gate marks a dead session, which must stay null).
-  const GATE = /utm_source=Reggate|create a free account|Subscribe to continue/i;
+  const GATE = /utm_source=Reggate|create a free account|Subscribe to continue|THIS IS NOT A PAYWALL/i;
   let region;
   if (startM) region = html.slice(startM.index);
   else {
@@ -316,8 +316,6 @@ function extractStageBody(html) {
     // multi-word-name pattern, so allow zero additional name parts.
     // BRO-6872: case-sensitive and short only; with /i "The protagonist is a writer…" was dropped.
     (t.length < 400 && /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+(?:a|an|the|freelance|theatre)\s+(?:[Cc]ulture\s+|[Tt]heatre\s+|[Ff]reelance\s+|[Tt]heater\s+)?(?:journalist|critic|writer|editor|reviewer)/.test(t)) ||
-    // BRO-6487: older pages' bio line, e.g. "Natasha is international editor for The Stage" (no "a/an/the" after "is").
-    (t.length < 250 && /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+.{0,40}\b(?:editor|critic|reporter|journalist|writer)\b.{0,40}\bThe Stage\b/.test(t)) ||
     // Subscribe pitch
     /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) ||
     // Copyright
@@ -329,9 +327,20 @@ function extractStageBody(html) {
     // misread a genuinely complete review as truncated (task #876, confirmed
     // live on archduke-west-end-2026 / burlesque-west-end-2026 recoveries).
     /sign up to The Stage.s weekly reviews newsletter/i.test(t);
-  const paras = [...region.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+  const all = [...region.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
     .map((m) => stripHtml(m[1]))
-    .filter((t) => t.length > 40 && /[a-z]/.test(t) && !isTrailingNoise(t));
+    .filter((t) => t.length > 40 && /[a-z]/.test(t));
+  let paras;
+  if (startM) paras = all.filter((t) => !isTrailingNoise(t));
+  else {
+    // BRO-6487: older pages end the review with the author bio ("Natasha is international editor for The Stage"),
+    // a subscribe line and a copyright line. Require one of them after the prose (a listing, roundup or 404
+    // page has none) and keep only what comes before it, which also leaves sidebar paragraphs out.
+    const isPlainBio = (t) => t.length < 250 && /\bis\s+(?:[a-z]+\s+){0,3}(?:editor|critic|reporter|journalist|writer)\s+(?:for|at|of)\s+The Stage\b/.test(t);
+    const trailerAt = all.findIndex((t) => isTrailingNoise(t) || isPlainBio(t));
+    if (trailerAt < 0) return null;
+    paras = all.slice(0, trailerAt);
+  }
   const body = paras.join('\n\n');
   // The IntroText-less fallback needs a real run of prose (page chrome rarely has 3+ long paragraphs).
   if (!startM && (paras.length < 3 || body.length < 600)) return null;
