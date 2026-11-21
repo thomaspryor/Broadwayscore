@@ -161,7 +161,7 @@ SCOPE_DIR="${GAUNTLET_SCOPE_DIR:-}"; unset GAUNTLET_SCOPE_DIR
 # Dropped from the env like the scope, so nested runs never inherit a slice.
 SHARD="${GAUNTLET_SHARD:-}"; unset GAUNTLET_SHARD
 if [ -n "$SHARD" ]; then
-  if ! [[ "$SHARD" =~ ^([0-9]+)/([0-9]+)$ ]] || [ "${BASH_REMATCH[1]}" -lt 1 ] || [ "${BASH_REMATCH[2]}" -lt 2 ] \
+  if ! [[ "$SHARD" =~ ^([1-9][0-9]?)/([1-9][0-9]?)$ ]] || [ "${BASH_REMATCH[1]}" -lt 1 ] || [ "${BASH_REMATCH[2]}" -lt 2 ] \
     || [ "${BASH_REMATCH[2]}" -gt 16 ] || [ "${BASH_REMATCH[1]}" -gt "${BASH_REMATCH[2]}" ]; then
     echo "land-gauntlet.sh: GAUNTLET_SHARD must be k/n with 1<=k<=n, 2<=n<=16 (got $SHARD)" >&2; exit 2
   fi
@@ -170,7 +170,7 @@ if [ -n "$SHARD" ]; then
   # that dies before the final meta.json write still reads as an unmerged part.
   if [ -z "${GAUNTLET_CHILD:-}" ]; then
     mkdir -p "$OUT"
-    rm -f "$OUT"/*.exit "$OUT"/*.secs "$OUT"/*.shards.json "$OUT/tsc-tree-status"
+    rm -f "$OUT"/*.exit "$OUT"/*.secs "$OUT"/*.files "$OUT"/*.log "$OUT"/*.shards.json "$OUT/tsc-tree-status"
     printf '{"shard":"%s","partial":true}\n' "$SHARD" > "$OUT/meta.json"
   fi
 fi

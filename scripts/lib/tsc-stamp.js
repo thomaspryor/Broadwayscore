@@ -206,6 +206,8 @@ const TSC_INERT_RESIDUE = new Set(['data/gold-lists-computed.json']);
 function decideSeedExport({ meta, rebased, headOid, residue, key, digest, preDigest }) {
   const no = (reason) => ({ seed: '', reason });
   if (!meta || typeof meta !== 'object') return no('no gauntlet meta.json');
+  // BRO-7324: a split run counts only once its merge finished; one part alone judged a slice.
+  if (meta.mergeIncomplete || (meta.shard && !meta.sharded)) return no('gauntlet result is an unfinished split run');
   if (!SHA40.test(String(rebased || '')) || meta.sha !== rebased) return no('gauntlet did not measure the rebased sha');
   if (headOid !== rebased) return no('HEAD is not the rebased sha');
   if (!meta.exits || meta.exits.tsc !== 0) return no('tsc did not exit 0 in the gauntlet');

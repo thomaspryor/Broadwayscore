@@ -42,7 +42,7 @@ function pair(opts = {}) {
 
 test('parseShard / mergedExit', () => {
   assert.deepEqual(parseShard('2/2'), { k: 2, n: 2 });
-  for (const bad of ['1/1', '0/2', '3/2', '1/17', 'x', '', null]) assert.equal(parseShard(bad), null, String(bad));
+  for (const bad of ['1/1', '0/2', '3/2', '1/17', 'x', '', null, '01/2', '99999999999999999999/2']) assert.equal(parseShard(bad), null, String(bad));
   assert.equal(mergedExit([{ exit: 0 }, { exit: 0 }]), 0);
   assert.equal(mergedExit([{ exit: 0 }, { exit: 1 }]), 1);
   assert.equal(mergedExit([{ exit: 0 }, null]), 1);
@@ -152,7 +152,7 @@ test('whole parts finish on a plain exit; only TAP slices need a summary', () =>
 
 test('GAUNTLET_SHARD is validated before any gate runs', () => {
   const out = tmp();
-  for (const bad of ['1/1', '0/2', '3/2', '1/17', 'x']) {
+  for (const bad of ['1/1', '0/2', '3/2', '1/17', 'x', '01/2', '1/02', '99999999999999999999/2']) {
     const r = spawnSync('bash', [path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), out], { cwd: ROOT, encoding: 'utf8', env: { ...process.env, GAUNTLET_SHARD: bad, GAUNTLET_GATES: 'none' } });
     assert.equal(r.status, 2, `${bad}: ${r.stderr}`);
     assert.match(r.stderr, /GAUNTLET_SHARD must be k\/n/);
@@ -216,4 +216,21 @@ test('a sharded gauntlet run clears a reused dir and marks itself a part', () =>
   assert.equal(meta.shard, '1/2');
   assert.match(meta.tree, /^[0-9a-f]{40}$/);
   assert.match(readShardEntry(out, 'tsc', meta).invalid, /never merged/);
+});
+
+test('a whole advisory TAP gate that exits 2 stays advisory, as in an unsplit run', () => {
+  const { a, b } = pair({ a: { exits: { 'unit-tests-e2e': 2 }, logs: { 'unit-tests-e2e': 'crashed\n' } } }); const { a: ba, b: bb } = pair();
+  assert.equal(mergeGauntletDirs(a, b).ok, true); mergeGauntletDirs(ba, bb);
+  const e2e = judge(ba, a).gates.find((g) => g.gate === 'unit-tests-e2e');
+  assert.notEqual(e2e.mode, 'shard-incomplete');
+  assert.equal(e2e.verdict, 'pass', 'advisory gate downgraded as when unsplit');
+});
+
+test('seed export refuses an unfinished split run', () => {
+  const { decideSeedExport } = require('./tsc-stamp.js');
+  const sha = 'a'.repeat(40);
+  const base = { rebased: sha, headOid: sha, residue: [], key: 'k', digest: 'd', preDigest: 'd' };
+  for (const meta of [{ sha, exits: { tsc: 0 }, sharded: true, mergeIncomplete: true }, { sha, exits: { tsc: 0 }, shard: '1/2' }]) {
+    assert.match(decideSeedExport({ ...base, meta }).reason, /unfinished split/);
+  }
 });

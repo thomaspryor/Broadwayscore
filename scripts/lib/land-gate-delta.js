@@ -319,7 +319,7 @@ function checkShardManifest(gate, entry) {
     const part = parts[k];
     if (!part || typeof part !== 'object') { problems.push(`part ${k} is missing (its runner never reported)`); continue; }
     if (!Number.isInteger(part.exit)) { problems.push(`part ${k} has no exit code`); continue; }
-    if ((TAP_GATES.has(gate) && part.exit !== 0 && part.exit !== 1) || part.exit < 0 || part.exit >= 124) { problems.push(`part ${k} exited ${part.exit} (killed or timed out)`); continue; }
+    if ((TAP_GATES.has(gate) && n > 1 && part.exit !== 0 && part.exit !== 1) || part.exit < 0 || part.exit >= 124) { problems.push(`part ${k} exited ${part.exit} (killed or timed out)`); continue; }
     if (part.finished !== true) problems.push(`part ${k} did not finish (exit ${part.exit}, no final summary)`);
   }
   return { complete: problems.length === 0, problems };

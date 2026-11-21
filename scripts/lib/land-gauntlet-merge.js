@@ -52,7 +52,7 @@ function wholePart(gate, dir) {
 
 /** Pure. "k/n" -> {k, n} or null. */
 function parseShard(s) {
-  const m = /^(\d+)\/(\d+)$/.exec(String(s || ''));
+  const m = /^([1-9]\d?)\/([1-9]\d?)$/.exec(String(s || ''));
   if (!m) return null;
   const k = Number(m[1]); const n = Number(m[2]);
   return k >= 1 && k <= n && n >= 2 && n <= 16 ? { k, n } : null;
@@ -99,7 +99,7 @@ function mergeGauntletDirs(dirA, dirB, { gates = GATES } = {}) {
   for (const d of [dirA, dirB]) if (fs.existsSync(path.join(d, 'SCOPED'))) problems.push(`${d} is a scoped run; a split run must judge whole gates`);
   if (problems.length) return { ok: false, problems, gates: [] };
 
-  const byPart = { [metaA.shard]: dirA, [metaB.shard]: dirB };
+  const byPart = { [`${sA.k}/${sA.n}`]: dirA, [`${sB.k}/${sB.n}`]: dirB };
   const n = sA.n;
   const expected = Array.from({ length: n }, (_, i) => `${i + 1}/${n}`);
   const done = [];
@@ -119,7 +119,7 @@ function mergeGauntletDirs(dirA, dirB, { gates = GATES } = {}) {
         const text = readText(path.join(dir, `${gate}.log`)) || '';
         parts[k] = exit === undefined ? null : shardPart(gate, { exit, text });
         if (exit !== undefined) logs.push(`# ── part ${k} ──\n${text}`);
-        for (const f of readLines(path.join(dir, `${gate}.files`)) || []) if (!files.includes(f)) files.push(f);
+        if (exit !== undefined) for (const f of readLines(path.join(dir, `${gate}.files`)) || []) if (!files.includes(f)) files.push(f);
         const s = Number((readText(path.join(dir, `${gate}.secs`)) || '').trim());
         if ((readText(path.join(dir, `${gate}.secs`)) || '').trim() && Number.isFinite(s)) secs = secs === null ? s : Math.max(secs, s);
       }
