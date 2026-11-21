@@ -294,6 +294,9 @@ async function cmdRun() {
         const cls = [...new Set((h.match(/class="[^"]*(?:aos|article|review|content|body|story)[^"]*"/gi) || []).map(c => c.slice(7, -1).split(/\s+/).filter(t => /aos|article|review|content|body|story/i.test(t)).join('.')))].slice(0, 25);
         const paras = (h.match(/<p[ >][\s\S]*?<\/p>/g) || []).map(x => x.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
         const ex = require('./lib/article-extractor').extractArticleText(h, 'thestage.co.uk');
+        const sb = require('./lib/article-extractor').extractStageBody(h);
+        const ps = [...h.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)].map(m => ({ at: m.index, end: m.index + m[0].length, len: require('./lib/article-extractor').stripHtml(m[1]).length }));
+        console.log(`[stage-diag] stageBody=${sb ? sb.length : 'null'} paras(at,len,gapBefore)=${ps.map((x, i) => `${x.at},${x.len},${i ? x.at - ps[i - 1].end : 0}`).join(' ')}`);
         const h1At = h.search(/<h1[\s>]/);
         console.log(`[stage-diag] extractor=${ex ? ex.length : 'null'} h1At=${h1At} introAt=${h.search(/aos-Article-IntroText/)} gateHits=${['utm_source=Reggate', 'create a free account', 'Subscribe to continue', 'THIS IS NOT A PAYWALL'].map(g => new RegExp(g, 'i').test(h) ? g : '').filter(Boolean).join('|') || 'none'}`);
         console.log(`[stage-diag] classes: ${cls.join(' ')}`);
