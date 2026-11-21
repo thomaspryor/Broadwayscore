@@ -204,7 +204,7 @@ function ingest(showId, m, url, show) {
     try { body = String(JSON.parse(fs.readFileSync(f, 'utf8')).fullText || ''); } catch { /* unreadable file counts as no body */ }
     if (body.length < 200 || !pageMentionsShowTitle(body, show.title)) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
     // BRO-6487: sitemap slugs often carry no venue; a same-title production elsewhere must not pass on the title alone.
-    if (/standard/.test(m.outletId) && !require('./lib/we-sitemap-candidates.js').bodyNamesVenue(body, show.venue)) { fs.unlinkSync(f); removed++; continue; }
+    if (/standard/.test(m.outletId) && !require('./lib/we-sitemap-candidates.js').bodyNamesVenue(body, show.venue)) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
     kept = kept || name; bodyChars = body.length;
   }
   if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s), body ${lastBody.length} chars: ${lastBody.replace(/\s+/g, ' ').slice(0, 120)}` };
