@@ -10,6 +10,7 @@ const { hasExcerpt } = require('./lib/excerpt-fields');
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./lib/review-normalization');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const showScoreData = JSON.parse(fs.readFileSync('data/show-score.json', 'utf8'));
 const reviewTextsDir = 'data/review-texts';
@@ -53,7 +54,9 @@ for (const [showId, showData] of Object.entries(showScoreData.shows || {})) {
           review.showScoreExcerpt = excerpt;
           if (!review.url && ssReview.url) review.url = ssReview.url;
 
-          fs.writeFileSync(filePath, JSON.stringify(review, null, 2));
+          // Apply the same production and protected-field guards as live ingest.
+          const result = safeWriteReview(filePath, review);
+          if (result.wrote === false) continue;
           added++;
           totalAdded++;
         } else {
