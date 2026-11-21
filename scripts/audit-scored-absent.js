@@ -7,6 +7,7 @@
 //   node scripts/audit-scored-absent.js [--strict] [--grace-hours=48] [--no-write]
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
 const { findScoredAbsent, summarizeScoredAbsent } = require('./lib/scored-absent');
 const { explainRecoveryExclusion } = require('./lib/recovery-exclusions');
 const { isScoreable } = require('./lib/is-scoreable');
@@ -69,5 +70,11 @@ function run({ root = path.join(__dirname, '..'), argv = process.argv.slice(2), 
   return { summary, rows, exitCode: strict && summary.silent > 0 ? 1 : 0 };
 }
 
-if (require.main === module) process.exit(run().exitCode);
+if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/audit-scored-absent.js [--strict] [--grace-hours=48] [--no-write]\n  Lists scored, includable review files absent from reviews.json and their recorded rebuild drop reason (BRO-7945).');
+    process.exit(0);
+  }
+  process.exit(run().exitCode);
+}
 module.exports = { run };
