@@ -181,8 +181,18 @@ function stripGuardianTopicsFooter(text) {
 // outlet id (cross-posted rows). Corpus 2026-11-21: 57 Independent-shaped and
 // 116 Standard-shaped tails. Classifier-only, like the Guardian footer.
 // ---------------------------------------------------------------------------
-const INDEPENDENT_COMMENTS_FOOTER_RE = /\s*(?:More about\b[^\n]{0,200}?)?\s*Join our commenting forum\b[^\n]{0,200}$/;
-const STANDARD_SHOPPING_FOOTER_RE = /\s*MORE ABOUT\b[^\n]{0,300}?\bShopping Best Buys\b[^\n]{0,900}$/;
+// The whole widget sentence, not just its first phrase, and nothing after it
+// but an optional "Comments" label, so a cut final sentence that happens to
+// open "Join our commenting forum" is never taken for the footer.
+// No leading \s*: that made the match O(k^3) on a long whitespace run (review);
+// the cut point is trimmed instead. The topic-tag prefix never crosses a
+// sentence end, so "More about that later." in the review is not cut.
+const INDEPENDENT_COMMENTS_FOOTER_RE = /(?:More about\b[^\n.!?]{0,200}?)?Join our commenting forum\s*Join thought-provoking conversations, follow other Independent readers and see their replies(?:\s+Comments)?\s*$/;
+const STANDARD_SHOPPING_FOOTER_RE = /MORE ABOUT\b[^.!?]{0,300}?\bShopping\s+Best Buys\b[\s\S]{0,900}$/;
+// The classifier counts words on the unstripped text, so a footer is only cut
+// from a body that is review-length on its own (shortest real flip: 1,901
+// chars); a short excerpt plus widget words must not read as complete.
+const CMS_FOOTER_MIN_BODY = 1500;
 
 function stripCmsWidgetFooters(text) {
   if (!text || typeof text !== 'string') return text;
@@ -190,7 +200,7 @@ function stripCmsWidgetFooters(text) {
   for (const re of [INDEPENDENT_COMMENTS_FOOTER_RE, STANDARD_SHOPPING_FOOTER_RE]) {
     const m = re.exec(out);
     // never leave less than a review-length body (a widget string near the top is not a footer)
-    if (m && m.index >= 600) out = out.slice(0, m.index);
+    if (m && m.index >= CMS_FOOTER_MIN_BODY) out = out.slice(0, m.index).trimEnd();
   }
   return out;
 }

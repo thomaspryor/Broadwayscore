@@ -545,4 +545,19 @@ test('Independent / Standard CMS widget footers are stripped for the tier check 
   assert.equal(tier(cut, 'standard').contentTier, 'truncated');
   // no widget: unchanged
   assert.equal(T.stripCmsWidgetFooters(BODY), BODY);
+  // review fixes: a cut sentence opening with the widget phrase is not a footer
+  const fake = BODY + ' Join our commenting forum members were asked to rate the production and many of them said that';
+  assert.equal(T.stripCmsWidgetFooters(fake), fake);
+  // a short excerpt plus widget words is not stripped (word count would be manufactured)
+  const shortStd = BODY.slice(0, 700) + ' MORE ABOUT The Maids Shopping Best Buys Best toy advent calendars for Christmas 2025';
+  assert.equal(T.stripCmsWidgetFooters(shortStd), shortStd);
+  // the Standard widget split across lines is still the widget
+  const nl = BODY + ' To 29 Nov, donmarwarehouse.com .\nMORE ABOUT The Maids Donmar Warehouse\nShopping Best Buys\nBest toy advent calendars for Christmas 2025';
+  assert.ok(!/Shopping/.test(T.stripCmsWidgetFooters(nl)));
+  // review fixes: an earlier "More about ..." sentence in the review is kept
+  const early = BODY + ' More about that later. The cast is superb throughout. To 7 December More about Musicals Join our commenting forum Join thought-provoking conversations, follow other Independent readers and see their replies Comments';
+  assert.ok(T.stripCmsWidgetFooters(early).endsWith('To 7 December'));
+  // a long whitespace run stays fast (was cubic)
+  const ws = BODY + ' '.repeat(20000) + 'x';
+  const t0 = Date.now(); T.stripCmsWidgetFooters(ws); assert.ok(Date.now() - t0 < 200, 'whitespace run must stay fast');
 });

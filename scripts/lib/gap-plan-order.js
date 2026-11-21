@@ -150,7 +150,37 @@ function urlFindSliceExhausted(spentMs, env = process.env) {
   return spentMs >= urlFindSliceMs(env);
 }
 
+/**
+ * BRO-7943: group the run's BROWSER_SESSION items by adapter. Every adapter
+ * session holds the one cookie-renew lock, so the driver closes one before it
+ * opens another; four nightly adapters share a band, so one show's gaps came
+ * out as ft, telegraph, thestage, times and each switch relaunched Chrome and
+ * re-ran the auth probe. Only browser items move, and only among the slots
+ * browser items already held: non-browser items keep their places, and
+ * within an adapter the priority order is kept. Adapters go in the order of
+ * their first item. Apply after --limit, so the set of items run is unchanged.
+ * @param {Array<{strategy:string}>} work
+ * @param {(c:object)=>string|null} adapterNameOf
+ * @returns {Array} a new array
+ */
+function groupBrowserSessions(work, adapterNameOf) {
+  const slots = [];
+  const groups = new Map();
+  work.forEach((c, i) => {
+    if (c.strategy !== 'BROWSER_SESSION') return;
+    slots.push(i);
+    const k = adapterNameOf(c) || '';
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(c);
+  });
+  const ordered = [...groups.values()].flat();
+  const out = work.slice();
+  slots.forEach((slot, j) => { out[slot] = ordered[j]; });
+  return out;
+}
+
 module.exports = {
+  groupBrowserSessions,
   bandOf, attemptFacts, compareByBand, noGainStreak, backoffHours, backoffGate, identicalRefetchProof,
   slotSplit, urlFindSliceMs, urlFindSliceExhausted,
   BACKOFF_BASE_H, BACKOFF_CAP_H, IDENTICAL_REFETCH_PROOF,
