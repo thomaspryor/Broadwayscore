@@ -335,7 +335,9 @@ import { createRequire as _cr0 } from 'node:module';
   });
   _t0('selectStrategy: no free AND no paid tier -> neither planned', () => {
     const r = selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, freeTierOk: false, paidTierOk: false, recency: 'recent', showAgeDays: 10 });
-    _a0.equal(r.strategy, null);
+    // neither url route can run; BRO-7943: the only route left is finding the real url
+    _a0.equal(r.strategy, 'URL_FIND');
+    _a0.ok(r.skipped.some((k) => k.strategy === 'PAID_FETCH' && k.reason === 'no_paid_tier'));
     const p = selectStrategy({ gapClass: 'PAYWALL_TRUNCATED', hasUrl: true, hasAdapter: false, paidTierOk: false, recency: 'recent', showAgeDays: 10, eligible: (s) => ({ ok: s === 'PAID_FETCH', reason: 'x' }) });
     _a0.ok(p.skipped.some((k) => k.strategy === 'PAID_FETCH' && k.reason === 'no_paid_tier'));
   });

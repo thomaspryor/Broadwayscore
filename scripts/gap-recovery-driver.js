@@ -54,6 +54,11 @@ function arg(name, def = null) {
 const flag = (name) => process.argv.slice(2).includes(`--${name}`);
 const list = (v) => (v ? new Set(v.split(',').map((s) => s.trim()).filter(Boolean)) : null);
 
+// Pilot hook (BRO-7943): GAP_PILOT_ENABLE=URL_REDISCOVER turns a flagged-off
+// strategy on for ONE manual run, so its acceptance rate can be measured against
+// the 30% bar without editing the table. Never set by the nightly.
+const FLAGS = Object.fromEntries(Object.entries(STRATEGY_FLAGS).map(([k, v]) => [k, (process.env.GAP_PILOT_ENABLE || '').split(',').includes(k) ? { ...v, enabled: true } : v]));
+
 const OPTS = {
   dryRun: flag('dry-run'),
   reconcile: flag('reconcile'),
@@ -144,6 +149,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       eligible,
       runGates: { ...runGates, ...extraGates },
       only: OPTS.only,
+      flags: FLAGS,
     });
     const sel = owned ? { strategy: null, skipped: [{ strategy: 'ANY', reason: owned }] } : reselect();
     out.push({
