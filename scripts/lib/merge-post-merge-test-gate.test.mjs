@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS, TEST_GATE_MAX_TIMEOUT_MS, computeTestGateTimeoutMs } = require('./merge-post-merge-test-gate.js');
+const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS, TEST_GATE_MAX_TIMEOUT_MS, TEST_GATE_LOCAL_MIN_TIMEOUT_MS, computeTestGateTimeoutMs } = require('./merge-post-merge-test-gate.js');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 
 // --- baselineCheckoutOptions: pure, no I/O (BRO-3962) ---
@@ -1372,18 +1372,18 @@ test('runTestGate: stale data plus a NEW failure still blocks (the label never s
   assert.match(r.output, /ENV: likely stale local data/);
 });
 
-test('computeTestGateTimeoutMs (BRO-7947): scales with load, floors at 8 min, ceilings at 12 min', () => {
+test('computeTestGateTimeoutMs (BRO-7947): scales with load, floors at 12 min, ceilings at 14 min', () => {
   const MIN = 60 * 1000;
   // measured failing case: 1551 files, load 23.3 on 14 cores -> must exceed the 8:22 the run took
   const loaded = computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 23.3, cores: 14 });
-  assert.ok(loaded > 8.5 * MIN && loaded <= TEST_GATE_MAX_TIMEOUT_MS, `loaded cap ${loaded}`);
-  assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 0.5, cores: 14 }), 8 * MIN, 'idle machine keeps the 8 min floor');
+  assert.ok(loaded >= 12 * MIN && loaded <= TEST_GATE_MAX_TIMEOUT_MS, `loaded cap ${loaded}`);
+  assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 0.5, cores: 14 }), 12 * MIN, 'idle machine keeps the 12 min local floor');
   assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 400, cores: 14 }), TEST_GATE_MAX_TIMEOUT_MS, 'ceiling');
-  assert.equal(computeTestGateTimeoutMs({ fileCount: 5, loadAvg: 99, cores: 1 }) >= 8 * MIN, true);
+  assert.equal(computeTestGateTimeoutMs({ fileCount: 5, loadAvg: 99, cores: 1 }) >= 12 * MIN, true);
   assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 40, cores: 14, env: { MERGE_TEST_GATE_NO_LOAD_SCALING: '1' } }), 8 * MIN, 'CI land opts out');
   assert.equal(computeTestGateTimeoutMs({ fileCount: 1, loadAvg: 0, cores: 4, env: { MERGE_TEST_GATE_TIMEOUT_MS: '90000' } }), 90000, 'valid override wins');
   for (const bad of ['abc', '0', '-5', '']) {
-    assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 0, cores: 4, env: { MERGE_TEST_GATE_TIMEOUT_MS: bad } }), 8 * MIN, `bad override ${bad} falls back`);
+    assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 0, cores: 4, env: { MERGE_TEST_GATE_TIMEOUT_MS: bad } }), 12 * MIN, `bad override ${bad} falls back`);
   }
 });
 
@@ -1393,7 +1393,7 @@ test('runTestGate passes ONE computed cap to every spawn and keeps the kill fail
   const pass = runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true, execFn: (cwd, tf, cap) => { caps.push(cap); return { status: 0, stdout: '', stderr: '' }; } });
   assert.equal(pass.ran, true);
   assert.equal(caps.length, 1);
-  assert.ok(Number.isInteger(caps[0]) && caps[0] >= TEST_GATE_TIMEOUT_MS && caps[0] <= TEST_GATE_MAX_TIMEOUT_MS);
+  assert.ok(Number.isInteger(caps[0]) && caps[0] >= TEST_GATE_LOCAL_MIN_TIMEOUT_MS && caps[0] <= TEST_GATE_MAX_TIMEOUT_MS);
   assert.match(pass.reason, new RegExp(`in \\d+s \\(cap ${Math.round(caps[0] / 1000)}s\\)`));
   // a kill still blocks, is not retried, and never consults the baseline
   let spawns = 0;
@@ -1406,7 +1406,7 @@ test('runTestGate passes ONE computed cap to every spawn and keeps the kill fail
 
 test('MERGE_TEST_GATE_TIMEOUT_MS override: bad/zero values never disable the timeout; opt-out wins (BRO-7947)', () => {
   const c = (env) => computeTestGateTimeoutMs({ fileCount: 1, loadAvg: 0, cores: 4, env });
-  assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '0.1' }), 8 * 60 * 1000);
+  assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '0.1' }), 12 * 60 * 1000);
   assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '999999999999' }), 60 * 60 * 1000);
   assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '90000', MERGE_TEST_GATE_NO_LOAD_SCALING: '1' }), 8 * 60 * 1000);
   const mutex = require('node:fs').readFileSync(new URL('./push-mutex.sh', import.meta.url), 'utf8');
