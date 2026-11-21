@@ -412,3 +412,28 @@ test('--data-repo: the ACKED line names the data repo', () => {
   const d = core.decideAck(dataHappy());
   assert.match(core.formatAckLine(DATA_REF, d.row), /on review-texts's origin\/main/);
 });
+
+// BRO-8008: a rebase that absorbed a merge of origin/main leaves a merge tip
+// whose patch IDs differ from the landed twins. The CLI then hands in
+// tiedToStrandedByContent (every touched file identical to origin/main); core
+// must also require the card named and the sha authored inside the job window.
+test('BRO-8008: content-identical rebased twin naming the card is ackable', () => {
+  const rows = [...rowsStoppedShort.slice(0, 2), { ts: '2026-09-16T04:11:36.000Z', event: 'job-stranded', taskId: TASK, jobId: `${TASK}-fixture`, sha: 'deadbeef' }];
+  const base = happy().landing;
+  const plan = core.decideAck(happy({ rows, landing: { ...base, sha: 'cafebabe', message: `${REF}: twin`, tiedToStranded: false, tiedToStrandedByPatch: false, tiedToStrandedByContent: true } }));
+  assert.equal(plan.ok, true, plan.refusals.join('\n'));
+});
+
+test('BRO-8008: content tie without the card named in the message is refused', () => {
+  const rows = [...rowsStoppedShort.slice(0, 2), { ts: '2026-09-16T04:11:36.000Z', event: 'job-stranded', taskId: TASK, jobId: `${TASK}-fixture`, sha: 'deadbeef' }];
+  const base = happy().landing;
+  const plan = core.decideAck(happy({ rows, landing: { ...base, sha: 'cafebabe', message: 'unrelated commit', tiedToStranded: false, tiedToStrandedByPatch: false, tiedToStrandedByContent: true } }));
+  assert.equal(plan.ok, false);
+});
+
+test('BRO-8008: content tie authored long after the job window is refused', () => {
+  const rows = [...rowsStoppedShort.slice(0, 2), { ts: '2026-09-16T04:11:36.000Z', event: 'job-stranded', taskId: TASK, jobId: `${TASK}-fixture`, sha: 'deadbeef' }];
+  const base = happy().landing;
+  const plan = core.decideAck(happy({ rows, landing: { ...base, sha: 'cafebabe', message: `${REF}: late`, authorTs: '2026-09-17T10:00:00.000Z', commitTs: '2026-09-17T10:00:00.000Z', tiedToStranded: false, tiedToStrandedByPatch: false, tiedToStrandedByContent: true } }));
+  assert.equal(plan.ok, false);
+});

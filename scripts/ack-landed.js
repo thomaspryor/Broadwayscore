@@ -390,6 +390,26 @@ function runVerifyAndDecide(decide, verify, opts = {}) {
   return decide({ verify });
 }
 
+// Detached worktree at origin/main. Gitignored runtime state (node_modules,
+// data/ symlinks, .env) is symlinked from MAIN so verify commands can run.
+function makeOriginMainWorktree() {
+  const dir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'ack-landed-wt-'));
+  const add = spawnSync('git', ['worktree', 'add', '--detach', '--force', dir, 'origin/main'], { cwd: MAIN, encoding: 'utf8' });
+  if (add.status !== 0) { try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ } return null; }
+  const link = (rel) => {
+    const from = path.join(MAIN, rel), to = path.join(dir, rel);
+    if (fs.existsSync(from) && !fs.existsSync(to)) { try { fs.symlinkSync(from, to); } catch { /* best effort */ } }
+  };
+  link('node_modules'); link('.env');
+  try { for (const f of fs.readdirSync(path.join(MAIN, 'data'))) link(path.join('data', f)); } catch { /* no data dir */ }
+  return dir;
+}
+
+function removeWorktree(dir) {
+  spawnSync('git', ['worktree', 'remove', '--force', dir], { cwd: MAIN, encoding: 'utf8' });
+  try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
+}
+
 function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); process.exit(0); }
@@ -506,10 +526,11 @@ function main() {
   // to a data-repo commit, so --data-repo skips the tie (core then requires
   // window + naming instead) rather than probing the clone for a foreign sha.
   // Elsewhere checks ownership of ANY dispatch work; default ack requires its tip.
-  const noTie = { tiedToStranded: false, tiedToStrandedByPatch: false };
+  const noTie = { tiedToStranded: false, tiedToStrandedByPatch: false, tiedToStrandedByContent: false };
   const tie = dataRepo ? noTie : computeStrandedTie(sha, pre.stranded && pre.stranded.sha, { cwd: REPO, landed: landing.verdict === 'LANDED', includeEarlierCommits: landedElsewhere });
   landing.tiedToStranded = tie.tiedToStranded;
   landing.tiedToStrandedByPatch = tie.tiedToStrandedByPatch;
+  landing.tiedToStrandedByContent = tie.tiedToStrandedByContent;
   if (landedElsewhere && !dataRepo) {
     for (const st of rows.filter((r) => String(r.event) === 'job-stranded' && r.sha)) {
       if (landing.tiedToStranded || landing.tiedToStrandedByPatch) break;
@@ -538,6 +559,21 @@ function main() {
     containsSha: gitOk(['merge-base', '--is-ancestor', sha, 'HEAD']),
     dirtyCodePaths: [...mainDirty, ...cloneDirty],
   };
+  // BRO-8008: MAIN lagging origin/main (a worktree session cannot pull it)
+  // must not block a landed sha: verify instead in a throwaway detached
+  // worktree at origin/main, which proves origin/main itself and is immune to
+  // MAIN's uncommitted edits.
+  let verifyCwd = MAIN;
+  let tempWt = null;
+  if (!dataRepo && !checkout.containsSha && landing.verdict === 'LANDED') {
+    tempWt = makeOriginMainWorktree();
+    if (tempWt) {
+      verifyCwd = tempWt;
+      checkout.containsSha = true;
+      checkout.dirtyCodePaths = [];
+      console.error(`→ MAIN lags origin/main: verify will run in a temp worktree at origin/main (${tempWt})`);
+    }
+  }
   // core-data verify reads MAIN's data/*.json, which must be the symlinks into
   // this clone — a copied or foreign dataset would certify the wrong state.
   if (dataRepo && dataRepo.name === 'core-data') {
@@ -555,12 +591,17 @@ function main() {
   const dryRun = decide({ verify: { ...verify, exitCode: 0 } });
   if (!dryRun.ok) refuse(ref, dryRun.refusals, hintCtx);
 
-  console.error(`→ running verify in ${MAIN}: ${verify.cmd}`);
+  console.error(`→ running verify in ${verifyCwd}: ${verify.cmd}`);
   const verifyEnv = dataRepo && dataRepo.name === 'review-texts' ? { REVIEW_TEXTS_DIR: REPO } : undefined;
   if (verifyEnv && !/validate-data|audit-show-review-gap/.test(verify.cmd)) {
     console.error(`⚠️  verify reads review texts via REVIEW_TEXTS_DIR=${REPO}; a command that ignores that variable reads ${path.join(MAIN, 'data', 'review-texts')} instead, which may not be the clone`);
   }
-  const decision = runVerifyAndDecide(decide, verify, { cwd: MAIN, env: verifyEnv });
+  let decision;
+  try {
+    decision = runVerifyAndDecide(decide, verify, { cwd: verifyCwd, env: verifyEnv });
+  } finally {
+    if (tempWt) removeWorktree(tempWt);
+  }
   if (!decision.ok) refuse(ref, decision.refusals, hintCtx);
 
   // 5. Write the row. appendEntry self-stamps ts (never backdated).
