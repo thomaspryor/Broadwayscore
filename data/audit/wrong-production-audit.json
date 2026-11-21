@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T16:04:30.629Z",
+  "timestamp": "2026-11-21T16:50:25.049Z",
   "stats": {
-    "totalReviews": 83641,
-    "alreadyFlagged": 22418,
+    "totalReviews": 83645,
+    "alreadyFlagged": 22408,
     "dateGuardCatches": 235,
-    "directorMismatch": 3850,
-    "tvFilmSignals": 2398,
-    "londonSignals": 3914,
-    "offBroadwaySignals": 779,
+    "directorMismatch": 3852,
+    "tvFilmSignals": 2399,
+    "londonSignals": 3913,
+    "offBroadwaySignals": 780,
     "yearMismatch": 394,
-    "noPublishDate": 8248
+    "noPublishDate": 8249
   },
   "findings": [
     {
@@ -33943,6 +33943,19 @@
       ]
     },
     {
+      "showId": "illinoise-2024",
+      "file": "nytg--gillian-russo.json",
+      "publishDate": "2024-04-29",
+      "url": "https://www.newyorktheatreguide.com/reviews/illinoise-broadway-review-sufjan-stevens",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "illinoise-off-broadway-2024",
       "file": "broadwayworld--lora-strum.json",
       "score": 92,
@@ -41797,6 +41810,25 @@
       "score": 96,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/les-miserables-sondheim-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "file": "standard--nick-curtis.json",
+      "score": 81,
+      "publishDate": "2020-01-17",
+      "url": "https://www.standard.co.uk/culture/theatre/les-miserables-review-revamped-musical-opens-at-londons-sondheim-theatre-with-added-grit-a4336836.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -126653,6 +126685,20 @@
     },
     {
       "showId": "peter-and-the-starcatcher-2012",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": 42,
+      "publishDate": "2012-04-15T19:49:46-04:00",
+      "url": "http://www.newjerseynewsroom.com/new-york-theater/review-peter-and-the-starcatcher-offers-magical-doings",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "peter-and-the-starcatcher-2012",
       "file": "stageandcinema--sarah-taylor-ellis.json",
       "score": 89,
       "publishDate": "April 18, 2012",
@@ -135879,20 +135925,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-children-off-west-end-2026",
-      "file": "revstanstheatreblog--rightrevstan.json",
-      "score": 60,
-      "publishDate": "2026-09-06",
-      "url": "https://revstanstheatreblog.co.uk/2026/09/06/video-review-the-children-lyric-hammersmith/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
