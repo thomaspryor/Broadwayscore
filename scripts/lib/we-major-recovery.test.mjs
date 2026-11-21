@@ -224,3 +224,14 @@ test('urlSlugNamesTitle: other shows, other venues, roundups and long slugs do n
   assert.equal(lib.urlSlugNamesTitle(u('review-roundup-hamlet-and-more'), 'Hamlet', 'Old Vic Theatre'), false);
   assert.equal(lib.urlSlugNamesTitle('not a url', 'Hamlet', 'Old Vic Theatre'), false);
 });
+
+test('matchGuardianResults: observer slot takes only The Observer publication (BRO-7998)', () => {
+  const s = show({ title: 'The Lehman Trilogy', openingDate: '2018-07-12', venue: 'Piccadilly Theatre' });
+  const r = (publication) => ({ webUrl: 'https://www.theguardian.com/stage/2018/jul/15/lehman', webTitle: 'The Lehman Trilogy review',
+    webPublicationDate: '2018-07-15T07:00:00Z', fields: { headline: 'The Lehman Trilogy review', publication, bodyText: 'Piccadilly Theatre' }, tags: [{ id: 'tone/reviews' }] });
+  assert.equal(lib.matchGuardianResults(s, [r('The Observer')], 'observer').length, 1);
+  assert.equal(lib.matchGuardianResults(s, [r('The Guardian')], 'observer').length, 0);
+  assert.equal(lib.matchGuardianResults(s, [r('The Observer')], 'guardian').length, 0);
+  assert.equal(lib.matchGuardianResults(s, [r('The Observer')]).length, 0); // default stays guardian
+  assert.throws(() => lib.matchGuardianResults(s, [], 'times'));
+});

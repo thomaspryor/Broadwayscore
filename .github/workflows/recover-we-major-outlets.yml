@@ -149,6 +149,11 @@ jobs:
             node scripts/we-major-recovery.js guardian --seasons="$INPUT_SEASONS" ${INPUT_SHOWS:+--shows="$INPUT_SHOWS"} --out=$RUNNER_TEMP/guardian.json | tee -a $RUNNER_TEMP/recovery.log || echo '[]' > $RUNNER_TEMP/guardian.json
             node -e "const f=require('fs'),d=process.env.RUNNER_TEMP;f.writeFileSync(d+'/wos.json',JSON.stringify([...JSON.parse(f.readFileSync(d+'/wos.json')),...JSON.parse(f.readFileSync(d+'/guardian.json'))],null,1))"
           fi
+          # BRO-7998: The Observer through the same Guardian Content API (publication "The Observer"). Free.
+          if [ -n "$GUARDIAN_API_KEY" ] && { [ -z "$INPUT_SLOTS" ] || grep -q ',observer,' <<<",$INPUT_SLOTS,"; }; then
+            node scripts/we-major-recovery.js observer --seasons="$INPUT_SEASONS" ${INPUT_SHOWS:+--shows="$INPUT_SHOWS"} --out=$RUNNER_TEMP/observer.json | tee -a $RUNNER_TEMP/recovery.log || echo '[]' > $RUNNER_TEMP/observer.json
+            node -e "const f=require('fs'),d=process.env.RUNNER_TEMP;f.writeFileSync(d+'/wos.json',JSON.stringify([...JSON.parse(f.readFileSync(d+'/wos.json')),...JSON.parse(f.readFileSync(d+'/observer.json'))],null,1))"
+          fi
           # BRO-6487: Evening Standard monthly sitemaps. Free (plain fetch), production-specific by slug title + venue.
           if [ -z "$INPUT_SLOTS" ] || grep -q ',standard,' <<<",$INPUT_SLOTS,"; then
             node scripts/we-major-recovery.js sitemap --seasons="$INPUT_SEASONS" ${INPUT_SHOWS:+--shows="$INPUT_SHOWS"} --out=$RUNNER_TEMP/standard.json | tee -a $RUNNER_TEMP/recovery.log || echo '[]' > $RUNNER_TEMP/standard.json
@@ -168,6 +173,7 @@ jobs:
             ${{ runner.temp }}/recovery.log
             ${{ runner.temp }}/wos.json
             ${{ runner.temp }}/guardian.json
+            ${{ runner.temp }}/observer.json
             ${{ runner.temp }}/standard.json
           if-no-files-found: ignore
 

@@ -179,7 +179,15 @@ function guardianItemIsReview(r) {
   if (/\b(round ?up|readers?'? reviews?)\b/i.test(headline)) return false;
   return /\breview\b/i.test(headline) || /^[1-5]$/.test(String(f.starRating || '').trim());
 }
-function matchGuardianResults(show, results) {
+// BRO-7998: the same Content API search also yields The Observer's reviews (publication "The Observer",
+// filed under outletId observer). `slot` picks which publication a result must carry.
+const PUBLICATION_OF = {
+  guardian: /^(the guardian|theguardian\.com|guardian\.co\.uk)$/i,
+  observer: /^the observer$/i,
+};
+function matchGuardianResults(show, results, slot = 'guardian') {
+  const pubRe = PUBLICATION_OF[slot];
+  if (!pubRe) throw new Error(`matchGuardianResults: unknown slot ${slot}`);
   if (!show || !show.openingDate) return [];
   const lo = addDays(show.openingDate, -14), hi = addDays(show.openingDate, 60);
   const t = norm(show.title);
@@ -188,7 +196,7 @@ function matchGuardianResults(show, results) {
     const date = String(r.webPublicationDate || '').slice(0, 10);
     if (date < lo || date > hi) return false;
     // Web-first pieces before the July 2013 domain move carry 'guardian.co.uk' (BRO-6503).
-    if (!/^(the guardian|theguardian\.com|guardian\.co\.uk)$/i.test((r.fields && r.fields.publication) || '')) return false;
+    if (!pubRe.test((r.fields && r.fields.publication) || '')) return false;
     if (!(r.tags || []).some(x => x.id === 'tone/reviews')) return false;
     if (!guardianItemIsReview(r)) return false;
     const f = r.fields || {};

@@ -6,6 +6,7 @@
  *   report                       per-season averages + missing slots (reads data/)
  *   wos --out=FILE               free WhatsOnStage WP-API match for missing WoS slots
  *   guardian --out=FILE          Guardian Content API match for missing guardian slots (needs GUARDIAN_API_KEY)
+ *   observer --out=FILE          same API, publication "The Observer", for missing observer slots (BRO-7998)
  *   sitemap --out=FILE           Evening Standard monthly sitemaps match for missing standard slots (free)
  *   run  [flags]                 recover slots (CI: needs scraper keys + review-texts)
  *
@@ -78,10 +79,11 @@ async function cmdWos() {
 // Guardian Content API (key in CI only): one search per missing guardian slot over the
 // show's opening window. Output has the same shape as `wos`, so `run --candidates` ingests
 // through the same date-window and wrong-show guards. API calls are free (no scraper spend).
-async function cmdGuardian() {
+async function cmdGuardian(slot = 'guardian') {
   const key = process.env.GUARDIAN_API_KEY;
   if (!key) { console.error('GUARDIAN_API_KEY not set'); process.exit(2); }
-  const rows = loadRows().filter(r => r.missing.includes('guardian'));
+  const label = slot.toUpperCase();
+  const rows = loadRows().filter(r => r.missing.includes(slot));
   const shows = new Map(rd('data/shows.json').shows.map(s => [s.id, s]));
   const out = [];
   let asked = 0, failed = 0;
@@ -95,14 +97,14 @@ async function cmdGuardian() {
       const res = await fetch(`https://content.guardianapis.com/search?${q}`, { signal: AbortSignal.timeout(20000) });
       if (!res.ok) { failed++; console.log(`${r.id}: HTTP ${res.status}`); continue; }
       const results = (await res.json()).response?.results || [];
-      const posts = lib.matchGuardianResults(s, results);
-      if (posts.length) out.push({ showId: r.id, slot: 'guardian', posts });
+      const posts = lib.matchGuardianResults(s, results, slot);
+      if (posts.length) out.push({ showId: r.id, slot, posts });
     } catch (e) { failed++; console.log(`${r.id}: ${e.message}`); }
     await sleep(150);
   }
-  console.log(`GUARDIAN shows missing ${rows.length}; searched ${asked}; failed ${failed}; with candidates ${out.length}`);
+  console.log(`${label} shows missing ${rows.length}; searched ${asked}; failed ${failed}; with candidates ${out.length}`);
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(out, null, 1));
-  if (asked && failed === asked) { console.error('GUARDIAN: every API call failed (bad key or rate limit)'); process.exit(1); }
+  if (asked && failed === asked) { console.error(`${label}: every API call failed (bad key or rate limit)`); process.exit(1); }
 }
 
 
@@ -295,8 +297,8 @@ async function cmdRun() {
 }
 
 const cmd = process.argv[2];
-const table = { report: cmdReport, wos: cmdWos, guardian: cmdGuardian, sitemap: cmdSitemap, run: cmdRun };
+const table = { report: cmdReport, wos: cmdWos, guardian: () => cmdGuardian('guardian'), observer: () => cmdGuardian('observer'), sitemap: cmdSitemap, run: cmdRun };
 if (require.main === module) {
-  if (!table[cmd]) { console.error('Usage: node scripts/we-major-recovery.js <report|wos|guardian|sitemap|run> [flags] (see header)'); process.exit(2); }
+  if (!table[cmd]) { console.error('Usage: node scripts/we-major-recovery.js <report|wos|guardian|observer|sitemap|run> [flags] (see header)'); process.exit(2); }
   table[cmd]().catch(e => { console.error(e); process.exit(1); });
 }
