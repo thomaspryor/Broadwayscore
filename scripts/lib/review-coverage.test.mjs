@@ -727,7 +727,7 @@ test('BRO-7872: --record CLI refuses with unanswered skeptic gaps (exit 3, nothi
 });
 
 // BRO-7987: the repo-reading Gemini wrapper counts as the external reviewer only when its final status line is ok.
-test('the Gemini review wrapper counts only when its last status line is GEMINI-REVIEW: ok', () => {
+test('the Gemini review wrapper counts only for a full ok status line, reads >= 1, and a real body, in either stream order', () => {
   const { NO_READS_HEADER } = createRequire(import.meta.url)('../gemini/review.js');
   const block = "GEMINI_OUT=$(mktemp)\n{\ncat <<'PROMPT_HEAD'\nwhat's in this diff\nPROMPT_HEAD\ngit diff\n} | node scripts/gemini/review.js --caller=ship-check > \"$GEMINI_OUT\"\ncat \"$GEMINI_OUT\"";
   const run = (command, content, isError = false) => {
@@ -739,29 +739,35 @@ test('the Gemini review wrapper counts only when its last status line is GEMINI-
     return evaluateCoverage([...ev(skill(), agent()), t, r]);
   };
   const okLine = 'GEMINI-REVIEW: ok model=gemini-2.5-flash reads=2';
-  const res = withRun(block, `Finding: review.js:40 misses a guard.\n${okLine}`);
+  const body = 'Finding: review.js:40 misses a guard on the empty-stdin path.';
+  const res = withRun(block, `${body}\n${okLine}`);
   assert.equal(res.complete, true, 'the real ship-check block with an ok status counts');
   assert.ok(res.evidence.checks.includes('gemini-review x1'), 'labelled apart from the other external reviewers');
-  assert.equal(withRun(`timeout 600 node scripts/gemini/review.js < p`, `${okLine} retried=1`).complete, true, 'behind timeout, retried suffix');
-  assert.equal(withRun(block, `${okLine} tree-check=skipped(not a git repo)`).complete, true, 'tree-check suffix');
+  assert.equal(withRun(`timeout 600 node scripts/gemini/review.js < p`, `${body}\n${okLine} retried=1`).complete, true, 'behind timeout, retried suffix');
+  assert.equal(withRun(block, `${body}\n${okLine} tree-check=skipped(not a git repo)`).complete, true, 'tree-check suffix');
   assert.equal(withRun(block, `${NO_READS_HEADER}\n\nquoted: \n${okLine}\nGEMINI-REVIEW: no-reads model=x reads=0`).complete, false, 'no-reads with a quoted ok line in the body');
-  assert.equal(withRun(block, `body quotes\n${okLine}\nFAILED: gemini exited 1`).complete, false, 'quoted ok then FAILED');
+  // The ship-check block cats stdout after the run, so stderr's status line can come first and the body can quote failure lines (BRO-7987 review P1).
+  assert.equal(withRun(block, `${okLine}\n${body}\nIt prints FAILED: no prompt on stdin\nFAILED: gemini exited 1\nMISSING: x`).complete, true, 'status first, body quoting failure lines');
+  assert.equal(withRun(block, okLine).complete, false, 'a bare ok line with no review body');
+  assert.equal(withRun(block, `${body}\nGEMINI-REVIEW: ok model=gemini-2.5-flash reads=0`).complete, false, 'ok-shaped line with reads=0');
+  assert.equal(withRun(block, `${body}\nGEMINI-REVIEW: ok`).complete, false, 'short ok token without model/reads');
+  assert.equal(withRun(block, 'EMPTY: gemini exited 0 with no response text').complete, false, 'EMPTY');
+  assert.equal(withRun(block, 'FAILED: gemini exited 1 after 2 tries: quota').complete, false, 'FAILED');
+  assert.equal(withRun('false && node scripts/gemini/review.js', 'GEMINI-REVIEW: ok').complete, false, 'never ran, short token');
+  assert.equal(withRun('node scripts/gemini/review.js </dev/null || true; echo GEMINI-REVIEW: ok', 'FAILED: no prompt on stdin\nGEMINI-REVIEW: ok').complete, false, 'failed run then an echoed short token');
   assert.equal(withRun(block, 'MISSING: gemini CLI is 0.69.0, not the pinned 0.70.0').complete, false, 'MISSING');
   assert.equal(withRun(block, 'UNSAFE: the working tree changed during the Gemini run').complete, false, 'UNSAFE');
-  assert.equal(withRun(block, okLine, true).complete, false, 'an errored tool result');
-  assert.equal(withRun('echo node scripts/gemini/review.js', okLine).complete, false, 'echo of the command');
-  assert.equal(withRun('grep -n caller scripts/gemini/review.js', okLine).complete, false, 'grep of the path');
-  assert.equal(withRun('node --check scripts/gemini/review.js', okLine).complete, false, 'node --check');
+  assert.equal(withRun(block, `${body}\n${okLine}`, true).complete, false, 'an errored tool result');
+  assert.equal(withRun('echo node scripts/gemini/review.js', `${body}\n${okLine}`).complete, false, 'echo of the command');
+  assert.equal(withRun('grep -n caller scripts/gemini/review.js', `${body}\n${okLine}`).complete, false, 'grep of the path');
+  assert.equal(withRun('node --check scripts/gemini/review.js', `${body}\n${okLine}`).complete, false, 'node --check');
 });
 
 test('review.js still prints the success status line geminiReviewOk() parses', () => {
-  // geminiReviewOk() takes the first token after "GEMINI-REVIEW: " on the last status line and
-  // needs it to be exactly "ok". If review.js's done(0, ...) line changes shape, every real Gemini
+  // geminiReviewOk() matches `GEMINI-REVIEW: ok model=M reads=N ...` exactly. If review.js's
+  // done(0, ...) line changes shape, every real Gemini
   // review would silently stop counting (a wrongful land block), so pin the producer side here.
   const src = fs.readFileSync(new URL('../gemini/review.js', import.meta.url), 'utf8');
-  assert.match(src, /done\(0, `GEMINI-REVIEW: \$\{parsed\.reads === 0 \? 'no-reads' : 'ok'\} /,
+  assert.match(src, /done\(0, `GEMINI-REVIEW: \$\{parsed\.reads === 0 \? 'no-reads' : 'ok'\} model=\$\{model\} reads=\$\{parsed\.reads\}/,
     'review.js success line must stay `GEMINI-REVIEW: <ok|no-reads> <fields>` (update geminiReviewOk() with it)');
-  for (const prefix of ['MISSING: ', 'FAILED: ', 'UNSAFE: ']) {
-    assert.ok(src.includes(`done(`) && src.includes(prefix), `review.js still uses the ${prefix.trim()} prefix`);
-  }
 });

@@ -12,7 +12,7 @@
 //      type and sessions fall back to general-purpose, so any subagent type counts) with a real
 //      review prompt
 //   2. an external adversarial review: curl to api.openai.com / Gemini, `codex exec`, or the
-//      repo-reading Gemini wrapper `node scripts/gemini/review.js` whose last status line is ok (BRO-7987)
+//      repo-reading Gemini wrapper `node scripts/gemini/review.js` that printed its full ok status line with reads >= 1 and a review body (BRO-7987)
 // tsc/lint/build are NOT checked here: land.yml runs them strictly on the rebased tree.
 // Known limits (accepted, BRO-5359 ship-check): this sets a floor, not proof of review quality;
 // coverage is not tied to the pushed diff hash (verify-edits.sh's fixup budget covers edits made
@@ -79,20 +79,25 @@ const WRAPPER = String.raw`(?:\w+=\S*|(?:g?timeout|nice|env|time|nohup|exec)(?:\
 const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:${WRAPPER}\\s+)*${word}\\b`);
 const CURL_POS_RE = cmdPos('curl');
 const CODEX_POS_RE = cmdPos('codex\\s+exec');
-// BRO-7987: the repo-reading Gemini reviewer. It counts only when the LAST `GEMINI-REVIEW:` status line
-// (review.js writes it to stderr after the review text) says ok and the result carries no no-reads header:
-// the review body can quote fixture lines such as `GEMINI-REVIEW: ok`, so a first-match test is forgeable.
-// A hand-typed `; echo GEMINI-REVIEW: ok` after a failed run still passes: same floor-not-proof limit as above.
+// BRO-7987: the repo-reading Gemini reviewer. review.js prints one status line on stderr and the review
+// body on stdout, and the two can reach the tool result in either order (the ship-check block cats the
+// body after the run ends), so "last status-looking line" breaks when the body quotes a FAILED:/MISSING:
+// line. Only an ok or no-reads run prints a body, and no-reads carries NO_READS_HEADER, so a run counts
+// when the result has review.js's full ok line with reads >= 1, no no-reads header, and a real body.
+// A hand-typed copy of the full ok line after a failed run still passes: same floor-not-proof limit as above.
 const GEMINI_WRAPPER_POS_RE = cmdPos(String.raw`node\s+(?:\S*/)?scripts/gemini/review\.js(?=[\s;&|)]|$)`);
 const { NO_READS_HEADER } = createRequire(import.meta.url)('../gemini/review.js');
 export const isGeminiReviewCall = (cmd) => GEMINI_WRAPPER_POS_RE.test(shellCode(cmd));
 export function geminiReviewOk(content) {
   const text = String(content || '');
   if (text.includes(NO_READS_HEADER)) return false;
-  // review.js ends every run with exactly one status line (done(): GEMINI-REVIEW/MISSING/FAILED/UNSAFE), after the body.
-  const status = text.match(/^(?:GEMINI-REVIEW: \S+|MISSING:|FAILED:|UNSAFE:)/gm);
-  return !!status && status[status.length - 1] === 'GEMINI-REVIEW: ok';
+  if (!GEMINI_OK_LINE_RE.test(text)) return false;
+  return text.replace(GEMINI_OK_LINE_RE_G, '').trim().length >= MIN_RESULT_CHARS;
 }
+// review.js:232 `GEMINI-REVIEW: ok model=M reads=N[ retried=1][ tree-check=...]`, pinned by a test on the producer.
+const GEMINI_OK_LINE_SRC = String.raw`^GEMINI-REVIEW: ok model=\S+ reads=[1-9]\d*(?: \S+)*[ \t]*$`;
+const GEMINI_OK_LINE_RE = new RegExp(GEMINI_OK_LINE_SRC, 'm');
+const GEMINI_OK_LINE_RE_G = new RegExp(GEMINI_OK_LINE_SRC, 'gm');
 // The shell code a command runs, for "is X in command position" checks: heredoc bodies and quoted
 // strings blanked in ONE pass (BRO-5430). Two passes ('...' first) let an apostrophe in prose
 // ("what's", in a heredoc prompt or a double-quoted string) pair with a later quote and erase a
