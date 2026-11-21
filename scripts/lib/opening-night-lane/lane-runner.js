@@ -56,8 +56,10 @@ const MANUAL_TRIES = 3; // BRO-7741: passes an inbox URL is retried before it is
 function laneCardRow(record, show) {
   const row = card.toCardRow(record, show);
   if (record && record.humanReviewScore != null) {
+    // Only when the rebuild honours the override (source human-review); a provisional or out-of-band one leaves the
+    // lane's own score, so a normal row never takes some other step of the rebuild's precedence here.
     const best = require('../rebuild-helpers').getBestScore(record);
-    if (best && Number.isFinite(best.score)) row.assignedScore = best.score;
+    if (best && best.source === 'human-review' && Number.isFinite(best.score)) row.assignedScore = best.score;
   }
   return row;
 }
@@ -82,15 +84,17 @@ function planCorrection(record, entry, at) {
   const { applyReviewFieldEdit } = require('../review-field-edit');
   const field = entry.field;
   const current = record[field] === undefined ? null : record[field];
+  // Already applied first: a restarted lane re-reads a 'queued' correction whose edit is on the file (its expect no
+  // longer matches, and that is not a conflict).
+  if (JSON.stringify(current) === JSON.stringify(entry.value)) return { record, unchanged: true };
   if (Object.prototype.hasOwnProperty.call(entry, 'expect') && JSON.stringify(current) !== JSON.stringify(entry.expect)) {
     return { reject: `${field} is ${JSON.stringify(current)} now, not the ${JSON.stringify(entry.expect)} the correction expected` };
   }
-  if (JSON.stringify(current) === JSON.stringify(entry.value)) return { record, unchanged: true };
   const res = applyReviewFieldEdit(record, { field, oldValue: current, newValue: entry.value }, { fixId: `lane-inbox:${entry.id}`, at });
   if (!res.ok) return { reject: res.reason };
   if (field === 'humanReviewScore') {
     const best = require('../rebuild-helpers').getBestScore(res.record);
-    if (!best || best.score !== entry.value) return { reject: `the rebuild would publish ${best ? best.score : 'no score'}, not ${entry.value} (the printed rating's band, or a provisional score); fix it the regular way` };
+    if (!best || best.source !== 'human-review' || best.score !== entry.value) return { reject: `the rebuild would publish ${best ? best.score : 'no score'}, not ${entry.value} (the printed rating's band, or a provisional score); fix it the regular way` };
   }
   return { record: res.record };
 }
@@ -234,10 +238,16 @@ async function runLaneNight({
   // BRO-7891 item 2: corrections read this pass (manualCandidates reads the inbox once) and the ones whose row is queued
   // for publish again, by review key.
   let passCorrections = [];
-  const correctionsByKey = new Map(); // review key -> [entry]
-  const settleCorrections = (key, status, reason) => {
-    for (const e of correctionsByKey.get(key) || []) noteInbox(e, status, reason);
-    correctionsByKey.delete(key);
+  const correctionsByKey = new Map(); // review key -> [{entry, score}]: score = the assignedScore the corrected row carries
+  // `row` given: only corrections that row carries (a batch already in flight with the old score never settles a newer one).
+  const settleCorrections = (key, status, reason, row) => {
+    const list = correctionsByKey.get(key) || [];
+    const keep = [];
+    for (const c of list) {
+      if (row && c.score !== undefined && row.assignedScore !== c.score) { keep.push(c); continue; }
+      noteInbox(c.entry, status, reason);
+    }
+    if (keep.length) correctionsByKey.set(key, keep); else correctionsByKey.delete(key);
   };
   const outletIdFor = (e) => e.outletId || ((resolveOutletFromUrl(e.url) || {}).outletId) || null;
   const manualCandidates = async () => {
@@ -291,6 +301,11 @@ async function runLaneNight({
       if (!e || !e.id || manualClosed.has(gen(e)) || manualQueued.has(gen(e)) || (e.status && e.status !== 'queued')) continue;
       const key = discovery.canonicalUrl(e.url);
       if (!key) { noteInbox(e, 'rejected', 'not an http(s) URL'); continue; }
+      // Rows the lane keeps off the site tonight: a correction must not put them back.
+      if (copySkipped.has(key)) { noteInbox(e, 'rejected', `a syndicated copy the lane keeps off the site (the ${copySkipped.get(key).primary} review is the one published)`); continue; }
+      if (failedKeys().has(key)) { noteInbox(e, 'rejected', 'the lane held this review from publish tonight'); continue; }
+      // A batch carrying this review is publishing now: wait for it, so the corrected row is the next one sent.
+      if (inflightKeys.has(key)) continue;
       const found = reviewTextsDir ? findLaneFile(require('path').join(reviewTextsDir, show.id), night, key) : null;
       if (!found) {
         const working = awaiting.has(key) || manualByKey.has(key) || inflightKeys.has(key) || pending.some((q) => q.key === key);
@@ -316,7 +331,7 @@ async function runLaneNight({
       if (queued) { queued.row = row; if (e.field === 'humanReviewScore') queued.rescored = true; }
       else pending.push({ key, row, scoredAt: now(), ...(e.field === 'humanReviewScore' ? { rescored: true } : {}) });
       if (!correctionsByKey.has(key)) correctionsByKey.set(key, []);
-      correctionsByKey.get(key).push(e);
+      correctionsByKey.get(key).push({ entry: e, ...(e.field === 'humanReviewScore' ? { score: row.assignedScore } : {}) });
       noteInbox(e, 'queued');
     }
     passCorrections = [];
@@ -359,13 +374,13 @@ async function runLaneNight({
         liveKeys.add(r.key);
         liveTaken.add(`${criticKey(r.row.criticName)}|${r.row.outletId}`);
         if (manualByKey.has(r.key)) noteInbox(manualByKey.get(r.key), 'published', dryRun ? 'dry run' : null);
-        settleCorrections(r.key, 'published', dryRun ? 'dry run' : null);
+        settleCorrections(r.key, 'published', dryRun ? 'dry run' : null, r.row);
       }
       const droppedKeys = new Set(res.dropped || []);
       for (const r of batch) if (!verified.has(r.key) && !missing.has(r.key) && !droppedKeys.has(r.key)) keptKeys.add(r.key);
       for (const r of batch) {
-        if (droppedKeys.has(r.key)) settleCorrections(r.key, 'failed', 'landed in reviews.json but not in the regenerated show JSON');
-        else if (!verified.has(r.key) && !missing.has(r.key)) settleCorrections(r.key, 'failed', 'the merge kept the site\'s own row for this review');
+        if (droppedKeys.has(r.key)) settleCorrections(r.key, 'failed', 'landed in reviews.json but not in the regenerated show JSON', r.row);
+        else if (!verified.has(r.key) && !missing.has(r.key)) settleCorrections(r.key, 'failed', 'the merge kept the site\'s own row for this review', r.row);
       }
       for (const r of batch) {
         if (!manualByKey.has(r.key) || verified.has(r.key) || missing.has(r.key)) continue;
@@ -689,6 +704,16 @@ async function runLaneNight({
   // A correction not live by the end is on the review file: the first rebuild after the lane publishes it (if the
   // night's push-review-texts lands). 'failed' so the person hears it is not on the site yet.
   for (const key of [...correctionsByKey.keys()]) settleCorrections(key, 'failed', 'saved to the review file but not live when the lane ended; the first rebuild after the lane publishes it');
+  // A correction added after the last pass read the inbox (the lease is held until the night's push finishes): no lane
+  // will apply it. One last read, and each open one is rejected, so the person hears and uses the regular path.
+  if (readInbox) {
+    let last = [];
+    try { last = await readInbox(); } catch { last = []; }
+    for (const e of last || []) {
+      if (!inbox.isCorrection(e) || (e.status && e.status !== 'queued') || manualClosed.has(gen(e)) || manualQueued.has(gen(e))) continue;
+      noteInbox(e, 'rejected', 'added after the lane\'s last pass; the lane did not apply it');
+    }
+  }
   await flushInbox();
   return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped,
     inbox: readInbox ? { worked: [...manualByKey.values()].map((e) => e.id), closed: [...manualClosed].map((g) => g.split('@')[0]), unwritten: inboxUpdates.length } : null, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };

@@ -39,7 +39,9 @@ const GIT_TIMEOUT_MS = 20000;
 const CORRECTION_KIND = 'correction';
 // Fields the lane can change on a row it published without changing the row's identity (critic + outlet) or taking it
 // off the site. A take-down or a byline fix needs the regular path or a rollback.
-const LANE_CORRECTION_FIELDS = Object.freeze(['humanReviewScore', 'llmPullQuote']);
+// A score only (v1): publish verifies a score change live (rescored); a pull quote change could not be verified, and its
+// value check needs the review text, which the CLI does not have.
+const LANE_CORRECTION_FIELDS = Object.freeze(['humanReviewScore']);
 const isCorrection = (e) => !!e && e.kind === CORRECTION_KIND;
 
 const iso = (now) => new Date(typeof now === 'function' ? now() : (now === undefined ? Date.now() : now)).toISOString();
@@ -172,7 +174,7 @@ function inboxAlertFor(update) {
       conditionKey: `opening-night-lane-inbox:${update.id}@${update.addedAt || ''}`,
       title: `Lane correction ${update.status} for ${show}`,
       description: `The opening-night lane did not put the ${update.field || 'field'} correction for ${url} on the site${why}. `
-        + `Fix it the regular way (it goes live with the first rebuild after the lane): node scripts/new-fix-plan.js --review-edit='${show}/<file>.json:${update.field || '<field>'}=<value>'`,
+        + `Fix it the regular way (it goes live with the first rebuild after the lane): node scripts/new-fix-plan.js --review-edit='${show}/<file>.json:${update.field || '<field>'}=<value>' --after-lane`,
     };
   }
   const fix = update.status === 'rejected'

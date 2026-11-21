@@ -14,7 +14,7 @@ const { ingestRouteDecision, settleAfterInboxWrite } = require('../../scripts/li
 const { PROVISIONAL_DATE_SOURCES, isProvisionalPublishDate } = require('../../scripts/lib/publish-date-provenance.js');
 const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
 const trust = require('../../scripts/lib/opening-night-lane/trust-model.js');
-const { drainPlan, drainAllowed, liveLease, sweepPlan, STALE_OPEN_MS, RECHECK_MS, MAX_DRAINS } = require('../../scripts/opening-night-lane-inbox.js');
+const { strandedCorrections, drainPlan, drainAllowed, liveLease, sweepPlan, STALE_OPEN_MS, RECHECK_MS, MAX_DRAINS } = require('../../scripts/opening-night-lane-inbox.js');
 
 const NIGHT = new Date().toISOString().slice(0, 10);
 const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
@@ -608,8 +608,10 @@ test('BRO-7891 item 2: planCorrection honours expect and refuses a score the reb
   assert.match(planCorrection({ ...rec, originalScore: '2/5' }, { id: 'x', field: 'humanReviewScore', value: 85 }, 't').reject, /would publish 40, not 85/);
   // A provisional human score is ignored by the rebuild: refused too.
   assert.match(planCorrection({ ...rec, humanReviewScoreProvisional: true }, { id: 'x', field: 'humanReviewScore', value: 85 }, 't').reject, /would publish 72/);
-  // The published row agrees with the rebuild even when a clamped human score is already on the file.
-  assert.equal(laneCardRow({ ...rec, originalScore: '2/5', humanReviewScore: 85 }, SHOW).assignedScore, 40);
+  // An override the rebuild does not honour (out of the printed band) leaves the lane's own score: no other rebuild step leaks in.
+  assert.equal(laneCardRow({ ...rec, originalScore: '2/5', humanReviewScore: 85 }, SHOW).assignedScore, 72);
+  // Already applied (a restarted lane re-reading a 'queued' correction): unchanged, not an expect conflict.
+  assert.equal(planCorrection({ ...rec, humanReviewScore: 85 }, { id: 'x', field: 'humanReviewScore', value: 85, expect: 72 }, 't').unchanged, true);
   assert.equal(laneCardRow({ ...rec, humanReviewScore: 90 }, SHOW).assignedScore, 90, 'the published row carries the human score');
 });
 
@@ -661,4 +663,32 @@ test('BRO-7891 item 2: a correction for a review the lane did not publish tonigh
   assert.equal(fetched.length, 0);
   assert.deepEqual(marks.map((m) => [m.status, m.kind]), [['rejected', 'correction']]);
   assert.match(marks[0].reason, /not a review the lane published tonight/);
+});
+
+test('BRO-7891 item 2 ship-check: pull-quote corrections are not offered (unverifiable live, and the CLI has no text to check)', () => {
+  assert.deepEqual(inbox.LANE_CORRECTION_FIELDS, ['humanReviewScore']);
+  assert.equal(inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1, field: 'llmPullQuote', value: 'A quote that is long enough to pass the length rule.' }] }).ok, false);
+});
+
+test('BRO-7891 item 2 ship-check: a correction on a syndicated copy the lane keeps off the site is rejected, never re-published', async () => {
+  const fix = { id: `${SHOW.id}|fix|dn`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: DN, field: 'humanReviewScore', value: 85, addedAt: new Date().toISOString(), addedBy: 'test' };
+  let reads = 0;
+  const { doc, marks } = await laneNight2({
+    entries: () => { reads += 1; return reads === 1 ? [entry({ url: TRIB, id: `${SHOW.id}|t` }), entry({ url: DN, id: `${SHOW.id}|d` })] : [fix]; },
+    fetchFor: jones, maxPasses: 2,
+  });
+  assert.ok(!doc.reviews.some((r) => r.url === DN), 'the copy stays off the site');
+  const m = marks.filter((x) => x.id === fix.id);
+  assert.deepEqual(m.map((x) => x.status), ['rejected'], JSON.stringify(marks));
+  assert.match(m[0].reason, /syndicated copy/);
+});
+
+test('BRO-7891 item 2 ship-check: a correction added after the last pass is rejected at lane end; the sweep closes stranded ones', async () => {
+  const fix = { id: `${SHOW.id}|fix|late`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: URL1, field: 'humanReviewScore', value: 85, addedAt: new Date().toISOString(), addedBy: 'test' };
+  let reads = 0;
+  const { marks } = await laneNight2({ entries: () => { reads += 1; return reads === 1 ? [] : [fix]; }, fetchFor: tm, maxPasses: 1 });
+  assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['rejected'], JSON.stringify(marks));
+  const state = { leases: { [fix.id]: fix, [`${SHOW.id}|fix|done`]: { ...fix, status: 'published' } } };
+  assert.deepEqual(strandedCorrections(state, { held: () => false }).map((e) => e.id), [fix.id]);
+  assert.equal(strandedCorrections(state, { held: () => true }).length, 0, 'a held show is the lane\'s');
 });
