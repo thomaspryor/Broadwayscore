@@ -130,7 +130,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       // BRO-7942: per-review, per-strategy exponential backoff after no gain; two
       // identical refetches prove the text is complete (no third one).
       if (strategy === 'REFETCH_FREE') {
-        const proof = PO.identicalRefetchProof(live);
+        const proof = PO.identicalRefetchProof(live, { reviewUrl: review.url || null });
         if (proof.ok) return { ok: false, reason: 'identical_refetch_complete' };
       }
       const bo = PO.backoffGate(live, strategy, { reviewUrl: review.url || null, baseH: Number(process.env.GAP_BACKOFF_BASE_H) || undefined });

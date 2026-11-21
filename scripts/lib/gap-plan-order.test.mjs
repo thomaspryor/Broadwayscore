@@ -131,3 +131,19 @@ test('ship-check: browser_unavailable rows are not attempts; URL_FIND found-link
   const src = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
   assert.ok(src.indexOf('const e = baseEligible(strategy)') < src.indexOf('PO.backoffGate('), 'base eligibility is checked before backoff');
 });
+
+test('codex review: regex does not backtrack on long name tokens; proof is per url; pending_push is neutral in the streak; code tail never eats prose', async () => {
+  const T = require('./trailer-signatures.js');
+  const prose = 'The staging is confident and the second act lands every beat it reaches for. '.repeat(10);
+  const t0 = Date.now();
+  T.stripKnownTrailers(`${prose} Photo credit: ChristopherMitchellPhotographyAllRightsReservedChristopherMitchellPhotography (c) 2026`, 'x');
+  assert.ok(Date.now() - t0 < 500, 'no catastrophic backtracking');
+  const cut = `${prose} window.dataLayer = window.dataLayer || []; The actors stumble. Hamlet stranded, and the`;
+  assert.equal(T.stripFurnitureTail(cut), cut, 'prose after script residue is kept (stays truncated)');
+  const rf = (url) => ({ strategy: 'REFETCH_FREE', outcome: 'rejected', reason: 'not_longer', url, detail: { fetchedHash: 'h' } });
+  assert.equal(PO.identicalRefetchProof([rf('https://a.example/old'), rf('https://a.example/old')], { reviewUrl: 'https://a.example/new' }).ok, false);
+  assert.equal(PO.identicalRefetchProof([rf('https://a.example/old'), rf('https://a.example/old')], { reviewUrl: 'https://a.example/old' }).ok, true);
+  const rec = { strategy: 'ARCHIVE', outcome: 'recovered', detail: { tierImproved: false } };
+  const pend = { strategy: 'ARCHIVE', outcome: 'pending_push' };
+  assert.equal(PO.noGainStreak([pend, rec, pend, rec], 'ARCHIVE').n, 2);
+});

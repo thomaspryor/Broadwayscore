@@ -450,7 +450,7 @@ function stripRunInfoTrailer(text) {
 // Kill switch: FURNITURE_TAIL_DISABLED=true.
 // ---------------------------------------------------------------------------
 const FURN_DATE = `(?:\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${TELEGRAPH_MONTH}|${TELEGRAPH_MONTH}\\s+\\d{1,2}(?:st|nd|rd|th)?|(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\\.?\\s+\\d{1,2}(?:st|nd|rd|th)?)`;
-const FURN_NAMES = "((?:[\\p{Lu}][\\p{L}'’.-]*|&|and|de|van|von|la|le|du|da)(?:\\s*,?\\s*(?:[\\p{Lu}][\\p{L}'’.-]*|&|and|de|van|von|la|le|du|da)){0,7})";
+const FURN_NAMES = "((?:[\\p{Lu}][\\p{L}'’.-]{0,24}|&|and|de|van|von|la|le|du|da)(?:(?:\\s*,\\s*|\\s+)(?:[\\p{Lu}][\\p{L}'’.-]{0,24}|&|and|de|van|von|la|le|du|da)){0,7})";
 // Template / script residue: never prose, so the whole tail goes.
 const FURN_CODE_RES = [
   /\s*Δ\s*document\.getElementById\([\s\S]*$/,
@@ -518,7 +518,7 @@ function stripFurnitureTail(text) {
     // a short piece only (code and footers may be longer, they are fenced by their own regexes)
     if (!m.code && t.length - next.length > 400) break;
     // template code is never prose: a tail holding a run of plain words is a review, not residue
-    if (m.code && /(?:\b[a-z]{2,}\b\s+){12}/.test(t.slice(next.length))) break;
+    if (m.code && (/(?:\b[a-z]{2,}\b\s+){12}/.test(t.slice(next.length)) || /[a-z]{3,}[.!?]["”’]?\s+[\p{Lu}][\p{L}'’]+\s+[\p{L}'’]+/u.test(t.slice(next.length)))) break;
     if (next.length < RELATED_MIN_REMAINING) break;
     t = next;
   }

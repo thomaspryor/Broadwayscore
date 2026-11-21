@@ -84,7 +84,8 @@ function noGainStreak(liveRows, strategy, { reviewUrl = null } = {}) {
     const noGain = NO_GAIN_OUTCOMES.has(r.outcome)
       || (r.outcome === 'recovered' && r.detail && r.detail.tierImproved === false);
     if (!noGain) {
-      if (r.outcome === 'pending_push' || r.outcome === 'recovered') break; // a success ends the chain
+      if (r.outcome === 'recovered') break; // a landed tier gain ends the chain
+      if (r.outcome === 'pending_push') continue; // publication step of an attempt: neutral
       continue; // non-evidence (no browser, no key, vanished file): neither counts nor resets
     }
     if (!last) last = r;
@@ -117,9 +118,11 @@ function backoffGate(liveRows, strategy, { nowMs = Date.now(), reviewUrl = null,
  * `not_longer` / `not_materially_longer` at least twice with the same hash of
  * the fetched text. Rows without a hash never count (no proof without one).
  */
-function identicalRefetchProof(liveRows, { need = IDENTICAL_REFETCH_PROOF } = {}) {
+function identicalRefetchProof(liveRows, { need = IDENTICAL_REFETCH_PROOF, reviewUrl = null } = {}) {
   const counts = new Map();
+  const { urlCanonicallyChanged } = require('./url-change-invariant');
   for (const r of liveRows || []) {
+    if (reviewUrl && r.url && urlCanonicallyChanged(r.url, reviewUrl)) continue; // proof belongs to the url it was fetched from
     if (r.strategy !== 'REFETCH_FREE' || r.outcome !== 'rejected' || !NOT_LONGER_REASONS.has(r.reason)) continue;
     const h = r.detail && r.detail.fetchedHash;
     if (h) counts.set(h, (counts.get(h) || 0) + 1);
