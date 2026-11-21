@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-21T09:44:45.216Z",
+  "generatedAt": "2026-11-21T10:37:05.291Z",
   "summary": {
-    "total": 15,
-    "high": 8,
-    "medium": 5,
-    "low": 2
+    "total": 19,
+    "high": 10,
+    "medium": 6,
+    "low": 3
   },
   "collisions": [
     {
@@ -33,6 +33,33 @@
       "suggestedWinner": "an-american-in-paris-tour-2022",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14694097/PATRICK-MARMION-reviews-National-Theatre-notch-cast-Sondheims-send-flimsy-forgettable.html",
+      "normalizedUrl": "https://dailymail.co.uk/tvshowbiz/article-14694097/patrick-marmion-reviews-national-theatre-notch-cast-sondheims-send-flimsy-forgettable.html",
+      "candidates": [
+        {
+          "showId": "an-oak-tree-west-end-2025",
+          "file": "daily-mail--veronica-lee.json",
+          "publishDate": "2025-05-07",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "daily-mail"
+        },
+        {
+          "showId": "here-we-are-west-end-2025",
+          "file": "daily-mail--patrick-marmion.json",
+          "publishDate": "2025-05-09",
+          "openingDate": "2025-05-08",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "daily-mail"
+        }
+      ],
+      "suggestedWinner": "here-we-are-west-end-2025",
+      "reason": "publishDate 2025-05-09 is 1 days from here-we-are-west-end-2025 opening (2025-05-08)",
+      "confidence": "high"
     },
     {
       "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
@@ -356,6 +383,87 @@
       ],
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 1 days from stereophonic-off-broadway-2023",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://inews.co.uk/culture/arts/cate-blanchett-blazes-the-seagull-review-3569876?ico=most_popular",
+      "normalizedUrl": "https://inews.co.uk/culture/arts/cate-blanchett-blazes-the-seagull-review-3569876",
+      "candidates": [
+        {
+          "showId": "the-seagull-west-end-2022",
+          "file": "i-paper--fiona-mountford.json",
+          "publishDate": null,
+          "openingDate": "2022-07-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "i-paper"
+        },
+        {
+          "showId": "the-seagull-west-end-2025",
+          "file": "i-paper--fiona-mountford.json",
+          "publishDate": "2025-03-07",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "i-paper"
+        }
+      ],
+      "suggestedWinner": "the-seagull-west-end-2022",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/till-the-stars-come-down-review-dorfman-theatre-national-theatre-london-beth-steel-bijan-sheibani-sinead-matthews-marc-wootton-ruby-stokes",
+      "normalizedUrl": "https://thestage.co.uk/reviews/till-the-stars-come-down-review-dorfman-theatre-national-theatre-london-beth-steel-bijan-sheibani-sinead-matthews-marc-wootton-ruby-stokes",
+      "candidates": [
+        {
+          "showId": "till-the-stars-come-down-west-end-2024",
+          "file": "thestage--sam-marlowe.json",
+          "publishDate": "2024-02-01",
+          "openingDate": "2024-01-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thestage"
+        },
+        {
+          "showId": "till-the-stars-come-down-west-end-2025",
+          "file": "thestage--unknown.json",
+          "publishDate": "July 10th, 2025",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "thestage"
+        }
+      ],
+      "suggestedWinner": "till-the-stars-come-down-west-end-2024",
+      "reason": "publishDate 2024-02-01 is 1 days from till-the-stars-come-down-west-end-2024 opening (2024-01-31)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/till-the-stars-come-down-review-1",
+      "normalizedUrl": "https://timeout.com/london/theatre/till-the-stars-come-down-review-1",
+      "candidates": [
+        {
+          "showId": "till-the-stars-come-down-west-end-2024",
+          "file": "timeout-london--unknown.json",
+          "publishDate": null,
+          "openingDate": "2024-01-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "till-the-stars-come-down-west-end-2025",
+          "file": "timeout-london--isobel-lewis.json",
+          "publishDate": "2025-07-09",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "till-the-stars-come-down-west-end-2024",
+      "reason": "Only one candidate has score/fullText",
       "confidence": "medium"
     },
     {
