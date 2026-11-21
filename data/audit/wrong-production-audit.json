@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-21T10:15:10.569Z",
+  "timestamp": "2026-11-21T10:56:54.070Z",
   "stats": {
-    "totalReviews": 83612,
-    "alreadyFlagged": 22549,
+    "totalReviews": 83613,
+    "alreadyFlagged": 22414,
     "dateGuardCatches": 235,
-    "directorMismatch": 3824,
-    "tvFilmSignals": 2387,
-    "londonSignals": 3879,
-    "offBroadwaySignals": 777,
-    "yearMismatch": 390,
+    "directorMismatch": 3841,
+    "tvFilmSignals": 2391,
+    "londonSignals": 3891,
+    "offBroadwaySignals": 776,
+    "yearMismatch": 392,
     "noPublishDate": 8250
   },
   "findings": [
@@ -15563,6 +15563,34 @@
       ]
     },
     {
+      "showId": "cymbeline-west-end-2025",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 88,
+      "publishDate": "2025-01-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cymbeline-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 72,
+      "publishDate": "2025-01-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "cyrano-de-bergerac-2007",
       "file": "whatsonstage--unknown.json",
       "score": 99,
@@ -25973,6 +26001,25 @@
       ]
     },
     {
+      "showId": "girl-from-the-north-country-west-end-2017",
+      "file": "britishtheatrecom--julian-eaves.json",
+      "score": 92,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-girl-from-the-north-country-old-vic-theatre-5stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (2x) more than 2017 (0x). 2025 matches production: girl-from-the-north-country-west-end-2025"
+        }
+      ]
+    },
+    {
       "showId": "girl-from-the-north-country-west-end-2019",
       "file": "standard--nick-curtis.json",
       "score": 80,
@@ -26044,6 +26091,170 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": null,
+      "publishDate": "2025-07-10",
+      "url": "https://www.allthatdazzles.co.uk/post/review-girl-from-the-north-country-the-old-vic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "british-theatre--amy-yorston.json",
+      "score": 76,
+      "publishDate": "2025-07-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "city-am--adam-bloodworth.json",
+      "score": null,
+      "publishDate": "2025-07-10",
+      "url": "https://www.cityam.com/girl-from-the-north-country-review-lightning-doesnt-strike-twice/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "essentialsurrey--unknown.json",
+      "score": null,
+      "publishDate": "2025-07-23",
+      "url": "https://www.essentialsurrey.co.uk/theatre-arts/theatre-reviews/girl-from-the-north-country/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "financialtimes--tim-bano.json",
+      "score": 77,
+      "publishDate": "2025-07-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "ground--unknown.json",
+      "score": null,
+      "publishDate": "2025-07-10",
+      "url": "https://ground.news/article/girl-from-the-north-country-review-bob-dylans-smooth-songs-cant-save-this-dull-plotless-drama",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2017 (2x) more than 2025 (1x). 2017 matches production: girl-from-the-north-country-west-end-2017"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 79,
+      "publishDate": "2025-07-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "london-theatre--matt-wolf.json",
+      "score": 74,
+      "publishDate": "2025-07-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "thereviewshub--sonny-waheed.json",
+      "score": 72,
+      "publishDate": "2025-07-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "timeout-london--nina-culley.json",
+      "score": 81,
+      "publishDate": "2025-07-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 66,
+      "publishDate": "2025-07-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -27183,6 +27394,25 @@
       "score": 76,
       "publishDate": "2026-01-13",
       "url": "https://t2conline.com/going-bacharach-the-songs-of-an-icon-a-tale-of-two-acts-and-the-songs-of-a-giant/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david zippel\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "file": "wsj--charles-isherwood.json",
+      "score": 80,
+      "publishDate": "2026-02-05",
+      "url": "https://www.wsj.com/articles/going-bacharach-review-a-revue-done-right-off-broadway-1106af41",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32693,6 +32923,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2016 (2x) more than 2024 (0x). 2016 matches production: hold-on-to-me-darling-off-broadway-2016"
+        }
+      ]
+    },
+    {
+      "showId": "hold-on-to-your-butts-west-end-2024",
+      "file": "guardian--chris-wiegand.json",
+      "score": 75,
+      "publishDate": "December 16th, 2024",
+      "url": "https://www.theguardian.com/stage/2024/dec/16/hold-on-to-your-butts-review-jurassic-park-arcola-theatre-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -43430,6 +43674,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "marie-and-rosetta-west-end-2025",
+      "file": "everything-theatre--rob-warren.json",
+      "score": 78,
+      "publishDate": "2025-05-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"monique touko\" from marie-and-rosetta-west-end-2026"
         }
       ]
     },
@@ -80469,6 +80727,57 @@
       ]
     },
     {
+      "showId": "the-seagull-west-end-2025",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2025-03-07",
+      "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from the-seagull-west-end-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "file": "guardian--susannah-clapp.json",
+      "score": 82,
+      "publishDate": "2025-03-07",
+      "url": "https://www.theguardian.com/stage/2025/mar/16/the-week-in-theatre-the-seagull-chekhov-thomas-ostermeier-barbican-cate-blanchett-emma-corrin-tom-burke-james-graham-young-vic-adam-penfold-nottingham-playhouse-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from the-seagull-2008"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": 80,
+      "publishDate": "2025-03-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from the-seagull-west-end-2022"
+        }
+      ]
+    },
+    {
       "showId": "the-secret-diary-of-adrian-mole-aged-13-3-4-west-end-2019",
       "file": "britishtheatrecom--paul-t-davies.json",
       "score": 77,
@@ -83908,6 +84217,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "trouble-in-mind-2021",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "November 18th, 2021",
+      "url": "https://www.wsj.com/articles/trouble-in-mind-alice-childress-roundabout-theater-company-lachanze-chuck-cooper-diana-princess-of-wales-david-bryan-joe-di-pietr-jeanne-de-waal-11637272134",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -93226,6 +93548,20 @@
       ]
     },
     {
+      "showId": "alls-well-that-ends-well-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 88,
+      "publishDate": "2024-11-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "alterations-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
       "score": 61,
@@ -93672,6 +94008,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "an-oak-tree-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "score": 59,
+      "publishDate": "2025-05-07",
+      "url": "https://www.londonboxoffice.co.uk/news/post/an-oak-tree-young-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -97036,6 +97386,19 @@
       "score": 54,
       "publishDate": "2022-10-07",
       "url": "https://www.dailymail.co.uk/news/article-11289877/PATRICK-MARMION-reviews-Blues-Alabama-Sky.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "blues-for-an-alabama-sky-west-end-2022",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": null,
+      "url": "https://www.ft.com/content/ae3c7d11-ceaa-40b4-8275-c44577e2ea7e",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -106994,20 +107357,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "girl-from-the-north-country-west-end-2017",
-      "file": "britishtheatrecom--julian-eaves.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://www.britishtheatre.com/posts/review-girl-from-the-north-country-old-vic-theatre-5stars",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -120721,20 +121070,6 @@
       ]
     },
     {
-      "showId": "miles-for-mary-off-broadway-2026",
-      "file": "broadway-blog--matthew-wexler.json",
-      "score": 87,
-      "publishDate": null,
-      "url": "http://thebroadwayblog.com/miles-for-mary-review/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
       "showId": "miles-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 77,
@@ -122660,6 +122995,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "nine-night-off-west-end-2026",
+      "file": "londontheatredirect--hay-brunsdon.json",
+      "score": 93,
+      "publishDate": "2026-11-20",
+      "url": "https://www.londontheatredirect.com/news/nine-night-at-kiln-theatre-review-a-riot-of-laughter-love-grief-and-jamaican-family-life",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -138814,6 +139163,20 @@
       ]
     },
     {
+      "showId": "the-invention-of-love-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 88,
+      "publishDate": "2024-12-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "musical-theatre-report--ben-west.json",
       "publishDate": "2025-03-11",
@@ -139047,6 +139410,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lady-from-the-sea-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 80,
+      "publishDate": "2025-09-18",
+      "url": "https://www.whatsonstage.com/news/the-lady-from-the-sea-with-alicia-vikander-and-andrew-lincoln-at-the-bridge-theatre-review_1695365/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -143016,6 +143393,32 @@
       ]
     },
     {
+      "showId": "the-seagull-west-end-2025",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2025-03-07",
+      "url": "https://www.londontheatre.co.uk/reviews/the-seagull-review-barbican",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "file": "standard--tim-bano.json",
+      "publishDate": "2025-03-07",
+      "url": "https://www.standard.co.uk/culture/theatre/the-seagull-barbican-review-cate-blanchett-b1215074.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-sewing-group-west-end-2016",
       "file": "nytimes--matt-wolf.json",
       "score": 37,
@@ -145674,6 +146077,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "till-the-stars-come-down-west-end-2025",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 92,
+      "publishDate": "2025-07-10",
+      "url": "https://theatreweekly.com/review-till-the-stars-come-down-at-theatre-royal-haymarket/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
