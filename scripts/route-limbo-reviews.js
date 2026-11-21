@@ -47,11 +47,11 @@ function routeLimbo({ apply = false, allShows = false, days = 760, only = null, 
       const dec = misattributedWetRoundup(d, guards) || classifyLimbo(d, show, filePath, { nowMs, mtimeMs, graceDays, guards });
       if (!dec) continue;
       if (dec.route === 'grace') { counts.grace++; continue; }
+      if (d.limboRoute === dec.route && d.limboRule === (dec.rule || null)) { counts.unchanged = (counts.unchanged || 0) + 1; continue; } // re-judged, same answer: already routed
       rows.push({ showId: show.id, file: f, route: dec.route, rule: dec.rule, url: d.url });
       counts.byRoute[dec.route] = (counts.byRoute[dec.route] || 0) + 1;
       counts.byRule[dec.rule] = (counts.byRule[dec.rule] || 0) + 1;
       if (!apply) continue;
-      if (d.limboRoute === dec.route && d.limboRule === (dec.rule || null)) { counts.unchanged = (counts.unchanged || 0) + 1; continue; } // re-judged, same answer: no rewrite
       try {
         const res = safeWriteReview(filePath, applyDecision(d, dec, new Date(nowMs).toISOString()));
         if (res && res.lockedSkipped) counts.writeFailed++; else counts.routed++;
