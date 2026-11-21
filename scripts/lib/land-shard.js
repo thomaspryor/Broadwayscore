@@ -225,8 +225,13 @@ function collect(o, { exec = require('child_process').execFileSync, spawn = requ
     recheck = d.action === 'recheck';
     sleep(Math.min(recheck ? Math.min(intervalMs, 10000) : intervalMs, Math.max(0, deadline - now())));
   }
+  // BRO-7324 ledger: the wait for B and the local re-run, apart (timing only).
+  const waitSecs = Math.round((now() - t0) / 1000);
+  let localSecs = 0;
   if (source === 'local') {
+    const tl = now();
     const rc = runLocal(o, { spawn, log });
+    localSecs = Math.round((now() - tl) / 1000);
     if (rc !== 0) return fail(`part 2/2 on this runner exited ${rc}`);
   }
   const { mergeGauntletDirs } = require('./land-gauntlet-merge.js');
@@ -235,6 +240,8 @@ function collect(o, { exec = require('child_process').execFileSync, spawn = requ
   log(`node-shard: merged part 2/2 (${source}) into ${o['merge-into']}: ${r.gates.length} gate(s)`);
   appendOutput(`source=${source}`);
   appendOutput(`node_shard=${source}`);
+  appendOutput(`wait_secs=${waitSecs}`);
+  appendOutput(`local_secs=${localSecs}`);
   return 0;
 }
 

@@ -127,6 +127,9 @@ const EXEMPT_NEVER_CI = {
   // accumulates history. Run by autonomous-acceptance-recheck.js at its
   // RECHECK-AFTER date, never by CI. Lives in scripts/, not tests/unit/.
   'scripts/verify-provider-spend-streak.test.mjs': '3ae637c5-416f-81bb',
+  // RECHECK-AFTER acceptance probe (BRO-7324): live ledger, red until 10 pinned split landings
+  // record a median Checks wall under 20 min; run by autonomous-acceptance-recheck.js, never CI.
+  'scripts/verify-land-checks-goal.test.mjs': 'BRO-7324',
   // Deferred-effect acceptance probe (BRO-7796): asserts the nightly landed-change audit has written a passing safeRun
   // ledger row since 2026-11-19; data-state, run only by autonomous-acceptance-recheck.js after its RECHECK-AFTER date.
   'scripts/verify-landed-proof-saferun.test.mjs': 'BRO-7796',

@@ -169,7 +169,7 @@ test('collect writes node_shard (and source) only after a successful merge', () 
   let d = tmp(); let o = opts(d);
   const src = part(path.join(d, 'src'), '2/2', SHARD_PARTS[2], { sha: 'S2' });
   let r = withOutput(() => collect(o, { ...quiet, exec: fakeExec({ jobs: [doneJob], artifacts: [{ id: 5, name: shardArtifactName('9', '1') }], partDir: src }), spawn: () => ({ status: 0 }) }));
-  assert.equal(r.rc, 0); assert.match(r.out, /^source=artifact\nnode_shard=artifact\n$/);
+  assert.equal(r.rc, 0); assert.match(r.out, /^source=artifact\nnode_shard=artifact\nwait_secs=\d+\nlocal_secs=0\n$/);
   r = withOutput(() => collect(opts(tmp()), { ...quiet, exec: fakeExec({ jobs: [] }), spawn: (c, a) => { part(a[1], '2/2', SHARD_PARTS[2]); return { status: 0 }; } }));
   assert.equal(r.rc, 0); assert.match(r.out, /node_shard=local\n/);
   // Failure paths: local crash, merge refusal. Neither writes node_shard.
@@ -288,4 +288,20 @@ test('collect: --wait-min is a deadline for the whole wait, network calls and sl
   let n = 0;
   const rc2 = collect(opts(tmp()), { log: () => {}, sleep: () => {}, now: () => (n++ === 0 ? 0 : 10 * 60_000), exec: e2, spawn: (c, a) => { part(a[1], '2/2', SHARD_PARTS[2]); return { status: 0 }; } });
   assert.equal(rc2, 0); assert.equal(c2.length, 0);
+});
+
+test('collect: records the wait for B and the local re-run apart (timing ledger, BRO-7324)', () => {
+  const d = tmp(); const o = { ...opts(d), 'wait-min': '12', 'interval-s': '20' };
+  let t = 1_000_000;
+  const { exec } = hangingExec(/^$/, fakeExec({ jobs: [{ name: SHARD_JOB_NAME, status: 'completed', conclusion: 'failure' }] }));
+  const r = withOutput(() => collect(o, { ...quiet, exec, now: () => t, sleep: (ms) => { t += ms; }, spawn: (c, a) => { t += 300_000; part(a[1], '2/2', SHARD_PARTS[2]); return { status: 0 }; } }));
+  assert.equal(r.rc, 0);
+  assert.match(r.out, /node_shard=local/);
+  const wait = Number(/^wait_secs=(\d+)$/m.exec(r.out)[1]);
+  assert.ok(wait < 300, `the local run's 300s is not counted as waiting (wait ${wait}s)`);
+  assert.match(r.out, /^local_secs=300$/m);
+  // An artifact merge never runs part 2 here: local_secs is 0.
+  const d2 = tmp(); const src = part(path.join(d2, 'src'), '2/2', SHARD_PARTS[2], { sha: 'S2' });
+  const r2 = withOutput(() => collect(opts(d2), { ...quiet, exec: fakeExec({ jobs: [{ name: SHARD_JOB_NAME, status: 'completed', conclusion: 'success' }], artifacts: [{ id: 5, name: shardArtifactName('9', '1') }], partDir: src }), spawn: () => assert.fail('no local run') }));
+  assert.equal(r2.rc, 0); assert.match(r2.out, /node_shard=artifact/); assert.match(r2.out, /^local_secs=0$/m);
 });
