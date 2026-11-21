@@ -765,6 +765,8 @@ for (const field of ['wrongShow', 'wrongProduction', 'isNonReview']) {
     assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
     assert.ok(!doc.reviews.some((r) => r.url === URL1), 'the row is off reviews.json');
     assert.equal(files.length, 1); assert.equal(files[0].d[field], true, 'the review file carries the flag, so the rebuild after the lane keeps it off');
+    assert.equal(files[0].d.laneRevoked, true, 'lane trust is revoked: otherwise the rebuild after the night ignores the flag (laneBypasses) and the review returns');
+    assert.equal(trust.isLaneReview(files[0].d, { openingDate: NIGHT }), false);
     assert.ok(res.takedownDone.some((t) => /verified gone/.test(t.reason)), JSON.stringify(res.takedownDone));
   });
 }
@@ -859,4 +861,19 @@ test('BRO-7958: deploy port: an absent URL keeps the dispatch open until the liv
   assert.equal(port.isOpen(), true, 'still live: the deploy has not shipped the removal');
   port.observe({ rv: [] });
   assert.equal(port.isOpen(), false, 'gone live: closed');
+});
+
+test('BRO-7958 review: a retry after the removal already merged still waits for the live site to drop the URL (never "not on the site")', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7958-retry-'));
+  try {
+    const doc = { reviews: [] }; // an earlier publish already removed the row, then threw before the site caught up
+    const ports = { updateReviews: async (fn) => fn(doc), regenShow: async () => ({}), deploy: async () => {}, fetchLiveShow: async () => ({ rv: [{ u: URL1 }] }) };
+    const res = await publishLaneReviews({ show: SHOW.id, night: NIGHT, rows: [], takedown: [{ url: URL1, key: 'k', verifyAbsent: true }], ledgerDir: dir, ports, dryRun: true, pollMs: 1, timeoutMs: 30, openingDate: NIGHT });
+    assert.deepEqual(res.gone, []); assert.deepEqual(res.stillLive, ['k']); assert.equal(res.timedOut, true);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('BRO-7958 review: a publishDate clear stays possible on the regular path; the lane refuses it', () => {
+  assert.equal(FIELD_VALUE_CHECKS.publishDate(null), null);
+  assert.match(inbox.laneValueError('publishDate', null), /cannot be cleared/);
 });

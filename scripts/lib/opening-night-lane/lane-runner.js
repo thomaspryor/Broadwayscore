@@ -118,6 +118,11 @@ function planCorrection(record, entry, at, ctx = {}) {
     const row = laneCardRow(next, ctx.show || {});
     if (row.pullQuote !== entry.value) return { reject: `the rebuild would show ${JSON.stringify(row.pullQuote || null)} as the quote, not the one given (its quote rules pick another); fix it the regular way` };
   }
+  if (TAKEDOWN_FIELDS.includes(field)) {
+    // The lane's provenance stamp makes every corpus guard step aside for the review (laneBypasses), the rebuild after the
+    // night included: without this the take-down is undone as soon as the lane releases the show.
+    next = { ...next, laneRevoked: true, laneRevokedReason: `taken down in the opening-night lane (${field}) by ${stamp.fixId}` };
+  }
   return { record: next };
 }
 
@@ -266,6 +271,7 @@ async function runLaneNight({
   // only when the live site no longer shows the URL. takenDownKeys: reviews the lane keeps off the site for the night.
   const stagedTakedowns = []; // {key, url, criticName, outletId, entry, stagedAt, tries, inflight}
   const takenDownKeys = new Set();
+  const TAKEDOWN_ERRORS = 3; // publishes that threw before the correction is reported failed
   const TAKEDOWN_TRIES = 2; // publishes that could not see it gone before the correction is reported failed
   const ROW_PROP = { humanReviewScore: 'assignedScore', publishDate: 'publishDate', criticName: 'criticName', llmPullQuote: 'pullQuote' };
   // `row` given: only corrections that row carries (a batch already in flight with the old value never settles a newer one).
@@ -369,9 +375,10 @@ async function runLaneNight({
         // The old byline's file goes first: with both on disk the write guard marks the new one a duplicate of the old (same URL).
         if (file !== found.file) fs.rmSync(found.file, { force: true });
         const restore = () => { if (file !== found.file) { fs.rmSync(file, { force: true }); safeWriteReview(found.file, found.record, { force: true }); } else safeWriteReview(found.file, found.record, { force: true }); };
-        const w = safeWriteReview(file, plan.record);
+        let w;
+        try { w = safeWriteReview(file, plan.record); } catch (err) { restore(); noteInbox(e, 'failed', `review file write failed (${String((err && err.message) || err).slice(0, 120)}); the file is back as it was`); continue; }
         if (!w.wrote) { restore(); noteInbox(e, 'failed', `review file write refused (${w.skipped || 'unknown'})`); continue; }
-        record = JSON.parse(fs.readFileSync(file, 'utf8'));
+        try { record = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (err) { restore(); noteInbox(e, 'failed', 'the changed review file could not be read back; the file is back as it was'); continue; }
         const kept = JSON.stringify(record[e.field]) === JSON.stringify(e.value);
         // The write guard can answer a date with its own wrongProduction flag, or a byline with Unknown. Put the old file back.
         const sideFlag = e.field === 'publishDate' && record.wrongProduction === true && found.record.wrongProduction !== true;
@@ -382,6 +389,7 @@ async function runLaneNight({
           continue;
         }
       }
+      if (name !== found.name) fileToKey.delete(found.name);
       fileToKey.set(name, key);
       if (TAKEDOWN_FIELDS.includes(e.field)) {
         // Off the site: no republish of this review, an earlier correction still waiting on it is moot, and a staged row never goes out.
@@ -417,7 +425,7 @@ async function runLaneNight({
     // its old row down in the same merge that adds the new one (same URL: nothing to wait for gone).
     const takedowns = stagedTakedowns.filter((t) => !t.inflight);
     for (const t of takedowns) t.inflight = true;
-    const takedownArg = [...takedowns.map((t) => ({ url: t.url, key: t.key, verifyAbsent: true, removedBefore: t.removedBefore === true })),
+    const takedownArg = [...takedowns.map((t) => ({ url: t.url, key: t.key, verifyAbsent: true })),
       ...batch.filter((r) => r.replacesUrl).map((r) => ({ url: r.row.url, key: r.key, verifyAbsent: false }))];
     for (const k of batchKeys) inflightKeys.add(k);
     try {
@@ -428,7 +436,7 @@ async function runLaneNight({
       published.push(res);
       // BRO-7958: take-downs the merge did (and the live site stopped showing) or found nothing to remove: done. One the live
       // site still shows after the publish stays staged for the next batch, up to TAKEDOWN_TRIES, then it is reported failed.
-      const goneKeys = new Set([...(res.gone || []), ...(res.notRemoved || [])]);
+      const goneKeys = new Set(res.gone || []);
       for (const t of takedowns) {
         if (goneKeys.has(t.key)) {
           stagedTakedowns.splice(stagedTakedowns.indexOf(t), 1);
@@ -441,7 +449,6 @@ async function runLaneNight({
           noteInbox(t.entry, 'failed', 'the review file is flagged, but the live site still showed the review after the publish; the first rebuild after the lane removes it');
         }
       }
-      for (const t of takedowns) if ((res.stillLive || []).includes(t.key)) t.removedBefore = true; // the merge took it out; the site has not caught up
       const notLive = new Set([...(res.missing || [])]);
       for (const x of remove) { // the merge landed: the copies are off the site (unless their original is still not live: retry with it)
         if (notLive.has(x.primaryKey)) continue;
@@ -486,6 +493,11 @@ async function runLaneNight({
     } catch (e) {
       errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
       pending.unshift(...batch.map((r) => ({ ...r, scoredAt: clock.now() }))); // scored: losing them to a failed push would drop reviews silently
+      // A publish that threw (push rejected, deploy refused) counts against each take-down it carried, and waits a pass before the next try.
+      for (const t of takedowns) {
+        t.stagedAt = clock.now(); t.errors = (t.errors || 0) + 1;
+        if (t.errors >= TAKEDOWN_ERRORS && stagedTakedowns.includes(t)) { stagedTakedowns.splice(stagedTakedowns.indexOf(t), 1); noteInbox(t.entry, 'failed', 'the review file is flagged, but the take-down publish kept failing; the first rebuild after the lane removes it'); }
+      }
     } finally { for (const k of batchKeys) inflightKeys.delete(k); for (const t of takedowns) t.inflight = false; }
   };
   // A row that may be a syndicated copy (its critic has a primary outlet) is held until the end of the pass: its primary
@@ -728,7 +740,7 @@ async function runLaneNight({
         // queued again (marked `rescored`, so publish waits for the new score to be live) when already on the site.
         for (const sib of settled.rescored.splice(0)) {
           const file = [...fileToKey].find(([, k]) => k === sib.key)?.[0];
-          if (!file || sib.key === a.key) continue;
+          if (!file || sib.key === a.key || takenDownKeys.has(sib.key)) continue;
           let sibRow;
           try { sibRow = laneCardRow(JSON.parse(require('fs').readFileSync(require('path').join(reviewTextsDir, show.id, file), 'utf8')), show); } catch { continue; }
           const queued = pending.find((q) => q.key === sib.key);

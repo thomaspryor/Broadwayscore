@@ -87,7 +87,8 @@ function laneHeldEditProblem(action, lease, { url } = {}) {
       + `Correct it in the lane tonight: node scripts/opening-night-lane-inbox.js correct --show=${show} --url=${q(url || '<review URL>')} --field=${action.field} --value=${q(JSON.stringify(action.newValue))} `
       + '(or pass --after-lane to write the plan anyway)' };
   }
-  return { level: 'warn', message: `the opening-night lane holds ${show}: ${action.field} cannot be corrected by the lane, so this edit reaches the site only after the lane ends` };
+  const why = LANE_CORRECTION_FIELDS.includes(action.field) ? `the lane does not accept this value for ${action.field} (${laneValueError(action.field, action.newValue)})` : `${action.field} cannot be corrected by the lane`;
+  return { level: 'warn', message: `the opening-night lane holds ${show}: ${why}, so this edit reaches the site only after the lane ends` };
 }
 
 module.exports = { laneHeldEditProblem, ingestRouteDecision, routeToInbox, liveLease, settleAfterInboxWrite };

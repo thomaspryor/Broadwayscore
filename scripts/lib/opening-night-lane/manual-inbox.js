@@ -46,6 +46,7 @@ const LANE_CORRECTION_FIELDS = Object.freeze(['humanReviewScore', 'publishDate',
 /** The CLI-side value check for a lane correction field, or null. (The lane re-checks with the record at apply time.) */
 function laneValueError(field, value) {
   if (TAKEDOWN_FIELDS.includes(field)) return value === true ? null : `${field} can only be set to true on a lane review (clear a flag the regular way)`;
+  if (field === 'publishDate' && value === null) return 'publishDate cannot be cleared in the lane; give the correct YYYY-MM-DD day';
   if (field === 'criticName') {
     return typeof value === 'string' && value.trim().length >= 3 && value.trim().length <= 80 && !/^(unknown|n\/a|staff)$/i.test(value.trim())
       ? null : 'criticName must be a person\'s name (3-80 chars, not Unknown)';

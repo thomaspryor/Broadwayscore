@@ -188,10 +188,10 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
   for (const r of rows) if (landed.has(r.row)) log(r.key, 'rebuilt');
   // A take-down that really removed a row (verifyAbsent) is awaited gone; one that matched no lane row is reported, not awaited.
   const removedNow = new Set((merge.takedownRemoved || []).map(canonicalUrl));
-  // removedBefore: an earlier publish of this run removed it and the live site still showed it; nothing left to remove now, but it is still awaited.
-  const awaited = (x) => x.verifyAbsent !== false && (removedNow.has(canonicalUrl(x.url)) || x.removedBefore === true);
-  const absentWanted = takedowns.filter(awaited);
-  const notRemoved = takedowns.filter((x) => x.verifyAbsent !== false && !awaited(x)).map((x) => x.key);
+  // Absence is always verified against the live site, whoever removed the row: a retry after a push that landed but a regen
+  // that threw finds nothing to remove and must still see the URL gone before it is called done.
+  const absentWanted = takedowns.filter((x) => x.verifyAbsent !== false);
+  const notRemoved = absentWanted.filter((x) => !removedNow.has(canonicalUrl(x.url))).map((x) => x.key); // informational: this merge had no lane row for it
   await ports.deploy({ show, night, expectedUrls: rows.filter((r) => landed.has(r.row)).map((r) => r.row.url), ...(absentWanted.length ? { absentUrls: absentWanted.map((x) => x.url) } : {}) }); // real ports dispatch the press-night deploy without blocking; see deploy-port.js
   for (const r of rows) if (landed.has(r.row)) log(r.key, 'deployed');
 
