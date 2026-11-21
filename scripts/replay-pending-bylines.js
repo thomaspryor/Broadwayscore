@@ -357,13 +357,21 @@ function unrecoverableAlertPayload(showId, entries) {
  * and the stub itself holds nothing a primary could lack: no byline, no text
  * (BRO-4271). Pure; `landedFile` is findExistingFileForUrl's result.
  */
+/** BRO-8023: a filed primary whose body can stand in for the stub's (a real tier, no exclusion flag). Pure. */
+function primaryBodyIsSound(primary) {
+  if (!primary || typeof primary.fullText !== 'string' || !primary.fullText.trim()) return false;
+  if (primary.wrongShow || primary.wrongProduction || primary.isRoundupArticle || primary.duplicateOf) return false;
+  return ['complete', 'truncated'].includes(primary.contentTier);
+}
+
 function isRedundantPendingStub(data, landedFile, primary = null) {
   if (!landedFile || !data) return false;
   const hasByline = data.criticName && String(data.criticName).toLowerCase() !== 'unknown';
   // BRO-8023: a body is only "extra" when the primary's own body is shorter (40 same-url stubs with a fetched copy of
   // the primary's text sat in _pending forever: the-heart thewrap--536994cc vs thewrap--robert-hofler).
   const len = (t) => (typeof t === 'string' ? t.trim().length : 0);
-  const hasText = len(data.fullText) > 0 && (!primary || len(data.fullText) > len(primary.fullText));
+  // Only a sound primary body counts: a paywall wall or flagged primary never outweighs the stub's real text.
+  const hasText = len(data.fullText) > 0 && (!primaryBodyIsSound(primary) || len(data.fullText) > len(primary.fullText));
   // Anything a primary might lack keeps the stub: a score or an excerpt.
   const hasScore = data.originalScore != null && data.originalScore !== '';
   const hasExcerpt = Object.keys(data).some((k) => /Excerpt$/.test(k)
@@ -785,7 +793,8 @@ async function processShow(showId, deps = {}) {
         kept++;
         continue;
       }
-      if (verdict === 'same-article') {
+      const stubScoreMissingFromPrimary = data.originalScore != null && data.originalScore !== '' && (existing.originalScore == null || existing.originalScore === '');
+      if (verdict === 'same-article' && primaryBodyIsSound(existing) && !stubScoreMissingFromPrimary) {
         // BRO-8023: the primary already scores this article; the stub only adds a longer body or an excerpt. Settle
         // it with the reason (kept, not deleted) instead of re-fetching it every week (33 such 2025-26 stubs).
         const len = (t) => (typeof t === 'string' ? t.trim().length : 0);
@@ -914,6 +923,7 @@ module.exports = {
   NON_THEATRE_SECTIONS,
   findExistingFileForUrl,
   isRedundantPendingStub,
+  primaryBodyIsSound,
   // Liveness of the --all-open scope (audit S7-T7) — exported for
   // tests/unit/show-liveness.test.mjs.
   PENDING_DRAIN_LIVE_STATUSES,
