@@ -450,8 +450,8 @@ test('repo allows the read-only Bash commands and nothing that writes (BRO-7533)
 });
 
 // BRO-7885 (owner 2026-11-21, option A): peer messaging must not hit a hidden approval. Guard: these exact
-// rules stay in the repo allow list and reach the home settings; nothing broader (no server-wide wildcard for peers).
-test('peer messaging tools are allowed by exact name and reach the home settings (BRO-7885)', () => {
+// rules stay in the repo allow list and reach the cloud multi-repo install (buildSettings at /home/user). The Mac's own ~/.claude/settings.json is outside this test.
+test('peer messaging tools are allowed by exact name and reach the cloud multi-repo home settings (BRO-7885)', () => {
   const real = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
   const wanted = ['SendMessage', 'ListAgents', 'mcp__claude-code-remote__send_message', 'mcp__Claude_Code_Remote__send_message'];
   for (const r of wanted) assert.ok(real.permissions.allow.includes(r), `repo allows ${r}`);
