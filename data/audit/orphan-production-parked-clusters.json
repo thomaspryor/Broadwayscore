@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T10:38:35.631Z",
+  "generatedAt": "2026-11-21T10:41:29.953Z",
   "note": "BRO-7959: clusters still parked after batches 1-3. status=c means not a stage production in shows.json terms; pending-research means no source attempted yet this session (time budget), NOT a verified non-production.",
   "clusters": [
     {
@@ -78,6 +78,16 @@
       "reviews": 5,
       "hosts": [
         "the-enormous-crocodile-off-west-end-2026"
+      ],
+      "status": "pending-research",
+      "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."
+    },
+    {
+      "proposedId": "the-lives-of-others-west-end-2026-2",
+      "market": "west-end",
+      "reviews": 4,
+      "hosts": [
+        "the-lives-of-others-west-end-2026"
       ],
       "status": "pending-research",
       "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."
@@ -204,16 +214,6 @@
       "reason": "Hosted on the-bodyguard-tour-2026: tour stops. Leave flagged."
     },
     {
-      "proposedId": "the-lives-of-others-west-end-2026-2",
-      "market": "west-end",
-      "reviews": 4,
-      "hosts": [
-        "the-lives-of-others-west-end-2026"
-      ],
-      "status": "pending-research",
-      "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."
-    },
-    {
       "proposedId": "brainiac-live-west-end-2026-2",
       "market": "west-end",
       "reviews": 3,
@@ -304,6 +304,16 @@
       "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."
     },
     {
+      "proposedId": "music-city-off-broadway-2026-2",
+      "market": "broadway",
+      "reviews": 3,
+      "hosts": [
+        "music-city-off-broadway-2026"
+      ],
+      "status": "pending-research",
+      "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."
+    },
+    {
       "proposedId": "peter-pan-goes-wrong-west-end-2025",
       "market": "west-end",
       "reviews": 3,
@@ -319,6 +329,16 @@
       "reviews": 3,
       "hosts": [
         "purple-rain-2026"
+      ],
+      "status": "pending-research",
+      "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."
+    },
+    {
+      "proposedId": "still-off-broadway-2025",
+      "market": "broadway",
+      "reviews": 3,
+      "hosts": [
+        "still-off-broadway-2024"
       ],
       "status": "pending-research",
       "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."
@@ -349,6 +369,26 @@
       "reviews": 3,
       "hosts": [
         "the-wiz-2024"
+      ],
+      "status": "pending-research",
+      "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."
+    },
+    {
+      "proposedId": "urinetown-off-broadway-2025",
+      "market": "broadway",
+      "reviews": 3,
+      "hosts": [
+        "urinetown-2001"
+      ],
+      "status": "pending-research",
+      "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."
+    },
+    {
+      "proposedId": "wonderful-town-off-broadway-2025",
+      "market": "broadway",
+      "reviews": 3,
+      "hosts": [
+        "wonderful-town-2003"
       ],
       "status": "pending-research",
       "reason": "Sources not yet tried (venue page, Playbill, WET/theatrerecord). Host is a later same-title show; production for the review dates not yet identified."

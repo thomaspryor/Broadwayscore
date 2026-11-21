@@ -114,6 +114,14 @@ if (ARGV.includes('--rehome')) {
   const byTitle = L.indexShows(shows.filter((x) => !specs.some((s) => s.id === x.id)));
   const showById = new Map(shows.map((x) => [x.id, x]));
   const report = {};
+  // BRO-7959: a flagged copy whose URL is already live (unflagged) on another show is a duplicate, not a hidden review;
+  // moving it would create two live copies of one review.
+  const liveUrls = new Set();
+  for (const host of listShowDirs(dir, { silent: true, skipHolding: true })) {
+    for (const f of fs.readdirSync(path.join(dir, host)).filter((x) => x.endsWith('.json'))) {
+      try { const j = JSON.parse(fs.readFileSync(path.join(dir, host, f), 'utf8')); if (j.url && !j.wrongProduction && !j.wrongShow && !j.duplicateOf) liveUrls.add(L.urlKey(j.url)); } catch { /* unreadable file: not live */ }
+    }
+  }
   for (const s of specs) {
     const target = showById.get(s.id);
     if (!target) { console.error(`target missing from shows.json: ${s.id} (run --add)`); process.exit(1); }
@@ -149,6 +157,7 @@ if (ARGV.includes('--rehome')) {
         // reroutedFrom.
         const ok = L.reviewMarket(j, outlets) === s.market || o.isDualMarket || needles.some((n) => hay.includes(n));
         if (!ok) { rejected++; continue; }
+        if (j.url && liveUrls.has(L.urlKey(j.url))) { dupeLeft++; continue; }
         const key = `${f}|${ms}`;
         if (seen.has(key)) { dupeLeft++; continue; }
         seen.add(key);

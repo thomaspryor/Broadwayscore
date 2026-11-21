@@ -54,3 +54,10 @@ test('urlKey folds www, query, hash, trailing slash and case so duplicate copies
   assert.equal(L.urlKey('https://a.com/x/'), L.urlKey('https://a.com/x'));
   assert.notEqual(L.urlKey('https://a.com/x'), L.urlKey('https://a.com/y'));
 });
+
+test('urlKey keeps identifying query params but drops tracking ones; titlesCompatible is prefix-based (BRO-7959)', () => {
+  assert.notEqual(L.urlKey('https://a.com/r.php?id=1'), L.urlKey('https://a.com/r.php?id=2'));
+  assert.equal(L.urlKey('https://a.com/r?id=1&utm_source=x'), L.urlKey('https://a.com/r?id=1'));
+  assert.ok(L.titlesCompatible('imeverywoman', 'imeverywomanthechakakhanmusical'));
+  assert.ok(!L.titlesCompatible('seagull', 'threesisters'));
+});

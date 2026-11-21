@@ -86,9 +86,14 @@ function orphanCandidate(j, show, { byTitle, cutoffMs, now }) {
 function urlKey(u) {
   try {
     const x = new URL(u);
-    return x.hostname.replace(/^www\./, '').toLowerCase() + x.pathname.replace(/\/+$/, '').toLowerCase();
+    // Keep identifying query params (?p=123, ?id=9); drop tracking ones (utm_*, srsltid, smid, fbclid, gclid).
+    const q = [...x.searchParams].filter(([k]) => !/^(utm_|srsltid$|smid$|fbclid$|gclid$)/i.test(k)).sort(([a], [b]) => (a < b ? -1 : 1)).map(([k, v]) => `${k}=${v}`).join('&');
+    return x.hostname.replace(/^www\./, '').toLowerCase() + x.pathname.replace(/\/+$/, '').toLowerCase() + (q ? `?${q}` : '');
   } catch { return String(u || '').toLowerCase(); }
 }
+
+/** Two normalized titles name the same show if one is a prefix of the other ("imeverywoman" / "imeverywomanthechakakhanmusical"). */
+function titlesCompatible(a, b) { return !!a && !!b && (a.startsWith(b) || b.startsWith(a)); }
 
 /** Market of a review from its outlet registry entry (london region => west-end). */
 function reviewMarket(j, outlets) {
@@ -163,7 +168,7 @@ function proposeEntry(c, existingIds) {
 }
 
 module.exports = {
-  urlKey,
+  urlKey, titlesCompatible,
   DAY, COVER_SLACK_DAYS, CLUSTER_GAP_DAYS,
   parseDate, normTitle, reviewDateMs, isCrossMarketNote, indexShows, isCovered,
   orphanCandidate, reviewMarket, clusterOrphans, proposeEntry,
