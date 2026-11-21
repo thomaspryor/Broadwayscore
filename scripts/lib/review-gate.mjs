@@ -34,8 +34,9 @@
 //   1. gated lines (added+deleted in src/, scripts/, .github/workflows/ code
 //      files) vs origin/main…ref ≤ GATE_LINE_BUDGET → not gated, allowed.
 //   2. a pass-verdict whose diffHash matches the current diff → allowed.
-//   3. a pass-verdict whose head is an ancestor of ref with ≤ DRIFT_BUDGET_LINES
-//      of gated changes since (review fixups) → allowed.
+//   3. a pass-verdict whose head is an ancestor of ref (and NOT already on the
+//      base: BRO-7951) with ≤ DRIFT_BUDGET_LINES of gated changes since
+//      (review fixups) → allowed.
 //   4. otherwise blocked — run a review skill (or NO-SHIP-CHECK: bypass, which
 //      the hook detects in the transcript, not here).
 // /second-opinion verdicts only count for diffs ≤ SECOND_OPINION_MAX_LINES
@@ -806,9 +807,18 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
   // Built once, used for every entry's ancestor test — see ancestorSet() for
   // why the per-entry spawn made this scan take ~10 minutes.
   const ancestors = ancestorSet(repoRoot, ref === 'WORKTREE' ? 'HEAD' : ref);
-  const isAncestorOfRef = (head) => (
+  const isOnRef = (head) => (
     ancestors ? ancestors.has(head) : isAncestor(repoRoot, head, ref === 'WORKTREE' ? 'HEAD' : ref)
   );
+  // BRO-7951: a verdict recorded on a head that is already on the base reviewed
+  // nothing on THIS branch (1,000+ `diffHash:'empty'` verdicts sit on main and
+  // are ancestors of every branch). Fallback to the per-entry spawn if the set
+  // can't be built; if even that fails, isAncestor() is false => not skipped.
+  const baseAncestors = ancestorSet(repoRoot, base);
+  const isOnBase = (head) => (
+    baseAncestors ? baseAncestors.has(head) : isAncestor(repoRoot, head, base)
+  );
+  const isAncestorOfRef = (head) => isOnRef(head) && !isOnBase(head);
   // Loop-invariant: `stats` does not change inside the scan, so the pushed-file
   // set is hoisted out (it was rebuilt per entry) and doubles as the drift
   // pathspec.
@@ -883,7 +893,7 @@ export function queryPushAllowed({ repoRoot, ledgerRoot = null, ref = 'HEAD' }) 
     gated: true, allowed: false,
     reason: nearest
       ? `stale verdict (${nearest.reviewer} @ ${nearest.ts}): ${nearest.driftLines} gated lines changed since (> drift budget ${DRIFT_BUDGET_LINES})`
-      : 'no review verdict for this diff',
+      : 'no review verdict for this diff (a verdict recorded before committing, or on a head already on main, does not count: re-run the review after committing)',
     gatedLines: stats.totalLines,
     gatedFiles: stats.files.map(f => f.path).slice(0, 10),
     diffHash: currentHash,

@@ -321,3 +321,43 @@ test('diffHash ignores non-gated paths (data/ changes do not alter the hash)', (
   git(repo, 'commit', '-q', '-m', 'data only');
   assert.equal(computeDiffHash(repo, base, 'HEAD'), before);
 });
+
+// BRO-7951: a verdict recorded on a head already on the base reviewed nothing
+// on this branch, so it must not unlock fixup-drift.
+test('BRO-7951: verdict on base head does not unlock a 111-line branch', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  recordVerdict({ repoRoot: repo, reviewer: 'ship-check', result: 'pass' }); // head == origin/main
+  commitLines(repo, 'scripts/new.js', 111, 'unreviewed');
+  const r = queryPushAllowed({ repoRoot: repo });
+  assert.equal(r.allowed, false, JSON.stringify(r));
+});
+
+test('BRO-7951: light verdict on base head does not unlock a 60-line branch', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  recordVerdict({ repoRoot: repo, reviewer: 'second-opinion', result: 'pass' });
+  commitLines(repo, 'scripts/new.js', 60, 'unreviewed');
+  assert.equal(queryPushAllowed({ repoRoot: repo }).allowed, false);
+});
+
+test('BRO-7951: verdict on branch head + 20 lines drift is still allowed', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  commitLines(repo, 'scripts/monitor.js', 60, 'monitor');
+  recordVerdict({ repoRoot: repo, reviewer: 'ship-check', result: 'pass' });
+  commitLines(repo, 'scripts/monitor.js', 70, 'fixup');
+  const r = queryPushAllowed({ repoRoot: repo });
+  assert.equal(r.allowed, true, JSON.stringify(r));
+  assert.equal(r.via, 'fixup-drift');
+});
+
+test('BRO-7951: after the reviewed head lands on base, follow-up commits need a new review', (t) => {
+  const repo = makeRepo();
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  commitLines(repo, 'scripts/monitor.js', 60, 'monitor');
+  recordVerdict({ repoRoot: repo, reviewer: 'ship-check', result: 'pass' });
+  git(repo, 'update-ref', 'refs/remotes/origin/main', 'HEAD'); // landed
+  commitLines(repo, 'scripts/follow.js', 60, 'follow-up');
+  assert.equal(queryPushAllowed({ repoRoot: repo }).allowed, false);
+});
