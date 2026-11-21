@@ -357,26 +357,41 @@ function unrecoverableAlertPayload(showId, entries) {
  * and the stub itself holds nothing a primary could lack: no byline, no text
  * (BRO-4271). Pure; `landedFile` is findExistingFileForUrl's result.
  */
-/** BRO-8023: a filed primary whose body can stand in for the stub's (a real tier, no exclusion flag). Pure. */
-function primaryBodyIsSound(primary) {
-  if (!primary || typeof primary.fullText !== 'string' || !primary.fullText.trim()) return false;
-  if (primary.wrongShow || primary.wrongProduction || primary.isRoundupArticle || primary.duplicateOf) return false;
-  return ['complete', 'truncated'].includes(primary.contentTier);
-}
-
-function isRedundantPendingStub(data, landedFile, primary = null) {
+function isRedundantPendingStub(data, landedFile) {
   if (!landedFile || !data) return false;
   const hasByline = data.criticName && String(data.criticName).toLowerCase() !== 'unknown';
-  // BRO-8023: a body is only "extra" when the primary's own body is shorter (40 same-url stubs with a fetched copy of
-  // the primary's text sat in _pending forever: the-heart thewrap--536994cc vs thewrap--robert-hofler).
-  const len = (t) => (typeof t === 'string' ? t.trim().length : 0);
-  // Only a sound primary body counts: a paywall wall or flagged primary never outweighs the stub's real text.
-  const hasText = len(data.fullText) > 0 && (!primaryBodyIsSound(primary) || len(data.fullText) > len(primary.fullText));
+  const hasText = typeof data.fullText === 'string' && data.fullText.trim().length > 0;
   // Anything a primary might lack keeps the stub: a score or an excerpt.
   const hasScore = data.originalScore != null && data.originalScore !== '';
   const hasExcerpt = Object.keys(data).some((k) => /Excerpt$/.test(k)
     && typeof data[k] === 'string' && data[k].trim().length > 0);
   return !hasByline && !hasText && !hasScore && !hasExcerpt;
+}
+
+/** BRO-8023: a filed primary whose body the rebuild would score (a real tier, no exclusion/body flag). Pure. */
+function primaryBodyIsSound(primary) {
+  if (!primary || typeof primary.fullText !== 'string' || !primary.fullText.trim()) return false;
+  if (primary.wrongShow || primary.wrongProduction || primary.isRoundupArticle || primary.duplicateOf || primary.fullTextWrongAuthor) return false;
+  return ['complete', 'truncated'].includes(primary.contentTier);
+}
+const SCORE_FIELDS = ['originalScore', 'aggregatorStars', 'assignedScore', 'llmScore', 'humanReviewScore'];
+const present = (v) => v != null && v !== '';
+/**
+ * BRO-8023: why a text-bearing stub whose article a sound primary already files can be SETTLED (tagged, kept on
+ * disk, never re-fetched), or null. 40 such 2025-26 stubs sat in _pending forever (the-heart thewrap--536994cc vs
+ * thewrap--robert-hofler). Never deletes: two extractions of one article can differ, so the stub stays for a merge.
+ * Same article = the canonical key (id query params kept); a score field the primary lacks keeps the stub open. Pure.
+ */
+function sameArticleSettleReason(data, primary, primaryFile) {
+  if (!data || !primaryBodyIsSound(primary)) return null;
+  const { normalizeArticleUrl } = require('./lib/combined-review-utils');
+  const a = normalizeArticleUrl(data.url), b = normalizeArticleUrl(primary.url);
+  if (!a || a !== b) return null;
+  if (SCORE_FIELDS.some((k) => present(data[k]) && !present(primary[k]))) return null;
+  // An excerpt (a scoring fallback) the primary lacks keeps it open too.
+  if (Object.keys(data).some((k) => /Excerpt$/.test(k) && typeof data[k] === 'string' && data[k].trim() && !present(primary[k]))) return null;
+  const len = (t) => (typeof t === 'string' ? t.trim().length : 0);
+  return `same article already filed as ${primaryFile} (stub body ${len(data.fullText)} chars vs primary ${len(primary.fullText)}; not merged) (BRO-8023)`;
 }
 
 // BRO-7078: failed fetches before a no-identity rss stub is tagged.
@@ -617,10 +632,23 @@ async function processShow(showId, deps = {}) {
     const landed = findExistingFileForUrl(showId, data.outletId, url, root);
     let landedData = null;
     if (landed) { try { landedData = JSON.parse(fs.readFileSync(path.join(root, showId, landed), 'utf8')); } catch { landedData = null; } }
-    if (isRedundantPendingStub(data, landed, landedData)) {
+    if (isRedundantPendingStub(data, landed)) {
       console.log(`  [${file}] url already filed as ${landed} — dropping textless pending stub`);
       if (!dry) fs.unlinkSync(filepath);
       droppedRedundant++;
+      continue;
+    }
+
+    const settle = landed ? sameArticleSettleReason(data, landedData, landed) : null;
+    if (settle) {
+      console.log(`  [${file}] ${settle} — tagged, not fetched`);
+      if (!dry) {
+        data.promoteSkippedReason = settle;
+        data.promoteSkippedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      tagged++;
+      kept++;
       continue;
     }
 
@@ -776,7 +804,7 @@ async function processShow(showId, deps = {}) {
       try { existing = JSON.parse(fs.readFileSync(newPath, 'utf8')); } catch { /* unreadable primary: fall through to keep */ }
       const verdict = existing ? classifyTargetCollision(data, existing) : null;
       // Only drop a stub that carries nothing the primary lacks (no score / excerpt / longer body).
-      if (verdict === 'same-article' && isRedundantPendingStub(data, newFilename, existing)) {
+      if (verdict === 'same-article' && isRedundantPendingStub(data, newFilename)) {
         console.log(`  [${file}] ${dry ? 'DRY → would drop' : 'dropping'}: ${newFilename} already carries this article`);
         if (!dry) fs.unlinkSync(filepath);
         droppedRedundant++;
@@ -793,14 +821,11 @@ async function processShow(showId, deps = {}) {
         kept++;
         continue;
       }
-      const stubScoreMissingFromPrimary = data.originalScore != null && data.originalScore !== '' && (existing.originalScore == null || existing.originalScore === '');
-      if (verdict === 'same-article' && primaryBodyIsSound(existing) && !stubScoreMissingFromPrimary) {
-        // BRO-8023: the primary already scores this article; the stub only adds a longer body or an excerpt. Settle
-        // it with the reason (kept, not deleted) instead of re-fetching it every week (33 such 2025-26 stubs).
-        const len = (t) => (typeof t === 'string' ? t.trim().length : 0);
-        console.log(`  [${file}] ${newFilename} already scores this article — tagged (stub carries extra body/excerpt, not merged)`);
+      const settleAfter = verdict === 'same-article' ? sameArticleSettleReason(data, existing, newFilename) : null;
+      if (settleAfter) {
+        console.log(`  [${file}] ${settleAfter} — tagged`);
         if (!dry) {
-          data.promoteSkippedReason = `same article already filed as ${newFilename} (stub body ${len(data.fullText)} chars vs primary ${len(existing && existing.fullText)}; extra body/excerpt not merged) (BRO-8023)`;
+          data.promoteSkippedReason = settleAfter;
           data.promoteSkippedAt = now().toISOString();
           try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
         }
@@ -924,6 +949,7 @@ module.exports = {
   findExistingFileForUrl,
   isRedundantPendingStub,
   primaryBodyIsSound,
+  sameArticleSettleReason,
   // Liveness of the --all-open scope (audit S7-T7) — exported for
   // tests/unit/show-liveness.test.mjs.
   PENDING_DRAIN_LIVE_STATUSES,

@@ -175,27 +175,34 @@ describe('replay-pending-bylines processShow --triage-only (BRO-8023)', () => {
   });
 });
 
-describe('BRO-8023: a same-url stub with a copy of the primary body is redundant', () => {
-  const { isRedundantPendingStub } = require('../../scripts/replay-pending-bylines.js');
+describe('BRO-8023: sameArticleSettleReason (text-bearing same-url stubs are tagged, never deleted)', () => {
+  const { sameArticleSettleReason, isRedundantPendingStub } = require('../../scripts/replay-pending-bylines.js');
+  const U = 'https://www.thewrap.com/creative-content/theater/the-heart-off-broadway-review-organ-transplant-musical/';
   const body = 'x'.repeat(4000);
-  const stub = { criticName: 'Unknown', url: 'https://www.thewrap.com/creative-content/theater/the-heart-off-broadway-review-organ-transplant-musical/', fullText: body };
-  test('primary body as long or longer → redundant (dropped)', () => {
-    assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json', { fullText: body + 'more', contentTier: 'complete' }), true);
-    assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json', { fullText: body, contentTier: 'truncated' }), true);
+  const stub = { criticName: 'Unknown', url: U, fullText: body };
+  const good = { url: U, fullText: body, contentTier: 'complete' };
+  test('a sound primary with the same article settles the stub, with the reason', () => {
+    assert.match(sameArticleSettleReason(stub, good, 'thewrap--robert-hofler.json'), /same article already filed as thewrap--robert-hofler\.json/);
+    assert.ok(sameArticleSettleReason({ ...stub, fullText: body + body }, { ...good, contentTier: 'truncated' }, 'f.json'));
   });
-  test('a junk or flagged primary body never outweighs the stub text', () => {
-    assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json', { fullText: body + 'paywall', contentTier: 'invalid' }), false);
-    assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json', { fullText: body + 'x', contentTier: 'complete', wrongProduction: true }), false);
+  test('a junk, flagged or wrong-author primary never settles it', () => {
+    for (const p of [{ ...good, contentTier: 'invalid' }, { ...good, contentTier: 'stub' }, { ...good, wrongProduction: true }, { ...good, fullTextWrongAuthor: true }, { ...good, duplicateOf: 'x.json' }, { ...good, fullText: '' }]) {
+      assert.equal(sameArticleSettleReason(stub, p, 'f.json'), null, JSON.stringify(Object.keys(p)));
+    }
   });
-  test('stub body longer than the primary → kept (it carries something)', () => {
-    assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json', { fullText: 'short' }), false);
+  test('a score or excerpt the primary lacks keeps it open', () => {
+    assert.equal(sameArticleSettleReason({ ...stub, originalScore: '4/5' }, good, 'f.json'), null);
+    assert.equal(sameArticleSettleReason({ ...stub, aggregatorStars: '4/5' }, good, 'f.json'), null);
+    assert.equal(sameArticleSettleReason({ ...stub, dtliExcerpt: 'A fine show' }, good, 'f.json'), null);
+    assert.ok(sameArticleSettleReason({ ...stub, originalScore: '4/5' }, { ...good, originalScore: '4/5' }, 'f.json'));
   });
-  test('no primary data passed → old rule (text keeps it)', () => {
+  test('id-routed urls are different articles (LSA story.asp?ID=)', () => {
+    const a = 'https://www.lastagetimes.com/story.asp?ID=1111', b = 'https://www.lastagetimes.com/story.asp?ID=2222';
+    assert.equal(sameArticleSettleReason({ ...stub, url: a }, { ...good, url: b }, 'f.json'), null);
+  });
+  test('the deletion rule is unchanged: any text keeps the stub', () => {
     assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json'), false);
-  });
-  test('a score still keeps it', () => {
-    assert.equal(isRedundantPendingStub({ ...stub, originalScore: '4/5' }, 'thewrap--robert-hofler.json', { fullText: body, contentTier: 'complete' }), false);
-    assert.equal(isRedundantPendingStub({ ...stub, fullText: '', dtliExcerpt: 'A fine show' }, 'thewrap--robert-hofler.json', { fullText: body, contentTier: 'complete' }), false);
+    assert.equal(isRedundantPendingStub({ criticName: 'Unknown', url: U }, 'thewrap--robert-hofler.json'), true);
   });
 });
 
@@ -216,13 +223,14 @@ describe('BRO-8023: processShow settles same-url stubs against the filed primary
     fetch: async () => { counter.n++; return { content: '<html></html>' }; },
     alert: async () => {}, resolve: () => {}, emit: () => {}, budget: { exceeded: () => false, minutes: 5 },
   });
-  test('a fetched copy no longer than the primary body is dropped before any fetch', async () => {
+  test('a fetched copy of a filed article is tagged before any fetch, kept on disk', async () => {
     const body = 'word '.repeat(600);
     const { root, stub } = setup(body, body + ' more');
     const c = { n: 0 };
     const r = await processShow(PUNCH.id, deps(root, c));
-    assert.equal(fs.existsSync(stub), false);
-    assert.equal(r.droppedRedundant, 1);
+    assert.equal(fs.existsSync(stub), true);
+    assert.match(JSON.parse(fs.readFileSync(stub, 'utf8')).promoteSkippedReason, /same article already filed as culturesauce--thom-geier\.json/);
+    assert.equal(r.tagged, 1);
     assert.equal(c.n, 0);
   });
   test('a stub carrying a longer body than the primary is tagged with the reason (kept), not re-fetched forever', async () => {
