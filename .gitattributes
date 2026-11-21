@@ -47,6 +47,8 @@ data/audit/lane-switch.jsonl merge=union
 # explicit `ts` field first) — the two disqualifiers audit-ledger-merge-attrs.js
 # names. The writer never prunes, so union cannot resurrect a deleted row.
 data/audit/breaker-transitions.jsonl merge=union
+# report-discovery-share.js appends one {date,pending} row per run and never prunes (check-arm-yield.yml).
+data/audit/pending-growth-ledger.jsonl merge=union
 # Bot-only append log (task #784/#752), written by scripts/lib/provider-
 # telemetry.js's recordProviderCall() from many separate CI runners/checkouts
 # (collect-review-texts.yml matrix, gather-reviews.js, opening-night-poller.js,

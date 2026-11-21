@@ -291,3 +291,20 @@ test('BRO-7994: no outside trigger, or only tests edited, or nothing landed -> a
   assert.equal(decideAt([...edit('src/lib/google-one-tap.test.ts'), ...say('Not checkable from a cloud session.'), ...landed()]).decision, 'allow');
   assert.equal(decideAt([...edit('src/lib/google-one-tap.ts'), ...say('Not checkable from a cloud session.')]).decision, 'allow');
 });
+
+// BRO-7511 what-else: real runs behind a wrapper (timeout 300, FOO=1, nohup, nice -n) were read as "not run live".
+test('a wrapper before the interpreter still counts as a direct run; text that mentions one does not', () => {
+  const ev = [...edit('scripts/fixture-job.js'), ...landed()];
+  for (const c of ['timeout 300 node scripts/fixture-job.js --x', 'FOO=1 node scripts/fixture-job.js', 'nohup node scripts/fixture-job.js &',
+    'timeout -k 5 300 node scripts/fixture-job.js', 'nice -n 10 node scripts/fixture-job.js', 'cd x && env A=1 time node scripts/fixture-job.js']) {
+    assert.equal(decide([...ev, ...bash(c)]).decision, 'allow', c);
+  }
+  for (const c of ['echo timeout 300 node scripts/fixture-job.js', 'timeout 300 node scripts/fixture-job.js --help', 'grep node scripts/fixture-job.js']) {
+    assert.equal(decide([...ev, ...bash(c)]).decision, 'block', c);
+  }
+});
+
+test('a wrapped cloud-dispatch of the workflow counts as a dispatch', () => {
+  const ev = [...edit('.github/workflows/sentry-triage.yml'), ...landed()];
+  assert.equal(decide([...ev, ...bash('timeout 600 node scripts/cloud-dispatch.js sentry-triage.yml --wait')]).decision, 'allow');
+});

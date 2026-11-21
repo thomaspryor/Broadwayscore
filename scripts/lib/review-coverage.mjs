@@ -75,7 +75,9 @@ const MODEL_ENDPOINT_RE = /api\.openai\.com\/v1\/(?:chat\/completions|responses)
 const DATA_FLAG_RE = /\s(?:-d|--data(?:-[a-z]+)?|--json)\b/;
 // BRO-7714: wrapper prefixes before the word still run it: timeout/gtimeout [-flags] N, nice [-n N],
 // env [VAR=..], time, and `perl -e '...alarm...' N` (quotes are already blanked to "" in shellCode).
-const WRAPPER = String.raw`(?:\w+=\S*|(?:g?timeout|nice|env|time|nohup|exec)(?:\s+-\S+(?:\s+\d+)?)*(?:\s+\d+[smhd]?)?|perl\s+-e\s*(?:""|'')(?:\s+\d+)?)`;
+// Exported as CMD_WRAPPER_PREFIX: live-run-stop.mjs shares it for its direct-run and dispatch checks.
+export const CMD_WRAPPER_PREFIX = String.raw`(?:\w+=\S*|(?:g?timeout|nice|env|time|nohup|exec)(?:\s+-\S+(?:\s+\d+)?)*(?:\s+\d+[smhd]?)?|perl\s+-e\s*(?:""|'')(?:\s+\d+)?)`;
+const WRAPPER = CMD_WRAPPER_PREFIX;
 const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:${WRAPPER}\\s+)*${word}\\b`);
 const CURL_POS_RE = cmdPos('curl');
 const CODEX_POS_RE = cmdPos('codex\\s+exec');
