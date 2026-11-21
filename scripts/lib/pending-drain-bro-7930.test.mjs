@@ -111,6 +111,10 @@ test('short-title evidence: quoted or numeric-dash only, case-sensitive', () => 
   assert.ok(shortTitleEvidence({ fullText: 'Reviews 44—The Musical Deirdre' }, { title: '44' }));
   assert.ok(!shortTitleEvidence({ fullText: 'a job well done, the end of the line' }, { title: 'End' }));
   assert.ok(!shortTitleEvidence({ fullText: 'x' }, { title: 'Two Halves of Guinness' }));
+  assert.ok(shortTitleEvidence({ fullText: 'x', url: 'https://exeuntnyc.com/reviews/review-six-at-the-brooks-atkinson-theatre/' }, { title: 'SIX' }));
+  assert.ok(!shortTitleEvidence({ fullText: 'x', url: 'https://example.com/six-reasons-to-visit-nyc/' }, { title: 'SIX' }));
+  assert.ok(!shortTitleEvidence({ fullText: 'x', url: 'https://x.com/news/year-in-review-top-west-end-moments/' }, { title: 'End' }));
+  assert.ok(!shortTitleEvidence({ fullText: 'x', url: 'https://x.com/news/review-six-film-captures-the-substance/' }, { title: 'SIX' }));
 });
 
 test('CLASS GUARD: routeLimbo finds every past-grace limbo file and respects the grace window', () => {

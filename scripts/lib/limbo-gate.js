@@ -48,7 +48,17 @@ function shortTitleEvidence(d, show) {
   if (!title || !text || title.length > 4 || /\s/.test(title)) return false;
   const t = escRe(title);
   if (new RegExp(`[\u201c"\u2018'\u00ab]${t}[\u201d"\u2019'\u00bb]`).test(text)) return true;
-  return /^\d+$/.test(title) && new RegExp(`(?:^|[^\\d])${t}\\s*(?:[\u2014\u2013:\\-]|the musical\\b|musical\\b|play\\b)`, 'i').test(text);
+  if (/^\d+$/.test(title) && new RegExp(`(?:^|[^\\d])${t}\\s*(?:[\u2014\u2013:\\-]|the musical\\b|musical\\b|play\\b)`, 'i').test(text)) return true;
+  // The review's own URL names the show next to the word "review" (review-six-at-the-brooks-atkinson, oak-raven-theatre-review).
+  let slug = '';
+  try { slug = new URL(d.url).pathname.split('/').filter(Boolean).pop() || ''; } catch { return false; }
+  const words = slug.toLowerCase().replace(/\.[a-z0-9]+$/, '').split(/[-_]+/);
+  const at = words.indexOf(title.toLowerCase());
+  if (at === -1) return false;
+  // Adjacent to "review" (review-six-..., tru-review-...), and not a film/TV namesake ("review-six-film-...").
+  const adj = words[at - 1] === 'review' || words[at + 1] === 'review' || (words[at - 1] === 'the' && words[at - 2] === 'review');
+  const namesake = ['film', 'movie', 'series', 'tv', 'documentary'].includes(words[at + 1]);
+  return adj && !namesake;
 }
 
 /**
@@ -73,7 +83,9 @@ function misattributedWetRoundup(d, guards = require('./review-guards')) {
 function isLimboCandidate(d, show, filePath, guards = require('./review-guards')) {
   if (!d || typeof d !== 'object') return false;
   if (!SCOREABLE_TIERS.includes(d.contentTier)) return false;
-  if (DECIDED_FLAGS.some(k => !!d[k])) return false;
+  // A previous 'show-not-mentioned' rejection is re-judged each run, so an improved rescue rule can undo it.
+  const reopen = d.limboRoute === 'reject' && d.limboRule === 'show-not-mentioned';
+  if (DECIDED_FLAGS.some(k => !!d[k] && !(reopen && k === 'limboRoutedAt'))) return false;
   if (d.incompleteReason) return false; // owned by the recovery pipeline (url_content_mismatch, scraper_garbage, ...)
   return !isScored(d, guards);
 }
