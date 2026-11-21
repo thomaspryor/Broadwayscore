@@ -232,6 +232,43 @@ function classifyCandidate(url, show, onDiskByUrl, guards) {
 }
 
 /**
+ * BRO-7975: a SERP hit whose page now 404s/410s is not a review the pipeline
+ * can ingest (stale SERP index entry, mangled slug). It must not hold the
+ * weekly verdict at 'gaps-found'. Only a CONFIRMED 404/410 demotes a gap to a
+ * named exclusion; any other outcome (200, 403, timeout, throw) keeps it a gap
+ * so a blocked-but-real review is never hidden.
+ *
+ * @param {Array<{url:string,state:string,reason:string|null}>} candidates
+ * @param {(url:string)=>Promise<number|null>} statusOf resolves HTTP status or null
+ */
+async function demoteDeadGaps(candidates, statusOf) {
+  const out = [];
+  for (const c of Array.isArray(candidates) ? candidates : []) {
+    if (c.state !== 'gap') { out.push(c); continue; }
+    let status = null;
+    // Two consecutive 404/410s: one flaky/CDN-lag 404 must not hide a real review.
+    try {
+      status = await statusOf(c.url);
+      if (status === 404 || status === 410) { const again = await statusOf(c.url); if (again !== status) status = null; }
+    } catch { status = null; }
+    out.push(status === 404 || status === 410
+      ? { url: c.url, state: 'excluded', reason: `dead-url: HTTP ${status} (stale search result, nothing to ingest)` }
+      : c);
+  }
+  return out;
+}
+
+/** Plain GET status check (no fallback chain: a 404 is only trusted from the origin itself). */
+async function httpStatusOf(url) {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), 15000);
+  try {
+    const r = await fetch(url, { redirect: 'follow', signal: ctl.signal, headers: { 'user-agent': 'Mozilla/5.0 (compatible; BroadwayScorecardProbe)' } });
+    return r.status;
+  } finally { clearTimeout(t); }
+}
+
+/**
  * Per-show probe verdict: PASS unless at least one candidate is a genuine,
  * undiscovered gap. A show contributing zero candidates (naive query found
  * nothing, or found only URLs already known) trivially passes — there is
@@ -399,6 +436,8 @@ module.exports = {
   MIN_RUN_GAP_DAYS,
   REQUIRED_CLEAN_RUNS,
   classifyCandidate,
+  demoteDeadGaps,
+  httpStatusOf,
   classifyNonReviewUrl,
   lookupRecord,
   summarizeShow,

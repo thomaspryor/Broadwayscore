@@ -1,34 +1,13 @@
 {
-  "generatedAt": "2026-11-21T13:13:31.878Z",
+  "generatedAt": "2026-11-21T14:33:41.060Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 366,
-  "clean": 365,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "the-lion-king-tour-2021",
-      "title": "The Lion King",
-      "openingDate": "2021-10-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: fashionmeetsfood"
-        }
-      ],
-      "missingFromProd": [
-        "fashionmeetsfood"
-      ],
-      "localCount": 62,
-      "deployedCount": 62,
-      "firstDefectAt": "2026-11-21T13:13:25.973Z"
-    }
-  ],
+  "clean": 366,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

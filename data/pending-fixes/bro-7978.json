@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7978",
+  "planId": "819f5d68-e893-48bf-9b7b-94e60be4208f",
+  "status": "pending",
+  "createdAt": "2026-11-21T14:29:11.067Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7978: flag the Independent Romeo and Juliet review (Annabel Nugent) wrongShow on Cabaret at the Kit Kat Club West End 2021; the url and the stored excerpt describe a Romeo and Juliet production, not Cabaret.",
+    "steps": [
+      "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json: wrongShow"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "cabaret-at-the-kit-kat-club-west-end-2021/independent--annabel-nugent.json: wrongShow"
+      }
+    ]
+  }
+}

@@ -156,6 +156,7 @@ const ALERT_KEYS = {
   signInRedirect: 'ugc:signin-redirect-broken:', // + provider
   signInCheckBlind: 'ugc:signin-check-blind:', // + provider; digest: the daily check could not tell
   emailCodeFlood: 'ugc:email-code-flood',
+  oneTapOrigin: 'ugc:one-tap-unregistered-origin',
 };
 
 // Email-code sign-in went live on this day (BRO-6575). Older email accounts
@@ -310,10 +311,18 @@ FROM (
 )
 WHERE n_shown > 0
 GROUP BY dev ORDER BY shown DESC LIMIT 50`,
+    oneTapSkips: `
+SELECT toString(properties.reason) AS reason, count() AS n, count(DISTINCT distinct_id) AS devices
+FROM events
+WHERE event = 'one_tap_not_displayed' AND timestamp >= now() - INTERVAL 30 DAY
+GROUP BY reason ORDER BY n DESC`,
     // Health over the last 24 h, for the alerts. No Real Users lens: the
     // owner's own failed sign-in counts.
     health: `
 SELECT
+  countIf(event = 'one_tap_not_displayed' AND properties.$device_type = 'Desktop') AS one_tap_skips,
+  countIf(event = 'one_tap_not_displayed' AND properties.$device_type = 'Desktop' AND toString(properties.reason) = 'unregistered_origin') AS one_tap_origin,
+  count(DISTINCT if(event = 'one_tap_not_displayed' AND properties.$device_type = 'Desktop', distinct_id, NULL)) AS one_tap_devices,
   countIf(event = 'sign_in_started') AS started,
   count(DISTINCT if(event = 'sign_in_started', distinct_id, NULL)) AS started_devices,
   countIf(event = 'sign_in_completed') AS completed,
@@ -324,7 +333,7 @@ SELECT
   count(DISTINCT if(event = 'ugc_error' AND ${quietErrorFilter()}, distinct_id, NULL)) AS error_devices
 FROM events
 WHERE timestamp >= now() - INTERVAL 24 HOUR
-  AND event IN ('sign_in_started', 'sign_in_completed', 'sign_in_failed', 'rating_save_failed', 'ugc_error')`,
+  AND event IN ('sign_in_started', 'sign_in_completed', 'sign_in_failed', 'rating_save_failed', 'ugc_error', 'one_tap_not_displayed')`,
   };
 }
 
@@ -503,6 +512,10 @@ function summarizeFunnel(rows) {
   return { sources, totals };
 }
 
+function summarizeOneTapSkips(rows) {
+  return rows.map((r) => ({ reason: r.reason || 'unknown', count: num(r.n), devices: num(r.devices) }));
+}
+
 function summarizeActions(rows) {
   return rows
     .map((r) => ({ event: r.event, label: ACTION_LABELS[r.event] || r.event, last7: num(r.last7), last30: num(r.last30), users30: num(r.users30) }))
@@ -544,7 +557,15 @@ function evaluateAlerts(health) {
     errors: num(health.errors), errorDevices: num(health.error_devices),
   };
   const T = THRESHOLDS;
+  const skips = num(health.one_tap_skips), origin = num(health.one_tap_origin), devices = num(health.one_tap_devices);
   return [
+    {
+      key: ALERT_KEYS.oneTapOrigin,
+      firing: devices >= 20 && origin > skips / 2,
+      resolvable: devices >= 20 && origin <= skips / 2,
+      title: 'Google One Tap may have an unregistered origin',
+      description: `In the last 24 hours ${origin} of ${skips} desktop One Tap skips reported unregistered_origin, across ${devices} desktop devices. Check the Google OAuth client authorized JavaScript origins.`,
+    },
     {
       key: ALERT_KEYS.signInStalled,
       firing: h.started >= T.stalledStarts && h.startedDevices >= T.stalledStartDevices && h.completed === 0,
@@ -585,6 +606,7 @@ function buildDashboardData({ now = Date.now(), accounts, ph }) {
     actions: phOk('actions') ? summarizeActions(ph.actions) : null,
     funnel: phOk('funnel') ? summarizeFunnel(ph.funnel) : null,
     welcome: phOk('welcome') ? summarizeWelcome(ph.welcome) : null,
+    oneTapSkips: phOk('oneTapSkips') ? summarizeOneTapSkips(ph.oneTapSkips) : null,
     health: phOk('health') ? (ph.health[0] || {}) : null,
     failed: Object.entries(ph || {}).filter(([, v]) => v == null).map(([k]) => k),
   };
@@ -615,6 +637,9 @@ function weeklySummaryLines(d) {
     const app = f.other && (f.other.started || f.other.completed) ? `iPhone app / other: ${f.other.started} started, ${f.other.completed} finished` : null;
     const parts = [part(f.mobile, 'Phones'), part(f.desktop, 'Computers'), app].filter(Boolean);
     if (parts.length) lines.push(`Sign-up funnel, last 30 days. ${parts.join('. ')}.`);
+  }
+  if (d.oneTapSkips && d.oneTapSkips.length) {
+    lines.push(`Google One Tap skips, last 30 days: ${d.oneTapSkips.map((r) => `${r.reason}: ${r.count} skips on ${r.devices} devices`).join(', ')}.`);
   }
   const w = d.welcome && d.welcome.all;
   if (w && w.shown) {
@@ -647,6 +672,7 @@ module.exports = {
   inboxKey,
   summarizeAccounts,
   summarizeFunnel,
+  summarizeOneTapSkips,
   summarizeActions,
   summarizeWelcome,
   WELCOME_STEPS,

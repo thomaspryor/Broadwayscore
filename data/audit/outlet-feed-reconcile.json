@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T13:13:32.273Z",
+  "generatedAt": "2026-11-21T14:33:41.354Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -164,6 +164,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "north-west-end",
+      "error": "Timeout fetching https://northwestend.com/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -176,10 +180,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 876,
-  "matchedGaps": 1,
+  "itemsScanned": 865,
+  "matchedGaps": 2,
   "possibleGaps": 1,
   "gaps": [
+    {
+      "showId": "florence-off-west-end-2026",
+      "title": "Florence",
+      "level": "matched",
+      "outletId": "liamodell",
+      "url": "https://liamodell.com/2026/11/21/florence-review-park-theatre-finsbury-london-honor-santa-barnes/",
+      "headline": "‘Florence’ review &#8211; Basic satire of fake personas in the arts world",
+      "publishDate": "2026-11-21"
+    },
     {
       "showId": "nixon-in-china-regional-2026",
       "title": "Nixon in China",
