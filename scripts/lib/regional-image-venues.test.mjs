@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { imageOnlyVenue, IMAGE_ONLY_VENUES, slug } = require('./regional-image-venues.js');
+const { imageOnlyVenue, IMAGE_ONLY_VENUES, LISTING_SOURCES, listingSource, slug } = require('./regional-image-venues.js');
 const { REGIONAL_FEEDER_VENUES } = require('./aggregator-candidate-extract.js');
 
 test('Signature Theatre resolves to its own site', () => {
@@ -54,4 +54,19 @@ test('BRO-7265 DC/LA houses resolve to their own sites; renting houses and look-
   for (const other of ['Woolly Mammoth Theatre, Washington, DC', 'El Portal Theatre, North Hollywood, CA', 'Madnani Theater, Los Angeles, CA',
     'Gunston Arts Center, Arlington, VA', 'Pasadena Playhouse, Pasadena, CA', 'Theatre 4 All', 'Road Runner Stage'])
     assert.equal(imageOnlyVenue(other), null, other);
+});
+
+test('BRO-7878 theatreWashington listing: DC shows only, slug with and without the leading article, original upload url', () => {
+  const l = listingSource({ venue: 'Arena Stage, Washington, DC' });
+  assert.equal(l.name, 'theatreWashington');
+  assert.deepEqual(l.pageUrls({ title: 'The Motion' }), ['https://theatrewashington.org/shows/motion', 'https://theatrewashington.org/shows/the-motion']);
+  assert.deepEqual(l.pageUrls({ title: 'A Fine Madness' }), ['https://theatrewashington.org/shows/fine-madness', 'https://theatrewashington.org/shows/a-fine-madness']);
+  assert.deepEqual(l.pageUrls({ title: 'Hamlet' }), ['https://theatrewashington.org/shows/hamlet']);
+  for (const v of ['Signature Theatre, Arlington, VA', 'Olney Theatre Center, Olney, MD', 'Pasadena Playhouse, Pasadena, CA', undefined])
+    assert.equal(listingSource({ venue: v }), null, String(v));
+  assert.equal(listingSource({ venue: 'Keegan Theatre, Washington, DC' }).name, 'theatreWashington');
+  const html = '<meta property="og:image:alt" content="x"><img src="/themes/custom/backstage/dist/img/favicon-120.png"><img src="/sites/default/files/styles/landscape_810x405/public/2026-06/AFM%20KEY%20ART.jpg?itok=abc">';
+  assert.equal(l.extractImage(html, 'https://theatrewashington.org/shows/fine-madness'), 'https://theatrewashington.org/sites/default/files/2026-06/AFM%20KEY%20ART.jpg');
+  assert.equal(l.extractImage('<p>no art</p>', 'https://theatrewashington.org/shows/x'), null);
+  for (const s of LISTING_SOURCES) assert.ok(s.city.test(s.sample), `${s.name} sample must match its own city`);
 });

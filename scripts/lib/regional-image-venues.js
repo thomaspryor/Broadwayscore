@@ -53,8 +53,32 @@ const IMAGE_ONLY_VENUES = [
   { re: /^antaeus\b/i, city: 'Glendale, CA', domain: 'antaeus.org', sample: 'Antaeus Theater, Glendale, CA' },
 ];
 
+// BRO-7878: listing sites that carry a page per production for every house in a city
+// (theatreWashington.org/shows/<slug>), so a DC show on a house with no entry above still
+// gets key art. The page has no og:image (only og:image:alt), so the art is the first
+// Drupal file in the body, re-pointed from its cropped style to the original upload.
+const LISTING_SOURCES = [
+  {
+    name: 'theatreWashington', city: /,\s*Washington,\s*DC\s*$/i, sample: 'Arena Stage, Washington, DC',
+    pageUrls: (show) => {
+      const full = slug(show.title);
+      const bare = full.replace(/^(?:the|a|an)-/, '');
+      return [...new Set([bare, full].filter(Boolean))].map((s) => `https://theatrewashington.org/shows/${s}`);
+    },
+    extractImage: (html, baseUrl) => {
+      const m = String(html || '').match(/["'](\/sites\/default\/files\/(?:styles\/[^/"']+\/public\/)?[^"'?]+\.(?:jpe?g|png|webp))(?:\?[^"']*)?["']/i);
+      if (!m) return null;
+      try { return new URL(m[1].replace(/\/styles\/[^/]+\/public\//, '/'), baseUrl).href; } catch { return null; }
+    },
+  },
+];
+
+function listingSource(show) {
+  return LISTING_SOURCES.find((l) => l.city.test(show && show.venue || '')) || null;
+}
+
 function imageOnlyVenue(venue) {
   return IMAGE_ONLY_VENUES.find((v) => v.re.test(venue || '')) || null;
 }
 
-module.exports = { IMAGE_ONLY_VENUES, imageOnlyVenue, slug };
+module.exports = { IMAGE_ONLY_VENUES, LISTING_SOURCES, imageOnlyVenue, listingSource, slug };
