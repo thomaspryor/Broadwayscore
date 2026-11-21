@@ -204,16 +204,21 @@ test('guardianItemIsReview is the shared Guardian review predicate (BRO-6503, ou
 
 test('urlSlugNamesTitle: Stage slugs name the show even when the body does not', () => {
   const u = (slug) => `https://www.thestage.co.uk/reviews/${slug}`;
-  assert.equal(lib.urlSlugNamesTitle(u('the-father-at-wyndhams-theatre-london--carefully-calibrated-but-too-clinical'), 'The Father'), true);
-  assert.equal(lib.urlSlugNamesTitle(u('irving-berlins-white-christmas'), 'White Christmas'), true);
-  assert.equal(lib.urlSlugNamesTitle(u('the-mentalists'), 'The Mentalists'), true);
-  assert.equal(lib.urlSlugNamesTitle(u('mr-footes-other-leg-review-at-theatre-royal-haymarket-london--witty-and-warm-hearted'), "Mr Foote's Other Leg"), true);
-  assert.equal(lib.urlSlugNamesTitle(u('damon-albarns-wonderland-review-at-the-olivier-national-theatre--disappointing'), 'Wonder.land'), true);
+  assert.equal(lib.urlSlugNamesTitle(u('the-father-at-wyndhams-theatre-london--carefully-calibrated-but-too-clinical'), 'The Father', "Wyndham's Theatre"), true);
+  assert.equal(lib.urlSlugNamesTitle(u('irving-berlins-white-christmas'), 'White Christmas', 'Dominion Theatre'), true);
+  assert.equal(lib.urlSlugNamesTitle(u('the-mentalists'), 'The Mentalists', 'Wyndhams Theatre'), true);
+  assert.equal(lib.urlSlugNamesTitle(u('taken-at-midnight'), 'Taken at Midnight', 'Theatre Royal Haymarket'), true);
+  assert.equal(lib.urlSlugNamesTitle(u('taken-at-midnight-review-at-theatre-royal-haymarket-london--gripping'), 'Taken at Midnight', 'Theatre Royal Haymarket'), true);
+  assert.equal(lib.urlSlugNamesTitle(u('mr-footes-other-leg-review-at-theatre-royal-haymarket-london--witty-and-warm-hearted'), "Mr Foote's Other Leg", 'Theatre Royal Haymarket'), true);
+  assert.equal(lib.urlSlugNamesTitle(u('damon-albarns-wonderland-review-at-the-olivier-national-theatre--disappointing'), 'Wonder.land', 'Olivier Theatre'), true);
 });
 
-test('urlSlugNamesTitle: a different show or an unrelated slug does not match', () => {
+test('urlSlugNamesTitle: other shows, other venues, roundups and long slugs do not match', () => {
   const u = (slug) => `https://www.thestage.co.uk/reviews/${slug}`;
-  assert.equal(lib.urlSlugNamesTitle(u('the-mother-at-the-national-theatre'), 'The Father'), false);
-  assert.equal(lib.urlSlugNamesTitle(u('hangmen-review-at-wyndhams'), 'Hang'), false);
-  assert.equal(lib.urlSlugNamesTitle('not a url', 'Hamlet'), false);
+  assert.equal(lib.urlSlugNamesTitle(u('the-mother-at-the-national-theatre'), 'The Father', 'Wyndhams Theatre'), false);
+  assert.equal(lib.urlSlugNamesTitle(u('hangmen-review-at-wyndhams'), 'Hang', 'Duchess Theatre'), false);
+  assert.equal(lib.urlSlugNamesTitle(u('hamlet-review-at-theatr-clwyd--bold'), 'Hamlet', 'Old Vic Theatre'), false);
+  assert.equal(lib.urlSlugNamesTitle(u('cats-on-a-hot-tin-roof-review'), 'Cats', 'London Palladium'), false);
+  assert.equal(lib.urlSlugNamesTitle(u('review-roundup-hamlet-and-more'), 'Hamlet', 'Old Vic Theatre'), false);
+  assert.equal(lib.urlSlugNamesTitle('not a url', 'Hamlet', 'Old Vic Theatre'), false);
 });
