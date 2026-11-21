@@ -203,8 +203,8 @@ test('a small source fully rejected by policy is info, not a daily warn (BRO-797
 test('a stored warn for a fully rejected source no longer warns in the health row (BRO-7972)', () => {
   const stored = {
     windowEnd: '2026-11-19T23:59:59.000Z',
-    policy: { p: 'reject' },
-    sources: [{ ip: '13.211.69.231', fail: 3, pass: 0, dispositions: ['reject'] }],
+    policy: { p: 'reject', domain: 'broadwayscorecard.com' },
+    sources: [{ ip: '13.211.69.231', fail: 3, pass: 0, dkimDomains: [], dispositions: ['reject'] }],
     findings: [{ severity: 'warn', code: 'unauthenticated-source', message: 'x', evidence: { ip: '13.211.69.231' } }],
   };
   assert.equal(dmarcHealthResult(stored, { now: '2026-11-20T12:00:00.000Z' }).status, 'pass');
@@ -238,6 +238,8 @@ test('rejected-source downgrade keeps warn/action for look-alike-us, partial-pas
   assert.equal(dmarcHealthResult(stored(['broadwayscorecard.com'], 0), now).status, 'warn');
   assert.equal(dmarcHealthResult(stored([], 4), now).status, 'warn');
   assert.equal(dmarcHealthResult(stored([], 0), now).status, 'pass');
+  const noDkim = stored([], 0); delete noDkim.sources[0].dkimDomains;
+  assert.equal(dmarcHealthResult(noDkim, now).status, 'warn', 'missing evidence fails closed');
 });
 
 test('p=none is flagged as unenforced regardless of pass rate', () => {

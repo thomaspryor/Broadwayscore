@@ -289,6 +289,9 @@ function daysBetween(aIso, bIso) {
 function isBlockedByPolicy(source, failCountForHigh, policyDomain) {
   // A source signing with OUR domain is trying to be us (a misconfigured ESP
   // or a replay), not a blind spoof: keep it a warn so lost mail stays visible.
+  // Fail closed: without the policy domain or the DKIM evidence we cannot tell a
+  // blind spoof from a misconfigured sender, so keep the warn.
+  if (!policyDomain || !Array.isArray(source.dkimDomains)) return false;
   if ((source.dkimDomains || []).some((d) => isUnderDomain(d, policyDomain))) return false;
   return source.fail > 0 && source.fail < failCountForHigh && !(source.pass > 0)
     && Array.isArray(source.dispositions) && source.dispositions.length > 0
