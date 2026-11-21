@@ -774,7 +774,8 @@ function combinedColumnQuoteLacksOwnShow(quote, data, show) {
   if (!Array.isArray(data.combinedWith) || data.combinedWith.length === 0) return false;
   // Only a column the section splitter could NOT separate (anchor 'joint': every show's text still in one body). Other
   // anchors were trimmed to this show's own section; unsplit files are flagged from a shared URL alone (748 of 964).
-  if (data.multiShowSplitAnchorKind !== 'joint') return false;
+  // Child copies of a joint split carry only their own section; the parent keeps text about shows outside combinedWith.
+  if (data.multiShowSplitAnchorKind !== 'joint' || data.multiShowSplitParent !== true) return false;
   const title = (show && show.title) || data.showTitle;
   if (!title) return false;
   const norm = (t) => ' ' + foldDiacritics(String(t || '').toLowerCase()).replace(/[’‘ʼ']/g, '').replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
@@ -790,6 +791,7 @@ function combinedColumnQuoteLacksOwnShow(quote, data, show) {
   // ("predicted by Sweat and Hairy Ape"). It counts only when the record has
   // no cast or creative team to check instead.
   const needles = (names.length ? names : [bareTitle]).filter((n) => n && n.length >= 4);
+  if (!needles.length) return false; // a title under 4 chars ("Hir") with no cast data: no usable evidence
   return !needles.some((n) => body.includes(' ' + n + ' ') || body.includes(' ' + n + 's ')); // "Nottage's" folds to "nottages"
 }
 
