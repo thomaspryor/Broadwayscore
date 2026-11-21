@@ -48,6 +48,7 @@ const { discoverWestEndTheatreUrl } = require('./lib/westend-slug-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { notifyBoardAfterSave, missingKeyError } = require('./lib/audit-board-notify');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-we-closing-dates.js — Daily bidirectional audit of closingDate values for open West End shows.
@@ -173,7 +174,7 @@ async function auditOneShow(show) {
 async function notifyLinear(ambiguous, todayStr) {
   if (ambiguous.length === 0) return;
   if (!process.env.LINEAR_API_KEY) {
-    throw new Error('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
+    throw missingKeyError('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
   }
   const { spawnSync } = require('child_process');
   const brain = path.join(__dirname, 'linear-brain.js');
@@ -369,7 +370,7 @@ async function main() {
   }
 
   if (ambiguous.length > 0) {
-    await notifyLinear(ambiguous, TODAY);
+    await notifyBoardAfterSave(() => notifyLinear(ambiguous, TODAY), 'audit-we-closing-dates');
   }
 
   await cleanup();
