@@ -36,3 +36,12 @@ test('credits gate on credits left, not percent used (2026-11-21 false page: 91%
   const low = preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 40, remaining: 9000 } });
   assert.deepEqual(low.problems.map((p) => p.key), ['ScrapingBee credits']);
 });
+
+test('credit count missing or malformed: falls back to percent used, never passes a near-empty account silently', () => {
+  for (const remaining of [undefined, null, 'abc', NaN]) {
+    assert.deepEqual(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 95, remaining } }).problems.map((p) => p.key), ['ScrapingBee credits']);
+    assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 50, remaining } }).ok, true);
+  }
+  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, remaining: 10000, pctUsed: 99 } }).ok, true);
+  assert.equal(preflightVerdict({ results: all(), sb: { ok: true, remaining: 9999, pctUsed: 20 } }).ok, false);
+});

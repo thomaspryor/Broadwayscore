@@ -14,6 +14,7 @@ const { foldDiacritics } = require('./url-slug');
 
 const REQUIRED = ['Anthropic', 'OpenAI', 'Gemini', 'ScrapingBee', 'ScrapingDog', 'Bright Data', 'Private Repo PAT', 'Vercel', 'Resend'];
 const SB_MIN_REMAINING = 10000;
+const SB_FALLBACK_MAX_PCT_USED = 90;
 
 function preflightVerdict({ results = [], sb = null } = {}) {
   const problems = [];
@@ -26,8 +27,13 @@ function preflightVerdict({ results = [], sb = null } = {}) {
     const crashed = /^Check threw error/.test(String(r.message || ''));
     if (r.status === 'fail' || r.status === 'skip' || crashed) problems.push({ key: name, why: `${crashed ? 'check crashed' : r.status}: ${String(r.message || '').slice(0, 160)}` });
   }
-  if (sb && sb.ok && Number.isFinite(sb.remaining) && sb.remaining < SB_MIN_REMAINING) {
-    problems.push({ key: 'ScrapingBee credits', why: `${sb.remaining} left (under ${SB_MIN_REMAINING}; ${Math.round(sb.pctUsed)}% used)` });
+  if (sb && sb.ok) {
+    if (Number.isFinite(sb.remaining)) {
+      if (sb.remaining < SB_MIN_REMAINING) problems.push({ key: 'ScrapingBee credits', why: `${sb.remaining} left (under ${SB_MIN_REMAINING}; ${Math.round(sb.pctUsed)}% used)` });
+    } else if (Number.isFinite(sb.pctUsed) && sb.pctUsed >= SB_FALLBACK_MAX_PCT_USED) {
+      // No credit count in the status (shape changed?): fall back to percent used rather than pass silently.
+      problems.push({ key: 'ScrapingBee credits', why: `${Math.round(sb.pctUsed)}% used (credit count unreadable)` });
+    }
   }
   const resendDown = problems.some((p) => p.key === 'Resend');
   return { ok: problems.length === 0, problems, resendDown };
