@@ -188,6 +188,7 @@ const stats = {
   errors: 0,
   timeBudgetMin: TIME_BUDGET_MIN,
   timeBudgetExhausted: false,
+  phaseDeadlinesHit: [],
 };
 
 // Returns true (and logs once) when the run budget is spent. Phase loops break
@@ -200,9 +201,13 @@ const phaseDeadlineLogged = new Set();
 
 function budgetSpent(phaseLabel, remainingCount, phase) {
   if (!(phase in PHASE_DEADLINE_SHARES)) throw new Error(`budgetSpent: unknown phase ${phase} (${phaseLabel})`);
-  if (!budget.exceeded() && phaseDeadlineReached(budget, PHASE_DEADLINE_SHARES, phase)) {
+  // A slot only makes room for a later SELECTED phase; a phases=0 or phases=1,2
+  // dispatch keeps the whole budget for its last phase (ship-check finding).
+  const laterPhaseSelected = PHASES.some(p => p > phase);
+  if (laterPhaseSelected && !budget.exceeded() && phaseDeadlineReached(budget, PHASE_DEADLINE_SHARES, phase)) {
     if (!phaseDeadlineLogged.has(phase)) {
       phaseDeadlineLogged.add(phase);
+      stats.phaseDeadlinesHit = [...phaseDeadlineLogged];
       console.log(`\n  ⏱ Phase ${phase} slot (${Math.round(PHASE_DEADLINE_SHARES[phase] * 100)}% of ${TIME_BUDGET_MIN} min) used in ${phaseLabel} — ${remainingCount} items deferred; moving to the next phase`);
     }
     return true;
@@ -1100,6 +1105,7 @@ async function main() {
   console.log(`Errors:                      ${stats.errors}`);
   if (TIME_BUDGET_MIN) {
     console.log(`Time budget:                 ${stats.timeBudgetExhausted ? `EXHAUSTED at ${TIME_BUDGET_MIN} min — backlog deferred to next run` : `ok (${budget.elapsedMin()}/${TIME_BUDGET_MIN} min used)`}`);
+    if (stats.phaseDeadlinesHit.length) console.log(`Phase slots used up:         phase ${stats.phaseDeadlinesHit.join(", ")} (items deferred to next run)`);
   }
 
   if (Object.keys(stats.byOutlet).length > 0) {
