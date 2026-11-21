@@ -67,8 +67,8 @@ Add any conflicts found to the context block as **"Known conflicts"** so reviewe
 Launch ALL SIX simultaneously in a single message with parallel tool calls — the pre-mortem and the design reviewer run in parallel too, not after. Do not serialize them; latency matters and they're independent.
 
 1. **Codex (GPT-5.x with codebase access) — Production & Architecture focus** — Run via Bash.
-   **Codex check:** Run `command -v codex >/dev/null && { node scripts/codex/install.js >/dev/null 2>&1; echo READY; } || echo MISSING` (the install is idempotent and gives Codex the repo guards, BRO-4745) first.
-   - READY (local): **Step 1 — run Codex, writing its filtered output to a private per-run temp file:**
+   **Codex check:** Run `bash scripts/codex/ensure-cli.sh` (BRO-7927: it installs the pinned Codex CLI when the container has none, restores the owner's stored Codex login in cloud, and installs the repo guards, BRO-4745; idempotent, prints `READY` or `MISSING: <reason>`). Codex runs in cloud sessions too, so a fresh container is no reason to skip it first.
+   - READY: **Step 1 — run Codex, writing its filtered output to a private per-run temp file:**
      ```bash
      set -o pipefail
      [ -s "${PLAN_FILE:-/tmp/critique-plan.txt}" ] || { echo "ERROR: plan file is missing or empty — write the plan file before running this reviewer"; exit 1; }
@@ -109,9 +109,11 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    THE PLAN TO CRITIQUE:
    PROMPT_HEAD
      cat "${PLAN_FILE:-/tmp/critique-plan.txt}"
-   } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" 2>&1 \
-     | awk '/^codex$/{flag=1; next} /^tokens used$/{flag=0} flag' \
-     | tee "$PLAN_REVIEW_CODEX_OUT"
+   } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$PLAN_REVIEW_CODEX_OUT" >/dev/null 2>&1
+   cat "$PLAN_REVIEW_CODEX_OUT"
+   # BRO-7927: -o keeps only Codex's final answer; the old awk filter on its log kept every tool call it made (13k words on a 600-word review).
+   # Refresh tokens rotate: persist the login after every exec, or the next cloud container restores a dead one.
+   bash scripts/codex/ensure-cli.sh --save >/dev/null || echo "WARN: Codex login save failed (scripts/codex/auth-store.js save)"
      ```
      Note: uses your local Codex CLI (counts against ChatGPT Codex quota). Defaults to whatever model `~/.codex/config.toml` is set to.
 
@@ -135,7 +137,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
      rm -f "$PLAN_REVIEW_CODEX_OUT"
      ```
      If `CODEX_EMPTY` or `CODEX_REFUSED`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner (Phase 3) that Codex was READY but returned unusable output — distinguish "empty" (CLI produced no text, task #1081) from "refused" (Codex explicitly declined, task #1320) using `$CODEX_REASON`, both distinct from "not installed".
-   - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"` piped through `tee >(node scripts/log-llm-call.js --provider=openai --caller=plan-review >/dev/null 2>&1)` so the spend ledger sees it, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran in the coverage banner (Phase 3).
+   - MISSING (NOT expected anywhere, cloud included, since BRO-7927; print `ensure-cli.sh`'s reason in the coverage banner as a degraded-review line, e.g. `Codex: MISSING (<reason>), gpt-5.4-mini ran instead`): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"` piped through `tee >(node scripts/log-llm-call.js --provider=openai --caller=plan-review >/dev/null 2>&1)` so the spend ledger sees it, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran in the coverage banner (Phase 3).
 
 2. **Independent Claude — Structure, Gaps & Devil's Advocate** — Use the Task tool with subagent_type "review-panelist" and this prompt:
 

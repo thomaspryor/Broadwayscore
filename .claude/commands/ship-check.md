@@ -233,8 +233,8 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
    - Any design choices that might be surprising
 
 3. **Codex (GPT-5.x with codebase access) — Adversarial design review** — Run via Bash.
-   **Codex check:** Run `command -v codex >/dev/null && { node scripts/codex/install.js >/dev/null 2>&1; echo READY; } || echo MISSING` (the install is idempotent and gives Codex the repo guards, BRO-4745).
-   - READY (local): **Step 1 — run Codex, writing its filtered output to a private per-run temp file** (never a shared fixed path — this machine routinely runs many parallel Claude Code sessions, and a shared `/tmp` path lets one session's stale or in-flight file be read as another session's result):
+   **Codex check:** Run `bash scripts/codex/ensure-cli.sh` (BRO-7927: it installs the pinned Codex CLI when the container has none, restores the owner's stored Codex login in cloud, and installs the repo guards, BRO-4745; idempotent, prints `READY` or `MISSING: <reason>`). Codex runs in cloud sessions too, so a fresh container is no reason to skip it.
+   - READY: **Step 1 — run Codex, writing its filtered output to a private per-run temp file** (never a shared fixed path — this machine routinely runs many parallel Claude Code sessions, and a shared `/tmp` path lets one session's stale or in-flight file be read as another session's result):
      ```bash
      set -o pipefail
      # No suffix after the X's — BSD mktemp (macOS) silently ignores a template
@@ -280,9 +280,11 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
        echo
        echo "=== UNCOMMITTED CHANGES ==="
        git diff HEAD -- src/ scripts/ public/ data/ 2>/dev/null | head -1000
-     } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" 2>&1 \
-       | awk '/^codex$/{flag=1; next} /^tokens used$/{flag=0} flag' \
-       | tee "$CODEX_OUT"
+     } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$CODEX_OUT" >/dev/null 2>&1
+     cat "$CODEX_OUT"
+     # BRO-7927: -o keeps only Codex's final answer; the old awk filter on its log kept every tool call it made (13k words on a 600-word review).
+     # Refresh tokens rotate: persist the login after every exec, or the next cloud container restores a dead one.
+     bash scripts/codex/ensure-cli.sh --save >/dev/null || echo "WARN: Codex login save failed (scripts/codex/auth-store.js save)"
      ```
      Note: uses your local Codex CLI (counts against ChatGPT Codex quota). For very large diffs, raise the `head -2000` cap.
 
@@ -306,7 +308,7 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
      rm -f "$CODEX_OUT"
      ```
      If `CODEX_EMPTY` or `CODEX_REFUSED`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner that Codex was READY but returned unusable output — `CODEX_EMPTY` means the CLI produced no text (task #1081, flaky-empty-output, not a missing CLI); `CODEX_REFUSED` means Codex explicitly declined to review (task #1320, e.g. blocked by a failed data preflight) — print the `$CODEX_REASON` in the banner either way so it's clear WHY coverage degraded.
-   - MISSING (expected in cloud — there is no Codex CLI): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics, including its `log-llm-call.js` tee (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
+   - MISSING (NOT expected anywhere, cloud included, since BRO-7927; print `ensure-cli.sh`'s reason in the coverage banner as a degraded-review line, e.g. `Codex: MISSING (<reason>), gpt-5.4-mini ran instead`): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics, including its `log-llm-call.js` tee (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
    **This reviewer challenges the design from a different model family. It reads the diff and the surrounding code, then questions whether the chosen approach is right — not whether it's correct.**
 
 4. **Skeptic: the owner's question (BRO-7839)** — Run via Bash, after your other checks so it sees them:

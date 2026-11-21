@@ -35,7 +35,7 @@ Each is a copy of a `~/.claude/hooks/` master and self-skips when `$HOME/.claude
 
 **If one fails with "Unknown skill"** (sessions started with `create_session`, intermittently): Read `.claude/commands/<name>.md` and follow it fully by hand. The Stop hook counts that read after the failed call, never the failed call, and refuses a `NO-SHIP-CHECK`/`NO-WHAT-ELSE`/`NO-WRAP-UP` whose reason is only that the command did not load (BRO-5068).
 
-Only `.claude/commands/` in this repo (`ls .claude/commands/`). The planning suite (`/plan-review`, `/right-problem`, `/plan-tasks`) is committed here; its Codex/Gemini legs fall back to Claude agents when those CLIs/keys are absent.
+Only `.claude/commands/` in this repo (`ls .claude/commands/`). The planning suite (`/plan-review`, `/right-problem`, `/plan-tasks`) is committed here; its Codex leg runs in cloud too: `bash scripts/codex/ensure-cli.sh` installs the CLI and restores the stored login (BRO-7927), and a `MISSING` from it is a degraded review the coverage banner must name, never the normal case.
 
 ## Landing (the owner never merges)
 
