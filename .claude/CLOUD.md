@@ -116,7 +116,8 @@ The owner is mostly on iPhone/iPad. Before saying something needs "the Mac":
 
 - **Phone browser is enough** (give a direct link, never say Mac): GitHub settings (secrets, token scopes), ScrapingBee, Bright Data, Vercel and Supabase dashboards, Gmail filters (desktop-site mode), claude.ai/code environment settings, Routines.
 - **Cloud can do it**: committed scripts with production keys (`cloud-run-script.js`), any workflow dispatch, private data edits (`execute-approved-fix.yml`), starting work in its own session (`create_session`).
-- **Really the Mac**: outlet cookie renewal (The Stage, WSJ), the Mac's checkout and launchd jobs, cmux, WhatsApp/iMessage/Apple Reminders. Owner's hands only: task email (`docs/owner-email-guidelines.md`, BRO-6654).
+- **A Mac session can do it**: Xcode, simulators, the Mac's files. Start it yourself: `docs/cloud-mac-studio-runbook.md`.
+- **Really the owner's hands**: outlet cookie renewal (The Stage, WSJ), the Mac's checkout and launchd jobs, cmux, WhatsApp/iMessage/Apple Reminders. Owner's hands only: task email (`docs/owner-email-guidelines.md`, BRO-6654).
 
 ## Key gaps cloud has vs local
 
