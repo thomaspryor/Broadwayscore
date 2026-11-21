@@ -25,7 +25,8 @@ function countPendingCandidatesFor(base) {
   const shows = readJ(path.join(data, 'shows.json'));
   const reviews = readJ(path.join(data, 'reviews.json'));
   const showsById = new Map(((shows && (shows.shows || shows)) || []).map((s) => [s.id, s]));
-  const heldIndex = require('./lib/pending-triage').buildHeldUrlIndex((reviews && (reviews.reviews || reviews)) || []);
+  // No reviews.json: no held index (null), so the host and cross-show rules stay off rather than misfire.
+  const heldIndex = reviews ? require('./lib/pending-triage').buildHeldUrlIndex(reviews.reviews || reviews) : null;
   return countPendingCandidates({ base, showsById, heldIndex });
 }
 const { INERT_STRATEGIES } = require('./lib/gap-recovery-ledger');

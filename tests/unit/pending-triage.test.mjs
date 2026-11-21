@@ -32,6 +32,10 @@ const JUNK = [
   ['grace-pervades-west-end-2026', 'https://theatreweekly.com/production-images-released-for-grace-pervades-as-west-end-run-continues/'],
   ['hamlet-off-broadway-2026', 'http://www.BAM.org/Hamlet'],
   ['hamlet-off-broadway-2026', 'https://playbill.com/article/raymond-lee-in-hamlet-more-board-south-coast-repertory-2026-2027-season'],
+  // Second batch promotions (2026-11-21).
+  ['clarkston-west-end-2025', 'https://www.thetimes.com/culture/theatre-dance/article/joe-locke-interview-heartstopper-clarkston-trafalgar-theatre-xjnc0tz7v'],
+  ['stereophonic-west-end-2025', 'https://www.thetimes.com/culture/theatre-dance/article/stereophonic-duke-york-theatre-david-adjmi-will-butler-interview-x8500l8n7'],
+  ['little-bear-ridge-road-2025', 'https://deadline.com/2025/12/little-bear-ridge-road-closing-date-1236647056/'],
   ['liberation-off-broadway-2025', 'https://www.hollywoodreporter.com/movies/movie-reviews/the-liberation-review-carrie-coon-guy-nattiv-lily-james-1236690996/'],
 ];
 
@@ -102,6 +106,31 @@ describe('triagePendingStub (BRO-8023)', () => {
     assert.equal(T.triagePendingStub({ url, publishDate: 'December 14, 2014' }, { showId: PUNCH.id, show: PUNCH }).verdict, 'junk');
   });
 
+  test('dateless show: url year two years off its id year is junk; same year stays', () => {
+    const myth = { id: 'myth-off-broadway-2026', title: 'Myth', closingDate: '2026-10-18' };
+    assert.equal(T.triagePendingStub({ url: 'https://observer.com/2024/12/a-complete-unknown-review-a-thrilling-tour-of-established-myth/' }, { showId: myth.id, show: myth }).verdict, 'junk');
+    assert.equal(T.triagePendingStub({ url: 'https://observer.com/2026/09/myth-review-x/' }, { showId: myth.id, show: myth }).verdict, 'candidate');
+  });
+
+  test('query-routed archives keep their id: two LSA stories are two keys (review finding)', () => {
+    const idx = T.buildHeldUrlIndex([{ showId: 'a-2020', url: 'https://www.lightingandsoundamerica.com/news/story.asp?ID=1111' }]);
+    assert.equal(T.triagePendingStub({ url: 'https://www.lightingandsoundamerica.com/news/story.asp?ID=2222' }, { showId: 'b-2026', heldIndex: idx }).verdict, 'candidate');
+    assert.equal(T.triagePendingStub({ url: 'https://www.lightingandsoundamerica.com/news/story.asp?ID=1111' }, { showId: 'b-2026', heldIndex: idx }).verdict, 'junk');
+  });
+
+  test('a joint review naming this show too is not "another show\'s review" (review finding)', () => {
+    const url = 'https://www.thetimes.com/culture/theatre-dance/article/theatre-review-faith-hope-and-charity-big-the-musical-abc';
+    const idx = T.buildHeldUrlIndex([{ showId: 'faith-hope-and-charity-west-end-2019', url }]);
+    const big = { id: 'big-the-musical-west-end-2019', title: 'Big the Musical' };
+    assert.equal(T.triagePendingStub({ url }, { showId: big.id, show: big, heldIndex: idx }).verdict, 'candidate');
+  });
+
+  test('ordinal dates parse', () => { assert.equal(T.stubDateIso('August 12th, 2021'), '2021-08-12'); });
+
+  test('no held index (reviews.json unreadable) turns the host rule off, not on', () => {
+    assert.equal(T.triagePendingStub({ url: 'https://theaterscene.org/2022/10/1776/' }, { showId: 'x-2026', heldIndex: null }).verdict, 'candidate');
+  });
+
   test('showEra buckets by id year suffix', () => {
     assert.equal(T.showEra('punch-west-end-2025'), '2025-26');
     assert.equal(T.showEra('hamlet-2019'), '2015-24');
@@ -116,17 +145,18 @@ describe('replay-pending-bylines processShow --triage-only (BRO-8023)', () => {
     const dir = path.join(root, '_pending', PUNCH.id);
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'hollywood-reporter--a1.json'), JSON.stringify({ outletId: 'hollywood-reporter', criticName: 'Unknown', url: 'https://www.hollywoodreporter.com/movies/movie-reviews/punch-review-1236000000/' }));
-    fs.writeFileSync(path.join(dir, 'guardian--c3.json'), JSON.stringify({ outletId: 'guardian', criticName: 'Unknown', url: 'https://www.theguardian.com/stage/2026/apr/01/punch-review-other' }));
+    fs.writeFileSync(path.join(dir, 'guardian--c3.json'), JSON.stringify({ outletId: 'guardian', criticName: 'Unknown', url: 'https://www.theguardian.com/stage/2026/apr/01/other-play-review' }));
     fs.writeFileSync(path.join(dir, 'times-uk--b2.json'), JSON.stringify({ outletId: 'times-uk', criticName: 'Unknown', url: REAL[0][1] }));
-    let fetches = 0;
+    let fetches = 0; let resolved = 0;
     const r = await processShow(PUNCH.id, {
       root, show: PUNCH, dryRun: false, triageOnly: true,
-      heldIndex: T.buildHeldUrlIndex([{ showId: 'punch-uk-tour-2026', url: 'https://www.theguardian.com/stage/2026/apr/01/punch-review-other' }]), explicitScope: false,
+      heldIndex: T.buildHeldUrlIndex([{ showId: 'punch-uk-tour-2026', url: 'https://www.theguardian.com/stage/2026/apr/01/other-play-review' }]), explicitScope: false,
       fetch: async () => { fetches++; return { content: '<html></html>' }; },
-      alert: async () => {}, resolve: () => {}, emit: () => {},
+      alert: async () => {}, resolve: () => { resolved++; }, emit: () => {},
       budget: { exceeded: () => false, minutes: 5 },
     });
     assert.equal(fetches, 0);
+    assert.equal(resolved, 0, 'a no-fetch pass must not resolve the show\'s unrecoverable alert');
     assert.equal(r.tagged, 2);
     assert.equal(r.candidates, 1);
     assert.equal(r.promoted, 0);
