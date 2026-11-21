@@ -371,7 +371,7 @@ test('evaluateEmailCodeAlert fires at the threshold, clears well below it, and n
   assert.equal(m.evaluateEmailCodeAlert(null), null, 'no account list, no verdict either way');
 });
 
-test('One Tap skips are reported and origin alerts use the 24-hour desktop threshold', () => {
+test('One Tap skips are reported and origin alerts fire at real desktop traffic volume', () => {
   const q = m.buildQueries();
   assert.match(q.oneTapSkips, /one_tap_not_displayed/);
   assert.match(q.oneTapSkips, /INTERVAL 30 DAY/);
@@ -387,6 +387,13 @@ test('One Tap skips are reported and origin alerts use the 24-hour desktop thres
   const alert = (health) => m.evaluateAlerts(health).find((a) => a.key === m.ALERT_KEYS.oneTapOrigin);
   assert.equal(alert({ one_tap_skips: 40, one_tap_origin: 21, one_tap_devices: 20 }).firing, true);
   assert.equal(alert({ one_tap_skips: 40, one_tap_origin: 20, one_tap_devices: 20 }).firing, false);
-  assert.equal(alert({ one_tap_skips: 40, one_tap_origin: 21, one_tap_devices: 19 }).firing, false);
+  assert.equal(alert({ one_tap_skips: 40, one_tap_origin: 21, one_tap_devices: 19 }).firing, true, 'well above the 3-device floor');
+  // The real 2026-11-21 outage (PostHog, last 24 h): the old 20-device floor stayed silent on it.
+  assert.equal(alert({ one_tap_skips: 14, one_tap_origin: 14, one_tap_devices: 13 }).firing, true, 'real outage volume must fire');
+  assert.equal(alert({ one_tap_skips: 3, one_tap_origin: 3, one_tap_devices: 3 }).firing, true);
+  assert.equal(alert({ one_tap_skips: 2, one_tap_origin: 2, one_tap_devices: 2 }).firing, false, 'two devices is noise');
+  assert.equal(alert({ one_tap_skips: 0, one_tap_origin: 0, one_tap_devices: 0 }).resolvable, true, 'clears once One Tap stops skipping');
+  assert.equal(alert({ one_tap_skips: 2, one_tap_origin: 2, one_tap_devices: 2 }).resolvable, false, 'still erroring, below floor: stay open');
+  assert.match(alert({ one_tap_skips: 14, one_tap_origin: 14, one_tap_devices: 13 }).description, /Authorized JavaScript origins/);
   assert.equal(m.buildDashboardData({ accounts: null, ph: { oneTapSkips: null } }).oneTapSkips, null);
 });

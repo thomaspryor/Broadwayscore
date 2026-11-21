@@ -147,6 +147,11 @@ const THRESHOLDS = {
   // are people who gave up; this many in 24 hours is a script asking for codes.
   unfinishedEmailCodes: 25,
   unfinishedEmailCodesClear: 10, // resolve only well below the trigger, so 3-hourly runs do not flap
+  // Google One Tap (BRO-7936): the site sees about a dozen desktop One Tap
+  // attempts a day. The first floor (20 devices) never fired during the real
+  // 2026-11-21 outage (14 of 14 skips were unregistered_origin across 13
+  // devices). Three devices is enough to rule out one person's odd browser.
+  oneTapOriginDevices: 3,
 };
 
 const ALERT_KEYS = {
@@ -561,10 +566,14 @@ function evaluateAlerts(health) {
   return [
     {
       key: ALERT_KEYS.oneTapOrigin,
-      firing: devices >= 20 && origin > skips / 2,
-      resolvable: devices >= 20 && origin <= skips / 2,
-      title: 'Google One Tap may have an unregistered origin',
-      description: `In the last 24 hours ${origin} of ${skips} desktop One Tap skips reported unregistered_origin, across ${devices} desktop devices. Check the Google OAuth client authorized JavaScript origins.`,
+      firing: devices >= T.oneTapOriginDevices && origin > skips / 2,
+      // Resolve on the error share alone: once the fix lands, One Tap shows
+      // instead of skipping, so skip devices fall below the floor and a
+      // device-gated resolve would never clear.
+      resolvable: origin <= skips / 2,
+      title: 'Google sign-in corner card is blocked by a Google setting',
+      description: `In the last 24 hours ${origin} of ${skips} desktop visitors' Google sign-in cards were refused by Google (reason: unregistered_origin), across ${devices} devices. ` +
+        'Fix: in Google Cloud Console, Credentials, open the web client and add https://broadwayscorecard.com and https://www.broadwayscorecard.com under Authorized JavaScript origins, then save.',
     },
     {
       key: ALERT_KEYS.signInStalled,
