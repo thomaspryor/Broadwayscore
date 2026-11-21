@@ -150,3 +150,15 @@ describe('quarterly tips prompt carries the verified sections (BRO-8018)', () =>
     assert.doesNotMatch(buildPrompt('X Theatre', {}, {}), /Verified seating sections/);
   });
 });
+
+describe('prompt text is always well-formed UTF-16 (BRO-8018 Marquis failure)', () => {
+  test('a window that splits an emoji does not leave a lone surrogate', () => {
+    const bad = `Marquis Theatre ${'\uD83C'} orchestra`;
+    assert.ok(!/[\uD800-\uDFFF]/.test(A.wellFormed(bad)));
+    assert.strictEqual(A.wellFormed('ok 🎭 ok'), 'ok 🎭 ok');
+    const long = `${'x'.repeat(599)}🎭 Marquis Theatre orchestra center best view `.repeat(40);
+    const p = A.selectPassages(long, 'Marquis Theatre', { name: 'Orchestra Center' }, 3000);
+    assert.doesNotThrow(() => JSON.parse(JSON.stringify({ p })));
+    assert.ok(!/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/.test(p));
+  });
+});

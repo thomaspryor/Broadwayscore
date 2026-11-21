@@ -119,6 +119,15 @@ function sectionKeywords(section) {
  * The full text is still used for quote matching; this only bounds what a model reads.
  */
 function selectPassages(text, theaterName, section, maxChars = 9000) {
+  return wellFormed(selectPassagesRaw(text, theaterName, section, maxChars));
+}
+
+/** Fixed-width windows can split an emoji's surrogate pair; the OpenAI API rejects such a body. */
+function wellFormed(s) {
+  return String(s).replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, '\uFFFD');
+}
+
+function selectPassagesRaw(text, theaterName, section, maxChars) {
   const t = String(text || '');
   if (t.length <= maxChars) return t;
   const kw = sectionKeywords(section);
@@ -207,7 +216,7 @@ function buildRewritePrompt({ theaterName, section, sources, allowedShowTitles =
   const hazards = (section.hazards || []).map((h, i) => `  hazard ${i}: [${h.type}] ${h.note}`).join('\n') || '  (none)';
   const srcBlock = sources.map((s, i) => `=== SOURCE ${i + 1}: ${s.url}${s.namesTheater ? '' : ' (DOES NOT NAME THIS THEATER: never cite it)'}\n${s.passages || '(could not be fetched)'}`).join('\n\n');
   const tenants = allowedShowTitles.length ? allowedShowTitles.map((t) => `"${t}"`).join(', ') : 'none';
-  return `You are fact-checking seating advice for ${theaterName} on Broadway against the source pages below.
+  return wellFormed(`You are fact-checking seating advice for ${theaterName} on Broadway against the source pages below.
 Keep ONLY what the sources say about THIS section at THIS theater. When in doubt, drop it.
 
 SECTION: "${section.name}"
@@ -248,20 +257,20 @@ Reply with ONLY this JSON:
  "worstFor":{"keep":["tag",...],"evidence":[...]},
  "hazards":[{"i":0,"keep":true|false,"note":"...","evidence":[...]}],
  "rationale":[{"text":"...","evidence":[...]}]}
-Omit a field object when the section does not have that field.`;
+Omit a field object when the section does not have that field.`);
 }
 
 /** The checker sees each claim next to its quotes and says yes or no per claim. */
 function buildVerifyPrompt({ theaterName, sectionName, claims }) {
   const block = claims.map((c, i) => `CLAIM ${i + 1} [${c.kind}]: ${c.text}\n${c.evidence.map((e) => `  EVIDENCE (${e.url}): "${e.quote}"`).join('\n')}`).join('\n\n');
-  return `You are a strict fact-checker. Each claim below is about the "${sectionName}" seats at ${theaterName} on Broadway.
+  return wellFormed(`You are a strict fact-checker. Each claim below is about the "${sectionName}" seats at ${theaterName} on Broadway.
 For each claim, decide if the EVIDENCE quotes, read literally, support the claim for this section at this theater.
 Say false if the evidence is about a different section, a different theater, is vaguer than the claim, or only partly supports it.
 A [verdict] claim of "good, reasonable seats" is supported by evidence that the seats are good, decent or worth buying; it does not need to say they are the best.
 
 ${block}
 
-Reply with ONLY JSON: {"results":[{"i":1,"supported":true|false,"why":"<8 words>"}, ...]} with one entry per claim.`;
+Reply with ONLY JSON: {"results":[{"i":1,"supported":true|false,"why":"<8 words>"}, ...]} with one entry per claim.`);
 }
 
 /** Verifier reply -> Map(claimIndex(1-based) -> boolean). Throws if any claim is missing. */
@@ -362,6 +371,6 @@ function quoteHash(q) {
 module.exports = {
   VERDICTS, PRICE_TIERS, SHOW_TAGS, HAZARD_TYPES, hazardType, DEFAULT_LABEL, MIN_SECTIONS_PER_THEATER, FORMER_NAMES,
   normalizeText, htmlToText, theaterNamePatterns, pageNamesTheater, sectionKeywords, selectPassages,
-  quoteInText, groundEvidence, copyProblems, parseJsonReply, buildRewritePrompt, buildVerifyPrompt,
+  wellFormed, quoteInText, groundEvidence, copyProblems, parseJsonReply, buildRewritePrompt, buildVerifyPrompt,
   parseVerifyReply, groundRewrite, decideSection, theaterKeepProblems, quoteHash,
 };

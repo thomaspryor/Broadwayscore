@@ -27,6 +27,7 @@ function guard() { if (spend.usd >= spend.maxUsd) throw new Error(`audit spend c
 /** opts: { grounded, image: {mime, b64} } */
 async function askGemini(prompt, opts = {}) {
   guard();
+  prompt = String(prompt).toWellFormed(); // a sliced emoji (lone surrogate) makes the API reject the body (BRO-8018)
   const parts = [{ text: prompt }];
   if (opts.image) parts.push({ inlineData: { mimeType: opts.image.mime, data: opts.image.b64 } });
   const body = { contents: [{ parts }], generationConfig: { temperature: 0, thinkingConfig: { thinkingBudget: opts.grounded ? 2048 : 512 }, maxOutputTokens: 8192 } };
@@ -50,6 +51,7 @@ async function askGemini(prompt, opts = {}) {
 /** opts: { search: true, image: {mime, b64} } */
 async function askOpenAI(prompt, opts = {}) {
   guard();
+  prompt = String(prompt).toWellFormed(); // a sliced emoji (lone surrogate) makes the API reject the body (BRO-8018)
   const content = [{ type: 'input_text', text: prompt }];
   if (opts.image) content.push({ type: 'input_image', image_url: `data:${opts.image.mime};base64,${opts.image.b64}` });
   const body = { model: OPENAI_MODEL, input: [{ role: 'user', content }], reasoning: { effort: 'low' } };
