@@ -564,15 +564,14 @@ function main() {
   // worktree at origin/main, which proves origin/main itself and is immune to
   // MAIN's uncommitted edits.
   let verifyCwd = MAIN;
-  let tempWt = null;
+  let needTempWt = false;
   if (!dataRepo && !checkout.containsSha && landing.verdict === 'LANDED') {
-    tempWt = makeOriginMainWorktree();
-    if (tempWt) {
-      verifyCwd = tempWt;
-      checkout.containsSha = true;
-      checkout.dirtyCodePaths = [];
-      console.error(`→ MAIN lags origin/main: verify will run in a temp worktree at origin/main (${tempWt})`);
-    }
+    // Sound: LANDED means sha is an ancestor of the freshly fetched origin/main.
+    // The worktree itself is created only after the dry run passes (a refusal
+    // process.exit()s and would leak it).
+    needTempWt = true;
+    checkout.containsSha = true;
+    checkout.dirtyCodePaths = [];
   }
   // core-data verify reads MAIN's data/*.json, which must be the symlinks into
   // this clone — a copied or foreign dataset would certify the wrong state.
@@ -591,6 +590,17 @@ function main() {
   const dryRun = decide({ verify: { ...verify, exitCode: 0 } });
   if (!dryRun.ok) refuse(ref, dryRun.refusals, hintCtx);
 
+  let tempWt = null;
+  if (needTempWt) {
+    tempWt = makeOriginMainWorktree();
+    if (tempWt) {
+      verifyCwd = tempWt;
+      process.on('exit', () => removeWorktree(tempWt));
+      console.error(`→ MAIN lags origin/main: verify runs in a temp worktree at origin/main (${tempWt})`);
+    } else {
+      refuse(ref, ['the checkout the verify command would run in does not contain the sha yet and a temp worktree at origin/main could not be created — pull origin/main there first'], hintCtx);
+    }
+  }
   console.error(`→ running verify in ${verifyCwd}: ${verify.cmd}`);
   const verifyEnv = dataRepo && dataRepo.name === 'review-texts' ? { REVIEW_TEXTS_DIR: REPO } : undefined;
   if (verifyEnv && !/validate-data|audit-show-review-gap/.test(verify.cmd)) {
@@ -600,7 +610,7 @@ function main() {
   try {
     decision = runVerifyAndDecide(decide, verify, { cwd: verifyCwd, env: verifyEnv });
   } finally {
-    if (tempWt) removeWorktree(tempWt);
+    if (tempWt) { removeWorktree(tempWt); tempWt = null; }
   }
   if (!decision.ok) refuse(ref, decision.refusals, hintCtx);
 

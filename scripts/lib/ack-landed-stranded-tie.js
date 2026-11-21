@@ -78,7 +78,7 @@ function jobTouchedFiles(git, tip) {
 function contentIdentical(git, tip, commit) {
   const files = jobTouchedFiles(git, tip);
   if (!files.length) return false;
-  const sameAsMain = git(['diff', '--name-only', tip, 'origin/main', '--', ...files]);
+  const sameAsMain = git(['--literal-pathspecs', 'diff', '--name-only', tip, 'origin/main', '--', ...files]);
   if (sameAsMain) return false;
   const shaFiles = new Set(git(['diff-tree', '--no-commit-id', '--name-only', '-r', '--root', '-m', '--first-parent', commit]).split('\n').filter(Boolean));
   return files.some(f => shaFiles.has(f));
