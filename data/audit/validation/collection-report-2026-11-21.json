@@ -1,50 +1,50 @@
 {
-  "runDate": "2026-11-21T01:17:36.077Z",
+  "runDate": "2026-11-21T01:28:38.801Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 60,
     "priority": "all",
-    "showFilter": "blue-man-group-a-new-holiday-surprise-2026",
-    "aggressive": false,
+    "showFilter": "desire-under-the-elms-off-west-end-2026",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
     "processed": 2,
-    "failed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 0,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -55,9 +55,9 @@
   },
   "thisRun": {
     "processed": 2,
-    "failed": 0,
+    "failed": 1,
     "shows": [
-      "blue-man-group-a-new-holiday-surprise-2026"
+      "desire-under-the-elms-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,32 +66,43 @@
     }
   },
   "processed": [
-    "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-    "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json"
+    "desire-under-the-elms-off-west-end-2026/plays-international--unknown.json",
+    "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
   ],
-  "failed": [],
+  "failed": [
+    "desire-under-the-elms-off-west-end-2026/plays-to-see--unknown.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json",
-      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json"
+      "desire-under-the-elms-off-west-end-2026/plays-international--unknown.json",
+      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
     ],
-    "failed": []
+    "failed": [
+      "desire-under-the-elms-off-west-end-2026/plays-to-see--unknown.json"
+    ]
   },
   "tierDetails": {
     "playwright": [
-      "blue-man-group-a-new-holiday-surprise-2026/culturesauce--thom-geier.json"
+      "desire-under-the-elms-off-west-end-2026/plays-international--unknown.json",
+      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "blue-man-group-a-new-holiday-surprise-2026/broadwayworld--chloe-rabinowitz.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Plays To See": {
+      "count": 1,
+      "domain": "playstosee.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
