@@ -222,7 +222,10 @@ function countPendingCandidates({ base, outlets = MAJOR_FULLTEXT_OUTLETS, showsB
       if (!r || !want.has(o) || T.isSettledPendingStub(r)) continue;
       const v = T.triagePendingStub(r, { showId: s, show: showsById.get(s), heldIndex });
       if (v.verdict !== 'candidate') continue;
-      byOutlet[o] = (byOutlet[o] || 0) + 1;
+      const b = byOutlet[o] || (byOutlet[o] = { n: 0, attempted: 0 });
+      b.n++;
+      // Fetched by the drain and not recoverable (BRO-8023 stamp, or the older unrecoverable stamp): worked, not unattempted.
+      if (r.pendingFetchAttemptedAt || r.pendingUnrecoverableAt || r.pendingRefetchedAt) b.attempted++;
       rows.push({ outlet: o, show: s, file: f, url: r.url || null });
     }
   }
@@ -249,9 +252,12 @@ function evaluateFloors({ rates, gaps, attemptedKeys, nowMs = Date.now(), staleD
   const allOutlets = new Set([...Object.keys(rates), ...Object.keys(pendingCandidates)]);
   const outlets = [...allOutlets].map((o) => {
     const t = rates[o] || { n: 0, full: 0, documented: 0, dupCovered: 0, pct: 100, floor: floorFor(o) };
-    const pending = pendingCandidates[o] || 0;
+    // A number (tests, older callers) or {n, attempted} from countPendingCandidates.
+    const pc = pendingCandidates[o];
+    const pending = typeof pc === 'number' ? pc : (pc && pc.n) || 0;
+    const pendingAttempted = typeof pc === 'number' ? 0 : (pc && pc.attempted) || 0;
     const og = gaps.filter((g) => g.outlet === o);
-    const unattempted = og.filter((g) => !attemptedKeys.has(g.reviewKey)).length + pending;
+    const unattempted = og.filter((g) => !attemptedKeys.has(g.reviewKey)).length + (pending - pendingAttempted);
     const n = t.n + pending;
     // Pending candidates are missing reviews: same covered count over a bigger denominator.
     const pct = pending ? (n ? (t.pct * t.n) / n : 100) : t.pct;

@@ -257,7 +257,7 @@ function screenSectionHit(u) {
   if (/(^|\.)hollywoodreporter\.com$/i.test(u.hostname) && THR_TAG_INDEX_RE.test(u.pathname)) return true;
   if (DEADLINE_HOST_RE.test(u.hostname) && FILM_FESTIVAL_SLUG_RE.test(slug) && !THEATRE_SLUG_CUE_RE.test(slug)) return true;
   // A screen-trade slug that says what it is ("spellbound-film-review"): the play "Midnight Movie" is why this is host-scoped.
-  if (SCREEN_TRADE_HOST_RE.test(u.hostname) && /(?:^|-)(?:film|movie|tv|series)-review(?:-|$)/i.test(slug) && !THEATRE_SLUG_CUE_RE.test(slug)) return true;
+  if (SCREEN_TRADE_HOST_RE.test(u.hostname) && !/\/legit\//i.test(u.pathname) && /(?:^|-)(?:film|movie|tv|series)-review(?:-|$)/i.test(slug) && !THEATRE_SLUG_CUE_RE.test(slug)) return true;
   // Box-office grosses stories are news, never a review (deadline broadway-box-office-..., ew box-office-preview-...).
   if (SCREEN_BOX_OFFICE_HOST_RE.test(u.hostname) && /(?:^|-)box-office(?:-|$)/i.test(slug) && !/(?:^|-)review(?:-|$)/i.test(slug)) return true;
   return false;
