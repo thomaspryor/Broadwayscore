@@ -259,10 +259,11 @@ test('BRO-7911: the retro gate still runs when the chain block cap is spent', ()
     fs.writeFileSync(chain, 'RCOV\nROOTCAUSE\nCLEARCLOSE\nEFFECTPENDING\n'); // 4 lines = the cap
     const hook = path.join(import.meta.dirname, '..', '..', '.claude', 'hooks', 'verify-edits.sh');
     const input = JSON.stringify({ transcript_path: tp, session_id: 's', stop_hook_active: true, last_assistant_message: 'ACTION NEEDED FROM YOU — read it' });
-    const r = spawnSync('bash', [hook], { input, env: { ...process.env, CLAUDE_CODE_REMOTE: 'true' }, encoding: 'utf8' });
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-home-')); // defeats the Mac-master self-skip
+    const r = spawnSync('bash', [hook], { input, env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: 'true' }, encoding: 'utf8' });
     assert.equal(r.status, 2, r.stderr);
     assert.match(r.stderr, /\[VE:RETROCOV\]/);
-    const off = spawnSync('bash', [hook], { input, env: { ...process.env, CLAUDE_CODE_REMOTE: 'true', RETRO_COVERAGE_STOP_DISABLE: '1' }, encoding: 'utf8' });
+    const off = spawnSync('bash', [hook], { input, env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: 'true', RETRO_COVERAGE_STOP_DISABLE: '1' }, encoding: 'utf8' });
     assert.equal(off.status, 0, 'kill switch still lets the capped chain through');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true }); fs.rmSync(chain, { force: true }); fs.rmSync(counter, { force: true });
