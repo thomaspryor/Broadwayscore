@@ -176,3 +176,74 @@ test('BRO-4078: computeStrandedTie skips the patch lookup entirely when landed i
   assert.equal(tie.tiedToStranded, false);
   assert.equal(tie.tiedToStrandedByPatch, false, 'no point diffing a sha that is not even landed');
 });
+
+// BRO-8008: the job merged origin/main into its branch before being stranded,
+// so the tip is a merge and patch IDs of the landed (rebased) twins differ.
+// Content tie: every file the job touched is identical on origin/main.
+function mergeTipScenario({ divergeAfter }) {
+  git(['checkout', '-q', '-b', 'job']);
+  commit(`fix(${REF}): part one`, '2026-01-01T10:00:00Z', 'a.txt');
+  commit(`fix(${REF}): part two`, '2026-01-01T10:05:00Z', 'b.txt');
+  git(['checkout', '-q', 'main']);
+  commit('chore: main moved', '2026-01-01T10:02:00Z', 'c.txt');
+  git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
+  git(['checkout', '-q', 'job']);
+  git(['merge', '-q', '--no-edit', 'origin/main'], { date: '2026-01-01T10:06:00Z' });
+  const strandedTip = git(['rev-parse', 'HEAD']);
+  // Landed twins: rebase-equivalent, but with content tweaks to the commit
+  // so the patch IDs differ while the final files are identical.
+  git(['checkout', '-q', 'main']);
+  git(['checkout', 'job', '--', 'a.txt', 'b.txt']);
+  git(['add', 'a.txt', 'b.txt']);
+  git(['commit', '-q', '-m', `fix(${REF}): landed twin`], { date: '2026-01-01T10:30:00Z' });
+  const twin = git(['rev-parse', 'HEAD']);
+  if (divergeAfter) commit('chore: later edit to a.txt', '2026-01-01T11:00:00Z', 'a.txt');
+  git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
+  return { strandedTip, twin };
+}
+
+test('BRO-8008: merge-tip stranded job whose files are identical on origin/main ties by content', () => {
+  const { strandedTip, twin } = mergeTipScenario({ divergeAfter: false });
+  const tie = computeStrandedTie(twin, strandedTip, { cwd: repo });
+  assert.equal(tie.tiedToStrandedByContent, true);
+  assert.equal(tie.tiedToStranded, false);
+});
+
+test('BRO-8008: a touched file that differs on origin/main refuses the content tie', () => {
+  const { strandedTip, twin } = mergeTipScenario({ divergeAfter: true });
+  const tie = computeStrandedTie(twin, strandedTip, { cwd: repo });
+  assert.equal(tie.tiedToStrandedByContent, false);
+  assert.equal(tie.tiedToStrandedByPatch, false);
+});
+
+test('BRO-8008: an unrelated commit that touches none of the job files gets no content tie', () => {
+  const { strandedTip } = mergeTipScenario({ divergeAfter: false });
+  const other = commit('chore: other', '2026-01-01T10:40:00Z', 'z.txt');
+  git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
+  const tie = computeStrandedTie(other, strandedTip, { cwd: repo });
+  assert.equal(tie.tiedToStrandedByContent, false);
+});
+
+test('BRO-8008: a file changed only in the job\'s merge-conflict resolution is checked by the content tie', () => {
+  git(['checkout', '-q', '-b', 'job']);
+  commit(`fix(${REF}): part one`, '2026-01-01T10:00:00Z', 'a.txt');
+  git(['checkout', '-q', 'main']);
+  commit('chore: main edits r.txt', '2026-01-01T10:02:00Z', 'r.txt');
+  git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
+  git(['checkout', '-q', 'job']);
+  commit(`fix(${REF}): job edits r.txt`, '2026-01-01T10:03:00Z', 'r.txt');
+  try { git(['merge', '--no-edit', 'origin/main'], { date: '2026-01-01T10:06:00Z' }); } catch { /* conflict expected */ }
+  fs.writeFileSync(path.join(repo, 'r.txt'), 'job resolution');
+  git(['add', 'r.txt']);
+  git(['commit', '-q', '--no-edit'], { date: '2026-01-01T10:06:00Z' });
+  const tip = git(['rev-parse', 'HEAD']);
+  // main lands a.txt content but NOT the resolved r.txt
+  git(['checkout', '-q', 'main']);
+  git(['checkout', 'job', '--', 'a.txt']);
+  git(['add', 'a.txt']);
+  git(['commit', '-q', '-m', `fix(${REF}): twin`], { date: '2026-01-01T10:30:00Z' });
+  const twin = git(['rev-parse', 'HEAD']);
+  git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
+  const tie = computeStrandedTie(twin, tip, { cwd: repo });
+  assert.equal(tie.tiedToStrandedByContent, false, 'r.txt differs on main, so the work is not fully landed');
+});

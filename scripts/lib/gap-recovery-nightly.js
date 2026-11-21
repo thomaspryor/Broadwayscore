@@ -192,7 +192,7 @@ function missedRunAlert(rows, nowMs = Date.now(), hours = STALE_ROW_HOURS) {
  * reopening recovered reviews, the nightly ceiling hit, the run failing.
  * @returns {Array<{key:string, text:string}>} plain-English, owner-readable
  */
-function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0, pushFailed = false, reopened = 0, ceilingHit = false, ceiling = DEFAULT_NIGHTLY_CEILING, runFailed = false, runError = '', timeBudgetHit = false, zeroStrategies = [] }) {
+function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0, pushFailed = false, reopened = 0, ceilingHit = false, ceiling = DEFAULT_NIGHTLY_CEILING, runFailed = false, runError = '', timeBudgetHit = false, zeroStrategies = [], methodErrorRates = [] }) {
   const out = [];
   if (authFailedStreak >= AUTH_STREAK_ALERT) {
     const who = authOutlets.length ? authOutlets.join(', ') : 'a subscriber site';
@@ -207,6 +207,10 @@ function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0
   if (ceilingHit) out.push({ key: 'ceiling_hit', text: `the nightly limit of ${ceiling} recovered reviews was reached, so more are waiting for the next night` });
   if (timeBudgetHit) out.push({ key: 'time_budget_hit', text: 'the nightly run stopped because it used up its time budget before finishing the plan' });
   if (zeroStrategies.length) out.push({ key: 'strategy_zero_yield', text: `${zeroStrategies.join(', ')} recovered nothing for ${ZERO_YIELD_NIGHTS} nights in a row while being tried` });
+  if (methodErrorRates.length) {
+    const who = methodErrorRates.map((b) => `${b.method} (${b.errored} of ${b.runs} lookups failed${b.lastError ? `: ${String(b.lastError).slice(0, 60)}` : ''})`).join('; ');
+    out.push({ key: 'url_find_method_failing', text: `a link-finding route is failing most of the time, so those reviews are not being searched: ${who}` });
+  }
   if (runFailed) out.push({ key: 'run_failed', text: `the nightly run stopped with an error${runError ? ` (${String(runError).slice(0, 80)})` : ''}` });
   return out;
 }
@@ -267,10 +271,11 @@ function buildNightlyRow({ runId, status, summary, counts, reopened = 0, superse
       : null,
   };
   row.zeroYieldStrategies = status === 'ran' ? zeroYieldStrategies(prevRows, row.byStrategy) : [];
+  row.urlFindMethodErrors = status === 'ran' ? require('./url-find-method-health').urlFindMethodErrorRates(ledgerRows, { nowMs }) : [];
   row.alerts = status === 'dry_run' || status === 'disabled' ? [] : decideAlerts({
     timeBudgetHit: row.timeBudgetHit, zeroStrategies: row.zeroYieldStrategies,
     authFailedStreak, authOutlets: authFailedOutlets, pendingStuck, pushFailed: row.pushFailed,
-    reopened: Math.max(0, reopened - superseded), ceilingHit: row.ceilingHit, ceiling, runFailed, runError: s.error,
+    methodErrorRates: row.urlFindMethodErrors, reopened: Math.max(0, reopened - superseded), ceilingHit: row.ceilingHit, ceiling, runFailed, runError: s.error,
   });
   return row;
 }

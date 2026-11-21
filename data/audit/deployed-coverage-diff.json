@@ -1,30 +1,46 @@
 {
-  "generatedAt": "2026-11-21T18:19:13.378Z",
+  "generatedAt": "2026-11-21T19:45:32.887Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 370,
+  "checked": 371,
   "clean": 369,
-  "defective": 1,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "buena-vista-social-club-tour-2026",
-      "title": "Buena Vista Social Club",
-      "openingDate": "2026-09-12",
+      "showId": "nine-night-off-west-end-2026",
+      "title": "Nine Night",
+      "openingDate": "2026-11-12",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 84.43 vs local 85.23 (Δ0.8)"
+          "detail": "deployed cs 82.86 vs local 88.41 (Δ5.55)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-21T18:19:10.062Z"
+      "localCount": 3,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-11-21T19:45:21.710Z"
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "openingDate": "2026-11-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.09 vs local 78.18 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 32,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-11-21T19:45:21.710Z"
     }
   ],
   "persistentDefective": 0,

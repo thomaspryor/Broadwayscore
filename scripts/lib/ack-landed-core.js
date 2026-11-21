@@ -409,8 +409,19 @@ function decideAck(input) {
     // rebase-landed stranded job and nothing could ever ack one. The patch tie
     // compares the diff rather than the prose, so it is stronger evidence than
     // the name check the non-stranded path uses, not weaker.
-    if (!landing.tiedToStranded && !landing.tiedToStrandedByPatch) {
-      refusals.push(`for a job-stranded row the sha must be the stranded sha ${stranded.sha} itself, or an origin/main commit patch-identical to that tip (a rebase-landed twin); got ${landing.sha || '<sha>'}`);
+    // BRO-8008: tiedToStrandedByContent (every file the job touched is
+    // identical between its tip and origin/main) is weaker than a patch tie,
+    // so it ALSO needs the card named and the sha authored inside the job's
+    // window (before the terminal row).
+    let contentTie = false;
+    if (landing.tiedToStrandedByContent && !landing.tiedToStranded && !landing.tiedToStrandedByPatch) {
+      const endRow = workEndRow(newest, scoped.rows) || newest;
+      const endTs = Date.parse((endRow && endRow.ts) || '');
+      const inWindow = Number.isFinite(workTs) && Number.isFinite(endTs) && workTs <= endTs + COMMIT_AFTER_TERMINAL_GRACE_MS;
+      if (namesRef && inWindow) contentTie = true;
+    }
+    if (!landing.tiedToStranded && !landing.tiedToStrandedByPatch && !contentTie) {
+      refusals.push(`for a job-stranded row the sha must be the stranded sha ${stranded.sha} itself, or an origin/main commit patch-identical to that tip (a rebase-landed twin), or a commit naming ${ref} authored in the job window that leaves every file the job touched identical to the stranded tip; got ${landing.sha || '<sha>'}`);
     }
   } else if (!namesRef) {
     refusals.push(`the sha's commit message does not name ${ref} — pass the job's own commit, not an unrelated one`);
@@ -710,7 +721,7 @@ function decideLandedElsewhere(input) {
   // A stranded job's OWN work can land after its window (a squash-merge
   // re-stamps the author date); that belongs to the default ack's stranded
   // tie, which records the job as productive — not here.
-  if (landing.tiedToStranded || landing.tiedToStrandedByPatch) {
+  if (landing.tiedToStranded || landing.tiedToStrandedByPatch || landing.tiedToStrandedByContent) {
     refusals.push(`the sha is tied to the stranded job's own sha${stranded && stranded.sha ? ` ${stranded.sha}` : ''} — that job DID do this work; ack it with the default mode`);
   }
 

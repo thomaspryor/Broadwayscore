@@ -5,14 +5,15 @@
  * Input: check-secrets-health.js results ({name, status: pass|warn|fail|skip, message}) and the ScrapingBee
  * credit status (check-sb-credits fetchSBCreditStatus()). A press night needs every key the old path spends on
  * (scoring models, scrapers, the private data repo, deploys, the owner email). A key that fails or is not set at
- * all fails the preflight; a warning does not (warnings already reach the weekly secrets check). ScrapingBee at
- * 90% used or more fails: the poller burns ~2-5k credits on a busy night.
+ * all fails the preflight; a warning does not (warnings already reach the weekly secrets check). ScrapingBee fails
+ * when fewer than SB_MIN_REMAINING credits are left: the poller burns ~2-5k credits on a busy night, so the floor is
+ * two worst-case nights. A percent-used rule paged at 91% used with 23,738 left (2026-11-21), a false alarm.
  */
 
 const { foldDiacritics } = require('./url-slug');
 
 const REQUIRED = ['Anthropic', 'OpenAI', 'Gemini', 'ScrapingBee', 'ScrapingDog', 'Bright Data', 'Private Repo PAT', 'Vercel', 'Resend'];
-const SB_MAX_PCT_USED = 90;
+const SB_MIN_REMAINING = 10000;
 
 function preflightVerdict({ results = [], sb = null } = {}) {
   const problems = [];
@@ -25,11 +26,11 @@ function preflightVerdict({ results = [], sb = null } = {}) {
     const crashed = /^Check threw error/.test(String(r.message || ''));
     if (r.status === 'fail' || r.status === 'skip' || crashed) problems.push({ key: name, why: `${crashed ? 'check crashed' : r.status}: ${String(r.message || '').slice(0, 160)}` });
   }
-  if (sb && sb.ok && Number.isFinite(sb.pctUsed) && sb.pctUsed >= SB_MAX_PCT_USED) {
-    problems.push({ key: 'ScrapingBee credits', why: `${Math.round(sb.pctUsed)}% used (${sb.remaining} left)` });
+  if (sb && sb.ok && Number.isFinite(sb.remaining) && sb.remaining < SB_MIN_REMAINING) {
+    problems.push({ key: 'ScrapingBee credits', why: `${sb.remaining} left (under ${SB_MIN_REMAINING}; ${Math.round(sb.pctUsed)}% used)` });
   }
   const resendDown = problems.some((p) => p.key === 'Resend');
   return { ok: problems.length === 0, problems, resendDown };
 }
 
-module.exports = { preflightVerdict, REQUIRED, SB_MAX_PCT_USED };
+module.exports = { preflightVerdict, REQUIRED, SB_MIN_REMAINING };

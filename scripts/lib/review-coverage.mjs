@@ -11,7 +11,8 @@
 //   1. a Claude codebase review: an Agent call (review-panelist preferred; some containers lack that
 //      type and sessions fall back to general-purpose, so any subagent type counts) with a real
 //      review prompt
-//   2. an external adversarial review: curl to api.openai.com / Gemini, or `codex exec`
+//   2. an external adversarial review: curl to api.openai.com / Gemini, `codex exec`, or the
+//      repo-reading Gemini wrapper `node scripts/gemini/review.js` that printed its full ok status line with reads >= 1 and a review body (BRO-7987)
 // tsc/lint/build are NOT checked here: land.yml runs them strictly on the rebased tree.
 // Known limits (accepted, BRO-5359 ship-check): this sets a floor, not proof of review quality;
 // coverage is not tied to the pushed diff hash (verify-edits.sh's fixup budget covers edits made
@@ -78,6 +79,25 @@ const WRAPPER = String.raw`(?:\w+=\S*|(?:g?timeout|nice|env|time|nohup|exec)(?:\
 const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:${WRAPPER}\\s+)*${word}\\b`);
 const CURL_POS_RE = cmdPos('curl');
 const CODEX_POS_RE = cmdPos('codex\\s+exec');
+// BRO-7987: the repo-reading Gemini reviewer. review.js prints one status line on stderr and the review
+// body on stdout, and the two can reach the tool result in either order (the ship-check block cats the
+// body after the run ends), so "last status-looking line" breaks when the body quotes a FAILED:/MISSING:
+// line. Only an ok or no-reads run prints a body, and no-reads carries NO_READS_HEADER, so a run counts
+// when the result has review.js's full ok line with reads >= 1, no no-reads header, and a real body.
+// A hand-typed copy of the full ok line after a failed run still passes: same floor-not-proof limit as above.
+const GEMINI_WRAPPER_POS_RE = cmdPos(String.raw`node\s+(?:\S*/)?scripts/gemini/review\.js(?=[\s;&|)]|$)`);
+const { NO_READS_HEADER } = createRequire(import.meta.url)('../gemini/review.js');
+export const isGeminiReviewCall = (cmd) => GEMINI_WRAPPER_POS_RE.test(shellCode(cmd));
+export function geminiReviewOk(content) {
+  const text = String(content || '');
+  if (text.includes(NO_READS_HEADER)) return false;
+  if (!GEMINI_OK_LINE_RE.test(text)) return false;
+  return text.replace(GEMINI_OK_LINE_RE_G, '').trim().length >= MIN_RESULT_CHARS;
+}
+// review.js:232 `GEMINI-REVIEW: ok model=M reads=N[ retried=1][ tree-check=...]`, pinned by a test on the producer.
+const GEMINI_OK_LINE_SRC = String.raw`^GEMINI-REVIEW: ok model=\S+ reads=[1-9]\d*(?: \S+)*[ \t]*$`;
+const GEMINI_OK_LINE_RE = new RegExp(GEMINI_OK_LINE_SRC, 'm');
+const GEMINI_OK_LINE_RE_G = new RegExp(GEMINI_OK_LINE_SRC, 'gm');
 // The shell code a command runs, for "is X in command position" checks: heredoc bodies and quoted
 // strings blanked in ONE pass (BRO-5430). Two passes ('...' first) let an apostrophe in prose
 // ("what's", in a heredoc prompt or a double-quoted string) pair with a later quote and erase a
@@ -190,6 +210,7 @@ export function evaluateCoverage(events, { requireBuild = false, now = new Date(
   const answeredWell = (id) => substantiveResult(results.get(id));
   const claude = [];
   const external = [];
+  const gemini = [];
   const skeptic = [];
   for (const e of events.slice(last.i + 1)) {
     if (e.kind !== 'assistant_tool_use') continue;
@@ -197,6 +218,8 @@ export function evaluateCoverage(events, { requireBuild = false, now = new Date(
       if (String(e.input?.prompt || '').length >= MIN_PANELIST_PROMPT && /\b(?:review|audit|adversar\w*)\b/i.test(String(e.input?.prompt)) && answered(e.id)) claude.push(e);
     } else if (e.name === 'Bash' && isExternalReviewCall(String(e.input?.command || '')) && answeredWell(e.id)) {
       external.push(e);
+    } else if (e.name === 'Bash' && isGeminiReviewCall(String(e.input?.command || '')) && answered(e.id) && geminiReviewOk(results.get(e.id)?.content)) {
+      gemini.push(e);
     } else if (e.name === 'Bash' && isSkepticReviewCall(String(e.input?.command || '')) && answered(e.id) && SKEPTIC_VERDICT_RE.test(String(results.get(e.id)?.content || ''))) {
       skeptic.push(e);
     }
@@ -218,7 +241,7 @@ export function evaluateCoverage(events, { requireBuild = false, now = new Date(
   const missing = [];
   if (requireBuild && !built) missing.push('the build (`npm run build`, Phase 2 of ship-check): land.yml does not run it and this diff touches src/');
   if (claude.length === 0) missing.push('Claude codebase review (an Agent call, subagent_type review-panelist, with a real review prompt of 200+ characters)');
-  if (external.length === 0) missing.push('external adversarial review (curl -d to api.openai.com /v1/chat/completions, Gemini generateContent, or `codex exec`) with a real response');
+  if (external.length + gemini.length === 0) missing.push('external adversarial review (curl -d to api.openai.com /v1/chat/completions, Gemini generateContent, `codex exec`, or `node scripts/gemini/review.js` ending GEMINI-REVIEW: ok) with a real response');
   const advisory = [];
   if (skeptic.length === 0) {
     const m = 'skeptic "is this fully tested?" review (`node scripts/lib/skeptic-review-stop.mjs --ship-check`, Phase 5 of ship-check) with its SKEPTIC REVIEW verdict';
@@ -228,11 +251,11 @@ export function evaluateCoverage(events, { requireBuild = false, now = new Date(
   let evidence = null;
   if (complete) {
     const h = createHash('sha256');
-    for (const e of [...claude, ...external, ...skeptic]) h.update(`${e.id}\n${results.get(e.id)?.content || ''}\n`);
+    for (const e of [...claude, ...external, ...gemini, ...skeptic]) h.update(`${e.id}\n${results.get(e.id)?.content || ''}\n`);
     evidence = {
       outputsHash: h.digest('hex'),
       invocationId: String(last.id),
-      checks: [`claude-subagent-review x${claude.length}`, `external-review x${external.length}`, ...(skeptic.length ? [`skeptic-review x${skeptic.length}`] : [])],
+      checks: [`claude-subagent-review x${claude.length}`, ...(external.length ? [`external-review x${external.length}`] : []), ...(gemini.length ? [`gemini-review x${gemini.length}`] : []), ...(skeptic.length ? [`skeptic-review x${skeptic.length}`] : [])],
     };
   }
   return { ran: true, complete, skill: last.skill, missing, advisory, evidence, unansweredGaps, ranBeforeLastEdit };

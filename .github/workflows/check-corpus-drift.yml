@@ -264,6 +264,13 @@ jobs:
           RC4=0; OUT4=$(node scripts/audit-cross-show-url-flags.js --strict --alert 2>&1) || RC4=$?
           echo "$OUT4" | tail -12
           [ "$RC4" != "0" ] && echo "::warning::cross-show URL flag audit: a wrongProduction flag may hide a correct review. Read each text, then clear it with new-fix-plan.js or add it to data/audit/cross-show-url-flags-reviewed.json. Run: node scripts/audit-cross-show-url-flags.js"
+          # BRO-7999 R3: recent reviews held out by an automated rule that nobody has read and whose text looks like a real review.
+          # Advisory: --queue always exits 0 once it ran (3 = no corpus); the --alert card carries ids and rule names only.
+          RC5=0; OUT5=$(node scripts/audit-excluded-with-own-show-evidence.js --queue --alert 2>&1) || RC5=$?
+          echo "$OUT5" | grep -E "^(Held-out review queue|  \[)" | head -14
+          [ "$RC5" != "0" ] && echo "::warning::held-out review queue could not run (exit $RC5)"
+          Q5=$(echo "$OUT5" | grep -oE '[0-9]+ row\(s\)' | head -1 | grep -oE '^[0-9]+' || true)
+          [ -n "$Q5" ] && [ "$Q5" != "0" ] && echo "::warning::held-out review queue: $Q5 recent review(s) held out by an automated rule look real. Read each text; wrong flag: clear that one flag with new-fix-plan.js --review-edit. Run: node scripts/audit-excluded-with-own-show-evidence.js --queue"
           exit 0
 
       - name: Audit isNonReview content-type/wrongShow + slug coverage (BRO-3862)

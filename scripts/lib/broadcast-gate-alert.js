@@ -58,7 +58,10 @@ const GATES = {
 function isOwnerInformed(result) {
   if (!result) return false;
   return result.action === 'silent' || result.action === 'digest'
-    || (result.action === 'human' && !!result.delivered);
+    || (result.action === 'human' && !!result.delivered)
+    // BRO-8005: a repeating page-gated alert gets promoted digest -> 'auto' and files a
+    // Linear tracker. A filed tracker (dispatchOk) means the owner is informed.
+    || (result.action === 'auto' && result.dispatchOk === true);
 }
 
 /**

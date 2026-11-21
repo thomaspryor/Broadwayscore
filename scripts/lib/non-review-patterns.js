@@ -16,13 +16,17 @@
  * opening, absent strong review language, is high-confidence non-review.
  */
 
+const OBIT_AGE_LEAD_CHARS = 200;
+
 const NON_REVIEW_PATTERNS = [
   // Press releases / promotional
   { pattern: /(?:is pleased to announce|announces?\s+(?:that|the)|tickets? (?:are\s+)?(?:now\s+)?on sale|available at the box office)/i, type: 'press_release' },
   // Cast announcements
   { pattern: /(?:joins? the cast|has been cast|will star in|casting (?:announced|complete))/i, type: 'cast_announcement' },
   // Previews / anticipation articles
-  { pattern: /(?:what to expect|first look at|sneak peek|before (?:it|the show) opens|preview article|previews begin)/i, type: 'preview_article' },
+  // "to first look at what preceded it" is a critic's verb phrase (Leiter on Rope, BRO-7999), not a
+  // "First Look at ..." preview headline, so a preceding "to " is not a match.
+  { pattern: /(?:what to expect|(?<!\bto\s)first look at|sneak peek|before (?:it|the show) opens|preview article|previews begin)/i, type: 'preview_article' },
   // News/closings
   { pattern: /(?:closes? (?:early|unexpectedly|on)|final performance|closing notice|has been (?:cancelled|postponed|delayed))/i, type: 'news_article' },
   // Interviews
@@ -36,8 +40,11 @@ const NON_REVIEW_PATTERNS = [
   { pattern: /(?:photo gallery|see the photos|in photos|production photos|first photos)/i, type: 'photo_gallery' },
   // Obituaries
   { pattern: /(?:has died|passed away|in memoriam)/i, type: 'obituary' },
-  { pattern: /(?:(?:age|aged) \d{2,3}).{0,40}(?:died|death|passed|memorial|funeral|tribute)/i, type: 'obituary' },
-  { pattern: /(?:died|death|passed|memorial|funeral|tribute).{0,40}(?:(?:age|aged) \d{2,3})/i, type: 'obituary' },
+  // An age beside a death is the obituary's headline fact, so it sits in the lead. Deeper in the
+  // opening it is a review recalling a composer's death (Popescu on Rent: "Larson died aged 35",
+  // BRO-7999). maxIndex bounds where the match may start; heuristicClassify honours it.
+  { pattern: /(?:(?:age|aged) \d{2,3}).{0,40}(?:died|death|passed|memorial|funeral|tribute)/i, type: 'obituary', maxIndex: OBIT_AGE_LEAD_CHARS },
+  { pattern: /(?:died|death|passed|memorial|funeral|tribute).{0,40}(?:(?:age|aged) \d{2,3})/i, type: 'obituary', maxIndex: OBIT_AGE_LEAD_CHARS },
   { pattern: /\bremembering\b.{0,20}(?:who|life|legacy|career)/i, type: 'obituary' },
   // Garbage scrapes — advisory only (NOT definitive). Real scraped reviews often
   // carry an incidental "BROWSER UPDATE"/"please upgrade your browser" boilerplate
@@ -124,9 +131,9 @@ function heuristicClassify(text) {
 
   const opening = text.substring(0, 400);
   const matches = [];
-  for (const { pattern, type } of NON_REVIEW_PATTERNS) {
+  for (const { pattern, type, maxIndex } of NON_REVIEW_PATTERNS) {
     const m = opening.match(pattern);
-    if (m) matches.push({ type, evidence: m[0] });
+    if (m && (maxIndex === undefined || m.index <= maxIndex)) matches.push({ type, evidence: m[0] });
   }
   if (matches.length === 0) return null;
   if (reviewSignals >= 2) return null;
@@ -144,4 +151,4 @@ function heuristicClassify(text) {
   return { isNonReview: true, type: matches[0].type, confidence: 'medium', evidence: matches[0].evidence };
 }
 
-module.exports = { NON_REVIEW_PATTERNS, REVIEW_INDICATORS, heuristicClassify };
+module.exports = { OBIT_AGE_LEAD_CHARS, NON_REVIEW_PATTERNS, REVIEW_INDICATORS, heuristicClassify };

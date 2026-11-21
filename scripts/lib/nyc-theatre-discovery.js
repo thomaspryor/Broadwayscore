@@ -10,7 +10,7 @@ const DAY_MS = 86400000;
 function queryForShow(show) {
   const category = isLondonMarket(show.category) ? 'west end'
     : show.category === 'off-broadway' ? 'off-broadway' : 'broadway';
-  const year = show.openingDate ? new Date(show.openingDate).getFullYear() : '';
+  const year = show.openingDate ? new Date(show.openingDate).getUTCFullYear() : '';
   return `site:newyorkcitytheatre.com/news/reviews/ "${show.title}" ${category}${year ? ` ${year}` : ''}`;
 }
 

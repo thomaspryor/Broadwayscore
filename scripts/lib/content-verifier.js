@@ -1001,14 +1001,17 @@ function heuristicVerify({ scrapedText, excerpt, showTitle, akaTitles }) {
   // ("Les Misérables"); without folding both the haystack and the needle,
   // an accented body never matches an unaccented title or vice versa
   // (task #648/#760 class — see title-match.js:foldDiacritics).
-  const text = foldDiacritics(scrapedText).toLowerCase();
+  // Curly quotes fold to straight ones on both sides: "We'll See" is set as “We’ll See” in print copy
+  // and was stamped wrongArticle (then promoted to isNonReview) for it (BRO-7999).
+  const foldQuotes = (s) => s.replace(/[\u2018\u2019\u02bc]/g, "'").replace(/[\u201c\u201d]/g, '"');
+  const text = foldQuotes(foldDiacritics(scrapedText).toLowerCase());
 
   // Check if show title appears in text. A press title (shows.json akaTitles)
   // counts too: "Billy Crystal 860" is reviewed as "860", and this check
   // alone stamped five real 860 reviews wrongArticle, which the rebuild then
   // promoted to isNonReview (BRO-5891).
   const titleIn = (t) => {
-    const l = foldDiacritics(t || '').toLowerCase();
+    const l = foldQuotes(foldDiacritics(t || '').toLowerCase());
     return Boolean(l) && (text.includes(l) || text.includes(l.replace(/[^a-z0-9]/g, '')));
   };
   const showMentioned = titleIn(showTitle)

@@ -1059,7 +1059,7 @@ async function main(): Promise<void> {
     scorer = new EnsembleReviewScorer(claudeApiKey, openaiApiKey!, geminiApiKey, openrouterApiKey, {
       claudeModel: options.model,
       openaiModel: options.openaiModel,
-      geminiModel: 'gemini-2.5-flash',
+      geminiModel: require('../lib/models').SCORING_GEMINI,
       kimiModel: 'moonshotai/kimi-k2.5',
       verbose: options.verbose
     });

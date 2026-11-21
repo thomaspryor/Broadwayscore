@@ -29,6 +29,32 @@ export const MONEY_UNLOCK_KEY = 'bsc_money_unlocked';
 export const MONEY_UNLOCK_COOKIE = 'bsc_money';
 export const MONEY_UNLOCKED_EVENT = 'bsc_money_unlocked';
 export const MONEY_UNLOCK_ATTR = 'data-money-unlocked';
+const MONEY_SIGNIN_INTENT = 'bsc_money_signin_intent';
+
+/** Remember only an actual sign-in attempt from the gate across OAuth redirects. */
+export function recordMoneySignIn(source: string): void {
+  try {
+    if (source === 'biz_gate') sessionStorage.setItem(MONEY_SIGNIN_INTENT, JSON.stringify({ page: window.location.pathname, ts: Date.now() }));
+    else sessionStorage.removeItem(MONEY_SIGNIN_INTENT);
+  } catch { /* storage unavailable */ }
+}
+
+let moneySignInSave: Promise<void> | null = null;
+
+/** Complete the gate's list signup once, including after an OAuth redirect. */
+export function completeMoneySignIn(email: string): Promise<void> {
+  if (moneySignInSave) return moneySignInSave;
+  let intent: { page?: string; ts?: number } | null = null;
+  try {
+    intent = JSON.parse(sessionStorage.getItem(MONEY_SIGNIN_INTENT) || 'null');
+    if (!intent?.ts || Date.now() - intent.ts > 30 * 60 * 1000 || !intent.page || !email) return Promise.resolve();
+  } catch { return Promise.resolve(); }
+  const page = intent.page;
+  moneySignInSave = submitMoneySignup(email, '', `biz_gate:${page}`).then(() => {
+    try { sessionStorage.removeItem(MONEY_SIGNIN_INTENT); } catch { /* storage unavailable */ }
+  }).finally(() => { moneySignInSave = null; });
+  return moneySignInSave;
+}
 
 /** What the gate tells readers their email is used for. Owner-editable. */
 export const MONEY_EMAIL_USE =

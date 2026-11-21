@@ -43,6 +43,22 @@ const { isSafeCheckCommand, extractCheckPaths } = require('./check-paths.js');
 const { defaultDetail, tapDetail, checksEnv, cardCheckArgv, prepareCheckWorkdir, readTsxRunTests, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { envCauseOf, needsTsxRunner } = require('./check-env-cause.js');
 const { refreshDataClone } = require('./data-clone-refresh.js');
+const { writeOwner, checkoutInUse, OWNER_FILE } = require('./acceptance-checkout-owner.js');
+const { registerExitCleanup } = require('./temp-worktree.js');
+const { holdsIgnoredWork } = require('./codex-runner.js');
+const ownedCheckouts = new Map();
+let cleanupRegistered = false;
+
+function ownCheckout(co) {
+  writeOwner(co.dir);
+  ownedCheckouts.set(co.dir, co);
+  if (!cleanupRegistered) {
+    registerExitCleanup(() => {
+      for (const checkout of ownedCheckouts.values()) removeCheckout(checkout);
+    });
+    cleanupRegistered = true;
+  }
+}
 
 const DEFAULT_REPO = path.join(__dirname, '..', '..');
 // Per-git-call ceiling. Generous enough for a cold fetch on a large repo,
@@ -151,6 +167,7 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   const wt = path.join(dir, 'main');
   let dataClone = { status: 'skipped' };
   try {
+    ownCheckout({ dir, wt, repo, sha });
     execFileSync('git', ['worktree', 'add', '--detach', wt, sha], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
     // BRO-4830: refresh the data clone BEFORE it is copied (once per process).
     dataClone = refreshDataClone(repo);
@@ -164,7 +181,7 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
     // so without this, every failed `worktree add` (a lock contended by another
     // session, a full disk) leaks a directory. Once per night was tolerable;
     // once per card close is not (ship-check finding).
-    try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    removeCheckout({ dir, wt, repo, sha });
     throw err;
   }
   // prepareCheckWorkdir is best-effort by design (it swallows link failures),
@@ -212,11 +229,12 @@ function makeStandaloneCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-chec
   const wt = path.join(dir, 'main');
   let dataClone = { status: 'skipped' };
   try {
+    ownCheckout({ dir, wt, repo, standalone: true });
     runGitOrThrow(['clone', '--quiet', '--depth', '1', '--single-branch', '-b', 'main', url, wt], { timeout: CLONE_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
     dataClone = refreshDataClone(repo);
     prepareCheckWorkdir(wt, repo);
   } catch (err) {
-    try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    removeCheckout({ dir, wt, repo, standalone: true });
     throw err;
   }
   const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: wt, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
@@ -235,17 +253,31 @@ function unpreparedReason(wt, dataClone) {
   return reasons.length ? reasons.join('; ') : null;
 }
 
-/** Best effort: a leftover worktree is picked up by `git worktree prune`. */
+/** Preserve a checkout when it is busy, dirty, locked, or contains new commits. */
 function removeCheckout(co) {
   if (!co) return;
-  if (co.standalone) {
-    try { fs.rmSync(co.dir, { recursive: true, force: true }); } catch { /* best effort */ }
-    return;
-  }
   const repo = co.repo || DEFAULT_REPO;
-  try { execFileSync('git', ['worktree', 'remove', '--force', co.wt], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }); }
-  catch { /* leave for git worktree prune */ }
-  try { fs.rmSync(co.dir, { recursive: true, force: true }); } catch { /* best effort */ }
+  try {
+    if (fs.existsSync(co.wt)) {
+      if (holdsIgnoredWork(co.wt) || checkoutInUse(co.wt)) return false;
+      const git = (args) => execFileSync('git', ['-C', co.wt, ...args], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+      if (git(['status', '--porcelain', '--untracked-files=all'])) return false;
+      if (co.sha && git(['rev-parse', 'HEAD']) !== co.sha) return false;
+      if (co.standalone) {
+        if (git(['rev-list', '--count', 'origin/main..HEAD']) !== '0') return false;
+        fs.rmSync(co.wt, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+      } else {
+        execFileSync('git', ['worktree', 'remove', co.wt], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+      }
+    }
+    fs.rmSync(path.join(co.dir, OWNER_FILE), { force: true });
+    fs.rmdirSync(co.dir);
+    ownedCheckouts.delete(co.dir);
+    return true;
+  } catch (error) {
+    console.error(`[acceptance-checkout] retained ${co.dir}: ${error.message}`);
+    return false;
+  }
 }
 
 // node --test prints a summary line `# pass N` (TAP, the default when piped)

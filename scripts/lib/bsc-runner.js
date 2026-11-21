@@ -219,7 +219,7 @@ function teardownJobWorktree(wtPath, jobId) {
 // bsc-next.js/linear-next.js already wraps its own failure in a non-fatal
 // console.error). This is the one shared choke point both dispatchers call
 // through, so the check lives here rather than duplicated in each caller.
-const DEFAULT_DISPATCH_DISK_FLOOR_GB = 5;
+const DEFAULT_DISPATCH_DISK_FLOOR_GB = 15;
 
 /**
  * BRO-4297: BSC_DISPATCH_DISK_FLOOR_GB -> GB. A blank/whitespace value is

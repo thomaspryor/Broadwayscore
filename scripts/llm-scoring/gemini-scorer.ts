@@ -49,13 +49,11 @@ export class GeminiScorer {
   constructor(apiKey: string, options: Partial<GeminiScoringOptions> = {}) {
     this.client = new GoogleGenerativeAI(apiKey);
     this.options = {
-      // 2026-04-28: switched default from 'gemini-2.5-flash' to 'gemini-2.5-flash'.
-      // 2.0-flash hit free-tier 1500 RPD repeatedly during bulk rescores, causing
-      // every Gemini call to fail through 5 retries (~60s/call) and silently
-      // demoting the ensemble to two-model-fallback. 2.5-flash uses a separate
-      // quota pool. The thinkingConfig:{thinkingBudget:0} below disables 2.5's
-      // hidden reasoning tokens that would otherwise truncate V5 JSON output.
-      model: options.model || 'gemini-2.5-flash',
+      // Default = the scoring pin models.js SCORING_GEMINI (gemini-3.5-flash-lite since
+      // BRO-7511; gemini-2.5-flash before, which shuts down 2026-12-01). The thinking
+      // config below is per model (llm-batch.js geminiThinkingOff): thinking off keeps
+      // hidden reasoning tokens from truncating the V5 JSON inside maxOutputTokens.
+      model: options.model || require('../lib/models').SCORING_GEMINI,
       maxRetries: options.maxRetries ?? 5,
       verbose: options.verbose ?? false,
       temperature: options.temperature ?? 0.3

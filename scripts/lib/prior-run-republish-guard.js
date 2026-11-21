@@ -96,6 +96,8 @@ function detectPriorRunRepublish({ text, show }) {
 function shouldReleasePriorRunRepublish(d, show) {
   if (!d || d.wrongProduction !== true || d.wrongProductionReason !== 'prior-run-republish') return false;
   if (d.wrongProductionManualClear || d.wrongProductionOverride || d.humanReviewedWrongProduction !== undefined || d.allowEarlyDate) return false;
+  // Ensemble verdict outranks a detector that stopped matching (BRO-7906).
+  if (require('./wrong-production-autoclear').hasEnsembleConsensus(d, 'wrong_production')) return false;
   return !detectPriorRunRepublish({ text: d.fullText, show }).flag;
 }
 

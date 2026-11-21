@@ -55,7 +55,13 @@ async function defaultFetchJson(u) {
   const t = setTimeout(() => ctl.abort(), 15000);
   try {
     const r = await fetch(u, { signal: ctl.signal });
-    if (!r.ok) throw new Error(`CDX HTTP ${r.status}`);
+    if (!r.ok) {
+      // BRO-8000: IA refuses CDX without auth; that is a blocked route, not "no capture".
+      const AC = require('./archive-cdx');
+      const body = await r.text().catch(() => '');
+      if (AC.classifyArchiveResponse(r.status, body)) throw AC.authRequiredError(u);
+      throw new Error(`CDX HTTP ${r.status}`);
+    }
     return await r.json();
   } finally { clearTimeout(t); }
 }
@@ -66,8 +72,15 @@ async function captureTimestamp(url, which, { fetchJson, onError } = {}) {
     const t = setTimeout(() => ctl.abort(), 15000);
     try {
       const r = await fetch(u, { signal: ctl.signal });
-      if (!r.ok) throw new Error(`CDX HTTP ${r.status}`);
-      return await r.json();
+      if (!r.ok) {
+        const AC = require('./archive-cdx');
+        const body = await r.text().catch(() => '');
+        if (AC.classifyArchiveResponse(r.status, body)) throw AC.authRequiredError(u);
+        throw new Error(`CDX HTTP ${r.status}`);
+      }
+      const txt = await r.text();
+      if (require('./archive-cdx').classifyArchiveResponse(r.status, txt)) throw require('./archive-cdx').authRequiredError(u);
+      return JSON.parse(txt);
     } finally { clearTimeout(t); }
   });
   const limit = which === 'earliest' ? '1' : '-1';
@@ -100,9 +113,11 @@ async function fetchWithArchiveFallback(url, { fetchPageFn, fetchJson } = {}) {
     if (usable(html) && !isNotFoundHtml(html)) return { html, via: 'live' };
     liveError = usable(html) ? 'live page is the site\'s not-found template' : `no usable HTML (${html ? html.length : 0} chars)`;
   } catch (e) { liveError = `fetch failed: ${e.message}`; }
-  const ts = await latestCaptureTimestamp(url, { fetchJson });
+  let cdxBlocked = false;
+  const ts = await latestCaptureTimestamp(url, { fetchJson, onError: (e) => { if (e && e.kind === 'archive_auth_required') cdxBlocked = true; } });
   const snapUrl = ts ? archiveSnapshotFetchUrl(url, ts) : null;
-  if (!snapUrl) return { html: null, via: null, error: `${liveError}; no archive.org capture` };
+  // BRO-8000: a blocked CDX is not "no capture".
+  if (!snapUrl) return { html: null, via: null, error: `${liveError}; ${cdxBlocked ? 'archive_auth_required (archive.org CDX blocked for this host, capture unknown)' : 'no archive.org capture'}` };
   try {
     const r = await fetchPageFn(snapUrl);
     const html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);

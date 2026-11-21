@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T18:19:13.708Z",
+  "generatedAt": "2026-11-21T19:45:33.213Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -147,6 +147,11 @@
       "id": "fiddler-on-the-roof-regional-2026",
       "title": "Fiddler on the Roof",
       "openingDate": "2026-11-19"
+    },
+    {
+      "id": "the-beauty-queen-of-leenane-regional-2026",
+      "title": "The Beauty Queen of Leenane",
+      "openingDate": "2026-11-20"
     }
   ],
   "skipped": [
@@ -168,9 +173,13 @@
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "HTTP 500 for https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 925,
+  "itemsScanned": 921,
   "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [

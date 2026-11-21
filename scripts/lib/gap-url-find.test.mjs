@@ -245,3 +245,75 @@ test('BRO-7962: a walled link the logged-in browser proves dead is refused, not 
   const row = { strategy: 'URL_FIND', outcome: dead.outcome, detail: { refusalPolicy: UF.REFUSAL_POLICY, refusedCandidates: dead.refusedCandidates } };
   assert.ok(UF.refusedUrlsFromRows([row]).has(url));
 });
+
+// ---- BRO-8000: Internet Archive CDX refuses without auth -------------------
+const AUTH_BODY = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">\n<title>403 Forbidden</title>\n<h1>Forbidden</h1>\n<p>This type of CDX query requires authorization.</p>\n';
+const ctx8000 = { review: { showId: 'julie-west-end-2018', outletId: 'telegraph', publishDate: '2018-06-08' }, show: null, title: 'Julie',
+  profile: { hosts: ['telegraph.co.uk'], prefixes: ['telegraph.co.uk/theatre'] }, hosts: ['telegraph.co.uk'], titleDirs: [] };
+
+test('BRO-8000: default fetchText turns the IA 403-auth body into a typed archive_auth_required error', async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(AUTH_BODY, { status: 403 });
+  try {
+    await assert.rejects(UF.defaultDeps().fetchText('https://web.archive.org/cdx/search/cdx?url=x'), (e) => e.kind === 'archive_auth_required' && e.status === 403);
+    // a plain 403 from some other host stays an ordinary HTTP error
+    await assert.rejects(UF.defaultDeps().fetchText('https://example.com/x'), (e) => !e.kind && /HTTP 403/.test(e.message));
+  } finally { globalThis.fetch = realFetch; }
+});
+
+test('BRO-8000: WAYBACK_CDX auth refusal is a blocked route: typed, one query, never "no capture"', async () => {
+  const realFetch = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => { calls++; return new Response(AUTH_BODY, { status: 403 }); };
+  try {
+    const r = await UF.runMethod('WAYBACK_CDX', ctx8000, { ...UF.defaultDeps(), indexBreaker: {}, indexRetry: { baseMs: 0, sleep: async () => {} } });
+    assert.equal(r.blocked, 'archive_auth_required');
+    assert.equal(r.error, 'archive_auth_required');
+    assert.equal(r.candidates.length, 0);
+    assert.equal(calls, 1, 'the refusal stops the remaining queries');
+    assert.equal(UF.probeMethodStatus ? UF.probeMethodStatus({ blocked: r.blocked, error: r.error, found: 0, tried: r.tried }) : 'archive_auth_required', 'archive_auth_required');
+  } finally { globalThis.fetch = realFetch; }
+  assert.ok(!UF.METHOD_DONE.has('archive_auth_required'), 'a blocked route never counts as a method that ran');
+});
+
+test('BRO-8000: urlFindMethodErrorRates flags a method erroring on >50% of a day\'s runs', () => {
+  const now = Date.parse('2026-11-21T12:00:00Z');
+  const row = (st, i, m = 'WAYBACK_CDX') => ({ strategy: 'URL_FIND', ts: `2026-11-21T0${i}:00:00Z`, detail: { methods: { [m]: st, SERP: 'no_candidates' }, methodErrors: st === 'archive_auth_required' ? { [m]: 'archive_auth_required' } : {} } });
+  const bad = [0, 1, 2, 3, 4, 5].map((i) => row('archive_auth_required', i));
+  const out = UF.urlFindMethodErrorRates(bad, { nowMs: now });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].method, 'WAYBACK_CDX');
+  assert.equal(out[0].lastError, 'archive_auth_required');
+  // healthy, too few runs, and stale rows do not alert
+  assert.deepEqual(UF.urlFindMethodErrorRates([0, 1, 2, 3, 4, 5].map((i) => row('no_candidates', i)), { nowMs: now }), []);
+  assert.deepEqual(UF.urlFindMethodErrorRates(bad.slice(0, 3), { nowMs: now }), []);
+  assert.deepEqual(UF.urlFindMethodErrorRates(bad, { nowMs: now + 3 * 86400000 }), []);
+});
+
+test('BRO-8000: 5+ typed blocks in a day alert even when under 50% of all lookups (the 403 is per publisher)', () => {
+  const now = Date.parse('2026-11-21T12:00:00Z');
+  const rows = [];
+  for (let i = 0; i < 20; i++) rows.push({ strategy: 'URL_FIND', ts: '2026-11-21T01:00:00Z', detail: { methods: { WAYBACK_CDX: i < 6 ? 'archive_auth_required' : 'no_candidates' } } });
+  const out = UF.urlFindMethodErrorRates(rows, { nowMs: now });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].blocked, 6);
+});
+
+test('BRO-8000: a 200 upstream_error envelope from the archive is also the typed block; partial failures still count for the alert', async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response('{"error":{"code":"upstream_error","message":"query failed with status_code=403"}}', { status: 200 });
+  try {
+    await assert.rejects(UF.defaultDeps().fetchText('https://archive.org/wayback/available?url=x'), (e) => e.kind === 'archive_auth_required');
+  } finally { globalThis.fetch = realFetch; }
+  const now = Date.parse('2026-11-21T12:00:00Z');
+  const rows = [0, 1, 2, 3, 4, 5].map((i) => ({ strategy: 'URL_FIND', ts: `2026-11-21T0${i}:00:00Z`, detail: { methods: { WAYBACK_CDX: 'found_unreadable' }, methodErrors: { WAYBACK_CDX: 'archive_auth_required' } } }));
+  assert.equal(UF.urlFindMethodErrorRates(rows, { nowMs: now }).length, 1);
+});
+
+test('BRO-8000: the nightly row / digest path stays dependency-free (no gap-url-find, scraper, playwright)', () => {
+  for (const f of ['url-find-method-health.js', 'gap-recovery-nightly.js']) {
+    const src = require('node:fs').readFileSync(new URL(`./${f}`, import.meta.url), 'utf8');
+    assert.ok(!/require\(['"]\.\/gap-url-find['"]\)/.test(src), `${f} must not require gap-url-find`);
+  }
+  assert.ok(UF.METHOD_DONE.size === 3 && [...UF.METHOD_DONE].every((m) => ['no_candidates', 'not_applicable', 'candidates_refused'].includes(m)), 'url-find-method-health mirrors METHOD_DONE');
+});

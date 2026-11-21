@@ -13,7 +13,7 @@ import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, Ense
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5, buildSystemPromptV6, clampScoreToBand, ScoreBand } from './config';
 import { buildScoringInput, ReviewInputData, ScoringInput } from './input-builder';
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
-const { SCORING_OPENAI, SCORING_SONNET } = require('../lib/models');
+const { SCORING_OPENAI, SCORING_SONNET, SCORING_GEMINI } = require('../lib/models');
 const { detectBandFromReviewFile, shouldUseAnchoredMode } = require('../lib/star-reliability');
 import { ensembleScore, toModelScore, applyTailStretch } from './ensemble';
 
@@ -24,7 +24,7 @@ import { ensembleScore, toModelScore, applyTailStretch } from './ensemble';
 export interface EnsembleScoringOptions {
   claudeModel: 'claude-sonnet-4-6' | 'claude-sonnet-5-5' | 'claude-haiku-4-5-20251001';
   openaiModel: OpenAIScoringModel;
-  geminiModel: 'gemini-2.5-flash' | 'gemini-2.5-flash' | 'gemini-1.5-flash';
+  geminiModel: 'gemini-3.5-flash-lite' | 'gemini-2.5-flash' | 'gemini-1.5-flash';
   kimiModel: string;
   maxDelta: number;  // Maximum acceptable difference between models
   verbose: boolean;
@@ -193,7 +193,7 @@ export class EnsembleReviewScorer {
       // past reviews is planned before gpt-4o retires on 2027-01-14. The pin
       // moves only when that A/B passes.
       openaiModel: options.openaiModel || SCORING_OPENAI,
-      geminiModel: options.geminiModel || 'gemini-2.5-flash',
+      geminiModel: options.geminiModel || SCORING_GEMINI,
       kimiModel: options.kimiModel || 'moonshotai/kimi-k2.5',
       maxDelta: options.maxDelta ?? 15,
       verbose: options.verbose ?? false,
