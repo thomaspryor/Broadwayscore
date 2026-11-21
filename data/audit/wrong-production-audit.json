@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T17:45:52.361Z",
+  "timestamp": "2026-11-21T18:02:01.636Z",
   "stats": {
-    "totalReviews": 83652,
-    "alreadyFlagged": 22415,
+    "totalReviews": 83689,
+    "alreadyFlagged": 22416,
     "dateGuardCatches": 235,
-    "directorMismatch": 3853,
+    "directorMismatch": 3858,
     "tvFilmSignals": 2400,
-    "londonSignals": 3915,
+    "londonSignals": 3931,
     "offBroadwaySignals": 780,
     "yearMismatch": 394,
-    "noPublishDate": 8242
+    "noPublishDate": 8239
   },
   "findings": [
     {
@@ -3935,7 +3935,7 @@
     {
       "showId": "aladdin-west-end-2016",
       "file": "guardian--michael-billington.json",
-      "score": 81,
+      "score": 76,
       "publishDate": "June 15th, 2016",
       "url": "https://www.theguardian.com/stage/2016/jun/15/aladdin-review-disney-musical-west-end-prince-edward-theatre",
       "findings": [
@@ -3966,6 +3966,20 @@
       "score": 89,
       "publishDate": "2016-06-15",
       "url": "https://www.londontheatre1.com/reviews/musical/aladdin-prince-edward-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "file": "observer--sarah-crompton.json",
+      "score": 82,
+      "publishDate": "2016-06-19",
+      "url": "https://www.theguardian.com/stage/2016/jun/19/aladdin-review-musical-disney-west-end-energetic-outrageous",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33959,6 +33973,7 @@
     {
       "showId": "illinoise-2024",
       "file": "nytg--gillian-russo.json",
+      "score": 90,
       "publishDate": "2024-04-29",
       "url": "https://www.newyorktheatreguide.com/reviews/illinoise-broadway-review-sufjan-stevens",
       "findings": [
@@ -40026,6 +40041,25 @@
     },
     {
       "showId": "kinky-boots-west-end-2015",
+      "file": "observer--susannah-clapp.json",
+      "score": 39,
+      "publishDate": "2015-09-20",
+      "url": "https://www.theguardian.com/stage/2015/sep/20/kinky-boots-musical-review-london-cyndi-lauper-harvey-fierstein",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-west-end-2015",
       "file": "standard--henry-hitchings.json",
       "score": 81,
       "publishDate": "2015-09-16",
@@ -40041,7 +40075,7 @@
     {
       "showId": "kinky-boots-west-end-2015",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 39,
+      "score": 35,
       "publishDate": "2015-09-15",
       "url": "http://www.telegraph.co.uk/theatre/what-to-see/kinky-boots-adelphi-theatre-review/",
       "findings": [
@@ -46242,7 +46276,7 @@
     {
       "showId": "motown-the-musical-west-end-2016",
       "file": "guardian--michael-billington.json",
-      "score": 37,
+      "score": 38,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2016/mar/08/motown-the-musical-review-berry-gordy-shaftesbury-theatre",
       "findings": [
@@ -46259,6 +46293,20 @@
       "score": 77,
       "publishDate": "2016-06-08",
       "url": "https://www.londontheatre.co.uk/reviews/motown-the-musical-review-at-the-shaftesbury-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"charles randolph-wright\" from motown-the-musical-2016"
+        }
+      ]
+    },
+    {
+      "showId": "motown-the-musical-west-end-2016",
+      "file": "observer--kate-kellaway.json",
+      "score": 35,
+      "publishDate": "2016-03-13",
+      "url": "https://www.theguardian.com/stage/2016/mar/13/motown-the-musical-observer-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -46298,7 +46346,7 @@
     {
       "showId": "motown-the-musical-west-end-2016",
       "file": "whatsonstage--michael-coveney.json",
-      "score": 38,
+      "score": 39,
       "publishDate": "2016-03-08",
       "url": "https://www.whatsonstage.com/news/motown-the-musical-shaftesbury-theatre_39921/",
       "findings": [
@@ -71596,7 +71644,7 @@
     {
       "showId": "the-elephant-man-west-end-2015",
       "file": "guardian--michael-billington.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2015-06-01T12:14:40+00:00",
       "url": "https://www.theguardian.com/stage/2015/jun/01/the-elephant-man-review-bradley-cooper-london",
       "findings": [
@@ -71632,6 +71680,20 @@
       "score": 59,
       "publishDate": "2015-06-01T12:14:40+00:00",
       "url": "http://londonist.com/2015/06/bradley-cooper-excels-in-dated-elephant-man.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        }
+      ]
+    },
+    {
+      "showId": "the-elephant-man-west-end-2015",
+      "file": "observer--susannah-clapp.json",
+      "score": 56,
+      "publishDate": "2015-06-07",
+      "url": "https://www.theguardian.com/stage/2015/jun/07/elephant-man-review-haymarket-london-bradley-cooper",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -86136,7 +86198,7 @@
     {
       "showId": "vanya-off-broadway-2025",
       "file": "theater-scene--deirdre-donovan.json",
-      "score": null,
+      "score": 92,
       "publishDate": "April 14th, 2025",
       "url": "https://theaterscene.com/Vanya-DD.html",
       "findings": [
@@ -90293,7 +90355,7 @@
     {
       "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
       "file": "guardian--michael-billington.json",
-      "score": 60,
+      "score": 61,
       "publishDate": "2015-01-12",
       "url": "https://www.theguardian.com/stage/2015/jan/12/women-on-verge-of-nervous-breakdown-review",
       "findings": [
@@ -90310,6 +90372,20 @@
       "score": 89,
       "publishDate": "2015-03-31",
       "url": "https://www.londontheatre1.com/reviews/review-of-women-on-the-verge-of-a-nervous-breakdown/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from women-on-the-verge-of-a-nervous-breakdown-2010"
+        }
+      ]
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+      "file": "observer--susannah-clapp.json",
+      "score": 56,
+      "publishDate": "2015-01-18",
+      "url": "https://www.theguardian.com/stage/2015/jan/18/women-on-the-verge-of-a-nervous-breakdown-review-tamsin-greig",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -91192,7 +91268,7 @@
     {
       "showId": "a-christmas-carol-west-end-2015",
       "file": "guardian--lyn-gardner.json",
-      "score": 57,
+      "score": 56,
       "publishDate": "2015-12-10",
       "url": "https://www.theguardian.com/stage/2015/dec/10/a-christmas-carol-review-jim-broadbent-noel-coward-theatre",
       "findings": [
@@ -93982,6 +94058,20 @@
     },
     {
       "showId": "american-buffalo-west-end-2015",
+      "file": "observer--susannah-clapp.json",
+      "score": 61,
+      "publishDate": "2015-05-03",
+      "url": "https://www.theguardian.com/stage/2015/may/03/american-buffalo-wyndhams-observer-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "american-buffalo-west-end-2015",
       "file": "telegraph--dominic-cavendish.json",
       "score": 76,
       "publishDate": "2015-04-28",
@@ -94344,7 +94434,7 @@
     {
       "showId": "an-oak-tree-west-end-2025",
       "file": "london-theatre--matt-wolf.json",
-      "score": null,
+      "score": 55,
       "publishDate": "May 7th, 2025",
       "url": "https://www.londontheatre.co.uk/reviews/an-oak-tree-review-young-vic",
       "findings": [
@@ -96207,7 +96297,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2024-12-08",
       "url": "https://www.theguardian.com/stage/2024/dec/08/ballet-shoes-review-national-theatre-london",
       "findings": [
@@ -96235,7 +96325,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "london-theatre--julia-rank.json",
-      "score": 82,
+      "score": 77,
       "publishDate": "2024-12-06",
       "url": "https://www.londontheatre.co.uk/reviews/ballet-shoes-review-national-theatre",
       "findings": [
@@ -96277,6 +96367,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "observer--unknown.json",
+      "score": 89,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2024/dec/16/the-week-in-theatre-ballet-shoes-olivier-the-importance-of-being-earnest-ncuti-gatwa-sharon-d-clarke-lyttelton-national-theatre-the-devil-wears-prada-musical-dominion-the-massive-tragedy-of-madame-bovary-southwark-playhouse-borough-review",
       "findings": [
@@ -96429,7 +96520,7 @@
     {
       "showId": "beautiful-the-carole-king-musical-west-end-2015",
       "file": "london-box-office--phil-willmott.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2015-02-27",
       "url": "https://www.londonboxoffice.co.uk/news/post/beautiful-review",
       "findings": [
@@ -100369,6 +100460,20 @@
     },
     {
       "showId": "cleansed-west-end-2016",
+      "file": "observer--susannah-clapp.json",
+      "score": 38,
+      "publishDate": "2016-02-28",
+      "url": "https://www.theguardian.com/stage/2016/feb/28/cleansed-sarah-kane-dorfman-national-theatre-observer-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-west-end-2016",
       "file": "standard--henry-hitchings.json",
       "score": 82,
       "publishDate": "2016-02-24",
@@ -103744,7 +103849,7 @@
     {
       "showId": "doctor-faustus-west-end-2016",
       "file": "artsdesk--marianka-swain.json",
-      "score": 40,
+      "score": 41,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/doctor-faustus-duke-yorks-theatre",
       "findings": [
@@ -109253,6 +109358,20 @@
     },
     {
       "showId": "groundhog-day-west-end-2016",
+      "file": "observer--susannah-clapp.json",
+      "score": 59,
+      "publishDate": "2016-08-21",
+      "url": "https://www.theguardian.com/stage/2016/aug/21/groundhog-day-musical-tim-minchin-old-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2016",
       "file": "telegraph--dominic-cavendish.json",
       "score": 94,
       "publishDate": "2016-08-17",
@@ -110726,7 +110845,7 @@
     {
       "showId": "hang-west-end-2015",
       "file": "guardian--michael-billington.json",
-      "score": 56,
+      "score": 57,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2015/jun/17/hang-review-marianne-jean-baptiste-justice-capital-punishment",
       "findings": [
@@ -112565,9 +112684,23 @@
     {
       "showId": "high-society-west-end-2015",
       "file": "guardian--michael-billington.json",
-      "score": 58,
+      "score": 57,
       "publishDate": "2015-05-14",
       "url": "https://www.theguardian.com/stage/2015/may/14/high-society-review-old-vic-finale-cole-porter-musical-kevin-spacey",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2015",
+      "file": "observer--susannah-clapp.json",
+      "score": 61,
+      "publishDate": "2015-05-17",
+      "url": "https://www.theguardian.com/stage/2015/may/17/high-society-review-sumptuous-frocks-but-really-top-class",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -113124,6 +113257,20 @@
       "score": 78,
       "publishDate": "2015-02-12",
       "url": "https://www.britishtheatre.com/posts/review-how-to-hold-your-breath-royal-court-theatre-4stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "how-to-hold-your-breath-west-end-2015",
+      "file": "observer--susannah-clapp.json",
+      "score": 36,
+      "publishDate": "2015-02-15",
+      "url": "https://www.theguardian.com/stage/2015/feb/15/how-to-hold-your-breath-review-baffling-cliched-maxine-peake",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -115053,6 +115200,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "jane-eyre-west-end-2015",
+      "file": "guardian--michael-billington.json",
+      "score": 59,
+      "publishDate": "2015-09-18",
+      "url": "https://www.theguardian.com/stage/2015/sep/18/jane-eyre-review-abridged-too-far-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -118016,7 +118177,7 @@
     {
       "showId": "light-shining-in-buckinghamshire-west-end-2015",
       "file": "express-uk--michael-arditti.json",
-      "score": 71,
+      "score": 77,
       "publishDate": "2015-05-03",
       "url": "https://www.express.co.uk/entertainment/theatre/574509/American-Buffalo-Light-shining-in-Buckinghamshire-theatre-reviews",
       "findings": [
@@ -118038,6 +118199,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "light-shining-in-buckinghamshire-west-end-2015",
+      "file": "observer--kate-kellaway.json",
+      "score": 86,
+      "publishDate": "2015-04-26",
+      "url": "https://www.theguardian.com/stage/2015/apr/26/light-shining-in-buckinghamshire-review-caryl-churchill-national",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -118075,6 +118250,20 @@
       "score": 56,
       "publishDate": "2015-12-02",
       "url": "https://www.theguardian.com/stage/2015/dec/02/linda-review-royal-court-london-noma-dumezweni-penelope-skinner",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "linda-west-end-2015",
+      "file": "observer--susannah-clapp.json",
+      "score": 82,
+      "publishDate": "2015-12-06",
+      "url": "https://www.theguardian.com/stage/2015/dec/06/linda-review-royal-court-theatre-noma-dumezweni-kim-cattrall",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -119090,7 +119279,7 @@
     {
       "showId": "man-and-superman-west-end-2015",
       "file": "guardian--michael-billington.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2015/feb/26/man-and-superman-review-ralph-fiennes-national-theatre",
       "findings": [
@@ -128423,7 +128612,7 @@
     {
       "showId": "red-velvet-west-end-2016",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2016-02-01",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/red-velvet-garrick-theatre-review-highly-recommended/",
       "findings": [
@@ -129242,7 +129431,7 @@
     {
       "showId": "roosevelvis-west-end-2015",
       "file": "britishtheatrecom--james-garden.json",
-      "score": null,
+      "score": 83,
       "publishDate": null,
       "url": "https://www.britishtheatre.com/ar/posts/review-roosevelvis-royal-court-4stars",
       "findings": [
@@ -129273,6 +129462,20 @@
       "score": 82,
       "publishDate": "2015-10-27",
       "url": "https://www.theguardian.com/stage/2015/oct/27/roosevelvis-review-royal-court-the-team",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "roosevelvis-west-end-2015",
+      "file": "observer--susannah-clapp.json",
+      "score": 57,
+      "publishDate": "2015-11-01",
+      "url": "https://www.theguardian.com/stage/2015/nov/01/roosevelvis-royal-court-observer-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -136894,6 +137097,34 @@
     },
     {
       "showId": "the-deep-blue-sea-west-end-2016",
+      "file": "guardian--michael-billington.json",
+      "score": 83,
+      "publishDate": "2016-06-09",
+      "url": "https://www.theguardian.com/stage/2016/jun/09/the-deep-blue-sea-review-helen-mccrory-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-deep-blue-sea-west-end-2016",
+      "file": "observer--susannah-clapp.json",
+      "score": 83,
+      "publishDate": "2016-06-12",
+      "url": "https://www.theguardian.com/stage/2016/jun/12/deep-blue-sea-helen-mccrory-terence-rattigan-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-deep-blue-sea-west-end-2016",
       "file": "radio-times--ben-dowell.json",
       "score": 84,
       "publishDate": "2016-06-09",
@@ -137665,8 +137896,22 @@
     },
     {
       "showId": "the-father-west-end-2015",
-      "file": "whatsonstage--michael-coveney.json",
+      "file": "observer--susannah-clapp.json",
       "score": 96,
+      "publishDate": "2015-10-11",
+      "url": "https://www.theguardian.com/stage/2015/oct/11/the-father-review-kenneth-cranham-florian-zeller",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "the-father-west-end-2015",
+      "file": "whatsonstage--michael-coveney.json",
+      "score": 98,
       "publishDate": "2015-10-06",
       "url": "https://www.whatsonstage.com/news/the-father-wyndhams-theatre_38875/",
       "findings": [
@@ -138010,6 +138255,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-flick-west-end-2016",
+      "file": "observer--susannah-clapp.json",
+      "score": 95,
+      "publishDate": "2016-04-24",
+      "url": "https://www.theguardian.com/stage/2016/apr/24/the-flick-national-theatre-review-another-world-losing-our-children-islamic-state-suicide",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -141318,6 +141577,20 @@
     },
     {
       "showId": "the-master-builder-west-end-2016",
+      "file": "observer--susannah-clapp.json",
+      "score": 59,
+      "publishDate": "2016-02-07",
+      "url": "https://www.theguardian.com/stage/2016/feb/07/the-master-builder-review-ralph-fiennes-ibsen-david-hare",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-master-builder-west-end-2016",
       "file": "telegraph--jane-shilling.json",
       "score": 94,
       "publishDate": "2016-02-04",
@@ -141355,6 +141628,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-mentalists-west-end-2015",
+      "file": "observer--susannah-clapp.json",
+      "score": 38,
+      "publishDate": "2015-07-19",
+      "url": "https://www.theguardian.com/stage/2015/jul/19/the-mentalists-review-stephen-merchant-richard-bean",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -141473,7 +141760,7 @@
     {
       "showId": "the-misanthrope-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-06-28",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-misanthrope-lyttelton-theatre",
       "findings": [
@@ -147598,7 +147885,7 @@
     {
       "showId": "treasure-island-west-end-2014",
       "file": "guardian--michael-billington.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2014-12-11",
       "url": "https://www.theguardian.com/stage/2014/dec/11/treasure-island-review-olivier-london-national-robert-louis-stevenson",
       "findings": [
@@ -148212,6 +148499,7 @@
     {
       "showId": "under-the-shadow-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "score": 66,
       "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/under-the-shadow-review-almeida-london-t7pc8jxc0",
       "findings": [
@@ -148504,7 +148792,7 @@
     {
       "showId": "violence-and-son-west-end-2015",
       "file": "whatsonstage--matt-trueman.json",
-      "score": 61,
+      "score": 57,
       "publishDate": "2015-06-09",
       "url": "https://www.whatsonstage.com/news/violence-and-son-royal-court_37997/",
       "findings": [
