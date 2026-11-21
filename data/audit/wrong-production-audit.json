@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-21T02:31:01.439Z",
+  "timestamp": "2026-11-21T03:16:38.314Z",
   "stats": {
-    "totalReviews": 83556,
+    "totalReviews": 83557,
     "alreadyFlagged": 22615,
     "dateGuardCatches": 222,
     "directorMismatch": 3802,
     "tvFilmSignals": 2380,
-    "londonSignals": 3857,
+    "londonSignals": 3858,
     "offBroadwaySignals": 775,
     "yearMismatch": 388,
     "noPublishDate": 8293
@@ -103492,6 +103492,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "elektra-off-broadway-2026",
+      "file": "theater-life--samuel-l-leiter.json",
+      "score": 23,
+      "publishDate": "2026-11-20",
+      "url": "https://theaterlife.com/elektra/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
