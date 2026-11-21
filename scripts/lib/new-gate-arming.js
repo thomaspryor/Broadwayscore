@@ -155,9 +155,6 @@ function hasProofMarker(line) {
   return /(\/\/|#)\s*gate-arm-ok:\s*\S/.test(maskStrings(line));
 }
 
-// Text of a call line with the helper name erased, so warn(`x`) -> error(`x`)
-// (the sanctioned advisory -> blocking promotion) pairs with its removed twin.
-const HELPER_ANY = /(?<![\w.$])(error|warn|reviewFileError|reviewRowError|exitWithError)\s*\(/;
 const norm = l => l.trim().replace(/\s+/g, ' ');
 
 // Parse a unified diff of ONE file into hunks: { added:[], removed:[], all:[] }.
@@ -203,14 +200,11 @@ function findUnprovenNewValidatorErrors({ files, changedFiles, contextTexts }) {
         const n = countCalls(l, helpers);
         for (let k = 0; k < n; k++) removed.push({ line: norm(l), hunk: i, used: false });
       }
-      // removed warn() calls count for promotion pairing only (identical-text pass)
-      for (const l of h.removed) if (countCalls(l, ['warn']) > 0) removed.push({ line: norm(l), hunk: i, used: false, warnOnly: true });
       for (const l of h.added) {
         const n = countCalls(l, helpers);
         for (let k = 0; k < n; k++) added.push({ line: norm(l), hunk: i, marked, paired: false });
       }
     });
-    const key = (l) => l.replace(HELPER_ANY, '(');
     const pair = (match) => {
       for (const a of added) {
         if (a.paired) continue;
@@ -219,8 +213,7 @@ function findUnprovenNewValidatorErrors({ files, changedFiles, contextTexts }) {
       }
     };
     pair((a, r) => a.line === r.line);
-    pair((a, r) => key(a.line) === key(r.line)); // warn -> error promotion
-    pair((a, r) => !r.warnOnly && a.hunk === r.hunk);
+    pair((a, r) => a.hunk === r.hunk);
     const unmatched = added.filter(a => !a.paired);
     // A baseline exempts only if the diff itself, or a changed helper file, names it.
     const refText = [f.diff || '', ...(contextTexts || [])].join('\n');

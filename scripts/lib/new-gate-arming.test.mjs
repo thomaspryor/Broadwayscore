@@ -87,6 +87,7 @@ test('two calls on one line: pairing one leaves the other flagged', () => {
 test('exitWithError helper counts', () => assert.equal(run(['+    exitWithError(`x`);']).length, 1));
 test('url string before a call does not hide it', () => assert.equal(run(['+    if (u === "https://x.com") error(`x`);']).length, 1));
 test('marker inside a string literal is not proof', () => assert.equal(run(['+    const m = "// gate-arm-ok: fake";', '+    error(`x`);']).length, 1));
-test('warn() promoted to error() with the same message is the sanctioned second commit', () => {
-  assert.deepEqual(run(['-    warn(`Show x has no date`);', '+    error(`Show x has no date`);']), []);
+test('warn() promoted to error() needs proof: flagged bare, ok with a gate-arm-ok marker (BRO-7929 re-add)', () => {
+  assert.equal(run(['-    warn(`Show x has no date`);', '+    error(`Show x has no date`);']).length, 1);
+  assert.deepEqual(run(['-    warn(`Show x has no date`);', '+    // gate-arm-ok: one green main run 2026-11-21 (BRO-7929)', '+    error(`Show x has no date`);']), []);
 });
