@@ -122,3 +122,16 @@ test('BRO-6435: a resolved row with no resolvedAt is absent by its lastSeen; wit
   assert.equal(classifyEntry({ status: 'resolved', resolvedAt: 'junk' }, realNowMs()).verdict, 'unknown');
   assert.equal(classifyEntry({ status: 'resolved', lastSeen: iso(2), resolvedAt: iso(10) }, realNowMs()).verdict, 'unknown', 'seen after resolve stays unknown');
 });
+
+// BRO-7685: a resurfaced digest line is titled "<title> (still open — BRO-N)"
+// and its dispatch key carries that decorated title; it must still match the
+// undecorated ledger row's title, or the card's acceptance check can never pass.
+test('digest-needs-you key with a "(still open — BRO-N)" suffix matches the undecorated row', () => {
+  const key = 'digest-needs-you:LLM scoring daily spend over budget (still open — BRO-6732)';
+  const row = (status) => ({ status, title: 'LLM scoring daily spend over budget', lastSeen: iso(5), ...(status === 'resolved' ? { resolvedAt: iso(1) } : {}) });
+  assert.equal(run(writeLedger('so-res.json', { 'llm-scoring:daily-cost-breach': row('resolved') }), key).status, 0);
+  assert.equal(run(writeLedger('so-open.json', { 'llm-scoring:daily-cost-breach': { ...row('open'), lastSeen: iso(1) } }), key).status, 1);
+  const { stripStillOpenSuffix } = require('../../scripts/check-alert-condition-absent.js');
+  assert.equal(stripStillOpenSuffix('Foo (still open — BRO-12)'), 'Foo');
+  assert.equal(stripStillOpenSuffix('Foo (still open) bar'), 'Foo (still open) bar', 'only the trailing router suffix is stripped');
+});

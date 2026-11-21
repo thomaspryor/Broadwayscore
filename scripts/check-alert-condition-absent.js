@@ -54,6 +54,12 @@ const QUIET_WINDOW_H = 168;
 // the router (or this checkout) is stale and "quiet" cannot be trusted.
 const LEDGER_MAX_AGE_H = 48;
 
+// owner-alert-router.js resurface suffix: ` (still open — BRO-123)`.
+const STILL_OPEN_SUFFIX = /\s*\(still open [—–-]+ [A-Z]+-\d+\)\s*$/;
+function stripStillOpenSuffix(title) {
+  return String(title).replace(STILL_OPEN_SUFFIX, '');
+}
+
 function ts(v) {
   const t = Date.parse(v || '');
   return Number.isFinite(t) ? t : NaN;
@@ -134,7 +140,13 @@ function decide(ledgers, key, nowMs = Date.now()) {
   // the check could never pass for them (BRO-6208). Such a key also matches
   // every ledger row whose title is that digest line's title.
   const DIGEST_PREFIX = 'digest-needs-you:';
-  const digestTitle = key.startsWith(DIGEST_PREFIX) ? rowMatchKey(key.slice(DIGEST_PREFIX.length)) : null;
+  // A resurfaced digest line is titled `<title> (still open — BRO-N)`
+  // (owner-alert-router.js resurface branch) and the digest builds the key from
+  // that decorated title, so strip the suffix or the key never matches its own
+  // row and the check is stuck on CANNOT TELL (BRO-7685).
+  const digestTitle = key.startsWith(DIGEST_PREFIX)
+    ? rowMatchKey(stripStillOpenSuffix(key.slice(DIGEST_PREFIX.length)))
+    : null;
   const byKey = new Map();
   for (const l of ledgers) {
     for (const [k, entry] of Object.entries(l.conditions)) {
@@ -196,4 +208,4 @@ if (require.main === module) {
     process.exit(3);
   }
 }
-module.exports = { main, decide, classifyEntry, QUIET_WINDOW_H, LEDGER_MAX_AGE_H };
+module.exports = { main, decide, classifyEntry, stripStillOpenSuffix, QUIET_WINDOW_H, LEDGER_MAX_AGE_H };
