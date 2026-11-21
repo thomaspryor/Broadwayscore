@@ -206,6 +206,9 @@ function liveRows(list) {
 
 /** failed-fetch-policy reason an evidence row stands for. */
 function policyReasonOf(row) {
+  // BRO-7962 review: a bot check / paywall is no access on this route, not a page
+  // that serves the wrong content; it takes the 5-failure path, not the strict 3.
+  if (row.outcome === 'rejected' && require('./gap-strategies').WALLED_REASONS.has(row.reason)) return 'all_tiers_failed';
   if (row.outcome === 'rejected') return 'garbage_content'; // the page serves content, never this review
   return FF_REASONS.has(row.reason) ? row.reason : 'fetch_error';
 }

@@ -51,3 +51,13 @@ test('orphanAccepts: an equal-length dirty file with a different hash is NOT ado
   assert.deepEqual(r.adopt, ['s/a.json']);
   assert.deepEqual(r.gone, ['s/b.json']);
 });
+
+test('BRO-7962: a round that is allowed to run never gets a 0 budget (0 means "no cap" to the driver)', () => {
+  for (const cb of [null, 0, 1, 25]) for (const cs of [null, 0, 1, 60]) for (const ub of [0, 1, 24, 25, 30]) for (const us of [0, 1, 59, 60, 70]) {
+    const cap = { bd: cb, serp: cs }; const spend = { bd: ub, serp: us };
+    const d = B.stopDecision({ failedPushes: 0, spend, cap, roundsDone: 0, rounds: 3, lastRoundWork: 1 });
+    if (d.stop) continue;
+    const rem = B.remainingBudget(cap, spend);
+    assert.ok(rem.bd !== 0 && rem.serp !== 0, JSON.stringify({ cap, spend, rem }));
+  }
+});

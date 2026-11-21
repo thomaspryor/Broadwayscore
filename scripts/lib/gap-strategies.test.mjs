@@ -219,7 +219,7 @@ test('urlFind: timeouts stay open, unreadable links are kept, slots skip old ref
     const r = await S.urlFind({ filePath: fp, showId: 'julie-west-end-2018' }, { dir: tmp, rootDir: root, refusedUrls: new Set(['https://t.co.uk/old']), methods: ['AGG_LINK', 'OUTLET_SITEMAP', 'WAYBACK_CDX', 'SLUG_GUESS'] }, { gate });
     assert.equal(r.methods.AGG_LINK, 'error'); // a timeout is not a refusal
     assert.equal(r.methods.OUTLET_SITEMAP, 'found_unreadable'); // paywalled link is found, not "not findable"
-    assert.deepEqual(r.foundUnreadable, [{ url: 'https://t.co.uk/b1', code: 'paywall' }]);
+    assert.deepEqual(r.foundUnreadable, [{ url: 'https://t.co.uk/b1', code: 'paywall', method: 'OUTLET_SITEMAP' }]);
     assert.equal(r.methods.WAYBACK_CDX, 'more_candidates'); // 4 fresh links, 3 tried: not done
     assert.ok(!fetched.includes('https://t.co.uk/old')); // an old refusal does not use a slot
     assert.ok(fetched.includes('https://t.co.uk/c3') && !fetched.includes('https://t.co.uk/c4'));
@@ -366,3 +366,229 @@ import { createRequire as _cr0 } from 'node:module';
     _a0.equal(selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, recency: 'recent', showAgeDays: 10 }).strategy, 'REFETCH_FREE');
   });
 }
+
+// BRO-7962: a bot check or a declared paywall is "no access" on the route, never
+// proof the LINK is wrong. The correct Times link for a NO_URL review was
+// refused this way (trial 2026-11-21) and skipped by every later night.
+import { test as _t62 } from 'node:test';
+import _a62 from 'node:assert/strict';
+import { createRequire as _cr62 } from 'node:module';
+{
+  const req = _cr62(import.meta.url);
+  const S = req('./gap-strategies.js');
+  const UF = req('./gap-url-find.js');
+  const TIMES_CHALLENGE = '<!DOCTYPE html><html><head><title>Verifying Device</title><link rel="stylesheet" href="https://p.toadmash.net/toadmash-1.0.11.css"></head><body>Verifying your device, please wait</body></html>';
+  const PAYWALLED = '<html><head><title>Under the Shadow review</title><script type="application/ld+json">{"@type":"NewsArticle","isAccessibleForFree":"False"}</script></head><body><p>Subscribe</p></body></html>';
+  const d62 = { isNotFoundHtml: () => false, extractArticleText: () => null };
+
+  _t62('fromHtml: bot check and declared paywall keep outcome rejected but name the reason', () => {
+    _a62.deepEqual(S.fromHtml(TIMES_CHALLENGE, 'https://www.thetimes.com/a', 'free', d62), { ok: false, outcome: 'rejected', reason: 'bot_challenge' });
+    _a62.deepEqual(S.fromHtml(PAYWALLED, 'https://www.thetimes.com/a', 'free', d62), { ok: false, outcome: 'rejected', reason: 'paywalled' });
+    _a62.equal(S.fromHtml(PAYWALLED.replace('"False"', 'false'), 'https://x/a', 'free', d62).reason, 'paywalled');
+    _a62.equal(S.fromHtml('<html><body>nav only</body></html>', 'https://x/a', 'free', d62).reason, 'extractor_null');
+    // a free page that declares itself free is not walled
+    _a62.equal(S.fromHtml(PAYWALLED.replace('"False"', 'true'), 'https://x/a', 'free', d62).reason, 'extractor_null');
+  });
+
+  _t62('fetchRefusedOnEvidence: walled answers are not evidence about the link', () => {
+    _a62.equal(UF.fetchRefusedOnEvidence(['free:rejected/bot_challenge', 'wayback:rejected/extractor_null', 'brightdata:rejected/paywalled']), false);
+    _a62.equal(UF.fetchRefusedOnEvidence(['free:rejected/extractor_null', 'wayback:rejected/extractor_null']), true);
+    _a62.equal(UF.walledFetchReason(['free:rejected/extractor_null', 'brightdata:rejected/paywalled']), 'paywalled');
+    _a62.equal(UF.walledFetchReason(['free:rejected/extractor_null']), null);
+  });
+
+  _t62('fetchCandidateText on the real trial shape: challenge free, paywalled paid -> walled, not refused', async () => {
+    const deps = { ...d62, fetchPage: async (u, o) => ({ content: o && o.tiers && o.tiers[0] === 'brightdata' ? PAYWALLED : TIMES_CHALLENGE, source: 'x' }), listCaptureTimestamps: async () => [] };
+    const got = await UF.fetchCandidateText('https://www.thetimes.com/a', { allowBd: true }, deps);
+    _a62.equal(got.ok, false);
+    _a62.equal(UF.fetchRefusedOnEvidence(got.tried), false, JSON.stringify(got.tried));
+    _a62.equal(UF.walledFetchReason(got.tried), 'bot_challenge');
+  });
+
+  _t62('urlFind: a walled link is found_unreadable (with its method), never refusedCandidates', async () => {
+    const fs = req('fs'); const os = req('os'); const path = req('path');
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'urlfind62-'));
+    fs.mkdirSync(path.join(tmp, 'julie-west-end-2018'));
+    const fp = path.join(tmp, 'julie-west-end-2018', 'times-uk--x.json');
+    fs.writeFileSync(fp, JSON.stringify({ showId: 'julie-west-end-2018', outletId: 'times-uk', criticName: 'X Y', url: null, fullText: 'short' }));
+    const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+    const orig = { runMethod: UF.runMethod, fetchCandidateText: UF.fetchCandidateText };
+    UF.runMethod = async (m) => ({ candidates: m === 'SLUG_GUESS' ? [{ url: 'https://www.thetimes.com/w1' }, { url: 'https://www.thetimes.com/gone' }] : [], tried: [], error: null });
+    UF.fetchCandidateText = async (url) => (url.endsWith('w1')
+      ? { ok: false, tried: ['free:rejected/bot_challenge', 'wayback:no_evidence/archive_empty'] }
+      : { ok: false, tried: ['free:no_evidence/url_dead_404', 'wayback:no_evidence/archive_empty'] });
+    try {
+      const r = await S.urlFind({ filePath: fp, showId: 'julie-west-end-2018' }, { dir: tmp, rootDir: root, methods: ['SLUG_GUESS'] }, { gate: async () => ({ ok: false, code: 'identity_unproven' }) });
+      _a62.deepEqual(r.foundUnreadable, [{ url: 'https://www.thetimes.com/w1', code: 'bot_challenge', method: 'SLUG_GUESS' }]);
+      _a62.deepEqual(r.refusedCandidates, ['https://www.thetimes.com/gone']); // a dead link is still refused
+      _a62.equal(r.methods.SLUG_GUESS, 'found_unreadable');
+      _a62.ok(!UF.METHOD_DONE.has(r.methods.SLUG_GUESS));
+      _a62.deepEqual(r.methodsIfWalledRefused, { SLUG_GUESS: 'candidates_refused' }); // everything else in it was refused on evidence
+      const dead = UF.applyWalledBrowserResult(r, r.foundUnreadable[0], { outcome: 'no_evidence', reason: 'url_not_found_404' });
+      _a62.equal(dead.methods.SLUG_GUESS, 'candidates_refused');
+    } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
+  });
+
+  _t62('urlFind review: a browser 404 on the walled link never marks a method done that had a timed-out sibling, more links, or a second unreadable link', async () => {
+    const fs = req('fs'); const os = req('os'); const path = req('path');
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'urlfind62b-'));
+    fs.mkdirSync(path.join(tmp, 'julie-west-end-2018'));
+    const fp = path.join(tmp, 'julie-west-end-2018', 'times-uk--x.json');
+    fs.writeFileSync(fp, JSON.stringify({ showId: 'julie-west-end-2018', outletId: 'times-uk', criticName: 'X Y', url: null, fullText: 'short' }));
+    const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+    const orig = { runMethod: UF.runMethod, fetchCandidateText: UF.fetchCandidateText };
+    const cands = {
+      SLUG_GUESS: ['w1', 'slow'], // walled + timed out
+      SERP: ['w2', 'a', 'b', 'c'], // walled + more than the per-method slots
+      WAYBACK_CDX: ['w3', 'short'], // walled + a too-short page (gate path)
+    };
+    UF.runMethod = async (m) => ({ candidates: (cands[m] || []).map((x) => ({ url: `https://www.thetimes.com/${x}` })), tried: [], error: null });
+    UF.fetchCandidateText = async (url) => (/\/w\d$/.test(url) ? { ok: false, tried: ['free:rejected/bot_challenge'] }
+      : url.endsWith('slow') ? { ok: false, tried: ['free:error/timeout'] }
+      : url.endsWith('short') ? { ok: true, rawText: 'tiny', html: '<html></html>', via: 'free' }
+      : { ok: false, tried: ['free:no_evidence/url_dead_404'] });
+    try {
+      const r = await S.urlFind({ filePath: fp, showId: 'julie-west-end-2018' }, { dir: tmp, rootDir: root, methods: ['SLUG_GUESS', 'SERP', 'WAYBACK_CDX'], serpKeys: { x: 1 } }, { gate: async () => ({ ok: false, code: 'too_short' }) });
+      _a62.ok(r.foundUnreadable.every((u) => u.method), 'every unreadable link carries its method');
+      let g = r;
+      for (const w of r.foundUnreadable.filter((u) => /\/w\d$/.test(u.url))) g = UF.applyWalledBrowserResult(g, w, { outcome: 'no_evidence', reason: 'url_not_found_404' });
+      _a62.equal(g.methods.SLUG_GUESS, 'error');
+      if (r.methods.SERP !== 'skipped_paid') _a62.equal(g.methods.SERP, 'more_candidates');
+      _a62.equal(g.methods.WAYBACK_CDX, 'found_unreadable');
+      for (const m of ['SLUG_GUESS', 'WAYBACK_CDX']) _a62.ok(!UF.METHOD_DONE.has(g.methods[m]), m);
+      _a62.notEqual(g.reason, 'url_not_found_all_methods');
+      // a fold without the record never guesses done
+      const bare = UF.applyWalledBrowserResult({ ...r, methodsIfWalledRefused: undefined }, r.foundUnreadable[0], { outcome: 'no_evidence', reason: 'url_not_found_404' });
+      _a62.equal(bare.methods[r.foundUnreadable[0].method], 'found_unreadable');
+    } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
+  });
+
+  _t62('pre-fix refusals are not trusted: links and candidates_refused statuses reopen, post-fix ones hold', () => {
+    const old = { strategy: 'URL_FIND', outcome: 'no_evidence', ts: '2026-11-20T00:00:00Z', detail: { policy: UF.URL_FIND_POLICY, methods: { SERP: 'candidates_refused', SLUG_GUESS: 'no_candidates' }, refusedCandidates: ['https://www.thetimes.com/right'] } };
+    _a62.equal(UF.refusedUrlsFromRows([old]).size, 0);
+    const prog = UF.urlFindProgress([old]);
+    _a62.ok(prog.missing.includes('SERP'), 'old candidates_refused reopens');
+    _a62.ok(!prog.missing.includes('SLUG_GUESS'), 'old no_candidates still done');
+    const fresh = { ...old, detail: { ...old.detail, refusalPolicy: UF.REFUSAL_POLICY } };
+    _a62.deepEqual([...UF.refusedUrlsFromRows([fresh])], ['https://www.thetimes.com/right']);
+    _a62.ok(!UF.urlFindProgress([fresh]).missing.includes('SERP'));
+    // a gate refusal of a READ link (outcome rejected + url) stays refused whatever the policy
+    _a62.deepEqual([...UF.refusedUrlsFromRows([{ strategy: 'URL_FIND', outcome: 'rejected', reason: 'wrong_article', url: 'https://x/read' }])], ['https://x/read']);
+  });
+
+  _t62('class guard: every fetch tier that accepts a page runs the challenge check first (scraper.js)', () => {
+    const fs = req('fs'); const path = req('path');
+    const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), 'scraper.js'), 'utf8');
+    const start = src.indexOf('const tiers = {');
+    _a62.ok(start > 0, 'tiers object not found');
+    const body = src.slice(start, src.indexOf('\n  };', start));
+    const parts = body.split(/\n    '?([a-z-]+)'?: async/).slice(1);
+    const missing = [];
+    for (let i = 0; i < parts.length; i += 2) if (/_checkAndReturn\(/.test(parts[i + 1]) && !/(?:_isChallengeOrGarbage|challengeSeen)\(/.test(parts[i + 1])) missing.push(parts[i]);
+    _a62.ok(parts.length >= 12, `parsed ${parts.length / 2} tiers`);
+    _a62.deepEqual(missing, [], `tiers accepting a page without the challenge check: ${missing.join(', ')}`);
+  });
+}
+
+// BRO-7962 ship-check fixes: handoff decision, walled parking, identity-only read refusals.
+{
+  const req = _cr62(import.meta.url);
+  const UF = req('./gap-url-find.js');
+  const walledGot = { ok: false, foundUnreadable: [{ url: 'https://www.thetimes.com/short', code: 'too_short' }, { url: 'https://www.thetimes.com/w', code: 'bot_challenge', method: 'SERP' }] };
+  _t62('walledHandoffLink: only a walled link, only with an open browser gate, an enabled strategy and an adapter', () => {
+    const on = { browserGateOpen: true, browserEnabled: true, hasAdapter: true };
+    _a62.deepEqual(UF.walledHandoffLink(walledGot, on), { url: 'https://www.thetimes.com/w', code: 'bot_challenge', method: 'SERP' });
+    for (const k of Object.keys(on)) _a62.equal(UF.walledHandoffLink(walledGot, { ...on, [k]: false }), null, k);
+    _a62.equal(UF.walledHandoffLink({ ok: true, foundUnreadable: walledGot.foundUnreadable }, on), null);
+    _a62.equal(UF.walledHandoffLink({ ok: false, foundUnreadable: [{ url: 'u', code: 'too_short' }] }, on), null);
+  });
+  _t62('walled park: 2 unread nights + every missing method already found the wall; a login reader parks only after failing twice', () => {
+    const row = (ts, { methods = { SERP: 'found_unreadable' }, walledBrowser = null } = {}) => ({ strategy: 'URL_FIND', outcome: 'no_evidence', reason: 'url_found_unreadable', ts,
+      detail: { policy: UF.URL_FIND_POLICY, refusalPolicy: UF.REFUSAL_POLICY, methods, foundUnreadable: [{ url: 'https://x/w', code: 'paywalled', method: 'SERP' }], ...(walledBrowser ? { walledBrowser } : {}) } });
+    const now = Date.parse('2026-12-30T00:00:00Z');
+    const doneElse = Object.fromEntries(UF.METHODS.filter((m) => m !== 'SERP').map((m) => [m, 'no_candidates']));
+    const full = { methods: { ...doneElse, SERP: 'found_unreadable' } };
+    _a62.equal(UF.urlFindEligibility([row('2026-11-01T00:00:00Z', full)], { nowMs: now }).ok, true); // one sighting
+    const two = [row('2026-11-01T00:00:00Z', full), row('2026-11-10T00:00:00Z', full)];
+    _a62.equal(UF.urlFindEligibility(two, { nowMs: now }).reason, 'url_find_walled_waiting_login');
+    // another method never ran: it may find a free copy, so no park
+    _a62.equal(UF.urlFindEligibility([row('2026-11-01T00:00:00Z'), row('2026-11-10T00:00:00Z')], { nowMs: now }).ok, true);
+    // a login reader keeps trying ...
+    _a62.equal(UF.urlFindEligibility(two, { nowMs: now, loginReader: true }).ok, true);
+    // ... until it failed on that link twice
+    const wb = { url: 'https://x/w', outcome: 'auth_failed', reason: 'logged_out' };
+    const twoFailed = [row('2026-11-01T00:00:00Z', { ...full, walledBrowser: wb }), row('2026-11-10T00:00:00Z', { ...full, walledBrowser: wb })];
+    _a62.equal(UF.urlFindEligibility(twoFailed, { nowMs: now, loginReader: true }).reason, 'url_find_walled_waiting_login');
+  });
+  _t62('a walled rejection takes the 5-failure path, not the strict garbage_content one', () => {
+    const L = req('./gap-recovery-ledger.js');
+    const st = (reason) => {
+      const rows = [1, 2, 3].map((d) => ({ reviewKey: 'k', strategy: 'REFETCH_FREE', outcome: 'rejected', reason, ts: `2026-11-0${d}T00:00:00Z` }));
+      return L.strategyState(new Map([['k', rows]]), 'k', 'REFETCH_FREE');
+    };
+    _a62.equal(st('bot_challenge').lastPolicyReason, 'all_tiers_failed');
+    _a62.equal(st('bot_challenge').abandoned, false);
+    _a62.equal(st('extractor_null').lastPolicyReason, 'garbage_content');
+  });
+  _t62('a READ link is refused only on an identity refusal, not too_short / not_longer', () => {
+    const r = (reason) => ({ strategy: 'URL_FIND', outcome: 'rejected', reason, url: `https://x/${reason}` });
+    _a62.deepEqual([...UF.refusedUrlsFromRows([r('too_short'), r('not_longer'), r('wrong_article'), r('byline_conflict')])], ['https://x/wrong_article', 'https://x/byline_conflict']);
+  });
+  _t62('class guard: gap-recovery-driver.js runLive uses no name defined only in main()/planCandidates()', () => {
+    const fs = req('fs'); const path = req('path');
+    const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'gap-recovery-driver.js'), 'utf8');
+    const start = src.indexOf('async function runLive(');
+    const body = src.slice(start, src.indexOf('\n}\n', start)); // to the function's closing brace at column 0
+    const header = body.slice(0, body.indexOf('\n'));
+    const code = body.replace(/\/\/[^\n]*/g, '').replace(/'(?:[^'\\\n]|\\.)*'/g, "''"); // drop comments and quoted strings (template ${...} uses still count)
+    // Every name declared at the top of main() / planCandidates() (const/let, plain or destructured).
+    const outerNames = new Set();
+    for (const fn of ['async function main(', 'function planCandidates(']) {
+      const i = src.indexOf(fn); if (i < 0) continue;
+      const fb = src.slice(i, src.indexOf('\n}\n', i));
+      for (const m of fb.matchAll(/\n  (?:const|let) (\{[^}]*\}|[A-Za-z_$][\w$]*)/g)) {
+        for (const n of m[1].replace(/[{}]/g, '').split(',')) { const k = n.split(':').pop().split('=')[0].trim(); if (k) outerNames.add(k); }
+      }
+    }
+    _a62.ok(outerNames.has('runGates') && outerNames.size > 5, `parsed ${outerNames.size} outer names`);
+    const topLevel = new Set([...src.matchAll(/\n(?:const|let|var|function|async function) \{?([A-Za-z_$][\w$, ]*)/g)].flatMap((m) => m[1].split(',').map((x) => x.trim())));
+    for (const name of outerNames) {
+      if (topLevel.has(name)) continue;
+      if (!new RegExp(`(?<![.\\w$])${name.replace(/\$/g, '\\$')}\\b(?!\\s*:)`).test(code)) continue; // a bare use, not obj.name or a key
+      const declared = new RegExp(`(?:\\b${name}\\b)`).test(header) || new RegExp(`(?:const|let|var)\\s+(?:\\{[^}]*\\b${name}\\b[^}]*\\}|${name}\\b)`).test(body) || new RegExp(`\\(\\s*\\[?[^)]*\\b${name}\\b[^)]*\\)\\s*=>|for \\((?:const|let) [^)]*\\b${name}\\b`).test(body);
+      _a62.ok(declared, `runLive uses ${name} but never declares or receives it`);
+    }
+  });
+}
+
+// BRO-7962: a chain that every tier answered with a bot check says so (Telegraph slug guess, 2026-11-21 real run).
+{
+  const req = _cr62(import.meta.url);
+  const S = req('./gap-strategies.js');
+  const UF = req('./gap-url-find.js');
+  const CHALLENGE = '<html><head><title>Just a moment...</title></head><body><div id="challenge-running">Checking your browser</div><script src="/cdn-cgi/challenge-platform/h/b/orchestrate/chl_page/v1"></script></body></html>';
+  const deps = (fetchPage) => ({ ...S.defaultDeps(), fetchPage, isNotFoundHtml: () => false, extractArticleText: () => null, listCaptureTimestamps: async () => [], freeTiersForUrl: () => ['direct'] });
+  const thrower = (html) => async () => { const e = new Error('All scraping methods failed'); if (html) e.challengeHtml = html; throw e; };
+  _t62('walledFetchError: a wall page on the error -> rejected/<wall>; none -> null', () => {
+    _a62.equal(S.walledFetchError(Object.assign(new Error('All scraping methods failed'), { challengeHtml: CHALLENGE })).reason, 'bot_challenge');
+    _a62.equal(S.walledFetchError(new Error('All scraping methods failed')), null);
+    _a62.equal(S.walledFetchError(Object.assign(new Error('x'), { challengeHtml: '<p>tiny</p>' })), null);
+  });
+  _t62('refetchFree: all tiers challenged -> rejected/bot_challenge, plain failure unchanged', async () => {
+    _a62.deepEqual([(await S.refetchFree({ url: 'https://www.telegraph.co.uk/a' }, deps(thrower(CHALLENGE)))).reason], ['bot_challenge']);
+    _a62.notEqual((await S.refetchFree({ url: 'https://www.telegraph.co.uk/a' }, deps(thrower(null)))).reason, 'bot_challenge');
+  });
+  _t62('fetchCandidateText: a fully challenged link is walled (handoff), not an error', async () => {
+    const got = await UF.fetchCandidateText('https://www.telegraph.co.uk/a', { allowBd: true }, deps(thrower(CHALLENGE)));
+    _a62.equal(UF.walledFetchReason(got.tried), 'bot_challenge', got.tried.join(' | '));
+    _a62.equal(UF.fetchRefusedOnEvidence(got.tried), false);
+  });
+}
+
+_t62('BRO-7962: the Telegraph Akamai "Access Denied" page (real, 2026-11-21) is a wall, for the chain and the recovery layer alike', () => {
+  const req = _cr62(import.meta.url);
+  const AKAMAI = '<html><head> <title>Access Denied</title> </head><body> <h1>Access Denied</h1> You don\'t have permission to access "http://www.telegraph.co.uk/theatre/what-to-see/evening-all-afternoon-review/" on this server.<p> Reference #18.d124c317.1795261217.1da28212 </p><p>https://errors.edgesuite.net/18.d124c317.1795261217.1da28212</p> </body></html>';
+  _a62.equal(req('./cookie-probes.js').isBotChallenge(AKAMAI), true);
+  _a62.equal(req('./scraper.js').isChallengeOrGarbage(AKAMAI), true);
+  _a62.equal(req('./gap-strategies.js').walledFetchError(Object.assign(new Error('All scraping methods failed'), { challengeHtml: AKAMAI })).reason, 'bot_challenge');
+});

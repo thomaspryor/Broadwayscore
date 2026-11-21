@@ -255,24 +255,9 @@ function isTollbitGate(content) {
       (content.includes('tollbit.dev') && /not authorized to access this content/i.test(content)));
 }
 
-/**
- * A WAF "Access Denied" page that some sites (newyorksocialdiary.com) serve
- * as a ~20KB 200 to Playwright: bigger than the 10KB cap above, so it was
- * stored as a 334-char "review" (BRO-5133). Title + phrase together, so an
- * article quoting the phrase is not rejected.
- *
- * Akamai's wording differs ("You don't have permission to access ... on this
- * server", reference link to errors.edgesuite.net). dailymail.co.uk serves it
- * to Playwright once an IP is throttled, and the chain logged the 334-char
- * denial as a success (BRO-716).
- */
-function isRobotBlockPage(content) {
-  return !!content && content.length < 60000 &&
-    /<title>\s*Access Denied\s*<\/title>/i.test(content) &&
-    (content.includes('similar to malicious requests sent by robots') ||
-      /You don(?:'|&#39;|’)t have permission to access/i.test(content) ||
-      content.includes('errors.edgesuite.net'));
-}
+// isRobotBlockPage (WAF / Akamai "Access Denied", BRO-5133, BRO-716) lives in cookie-probes.js
+// so the bot-check detector there (isBotChallenge) and this chain share one definition (BRO-7962).
+const { isRobotBlockPage } = require('./cookie-probes');
 
 function _isJsRequiredDomain(url) {
   try {
@@ -1800,6 +1785,16 @@ async function fetchPage(url, options = {}) {
   // empty immediately before it (BRO-3009 S1-T8). Purely a telemetry
   // passenger — no tier branches on it — so the spend ledger can say WHY this
   // provider was reached, not just what it cost.
+  // BRO-7962: keep the last bot-check / wall page a tier refused, so a chain that
+  // every tier answered with a challenge says so on its error (err.challengeHtml)
+  // instead of reading like a broken fetch. Callers that do not look at it see
+  // the same 'All scraping methods failed' error as before.
+  let lastChallengeHtml = null;
+  const challengeSeen = (content) => {
+    const bad = _isChallengeOrGarbage(content);
+    if (bad && typeof content === 'string') lastChallengeHtml = content;
+    return bad;
+  };
   const tiers = {
     // Cookie-gated outlets (WSJ, FT, NYT, Telegraph, etc.): try plain HTTPS
     // with subscriber cookies FIRST. WSJ's DataDome blocks BD/Playwright even
@@ -1809,7 +1804,12 @@ async function fetchPage(url, options = {}) {
     'cookies-plain': async (fallbackFrom) => {
       console.log(`  → Trying plain HTTPS with ${cookieDomain} cookies...`);
       const raw = await fetchWithCookiesPlain(url);
-      if (raw && raw.content && raw.content.length > 0) {
+      // BRO-7962: same challenge check as every other tier. thetimes.com answers a
+      // plain fetch with its 1.3 KB "Verifying Device" page; reported as Success it
+      // stopped the chain before the Playwright tiers could read the article.
+      if (raw && raw.content && challengeSeen(raw.content)) {
+        console.log('  ⚠️  Cookie-plain returned a challenge page, trying next tier...');
+      } else if (raw && raw.content && raw.content.length > 0) {
         const checked = _checkAndReturn(raw, 'Cookie-plain');
         if (checked) return checked;
       }
@@ -1824,7 +1824,7 @@ async function fetchPage(url, options = {}) {
         fast: isPublicSite || _isNeverIdleDomain(url),
         playwrightWaitForSelector: options.playwrightWaitForSelector,
       });
-      if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+      if (raw && raw.content && challengeSeen(raw.content)) {
         console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
       } else if (raw) {
         const checked = _checkAndReturn(raw, 'Playwright');
@@ -1850,7 +1850,7 @@ async function fetchPage(url, options = {}) {
       console.log('  → Trying Scrapingdog...');
       const raw = await fetchWithScrapingdog(url, { ...options, fallbackFrom, onSkip });
       if (raw && raw.content && raw.content.length > 0) {
-        if (_isChallengeOrGarbage(raw.content)) {
+        if (challengeSeen(raw.content)) {
           console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
         } else {
           const checked = _checkAndReturn(raw, 'Scrapingdog');
@@ -1865,7 +1865,7 @@ async function fetchPage(url, options = {}) {
       if (raw && raw.content && raw.content.length > 0) {
         // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge
         // HTML that passes length > 0 but isn't real content. Fall through to ScrapingBee.
-        if (_isChallengeOrGarbage(raw.content)) {
+        if (challengeSeen(raw.content)) {
           console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${raw.content.length} bytes), trying next provider...`);
         } else {
           const checked = _checkAndReturn(raw, 'Bright Data');
@@ -1888,7 +1888,7 @@ async function fetchPage(url, options = {}) {
       }
       console.log('  → Trying ScrapingBee...');
       const raw = await fetchWithScrapingBee(url, { ...options, fallbackFrom, onSkip });
-      if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+      if (raw && raw.content && challengeSeen(raw.content)) {
         console.log(`  ⚠️  ScrapingBee returned challenge/garbage (${raw.content.length} bytes)`);
       } else if (raw) {
         const checked = _checkAndReturn(raw, 'ScrapingBee');
@@ -1903,7 +1903,7 @@ async function fetchPage(url, options = {}) {
     'playwright-last': async (fallbackFrom) => {
       console.log('  → Trying Playwright (last resort)...');
       const raw = await fetchWithPlaywright(url, { fast: _isNeverIdleDomain(url) });
-      if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+      if (raw && raw.content && challengeSeen(raw.content)) {
         console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes)`);
       } else if (raw) {
         const checked = _checkAndReturn(raw, 'Playwright');
@@ -1933,7 +1933,9 @@ async function fetchPage(url, options = {}) {
     fallbackFrom = fallbackFromLabel(tierName, { skipReason });
   }
 
-  throw new Error('All scraping methods failed');
+  const err = new Error('All scraping methods failed');
+  if (lastChallengeHtml) err.challengeHtml = lastChallengeHtml.slice(0, 50000);
+  throw err;
 }
 
 /**

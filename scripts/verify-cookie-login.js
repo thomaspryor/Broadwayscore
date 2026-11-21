@@ -145,7 +145,9 @@ async function sharedProbe(t) {
       where = 'fetch';
     }
   } catch (e) {
-    return { ...base, ok: false, error: e.message.split('\n')[0] };
+    // BRO-7962: a chain every tier answered with a bot check now throws with the page on
+    // err.challengeHtml (the cookie tier no longer returns it as a success): still botBlocked.
+    return { ...base, ok: false, error: e.message.split('\n')[0], ...(e.challengeHtml && isBotChallenge(e.challengeHtml) ? { botBlocked: true } : {}) };
   }
   const status = bprobe.classify(p, withCookies, withoutCookies);
   const detail = `${where}: ${status}; body ${withCookies.body.length} vs ${withoutCookies.body.length} with no session (need ${p.minBody})`;
@@ -165,6 +167,8 @@ async function probe(t) {
     if (!t.loggedInMarker) body = extractArticleTextFromUrl(html, t.url) || '';
   } catch (e) {
     error = e.message;
+    // BRO-7962: every tier got a bot check; the page rides on the error now.
+    if (e.challengeHtml && isBotChallenge(e.challengeHtml)) { html = e.challengeHtml; htmlLen = html.length; error = null; }
   }
   let ok, detail;
   if (t.loggedInMarker) {

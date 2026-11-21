@@ -125,7 +125,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     const facts = PO.attemptFacts(live);
     const baseEligible = (strategy) => {
       // URL_FIND: per-method progress across nights (gap-url-find.urlFindEligibility).
-      if (strategy === 'URL_FIND') return require('./lib/gap-url-find').urlFindEligibility(live, { cooldownH: Number(process.env.GAP_URL_FIND_COOLDOWN_H || 20) });
+      if (strategy === 'URL_FIND') return require('./lib/gap-url-find').urlFindEligibility(live, { cooldownH: Number(process.env.GAP_URL_FIND_COOLDOWN_H || 20), loginReader: adapterUsable(review.outletId, { explicitOutlets: OPTS.outlets }) });
       const e = L.strategyEligibility({ strategy, show, review, gapClass: row.gapClass, state: L.strategyState(ledgerIndex, reviewKey, strategy) });
       if (!e.ok) return e;
       // BRO-7944: a non-evidence outcome (soft 404, timeout) is retried, but not minutes later by the next batch round.
@@ -371,7 +371,7 @@ async function main() {
     }
     return 0;
   }
-  return runLive({ dir, cands, rows, ledgerPath, serpKeys, gui });
+  return runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates });
 }
 
 /** Tonight's URL_FIND slots over the planned candidates (gap-url-find.planUrlFindWork). */
@@ -383,12 +383,12 @@ function planUrlFind(cands, paidSlots, freeSlots) {
   });
 }
 
-async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
+async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates = {} }) {
   const { recoverReviewTextVerified } = require('./lib/gap-acceptance');
   const { checkpointReviewTexts, retryPendingPushes, createWriteTracker, ReviewTextsPushError } = require('./lib/review-texts-checkpoint');
   const { withReviewTextsLock } = require('./lib/review-texts-lock');
   const S = require('./lib/gap-strategies');
-  const { adapterFor, openSession, closeOtherSessions } = require('./lib/browser-outlet-adapters');
+  const { adapterFor, adapterUsable, openSession, closeOtherSessions } = require('./lib/browser-outlet-adapters');
   // A per-run cap (the nightly job) replaces the per-UTC-day count, so manual
   // runs earlier in the same UTC day do not eat the night's budget.
   const runCeiling = L.runCeiling();
@@ -437,6 +437,33 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
 
   const stats = { attempted: 0, accepted: 0, byStrategy: {} };
   const sessions = new Map(); // adapter name -> session | {failed}
+  // Logged in at the probe, lost mid-run: still a lost session tonight.
+  const markSessionLost = async (ad, s, got) => {
+    if (got.ok || got.outcome !== 'auth_failed' || s.failed) return;
+    await s.close().catch(() => {});
+    sessions.set(ad.name, { failed: got });
+    SUMMARY.authOkOutlets = SUMMARY.authOkOutlets.filter((n) => n !== ad.name);
+    if (!SUMMARY.authFailedOutlets.includes(ad.name)) SUMMARY.authFailedOutlets.push(ad.name);
+  };
+  // One logged-in browser per adapter per run (opened on first use).
+  const sessionFor = async (ad) => {
+    if (!sessions.has(ad.name)) {
+      // Every adapter session holds the one cookie-renew lock, so a second
+      // outlet could never open while the first stays open (BRO-7943: FT
+      // joined The Stage in the nightly). Close the others first; a closed
+      // outlet reopens later in the run if it has more work.
+      await closeOtherSessions(sessions, ad.name);
+      const o = gui.available ? await openSession(ad) : { ok: false, outcome: 'browser_unavailable', reason: 'gui' };
+      sessions.set(ad.name, o.ok ? o.session : { failed: o });
+      if (o.ok) { if (!SUMMARY.authOkOutlets.includes(ad.name)) SUMMARY.authOkOutlets.push(ad.name); }
+      else if (o.outcome === 'auth_failed') {
+        // A reopen (closeOtherSessions closed it earlier) that lost the login: not OK any more.
+        SUMMARY.authOkOutlets = SUMMARY.authOkOutlets.filter((n) => n !== ad.name);
+        if (!SUMMARY.authFailedOutlets.includes(ad.name)) SUMMARY.authFailedOutlets.push(ad.name);
+      }
+    }
+    return sessions.get(ad.name);
+  };
   const start = Date.now();
   let accepted = 0;
   let runError = null;
@@ -527,26 +554,9 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       let got;
       if (strategy === 'BROWSER_SESSION') {
         const ad = adapterFor(c.outletId);
-        if (!sessions.has(ad.name)) {
-          // Every adapter session holds the one cookie-renew lock, so a second
-          // outlet could never open while the first stays open (BRO-7943: FT
-          // joined The Stage in the nightly). Close the others first; a closed
-          // outlet reopens later in the run if it has more work.
-          await closeOtherSessions(sessions, ad.name);
-          const o = gui.available ? await openSession(ad) : { ok: false, outcome: 'browser_unavailable', reason: 'gui' };
-          sessions.set(ad.name, o.ok ? o.session : { failed: o });
-          if (o.ok) SUMMARY.authOkOutlets.push(ad.name);
-          else if (o.outcome === 'auth_failed') SUMMARY.authFailedOutlets.push(ad.name);
-        }
-        const s = sessions.get(ad.name);
+        const s = await sessionFor(ad);
         got = s.failed ? { ok: false, outcome: s.failed.outcome, reason: s.failed.reason } : await S.browserSession(c, s);
-        if (!got.ok && got.outcome === 'auth_failed' && !s.failed) {
-          await s.close().catch(() => {});
-          sessions.set(ad.name, { failed: got });
-          // Logged in at the probe, lost mid-run: still a lost session tonight.
-          SUMMARY.authOkOutlets = SUMMARY.authOkOutlets.filter((n) => n !== ad.name);
-          if (!SUMMARY.authFailedOutlets.includes(ad.name)) SUMMARY.authFailedOutlets.push(ad.name);
-        }
+        await markSessionLost(ad, s, got);
         // A session-level failure (no session for the outlet this run) is
         // non-evidence: record it and fall through to the next eligible
         // strategy, so a broken login never starves ARCHIVE run after run.
@@ -568,9 +578,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       else if (strategy === 'URL_FIND') {
         if (PO.urlFindSliceExhausted(urlFindSpentMs)) { urlFindSliceSkipped++; stats.attempted--; continue; } // fallback-reached URL_FIND obeys the slice too
         // Links a past URL_FIND run found and the live gate refused are not fetched again.
-        const refusedUrls = new Set(L.liveRows(L.indexRows(L.readRows(ledgerPath)).get(c.reviewKey) || [])
-          .filter((r) => r.strategy === 'URL_FIND')
-          .flatMap((r) => [...(r.outcome === 'rejected' && r.url ? [r.url] : []), ...((r.detail && r.detail.refusedCandidates) || [])]));
+        const refusedUrls = require('./lib/gap-url-find').refusedUrlsFromRows(L.liveRows(L.indexRows(L.readRows(ledgerPath)).get(c.reviewKey) || []));
         // GAP_URL_FIND_METHODS narrows a bulk run to the methods with measured yield.
         const methods = process.env.GAP_URL_FIND_METHODS ? process.env.GAP_URL_FIND_METHODS.split(',').map((m) => m.trim()).filter(Boolean) : null;
         // A fallback-reached URL_FIND takes a paid slot only while one is left.
@@ -580,6 +588,25 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         urlFindRuns = slot.paidUsed;
         const ufStart = Date.now();
         try { got = await S.urlFind(c, { dir, rootDir: ROOT, serpKeys, refusedUrls, methods, freeOnly: slot.freeOnly }); } finally { urlFindSpentMs += Date.now() - ufStart; }
+        // BRO-7962: the link was found but sits behind a paywall or bot check. When this
+        // outlet has a logged-in browser tonight, read it there; the text then goes
+        // through the same acceptance gate (identity, byline, date) as any URL_FIND find.
+        const walled = require('./lib/gap-url-find').walledHandoffLink(got, {
+          browserGateOpen: !runGates.BROWSER_SESSION,
+          browserEnabled: require('./lib/gap-strategy-table').STRATEGY_FLAGS.BROWSER_SESSION.enabled,
+          hasAdapter: adapterUsable(c.outletId, { explicitOutlets: OPTS.outlets }),
+        });
+        if (walled) {
+          const ad = adapterFor(c.outletId);
+          const s = await sessionFor(ad);
+          const bStart = Date.now();
+          let b;
+          try { b = s.failed ? { ok: false, outcome: s.failed.outcome, reason: s.failed.reason } : await S.browserSession({ ...c, url: walled.url }, s); } finally { urlFindSpentMs += Date.now() - bStart; } // part of the URL_FIND slice
+          await markSessionLost(ad, s, b);
+          console.log(`  walled link ${walled.url} (${walled.code}) -> browser: ${b.ok ? `read ${b.rawText.length} chars` : `${b.outcome} (${b.reason})`}`);
+          if (b.ok) got = { ...b, url: walled.url, via: `url-find:${walled.method || '?'}:browser`, methods: { ...got.methods, [walled.method]: 'found' }, foundBy: walled.method || null, refusedCandidates: got.refusedCandidates, foundUnreadable: got.foundUnreadable };
+          else got = require('./lib/gap-url-find').applyWalledBrowserResult(got, walled, b);
+        }
       }
       else got = { ok: false, outcome: 'non_evidence', reason: `strategy_unbuilt:${strategy}` };
 
@@ -602,8 +629,8 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         });
       }
 
-      const urlFindDetail = got.methods ? { policy: require('./lib/gap-url-find').URL_FIND_POLICY, methods: got.methods, foundBy: got.foundBy || null,
-        refusedCandidates: got.refusedCandidates || [], foundUnreadable: got.foundUnreadable || [] } : undefined;
+      const urlFindDetail = got.methods ? { policy: require('./lib/gap-url-find').URL_FIND_POLICY, refusalPolicy: require('./lib/gap-url-find').REFUSAL_POLICY, methods: got.methods, foundBy: got.foundBy || null,
+        refusedCandidates: got.refusedCandidates || [], foundUnreadable: got.foundUnreadable || [], ...(got.walledBrowser ? { walledBrowser: got.walledBrowser } : {}) } : undefined;
       if (!got.ok) {
         console.log(`  ✗ ${got.outcome} (${got.reason})${got.methods ? ` ${JSON.stringify(got.methods)}` : ''}`);
         record(c, strategy, { outcome: got.outcome, reason: got.reason, ...L.refusalDiagnostics({ c, got }), ...(urlFindDetail ? { detail: urlFindDetail } : {}) });

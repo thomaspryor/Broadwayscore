@@ -167,8 +167,31 @@ function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker,
 // The Times and WSJ challenges were sending the owner to re-login in Safari).
 const BOT_CHALLENGE_RE = /captcha-delivery\.com|<title>\s*(?:Verifying Device|Just a moment\.\.\.|Security Verification)\s*<\/title>|Access is temporarily restricted|slide right to secure/i;
 
-function isBotChallenge(html) {
-  return BOT_CHALLENGE_RE.test(String(html || ''));
+/**
+ * A WAF "Access Denied" page that some sites (newyorksocialdiary.com) serve
+ * as a ~20KB 200 to Playwright: bigger than the 10KB cap above, so it was
+ * stored as a 334-char "review" (BRO-5133). Title + phrase together, so an
+ * article quoting the phrase is not rejected.
+ *
+ * Akamai's wording differs ("You don't have permission to access ... on this
+ * server", reference link to errors.edgesuite.net). dailymail.co.uk serves it
+ * to Playwright once an IP is throttled, and the chain logged the 334-char
+ * denial as a success (BRO-716).
+ */
+function isRobotBlockPage(content) {
+  return !!content && content.length < 60000 &&
+    /<title>\s*Access Denied\s*<\/title>/i.test(content) &&
+    (content.includes('similar to malicious requests sent by robots') ||
+      /You don(?:'|&#39;|’)t have permission to access/i.test(content) ||
+      content.includes('errors.edgesuite.net'));
 }
 
-module.exports = { COOKIE_PROBES, classifyWalledProbe, isBotChallenge };
+// BRO-7962: an Akamai/WAF "Access Denied" page (Telegraph to every plain and
+// Playwright fetch, 2026-11-21) is a bot wall too; one definition with the
+// scraper chain's check (isRobotBlockPage), so the two cannot drift.
+function isBotChallenge(html) {
+  const s = String(html || '');
+  return BOT_CHALLENGE_RE.test(s) || isRobotBlockPage(s);
+}
+
+module.exports = { COOKIE_PROBES, classifyWalledProbe, isBotChallenge, isRobotBlockPage };

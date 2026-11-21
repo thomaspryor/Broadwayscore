@@ -69,6 +69,8 @@ function main() {
     const d = B.stopDecision({ failedPushes, spend, cap: CAP, roundsDone: round - 1, rounds: ROUNDS, lastRoundWork: round === 1 ? 1 : lastWork });
     if (d.stop) { stopWhy = d.why; break; }
     const rem = B.remainingBudget(CAP, spend);
+    // The driver reads BD_REQ_BUDGET/SERP_QUERY_BUDGET=0 as "no cap": a spent budget must stop here, never reach it.
+    if (rem.bd === 0 || rem.serp === 0) { stopWhy = `spend cap reached (BD left ${rem.bd}, SERP left ${rem.serp})`; break; }
     const sumPath = path.join(STATE_DIR, `batch-${BATCH_ID}-r${round}.json`);
     try { fs.unlinkSync(sumPath); } catch { /* none */ }
     const env = {

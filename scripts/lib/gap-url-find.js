@@ -476,6 +476,82 @@ const URL_FIND_EVIDENCE = new Set(['no_evidence', 'rejected']);
 // no_candidates outlive night two's found_unreadable). Errors undo nothing.
 const METHOD_FOUND = new Set(['found', 'found_unreadable', 'more_candidates']);
 
+// BRO-7962: rows written before REFUSAL_POLICY 1 refused links that were only
+// behind a paywall or bot check. Their refusals (the links and the method's
+// 'candidates_refused' status) are not trusted: those methods run once more
+// and re-judge their links. Narrower than a URL_FIND_POLICY bump, which would
+// rerun every finished search (~1,800 reviews) to fix the 52 that refused links.
+const REFUSAL_POLICY = 1;
+function refusalTrusted(row) {
+  return ((row && row.detail && row.detail.refusalPolicy) || 0) >= REFUSAL_POLICY;
+}
+
+/**
+ * Links earlier URL_FIND tries found and refused on trusted evidence, from a
+ * review's live rows. A link whose text was READ and refused counts only when
+ * the gate said it is not this review (identity refusal); "too short" or "not
+ * longer" says nothing about the link (BRO-7962 review). Pure.
+ */
+function refusedUrlsFromRows(rows) {
+  const { URL_IDENTITY_REFUSALS } = require('./gap-strategies');
+  return new Set((rows || []).filter((r) => r.strategy === 'URL_FIND')
+    .flatMap((r) => [...(r.outcome === 'rejected' && r.url && URL_IDENTITY_REFUSALS.has(r.reason) ? [r.url] : []), ...(refusalTrusted(r) ? (r.detail.refusedCandidates || []) : [])]));
+}
+
+/**
+ * The walled link (bot check / paywall) a failed URL_FIND should hand to the
+ * outlet's logged-in browser tonight, or null. Pure.
+ * @param {{ok:boolean, foundUnreadable?:Array<{url:string, code:string, method?:string}>}} got
+ */
+function walledHandoffLink(got, { browserGateOpen, browserEnabled, hasAdapter }) {
+  if (!got || got.ok || !browserGateOpen || !browserEnabled || !hasAdapter) return null;
+  const { WALLED_REASONS } = require('./gap-strategies');
+  return (got.foundUnreadable || []).find((u) => u && u.url && WALLED_REASONS.has(u.code)) || null;
+}
+
+/**
+ * Fold a failed walled-link browser read into the URL_FIND result. When the
+ * logged-in browser proves the link dead (404/410), it is refused on evidence
+ * (refusedCandidates, so no method re-finds it) and is no longer unreadable;
+ * the method that found only that link counts as candidates_refused. Any other
+ * failure (lost login, wall) leaves the link waiting. Pure.
+ */
+/** outcome + reason of a failed URL_FIND from its method statuses. Pure (one definition, BRO-7962). */
+function urlFindOutcome(status, foundUnreadable) {
+  const complete = METHODS.every((m) => METHOD_DONE.has(status[m]));
+  return { outcome: Object.values(status).some((s) => METHOD_DONE.has(s)) ? 'no_evidence' : 'non_evidence', reason: complete ? 'url_not_found_all_methods' : ((foundUnreadable || []).length ? 'url_found_unreadable' : 'url_not_found') };
+}
+
+const BROWSER_DEAD_RE = /^url_(?:not_found|dead)/;
+function applyWalledBrowserResult(got, walled, b) {
+  const walledBrowser = { url: walled.url, outcome: b.outcome, reason: b.reason };
+  if (!BROWSER_DEAD_RE.test(String(b.reason || ''))) return { ...got, walledBrowser };
+  const foundUnreadable = (got.foundUnreadable || []).filter((u) => u.url !== walled.url);
+  const methods = { ...(got.methods || {}) };
+  // The method takes the status it had with its walled links set aside (more
+  // candidates, a timed-out sibling, a query error all stay undone); with no
+  // record of that, it stays found_unreadable (never guessed done).
+  const m = walled.method;
+  const after = m && got.methodsIfWalledRefused && got.methodsIfWalledRefused[m];
+  if (after && methods[m] === 'found_unreadable' && !foundUnreadable.some((u) => u.method === m)) methods[m] = after;
+  return { ...got, ...urlFindOutcome(methods, foundUnreadable), walledBrowser, foundUnreadable, methods, refusedCandidates: [...new Set([...(got.refusedCandidates || []), walled.url])] };
+}
+
+// A walled link seen this many URL_FIND nights without a login reading it waits
+// for the outlet's browser instead of re-buying the same search and fetch weekly.
+const WALLED_PARK_AFTER = 2;
+
+/** How many URL_FIND rows found `url` walled and could not read it. Pure. */
+function walledSightings(tries) {
+  const { WALLED_REASONS } = require('./gap-strategies');
+  const n = new Map();
+  for (const t of tries || []) {
+    if (t.strategy !== 'URL_FIND') continue;
+    for (const u of (t.detail && t.detail.foundUnreadable) || []) if (u && WALLED_REASONS.has(u.code)) n.set(u.url, (n.get(u.url) || 0) + 1);
+  }
+  return n;
+}
+
 function urlFindProgress(tries, methods = METHODS) {
   const done = new Map();
   for (const t of tries || []) {
@@ -483,7 +559,8 @@ function urlFindProgress(tries, methods = METHODS) {
     const ms = (t.detail && t.detail.methods) || {};
     for (const [m, status] of Object.entries(ms)) {
       if (METHOD_FOUND.has(status)) done.delete(m);
-      else if (METHOD_DONE.has(status) && URL_FIND_EVIDENCE.has(t.outcome) && (t.detail && t.detail.policy) === URL_FIND_POLICY) done.set(m, { status, ts: t.ts, runId: t.runId });
+      else if (METHOD_DONE.has(status) && URL_FIND_EVIDENCE.has(t.outcome) && (t.detail && t.detail.policy) === URL_FIND_POLICY
+        && (status !== 'candidates_refused' || refusalTrusted(t))) done.set(m, { status, ts: t.ts, runId: t.runId });
     }
   }
   const missing = methods.filter((m) => !done.has(m));
@@ -501,9 +578,36 @@ function urlFindProgress(tries, methods = METHODS) {
 // re-buy Bright Data each night (ship-check P1).
 const UNREADABLE_COOLDOWN_H = 7 * 24;
 
-function urlFindEligibility(tries, { nowMs = Date.now(), cooldownH = 20 } = {}) {
+/**
+ * Park URL_FIND for this review (BRO-7962 review) when a walled link was found
+ * and left unread on WALLED_PARK_AFTER nights, every method still missing has
+ * already found a walled link (re-running them only re-finds it), and either
+ * the outlet has no login reader or that reader failed on the link that often.
+ * Not permanent and not NOT_FINDABLE: a working login (or --outlets) reopens it.
+ */
+function hasAdapterWait(tries, { loginReader = false, missing = [] } = {}) {
+  const { WALLED_REASONS } = require('./gap-strategies');
+  const uf = (tries || []).filter((t) => t.strategy === 'URL_FIND');
+  const foundWalled = new Set();
+  for (const t of uf) {
+    for (const u of (t.detail && t.detail.foundUnreadable) || []) if (u && WALLED_REASONS.has(u.code) && u.method) foundWalled.add(u.method);
+  }
+  if (!missing.every((m) => foundWalled.has(m))) return false;
+  for (const [url, n] of walledSightings(tries)) {
+    if (n < WALLED_PARK_AFTER) continue;
+    if (!loginReader) return true;
+    const browserFailed = uf.filter((t) => t.detail && t.detail.walledBrowser && t.detail.walledBrowser.url === url).length;
+    if (browserFailed >= WALLED_PARK_AFTER) return true;
+  }
+  return false;
+}
+
+function urlFindEligibility(tries, { nowMs = Date.now(), cooldownH = 20, loginReader = false } = {}) {
   const prog = urlFindProgress(tries);
   if (!prog.missing.length) return { ok: false, reason: 'url_find_exhausted' };
+  // BRO-7962 review: found, behind a wall, unread twice -> wait for a login (not permanent, not "not findable").
+  // A login reader keeps trying (URL_FIND hands it the link, weekly cooldown) until it too fails twice.
+  if (hasAdapterWait(tries, { loginReader, missing: prog.missing })) return { ok: false, reason: 'url_find_walled_waiting_login' };
   const uf = (tries || []).filter((t) => t.strategy === 'URL_FIND' && Number.isFinite(Date.parse(t.ts || '')));
   if (uf.length) {
     const latest = uf.reduce((a, b) => (Date.parse(b.ts) >= Date.parse(a.ts) ? b : a));
@@ -559,9 +663,19 @@ function outletHosts(outletId, profile, registry) {
  * fetch_error is a blocked route, not an answer (ship-check P1: those are
  * classed no_evidence by the fetch policy but say nothing about the link). Pure.
  */
-const FETCH_EVIDENCE_RE = /^[a-z]+:(?:rejected\/|no_evidence\/(?:url_dead|url_not_found|archive_empty))/;
+// BRO-7962: a bot check or a declared paywall (gap-strategies WALLED_REASONS) is
+// a page we may not read, not an answer about the link: the correct Times link
+// for a review was refused this way and skipped by every later night.
+const FETCH_EVIDENCE_RE = /^[a-z]+:(?:rejected\/(?!bot_challenge$|paywalled$)|no_evidence\/(?:url_dead|url_not_found|archive_empty))/;
+const WALLED_FETCH_RE = /^[a-z]+:rejected\/(bot_challenge|paywalled)$/;
 function fetchRefusedOnEvidence(tried) {
   return (tried || []).length > 0 && tried.every((t) => FETCH_EVIDENCE_RE.test(t));
+}
+
+/** The first walled answer ('bot_challenge' | 'paywalled') among the routes tried, else null. Pure. */
+function walledFetchReason(tried) {
+  for (const t of tried || []) { const m = WALLED_FETCH_RE.exec(t); if (m) return m[1]; }
+  return null;
 }
 
 /** A method that had nothing to search with (no host, no date, no crawl for the years). Pure. */
@@ -595,7 +709,10 @@ async function fetchCandidateText(url, { allowBd = false, minChars = 1500, onPai
     try {
       const res = await d.fetchPage(url, { tiers: ['brightdata'] });
       take(S.fromHtml(res && res.content, url, 'brightdata', d), 'brightdata');
-    } catch (e) { tried.push(`brightdata:error ${String(e.message).slice(0, 60)}`); }
+    } catch (e) {
+      const w = S.walledFetchError(e);
+      if (w) take(w, 'brightdata'); else tried.push(`brightdata:error ${String(e.message).slice(0, 60)}`);
+    }
   }
   return best ? { ...best, url, tried, paid } : { ok: false, url, tried, paid };
 }
@@ -721,7 +838,7 @@ module.exports = {
   planUrlFindWork,
   fallbackUrlFindSlot,
   probeLedgerRow,
-  buildCorpusIndex, outletHosts, fetchCandidateText, fetchRefusedOnEvidence, methodNotApplicable, urlFindProgress, urlFindEligibility, METHOD_DONE, URL_FIND_POLICY, fetchIndexWithRetry, resetIndexBreaker, INDEX_BREAKER_LIMIT,
+  buildCorpusIndex, outletHosts, fetchCandidateText, fetchRefusedOnEvidence, walledFetchReason, refusedUrlsFromRows, walledHandoffLink, applyWalledBrowserResult, urlFindOutcome, walledSightings, WALLED_PARK_AFTER, REFUSAL_POLICY, methodNotApplicable, urlFindProgress, urlFindEligibility, METHOD_DONE, URL_FIND_POLICY, fetchIndexWithRetry, resetIndexBreaker, INDEX_BREAKER_LIMIT,
   METHODS, SITEMAP_ADAPTERS, titleTokens, pathWords, slugTitleScore, dateWindow, learnOutletProfile, extractOutboundLinks,
   rankCandidates, cdxFilterToken, waybackQueries, learnTitleStartDirs, titleStartQueries, yearWindow, parseCdxCandidates, learnSlugTemplates, slugify, sitemapDays,
   parseSitemapLocs, aggregatorFilesFor, runMethod, defaultDeps, commonCrawlQueries, parseCcCandidates, setCcCollections,
