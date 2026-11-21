@@ -133,6 +133,9 @@ If the change moves spend (fetch, SERP, scraper, vendor order, caching, a cap), 
 3. A test that asserts the fallback-to-paid behaviour is not evidence of savings. A line like `EFFECT: ... numbers pending` is not a result: say "live, not yet proven until <date>" and do not write "verified".
 4. `RECHECK-AFTER` is only for an effect whose first observation is more than 24 hours away (the tool printed `idle` or `pending`). The ledger shows spend within the hour; do not defer what the ledger can already show.
 
+### Phase 2.6: Outside settings need successes, not silence (BRO-7994)
+If the change only works when a setting outside the repo is right (Google sign-in origins, DNS, a provider dashboard), "0 events" or "no errors" after go-live proves nothing. Read live data after the land and cite 2+ real successes (`LIVE-CHECK:`), or say plainly it is unproven. Owner steps for such a setting: `node scripts/lib/owner-steps.js`.
+
 ### Phase 3: Check for collateral damage
 
 This is the part that gets skipped. For each file in the "blast radius":

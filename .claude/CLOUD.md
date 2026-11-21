@@ -17,6 +17,7 @@ Each is a copy of a `~/.claude/hooks/` master and self-skips when `$HOME/.claude
 
 - `session-start.sh`: critical-rules banner + integrity check.
 - `verify-edits.sh` (Stop): blocks "done" without Bash verification; needs a closing verdict line: `SAFE TO ARCHIVE — <why>`, `KEEP OPEN — <what it waits on, what wakes it>` or `ACTION NEEDED FROM YOU — <what>` (a DECISION NEEDED / `You need to:` ask pairs only with ACTION NEEDED); blocks an unmerged PR with no blocker (`CI still running`, `CI red`, merge conflict, `DECISION NEEDED:`, `PR-BLOCKER: <reason>`); NOCARD blocks work with no Linear card (`NO-CARD: <reason>`); INFLIGHT blocks SAFE TO ARCHIVE while a background Agent or self-bound Routine is pending; OPENWORK, LOOSEENDS, WAKELESS, CLEARCLOSE, OWNERMERGE and LANDUNCHECKED block hand-offs, offers, a `KEEP OPEN` with nothing armed to wake it, an unclear closing block, "waiting on your merge" and a land push with no run check of its own (`BACKLOG-OK: <why>`); LANDREFUSED (advisory until 2026-11-24) blocks a refused landing the closing never mentions. Bypass `NO-VERIFY: <reason>`.
+- BRO-7994 (`verify-edits.sh`): LIVERUN refuses SAFE TO ARCHIVE on a landed change needing an outside setting (OAuth origins, DNS, a dashboard) until `LIVE-CHECK: <2+ successes from a live read>`, a 7-day RECHECK with a live VERIFY, or `NO-OUTSIDE-SETTING:`. OWNERSTEPS: owner steps on an outside site need a link, numbered steps, "You'll see" (`node scripts/lib/owner-steps.js` has recipes). Kill: `OUTSIDE_SETTING_STOP_DISABLE=1`, `OWNER_STEPS_STOP_DISABLE=1`.
   - Finish chain: SAFE TO ARCHIVE after edits under `src/`, `scripts/`, `.claude/hooks/`, `.github/workflows/` or `supabase/` needs a review since those edits (`/ship-check`, `/code-review`, or `/second-opinion` while the session has ≤15 code edits; up to 8 fixup edits after it are covered until the owner's next message), then `/what-else` and `/wrap-up` (NOWRAPUP also checks the wrap-up's Linear close-out). Only real invocations count (Skill tool or the owner's slash command), not an Agent "review", codex, or by hand. Edits through Bash count. Bypasses `NO-SHIP-CHECK:` / `NO-WHAT-ELSE:` / `NO-WRAP-UP: <reason>` (`NO-VERIFY:` does not waive the review); kill switch `CLOUD_CHAIN_GATE_DISABLE=1`.
 - `github-main-guard.sh`: refuses GitHub MCP writes to Broadwayscore `main` and MCP PR creates/merges/auto-merge; land via `land/<name>`. Override `LAND_ENFORCE_OFF=1` or `$HOME/.claude/LAND_ENFORCE_OFF`.
 - `block-resend-broadcasts.sh`: refuses direct `resend.com/broadcasts` calls (CLAUDE.md §17).
@@ -99,11 +100,7 @@ CLAUDE.md's `gh` runbooks don't run as written; use the GitHub MCP tools (secret
 
 ## Multi-repo sessions (BRO-5008, BRO-5221)
 
-Several repos attached, or a misspelled `create_session` source_url, start the session in `/home/user`: `--add-dir` loads commands, never hooks. The setup-script line (below) runs `scripts/install-home-claude-config.js`, which wires every hook into `/home/user/.claude` and links `commands/`, `skills/`, `agents/`; startup repairs drift. Check with its `--check`.
-
-If that reports DRIFT, or `--check` does not exist (no checkout), no repo hooks fire: follow the hook rules by hand (no `POST /broadcasts/{id}/send`, no MCP writes to `main`, review before landing, close the card). Stall Stop gates load via the app repo `stall-stop-bootstrap.sh`; a `BRO-7194:` message means they did not.
-
-`--adopt-hookless-settings` preserves unmarked, hookless settings, including permissions and `autoMode`, across install and uninstall.
+Several repos attached (or a bad `create_session` source_url) start in `/home/user` and load no repo hooks unless the setup-script install ran: `docs/cloud-multi-repo-runbook.md`.
 
 ## Production API keys from a phone session
 

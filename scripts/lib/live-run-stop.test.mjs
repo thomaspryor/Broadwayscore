@@ -243,3 +243,51 @@ test('BRO-7790: NO-LIVE-RUN is per file; a bare one covers only a single-file ch
   assert.equal(decide2(ev, 'NO-LIVE-RUN: scripts/mailer-job.js: runs on cron at 6am daily\nNO-LIVE-RUN: scripts/fixture-job.js: sends real email to readers\nSAFE TO ARCHIVE — x').decision, 'block', 'a schedule-only per-file reason is refused');
   assert.equal(decide([...edit('scripts/fixture-job.js'), ...land()], bare).decision, 'allow', 'single live file: bare bypass still works');
 });
+
+// ─── BRO-7994: outside-setting class ─────────────────────────────────────────
+const say = (text) => [{ kind: 'assistant_text', text }];
+const NOW = new Date('2026-11-21T12:00:00Z');
+const decideAt = (events, lastMessage = SAFE) => stopHookDecision({ lastMessage, events, env: ENV, index, now: NOW });
+const oneTap = () => [...edit('src/lib/google-one-tap.ts'), ...say('Gotchas: the Google web client must list both origins. Not checkable from a cloud session.'), ...landed()];
+
+test('BRO-7994 incident: One Tap landed, admitted unverifiable, 0 events 3 min later, SAFE TO ARCHIVE -> block', () => {
+  const events = [...oneTap(), ...use('mcp__0646a38c__exec', { command: 'query' }, '{"results":[[0]]}'),
+    ...say('LIVE-CHECK: 0 One Tap events 3 minutes after go-live, no errors'),
+    ...say('Paused. RECHECK-AFTER: 2026-12-21\nVERIFY: `test -f src/lib/google-one-tap.ts`')];
+  const d = decideAt(events);
+  assert.equal(d.decision, 'block');
+  assert.match(d.chunkKey, /:outside$/);
+  assert.match(d.message, /src\/lib\/google-one-tap\.ts/);
+  assert.match(d.message, /more than 7 days/);
+});
+
+test('BRO-7994: a short recheck with a real acceptance command passes; test -f does not', () => {
+  const ok = say('RECHECK-AFTER: 2026-11-23\nVERIFY: `node scripts/check-alert-condition-absent.js --key-b64 b25lLXRhcA`');
+  assert.equal(decideAt([...oneTap(), ...ok]).decision, 'allow');
+  const hollow = say('RECHECK-AFTER: 2026-11-23\nVERIFY: `test -f src/lib/google-one-tap.ts`');
+  assert.equal(decideAt([...oneTap(), ...hollow]).decision, 'block');
+});
+
+test('BRO-7994: LIVE-CHECK counts only when the number is in a live read taken after the land', () => {
+  const claim = say('LIVE-CHECK: 6 One Tap sign-ins completed since go-live');
+  const read = use('mcp__0646a38c__exec', { command: 'query' }, '{"results":[["one_tap_success", 6]]}');
+  assert.equal(decideAt([...oneTap(), ...read, ...claim]).decision, 'allow');
+  assert.equal(decideAt([...oneTap(), ...claim]).decision, 'block', 'no read at all');
+  assert.equal(decideAt([...oneTap(), ...bash('echo "6 sign-ins"', '6 sign-ins'), ...claim]).decision, 'block', 'echo is not a read');
+  const before = [...edit('src/lib/google-one-tap.ts'), ...say('Not checkable from a cloud session.'), ...read, ...landed(), ...claim];
+  assert.equal(decideAt(before).decision, 'block', 'read before the land');
+});
+
+test('BRO-7994: owner handed a manual outside-site step after a landed src change -> block; bypass and kill switch allow', () => {
+  const msg = 'Shipped.\nYou need to: in Google Cloud Console, add both site addresses on the sign-in settings.\n\nSAFE TO ARCHIVE — landed';
+  const ev = [...edit('src/lib/google-one-tap.ts'), ...landed()];
+  assert.equal(decideAt(ev, msg).decision, 'block');
+  assert.equal(decideAt([...ev, ...say('NO-OUTSIDE-SETTING: the console change only renames the app, sign-in works without it')], msg).decision, 'allow');
+  assert.equal(stopHookDecision({ lastMessage: msg, events: ev, env: { ...ENV, OUTSIDE_SETTING_STOP_DISABLE: '1' }, index, now: NOW }).decision, 'allow');
+});
+
+test('BRO-7994: no outside trigger, or only tests edited, or nothing landed -> allow', () => {
+  assert.equal(decideAt([...edit('src/lib/google-one-tap.ts'), ...landed()]).decision, 'allow');
+  assert.equal(decideAt([...edit('src/lib/google-one-tap.test.ts'), ...say('Not checkable from a cloud session.'), ...landed()]).decision, 'allow');
+  assert.equal(decideAt([...edit('src/lib/google-one-tap.ts'), ...say('Not checkable from a cloud session.')]).decision, 'allow');
+});
