@@ -217,6 +217,8 @@ function ingest(showId, m, url, show) {
   return { outcome: 'ingested', file: kept, bodyChars };
 }
 
+let stageDiagDone = false;
+
 async function cmdRun() {
   const capUsd = numArg('max-usd', 45);
   const state0 = readState();
@@ -280,6 +282,15 @@ async function cmdRun() {
     results.push(done);
     refresh();
     console.log(`${q.showId} [${q.slot}] ${done.outcome} ${done.url || ''}${/^removed/.test(done.outcome) && done.detail ? ` (${done.detail})` : ''}`);
+    // BRO-6487 diagnostic, once per run: why a Stage page that fetched fine has no article body.
+    if (q.slot === 'stage' && /^removed/.test(done.outcome) && done.url && !stageDiagDone) {
+      stageDiagDone = true;
+      try {
+        const raw = await require('./lib/fetch-plain').fetchWithCookiesPlain(done.url);
+        const h = (raw && raw.content) || '';
+        console.log(`[stage-diag] ${h.length} chars, introText=${/aos-Article-IntroText/.test(h)}, gate=${/utm_source=Reggate/i.test(h)}, paras=${(h.match(/<p[ >]/g) || []).length}, title=${((/<title>([^<]{0,80})/.exec(h) || [])[1] || '').trim()}`);
+      } catch (e) { console.log(`[stage-diag] error ${String(e.message).slice(0, 80)}`); }
+    }
     if (results.length % 25 === 0) console.log(tally.line());
     await sleep(500);
   }
