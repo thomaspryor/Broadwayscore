@@ -1,0 +1,263 @@
+name: Scoring Experiment
+
+on:
+  workflow_dispatch:
+    inputs:
+      experiment:
+        description: 'Which experiment to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - comprehensive
+          - prompt-variations
+          - openai-leg-shadow
+      sample:
+        description: 'openai-leg-shadow: sample size (past reviews)'
+        required: false
+        default: '1000'
+      limit:
+        description: 'openai-leg-shadow: max reviews per shard (smoke run: 5)'
+        required: false
+        default: ''
+      shadow_model:
+        description: 'openai-leg-shadow: second OpenAI model (gpt-4o = noise floor run)'
+        required: false
+        default: 'gpt-5.4-mini'
+        type: choice
+        options:
+          - gpt-5.4-mini
+          - gpt-6-luna
+          - gpt-5.6-luna
+          - gpt-5.6-sol
+          - gpt-4o
+          - none
+      shadow_claude_model:
+        description: 'openai-leg-shadow: Claude shadow leg, e.g. claude-sonnet-5-5 (blank = none). Sonnet 5.5 runs without temperature (API rejects it), see BRO-7529'
+        required: false
+        default: ''
+      control_openai_model:
+        description: 'openai-leg-shadow: pin the CONTROL OpenAI leg, e.g. gpt-4o for a combined old-vs-new A/B (blank = the production pin)'
+        required: false
+        default: ''
+      control_claude_model:
+        description: 'openai-leg-shadow: pin the CONTROL Claude leg, e.g. claude-sonnet-4-6 (blank = the production pin)'
+        required: false
+        default: ''
+      shadow_gemini_model:
+        description: 'openai-leg-shadow: Gemini shadow leg, e.g. gemini-3.5-flash-lite (BRO-7511, 2.5-flash shuts down 2026-12-01; blank = none)'
+        required: false
+        default: ''
+      max_cost_usd:
+        description: 'openai-leg-shadow: spend cap in USD for THIS dispatch across the 4 shards (each gets a quarter; resumes of the same label count prior spend; the 80 USD owner cap is across all dispatches, so budget accordingly). Owner hard cap is 80.'
+        required: false
+        default: '75'
+      open_shows:
+        description: 'openai-leg-shadow: score EVERY review of N open shows instead of a corpus sample (blank = sample)'
+        required: false
+        default: ''
+      label:
+        description: 'openai-leg-shadow: results file prefix, data/audit/openai-leg-ab/<label>-shard-N.jsonl (blank = shard-N.jsonl). A gpt-4o shadow run is a NOISE FLOOR: read its flips/moved, ignore its gates.'
+        required: false
+        default: ''
+
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  run-experiment:
+    if: ${{ github.event.inputs.experiment != 'openai-leg-shadow' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Comprehensive Experiment
+        if: ${{ github.event.inputs.experiment == 'all' || github.event.inputs.experiment == 'comprehensive' }}
+        run: |
+          echo "=== Running Comprehensive Scoring Experiment ==="
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comprehensive-experiment.ts
+
+      - name: Run Prompt Variations Experiment
+        if: ${{ github.event.inputs.experiment == 'all' || github.event.inputs.experiment == 'prompt-variations' }}
+        run: |
+          echo "=== Running Prompt Variations Experiment ==="
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/test-prompt-variations.ts
+
+      - name: Upload Results
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: experiment-results
+          path: data/audit/*.json
+
+      - name: Commit Results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/audit/*.json || true
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: Add scoring experiment results
+
+            Experiment: ${{ github.event.inputs.experiment }}
+            Triggered by: @${{ github.actor }}
+
+            Co-Authored-By: Claude <noreply@anthropic.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+      # severity-low-ok: manual workflow_dispatch only: the person who dispatched it is watching the run, and nothing scheduled or user-facing depends on it (experiment run, never touches live scores)
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Scoring Experiment Failed'
+          severity: 'low'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scoring-experiment-run-experiment
+
+  # OpenAI-leg migration A/B on past reviews (owner plan 2026-11-09; gpt-4o
+  # retires 2027-01-14). Read-only against review files: each shard writes one
+  # JSONL of control-vs-shadow finals to data/audit/openai-leg-ab/ and commits
+  # only that (plus the LLM spend ledger). Report:
+  #   npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/openai-leg-shadow.ts --report data/audit/openai-leg-ab
+  openai-leg-shadow:
+    if: ${{ github.event.inputs.experiment == 'openai-leg-shadow' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1000
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+      - name: Results file
+        id: dir
+        env:
+          INPUT_LABEL: ${{ github.event.inputs.label }}
+        run: |
+          # One folder (already merge=union + verified in audit-ledger-merge-attrs.js);
+          # runs are told apart by file prefix.
+          case "$INPUT_LABEL" in ''|*[!a-z0-9-]*) [ -z "$INPUT_LABEL" ] || { echo "::error::label must be [a-z0-9-]"; exit 1; } ;; esac
+          echo "file=data/audit/openai-leg-ab/${INPUT_LABEL:+$INPUT_LABEL-}shard-${{ matrix.shard }}.jsonl" >> "$GITHUB_OUTPUT"
+          echo "cost=data/audit/openai-leg-ab/${INPUT_LABEL:+$INPUT_LABEL-}shard-${{ matrix.shard }}.cost.json" >> "$GITHUB_OUTPUT"
+      - name: Score shard ${{ matrix.shard }} (control ${{ github.event.inputs.control_openai_model || 'pin' }}+${{ github.event.inputs.control_claude_model || 'pin' }} vs shadow ${{ github.event.inputs.shadow_model || 'gpt-5.4-mini' }})
+        env:
+          INPUT_SAMPLE: ${{ github.event.inputs.sample }}
+          INPUT_LIMIT: ${{ github.event.inputs.limit }}
+          INPUT_SHADOW: ${{ github.event.inputs.shadow_model }}
+          INPUT_OPEN_SHOWS: ${{ github.event.inputs.open_shows }}
+          INPUT_CLAUDE: ${{ github.event.inputs.shadow_claude_model }}
+          INPUT_CTRL_OPENAI: ${{ github.event.inputs.control_openai_model }}
+          INPUT_CTRL_CLAUDE: ${{ github.event.inputs.control_claude_model }}
+          INPUT_GEMINI: ${{ github.event.inputs.shadow_gemini_model }}
+          INPUT_MAXCOST: ${{ github.event.inputs.max_cost_usd }}
+          OUT_FILE: ${{ steps.dir.outputs.file }}
+        run: |
+          EXTRA=""
+          if [ -n "$INPUT_LIMIT" ]; then EXTRA="$EXTRA --limit=$INPUT_LIMIT --shuffle"; fi
+          if [ -n "$INPUT_OPEN_SHOWS" ]; then EXTRA="$EXTRA --open-shows=$INPUT_OPEN_SHOWS"; fi
+          if [ -n "$INPUT_CLAUDE" ]; then EXTRA="$EXTRA --shadow-claude-model=$INPUT_CLAUDE"; fi
+          # The script validates every model id (unknown ids throw before any API call).
+          for v in "$INPUT_CTRL_OPENAI" "$INPUT_CTRL_CLAUDE" "$INPUT_GEMINI"; do case "$v" in *[!a-z0-9.-]*) echo "::error::model ids must be [a-z0-9.-]"; exit 1;; esac; done
+          if [ -n "$INPUT_CTRL_OPENAI" ]; then EXTRA="$EXTRA --control-openai-model=$INPUT_CTRL_OPENAI"; fi
+          if [ -n "$INPUT_CTRL_CLAUDE" ]; then EXTRA="$EXTRA --control-claude-model=$INPUT_CTRL_CLAUDE"; fi
+          if [ -n "$INPUT_GEMINI" ]; then EXTRA="$EXTRA --shadow-gemini-model=$INPUT_GEMINI"; fi
+          CAP="${INPUT_MAXCOST:-75}"
+          node -e 'const c=Number(process.argv[1]);if(!(c>0&&c<=80)){console.error("::error::max_cost_usd must be a number in (0, 80]");process.exit(1)}' "$CAP"
+          SHARD_CAP=$(node -e 'console.log((Number(process.argv[1])/4).toFixed(2))' "$CAP")
+          EXTRA="$EXTRA --max-cost-usd=$SHARD_CAP"
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/openai-leg-shadow.ts \
+            --sample="${INPUT_SAMPLE:-1000}" --seed=20261109 --shard=${{ matrix.shard }} --shards=4 \
+            --concurrency=4 --shadow-model="${INPUT_SHADOW:-gpt-5.4-mini}" \
+            --out="$OUT_FILE" $EXTRA
+      - name: Upload shard
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: openai-leg-ab${{ github.event.inputs.label && format('-{0}', github.event.inputs.label) || '' }}-shard-${{ matrix.shard }}
+          path: |
+            ${{ steps.dir.outputs.file }}
+            ${{ steps.dir.outputs.cost }}
+          if-no-files-found: warn
+      - name: Commit shard
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          OUT_FILE: ${{ steps.dir.outputs.file }}
+          COST_FILE: ${{ steps.dir.outputs.cost }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          [ -n "$OUT_FILE" ] && git add "$OUT_FILE" 2>/dev/null || true
+          [ -n "$COST_FILE" ] && git add "$COST_FILE" 2>/dev/null || true
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: OpenAI-leg A/B shard ${{ matrix.shard }} [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scoring-experiment-openai-leg-shadow

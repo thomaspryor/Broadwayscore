@@ -1,0 +1,1906 @@
+{
+  "outletId": "theater-life",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T12:14:15.063Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "status": "incomplete",
+    "notes": [
+      "page 7: HTTP 403"
+    ],
+    "incomplete": true,
+    "enumerated": 600,
+    "inWindow": 600,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "held": 343,
+      "gap": 8,
+      "out-of-window": 39,
+      "not-review": 114,
+      "held-alt-url": 52,
+      "held-unmatched": 8,
+      "catalog-gap": 36
+    },
+    "viaTitleVariant": {
+      "gap": 2,
+      "held": 17,
+      "held-alt-url": 5,
+      "not-review": 1
+    },
+    "recall": 0.98,
+    "recallWithCatalog": 0.9
+  },
+  "seasons": {
+    "2026-27": {
+      "held": 20,
+      "gap": 1,
+      "out-of-window": 1,
+      "not-review": 2,
+      "held-alt-url": 1,
+      "held-unmatched": 1
+    },
+    "2025-26": {
+      "gap": 4,
+      "held": 94,
+      "out-of-window": 8,
+      "not-review": 27,
+      "held-alt-url": 18,
+      "catalog-gap": 8,
+      "held-unmatched": 2
+    },
+    "2024-25": {
+      "catalog-gap": 9,
+      "not-review": 39,
+      "out-of-window": 12,
+      "held-alt-url": 14,
+      "held-unmatched": 2,
+      "held": 82,
+      "gap": 1
+    },
+    "2023-24": {
+      "held": 85,
+      "held-unmatched": 3,
+      "catalog-gap": 11,
+      "not-review": 32,
+      "out-of-window": 13,
+      "held-alt-url": 13,
+      "gap": 1
+    },
+    "2022-23": {
+      "held": 62,
+      "catalog-gap": 8,
+      "out-of-window": 5,
+      "held-alt-url": 6,
+      "not-review": 14,
+      "gap": 1
+    }
+  },
+  "corpusSide": {
+    "rowsInWindow": 773,
+    "notEnumerated": 76,
+    "noUrl": 2,
+    "samples": [
+      {
+        "showId": "a-case-for-the-existence-of-god-off-broadway-2022",
+        "url": "https://theaterlife.com/a-case-for-the-existence-of-god-golden-shield/",
+        "publishDate": "2022-05-15",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-childs-christmas-in-wales-off-broadway-2022",
+        "url": "https://theaterlife.com/a-childs-christmas-in-wales/",
+        "publishDate": "2022-12-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-christmas-carol-2022",
+        "url": "https://theaterlife.com/a-christmas-carol-2/",
+        "publishDate": "2022-11-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "aint-no-mo-2022",
+        "url": "https://theaterlife.com/aint-no-mo-2/",
+        "publishDate": "2022-12-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "almost-famous-2022",
+        "url": "https://theaterlife.com/almost-famous-1-2/",
+        "publishDate": "2022-11-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "american-buffalo-2022",
+        "url": "https://theaterlife.com/how-i-learned-to-drive-american-buffalo/",
+        "publishDate": "2022-05-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "american-buffalo-2022",
+        "url": "https://theaterlife.com/american-buffalo/",
+        "publishDate": "2022-05-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "and-juliet-2022",
+        "url": "https://theaterlife.com/juliet/",
+        "publishDate": "2022-11-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "and-juliet-2022",
+        "url": "https://theaterlife.com/juliet-1-2/",
+        "publishDate": "2022-11-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "angry-alan-off-broadway-2025",
+        "url": "https://theaterlife.com/five-reasons-why-angry-alan-should-transfer-to-broadway/",
+        "publishDate": "2025-07-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "birthday-candles-2022",
+        "url": "https://theaterlife.com/birthday-candles-1-2/",
+        "publishDate": "2022-04-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "black-no-more-off-broadway-2022",
+        "url": "https://theaterlife.com/intimate-apparel-black-no-more/",
+        "publishDate": "2022-02-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "caroline-or-change-2021",
+        "url": "https://theaterlife.com/caroline-or-change-fire-shut-up-in-my-bones/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "chester-bailey-off-broadway-2022",
+        "url": "https://theaterlife.com/chester-bailey/",
+        "publishDate": "2022-11-01",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "clydes-2021",
+        "url": "https://theaterlife.com/clydes-1-2/",
+        "publishDate": "2021-12-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "coal-country-off-broadway-2022",
+        "url": "https://theaterlife.com/coal-country/",
+        "publishDate": "2022-03-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "confederates-off-broadway-2022",
+        "url": "https://theaterlife.com/confederates/",
+        "publishDate": "2022-03-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "diana-the-musical-2021",
+        "url": "https://theaterlife.com/diana-the-musical/",
+        "publishDate": "2021-10-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "english-off-broadway-2022",
+        "url": "https://theaterlife.com/english-the-hang/",
+        "publishDate": "2022-02-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "flying-over-sunset-2021",
+        "url": "https://theaterlife.com/flying-over-sunset-1-2/",
+        "publishDate": "2021-12-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+        "url": "https://theaterlife.com/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-birthday-candles/",
+        "publishDate": "2022-04-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+        "url": "https://theaterlife.com/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf/",
+        "publishDate": "2022-04-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "funny-girl-2022",
+        "url": "https://theaterlife.com/funny-girl/",
+        "publishDate": "2022-04-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "hangmen-2022",
+        "url": "https://theaterlife.com/hangmen-the-minutes/",
+        "publishDate": "2022-04-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "harmony-off-broadway-2022",
+        "url": "https://theaterlife.com/harmony-1-2/",
+        "publishDate": "2022-04-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
+        "url": "https://www.theaterlife.com/node/16150",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "how-i-learned-to-drive-2022",
+        "url": null,
+        "publishDate": "2022-05-10",
+        "why": "no-url"
+      },
+      {
+        "showId": "into-the-woods-2022",
+        "url": "https://theaterlife.com/into-the-woods-2/",
+        "publishDate": "2022-07-15",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "into-the-woods-2022",
+        "url": "https://theaterlife.com/into-the-woods/",
+        "publishDate": "2022-07-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "junk-2017",
+        "url": "https://theaterlife.com/junk-illyria-actually/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "kimberly-akimbo-off-broadway-2021",
+        "url": "https://theaterlife.com/company-kimberly-akimbo/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "lackawanna-blues-2021",
+        "url": "https://theaterlife.com/lackawanna-blues-1-2/",
+        "publishDate": "2021-10-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "leopoldstadt-2022",
+        "url": "https://theaterlife.com/leopoldstadt/",
+        "publishDate": "2022-10-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "leopoldstadt-2022",
+        "url": "https://theaterlife.com/leopoldstadt-1-2/",
+        "publishDate": "2022-10-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "long-days-journey-into-night-off-broadway-2022",
+        "url": "https://theaterlife.com/long-days-journey-into-night-2/",
+        "publishDate": "2022-02-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "macbeth-2022",
+        "url": "https://theaterlife.com/macbeth-3/",
+        "publishDate": "2022-05-01",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "url": "https://theaterlife.com/mike-birbiglia-the-old-man-the-pool/",
+        "publishDate": "2022-11-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mj-2022",
+        "url": null,
+        "publishDate": "2022-02-14",
+        "why": "no-url"
+      },
+      {
+        "showId": "mj-2022",
+        "url": "https://theaterlife.com/mj-the-musical/",
+        "publishDate": "2022-02-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mrs-doubtfire-2021",
+        "url": "https://theaterlife.com/mrs-doubtfire-1-2/",
+        "publishDate": "2021-12-11",
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://theaterlife.com/rope/",
+      "headline": "Rope **",
+      "publishDate": "2026-11-04",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "rope-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/cat-cohen-broad-strokes-1-2/",
+      "headline": "Cat Cohen Broad Strokes ****1/2",
+      "publishDate": "2026-08-31",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cat-cohen-broad-strokes-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/la-cage-aux-folles-3/",
+      "headline": "La Cage Aux Folles ***",
+      "publishDate": "2026-06-27",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "encores-la-cage-aux-folles-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "la-cage-aux-folles-2010",
+        "la-cage-aux-folles-2004",
+        "la-cage-aux-folles-1983"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/well-ill-let-you-go-1-2/",
+      "headline": "Well, I’ll Let You Go *** 1/2",
+      "publishDate": "2026-05-14",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "well-ill-let-you-go-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-bookstore-respite/",
+      "headline": "The Bookstore *** 1/2",
+      "publishDate": "2026-01-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-bookstore-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/rolling-thunder-1-2/",
+      "headline": "Rolling Thunder **1/2",
+      "publishDate": "2025-07-25",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "rolling-thunder-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/munich-meda-happy-family/",
+      "headline": "Munich Medea: Happy Family ***",
+      "publishDate": "2024-02-16",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "medea-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "medea-2002",
+        "medea-1994",
+        "medea-1973",
+        "medea-1982",
+        "medea-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-saviour/",
+      "headline": "The Saviour ****",
+      "publishDate": "2023-07-02",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-saviour-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://theaterlife.com/school-girls-or-the-african-mean-girls-play-2/",
+      "headline": "School Girls; Or, The African Mean Girls Play ****",
+      "publishDate": "2026-10-08",
+      "matched": [
+        "school-girls-or-the-african-mean-girls-play-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/school-girls-or-the-african-mean-girls-play/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/shakespeare-in-the-parks-romeo-and-juliet/",
+      "headline": "Shakespeare in the Park’s Romeo and Juliet ***",
+      "publishDate": "2026-06-14",
+      "matched": [
+        "romeo-and-juliet-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/romeo-and-juliet-3/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-people-versus-lenny-bruce/",
+      "headline": "The People Versus Lenny Bruce **",
+      "publishDate": "2026-05-14",
+      "matched": [
+        "the-people-versus-lenny-bruce-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/the-people-versus-lenny-bruce-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-balusters-2/",
+      "headline": "The Balusters ****",
+      "publishDate": "2026-05-09",
+      "matched": [
+        "the-balusters-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/the-balusters/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/beaches-1-2/",
+      "headline": "Beaches *** 1/2",
+      "publishDate": "2026-05-07",
+      "matched": [
+        "beaches-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/beaches/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-fear-of-13/",
+      "headline": "The Fear of 13 **** Innocent and Unheard – Riveting",
+      "publishDate": "2026-05-04",
+      "matched": [
+        "the-fear-of-13-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/the-fear-of-13-2/",
+        "https://theaterlife.com/the-fear-of-13-1-2/",
+        "https://theaterlife.com/the-fear-of-13-schmigadoon/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/schmigadoon/",
+      "headline": "Schmigadoon! *****",
+      "publishDate": "2026-04-20",
+      "matched": [
+        "schmigadoon-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/schmigadoon-2/",
+        "https://theaterlife.com/the-fear-of-13-schmigadoon/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/cats-the-jellicle-ball-a-quasi-revival-in-spectacular-ballroom-vogue-style/",
+      "headline": "Cats: The Jellicle Ball *** – A Quasi Revival in Spectacular “Ballroom Vogue” Style",
+      "publishDate": "2026-04-10",
+      "matched": [
+        "cats-the-jellicle-ball-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/cats-the-jellicle-ball-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/dog-day-afternoon-why/",
+      "headline": "Dog Day Afternoon – Why? **",
+      "publishDate": "2026-04-05",
+      "matched": [
+        "dog-day-afternoon-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/dog-day-afternoon-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/five-reasons-why-bigfoot-is-a-big-must-see/",
+      "headline": "Five Reasons Why Bigfoot! is a Big Must-See",
+      "publishDate": "2026-03-09",
+      "matched": [
+        "bigfoot-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/bigfoot/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/bigfoot-a-new-musical-1-2/",
+      "headline": "Bigfoot!- A New Musical* 1/2",
+      "publishDate": "2026-03-02",
+      "matched": [
+        "bigfoot-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/bigfoot/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-dinosaurs/",
+      "headline": "The Dinosaurs ****",
+      "publishDate": "2026-02-17",
+      "matched": [
+        "the-dinosaurs-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/the-dinosaurs-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/bug-3/",
+      "headline": "Bug ***",
+      "publishDate": "2026-02-01",
+      "matched": [
+        "bug-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/bug/",
+        "https://theaterlife.com/bug-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/two-strangers-carry-a-cake-across-new-york-2/",
+      "headline": "Two Strangers (Carry a Cake Across New York) ***",
+      "publishDate": "2025-11-29",
+      "matched": [
+        "two-strangers-bway-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/two-strangers-carry-a-cake-across-new-york/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/playing-shylock/",
+      "headline": "Playing Shylock *****",
+      "publishDate": "2025-11-12",
+      "matched": [
+        "playing-shylock-off-broadway-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/playing-shylock-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/little-bear-ridge-road/",
+      "headline": "Little Bear Ridge Road *****",
+      "publishDate": "2025-10-31",
+      "matched": [
+        "little-bear-ridge-road-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/little-bear-ridge-road-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/lets-love/",
+      "headline": "Let’s Love ***",
+      "publishDate": "2025-10-27",
+      "matched": [
+        "lets-love-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/lets-love-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/crooked-cross/",
+      "headline": "Crooked Cross *** 1/2",
+      "publishDate": "2025-10-09",
+      "matched": [
+        "crooked-cross-off-broadway-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/crooked-cross-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/punch-3/",
+      "headline": "Punch *****",
+      "publishDate": "2025-09-30",
+      "matched": [
+        "punch-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/punch/",
+        "https://theaterlife.com/punch-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/ava-the-secret-conversations-3/",
+      "headline": "Ava: The Secret Conversations ***",
+      "publishDate": "2025-08-16",
+      "matched": [
+        "ava-the-secret-conversations-off-broadway-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/ava-the-secret-conversations/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/ava-the-secret-conversations-2/",
+      "headline": "Ava: The Secret Conversations ***",
+      "publishDate": "2025-08-08",
+      "matched": [
+        "ava-the-secret-conversations-off-broadway-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/ava-the-secret-conversations/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/heathers/",
+      "headline": "Heathers The Musical ***",
+      "publishDate": "2025-07-10",
+      "matched": [
+        "heathers-the-musical-off-broadway-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/heathers-the-musical/",
+        "https://theaterlife.com/heathers-the-musical-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/just-in-time/",
+      "headline": "JUST IN TIME *****",
+      "publishDate": "2025-05-05",
+      "matched": [
+        "just-in-time-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/just-in-time-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/pirates-the-penzance-musical-3/",
+      "headline": "​PIRATES! THE PENZANCE MUSICAL *****",
+      "publishDate": "2025-05-01",
+      "matched": [
+        "pirates-the-penzance-musical-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/pirates-the-penzance-musical-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/pirates-the-penzance-musical/",
+      "headline": "Pirates! The Penzance Musical ****",
+      "publishDate": "2025-04-24",
+      "matched": [
+        "pirates-the-penzance-musical-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/pirates-the-penzance-musical-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/five-reasons-why-operation-mincemeat-epitomizes-historical-humor/",
+      "headline": "Five Reasons Why Operation Mincemeat Epitomizes Historical Humor",
+      "publishDate": "2025-04-19",
+      "matched": [
+        "operation-mincemeat-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/operation-mincemeat/",
+        "https://theaterlife.com/operation-mincemeat-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/boop-the-musical-3/",
+      "headline": "Boop! The Musical***",
+      "publishDate": "2025-04-15",
+      "matched": [
+        "boop-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/boop-the-musical-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/boop-the-musical/",
+      "headline": "BOOP! THE MUSICAL****",
+      "publishDate": "2025-04-12",
+      "matched": [
+        "boop-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/boop-the-musical-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/good-night-and-good-luck-1-2/",
+      "headline": "Good Night, and Good Luck ****1/2",
+      "publishDate": "2025-04-06",
+      "matched": [
+        "good-night-and-good-luck-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/good-night-and-good-luck/",
+        "https://theaterlife.com/good-night-and-good-luck-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/five-reasons-why-redwood-reaches-soaring-heights/",
+      "headline": "Five Reasons Why Redwood Reaches Soaring Heights",
+      "publishDate": "2025-03-19",
+      "matched": [
+        "redwood-2025"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/redwood-2/",
+        "https://theaterlife.com/redwood-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/romeo-juliet-1-2/",
+      "headline": "Romeo & Juliet ***1/2",
+      "publishDate": "2024-10-31",
+      "matched": [
+        "romeo-juliet-2024"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/romeo-juliet-1-2-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/our-town-1-2/",
+      "headline": "Our Town **1/2",
+      "publishDate": "2024-10-25",
+      "matched": [
+        "our-town-2024"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/our-town/",
+        "https://theaterlife.com/our-town-2/",
+        "https://theaterlife.com/our-town-3/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/sunset-boulevard-2/",
+      "headline": "Sunset Boulevard **",
+      "publishDate": "2024-10-25",
+      "matched": [
+        "sunset-boulevard-2024"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/sunset-boulevard-3/",
+        "https://theaterlife.com/sunset-blvd/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/lempicka/",
+      "headline": "Lempicka *****",
+      "publishDate": "2024-04-17",
+      "matched": [
+        "lempicka-2024"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/lempicka-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-outsiders/",
+      "headline": "The Outsiders ***",
+      "publishDate": "2024-04-11",
+      "matched": [
+        "the-outsiders-2024"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/the-outsiders-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-whos-tommy-1-2/",
+      "headline": "The Who’s Tommy ****1/2",
+      "publishDate": "2024-04-05",
+      "matched": [
+        "the-whos-tommy-2024"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/the-whos-tommy/",
+        "https://theaterlife.com/the-whos-tommy-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/water-for-elephants/",
+      "headline": "Water For Elephants *****",
+      "publishDate": "2024-03-31",
+      "matched": [
+        "water-for-elephants-2024"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/water-for-elephants-2/",
+        "https://theaterlife.com/water-for-elephants-3/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-notebook-2/",
+      "headline": "The Notebook ****",
+      "publishDate": "2024-03-28",
+      "matched": [
+        "the-notebook-2024"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/the-notebook/",
+        "https://theaterlife.com/the-notebook-the-musical/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/appropriate-1-2-2/",
+      "headline": "Appropriate ****1/2",
+      "publishDate": "2024-02-14",
+      "matched": [
+        "appropriate-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/appropriate/",
+        "https://theaterlife.com/appropriate-1-2-3/",
+        "https://theaterlife.com/appropriate-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/how-to-dance-in-ohio-2/",
+      "headline": "How To Dance In Ohio ****",
+      "publishDate": "2023-12-19",
+      "matched": [
+        "how-to-dance-in-ohio-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/how-to-dance-in-ohio-buena-vista-social-club-i-can-get-it-for-you-wholesale/",
+        "https://theaterlife.com/how-to-dance-in-ohio-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/buena-vista-social-club-2/",
+      "headline": "Buena Vista Social Club *****",
+      "publishDate": "2023-12-18",
+      "matched": [
+        "buena-vista-social-club-off-broadway-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/buena-vista-social-club-3/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/how-to-dance-in-ohio/",
+      "headline": "How To Dance In Ohio ***",
+      "publishDate": "2023-12-15",
+      "matched": [
+        "how-to-dance-in-ohio-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/how-to-dance-in-ohio-buena-vista-social-club-i-can-get-it-for-you-wholesale/",
+        "https://theaterlife.com/how-to-dance-in-ohio-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/buena-vista-social-club/",
+      "headline": "Buena Vista Social Club ***",
+      "publishDate": "2023-12-15",
+      "matched": [
+        "buena-vista-social-club-off-broadway-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/buena-vista-social-club-3/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-gardens-of-anuncia-1-2-2/",
+      "headline": "The Gardens of Anuncia ***1/2",
+      "publishDate": "2023-12-08",
+      "matched": [
+        "the-gardens-of-anuncia-off-broadway-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/the-gardens-of-anuncia-manahatta/",
+        "https://theaterlife.com/the-gardens-of-anuncia-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/i-can-get-it-for-you-wholesale/",
+      "headline": "I Can Get It For You Wholesale ****",
+      "publishDate": "2023-12-05",
+      "matched": [
+        "i-can-get-it-for-you-wholesale-off-broadway-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/i-can-get-it-for-you-wholesale-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/i-need-that-1-2-2/",
+      "headline": "I Need That **1/2",
+      "publishDate": "2023-11-08",
+      "matched": [
+        "i-need-that-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/i-need-that-sabbaths-theater/",
+        "https://theaterlife.com/i-need-that-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-cottage-1-2/",
+      "headline": "The Cottage **1/2",
+      "publishDate": "2023-07-29",
+      "matched": [
+        "the-cottage-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/the-cottage/",
+        "https://theaterlife.com/the-cottage-1-2-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/days-of-wine-and-roses-1-2/",
+      "headline": "Days of Wine and Roses **1/2",
+      "publishDate": "2023-06-15",
+      "matched": [
+        "days-of-wine-and-roses-off-broadway-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/days-of-wine-and-roses/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/romeo-and-juliet-2/",
+      "headline": "Romeo and Juliet **",
+      "publishDate": "2023-05-14",
+      "matched": [
+        "and-juliet-2022"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/juliet/",
+        "https://theaterlife.com/juliet-1-2/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/good-night-oscar/",
+      "headline": "Good Night, Oscar *****",
+      "publishDate": "2023-04-30",
+      "matched": [
+        "good-night-oscar-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/goodnight-oscar/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/bob-fosses-dancin-1-2-2/",
+      "headline": "Bob Fosse’s Dancin’ ****1/2",
+      "publishDate": "2023-04-05",
+      "matched": [
+        "bob-fosses-dancin-2023"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/bob-fosses-dancin-1-2/",
+        "https://theaterlife.com/bob-fosses-dancin/"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/a-beautiful-noise-1-2/",
+      "headline": "A Beautiful Noise **1/2",
+      "publishDate": "2023-02-06",
+      "matched": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
+      ],
+      "heldUrls": [
+        "https://theaterlife.com/a-beautiful-noise/"
+      ]
+    }
+  ],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://theaterlife.com/pre-existing-conditions/",
+      "headline": "Pre-Existing Conditions ***",
+      "publishDate": "2026-09-20",
+      "via": null,
+      "held": [
+        "pre-existing-condition-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/art-1-2/",
+      "headline": "Art *** 1/2",
+      "publishDate": "2025-10-19",
+      "via": null,
+      "held": [
+        "art-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-porch-on-windy-hill-a-new-play-with-old-music/",
+      "headline": "The Porch on Windy Hill – A new play with old music",
+      "publishDate": "2025-09-19",
+      "via": null,
+      "held": [
+        "the-porch-on-windy-hill-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-porch-on-windy-hill-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/jamie-allans-amaze/",
+      "headline": "Jamie Allan’s Amaze ****",
+      "publishDate": "2025-08-14",
+      "via": null,
+      "held": [
+        "amaze-magic-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/sondheims-old-friends/",
+      "headline": "SONDHEIM’S OLD FRIENDS *****",
+      "publishDate": "2025-04-20",
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-job/",
+      "headline": "Job ****",
+      "publishDate": "2024-08-04",
+      "via": null,
+      "held": [
+        "job-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/job/",
+      "headline": "Job ****",
+      "publishDate": "2024-07-30",
+      "via": null,
+      "held": [
+        "job-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/n-a-1-2/",
+      "headline": "N/A ****1/2",
+      "publishDate": "2024-06-27",
+      "via": null,
+      "held": [
+        "n-a-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [
+    {
+      "url": "https://theaterlife.com/sketches-lauren-lovette-charles-yang-peter-dugan/",
+      "headline": "Sketches: Lauren Lovette, Charles Yang & Peter Dugan *****",
+      "publishDate": "2026-04-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/three-plays-address-the-spirit-of-our-timeor-the-lack-thereof/",
+      "headline": "Three Plays Address the Spirit of Our Time…Or the Lack Thereof",
+      "publishDate": "2026-04-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/rob-lake-magic-with-special-guests-the-muppets/",
+      "headline": "Rob Lake Magic with Special Guests The Muppets ***",
+      "publishDate": "2025-11-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/fixing-frankie/",
+      "headline": "Fixing Frankie ****",
+      "publishDate": "2025-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/did-you-eat-1-2/",
+      "headline": "Did You Eat? ***1/2",
+      "publishDate": "2025-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/and-then-we-were-no-more/",
+      "headline": "And Then We Were No More ***",
+      "publishDate": "2025-10-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-wild-duck/",
+      "headline": "The Wild Duck ****",
+      "publishDate": "2025-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-wild-duck-1-2/",
+      "headline": "The Wild Duck **1/2",
+      "publishDate": "2025-09-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/jamie-allans-amaze-1-2/",
+      "headline": "Jamie Allan’s Amaze **** 1/2",
+      "publishDate": "2025-08-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/shellshocked/",
+      "headline": "Shellshocked ****",
+      "publishDate": "2025-06-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/fat-cat-killers-1-2/",
+      "headline": "Fat Cat Killers ***1/2",
+      "publishDate": "2025-05-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/we-had-a-world-2/",
+      "headline": "We Had A World ****",
+      "publishDate": "2025-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/we-had-a-world/",
+      "headline": "We Had A World ***",
+      "publishDate": "2025-03-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-great-privation-how-to-flip-ten-cents-into-a-dollar/",
+      "headline": "THE GREAT PRIVATION (HOW TO FLIP TEN CENTS INTO A DOLLAR) ***",
+      "publishDate": "2025-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/dakar-2000/",
+      "headline": "Dakar 2000 **",
+      "publishDate": "2025-03-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/safety-not-guaranteed/",
+      "headline": "Safety Not Guaranteed ****",
+      "publishDate": "2024-10-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/our-class-2/",
+      "headline": "Our Class ****",
+      "publishDate": "2024-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/job-2/",
+      "headline": "Job ***",
+      "publishDate": "2024-08-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/sally-and-tom-1-2/",
+      "headline": "Sally and Tom ***1/2",
+      "publishDate": "2024-05-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/sally-tom/",
+      "headline": "Sally & Tom ****",
+      "publishDate": "2024-04-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-sorcerer-trial-by-jury-1-2/",
+      "headline": "The Sorcerer & Trial By Jury ****1/2",
+      "publishDate": "2024-04-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/melba-moore-54-below-1-2/",
+      "headline": "Melba Moore @ 54 Below ****1/2",
+      "publishDate": "2024-03-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-ally/",
+      "headline": "The Ally ****",
+      "publishDate": "2024-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/our-class-1-2/",
+      "headline": "Our Class ****1/2",
+      "publishDate": "2024-01-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-sweet-spot-1-2/",
+      "headline": "The Sweet Spot **1/2",
+      "publishDate": "2024-01-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/brandon-victor-dixon-54-below/",
+      "headline": "Brandon Victor Dixon @ 54 Below ****",
+      "publishDate": "2023-12-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/poor-yella-rednecks-1-2-2/",
+      "headline": "Poor Yella Rednecks ****1/2",
+      "publishDate": "2023-11-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/poor-yellow-rednecks/",
+      "headline": "Poor Yella Rednecks ****",
+      "publishDate": "2023-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/rock-and-roll-man/",
+      "headline": "Rock and Roll Man ***",
+      "publishDate": "2023-08-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/chanteuse-a-survival-musical/",
+      "headline": "Chanteuse: A Survival Musical ****",
+      "publishDate": "2023-07-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/senior-living/",
+      "headline": "Senior Living ****",
+      "publishDate": "2023-05-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/vanities-the-musical/",
+      "headline": "Vanities – the Musical ***",
+      "publishDate": "2023-04-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-best-we-could/",
+      "headline": "The Best We Could ****",
+      "publishDate": "2023-03-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/jennifer-holliday-54-below/",
+      "headline": "Jennifer Holliday @ 54 Below",
+      "publishDate": "2023-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-immortal-jellyfish-girl/",
+      "headline": "The Immortal Jellyfish Girl ****",
+      "publishDate": "2023-01-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://theaterlife.com/the-appointment-1-2/",
+      "headline": "The Appointment ***1/2",
+      "publishDate": "2023-01-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://theaterlife.com/all-the-things-you-are-jerome-kern/",
+      "headline": "All the Things You Are: Love, Laughter, and the Music of Jerome Kern ****",
+      "publishDate": "2026-10-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jerome-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/dear-evan-hansen-at-bay-street-theater/",
+      "headline": "Dear Evan Hansen at Bay Street Theater",
+      "publishDate": "2026-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dear-evan-hansen-2016",
+        "dear-evan-hansen-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-extraordinary-arias-with-a-twist-two-legends-again-collude/",
+      "headline": "The Extraordinary ‘Arias with a Twist’ – Two Legends Again Collude",
+      "publishDate": "2026-08-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "arias-with-a-twist-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/cagney-the-musical-opens-at-bay-street-theater/",
+      "headline": "Cagney The Musical opens at Bay Street Theater",
+      "publishDate": "2026-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cagney-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/contradiction-of-the-human-soul/",
+      "headline": "Contradiction of the Southern Soul  ****",
+      "publishDate": "2026-04-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "human-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/happenstance-theater-presents-juxtapose-a-theatrical-shadow-box/",
+      "headline": "Happenstance Theater presents Juxtapose- A Theatrical Shadow Box",
+      "publishDate": "2026-01-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-shadow-box-1994",
+        "the-shadow-box-1977"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/gotta-dance/",
+      "headline": "Gotta Dance!*****",
+      "publishDate": "2025-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "gotta-dance-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/elizabeth-i-in-her-own-words/",
+      "headline": "Elizabeth I: In Her Own Words *****",
+      "publishDate": "2025-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "elizabeth-i-1972"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/andre-de-shields-is-tartuffe/",
+      "headline": "André De Shields Is Tartuffe ****",
+      "publishDate": "2025-10-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tartuffe-2003",
+        "tartuffe-1996",
+        "tartuffe-1977",
+        "tartuffe-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/twelfth-night-2/",
+      "headline": "Twelfth Night **",
+      "publishDate": "2025-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/well-ill-let-you-go-2/",
+      "headline": "Well, I’ll Let You Go ****",
+      "publishDate": "2025-08-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "well-ill-let-you-go-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/well-ill-let-you-go/",
+      "headline": "Well, I’ll Let You Go ****",
+      "publishDate": "2025-08-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "well-ill-let-you-go-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-imaginary-invalid-1-2-2/",
+      "headline": "The Imaginary Invalid ****1/2",
+      "publishDate": "2025-06-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-imaginary-invalid-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/prosperous-fools/",
+      "headline": "Prosperous Fools **",
+      "publishDate": "2025-06-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-imaginary-invalid-1-2/",
+      "headline": "THE IMAGINARY INVALID ** 1/2",
+      "publishDate": "2025-06-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-imaginary-invalid-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/bus-stop-1-2/",
+      "headline": "Bus Stop ***1/2",
+      "publishDate": "2025-05-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "bus-stop-1996"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/music-city/",
+      "headline": "Music City ***",
+      "publishDate": "2025-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "music-city-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/show-boat-a-river/",
+      "headline": "Show/Boat: A River ***",
+      "publishDate": "2025-01-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-river-2014",
+        "show-boat-1994",
+        "show-boat-1983"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/sumpn-like-wings-1-2/",
+      "headline": "Sump’n Like Wings **1/2",
+      "publishDate": "2024-10-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wings-1979"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/medea-re-versed/",
+      "headline": "Medea Re-Versed *****",
+      "publishDate": "2024-10-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "medea-2002",
+        "medea-1994",
+        "medea-1973",
+        "medea-1982",
+        "medea-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/counting-and-cracking-1-2/",
+      "headline": "Counting and Cracking ****1/2",
+      "publishDate": "2024-09-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "counting-and-cracking-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/master-class-bay-street-1-2/",
+      "headline": "Master Class @ Bay Street ****1/2",
+      "publishDate": "2024-06-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "master-class-2011",
+        "master-class-1995"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/n-a-1-2-2/",
+      "headline": "N/A ***1/2",
+      "publishDate": "2024-06-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/n-a-2/",
+      "headline": "N/A *****",
+      "publishDate": "2024-06-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/n-a/",
+      "headline": "N/A *****",
+      "publishDate": "2024-06-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/titanic-1-2/",
+      "headline": "Titanic ****1/2",
+      "publishDate": "2024-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/here-there-are-blueberries-2/",
+      "headline": "Here There Are Blueberries ****",
+      "publishDate": "2024-05-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/here-there-are-blueberries/",
+      "headline": "Here There Are Blueberries ****",
+      "publishDate": "2024-05-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/ibsens-ghost-2/",
+      "headline": "Ibsen’s Ghost ****",
+      "publishDate": "2024-04-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghost-the-musical-2012"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/ibsens-ghost/",
+      "headline": "Ibsen’s Ghost ****",
+      "publishDate": "2024-03-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghost-the-musical-2012"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/women-on-fire-fair-is-foul/",
+      "headline": "Women on Fire: Fair Is Foul! ****",
+      "publishDate": "2024-01-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/the-night-of-the-iguana/",
+      "headline": "The Night of the Iguana **",
+      "publishDate": "2023-12-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-night-of-the-iguana-1988",
+        "the-night-of-the-iguana-1976"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/hells-kitchen-1-2/",
+      "headline": "Hell’s Kitchen ***1/2",
+      "publishDate": "2023-11-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/young-frankenstein-2/",
+      "headline": "Young Frankenstein *****",
+      "publishDate": "2023-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "young-frankenstein-2007"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/uncle-vanya/",
+      "headline": "Uncle Vanya ****",
+      "publishDate": "2023-08-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "uncle-vanya-2024",
+        "uncle-vanya-1995",
+        "uncle-vanya-1973",
+        "uncle-vanya-2000"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/cat-on-a-hot-tin-roof-5/",
+      "headline": "Cat On A Hot Tin Roof ***",
+      "publishDate": "2023-03-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cat-on-a-hot-tin-roof-2013",
+        "cat-on-a-hot-tin-roof-2008",
+        "cat-on-a-hot-tin-roof-1990",
+        "cat-on-a-hot-tin-roof-1974",
+        "cat-on-a-hot-tin-roof-2003",
+        "cat-on-a-hot-tin-roof-2027"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/endgame/",
+      "headline": "Endgame ***",
+      "publishDate": "2023-02-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "endgame-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/h-m-s-pinafore/",
+      "headline": "H.M.S. Pinafore *****",
+      "publishDate": "2023-01-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hms-pinafore-1976"
+      ]
+    },
+    {
+      "url": "https://theaterlife.com/downstate-2/",
+      "headline": "Downstate *****",
+      "publishDate": "2022-12-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    }
+  ]
+}

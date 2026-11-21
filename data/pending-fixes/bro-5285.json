@@ -1,0 +1,59 @@
+{
+  "createdAt": "2026-10-13T17:47:41Z",
+  "issueNumber": "bro-5285",
+  "planId": "335068e5-8cbb-4207-b5d1-dac997ec6581",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5285: Holly O'Mahony's Stage review of The Comedy About Spies (2025-05-14, Noel Coward Theatre url) sits unflagged on the 2026 Adelphi entry, whose priorRuns entry says inheritReviews:false; the rebuild's priorRuns auto-clear (now fixed) had un-flagged it and the class-A contamination gate fails on it. Execute Approved Fix 6a6cc6d45b moved the full-text copy to the 2025 entry on 2026-10-12, but the excerpt twin thestage--holly-o.json still held the url on the 2026 entry, so the push ownership gate dropped the 2025 file as a cross-show re-creation (1986df43a3) and Gather re-created an excerpt-only twin. Remove both 2026 copies, restore the full-text record from before that move, and move it to the 2025 entry, which then owns the url alone.",
+    "riskLevel": "low",
+    "steps": [
+      "Delete the-comedy-about-spies-west-end-2026/thestage--holly-o.json (excerpt only, no text)",
+      "Delete the-comedy-about-spies-west-end-2026/thestage--holly-omahony.json (excerpt only, re-created by Gather, duplicateOf the file above)",
+      "Restore the full-text record from 89d8617d81 (3279-char fullText, complete tier) directly as the-comedy-about-spies-west-end-2025/thestage--holly-omahony.json"
+    ],
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/thestage--holly-o.json",
+        "description": "Excerpt-only twin of the same Stage url; its presence on the 2026 entry is what made the ownership gate drop the 2025 move"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/thestage--holly-omahony.json",
+        "description": "Excerpt-only copy Gather re-created on 2026-10-13; replaced by the restored full-text record"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/thestage--holly-omahony.json",
+        "fromCommit": "89d8617d81d1ba93f8c62ce215bf80c096ed29ed",
+        "description": "Full-text record (3279 chars, complete tier) as it stood before the 2026-10-12 move, written straight to the 2025 entry (restoring onto the 2026 entry is quarantined by the class-A write guard)",
+        "destPath": "the-comedy-about-spies-west-end-2025/thestage--holly-omahony.json"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T18:45:48.635Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/thestage--holly-o.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/thestage--holly-omahony.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-comedy-about-spies-west-end-2026/thestage--holly-omahony.json@89d8617d81d1ba93f8c62ce215bf80c096ed29ed -> the-comedy-about-spies-west-end-2025/thestage--holly-omahony.json"
+    }
+  ]
+}

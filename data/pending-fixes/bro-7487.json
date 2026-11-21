@@ -1,0 +1,97 @@
+{
+  "issueNumber": "bro-7487",
+  "planId": "57bb642f-d45d-41fe-9bff-d70f83c238fc",
+  "status": "applied",
+  "createdAt": "2026-11-14T13:55:18.265Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct opening dates: Ripple OB 2026-11-18 -> 2026-11-10 (7 outlets reviewed 11-10), Spend Spend Spend 2024-12-22 -> 2024-11-28 (Royal Exchange press night)",
+    "steps": [
+      "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.openingDate",
+      "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.openingDateSource",
+      "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.status",
+      "shows.json: spend-spend-spend-royal-exchange-regional-2024.openingDate",
+      "shows.json: spend-spend-spend-royal-exchange-regional-2024.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-11-18",
+        "newValue": "2026-11-10",
+        "description": "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "review-derived-press-night",
+        "description": "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+        "field": "status",
+        "oldValue": "previews",
+        "newValue": "open",
+        "description": "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spend-spend-spend-royal-exchange-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-12-22",
+        "newValue": "2024-11-28",
+        "description": "shows.json: spend-spend-spend-royal-exchange-regional-2024.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spend-spend-spend-royal-exchange-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "venue-page:royalexchange-press-night",
+        "description": "shows.json: spend-spend-spend-royal-exchange-regional-2024.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-11-14T14:43:58.435Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-ripple-the-wave-that-carried-me-home-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-ripple-the-wave-that-carried-me-home-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-ripple-the-wave-that-carried-me-home-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for spend-spend-spend-royal-exchange-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for spend-spend-spend-royal-exchange-regional-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

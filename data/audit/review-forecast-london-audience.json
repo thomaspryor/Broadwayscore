@@ -1,0 +1,2584 @@
+{
+ "card": "BRO-7380",
+ "note": "London-first and out-of-town audience ratings dated before the Broadway first preview (Show Score member pages found through the Show Score sitemaps, plus held London Box Office ratings). Aggregates only: no names, no text. Free direct fetches, 1 worker, at most 1 request per second.",
+ "paidFetches": 0,
+ "directRequestsTotal": 415,
+ "sitemap": {
+  "london": 2927,
+  "regional": 365
+ },
+ "shows": {
+  "american-psycho-2016": {
+   "cohort": "london-first",
+   "opening": "2016-04-21",
+   "previewsStart": "2016-03-24",
+   "cutoff": "2016-03-23",
+   "sources": [],
+   "pooled": null
+  },
+  "the-father-2016": {
+   "cohort": "london-first",
+   "opening": "2016-04-14",
+   "previewsStart": "2016-03-22",
+   "cutoff": "2016-03-21",
+   "sources": [],
+   "pooled": null
+  },
+  "eclipsed-2016": {
+   "cohort": "london-first",
+   "opening": "2016-03-06",
+   "previewsStart": "2016-02-23",
+   "cutoff": "2016-02-22",
+   "sources": [],
+   "pooled": null
+  },
+  "the-color-purple-2015": {
+   "cohort": "london-first",
+   "opening": "2015-12-10",
+   "previewsStart": "2015-11-10",
+   "cutoff": "2015-11-09",
+   "sources": [],
+   "pooled": null
+  },
+  "a-view-from-the-bridge-2015": {
+   "cohort": "london-first",
+   "opening": "2015-11-12",
+   "previewsStart": "2015-10-21",
+   "cutoff": "2015-10-20",
+   "sources": [],
+   "pooled": null
+  },
+  "king-charles-iii-2015": {
+   "cohort": "london-first",
+   "opening": "2015-11-01",
+   "previewsStart": "2015-10-10",
+   "cutoff": "2015-10-09",
+   "sources": [],
+   "pooled": null
+  },
+  "therese-raquin-2015": {
+   "cohort": "london-first",
+   "opening": "2015-10-29",
+   "previewsStart": "2015-10-01",
+   "cutoff": "2015-09-30",
+   "sources": [],
+   "pooled": null
+  },
+  "charlie-and-the-chocolate-factory-2017": {
+   "cohort": "london-first",
+   "opening": "2017-04-23",
+   "previewsStart": "2017-03-28",
+   "cutoff": "2017-03-27",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/charlie-and-the-chocolate-factory-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "groundhog-day-2017": {
+   "cohort": "london-first",
+   "opening": "2017-04-17",
+   "previewsStart": "2017-03-16",
+   "cutoff": "2017-03-15",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/groundhog-day-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 159,
+     "lastPage": 20,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "miss-saigon-2017": {
+   "cohort": "london-first",
+   "opening": "2017-03-23",
+   "previewsStart": "2017-03-01",
+   "cutoff": "2017-02-28",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/miss-saigon-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "sunset-boulevard-2017": {
+   "cohort": "london-first",
+   "opening": "2017-02-09",
+   "previewsStart": "2017-02-02",
+   "cutoff": "2017-02-01",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/sunset-boulevard-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 243,
+     "lastPage": 29,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "les-liaisons-dangereuses-2016": {
+   "cohort": "london-first",
+   "opening": "2016-10-30",
+   "previewsStart": "2016-10-08",
+   "cutoff": "2016-10-07",
+   "sources": [],
+   "pooled": null
+  },
+  "the-encounter-2016": {
+   "cohort": "london-first",
+   "opening": "2016-09-29",
+   "previewsStart": "2016-09-20",
+   "cutoff": "2016-09-19",
+   "sources": [],
+   "pooled": null
+  },
+  "cats-2016": {
+   "cohort": "london-first",
+   "opening": "2016-07-31",
+   "previewsStart": "2016-07-14",
+   "cutoff": "2016-07-13",
+   "sources": [],
+   "pooled": null
+  },
+  "travesties-2018": {
+   "cohort": "london-first",
+   "opening": "2018-04-24",
+   "previewsStart": "2018-03-29",
+   "cutoff": "2018-03-28",
+   "sources": [],
+   "pooled": null
+  },
+  "harry-potter-2021": {
+   "cohort": "london-first",
+   "opening": "2018-04-22",
+   "previewsStart": "2018-03-16",
+   "cutoff": "2018-03-15",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 3047,
+     "lastPage": 77,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "angels-in-america-2018": {
+   "cohort": "london-first",
+   "opening": "2018-03-25",
+   "previewsStart": "2018-02-23",
+   "cutoff": "2018-02-22",
+   "sources": [],
+   "pooled": null
+  },
+  "john-lithgow-stories-by-heart-2018": {
+   "cohort": "london-first",
+   "opening": "2018-01-11",
+   "previewsStart": "2017-12-21",
+   "cutoff": "2017-12-20",
+   "sources": [],
+   "pooled": null
+  },
+  "farinelli-and-the-king-2017": {
+   "cohort": "london-first",
+   "opening": "2017-12-17",
+   "previewsStart": "2017-12-05",
+   "cutoff": "2017-12-04",
+   "sources": [],
+   "pooled": null
+  },
+  "the-children-2017": {
+   "cohort": "london-first",
+   "opening": "2017-12-12",
+   "previewsStart": "2017-11-28",
+   "cutoff": "2017-11-27",
+   "sources": [],
+   "pooled": null
+  },
+  "1984-2017": {
+   "cohort": "london-first",
+   "opening": "2017-06-22",
+   "previewsStart": "2017-05-18",
+   "cutoff": "2017-05-17",
+   "sources": [],
+   "pooled": null
+  },
+  "ink-2019": {
+   "cohort": "london-first",
+   "opening": "2019-04-24",
+   "previewsStart": "2019-04-02",
+   "cutoff": "2019-04-01",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/ink-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "hadestown-2019": {
+   "cohort": "london-first",
+   "opening": "2019-04-17",
+   "previewsStart": "2019-03-22",
+   "cutoff": "2019-03-21",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/hadestown-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 42,
+     "lastPage": 2,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    },
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/hadestown-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 5943,
+     "lastPage": 30,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "choir-boy-2019": {
+   "cohort": "london-first",
+   "opening": "2019-01-08",
+   "previewsStart": "2018-12-12",
+   "cutoff": "2018-12-11",
+   "sources": [],
+   "pooled": null
+  },
+  "network-2018": {
+   "cohort": "london-first",
+   "opening": "2018-12-06",
+   "previewsStart": "2018-11-10",
+   "cutoff": "2018-11-09",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/network-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 6,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "the-ferryman-2018": {
+   "cohort": "london-first",
+   "opening": "2018-10-21",
+   "previewsStart": "2018-10-02",
+   "cutoff": "2018-10-01",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/ferryman-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 9,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "the-nap-2018": {
+   "cohort": "london-first",
+   "opening": "2018-09-27",
+   "previewsStart": "2018-09-05",
+   "cutoff": "2018-09-04",
+   "sources": [],
+   "pooled": null
+  },
+  "my-name-is-lucy-barton-2020": {
+   "cohort": "london-first",
+   "opening": "2020-01-15",
+   "previewsStart": "2020-01-04",
+   "cutoff": "2020-01-03",
+   "sources": [],
+   "pooled": null
+  },
+  "a-christmas-carol-2019": {
+   "cohort": "london-first",
+   "opening": "2019-11-20",
+   "previewsStart": "2019-11-07",
+   "cutoff": "2019-11-06",
+   "sources": [],
+   "pooled": null
+  },
+  "the-inheritance-2019": {
+   "cohort": "london-first",
+   "opening": "2019-11-17",
+   "previewsStart": "2019-09-27",
+   "cutoff": "2019-09-26",
+   "sources": [],
+   "pooled": null
+  },
+  "tina-2019": {
+   "cohort": "london-first",
+   "opening": "2019-11-07",
+   "previewsStart": "2019-10-12",
+   "cutoff": "2019-10-11",
+   "sources": [],
+   "pooled": null
+  },
+  "the-height-of-the-storm-2019": {
+   "cohort": "london-first",
+   "opening": "2019-09-24",
+   "previewsStart": "2019-09-10",
+   "cutoff": "2019-09-09",
+   "sources": [],
+   "pooled": null
+  },
+  "betrayal-2019": {
+   "cohort": "london-first",
+   "opening": "2019-09-05",
+   "previewsStart": "2019-08-14",
+   "cutoff": "2019-08-13",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/betrayal-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 7,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "hangmen-2022": {
+   "cohort": "london-first",
+   "opening": "2022-04-21",
+   "previewsStart": "2022-04-08",
+   "cutoff": "2022-04-07",
+   "sources": [],
+   "pooled": null
+  },
+  "company-2021": {
+   "cohort": "london-first",
+   "opening": "2021-12-09",
+   "previewsStart": "2020-03-02",
+   "cutoff": "2020-03-01",
+   "sources": [],
+   "pooled": null
+  },
+  "caroline-or-change-2021": {
+   "cohort": "london-first",
+   "opening": "2021-10-27",
+   "previewsStart": "2021-10-08",
+   "cutoff": "2021-10-07",
+   "sources": [],
+   "pooled": null
+  },
+  "the-lehman-trilogy-2021": {
+   "cohort": "london-first",
+   "opening": "2021-10-14",
+   "previewsStart": "2020-03-07",
+   "cutoff": "2020-03-06",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/the-lehman-trilogy-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 620,
+     "lastPage": 15,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 5,
+     "mean": 90.6,
+     "shareLe60": 0,
+     "newest": "2020-01-04",
+     "oldest": "2019-07-29"
+    }
+   ],
+   "pooled": {
+    "n": 5,
+    "mean": 90.6,
+    "shareLe60": 0,
+    "newest": "2020-01-04"
+   }
+  },
+  "six-2021": {
+   "cohort": "london-first",
+   "opening": "2021-10-03",
+   "previewsStart": "2020-02-13",
+   "cutoff": "2020-02-12",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/six-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 161,
+     "lastPage": 14,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    },
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/six-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 3767,
+     "lastPage": 83,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "prima-facie-2023": {
+   "cohort": "london-first",
+   "opening": "2023-04-23",
+   "previewsStart": "2023-04-11",
+   "cutoff": "2023-04-10",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/prima-facie-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 63,
+     "lastPage": 8,
+     "pagesRead": 6,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 43,
+     "mean": 93,
+     "shareLe60": 0,
+     "newest": "2023-03-23",
+     "oldest": "2022-04-18"
+    }
+   ],
+   "pooled": {
+    "n": 43,
+    "mean": 93,
+    "shareLe60": 0,
+    "newest": "2023-03-23"
+   }
+  },
+  "peter-pan-goes-wrong-2023": {
+   "cohort": "london-first",
+   "opening": "2023-04-19",
+   "previewsStart": "2023-03-17",
+   "cutoff": "2023-03-16",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/peter-pan-goes-wrong",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 3,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    },
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/peter-pan-goes-wrong-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 59,
+     "lastPage": 8,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "life-of-pi-2023": {
+   "cohort": "london-first",
+   "opening": "2023-03-30",
+   "previewsStart": "2023-03-09",
+   "cutoff": "2023-03-08",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/life-of-pi-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 254,
+     "lastPage": 31,
+     "pagesRead": 27,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 211,
+     "mean": 90.2,
+     "shareLe60": 0,
+     "newest": "2023-03-08",
+     "oldest": "2022-03-02"
+    },
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/life-of-pi-la",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 9
+    }
+   ],
+   "pooled": {
+    "n": 211,
+    "mean": 90.2,
+    "shareLe60": 0,
+    "newest": "2023-03-08"
+   }
+  },
+  "bad-cinderella-2023": {
+   "cohort": "london-first",
+   "opening": "2023-03-23",
+   "previewsStart": "2023-02-17",
+   "cutoff": "2023-02-16",
+   "sources": [],
+   "pooled": null
+  },
+  "the-collaboration-2022": {
+   "cohort": "london-first",
+   "opening": "2022-12-18",
+   "previewsStart": "2022-11-30",
+   "cutoff": "2022-11-29",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-collaboration",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 11,
+     "lastPage": 2,
+     "pagesRead": 2,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 7,
+     "mean": 84.4,
+     "shareLe60": 0,
+     "newest": "2022-10-02",
+     "oldest": "2022-03-31"
+    }
+   ],
+   "pooled": {
+    "n": 7,
+    "mean": 84.4,
+    "shareLe60": 0,
+    "newest": "2022-10-02"
+   }
+  },
+  "a-christmas-carol-2022": {
+   "cohort": "london-first",
+   "opening": "2022-11-21",
+   "previewsStart": "2022-11-08",
+   "cutoff": "2022-11-07",
+   "sources": [],
+   "pooled": null
+  },
+  "and-juliet-2022": {
+   "cohort": "london-first",
+   "opening": "2022-11-17",
+   "previewsStart": "2022-10-28",
+   "cutoff": "2022-10-27",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/juliet-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 827,
+     "lastPage": 100,
+     "pagesRead": 40,
+     "capped": true,
+     "reachedCutoff": false,
+     "n": 318,
+     "mean": 87.8,
+     "shareLe60": 0.1,
+     "newest": "2022-10-22",
+     "oldest": "2022-03-02"
+    }
+   ],
+   "pooled": {
+    "n": 318,
+    "mean": 87.8,
+    "shareLe60": 0.1,
+    "newest": "2022-10-22"
+   }
+  },
+  "walking-with-ghosts-2022": {
+   "cohort": "london-first",
+   "opening": "2022-10-27",
+   "previewsStart": "2022-10-18",
+   "cutoff": "2022-10-17",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/walking-with-ghosts-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 3,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": false,
+     "n": 3,
+     "mean": 76,
+     "shareLe60": 0,
+     "newest": "2022-09-20",
+     "oldest": "2022-09-10"
+    }
+   ],
+   "pooled": {
+    "n": 3,
+    "mean": 76,
+    "shareLe60": 0,
+    "newest": "2022-09-20"
+   }
+  },
+  "death-of-a-salesman-2022": {
+   "cohort": "london-first",
+   "opening": "2022-10-09",
+   "previewsStart": "2022-09-17",
+   "cutoff": "2022-09-16",
+   "sources": [],
+   "pooled": null
+  },
+  "leopoldstadt-2022": {
+   "cohort": "london-first",
+   "opening": "2022-10-02",
+   "previewsStart": "2022-09-14",
+   "cutoff": "2022-09-13",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/leopoldstadt-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 12,
+     "lastPage": 2,
+     "pagesRead": 2,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 6,
+     "mean": 79.2,
+     "shareLe60": 0.2,
+     "newest": "2022-08-25",
+     "oldest": "2022-03-25"
+    }
+   ],
+   "pooled": {
+    "n": 6,
+    "mean": 79.2,
+    "shareLe60": 0.20000000000000004,
+    "newest": "2022-08-25"
+   }
+  },
+  "the-kite-runner-2022": {
+   "cohort": "london-first",
+   "opening": "2022-07-21",
+   "previewsStart": "2022-07-06",
+   "cutoff": "2022-07-05",
+   "sources": [],
+   "pooled": null
+  },
+  "patriots-2024": {
+   "cohort": "london-first",
+   "opening": "2024-04-22",
+   "previewsStart": "2024-04-01",
+   "cutoff": "2024-03-31",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/patriots-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 11,
+     "lastPage": 2,
+     "pagesRead": 2,
+     "capped": false,
+     "reachedCutoff": false,
+     "n": 10,
+     "mean": 82.2,
+     "shareLe60": 0.2,
+     "newest": "2023-08-10",
+     "oldest": "2022-07-06"
+    }
+   ],
+   "pooled": {
+    "n": 10,
+    "mean": 82.2,
+    "shareLe60": 0.2,
+    "newest": "2023-08-10"
+   }
+  },
+  "gutenberg-2023": {
+   "cohort": "london-first",
+   "opening": "2023-10-12",
+   "previewsStart": "2023-09-15",
+   "cutoff": "2023-09-14",
+   "sources": [],
+   "pooled": null
+  },
+  "merrily-we-roll-along-2023": {
+   "cohort": "london-first",
+   "opening": "2023-10-10",
+   "previewsStart": "2023-09-19",
+   "cutoff": "2023-09-18",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/merrily-we-roll-along-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 2,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 1,
+     "mean": 40,
+     "shareLe60": 1,
+     "newest": "2023-09-04",
+     "oldest": "2023-09-04"
+    }
+   ],
+   "pooled": {
+    "n": 1,
+    "mean": 40,
+    "shareLe60": 1,
+    "newest": "2023-09-04"
+   }
+  },
+  "the-shark-is-broken-2023": {
+   "cohort": "london-first",
+   "opening": "2023-08-10",
+   "previewsStart": "2023-07-25",
+   "cutoff": "2023-07-24",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/the-shark-is-broken-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 5,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 4,
+     "mean": 68.8,
+     "shareLe60": 0.3,
+     "newest": "2023-03-14",
+     "oldest": "2022-03-31"
+    }
+   ],
+   "pooled": {
+    "n": 4,
+    "mean": 68.8,
+    "shareLe60": 0.3,
+    "newest": "2023-03-14"
+   }
+  },
+  "back-to-the-future-2023": {
+   "cohort": "london-first",
+   "opening": "2023-08-03",
+   "previewsStart": "2023-06-30",
+   "cutoff": "2023-06-29",
+   "sources": [],
+   "pooled": null
+  },
+  "here-lies-love-2023": {
+   "cohort": "london-first",
+   "opening": "2023-07-20",
+   "previewsStart": "2023-06-17",
+   "cutoff": "2023-06-16",
+   "sources": [],
+   "pooled": null
+  },
+  "just-for-us-2023": {
+   "cohort": "london-first",
+   "opening": "2023-06-26",
+   "previewsStart": "2023-06-22",
+   "cutoff": "2023-06-21",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/just-for-us-london",
+     "kind": "london-sitemap",
+     "verified": false,
+     "pageName": "Alex Edelman: Just For Us",
+     "reason": "page title does not match the show"
+    }
+   ],
+   "pooled": null
+  },
+  "stephen-sondheims-old-friends-2025": {
+   "cohort": "london-first",
+   "opening": "2025-04-08",
+   "previewsStart": "2025-03-25",
+   "cutoff": "2025-03-24",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/stephen-sondheims-old-friends-la",
+     "kind": "regional-sitemap",
+     "verified": false,
+     "pageName": "Stephen Sondheim&#39;s Old Friends",
+     "reason": "page title does not match the show"
+    }
+   ],
+   "pooled": null
+  },
+  "the-picture-of-dorian-gray-2025": {
+   "cohort": "london-first",
+   "opening": "2025-03-27",
+   "previewsStart": "2025-03-10",
+   "cutoff": "2025-03-09",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/the-picture-of-dorian-gray-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 84,
+     "lastPage": 10,
+     "pagesRead": 10,
+     "capped": false,
+     "reachedCutoff": false,
+     "n": 72,
+     "mean": 91,
+     "shareLe60": 0,
+     "newest": "2024-07-21",
+     "oldest": "2024-02-06"
+    }
+   ],
+   "pooled": {
+    "n": 72,
+    "mean": 91,
+    "shareLe60": 0,
+    "newest": "2024-07-21"
+   }
+  },
+  "elf-2024": {
+   "cohort": "london-first",
+   "opening": "2024-11-17",
+   "previewsStart": "2024-11-09",
+   "cutoff": "2024-11-08",
+   "sources": [],
+   "pooled": null
+  },
+  "tammy-faye-2024": {
+   "cohort": "london-first",
+   "opening": "2024-11-14",
+   "previewsStart": "2024-10-19",
+   "cutoff": "2024-10-18",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/tammy-faye-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 44,
+     "lastPage": 6,
+     "pagesRead": 6,
+     "capped": false,
+     "reachedCutoff": false,
+     "n": 44,
+     "mean": 86.6,
+     "shareLe60": 0,
+     "newest": "2024-09-04",
+     "oldest": "2022-10-23"
+    }
+   ],
+   "pooled": {
+    "n": 44,
+    "mean": 86.6,
+    "shareLe60": 0,
+    "newest": "2024-09-04"
+   }
+  },
+  "sunset-boulevard-2024": {
+   "cohort": "london-first",
+   "opening": "2024-10-20",
+   "previewsStart": "2024-09-28",
+   "cutoff": "2024-09-27",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/sunset-boulevard-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 243,
+     "lastPage": 29,
+     "pagesRead": 29,
+     "capped": false,
+     "reachedCutoff": false,
+     "n": 229,
+     "mean": 85.6,
+     "shareLe60": 0.1,
+     "newest": "2024-06-15",
+     "oldest": "2023-09-22"
+    }
+   ],
+   "pooled": {
+    "n": 229,
+    "mean": 85.6,
+    "shareLe60": 0.1,
+    "newest": "2024-06-15"
+   }
+  },
+  "the-hills-of-california-2024": {
+   "cohort": "london-first",
+   "opening": "2024-09-29",
+   "previewsStart": "2024-09-11",
+   "cutoff": "2024-09-10",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/the-hills-of-california-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 122,
+     "lastPage": 14,
+     "pagesRead": 14,
+     "capped": false,
+     "reachedCutoff": false,
+     "n": 106,
+     "mean": 85.5,
+     "shareLe60": 0.1,
+     "newest": "2024-09-03",
+     "oldest": "2024-02-01"
+    }
+   ],
+   "pooled": {
+    "n": 106,
+    "mean": 85.5,
+    "shareLe60": 0.10000000000000002,
+    "newest": "2024-09-03"
+   }
+  },
+  "the-fear-of-13-2026": {
+   "cohort": "london-first",
+   "opening": "2026-04-15",
+   "previewsStart": "2026-03-19",
+   "cutoff": "2026-03-18",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-fear-of-13",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 20
+    }
+   ],
+   "pooled": null
+  },
+  "giant-2026": {
+   "cohort": "london-first",
+   "opening": "2026-03-23",
+   "previewsStart": "2026-03-11",
+   "cutoff": "2026-03-10",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/giant",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 225
+    },
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/giant-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 144
+    },
+    {
+     "kind": "lbo-held",
+     "verified": true,
+     "n": 30,
+     "mean": 98.7,
+     "shareLe60": 0,
+     "newest": "2025-08-03",
+     "oldest": "2024-10-10"
+    }
+   ],
+   "pooled": {
+    "n": 30,
+    "mean": 98.7,
+    "shareLe60": 0,
+    "newest": "2025-08-03"
+   }
+  },
+  "every-brilliant-thing-2026": {
+   "cohort": "london-first",
+   "opening": "2026-03-12",
+   "previewsStart": "2026-02-21",
+   "cutoff": "2026-02-20",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/every-brilliant-thing-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 472
+    }
+   ],
+   "pooled": null
+  },
+  "two-strangers-bway-2025": {
+   "cohort": "london-first",
+   "opening": "2025-11-20",
+   "previewsStart": "2025-11-01",
+   "cutoff": "2025-10-31",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/two-strangers-carry-a-cake-across-new-york",
+     "kind": "london-sitemap",
+     "verified": false,
+     "pageName": "Two Strangers",
+     "reason": "page title does not match the show"
+    },
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/two-strangers-carry-a-cake-across-new-york-west-end",
+     "kind": "london-sitemap",
+     "verified": false,
+     "pageName": "Two Strangers",
+     "reason": "page title does not match the show"
+    }
+   ],
+   "pooled": null
+  },
+  "oedipus-2025": {
+   "cohort": "london-first",
+   "opening": "2025-11-13",
+   "previewsStart": "2025-10-30",
+   "cutoff": "2025-10-29",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/oedipus",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 35
+    },
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/oedipus-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 334
+    }
+   ],
+   "pooled": null
+  },
+  "punch-2025": {
+   "cohort": "london-first",
+   "opening": "2025-09-29",
+   "previewsStart": "2025-09-09",
+   "cutoff": "2025-09-08",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/punch",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 64
+    },
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/punch-west-end",
+     "kind": "london-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 172
+    }
+   ],
+   "pooled": null
+  },
+  "celebrity-autobiography-2026": {
+   "cohort": "london-first",
+   "opening": "2026-05-18",
+   "previewsStart": "2026-05-16",
+   "cutoff": "2026-05-15",
+   "sources": [],
+   "pooled": null
+  },
+  "the-play-that-goes-wrong-2017": {
+   "cohort": "london-first",
+   "opening": "2017-04-02",
+   "previewsStart": "2017-03-09",
+   "cutoff": "2017-03-08",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/the-play-that-goes-wrong-london",
+     "kind": "london-mapped",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 2849
+    }
+   ],
+   "pooled": null
+  },
+  "cabaret-2024": {
+   "cohort": "london-first",
+   "opening": "2024-04-21",
+   "previewsStart": "2024-04-01",
+   "cutoff": "2024-03-31",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/cabaret-at-the-kit-kat-club-london",
+     "kind": "london-mapped",
+     "verified": true,
+     "listed": 4618,
+     "lastPage": 93,
+     "pagesRead": 40,
+     "capped": true,
+     "reachedCutoff": false,
+     "n": 320,
+     "mean": 93.4,
+     "shareLe60": 0,
+     "newest": "2023-03-26",
+     "oldest": "2022-03-26"
+    }
+   ],
+   "pooled": {
+    "n": 320,
+    "mean": 93.4,
+    "shareLe60": 0,
+    "newest": "2023-03-26"
+   }
+  },
+  "stranger-things-2024": {
+   "cohort": "london-first",
+   "opening": "2025-04-22",
+   "previewsStart": "2025-03-28",
+   "cutoff": "2025-03-27",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/stranger-things-the-first-shadow",
+     "kind": "london-mapped",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 5845
+    },
+    {
+     "kind": "lbo-held",
+     "verified": true,
+     "n": 23,
+     "mean": 94.8,
+     "shareLe60": 0,
+     "newest": "2025-03-21",
+     "oldest": "2024-09-03"
+    }
+   ],
+   "pooled": {
+    "n": 23,
+    "mean": 94.8,
+    "shareLe60": 0,
+    "newest": "2025-03-21"
+   }
+  },
+  "operation-mincemeat-2025": {
+   "cohort": "london-first",
+   "opening": "2025-03-20",
+   "previewsStart": "2025-02-15",
+   "cutoff": "2025-02-14",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/operation-mincemeat-west-end",
+     "kind": "london-mapped",
+     "verified": true,
+     "listed": 401,
+     "lastPage": 38,
+     "pagesRead": 38,
+     "capped": false,
+     "reachedCutoff": false,
+     "n": 301,
+     "mean": 86.3,
+     "shareLe60": 0.1,
+     "newest": "2024-09-07",
+     "oldest": "2023-04-05"
+    },
+    {
+     "url": "https://www.show-score.com/uk/london/off-west-end-shows/operation-mincemeat-london",
+     "kind": "london-sitemap",
+     "verified": true,
+     "listed": 26,
+     "lastPage": 3,
+     "pagesRead": 3,
+     "capped": false,
+     "reachedCutoff": false,
+     "n": 21,
+     "mean": 87,
+     "shareLe60": 0,
+     "newest": "2024-01-03",
+     "oldest": "2022-03-31"
+    }
+   ],
+   "pooled": {
+    "n": 322,
+    "mean": 86.34565217391304,
+    "shareLe60": 0.09347826086956522,
+    "newest": "2024-09-07"
+   }
+  },
+  "titanique-2026": {
+   "cohort": "london-first",
+   "opening": "2026-04-12",
+   "previewsStart": "2026-03-26",
+   "cutoff": "2026-03-25",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/titanique-west-end",
+     "kind": "london-mapped",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 5815
+    },
+    {
+     "kind": "lbo-held",
+     "verified": true,
+     "n": 22,
+     "mean": 94.5,
+     "shareLe60": 0,
+     "newest": "2026-03-25",
+     "oldest": "2025-09-22"
+    }
+   ],
+   "pooled": {
+    "n": 22,
+    "mean": 94.5,
+    "shareLe60": 0,
+    "newest": "2026-03-25"
+   }
+  },
+  "paranormal-activity-2026": {
+   "cohort": "london-first",
+   "opening": "2026-08-25",
+   "previewsStart": "2026-08-14",
+   "cutoff": "2026-08-13",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/uk/london/west-end-shows/paranormal-activity-west-end",
+     "kind": "london-mapped",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 1263
+    },
+    {
+     "kind": "lbo-held",
+     "verified": true,
+     "n": 5,
+     "mean": 96,
+     "shareLe60": 0,
+     "newest": "2026-03-25",
+     "oldest": "2026-01-23"
+    }
+   ],
+   "pooled": {
+    "n": 5,
+    "mean": 96,
+    "shareLe60": 0,
+    "newest": "2026-03-25"
+   }
+  },
+  "tuck-everlasting-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-04-26",
+   "previewsStart": "2016-03-31",
+   "cutoff": "2016-03-30",
+   "sources": [],
+   "pooled": null
+  },
+  "waitress-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-04-24",
+   "previewsStart": "2016-03-25",
+   "cutoff": "2016-03-24",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/chicago/theatre-shows/waitress-musical-chicago",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 2
+    },
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/waitress-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 26
+    }
+   ],
+   "pooled": null
+  },
+  "bright-star-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-03-24",
+   "previewsStart": "2016-02-25",
+   "cutoff": "2016-02-24",
+   "sources": [],
+   "pooled": null
+  },
+  "the-humans-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-02-18",
+   "previewsStart": "2016-01-24",
+   "cutoff": "2016-01-23",
+   "sources": [],
+   "pooled": null
+  },
+  "our-mothers-brief-affair-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-01-20",
+   "previewsStart": "2015-12-28",
+   "cutoff": "2015-12-27",
+   "sources": [],
+   "pooled": null
+  },
+  "misery-2015": {
+   "cohort": "out-of-town",
+   "opening": "2015-11-15",
+   "previewsStart": "2015-10-22",
+   "cutoff": "2015-10-21",
+   "sources": [],
+   "pooled": null
+  },
+  "allegiance-2015": {
+   "cohort": "out-of-town",
+   "opening": "2015-11-08",
+   "previewsStart": "2015-10-06",
+   "cutoff": "2015-10-05",
+   "sources": [],
+   "pooled": null
+  },
+  "on-your-feet-2015": {
+   "cohort": "out-of-town",
+   "opening": "2015-11-05",
+   "previewsStart": "2015-10-05",
+   "cutoff": "2015-10-04",
+   "sources": [],
+   "pooled": null
+  },
+  "dames-at-sea-2015": {
+   "cohort": "out-of-town",
+   "opening": "2015-10-22",
+   "previewsStart": "2015-09-24",
+   "cutoff": "2015-09-23",
+   "sources": [],
+   "pooled": null
+  },
+  "fool-for-love-2015": {
+   "cohort": "out-of-town",
+   "opening": "2015-10-08",
+   "previewsStart": "2015-09-15",
+   "cutoff": "2015-09-14",
+   "sources": [],
+   "pooled": null
+  },
+  "spring-awakening-2015": {
+   "cohort": "out-of-town",
+   "opening": "2015-09-27",
+   "previewsStart": "2015-09-08",
+   "cutoff": "2015-09-07",
+   "sources": [],
+   "pooled": null
+  },
+  "amazing-grace-2015": {
+   "cohort": "out-of-town",
+   "opening": "2015-07-16",
+   "previewsStart": "2015-06-25",
+   "cutoff": "2015-06-24",
+   "sources": [],
+   "pooled": null
+  },
+  "bandstand-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-04-26",
+   "previewsStart": "2017-03-31",
+   "cutoff": "2017-03-30",
+   "sources": [],
+   "pooled": null
+  },
+  "anastasia-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-04-24",
+   "previewsStart": "2017-03-23",
+   "cutoff": "2017-03-22",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/anastasia-la",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "listed": 1,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "indecent-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-04-18",
+   "previewsStart": "2017-04-04",
+   "cutoff": "2017-04-03",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/indecent-la",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "war-paint-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-04-06",
+   "previewsStart": "2017-03-07",
+   "cutoff": "2017-03-06",
+   "sources": [],
+   "pooled": null
+  },
+  "sweat-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-03-26",
+   "previewsStart": "2017-03-04",
+   "cutoff": "2017-03-03",
+   "sources": [],
+   "pooled": null
+  },
+  "come-from-away-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-03-12",
+   "previewsStart": "2017-02-18",
+   "cutoff": "2017-02-17",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/come-from-away-national-tour",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "in-transit-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-12-11",
+   "previewsStart": "2016-11-10",
+   "cutoff": "2016-11-09",
+   "sources": [],
+   "pooled": null
+  },
+  "dear-evan-hansen-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-12-04",
+   "previewsStart": "2016-11-14",
+   "cutoff": "2016-11-13",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/dear-evan-hansen-national-tour",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "listed": 7,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    },
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/dear-evan-hansen-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "a-bronx-tale-the-musical-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-12-01",
+   "previewsStart": "2016-11-03",
+   "cutoff": "2016-11-02",
+   "sources": [],
+   "pooled": null
+  },
+  "natasha-pierre-and-the-great-comet-of-1812-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-11-14",
+   "previewsStart": "2016-10-18",
+   "cutoff": "2016-10-17",
+   "sources": [],
+   "pooled": null
+  },
+  "oh-hello-on-broadway-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-10-10",
+   "previewsStart": "2016-09-23",
+   "cutoff": "2016-09-22",
+   "sources": [],
+   "pooled": null
+  },
+  "holiday-inn-the-new-irving-berlin-musical-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-10-06",
+   "previewsStart": "2016-09-01",
+   "cutoff": "2016-08-31",
+   "sources": [],
+   "pooled": null
+  },
+  "motown-the-musical-2016": {
+   "cohort": "out-of-town",
+   "opening": "2016-07-12",
+   "previewsStart": null,
+   "cutoff": "2016-06-21",
+   "sources": [],
+   "pooled": null
+  },
+  "summer-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-04-23",
+   "previewsStart": "2018-03-28",
+   "cutoff": "2018-03-27",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/summer-the-donna-summer-musical-la",
+     "kind": "regional-sitemap",
+     "verified": false,
+     "pageName": "Summer: The Donna Summer Musical",
+     "reason": "page title does not match the show"
+    }
+   ],
+   "pooled": null
+  },
+  "children-of-a-lesser-god-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-04-11",
+   "previewsStart": "2018-03-22",
+   "cutoff": "2018-03-21",
+   "sources": [],
+   "pooled": null
+  },
+  "mean-girls-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-04-08",
+   "previewsStart": "2018-03-12",
+   "cutoff": "2018-03-11",
+   "sources": [],
+   "pooled": null
+  },
+  "frozen-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-03-22",
+   "previewsStart": "2018-02-22",
+   "cutoff": "2018-02-21",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/frozen-the-musical-la",
+     "kind": "regional-sitemap",
+     "verified": false,
+     "pageName": "Frozen The Musical",
+     "reason": "page title does not match the show"
+    }
+   ],
+   "pooled": null
+  },
+  "escape-to-margaritaville-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-03-15",
+   "previewsStart": "2018-02-16",
+   "cutoff": "2018-02-15",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/escape-to-margaritaville-d-c",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    },
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/escape-to-margaritaville-la",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "listed": 1,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "spongebob-squarepants-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-12-04",
+   "previewsStart": "2017-11-06",
+   "cutoff": "2017-11-05",
+   "sources": [],
+   "pooled": null
+  },
+  "the-parisian-woman-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-11-30",
+   "previewsStart": "2017-11-09",
+   "cutoff": "2017-11-08",
+   "sources": [],
+   "pooled": null
+  },
+  "meteor-shower-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-11-29",
+   "previewsStart": "2017-11-01",
+   "cutoff": "2017-10-31",
+   "sources": [],
+   "pooled": null
+  },
+  "latin-history-for-morons-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-11-15",
+   "previewsStart": "2017-10-19",
+   "cutoff": "2017-10-18",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/latin-history-for-morons-la",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "listed": 1,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "junk-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-11-02",
+   "previewsStart": "2017-10-05",
+   "cutoff": "2017-10-04",
+   "sources": [],
+   "pooled": null
+  },
+  "time-and-the-conways-2017": {
+   "cohort": "out-of-town",
+   "opening": "2017-10-10",
+   "previewsStart": "2017-09-14",
+   "cutoff": "2017-09-13",
+   "sources": [],
+   "pooled": null
+  },
+  "beetlejuice-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-04-25",
+   "previewsStart": "2019-03-28",
+   "cutoff": "2019-03-27",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/beetlejuice-washington-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "listed": 42,
+     "lastPage": 6,
+     "pagesRead": 6,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 38,
+     "mean": 83.7,
+     "shareLe60": 0,
+     "newest": "2019-02-26",
+     "oldest": "2018-10-15"
+    },
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/beetlejuice-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": {
+    "n": 38,
+    "mean": 83.7,
+    "shareLe60": 0,
+    "newest": "2019-02-26"
+   }
+  },
+  "tootsie-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-04-23",
+   "previewsStart": "2019-03-29",
+   "cutoff": "2019-03-28",
+   "sources": [],
+   "pooled": null
+  },
+  "hillary-and-clinton-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-04-18",
+   "previewsStart": "2019-03-16",
+   "cutoff": "2019-03-15",
+   "sources": [],
+   "pooled": null
+  },
+  "oklahoma-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-04-07",
+   "previewsStart": "2019-03-19",
+   "cutoff": "2019-03-18",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/oklahoma-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "what-the-constitution-means-to-me-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-03-31",
+   "previewsStart": "2019-03-14",
+   "cutoff": "2019-03-13",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/what-the-constitution-means-to-me-kennedy-center",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "listed": 1,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    },
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/what-the-constitution-means-to-me-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    },
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/what-the-constitution-means-to-me-la",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "listed": 2,
+     "lastPage": 1,
+     "pagesRead": 1,
+     "capped": false,
+     "reachedCutoff": true,
+     "n": 0
+    }
+   ],
+   "pooled": null
+  },
+  "aint-too-proud-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-03-21",
+   "previewsStart": "2019-02-28",
+   "cutoff": "2019-02-27",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/ain-t-too-proud-the-life-and-times-of-the-temptations-dc",
+     "kind": "regional-sitemap",
+     "verified": false,
+     "pageName": "Ain’t Too Proud – The Life and Times of The Temptations",
+     "reason": "page title does not match the show"
+    }
+   ],
+   "pooled": null
+  },
+  "be-more-chill-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-03-10",
+   "previewsStart": "2019-02-13",
+   "cutoff": "2019-02-12",
+   "sources": [],
+   "pooled": null
+  },
+  "the-cher-show-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-12-03",
+   "previewsStart": "2018-11-01",
+   "cutoff": "2018-10-31",
+   "sources": [],
+   "pooled": null
+  },
+  "the-prom-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-11-15",
+   "previewsStart": "2018-10-23",
+   "cutoff": "2018-10-22",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/the-prom-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "the-new-one-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-11-11",
+   "previewsStart": "2018-10-25",
+   "cutoff": "2018-10-24",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/the-new-one-d-c",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    },
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/the-new-one-la",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "american-son-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-11-04",
+   "previewsStart": "2018-10-06",
+   "cutoff": "2018-10-05",
+   "sources": [],
+   "pooled": null
+  },
+  "pretty-woman-the-musical-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-08-16",
+   "previewsStart": "2018-07-20",
+   "cutoff": "2018-07-19",
+   "sources": [],
+   "pooled": null
+  },
+  "gettin-the-band-back-together-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-08-13",
+   "previewsStart": "2018-07-19",
+   "cutoff": "2018-07-18",
+   "sources": [],
+   "pooled": null
+  },
+  "head-over-heels-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-07-26",
+   "previewsStart": "2018-06-23",
+   "cutoff": "2018-06-22",
+   "sources": [],
+   "pooled": null
+  },
+  "straight-white-men-2018": {
+   "cohort": "out-of-town",
+   "opening": "2018-07-23",
+   "previewsStart": "2018-06-30",
+   "cutoff": "2018-06-29",
+   "sources": [],
+   "pooled": null
+  },
+  "grand-horizons-2020": {
+   "cohort": "out-of-town",
+   "opening": "2020-01-23",
+   "previewsStart": "2019-12-23",
+   "cutoff": "2019-12-22",
+   "sources": [],
+   "pooled": null
+  },
+  "jagged-little-pill-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-12-05",
+   "previewsStart": "2019-11-03",
+   "cutoff": "2019-11-02",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/jagged-little-pill-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "the-sound-inside-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-10-17",
+   "previewsStart": "2019-09-14",
+   "cutoff": "2019-09-13",
+   "sources": [],
+   "pooled": null
+  },
+  "the-lightning-thief-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-10-16",
+   "previewsStart": "2019-09-20",
+   "cutoff": "2019-09-19",
+   "sources": [],
+   "pooled": null
+  },
+  "the-rose-tattoo-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-10-15",
+   "previewsStart": "2019-09-19",
+   "cutoff": "2019-09-18",
+   "sources": [],
+   "pooled": null
+  },
+  "linda-vista-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-10-10",
+   "previewsStart": "2019-09-19",
+   "cutoff": "2019-09-18",
+   "sources": [],
+   "pooled": null
+  },
+  "the-great-society-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-10-01",
+   "previewsStart": "2019-09-06",
+   "cutoff": "2019-09-05",
+   "sources": [],
+   "pooled": null
+  },
+  "moulin-rouge-2019": {
+   "cohort": "out-of-town",
+   "opening": "2019-07-25",
+   "previewsStart": "2019-06-28",
+   "cutoff": "2019-06-27",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/moulin-rouge-the-musical-the-kennedy-center",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "mr-saturday-night-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-04-27",
+   "previewsStart": "2022-03-29",
+   "cutoff": "2022-03-28",
+   "sources": [],
+   "pooled": null
+  },
+  "a-strange-loop-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-04-26",
+   "previewsStart": "2022-04-14",
+   "cutoff": "2022-04-13",
+   "sources": [],
+   "pooled": null
+  },
+  "the-minutes-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-04-17",
+   "previewsStart": "2020-02-25",
+   "cutoff": "2020-02-24",
+   "sources": [],
+   "pooled": null
+  },
+  "birthday-candles-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-04-10",
+   "previewsStart": "2022-03-18",
+   "cutoff": "2022-03-17",
+   "sources": [],
+   "pooled": null
+  },
+  "paradise-square-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-04-03",
+   "previewsStart": "2022-03-15",
+   "cutoff": "2022-03-14",
+   "sources": [],
+   "pooled": null
+  },
+  "plaza-suite-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-03-28",
+   "previewsStart": "2022-02-25",
+   "cutoff": "2022-02-24",
+   "sources": [],
+   "pooled": null
+  },
+  "skeleton-crew-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-01-26",
+   "previewsStart": "2021-12-27",
+   "cutoff": "2021-12-26",
+   "sources": [],
+   "pooled": null
+  },
+  "mrs-doubtfire-2021": {
+   "cohort": "out-of-town",
+   "opening": "2021-12-05",
+   "previewsStart": "2021-10-21",
+   "cutoff": "2021-10-20",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/mrs-doubtfire-the-national-theatre",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "clydes-2021": {
+   "cohort": "out-of-town",
+   "opening": "2021-11-23",
+   "previewsStart": "2021-11-03",
+   "cutoff": "2021-11-02",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/clyde-s-dc",
+     "kind": "regional-sitemap",
+     "verified": false,
+     "pageName": "Clyde&#39;s",
+     "reason": "page title does not match the show"
+    }
+   ],
+   "pooled": null
+  },
+  "diana-the-musical-2021": {
+   "cohort": "out-of-town",
+   "opening": "2021-11-17",
+   "previewsStart": "2020-03-02",
+   "cutoff": "2020-03-01",
+   "sources": [],
+   "pooled": null
+  },
+  "dana-h-2021": {
+   "cohort": "out-of-town",
+   "opening": "2021-10-17",
+   "previewsStart": "2021-10-01",
+   "cutoff": "2021-09-30",
+   "sources": [],
+   "pooled": null
+  },
+  "thoughts-of-a-colored-man-2021": {
+   "cohort": "out-of-town",
+   "opening": "2021-10-13",
+   "previewsStart": "2021-10-01",
+   "cutoff": "2021-09-30",
+   "sources": [],
+   "pooled": null
+  },
+  "pass-over-2021": {
+   "cohort": "out-of-town",
+   "opening": "2021-08-22",
+   "previewsStart": "2021-08-04",
+   "cutoff": "2021-08-03",
+   "sources": [],
+   "pooled": null
+  },
+  "grey-house-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-05-30",
+   "previewsStart": "2023-04-29",
+   "cutoff": "2023-04-28",
+   "sources": [],
+   "pooled": null
+  },
+  "good-night-oscar-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-04-24",
+   "previewsStart": "2023-04-07",
+   "cutoff": "2023-04-06",
+   "sources": [],
+   "pooled": null
+  },
+  "the-thanksgiving-play-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-04-20",
+   "previewsStart": "2023-03-25",
+   "cutoff": "2023-03-24",
+   "sources": [],
+   "pooled": null
+  },
+  "fat-ham-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-04-12",
+   "previewsStart": "2023-03-21",
+   "cutoff": "2023-03-20",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/chicago/theatre-shows/fat-ham-chicago",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 10
+    },
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/fat-ham-studio-theatre",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "shucked-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-04-04",
+   "previewsStart": "2023-03-08",
+   "cutoff": "2023-03-07",
+   "sources": [],
+   "pooled": null
+  },
+  "bob-fosses-dancin-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-03-19",
+   "previewsStart": "2023-03-02",
+   "cutoff": "2023-03-01",
+   "sources": [],
+   "pooled": null
+  },
+  "a-beautiful-noise-the-neil-diamond-musical-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-12-04",
+   "previewsStart": "2022-11-02",
+   "cutoff": "2022-11-01",
+   "sources": [],
+   "pooled": null
+  },
+  "aint-no-mo-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-12-01",
+   "previewsStart": "2022-11-09",
+   "cutoff": "2022-11-08",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/ain-t-no-mo-dc",
+     "kind": "regional-sitemap",
+     "verified": false,
+     "pageName": "Ain&#39;t No Mo&#39;",
+     "reason": "page title does not match the show"
+    }
+   ],
+   "pooled": null
+  },
+  "mike-birbiglia-the-old-man-and-the-pool-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-11-13",
+   "previewsStart": "2022-10-28",
+   "cutoff": "2022-10-27",
+   "sources": [],
+   "pooled": null
+  },
+  "almost-famous-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-11-03",
+   "previewsStart": "2022-10-03",
+   "cutoff": "2022-10-02",
+   "sources": [],
+   "pooled": null
+  },
+  "1776-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-10-06",
+   "previewsStart": "2022-09-16",
+   "cutoff": "2022-09-15",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/1776-the-kennedy-center",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "cost-of-living-2022": {
+   "cohort": "out-of-town",
+   "opening": "2022-10-03",
+   "previewsStart": "2022-09-13",
+   "cutoff": "2022-09-12",
+   "sources": [],
+   "pooled": null
+  },
+  "the-great-gatsby-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-04-25",
+   "previewsStart": "2024-03-29",
+   "cutoff": "2024-03-28",
+   "sources": [],
+   "pooled": null
+  },
+  "illinoise-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-04-24",
+   "previewsStart": "2024-04-24",
+   "cutoff": "2024-04-21",
+   "sources": [],
+   "pooled": null
+  },
+  "mary-jane-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-04-23",
+   "previewsStart": "2024-04-02",
+   "cutoff": "2024-04-01",
+   "sources": [],
+   "pooled": null
+  },
+  "heart-of-rock-and-roll-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-04-22",
+   "previewsStart": "2024-03-29",
+   "cutoff": "2024-03-28",
+   "sources": [],
+   "pooled": null
+  },
+  "the-wiz-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-04-17",
+   "previewsStart": "2024-03-29",
+   "cutoff": "2024-03-28",
+   "sources": [],
+   "pooled": null
+  },
+  "lempicka-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-04-14",
+   "previewsStart": "2024-03-19",
+   "cutoff": "2024-03-18",
+   "sources": [],
+   "pooled": null
+  },
+  "the-outsiders-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-04-11",
+   "previewsStart": "2024-03-16",
+   "cutoff": "2024-03-15",
+   "sources": [],
+   "pooled": null
+  },
+  "the-whos-tommy-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-03-28",
+   "previewsStart": "2024-03-08",
+   "cutoff": "2024-03-07",
+   "sources": [],
+   "pooled": null
+  },
+  "water-for-elephants-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-03-21",
+   "previewsStart": "2024-02-24",
+   "cutoff": "2024-02-23",
+   "sources": [],
+   "pooled": null
+  },
+  "the-notebook-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-03-14",
+   "previewsStart": "2024-02-10",
+   "cutoff": "2024-02-09",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/the-notebooks-of-leonardo-da-vinci-dc",
+     "kind": "regional-sitemap",
+     "verified": false,
+     "pageName": "The Notebooks of Leonardo da Vinci",
+     "reason": "page title does not match the show"
+    }
+   ],
+   "pooled": null
+  },
+  "how-to-dance-in-ohio-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-12-10",
+   "previewsStart": "2023-11-15",
+   "cutoff": "2023-11-14",
+   "sources": [],
+   "pooled": null
+  },
+  "spamalot-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-11-16",
+   "previewsStart": "2023-10-31",
+   "cutoff": "2023-10-30",
+   "sources": [],
+   "pooled": null
+  },
+  "harmony-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-11-13",
+   "previewsStart": "2023-10-18",
+   "cutoff": "2023-10-17",
+   "sources": [],
+   "pooled": null
+  },
+  "the-cottage-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-07-24",
+   "previewsStart": "2023-07-07",
+   "cutoff": "2023-07-06",
+   "sources": [],
+   "pooled": null
+  },
+  "once-upon-a-one-more-time-2023": {
+   "cohort": "out-of-town",
+   "opening": "2023-06-22",
+   "previewsStart": "2023-05-13",
+   "cutoff": "2023-05-12",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/once-upon-a-one-more-time-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "real-women-have-curves-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-04-27",
+   "previewsStart": "2025-04-01",
+   "cutoff": "2025-03-31",
+   "sources": [],
+   "pooled": null
+  },
+  "john-proctor-is-the-villain-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-04-14",
+   "previewsStart": "2025-03-20",
+   "cutoff": "2025-03-19",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/john-proctor-is-the-villain-dc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "boop-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-04-05",
+   "previewsStart": "2025-03-11",
+   "cutoff": "2025-03-10",
+   "sources": [],
+   "pooled": null
+  },
+  "purpose-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-03-17",
+   "previewsStart": "2025-02-25",
+   "cutoff": "2025-02-24",
+   "sources": [],
+   "pooled": null
+  },
+  "redwood-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-02-13",
+   "previewsStart": "2025-01-24",
+   "cutoff": "2025-01-23",
+   "sources": [],
+   "pooled": null
+  },
+  "english-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-01-23",
+   "previewsStart": "2025-01-03",
+   "cutoff": "2025-01-02",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/english-studio-theatre",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "cult-of-love-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-12-12",
+   "previewsStart": "2024-11-20",
+   "cutoff": "2024-11-19",
+   "sources": [],
+   "pooled": null
+  },
+  "death-becomes-her-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-11-21",
+   "previewsStart": "2024-10-23",
+   "cutoff": "2024-10-22",
+   "sources": [],
+   "pooled": null
+  },
+  "swept-away-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-11-19",
+   "previewsStart": "2024-10-29",
+   "cutoff": "2024-10-28",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/dc/theatre-shows/swept-away-arena-stage",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": null
+    }
+   ],
+   "pooled": null
+  },
+  "maybe-happy-ending-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-11-12",
+   "previewsStart": "2024-10-16",
+   "cutoff": "2024-10-15",
+   "sources": [],
+   "pooled": null
+  },
+  "a-wonderful-world-the-louis-armstrong-musical-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-11-11",
+   "previewsStart": "2024-10-16",
+   "cutoff": "2024-10-15",
+   "sources": [],
+   "pooled": null
+  },
+  "yellow-face-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-10-01",
+   "previewsStart": "2024-09-13",
+   "cutoff": "2024-09-12",
+   "sources": [],
+   "pooled": null
+  },
+  "the-roommate-2024": {
+   "cohort": "out-of-town",
+   "opening": "2024-09-12",
+   "previewsStart": "2024-08-29",
+   "cutoff": "2024-08-28",
+   "sources": [],
+   "pooled": null
+  },
+  "beaches-2026": {
+   "cohort": "out-of-town",
+   "opening": "2026-04-22",
+   "previewsStart": "2026-03-27",
+   "cutoff": "2026-03-26",
+   "sources": [],
+   "pooled": null
+  },
+  "schmigadoon-2026": {
+   "cohort": "out-of-town",
+   "opening": "2026-04-20",
+   "previewsStart": "2026-04-04",
+   "cutoff": "2026-04-03",
+   "sources": [],
+   "pooled": null
+  },
+  "bug-2026": {
+   "cohort": "out-of-town",
+   "opening": "2026-01-08",
+   "previewsStart": "2025-12-16",
+   "cutoff": "2025-12-15",
+   "sources": [],
+   "pooled": null
+  },
+  "chess-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-11-16",
+   "previewsStart": "2025-10-15",
+   "cutoff": "2025-10-14",
+   "sources": [],
+   "pooled": null
+  },
+  "queen-versailles-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-11-09",
+   "previewsStart": "2025-10-08",
+   "cutoff": "2025-10-07",
+   "sources": [],
+   "pooled": null
+  },
+  "little-bear-ridge-road-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-10-30",
+   "previewsStart": "2025-10-07",
+   "cutoff": "2025-10-06",
+   "sources": [],
+   "pooled": null
+  },
+  "mamma-mia-2025": {
+   "cohort": "out-of-town",
+   "opening": "2025-08-14",
+   "previewsStart": "2025-08-02",
+   "cutoff": "2025-08-01",
+   "sources": [
+    {
+     "url": "https://www.show-score.com/us/la/theatre-shows/mamma-mia-oc",
+     "kind": "regional-sitemap",
+     "verified": true,
+     "reason": "no dated member ratings on the page",
+     "listed": 6
+    }
+   ],
+   "pooled": null
+  }
+ }
+}

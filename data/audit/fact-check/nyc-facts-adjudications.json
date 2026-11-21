@@ -1,0 +1,2961 @@
+{
+  "the-notebook-2024|previewsStart": {
+    "verdict": "unverifiable",
+    "url": "https://shubert.nyc/press/the-notebook-will-arrive-on-broadway-in-spring-2024/",
+    "correctValue": null,
+    "note": "Only page fetched is the 2023 announcement (Feb 6); no page confirms the actual first preview.",
+    "judgedStored": "2024-02-10"
+  },
+  "between-riverside-and-crazy-2022|previewsStart": {
+    "verdict": "wrong",
+    "url": "https://www.newyorktheatreguide.com/show/26311-between-riverside-and-crazy-tickets",
+    "correctValue": "2022-11-30",
+    "note": "NY Theatre Guide: start date November 30th, 2022.",
+    "judgedStored": "2022-12-01"
+  },
+  "between-riverside-and-crazy-2022|revival": {
+    "verdict": "correct",
+    "url": "https://www.ibdb.com/broadway-production/between-riverside-and-crazy-535124",
+    "correctValue": null,
+    "note": "First Broadway production (IBDB). Its earlier runs were Off-Broadway (Atlantic 2014, Second Stage 2015); it was a 2023 Tony nominee for Best Play, not Best Revival. Broadway rows follow IBDB, so stored new is right. Checker answer counted a pre-Broadway Off-Broadway run (prompt fixed).",
+    "judgedStored": "new"
+  },
+  "the-little-prince-2022|type": {
+    "verdict": "unverifiable",
+    "url": "https://www.broadway.com/shows/the-little-prince-broadway/",
+    "correctValue": null,
+    "note": "Dance/acrobatic adaptation; play vs special is a taste call.",
+    "judgedStored": "play"
+  },
+  "kate-allie-and-the-86-mets-off-broadway-2026|tier": {
+    "verdict": "unverifiable",
+    "url": "https://www.broadwayworld.com/off-off-broadway/regional/KateAllie-and-the--86-Mets-4412245",
+    "correctValue": null,
+    "note": "Both checkers say Off-Off-Broadway (BWW lists it under off-off-broadway) but the page is bot-walled (403); Asylum NYC is a comedy club.",
+    "judgedStored": "off-broadway"
+  },
+  "kate-allie-and-the-86-mets-off-broadway-2026|closing": {
+    "verdict": "unverifiable",
+    "url": "https://www.broadwayworld.com/off-off-broadway/regional/KateAllie-and-the--86-Mets-4412245",
+    "correctValue": null,
+    "note": "BWW 403.",
+    "judgedStored": "2026-11-08"
+  },
+  "kate-allie-and-the-86-mets-off-broadway-2026|revival": {
+    "verdict": "unverifiable",
+    "url": null,
+    "correctValue": null,
+    "note": "Checkers split; no page.",
+    "judgedStored": "new"
+  },
+  "the-morbs-off-broadway-2026|previewsStart": {
+    "verdict": "wrong",
+    "url": "https://art-newyork.org/events/the-morbs/",
+    "correctValue": "2026-10-26",
+    "note": "A.R.T./New York event page: October 26, 2026 - November 14, 2026.",
+    "judgedStored": "2026-10-27"
+  },
+  "the-morbs-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "url": "https://www.tdf.org/shows/23532/the-morbs/",
+    "correctValue": "2026-11-02",
+    "note": "TDF listing and BWW 2026-10-22 extension article: first preview Oct 26, opening Nov 2, closing Nov 21 (extended from Nov 14). Stored opening was the old first-performance date.",
+    "judgedStored": "2026-10-27"
+  },
+  "do-not-try-this-at-home-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "url": "https://www.newvictory.org/events/2627-live-performance-do-not-try-this-at-home",
+    "correctValue": null,
+    "note": "STREB new show (BWW 2025 headline: debuts new show).",
+    "judgedStored": "new"
+  },
+  "hadestown-2019|revival": {
+    "verdict": "correct",
+    "url": "https://playbill.com/article/hadestown-opens-tonight-at-new-york-theatre-workshop",
+    "correctValue": null,
+    "note": "Transfer of the NYTW production; Tony Best Musical 2019. Checkers called the transfer a revival.",
+    "judgedStored": "new"
+  },
+  "hadestown-2019|otherRuns": {
+    "verdict": "wrong",
+    "url": "https://playbill.com/article/hadestown-opens-tonight-at-new-york-theatre-workshop",
+    "correctValue": null,
+    "note": "2016 New York Theatre Workshop run is neither a priorRun nor a row.",
+    "judgedStored": []
+  },
+  "anthony-devito-jersey-boy-off-broadway-2026|type": {
+    "verdict": "unverifiable",
+    "url": "https://www.sohoplayhouse.com/shows/anthony-devito-jersey-boy",
+    "correctValue": null,
+    "note": "Solo show by a comedian; play vs special is a taste call.",
+    "judgedStored": "play"
+  },
+  "lord-nil-7-deadly-sins-off-broadway-2025|type": {
+    "verdict": "wrong",
+    "url": "https://www.lordnil.com/",
+    "correctValue": "special",
+    "note": "Magic/illusion show; stored play.",
+    "judgedStored": "play"
+  },
+  "duality-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "url": "https://playbill.com/production/duality-off-broadway-a-r-t-new-york-theatres-2024",
+    "correctValue": null,
+    "note": "Playbill production page supports Dec 11.",
+    "judgedStored": "2024-12-11"
+  },
+  "kowalski-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "url": "https://playbill.com/production/kowalski-off-broadway-the-duke-on-42nd-street-2025",
+    "correctValue": null,
+    "note": "Playbill: begins January 12.",
+    "judgedStored": "2025-01-12"
+  },
+  "kowalski-off-broadway-2025|openingNight": {
+    "verdict": "unverifiable",
+    "url": "https://www.tdf.org/shows/22303/kowalski/",
+    "correctValue": null,
+    "note": "No fetched page states either date.",
+    "judgedStored": "2025-01-25"
+  },
+  "clowns-like-me-off-broadway-2024|closing": {
+    "verdict": "wrong",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/clowns-like-me_17372",
+    "correctValue": "2024-08-18",
+    "note": "TheaterMania: Closing Night August 18, 2024 (extension not picked up).",
+    "judgedStored": "2024-07-28"
+  },
+  "five-the-parody-musical-off-broadway-2024|closing": {
+    "verdict": "unverifiable",
+    "url": null,
+    "correctValue": null,
+    "note": "No fetched page.",
+    "judgedStored": "2024-04-21"
+  },
+  "everythings-fine-off-broadway-2022|previewsStart": {
+    "verdict": "unverifiable",
+    "url": "https://www.theatermania.com/news/john-lithgow-to-direct-douglas-mcgrath-in-new-solo-show-",
+    "correctValue": null,
+    "note": "Only an announcement (Sept 20) was fetched.",
+    "judgedStored": "2022-09-28"
+  },
+  "everythings-fine-off-broadway-2022|closing": {
+    "verdict": "wrong",
+    "url": "https://www.thepressroomnyc.com/everythings-fine",
+    "correctValue": "2022-11-03",
+    "note": "Press rep page: closed November 3, 2022.",
+    "judgedStored": "2022-11-01"
+  },
+  "la-fille-du-regiment-off-broadway-2025|type": {
+    "verdict": "correct",
+    "url": "https://www.metopera.org/",
+    "correctValue": null,
+    "note": "Donizetti opera at the Met; checkers answered other.",
+    "judgedStored": "opera"
+  },
+  "la-fille-du-regiment-off-broadway-2025|revival": {
+    "verdict": "unverifiable",
+    "url": null,
+    "correctValue": null,
+    "note": "Met repertory revival; site revival flag is not defined for Met rep.",
+    "judgedStored": "new"
+  },
+  "three-houses-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "url": "https://playbill.com/article/new-dave-malloy-musical-three-houses-extends-off-broadway",
+    "correctValue": "2024-05-20",
+    "note": "Playbill: official opening May 20; stored May 22 is the opening-night photo article date.",
+    "judgedStored": "2024-05-22"
+  },
+  "jesa-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "url": "https://publictheater.org/media/4w0f2ckt/jesa-casting-press-release.pdf",
+    "correctValue": "2026-03-20",
+    "note": "Public Theater release: begins March 10, officially opens March 20. Stored = previews.",
+    "judgedStored": "2026-03-10"
+  },
+  "between-two-knees-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "url": "https://playbill.com/article/new-york-premiere-of-between-two-knees-officially-opens-february-13",
+    "correctValue": null,
+    "note": "Playbill: beginning performances February 4.",
+    "judgedStored": "2024-02-04"
+  },
+  "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025|type": {
+    "verdict": "correct",
+    "url": "https://www.metopera.org/about/press-releases/the-metropolitan-operas-202526-season/",
+    "correctValue": null,
+    "note": "Met world-premiere opera.",
+    "judgedStored": "opera"
+  },
+  "encores-the-wild-party-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "url": null,
+    "correctValue": null,
+    "note": "NYT review dated Mar 19 is the morning after a Mar 18 opening.",
+    "judgedStored": "2026-03-18"
+  },
+  "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/mrs-stern-wanders-the-prussian-state-library_",
+    "correctValue": null,
+    "note": "TheaterMania: Opening Night September 12, 2026.",
+    "judgedStored": "2026-09-12"
+  },
+  "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "url": "https://59e59.org/shows/show-detail/mrs-stern-wanders-the-prussian-state-library/",
+    "correctValue": null,
+    "note": "Luna Stage (NJ) production transferring to 59E59; a transfer is new.",
+    "judgedStored": "new"
+  },
+  "orlando-off-broadway-2026|previewsStart": {
+    "verdict": "wrong",
+    "url": "https://www.newyorktheatreguide.com/theatre-news/news/orlando-sets-off-broadway-cast-joining",
+    "correctValue": "2024-04-02",
+    "note": "NY Theatre Guide: runs April 2 to May 12, opening night April 21.",
+    "judgedStored": "2024-03-28"
+  },
+  "orlando-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "url": "https://www.newyorktheatreguide.com/theatre-news/news/orlando-sets-off-broadway-cast-joining",
+    "correctValue": "2024-04-21",
+    "note": "NY Theatre Guide: opening night April 21.",
+    "judgedStored": "2024-04-15"
+  },
+  "orlando-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "url": "https://www.broadwayworld.com/off-broadway/article/Classic-Stage-Company-Presents-Sarah-Ruhl",
+    "correctValue": "revival",
+    "note": "Sarah Ruhl Orlando had a 2010 Classic Stage Company production.",
+    "judgedStored": "new"
+  },
+  "floyd-collins-2025|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/floyd-collins-broadway-vivian-beaumont-theater-2025",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "the-collaboration-2022|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-collaboration-broadway-samuel-j-friedman-theatre-2022",
+    "note": "Playbill production page: 2022-11-30",
+    "judgedStored": "2022-11-30",
+    "by": "playbill-auto"
+  },
+  "skeleton-crew-2022|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/skeleton-crewsamuel-j-friedman-theatre-2021-2022",
+    "note": "Playbill production page: 2022-01-26",
+    "judgedStored": "2022-01-26",
+    "by": "playbill-auto"
+  },
+  "take-me-out-2022|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/take-me-out-broadway-gerald-schoenfeld-theatre-2022",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Gerald Schoenfeld Theatre",
+    "by": "playbill-auto"
+  },
+  "take-me-out-2022|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/take-me-out-broadway-gerald-schoenfeld-theatre-2022",
+    "note": "Playbill production page: 2023-02-05",
+    "judgedStored": "2023-02-05",
+    "by": "playbill-auto"
+  },
+  "ragtime-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/ragtime-broadway-vivian-beaumont-theater-2025",
+    "note": "Playbill production page: 2026-08-16",
+    "judgedStored": "2026-08-16",
+    "by": "playbill-auto"
+  },
+  "the-last-five-years-2025|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-last-five-years-broadway-hudson-theatre-2025",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "lackawanna-blues-2021|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/lackawanna-bluessamuel-j-friedman-theatre-2021-2022",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "every-brilliant-thing-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/every-brilliant-thing-broadway-hudson-theatre-2026",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "illinoise-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/illinoise-broadway-st-james-theatre-2024",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "St. James Theatre",
+    "by": "playbill-auto"
+  },
+  "illinoise-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/illinoise-broadway-st-james-theatre-2024",
+    "note": "Playbill production page: 2024-04-24",
+    "judgedStored": "2024-04-24",
+    "by": "playbill-auto"
+  },
+  "illinoise-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/illinoise-broadway-st-james-theatre-2024",
+    "note": "Playbill production page: 2024-04-24",
+    "judgedStored": "2024-04-24",
+    "by": "playbill-auto"
+  },
+  "illinoise-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/illinoise-broadway-st-james-theatre-2024",
+    "note": "Playbill production page: 2024-08-10",
+    "judgedStored": "2024-08-10",
+    "by": "playbill-auto"
+  },
+  "titanique-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/titanique-broadway-st-james-theatre-2026",
+    "note": "Playbill production page: 2026-09-20",
+    "judgedStored": "2026-09-20",
+    "by": "playbill-auto"
+  },
+  "bug-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/bug-broadway-samuel-j-friedman-theatre-2026",
+    "note": "Playbill production page: 2025-12-16",
+    "judgedStored": "2025-12-16",
+    "by": "playbill-auto"
+  },
+  "bug-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/bug-broadway-samuel-j-friedman-theatre-2026",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "liberation-2025|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/liberation-broadway-james-earl-jones-theatre-2025",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "James Earl Jones Theatre",
+    "by": "playbill-auto"
+  },
+  "liberation-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/liberation-broadway-james-earl-jones-theatre-2025",
+    "note": "Playbill production page: 2025-10-08",
+    "judgedStored": "2025-10-08",
+    "by": "playbill-auto"
+  },
+  "liberation-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/liberation-broadway-james-earl-jones-theatre-2025",
+    "note": "Playbill production page: 2025-10-28",
+    "judgedStored": "2025-10-28",
+    "by": "playbill-auto"
+  },
+  "liberation-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/liberation-broadway-james-earl-jones-theatre-2025",
+    "note": "Playbill production page: 2026-02-01",
+    "judgedStored": "2026-02-01",
+    "by": "playbill-auto"
+  },
+  "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enufbooth-theatre-2021-2022",
+    "note": "Playbill production page: 2022-04-01",
+    "judgedStored": "2022-04-01",
+    "by": "playbill-auto"
+  },
+  "uncle-vanya-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/uncle-vanya-broadway-vivian-beaumont-theater-2024",
+    "note": "Playbill production page: 2024-04-03",
+    "judgedStored": "2024-04-03",
+    "by": "playbill-auto"
+  },
+  "aint-no-mo-2022|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/aint-no-mo-broadway-belasco-theatre-2022",
+    "note": "Playbill production page: 2022-11-09",
+    "judgedStored": "2022-11-09",
+    "by": "playbill-auto"
+  },
+  "ohio-state-murders-2022|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/ohio-state-murders-broadway-james-earl-jones-theatre-2022",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "clydes-2021|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/clydeshelen-hayes-theater-2021-2022",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Helen Hayes Theater",
+    "by": "playbill-auto"
+  },
+  "once-upon-a-mattress-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/once-upon-a-mattress-broadway-hudson-theatre-2024",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Hudson Theatre",
+    "by": "playbill-auto"
+  },
+  "once-upon-a-mattress-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/once-upon-a-mattress-broadway-hudson-theatre-2024",
+    "note": "Playbill production page: 2024-07-31",
+    "judgedStored": "2024-07-31",
+    "by": "playbill-auto"
+  },
+  "once-upon-a-mattress-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/once-upon-a-mattress-broadway-hudson-theatre-2024",
+    "note": "Playbill production page: 2024-08-12",
+    "judgedStored": "2024-08-12",
+    "by": "playbill-auto"
+  },
+  "once-upon-a-mattress-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/once-upon-a-mattress-broadway-hudson-theatre-2024",
+    "note": "Playbill production page: 2024-11-30",
+    "judgedStored": "2024-11-30",
+    "by": "playbill-auto"
+  },
+  "once-upon-a-mattress-2024|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/once-upon-a-mattress-broadway-hudson-theatre-2024",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "yellow-face-2024|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/yellow-face-broadway-todd-haimes-theatre-2024",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "becky-shaw-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/becky-shaw-broadway-helen-hayes-theatre-2026",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Helen Hayes Theater",
+    "by": "playbill-auto"
+  },
+  "becky-shaw-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/becky-shaw-broadway-helen-hayes-theatre-2026",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "the-skin-of-our-teeth-2022|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-skin-of-our-teethvivian-beaumont-theater-2021-2022",
+    "note": "Playbill production page: 2022-04-01",
+    "judgedStored": "2022-04-01",
+    "by": "playbill-auto"
+  },
+  "marjorie-prime-2025|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/marjorie-prime-broadway-helen-hayes-theatre-2025",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Helen Hayes Theater",
+    "by": "playbill-auto"
+  },
+  "marjorie-prime-2025|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/marjorie-prime-broadway-helen-hayes-theatre-2025",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "job-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.ibdb.com/broadway-production/job-539824",
+    "note": "page states the stored value; openai answer Connelly Theatre (Connelly Theater) — 220 E. 4th Street, New York, NY has no page behind it",
+    "judgedStored": "Helen Hayes Theater",
+    "by": "pages-auto"
+  },
+  "slave-play-2021|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.ibdb.com/broadway-production/slave-play-532475",
+    "note": "page states the stored value; gemini answer Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "beetlejuice-2025|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/beetlejuice-broadway-palace-theatre-2025",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "cost-of-living-2022|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/cost-of-living-broadway-samuel-j-friedman-theatre-2022",
+    "note": "Playbill production page: new",
+    "judgedStored": "new",
+    "by": "playbill-auto"
+  },
+  "plaza-suite-2022|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/plaza-suitehudson-theatre-2021-2022",
+    "note": "Playbill production page: 2022-07-10",
+    "judgedStored": "2022-07-10",
+    "by": "playbill-auto"
+  },
+  "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.todaytix.com/nyc/shows/19034-la-breve-y-maravillosa-vida-de-oscar-wao",
+    "note": "page states the stored value; gemini answer 2024-11-08 has no page behind it",
+    "judgedStored": "2024-02-17",
+    "by": "pages-auto"
+  },
+  "school-girls-or-the-african-mean-girls-play-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/school-girls-or-the-african-mean-girls-play-broadway-samuel-j-friedman-theatre-2026",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "friends-the-musical-parody-off-broadway-2022|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.todaytix.com/nyc/shows/25028-friends-the-musical-parody",
+    "note": "page states the stored value; openai answer 2022-04-05 has no page behind it",
+    "judgedStored": "2022-03-29",
+    "by": "pages-auto"
+  },
+  "kevin-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tdf.org/on-stage/show-finder/",
+    "note": "page states the stored value; openai answer musical has no page behind it",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "toc-toc-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.borninthecity.com/product/toc-toc/",
+    "note": "page states the stored value; openai answer Gramercy Arts Theatre at Repertorio Español (138 E. 27th Street) has no page behind it",
+    "judgedStored": "Repertorio Español / Spanish Theatre Repertory",
+    "by": "pages-auto"
+  },
+  "sea-wall-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "revival",
+    "url": "https://playbill.com/production/sea-wall-off-broadway-studio-seaview-2026",
+    "note": "Playbill production page and a checker agree on revival",
+    "judgedStored": "new",
+    "by": "playbill-auto"
+  },
+  "king-of-the-yees-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-10-19",
+    "url": "https://playbill.com/production/king-of-the-yees-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2026",
+    "note": "Playbill production page and a checker agree on 2026-10-19",
+    "judgedStored": "2026-10-20",
+    "by": "playbill-auto"
+  },
+  "jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://www.todaytix.com/nyc/shows/46879-jim-hensons-fraggle-rock-back-to-the-rock-live",
+    "note": "both checkers, pages on todaytix.com and newvictory.org state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "broadway-magic-hour-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "special",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/broadway-magic-hour-nycs-1-family-magic-show_1802015/",
+    "note": "both checkers, pages on theatermania.com and tdf.org state special",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "soon-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/article/nick-blaemires-soon-musical-will-have-off-broadway-run-this-fall",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "the-heart-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-heart-off-broadway-laura-pels-theatre-2026",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Roundabout Theatre Company/Laura Pels Theatre",
+    "by": "playbill-auto"
+  },
+  "king-lear-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://seasons.lamama.org/shows/compagnia-de-colombari-king-lear",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "peter-panto-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://www.tdf.org/shows/23550/peter-panto/",
+    "note": "both checkers, pages on tdf.org and theatrephiladelphia.org state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "specimen-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/specimen_1847186/",
+    "note": "page states the stored value; openai answer 2026-05-06 has no page behind it",
+    "judgedStored": "2026-10-28",
+    "by": "pages-auto"
+  },
+  "specimen-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/specimen_1847186/",
+    "note": "page states the stored value; openai answer 2026-06-06 has no page behind it",
+    "judgedStored": "2026-11-21",
+    "by": "pages-auto"
+  },
+  "egg-or-anything-dipped-in-egg-gone-soften-off-broadway-2027|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://art-newyork.org/events/egg-or-anything-dipped-in-egg-gone-soften/",
+    "note": "page states the stored value; gemini answer 2027-01-27 has no page behind it",
+    "judgedStored": "2027-01-28",
+    "by": "pages-auto"
+  },
+  "kilgallen-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://www.theatermania.com/news/donna-vivino-to-star-in-york-theatres-world-premiere-of-kilgallen_1857836/",
+    "note": "both checkers, pages on theatermania.com and yorktheatre.org state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "the-surge-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.spectra.theater/explore/studio/aea62dac-3353-4570-940e-1dbd957a5ae8",
+    "note": "page states the stored value; gemini answer The Joyce Theater has no page behind it",
+    "judgedStored": "The Public Theater",
+    "by": "pages-auto"
+  },
+  "msblackforpresident-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/ms-blakk-for-president-off-broadway-vineyard-theatre-2026",
+    "note": "Playbill production page: 2026-10-15",
+    "judgedStored": "2026-10-15",
+    "by": "playbill-auto"
+  },
+  "paranormal-activity-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.ibdb.com/broadway-show/paranormal-activity-546938",
+    "note": "page states the stored value; gemini answer 2027-01-03 has no page behind it",
+    "judgedStored": "2027-02-28",
+    "by": "pages-auto"
+  },
+  "slanted-floors-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-11-02",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/slanted-floors_1856581/",
+    "note": "both checkers, pages on theatermania.com and tdf.org state 2026-11-02",
+    "judgedStored": "2026-10-20",
+    "by": "pages-auto"
+  },
+  "slanted-floors-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/article/site-specific-slanted-floors-starring-adam-chanler-berat-and-kyle-beltran-will-return-this-summer",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "much-ado-about-nothing-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/much-ado-about-nothing-broadway-winter-garden-theatre-2026",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "whats-eating-gilbert-grape-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://ng.headtopics.com/news/gilbert-grape-musical-heading-to-off-broadway-in-2027-84694011",
+    "note": "both checkers, pages on ng.headtopics.com and mcctheater.org state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "jena-friedman-motherfucker-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tdf.org/shows/23566/jena-friedman-motherfucker/",
+    "note": "page states the stored value; gemini answer special has no page behind it",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "tim-and-scrooge-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.59e59.org/shows/show-detail/tim-and-scrooge/",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/going-bacharach-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026-2",
+    "note": "Playbill production page: 2026-09-09",
+    "judgedStored": "2026-09-09",
+    "by": "playbill-auto"
+  },
+  "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/going-bacharach-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026-2",
+    "note": "Playbill production page: 2026-09-16",
+    "judgedStored": "2026-09-16",
+    "by": "playbill-auto"
+  },
+  "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.broadwayplus.com/shows/going-bacharach",
+    "note": "page states the stored value; openai answer 2026-02-15 has no page behind it",
+    "judgedStored": "2026-11-29",
+    "by": "pages-auto"
+  },
+  "the-lion-king-1997|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-lion-king-new-amsterdam-theatre-vault-0000008729",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Minskoff Theatre",
+    "by": "playbill-auto"
+  },
+  "the-verge-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-verge-off-broadway-public-theater-luesther-hall-2026",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "The Public Theater/LuEsther Hall",
+    "by": "playbill-auto"
+  },
+  "elektra-off-broadway-2026|closing": {
+    "verdict": "wrong",
+    "correctValue": "2026-12-06",
+    "url": "https://www.borninthecity.com/product/elektra/",
+    "note": "both checkers, pages on borninthecity.com and tfana.org state 2026-12-06",
+    "judgedStored": "2026-12-18",
+    "by": "pages-auto"
+  },
+  "elektra-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "revival",
+    "url": "https://playbill.com/production/elektra-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2026",
+    "note": "Playbill production page and a checker agree on revival",
+    "judgedStored": "new",
+    "by": "playbill-auto"
+  },
+  "operation-mincemeat-2025|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/operation-mincemeat-broadway-john-golden-theatre-2025",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "John Golden Theatre",
+    "by": "playbill-auto"
+  },
+  "el-quijote-off-broadway-2026|closing": {
+    "verdict": "wrong",
+    "correctValue": "2027-05-26",
+    "url": "https://gredivelvasquez.com/productions",
+    "note": "both checkers, pages on gredivelvasquez.com and theatermap.nyc state 2027-05-26",
+    "judgedStored": "2027-05-31",
+    "by": "pages-auto"
+  },
+  "chasing-grace-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://shenycarts.org/chasinggrace/",
+    "note": "both checkers, pages on shenycarts.org and tdf.org state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "pretend-its-pretend-off-broadway-2026|previewsStart": {
+    "verdict": "wrong",
+    "correctValue": "2027-01-28",
+    "url": "https://www.broadwaynews.com/a-few-good-men-and-the-sound-of-music-set-for-lincoln-center-theaters-2026-2027-broadway-season/",
+    "note": "both checkers, pages on broadwaynews.com and iheartradiobroadway.com state 2027-01-28",
+    "judgedStored": "2027-01-26",
+    "by": "pages-auto"
+  },
+  "hole-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.playwrightshorizons.org/shows/production-history/2020s/2627/degenerates",
+    "note": "page states the stored value; openai answer 2026-05-14 has no page behind it",
+    "judgedStored": "2027-01-10",
+    "by": "pages-auto"
+  },
+  "chicago-1996|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/chicago-richard-rodgers-theatre-vault-0000003074",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Ambassador Theatre",
+    "by": "playbill-auto"
+  },
+  "marilyn-exposed-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tdf.org/shows/23338/marilyn-exposed/",
+    "note": "page states the stored value; gemini answer 2026-07-01 has no page behind it",
+    "judgedStored": "2026-06-08",
+    "by": "pages-auto"
+  },
+  "nature-theater-of-oklahoma-pizza-or-a-door-in-the-dark-does-not-dance-off-broadway-2027|type": {
+    "verdict": "wrong",
+    "correctValue": "opera",
+    "url": "https://www.todaytix.com/nyc/shows/47755-nature-theater-of-oklahoma-pizza-or-a-door-in-the-dark-does-not-dance",
+    "note": "both checkers, pages on todaytix.com and nyuskirball.org state opera",
+    "judgedStored": "special",
+    "by": "pages-auto"
+  },
+  "angelica-liddell-seppuku-off-broadway-2027|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://nyuskirball.org/performance/seppuku/",
+    "note": "page states the stored value; gemini answer special has no page behind it",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "gloria-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "new",
+    "url": "https://www.newyorkcitytheatre.com/shows/hayes-theatre/gloria",
+    "note": "both checkers, pages on newyorkcitytheatre.com and playbill.com state new",
+    "judgedStored": "revival",
+    "by": "pages-auto"
+  },
+  "seussical-theatre-young-audiences-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/47601-seussical-tm-theatre-young-audiences",
+    "note": "page states the stored value; openai answer 92nd Street Y, Buttenweiser Hall has no page behind it",
+    "judgedStored": "92NY Buttenwieser Hall",
+    "by": "pages-auto"
+  },
+  "the-fever-greenwich-house-theater-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "revival",
+    "url": "https://playbill.com/production/the-fever-off-broadway-greenwich-house-theater-2026",
+    "note": "Playbill production page and a checker agree on revival",
+    "judgedStored": "new",
+    "by": "playbill-auto"
+  },
+  "the-apple-boys-off-broadway-2027|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://news.frombroadway.com/post/the-apple-boys-off-broadway-premiere-duke-on-42nd-street",
+    "note": "both checkers, pages on news.frombroadway.com and theappleboysmusical.com state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "the-apple-boys-off-broadway-2027|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://omdkc.com/the-apple-boys-to-premiere-off-broadway-this-winter-at-the-duke-on-42nd-street/",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "the-fantasticks-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-fantasticks-broadway-helen-hayes-theater-2026",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "the-play-that-goes-wrong-off-broadway-2019|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2019-02-20",
+    "url": "https://playbill.com/production/the-play-that-goes-wrong-off-broadway-new-world-stages-stage-4-2019",
+    "note": "Playbill production page and a checker agree on 2019-02-20",
+    "judgedStored": "2019-02-11",
+    "by": "playbill-auto"
+  },
+  "the-play-that-goes-wrong-off-broadway-2019|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-play-that-goes-wrong-off-broadway-new-world-stages-stage-4-2019",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "the-unsinkable-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "play",
+    "url": "https://broadway-explorer.com/shows/the-unsinkable",
+    "note": "both checkers, pages on broadway-explorer.com and newyorktheatreguide.com state play",
+    "judgedStored": "musical",
+    "by": "pages-auto"
+  },
+  "the-charioteer-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tickettailor.com/events/thecelltheatre/2252675",
+    "note": "page states the stored value; openai answer 2026-10-28 has no page behind it",
+    "judgedStored": "2026-11-04",
+    "by": "pages-auto"
+  },
+  "the-two-of-you-off-broadway-2027|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.borninthecity.com/product/the-two-of-you/",
+    "note": "page states the stored value; openai answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "our-sinatra-a-musical-celebration-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "Off-Broadway revival",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/our-sinatra-a-musical-celebration_1851141/",
+    "note": "both checkers, pages on theatermania.com and oursinatra.com state Off-Broadway revival",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "heathers-the-musical-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/heathers-the-musical-off-broadway-new-world-stages-stage-1-2025",
+    "note": "Playbill production page: 2025-06-30",
+    "judgedStored": "2025-06-30",
+    "by": "playbill-auto"
+  },
+  "the-holes-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-09-22",
+    "url": "https://playbill.com/production/the-holes-off-broadway-the-wild-project-2026",
+    "note": "Playbill production page and a checker agree on 2026-09-22",
+    "judgedStored": "2026-09-23",
+    "by": "playbill-auto"
+  },
+  "narcissister-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/article/playwrights-horizons-will-stage-world-premieres-from-aleshea-harris-else-went-kate-attwell-more-in-2026-2027-season",
+    "note": "page states the stored value; gemini answer special has no page behind it",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "schtick-a-pole-in-it-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.schtickapole.com/events-1/",
+    "note": "page states the stored value; gemini answer 2026-01-23 has no page behind it",
+    "judgedStored": "2026-08-21",
+    "by": "pages-auto"
+  },
+  "miracle-on-south-division-street-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://thegoodnewsroom.org/miracle-on-south-division-street-opens-at-the-sheen-center-bringing-laughs-to-lower-manhattan/",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "work-of-devotion-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://broadway-explorer.com/shows/work-of-devotion",
+    "note": "page states the stored value; openai answer 2027-02-28 has no page behind it",
+    "judgedStored": "2027-02-03",
+    "by": "pages-auto"
+  },
+  "downstate-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/downstate-broadway-booth-theatre-2026",
+    "note": "Playbill production page: 2026-10-22",
+    "judgedStored": "2026-10-22",
+    "by": "playbill-auto"
+  },
+  "all-of-me-off-broadway-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/all-of-me-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2024",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "The Pershing Square Signature Center/Alice Griffin Jewel Box Theatre",
+    "by": "playbill-auto"
+  },
+  "the-antiquities-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-antiquities-off-broadway-playwrights-horizons-mainstage-theater-2025",
+    "note": "Playbill production page: 2025-03-02",
+    "judgedStored": "2025-03-02",
+    "by": "playbill-auto"
+  },
+  "millennials-are-killing-musicals-off-broadway-2023|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/millennials-are-killing-musicals-off-broadway-theatre-71-2023",
+    "note": "Playbill production page: 2023-05-07",
+    "judgedStored": "2023-05-07",
+    "by": "playbill-auto"
+  },
+  "have-you-met-jane-goodall-and-her-mother-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/have-you-met-jane-goodall-and-her-mother-off-broadway-ensemble-studio-theatre-2025",
+    "note": "Playbill production page: 2025-03-30",
+    "judgedStored": "2025-03-30",
+    "by": "playbill-auto"
+  },
+  "the-seat-of-our-pants-off-broadway-2025|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://playbill.com/production/the-seat-of-our-pants-off-broadway-public-theater-newman-theater-2025",
+    "note": "Playbill production page and a checker agree on musical",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "elephant-and-piggies-we-are-in-a-play-off-broadway-2025|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/elephant-piggies-we-are-in-a-play-off-broadway-atlantic-theater-company-linda-gross-theater-2025",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Atlantic Theater Company/Linda Gross Theater",
+    "by": "playbill-auto"
+  },
+  "elephant-and-piggies-we-are-in-a-play-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/elephant-piggies-we-are-in-a-play-off-broadway-atlantic-theater-company-linda-gross-theater-2025",
+    "note": "Playbill production page: 2025-02-01",
+    "judgedStored": "2025-02-01",
+    "by": "playbill-auto"
+  },
+  "elephant-and-piggies-we-are-in-a-play-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/elephant-piggies-we-are-in-a-play-off-broadway-atlantic-theater-company-linda-gross-theater-2025",
+    "note": "Playbill production page: 2025-02-01",
+    "judgedStored": "2025-02-01",
+    "by": "playbill-auto"
+  },
+  "elephant-and-piggies-we-are-in-a-play-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/elephant-piggies-we-are-in-a-play-off-broadway-atlantic-theater-company-linda-gross-theater-2025",
+    "note": "Playbill production page: 2025-02-23",
+    "judgedStored": "2025-02-23",
+    "by": "playbill-auto"
+  },
+  "elephant-and-piggies-we-are-in-a-play-off-broadway-2025|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://atlantictheater.org/production/atlantic-for-kids-elephant-piggies-we-are-in-a-play/",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "the-last-bimbo-of-the-apocalypse-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-last-bimbo-of-the-apocalypse-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2025",
+    "note": "Playbill production page: 2025-05-13",
+    "judgedStored": "2025-05-13",
+    "by": "playbill-auto"
+  },
+  "the-price-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-price-off-broadway-theatre-at-st-clements-2025",
+    "note": "Playbill production page: 2025-02-21",
+    "judgedStored": "2025-02-21",
+    "by": "playbill-auto"
+  },
+  "the-price-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-price-off-broadway-theatre-at-st-clements-2025",
+    "note": "Playbill production page: 2025-03-30",
+    "judgedStored": "2025-03-30",
+    "by": "playbill-auto"
+  },
+  "father-anonymous-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/father-anonymous-off-broadway-amt-theater-2025",
+    "note": "Playbill production page: 2025-06-12",
+    "judgedStored": "2025-06-12",
+    "by": "playbill-auto"
+  },
+  "bear-grease-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/bear-grease-off-broadway-st-lukes-theatre-2025",
+    "note": "Playbill production page: 2025-09-07",
+    "judgedStored": "2025-09-07",
+    "by": "playbill-auto"
+  },
+  "bear-grease-off-broadway-2025|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://playbill.com/production/bear-grease-off-broadway-st-lukes-theatre-2025",
+    "note": "Playbill production page and a checker agree on musical",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "elyria-off-broadway-2023|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/elyria-off-broadway-atlantic-theater-company-linda-gross-theater-2023",
+    "note": "Playbill production page: 2023-02-09",
+    "judgedStored": "2023-02-09",
+    "by": "playbill-auto"
+  },
+  "bernardas-daughters-off-broadway-2023|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/bernardas-daughters-off-broadway-the-chelsea-factory-2023",
+    "note": "page states the stored value; gemini answer 2023-06-04 has no page behind it",
+    "judgedStored": "2023-06-18",
+    "by": "pages-auto"
+  },
+  "conversations-with-mother-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/conversations-with-mother-off-broadway-theater-555-2025",
+    "note": "Playbill production page: 2025-04-21",
+    "judgedStored": "2025-04-21",
+    "by": "playbill-auto"
+  },
+  "god-of-carnage-off-broadway-2023|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/god-of-carnage-off-broadway-theatre-five-theatre-row-2023",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Theatre Five @ Theatre Row",
+    "by": "playbill-auto"
+  },
+  "the-wanderers-off-broadway-2023|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-wanderersroundabout-theatre-company-laura-pels-theatre-2022-2023",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Roundabout Theatre Company - Laura Pels Theatre",
+    "by": "playbill-auto"
+  },
+  "the-doctor-off-broadway-2023|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-doctor-off-broadway-park-avenue-armory-2023",
+    "note": "Playbill production page: 2023-06-13",
+    "judgedStored": "2023-06-13",
+    "by": "playbill-auto"
+  },
+  "fatherland-off-broadway-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/fatherland-off-broadway-new-york-city-center-stage-ii-2024",
+    "note": "Playbill production page: 2024-11-10",
+    "judgedStored": "2024-11-10",
+    "by": "playbill-auto"
+  },
+  "evanston-salt-costs-climbing-off-broadway-2022|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/evanston-salt-costs-climbing-off-broadway-the-pershing-square-signature-theatre-center-2022",
+    "note": "Playbill production page: 2022-10-25",
+    "judgedStored": "2022-10-25",
+    "by": "playbill-auto"
+  },
+  "evanston-salt-costs-climbing-off-broadway-2022|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/evanston-salt-costs-climbing-off-broadway-the-pershing-square-signature-theatre-center-2022",
+    "note": "Playbill production page: 2022-11-13",
+    "judgedStored": "2022-11-13",
+    "by": "playbill-auto"
+  },
+  "macbeth-an-undoing-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/macbeth-an-undoing-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2024",
+    "note": "Playbill production page: 2024-04-05",
+    "judgedStored": "2024-04-05",
+    "by": "playbill-auto"
+  },
+  "macbeth-an-undoing-off-broadway-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/macbeth-an-undoing-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2024",
+    "note": "Playbill production page: 2024-04-28",
+    "judgedStored": "2024-04-28",
+    "by": "playbill-auto"
+  },
+  "safe-house-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/safe-house-off-broadway-st-anns-warehouse-2025",
+    "note": "page states the stored value; gemini answer 2025-02-20 has no page behind it",
+    "judgedStored": "2025-02-15",
+    "by": "pages-auto"
+  },
+  "safe-house-off-broadway-2025|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/safe-house-off-broadway-st-anns-warehouse-2025",
+    "note": "page states the stored value; gemini answer special has no page behind it",
+    "judgedStored": "musical",
+    "by": "pages-auto"
+  },
+  "burnout-paradise-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/burnout-paradise-off-broadway-st-anns-warehouse-2024",
+    "note": "Playbill production page: 2024-11-12",
+    "judgedStored": "2024-11-12",
+    "by": "playbill-auto"
+  },
+  "lights-out-nat-king-cole-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/lights-out-nat-king-cole-off-broadway-new-york-theatre-workshop-2025",
+    "note": "Playbill production page: 2025-05-19",
+    "judgedStored": "2025-05-19",
+    "by": "playbill-auto"
+  },
+  "oh-happy-day-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tdf.org/shows/22592/oh-happy-day/",
+    "note": "page states the stored value; openai answer 2025-11-02 has no page behind it",
+    "judgedStored": "2025-11-09",
+    "by": "pages-auto"
+  },
+  "watch-me-walk-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/watch-me-walk-off-broadway-playwrights-horizons-peter-jay-sharp-theater-2026",
+    "note": "Playbill production page: 2026-01-25",
+    "judgedStored": "2026-01-25",
+    "by": "playbill-auto"
+  },
+  "watch-me-walk-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/watch-me-walk-off-broadway-playwrights-horizons-peter-jay-sharp-theater-2026",
+    "note": "Playbill production page: 2026-02-15",
+    "judgedStored": "2026-02-15",
+    "by": "playbill-auto"
+  },
+  "the-seven-year-disappear-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-seven-year-disappear-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2024",
+    "note": "Playbill production page: 2024-02-25",
+    "judgedStored": "2024-02-25",
+    "by": "playbill-auto"
+  },
+  "circle-jerk-off-broadway-2022|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/circle-jerk-off-broadway-connelly-theatre-2022",
+    "note": "Playbill production page: 2022-06-08",
+    "judgedStored": "2022-06-08",
+    "by": "playbill-auto"
+  },
+  "hamlet-greenwich-house-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/article/eddie-izzard-returns-to-new-york-in-solo-hamlet-opening-february-11",
+    "note": "page states the stored value; gemini answer 2024-05-30 has no page behind it",
+    "judgedStored": "2024-02-11",
+    "by": "pages-auto"
+  },
+  "hamlet-greenwich-house-off-broadway-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/hamlet-off-broadway-greenwich-house-theater-2024",
+    "note": "page states the stored value; gemini answer 2024-06-15 has no page behind it",
+    "judgedStored": "2024-03-16",
+    "by": "pages-auto"
+  },
+  "pygmalion-off-broadway-2025|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/pygmalion-off-broadway-theatre-five-theatre-row-2025",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Theatre Five @ Theatre Row",
+    "by": "playbill-auto"
+  },
+  "pygmalion-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/pygmalion-off-broadway-theatre-five-theatre-row-2025",
+    "note": "Playbill production page: 2025-10-22",
+    "judgedStored": "2025-10-22",
+    "by": "playbill-auto"
+  },
+  "stereophonic-off-broadway-2023|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2023-10-29",
+    "url": "https://playbill.com/production/stereophonic-off-broadway-playwrights-horizons-mainstage-theater-2023",
+    "note": "Playbill production page and a checker agree on 2023-10-29",
+    "judgedStored": "2023-10-17",
+    "by": "playbill-auto"
+  },
+  "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://en.wikipedia.org/wiki/Walk_on_Through:_Confessions_of_a_Museum_Novice",
+    "note": "both checkers, pages on en.wikipedia.org and playbill.com state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "n-a-off-broadway-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/n-a-off-broadway-mitzi-e-newhouse-theatre-2024",
+    "note": "Playbill production page: 2024-09-01",
+    "judgedStored": "2024-09-01",
+    "by": "playbill-auto"
+  },
+  "ginger-twinsies-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/ginger-twinsies-off-broadway-orpheum-theatre-2025",
+    "note": "Playbill production page: 2025-10-26",
+    "judgedStored": "2025-10-26",
+    "by": "playbill-auto"
+  },
+  "alexandria-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/alexandria-off-broadway-dixon-place-2025",
+    "note": "Playbill production page: 2025-05-09",
+    "judgedStored": "2025-05-09",
+    "by": "playbill-auto"
+  },
+  "reunions-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/reunions-off-broadway-new-york-city-center-stage-ii-2025",
+    "note": "Playbill production page: 2025-12-14",
+    "judgedStored": "2025-12-14",
+    "by": "playbill-auto"
+  },
+  "reunions-off-broadway-2025|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://playbill.com/production/reunions-off-broadway-new-york-city-center-stage-ii-2025",
+    "note": "Playbill production page and a checker agree on musical",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "laowang-a-chinatown-king-lear-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/laowang-a-chinatown-king-lear-off-broadway-59e59-theater-a-2025",
+    "note": "Playbill production page: 2025-11-11",
+    "judgedStored": "2025-11-11",
+    "by": "playbill-auto"
+  },
+  "people-of-the-book-off-broadway-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/people-of-the-book-off-broadway-urban-stages-2024",
+    "note": "Playbill production page: 2024-10-27",
+    "judgedStored": "2024-10-27",
+    "by": "playbill-auto"
+  },
+  "the-half-god-of-rainfall-off-broadway-2023|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-half-god-of-rainfall-off-broadway-new-york-theatre-workshop-2023",
+    "note": "Playbill production page: 2023-07-13",
+    "judgedStored": "2023-07-13",
+    "by": "playbill-auto"
+  },
+  "saturday-church-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/saturday-church-off-broadway-new-york-theatre-workshop-2025",
+    "note": "Playbill production page: 2025-10-24",
+    "judgedStored": "2025-10-24",
+    "by": "playbill-auto"
+  },
+  "saturday-church-off-broadway-2025|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://playbill.com/production/saturday-church-off-broadway-new-york-theatre-workshop-2025",
+    "note": "Playbill production page and a checker agree on musical",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "ceremonies-in-dark-old-men-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/ceremonies-in-dark-old-men-off-broadway-theatre-at-st-clements-2025",
+    "note": "Playbill production page: 2025-04-18",
+    "judgedStored": "2025-04-18",
+    "by": "playbill-auto"
+  },
+  "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.broadway.com/shows/mind-mangler/",
+    "note": "page states the stored value; openai answer 2024-03-03 has no page behind it",
+    "judgedStored": "2024-01-28",
+    "by": "pages-auto"
+  },
+  "dreadful-episodes-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/dreadful-episodes-off-broadway-59e59-theater-b-2025",
+    "note": "Playbill production page: 2025-10-10",
+    "judgedStored": "2025-10-10",
+    "by": "playbill-auto"
+  },
+  "the-refuge-plays-off-broadway-2023|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-refuge-plays-off-broadway-roundabout-theatre-company-laura-pels-theatre-2023",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Roundabout Theatre Company - Laura Pels Theatre",
+    "by": "playbill-auto"
+  },
+  "the-refuge-plays-off-broadway-2023|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-refuge-plays-off-broadway-roundabout-theatre-company-laura-pels-theatre-2023",
+    "note": "Playbill production page: 2023-10-04",
+    "judgedStored": "2023-10-04",
+    "by": "playbill-auto"
+  },
+  "deep-blue-sound-off-broadway-2025|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.clubbedthumb.org/productions/2023/deep-blue-sound/",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "angry-alan-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/43996-angry-alan",
+    "note": "page states the stored value; openai answer 2025-06-11 has no page behind it",
+    "judgedStored": "2025-05-23",
+    "by": "pages-auto"
+  },
+  "dog-man-the-musical-off-broadway-2023|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/dog-man-the-musical-off-broadway-new-world-stages-stage-3-2023",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "New World Stages Stage 3",
+    "by": "playbill-auto"
+  },
+  "translations-off-broadway-2023|revival": {
+    "verdict": "wrong",
+    "correctValue": "Off-Broadway revival",
+    "url": "https://nystagereview.com/2023/10/29/translations-finding-the-meaning-behind-the-words/",
+    "note": "both checkers, pages on nystagereview.com and timeout.com state Off-Broadway revival",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "scene-partners-off-broadway-2023|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/scene-partners-off-broadway-vineyard-theatre-2023",
+    "note": "Playbill production page: 2023-11-12",
+    "judgedStored": "2023-11-12",
+    "by": "playbill-auto"
+  },
+  "still-off-broadway-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/still-off-broadway-dr2-theatre-2024",
+    "note": "Playbill production page: 2024-05-18",
+    "judgedStored": "2024-05-18",
+    "by": "playbill-auto"
+  },
+  "dirty-laundry-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/dirty-laundry-off-broadway-wp-theater-2024",
+    "note": "Playbill production page: 2024-09-21",
+    "judgedStored": "2024-09-21",
+    "by": "playbill-auto"
+  },
+  "oh-mary-off-broadway-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/oh-mary-off-broadway-lucille-lortel-theatre-2024",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Lucille Lortel Theatre",
+    "by": "playbill-auto"
+  },
+  "oh-mary-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/oh-mary-off-broadway-lucille-lortel-theatre-2024",
+    "note": "Playbill production page: 2024-02-08",
+    "judgedStored": "2024-02-08",
+    "by": "playbill-auto"
+  },
+  "covenant-off-broadway-2023|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/covenant-off-broadway-roundabout-theatre-company-black-box-theatre-2023",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Roundabout Theatre Company - Black Box Theatre",
+    "by": "playbill-auto"
+  },
+  "public-obscenities-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/public-obscenities-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2024",
+    "note": "page states the stored value; gemini answer 2024-01-24 has no page behind it",
+    "judgedStored": "2024-01-17",
+    "by": "pages-auto"
+  },
+  "that-parenting-musical-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/that-parenting-musical-off-broadway-theatre-row-theatre-2024",
+    "note": "Playbill production page: 2024-09-04",
+    "judgedStored": "2024-09-04",
+    "by": "playbill-auto"
+  },
+  "that-parenting-musical-off-broadway-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/that-parenting-musical-off-broadway-theatre-row-theatre-2024",
+    "note": "Playbill production page: 2024-11-03",
+    "judgedStored": "2024-11-03",
+    "by": "playbill-auto"
+  },
+  "the-knight-of-the-burning-pestle-off-broadway-2023|revival": {
+    "verdict": "wrong",
+    "correctValue": "Off-Broadway revival",
+    "url": "https://www.theaterscene.net/plays/offbway-plays/the-knight-of-the-burning-pestle/victor-gluck/",
+    "note": "both checkers, pages on theaterscene.net and en.wikipedia.org state Off-Broadway revival",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "you-dont-have-to-do-anything-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/you-dont-have-to-do-anything-off-broadway-here-arts-center-2024",
+    "note": "Playbill production page: 2024-02-09",
+    "judgedStored": "2024-02-09",
+    "by": "playbill-auto"
+  },
+  "grief-camp-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/grief-camp-off-broadway-atlantic-theater-company-linda-gross-theater-2025",
+    "note": "Playbill production page: 2025-04-05",
+    "judgedStored": "2025-04-05",
+    "by": "playbill-auto"
+  },
+  "bettingers-luggage-off-broadway-2023|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/bettingers-luggage-off-broadway-amt-theater-2023",
+    "note": "Playbill production page: 2023-09-19",
+    "judgedStored": "2023-09-19",
+    "by": "playbill-auto"
+  },
+  "david-blaine-presents-asi-winds-inner-circle-off-broadway-2022|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/david-blaine-presents-asi-winds-inner-circle-off-broadway-the-gym-at-judson-2022",
+    "note": "Playbill production page: 2022-09-15",
+    "judgedStored": "2022-09-15",
+    "by": "playbill-auto"
+  },
+  "illinoise-off-broadway-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.theatermania.com/news/park-avenue-armorys-2024-season-includes-new-york-city-premiere-of-illinoise_1721491/",
+    "note": "page states the stored value; openai answer James Theatre (formerly the Gerald Schoenfeld Theatre) at 246 W. 44th St., New York — the Broadway house often listed as the James Theatre has no page behind it",
+    "judgedStored": "Park Avenue Armory",
+    "by": "pages-auto"
+  },
+  "the-gardens-of-anuncia-off-broadway-2023|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://www.lct.org/explore/blog/just-announced-gardens-anuncia/",
+    "note": "both checkers, pages on lct.org and playbill.com state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "the-very-hungry-caterpillar-show-off-broadway-2023|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-very-hungry-caterpillar-show-off-broadway-dr2-theatre-2023",
+    "note": "Playbill production page: 2023-05-28",
+    "judgedStored": "2023-05-28",
+    "by": "playbill-auto"
+  },
+  "deep-history-off-broadway-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/deep-history-off-broadway-the-public-theater-2024",
+    "note": "Playbill production page: 2024-10-27",
+    "judgedStored": "2024-10-27",
+    "by": "playbill-auto"
+  },
+  "a-good-day-to-me-not-to-you-off-broadway-2023|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/a-good-day-to-me-not-to-you-off-broadway-connelly-theatre-2023",
+    "note": "Playbill production page: 2023-12-09",
+    "judgedStored": "2023-12-09",
+    "by": "playbill-auto"
+  },
+  "the-connector-off-broadway-2024|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://mcctheater.org/tix/the-connector/",
+    "note": "both checkers, pages on mcctheater.org and playbill.com state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "my-first-ex-husband-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/my-first-ex-husband-off-broadway-mmac-theatre-2025",
+    "note": "Playbill production page: 2025-05-18",
+    "judgedStored": "2025-05-18",
+    "by": "playbill-auto"
+  },
+  "the-counter-off-broadway-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-counter-off-broadway-roundabout-theatre-company-laura-pels-theatre-2024",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Roundabout Theatre Company - Laura Pels Theatre",
+    "by": "playbill-auto"
+  },
+  "the-counter-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-counter-off-broadway-roundabout-theatre-company-laura-pels-theatre-2024",
+    "note": "Playbill production page: 2024-09-19",
+    "judgedStored": "2024-09-19",
+    "by": "playbill-auto"
+  },
+  "remember-this-the-lesson-of-jan-karski-off-broadway-2022|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/remember-this-the-lesson-of-jan-karski-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2022",
+    "note": "Playbill production page: 2022-09-10",
+    "judgedStored": "2022-09-10",
+    "by": "playbill-auto"
+  },
+  "russian-troll-farm-a-workplace-comedy-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/russian-troll-farm-a-workplace-comedy-off-broadway-vineyard-theatre-2024",
+    "note": "Playbill production page: 2024-02-03",
+    "judgedStored": "2024-02-03",
+    "by": "playbill-auto"
+  },
+  "arcadia-off-broadway-2023|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/arcadia-off-broadway-the-west-end-theatre-2023",
+    "note": "Playbill production page: 2023-10-28",
+    "judgedStored": "2023-10-28",
+    "by": "playbill-auto"
+  },
+  "arcadia-off-broadway-2023|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/arcadia-off-broadway-the-west-end-theatre-2023",
+    "note": "Playbill production page: 2023-12-31",
+    "judgedStored": "2023-12-31",
+    "by": "playbill-auto"
+  },
+  "arcadia-off-broadway-2023|revival": {
+    "verdict": "wrong",
+    "correctValue": "Off-Broadway revival",
+    "url": "https://www.timeout.com/newyork/theater/arcadia-bedlam-review-tom-stoppard",
+    "note": "both checkers, pages on timeout.com and offoffonline.squarespace.com state Off-Broadway revival",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "the-bakers-wife-off-broadway-2025|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://playbill.com/production/the-bakers-wife-off-broadway-classic-stage-company-lynn-f-angelson-theater-2025",
+    "note": "Playbill production page and a checker agree on musical",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "the-bakers-wife-off-broadway-2025|revival": {
+    "verdict": "wrong",
+    "correctValue": "revival",
+    "url": "https://playbill.com/production/the-bakers-wife-off-broadway-classic-stage-company-lynn-f-angelson-theater-2025",
+    "note": "Playbill production page and a checker agree on revival",
+    "judgedStored": "new",
+    "by": "playbill-auto"
+  },
+  "the-big-gay-jamboree-off-broadway-2024|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://www.theatermania.com/news/the-big-gay-jamboree-sets-closing-date_1756434/",
+    "note": "both checkers, pages on theatermania.com and en.wikipedia.org state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "the-fires-off-broadway-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-fires-off-broadway-soho-repertory-theater-2024",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "SoHo Repertory Theater",
+    "by": "playbill-auto"
+  },
+  "the-fires-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-fires-off-broadway-soho-repertory-theater-2024",
+    "note": "Playbill production page: 2024-05-21",
+    "judgedStored": "2024-05-21",
+    "by": "playbill-auto"
+  },
+  "a-sign-of-the-times-off-broadway-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/a-sign-of-the-times-off-broadway-new-world-stages-stage-1-2024",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "New World Stages Stage 1",
+    "by": "playbill-auto"
+  },
+  "a-sign-of-the-times-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/a-sign-of-the-times-off-broadway-new-world-stages-stage-1-2024",
+    "note": "Playbill production page: 2024-02-08",
+    "judgedStored": "2024-02-08",
+    "by": "playbill-auto"
+  },
+  "polishing-shakespeare-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/polishing-shakespeare-off-broadway-59e59-theater-b-2025",
+    "note": "page states the stored value; gemini answer 2025-07-10 has no page behind it",
+    "judgedStored": "2025-07-12",
+    "by": "pages-auto"
+  },
+  "deadly-stages-off-broadway-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/deadly-stages-off-broadway-theatre-five-theatre-row-2024",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Theatre Five @ Theatre Row",
+    "by": "playbill-auto"
+  },
+  "the-creeps-off-broadway-2023|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://catherinewaller.weebly.com/",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "henry-iv-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/henry-iv-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2025",
+    "note": "Playbill production page: 2025-02-09",
+    "judgedStored": "2025-02-09",
+    "by": "playbill-auto"
+  },
+  "henry-iv-off-broadway-2025|revival": {
+    "verdict": "wrong",
+    "correctValue": "Off-Broadway revival",
+    "url": "https://nystagereview.com/2025/02/11/henry-iv-fathers-and-sons-and-falstaff-in-the-round/",
+    "note": "both checkers, pages on nystagereview.com and theatermania.com state Off-Broadway revival",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "house-of-mcqueen-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/house-of-mcqueen-off-broadway-the-mansion-at-hudson-yards-2025",
+    "note": "Playbill production page: 2025-11-02",
+    "judgedStored": "2025-11-02",
+    "by": "playbill-auto"
+  },
+  "merrily-we-roll-along-off-broadway-2022|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/merrily-we-roll-along-off-broadway-new-york-theatre-workshop-2022",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "New York Theatre Workshop",
+    "by": "playbill-auto"
+  },
+  "merrily-we-roll-along-off-broadway-2022|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/merrily-we-roll-along-off-broadway-new-york-theatre-workshop-2022",
+    "note": "Playbill production page: 2022-11-21",
+    "judgedStored": "2022-11-21",
+    "by": "playbill-auto"
+  },
+  "merrily-we-roll-along-off-broadway-2022|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/merrily-we-roll-along-off-broadway-new-york-theatre-workshop-2022",
+    "note": "Playbill production page: 2022-12-12",
+    "judgedStored": "2022-12-12",
+    "by": "playbill-auto"
+  },
+  "merrily-we-roll-along-off-broadway-2022|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/merrily-we-roll-along-off-broadway-new-york-theatre-workshop-2022",
+    "note": "Playbill production page: 2023-01-22",
+    "judgedStored": "2023-01-22",
+    "by": "playbill-auto"
+  },
+  "300-paintings-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/300-paintings-off-broadway-vineyard-theatre-2024",
+    "note": "Playbill production page: 2024-11-12",
+    "judgedStored": "2024-11-12",
+    "by": "playbill-auto"
+  },
+  "wesley-off-broadway-2025|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/wesley_1780663/",
+    "note": "both checkers, pages on theatermania.com and playbill.com state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "meet-the-cartozians-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/meet-the-cartozians-off-broadway-the-pershing-square-signature-center-irene-diamond-stage-2025",
+    "note": "Playbill production page: 2025-10-30",
+    "judgedStored": "2025-10-30",
+    "by": "playbill-auto"
+  },
+  "ava-the-secret-conversations-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/ava-the-secret-conversations-off-broadway-new-york-city-center-2025",
+    "note": "Playbill production page: 2025-07-30",
+    "judgedStored": "2025-07-30",
+    "by": "playbill-auto"
+  },
+  "lone-star-off-broadway-2023|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/lone-star-off-broadway-theatre-row-theatre-2023",
+    "note": "Playbill production page: 2023-11-24",
+    "judgedStored": "2023-11-24",
+    "by": "playbill-auto"
+  },
+  "lone-star-off-broadway-2023|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/lone-star-off-broadway-theatre-row-theatre-2023",
+    "note": "Playbill production page: 2023-11-24",
+    "judgedStored": "2023-11-24",
+    "by": "playbill-auto"
+  },
+  "lone-star-off-broadway-2023|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.ruthstage.org/lonestar",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-2025|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-a-r-t-new-york-theatres-2025",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "A.R.T./New York Theatres",
+    "by": "playbill-auto"
+  },
+  "how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-a-r-t-new-york-theatres-2025",
+    "note": "Playbill production page: 2025-02-03",
+    "judgedStored": "2025-02-03",
+    "by": "playbill-auto"
+  },
+  "pay-the-writer-off-broadway-2023|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/pay-the-writer-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2023",
+    "note": "Playbill production page: 2023-09-30",
+    "judgedStored": "2023-09-30",
+    "by": "playbill-auto"
+  },
+  "pretty-perfect-lives-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/pretty-perfect-lives-off-broadway-the-flea-theater-2024",
+    "note": "Playbill production page: 2024-08-17",
+    "judgedStored": "2024-08-17",
+    "by": "playbill-auto"
+  },
+  "the-honey-trap-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-honey-trap-off-broadway-irish-repertory-theatre-2025",
+    "note": "Playbill production page: 2026-02-15",
+    "judgedStored": "2026-02-15",
+    "by": "playbill-auto"
+  },
+  "picnic-at-hanging-rock-off-broadway-2025|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://playbill.com/production/picnic-at-hanging-rock-off-broadway-greenwich-house-theater-2025",
+    "note": "Playbill production page and a checker agree on musical",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "this-is-government-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/this-is-government-off-broadway-59e59-theater-b-2025",
+    "note": "Playbill production page: 2025-09-06",
+    "judgedStored": "2025-09-06",
+    "by": "playbill-auto"
+  },
+  "jonah-off-broadway-2024|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/jonah-off-broadway-roundabout-theatre-company-laura-pels-theatre-2024",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Roundabout Theatre Company - Laura Pels Theatre",
+    "by": "playbill-auto"
+  },
+  "queens-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/queens-off-broadway-new-york-city-center-2025",
+    "note": "Playbill production page: 2025-10-15",
+    "judgedStored": "2025-10-15",
+    "by": "playbill-auto"
+  },
+  "queens-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/queens-off-broadway-new-york-city-center-2025",
+    "note": "Playbill production page: 2025-12-07",
+    "judgedStored": "2025-12-07",
+    "by": "playbill-auto"
+  },
+  "ta-da-off-broadway-2025|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/ta-da-off-broadway-greenwich-house-theater-2025",
+    "note": "Playbill production page: play",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "the-goodbye-girl-off-broadway-2023|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-goodbye-girl-off-broadway-theatre-row-theatre-2023",
+    "note": "Playbill production page: 2023-05-07",
+    "judgedStored": "2023-05-07",
+    "by": "playbill-auto"
+  },
+  "the-goodbye-girl-off-broadway-2023|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-goodbye-girl-off-broadway-theatre-row-theatre-2023",
+    "note": "Playbill production page: 2023-05-07",
+    "judgedStored": "2023-05-07",
+    "by": "playbill-auto"
+  },
+  "stalker-off-broadway-2024|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/stalker-off-broadway-new-world-stages-stage-3-2024",
+    "note": "Playbill production page: 2024-09-01",
+    "judgedStored": "2024-09-01",
+    "by": "playbill-auto"
+  },
+  "infinite-life-off-broadway-2023|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/infinite-life-off-broadway-atlantic-theater-company-linda-gross-theater-2023",
+    "note": "Playbill production page: 2023-10-08",
+    "judgedStored": "2023-10-08",
+    "by": "playbill-auto"
+  },
+  "the-gospel-according-to-heather-off-broadway-2023|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-gospel-according-to-heather-off-broadway-theater-555-2023",
+    "note": "Playbill production page: 2023-07-16",
+    "judgedStored": "2023-07-16",
+    "by": "playbill-auto"
+  },
+  "bite-me-off-broadway-2023|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/bite-me-off-broadway-wp-theater-2023",
+    "note": "Playbill production page: 2023-09-23",
+    "judgedStored": "2023-09-23",
+    "by": "playbill-auto"
+  },
+  "teeth-off-broadway-2024|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tdf.org/shows/19922/teeth/",
+    "note": "page states the stored value; openai answer 2024-02-21 has no page behind it",
+    "judgedStored": "2024-10-16",
+    "by": "pages-auto"
+  },
+  "teeth-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tdf.org/shows/19922/teeth/",
+    "note": "page states the stored value; openai answer 2024-03-19 has no page behind it",
+    "judgedStored": "2024-10-31",
+    "by": "pages-auto"
+  },
+  "school-pictures-off-broadway-2023|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/article/new-york-premiere-of-milo-cramers-school-pictures-begins-at-playwrights-horizons-november-8",
+    "note": "page states the stored value; gemini answer play has no page behind it",
+    "judgedStored": "musical",
+    "by": "pages-auto"
+  },
+  "endgame-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/endgame-off-broadway-irish-arts-center-2025",
+    "note": "Playbill production page: 2025-10-22",
+    "judgedStored": "2025-10-22",
+    "by": "playbill-auto"
+  },
+  "mindplay-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/mindplay-off-broadway-greenwich-house-theater-2025",
+    "note": "Playbill production page: 2025-05-11",
+    "judgedStored": "2025-05-11",
+    "by": "playbill-auto"
+  },
+  "eurydice-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "Off-Broadway revival",
+    "url": "https://www.todaytix.com/nyc/shows/40571-eurydice-signature",
+    "note": "both checkers, pages on todaytix.com and en.wikipedia.org state Off-Broadway revival",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "kramerfauci-st-anns-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/kramer-fauci-off-broadway-st-anns-warehouse-2026",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "St. Ann's Warehouse",
+    "by": "playbill-auto"
+  },
+  "kramerfauci-st-anns-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/kramer-fauci-off-broadway-st-anns-warehouse-2026",
+    "note": "Playbill production page: 2026-09-27",
+    "judgedStored": "2026-09-27",
+    "by": "playbill-auto"
+  },
+  "kramerfauci-st-anns-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/kramer-fauci-off-broadway-st-anns-warehouse-2026",
+    "note": "Playbill production page: 2026-10-04",
+    "judgedStored": "2026-10-04",
+    "by": "playbill-auto"
+  },
+  "kramerfauci-st-anns-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/kramer-fauci-off-broadway-st-anns-warehouse-2026",
+    "note": "Playbill production page: 2026-10-24",
+    "judgedStored": "2026-10-24",
+    "by": "playbill-auto"
+  },
+  "spring-dances-2026-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.todaytix.com/nyc/shows/46502-spring-dances-2026",
+    "note": "page states the stored value; openai answer 2026-03-25 has no page behind it",
+    "judgedStored": "2026-03-26",
+    "by": "pages-auto"
+  },
+  "grown-up-nights-jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/46913-grown-up-nights-jim-hensons-fraggle-rock-back-to-the-rock-live",
+    "note": "page states the stored value; openai answer 2026-05-30 has no page behind it",
+    "judgedStored": "2026-06-12",
+    "by": "pages-auto"
+  },
+  "beyond-the-stardust-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/beyond-the-stardust-off-broadway-the-flea-theater-2026",
+    "note": "Playbill production page: 2026-09-10",
+    "judgedStored": "2026-09-10",
+    "by": "playbill-auto"
+  },
+  "beyond-the-stardust-off-broadway-2026|closing": {
+    "verdict": "wrong",
+    "correctValue": "2026-10-28",
+    "url": "https://playbill.com/production/beyond-the-stardust-off-broadway-the-flea-theater-2026",
+    "note": "Playbill production page and a checker agree on 2026-10-28",
+    "judgedStored": "2026-10-18",
+    "by": "playbill-auto"
+  },
+  "sexual-misconduct-of-the-middle-classes-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.broadway.com/shows/sexual-misconduct-of-the-middle-classes/event/21756714/04-30-2026/1930/",
+    "note": "page states the stored value; openai answer 2026-04-20 has no page behind it",
+    "judgedStored": "2026-04-30",
+    "by": "pages-auto"
+  },
+  "the-black-mirror-experience-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "special",
+    "url": "https://www.theatermania.com/news/immersive-black-mirror-play-to-arrive-off-broadway-this-summer_1838719/",
+    "note": "both checkers, pages on theatermania.com and banijay.com state special",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "touch-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/46217-touch",
+    "note": "page states the stored value; openai answer 2026-03-12 has no page behind it",
+    "judgedStored": "2026-03-14",
+    "by": "pages-auto"
+  },
+  "stevie-a-life-in-the-key-of-songs-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/46989-stevie-a-life-in-the-key-of-songs",
+    "note": "page states the stored value; openai answer Brooklyn Academy of Music - Howard Gilman Opera House has no page behind it",
+    "judgedStored": "BAM Howard Gilman Opera House",
+    "by": "pages-auto"
+  },
+  "creation-stories-and-all-the-important-importants-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/creation-stories-and-all-the-important-importants-off-broadway-claire-tow-theater-2026",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "LCT3 at the Claire Tow Theater",
+    "by": "playbill-auto"
+  },
+  "america-who-hurt-you-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/america-who-hurt-you-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2026",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Theatre for a New Audience/Polonsky Shakespeare Center",
+    "by": "playbill-auto"
+  },
+  "america-who-hurt-you-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/america-who-hurt-you-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2026",
+    "note": "Playbill production page: 2026-09-11",
+    "judgedStored": "2026-09-11",
+    "by": "playbill-auto"
+  },
+  "garry-starr-classic-penguins-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/garry-starr-classic-penguins-off-broadway-studio-seaview-2026",
+    "note": "Playbill production page: play",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "garry-starr-classic-penguins-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "new",
+    "url": "https://francescamoody.com/garry-starr-classic-penguins-transfers-to-new-york/",
+    "note": "both checkers, pages on francescamoody.com and theaterscene.com state new",
+    "judgedStored": "revival",
+    "by": "pages-auto"
+  },
+  "the-unknown-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-02-12",
+    "url": "https://newyorktheater.me/2026/02/12/the-unknown-review-sean-hayes-stalked/",
+    "note": "both checkers, pages on newyorktheater.me and tdf.org state 2026-02-12",
+    "judgedStored": "2026-01-31",
+    "by": "pages-auto"
+  },
+  "repro-eco-tomorrow-is-now-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://reprofreedomarts.org/reproeco/",
+    "note": "page states the stored value; gemini answer special has no page behind it",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "tristan-und-isolde-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/44789-tristan-und-isolde",
+    "note": "page states the stored value; openai answer 2026-04-04 has no page behind it",
+    "judgedStored": "2026-04-02",
+    "by": "pages-auto"
+  },
+  "vanya-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/vanya-off-broadway-lucille-lortel-theatre-2025",
+    "note": "Playbill production page: 2025-03-11",
+    "judgedStored": "2025-03-11",
+    "by": "playbill-auto"
+  },
+  "les-miserables-arena-concert-spectacular-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://nystagereview.com/2026/07/28/les-miserables-the-arena-concert-spectacular-still-breaking-hearts-and-triggering-tears/",
+    "note": "page states the stored value; gemini answer 2026-07-23 has no page behind it",
+    "judgedStored": "2026-07-28",
+    "by": "pages-auto"
+  },
+  "les-miserables-arena-concert-spectacular-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://worldtour.lesmis.com/about-the-show/",
+    "note": "page states the stored value; gemini answer Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "the-maids-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-maids-off-broadway-st-anns-warehouse-2026",
+    "note": "Playbill production page: revival",
+    "judgedStored": "revival",
+    "by": "playbill-auto"
+  },
+  "the-lonely-few-off-broadway-2024|previewsStart": {
+    "verdict": "wrong",
+    "correctValue": "2024-04-26",
+    "url": "https://playbill.com/production/the-lonely-few-off-broadway-the-robert-w-wilson-mcc-theater-space-2024",
+    "note": "Playbill production page and a checker agree on 2024-04-26",
+    "judgedStored": "2024-05-07",
+    "by": "playbill-auto"
+  },
+  "the-lonely-few-off-broadway-2024|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2024-05-20",
+    "url": "https://playbill.com/production/the-lonely-few-off-broadway-the-robert-w-wilson-mcc-theater-space-2024",
+    "note": "Playbill production page and a checker agree on 2024-05-20",
+    "judgedStored": "2024-05-21",
+    "by": "playbill-auto"
+  },
+  "the-lonely-few-off-broadway-2024|closing": {
+    "verdict": "wrong",
+    "correctValue": "2024-06-09",
+    "url": "https://playbill.com/production/the-lonely-few-off-broadway-the-robert-w-wilson-mcc-theater-space-2024",
+    "note": "Playbill production page and a checker agree on 2024-06-09",
+    "judgedStored": "2024-06-02",
+    "by": "playbill-auto"
+  },
+  "bedlams-othello-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://bedlam.org/othello",
+    "note": "page states the stored value; gemini answer 2026-11-29 has no page behind it",
+    "judgedStored": "2026-05-31",
+    "by": "pages-auto"
+  },
+  "jerome-off-broadway-2025|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/jerome-off-broadway-playwrights-horizons-the-judith-o-rubin-theater-2026",
+    "note": "Playbill production page: 2026-05-14",
+    "judgedStored": "2026-05-14",
+    "by": "playbill-auto"
+  },
+  "jerome-off-broadway-2025|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-06-02",
+    "url": "https://playbill.com/production/jerome-off-broadway-playwrights-horizons-the-judith-o-rubin-theater-2026",
+    "note": "Playbill production page and a checker agree on 2026-06-02",
+    "judgedStored": "2026-06-01",
+    "by": "playbill-auto"
+  },
+  "antigone-this-play-i-read-in-high-school-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/antigone-this-play-i-read-in-high-school-off-broadway-public-theater-barbaralee-theater-formerly-anspacher-theater-2026",
+    "note": "Playbill production page: 2026-04-12",
+    "judgedStored": "2026-04-12",
+    "by": "playbill-auto"
+  },
+  "the-disappear-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-01-15",
+    "url": "https://playbill.com/production/the-disappear-off-broadway-minetta-lane-theatre-2026",
+    "note": "Playbill production page and a checker agree on 2026-01-15",
+    "judgedStored": "2026-01-08",
+    "by": "playbill-auto"
+  },
+  "macbeth-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "play",
+    "url": "https://goodmenproject.com/all-things-geek/off-broadway-theater-review-xela/",
+    "note": "both checkers, pages on goodmenproject.com and frogandpeachtheatre.org state play",
+    "judgedStored": "opera",
+    "by": "pages-auto"
+  },
+  "macbeth-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tdf.org/shows/23085/macbeth/",
+    "note": "page states the stored value; openai answer new has no page behind it",
+    "judgedStored": "revival",
+    "by": "pages-auto"
+  },
+  "manual-cinema-the-4th-witch-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://nyuskirball.org/performance/the-4th-witch/",
+    "note": "page states the stored value; gemini answer special has no page behind it",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "the-whoopi-monologues-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://web.playbill.com/production/the-whoopi-monologues-off-broadway-mitzi-e-newhouse-theatre-2026",
+    "note": "Playbill production page: 2026-07-14",
+    "judgedStored": "2026-07-14",
+    "by": "playbill-auto"
+  },
+  "birthright-off-broadway-2026|previewsStart": {
+    "verdict": "wrong",
+    "correctValue": "2026-06-16",
+    "url": "https://playbill.com/production/birthright-off-broadway-the-robert-w-wilson-mcc-theater-space-2026",
+    "note": "Playbill production page and a checker agree on 2026-06-16",
+    "judgedStored": "2026-06-05",
+    "by": "playbill-auto"
+  },
+  "birthright-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-06-29",
+    "url": "https://playbill.com/production/birthright-off-broadway-the-robert-w-wilson-mcc-theater-space-2026",
+    "note": "Playbill production page and a checker agree on 2026-06-29",
+    "judgedStored": "2026-06-24",
+    "by": "playbill-auto"
+  },
+  "are-you-mad-at-me-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/are-you-mad-at-me-off-broadway-here-arts-center-2026",
+    "note": "Playbill production page: 2026-07-10",
+    "judgedStored": "2026-07-10",
+    "by": "playbill-auto"
+  },
+  "are-you-mad-at-me-off-broadway-2026|openingNight": {
+    "verdict": "unverifiable",
+    "correctValue": null,
+    "url": "https://playbill.com/production/are-you-mad-at-me-off-broadway-here-arts-center-2026",
+    "note": "Playbill says 2026-07-10, no checker agrees, row says 2026-07-20",
+    "judgedStored": "2026-07-20",
+    "by": "playbill-auto"
+  },
+  "are-you-mad-at-me-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/are-you-mad-at-me-off-broadway-here-arts-center-2026",
+    "note": "Playbill production page: 2026-08-15",
+    "judgedStored": "2026-08-15",
+    "by": "playbill-auto"
+  },
+  "the-reservoir-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-02-24",
+    "url": "https://playbill.com/production/the-reservoir-off-broadway-atlantic-theater-company-linda-gross-theater-2026",
+    "note": "Playbill production page and a checker agree on 2026-02-24",
+    "judgedStored": "2026-02-05",
+    "by": "playbill-auto"
+  },
+  "rosie-odonnell-common-knowledge-off-broadway-2026|openingNight": {
+    "verdict": "unverifiable",
+    "correctValue": null,
+    "url": "https://playbill.com/production/rosie-odonnell-common-knowledge-off-broadway-daryl-roth-theatre-2026",
+    "note": "Playbill says 2026-07-22, no checker agrees, row says 2026-07-25",
+    "judgedStored": "2026-07-25",
+    "by": "playbill-auto"
+  },
+  "rosie-odonnell-common-knowledge-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/rosie-odonnell-common-knowledge-off-broadway-daryl-roth-theatre-2026",
+    "note": "Playbill production page: play",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-25th-annual-putnam-county-spelling-bee-off-broadway-new-world-stages-stage-3-2025",
+    "note": "Playbill production page: 2026-10-11",
+    "judgedStored": "2026-10-11",
+    "by": "playbill-auto"
+  },
+  "night-side-songs-off-broadway-2026|previewsStart": {
+    "verdict": "wrong",
+    "correctValue": "2026-02-14",
+    "url": "https://www.newyorktheatreguide.com/show/44495-night-side-songs",
+    "note": "both checkers, pages on newyorktheatreguide.com and playbill.com state 2026-02-14",
+    "judgedStored": "2026-03-02",
+    "by": "pages-auto"
+  },
+  "youre-a-good-man-charlie-brown-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/45660-youre-a-good-man-charlie-brown",
+    "note": "page states the stored value; openai answer New York City Center (Encores! series) has no page behind it",
+    "judgedStored": "92NY Buttenwieser Hall",
+    "by": "pages-auto"
+  },
+  "youre-a-good-man-charlie-brown-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/45660-youre-a-good-man-charlie-brown",
+    "note": "page states the stored value; openai answer 2027-02-03 has no page behind it",
+    "judgedStored": "2026-03-14",
+    "by": "pages-auto"
+  },
+  "youre-a-good-man-charlie-brown-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/45660-youre-a-good-man-charlie-brown",
+    "note": "page states the stored value; openai answer 2027-02-14 has no page behind it",
+    "judgedStored": "2026-03-29",
+    "by": "pages-auto"
+  },
+  "the-winters-tale-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.todaytix.com/nyc/shows/47414-ada-accessible-lottery-the-winters-tale-free-shakespeare-in-the-park",
+    "note": "page states the stored value; openai answer 2026-08-22 has no page behind it",
+    "judgedStored": "2026-08-23",
+    "by": "pages-auto"
+  },
+  "la-boheme-off-broadway-2024|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.operabase.com/productions/la-boheme-239041/en",
+    "note": "page states the stored value; openai answer 2024-11-16 has no page behind it",
+    "judgedStored": "2024-11-13",
+    "by": "pages-auto"
+  },
+  "you-got-older-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/you-got-older-off-broadway-cherry-lane-theatre-2026",
+    "note": "Playbill production page: 2026-02-23",
+    "judgedStored": "2026-02-23",
+    "by": "playbill-auto"
+  },
+  "cold-war-choir-practice-off-broadway-2026|revival": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/cold-war-choir-practice-off-broadway-the-robert-w-wilson-mcc-theater-space-2026",
+    "note": "page states the stored value; gemini answer Off-Broadway revival has no page behind it",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "quarter-rican-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.theatermania.com/shows/bronx/quarter-rican_1856201/",
+    "note": "page states the stored value; gemini answer 2026-10-15 has no page behind it",
+    "judgedStored": "2026-10-11",
+    "by": "pages-auto"
+  },
+  "pied-a-terre-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/pied-a-terre-off-broadway-the-theater-center-anne-l-bernstein-theater-2026",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "The Theater Center",
+    "by": "playbill-auto"
+  },
+  "that-math-show-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "special",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/that-math-show_1840511/",
+    "note": "both checkers, pages on theatermania.com and maa.org state special",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "mother-russia-off-broadway-2026|closing": {
+    "verdict": "wrong",
+    "correctValue": "2026-03-22",
+    "url": "https://playbill.com/production/mother-russia-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2026",
+    "note": "Playbill production page and a checker agree on 2026-03-22",
+    "judgedStored": "2026-03-29",
+    "by": "playbill-auto"
+  },
+  "caroline-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2025-09-30",
+    "url": "https://playbill.com/production/caroline-off-broadway-the-robert-w-wilson-mcc-theater-space-2025",
+    "note": "Playbill production page and a checker agree on 2025-09-30",
+    "judgedStored": "2025-10-01",
+    "by": "playbill-auto"
+  },
+  "oratorio-for-living-things-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/oratorio-for-living-things-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2025",
+    "note": "Playbill production page: 2025-09-30",
+    "judgedStored": "2025-09-30",
+    "by": "playbill-auto"
+  },
+  "oratorio-for-living-things-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/oratorio-for-living-things-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2025",
+    "note": "Playbill production page: 2025-11-23",
+    "judgedStored": "2025-11-23",
+    "by": "playbill-auto"
+  },
+  "oratorio-for-living-things-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/oratorio-for-living-things-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2025",
+    "note": "Playbill production page: musical",
+    "judgedStored": "musical",
+    "by": "playbill-auto"
+  },
+  "heartbreak-hotel-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-03-24",
+    "url": "https://playbill.com/production/heartbreak-hotel-off-broadway-dr2-theatre-2026",
+    "note": "Playbill production page and a checker agree on 2026-03-24",
+    "judgedStored": "2026-03-20",
+    "by": "playbill-auto"
+  },
+  "not-nobody-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tdf.org/shows/22827/not-nobody/",
+    "note": "page states the stored value; gemini answer 2026-02-10 has no page behind it",
+    "judgedStored": "2026-02-05",
+    "by": "pages-auto"
+  },
+  "animal-wisdom-off-broadway-2022|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-05-17",
+    "url": "https://playbill.com/production/animal-wisdom-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2026",
+    "note": "Playbill production page and a checker agree on 2026-05-17",
+    "judgedStored": "2026-05-19",
+    "by": "playbill-auto"
+  },
+  "animal-wisdom-off-broadway-2022|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://playbill.com/production/animal-wisdom-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2026",
+    "note": "Playbill production page and a checker agree on musical",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "animal-wisdom-off-broadway-2022|revival": {
+    "verdict": "wrong",
+    "correctValue": "revival",
+    "url": "https://playbill.com/production/animal-wisdom-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2026",
+    "note": "Playbill production page and a checker agree on revival",
+    "judgedStored": "new",
+    "by": "playbill-auto"
+  },
+  "kenrex-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/46159-kenrex-lortel",
+    "note": "page states the stored value; openai answer 2026-04-15 has no page behind it",
+    "judgedStored": "2026-04-16",
+    "by": "pages-auto"
+  },
+  "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/hans-litten-the-jew-who-cross-examined-hitler-off-broadway-theatre-five-theatre-row-2026",
+    "note": "page states the stored value; gemini answer Theatre Row, Theatre 5 has no page behind it",
+    "judgedStored": "Theatre Five at Theatre Row",
+    "by": "pages-auto"
+  },
+  "going-bacharach-the-songs-of-an-icon-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://www.spectra.theater/explore/production/72142fc5-050c-5d67-8a6f-b670861853c7",
+    "note": "both checkers, pages on spectra.theater and timeout.com state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "zack-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "Off-Broadway revival",
+    "url": "https://nystagereview.com/2026/03/10/zack-another-oldie-but-goodie-from-the-mint-theater/",
+    "note": "both checkers, pages on nystagereview.com and playbill.com state Off-Broadway revival",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "the-dinosaurs-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-02-16",
+    "url": "https://playbill.com/production/the-dinosaurs-off-broadway-playwrights-horizons-the-judy-theater-2026",
+    "note": "Playbill production page and a checker agree on 2026-02-16",
+    "judgedStored": "2026-02-04",
+    "by": "playbill-auto"
+  },
+  "the-receptionist-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "revival",
+    "url": "https://playbill.com/production/the-receptionist-off-broadway-the-pershing-square-signature-center-irene-diamond-stage-2026",
+    "note": "Playbill production page and a checker agree on revival",
+    "judgedStored": "new",
+    "by": "playbill-auto"
+  },
+  "the-ford-hill-project-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/the-ford-hill-project-off-broadway-brooklyn-academy-of-music-2026",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "BAM Fisher (Fishman Space)",
+    "by": "playbill-auto"
+  },
+  "data-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-01-25",
+    "url": "https://playbill.com/production/data-off-broadway-lucille-lortel-theatre-2026",
+    "note": "Playbill production page and a checker agree on 2026-01-25",
+    "judgedStored": "2026-01-09",
+    "by": "playbill-auto"
+  },
+  "dirty-books-off-broadway-2025|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/dirty-books-off-broadway-bated-breath-theatre-2025",
+    "note": "Playbill production page: 2025-11-13",
+    "judgedStored": "2025-11-13",
+    "by": "playbill-auto"
+  },
+  "mister-snickers-of-new-york-city-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/46853-mister-snickers-of-new-york-city",
+    "note": "page states the stored value; openai answer wild project (89-seat theatre at The Wild Project, New York) has no page behind it",
+    "judgedStored": "Urban Stages",
+    "by": "pages-auto"
+  },
+  "ulysses-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-01-25",
+    "url": "https://playbill.com/production/ulysses-off-broadway-public-theater-martinson-hall-2026",
+    "note": "Playbill production page and a checker agree on 2026-01-25",
+    "judgedStored": "2026-01-13",
+    "by": "playbill-auto"
+  },
+  "milk-and-honey-amt-theater-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://www.theatermania.com/news/off-broadway-revival-of-jerry-herman-musical-milk-and-honey-announces-cast_1829750/",
+    "note": "both checkers, pages on theatermania.com and tdf.org state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "shit-meet-fan-off-broadway-2024|previewsStart": {
+    "verdict": "wrong",
+    "correctValue": "2024-10-10",
+    "url": "https://playbill.com/production/shit-meet-fan-off-broadway-the-robert-w-wilson-mcc-theater-space-2024",
+    "note": "Playbill production page and a checker agree on 2024-10-10",
+    "judgedStored": "2024-08-21",
+    "by": "playbill-auto"
+  },
+  "trophy-boys-off-broadway-2025|previewsStart": {
+    "verdict": "wrong",
+    "correctValue": "2025-06-05",
+    "url": "https://playbill.com/production/trophy-boys-off-broadway-the-robert-w-wilson-mcc-theater-space-2025",
+    "note": "Playbill production page and a checker agree on 2025-06-05",
+    "judgedStored": "2025-06-10",
+    "by": "playbill-auto"
+  },
+  "trophy-boys-off-broadway-2025|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2025-06-24",
+    "url": "https://playbill.com/production/trophy-boys-off-broadway-the-robert-w-wilson-mcc-theater-space-2025",
+    "note": "Playbill production page and a checker agree on 2025-06-24",
+    "judgedStored": "2025-06-25",
+    "by": "playbill-auto"
+  },
+  "trophy-boys-off-broadway-2025|closing": {
+    "verdict": "wrong",
+    "correctValue": "2025-08-03",
+    "url": "https://playbill.com/production/trophy-boys-off-broadway-the-robert-w-wilson-mcc-theater-space-2025",
+    "note": "Playbill production page and a checker agree on 2025-08-03",
+    "judgedStored": "2025-07-27",
+    "by": "playbill-auto"
+  },
+  "cat-cohen-broad-strokes-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/cat-cohen-broad-strokes-off-broadway-lucille-lortel-theatre-2026",
+    "note": "Playbill production page: 2026-09-26",
+    "judgedStored": "2026-09-26",
+    "by": "playbill-auto"
+  },
+  "cat-cohen-broad-strokes-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://playbill.com/production/cat-cohen-broad-strokes-off-broadway-lucille-lortel-theatre-2026",
+    "note": "Playbill production page and a checker agree on musical",
+    "judgedStored": "play",
+    "by": "playbill-auto"
+  },
+  "small-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-05-28",
+    "url": "https://playbill.com/production/small-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2026",
+    "note": "Playbill production page and a checker agree on 2026-05-28",
+    "judgedStored": "2026-05-29",
+    "by": "playbill-auto"
+  },
+  "the-potluck-off-broadway-2026|type": {
+    "verdict": "wrong",
+    "correctValue": "musical",
+    "url": "https://www.indiespace.org/updates/upcoming-indie-theater-august-1",
+    "note": "both checkers, pages on indiespace.org and sohorep.org state musical",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "shifters-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-07-15",
+    "url": "https://playbill.com/production/shifters-off-broadway-cherry-lane-theatre-2026",
+    "note": "Playbill production page and a checker agree on 2026-07-15",
+    "judgedStored": "2026-07-16",
+    "by": "playbill-auto"
+  },
+  "henry-vi-a-trilogy-in-two-parts-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-06-21",
+    "url": "https://playbill.com/production/henry-vi-a-trilogy-in-two-parts-off-broadway-public-theater-newman-theater-2026",
+    "note": "Playbill production page and a checker agree on 2026-06-21",
+    "judgedStored": "2026-06-09",
+    "by": "playbill-auto"
+  },
+  "what-happened-was-off-broadway-2026|openingNight": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/what-happened-was-off-broadway-minetta-lane-theatre-2026",
+    "note": "page states the stored value; gemini answer 2026-04-21 has no page behind it",
+    "judgedStored": "2026-04-14",
+    "by": "pages-auto"
+  },
+  "the-invention-of-love-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-09-20",
+    "url": "https://playbill.com/production/the-invention-of-love-off-broadway-theaterlab-2026",
+    "note": "Playbill production page and a checker agree on 2026-09-20",
+    "judgedStored": "2026-09-21",
+    "by": "playbill-auto"
+  },
+  "bad-krey-l-off-broadway-2026|closing": {
+    "verdict": "wrong",
+    "correctValue": "2024-12-01",
+    "url": "https://playbill.com/production/bad-kreyol-off-broadway-the-pershing-square-signature-center-irene-diamond-stage-2024",
+    "note": "Playbill production page and a checker agree on 2024-12-01",
+    "judgedStored": "2024-12-08",
+    "by": "playbill-auto"
+  },
+  "pepper-slit-live-in-her-living-room-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/pepper-slit-live-in-her-living-room-off-broadway-east-village-basement-2026",
+    "note": "page states the stored value; gemini answer special has no page behind it",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "age-of-content-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/45885-age-of-content",
+    "note": "page states the stored value; openai answer Howard Gilman Opera House at Brooklyn Academy of Music has no page behind it",
+    "judgedStored": "BAM Howard Gilman Opera House",
+    "by": "pages-auto"
+  },
+  "isla-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-08-13",
+    "url": "https://exeuntnyc.com/reviews/review-isla-at-wp-theater/",
+    "note": "both checkers, pages on exeuntnyc.com and tdf.org state 2026-08-13",
+    "judgedStored": "2026-08-08",
+    "by": "pages-auto"
+  },
+  "isla-off-broadway-2026|type": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.tdf.org/shows/23343/isla/",
+    "note": "page states the stored value; gemini answer musical has no page behind it",
+    "judgedStored": "play",
+    "by": "pages-auto"
+  },
+  "the-gin-game-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-07-20",
+    "url": "https://www.theatermania.com/shows/new-york-city-theater/off-off-broadway/the-gin-game_1846906/",
+    "note": "both checkers, pages on theatermania.com and nystagereview.com state 2026-07-20",
+    "judgedStored": "2026-07-15",
+    "by": "pages-auto"
+  },
+  "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://www.newyorktheatreguide.com/show/46507-transcendency-rising-short-plays-about-defying-limitations",
+    "note": "page states the stored value; openai answer Theatre Five at Theatre Row (410 West 42nd Street, New York, NY) has no page behind it",
+    "judgedStored": "Theatre Row, Theatre 5",
+    "by": "pages-auto"
+  },
+  "the-tragedy-of-coriolanus-off-broadway-2026|openingNight": {
+    "verdict": "wrong",
+    "correctValue": "2026-02-14",
+    "url": "https://playbill.com/production/the-tragedy-of-coriolanus-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2026",
+    "note": "Playbill production page and a checker agree on 2026-02-14",
+    "judgedStored": "2026-02-03",
+    "by": "playbill-auto"
+  },
+  "the-tragedy-of-coriolanus-off-broadway-2026|revival": {
+    "verdict": "wrong",
+    "correctValue": "revival",
+    "url": "https://playbill.com/production/the-tragedy-of-coriolanus-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2026",
+    "note": "Playbill production page and a checker agree on revival",
+    "judgedStored": "new",
+    "by": "playbill-auto"
+  },
+  "turandot-off-broadway-2025|revival": {
+    "verdict": "wrong",
+    "correctValue": "Broadway revival",
+    "url": "https://operawire.com/metropolitan-opera-2025-26-review-turandot-2/",
+    "note": "both checkers, pages on operawire.com and eng.enc-news.com state Broadway revival",
+    "judgedStored": "new",
+    "by": "pages-auto"
+  },
+  "spandex-off-broadway-2026|theatre": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/spandex-off-broadway-asylum-nyc-2026",
+    "note": "Playbill production page venue matches",
+    "judgedStored": "Asylum NYC",
+    "by": "playbill-auto"
+  },
+  "silverback-mountain-off-broadway-2026|previewsStart": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/silverback-mountain-off-broadway-amt-theater-2026",
+    "note": "Playbill production page: 2026-05-31",
+    "judgedStored": "2026-05-31",
+    "by": "playbill-auto"
+  },
+  "silverback-mountain-off-broadway-2026|closing": {
+    "verdict": "correct",
+    "correctValue": null,
+    "url": "https://playbill.com/production/silverback-mountain-off-broadway-amt-theater-2026",
+    "note": "Playbill production page: 2026-06-28",
+    "judgedStored": "2026-06-28",
+    "by": "playbill-auto"
+  }
+}

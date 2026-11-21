@@ -1,0 +1,3009 @@
+{
+  "outletId": "nysr",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:36:51.367Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 1288,
+    "inWindow": 1288,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "held": 776,
+      "catalog-gap": 44,
+      "held-unmatched": 27,
+      "out-of-window": 171,
+      "held-other-market": 7,
+      "held-alt-url": 11,
+      "not-review": 251,
+      "gap": 1
+    },
+    "viaTitleVariant": {
+      "held": 56,
+      "held-alt-url": 5
+    },
+    "recall": 0.999,
+    "recallWithCatalog": 0.946
+  },
+  "seasons": {
+    "2026-27": {
+      "held": 58,
+      "catalog-gap": 1,
+      "held-unmatched": 6,
+      "out-of-window": 1
+    },
+    "2025-26": {
+      "held": 193,
+      "held-other-market": 5,
+      "catalog-gap": 5,
+      "held-alt-url": 2,
+      "held-unmatched": 4,
+      "out-of-window": 10,
+      "not-review": 22
+    },
+    "2024-25": {
+      "out-of-window": 36,
+      "catalog-gap": 11,
+      "held": 166,
+      "held-unmatched": 7,
+      "not-review": 41,
+      "held-other-market": 2,
+      "held-alt-url": 1
+    },
+    "2023-24": {
+      "held": 139,
+      "not-review": 30,
+      "held-unmatched": 6,
+      "out-of-window": 33,
+      "catalog-gap": 13,
+      "held-alt-url": 3
+    },
+    "2022-23": {
+      "out-of-window": 45,
+      "catalog-gap": 6,
+      "not-review": 75,
+      "held": 127,
+      "held-alt-url": 4
+    },
+    "2021-22": {
+      "not-review": 73,
+      "out-of-window": 43,
+      "catalog-gap": 8,
+      "held": 91,
+      "gap": 1,
+      "held-unmatched": 4,
+      "held-alt-url": 1
+    },
+    "2020-21": {
+      "not-review": 10,
+      "held": 2,
+      "out-of-window": 3
+    }
+  },
+  "corpusSide": {
+    "rowsInWindow": 1003,
+    "notEnumerated": 2,
+    "noUrl": 2,
+    "samples": [
+      {
+        "showId": "anna-christie-1977",
+        "url": "https://open.substack.com/pub/newyorknotebook/p/anna-christie?r=1gwcg&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "babe-off-broadway-2024",
+        "url": "https://nystagereview.com/?p=22418",
+        "publishDate": "2024-11-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "once-upon-a-mattress-1996",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "othello-1982",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://nystagereview.com/2022/07/11/between-the-lines-targeting-that-wicked-audience/",
+      "headline": "Between the Lines: Targeting That “Wicked” Audience",
+      "publishDate": "2022-07-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "wicked-2003"
+      ],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://nystagereview.com/2026/08/02/maybe-happy-ending-resist-robophobia/",
+      "headline": "Maybe Happy Ending: Resist Robophobia",
+      "publishDate": "2026-08-02",
+      "matched": [
+        "maybe-happy-ending-2024"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
+        "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2026/07/28/just-in-time-jeremy-jordan-will-be-your-bobby-darin-from-now-on/",
+      "headline": "Just in Time: Jeremy Jordan Will Be Your Bobby Darin From Now On",
+      "publishDate": "2026-07-28",
+      "matched": [
+        "just-in-time-2025"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2025/04/26/just-in-time-a-bio-musical-blast/",
+        "https://nystagereview.com/2025/04/26/just-in-time-hello-bobby-darin-gets-a-splashy-broadway-tribute/"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/20/babe-sex-rock-and-gen-z-in-a-tik-tok-workplace/",
+      "headline": "Babe: Sex, Rock and Gen Z in a Tik-Tok Workplace",
+      "publishDate": "2024-11-20",
+      "matched": [
+        "babe-off-broadway-2024"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2024/11/20/babe-metoo-in-the-music-biz/",
+        "https://nystagereview.com/?p=22418"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/04/17/the-wiz-revival-doesnt-ease-down-the-road-easily/",
+      "headline": "The Wiz: Revival Doesn’t Ease Down the Road Easily",
+      "publishDate": "2024-04-17",
+      "matched": [
+        "the-wiz-2024"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2024/04/17/the-wiz-not-an-oz-picious-revival/"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/12/13/buena-vista-social-club-go-for-the-music-alone/",
+      "headline": "Buena Vista Social Club: Go for the Music Alone",
+      "publishDate": "2023-12-13",
+      "matched": [
+        "buena-vista-social-club-off-broadway-2023"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2023/12/13/buena-vista-social-club-from-album-to-screen-to-triumphant-musical/"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/11/14/danny-and-the-deep-blue-sea-stale-pretzels-cheap-beer-and-dive-bar-dreams/",
+      "headline": "Danny and the Deep Blue Sea: Stale Pretzels, Cheap Beer, and Dive-Bar Dreams",
+      "publishDate": "2023-11-14",
+      "matched": [
+        "danny-and-the-deep-blue-sea-off-broadway-2023"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2023/11/14/danny-and-the-deep-blue-sea-john-patrick-shanleys-1983-drama-revived-swimmingly/"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/05/14/romeo-juliet-a-story-of-woe-served-with-a-twist/",
+      "headline": "Romeo & Juliet: A Story of Woe, Served with a Twist",
+      "publishDate": "2023-05-14",
+      "matched": [
+        "and-juliet-2022"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2022/11/17/juliet-shakespeare-reimagined-with-earworm-heavy-pop-hits/",
+        "https://nystagereview.com/2022/11/17/juliet-candy-colored-glitter-bomb-musical-romp/"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/11/13/the-old-man-the-pool-mike-birbiglia-laps-up-laughs-and-how/",
+      "headline": "The Old Man & the Pool: Mike Birbiglia Laps Up Laughs, and How!",
+      "publishDate": "2022-11-13",
+      "matched": [
+        "mike-birbiglia-the-old-man-and-the-pool-2022"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2022/11/13/the-old-man-the-pool-mike-birbiglia-dives-into-middle-age/"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/10/20/topdog-underdog-keep-your-eye-on-the-winner-but-which/",
+      "headline": "Topdog/Underdog: Keep your eye on the winner — but which?",
+      "publishDate": "2022-10-20",
+      "matched": [
+        "topdog-underdog-2022"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2022/10/20/topdog-underdog-watch-it-close-watch-it-close-now/"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/09/15/remember-this-a-highly-memorable-holocaust-message/",
+      "headline": "Remember This: A Highly Memorable Holocaust Message",
+      "publishDate": "2022-09-15",
+      "matched": [
+        "remember-this-the-lesson-of-jan-karski-off-broadway-2022"
+      ],
+      "heldUrls": [
+        "https://nystagereview.com/2022/09/15/remember-this-a-vital-message-goes-unheeded/"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/11/23/clydes-lynn-nottage-cooks-up-a-sharp-kitchen-set-comedy/",
+      "headline": "Clyde’s: Lynn Nottage Cooks Up A Sharp Kitchen-Set Comedy",
+      "publishDate": "2021-11-23",
+      "matched": [
+        "clydes-2021"
+      ],
+      "heldUrls": [
+        "http://nystagereview.com/2021/11/23/clydes-zestfully-tasty-new-play-from-lynn-nottage-with-cilantro-and-dill/"
+      ]
+    }
+  ],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://nystagereview.com/2026/11/02/waiting-for-lefty-the-play-has-aged-the-injustice-has-not/",
+      "headline": "Waiting for Lefty: The Play Has Aged, the Injustice Has Not",
+      "publishDate": "2026-11-02",
+      "via": null,
+      "held": [
+        "clifford-odets-waiting-for-lefty-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2026/11/02/waiting-for-lefty-no-no-odets/",
+      "headline": "Waiting for Lefty: No, No, Odets!",
+      "publishDate": "2026-11-02",
+      "via": null,
+      "held": [
+        "clifford-odets-waiting-for-lefty-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2026/10/21/860-billy-crystal-brings-down-the-house/",
+      "headline": "860: Billy Crystal Brings Down the House",
+      "publishDate": "2026-10-21",
+      "via": null,
+      "held": [
+        "billy-crystal-860-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2026/10/21/860-billy-crystal-turns-pain-into-theatrical-gain/",
+      "headline": "860: Billy Crystal Turns Pain into Theatrical Gain",
+      "publishDate": "2026-10-21",
+      "via": null,
+      "held": [
+        "billy-crystal-860-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2026/10/19/copperfield-top-drawer-musical-take-on-the-dickens-classic/",
+      "headline": "Copperfield! Top-Drawer Musical Take on the Dickens Classic",
+      "publishDate": "2026-10-19",
+      "via": null,
+      "held": [
+        "copperfield-the-new-musical-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "copperfield-1981"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2026/09/27/how-shakespeare-saved-my-life-theater-as-testimony/",
+      "headline": "How Shakespeare Saved My Life: Theater as Testimony",
+      "publishDate": "2026-09-27",
+      "via": null,
+      "held": [
+        "how-shakespeare-saved-my-life-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "how-shakespeare-saved-my-life-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2026/07/27/broad-strokes-the-funny-side-of-a-near-death-experience/",
+      "headline": "Broad Strokes: The Funny Side of a Near-Death Experience",
+      "publishDate": "2026-07-27",
+      "via": null,
+      "held": [
+        "cat-cohen-broad-strokes-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2026/07/27/broad-strokes-death-defying-laughter/",
+      "headline": "Broad Strokes: Death Defying Laughter",
+      "publishDate": "2026-07-27",
+      "via": null,
+      "held": [
+        "cat-cohen-broad-strokes-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2026/05/07/othello-bedlams-four-actor-version-a-palpable-hit/",
+      "headline": "Othello: Bedlam’s Four-Actor Version a Palpable Hit",
+      "publishDate": "2026-05-07",
+      "via": null,
+      "held": [
+        "bedlams-othello-off-broadway-2026",
+        "othello-bedlam-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "othello-2025",
+        "othello-1970",
+        "othello-1982",
+        "othello-bedlam-off-broadway-2026",
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/11/06/44-the-musical-the-obama-years-satirized-with-four-letter-words/",
+      "headline": "44 The Musical: The Obama Years, Satirized with Four-Letter Words",
+      "publishDate": "2025-11-06",
+      "via": null,
+      "held": [
+        "44-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/08/04/can-i-be-frank-frank-fervent-ferociously-funny/",
+      "headline": "Can I Be Frank?: Frank, Fervent, Ferociously Funny",
+      "publishDate": "2025-08-04",
+      "via": null,
+      "held": [
+        "morgan-bassichis-can-i-be-frank-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/08/04/can-i-be-frank-being-present-about-the-past/",
+      "headline": "Can I Be Frank?: Being Present about the Past",
+      "publishDate": "2025-08-04",
+      "via": null,
+      "held": [
+        "morgan-bassichis-can-i-be-frank-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-present-2017"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-lets-hear-it-from-the-boy/",
+      "headline": "Sexual Misconduct of the Middle Classes: Let’s Hear It From the Boy",
+      "publishDate": "2025-05-08",
+      "via": null,
+      "held": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-star-power-up-close/",
+      "headline": "Sexual Misconduct of the Middle Classes: Star Power Up Close",
+      "publishDate": "2025-05-08",
+      "via": null,
+      "held": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/04/08/sondheims-old-friends-something-great-has-come-no-maybe-about-it/",
+      "headline": "Sondheim’s Old Friends: Something Great Has Come, No Maybe About It",
+      "publishDate": "2025-04-08",
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/04/08/sondheims-old-friends-musical-cornucopia-makes-an-overstuffed-banquet/",
+      "headline": "Sondheim’s Old Friends: Musical Cornucopia Makes an Overstuffed Banquet",
+      "publishDate": "2025-04-08",
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/04/07/boop-betty-brightens-broadway-but/",
+      "headline": "Boop!: Betty Brightens Broadway, But….",
+      "publishDate": "2025-04-07",
+      "via": null,
+      "held": [
+        "boop-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/07/30/job-an-unfiltered-drama-for-the-social-media-age/",
+      "headline": "Job: An Unfiltered Drama for the Social Media Age",
+      "publishDate": "2024-07-30",
+      "via": null,
+      "held": [
+        "job-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/06/27/n-a-politics-writ-personal/",
+      "headline": "N/A: Politics Writ Personal",
+      "publishDate": "2024-06-27",
+      "via": null,
+      "held": [
+        "n-a-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/06/27/n-a-pelosi-ocasio-cortez-go-at-it-toe-to-toe/",
+      "headline": "N/A: Pelosi, Ocasio-Cortez Go at It Toe-to-Toe",
+      "publishDate": "2024-06-27",
+      "via": null,
+      "held": [
+        "n-a-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/04/21/cabaret-immersive-ambitious-all-too-timely/",
+      "headline": "Cabaret: Immersive, Ambitious, All Too Timely",
+      "publishDate": "2024-04-21",
+      "via": null,
+      "held": [
+        "cabaret-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/04/21/cabaret-come-for-the-pre-show-and-oh-theres-also-the-musical/",
+      "headline": "Cabaret: Come for the Pre-Show, and Oh, There’s Also the Musical",
+      "publishDate": "2024-04-21",
+      "via": null,
+      "held": [
+        "cabaret-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/10/10/now-you-know-or-how-to-make-merrily-roll-along/",
+      "headline": "Now You Know; or, How to Make ‘Merrily’ Roll Along",
+      "publishDate": "2023-10-10",
+      "via": null,
+      "held": [
+        "merrily-we-roll-along-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/01/mj-michael-jackson-jukebox-musical-is-very-smooth-somewhat-criminal/",
+      "headline": "MJ: Michael Jackson Jukebox Musical Is Very Smooth, Somewhat Criminal",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/01/mj-the-man-in-the-mire/",
+      "headline": "MJ: The Man in the Mire",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2021/10/03/six-hold-on-to-your-heads-with-cheers-and-huzzahs/",
+      "headline": "Six: Hold on to Your Heads, with Cheers and Huzzahs!",
+      "publishDate": "2021-10-03",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2021/10/03/six-long-live-the-queens/",
+      "headline": "Six: Long Live the Queens",
+      "publishDate": "2021-10-03",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "queens-off-broadway-2025"
+      ]
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [
+    {
+      "url": "https://nystagereview.com/2026/11/16/the-2026-christmas-spectacular-ringing-in-the-holidays-with-the-rockettes/",
+      "headline": "The 2026 Christmas Spectacular: Ringing in the Holidays with The Rockettes",
+      "publishDate": "2026-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2026/08/08/casey-likes-back-to-the-past-as-a-youngun-remembers-it/",
+      "headline": "Casey Likes: Back to the Past, as a Young’un Remembers It",
+      "publishDate": "2026-08-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2026/04/15/from-boston-when-playwrights-kill-a-not-quite-dizzy-enough-backstage-farce/",
+      "headline": "From Boston, When Playwrights Kill: A Not Quite Dizzy-Enough Backstage Farce",
+      "publishDate": "2026-04-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/12/03/the-faggots-and-their-friends-between-revolutions-queer-doings-at-the-park-avenue-armory/",
+      "headline": "The Faggots and Their Friends Between Revolutions: Queer Doings at the Park Avenue Armory",
+      "publishDate": "2025-12-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/10/18/adam-gopniks-new-york-gallery-talk-par-excellence/",
+      "headline": "Adam Gopnik’s New York: Gallery Talk, Par Excellence",
+      "publishDate": "2025-10-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/09/30/and-then-we-were-no-more-talk-of-technology-in-totalitarian-times/",
+      "headline": "And Then We Were No More: Talk of Technology in Totalitarian Times",
+      "publishDate": "2025-09-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/08/18/jeff-ross-take-a-banana-for-the-ride-an-overly-sentimental-comedic-journey/",
+      "headline": "Jeff Ross: Take a Banana for the Ride–An Overly Sentimental Comedic Journey",
+      "publishDate": "2025-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/07/10/melba-moore-from-broadway-and-elsewhere-with-love/",
+      "headline": "Melba Moore: From Broadway (and Elsewhere) with Love",
+      "publishDate": "2025-07-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/06/16/passengers-a-congenial-and-classy-party-of-tip-top-cirque-style-artists-take-the-train-downtown/",
+      "headline": "Passengers: A Classy Party of Tip-Top Cirque-Style Artists Take the Train Downtown",
+      "publishDate": "2025-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/04/16/glass-kill-what-if-if-only-imp-caryl-churchill-vaudeville/",
+      "headline": "Glass. Kill. What If If Only. Imp: Caryl Churchill Vaudeville",
+      "publishDate": "2025-04-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/04/15/minor-ity-talking-ident-ity-creativ-ity-authentic-ity-commun-ity/",
+      "headline": "minor.ity: Talking ident.ity, creativ.ity, authentic.ity, commun.ity",
+      "publishDate": "2025-04-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/03/05/sugarcraft-a-scoop-of-culinary-history-spoiled-by-the-serving/",
+      "headline": "Sugarcraft: A Scoop of Culinary History Spoiled by the Serving",
+      "publishDate": "2025-03-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/02/02/pecking-order-fowl-play-indeed/",
+      "headline": "Pecking Order: Fowl Play Indeed",
+      "publishDate": "2025-02-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2025/01/25/hugh-jackman-from-new-york-with-love-a-triumphant-career-tapping-concert/",
+      "headline": "Hugh Jackman: From New York, With Love: A Triumphant, Career-Tapping Concert",
+      "publishDate": "2025-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/27/ann-hampton-callaway-and-liz-callaway-new-york-state-of-mind-an-evening-greater-than-the-sum-of-its-parts/",
+      "headline": "Ann Hampton Callaway and Liz Callaway, New York State of Mind: An Evening Greater Than the Sum of Its Parts",
+      "publishDate": "2024-11-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/10/give-me-carmelita-tropicana-experimental-identities/",
+      "headline": "Give Me Carmelita Tropicana!: Experimental Identities",
+      "publishDate": "2024-11-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/09/24/cheyenne-jackson-encouraging-signs-of-life-at-54-below/",
+      "headline": "Cheyenne Jackson: Encouraging “Signs of Life” at 54 Below",
+      "publishDate": "2024-09-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/07/22/laura-and-linda-benanti-mothers-know-best-gifted-by-nature-and-nurture/",
+      "headline": "Laura and Linda Benanti: Mothers Know Best–Gifted By Nature, and Nurture",
+      "publishDate": "2024-07-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/06/04/breaking-the-story-war-is-hell-and-so-is-remembering-it/",
+      "headline": "Breaking the Story: War is Hell, and So is Remembering It",
+      "publishDate": "2024-06-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/05/30/the-comedy-of-errors-a-tuneful-bilingual-romp-through-the-parks/",
+      "headline": "The Comedy of Errors: A Tuneful Bilingual Romp through the Parks",
+      "publishDate": "2024-05-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/05/13/laura-benanti-nobody-cares-a-virtuosic-evening-of-comedic-embarrassment/",
+      "headline": "Laura Benanti, Nobody Cares: A Virtuosic Evening of Comedic Embarrassment",
+      "publishDate": "2024-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/03/31/two-shades-of-ibsen-old-henrik-inspires-new-works-by-herzog-and-busch/",
+      "headline": "Two Shades of Ibsen: Old Henrik Inspires New Works by Herzog and Busch",
+      "publishDate": "2024-03-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/03/30/andrea-mcardle-the-broadway-baby-returns-to-familiar-environs/",
+      "headline": "Andrea McArdle: The Broadway Baby Returns to Familiar Environs",
+      "publishDate": "2024-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/02/28/the-ally-josh-radnor-shines-in-itamar-moses-expansive-new-drama/",
+      "headline": "The Ally: Josh Radnor Shines in Itamar Moses’ Expansive New Drama",
+      "publishDate": "2024-02-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2024/01/18/our-class-harrowing-history-lessons-from-the-polish-front/",
+      "headline": "Our Class: Harrowing History Lessons From the Polish Front",
+      "publishDate": "2024-01-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/12/05/manahatta-a-smart-focus-on-who-really-owns-manhattan/",
+      "headline": "Manahatta: A Smart Focus on Who Really Owns Manhattan",
+      "publishDate": "2023-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/12/05/brandon-victor-dixon-soul-of-broadway-at-54-below/",
+      "headline": "Brandon Victor Dixon: Soul of Broadway at 54 Below",
+      "publishDate": "2023-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/11/01/poor-yella-rednecks-a-richly-colorful-comedy-with-an-asian-accent/",
+      "headline": "Poor Yella Rednecks: A RIchly Colorful Comedy with an Asian Accent",
+      "publishDate": "2023-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/09/28/melissa-etheridge-my-window-this-is-m-e/",
+      "headline": "Melissa Etheridge–My Window: This Is M.E.",
+      "publishDate": "2023-09-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/09/20/dig-theresa-rebecks-flavorful-plant-based-comedy-at-59e59/",
+      "headline": "Dig: Theresa Rebeck’s Flavorful Plant-Based Comedy, at 59e59",
+      "publishDate": "2023-09-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/08/20/el-mago-pop-european-vegas-style-magic-on-broadway/",
+      "headline": "El Mago Pop: European, Vegas-Style Magic on Broadway",
+      "publishDate": "2023-08-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/06/21/one-woman-show-liz-kingsman-makes-the-most-of-her-meta-moment/",
+      "headline": "One Woman Show: Liz Kingsman Makes the Most of Her Meta Moment",
+      "publishDate": "2023-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/05/29/the-rebecca-luker-songbook-a-benefit-concert-moving-high-notes/",
+      "headline": "The Rebecca Luker Songbook: A Benefit Concert, with Moving High Notes",
+      "publishDate": "2023-05-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/05/15/a-beautiful-lady-liz-swados-1984-work-in-mighty-nyc-bow/",
+      "headline": "A Beautiful Lady: Liz Swados’ 1984 Work in Mighty NYC Bow",
+      "publishDate": "2023-05-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/03/30/vanities-the-musical-jack-heifners-three-female-friends-return-singing-again/",
+      "headline": "Vanities—The Musical: Jack Heifner’s Three Female Friends Return, Singing (Again)",
+      "publishDate": "2023-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/21/leo-reich-literally-who-cares-jokin-bout-his-generation-and-himself/",
+      "headline": "Leo Reich, Literally Who Cares: Jokin’ ‘Bout His Generation, and Himself",
+      "publishDate": "2023-02-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2022/08/21/from-massachusetts-celebrate-everything-passing-by-with-sondheim/",
+      "headline": "From Massachusetts: Celebrate Everything Passing By, With Sondheim",
+      "publishDate": "2022-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2022/08/01/the-nosebleed-cheerful-ritualistic-play-about-grief-of-all-things/",
+      "headline": "The Nosebleed: Cheerful Ritualistic Play About Grief, Of All Things",
+      "publishDate": "2022-08-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2022/05/24/songbook-sundays-got-gershwin-at-dizzys-club/",
+      "headline": "Songbook Sundays: Got Gershwin at Dizzy’s Club",
+      "publishDate": "2022-05-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2022/04/27/john-pizzarelli-songs-of-stage-and-screen-at-the-carlyle/",
+      "headline": "John Pizzarelli: Songs of Stage and Screen, at the Carlyle",
+      "publishDate": "2022-04-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2022/03/21/at-the-wedding-of-canapes-and-cannibals/",
+      "headline": "At the Wedding: Of Canapés and Cannibals",
+      "publishDate": "2022-03-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2022/03/17/the-life-seldom-revived-cy-coleman-musical-gets-a-shot-in-the-arm-from-billy-porter/",
+      "headline": "The Life: Seldom-Revived Cy Coleman Musical Gets a Shot in the Arm from Billy Porter",
+      "publishDate": "2022-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2022/01/20/whisper-house-not-so-blithe-spirits/",
+      "headline": "Whisper House: Not-So-Blithe Spirits",
+      "publishDate": "2022-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://nystagereview.com/2021/11/20/melissa-errico-sings-her-new-york/",
+      "headline": "Melissa Errico Sings Her New York",
+      "publishDate": "2021-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://nystagereview.com/2026/10/29/from-toronto-a-rare-production-of-the-classic-stage-thriller-sleuth/",
+      "headline": "From Toronto: A Rare Production of the Classic Stage Thriller Sleuth",
+      "publishDate": "2026-10-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sleuth-1970"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2026/07/17/from-maine-hello-dolly-wow-wow-wow-fellas/",
+      "headline": "From Maine: Hello, Dolly! Wow Wow Wow, Fellas",
+      "publishDate": "2026-07-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hello-dolly-2017",
+        "hello-dolly-1995",
+        "hello-dolly-1978",
+        "hello-dolly-1975"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2026/04/14/the-approach-three-women-shoot-the-charged-breeze/",
+      "headline": "The Approach: Three Women Shoot the Charged Breeze",
+      "publishDate": "2026-04-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2026/01/25/from-under-the-radar-the-visitors-and-a-pair-of-no-shows/",
+      "headline": "From Under the Radar: ‘The Visitors’ and a Pair of No-Shows",
+      "publishDate": "2026-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-visitors-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/12/18/amahl-and-the-night-visitors-grand-opera-grandly-done/",
+      "headline": "Amahl and the Night Visitors: Grand Opera, Grandly Done",
+      "publishDate": "2025-12-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "amahl-and-the-night-visitors-1970"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/12/18/amahl-and-the-night-visitors-kids-stuff-or-what/",
+      "headline": "Amahl and the Night Visitors: Kid’s Stuff or What?",
+      "publishDate": "2025-12-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "amahl-and-the-night-visitors-1970"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/12/04/a-christmas-carol-rings-the-bell-downtown/",
+      "headline": "A Christmas Carol: Rings the Bell Downtown",
+      "publishDate": "2025-12-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
+      "headline": "Gotta Dance!:  Gotta Dance Better Than This!",
+      "publishDate": "2025-12-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "gotta-dance-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/11/23/sweet-smell-of-success-hamlisch-musical-returns-with-improvements/",
+      "headline": "Sweet Smell of Success: Hamlisch Musical Returns, with Improvements",
+      "publishDate": "2025-11-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sweet-smell-of-success-2002"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/10/05/are-the-bennet-girls-ok-not-in-bedlams-jane-austen-send-up/",
+      "headline": "Are the Bennet Girls Ok?: Not in Bedlam’s Jane Austen Send-Up",
+      "publishDate": "2025-10-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "are-the-bennet-girls-ok-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/09/18/mexodus-significant-take-on-todays-immigrant-situation/",
+      "headline": "Mexodus: Significant Take on Today’s Immigrant Situation",
+      "publishDate": "2025-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/08/21/twelfth-night-come-for-the-verse-stay-for-the-vibes/",
+      "headline": "Twelfth Night: Come for the Verse, Stay for the Vibes",
+      "publishDate": "2025-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/08/21/twelfth-night-moonlit-enchantment-as-shakespeare-returns-to-the-park/",
+      "headline": "Twelfth Night: Moonlit Enchantment As Shakespeare Returns to the Park",
+      "publishDate": "2025-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/08/18/jeff-ross-take-a-banana-for-the-ride-another-jersey-boys-story/",
+      "headline": "Jeff Ross: Take a Banana for the Ride, Another Jersey Boy’s Story",
+      "publishDate": "2025-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jersey-boys-2005"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/08/07/well-ill-let-you-go-piecing-a-poignant-puzzle/",
+      "headline": "Well, I’ll Let You Go: Piecing a poignant puzzle",
+      "publishDate": "2025-08-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "well-ill-let-you-go-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/07/27/gene-gilda-the-late-great-comedians-brought-to-vivid-life/",
+      "headline": "Gene & Gilda: The Late Great Comedians Brought To Vivid Life",
+      "publishDate": "2025-07-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "comedians-1976"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/07/13/the-gospel-at-colonus-a-grand-and-glorious-revival/",
+      "headline": "The Gospel at Colonus: A grand and glorious revival",
+      "publishDate": "2025-07-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-gospel-at-colonus-1988"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/06/26/violas-room-an-eerie-place-to-visit/",
+      "headline": "Viola’s Room: An Eerie Place to Visit",
+      "publishDate": "2025-06-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-visit-2015",
+        "the-visit-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/06/12/prosperous-fools-taylor-mac-attacks-unpersuasively/",
+      "headline": "Prosperous Fools: Taylor Mac Attacks, Unpersuasively",
+      "publishDate": "2025-06-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/06/12/prosperous-fools-taylor-mac-takes-on-moliere-but-not-prosperously-foolishly/",
+      "headline": "Prosperous Fools: Taylor Mac Takes on Molière But Not Prosperously, Foolishly",
+      "publishDate": "2025-06-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/06/02/the-imaginary-invalid-moliere-classic-in-robust-good-health-and-humor/",
+      "headline": "The Imaginary Invalid: Moliére Classic in Robust Good Health and Humor",
+      "publishDate": "2025-06-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-imaginary-invalid-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/05/18/bus-stop-william-inges-tony-nominated-work-on-a-loving-return-trip/",
+      "headline": "Bus Stop: William Inge’s Tony-Nominated Work on a Loving Return Trip",
+      "publishDate": "2025-05-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "bus-stop-1996"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/05/01/wonderful-town-not-as-good-as-it-sounds/",
+      "headline": "Wonderful Town: Not As Good As it Sounds",
+      "publishDate": "2025-05-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wonderful-town-2003"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/05/01/wonderful-town-bernstein-comden-green-musical-in-not-so-wonderful-revival/",
+      "headline": "Wonderful Town: Bernstein-Comden-Green Musical in Not So Wonderful Revival",
+      "publishDate": "2025-05-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wonderful-town-2003"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/04/09/take-the-lead-new-musical-dances-its-heart-out/",
+      "headline": "Take The Lead: New Musical Dances Its Heart Out",
+      "publishDate": "2025-04-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/04/04/the-cherry-orchard-anton-chekhov-gets-an-unforgiving-axe/",
+      "headline": "The Cherry Orchard: Anton Chekhov Gets an Unforgiving Axe",
+      "publishDate": "2025-04-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/03/11/a-streetcar-named-desire-a-healthy-shot-of-southern-discomfort/",
+      "headline": "A Streetcar Named Desire: A Healthy Shot of Southern Discomfort",
+      "publishDate": "2025-03-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/03/11/a-streetcar-named-desire-overly-stylized-revival-goes-off-the-rails/",
+      "headline": "A Streetcar Named Desire: Overly Stylized Revival Goes Off the Rails",
+      "publishDate": "2025-03-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/03/09/judy-collins-friends-a-joyous-tribute-to-the-beloved-singer-songwriter/",
+      "headline": "Judy Collins & Friends: A Joyous Tribute to the Beloved Singer-Songwriter",
+      "publishDate": "2025-03-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tribute-1978"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/02/15/melissa-errico-at-birdland-theater-for-valentines-day-a-touch-of-venus/",
+      "headline": "Melissa Errico at Birdland Theater: For Valentine’s Day, A Touch of Venus",
+      "publishDate": "2025-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "touch-off-broadway-2026",
+        "venus-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/02/06/urinetown-encores-musical-minds-its-pees-cues/",
+      "headline": "Urinetown: Encores Musical Minds Its Pees (& Cues)",
+      "publishDate": "2025-02-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "urinetown-2001"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/02/06/urinetown-the-once-startling-musical-handily-revived/",
+      "headline": "Urinetown: The Once-Startling Musical Handily Revived",
+      "publishDate": "2025-02-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "urinetown-2001"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/01/27/dear-jack-dear-louise-wwii-love-letters-with-wit-and-charm/",
+      "headline": "Dear Jack, Dear Louise: WWII Love Letters, with Wit and Charm",
+      "publishDate": "2025-01-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-letters-2014",
+        "love-letters-1989",
+        "charm-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/01/26/cymbeline-shakespeare-lite-more-easily-rephrased-than-actually-done/",
+      "headline": "Cymbeline: Shakespeare Lite, more easily rephrased than actually done",
+      "publishDate": "2025-01-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cymbeline-2007"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/01/15/show-boat-a-river-the-seminal-historical-classic-severely-landlocked/",
+      "headline": "Show/Boat: A River: The Seminal, Historical Classic Severely Landlocked",
+      "publishDate": "2025-01-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-river-2014",
+        "show-boat-1994",
+        "show-boat-1983"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2025/01/12/old-cock-fowl-doings-all-the-way-from-portugal/",
+      "headline": "Old Cock: Fowl Doings all the Way from Portugal",
+      "publishDate": "2025-01-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "all-the-way-2014"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/12/13/janine-harounis-manoushe-straight-talk-from-the-n-y-born-u-k-dwelling-comedian/",
+      "headline": "Janine Harouni’s Man’oushe: Straight Talk From the N.Y.-Born, U.K.-Dwelling Comedian",
+      "publishDate": "2024-12-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "straight-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/26/the-dead-1904-james-joyce-and-the-living-2024/",
+      "headline": "The Dead, 1904: James Joyce and The Living, 2024",
+      "publishDate": "2024-11-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-dead-1904-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/26/the-dead-1904-irish-rep-brings-james-joyce-adaptation-home-to-new-york-for-the-holidays/",
+      "headline": "The Dead, 1904: Irish Rep Brings James Joyce Adaptation Home (to New York) for the Holidays",
+      "publishDate": "2024-11-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-dead-1904-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/25/merchant-of-venice-a-comedy-of-too-many-errors/",
+      "headline": "Merchant of Venice: A Comedy of Too Many Errors",
+      "publishDate": "2024-11-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/17/the-light-and-the-dark-scandal-in-chiaroscuro-for-today/",
+      "headline": "The Light and the Dark: Scandal in Chiaroscuro, For Today",
+      "publishDate": "2024-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "chiaroscuro-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/14/king-lear-kenneth-branagh-cuts-the-tragic-tale-to-a-slim-two-hours/",
+      "headline": "King Lear: Kenneth Branagh Cuts the Tragic Tale to a Slim Two Hours",
+      "publishDate": "2024-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "king-lear-2019",
+        "king-lear-2004",
+        "king-lear-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/14/king-lear-kenneth-branagh-brings-a-revival-for-our-time-sorta/",
+      "headline": "King Lear: Kenneth Branagh Brings a Revival For Our Time, Sorta",
+      "publishDate": "2024-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "king-lear-2019",
+        "king-lear-2004",
+        "king-lear-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/01/ragtime-simple-and-somehow-sublime/",
+      "headline": "Ragtime: Simple and Somehow Sublime",
+      "publishDate": "2024-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ragtime-2025",
+        "ragtime-2009",
+        "ragtime-1998"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/11/01/ragtime-e-l-doctorows-musicalized-masterpiece-masterfully-revived/",
+      "headline": "Ragtime: E. L. Doctorow’s Musicalized Masterpiece Masterfully Revived",
+      "publishDate": "2024-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ragtime-2025",
+        "ragtime-2009",
+        "ragtime-1998"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/10/13/sumpn-like-wings-yearning-to-fly-away/",
+      "headline": "Sump’n Like Wings: Yearning to Fly Away",
+      "publishDate": "2024-10-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wings-1979"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/09/30/medea-re-versed-euripides-classic-raptly-updated-as-rap/",
+      "headline": "Medea Re-Versed: Euripides’ Classic Raptly Updated as Rap",
+      "publishDate": "2024-09-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "medea-2002",
+        "medea-1994",
+        "medea-1973",
+        "medea-1982",
+        "medea-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/07/26/from-maine-a-little-night-music-big-smiles-of-a-summer-night/",
+      "headline": "From Maine: A Little Night Music, Big Smiles of a Summer Night",
+      "publishDate": "2024-07-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-little-night-music-2009",
+        "a-little-night-music-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/07/14/the-journals-of-adam-eve-linden-henner-score-as-first-couple/",
+      "headline": "The Journals of Adam & Eve: Linden, Henner Score as First Couple",
+      "publishDate": "2024-07-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/06/28/a-little-night-music-53-musicians-the-glamorous-life-indeed/",
+      "headline": "A Little Night Music: 53 Musicians? The Glamorous Life Indeed!",
+      "publishDate": "2024-06-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-little-night-music-2009",
+        "a-little-night-music-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-healing-only-teases-abused-young-woman/",
+      "headline": "Pre-Existing Condition: Healing Only Teases Abused Young Woman",
+      "publishDate": "2024-06-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pre-existing-condition-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/06/18/pre-existing-condition-confessional-challenging-and-curative/",
+      "headline": "Pre-Existing Condition: Confessional, Challenging, and Curative",
+      "publishDate": "2024-06-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pre-existing-condition-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/06/12/titanic-a-tale-of-doomed-dreams-and-hubris-rises-anew/",
+      "headline": "Titanic: A Tale of Doomed Dreams and Hubris Rises Anew",
+      "publishDate": "2024-06-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/06/12/titanic-smooth-sailing-as-the-band-plays-on/",
+      "headline": "Titanic: Smooth Sailing as the Band Plays On",
+      "publishDate": "2024-06-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/05/23/molly-sweeney-brian-friels-play-about-sight-and-shortsidedness-insightfully-revived/",
+      "headline": "Molly Sweeney: Brian Friel’s Play About Sight and Shortsidedness Insightfully Revived",
+      "publishDate": "2024-05-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "molly-sweeney-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/05/23/molly-sweeney-an-ideal-cast-adds-insight-and-intensity-to-friels-1994-chamber-drama/",
+      "headline": "Molly Sweeney: An Ideal Cast Adds Insight and Intensity to Friel’s 1994 Chamber Drama",
+      "publishDate": "2024-05-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "molly-sweeney-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
+      "headline": "Here There Are Blueberries: A New, Invaluable Holocaust Stage Documentary",
+      "publishDate": "2024-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/04/20/the-grapes-of-wrath-ricky-ian-gordons-opera-deserves-a-real-run/",
+      "headline": "The Grapes of Wrath: Ricky Ian Gordon’s Opera Deserves a Real Run",
+      "publishDate": "2024-04-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-grapes-of-wrath-1990"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/04/16/sally-tom-follies-of-a-founding-father/",
+      "headline": "Sally & Tom: Follies of a Founding Father",
+      "publishDate": "2024-04-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "follies-2011",
+        "the-father-1981",
+        "follies-1971",
+        "follies-2001"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/03/27/grief-hotel-misery-loves-company/",
+      "headline": "Grief Hotel: Misery Loves Company",
+      "publishDate": "2024-03-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "misery-2015"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/03/27/grief-hotel-a-bizarre-business-plan-that-doubles-as-a-clever-leitmotif/",
+      "headline": "Grief Hotel: A Bizarre Business Plan That Doubles as a Clever Leitmotif",
+      "publishDate": "2024-03-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "doubles-1985"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/03/22/leslie-uggams-something-old-something-new-something-wonderful/",
+      "headline": "Leslie Uggams: Something Old, Something New, Something Wonderful",
+      "publishDate": "2024-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "something-old-something-new-1977"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/03/14/ibsens-ghost-charles-busch-triumphs-as-the-irresponsible-widow-ibsen/",
+      "headline": "Ibsen’s Ghost: Charles Busch Triumphs as the Irresponsible Widow Ibsen",
+      "publishDate": "2024-03-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghost-the-musical-2012"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/03/14/ibsens-ghost-a-widows-revenge-or-beating-around-the-busch/",
+      "headline": "Ibsen’s Ghost: A Widow’s Revenge, or Beating Around the Busch",
+      "publishDate": "2024-03-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghost-the-musical-2012"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/02/22/jellys-last-jam-exuberant-jelly-roll-morton-musical-revived-with-a-significant-hitch/",
+      "headline": "Jelly’s Last Jam: Exuberant Jelly Roll Morton Musical Revived with a Significant Hitch",
+      "publishDate": "2024-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jellys-last-jam-1992"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/02/07/after-midnight-joyful-revue-celebrates-a-momentous-chapter-in-black-history/",
+      "headline": "After Midnight: Joyful Revue Celebrates a Momentous Chapter in Black History",
+      "publishDate": "2024-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "after-midnight-2013"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/01/25/once-upon-a-mattress-sutton-foster-distinguishes-a-so-so-revival/",
+      "headline": "Once Upon a Mattress: Sutton Foster Distinguishes a So-So Revival",
+      "publishDate": "2024-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "once-upon-a-mattress-2024",
+        "once-upon-a-mattress-1996"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/01/25/once-upon-a-mattress-a-royal-success-at-encores/",
+      "headline": "Once Upon a Mattress: A Royal Success, at Encores",
+      "publishDate": "2024-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "once-upon-a-mattress-2024",
+        "once-upon-a-mattress-1996"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2024/01/20/from-london-pacific-overtures-and-thanks-be-for-it/",
+      "headline": "From London: Pacific Overtures, and Thanks Be for It",
+      "publishDate": "2024-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pacific-overtures-1976",
+        "pacific-overtures-2004",
+        "pacific-overtures-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/12/17/the-night-of-the-iguana-tennessee-williams-last-great-play-shines-in-starry-revival/",
+      "headline": "The Night Of The Iguana: Tennessee Williams’ Last Great Play Shines in Starry Revival",
+      "publishDate": "2023-12-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-night-of-the-iguana-1988",
+        "the-night-of-the-iguana-1976"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/12/17/the-night-of-the-iguana-williams-at-his-best-production-not/",
+      "headline": "The Night of the Iguana: Williams at his Best, Production Not",
+      "publishDate": "2023-12-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-night-of-the-iguana-1988",
+        "the-night-of-the-iguana-1976"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/11/19/hells-kitchen-a-musical-neighborhood-worth-visiting/",
+      "headline": "Hell’s Kitchen: A Musical Neighborhood Worth Visiting",
+      "publishDate": "2023-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/11/19/hells-kitchen-alicia-keys-tries-her-hand-at-theater/",
+      "headline": "Hell’s Kitchen: Alicia Keys Tries Her Hand at Theater",
+      "publishDate": "2023-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/11/05/the-frogs-theyre-back-and-bouncier-than-ever/",
+      "headline": "The Frogs: They’re Back and Bouncier Than Ever",
+      "publishDate": "2023-11-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-frogs-2004"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/11/03/pal-joey-at-city-center-purists-are-in-for-a-surprise/",
+      "headline": "Pal Joey: At City Center, Purists Are In for a Surprise",
+      "publishDate": "2023-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pal-joey-2008",
+        "pal-joey-1976"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/10/27/redwood-a-complex-and-comedic-family-history-lesson/",
+      "headline": "Redwood: A Complex and Comedic Family History Lesson",
+      "publishDate": "2023-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "redwood-2025"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/10/24/the-great-gatsby-fitzergeralds-classic-impressively-staged-once-again-defies-translation/",
+      "headline": "The Great Gatsby: Fitzgerald’s Classic, Impressively Staged, Once Again Defies Translation",
+      "publishDate": "2023-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-great-gatsby-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/09/28/melissa-etheridge-my-window-the-rock-n-roll-icon-tells-all-sells-all/",
+      "headline": "Melissa Etheridge–My Window: The Rock ‘n’ Roll Icon Tells All, Sells All",
+      "publishDate": "2023-09-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "rock-n-roll-2007"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/09/18/job-therapist-patient-in-trouble-play-requires-patience/",
+      "headline": "Job: Therapist-Patient-in-Trouble Play Requires Patience",
+      "publishDate": "2023-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "job-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/09/11/santino-fontana-at-54-below-guy-next-door-charm-leading-man-chops/",
+      "headline": "Santino Fontana at 54 Below: Guy-Next-Door Charm, Leading Man Chops",
+      "publishDate": "2023-09-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "charm-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/08/30/the-tempest-conjuring-and-singing-under-the-stars/",
+      "headline": "The Tempest: Conjuring and Singing Under the Stars",
+      "publishDate": "2023-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-1995"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/08/20/el-mago-pop-illusionist-antonio-diaz-has-the-magic-touch/",
+      "headline": "El Mago Pop: Illusionist Antonio Díaz Has the Magic Touch",
+      "publishDate": "2023-08-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "touch-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/08/14/small-the-heightened-story-of-a-growing-jockey-hopeful/",
+      "headline": "Small: The Heightened Story of a Growing Jockey Hopeful",
+      "publishDate": "2023-08-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/07/21/i-got-the-job-still-more-reasons-to-love-lucie-arnaz/",
+      "headline": "I Got the Job!: Still More Reasons to Love Lucie (Arnaz)",
+      "publishDate": "2023-07-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/07/16/from-london-immersive-guys-dolls-comes-alive/",
+      "headline": "From London: Immersive Guys & Dolls Comes Alive",
+      "publishDate": "2023-07-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/07/13/the-motive-and-the-cue-excellent-and-entertaining-look-at-the-burton-gielgud-hamlet/",
+      "headline": "From London: Excellent Look at Motives and Cues of the Burton-Gielgud Hamlet",
+      "publishDate": "2023-07-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/07/11/from-london-brokeback-mountain-takes-the-stage-and-breaks-your-heart/",
+      "headline": "From London: Brokeback Mountain Takes the Stage and Breaks Your Heart",
+      "publishDate": "2023-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/07/06/uncle-vanya-misery-loves-company/",
+      "headline": "Uncle Vanya: Misery Loves Company",
+      "publishDate": "2023-07-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "uncle-vanya-2024",
+        "misery-2015",
+        "uncle-vanya-1995",
+        "uncle-vanya-1973",
+        "uncle-vanya-2000"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/06/28/hamlet-to-see-or-not-to-see/",
+      "headline": "Hamlet: To See Or Not To See?",
+      "publishDate": "2023-06-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/06/22/the-light-in-the-piazza-a-brief-but-beautiful-trip-to-italy/",
+      "headline": "The Light in the Piazza: A Brief But Beautiful Trip to Italy",
+      "publishDate": "2023-06-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-light-in-the-piazza-2005"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/06/20/good-vibrations-belfast-calling/",
+      "headline": "Good Vibrations: Belfast Calling",
+      "publishDate": "2023-06-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "good-vibrations-2005"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/06/13/foxes-foxy-play-on-being-heard-or-not-is-worth-hearing-out/",
+      "headline": "Foxes: Foxy Play on Being Heard or Not Is Worth Hearing Out",
+      "publishDate": "2023-06-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "play-on-1997"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/05/31/love-letters-a-r-gurneys-moving-portrait-of-two-almost-lovers/",
+      "headline": "Love Letters: A. R. Gurney’s Moving Portrait of Two Almost Lovers",
+      "publishDate": "2023-05-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-letters-2014",
+        "love-letters-1989"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/05/11/tartuffe-or-the-hypocrite-molieres-delectable-villain-on-the-loose/",
+      "headline": "Tartuffe, or the Hypocrite: Molière’s Delectable Villain on the Loose",
+      "publishDate": "2023-05-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tartuffe-2003",
+        "tartuffe-1996",
+        "tartuffe-1977",
+        "tartuffe-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/05/08/the-habit-of-art-alan-bennetts-more-famous-history-boys/",
+      "headline": "The Habit of Art:  Alan Bennett’s More Famous History Boys",
+      "publishDate": "2023-05-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-history-boys-2006"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/28/the-seagull-not-your-great-great-great-grandmothers-chekhov/",
+      "headline": "The Seagull: Not Your Great-Great-Great-Grandmother’s Chekhov",
+      "publishDate": "2023-02-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-2008",
+        "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/28/the-seagull-woodstock-ny-the-chekhov-updating-you-didnt-need/",
+      "headline": "The Seagull/Woodstock, NY: The Chekhov Updating You Didn’t Need",
+      "publishDate": "2023-02-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-2008",
+        "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/27/the-sign-in-sidney-brusteins-window-lorraine-hansberrys-largely-forgotten-play-shows-signs-of-life/",
+      "headline": "The Sign in Sidney Brustein’s Window: Lorraine Hansberry’s Largely Forgotten Play Shows Signs of Life",
+      "publishDate": "2023-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sign-in-sidney-brusteins-window-2023",
+        "the-sign-in-sidney-brusteins-window-1972"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/27/the-sign-in-sidney-brusteins-window-an-opaque-revival-of-an-obscure-american-play/",
+      "headline": "The Sign in Sidney Brustein’s Window: An Opaque Revival of an Obscure American Play",
+      "publishDate": "2023-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-sign-in-sidney-brusteins-window-2023",
+        "the-sign-in-sidney-brusteins-window-1972"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/26/fall-river-fishing-black-comedy-with-a-side-of-bolognese/",
+      "headline": "Fall River Fishing: Black Comedy With a Side of Bolognese",
+      "publishDate": "2023-02-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-river-2014"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/14/hip-hop-cinderella-a-clever-update-leaps-far-into-the-future/",
+      "headline": "Hip Hop Cinderella: A Clever Update Leaps Far into the Future",
+      "publishDate": "2023-02-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cinderella-the-musical-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/13/twelfth-night-a-terrific-trimmed-down-take-on-shakespeares-comedy/",
+      "headline": "Twelfth Night: A Terrific Trimmed-Down Take on Shakespeare’s Comedy",
+      "publishDate": "2023-02-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/11/out-of-the-dark-melissa-erricos-bright-film-noir-tribute/",
+      "headline": "Out of the Dark: Melissa Errico’s Bright Film Noir Tribute",
+      "publishDate": "2023-02-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tribute-1978"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/02/endgame-a-fine-tuned-production-of-becketts-favorite-play/",
+      "headline": "Endgame: A Fine-Tuned Production of Beckett’s Favorite Play",
+      "publishDate": "2023-02-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "endgame-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/02/02/endgame-bill-irwin-john-douglas-thompson-play-becketts-work-to-win/",
+      "headline": "Endgame: Bill Irwin, John Douglas Thompson Play Beckett’s Work to Win",
+      "publishDate": "2023-02-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "endgame-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/01/24/small-talk-colin-quinn-on-the-lost-art-of-casual-conversation/",
+      "headline": "Small Talk: Colin Quinn On the Lost Art of Casual Conversation",
+      "publishDate": "2023-01-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026",
+        "the-conversation-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/01/23/colin-quinn-small-talk-anything-but/",
+      "headline": "Colin Quinn Small Talk: Anything But",
+      "publishDate": "2023-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2023/01/17/frankensteins-monster-is-drunk-and-the-sheep-have-all-jumped-the-fences-a-short-sweet-wild-ride/",
+      "headline": "Frankenstein’s Monster is Drunk and the Sheep have all Jumped the Fences: A Short, Sweet, Wild Ride",
+      "publishDate": "2023-01-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fences-2010",
+        "fences-1987"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/12/18/oh-mary-its-christmas-justin-vivian-bond-brings-joy-to-joes-pub/",
+      "headline": "Oh Mary, It’s Christmas!: Justin Vivian Bond brings joy to Joe’s Pub",
+      "publishDate": "2022-12-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oh-mary-2024",
+        "oh-mary-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/12/01/hoagy-carmichaels-stardust-road-a-cool-cool-homage-that-could-be-cooler/",
+      "headline": "Hoagy Carmichael’s Stardust Road: A Cool, Cool Homage That Could Be Cooler",
+      "publishDate": "2022-12-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "stardust-1987"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/11/27/big-apple-circus-its-back-and-buoyant-with-a-message/",
+      "headline": "Big Apple Circus: It’s Back and Buoyant, with a Message",
+      "publishDate": "2022-11-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "big-apple-circus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/11/21/the-rat-trap-noel-cowards-first-play-not-yet-up-to-his-mastery/",
+      "headline": "The Rat Trap: Noël Coward’s First Play Not Yet Up to His Mastery",
+      "publishDate": "2022-11-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/11/20/the-gett-the-epic-story-of-creation-cut-down-to-human-size/",
+      "headline": "The Gett: The Epic Story of Creation, Cut Down to Human Size",
+      "publishDate": "2022-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "human-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/11/15/camp-siegfried-in-post-weimar-new-york-innocence-lost/",
+      "headline": "Camp Siegfried: In Post-Weimar New York, Innocence Lost",
+      "publishDate": "2022-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "innocence-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/11/15/downstate-bruce-norris-bold-unflinching-look-at-child-abusers/",
+      "headline": "Downstate: Bruce Norris’ Bold, Unflinching Look at Child Abusers",
+      "publishDate": "2022-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/11/07/a-delicate-balance-edward-albees-visionary-play-on-terror-revived-terrifically/",
+      "headline": "A Delicate Balance: Edward Albee’s Visionary Play on Terror Revived Terrifically",
+      "publishDate": "2022-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-delicate-balance-2014",
+        "a-delicate-balance-1996",
+        "play-on-1997"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/11/06/from-boston-chekhovs-cherry-orchard-in-high-tech-makeover/",
+      "headline": "From Boston: Chekhov’s Cherry Orchard in High-Tech Makeover",
+      "publishDate": "2022-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/11/02/the-year-of-magical-thinking-kathleen-chalfant-brings-joan-didion-back-to-life/",
+      "headline": "The Year of Magical Thinking: Kathleen Chalfant Brings Joan Didion Back to Life",
+      "publishDate": "2022-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-year-of-magical-thinking-2007"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/10/27/the-unbelieving-agnostics-anonymous-renegade-preachers-confess-their-doubts/",
+      "headline": "The Unbelieving: Agnostics Anonymous — Renegade Preachers Confess Their Doubts",
+      "publishDate": "2022-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "anonymous-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/10/26/straight-line-crazy-ralph-fiennes-is-straight-line-wonderful/",
+      "headline": "Straight Line Crazy: Ralph Fiennes Is Straight Line Wonderful",
+      "publishDate": "2022-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "straight-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/10/25/a-raisin-in-the-sun-a-classic-overbaked-but-with-radiant-performances/",
+      "headline": "A Raisin in the Sun: A Classic Overbaked, but with Radiant Performances",
+      "publishDate": "2022-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-raisin-in-the-sun-2014",
+        "a-raisin-in-the-sun-2004"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/10/22/montag-a-female-odd-couple-sits-out-a-crisis/",
+      "headline": "Montag: A Female Odd Couple Sits Out a Crisis",
+      "publishDate": "2022-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-odd-couple-2005",
+        "the-odd-couple-1985",
+        "the-odd-couple-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/10/18/wuthering-heights-happily-a-bit-extra/",
+      "headline": "Wuthering Heights: Happily a Bit Extra",
+      "publishDate": "2022-10-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wuthering-heights-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/10/11/guys-and-dolls-frank-loessers-musical-fable-is-no-gamble/",
+      "headline": "Guys and Dolls: Frank Loesser’s Musical Fable Is No Gamble",
+      "publishDate": "2022-10-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/09/14/from-boston-sing-street-soars/",
+      "headline": "From Boston: Sing Street Soars",
+      "publishDate": "2022-09-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sing-street-off-broadway-2019"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/08/30/as-you-like-it-a-pastoral-musical-comedy-delight/",
+      "headline": "As You Like It: A Pastoral Musical Comedy Delight",
+      "publishDate": "2022-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-1974",
+        "as-you-like-it-1986"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/08/11/on-that-day-in-amsterdam-strangers-find-romance-and-guilt-far-from-home/",
+      "headline": "On That Day in Amsterdam: Strangers Find Romance, and Guilt, Far From Home",
+      "publishDate": "2022-08-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "strangers-1979"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/07/20/seagull-elevator-repair-service-takes-aim-at-anton-chekhovs-classic/",
+      "headline": "Seagull:  Elevator Repair Service Takes Aim at Anton Chekhov’s Classic",
+      "publishDate": "2022-07-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-2008",
+        "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/07/20/seagull-did-you-hear-the-one-about-the-writer/",
+      "headline": "Seagull: Did You Hear the One About the Writer?",
+      "publishDate": "2022-07-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-2008",
+        "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/07/11/richard-iii-shakespeares-crooked-in-several-ways-villain-as-court-fashion-plate/",
+      "headline": "Richard III: Shakespeare’s Crooked in Several Ways Villain as Court Fashion Plate",
+      "publishDate": "2022-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/06/29/hamlet-the-william-shakespeare-classic-declassified-and-the-rest-is-silence/",
+      "headline": "Hamlet: The William Shakespeare Classic Declassified, and the Rest Is Silence",
+      "publishDate": "2022-06-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/06/22/corsicana-will-arbery-in-a-lone-star-state-of-mind/",
+      "headline": "Corsicana: Will Arbery in a Lone Star State of Mind",
+      "publishDate": "2022-06-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "lone-star-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/06/16/the-orchard-anton-chekhovs-cherry-orchard-spectacularly-reimagined/",
+      "headline": "The Orchard: Anton Chekhov’s Cherry Orchard Spectacularly Reimagined",
+      "publishDate": "2022-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/05/26/fat-ham-a-nontragic-take-on-shakespeares-most-popular-tragedy/",
+      "headline": "Fat Ham: A Nontragic Take on Shakespeare’s Most Popular Tragedy",
+      "publishDate": "2022-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/05/22/who-killed-my-father-a-gregarious-gay-son-faces-his-macho-dad-and-the-world/",
+      "headline": "Who Killed My Father:  A Gregarious Gay Son Faces His Macho Dad and the World",
+      "publishDate": "2022-05-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/05/19/belfast-girls-five-irish-orphans-brave-the-1850-high-seas/",
+      "headline": "Belfast Girls: Five Irish Orphans Brave the 1850 High Seas",
+      "publishDate": "2022-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "orphans-2013"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/05/16/a-walk-on-the-moon-an-inviting-musical-about-an-illicit-summer-romance/",
+      "headline": "A Walk on the Moon: An Inviting Musical About an Illicit Summer Romance",
+      "publishDate": "2022-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-walk-on-the-moon-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/05/12/the-vagrant-trilogy-vivid-lives-of-a-conflicted-palestinian-poetry-scholar/",
+      "headline": "The Vagrant Trilogy: Vivid Lives of a Conflicted Palestinian Poetry Scholar",
+      "publishDate": "2022-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "conflicted-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/05/06/into-the-woods-sondheim-leads-encores-out-of-darkness/",
+      "headline": "Into the Woods: Sondheim Leads Encores Out of Darkness",
+      "publishDate": "2022-05-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-2022",
+        "into-the-woods-2002",
+        "into-the-woods-1997",
+        "into-the-woods-1987"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/05/03/from-boston-the-inheritance-hands-gay-history-over-to-regional-theater-triumphantly/",
+      "headline": "From Boston: The Inheritance Hands Gay History Over to Regional Theater, Triumphantly",
+      "publishDate": "2022-05-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-inheritance-2019"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/04/28/from-paris-tartuffe-stripped-bare-literally-by-ivo-van-hove/",
+      "headline": "From Paris: Tartuffe Stripped Bare (Literally) by Ivo van Hove",
+      "publishDate": "2022-04-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tartuffe-2003",
+        "tartuffe-1996",
+        "tartuffe-1977",
+        "tartuffe-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/04/28/for-the-first-time-in-forever-the-songs-of-kristen-bobby-lopez/",
+      "headline": "For the First Time in Forever: The Songs of Kristen & Bobby Lopez",
+      "publishDate": "2022-04-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/04/14/cyrano-de-bergerac-james-mcavoy-as-a-swoon-worthy-swashbuckling-poet/",
+      "headline": "Cyrano de Bergerac: James McAvoy As a Swoon-Worthy Swashbuckling Poet",
+      "publishDate": "2022-04-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyrano-de-bergerac-2012",
+        "cyrano-de-bergerac-2007",
+        "cyrano-de-bergerac-1984"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/04/12/to-my-girls-boys-in-the-band-unsuccessfully-updated-in-palm-springs/",
+      "headline": "To My Girls: ‘Boys in the Band,’ Unsuccessfully Updated in Palm Springs",
+      "publishDate": "2022-04-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-boys-in-the-band-2018"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/03/24/to-steve-with-love-liz-callaway-celebrates-sondheim/",
+      "headline": "To Steve With Love: Liz Callaway Celebrates Sondheim",
+      "publishDate": "2022-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "steve-off-broadway-2015"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/03/08/a-touch-of-the-poet-robert-cuccioli-a-figure-of-valor-in-eugene-oneills-drama/",
+      "headline": "A Touch of the Poet: Robert Cuccioli a Figure of Valor in Eugene O’Neill’s Drama",
+      "publishDate": "2022-03-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-touch-of-the-poet-2005",
+        "a-touch-of-the-poet-1977"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/27/sandblasted-the-place-of-black-women-today-given-a-fantastical-look-see/",
+      "headline": "sandblasted: The Place of Black Women Today Given a Fantastical Look-See",
+      "publishDate": "2022-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/15/the-merchant-of-venice-a-too-timely-production-of-shakespeares-problem-play/",
+      "headline": "The Merchant of Venice: A Too-Timely Production of Shakespeare’s Problem Play",
+      "publishDate": "2022-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/15/the-merchant-of-venice-john-douglas-thompsons-shylock-takes-the-town/",
+      "headline": "The Merchant of Venice: John Douglas Thompson’s Shylock Takes the Town",
+      "publishDate": "2022-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/13/space-dogs-singing-the-praises-of-mans-best-friend/",
+      "headline": "Space Dogs: Singing the Praises of Man’s Best Friend",
+      "publishDate": "2022-02-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "best-friend-1976"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/03/the-tap-dance-kid-taps-10-direction-8-score-5-book-4/",
+      "headline": "The Tap Dance Kid: Taps 10, Direction 8, Score 5, Book 4",
+      "publishDate": "2022-02-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tap-dance-kid-1983"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/03/the-tap-dance-kid-a-boy-and-his-tap-shoes/",
+      "headline": "The Tap Dance Kid: A Boy and His Tap Shoes",
+      "publishDate": "2022-02-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tap-dance-kid-1983"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/01/prayer-for-the-french-republic-old-hatred-and-enduring-hope/",
+      "headline": "Prayer for the French Republic: Old Hatred and Enduring Hope",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/02/01/prayer-for-the-french-republic-will-jews-always-have-paris-and-the-rest-of-france/",
+      "headline": "Prayer for the French Republic: Will Jews Always Have Paris and the Rest of France?",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/01/31/intimate-apparel-lynn-nottages-first-rate-play-opera-ized-to-no-evident-purpose/",
+      "headline": "Intimate Apparel: Lynn Nottage’s First-Rate Play Opera-ized to No Evident Purpose",
+      "publishDate": "2022-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "purpose-2025"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2022/01/11/the-search-for-signs-of-intelligent-life-in-the-universe-one-woman-speaks-volumes/",
+      "headline": "The Search for Signs of Intelligent Life in the Universe: One Woman Speaks Volumes",
+      "publishDate": "2022-01-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-search-for-signs-of-intelligent-life-in-the-universe-1985",
+        "the-search-for-signs-of-intelligent-life-in-the-universe-2000"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/12/07/is-there-still-sex-in-the-city-candace-bushnell-tells-all/",
+      "headline": "Is There Still Sex in the City?: Candace Bushnell Tells All",
+      "publishDate": "2021-12-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/11/16/medicine-not-what-the-doctor-ordered/",
+      "headline": "Medicine: Not What the Doctor Ordered",
+      "publishDate": "2021-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-doctor-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/11/15/mornings-at-seven-extra-special-cast-does-the-paul-osborn-classic-proud/",
+      "headline": "Morning’s at Seven: Extra-Special Cast Does the Paul Osborn Classic Proud",
+      "publishDate": "2021-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mornings-at-seven-2002",
+        "mornings-at-seven-1980"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/11/15/mornings-at-seven-everything-old-is-wonderfully-new-again/",
+      "headline": "Morning’s at Seven: Everything Old is Wonderfully New Again",
+      "publishDate": "2021-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mornings-at-seven-2002",
+        "mornings-at-seven-1980"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/11/14/baby-nearly-40-years-later-the-story-goes-on/",
+      "headline": "Baby: Nearly 40 Years Later, the Story Goes On",
+      "publishDate": "2021-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/11/03/morning-sun-simon-stephens-salutes-three-generations-of-strong-new-york-women/",
+      "headline": "Morning Sun: Simon Stephens Salutes Three Generations of Strong New York Women",
+      "publishDate": "2021-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/11/03/morning-sun-three-not-so-tall-women/",
+      "headline": "Morning Sun: Three Not So Tall Women",
+      "publishDate": "2021-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/11/01/twilight-los-angeles-1992-anna-deavere-smiths-stage-documentary-brilliantly-back/",
+      "headline": "Twilight: Los Angeles, 1992: Anna Deavere Smith’s Stage Documentary Brilliantly Back",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twilight-los-angeles-1992-1994"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/10/28/mrs-warrens-profession-shaws-steadfast-feminism-tidily-displayed/",
+      "headline": "Mrs. Warren’s Profession: Shaw’s Steadfast Feminism Tidily Displayed",
+      "publishDate": "2021-10-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mrs-warrens-profession-2010",
+        "mrs-warrens-profession-1976"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/10/17/american-utopia-the-joyous-theatrical-concert-we-still-need/",
+      "headline": "American Utopia: The Joyous Theatrical Concert We Still Need",
+      "publishDate": "2021-10-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/10/15/the-fever-wallace-shawn-wags-his-finger-again/",
+      "headline": "The Fever: Wallace Shawn Wags His Finger, Again",
+      "publishDate": "2021-10-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-fever-greenwich-house-theater-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/09/13/the-last-of-the-love-letters-a-stunning-look-at-loves-ups-and-downs/",
+      "headline": "The Last of the Love Letters: A Stunning Look at Love’s Ups and Downs",
+      "publishDate": "2021-09-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-letters-2014",
+        "love-letters-1989"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/08/04/putting-it-together-lapine-and-sondheim-and-bernadette-and-mandy-via-town-hall/",
+      "headline": "Putting It Together: Lapine and Sondheim (and Bernadette and Mandy), Via Town Hall",
+      "publishDate": "2021-08-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "putting-it-together-1999"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/08/01/from-boston-the-tempest-a-perfect-storm-and-a-perfect-john-douglas-thompson/",
+      "headline": "From Boston: The Tempest, A Perfect Storm and a Perfect John Douglas Thompson",
+      "publishDate": "2021-08-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-1995"
+      ]
+    },
+    {
+      "url": "https://nystagereview.com/2021/07/08/fruma-sarah-waiting-in-the-wings-jackie-hoffman-happily-soars/",
+      "headline": "Fruma-Sarah (Waiting in the Wings): Jackie Hoffman Happily Soars",
+      "publishDate": "2021-07-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wings-1979",
+        "waiting-in-the-wings-1999"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1861 @@
+{
+  "issueNumber": "bro-5088",
+  "planId": "d00fcf50-1d06-4ac7-ac15-f811ff688475",
+  "status": "applied",
+  "createdAt": "2026-10-25T22:24:28.270Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5088 class sweep: Director credits that belong to another production or another role, and Playwright credits held by non-writers (each sourced in the action description).",
+    "steps": [
+      "once-2012: drop Director credit for John Carney (wrote and directed the 2007 film only; John Tiffany directed the stage production) (https://en.wikipedia.org/wiki/Once_(musical))",
+      "the-apple-tree-2006: drop Director credit for Mike Nichols (directed the 1966 original; the 2006 Roundabout revival was directed by Gary Griffin) (https://www.newyorktheatreguide.com/theatre-news/news/the-apple-tree-kristin-chenoweth-to-star)",
+      "a-midsummer-nights-dream-1996: drop Director credit for Sue Lefton (credited for movement direction, not director (IBDB search snippet)) (https://www.ibdb.com/broadway-production/a-midsummer-nights-dream-4272)",
+      "my-fair-lady-1993: drop Director credit for Moss Hart (Original Production Director (1956); 1993 revival directed by Howard Davies) (https://playbill.com/production/my-fair-lady-virginia-theatre-vault-0000005237)",
+      "jekyll-and-hyde-1997: drop Director credit for Gregory Boyd at The Alley Theatre (directed the 1990 Alley Theatre production; Broadway directed by Robin Phillips) (https://en.wikipedia.org/wiki/Jekyll_%26_Hyde_(musical))",
+      "private-lives-2011: drop Director credit for Scarlett Mackmin (credited for movement direction (IBDB search snippet); Richard Eyre directed) (https://www.broadwayworld.com/article/Broadway-Bound-PRIVATE-LIVES-Begins-Rehearsals-822-20110819)",
+      "funny-girl-2002: drop Director credit for Garson Kanin (directed the 1964 original (died 1999); this one-night 2002 benefit concert was directed by Peter Flynn) (https://playbill.com/person/peter-flynn-vault-0000019513)",
+      "arcadia-1995: drop Director credit for Jane Gibson (Movement Director; Trevor Nunn directed) (https://playbill.com/production/arcadia-vivian-beaumont-theatre-vault-0000011241)",
+      "electra-1998: drop Director credit for Jonathan Butterell (credited for movement direction (IBDB search snippet); David Leveaux directed) (https://www.ibdb.com/broadway-production/electra-5701)",
+      "irene-1973: drop Director credit for John Gielgud (hired for the tryout and replaced by Gower Champion before Broadway) (https://en.wikipedia.org/wiki/Irene_(musical))",
+      "romeo-and-juliet-2013: drop Director credit for Nancy Bannon (movement direction; David Leveaux directed) (https://www.newyorktheatreguide.com/theatre-news/news/romeo-juliet-complete-cast-and-creative-team-announced)",
+      "good-evening-1973: drop Director credit for Joe McGrath (Film Sequences Directed by; Jerry Adler directed the stage show) (https://playbill.com/production/good-evening-plymouth-theatre-vault-0000009582)",
+      "butley-1972: drop Director credit for Harold Pinter (directed the London original and the film; Broadway directed by James Hammerstein) (https://en.wikipedia.org/wiki/Butley_(play))",
+      "on-the-waterfront-1995: drop Director credit for Gordon Edelstein (Playbill Vault credits Adrian Hall as the only director; no source credits Edelstein) (https://playbill.com/production/on-the-waterfront-brooks-atkinson-theatre-vault-0000008004)",
+      "something-unspoken-1995: drop Director credit for Loyd Williamson (IBDB snippet credits only Theodore Mann as director; no source for Williamson as director) (https://www.ibdb.com/broadway-production/garden-district-4306); drop Director credit for Harold Scott (IBDB snippet credits only Theodore Mann as director; no source for Scott as director) (https://www.ibdb.com/broadway-production/garden-district-4306)",
+      "caesar-and-cleopatra-1977: drop Director credit for Al Sambogna (IBDB and NYPL credit only Ellis Rabb as director; no source for Sambogna) (https://www.ibdb.com/broadway-production/caesar-and-cleopatra-3897)",
+      "alice-in-wonderland-1982: drop Director credit for Bambi Linn (movement credit only (CSM); directed by Le Gallienne and John Strasberg) (https://www.csmonitor.com/1982/1230/123003.html)",
+      "mame-1983: drop Playwright credit for Peter Wolf (scenery designer (CSM review of the 1983 revival); Lawrence and Lee wrote the play) (https://www.csmonitor.com/1983/0727/072701.html)",
+      "shenandoah-1989: drop Playwright credit for Reginald Bronskill (no source for a writing credit; IBDB credits James Lee Barrett with the book) (https://www.csmonitor.com/1989/0815/lshen.html)",
+      "the-glass-menagerie-1983: drop Playwright credit for Michael Dansicker (no source for a writing credit; the play is by Tennessee Williams) (https://playbill.com/production/the-glass-menagerie-eugene-oneill-theatre-vault-0000004708)",
+      "the-little-foxes-1981: drop Playwright credit for Stanley Silverman (a composer, not a writer of this play; Lillian Hellman wrote it (BRO-5080 synopsis author gate)) (https://www.ibdb.com/broadway-production/the-little-foxes-4117)",
+      "the-suicide-1980: drop Playwright credit for Trinity Square Repertory Company (a producing company, not a person; Nikolai Erdman wrote the play) (https://www.ibdb.com/broadway-production/the-suicide-3970)",
+      "sweet-sue-1987: drop Playwright credit for Kodak Duratrans (a Kodak display-film product, not a person; A. R. Gurney wrote the play) (https://www.ibdb.com/broadway-production/sweet-sue-4438)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "once-2012",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "John Carney",
+            "role": "Director"
+          },
+          {
+            "name": "John Tiffany",
+            "role": "Director"
+          },
+          {
+            "name": "Enda Walsh",
+            "role": "Book"
+          },
+          {
+            "name": "Bob Crowley",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Natasha Katz",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Clive Goodwin",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Martin Lowe",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Martin Lowe",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Rob Preuss",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Glen Hansard",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Markéta Irglová",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "John Tiffany",
+            "role": "Director"
+          },
+          {
+            "name": "Enda Walsh",
+            "role": "Book"
+          },
+          {
+            "name": "Bob Crowley",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Natasha Katz",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Clive Goodwin",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Martin Lowe",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Martin Lowe",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Rob Preuss",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Glen Hansard",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Markéta Irglová",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "description": "once-2012: drop Director credit for John Carney (wrote and directed the 2007 film only; John Tiffany directed the stage production) (https://en.wikipedia.org/wiki/Once_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-apple-tree-2006",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Mike Nichols",
+            "role": "Director"
+          },
+          {
+            "name": "Gary Griffin",
+            "role": "Director"
+          },
+          {
+            "name": "Andy Blankenbuehler",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Jerry Bock",
+            "role": "Book & Music"
+          },
+          {
+            "name": "Sheldon Harnick",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jess Goldstein",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Donald Holder",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Dan Moses Schreier",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Jonathan Tunick",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Rob Fisher",
+            "role": "Music Direction"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Gary Griffin",
+            "role": "Director"
+          },
+          {
+            "name": "Andy Blankenbuehler",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Jerry Bock",
+            "role": "Book & Music"
+          },
+          {
+            "name": "Sheldon Harnick",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jess Goldstein",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Donald Holder",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Dan Moses Schreier",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Jonathan Tunick",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Rob Fisher",
+            "role": "Music Direction"
+          }
+        ],
+        "description": "the-apple-tree-2006: drop Director credit for Mike Nichols (directed the 1966 original; the 2006 Roundabout revival was directed by Gary Griffin) (https://www.newyorktheatreguide.com/theatre-news/news/the-apple-tree-kristin-chenoweth-to-star)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-1996",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright"
+          },
+          {
+            "name": "Adrian Noble",
+            "role": "Director"
+          },
+          {
+            "name": "Sue Lefton",
+            "role": "Director"
+          },
+          {
+            "name": "Anthony Ward",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Anthony Ward",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Chris Parry",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Paul Slocombe",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright"
+          },
+          {
+            "name": "Adrian Noble",
+            "role": "Director"
+          },
+          {
+            "name": "Anthony Ward",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Anthony Ward",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Chris Parry",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Paul Slocombe",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "a-midsummer-nights-dream-1996: drop Director credit for Sue Lefton (credited for movement direction, not director (IBDB search snippet)) (https://www.ibdb.com/broadway-production/a-midsummer-nights-dream-4272)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-fair-lady-1993",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Howard Davies",
+            "role": "Director"
+          },
+          {
+            "name": "Moss Hart",
+            "role": "Director"
+          },
+          {
+            "name": "Donald Saddler",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Alan Jay Lerner",
+            "role": "Book"
+          },
+          {
+            "name": "Patricia Zipprodt",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Natasha Katz",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Peter J. Fitzgerald",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Alan Jay Lerner",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Frederick Loewe",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Howard Davies",
+            "role": "Director"
+          },
+          {
+            "name": "Donald Saddler",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Alan Jay Lerner",
+            "role": "Book"
+          },
+          {
+            "name": "Patricia Zipprodt",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Natasha Katz",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Peter J. Fitzgerald",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Alan Jay Lerner",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Frederick Loewe",
+            "role": "Music"
+          }
+        ],
+        "description": "my-fair-lady-1993: drop Director credit for Moss Hart (Original Production Director (1956); 1993 revival directed by Howard Davies) (https://playbill.com/production/my-fair-lady-virginia-theatre-vault-0000005237)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jekyll-and-hyde-1997",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Gregory Boyd at The Alley Theatre",
+            "role": "Director"
+          },
+          {
+            "name": "Robin Phillips",
+            "role": "Director"
+          },
+          {
+            "name": "Joey Pizzi",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Leslie Bricusse",
+            "role": "Book"
+          },
+          {
+            "name": "Robin Phillips and James Noone",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Ann Curtis",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Beverly Emmons",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Karl Richardson and Scott Stauffer",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Kim Scharnberg",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Jeremy Roberts",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Jason Howland",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Leslie Bricusse",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Frank Wildhorn",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Robin Phillips",
+            "role": "Director"
+          },
+          {
+            "name": "Joey Pizzi",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Leslie Bricusse",
+            "role": "Book"
+          },
+          {
+            "name": "Robin Phillips and James Noone",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Ann Curtis",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Beverly Emmons",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Karl Richardson and Scott Stauffer",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Kim Scharnberg",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Jeremy Roberts",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Jason Howland",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Leslie Bricusse",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Frank Wildhorn",
+            "role": "Music"
+          }
+        ],
+        "description": "jekyll-and-hyde-1997: drop Director credit for Gregory Boyd at The Alley Theatre (directed the 1990 Alley Theatre production; Broadway directed by Robin Phillips) (https://en.wikipedia.org/wiki/Jekyll_%26_Hyde_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "private-lives-2011",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Sir Richard Eyre",
+            "role": "Director"
+          },
+          {
+            "name": "Scarlett Mackmin",
+            "role": "Director"
+          },
+          {
+            "name": "Noël Coward",
+            "role": "Playwright"
+          },
+          {
+            "name": "Rob Howell",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "David Howe",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Chris Cronin",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Sir Richard Eyre",
+            "role": "Director"
+          },
+          {
+            "name": "Noël Coward",
+            "role": "Playwright"
+          },
+          {
+            "name": "Rob Howell",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "David Howe",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Chris Cronin",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "private-lives-2011: drop Director credit for Scarlett Mackmin (credited for movement direction (IBDB search snippet); Richard Eyre directed) (https://www.broadwayworld.com/article/Broadway-Bound-PRIVATE-LIVES-Begins-Rehearsals-822-20110819)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "funny-girl-2002",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Garson Kanin",
+            "role": "Director"
+          },
+          {
+            "name": "Peter Flynn",
+            "role": "Director"
+          },
+          {
+            "name": "Devanand N. Janki and Robert Tatad",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Isobel Lennart",
+            "role": "Book"
+          },
+          {
+            "name": "Rob Bissinger",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jeff Johnson Doherty",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Martin Vreeland",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Cynthia J. Hawkins",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Ryan Shore",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Seth Rudetsky",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Bob Merrill",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Jule Styne",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Peter Flynn",
+            "role": "Director"
+          },
+          {
+            "name": "Devanand N. Janki and Robert Tatad",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Isobel Lennart",
+            "role": "Book"
+          },
+          {
+            "name": "Rob Bissinger",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jeff Johnson Doherty",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Martin Vreeland",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Cynthia J. Hawkins",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Ryan Shore",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Seth Rudetsky",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Bob Merrill",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Jule Styne",
+            "role": "Music"
+          }
+        ],
+        "description": "funny-girl-2002: drop Director credit for Garson Kanin (directed the 1964 original (died 1999); this one-night 2002 benefit concert was directed by Peter Flynn) (https://playbill.com/person/peter-flynn-vault-0000019513)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arcadia-1995",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Tom Stoppard",
+            "role": "Playwright"
+          },
+          {
+            "name": "Trevor Nunn",
+            "role": "Director"
+          },
+          {
+            "name": "Jane Gibson",
+            "role": "Director"
+          },
+          {
+            "name": "Mark Thompson",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Mark Thompson",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Pyant",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Charles Bugbee III",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Steven Edis",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Joshua Rosenblum",
+            "role": "Music Direction"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Tom Stoppard",
+            "role": "Playwright"
+          },
+          {
+            "name": "Trevor Nunn",
+            "role": "Director"
+          },
+          {
+            "name": "Mark Thompson",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Mark Thompson",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Pyant",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Charles Bugbee III",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Steven Edis",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Joshua Rosenblum",
+            "role": "Music Direction"
+          }
+        ],
+        "description": "arcadia-1995: drop Director credit for Jane Gibson (Movement Director; Trevor Nunn directed) (https://playbill.com/production/arcadia-vivian-beaumont-theatre-vault-0000011241)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "electra-1998",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Sophocles",
+            "role": "Playwright"
+          },
+          {
+            "name": "Frank McGuinness",
+            "role": "Playwright"
+          },
+          {
+            "name": "David Leveaux",
+            "role": "Director"
+          },
+          {
+            "name": "Jonathan Butterell",
+            "role": "Director"
+          },
+          {
+            "name": "Johan Engels",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Johan Engels",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Pyant",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Fergus O'Hare",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Sophocles",
+            "role": "Playwright"
+          },
+          {
+            "name": "Frank McGuinness",
+            "role": "Playwright"
+          },
+          {
+            "name": "David Leveaux",
+            "role": "Director"
+          },
+          {
+            "name": "Johan Engels",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Johan Engels",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Pyant",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Fergus O'Hare",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "electra-1998: drop Director credit for Jonathan Butterell (credited for movement direction (IBDB search snippet); David Leveaux directed) (https://www.ibdb.com/broadway-production/electra-5701)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "irene-1973",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "James Montgomery",
+            "role": "Playwright"
+          },
+          {
+            "name": "Gower Champion",
+            "role": "Director"
+          },
+          {
+            "name": "John Gielgud",
+            "role": "Director"
+          },
+          {
+            "name": "Hugh Wheeler and Joseph Stein",
+            "role": "Book"
+          },
+          {
+            "name": "Raoul Pène Du Bois",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Raoul Pène Du Bois",
+            "role": "Costume Design"
+          },
+          {
+            "name": "David F. Segal",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Ralph Burns",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Joseph McCarthy",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Harry Tierney",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "James Montgomery",
+            "role": "Playwright"
+          },
+          {
+            "name": "Gower Champion",
+            "role": "Director"
+          },
+          {
+            "name": "Hugh Wheeler and Joseph Stein",
+            "role": "Book"
+          },
+          {
+            "name": "Raoul Pène Du Bois",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Raoul Pène Du Bois",
+            "role": "Costume Design"
+          },
+          {
+            "name": "David F. Segal",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Ralph Burns",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Joseph McCarthy",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Harry Tierney",
+            "role": "Music"
+          }
+        ],
+        "description": "irene-1973: drop Director credit for John Gielgud (hired for the tryout and replaced by Gower Champion before Broadway) (https://en.wikipedia.org/wiki/Irene_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "romeo-and-juliet-2013",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "David Leveaux",
+            "role": "Director"
+          },
+          {
+            "name": "Nancy Bannon",
+            "role": "Director"
+          },
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright"
+          },
+          {
+            "name": "Jesse Poleshuck",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Fabio Toblini",
+            "role": "Costume Design"
+          },
+          {
+            "name": "David Weiner",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "David Van Tieghem",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "David Leveaux",
+            "role": "Director"
+          },
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright"
+          },
+          {
+            "name": "Jesse Poleshuck",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Fabio Toblini",
+            "role": "Costume Design"
+          },
+          {
+            "name": "David Weiner",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "David Van Tieghem",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "romeo-and-juliet-2013: drop Director credit for Nancy Bannon (movement direction; David Leveaux directed) (https://www.newyorktheatreguide.com/theatre-news/news/romeo-juliet-complete-cast-and-creative-team-announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "good-evening-1973",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Dudley Moore and Peter Cook",
+            "role": "Playwright"
+          },
+          {
+            "name": "Jerry Adler",
+            "role": "Director"
+          },
+          {
+            "name": "Joe McGrath",
+            "role": "Director"
+          },
+          {
+            "name": "Robert Randolph",
+            "role": "Scenic Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Dudley Moore and Peter Cook",
+            "role": "Playwright"
+          },
+          {
+            "name": "Jerry Adler",
+            "role": "Director"
+          },
+          {
+            "name": "Robert Randolph",
+            "role": "Scenic Design"
+          }
+        ],
+        "description": "good-evening-1973: drop Director credit for Joe McGrath (Film Sequences Directed by; Jerry Adler directed the stage show) (https://playbill.com/production/good-evening-plymouth-theatre-vault-0000009582)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "butley-1972",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Simon Gray",
+            "role": "Playwright"
+          },
+          {
+            "name": "James Hammerstein",
+            "role": "Director"
+          },
+          {
+            "name": "Harold Pinter",
+            "role": "Director"
+          },
+          {
+            "name": "Eileen Diss",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Neil Peter Jampolis",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Neil Peter Jampolis",
+            "role": "Lighting Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Simon Gray",
+            "role": "Playwright"
+          },
+          {
+            "name": "James Hammerstein",
+            "role": "Director"
+          },
+          {
+            "name": "Eileen Diss",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Neil Peter Jampolis",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Neil Peter Jampolis",
+            "role": "Lighting Design"
+          }
+        ],
+        "description": "butley-1972: drop Director credit for Harold Pinter (directed the London original and the film; Broadway directed by James Hammerstein) (https://en.wikipedia.org/wiki/Butley_(play))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-waterfront-1995",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Budd Schulberg and Stan Silverman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Adrian Hall",
+            "role": "Director"
+          },
+          {
+            "name": "Gordon Edelstein",
+            "role": "Director"
+          },
+          {
+            "name": "Eugene Lee",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Ann Hould-Ward",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Peter Kaczorowski",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Dan Moses Schreier",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Budd Schulberg and Stan Silverman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Adrian Hall",
+            "role": "Director"
+          },
+          {
+            "name": "Eugene Lee",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Ann Hould-Ward",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Peter Kaczorowski",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Dan Moses Schreier",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "on-the-waterfront-1995: drop Director credit for Gordon Edelstein (Playbill Vault credits Adrian Hall as the only director; no source credits Edelstein) (https://playbill.com/production/on-the-waterfront-brooks-atkinson-theatre-vault-0000008004)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "something-unspoken-1995",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Tennessee Williams",
+            "role": "Playwright"
+          },
+          {
+            "name": "Theodore Mann",
+            "role": "Director"
+          },
+          {
+            "name": "Loyd Williamson",
+            "role": "Director"
+          },
+          {
+            "name": "Harold Scott",
+            "role": "Director"
+          },
+          {
+            "name": "Zack Brown",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Zack Brown",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Marc B. Weiss",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Bruce Cameron",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Tennessee Williams",
+            "role": "Playwright"
+          },
+          {
+            "name": "Theodore Mann",
+            "role": "Director"
+          },
+          {
+            "name": "Zack Brown",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Zack Brown",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Marc B. Weiss",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Bruce Cameron",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "something-unspoken-1995: drop Director credit for Loyd Williamson (IBDB snippet credits only Theodore Mann as director; no source for Williamson as director) (https://www.ibdb.com/broadway-production/garden-district-4306); drop Director credit for Harold Scott (IBDB snippet credits only Theodore Mann as director; no source for Scott as director) (https://www.ibdb.com/broadway-production/garden-district-4306)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "caesar-and-cleopatra-1977",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "George Bernard Shaw",
+            "role": "Playwright"
+          },
+          {
+            "name": "Ellis Rabb",
+            "role": "Director"
+          },
+          {
+            "name": "Al Sambogna",
+            "role": "Director"
+          },
+          {
+            "name": "Ming Cho Lee",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jane Greenwood",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Thomas Skelton",
+            "role": "Lighting Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "George Bernard Shaw",
+            "role": "Playwright"
+          },
+          {
+            "name": "Ellis Rabb",
+            "role": "Director"
+          },
+          {
+            "name": "Ming Cho Lee",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jane Greenwood",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Thomas Skelton",
+            "role": "Lighting Design"
+          }
+        ],
+        "description": "caesar-and-cleopatra-1977: drop Director credit for Al Sambogna (IBDB and NYPL credit only Ellis Rabb as director; no source for Sambogna) (https://www.ibdb.com/broadway-production/caesar-and-cleopatra-3897)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alice-in-wonderland-1982",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Eva Le Gallienne and Florida Friebus",
+            "role": "Adaptation"
+          },
+          {
+            "name": "Eva Le Gallienne and John Strasberg",
+            "role": "Director"
+          },
+          {
+            "name": "Bambi Linn",
+            "role": "Director"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Patricia Zipprodt",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Jennifer Tipton",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jack Mann",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Jonathan Tunick",
+            "role": "Music Supervision"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Eva Le Gallienne and Florida Friebus",
+            "role": "Adaptation"
+          },
+          {
+            "name": "Eva Le Gallienne and John Strasberg",
+            "role": "Director"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Patricia Zipprodt",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Jennifer Tipton",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jack Mann",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Jonathan Tunick",
+            "role": "Music Supervision"
+          }
+        ],
+        "description": "alice-in-wonderland-1982: drop Director credit for Bambi Linn (movement credit only (CSM); directed by Le Gallienne and John Strasberg) (https://www.csmonitor.com/1982/1230/123003.html)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mame-1983",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Peter Wolf",
+            "role": "Playwright"
+          },
+          {
+            "name": "Robert E. Lee and Jerome Lawrence",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Bowab",
+            "role": "Director"
+          },
+          {
+            "name": "Onna White",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Jerome Lawrence and Robert E. Lee",
+            "role": "Book"
+          },
+          {
+            "name": "William and Jean Eckart",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Robert Mackintosh",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Thomas Skelton",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Christine Voellinger",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Philip J. Lang",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Jim Coleman",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Jerry Herman",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Jerry Herman",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Robert E. Lee and Jerome Lawrence",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Bowab",
+            "role": "Director"
+          },
+          {
+            "name": "Onna White",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Jerome Lawrence and Robert E. Lee",
+            "role": "Book"
+          },
+          {
+            "name": "William and Jean Eckart",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Robert Mackintosh",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Thomas Skelton",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Christine Voellinger",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Philip J. Lang",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Jim Coleman",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Jerry Herman",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Jerry Herman",
+            "role": "Music"
+          }
+        ],
+        "description": "mame-1983: drop Playwright credit for Peter Wolf (scenery designer (CSM review of the 1983 revival); Lawrence and Lee wrote the play) (https://www.csmonitor.com/1983/0727/072701.html)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shenandoah-1989",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Reginald Bronskill",
+            "role": "Playwright"
+          },
+          {
+            "name": "James Lee Barrett",
+            "role": "Playwright"
+          },
+          {
+            "name": "Philip Rose",
+            "role": "Director"
+          },
+          {
+            "name": "Robert Tucker",
+            "role": "Choreographer"
+          },
+          {
+            "name": "James Lee Barrett, Peter Udell and Philip Rose",
+            "role": "Book"
+          },
+          {
+            "name": "Guy Geoly",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Stephen Ross",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "David Warrack",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Peter Udell",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Gary Geld",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "James Lee Barrett",
+            "role": "Playwright"
+          },
+          {
+            "name": "Philip Rose",
+            "role": "Director"
+          },
+          {
+            "name": "Robert Tucker",
+            "role": "Choreographer"
+          },
+          {
+            "name": "James Lee Barrett, Peter Udell and Philip Rose",
+            "role": "Book"
+          },
+          {
+            "name": "Guy Geoly",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Stephen Ross",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "David Warrack",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Peter Udell",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Gary Geld",
+            "role": "Music"
+          }
+        ],
+        "description": "shenandoah-1989: drop Playwright credit for Reginald Bronskill (no source for a writing credit; IBDB credits James Lee Barrett with the book) (https://www.csmonitor.com/1989/0815/lshen.html)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-glass-menagerie-1983",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Tennessee Williams",
+            "role": "Playwright"
+          },
+          {
+            "name": "Michael Dansicker",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Dexter",
+            "role": "Director"
+          },
+          {
+            "name": "Ming Cho Lee",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Patricia Zipprodt",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Andy Phillips",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Otts Munderloh",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Tennessee Williams",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Dexter",
+            "role": "Director"
+          },
+          {
+            "name": "Ming Cho Lee",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Patricia Zipprodt",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Andy Phillips",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Otts Munderloh",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "the-glass-menagerie-1983: drop Playwright credit for Michael Dansicker (no source for a writing credit; the play is by Tennessee Williams) (https://playbill.com/production/the-glass-menagerie-eugene-oneill-theatre-vault-0000004708)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-foxes-1981",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Lillian Hellman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Stanley Silverman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Austin Pendleton",
+            "role": "Director"
+          },
+          {
+            "name": "Andrew Jackness",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Florence Klotz",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Gallo",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jack Mann",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Lillian Hellman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Austin Pendleton",
+            "role": "Director"
+          },
+          {
+            "name": "Andrew Jackness",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Florence Klotz",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Gallo",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jack Mann",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "the-little-foxes-1981: drop Playwright credit for Stanley Silverman (a composer, not a writer of this play; Lillian Hellman wrote it (BRO-5080 synopsis author gate)) (https://www.ibdb.com/broadway-production/the-little-foxes-4117)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-suicide-1980",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Nikolai Erdman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Trinity Square Repertory Company",
+            "role": "Playwright"
+          },
+          {
+            "name": "Jonas Jurasas",
+            "role": "Director"
+          },
+          {
+            "name": "Santo Loquasto",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Santo Loquasto",
+            "role": "Costume Design"
+          },
+          {
+            "name": "F. Mitchell Dana",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jack Shearing",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Bill Dyer",
+            "role": "Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Nikolai Erdman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Jonas Jurasas",
+            "role": "Director"
+          },
+          {
+            "name": "Santo Loquasto",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Santo Loquasto",
+            "role": "Costume Design"
+          },
+          {
+            "name": "F. Mitchell Dana",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jack Shearing",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Bill Dyer",
+            "role": "Lyrics"
+          }
+        ],
+        "description": "the-suicide-1980: drop Playwright credit for Trinity Square Repertory Company (a producing company, not a person; Nikolai Erdman wrote the play) (https://www.ibdb.com/broadway-production/the-suicide-3970)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sweet-sue-1987",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "A. R. Gurney, Jr",
+            "role": "Playwright"
+          },
+          {
+            "name": "Kodak Duratrans",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Tillinger",
+            "role": "Director"
+          },
+          {
+            "name": "Santo Loquasto",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jess Goldstein",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Ken Billington",
+            "role": "Lighting Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "A. R. Gurney, Jr",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Tillinger",
+            "role": "Director"
+          },
+          {
+            "name": "Santo Loquasto",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jess Goldstein",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Ken Billington",
+            "role": "Lighting Design"
+          }
+        ],
+        "description": "sweet-sue-1987: drop Playwright credit for Kodak Duratrans (a Kodak display-film product, not a person; A. R. Gurney wrote the play) (https://www.ibdb.com/broadway-production/sweet-sue-4438)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T01:33:51.400Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for once-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-apple-tree-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for a-midsummer-nights-dream-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for my-fair-lady-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for jekyll-and-hyde-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for private-lives-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for funny-girl-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for arcadia-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for electra-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for irene-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for romeo-and-juliet-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for good-evening-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for butley-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for on-the-waterfront-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for something-unspoken-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for caesar-and-cleopatra-1977"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for alice-in-wonderland-1982"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for mame-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for shenandoah-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-glass-menagerie-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-little-foxes-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-suicide-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for sweet-sue-1987"
+    }
+  ],
+  "executedIn": "ci"
+}

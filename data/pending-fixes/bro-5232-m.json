@@ -1,0 +1,154 @@
+{
+  "planId": "7afd4173-a753-4670-9bf5-7f303be76bf0",
+  "issueNumber": "bro-5232-m",
+  "createdAt": "2026-10-13T14:28:41.899Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "status": "applied",
+  "plan": {
+    "summary": "BRO-5232 m: restore real reviews left uncounted after a-l: four wrong automatic flags on the real copy, and the Trouble in Mind AP row cleared for re-collection.",
+    "steps": [
+      "clear wrongShow/wrongProduction/isNonReview on 4 real reviews",
+      "undo 2 duplicate pointers whose target was itself excluded",
+      "clear wrongShow on AP Trouble in Mind for re-collect"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/wsj--charles-isherwood.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5232: this is Charles Isherwood's WSJ review of the Broadway Some Like It Hot (https://www.wsj.com/articles/some-like-it-hot-review-broadway-musical-christian-borle-j-harrison-ghee-marc-shaiman-11670625546); the wrongShow reason itself says it is the right production at the Shubert ~11 days after the 12/11/22 opening and only objects that the text is truncated, which is a content tier, not a wrong show. Clearing restores his real review after the made-up USA Today copy was marked wrongAttribution."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/wsj--charles-isherwood.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: this is Charles Isherwood's WSJ review of the Broadway Some Like It Hot (https://www.wsj.com/articles/some-like-it-hot-review-broadway-musical-christian-borle-j-harrison-ghee-marc-shaiman-11670625546); the wrongShow reason itself says it is the right production at the Shubert ~11 days after the 12/11/22 opening and only objects that the text is truncated, which is a content tier, not a wrong show. Clearing restores his real review after the made-up USA Today copy was marked wrongAttribution."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/northjerseycom--robert-feldberg.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5232: Robert Feldberg's northjersey.com review (http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339) is dated August 1st, 2016, the Broadway revival's opening; the wrongShow flag guessed cats-west-end-2026 from a URL collision, which a 2016 article cannot be."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/northjerseycom--robert-feldberg.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Robert Feldberg's northjersey.com review (http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339) is dated August 1st, 2016, the Broadway revival's opening; the wrongShow flag guessed cats-west-end-2026 from a URL collision, which a 2016 article cannot be."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/new-york-sun--elysa-gardner.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5232: Elysa Gardner's New York Sun review (https://www.nysun.com/article/although-beguiling-and-funny-this-meta-exercise-has-aged-a-bit-since-2019) reviews the 2022 Broadway run; the flag came from the 2019 in the headline slug (\"has aged a bit since 2019\"), and the text calls the earlier staging off-Broadway. Metadata from URLs is not evidence."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/new-york-sun--elysa-gardner.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Elysa Gardner's New York Sun review (https://www.nysun.com/article/although-beguiling-and-funny-this-meta-exercise-has-aged-a-bit-since-2019) reviews the 2022 Broadway run; the flag came from the 2019 in the headline slug (\"has aged a bit since 2019\"), and the text calls the earlier staging off-Broadway. Metadata from URLs is not evidence."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "13-2008/nytimes--ben-brantley.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5232: http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html is Ben Brantley's NYT review of 13 (theater/reviews path, 06bran = Brantley, opening-night date); isNonReview carried no reason. Restores his real review after the broadway-space copy was marked wrongAttribution."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "13-2008/nytimes--ben-brantley.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html is Ben Brantley's NYT review of 13 (theater/reviews path, 06bran = Brantley, opening-night date); isNonReview carried no reason. Restores his real review after the broadway-space copy was marked wrongAttribution."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "trouble-in-mind-2021/ap--mark-kennedy.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5232: the live AP page (https://apnews.com/article/entertainment-music-arts-and-entertainment-theater-race-and-ethnicity-4abb53c1f9816696c2b889a8800aa20c) is Mark Kennedy's review \"Trouble in Mind makes its Broadway debut, finally\" (JSON-LD author Mark Kennedy, cloud fetch 2026-10-13); the stored text was a bad scrape of photo captions, not another show. Clearing so the text can be re-collected; Kennedy's review counts nowhere since the Bloomberg copy was marked wrongAttribution."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "trouble-in-mind-2021/ap--mark-kennedy.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: the live AP page (https://apnews.com/article/entertainment-music-arts-and-entertainment-theater-race-and-ethnicity-4abb53c1f9816696c2b889a8800aa20c) is Mark Kennedy's review \"Trouble in Mind makes its Broadway debut, finally\" (JSON-LD author Mark Kennedy, cloud fetch 2026-10-13); the stored text was a bad scrape of photo captions, not another show. Clearing so the text can be re-collected; Kennedy's review counts nowhere since the Bloomberg copy was marked wrongAttribution."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T16:54:36.928Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/wsj--charles-isherwood.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/wsj--charles-isherwood.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/northjerseycom--robert-feldberg.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/northjerseycom--robert-feldberg.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/new-york-sun--elysa-gardner.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/new-york-sun--elysa-gardner.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/nytimes--ben-brantley.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/nytimes--ben-brantley.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/ap--mark-kennedy.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/ap--mark-kennedy.json wrongShowManualClear: null -> true"
+    }
+  ]
+}

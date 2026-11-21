@@ -1,0 +1,184 @@
+{
+  "issueNumber": "bro-5647-v",
+  "planId": "0238ca4d-7bb8-4f88-b570-126641b67b63",
+  "status": "applied",
+  "createdAt": "2026-10-21T19:20:43.200Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "SEC Form D filings for three shows, each filing re-opened at sec.gov and tied to its show through public evidence on the filing (related persons, and an entity name drawn from the show): Waiting for Godot's D/A says the offering was capitalized at $7.5M from 90 investors (basis becomes sold); Water for Elephants' $25M and Two Strangers' $8M are the filings' maximums (minimums $20M and $5M), so their basis becomes maximum. Values unchanged. Old values from the private core data.",
+    "steps": [
+      "Godot, Water for Elephants, Two Strangers SEC sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waiting-for-godot-2025",
+        "showId": "waiting-for-godot-2025",
+        "field": "capitalizationSource",
+        "oldValue": "Variety",
+        "newValue": "SEC Form D/A (Didi & Gogo LP, CIK 0002065551, signed Oct 24, 2025): $7,500,000 sold of an $8,000,000 offering, from 90 investors; \"Maximum capitalization was $8,000,000/Minimum capitalization was $7,000,000/Offering capitalized at $7,500,000\". Its general partners include The Jamie Lloyd Company (TJLC Productions) and ATG Entertainment; Didi and Gogo are the play's two tramps. https://www.sec.gov/Archives/edgar/data/2065551/000206555125000002/primary_doc.xml",
+        "description": "waiting-for-godot-2025: the amended filing states the amount raised"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waiting-for-godot-2025",
+        "showId": "waiting-for-godot-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/waiting-for-godot-starring-keanu-reeves-and-alex-winter-recoups_1812808/",
+            "date": "2025-11-20"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/waiting-for-godot-starring-keanu-reeves-and-alex-winter-recoups_1812808/",
+            "date": "2025-11-20"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2065551/000206555125000002/primary_doc.xml",
+            "date": "2025-10-24"
+          }
+        ],
+        "description": "waiting-for-godot-2025: add the SEC filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "showId": "water-for-elephants",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway Journal (Apr 2024), citing production documents: \"its $25 million capitalization\"",
+        "newValue": "SEC Form D (Big Top Productions LLC, CIK 0001989239, signed Aug 9, 2023): offering up to $25 million; \"Minimum capitalization is $20,000,000; Maximum capitalization is $25,000,000.\" Its related persons include Peter Schneider and Frank Marshall (Parade of Elephants LLC), two of the show's producers. Broadway Journal (Apr 2024), citing production documents, reported \"its $25 million capitalization\". https://www.sec.gov/Archives/edgar/data/1989239/000198923923000001/primary_doc.xml",
+        "description": "water-for-elephants: the $25M is the filing's maximum"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "showId": "water-for-elephants",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/stereophonic-makes-tony-history-in-hazardous-season",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/stereophonic-makes-tony-history-in-hazardous-season",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1989239/000198923923000001/primary_doc.xml",
+            "date": "2023-08-09"
+          }
+        ],
+        "description": "water-for-elephants: add the SEC filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "two-strangers",
+        "showId": "two-strangers",
+        "field": "capitalizationSource",
+        "oldValue": "Forbes (Nov 2025)",
+        "newValue": "SEC Form D (Takes The Cake LP, CIK 0002081901, signed Aug 20, 2025): offering up to $8 million; \"The minimum capitalization is $5,000,000. The maximum capitalization is $8,000,000.\" Its related persons include Kevin McCollum and Us Strangers Ltd. Forbes (Nov 2025) reported an $8 million capitalization. https://www.sec.gov/Archives/edgar/data/2081901/000208190125000001/primary_doc.xml",
+        "description": "two-strangers: the $8M is the filing's maximum"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "two-strangers",
+        "showId": "two-strangers",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2025/11/17/two-strangers-arrives-on-broadway-in-a-perfect-storm/",
+            "date": "2025-11-17"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Sets-Closing-Date-20260916",
+            "date": "2026-09-16"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2025/11/17/two-strangers-arrives-on-broadway-in-a-perfect-storm/",
+            "date": "2025-11-17"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Sets-Closing-Date-20260916",
+            "date": "2026-09-16"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2081901/000208190125000001/primary_doc.xml",
+            "date": "2025-08-20"
+          }
+        ],
+        "description": "two-strangers: add the SEC filing"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T19:46:08.754Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for waiting-for-godot-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for waiting-for-godot-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for two-strangers"
+    }
+  ],
+  "executedIn": "ci"
+}

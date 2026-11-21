@@ -1,0 +1,372 @@
+{
+  "issueNumber": "bro-7928-b",
+  "planId": "b10a4534-333a-4256-a082-0dbe3a91384d",
+  "status": "applied",
+  "createdAt": "2026-11-21T10:00:35.370Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Theater Life star ratings: 52 recovered from the outlet's own WP post titles/footers (theaterlife.com times out from CI runners, so the weekly recovery never reached them) and 9 stored ratings corrected (combined-column titles had given every show the last show's stars; Leopoldstadt stored 'A'). Read by recover-explicit-ratings.js phase 2 on the final BRO-7928 code; 509 stored title ratings re-audited against live posts. (part 2 of 3)",
+    "steps": [
+      "garsides-career-off-broadway-2025/theater-life--samuel-l-leiter.json: originalScore",
+      "harmony-off-broadway-2022/theater-life--david-sheward.json: originalScore",
+      "here-we-are-off-broadway-2023/theater-life--david-sheward.json: originalScore",
+      "home-2024/theater-life--samuel-l-leiter.json: originalScore",
+      "kowalski-off-broadway-2025/theater-life--samuel-l-leiter.json: originalScore",
+      "leopoldstadt-2022/theater-life--david-sheward.json: originalScore",
+      "les-liaisons-dangereuses-2016/theater-life--david-sheward.json: originalScore",
+      "lights-out-nat-king-cole-off-broadway-2025/theater-life--paulanne-simmons.json: originalScore",
+      "lobby-hero-2018/theater-life--david-sheward.json: originalScore",
+      "long-days-journey-into-night-off-broadway-2022/theater-life--bernard-carragher.json: originalScore",
+      "love-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore",
+      "make-me-gorgeous-off-broadway-2023/theater-life--alix-cohen.json: originalScore",
+      "people-places-and-things-off-broadway-2017/theater-life--david-sheward.json: originalScore",
+      "philadelphia-here-i-come-off-broadway-2024/theater-life--samuel-l-leiter.json: originalScore",
+      "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/theater-life--isa-goldberg.json: originalScore",
+      "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/theater-life--paulanne-simmons.json: originalScore",
+      "schmigadoon-2026/theater-life--samuel-l-leiter.json: originalScore",
+      "snow-in-midsummer-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore",
+      "sorry-for-your-loss-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore",
+      "spongebob-squarepants-2017/theater-life--david-sheward.json: originalScore",
+      "sunday-in-the-park-with-george-2017/theater-life--david-sheward.json: originalScore",
+      "sunset-boulevard-2017/theater-life--david-sheward.json: originalScore",
+      "the-elephant-man-2014/theater-life--david-sheward.json: originalScore",
+      "the-fears-off-broadway-2023/theater-life--paulanne-simmons.json: originalScore",
+      "the-gardens-of-anuncia-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "garsides-career-off-broadway-2025/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "garsides-career-off-broadway-2025/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "harmony-off-broadway-2022/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3.5/5 stars",
+        "description": "harmony-off-broadway-2022/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-off-broadway-2023/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "here-we-are-off-broadway-2023/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "home-2024/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": "4/5 stars",
+        "description": "home-2024/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kowalski-off-broadway-2025/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5 stars",
+        "description": "kowalski-off-broadway-2025/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-2022/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": "5/5 stars",
+        "description": "leopoldstadt-2022/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "les-liaisons-dangereuses-2016/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lights-out-nat-king-cole-off-broadway-2025/theater-life--paulanne-simmons.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "lights-out-nat-king-cole-off-broadway-2025/theater-life--paulanne-simmons.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lobby-hero-2018/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "3/5 stars",
+        "description": "lobby-hero-2018/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-off-broadway-2022/theater-life--bernard-carragher.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "long-days-journey-into-night-off-broadway-2022/theater-life--bernard-carragher.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "love-off-broadway-2023/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "love-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "make-me-gorgeous-off-broadway-2023/theater-life--alix-cohen.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "5/5 stars",
+        "description": "make-me-gorgeous-off-broadway-2023/theater-life--alix-cohen.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "people-places-and-things-off-broadway-2017/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "5/5 stars",
+        "description": "people-places-and-things-off-broadway-2017/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "philadelphia-here-i-come-off-broadway-2024/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "philadelphia-here-i-come-off-broadway-2024/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/theater-life--isa-goldberg.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3.5/5 stars",
+        "description": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/theater-life--isa-goldberg.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/theater-life--paulanne-simmons.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/theater-life--paulanne-simmons.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "schmigadoon-2026/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": "4/5 stars",
+        "description": "schmigadoon-2026/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "snow-in-midsummer-off-broadway-2022/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5 stars",
+        "description": "snow-in-midsummer-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sorry-for-your-loss-off-broadway-2023/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "sorry-for-your-loss-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spongebob-squarepants-2017/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3.5/5 stars",
+        "description": "spongebob-squarepants-2017/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunday-in-the-park-with-george-2017/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "sunday-in-the-park-with-george-2017/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-2017/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "sunset-boulevard-2017/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-elephant-man-2014/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "the-elephant-man-2014/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-fears-off-broadway-2023/theater-life--paulanne-simmons.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2.5/5 stars",
+        "description": "the-fears-off-broadway-2023/theater-life--paulanne-simmons.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-gardens-of-anuncia-off-broadway-2023/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3.5/5 stars",
+        "description": "the-gardens-of-anuncia-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore"
+      }
+    ]
+  },
+  "executedAt": "2026-11-21T10:49:13.059Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garsides-career-off-broadway-2025/theater-life--samuel-l-leiter.json originalScore: null -> \"4/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harmony-off-broadway-2022/theater-life--david-sheward.json originalScore: null -> \"3.5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-off-broadway-2023/theater-life--david-sheward.json originalScore: null -> \"4/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-2024/theater-life--samuel-l-leiter.json originalScore: \"5/5 stars\" -> \"4/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kowalski-off-broadway-2025/theater-life--samuel-l-leiter.json originalScore: null -> \"2/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-2022/theater-life--david-sheward.json originalScore: \"A\" -> \"5/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/theater-life--david-sheward.json originalScore: null -> \"4/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lights-out-nat-king-cole-off-broadway-2025/theater-life--paulanne-simmons.json originalScore: null -> \"4/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lobby-hero-2018/theater-life--david-sheward.json originalScore: \"4/5 stars\" -> \"3/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-off-broadway-2022/theater-life--bernard-carragher.json originalScore: null -> \"4/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "love-off-broadway-2023/theater-life--samuel-l-leiter.json originalScore: null -> \"3/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "make-me-gorgeous-off-broadway-2023/theater-life--alix-cohen.json originalScore: null -> \"5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "people-places-and-things-off-broadway-2017/theater-life--david-sheward.json originalScore: null -> \"5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "philadelphia-here-i-come-off-broadway-2024/theater-life--samuel-l-leiter.json originalScore: null -> \"4/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/theater-life--isa-goldberg.json originalScore: null -> \"3.5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/theater-life--paulanne-simmons.json originalScore: null -> \"4/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "schmigadoon-2026/theater-life--samuel-l-leiter.json originalScore: \"5/5 stars\" -> \"4/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "snow-in-midsummer-off-broadway-2022/theater-life--samuel-l-leiter.json originalScore: null -> \"2/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sorry-for-your-loss-off-broadway-2023/theater-life--samuel-l-leiter.json originalScore: null -> \"4/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spongebob-squarepants-2017/theater-life--david-sheward.json originalScore: null -> \"3.5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunday-in-the-park-with-george-2017/theater-life--david-sheward.json originalScore: null -> \"4/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2017/theater-life--david-sheward.json originalScore: null -> \"3/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-elephant-man-2014/theater-life--david-sheward.json originalScore: null -> \"3/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fears-off-broadway-2023/theater-life--paulanne-simmons.json originalScore: null -> \"2.5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-gardens-of-anuncia-off-broadway-2023/theater-life--samuel-l-leiter.json originalScore: null -> \"3.5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    }
+  ],
+  "executedIn": "ci"
+}

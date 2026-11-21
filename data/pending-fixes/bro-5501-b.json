@@ -1,0 +1,32 @@
+{
+  "issueNumber": "bro-5501-b",
+  "planId": "6809e711-2715-4247-bea3-7897754b1df0",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5501 item 3: read-only probe of the Show Score / DTLI aggregator archive for sibling-misfiled pages (the 2009 BAM Mendes Cherry Orchard html filed under both 2026 ids). The audit exits 1 when it finds any, which is the signal; a follow-up plan runs --delete --expect=N.",
+    "steps": [
+      "Run audit-sibling-misfile-archive.js --json (no --delete) and read the job log."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "audit-sibling-misfile-archive.js",
+        "args": "--json",
+        "description": "Probe archive for sibling-misfiled pages (read only)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T19:49:00.086Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script audit-sibling-misfile-archive.js failed: Command failed: node scripts/audit-sibling-misfile-archive.js --json"
+    }
+  ]
+}

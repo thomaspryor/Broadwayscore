@@ -1,0 +1,3796 @@
+{
+  "outletId": "timeout-london",
+  "market": "london",
+  "generatedAt": "2026-10-29T06:37:31.451Z",
+  "since": "2012-09-01",
+  "source": {
+    "kind": "sitemap",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 12279,
+    "inWindow": 12276,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "review-texts",
+  "summary": {
+    "counts": {
+      "not-review": 11661,
+      "catalog-gap": 2,
+      "held": 323,
+      "out-of-window": 140,
+      "held-alt-url": 26,
+      "held-unmatched": 72,
+      "ambiguous": 1,
+      "held-other-market": 30,
+      "gap": 8,
+      "other-market-review": 11,
+      "misfile": 2
+    },
+    "viaTitleVariant": {
+      "held": 16,
+      "gap": 2
+    },
+    "recall": 0.972,
+    "recallWithCatalog": 0.967
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 83,
+      "catalog-gap": 1,
+      "held": 34,
+      "out-of-window": 2,
+      "held-alt-url": 2,
+      "held-unmatched": 5
+    },
+    "2025-26": {
+      "not-review": 287,
+      "held": 108,
+      "out-of-window": 14,
+      "ambiguous": 1,
+      "held-other-market": 5,
+      "held-unmatched": 12,
+      "gap": 1,
+      "held-alt-url": 6,
+      "other-market-review": 1
+    },
+    "2024-25": {
+      "not-review": 316,
+      "held-unmatched": 19,
+      "out-of-window": 19,
+      "held-other-market": 14,
+      "held": 55,
+      "other-market-review": 1,
+      "held-alt-url": 2,
+      "gap": 2
+    },
+    "2023-24": {
+      "not-review": 43,
+      "held-unmatched": 5,
+      "held": 9,
+      "out-of-window": 3,
+      "held-other-market": 2
+    },
+    "2022-23": {
+      "held-unmatched": 2,
+      "not-review": 36,
+      "held": 4,
+      "out-of-window": 4,
+      "held-other-market": 2
+    },
+    "2021-22": {
+      "not-review": 91,
+      "other-market-review": 1,
+      "held": 8,
+      "out-of-window": 7,
+      "held-alt-url": 2,
+      "gap": 1
+    },
+    "2020-21": {
+      "not-review": 64,
+      "out-of-window": 2,
+      "held": 6,
+      "held-unmatched": 2,
+      "catalog-gap": 1
+    },
+    "2019-20": {
+      "not-review": 345,
+      "out-of-window": 14,
+      "held-unmatched": 7,
+      "held": 36,
+      "misfile": 1,
+      "gap": 1,
+      "other-market-review": 2,
+      "held-alt-url": 1
+    },
+    "2018-19": {
+      "not-review": 524,
+      "out-of-window": 34,
+      "held": 36,
+      "misfile": 1,
+      "held-alt-url": 4,
+      "held-unmatched": 6,
+      "other-market-review": 3,
+      "held-other-market": 2
+    },
+    "2017-18": {
+      "not-review": 888,
+      "held-unmatched": 6,
+      "out-of-window": 33,
+      "gap": 2,
+      "held": 17,
+      "held-alt-url": 8,
+      "held-other-market": 2,
+      "other-market-review": 3
+    },
+    "2016-17": {
+      "not-review": 1084,
+      "gap": 1,
+      "out-of-window": 1,
+      "held": 6
+    },
+    "2015-16": {
+      "not-review": 1154,
+      "held-unmatched": 7,
+      "held": 3,
+      "held-other-market": 2,
+      "held-alt-url": 1
+    },
+    "2014-15": {
+      "not-review": 6680,
+      "held-other-market": 1,
+      "held-unmatched": 1,
+      "held": 1,
+      "out-of-window": 7
+    },
+    "2013-14": {
+      "not-review": 47
+    },
+    "2012-13": {
+      "not-review": 19
+    }
+  },
+  "corpusSide": {
+    "rowsInWindow": 782,
+    "notEnumerated": 242,
+    "noUrl": 111,
+    "samples": [
+      {
+        "showId": "1536-off-west-end-2026",
+        "url": "https://www.timeout.com/london/theatre/1536-review",
+        "publishDate": "2025-05-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "2-22-a-ghost-story-west-end-2023",
+        "url": "https://www.timeout.com/london/theatre/2-22-a-ghost-story-review",
+        "publishDate": "2023-01-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-kind-of-people-west-end-2019",
+        "url": null,
+        "publishDate": "2019-12-08",
+        "why": "no-url"
+      },
+      {
+        "showId": "a-little-life-west-end-2023",
+        "url": "https://www.timeout.com/london/theatre/a-little-life-review",
+        "publishDate": "2023-04-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-mirror-west-end-2024",
+        "url": "https://www.timeout.com/london/theatre/a-mirror-review",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-mirror-west-end-2024",
+        "url": "https://www.timeout.com/london/theatre/a-mirror-review-1",
+        "publishDate": "2024-02-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-view-from-islington-north-west-end-2016",
+        "url": null,
+        "publishDate": "2016-05-31",
+        "why": "no-url"
+      },
+      {
+        "showId": "a-view-from-the-bridge-west-end-2024",
+        "url": "https://www.timeout.com/london/theatre/a-view-from-the-bridge-4-review",
+        "publishDate": "2024-06-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "abba-voyage-off-west-end-2026",
+        "url": "https://www.timeout.com/london/music/abba-voyage-review",
+        "publishDate": "2022-05-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "affluenza-off-west-end-2026",
+        "url": "https://www.timeout.com/london/theatre/affluenza",
+        "publishDate": "2026-10-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "all-my-sons-west-end-2025",
+        "url": "https://www.timeout.com/london/news/review-all-my-sons-starring-bran-cranston-at-wyndhams-theatre-112225",
+        "publishDate": "2025-11-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "all-of-us-west-end-2022",
+        "url": null,
+        "publishDate": "2022-08-17",
+        "why": "no-url"
+      },
+      {
+        "showId": "american-buffalo-west-end-2015",
+        "url": null,
+        "publishDate": "2015-04-28",
+        "why": "no-url"
+      },
+      {
+        "showId": "american-idiot-west-end-2016",
+        "url": null,
+        "publishDate": "2016-07-19",
+        "why": "no-url"
+      },
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "url": "https://www.timeout.com/london/theatre/an-enemy-of-the-people-4-review",
+        "publishDate": "2024-02-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "anatomy-of-a-suicide-west-end-2017",
+        "url": null,
+        "publishDate": "2017-06-12",
+        "why": "no-url"
+      },
+      {
+        "showId": "arcadia-west-end-2026",
+        "url": "https://www.timeout.com/london/theatre/arcadia-review",
+        "publishDate": "2026-02-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "art-west-end-2016",
+        "url": null,
+        "publishDate": "2016-12-22",
+        "why": "no-url"
+      },
+      {
+        "showId": "as-you-like-it-west-end-2022",
+        "url": "https://www.timeout.com/london/theatre/as-you-like-it-review-3",
+        "publishDate": "2022-12-15",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "aspects-of-love-west-end-2023",
+        "url": "https://www.timeout.com/london/theatre/aspects-of-love-1-review",
+        "publishDate": "2023-05-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "backstairs-billy-west-end-2023",
+        "url": "https://www.timeout.com/london/theatre/backstairs-billy-review",
+        "publishDate": "2023-11-08",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "baghdaddy-west-end-2022",
+        "url": "https://www.timeout.com/london/theatre/baghdaddy-review",
+        "publishDate": "2022-12-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "ballet-shoes-west-end-2025",
+        "url": "https://www.timeout.com/london/theatre/ballet-shoes-review",
+        "publishDate": "2025-11-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bat-out-of-hell-west-end-2017",
+        "url": null,
+        "publishDate": "2017-06-21",
+        "why": "no-url"
+      },
+      {
+        "showId": "bat-out-of-hell-west-end-2018",
+        "url": null,
+        "publishDate": "2018-04-26",
+        "why": "no-url"
+      },
+      {
+        "showId": "beetlejuice-west-end-2026",
+        "url": "https://www.timeout.com/london/news/review-beetlejuice-the-musical-at-the-london-palladium-052826",
+        "publishDate": "2026-05-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "best-of-enemies-west-end-2022",
+        "url": "https://www.timeout.com/london/theatre/best-of-enemies-review",
+        "publishDate": "2022-11-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "black-superhero-west-end-2023",
+        "url": "https://www.timeout.com/london/theatre/black-superhero-review",
+        "publishDate": "2023-03-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bleak-expectations-west-end-2023",
+        "url": "https://www.timeout.com/london/theatre/bleak-expectations-review",
+        "publishDate": "2023-05-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "blue-mist-west-end-2023",
+        "url": "https://www.timeout.com/london/theatre/blue-mist-review",
+        "publishDate": "2023-10-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "blues-for-an-alabama-sky-west-end-2022",
+        "url": "https://www.timeout.com/london/theatre/blues-for-an-alabama-sky-review",
+        "publishDate": "2022-10-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bluets-west-end-2024",
+        "url": "https://www.timeout.com/london/theatre/bluets-review",
+        "publishDate": "2024-05-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bonnie-and-clyde-west-end-2023",
+        "url": "https://www.timeout.com/london/theatre/bonnie-clyde-review",
+        "publishDate": "2023-03-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "born-with-teeth-west-end-2025",
+        "url": "https://www.timeout.com/london/news/review-born-with-teeth-starring-ncuti-gatwa-at-wyndhams-theatre-090225",
+        "publishDate": "2025-09-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "boys-from-the-blackstuff-west-end-2024",
+        "url": "https://www.timeout.com/london/theatre/boys-from-the-blackstuff-review",
+        "publishDate": "2024-05-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "brokeback-mountain-west-end-2023",
+        "url": "https://www.timeout.com/london/theatre/brokeback-mountain-review",
+        "publishDate": "2023-05-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "burlesque-west-end-2026",
+        "url": "https://www.timeout.com/london/news/review-burlesque-the-musical-savoy-theatre-072325",
+        "publishDate": "2025-07-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cats-west-end-2026",
+        "url": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
+        "publishDate": "2026-08-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cleansed-off-west-end-2026",
+        "url": "https://www.timeout.com/london/news/review-cleansed-at-the-almeida-theatre-073026",
+        "publishDate": "2026-08-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cock-west-end-2022",
+        "url": "https://www.timeout.com/london/theatre/cock-review",
+        "publishDate": "2022-03-16",
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://www.timeout.com/london/theatre/hot-mess-2-review",
+      "headline": "hot mess 2 review",
+      "publishDate": "2026-05-14",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "hot-mess-a-new-musical-off-west-end-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-last-laugh-review",
+      "headline": "the last laugh review",
+      "publishDate": "2025-02-27",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-last-laugh-west-end-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-tupperware-of-ashes-review",
+      "headline": "a tupperware of ashes review",
+      "publishDate": "2024-10-03",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-tupperware-of-ashes-west-end-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/what-if-if-only-review",
+      "headline": "what if if only review",
+      "publishDate": "2021-10-01",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "what-if-if-only-west-end-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/three-sisters-review-3",
+      "headline": "three sisters review 3",
+      "publishDate": "2019-12-11",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "three-sisters-west-end-2019"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/imperium-review",
+      "headline": "imperium review",
+      "publishDate": "2018-08-06",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "imperium-the-cicero-plays-west-end-2018"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-great-wave-review",
+      "headline": "the great wave review",
+      "publishDate": "2018-03-20",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-great-wave-west-end-2018"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/hamlet-review-1",
+      "headline": "hamlet review 1",
+      "publishDate": "2017-08-31",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hamlet-west-end-2017"
+      ],
+      "outOfWindow": [
+        "hamlet-west-end-2025"
+      ]
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://www.timeout.com/london/theatre/man-to-man-4-review",
+      "headline": "man to man 4 review",
+      "publishDate": "2026-10-10",
+      "matched": [
+        "man-to-man-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/news/review-man-to-man-starring-tilda-swinton-at-the-royal-court-theatre-091226"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-story-review",
+      "headline": "the story review",
+      "publishDate": "2026-09-04",
+      "matched": [
+        "the-story-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/the-story"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-99-review",
+      "headline": "a midsummer nights dream 99 review",
+      "publishDate": "2026-04-21",
+      "matched": [
+        "a-midsummer-nights-dream-globe-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-100-review"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/mamma-mia-the-party-review",
+      "headline": "mamma mia the party review",
+      "publishDate": "2026-04-15",
+      "matched": [
+        "mamma-mia-west-end-2021"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/mamma-mia",
+        "https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/jajas-african-hair-braiding-review",
+      "headline": "jajas african hair braiding review",
+      "publishDate": "2026-03-30",
+      "matched": [
+        "jajas-african-hair-braiding-west-end-2026"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/consumed-review",
+      "headline": "consumed review",
+      "publishDate": "2026-02-23",
+      "matched": [
+        "consumed-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/the-crucible-4-review"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-tempest-47-review",
+      "headline": "the tempest 47 review",
+      "publishDate": "2026-01-30",
+      "matched": [
+        "the-tempest-globe-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/the-tempest-46-review"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/ballet-shoes-review-1",
+      "headline": "ballet shoes review 1",
+      "publishDate": "2025-11-28",
+      "matched": [
+        "ballet-shoes-west-end-2025"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/ballet-shoes-review"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/after-the-act-review-1",
+      "headline": "after the act review 1",
+      "publishDate": "2025-05-26",
+      "matched": [
+        "after-the-act-west-end-2025"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/after-the-act-review"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-legends-of-them-review",
+      "headline": "the legends of them review",
+      "publishDate": "2024-12-13",
+      "matched": [
+        "the-legends-of-them-west-end-2024"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/cinderella-the-awesome-truth-review",
+      "headline": "cinderella the awesome truth review",
+      "publishDate": "2021-11-22",
+      "matched": [
+        "cinderella-west-end-2021"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/cinderella-review-3"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-shark-is-broken-review",
+      "headline": "the shark is broken review",
+      "publishDate": "2021-10-22",
+      "matched": [
+        "the-shark-is-broken-west-end-2021"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/noises-off-review",
+      "headline": "noises off review",
+      "publishDate": "2019-09-26",
+      "matched": [
+        "noises-off-west-end-2019"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/noises-off-review-1"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/on-your-feet-review",
+      "headline": "on your feet review",
+      "publishDate": "2019-06-27",
+      "matched": [
+        "on-your-feet-west-end-2019"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/on-your-feet"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/aladdin-review-1",
+      "headline": "aladdin review 1",
+      "publishDate": "2018-12-06",
+      "matched": [
+        "aladdin-west-end-2016"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/aladdin-review"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/im-not-running-review",
+      "headline": "im not running review",
+      "publishDate": "2018-10-10",
+      "matched": [
+        "im-not-running-west-end-2018"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-prisoner-review",
+      "headline": "the prisoner review",
+      "publishDate": "2018-09-18",
+      "matched": [
+        "the-prisoner-west-end-2018"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/pity-review",
+      "headline": "pity review",
+      "publishDate": "2018-07-19",
+      "matched": [
+        "pity-west-end-2018"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/knights-of-the-rose-review",
+      "headline": "knights of the rose review",
+      "publishDate": "2018-07-06",
+      "matched": [
+        "knights-of-the-rose-west-end-2018"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/instructions-for-correct-assembly-review",
+      "headline": "instructions for correct assembly review",
+      "publishDate": "2018-04-15",
+      "matched": [
+        "instructions-for-correct-assembly-west-end-2018"
+      ],
+      "heldUrls": [
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/ruthless-the-musical-review",
+      "headline": "ruthless the musical review",
+      "publishDate": "2018-03-28",
+      "matched": [
+        "ruthless-the-musical-west-end-2018"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/long-days-journey-into-night-review",
+      "headline": "long days journey into night review",
+      "publishDate": "2018-02-07",
+      "matched": [
+        "long-days-journey-into-night-west-end-2018"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/pinocchio-review",
+      "headline": "pinocchio review",
+      "publishDate": "2017-12-14",
+      "matched": [
+        "pinocchio-west-end-2017"
+      ],
+      "heldUrls": [
+        "https://www.timeout.com/london/theatre/pinocchio-review-1"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/goats-review",
+      "headline": "goats review",
+      "publishDate": "2017-12-01",
+      "matched": [
+        "goats-west-end-2017"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/waiting-for-godot-review",
+      "headline": "waiting for godot review",
+      "publishDate": "2017-09-08",
+      "matched": [
+        "waiting-for-godot-west-end-2017"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/hand-to-god-review-giveaway-terms-and-conditions",
+      "headline": "hand to god review giveaway terms and conditions",
+      "publishDate": "2016-03-23",
+      "matched": [
+        "hand-to-god-west-end-2016"
+      ],
+      "heldUrls": [
+        "(no url)",
+        "(no url)"
+      ]
+    }
+  ],
+  "misfiles": [
+    {
+      "url": "https://www.timeout.com/london/theatre/leopoldstadt-review",
+      "headline": "leopoldstadt review",
+      "publishDate": "2020-02-12",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "leopoldstadt-west-end-2021"
+      ],
+      "matched": [
+        "leopoldstadt-west-end-2020"
+      ],
+      "outOfWindow": [
+        "leopoldstadt-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/seven-methods-of-killing-kylie-jenner-review",
+      "headline": "seven methods of killing kylie jenner review",
+      "publishDate": "2019-07-09",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "seven-methods-of-killing-kylie-jenner-west-end-2021"
+      ],
+      "matched": [
+        "seven-methods-of-killing-kylie-jenner-west-end-2019"
+      ],
+      "outOfWindow": [
+        "seven-methods-of-killing-kylie-jenner-west-end-2021"
+      ]
+    }
+  ],
+  "heldUnmatched": [
+    {
+      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
+      "headline": "a christmas carol goes wrong review",
+      "publishDate": "2026-10-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "christmas-carol-goes-wrong-apollo-west-end-2025",
+        "christmas-carol-goes-wrong-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-west-end-2026",
+        "christmas-carol-goes-wrong-west-end-2026",
+        "christmas-carol-goes-wrong-apollo-west-end-2025",
+        "a-christmas-carol-west-end-2023",
+        "a-christmas-carol-west-end-2022",
+        "a-christmas-carol-west-end-2020",
+        "a-christmas-carol-west-end-2018",
+        "a-christmas-carol-west-end-2024",
+        "a-christmas-carol-west-end-2012",
+        "a-christmas-carol-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/franz-marie",
+      "headline": "franz marie",
+      "publishDate": "2026-10-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "franz-and-marie-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/tru-review",
+      "headline": "tru review",
+      "publishDate": "2026-09-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "tru-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/thelma-louise-review",
+      "headline": "thelma louise review",
+      "publishDate": "2026-09-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "thelma-and-louise-a-new-musical-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/when-the-rainbow-is-enuf-review",
+      "headline": "when the rainbow is enuf review",
+      "publishDate": "2026-09-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/horrible-histories-barmy-britain-the-best-bits",
+      "headline": "horrible histories barmy britain the best bits",
+      "publishDate": "2026-06-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "horrible-histories-barmy-britain-the-best-bits-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "horrible-histories-barmy-britain-the-best-bits-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/relics-review",
+      "headline": "relics review",
+      "publishDate": "2026-05-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "relics-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "relics-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/krapps-last-tape-3-review",
+      "headline": "krapps last tape 3 review",
+      "publishDate": "2026-05-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "krapps-last-tape-godots-todo-list-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/tender-1-review",
+      "headline": "tender 1 review",
+      "publishDate": "2026-05-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "tender-by-dave-harris-off-west-end-2026",
+        "tender-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "tender-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/hay-fever-3",
+      "headline": "hay fever 3",
+      "publishDate": "2026-05-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hay-fever-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "hay-fever-west-end-2026",
+        "hay-fever-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "headline": "to kill a mockingbird review",
+      "publishDate": "2026-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "to-kill-a-mockingbird-west-end-2022",
+        "to-kill-a-mockingbird-2018",
+        "to-kill-a-mockingbird-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "to-kill-a-mockingbird-west-end-2026",
+        "to-kill-a-mockingbird-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
+      "headline": "the cherry orchard 16",
+      "publishDate": "2026-04-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-cherry-orchard-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-west-end-2026",
+        "the-cherry-orchard-riverside-studios-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/romeo-juliet-14-review",
+      "headline": "romeo juliet 14 review",
+      "publishDate": "2026-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "romeo-and-juliet-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/sunny-afternoon",
+      "headline": "sunny afternoon",
+      "publishDate": "2025-12-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "sunny-afternoon-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "sunny-afternoon-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/when-we-are-married-2-review",
+      "headline": "when we are married 2 review",
+      "publishDate": "2025-12-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-phantom-of-the-opera-west-end-1986"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/one-flew-over-the-cuckoos-nest-8-review",
+      "headline": "one flew over the cuckoos nest 8 review",
+      "publishDate": "2025-12-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "one-flew-over-the-cuckoos-nest-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "one-flew-over-the-cuckoos-nest-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-snowman-review",
+      "headline": "the snowman review",
+      "publishDate": "2025-09-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-snowman-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-snowman-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/juniper-blood-review",
+      "headline": "juniper blood review",
+      "publishDate": "2025-08-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "blood-of-my-blood-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/secret-cinemas-grease-the-immersive-movie-experience-review",
+      "headline": "secret cinemas grease the immersive movie experience review",
+      "publishDate": "2025-08-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "grease-the-immersive-movie-musical-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "grease-the-immersive-movie-musical-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/till-the-stars-come-down-review-1",
+      "headline": "till the stars come down review 1",
+      "publishDate": "2025-07-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "till-the-stars-come-down-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "till-the-stars-come-down-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/noughts-crosses-1-review",
+      "headline": "noughts crosses 1 review",
+      "publishDate": "2025-07-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "romeo-and-juliet-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-14-review-2",
+      "headline": "the importance of being earnest 14 review 2",
+      "publishDate": "2025-06-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-importance-of-being-earnest-west-end-2025",
+        "the-importance-of-being-earnest-2011",
+        "the-importance-of-being-oscar-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-importance-of-being-earnest-west-end-2025",
+        "the-importance-of-being-earnest-west-end-2024",
+        "the-importance-of-being-earnest-west-end-2014",
+        "the-importance-of-being-earnest-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-crucible-4-review",
+      "headline": "the crucible 4 review",
+      "publishDate": "2025-05-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "consumed-west-end-2026",
+        "the-crucible-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
+        "the-crucible-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-playboy-of-the-western-world-3-review",
+      "headline": "the playboy of the western world 3 review",
+      "publishDate": "2025-05-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-playboy-of-the-western-world-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-playboy-of-the-western-world-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/bat-out-of-hell-the-musical-review",
+      "headline": "bat out of hell the musical review",
+      "publishDate": "2025-05-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bat-out-of-hell-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "bat-out-of-hell-west-end-2018",
+        "bat-out-of-hell-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/all-my-sons-3",
+      "headline": "all my sons 3",
+      "publishDate": "2025-04-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "all-my-sons-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "all-my-sons-west-end-2025",
+        "all-my-sons-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/an-oak-tree-review",
+      "headline": "an oak tree review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "an-oak-tree-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "an-oak-tree-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/punch-review",
+      "headline": "punch review",
+      "publishDate": "2025-03-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "punch-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "punch-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/richard-ii-10-review",
+      "headline": "richard ii 10 review",
+      "publishDate": "2025-02-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "richard-ii-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "richard-ii-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/fright-review",
+      "headline": "fright review",
+      "publishDate": "2025-01-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "inside-no-9-stage-fright-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-great-gatsby-9-review",
+      "headline": "the great gatsby 9 review",
+      "publishDate": "2025-01-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-great-gatsby-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-great-gatsby-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/tender-review",
+      "headline": "tender review",
+      "publishDate": "2024-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "tender-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "tender-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-years-review",
+      "headline": "the years review",
+      "publishDate": "2024-11-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-years-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/come-alive-review",
+      "headline": "come alive review",
+      "publishDate": "2024-10-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "come-alive-the-greatest-showman-circus-spectacular-off-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/only-fools-and-horses-the-musical-review",
+      "headline": "only fools and horses the musical review",
+      "publishDate": "2024-09-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "only-fools-and-horses-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "only-fools-and-horses-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/barcelona-review",
+      "headline": "barcelona review",
+      "publishDate": "2024-09-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "barcelona-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "barcelona-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-curious-case-of-benjamin-button-review-1",
+      "headline": "the curious case of benjamin button review 1",
+      "publishDate": "2024-08-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-curious-case-of-benjamin-button-west-end-2024",
+        "the-curious-case-of-benjamin-button-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-curious-case-of-benjamin-button-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/echo-every-cold-hearted-oxygen-review",
+      "headline": "echo every cold hearted oxygen review",
+      "publishDate": "2024-07-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "echo-every-cold-hearted-oxygen-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-enormous-crocodile-review",
+      "headline": "the enormous crocodile review",
+      "publishDate": "2024-05-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-enormous-crocodile-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-enormous-crocodile-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/unfortunate-the-tale-of-ursula-the-sea-witch-review",
+      "headline": "unfortunate the tale of ursula the sea witch review",
+      "publishDate": "2024-01-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-devil-wears-prada-review",
+      "headline": "the devil wears prada review",
+      "publishDate": "2023-10-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-devil-wears-prada-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-devil-wears-prada-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/dear-england-review-2",
+      "headline": "dear england review 2",
+      "publishDate": "2023-08-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "dear-england-west-end-2025",
+        "dear-england-new-wimbledon-theatre-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "dear-england-new-wimbledon-theatre-west-end-2026",
+        "dear-england-west-end-2025",
+        "dear-england-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/we-made-a-different-cat-bus-a-day-for-five-days-inside-the-rscs-my-neighbour-totoro",
+      "headline": "we made a different cat bus a day for five days inside the rscs my neighbour totoro",
+      "publishDate": "2022-10-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "my-neighbour-totoro-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "my-neighbour-totoro-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/rockets-and-blue-lights-review",
+      "headline": "rockets and blue lights review",
+      "publishDate": "2021-07-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "rockets-and-blue-lights-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "rockets-and-blue-lights-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/under-milk-wood-review",
+      "headline": "under milk wood review",
+      "publishDate": "2021-05-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "under-milk-wood-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "under-milk-wood-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/blithe-spirit-review",
+      "headline": "blithe spirit review",
+      "publishDate": "2020-03-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "blithe-spirit-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "blithe-spirit-west-end-2021",
+        "blithe-spirit-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/paradise-review-1",
+      "headline": "paradise review 1",
+      "publishDate": "2020-02-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "paradise-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "paradise-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/be-more-chill-review",
+      "headline": "be more chill review",
+      "publishDate": "2020-02-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "be-more-chill-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "be-more-chill-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-visit-review-postponed",
+      "headline": "the visit review postponed",
+      "publishDate": "2020-02-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-visit-or-the-old-lady-comes-to-call-west-end-2020"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/death-of-england-review",
+      "headline": "death of england review",
+      "publishDate": "2020-02-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "death-of-england-closing-time-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/richard-iii-32",
+      "headline": "richard iii 32",
+      "publishDate": "2019-11-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "richard-iii-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/glass-kill-bluebeard-imp-review",
+      "headline": "glass kill bluebeard imp review",
+      "publishDate": "2019-09-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "glass-kill-bluebeard-and-imp-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/jouvert-review",
+      "headline": "jouvert review",
+      "publishDate": "2019-06-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "jouvert-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "jouvert-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/dinosaur-world-livereview",
+      "headline": "dinosaur world livereview",
+      "publishDate": "2019-05-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "dinosaur-world-live-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-lehman-trilogyreview",
+      "headline": "the lehman trilogyreview",
+      "publishDate": "2019-05-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-lehman-trilogy-west-end-2023",
+        "the-lehman-trilogy-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/translations-review",
+      "headline": "translations review",
+      "publishDate": "2019-04-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "translations-west-end-2018",
+        "translations-west-end-2019",
+        "translations-2007"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "translations-west-end-2019",
+        "translations-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/uncle-vanya-review",
+      "headline": "uncle vanya review",
+      "publishDate": "2018-12-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "uncle-vanya-west-end-2020"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "vanya-west-end-2023",
+        "uncle-vanya-west-end-2020",
+        "uncle-vanya-west-end-2012"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-fishermen-review",
+      "headline": "the fishermen review",
+      "publishDate": "2018-11-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-fishermen-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-fishermen-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/happy-ending-1",
+      "headline": "happy ending 1",
+      "publishDate": "2018-08-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "happy-ending-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "happy-ending-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/pressure-review",
+      "headline": "pressure review",
+      "publishDate": "2018-04-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "pressure-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "pressure-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/fanny-alexander-review",
+      "headline": "fanny alexander review",
+      "publishDate": "2018-03-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "fanny-and-alexander-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/girls-boys-review",
+      "headline": "girls boys review",
+      "publishDate": "2018-02-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "girls-and-boys-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "girls-off-west-end-2026",
+        "the-girls-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-twilight-zone-review",
+      "headline": "the twilight zone review",
+      "publishDate": "2017-12-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-twilight-zone-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-twilight-zone-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-12",
+      "headline": "the wind in the willows 12",
+      "publishDate": "2017-11-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-wind-in-the-willows-west-end-2017"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-wind-in-the-willows-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8",
+      "headline": "the wind in the willows 8",
+      "publishDate": "2016-07-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-wind-in-the-willows-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/king-charles-iii",
+      "headline": "king charles iii",
+      "publishDate": "2016-05-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "king-charles-iii-2015",
+        "king-charles-iii-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "king-charles-iii-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/skylight",
+      "headline": "skylight",
+      "publishDate": "2016-05-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "skylight-2015",
+        "skylight-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "skylight-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/electra-4",
+      "headline": "electra 4",
+      "publishDate": "2016-05-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "electra-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "electra-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/let-the-right-one-in",
+      "headline": "let the right one in",
+      "publishDate": "2016-05-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "let-the-right-one-in-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "let-the-right-one-in-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/bend-it-like-beckham",
+      "headline": "bend it like beckham",
+      "publishDate": "2016-05-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bend-it-like-beckham-the-musical-west-end-2015"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "bend-it-like-beckham-the-musical-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-scottsboro-boys",
+      "headline": "the scottsboro boys",
+      "publishDate": "2016-05-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-scottsboro-boys-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-scottsboro-boys-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/american-psycho-review",
+      "headline": "american psycho review",
+      "publishDate": "2015-07-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "american-psycho-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "american-psycho-off-west-end-2026"
+      ]
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://www.timeout.com/london/theatre/much-ado-about-nothing-review-3",
+      "headline": "much ado about nothing review 3",
+      "publishDate": "2026-08-10",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "much-ado-about-nothing-globe-off-west-end-2026",
+        "much-ado-about-nothing-off-west-end-2026"
+      ],
+      "outOfWindow": [
+        "much-ado-about-nothing-west-end-2025",
+        "much-ado-about-nothing-west-end-2022",
+        "much-ado-about-nothing-west-end-2013",
+        "much-ado-about-nothing-west-end-2016"
+      ]
+    }
+  ],
+  "catalogGaps": [
+    {
+      "url": "https://www.timeout.com/london/theatre/london-theatre-reviews",
+      "headline": "london theatre reviews",
+      "publishDate": "2026-10-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/romeo-juliet-review-regents-park",
+      "headline": "romeo juliet review regents park",
+      "publishDate": "2021-06-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    }
+  ],
+  "otherMarketReviews": [
+    {
+      "url": "https://www.timeout.com/london/theatre/the-meat-kings-inc-of-brooklyn-heights-review",
+      "headline": "the meat kings inc of brooklyn heights review",
+      "publishDate": "2025-11-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-merry-wives-of-windsor-7-review",
+      "headline": "the merry wives of windsor 7 review",
+      "publishDate": "2025-07-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/edinburgh-fringe-theatre-reviews",
+      "headline": "edinburgh fringe theatre reviews",
+      "publishDate": "2022-08-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "edinburgh"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/joan-of-leeds-review",
+      "headline": "joan of leeds review",
+      "publishDate": "2019-12-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/sydney-the-old-girl-review",
+      "headline": "sydney the old girl review",
+      "publishDate": "2019-11-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "international"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-merry-wives-of-windsor-review-1",
+      "headline": "the merry wives of windsor review 1",
+      "publishDate": "2019-05-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-flying-bath-review",
+      "headline": "the flying bath review",
+      "publishDate": "2019-03-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/notre-dame-de-paris-review",
+      "headline": "notre dame de paris review",
+      "publishDate": "2019-01-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "international"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-merry-wives-of-windsor-review",
+      "headline": "the merry wives of windsor review",
+      "publishDate": "2018-05-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-york-realist-review",
+      "headline": "the york realist review",
+      "publishDate": "2018-02-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/twilight-los-angeles-1992-review",
+      "headline": "twilight los angeles 1992 review",
+      "publishDate": "2018-01-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "international"
+    }
+  ],
+  "outOfWindow": [
+    {
+      "url": "https://www.timeout.com/london/theatre/stick-man-review",
+      "headline": "stick man review",
+      "publishDate": "2026-10-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "stick-man-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-nutcracker-and-the-mouse-king-review",
+      "headline": "the nutcracker and the mouse king review",
+      "publishDate": "2026-10-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "nutcracker-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/club-nvrlnd-review",
+      "headline": "club nvrlnd review",
+      "publishDate": "2026-08-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "club-nvrlnd-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/heathers-the-musical-review",
+      "headline": "heathers the musical review",
+      "publishDate": "2026-06-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "heathers-the-musical-off-west-end-2026",
+        "heathers-the-musical-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/burlesque-the-musical-review",
+      "headline": "burlesque the musical review",
+      "publishDate": "2026-06-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "burlesque-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/anansi-the-spider-review",
+      "headline": "anansi the spider review",
+      "publishDate": "2026-02-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "anansi-the-spider-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/twelfth-night-64-review",
+      "headline": "twelfth night 64 review",
+      "publishDate": "2025-12-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/cinderella-55-review",
+      "headline": "cinderella 55 review",
+      "publishDate": "2025-12-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/jack-and-the-beanstalk-30-review",
+      "headline": "jack and the beanstalk 30 review",
+      "publishDate": "2025-12-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jack-and-the-beanstalk-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-97-review",
+      "headline": "a midsummer nights dream 97 review",
+      "publishDate": "2025-11-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-midsummer-nights-dream-globe-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/jack-and-the-beanstalk-29-review",
+      "headline": "jack and the beanstalk 29 review",
+      "publishDate": "2025-11-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jack-and-the-beanstalk-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/ride-the-cyclone-the-musical-review",
+      "headline": "ride the cyclone the musical review",
+      "publishDate": "2025-11-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ride-the-cyclone-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/ghost-stories-review",
+      "headline": "ghost stories review",
+      "publishDate": "2025-09-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghost-stories-west-end-2019",
+        "stories-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/dracula-12-review",
+      "headline": "dracula 12 review",
+      "publishDate": "2025-09-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-a-ghost-story-review",
+      "headline": "a christmas carol a ghost story review",
+      "publishDate": "2025-09-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-west-end-2026",
+        "the-story-west-end-2026",
+        "a-christmas-carol-west-end-2023",
+        "a-christmas-carol-west-end-2022",
+        "a-christmas-carol-west-end-2020",
+        "a-christmas-carol-west-end-2018",
+        "a-christmas-carol-west-end-2024",
+        "a-christmas-carol-west-end-2012",
+        "a-christmas-carol-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-review-old-vic-review-1",
+      "headline": "a christmas carol review old vic review 1",
+      "publishDate": "2025-09-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-west-end-2026",
+        "a-christmas-carol-west-end-2023",
+        "a-christmas-carol-west-end-2022",
+        "a-christmas-carol-west-end-2020",
+        "a-christmas-carol-west-end-2018",
+        "a-christmas-carol-west-end-2024",
+        "a-christmas-carol-west-end-2012",
+        "a-christmas-carol-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/twelfth-night-or-what-you-will-2-review",
+      "headline": "twelfth night or what you will 2 review",
+      "publishDate": "2025-08-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-off-west-end-2026",
+        "what-you-will-west-end-2012",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/brixton-calling-review",
+      "headline": "brixton calling review",
+      "publishDate": "2025-07-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "brixton-calling-off-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/girl-from-the-north-country-review-1",
+      "headline": "girl from the north country review 1",
+      "publishDate": "2025-06-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "girl-from-the-north-country-west-end-2019",
+        "girl-from-the-north-country-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-review-1a",
+      "headline": "a midsummer nights dream review 1a",
+      "publishDate": "2025-06-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-midsummer-nights-dream-globe-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/adam-riches-jimmy-review",
+      "headline": "adam riches jimmy review",
+      "publishDate": "2025-06-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jimmy-off-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/bridge-command-review",
+      "headline": "bridge command review",
+      "publishDate": "2025-06-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/romeo-and-juliet-54-review",
+      "headline": "romeo and juliet 54 review",
+      "publishDate": "2025-05-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-and-juliet-west-end-2026",
+        "romeo-and-juliet-west-end-2027",
+        "romeo-and-juliet-west-end-2024",
+        "romeo-and-juliet-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/dracula-a-comedy-of-terrors-review",
+      "headline": "dracula a comedy of terrors review",
+      "publishDate": "2025-04-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-glass-menagerie-6-review",
+      "headline": "the glass menagerie 6 review",
+      "publishDate": "2025-03-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-glass-menagerie-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/macbeth-86-review",
+      "headline": "macbeth 86 review",
+      "publishDate": "2025-03-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-paddington-bear-experience-review",
+      "headline": "the paddington bear experience review",
+      "publishDate": "2025-02-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "paddington-the-musical-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/three-sisters-16-review",
+      "headline": "three sisters 16 review",
+      "publishDate": "2025-02-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "three-sisters-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-95-review",
+      "headline": "a midsummer nights dream 95 review",
+      "publishDate": "2024-12-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-midsummer-nights-dream-globe-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/cinderella-54-review",
+      "headline": "cinderella 54 review",
+      "publishDate": "2024-12-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/pinocchio-23-review",
+      "headline": "pinocchio 23 review",
+      "publishDate": "2024-12-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pinocchio-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/dick-whittington-and-his-cat-4-review",
+      "headline": "dick whittington and his cat 4 review",
+      "publishDate": "2024-12-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dick-whittington-and-his-cat-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/aladdin-36-review",
+      "headline": "aladdin 36 review",
+      "publishDate": "2024-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "aladdin-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/jack-and-the-beanstalk-what-a-whopper-review",
+      "headline": "jack and the beanstalk what a whopper review",
+      "publishDate": "2024-10-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jack-and-the-beanstalk-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-ish-review",
+      "headline": "a christmas carol ish review",
+      "publishDate": "2024-09-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-west-end-2026",
+        "a-christmas-carol-west-end-2023",
+        "a-christmas-carol-west-end-2022",
+        "a-christmas-carol-west-end-2020",
+        "a-christmas-carol-west-end-2018",
+        "a-christmas-carol-west-end-2024",
+        "a-christmas-carol-west-end-2012",
+        "a-christmas-carol-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-duchess-1-review",
+      "headline": "the duchess 1 review",
+      "publishDate": "2024-06-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-duchess-of-malfi-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/feeling-afraid-as-if-something-terrible-is-going-to-happen-review",
+      "headline": "feeling afraid as if something terrible is going to happen review",
+      "publishDate": "2023-10-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026",
+        "feeling-afraid-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/hadestown-review-1",
+      "headline": "hadestown review 1",
+      "publishDate": "2023-10-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hadestown-west-end-2024",
+        "hadestown-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/guys-and-dolls-review",
+      "headline": "guys and dolls review",
+      "publishDate": "2023-03-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/aspects-of-love-review",
+      "headline": "aspects of love review",
+      "publishDate": "2023-01-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "aspects-of-love-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-smartest-giant-in-town-review",
+      "headline": "the smartest giant in town review",
+      "publishDate": "2022-11-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-smartest-giant-in-town-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/sh-t-theatre-evita-too-review-1",
+      "headline": "sh t theatre evita too review 1",
+      "publishDate": "2022-10-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "evita-west-end-2025",
+        "evita-west-end-2017",
+        "evita-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/henry-v-review",
+      "headline": "henry v review",
+      "publishDate": "2022-03-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "henry-v-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/measure-for-measure-review-2",
+      "headline": "measure for measure review 2",
+      "publishDate": "2021-12-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "measure-for-measure-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/jack-and-the-beanstalk-review-2",
+      "headline": "jack and the beanstalk review 2",
+      "publishDate": "2021-12-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jack-and-the-beanstalk-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/aladdin-review-2",
+      "headline": "aladdin review 2",
+      "publishDate": "2021-11-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "aladdin-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-tragedy-of-macbeth-review",
+      "headline": "the tragedy of macbeth review",
+      "publishDate": "2021-10-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/hamlet-review-4",
+      "headline": "hamlet review 4",
+      "publishDate": "2021-10-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/theres-a-rang-tan-in-my-bedroom-other-stories-review",
+      "headline": "theres a rang tan in my bedroom other stories review",
+      "publishDate": "2021-09-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "stories-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/carousel-review",
+      "headline": "carousel review",
+      "publishDate": "2021-08-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carousel-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/twelfth-night-review-2",
+      "headline": "twelfth night review 2",
+      "publishDate": "2021-08-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-tempest-review-1",
+      "headline": "the tempest review 1",
+      "publishDate": "2020-03-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-globe-west-end-2026",
+        "the-tempest-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/nora-a-dolls-house-review-cancelled",
+      "headline": "nora a dolls house review cancelled",
+      "publishDate": "2020-03-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-dolls-house-off-west-end-2026",
+        "a-dolls-house-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-taming-of-the-shrew-review-1",
+      "headline": "the taming of the shrew review 1",
+      "publishDate": "2020-02-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-taming-of-the-shrew-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/cinderella-review-1",
+      "headline": "cinderella review 1",
+      "publishDate": "2019-12-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-duchess-of-malfi-review",
+      "headline": "the duchess of malfi review",
+      "publishDate": "2019-12-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-duchess-of-malfi-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/dick-whittington-and-his-cat-review",
+      "headline": "dick whittington and his cat review",
+      "publishDate": "2019-12-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dick-whittington-and-his-cat-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/cinderella-review",
+      "headline": "cinderella review",
+      "publishDate": "2019-11-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/measure-for-measure-review-1",
+      "headline": "measure for measure review 1",
+      "publishDate": "2019-11-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "measure-for-measure-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-taming-of-the-shrew-review",
+      "headline": "the taming of the shrew review",
+      "publishDate": "2019-11-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-taming-of-the-shrew-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/as-you-like-it-review-2",
+      "headline": "as you like it review 2",
+      "publishDate": "2019-10-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-globe-west-end-2026",
+        "as-you-like-it-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/orlando-review",
+      "headline": "orlando review",
+      "publishDate": "2019-10-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "orlando-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/blood-wedding-review",
+      "headline": "blood wedding review",
+      "publishDate": "2019-09-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-weddings-off-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-dolls-house-review",
+      "headline": "a dolls house review",
+      "publishDate": "2019-09-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-dolls-house-off-west-end-2026",
+        "a-dolls-house-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-review-4",
+      "headline": "a midsummer nights dream review 4",
+      "publishDate": "2019-09-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-midsummer-nights-dream-globe-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/twelfth-night-review-1",
+      "headline": "twelfth night review 1",
+      "publishDate": "2019-08-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/equus-review",
+      "headline": "equus review",
+      "publishDate": "2019-07-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "equus-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-review-3",
+      "headline": "a midsummer nights dream review 3",
+      "publishDate": "2019-07-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-midsummer-nights-dream-globe-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/three-sisters-review-2",
+      "headline": "three sisters review 2",
+      "publishDate": "2019-06-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "three-sisters-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/singin-in-the-rain-review",
+      "headline": "singin in the rain review",
+      "publishDate": "2019-06-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "singin-in-the-rain-off-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/peter-pan-review-3",
+      "headline": "peter pan review 3",
+      "publishDate": "2019-06-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-glass-menagerie-review",
+      "headline": "the glass menagerie review",
+      "publishDate": "2019-05-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-glass-menagerie-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/henry-v-or-harry-england-review",
+      "headline": "henry v or harry england review",
+      "publishDate": "2019-05-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "henry-v-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/avalanche-a-love-story-review",
+      "headline": "avalanche a love story review",
+      "publishDate": "2019-05-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-story-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/fleabag-review-1",
+      "headline": "fleabag review 1",
+      "publishDate": "2019-05-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fleabag-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/three-sisters-review-1",
+      "headline": "three sisters review 1",
+      "publishDate": "2019-04-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "three-sisters-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/fleabag-review",
+      "headline": "fleabag review",
+      "publishDate": "2019-04-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fleabag-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-crucible-review",
+      "headline": "the crucible review",
+      "publishDate": "2019-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
+        "the-crucible-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/richard-iii-review-1",
+      "headline": "richard iii review 1",
+      "publishDate": "2019-03-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/richard-ii-review",
+      "headline": "richard ii review",
+      "publishDate": "2019-03-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-ii-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/cyprus-avenue-review",
+      "headline": "cyprus avenue review",
+      "publishDate": "2019-02-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyprus-avenue-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/dracula-review-1",
+      "headline": "dracula review 1",
+      "publishDate": "2019-02-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/home-im-darling-review",
+      "headline": "home im darling review",
+      "publishDate": "2019-02-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "home-im-darling-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/nine-night-review",
+      "headline": "nine night review",
+      "publishDate": "2019-01-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "nine-night-off-west-end-2026",
+        "nine-night-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-war-of-the-worlds-review",
+      "headline": "the war of the worlds review",
+      "publishDate": "2019-01-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-war-of-the-worlds-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/paradise-review",
+      "headline": "paradise review",
+      "publishDate": "2019-01-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "paradise-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/peter-pan-review-2",
+      "headline": "peter pan review 2",
+      "publishDate": "2018-12-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/peter-pan-review-1",
+      "headline": "peter pan review 1",
+      "publishDate": "2018-12-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/doctor-faustus-review",
+      "headline": "doctor faustus review",
+      "publishDate": "2018-12-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-doctor-west-end-2022",
+        "doctor-faustus-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/macbeth-review-3",
+      "headline": "macbeth review 3",
+      "publishDate": "2018-11-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/seussical-review",
+      "headline": "seussical review",
+      "publishDate": "2018-11-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "seussical-the-musical-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/macbeth-review-2",
+      "headline": "macbeth review 2",
+      "publishDate": "2018-11-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/romeo-and-juliet-review",
+      "headline": "romeo and juliet review",
+      "publishDate": "2018-11-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-and-juliet-west-end-2026",
+        "romeo-and-juliet-west-end-2027",
+        "romeo-and-juliet-west-end-2024",
+        "romeo-and-juliet-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/macbeth-review-1",
+      "headline": "macbeth review 1",
+      "publishDate": "2018-10-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/measure-for-measure-review",
+      "headline": "measure for measure review",
+      "publishDate": "2018-10-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "measure-for-measure-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/twelfth-night-review",
+      "headline": "twelfth night review",
+      "publishDate": "2018-10-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-other-place-review",
+      "headline": "the other place review",
+      "publishDate": "2018-09-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-other-place-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-human-voice-review",
+      "headline": "the human voice review",
+      "publishDate": "2018-09-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-human-voice-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-animals-and-children-took-to-the-streets-review",
+      "headline": "the animals and children took to the streets review",
+      "publishDate": "2018-09-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-children-off-west-end-2026",
+        "the-children-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/loves-labours-lost-review",
+      "headline": "loves labours lost review",
+      "publishDate": "2018-08-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "loves-labours-lost-globe-west-end-2026",
+        "loves-labours-lost-off-west-end-2026",
+        "loves-labours-lost-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-rise-and-fall-of-little-voice-review",
+      "headline": "the rise and fall of little voice review",
+      "publishDate": "2018-08-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-rise-and-fall-of-little-voice-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-importance-of-being-earnest-review",
+      "headline": "the importance of being earnest review",
+      "publishDate": "2018-08-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-importance-of-being-earnest-west-end-2025",
+        "the-importance-of-being-earnest-west-end-2024",
+        "the-importance-of-being-earnest-west-end-2014",
+        "the-importance-of-being-earnest-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/othello-review-1",
+      "headline": "othello review 1",
+      "publishDate": "2018-08-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "othello-west-end-2025",
+        "othello-west-end-2022",
+        "othello-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/barry-humphriess-weimar-cabaret-review",
+      "headline": "barry humphriess weimar cabaret review",
+      "publishDate": "2018-07-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-west-end-2012"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/as-you-like-it-review-1",
+      "headline": "as you like it review 1",
+      "publishDate": "2018-07-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-globe-west-end-2026",
+        "as-you-like-it-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-winters-tale-review",
+      "headline": "the winters tale review",
+      "publishDate": "2018-07-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-winters-tale-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-tempest-review",
+      "headline": "the tempest review",
+      "publishDate": "2018-06-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-globe-west-end-2026",
+        "the-tempest-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/machinal-review",
+      "headline": "machinal review",
+      "publishDate": "2018-06-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "machinal-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/peter-pan-review",
+      "headline": "peter pan review",
+      "publishDate": "2018-05-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/three-sisters-review",
+      "headline": "three sisters review",
+      "publishDate": "2018-05-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "three-sisters-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/hamlet-review-3",
+      "headline": "hamlet review 3",
+      "publishDate": "2018-05-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/as-you-like-it-review",
+      "headline": "as you like it review",
+      "publishDate": "2018-05-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-globe-west-end-2026",
+        "as-you-like-it-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/an-ideal-husband-review",
+      "headline": "an ideal husband review",
+      "publishDate": "2018-05-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "an-ideal-husband-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/much-ado-about-nothing-review",
+      "headline": "much ado about nothing review",
+      "publishDate": "2018-04-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "much-ado-about-nothing-globe-off-west-end-2026",
+        "much-ado-about-nothing-off-west-end-2026",
+        "much-ado-about-nothing-west-end-2025",
+        "much-ado-about-nothing-west-end-2022",
+        "much-ado-about-nothing-west-end-2013",
+        "much-ado-about-nothing-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/hamlet-review-2",
+      "headline": "hamlet review 2",
+      "publishDate": "2018-03-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/macbeth-review",
+      "headline": "macbeth review",
+      "publishDate": "2018-03-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/frozen-review",
+      "headline": "frozen review",
+      "publishDate": "2018-02-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frozen-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-ferryman-review",
+      "headline": "the ferryman review",
+      "publishDate": "2018-02-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-ferryman-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/othello-review",
+      "headline": "othello review",
+      "publishDate": "2018-02-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "othello-west-end-2025",
+        "othello-west-end-2022",
+        "othello-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/julius-caesar-review-1",
+      "headline": "julius caesar review 1",
+      "publishDate": "2018-01-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "julius-caesar-globe-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/jack-and-the-beanstalk-review-1",
+      "headline": "jack and the beanstalk review 1",
+      "publishDate": "2017-12-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jack-and-the-beanstalk-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/julius-caesar-review",
+      "headline": "julius caesar review",
+      "publishDate": "2017-12-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "julius-caesar-globe-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/jack-and-the-beanstalk-review",
+      "headline": "jack and the beanstalk review",
+      "publishDate": "2017-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jack-and-the-beanstalk-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/miss-julie-review",
+      "headline": "miss julie review",
+      "publishDate": "2017-11-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "julie-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/mother-courage-and-her-children-review",
+      "headline": "mother courage and her children review",
+      "publishDate": "2017-11-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mother-courage-and-her-children-globe-west-end-2026",
+        "the-children-off-west-end-2026",
+        "the-children-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/glengarry-glen-ross-review",
+      "headline": "glengarry glen ross review",
+      "publishDate": "2017-11-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "glengarry-glen-ross-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/coriolanus-review",
+      "headline": "coriolanus review",
+      "publishDate": "2017-11-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "coriolanus-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/dracula-review",
+      "headline": "dracula review",
+      "publishDate": "2017-10-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-seagull-review",
+      "headline": "the seagull review",
+      "publishDate": "2017-10-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-globe-off-west-end-2026",
+        "the-seagull-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/jane-eyre-review",
+      "headline": "jane eyre review",
+      "publishDate": "2017-09-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jane-eyre-off-west-end-2026",
+        "jane-eyre-rose-kingston-off-west-end-2026",
+        "jane-eyre-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/trouble-in-mind-review",
+      "headline": "trouble in mind review",
+      "publishDate": "2017-09-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "trouble-in-mind-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/me-robin-hood-review",
+      "headline": "me robin hood review",
+      "publishDate": "2017-09-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "robin-hood-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/richard-iii-review",
+      "headline": "richard iii review",
+      "publishDate": "2017-08-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/every-brilliant-thing-review",
+      "headline": "every brilliant thing review",
+      "publishDate": "2014-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "every-brilliant-thing-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/a-series-of-increasingly-impossible-acts-review",
+      "headline": "a series of increasingly impossible acts review",
+      "publishDate": "2014-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "impossible-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/major-tom-review",
+      "headline": "major tom review",
+      "publishDate": "2014-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "major-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/captain-flinn-and-the-pirate-dinosaurs-review",
+      "headline": "captain flinn and the pirate dinosaurs review",
+      "publishDate": "2014-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-captain-off-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/the-ingenious-gentleman-don-quixote-of-la-mancha-review",
+      "headline": "the ingenious gentleman don quixote of la mancha review",
+      "publishDate": "2014-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "don-quixote-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/hamlet-review",
+      "headline": "hamlet review",
+      "publishDate": "2014-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/blind-hamlet-review",
+      "headline": "blind hamlet review",
+      "publishDate": "2014-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    }
+  ]
+}

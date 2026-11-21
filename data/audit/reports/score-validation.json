@@ -1,0 +1,5158 @@
+{
+  "timestamp": "2026-01-25T04:20:54.331Z",
+  "totalReviews": 976,
+  "validated": 976,
+  "withFlags": 290,
+  "highSeverity": 0,
+  "mediumSeverity": 9,
+  "byType": {
+    "missing_score": 281,
+    "dtli_mismatch": 9
+  },
+  "flaggedReviews": [
+    {
+      "file": "aladdin-2014/ew--thom-geier.json",
+      "showId": "aladdin-2014",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Thom Geier",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "aladdin-2014/huffpost--steven-suskin.json",
+      "showId": "aladdin-2014",
+      "outlet": "HuffPost",
+      "criticName": "Steven Suskin",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+      "showId": "aladdin-2014",
+      "outlet": "New Jersey Newsroom",
+      "criticName": "Michael Sommers",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "aladdin-2014/northjersey--robert-feldberg.json",
+      "showId": "aladdin-2014",
+      "outlet": "NorthJersey.com",
+      "criticName": "Robert Feldberg",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "aladdin-2014/ny-daily-news--joe-dziemianowicz.json",
+      "showId": "aladdin-2014",
+      "outlet": "New York Daily News",
+      "criticName": "Joe Dziemianowicz",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "aladdin-2014/nypost--elisabeth-vincentelli.json",
+      "showId": "aladdin-2014",
+      "outlet": "New York Post",
+      "criticName": "Elisabeth Vincentelli",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "aladdin-2014/thewrap--robert-hofler.json",
+      "showId": "aladdin-2014",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "aladdin-2014/timeout-ny--adam-feldman.json",
+      "showId": "aladdin-2014",
+      "outlet": "Timeout NY",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "aladdin-2014/usa-today--elysa-gardner.json",
+      "showId": "aladdin-2014",
+      "outlet": "USA Today",
+      "criticName": "Elysa Gardner",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "aladdin-2014/variety--marilyn-stasio.json",
+      "showId": "aladdin-2014",
+      "outlet": "Variety",
+      "criticName": "Marilyn Stasio",
+      "assignedScore": 43,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 43 outside 45-75",
+          "expected": "45-75",
+          "actual": 43
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "file": "and-juliet-2022/city-beat--brain-scott-lipton.json",
+      "showId": "and-juliet-2022",
+      "outlet": "City Beat",
+      "criticName": "Brain Scott Lipton",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "and-juliet-2022/nypost--johnny-oleksinski.json",
+      "showId": "and-juliet-2022",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/amny--matt-windman.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/backstage--david-sheward.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "Backstage",
+      "criticName": "David Sheward",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/chicago-tribune--chris-jones.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/ew--lisa-schwarzbaum.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Lisa Schwarzbaum",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/hollywood-reporter--david-rooney.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/la-times--unknown.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "La Times",
+      "criticName": null,
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/ny-daily-news--joe-dziemianowicz.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "NY Daily News",
+      "criticName": "Joe Dziemianowicz",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/ny-magazine--scott-brown.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "NY Magazine",
+      "criticName": "Scott Brown",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/ny-post--elisabeth-vincentelli.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "NY Post",
+      "criticName": "Elisabeth Vincentelli",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/the-financial-times--brendan-lemon.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "The Financial Times",
+      "criticName": "Brendan Lemon",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/the-la-times--charles-mcnulty.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "The LA Times",
+      "criticName": "Charles McNulty",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/the-philadelphia-inquirer--howard-shapiro.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "The Philadelphia Inquirer",
+      "criticName": "Howard Shapiro",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/toronto-star--richard-ouzounian.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "Toronto Star",
+      "criticName": "Richard Ouzounian",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/usa-today--elysa-gardner.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "USA Today",
+      "criticName": "Elysa Gardner",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "book-of-mormon-2011/variety--steve-suskin.json",
+      "showId": "book-of-mormon-2011",
+      "outlet": "Variety",
+      "criticName": "Steve Suskin",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/advertisement--jonathan-mandell.json",
+      "showId": "boop-2025",
+      "outlet": "Advertisement",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/amny--matt-windman.json",
+      "showId": "boop-2025",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/broadway-news--brittani-samuel.json",
+      "showId": "boop-2025",
+      "outlet": "BROADWAY NEWS",
+      "criticName": "Brittani Samuel",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/chicago-tribune--chris-jones.json",
+      "showId": "boop-2025",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/daily-beast--tim-teeman.json",
+      "showId": "boop-2025",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/new-york-theater--jonathan-mandell.json",
+      "showId": "boop-2025",
+      "outlet": "New York Theater",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/new-york-theatre-guide--allison-considine.json",
+      "showId": "boop-2025",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Allison Considine",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/nypost--johnny-oleksinki.json",
+      "showId": "boop-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/nypost--johnny-oleksinski.json",
+      "showId": "boop-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/nytimes--jesse-green.json",
+      "showId": "boop-2025",
+      "outlet": "The New York Times",
+      "criticName": "Jesse Green",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/slant-magazine--dan-rubins.json",
+      "showId": "boop-2025",
+      "outlet": "Slant Magazine",
+      "criticName": "Dan Rubins",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/theatermania--pete-hempstead.json",
+      "showId": "boop-2025",
+      "outlet": "TheaterMania",
+      "criticName": "Pete Hempstead",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/thewrap--robert-hofler.json",
+      "showId": "boop-2025",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/timeout-ny--adam-feldman.json",
+      "showId": "boop-2025",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/variety--frank-rizzo.json",
+      "showId": "boop-2025",
+      "outlet": "Variety",
+      "criticName": "Frank Rizzo",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "boop-2025/vulture--jackson-mchenry.json",
+      "showId": "boop-2025",
+      "outlet": "Vulture",
+      "criticName": "Jackson McHenry",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "buena-vista-social-club-2025/guardian--jesse-hassenger.json",
+      "showId": "buena-vista-social-club-2025",
+      "outlet": "The Guardian",
+      "criticName": "Jesse Hassenger",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "buena-vista-social-club-2025/ny-daily-news--chris-jones.json",
+      "showId": "buena-vista-social-club-2025",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "buena-vista-social-club-2025/ny-theatre-guide--joe-dziemianowicz.json",
+      "showId": "buena-vista-social-club-2025",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Joe Dziemianowicz",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "buena-vista-social-club-2025/theatermania--zachary-stewart.json",
+      "showId": "buena-vista-social-club-2025",
+      "outlet": "TheaterMania",
+      "criticName": "Zachary Stewart",
+      "assignedScore": 77,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 77 outside 45-75",
+          "expected": "45-75",
+          "actual": 77
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "file": "bug-2026/4columns--david-cote.json",
+      "showId": "bug-2025",
+      "outlet": "4Columns",
+      "criticName": "David Cote",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "bug-2026/ew--shania-russell.json",
+      "showId": "bug-2025",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Shania Russell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "bug-2026/guardian--jesse-hassenger.json",
+      "showId": "bug-2025",
+      "outlet": "The Guardian",
+      "criticName": "Jesse Hassenger",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "bug-2026/ny-daily-news--chris-jones.json",
+      "showId": "bug-2025",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "bug-2026/usa-today--patrick-ryan.json",
+      "showId": "bug-2025",
+      "outlet": "USA Today",
+      "criticName": "Patrick Ryan",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "bug-2026/variety--aramide-timubu.json",
+      "showId": "bug-2025",
+      "outlet": "Variety",
+      "criticName": "Aramide Timubu",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "bug-2026/wsj--charles-isherwood.json",
+      "showId": "bug-2025",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Charles Isherwood",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/advertisement--chris-jones.json",
+      "showId": "cabaret-2024",
+      "outlet": "Advertisement",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/amny--matt-windman.json",
+      "showId": "cabaret-2024",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/broadway-news--brittani-samuel.json",
+      "showId": "cabaret-2024",
+      "outlet": "BROADWAY NEWS",
+      "criticName": "Brittani Samuel",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/daily-beast--tim-teeman.json",
+      "showId": "cabaret-2024",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/deadline--greg-evans.json",
+      "showId": "cabaret-2024",
+      "outlet": "Deadline",
+      "criticName": "Greg Evans",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/ew--emlyn-travis.json",
+      "showId": "cabaret-2024",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Emlyn Travis",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/forward--pj-grisar.json",
+      "showId": "cabaret-2024",
+      "outlet": "Forward",
+      "criticName": "PJ Grisar",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/new-york-theater--jonathan-mandell.json",
+      "showId": "cabaret-2024",
+      "outlet": "New York Theater",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/new-york-theatre-guide--amelia-merrill.json",
+      "showId": "cabaret-2024",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Amelia Merrill",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/ny-daily-news--chris-jones.json",
+      "showId": "cabaret-2024",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/nypost--johnny-oleksinski.json",
+      "showId": "cabaret-2024",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/nytimes--jesse-green.json",
+      "showId": "cabaret-2024",
+      "outlet": "The New York Times",
+      "criticName": "Jesse Green",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/observer--rex-reed.json",
+      "showId": "cabaret-2024",
+      "outlet": "The Observer",
+      "criticName": "Rex Reed",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/queerty--matthew-wexler.json",
+      "showId": "cabaret-2024",
+      "outlet": "Queerty",
+      "criticName": "Matthew Wexler",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/theatermania--zachary-stewart.json",
+      "showId": "cabaret-2024",
+      "outlet": "TheaterMania",
+      "criticName": "Zachary Stewart",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/thewrap--robert-hofler.json",
+      "showId": "cabaret-2024",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/timeout--adam-feldman.json",
+      "showId": "cabaret-2024",
+      "outlet": "TimeOut",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/timeout-ny--adam-feldman.json",
+      "showId": "cabaret-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/variety--naveen-kumar.json",
+      "showId": "cabaret-2024",
+      "outlet": "Variety",
+      "criticName": "Naveen Kumar",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/village-voice--michael-musto.json",
+      "showId": "cabaret-2024",
+      "outlet": "Village Voice",
+      "criticName": "Michael Musto",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/vulture--sara-holdren.json",
+      "showId": "cabaret-2024",
+      "outlet": "Vulture",
+      "criticName": "Sara Holdren",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "cabaret-2024/wsj--charles-isherwood.json",
+      "showId": "cabaret-2024",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Charles Isherwood",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "chess-2025/ew--shania-russell.json",
+      "showId": "chess-2025",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Shania Russell",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "chess-2025/ny-daily-news--chris-jones.json",
+      "showId": "chess-2025",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "chess-2025/usa-today--patrick-ryan.json",
+      "showId": "chess-2025",
+      "outlet": "USA Today",
+      "criticName": "Patrick Ryan",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "chess-2025/variety--christian-lewis.json",
+      "showId": "chess-2025",
+      "outlet": "Variety",
+      "criticName": "Christian Lewis",
+      "assignedScore": 41,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 41 outside 45-75",
+          "expected": "45-75",
+          "actual": 41
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "file": "chess-2025/vulture--sara-holdren.json",
+      "showId": "chess-2025",
+      "outlet": "Vulture",
+      "criticName": "Sara Holdren",
+      "assignedScore": 82,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 82 outside 45-75",
+          "expected": "45-75",
+          "actual": 82
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "file": "chicago-1996/time--unknown.json",
+      "showId": "chicago-1996",
+      "outlet": "Time",
+      "criticName": null,
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "death-becomes-her-2024/ew--dalton-ross.json",
+      "showId": "death-becomes-her-2024",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Dalton Ross",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "death-becomes-her-2024/guardian--benjamin-lee.json",
+      "showId": "death-becomes-her-2024",
+      "outlet": "The Guardian",
+      "criticName": "Benjamin Lee",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hadestown-2019/nytimes--ben-brantley.json",
+      "showId": "hadestown-2019",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hamilton-2015/dc-theatre-scene--jonathan-mandell.json",
+      "showId": "hamilton-2015",
+      "outlet": "DC Theatre Scene",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hamilton-2015/ew--leah-greenblatt.json",
+      "showId": "hamilton-2015",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Leah Greenblatt",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hamilton-2015/huffpost--steven-suskin.json",
+      "showId": "hamilton-2015",
+      "outlet": "HuffPost",
+      "criticName": "Steven Suskin",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hamilton-2015/thewrap--robert-hofler.json",
+      "showId": "hamilton-2015",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hamilton-2015/timeout-ny--david-cote.json",
+      "showId": "hamilton-2015",
+      "outlet": "Time Out New York",
+      "criticName": "David Cote",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hamilton-2015/usa-today--elysa-gardner.json",
+      "showId": "hamilton-2015",
+      "outlet": "USA Today",
+      "criticName": "Elysa Gardner",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hamilton-2015/wsj--terry-teachout.json",
+      "showId": "hamilton-2015",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Terry Teachout",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/amny--matt-windman.json",
+      "showId": "harry-potter-2021",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/broadwayworld--michael-dale.json",
+      "showId": "harry-potter-2021",
+      "outlet": "BroadwayWorld",
+      "criticName": "Michael Dale",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/chicago-tribune--chris-jones.json",
+      "showId": "harry-potter-2021",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/daily-beast--tim-teeman.json",
+      "showId": "harry-potter-2021",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/ew--marc-snetiker.json",
+      "showId": "harry-potter-2021",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Marc Snetiker",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/forward--matthew-murphy.json",
+      "showId": "harry-potter-2021",
+      "outlet": "Forward",
+      "criticName": "Matthew Murphy",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/guardian--alexis-soloski.json",
+      "showId": "harry-potter-2021",
+      "outlet": "The Guardian",
+      "criticName": "Alexis Soloski",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/hollywood-reporter--david-rooney.json",
+      "showId": "harry-potter-2021",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/mashable--erin-strecker.json",
+      "showId": "harry-potter-2021",
+      "outlet": "Mashable",
+      "criticName": "Erin Strecker",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/newsday--barbara-schuler.json",
+      "showId": "harry-potter-2021",
+      "outlet": "Newsday",
+      "criticName": "Barbara Schuler",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/nj-com--christopher-kelly.json",
+      "showId": "harry-potter-2021",
+      "outlet": "NJ.com",
+      "criticName": "Christopher Kelly",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/ny-daily-news--joe-dziemianowicz.json",
+      "showId": "harry-potter-2021",
+      "outlet": "New York Daily News",
+      "criticName": "Joe Dziemianowicz",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/ny-stage-review--steven-suskin.json",
+      "showId": "harry-potter-2021",
+      "outlet": "New York Stage Review",
+      "criticName": "Steven Suskin",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/nytimes--ben-brantley.json",
+      "showId": "harry-potter-2021",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/telegraph--diana-snyder.json",
+      "showId": "harry-potter-2021",
+      "outlet": "The Telegraph",
+      "criticName": "Diana Snyder",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/the-times--ann-treneman.json",
+      "showId": "harry-potter-2021",
+      "outlet": "The Times",
+      "criticName": "Ann Treneman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/thewrap--robert-hofler.json",
+      "showId": "harry-potter-2021",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/time-out--adam-feldman.json",
+      "showId": "harry-potter-2021",
+      "outlet": "Time Out",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/vanity-fair--richard-lawson.json",
+      "showId": "harry-potter-2021",
+      "outlet": "Vanity Fair",
+      "criticName": "Richard Lawson",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/variety--marilyn-stasio.json",
+      "showId": "harry-potter-2021",
+      "outlet": "Variety",
+      "criticName": "Marilyn Stasio",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/vulture--sara-holdren.json",
+      "showId": "harry-potter-2021",
+      "outlet": "Vulture",
+      "criticName": "Sara Holdren",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "harry-potter-2021/washington-post--peter-marks.json",
+      "showId": "harry-potter-2021",
+      "outlet": "The Washington Post",
+      "criticName": "Peter Marks",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+      "showId": "hells-kitchen-2024",
+      "outlet": "Chelsea Community News",
+      "criticName": "Michael Musto",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hells-kitchen-2024/cititour--scott-lipton.json",
+      "showId": "hells-kitchen-2024",
+      "outlet": "Cititour",
+      "criticName": "Scott Lipton",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hells-kitchen-2024/ny-daily-news--chris-jones.json",
+      "showId": "hells-kitchen-2024",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hells-kitchen-2024/thewrap--robert-hofler.json",
+      "showId": "hells-kitchen-2024",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": 23,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 23 outside 45-75",
+          "expected": "45-75",
+          "actual": 23
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "file": "hells-kitchen-2024/timeout--adam-feldman.json",
+      "showId": "hells-kitchen-2024",
+      "outlet": "TimeOut",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "hells-kitchen-2024/variety--aramide-timubu.json",
+      "showId": "hells-kitchen-2024",
+      "outlet": "Variety",
+      "criticName": "Aramide Timubu",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/broadway-news--brittani-samuel.json",
+      "showId": "just-in-time-2025",
+      "outlet": "BROADWAY NEWS",
+      "criticName": "Brittani Samuel",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/chicago-tribune--chris-jones.json",
+      "showId": "just-in-time-2025",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/daily-beast--tim-teeman.json",
+      "showId": "just-in-time-2025",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/deadline--greg-evans.json",
+      "showId": "just-in-time-2025",
+      "outlet": "Deadline",
+      "criticName": "Greg Evans",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/ew--shania-russell.json",
+      "showId": "just-in-time-2025",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Shania Russell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/guardian--adrian-horton.json",
+      "showId": "just-in-time-2025",
+      "outlet": "The Guardian",
+      "criticName": "Adrian Horton",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/new-york-theatre-guide--caroline-cao.json",
+      "showId": "just-in-time-2025",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Caroline Cao",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/nypost--johnny-oleksinski.json",
+      "showId": "just-in-time-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/nytimes--jesse-green.json",
+      "showId": "just-in-time-2025",
+      "outlet": "The New York Times",
+      "criticName": "Jesse Green",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/theatermania--kenji-fujishima.json",
+      "showId": "just-in-time-2025",
+      "outlet": "TheaterMania",
+      "criticName": "Kenji Fujishima",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/thewrap--robert-hofler.json",
+      "showId": "just-in-time-2025",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/timeout--adam-feldman.json",
+      "showId": "just-in-time-2025",
+      "outlet": "TimeOut",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/variety--christian-lewis.json",
+      "showId": "just-in-time-2025",
+      "outlet": "Variety",
+      "criticName": "Christian Lewis",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/vulture--jackson-mchenry.json",
+      "showId": "just-in-time-2025",
+      "outlet": "Vulture",
+      "criticName": "Jackson McHenry",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "just-in-time-2025/washington-post--naveen-kumar.json",
+      "showId": "just-in-time-2025",
+      "outlet": "WASHINGTON POST",
+      "criticName": "Naveen Kumar",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/amny--matt-windman.json",
+      "showId": "liberation-2025",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/chicago-tribune--chris-jones.json",
+      "showId": "liberation-2025",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/daily-beast--tim-teeman.json",
+      "showId": "liberation-2025",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/ew--emlyn-travis.json",
+      "showId": "liberation-2025",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Emlyn Travis",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/guardian--adrian-horton.json",
+      "showId": "liberation-2025",
+      "outlet": "The Guardian",
+      "criticName": "Adrian Horton",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/new-york-theater--jonathan-mandell.json",
+      "showId": "liberation-2025",
+      "outlet": "New York Theater",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/new-york-theatre-guide--austin-fimmano.json",
+      "showId": "liberation-2025",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Austin Fimmano",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/new-yorker--helen-shaw.json",
+      "showId": "liberation-2025",
+      "outlet": "The New Yorker",
+      "criticName": "Helen Shaw",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/nypost--johnny-oleksinski.json",
+      "showId": "liberation-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/nytimes--elisabeth-vincentelli.json",
+      "showId": "liberation-2025",
+      "outlet": "The New York Times",
+      "criticName": "Elisabeth Vincentelli",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/nytimes--elisabeth-vincetelli.json",
+      "showId": "liberation-2025",
+      "outlet": "The New York Times",
+      "criticName": "Elisabeth Vincetelli",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/theatermania--rachel-graham.json",
+      "showId": "liberation-2025",
+      "outlet": "TheaterMania",
+      "criticName": "Rachel Graham",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/thewrap--robert-hofler.json",
+      "showId": "liberation-2025",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/timeout-ny--adam-feldman.json",
+      "showId": "liberation-2025",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/variety--aramide-tinubu.json",
+      "showId": "liberation-2025",
+      "outlet": "Variety",
+      "criticName": "Aramide Tinubu",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/vulture--jackson-mchenry.json",
+      "showId": "liberation-2025",
+      "outlet": "Vulture",
+      "criticName": "Jackson McHenry",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "liberation-2025/washington-post--naveen-kumar.json",
+      "showId": "liberation-2025",
+      "outlet": "WASHINGTON POST",
+      "criticName": "Naveen Kumar",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "mamma-mia-2025/ny-daily-news--chris-jones.json",
+      "showId": "mamma-mia-2025",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "mamma-mia-2025/nypost--johnny-oleksinki.json",
+      "showId": "mamma-mia-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "mamma-mia-2025/nytimes--elisabeth-vincentelli.json",
+      "showId": "mamma-mia-2025",
+      "outlet": "The New York Times",
+      "criticName": "Elisabeth Vincentelli",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "marjorie-prime-2025/cititour--scott-lipton.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "Cititour",
+      "criticName": "Scott Lipton",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "marjorie-prime-2025/ew--shania-russell.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Shania Russell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "marjorie-prime-2025/guardian--richard-lawson.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "The Guardian",
+      "criticName": "Richard Lawson",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "marjorie-prime-2025/ny-daily-news--chris-jones.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "marjorie-prime-2025/nypost--johnny-oleksinki.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "marjorie-prime-2025/thewrap--robert-hofler.json",
+      "showId": "marjorie-prime-2025",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": 43,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 43 outside 45-75",
+          "expected": "45-75",
+          "actual": 43
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "file": "maybe-happy-ending-2024/daily-beast--tim-teeman.json",
+      "showId": "maybe-happy-ending-2024",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "maybe-happy-ending-2024/new-york-sun--elysa-gardner.json",
+      "showId": "maybe-happy-ending-2024",
+      "outlet": "New York Sun",
+      "criticName": "Elysa Gardner",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "maybe-happy-ending-2024/ny-daily-news--chris-jones.json",
+      "showId": "maybe-happy-ending-2024",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "maybe-happy-ending-2024/timeout--adam-feldman.json",
+      "showId": "maybe-happy-ending-2024",
+      "outlet": "TimeOut",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "maybe-happy-ending-2024/usa-today--patrick-ryan.json",
+      "showId": "maybe-happy-ending-2024",
+      "outlet": "USA Today",
+      "criticName": "Patrick Ryan",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "mj-2022/amny--matt-windman.json",
+      "showId": "mj-2022",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "mj-2022/daily-beast--tim-teeman.json",
+      "showId": "mj-2022",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "moulin-rouge-2019/TNO--jeremy-gerard.json",
+      "showId": "moulin-rouge-2019",
+      "outlet": "Theater News Online",
+      "criticName": "Jeremy Gerard",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "oedipus-2025/cititour--scott-lipton.json",
+      "showId": "oedipus-2025",
+      "outlet": "Cititour",
+      "criticName": "Scott Lipton",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "oedipus-2025/la-times--charles-mcnulty.json",
+      "showId": "oedipus-2025",
+      "outlet": "La Times",
+      "criticName": "Charles McNulty",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "oedipus-2025/ny-daily-news--chris-jones.json",
+      "showId": "oedipus-2025",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "oedipus-2025/nypost--johnny-oleksinki.json",
+      "showId": "oedipus-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "oh-mary-2024/nypost--johnny-oleksinki.json",
+      "showId": "oh-mary-2024",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "oh-mary-2024/usa-today--patrick-ryan.json",
+      "showId": "oh-mary-2024",
+      "outlet": "USA Today",
+      "criticName": "Patrick Ryan",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "oh-mary-2024/wsj--charles-isherwood.json",
+      "showId": "oh-mary-2024",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Charles Isherwood",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "operation-mincemeat-2025/nypost--johnny-oleksinki.json",
+      "showId": "operation-mincemeat-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/1-minute-critic--matthew-wexler.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "1 Minute Critic",
+      "criticName": "Matthew Wexler",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/advertisement--jonathan-mandell.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Advertisement",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/ap--mark-kennedy.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/cititour--scott-lipton.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Cititour",
+      "criticName": "Scott Lipton",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/daily-beast--tim-teeman.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/ew--dalton-ross.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Dalton Ross",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/la-times--charlesmcnulty.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "LA Times",
+      "criticName": "CharlesMcNulty",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/new-york-theater--jonathan-mandell.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "New York Theater",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/new-york-theatre-guide--joe-dziemianowicz.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Joe Dziemianowicz",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/ny-daily-news--chris-jones.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/nypost--johnny-oleksinski.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/nytimes--laura-collins-hughes.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "The New York Times",
+      "criticName": "Laura Collins-Hughes",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/slant--dan-rubins.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Slant",
+      "criticName": "Dan Rubins",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/theatermania--zachary-stewart.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "TheaterMania",
+      "criticName": "Zachary Stewart",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/timeout-new-york--adam-feldman.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "TimeOut New York",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/variety--aramide-timubu.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Variety",
+      "criticName": "Aramide Timubu",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/variety--aramide-tinubu.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Variety",
+      "criticName": "Aramide Tinubu",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/vulture--david-fox.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Vulture",
+      "criticName": "David Fox",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/vulture--sara-holdren-and-jesse-david-fox.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Vulture",
+      "criticName": "Sara Holdren and Jesse David Fox",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/vulture--sara-holdren.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Vulture",
+      "criticName": "Sara Holdren",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "queen-versailles-2025/washington-post--naveen-kumar.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "WASHINGTON POST",
+      "criticName": "Naveen Kumar",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/america-magazine--rob-weinert-kendt.json",
+      "showId": "ragtime-2025",
+      "outlet": "America Magazine",
+      "criticName": "Rob Weinert- Kendt",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/amny--matt-windman.json",
+      "showId": "ragtime-2025",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/chicago-tribune--chris-jones.json",
+      "showId": "ragtime-2025",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/cititour--scott-lipton.json",
+      "showId": "ragtime-2025",
+      "outlet": "Cititour",
+      "criticName": "Scott Lipton",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/daily-beast--tim-teeman.json",
+      "showId": "ragtime-2025",
+      "outlet": "The Daily Beast",
+      "criticName": "Tim Teeman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/dc-theater-arts--deb-miller.json",
+      "showId": "ragtime-2025",
+      "outlet": "DC Theater Arts",
+      "criticName": "Deb Miller",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/deadline--greg-evans.json",
+      "showId": "ragtime-2025",
+      "outlet": "Deadline",
+      "criticName": "Greg Evans",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/ew--shania-russell.json",
+      "showId": "ragtime-2025",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Shania Russell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/exeunt--lane-williamson.json",
+      "showId": "ragtime-2025",
+      "outlet": "Exeunt",
+      "criticName": "Lane Williamson",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/new-york-theater--jonathan-mandell.json",
+      "showId": "ragtime-2025",
+      "outlet": "New York Theater",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/new-york-theatre-guide--joe-dziemianowicz.json",
+      "showId": "ragtime-2025",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Joe Dziemianowicz",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/nypost--johnny-oleksinki.json",
+      "showId": "ragtime-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/nypost--johnny-oleksinski.json",
+      "showId": "ragtime-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/nytimes--laura-collins-hughes.json",
+      "showId": "ragtime-2025",
+      "outlet": "The New York Times",
+      "criticName": "Laura Collins-Hughes",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/theatermania--zachary-stewart.json",
+      "showId": "ragtime-2025",
+      "outlet": "TheaterMania",
+      "criticName": "Zachary Stewart",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/thewrap--robert-hofler.json",
+      "showId": "ragtime-2025",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/timeout-ny--adam-feldman.json",
+      "showId": "ragtime-2025",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/variety--frank-rizzo.json",
+      "showId": "ragtime-2025",
+      "outlet": "Variety",
+      "criticName": "Frank Rizzo",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/vulture--jackson-mchenry.json",
+      "showId": "ragtime-2025",
+      "outlet": "Vulture",
+      "criticName": "Jackson McHenry",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/washington-post--naveen-kumar.json",
+      "showId": "ragtime-2025",
+      "outlet": "WASHINGTON POST",
+      "criticName": "Naveen Kumar",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "ragtime-2025/wsj--charles-isherwood.json",
+      "showId": "ragtime-2025",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Charles Isherwood",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "six-2021/ny-stage-review--rose-bernardo.json",
+      "showId": "six-2021",
+      "outlet": "New York Stage Review",
+      "criticName": "Rose Bernardo",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "six-2021/thewrap--robert-hofler.json",
+      "showId": "six-2021",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stereophonic-2024/guardian--gloria-oladipo.json",
+      "showId": "stereophonic-2024",
+      "outlet": "The Guardian",
+      "criticName": "Gloria Oladipo",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stereophonic-2024/new-york-theater--jonathan-mandell.json",
+      "showId": "stereophonic-2024",
+      "outlet": "New York Theater",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stereophonic-2024/new-york-theatre-guide--allison-considine.json",
+      "showId": "stereophonic-2024",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Allison Considine",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stereophonic-2024/ny-daily-news--chris-jones.json",
+      "showId": "stereophonic-2024",
+      "outlet": "New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stereophonic-2024/vulture--sara-holdren.json",
+      "showId": "stereophonic-2024",
+      "outlet": "Vulture",
+      "criticName": "Sara Holdren",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/bbc-news--neil-armstrong.json",
+      "showId": "stranger-things-2024",
+      "outlet": "BBC News",
+      "criticName": "Neil Armstrong",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/broadwayworld--alexander-cohen.json",
+      "showId": "stranger-things-2024",
+      "outlet": "BroadwayWorld",
+      "criticName": "Alexander Cohen",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/guardian--arifa-akbar.json",
+      "showId": "stranger-things-2024",
+      "outlet": "The Guardian",
+      "criticName": "Arifa Akbar",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/london-theatre--marianka-swain.json",
+      "showId": "stranger-things-2024",
+      "outlet": "London Theatre",
+      "criticName": "Marianka Swain",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/nytimes--houman-barekat.json",
+      "showId": "stranger-things-2024",
+      "outlet": "The New York Times",
+      "criticName": "Houman Barekat",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/the-daily-mail--luke-jones.json",
+      "showId": "stranger-things-2024",
+      "outlet": "The Daily Mail",
+      "criticName": "Luke Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/the-independent--alice-saville.json",
+      "showId": "stranger-things-2024",
+      "outlet": "The Independent",
+      "criticName": "Alice Saville",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/the-stage--dave-fargnoli.json",
+      "showId": "stranger-things-2024",
+      "outlet": "The Stage",
+      "criticName": "Dave Fargnoli",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/the-standard--nick-curtis.json",
+      "showId": "stranger-things-2024",
+      "outlet": "The Standard",
+      "criticName": "Nick Curtis",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/tickertv--cheryl-king.json",
+      "showId": "stranger-things-2024",
+      "outlet": "TickerTV",
+      "criticName": "Cheryl King",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "stranger-things-2024/timeout-ny--adam-feldman.json",
+      "showId": "stranger-things-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "assignedScore": 29,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 29 outside 45-75",
+          "expected": "45-75",
+          "actual": 29
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "file": "stranger-things-2024/variety--david-benedict.json",
+      "showId": "stranger-things-2024",
+      "outlet": "Variety",
+      "criticName": "David Benedict",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "suffs-2024/did-they-like-it--juan-michael-porter-ii.json",
+      "showId": "suffs-2024",
+      "outlet": "DID THEY LIKE IT",
+      "criticName": "Juan Michael Porter II",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "suffs-2024/nytimes--maya-phillips.json",
+      "showId": "suffs-2024",
+      "outlet": "The New York Times",
+      "criticName": "Maya Phillips",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "suffs-2024/theatermania--hayley-levitt.json",
+      "showId": "suffs-2024",
+      "outlet": "TheaterMania",
+      "criticName": "Hayley Levitt",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "suffs-2024/thewrap--robert-hofler.json",
+      "showId": "suffs-2024",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "suffs-2024/timeout-ny--raven-snook.json",
+      "showId": "suffs-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Raven Snook",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "suffs-2024/variety--marylin-stasio.json",
+      "showId": "suffs-2024",
+      "outlet": "Variety",
+      "criticName": "Marylin Stasio",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "suffs-2024/vulture--helen-shaw.json",
+      "showId": "suffs-2024",
+      "outlet": "Vulture",
+      "criticName": "Helen Shaw",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-great-gatsby-2024/cititour--scott-lipton.json",
+      "showId": "the-great-gatsby-2024",
+      "outlet": "Cititour",
+      "criticName": "Scott Lipton",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-great-gatsby-2024/ew--emlyn-travis.json",
+      "showId": "the-great-gatsby-2024",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Emlyn Travis",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-great-gatsby-2024/variety--christian-lewis.json",
+      "showId": "the-great-gatsby-2024",
+      "outlet": "Variety",
+      "criticName": "Christian Lewis",
+      "assignedScore": 40,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 40 outside 45-75",
+          "expected": "45-75",
+          "actual": 40
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "file": "the-lion-king-1997/ew--jess-cagle.json",
+      "showId": "the-lion-king-1997",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Jess Cagle",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/ap--mark-kennedy.json",
+      "showId": "the-notebook-2024",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/broadway-news--brittani-samuel.json",
+      "showId": "the-notebook-2024",
+      "outlet": "BROADWAY NEWS",
+      "criticName": "Brittani Samuel",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/deadline--greg-evans.json",
+      "showId": "the-notebook-2024",
+      "outlet": "Deadline",
+      "criticName": "Greg Evans",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/ew--emlyn-travis.json",
+      "showId": "the-notebook-2024",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Emlyn Travis",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/guardian--gloria-oladipo.json",
+      "showId": "the-notebook-2024",
+      "outlet": "The Guardian",
+      "criticName": "Gloria Oladipo",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/indiewire--erin-strecker.json",
+      "showId": "the-notebook-2024",
+      "outlet": "IndieWire",
+      "criticName": "Erin Strecker",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/new-york-theater--jonathan-mandell.json",
+      "showId": "the-notebook-2024",
+      "outlet": "New York Theater",
+      "criticName": "Jonathan Mandell",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/new-york-theatre-guide--kyle-turner.json",
+      "showId": "the-notebook-2024",
+      "outlet": "New York Theatre Guide",
+      "criticName": "Kyle Turner",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/nypost--johnny-oleksinski.json",
+      "showId": "the-notebook-2024",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/nytimes--jesse-green.json",
+      "showId": "the-notebook-2024",
+      "outlet": "The New York Times",
+      "criticName": "Jesse Green",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/the-new-york-daily-news--chris-jones.json",
+      "showId": "the-notebook-2024",
+      "outlet": "The New York Daily News",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/theatermania--zachary-stewart.json",
+      "showId": "the-notebook-2024",
+      "outlet": "TheaterMania",
+      "criticName": "Zachary Stewart",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/thewrap--robert-hofler.json",
+      "showId": "the-notebook-2024",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": "Down",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/timeout-ny--adam-feldman.json",
+      "showId": "the-notebook-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/variety--frank-rizzo.json",
+      "showId": "the-notebook-2024",
+      "outlet": "Variety",
+      "criticName": "Frank Rizzo",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/vu--sara-holdren.json",
+      "showId": "the-notebook-2024",
+      "outlet": "Vu",
+      "criticName": "Sara Holdren",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/washington-post--naveen-kumar.json",
+      "showId": "the-notebook-2024",
+      "outlet": "The Washington Post",
+      "criticName": "Naveen Kumar",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-notebook-2024/wsj--charles-isherwood.json",
+      "showId": "the-notebook-2024",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Charles Isherwood",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-outsiders-2024/amny--matt-windman.json",
+      "showId": "the-outsiders-2024",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "assignedScore": 40,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "dtli_mismatch",
+          "severity": "medium",
+          "message": "DTLI \"Meh\" but score 40 outside 45-75",
+          "expected": "45-75",
+          "actual": 40
+        }
+      ],
+      "severity": "medium"
+    },
+    {
+      "file": "the-outsiders-2024/guardian--adrian-horton.json",
+      "showId": "the-outsiders-2024",
+      "outlet": "The Guardian",
+      "criticName": "Adrian Horton",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-outsiders-2024/nypost--johnny-oleksinki.json",
+      "showId": "the-outsiders-2024",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-roommate-2024/broadway-news--brittani-samuel.json",
+      "showId": "the-roommate-2024",
+      "outlet": "BROADWAY NEWS",
+      "criticName": "Brittani Samuel",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-roommate-2024/chicago-tribune--chris-jones.json",
+      "showId": "the-roommate-2024",
+      "outlet": "Chicago Tribune",
+      "criticName": "Chris Jones",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-roommate-2024/deadline--greg-evans.json",
+      "showId": "the-roommate-2024",
+      "outlet": "Deadline",
+      "criticName": "Greg Evans",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-roommate-2024/nytimes--jesse-green.json",
+      "showId": "the-roommate-2024",
+      "outlet": "The New York Times",
+      "criticName": "Jesse Green",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-roommate-2024/theatermania--zachary-stewart.json",
+      "showId": "the-roommate-2024",
+      "outlet": "TheaterMania",
+      "criticName": "Zachary Stewart",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-roommate-2024/thewrap--robert-hofler.json",
+      "showId": "the-roommate-2024",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-roommate-2024/timeout-ny--adam-feldman.json",
+      "showId": "the-roommate-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-roommate-2024/variety--daniel-d-addario.json",
+      "showId": "the-roommate-2024",
+      "outlet": "Variety",
+      "criticName": "Daniel D’Addario",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "the-roommate-2024/vulture--sara-holdren.json",
+      "showId": "the-roommate-2024",
+      "outlet": "Vulture",
+      "criticName": "Sara Holdren",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "two-strangers-bway-2025/nypost--johnny-oleksinki.json",
+      "showId": "two-strangers-bway-2025",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "two-strangers-bway-2025/the-recs--randall-david-cook.json",
+      "showId": "two-strangers-bway-2025",
+      "outlet": "The Recs",
+      "criticName": "Randall David Cook",
+      "assignedScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "water-for-elephants-2024/broadway-news--brittani-samuel.json",
+      "showId": "water-for-elephants-2024",
+      "outlet": "BROADWAY NEWS",
+      "criticName": "Brittani Samuel",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "water-for-elephants-2024/nypost--johnny-oleksinski.json",
+      "showId": "water-for-elephants-2024",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinski",
+      "assignedScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "water-for-elephants-2024/nytimes--jesse-green.json",
+      "showId": "water-for-elephants-2024",
+      "outlet": "The New York Times",
+      "criticName": "Jesse Green",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "water-for-elephants-2024/thewrap--robert-hofler.json",
+      "showId": "water-for-elephants-2024",
+      "outlet": "TheWrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "water-for-elephants-2024/timeout-ny--adam-feldman.json",
+      "showId": "water-for-elephants-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "water-for-elephants-2024/vulture--sara-holdren.json",
+      "showId": "water-for-elephants-2024",
+      "outlet": "Vulture",
+      "criticName": "Sara Holdren",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "wicked-2003/ny-daily-news--howard-kissel.json",
+      "showId": "wicked-2003",
+      "outlet": "New York Daily News",
+      "criticName": "Howard Kissel",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "wicked-2003/nytimes--ben-brantley.json",
+      "showId": "wicked-2003",
+      "outlet": "The New York Times",
+      "criticName": "Ben Brantley",
+      "assignedScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    },
+    {
+      "file": "wicked-2003/usa-today--elysa-gardner.json",
+      "showId": "wicked-2003",
+      "outlet": "USA Today",
+      "criticName": "Elysa Gardner",
+      "assignedScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "originalRating": null,
+      "flags": [
+        {
+          "type": "missing_score",
+          "message": "No assignedScore"
+        }
+      ],
+      "severity": "info"
+    }
+  ],
+  "summary": {
+    "dtliMismatches": [
+      {
+        "file": "aladdin-2014/variety--marilyn-stasio.json",
+        "showId": "aladdin-2014",
+        "outlet": "Variety",
+        "criticName": "Marilyn Stasio",
+        "assignedScore": 43,
+        "dtliThumb": "Meh",
+        "bwwThumb": null,
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 43 outside 45-75",
+            "expected": "45-75",
+            "actual": 43
+          }
+        ],
+        "severity": "medium"
+      },
+      {
+        "file": "buena-vista-social-club-2025/theatermania--zachary-stewart.json",
+        "showId": "buena-vista-social-club-2025",
+        "outlet": "TheaterMania",
+        "criticName": "Zachary Stewart",
+        "assignedScore": 77,
+        "dtliThumb": "Meh",
+        "bwwThumb": null,
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 77 outside 45-75",
+            "expected": "45-75",
+            "actual": 77
+          }
+        ],
+        "severity": "medium"
+      },
+      {
+        "file": "chess-2025/variety--christian-lewis.json",
+        "showId": "chess-2025",
+        "outlet": "Variety",
+        "criticName": "Christian Lewis",
+        "assignedScore": 41,
+        "dtliThumb": "Meh",
+        "bwwThumb": null,
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 41 outside 45-75",
+            "expected": "45-75",
+            "actual": 41
+          }
+        ],
+        "severity": "medium"
+      },
+      {
+        "file": "chess-2025/vulture--sara-holdren.json",
+        "showId": "chess-2025",
+        "outlet": "Vulture",
+        "criticName": "Sara Holdren",
+        "assignedScore": 82,
+        "dtliThumb": "Meh",
+        "bwwThumb": null,
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 82 outside 45-75",
+            "expected": "45-75",
+            "actual": 82
+          }
+        ],
+        "severity": "medium"
+      },
+      {
+        "file": "hells-kitchen-2024/thewrap--robert-hofler.json",
+        "showId": "hells-kitchen-2024",
+        "outlet": "TheWrap",
+        "criticName": "Robert Hofler",
+        "assignedScore": 23,
+        "dtliThumb": "Meh",
+        "bwwThumb": null,
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 23 outside 45-75",
+            "expected": "45-75",
+            "actual": 23
+          }
+        ],
+        "severity": "medium"
+      },
+      {
+        "file": "marjorie-prime-2025/thewrap--robert-hofler.json",
+        "showId": "marjorie-prime-2025",
+        "outlet": "TheWrap",
+        "criticName": "Robert Hofler",
+        "assignedScore": 43,
+        "dtliThumb": "Meh",
+        "bwwThumb": null,
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 43 outside 45-75",
+            "expected": "45-75",
+            "actual": 43
+          }
+        ],
+        "severity": "medium"
+      },
+      {
+        "file": "stranger-things-2024/timeout-ny--adam-feldman.json",
+        "showId": "stranger-things-2024",
+        "outlet": "Time Out New York",
+        "criticName": "Adam Feldman",
+        "assignedScore": 29,
+        "dtliThumb": "Meh",
+        "bwwThumb": null,
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 29 outside 45-75",
+            "expected": "45-75",
+            "actual": 29
+          }
+        ],
+        "severity": "medium"
+      },
+      {
+        "file": "the-great-gatsby-2024/variety--christian-lewis.json",
+        "showId": "the-great-gatsby-2024",
+        "outlet": "Variety",
+        "criticName": "Christian Lewis",
+        "assignedScore": 40,
+        "dtliThumb": "Meh",
+        "bwwThumb": null,
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 40 outside 45-75",
+            "expected": "45-75",
+            "actual": 40
+          }
+        ],
+        "severity": "medium"
+      },
+      {
+        "file": "the-outsiders-2024/amny--matt-windman.json",
+        "showId": "the-outsiders-2024",
+        "outlet": "amNewYork",
+        "criticName": "Matt Windman",
+        "assignedScore": 40,
+        "dtliThumb": "Meh",
+        "bwwThumb": null,
+        "originalRating": null,
+        "flags": [
+          {
+            "type": "dtli_mismatch",
+            "severity": "medium",
+            "message": "DTLI \"Meh\" but score 40 outside 45-75",
+            "expected": "45-75",
+            "actual": 40
+          }
+        ],
+        "severity": "medium"
+      }
+    ],
+    "bwwMismatches": [],
+    "ratingMismatches": [],
+    "aggregatorConflicts": []
+  }
+}

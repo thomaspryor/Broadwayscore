@@ -1,0 +1,5 @@
+[bsc-next] REFUSING headless dispatch of #1772: an unattended session cannot finish this card.
+    OWNER_DECISION_GATE: card defers to the owner ("VERIFY: owner-judgment")
+    NO_VERIFY_CMD: no runnable verify command in the acceptance criteria — the nightly recheck would have nothing to re-run
+  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,
+  or re-run with --allow-human-gated if you know the gate does not apply.

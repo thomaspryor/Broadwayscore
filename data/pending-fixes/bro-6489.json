@@ -1,0 +1,202 @@
+{
+  "issueNumber": "bro-6489",
+  "planId": "92ac358b-acf3-460e-a03c-3f3b456a38d1",
+  "status": "applied",
+  "createdAt": "2026-10-29T02:48:28.426Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6489 NYC facts audit: correct 8 rows the two-model pilot found wrong, each adjudicated from a fetched page (NYTG, Playbill, TDF, TheaterMania, Public Theater, press rep, BWW, venue site)",
+    "steps": [
+      "shows.json: between-riverside-and-crazy-2022.previewsStartDate",
+      "shows.json: the-morbs-off-broadway-2026.previewsStartDate",
+      "shows.json: the-morbs-off-broadway-2026.openingDate",
+      "shows.json: the-morbs-off-broadway-2026.status",
+      "shows.json: lord-nil-7-deadly-sins-off-broadway-2025.type",
+      "shows.json: clowns-like-me-off-broadway-2024.closingDate",
+      "shows.json: everythings-fine-off-broadway-2022.closingDate",
+      "shows.json: three-houses-off-broadway-2026.openingDate",
+      "shows.json: jesa-off-broadway-2026.openingDate",
+      "shows.json: orlando-off-broadway-2026.previewsStartDate",
+      "shows.json: orlando-off-broadway-2026.openingDate",
+      "shows.json: orlando-off-broadway-2026.isRevival"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "between-riverside-and-crazy-2022",
+        "field": "previewsStartDate",
+        "oldValue": "2022-12-01",
+        "newValue": "2022-11-30",
+        "description": "shows.json: between-riverside-and-crazy-2022.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-morbs-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-10-27",
+        "newValue": "2026-10-26",
+        "description": "shows.json: the-morbs-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-morbs-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-27",
+        "newValue": "2026-11-02",
+        "description": "shows.json: the-morbs-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-morbs-off-broadway-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "previews",
+        "description": "shows.json: the-morbs-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lord-nil-7-deadly-sins-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "special",
+        "description": "shows.json: lord-nil-7-deadly-sins-off-broadway-2025.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "clowns-like-me-off-broadway-2024",
+        "field": "closingDate",
+        "oldValue": "2024-07-28",
+        "newValue": "2024-08-18",
+        "description": "shows.json: clowns-like-me-off-broadway-2024.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "everythings-fine-off-broadway-2022",
+        "field": "closingDate",
+        "oldValue": "2022-11-01",
+        "newValue": "2022-11-03",
+        "description": "shows.json: everythings-fine-off-broadway-2022.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-houses-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2024-05-22",
+        "newValue": "2024-05-20",
+        "description": "shows.json: three-houses-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jesa-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-03-10",
+        "newValue": "2026-03-20",
+        "description": "shows.json: jesa-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "orlando-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2024-03-28",
+        "newValue": "2024-04-02",
+        "description": "shows.json: orlando-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "orlando-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2024-04-15",
+        "newValue": "2024-04-21",
+        "description": "shows.json: orlando-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "orlando-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: orlando-off-broadway-2026.isRevival"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T06:36:05.740Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for between-riverside-and-crazy-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-morbs-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-morbs-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-morbs-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for lord-nil-7-deadly-sins-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for clowns-like-me-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for everythings-fine-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for three-houses-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jesa-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for orlando-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for orlando-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for orlando-off-broadway-2026 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
+}

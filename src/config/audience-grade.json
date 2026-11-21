@@ -1,0 +1,6 @@
+{
+  "_comment": "Single source of truth for when a show gets an Audience Grade. Read by src/lib/audience-grade-utils.ts and by every script that mirrors the site (digest, mobile data, homepage/market archives, Reddit posts, fantasy config). Owner decision 2026-10-31: lowered from 15 to 10 (Downstate West End 2019 sat at 14 Mezzanine-only reviews).",
+  "minReviews": 10,
+  "fullConfidenceReviews": 15,
+  "_notes": "minReviews = show a grade (with a small-sample note below fullConfidenceReviews). fullConfidenceReviews = the bar used by rankings, ranked lists, analyses, Tony predictions and fantasy scoring."
+}

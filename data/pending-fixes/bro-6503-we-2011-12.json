@@ -1,0 +1,847 @@
+{
+  "issueNumber": "bro-6503-we-2011-12",
+  "planId": "aef52202-4d37-4d16-8082-51ff946b8bb8",
+  "status": "applied",
+  "createdAt": "2026-10-29T05:23:06.926Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 25 closed West End production(s) for 2011-2012 from the historical backfill (we-historical:theatricalia; BRO-6503).",
+    "steps": [
+      "Append broken-glass-west-end-2011 (Vaudeville Theatre, 2011-09-01 to 2011-12-31)",
+      "Append a-dish-of-tea-with-dr-johnson-west-end-2011 (Arts Theatre, 2011-09-02 to 2011-09-24)",
+      "Append the-tempest-west-end-2011 (Theatre Royal Haymarket, 2011-09-06 to 2011-10-29)",
+      "Append the-playboy-of-the-western-world-west-end-2011 (The Old Vic, 2011-09-17 to 2011-11-26)",
+      "Append yes-prime-minister-west-end-2011 (Gielgud Theatre, 2011-09-20 to 2011-11-19)",
+      "Append cool-hand-luke-west-end-2011 (Aldwych Theatre, 2011-09-27 to 2011-11-19)",
+      "Append driving-miss-daisy-west-end-2011 (Wyndham's Theatre, 2011-10-05 to 2011-12-17)",
+      "Append the-pitmen-painters-west-end-2011 (Duchess Theatre, 2011-10-05 to 2012-04-14)",
+      "Append backbeat-west-end-2011 (Duke of York's Theatre, 2011-10-10 to 2012-02-18)",
+      "Append death-and-the-maiden-west-end-2011 (Harold Pinter Theatre, 2011-10-13 to 2012-01-21)",
+      "Append crazy-for-you-west-end-2011 (Novello Theatre, 2011-10-17 to 2012-03-17)",
+      "Append jerusalem-west-end-2011 (Apollo Theatre, 2011-10-17 to 2012-01-14)",
+      "Append three-days-in-may-west-end-2011 (Trafalgar Theatre, 2011-11-02 to 2012-03-03)",
+      "Append the-lion-in-winter-west-end-2011 (Theatre Royal Haymarket, 2011-11-15 to 2012-01-28)",
+      "Append one-man-two-guvnors-west-end-2011 (Adelphi Theatre, 2011-11-21 to 2012-02-25)",
+      "Append a-round-heeled-woman-west-end-2011 (Aldwych Theatre, 2011-11-24 to 2012-01-14)",
+      "Append the-ladykillers-west-end-2011 (Gielgud Theatre, 2011-11-26 to 2012-04-14)",
+      "Append noises-off-west-end-2011 (The Old Vic, 2011-12-03 to 2012-03-10)",
+      "Append swallows-and-amazons-west-end-2011 (Vaudeville Theatre, 2011-12-20 to 2012-01-14)",
+      "Append the-madness-of-george-iii-west-end-2012 (Apollo Theatre, 2012-01-01 to 2012-03-31)",
+      "Append constellations-west-end-2012 (Royal Court, 2012-01-13 to 2012-02-11)",
+      "Append travelling-light-west-end-2012 (Lyttelton Theatre, 2012-01-18 to 2012-06-02)",
+      "Append absent-friends-west-end-2012 (Harold Pinter Theatre, 2012-02-09 to 2012-04-14)",
+      "Append hay-fever-west-end-2012 (Noël Coward Theatre, 2012-02-10 to 2012-06-02)",
+      "Append in-basildon-west-end-2012 (Royal Court, 2012-02-22 to 2012-03-24)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "broken-glass-west-end-2011",
+          "title": "Broken Glass",
+          "slug": "broken-glass-west-end-2011",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2011-09-01",
+          "openingDate": "2011-09-01",
+          "closingDate": "2011-12-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.009Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/63t/broken-glass/production/ta2"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-dish-of-tea-with-dr-johnson-west-end-2011",
+          "title": "A Dish of Tea with Dr Johnson",
+          "slug": "a-dish-of-tea-with-dr-johnson-west-end-2011",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2011-09-02",
+          "openingDate": "2011-09-02",
+          "closingDate": "2011-09-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.044Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/cv7/a-dish-of-tea-with-dr-johnson/production/rza"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-tempest-west-end-2011",
+          "title": "The Tempest",
+          "slug": "the-tempest-west-end-2011",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2011-09-06",
+          "openingDate": "2011-09-06",
+          "closingDate": "2011-10-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.064Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1p/the-tempest/production/1099"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-playboy-of-the-western-world-west-end-2011",
+          "title": "The Playboy of the Western World",
+          "slug": "the-playboy-of-the-western-world-west-end-2011",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2011-09-17",
+          "openingDate": "2011-09-17",
+          "closingDate": "2011-11-26",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.082Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3q3/the-playboy-of-the-western-world/production/1cpt"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "yes-prime-minister-west-end-2011",
+          "title": "Yes, Prime Minister",
+          "slug": "yes-prime-minister-west-end-2011",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2011-09-20",
+          "openingDate": "2011-09-20",
+          "closingDate": "2011-11-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.100Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/b0t/yes-prime-minister/production/pz2"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cool-hand-luke-west-end-2011",
+          "title": "Cool Hand Luke",
+          "slug": "cool-hand-luke-west-end-2011",
+          "venue": "Aldwych Theatre",
+          "previewsStartDate": "2011-09-27",
+          "openingDate": "2011-09-27",
+          "closingDate": "2011-11-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.116Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fx1/cool-hand-luke/production/10za"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "driving-miss-daisy-west-end-2011",
+          "title": "Driving Miss Daisy",
+          "slug": "driving-miss-daisy-west-end-2011",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2011-10-05",
+          "openingDate": "2011-10-05",
+          "closingDate": "2011-12-17",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.133Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5pj/driving-miss-daisy/production/152g"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-pitmen-painters-west-end-2011",
+          "title": "The Pitmen Painters",
+          "slug": "the-pitmen-painters-west-end-2011",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2011-10-05",
+          "openingDate": "2011-10-05",
+          "closingDate": "2012-04-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.150Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/cw8/the-pitmen-painters/production/1335"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "backbeat-west-end-2011",
+          "title": "Backbeat",
+          "slug": "backbeat-west-end-2011",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2011-10-10",
+          "openingDate": "2011-10-10",
+          "closingDate": "2012-02-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.167Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5mb/backbeat/production/14xy"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "death-and-the-maiden-west-end-2011",
+          "title": "Death and the Maiden",
+          "slug": "death-and-the-maiden-west-end-2011",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2011-10-13",
+          "openingDate": "2011-10-13",
+          "closingDate": "2012-01-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.184Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5t0/death-and-the-maiden/production/zkz"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "crazy-for-you-west-end-2011",
+          "title": "Crazy for You",
+          "slug": "crazy-for-you-west-end-2011",
+          "venue": "Novello Theatre",
+          "previewsStartDate": "2011-10-17",
+          "openingDate": "2011-10-17",
+          "closingDate": "2012-03-17",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.201Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/600/crazy-for-you/production/1580"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "jerusalem-west-end-2011",
+          "title": "Jerusalem",
+          "slug": "jerusalem-west-end-2011",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2011-10-17",
+          "openingDate": "2011-10-17",
+          "closingDate": "2012-01-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.216Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/9bs/jerusalem/production/zkv"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "three-days-in-may-west-end-2011",
+          "title": "Three Days in May",
+          "slug": "three-days-in-may-west-end-2011",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2011-11-02",
+          "openingDate": "2011-11-02",
+          "closingDate": "2012-03-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.233Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1f7/three-days-in-may/production/14y1"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-lion-in-winter-west-end-2011",
+          "title": "The Lion in Winter",
+          "slug": "the-lion-in-winter-west-end-2011",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2011-11-15",
+          "openingDate": "2011-11-15",
+          "closingDate": "2012-01-28",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.250Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/61h/the-lion-in-winter/production/109a"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "one-man-two-guvnors-west-end-2011",
+          "title": "One Man, Two Guvnors",
+          "slug": "one-man-two-guvnors-west-end-2011",
+          "venue": "Adelphi Theatre",
+          "previewsStartDate": "2011-11-21",
+          "openingDate": "2011-11-21",
+          "closingDate": "2012-02-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.268Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/cv5/one-man-two-guvnors/production/zta"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-round-heeled-woman-west-end-2011",
+          "title": "A Round-Heeled Woman",
+          "slug": "a-round-heeled-woman-west-end-2011",
+          "venue": "Aldwych Theatre",
+          "previewsStartDate": "2011-11-24",
+          "openingDate": "2011-11-24",
+          "closingDate": "2012-01-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.285Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fx2/a-round-heeled-woman/production/10zb"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-ladykillers-west-end-2011",
+          "title": "The Ladykillers",
+          "slug": "the-ladykillers-west-end-2011",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2011-11-26",
+          "openingDate": "2011-11-26",
+          "closingDate": "2012-04-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.302Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/d1r/the-ladykillers/production/she"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "noises-off-west-end-2011",
+          "title": "Noises Off",
+          "slug": "noises-off-west-end-2011",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2011-12-03",
+          "openingDate": "2011-12-03",
+          "closingDate": "2012-03-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.318Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5fm/noises-off/production/sfs"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "swallows-and-amazons-west-end-2011",
+          "title": "Swallows And Amazons",
+          "slug": "swallows-and-amazons-west-end-2011",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2011-12-20",
+          "openingDate": "2011-12-20",
+          "closingDate": "2012-01-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.334Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/764/swallows-and-amazons/production/14s5"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-madness-of-george-iii-west-end-2012",
+          "title": "The Madness of George III",
+          "slug": "the-madness-of-george-iii-west-end-2012",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2012-01-01",
+          "openingDate": "2012-01-01",
+          "closingDate": "2012-03-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.352Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5vr/the-madness-of-george-iii/production/13ee"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "constellations-west-end-2012",
+          "title": "Constellations",
+          "slug": "constellations-west-end-2012",
+          "venue": "Royal Court",
+          "previewsStartDate": "2012-01-13",
+          "openingDate": "2012-01-13",
+          "closingDate": "2012-02-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.369Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/etk/constellations/production/10hq"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "travelling-light-west-end-2012",
+          "title": "Travelling Light",
+          "slug": "travelling-light-west-end-2012",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2012-01-18",
+          "openingDate": "2012-01-18",
+          "closingDate": "2012-06-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.384Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/d4n/travelling-light/production/ssn"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "absent-friends-west-end-2012",
+          "title": "Absent Friends",
+          "slug": "absent-friends-west-end-2012",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2012-02-09",
+          "openingDate": "2012-02-09",
+          "closingDate": "2012-04-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.399Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/55m/absent-friends/production/zm0"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hay-fever-west-end-2012",
+          "title": "Hay Fever",
+          "slug": "hay-fever-west-end-2012",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2012-02-10",
+          "openingDate": "2012-02-10",
+          "closingDate": "2012-06-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.416Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/2w8/hay-fever/production/sj9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "in-basildon-west-end-2012",
+          "title": "In Basildon",
+          "slug": "in-basildon-west-end-2012",
+          "venue": "Royal Court",
+          "previewsStartDate": "2012-02-22",
+          "openingDate": "2012-02-22",
+          "closingDate": "2012-03-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.433Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/d0h/in-basildon/production/sep"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T07:44:07.670Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added broken-glass-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-dish-of-tea-with-dr-johnson-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-tempest-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-playboy-of-the-western-world-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added yes-prime-minister-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cool-hand-luke-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added driving-miss-daisy-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-pitmen-painters-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added backbeat-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added death-and-the-maiden-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added crazy-for-you-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added jerusalem-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added three-days-in-may-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-lion-in-winter-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added one-man-two-guvnors-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-round-heeled-woman-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-ladykillers-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added noises-off-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added swallows-and-amazons-west-end-2011"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-madness-of-george-iii-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added constellations-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added travelling-light-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added absent-friends-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hay-fever-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added in-basildon-west-end-2012"
+    }
+  ],
+  "executedIn": "ci"
+}

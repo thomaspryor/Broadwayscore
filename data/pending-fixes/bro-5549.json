@@ -1,0 +1,358 @@
+{
+  "issueNumber": "bro-5549",
+  "planId": "5ea4276e-5bc6-4997-881f-d092f0f136cc",
+  "status": "applied",
+  "createdAt": "2026-10-17T15:27:30.760Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5549: checked the owner’s second batch of Gemini deep research (nonprofit pipeline 2023-25, 2023-24 season, 2024-25 season) at source. New records: The Band’s Visit ($8.75M, recouped after 11 months; Broadway News, matches its Form D) and The Play That Goes Wrong ($4M, recouped after 17 months, about $305K weekly operating expenses; Broadway News). SEC Form D figures: Redwood $16M (was ~$15M, unsourced), Call Me Izzy $4,725,000 (was ~$4.9M, unsourced). Once Upon a Mattress stays an estimate, now ~$7.5M from a Form D that does not name the show. Rejected: the Halcyon Theatricals enhancement claims (the company launched Feb 2026, after all six shows), The Wiz $5.6M (Giant’s figure), Lempicka $16M (uncited); Gypsy’s weekly cost lead is a Reddit post this container cannot open.",
+    "steps": [
+      "Edits read every oldValue from live data; two add-commercial-entry actions create the new records."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "field": "capitalization",
+        "oldValue": 15000000,
+        "newValue": 16000000,
+        "description": "redwood: the producers’ SEC Form D (Redwood Onstage LLC, Apr 29 2024) offers $16,000,000; replaces the unsourced ~$15M estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "field": "capitalizationSource",
+        "oldValue": "Estimate (rounded to the nearest $1M)",
+        "newValue": "SEC Form D filing (Redwood Onstage Ltd Liability Co, CIK 0002020481, filed Apr 29, 2024; managers Maximum Entertainment Productions and Loudmouth Media, with Eva Price and Idina Menzel named): total offering amount $16,000,000. https://www.sec.gov/Archives/edgar/data/2020481/000202048124000001/xslFormDX01/primary_doc.xml",
+        "description": "redwood: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "redwood: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/05/redwood-idina-menzel-broadway-closing-date-1236383869/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/12/top-10-broadway-shows-2025-1236658702/",
+            "date": "2025-12-31",
+            "excerpt": "disappointing investors with multimillion-dollar losses"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/05/redwood-idina-menzel-broadway-closing-date-1236383869/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/12/top-10-broadway-shows-2025-1236658702/",
+            "date": "2025-12-31",
+            "excerpt": "disappointing investors with multimillion-dollar losses"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2020481/000202048124000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-04-29"
+          }
+        ],
+        "description": "redwood: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "field": "notes",
+        "oldValue": "Idina Menzel star vehicle. Closed May 18, 2025 after receiving no Tony nominations (Deadline). No capitalization reported and no recoupment announced.",
+        "newValue": "Idina Menzel star vehicle. Closed May 18, 2025 after receiving no Tony nominations (Deadline). The producers’ SEC Form D (Redwood Onstage LLC, April 2024) set the offering at $16 million; no recoupment announced.",
+        "description": "redwood: notes match the filed capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "capitalization",
+        "oldValue": 4900000,
+        "newValue": 4725000,
+        "description": "call-me-izzy: the lead producers’ SEC Form D/A (Scutley LLC, Jun 12 2025, opening night) reports $4,725,000 sold to 67 investors; the ~$4.9M had no source in the record (a BroadwayWorld forum poster’s figure)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Scutley Ltd Liability Co, CIK 0002055014, filed Jun 12, 2025; managed by the lead producers, Robert Ahrens Productions and Power of 3 Productions): $4,725,000 sold to 67 investors. https://www.sec.gov/Archives/edgar/data/2055014/000205501425000002/xslFormDX01/primary_doc.xml",
+        "description": "call-me-izzy: cite the Form D/A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "call-me-izzy: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/06/good-night-and-good-luck-othello-broadway-box-office-1236429403/",
+            "date": "2025-06-16"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/06/good-night-and-good-luck-othello-broadway-box-office-1236429403/",
+            "date": "2025-06-16"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2055014/000205501425000002/xslFormDX01/primary_doc.xml",
+            "date": "2025-06-12"
+          },
+          {
+            "type": "reddit",
+            "url": "https://forum.broadwayworld.com/thread/CALL-ME-IZZY-Previews",
+            "date": "2025-05-24"
+          }
+        ],
+        "description": "call-me-izzy: add the Form D/A and the forum post to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "notes",
+        "oldValue": "Rented Studio 54 from Roundabout — NOT a Roundabout production. No trade report of the capitalization; the ~$4.9M figure is an estimate. Jean Smart knee injury (Jul 7-21) devastated box office, dropping to 28-30% capacity during summer tourist peak. Avg 61.6% capacity at 1,000-seat house made recoupment impossible.",
+        "newValue": "Rented Studio 54 from Roundabout — NOT a Roundabout production. No trade report of the capitalization. The lead producers’ SEC Form D (Scutley LLC, amended June 2025) shows $4,725,000 raised from 67 investors; a BroadwayWorld forum poster had put the “official” capitalization at $4.9 million (May 2025). Jean Smart knee injury (Jul 7-21) devastated box office, dropping to 28-30% capacity during summer tourist peak. Avg 61.6% capacity at 1,000-seat house made recoupment impossible.",
+        "description": "call-me-izzy: notes match the filed capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "costMethodology",
+        "oldValue": "trade-reported",
+        "newValue": null,
+        "description": "call-me-izzy: no weekly running cost was ever reported for this show, so \"trade-reported\" was wrong."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "field": "capitalization",
+        "oldValue": 7000000,
+        "newValue": 7500000,
+        "description": "once-upon-a-mattress-2024: estimate moves to the $7,500,000 offering in a May 20 2024 Form D (Hey Nonny Nonny LLC) signed by Seaview’s Greg Nobile (lead producer), care of Wagner Johnson Productions (the show’s general manager); the filing does not name the show, so it stays an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "field": "capitalizationSource",
+        "oldValue": "Estimate (rounded to the nearest $1M); includes a later Los Angeles engagement",
+        "newValue": "Estimate from an SEC Form D filing that does not name the show (Hey Nonny Nonny Ltd Liability Co, CIK 0002022669, filed May 20, 2024, care of Wagner Johnson Productions, the show’s general manager, and signed by Greg Nobile of Seaview, its lead producer): total offering amount $7,500,000. https://www.sec.gov/Archives/edgar/data/2022669/000202266924000001/xslFormDX01/primary_doc.xml",
+        "description": "once-upon-a-mattress-2024: cite the filing behind the estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2022669/000202266924000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-05-20"
+          }
+        ],
+        "description": "once-upon-a-mattress-2024: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "field": "notes",
+        "oldValue": "Sutton Foster-led Encores! transfer to the Hudson Theatre; 128 performances plus 13 previews. NYT Critics' Pick. No capitalization reported and no recoupment announced.",
+        "newValue": "Sutton Foster-led Encores! transfer to the Hudson Theatre; 128 performances plus 13 previews. NYT Critics' Pick. No capitalization reported; the estimate follows a May 2024 SEC Form D ($7.5 million offering) filed by its lead producer, Seaview’s Greg Nobile, care of its general manager, which does not name the show. No recoupment announced.",
+        "description": "once-upon-a-mattress-2024: notes match the estimate’s basis."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-bands-visit-2017",
+        "entry": {
+          "designation": "Windfall",
+          "capitalization": 8750000,
+          "capitalizationSource": "Broadway News (Sep 10, 2018): \"“The Band’s Visit” has recouped its $8.75 million capitalization after 11 months on Broadway, the producers announced Monday.\" https://www.broadwaynews.com/the-bands-visit-recoups-after-11-months-on-broadway/ The SEC Form D (Band’s Visit Broadway, LLC, filed May 15, 2017) gives the same total offering amount, $8,750,000. https://www.sec.gov/Archives/edgar/data/1705879/000170587917000001/xslFormDX01/primary_doc.xml",
+          "recouped": true,
+          "recoupedDate": "2018-09",
+          "recoupedSource": "Broadway News (Sep 10, 2018): \"“The Band’s Visit” has recouped its $8.75 million capitalization after 11 months on Broadway, the producers announced Monday.\" https://www.broadwaynews.com/the-bands-visit-recoups-after-11-months-on-broadway/",
+          "notes": "Began off-Broadway at the Atlantic Theater Company. Recouped its $8.75 million capitalization after 11 months, announced Sep 10, 2018 (Broadway News); won 10 Tony Awards including Best Musical. No weekly running cost reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-bands-visit-recoups-after-11-months-on-broadway/",
+              "date": "2018-09-10"
+            },
+            {
+              "type": "sec",
+              "url": "https://www.sec.gov/Archives/edgar/data/1705879/000170587917000001/xslFormDX01/primary_doc.xml",
+              "date": "2017-05-15"
+            }
+          ]
+        },
+        "description": "the-bands-visit-2017: no commercial record yet; Broadway News reports the recoupment of its $8.75M capitalization (matches its SEC Form D). Windfall: recouped, model investor multiple 1.34x-1.76x (central 1.57x) against the 1.5x line."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-play-that-goes-wrong-2017",
+        "entry": {
+          "designation": "Trickle",
+          "capitalization": 4000000,
+          "capitalizationSource": "Broadway News (Aug 21, 2018): \"“The Play That Goes Wrong” has recouped its $4 million capitalization, 17 months after it began performances on Broadway.\" https://www.broadwaynews.com/the-play-that-goes-wrong-recoups-its-4-million-investment/",
+          "recouped": true,
+          "recoupedDate": "2018-08",
+          "recoupedSource": "Broadway News (Aug 21, 2018): \"“The Play That Goes Wrong” has recouped its $4 million capitalization, 17 months after it began performances on Broadway.\" https://www.broadwaynews.com/the-play-that-goes-wrong-recoups-its-4-million-investment/",
+          "weeklyRunningCost": 305000,
+          "weeklyRunningCostSource": "Broadway News (Aug 21, 2018): \"Across about one year of performances, the play’s weekly operating expenses averaged about $305,000, according to documents filed with the Securities and Exchange Commission.\" https://www.broadwaynews.com/the-play-that-goes-wrong-recoups-its-4-million-investment/",
+          "weeklyRunningCostBasis": "all-in",
+          "costMethodology": "trade-reported",
+          "notes": "Produced by Kevin McCollum, J.J. Abrams and Kenny Wax. Recouped its $4 million capitalization 17 months after it began performances (Broadway News, Aug 2018), helped by low running costs: weekly operating expenses averaged about $305,000 over about a year, per SEC filings. Extended its run to Jan 6, 2019.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-play-that-goes-wrong-recoups-its-4-million-investment/",
+              "date": "2018-08-21"
+            }
+          ]
+        },
+        "description": "the-play-that-goes-wrong-2017: no commercial record yet; Broadway News reports the recoupment of its $4M capitalization and its average weekly operating expenses from SEC filings (an all-in figure). Trickle: recouped late in a 22-month run."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T16:20:24.809Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-bands-visit-2017 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-play-that-goes-wrong-2017 (Trickle)"
+    }
+  ]
+}

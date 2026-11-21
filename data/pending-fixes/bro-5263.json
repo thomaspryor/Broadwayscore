@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-5263",
+  "planId": "732bb72a-e05f-4f43-a492-c7460d5c4e53",
+  "status": "applied",
+  "createdAt": "2026-10-24T23:33:25.977Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire the never-performed 2024 Vineyard Theatre run of Age Is a Feeling. Vineyard confirms the September 11 to October 13 engagement was postponed before rehearsals. Delete its one collected, invalid BroadwayWorld creative-team promo before retiring only the 2024 Vineyard id.",
+    "steps": [
+      "Delete age-is-a-feeling-off-broadway-2024/broadwayworld--team-bww.json, a pre-postponement creative-team promo marked wrongProduction and invalid and previously rejected as not_a_review. It is not a review; deleting it clears the collected-file count required for retirement.",
+      "Apply the following retire-show action through execute-approved-fix.yml to retire only age-is-a-feeling-off-broadway-2024 and archive its row after the promo file is deleted.",
+      "Verify the retired registry contains the 2024 Vineyard id and shows.json no longer contains it. Preserve the separate 2026 Soho Theatre Walthamstow production and allow future rescheduled Vineyard runs under their own ids."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "age-is-a-feeling-off-broadway-2024/broadwayworld--team-bww.json",
+        "destPath": null,
+        "description": "Pre-postponement BWW creative-team promo, wrongProduction/invalid, rejected not_a_review; not a review"
+      },
+      {
+        "type": "retire-show",
+        "id": "age-is-a-feeling-off-broadway-2024",
+        "expectTitle": "Age Is a Feeling",
+        "nonProduction": true,
+        "evidenceUrl": "https://vineyardtheatre.org/shows/age-is-a-feeling/",
+        "blockTitleVenue": false,
+        "reason": "BRO-5263: Vineyard Theatre states that the scheduled September 11 to October 13, 2024 US premiere was postponed before rehearsals began. This run never played; its previewsStartDate is a cancelled schedule, not evidence of performance. Retire this id only so a future rescheduled run remains discoverable."
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T06:57:31.214Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted age-is-a-feeling-off-broadway-2024/broadwayworld--team-bww.json"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired age-is-a-feeling-off-broadway-2024 (\"Age Is a Feeling\" @ Vineyard Theatre); dropped its audience-buzz.json key"
+    }
+  ],
+  "executedIn": "ci"
+}

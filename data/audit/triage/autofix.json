@@ -1,0 +1,20 @@
+{
+  "system": "autofix",
+  "status": "pass",
+  "lastChecked": "2026-11-21T09:56:54.810Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Autofix: persistent visitor rows with no open card",
+      "status": "pass",
+      "message": "Every visitor-facing row red for 96h+ has an open card"
+    },
+    {
+      "name": "Autofix: digest rows listed 4+ days with no card",
+      "status": "pass",
+      "message": "Every digest row listed 4+ days has a card"
+    }
+  ]
+}

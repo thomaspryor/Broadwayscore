@@ -1,0 +1,162 @@
+{
+  "issueNumber": "bro-6054-d",
+  "planId": "2883f0c3-782b-4c3c-8d83-242fbd1f28e8",
+  "status": "applied",
+  "createdAt": "2026-10-23T11:26:24.036Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6054 part 4: restore the TheaterMania Glengarry 2012 and Vulture Jagged Little Pill 2019 reviews (plan bro-6054 left them pointed at invalid same-URL siblings, so neither outlet counted), byline both Unknown and set wrongAttribution false; relabel the THR Time Stands Still copy filed under David Rooney as Frank Scheck (its same-URL Scheck sibling already points at it as a duplicate); set the 2009 SFGate Race byline to Unknown.",
+    "steps": [
+      "glengarry-glen-ross-2012/theatermania--david-rooney.json: criticName (byline belongs to the sibling outlet critic, text has no byline of its own)",
+      "glengarry-glen-ross-2012/theatermania--david-rooney.json: wrongAttribution (attribution resolved by setting criticName Unknown; false, since the guard keeps a null over a live flag)",
+      "glengarry-glen-ross-2012/theatermania--david-rooney.json: duplicateClearReason (canonical copy)",
+      "glengarry-glen-ross-2012/theatermania--david-rooney.json: duplicateOf (sibling is invalid)",
+      "jagged-little-pill-2019/vulture--jesse-green.json: criticName (byline belongs to the sibling outlet critic, text has no byline of its own)",
+      "jagged-little-pill-2019/vulture--jesse-green.json: wrongAttribution (attribution resolved by setting criticName Unknown; false, since the guard keeps a null over a live flag)",
+      "jagged-little-pill-2019/vulture--jesse-green.json: duplicateClearReason (canonical copy)",
+      "jagged-little-pill-2019/vulture--jesse-green.json: duplicateOf (sibling is invalid)",
+      "time-stands-still-2010/hollywood-reporter--david-rooney.json: criticName (THR Jan 2010 review is by Frank Scheck; Rooney reviewed it for Variety)",
+      "race-2009/sfgate--lily-janiak.json: criticName (no byline; Janiak was not at SFGate in 2009)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/theatermania--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Unknown",
+        "description": "glengarry-glen-ross-2012/theatermania--david-rooney.json: criticName (byline belongs to the sibling outlet critic, text has no byline of its own)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/theatermania--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": false,
+        "description": "glengarry-glen-ross-2012/theatermania--david-rooney.json: wrongAttribution (attribution resolved by setting criticName Unknown; false, since the guard keeps a null over a live flag)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/theatermania--david-rooney.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6054-d: url collision with theatermania--kenji-fujishima.json (wrongProduction, invalid); this file holds the outlet own unique review text and is the canonical copy",
+        "description": "glengarry-glen-ross-2012/theatermania--david-rooney.json: duplicateClearReason (canonical copy)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/theatermania--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": "theatermania--kenji-fujishima.json",
+        "newValue": null,
+        "description": "glengarry-glen-ross-2012/theatermania--david-rooney.json: duplicateOf (sibling is invalid)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Unknown",
+        "description": "jagged-little-pill-2019/vulture--jesse-green.json: criticName (byline belongs to the sibling outlet critic, text has no byline of its own)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": false,
+        "description": "jagged-little-pill-2019/vulture--jesse-green.json: wrongAttribution (attribution resolved by setting criticName Unknown; false, since the guard keeps a null over a live flag)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jesse-green.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6054-d: url collision with vulture--helen-shaw.json (wrongProduction, invalid); this file holds the outlet own unique review text and is the canonical copy",
+        "description": "jagged-little-pill-2019/vulture--jesse-green.json: duplicateClearReason (canonical copy)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": "vulture--helen-shaw.json",
+        "newValue": null,
+        "description": "jagged-little-pill-2019/vulture--jesse-green.json: duplicateOf (sibling is invalid)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "time-stands-still-2010/hollywood-reporter--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Frank Scheck",
+        "description": "time-stands-still-2010/hollywood-reporter--david-rooney.json: criticName (THR Jan 2010 review is by Frank Scheck; Rooney reviewed it for Variety)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "race-2009/sfgate--lily-janiak.json",
+        "field": "criticName",
+        "oldValue": "Lily Janiak",
+        "newValue": "Unknown",
+        "description": "race-2009/sfgate--lily-janiak.json: criticName (no byline; Janiak was not at SFGate in 2009)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T11:44:27.279Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/theatermania--david-rooney.json criticName: \"David Rooney\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/theatermania--david-rooney.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/theatermania--david-rooney.json duplicateClearReason: null -> \"BRO-6054-d: url collision with theatermania--kenji-fujishima.json (wrongProduction, invalid); this file holds the outlet own unique review text and is the canonical copy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/theatermania--david-rooney.json duplicateOf: \"theatermania--kenji-fujishima.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jesse-green.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jesse-green.json duplicateClearReason: null -> \"BRO-6054-d: url collision with vulture--helen-shaw.json (wrongProduction, invalid); this file holds the outlet own unique review text and is the canonical copy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jesse-green.json duplicateOf: \"vulture--helen-shaw.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "time-stands-still-2010/hollywood-reporter--david-rooney.json criticName: \"David Rooney\" -> \"Frank Scheck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "race-2009/sfgate--lily-janiak.json criticName: \"Lily Janiak\" -> \"Unknown\""
+    }
+  ],
+  "executedIn": "ci"
+}

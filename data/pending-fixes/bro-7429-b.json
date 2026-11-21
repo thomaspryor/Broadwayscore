@@ -1,0 +1,449 @@
+{
+  "issueNumber": "bro-7429-b",
+  "planId": "d84e6b00-1419-4eab-8034-7a41db52f2d7",
+  "status": "applied",
+  "createdAt": "2026-11-13T04:57:45.622Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7429: mark different same-title works with workKey, fix wrong/missing writers (part 2 of 2)",
+    "steps": [
+      "Lend Me a Tenor: Sham/Carroll musical adaptation; source https://theatricalia.com/play/7m1/lend-me-a-tenor-musical/production/14b5",
+      "Little Women: Chrisler play adaptation; source https://www.theatreinchicago.com/little-women/11944/",
+      "Little Women: Casey play adaptation; source https://www.thereviewshub.com/little-women-york-theatre-royal/",
+      "Little Women: Gunderson play adaptation; source https://www.theatreinchicago.com/little-women/12474/",
+      "Macbeth: Verdi opera (libretto Piave, after Shakespeare); source data",
+      "Medea: Cherubini opera; source data",
+      "Medea: Cherubini opera (Met, McVicar production); source data",
+      "Oedipus: Hickson adaptation (Old Vic); source data",
+      "Passion: Nichols play; source data",
+      "Rose: Andrew Davies play (Glenda Jackson); source https://www.ibdb.com/broadway-production/rose-4103",
+      "Safe House: L.B. Browne family drama; source https://www.broadwayworld.com/article/SAFE-HOUSE-World-Premiere-to-Star-Karen-Ziemba-Marc-Kudisch-20260803",
+      "Sylvia: Sylvia Pankhurst musical (Kate Prince); source https://en.wikipedia.org/wiki/Sylvia_(musical)",
+      "The Father: Strindberg play; source data",
+      "The Full Monty: Beaufoy stage play set in Sheffield; source https://www.londontheatre.co.uk/theatre-news/news/full-monty-the-play-transfers-to-london-20-feb-2014",
+      "The Three Musketeers: Kauzlaric play adaptation of Dumas; source https://www.theatreinchicago.com/the-three-musketeers/13036/",
+      "The Visit: Kander/Ebb/McNally musical; source data",
+      "Galileo (Trap Door, Chicago) is Brecht's play; source https://www.theatreinchicago.com/galileo/12910/ (blurb and Chicago Reader review cite Brecht)",
+      "Pygmalion is by George Bernard Shaw (Eisa Davis is mis-filed); source https://www.ibdb.com/broadway-production/pygmalion-1",
+      "Kinky Boots book is by Harvey Fierstein; source https://www.ibdb.com/broadway-production/kinky-boots-481156",
+      "Jaja's African Hair Braiding is by Jocelyn Bioh (Jaja is a character); source https://www.ibdb.com/broadway-production/jajas-african-hair-braiding",
+      "Repair garbled template text; source https://www.ibdb.com/broadway-production/galileo-545785"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lend-me-a-tenor-musical-west-end-2011",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "lend-me-a-tenor-sham-carroll-musical-adaptation",
+        "description": "Lend Me a Tenor: Sham/Carroll musical adaptation; source https://theatricalia.com/play/7m1/lend-me-a-tenor-musical/production/14b5"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-regional-2022",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "little-women-chrisler-play-adaptation",
+        "description": "Little Women: Chrisler play adaptation; source https://www.theatreinchicago.com/little-women/11944/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-york-royal-regional-2024",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "little-women-casey-play-adaptation",
+        "description": "Little Women: Casey play adaptation; source https://www.thereviewshub.com/little-women-york-theatre-royal/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-regional-2024",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "little-women-gunderson-play-adaptation",
+        "description": "Little Women: Gunderson play adaptation; source https://www.theatreinchicago.com/little-women/12474/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-off-broadway-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "macbeth-verdi-opera",
+        "description": "Macbeth: Verdi opera (libretto Piave, after Shakespeare); source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "medea-off-broadway-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "medea-cherubini-opera",
+        "description": "Medea: Cherubini opera; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "medea-off-broadway-2022",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "medea-cherubini-opera",
+        "description": "Medea: Cherubini opera (Met, McVicar production); source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oedipus-west-end-2025",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "oedipus-hickson-adaptation",
+        "description": "Oedipus: Hickson adaptation (Old Vic); source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "passion-1983",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "passion-nichols-play",
+        "description": "Passion: Nichols play; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rose-1981",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "rose-andrew-davies-play",
+        "description": "Rose: Andrew Davies play (Glenda Jackson); source https://www.ibdb.com/broadway-production/rose-4103"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "safe-house-off-broadway-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "safe-house-l-b-browne-family-drama",
+        "description": "Safe House: L.B. Browne family drama; source https://www.broadwayworld.com/article/SAFE-HOUSE-World-Premiere-to-Star-Karen-Ziemba-Marc-Kudisch-20260803"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sylvia-west-end-2023",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "sylvia-sylvia-pankhurst-musical",
+        "description": "Sylvia: Sylvia Pankhurst musical (Kate Prince); source https://en.wikipedia.org/wiki/Sylvia_(musical)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-1981",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "the-father-strindberg-play",
+        "description": "The Father: Strindberg play; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-full-monty-west-end-2014",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "the-full-monty-beaufoy-stage-play-set-in-sheffield",
+        "description": "The Full Monty: Beaufoy stage play set in Sheffield; source https://www.londontheatre.co.uk/theatre-news/news/full-monty-the-play-transfers-to-london-20-feb-2014"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-three-musketeers-regional-2026",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "the-three-musketeers-kauzlaric-play-adaptation-of-dumas",
+        "description": "The Three Musketeers: Kauzlaric play adaptation of Dumas; source https://www.theatreinchicago.com/the-three-musketeers/13036/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-visit-2015",
+        "field": "workKey",
+        "oldValue": null,
+        "newValue": "the-visit-kander-ebb-mcnally-musical",
+        "description": "The Visit: Kander/Ebb/McNally musical; source data"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "galileo-regional-2025",
+        "field": "creativeTeam",
+        "oldValue": null,
+        "newValue": [
+          {
+            "name": "Bertolt Brecht",
+            "role": "Playwright",
+            "_source": "BRO-7429 theatreinchicago.com/galileo/12910"
+          }
+        ],
+        "description": "Galileo (Trap Door, Chicago) is Brecht's play; source https://www.theatreinchicago.com/galileo/12910/ (blurb and Chicago Reader review cite Brecht)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pygmalion-2007",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "David Grindley",
+            "role": "Director"
+          },
+          {
+            "name": "Eisa Davis",
+            "role": "Playwright"
+          },
+          {
+            "name": "Jonathan Fensom",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Jason Taylor",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Gregory Clarke",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "David Grindley",
+            "role": "Director"
+          },
+          {
+            "name": "George Bernard Shaw",
+            "role": "Playwright",
+            "_source": "BRO-7429 ibdb"
+          },
+          {
+            "name": "Jonathan Fensom",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Jason Taylor",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Gregory Clarke",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "Pygmalion is by George Bernard Shaw (Eisa Davis is mis-filed); source https://www.ibdb.com/broadway-production/pygmalion-1"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kinky-boots-tour-2025",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "DB Bonds",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Douglas Carter Beane",
+            "role": "Book Writer",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "DB Bonds",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Harvey Fierstein",
+            "role": "Book Writer",
+            "_source": "BRO-7429 ibdb"
+          }
+        ],
+        "description": "Kinky Boots book is by Harvey Fierstein; source https://www.ibdb.com/broadway-production/kinky-boots-481156"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jajas-african-hair-braiding-off-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Jaja Nkengi",
+            "role": "Book Writer"
+          },
+          {
+            "name": "Monique Touko",
+            "role": "Director"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Jocelyn Bioh",
+            "role": "Playwright",
+            "_source": "BRO-7429 ibdb"
+          },
+          {
+            "name": "Monique Touko",
+            "role": "Director"
+          }
+        ],
+        "description": "Jaja's African Hair Braiding is by Jocelyn Bioh (Jaja is a character); source https://www.ibdb.com/broadway-production/jajas-african-hair-braiding"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "galileo-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Danny Strong",
+            "role": "Book"
+          },
+          {
+            "name": "{{plainlist | Zoe Sarnak Michael Weiner",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Danny Strong",
+            "role": "Book"
+          },
+          {
+            "name": "Zoe Sarnak",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Michael Weiner",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "description": "Repair garbled template text; source https://www.ibdb.com/broadway-production/galileo-545785"
+      }
+    ]
+  },
+  "executedAt": "2026-11-13T06:38:30.051Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for lend-me-a-tenor-musical-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for little-women-regional-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for little-women-york-royal-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for little-women-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for macbeth-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for medea-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for medea-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for oedipus-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for passion-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for rose-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for safe-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for sylvia-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for the-father-1981"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for the-full-monty-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for the-three-musketeers-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: workKey updated for the-visit-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for galileo-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for pygmalion-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for kinky-boots-tour-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for jajas-african-hair-braiding-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for galileo-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

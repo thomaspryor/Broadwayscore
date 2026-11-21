@@ -1,0 +1,5559 @@
+{
+  "generatedAt": "2026-11-11T15:02:40.958Z",
+  "card": "BRO-7369",
+  "market": "broadway",
+  "floor": {
+    "shows": 515,
+    "bootstrapMissCriticSampling": 2.42,
+    "ifFullPanelIsItselfADraw": 3.42,
+    "method": "resample each show's critics (one vote per outlet+critic, real tier weights), mean |resample - full|; the second number scales by sqrt(2) because the observed panel is itself one draw. Neither is a hard limit; it estimates the part of the miss that comes from which critics happened to review."
+  },
+  "today": "2026-11-11",
+  "protocol": "Walk-forward by season, ridge lambda 20, getCriticScore target, season-clustered bootstrap seed 7314 B=2000. diff = MAE with minus MAE without; negative is better. Verdict helps only if the 95% interval is entirely below zero.",
+  "baselineV1": {
+    "n": 341,
+    "maeV1": 7.72,
+    "maeCategoryMean": 8.55
+  },
+  "coverage": {
+    "evaluated": 519,
+    "withOpeningCast": 519,
+    "withPreviewData": 517,
+    "withAudienceCapture": 237
+  },
+  "leakage": {
+    "rowsChecked": 550,
+    "perturbation": {
+      "checked": 65,
+      "moved": 0
+    },
+    "lagDays": 3
+  },
+  "showScoreMembers": {
+    "showsTried": 341,
+    "withAtLeastOnePreOpeningMemberReview": 237,
+    "paidFetches": 0,
+    "directRequests": 4225
+  },
+  "wayback": {
+    "showsTried": 30,
+    "withCaptureBeforeOpening": 0,
+    "parsed": 0,
+    "paidFetches": 0
+  },
+  "multipleComparisons": "Bonferroni over 49 tests (6 single-group primary tests, cast+preview, all inputs together, earlier-run linear and step, two forked cuts, flop and rave tails, three combined models, seven Show Score tests). Per-feature rows are exploratory and uncorrected, so a lone exploratory \"helps\" would not count.",
+  "reliability": {
+    "source": "v1 walk-forward (data/audit/review-forecast-backtest.json)",
+    "coverage80": 0.841,
+    "avgWidth80": 28.4,
+    "tierHitModel": 0.362,
+    "tierHitCategoryMean": 0.324,
+    "tierHitPriorElseMean": 0.347
+  },
+  "earlierRunOverlap": {
+    "evaluatedShows": 341,
+    "withEarlierRunWebReviews": 179,
+    "withOwnEarlierProduction": 97,
+    "bothEarlierRunAndOwnProduction": 56,
+    "earlierRunOnly": 123,
+    "correlationShrunkWebMeanVsOwnPriorGap": {
+      "n": 56,
+      "r": 0.57
+    }
+  },
+  "earlierRun": {
+    "source": "research agents scored web reviews of the earlier run (regional, Off-Broadway, West End) found dated before first preview; the model uses only those dated on or before opening minus 3 days (the lag every input uses). Scores are agent-assigned after the Broadway verdict was known: noisy, hindsight risk the date filter cannot remove",
+    "showsInFile": 283,
+    "reviewsInFile": 553,
+    "partialDatesReadAsLastDayOfPeriod": true,
+    "cutDeclared": 75,
+    "forkedCuts": [
+      72,
+      78
+    ],
+    "troubleListUndated": true
+  },
+  "panelIncrement": null,
+  "inputs": [
+    {
+      "input": "Opening-night cast (all six cast features)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 18.24,
+        "diffCI95": [
+          0.04,
+          1.3
+        ],
+        "diffCI95Bonferroni": [
+          -0.25,
+          1.67
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.7,
+        "diffCI95": [
+          0.05,
+          0.33
+        ],
+        "diffCI95Bonferroni": [
+          -0.03,
+          0.39
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.02,
+        "diffCI95": [
+          -0.32,
+          0.26
+        ],
+        "diffCI95Bonferroni": [
+          -0.5,
+          0.37
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.92,
+      "maeCategoryMean": 8.55,
+      "diff": 0.2,
+      "diffCI95": [
+        0.08,
+        0.29
+      ],
+      "diffCI95Bonferroni": [
+        0.01,
+        0.34
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "Preview signals (length, capacity/price/gross trend, gross level)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.33,
+        "diffCI95": [
+          -1.17,
+          0.84
+        ],
+        "diffCI95Bonferroni": [
+          -1.69,
+          1.8
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.75,
+        "diffCI95": [
+          -0.02,
+          0.68
+        ],
+        "diffCI95Bonferroni": [
+          -0.09,
+          1.04
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.22,
+        "diffCI95": [
+          -1.42,
+          -0.29
+        ],
+        "diffCI95Bonferroni": [
+          -1.68,
+          -0.02
+        ],
+        "survivesCorrection": true
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.76,
+      "maeCategoryMean": 8.55,
+      "diff": 0.04,
+      "diffCI95": [
+        -0.19,
+        0.39
+      ],
+      "diffCI95Bonferroni": [
+        -0.27,
+        0.7
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Cast + preview signals together",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 18.06,
+        "diffCI95": [
+          -0.68,
+          1.59
+        ],
+        "diffCI95Bonferroni": [
+          -1.41,
+          2.2
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.91,
+        "diffCI95": [
+          0.13,
+          0.84
+        ],
+        "diffCI95Bonferroni": [
+          0.03,
+          1.15
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.28,
+        "diffCI95": [
+          -1.44,
+          -0.17
+        ],
+        "diffCI95Bonferroni": [
+          -1.78,
+          0.07
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.95,
+      "maeCategoryMean": 8.55,
+      "diff": 0.23,
+      "diffCI95": [
+        0.01,
+        0.55
+      ],
+      "diffCI95Bonferroni": [
+        -0.06,
+        0.85
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "Cast, shows with an opening cast on file only",
+      "kind": "primary-subset",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 18.24,
+        "diffCI95": [
+          0.04,
+          1.3
+        ],
+        "diffCI95Bonferroni": [
+          -0.25,
+          1.67
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.7,
+        "diffCI95": [
+          0.05,
+          0.33
+        ],
+        "diffCI95Bonferroni": [
+          -0.03,
+          0.39
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.02,
+        "diffCI95": [
+          -0.32,
+          0.26
+        ],
+        "diffCI95Bonferroni": [
+          -0.5,
+          0.37
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.92,
+      "maeCategoryMean": 8.55,
+      "diff": 0.2,
+      "diffCI95": [
+        0.08,
+        0.29
+      ],
+      "diffCI95Bonferroni": [
+        0.01,
+        0.34
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "hurts"
+    },
+    {
+      "input": "Preview signals, shows with preview data only",
+      "kind": "primary-subset",
+      "shows": 339,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.33,
+        "diffCI95": [
+          -1.17,
+          0.84
+        ],
+        "diffCI95Bonferroni": [
+          -1.69,
+          1.8
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 259,
+        "maeWithout": 6.5,
+        "maeWith": 6.78,
+        "diffCI95": [
+          0,
+          0.66
+        ],
+        "diffCI95Bonferroni": [
+          -0.08,
+          1
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.22,
+        "diffCI95": [
+          -1.42,
+          -0.29
+        ],
+        "diffCI95Bonferroni": [
+          -1.68,
+          -0.02
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.79,
+      "maeCategoryMean": 8.56,
+      "diff": 0.05,
+      "diffCI95": [
+        -0.17,
+        0.38
+      ],
+      "diffCI95Bonferroni": [
+        -0.26,
+        0.66
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Show Score PRIMARY: shrunk pre-opening member mean, full population",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 15.05,
+        "diffCI95": [
+          -4.82,
+          -0.59
+        ],
+        "diffCI95Bonferroni": [
+          -6.05,
+          0.16
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.32,
+        "diffCI95": [
+          -0.35,
+          -0.01
+        ],
+        "diffCI95Bonferroni": [
+          -0.48,
+          0.09
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.2,
+        "diffCI95": [
+          -1.26,
+          -0.4
+        ],
+        "diffCI95Bonferroni": [
+          -1.51,
+          -0.14
+        ],
+        "survivesCorrection": true
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.27,
+      "maeCategoryMean": 8.55,
+      "diff": -0.45,
+      "diffCI95": [
+        -0.74,
+        -0.22
+      ],
+      "diffCI95Bonferroni": [
+        -0.91,
+        -0.06
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": true,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Show Score primary, restricted to shows whose kept reviews reach within 7 days of the cutoff (others count as no data)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 16.18,
+        "diffCI95": [
+          -2.83,
+          0.04
+        ],
+        "diffCI95Bonferroni": [
+          -3.46,
+          0.85
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.39,
+        "diffCI95": [
+          -0.33,
+          0.11
+        ],
+        "diffCI95Bonferroni": [
+          -0.48,
+          0.22
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.47,
+        "diffCI95": [
+          -0.98,
+          -0.22
+        ],
+        "diffCI95Bonferroni": [
+          -1.18,
+          -0.04
+        ],
+        "survivesCorrection": true
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.45,
+      "maeCategoryMean": 8.55,
+      "diff": -0.27,
+      "diffCI95": [
+        -0.46,
+        -0.11
+      ],
+      "diffCI95Bonferroni": [
+        -0.58,
+        0.02
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Show Score primary, only shows with dated member reviews",
+      "kind": "primary-subset",
+      "shows": 237,
+      "missUnder55": {
+        "n": 14,
+        "maeWithout": 17.79,
+        "maeWith": 12.8,
+        "diffCI95": [
+          -6.91,
+          -2.18
+        ],
+        "diffCI95Bonferroni": [
+          -7.7,
+          -0.85
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 183,
+        "maeWithout": 6.42,
+        "maeWith": 6.21,
+        "diffCI95": [
+          -0.43,
+          0.04
+        ],
+        "diffCI95Bonferroni": [
+          -0.52,
+          0.2
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 10.17,
+        "maeWith": 9.21,
+        "diffCI95": [
+          -1.54,
+          -0.35
+        ],
+        "diffCI95Bonferroni": [
+          -1.71,
+          -0.06
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.11,
+      "maeCategoryMean": 8.1,
+      "diff": -0.62,
+      "diffCI95": [
+        -0.92,
+        -0.35
+      ],
+      "diffCI95Bonferroni": [
+        -1.08,
+        -0.24
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "helps"
+    },
+    {
+      "input": "Show Score secondary (a): share of ratings at or below 60",
+      "kind": "secondary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 14.7,
+        "diffCI95": [
+          -5.24,
+          -0.77
+        ],
+        "diffCI95Bonferroni": [
+          -6.65,
+          -0.28
+        ],
+        "survivesCorrection": true
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.35,
+        "diffCI95": [
+          -0.39,
+          0.07
+        ],
+        "diffCI95Bonferroni": [
+          -0.52,
+          0.18
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.13,
+        "diffCI95": [
+          -1.63,
+          -0.18
+        ],
+        "diffCI95Bonferroni": [
+          -1.98,
+          0.32
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.25,
+      "maeCategoryMean": 8.55,
+      "diff": -0.47,
+      "diffCI95": [
+        -0.85,
+        -0.13
+      ],
+      "diffCI95Bonferroni": [
+        -1.05,
+        0.07
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Show Score secondary (b): floor rule, only moves down when below the earlier shows median",
+      "kind": "secondary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 15.51,
+        "diffCI95": [
+          -4.33,
+          -0.17
+        ],
+        "diffCI95Bonferroni": [
+          -5.7,
+          0.37
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.32,
+        "diffCI95": [
+          -0.35,
+          -0.04
+        ],
+        "diffCI95Bonferroni": [
+          -0.47,
+          0.04
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.76,
+        "diffCI95": [
+          -0.5,
+          -0.13
+        ],
+        "diffCI95Bonferroni": [
+          -0.64,
+          -0.07
+        ],
+        "survivesCorrection": true
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.39,
+      "maeCategoryMean": 8.55,
+      "diff": -0.33,
+      "diffCI95": [
+        -0.54,
+        -0.16
+      ],
+      "diffCI95Bonferroni": [
+        -0.66,
+        -0.04
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": true,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Show Score secondary (c): mean plus review count",
+      "kind": "secondary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 14.96,
+        "diffCI95": [
+          -5.02,
+          -0.54
+        ],
+        "diffCI95Bonferroni": [
+          -6.25,
+          0.24
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.32,
+        "diffCI95": [
+          -0.38,
+          0.01
+        ],
+        "diffCI95Bonferroni": [
+          -0.53,
+          0.14
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.45,
+        "diffCI95": [
+          -1.26,
+          0.25
+        ],
+        "diffCI95Bonferroni": [
+          -1.48,
+          0.8
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.3,
+      "maeCategoryMean": 8.55,
+      "diff": -0.43,
+      "diffCI95": [
+        -0.73,
+        -0.18
+      ],
+      "diffCI95Bonferroni": [
+        -0.92,
+        -0.06
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": true,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Earlier-run web reviews, linear (shrunk mean gap, has flag)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 16.87,
+        "diffCI95": [
+          -1.49,
+          0.19
+        ],
+        "diffCI95Bonferroni": [
+          -1.84,
+          0.67
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.46,
+        "diffCI95": [
+          -0.32,
+          0.3
+        ],
+        "diffCI95Bonferroni": [
+          -0.5,
+          0.48
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.97,
+        "diffCI95": [
+          -0.83,
+          0.53
+        ],
+        "diffCI95Bonferroni": [
+          -1.29,
+          0.88
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.63,
+      "maeCategoryMean": 8.55,
+      "diff": -0.09,
+      "diffCI95": [
+        -0.36,
+        0.19
+      ],
+      "diffCI95Bonferroni": [
+        -0.53,
+        0.38
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-run web reviews, step at 75 (below / at or above)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 16.8,
+        "diffCI95": [
+          -1.51,
+          0.04
+        ],
+        "diffCI95Bonferroni": [
+          -2.01,
+          0.7
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.43,
+        "diffCI95": [
+          -0.25,
+          0.12
+        ],
+        "diffCI95Bonferroni": [
+          -0.36,
+          0.23
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.72,
+        "diffCI95": [
+          -0.88,
+          0.24
+        ],
+        "diffCI95Bonferroni": [
+          -1.2,
+          0.49
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.56,
+      "maeCategoryMean": 8.55,
+      "diff": -0.16,
+      "diffCI95": [
+        -0.34,
+        0.03
+      ],
+      "diffCI95Bonferroni": [
+        -0.43,
+        0.15
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-run, step at 72 (forked cut)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 16.57,
+        "diffCI95": [
+          -1.68,
+          -0.31
+        ],
+        "diffCI95Bonferroni": [
+          -2.1,
+          0.39
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.3,
+        "diffCI95": [
+          -0.45,
+          0.07
+        ],
+        "diffCI95Bonferroni": [
+          -0.57,
+          0.27
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.75,
+        "diffCI95": [
+          -0.78,
+          0.13
+        ],
+        "diffCI95Bonferroni": [
+          -1.1,
+          0.39
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.44,
+      "maeCategoryMean": 8.55,
+      "diff": -0.28,
+      "diffCI95": [
+        -0.5,
+        -0.03
+      ],
+      "diffCI95Bonferroni": [
+        -0.59,
+        0.17
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Earlier-run, step at 78 (forked cut)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 16.86,
+        "diffCI95": [
+          -1.41,
+          -0.12
+        ],
+        "diffCI95Bonferroni": [
+          -1.71,
+          0.16
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.39,
+        "diffCI95": [
+          -0.26,
+          0.03
+        ],
+        "diffCI95Bonferroni": [
+          -0.43,
+          0.12
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.7,
+        "diffCI95": [
+          -1.07,
+          0.35
+        ],
+        "diffCI95Bonferroni": [
+          -1.38,
+          0.62
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.53,
+      "maeCategoryMean": 8.55,
+      "diff": -0.19,
+      "diffCI95": [
+        -0.33,
+        -0.04
+      ],
+      "diffCI95Bonferroni": [
+        -0.41,
+        0.07
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Earlier-run linear, shows with earlier-run reviews only",
+      "kind": "primary-subset",
+      "shows": 179,
+      "missUnder55": {
+        "n": 16,
+        "maeWithout": 16.41,
+        "maeWith": 15.55,
+        "diffCI95": [
+          -1.84,
+          0.09
+        ],
+        "diffCI95Bonferroni": [
+          -2.42,
+          0.86
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 128,
+        "maeWithout": 6.11,
+        "maeWith": 6.19,
+        "diffCI95": [
+          -0.55,
+          0.76
+        ],
+        "diffCI95Bonferroni": [
+          -0.86,
+          1.18
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 35,
+        "maeWithout": 7.96,
+        "maeWith": 6.95,
+        "diffCI95": [
+          -1.69,
+          -0.34
+        ],
+        "diffCI95Bonferroni": [
+          -1.99,
+          0.04
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 7.39,
+      "maeWith": 7.18,
+      "maeCategoryMean": 9.23,
+      "diff": -0.22,
+      "diffCI95": [
+        -0.68,
+        0.31
+      ],
+      "diffCI95Bonferroni": [
+        -0.91,
+        0.74
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-run linear, shows WITHOUT an own earlier production in our data",
+      "kind": "primary-subset",
+      "shows": 123,
+      "missUnder55": {
+        "n": 16,
+        "maeWithout": 16.41,
+        "maeWith": 15.55,
+        "diffCI95": [
+          -1.84,
+          0.09
+        ],
+        "diffCI95Bonferroni": [
+          -2.42,
+          0.86
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 90,
+        "maeWithout": 6.54,
+        "maeWith": 6.27,
+        "diffCI95": [
+          -0.89,
+          0.43
+        ],
+        "diffCI95Bonferroni": [
+          -1.22,
+          0.77
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 17,
+        "maeWithout": 12.28,
+        "maeWith": 11.14,
+        "diffCI95": [
+          -3.07,
+          0.17
+        ],
+        "diffCI95Bonferroni": [
+          -4.68,
+          0.76
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 8.62,
+      "maeWith": 8.15,
+      "maeCategoryMean": 9.03,
+      "diff": -0.46,
+      "diffCI95": [
+        -0.96,
+        0.09
+      ],
+      "diffCI95Bonferroni": [
+        -1.15,
+        0.45
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-run linear, shows WITH an own earlier production in our data",
+      "kind": "primary-subset",
+      "shows": 56,
+      "missUnder55": null,
+      "missMiddle55to82": {
+        "n": 38,
+        "maeWithout": 5.1,
+        "maeWith": 6.01,
+        "diffCI95": [
+          0.2,
+          1.88
+        ],
+        "diffCI95Bonferroni": [
+          -0.42,
+          2.53
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 18,
+        "maeWithout": 3.88,
+        "maeWith": 2.98,
+        "diffCI95": [
+          -1.65,
+          0.03
+        ],
+        "diffCI95Bonferroni": [
+          -1.86,
+          0.65
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 4.71,
+      "maeWith": 5.03,
+      "maeCategoryMean": 9.67,
+      "diff": 0.32,
+      "diffCI95": [
+        -0.23,
+        0.94
+      ],
+      "diffCI95Bonferroni": [
+        -0.63,
+        1.23
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Trouble list (undated, exploratory only, not usable for forecasting)",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.53,
+        "diffCI95": [
+          -0.33,
+          0.22
+        ],
+        "diffCI95Bonferroni": [
+          -0.47,
+          0.29
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.54,
+        "diffCI95": [
+          -0.02,
+          0.14
+        ],
+        "diffCI95Bonferroni": [
+          -0.05,
+          0.19
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.11,
+        "diffCI95": [
+          -0.08,
+          0.27
+        ],
+        "diffCI95Bonferroni": [
+          -0.12,
+          0.44
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.76,
+      "maeCategoryMean": 8.55,
+      "diff": 0.04,
+      "diffCI95": [
+        -0.02,
+        0.12
+      ],
+      "diffCI95Bonferroni": [
+        -0.05,
+        0.17
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Panel: per-critic forecasts with tier weights (all critics, then same type)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 19.12,
+        "diffCI95": [
+          1.1,
+          1.94
+        ],
+        "diffCI95Bonferroni": [
+          0.81,
+          2.2
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.29,
+        "diffCI95": [
+          -0.35,
+          -0.09
+        ],
+        "diffCI95Bonferroni": [
+          -0.43,
+          -0.03
+        ],
+        "survivesCorrection": true
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.67,
+        "diffCI95": [
+          -0.56,
+          -0.21
+        ],
+        "diffCI95Bonferroni": [
+          -0.63,
+          -0.14
+        ],
+        "survivesCorrection": true
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.62,
+      "maeCategoryMean": 8.55,
+      "diff": -0.1,
+      "diffCI95": [
+        -0.19,
+        -0.03
+      ],
+      "diffCI95Bonferroni": [
+        -0.23,
+        0
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Panel, shows with an active panel only",
+      "kind": "primary-subset",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 19.12,
+        "diffCI95": [
+          1.1,
+          1.94
+        ],
+        "diffCI95Bonferroni": [
+          0.81,
+          2.2
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.29,
+        "diffCI95": [
+          -0.35,
+          -0.09
+        ],
+        "diffCI95Bonferroni": [
+          -0.43,
+          -0.03
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.67,
+        "diffCI95": [
+          -0.56,
+          -0.21
+        ],
+        "diffCI95Bonferroni": [
+          -0.63,
+          -0.14
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.62,
+      "maeCategoryMean": 8.55,
+      "diff": -0.1,
+      "diffCI95": [
+        -0.19,
+        -0.03
+      ],
+      "diffCI95Bonferroni": [
+        -0.23,
+        0
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "helps"
+    },
+    {
+      "input": "Awards earned by earlier productions of the same title",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.58,
+        "diffCI95": [
+          -0.06,
+          0.06
+        ],
+        "diffCI95Bonferroni": [
+          -0.11,
+          0.08
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.57,
+        "diffCI95": [
+          -0.02,
+          0.19
+        ],
+        "diffCI95Bonferroni": [
+          -0.06,
+          0.26
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.23,
+        "diffCI95": [
+          -0.01,
+          0.36
+        ],
+        "diffCI95Bonferroni": [
+          -0.08,
+          0.5
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.81,
+      "maeCategoryMean": 8.55,
+      "diff": 0.09,
+      "diffCI95": [
+        0,
+        0.17
+      ],
+      "diffCI95Bonferroni": [
+        -0.04,
+        0.24
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Awards, shows with an earlier production that has honours",
+      "kind": "primary-subset",
+      "shows": 40,
+      "missUnder55": null,
+      "missMiddle55to82": {
+        "n": 32,
+        "maeWithout": 7.42,
+        "maeWith": 8.12,
+        "diffCI95": [
+          -0.06,
+          1.71
+        ],
+        "diffCI95Bonferroni": [
+          -0.32,
+          2.29
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": null,
+      "maeWithout": 7.67,
+      "maeWith": 8.52,
+      "maeCategoryMean": 7.88,
+      "diff": 0.84,
+      "diffCI95": [
+        0.16,
+        1.69
+      ],
+      "diffCI95Bonferroni": [
+        -0.06,
+        2.33
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "hurts"
+    },
+    {
+      "input": "Calendar: spring crush and month of year",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.23,
+        "diffCI95": [
+          -0.85,
+          0.06
+        ],
+        "diffCI95Bonferroni": [
+          -1.2,
+          0.25
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.56,
+        "diffCI95": [
+          -0.08,
+          0.23
+        ],
+        "diffCI95Bonferroni": [
+          -0.16,
+          0.3
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.14,
+        "diffCI95": [
+          -0.16,
+          0.34
+        ],
+        "diffCI95Bonferroni": [
+          -0.33,
+          0.45
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.76,
+      "maeCategoryMean": 8.55,
+      "diff": 0.04,
+      "diffCI95": [
+        -0.09,
+        0.16
+      ],
+      "diffCI95Bonferroni": [
+        -0.14,
+        0.24
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Nonprofit-run house flag",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.66,
+        "diffCI95": [
+          -0.05,
+          0.21
+        ],
+        "diffCI95Bonferroni": [
+          -0.12,
+          0.28
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.5,
+        "diffCI95": [
+          -0.03,
+          0.07
+        ],
+        "diffCI95Bonferroni": [
+          -0.04,
+          0.14
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.01,
+        "diffCI95": [
+          -0.2,
+          0.11
+        ],
+        "diffCI95Bonferroni": [
+          -0.26,
+          0.19
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0.01,
+      "diffCI95": [
+        -0.03,
+        0.06
+      ],
+      "diffCI95Bonferroni": [
+        -0.04,
+        0.12
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Every input together (cast, preview, panel, awards, calendar, house)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 19.24,
+        "diffCI95": [
+          -0.19,
+          3.45
+        ],
+        "diffCI95Bonferroni": [
+          -1.41,
+          4.23
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 7.03,
+        "diffCI95": [
+          0.08,
+          1.11
+        ],
+        "diffCI95Bonferroni": [
+          -0.08,
+          1.53
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.2,
+        "diffCI95": [
+          -1.73,
+          0.13
+        ],
+        "diffCI95Bonferroni": [
+          -2.07,
+          0.78
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 8.12,
+      "maeCategoryMean": 8.55,
+      "diff": 0.4,
+      "diffCI95": [
+        -0.05,
+        0.94
+      ],
+      "diffCI95Bonferroni": [
+        -0.19,
+        1.44
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Combined: panel + earlier-run (step at 75)",
+      "kind": "combined",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.97,
+        "diffCI95": [
+          -0.32,
+          1.07
+        ],
+        "diffCI95Bonferroni": [
+          -0.86,
+          1.59
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.31,
+        "diffCI95": [
+          -0.41,
+          0.04
+        ],
+        "diffCI95Bonferroni": [
+          -0.54,
+          0.16
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.46,
+        "diffCI95": [
+          -1.2,
+          0.05
+        ],
+        "diffCI95Bonferroni": [
+          -1.52,
+          0.36
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.51,
+      "maeCategoryMean": 8.55,
+      "diff": -0.21,
+      "diffCI95": [
+        -0.39,
+        -0.03
+      ],
+      "diffCI95Bonferroni": [
+        -0.48,
+        0.06
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Combined: panel + earlier-run (linear)",
+      "kind": "combined",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.69,
+        "diffCI95": [
+          -0.8,
+          1.04
+        ],
+        "diffCI95Bonferroni": [
+          -1.11,
+          1.49
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.38,
+        "diffCI95": [
+          -0.44,
+          0.24
+        ],
+        "diffCI95Bonferroni": [
+          -0.63,
+          0.42
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.77,
+        "diffCI95": [
+          -1.02,
+          0.38
+        ],
+        "diffCI95Bonferroni": [
+          -1.42,
+          0.7
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.59,
+      "maeCategoryMean": 8.55,
+      "diff": -0.13,
+      "diffCI95": [
+        -0.4,
+        0.15
+      ],
+      "diffCI95Bonferroni": [
+        -0.57,
+        0.3
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Combined: panel + earlier-run (step) + Show Score primary, full population",
+      "kind": "combined",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 15.92,
+        "diffCI95": [
+          -3.91,
+          0.18
+        ],
+        "diffCI95Bonferroni": [
+          -5.36,
+          0.81
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.08,
+        "diffCI95": [
+          -0.7,
+          -0.13
+        ],
+        "diffCI95Bonferroni": [
+          -0.86,
+          0.04
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 7.76,
+        "diffCI95": [
+          -1.95,
+          -0.62
+        ],
+        "diffCI95Bonferroni": [
+          -2.36,
+          -0.21
+        ],
+        "survivesCorrection": true
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.07,
+      "maeCategoryMean": 8.55,
+      "diff": -0.65,
+      "diffCI95": [
+        -0.95,
+        -0.35
+      ],
+      "diffCI95Bonferroni": [
+        -1.13,
+        -0.17
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": true,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Combined: panel + earlier-run + Show Score audience, shows with member reviews only",
+      "kind": "combined-subset",
+      "shows": 237,
+      "missUnder55": {
+        "n": 14,
+        "maeWithout": 17.79,
+        "maeWith": 13.27,
+        "diffCI95": [
+          -6.41,
+          -1.76
+        ],
+        "diffCI95Bonferroni": [
+          -7.25,
+          -0.46
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 183,
+        "maeWithout": 6.42,
+        "maeWith": 5.82,
+        "diffCI95": [
+          -0.99,
+          -0.26
+        ],
+        "diffCI95Bonferroni": [
+          -1.15,
+          -0.03
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 10.17,
+        "maeWith": 8.95,
+        "diffCI95": [
+          -2.11,
+          -0.23
+        ],
+        "diffCI95Bonferroni": [
+          -2.55,
+          0.32
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 7.73,
+      "maeWith": 6.78,
+      "maeCategoryMean": 8.1,
+      "diff": -0.94,
+      "diffCI95": [
+        -1.21,
+        -0.69
+      ],
+      "diffCI95Bonferroni": [
+        -1.36,
+        -0.58
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "helps"
+    },
+    {
+      "input": "Combined: panel + earlier-run (step), shows with member reviews only (same shows, no audience)",
+      "kind": "combined-subset",
+      "shows": 237,
+      "missUnder55": {
+        "n": 14,
+        "maeWithout": 17.79,
+        "maeWith": 17.93,
+        "diffCI95": [
+          -0.78,
+          1.23
+        ],
+        "diffCI95Bonferroni": [
+          -1.07,
+          1.69
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 183,
+        "maeWithout": 6.42,
+        "maeWith": 6.07,
+        "diffCI95": [
+          -0.6,
+          -0.11
+        ],
+        "diffCI95Bonferroni": [
+          -0.69,
+          0.02
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 10.17,
+        "maeWith": 9.27,
+        "diffCI95": [
+          -1.34,
+          -0.35
+        ],
+        "diffCI95Bonferroni": [
+          -1.5,
+          -0.06
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.31,
+      "maeCategoryMean": 8.1,
+      "diff": -0.41,
+      "diffCI95": [
+        -0.6,
+        -0.25
+      ],
+      "diffCI95Bonferroni": [
+        -0.73,
+        -0.14
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "helps"
+    },
+    {
+      "input": "feature: castDevLead",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.56,
+        "diffCI95": [
+          -0.48,
+          0.38
+        ],
+        "diffCI95Bonferroni": [
+          -0.89,
+          0.67
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.55,
+        "diffCI95": [
+          -0.01,
+          0.12
+        ],
+        "diffCI95Bonferroni": [
+          -0.06,
+          0.16
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.07,
+        "diffCI95": [
+          -0.16,
+          0.15
+        ],
+        "diffCI95Bonferroni": [
+          -0.36,
+          0.2
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.77,
+      "maeCategoryMean": 8.55,
+      "diff": 0.05,
+      "diffCI95": [
+        -0.02,
+        0.12
+      ],
+      "diffCI95Bonferroni": [
+        -0.04,
+        0.17
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: castDevAll",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.91,
+        "diffCI95": [
+          0.04,
+          0.7
+        ],
+        "diffCI95Bonferroni": [
+          -0.1,
+          1.04
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.55,
+        "diffCI95": [
+          -0.02,
+          0.16
+        ],
+        "diffCI95Bonferroni": [
+          -0.04,
+          0.23
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9,
+        "diffCI95": [
+          -0.16,
+          0.05
+        ],
+        "diffCI95Bonferroni": [
+          -0.23,
+          0.11
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.77,
+      "maeCategoryMean": 8.55,
+      "diff": 0.05,
+      "diffCI95": [
+        -0.01,
+        0.15
+      ],
+      "diffCI95Bonferroni": [
+        -0.02,
+        0.21
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: castExpLead",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.54,
+        "diffCI95": [
+          -0.13,
+          0.03
+        ],
+        "diffCI95Bonferroni": [
+          -0.17,
+          0.06
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.5,
+        "diffCI95": [
+          -0.02,
+          0.03
+        ],
+        "diffCI95Bonferroni": [
+          -0.03,
+          0.04
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.07,
+        "diffCI95": [
+          -0.03,
+          0.07
+        ],
+        "diffCI95Bonferroni": [
+          -0.06,
+          0.09
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.72,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.02,
+        0.02
+      ],
+      "diffCI95Bonferroni": [
+        -0.02,
+        0.04
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: castExpAll",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.52,
+        "diffCI95": [
+          -0.14,
+          0.01
+        ],
+        "diffCI95Bonferroni": [
+          -0.2,
+          0.03
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.51,
+        "diffCI95": [
+          0,
+          0.04
+        ],
+        "diffCI95Bonferroni": [
+          -0.01,
+          0.06
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.12,
+        "diffCI95": [
+          0.02,
+          0.11
+        ],
+        "diffCI95Bonferroni": [
+          0.01,
+          0.14
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.74,
+      "maeCategoryMean": 8.55,
+      "diff": 0.02,
+      "diffCI95": [
+        0,
+        0.04
+      ],
+      "diffCI95Bonferroni": [
+        -0.01,
+        0.05
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: castDebutFrac",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.68,
+        "diffCI95": [
+          -0.19,
+          0.52
+        ],
+        "diffCI95Bonferroni": [
+          -0.27,
+          0.74
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.53,
+        "diffCI95": [
+          -0.01,
+          0.08
+        ],
+        "diffCI95Bonferroni": [
+          -0.02,
+          0.12
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.12,
+        "diffCI95": [
+          -0.11,
+          0.23
+        ],
+        "diffCI95Bonferroni": [
+          -0.19,
+          0.32
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.76,
+      "maeCategoryMean": 8.55,
+      "diff": 0.04,
+      "diffCI95": [
+        0.01,
+        0.08
+      ],
+      "diffCI95Bonferroni": [
+        -0.02,
+        0.11
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "feature: castSize",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.6,
+        "diffCI95": [
+          -0.15,
+          0.16
+        ],
+        "diffCI95Bonferroni": [
+          -0.28,
+          0.22
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.51,
+        "diffCI95": [
+          -0.02,
+          0.04
+        ],
+        "diffCI95Bonferroni": [
+          -0.04,
+          0.05
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9,
+        "diffCI95": [
+          -0.14,
+          0.03
+        ],
+        "diffCI95Bonferroni": [
+          -0.19,
+          0.08
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.72,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.03,
+        0.03
+      ],
+      "diffCI95Bonferroni": [
+        -0.05,
+        0.06
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: prevLen",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.33,
+        "diffCI95": [
+          -0.51,
+          0.03
+        ],
+        "diffCI95Bonferroni": [
+          -0.64,
+          0.15
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.53,
+        "diffCI95": [
+          -0.01,
+          0.09
+        ],
+        "diffCI95Bonferroni": [
+          -0.03,
+          0.14
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.08,
+        "diffCI95": [
+          -0.16,
+          0.22
+        ],
+        "diffCI95Bonferroni": [
+          -0.27,
+          0.31
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0.01,
+      "diffCI95": [
+        -0.03,
+        0.06
+      ],
+      "diffCI95Bonferroni": [
+        -0.06,
+        0.08
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: prevWeeks",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.67,
+        "diffCI95": [
+          -0.55,
+          0.93
+        ],
+        "diffCI95Bonferroni": [
+          -0.85,
+          1.67
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.7,
+        "diffCI95": [
+          -0.03,
+          0.55
+        ],
+        "diffCI95Bonferroni": [
+          -0.11,
+          0.84
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.42,
+        "diffCI95": [
+          -1.14,
+          -0.21
+        ],
+        "diffCI95Bonferroni": [
+          -1.41,
+          0.09
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.78,
+      "maeCategoryMean": 8.55,
+      "diff": 0.06,
+      "diffCI95": [
+        -0.13,
+        0.33
+      ],
+      "diffCI95Bonferroni": [
+        -0.22,
+        0.55
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: capSlope",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.48,
+        "diffCI95": [
+          -0.45,
+          0.28
+        ],
+        "diffCI95Bonferroni": [
+          -0.65,
+          0.5
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.5,
+        "diffCI95": [
+          -0.04,
+          0.07
+        ],
+        "diffCI95Bonferroni": [
+          -0.06,
+          0.11
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.08,
+        "diffCI95": [
+          -0.15,
+          0.26
+        ],
+        "diffCI95Bonferroni": [
+          -0.21,
+          0.43
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.72,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.03,
+        0.04
+      ],
+      "diffCI95Bonferroni": [
+        -0.05,
+        0.07
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: atpSlope",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.33,
+        "diffCI95": [
+          -0.94,
+          0.47
+        ],
+        "diffCI95Bonferroni": [
+          -1.32,
+          0.84
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.46,
+        "diffCI95": [
+          -0.17,
+          0.08
+        ],
+        "diffCI95Bonferroni": [
+          -0.24,
+          0.17
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.91,
+        "diffCI95": [
+          -0.51,
+          0.28
+        ],
+        "diffCI95Bonferroni": [
+          -0.65,
+          0.62
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.65,
+      "maeCategoryMean": 8.55,
+      "diff": -0.07,
+      "diffCI95": [
+        -0.21,
+        0.06
+      ],
+      "diffCI95Bonferroni": [
+        -0.3,
+        0.11
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: grossRel",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.51,
+        "diffCI95": [
+          -0.14,
+          0
+        ],
+        "diffCI95Bonferroni": [
+          -0.2,
+          0.03
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.5,
+        "diffCI95": [
+          -0.04,
+          0.04
+        ],
+        "diffCI95Bonferroni": [
+          -0.07,
+          0.07
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.12,
+        "diffCI95": [
+          -0.05,
+          0.18
+        ],
+        "diffCI95Bonferroni": [
+          -0.1,
+          0.26
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0.01,
+      "diffCI95": [
+        -0.04,
+        0.05
+      ],
+      "diffCI95Bonferroni": [
+        -0.06,
+        0.08
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: grossSlope",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.37,
+        "diffCI95": [
+          -0.27,
+          -0.13
+        ],
+        "diffCI95Bonferroni": [
+          -0.34,
+          -0.09
+        ],
+        "survivesCorrection": true
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.55,
+        "diffCI95": [
+          -0.01,
+          0.14
+        ],
+        "diffCI95Bonferroni": [
+          -0.04,
+          0.2
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.03,
+        "diffCI95": [
+          -0.25,
+          0.2
+        ],
+        "diffCI95Bonferroni": [
+          -0.41,
+          0.32
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.74,
+      "maeCategoryMean": 8.55,
+      "diff": 0.02,
+      "diffCI95": [
+        -0.05,
+        0.12
+      ],
+      "diffCI95Bonferroni": [
+        -0.07,
+        0.18
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: springCrush",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.27,
+        "diffCI95": [
+          -0.69,
+          0.09
+        ],
+        "diffCI95Bonferroni": [
+          -0.93,
+          0.23
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.56,
+        "diffCI95": [
+          -0.06,
+          0.19
+        ],
+        "diffCI95Bonferroni": [
+          -0.14,
+          0.24
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.05,
+        "diffCI95": [
+          -0.23,
+          0.21
+        ],
+        "diffCI95Bonferroni": [
+          -0.4,
+          0.33
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.75,
+      "maeCategoryMean": 8.55,
+      "diff": 0.03,
+      "diffCI95": [
+        -0.07,
+        0.11
+      ],
+      "diffCI95Bonferroni": [
+        -0.11,
+        0.17
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: monthSin",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.16,
+        "diffCI95": [
+          -0.86,
+          -0.06
+        ],
+        "diffCI95Bonferroni": [
+          -1.22,
+          0.1
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.62,
+        "diffCI95": [
+          -0.01,
+          0.25
+        ],
+        "diffCI95Bonferroni": [
+          -0.08,
+          0.33
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.12,
+        "diffCI95": [
+          -0.17,
+          0.33
+        ],
+        "diffCI95Bonferroni": [
+          -0.27,
+          0.46
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.79,
+      "maeCategoryMean": 8.55,
+      "diff": 0.07,
+      "diffCI95": [
+        -0.04,
+        0.18
+      ],
+      "diffCI95Bonferroni": [
+        -0.1,
+        0.24
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: monthCos",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.64,
+        "diffCI95": [
+          -0.09,
+          0.22
+        ],
+        "diffCI95Bonferroni": [
+          -0.16,
+          0.29
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.53,
+        "diffCI95": [
+          -0.03,
+          0.11
+        ],
+        "diffCI95Bonferroni": [
+          -0.06,
+          0.16
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.03,
+        "diffCI95": [
+          -0.09,
+          0.04
+        ],
+        "diffCI95Bonferroni": [
+          -0.14,
+          0.07
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.75,
+      "maeCategoryMean": 8.55,
+      "diff": 0.03,
+      "diffCI95": [
+        -0.02,
+        0.09
+      ],
+      "diffCI95Bonferroni": [
+        -0.05,
+        0.13
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: nonprofitHouse",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.66,
+        "diffCI95": [
+          -0.05,
+          0.21
+        ],
+        "diffCI95Bonferroni": [
+          -0.12,
+          0.28
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.5,
+        "diffCI95": [
+          -0.03,
+          0.07
+        ],
+        "diffCI95Bonferroni": [
+          -0.04,
+          0.14
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.01,
+        "diffCI95": [
+          -0.2,
+          0.11
+        ],
+        "diffCI95Bonferroni": [
+          -0.26,
+          0.19
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0.01,
+      "diffCI95": [
+        -0.03,
+        0.06
+      ],
+      "diffCI95Bonferroni": [
+        -0.04,
+        0.12
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: awardWins",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.53,
+        "diffCI95": [
+          -0.12,
+          0.02
+        ],
+        "diffCI95Bonferroni": [
+          -0.16,
+          0.03
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.57,
+        "diffCI95": [
+          -0.01,
+          0.16
+        ],
+        "diffCI95Bonferroni": [
+          -0.03,
+          0.24
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.22,
+        "diffCI95": [
+          -0.01,
+          0.39
+        ],
+        "diffCI95Bonferroni": [
+          -0.06,
+          0.53
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.8,
+      "maeCategoryMean": 8.55,
+      "diff": 0.08,
+      "diffCI95": [
+        0,
+        0.17
+      ],
+      "diffCI95Bonferroni": [
+        -0.02,
+        0.24
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: awardNoms",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.56,
+        "diffCI95": [
+          -0.05,
+          0.02
+        ],
+        "diffCI95Bonferroni": [
+          -0.07,
+          0.03
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.5,
+        "diffCI95": [
+          -0.04,
+          0.03
+        ],
+        "diffCI95Bonferroni": [
+          -0.07,
+          0.05
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.18,
+        "diffCI95": [
+          -0.02,
+          0.27
+        ],
+        "diffCI95Bonferroni": [
+          -0.07,
+          0.36
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.74,
+      "maeCategoryMean": 8.55,
+      "diff": 0.02,
+      "diffCI95": [
+        -0.02,
+        0.06
+      ],
+      "diffCI95Bonferroni": [
+        -0.05,
+        0.08
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: panelAll",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 18.96,
+        "diffCI95": [
+          0.96,
+          1.74
+        ],
+        "diffCI95Bonferroni": [
+          0.77,
+          1.94
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.35,
+        "diffCI95": [
+          -0.26,
+          -0.05
+        ],
+        "diffCI95Bonferroni": [
+          -0.33,
+          0
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.65,
+        "diffCI95": [
+          -0.55,
+          -0.26
+        ],
+        "diffCI95Bonferroni": [
+          -0.64,
+          -0.19
+        ],
+        "survivesCorrection": true
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.65,
+      "maeCategoryMean": 8.55,
+      "diff": -0.07,
+      "diffCI95": [
+        -0.15,
+        -0.01
+      ],
+      "diffCI95Bonferroni": [
+        -0.2,
+        0.03
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "feature: panelType",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 18.96,
+        "diffCI95": [
+          1.04,
+          1.72
+        ],
+        "diffCI95Bonferroni": [
+          0.83,
+          1.89
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.3,
+        "diffCI95": [
+          -0.33,
+          -0.09
+        ],
+        "diffCI95Bonferroni": [
+          -0.41,
+          -0.03
+        ],
+        "survivesCorrection": true
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.72,
+        "diffCI95": [
+          -0.48,
+          -0.19
+        ],
+        "diffCI95Bonferroni": [
+          -0.57,
+          -0.12
+        ],
+        "survivesCorrection": true
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.62,
+      "maeCategoryMean": 8.55,
+      "diff": -0.1,
+      "diffCI95": [
+        -0.18,
+        -0.04
+      ],
+      "diffCI95Bonferroni": [
+        -0.22,
+        -0.01
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": true,
+      "inCorrectionFamily": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Earlier-production audience vs v1: shrunk member mean, all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.62,
+        "diffCI95": [
+          -0.13,
+          0.2
+        ],
+        "diffCI95Bonferroni": [
+          -0.24,
+          0.31
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.57,
+        "diffCI95": [
+          -0.09,
+          0.23
+        ],
+        "diffCI95Bonferroni": [
+          -0.19,
+          0.34
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.1,
+        "diffCI95": [
+          -0.2,
+          0.31
+        ],
+        "diffCI95Bonferroni": [
+          -0.31,
+          0.45
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.79,
+      "maeCategoryMean": 8.55,
+      "diff": 0.07,
+      "diffCI95": [
+        -0.06,
+        0.22
+      ],
+      "diffCI95Bonferroni": [
+        -0.12,
+        0.36
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-production audience vs v1: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 16.72,
+        "maeWith": 16.78,
+        "diffCI95": [
+          -0.17,
+          0.27
+        ],
+        "diffCI95Bonferroni": [
+          -0.29,
+          0.39
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 6.25,
+        "maeWith": 6.32,
+        "diffCI95": [
+          -0.14,
+          0.28
+        ],
+        "diffCI95Bonferroni": [
+          -0.25,
+          0.36
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.56,
+        "maeWith": 7.66,
+        "diffCI95": [
+          -0.22,
+          0.57
+        ],
+        "diffCI95Bonferroni": [
+          -0.36,
+          0.92
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.34,
+      "maeWith": 7.42,
+      "maeCategoryMean": 8.96,
+      "diff": 0.08,
+      "diffCI95": [
+        -0.07,
+        0.24
+      ],
+      "diffCI95Bonferroni": [
+        -0.14,
+        0.38
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-production audience INCREMENT over landed v2 (v1 + Show Score mean and n): all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 14.96,
+        "maeWith": 15.11,
+        "diffCI95": [
+          0.02,
+          0.31
+        ],
+        "diffCI95Bonferroni": [
+          -0.02,
+          0.4
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.32,
+        "maeWith": 6.31,
+        "diffCI95": [
+          -0.08,
+          0.06
+        ],
+        "diffCI95Bonferroni": [
+          -0.15,
+          0.14
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 8.45,
+        "maeWith": 8.57,
+        "diffCI95": [
+          -0.01,
+          0.29
+        ],
+        "diffCI95Bonferroni": [
+          -0.06,
+          0.39
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.3,
+      "maeWith": 7.32,
+      "maeCategoryMean": 8.55,
+      "diff": 0.03,
+      "diffCI95": [
+        -0.04,
+        0.11
+      ],
+      "diffCI95Bonferroni": [
+        -0.09,
+        0.21
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-production audience INCREMENT over landed v2: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 13.38,
+        "maeWith": 13.56,
+        "diffCI95": [
+          0.02,
+          0.35
+        ],
+        "diffCI95Bonferroni": [
+          -0.05,
+          0.44
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 5.94,
+        "maeWith": 5.94,
+        "diffCI95": [
+          -0.1,
+          0.09
+        ],
+        "diffCI95Bonferroni": [
+          -0.17,
+          0.13
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.22,
+        "maeWith": 7.39,
+        "diffCI95": [
+          -0.01,
+          0.43
+        ],
+        "diffCI95Bonferroni": [
+          -0.08,
+          0.62
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 6.78,
+      "maeWith": 6.83,
+      "maeCategoryMean": 8.96,
+      "diff": 0.05,
+      "diffCI95": [
+        -0.04,
+        0.14
+      ],
+      "diffCI95Bonferroni": [
+        -0.1,
+        0.23
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-production audience INCREMENT over landed v2, confirmed pages only (no guessed slugs): all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 14.96,
+        "maeWith": 15.08,
+        "diffCI95": [
+          0.04,
+          0.22
+        ],
+        "diffCI95Bonferroni": [
+          -0.01,
+          0.28
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.32,
+        "maeWith": 6.29,
+        "diffCI95": [
+          -0.07,
+          0.01
+        ],
+        "diffCI95Bonferroni": [
+          -0.1,
+          0.02
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 8.45,
+        "maeWith": 8.52,
+        "diffCI95": [
+          0,
+          0.17
+        ],
+        "diffCI95Bonferroni": [
+          -0.01,
+          0.24
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.3,
+      "maeWith": 7.29,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.02,
+        0.02
+      ],
+      "diffCI95Bonferroni": [
+        -0.03,
+        0.02
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-production audience vs v1, only shows that carry it",
+      "kind": "exploratory-subset",
+      "shows": 110,
+      "missUnder55": null,
+      "missMiddle55to82": {
+        "n": 79,
+        "maeWithout": 6.03,
+        "maeWith": 6.28,
+        "diffCI95": [
+          -0.25,
+          0.79
+        ],
+        "diffCI95Bonferroni": [
+          -0.54,
+          1.18
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 29,
+        "maeWithout": 7.53,
+        "maeWith": 7.58,
+        "diffCI95": [
+          -0.46,
+          0.57
+        ],
+        "diffCI95Bonferroni": [
+          -0.77,
+          0.82
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 6.66,
+      "maeWith": 6.87,
+      "maeCategoryMean": 8.97,
+      "diff": 0.21,
+      "diffCI95": [
+        -0.2,
+        0.67
+      ],
+      "diffCI95Bonferroni": [
+        -0.38,
+        1.08
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-production audience increment over v2, only shows that carry it",
+      "kind": "exploratory-subset",
+      "shows": 110,
+      "missUnder55": null,
+      "missMiddle55to82": {
+        "n": 79,
+        "maeWithout": 5.88,
+        "maeWith": 5.92,
+        "diffCI95": [
+          -0.19,
+          0.3
+        ],
+        "diffCI95Bonferroni": [
+          -0.36,
+          0.54
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 29,
+        "maeWithout": 7.13,
+        "maeWith": 7.35,
+        "diffCI95": [
+          -0.02,
+          0.51
+        ],
+        "diffCI95Bonferroni": [
+          -0.17,
+          0.71
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 6.37,
+      "maeWith": 6.46,
+      "maeCategoryMean": 8.97,
+      "diff": 0.09,
+      "diffCI95": [
+        -0.1,
+        0.35
+      ],
+      "diffCI95Bonferroni": [
+        -0.25,
+        0.6
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-production audience increment over v2, flag plus score",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 14.96,
+        "maeWith": 14.97,
+        "diffCI95": [
+          -0.27,
+          0.31
+        ],
+        "diffCI95Bonferroni": [
+          -0.41,
+          0.51
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.32,
+        "maeWith": 6.43,
+        "diffCI95": [
+          -0.05,
+          0.3
+        ],
+        "diffCI95Bonferroni": [
+          -0.14,
+          0.39
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 8.45,
+        "maeWith": 8.39,
+        "diffCI95": [
+          -0.51,
+          0.4
+        ],
+        "diffCI95Bonferroni": [
+          -0.78,
+          0.85
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.3,
+      "maeWith": 7.37,
+      "maeCategoryMean": 8.55,
+      "diff": 0.08,
+      "diffCI95": [
+        -0.07,
+        0.26
+      ],
+      "diffCI95Bonferroni": [
+        -0.16,
+        0.39
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Earlier-production audience increment over v2, transfers that carry it",
+      "kind": "exploratory-subset",
+      "shows": 92,
+      "missUnder55": null,
+      "missMiddle55to82": {
+        "n": 63,
+        "maeWithout": 5.92,
+        "maeWith": 5.94,
+        "diffCI95": [
+          -0.22,
+          0.27
+        ],
+        "diffCI95Bonferroni": [
+          -0.36,
+          0.39
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 27,
+        "maeWithout": 7.21,
+        "maeWith": 7.46,
+        "diffCI95": [
+          -0.02,
+          0.61
+        ],
+        "diffCI95Bonferroni": [
+          -0.21,
+          0.92
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 6.5,
+      "maeWith": 6.59,
+      "maeCategoryMean": 9.45,
+      "diff": 0.09,
+      "diffCI95": [
+        -0.09,
+        0.31
+      ],
+      "diffCI95Bonferroni": [
+        -0.22,
+        0.49
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "A: own earlier-production critic score (count-shrunk gap, opened before first preview) vs v1: all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.69,
+        "diffCI95": [
+          -0.12,
+          0.4
+        ],
+        "diffCI95Bonferroni": [
+          -0.21,
+          0.54
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.62,
+        "diffCI95": [
+          0.05,
+          0.22
+        ],
+        "diffCI95Bonferroni": [
+          0.02,
+          0.28
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.23,
+        "diffCI95": [
+          -0.04,
+          0.4
+        ],
+        "diffCI95Bonferroni": [
+          -0.15,
+          0.55
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.86,
+      "maeCategoryMean": 8.55,
+      "diff": 0.14,
+      "diffCI95": [
+        0.04,
+        0.24
+      ],
+      "diffCI95Bonferroni": [
+        0,
+        0.3
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "A: own earlier-production critic score (count-shrunk gap, opened before first preview) vs v1: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 16.72,
+        "maeWith": 16.88,
+        "diffCI95": [
+          -0.19,
+          0.56
+        ],
+        "diffCI95Bonferroni": [
+          -0.36,
+          0.75
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 6.25,
+        "maeWith": 6.45,
+        "diffCI95": [
+          0.08,
+          0.36
+        ],
+        "diffCI95Bonferroni": [
+          0.06,
+          0.49
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.56,
+        "maeWith": 7.8,
+        "diffCI95": [
+          -0.05,
+          0.49
+        ],
+        "diffCI95Bonferroni": [
+          -0.22,
+          0.62
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.34,
+      "maeWith": 7.54,
+      "maeCategoryMean": 8.96,
+      "diff": 0.21,
+      "diffCI95": [
+        0.07,
+        0.36
+      ],
+      "diffCI95Bonferroni": [
+        0.02,
+        0.48
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "A: own earlier-production critic score (count-shrunk gap, opened before first preview) INCREMENT over landed v2: all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 14.96,
+        "maeWith": 15.09,
+        "diffCI95": [
+          -0.08,
+          0.42
+        ],
+        "diffCI95Bonferroni": [
+          -0.14,
+          0.57
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.32,
+        "maeWith": 6.38,
+        "diffCI95": [
+          0,
+          0.16
+        ],
+        "diffCI95Bonferroni": [
+          -0.03,
+          0.24
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 8.45,
+        "maeWith": 8.61,
+        "diffCI95": [
+          -0.04,
+          0.38
+        ],
+        "diffCI95Bonferroni": [
+          -0.13,
+          0.55
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.3,
+      "maeWith": 7.38,
+      "maeCategoryMean": 8.55,
+      "diff": 0.08,
+      "diffCI95": [
+        0.01,
+        0.19
+      ],
+      "diffCI95Bonferroni": [
+        -0.03,
+        0.27
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "A: own earlier-production critic score (count-shrunk gap, opened before first preview) INCREMENT over landed v2: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 13.38,
+        "maeWith": 13.56,
+        "diffCI95": [
+          -0.12,
+          0.58
+        ],
+        "diffCI95Bonferroni": [
+          -0.22,
+          0.79
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 5.94,
+        "maeWith": 6.05,
+        "diffCI95": [
+          0,
+          0.26
+        ],
+        "diffCI95Bonferroni": [
+          -0.04,
+          0.38
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.22,
+        "maeWith": 7.44,
+        "diffCI95": [
+          -0.04,
+          0.46
+        ],
+        "diffCI95Bonferroni": [
+          -0.17,
+          0.6
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 6.78,
+      "maeWith": 6.91,
+      "maeCategoryMean": 8.96,
+      "diff": 0.13,
+      "diffCI95": [
+        0.01,
+        0.29
+      ],
+      "diffCI95Bonferroni": [
+        -0.04,
+        0.41
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "A: own earlier-production critic score (count-shrunk gap, opened before first preview) INCREMENT over landed v2: only shows that carry it",
+      "kind": "exploratory-subset",
+      "shows": 78,
+      "missUnder55": null,
+      "missMiddle55to82": {
+        "n": 58,
+        "maeWithout": 5.4,
+        "maeWith": 5.61,
+        "diffCI95": [
+          -0.01,
+          0.58
+        ],
+        "diffCI95Bonferroni": [
+          -0.09,
+          0.85
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 19,
+        "maeWithout": 3.79,
+        "maeWith": 4.18,
+        "diffCI95": [
+          -0.07,
+          0.96
+        ],
+        "diffCI95Bonferroni": [
+          -0.23,
+          1.54
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 5.22,
+      "maeWith": 5.45,
+      "maeCategoryMean": 9.2,
+      "diff": 0.24,
+      "diffCI95": [
+        -0.02,
+        0.65
+      ],
+      "diffCI95Bonferroni": [
+        -0.13,
+        0.97
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "B: tier-weighted earlier-production score from reviews dated by the cutoff vs v1: all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.66,
+        "diffCI95": [
+          -0.12,
+          0.31
+        ],
+        "diffCI95Bonferroni": [
+          -0.22,
+          0.41
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.63,
+        "diffCI95": [
+          0.05,
+          0.24
+        ],
+        "diffCI95Bonferroni": [
+          0.02,
+          0.3
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.27,
+        "diffCI95": [
+          -0.02,
+          0.45
+        ],
+        "diffCI95Bonferroni": [
+          -0.11,
+          0.6
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.87,
+      "maeCategoryMean": 8.55,
+      "diff": 0.15,
+      "diffCI95": [
+        0.05,
+        0.25
+      ],
+      "diffCI95Bonferroni": [
+        0,
+        0.32
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "B: tier-weighted earlier-production score from reviews dated by the cutoff vs v1: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 16.72,
+        "maeWith": 16.83,
+        "diffCI95": [
+          -0.2,
+          0.44
+        ],
+        "diffCI95Bonferroni": [
+          -0.37,
+          0.57
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 6.25,
+        "maeWith": 6.45,
+        "diffCI95": [
+          0.08,
+          0.38
+        ],
+        "diffCI95Bonferroni": [
+          0.04,
+          0.53
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.56,
+        "maeWith": 7.85,
+        "diffCI95": [
+          -0.01,
+          0.54
+        ],
+        "diffCI95Bonferroni": [
+          -0.17,
+          0.68
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.34,
+      "maeWith": 7.55,
+      "maeCategoryMean": 8.96,
+      "diff": 0.22,
+      "diffCI95": [
+        0.08,
+        0.38
+      ],
+      "diffCI95Bonferroni": [
+        0.01,
+        0.51
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "B: tier-weighted earlier-production score from reviews dated by the cutoff INCREMENT over landed v2: all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 14.96,
+        "maeWith": 15.06,
+        "diffCI95": [
+          -0.08,
+          0.35
+        ],
+        "diffCI95Bonferroni": [
+          -0.14,
+          0.46
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.32,
+        "maeWith": 6.4,
+        "diffCI95": [
+          0.01,
+          0.17
+        ],
+        "diffCI95Bonferroni": [
+          -0.02,
+          0.25
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 8.45,
+        "maeWith": 8.63,
+        "diffCI95": [
+          -0.01,
+          0.4
+        ],
+        "diffCI95Bonferroni": [
+          -0.1,
+          0.55
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.3,
+      "maeWith": 7.39,
+      "maeCategoryMean": 8.55,
+      "diff": 0.1,
+      "diffCI95": [
+        0.02,
+        0.2
+      ],
+      "diffCI95Bonferroni": [
+        -0.03,
+        0.27
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "B: tier-weighted earlier-production score from reviews dated by the cutoff INCREMENT over landed v2: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 13.38,
+        "maeWith": 13.52,
+        "diffCI95": [
+          -0.13,
+          0.48
+        ],
+        "diffCI95Bonferroni": [
+          -0.24,
+          0.65
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 5.94,
+        "maeWith": 6.07,
+        "diffCI95": [
+          0.02,
+          0.28
+        ],
+        "diffCI95Bonferroni": [
+          -0.02,
+          0.39
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.22,
+        "maeWith": 7.47,
+        "diffCI95": [
+          0,
+          0.48
+        ],
+        "diffCI95Bonferroni": [
+          -0.14,
+          0.6
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 6.78,
+      "maeWith": 6.93,
+      "maeCategoryMean": 8.96,
+      "diff": 0.15,
+      "diffCI95": [
+        0.03,
+        0.31
+      ],
+      "diffCI95Bonferroni": [
+        -0.03,
+        0.41
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "B: tier-weighted earlier-production score from reviews dated by the cutoff INCREMENT over landed v2: only shows that carry it",
+      "kind": "exploratory-subset",
+      "shows": 78,
+      "missUnder55": null,
+      "missMiddle55to82": {
+        "n": 58,
+        "maeWithout": 5.4,
+        "maeWith": 5.65,
+        "diffCI95": [
+          0.03,
+          0.66
+        ],
+        "diffCI95Bonferroni": [
+          -0.04,
+          0.98
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 19,
+        "maeWithout": 3.79,
+        "maeWith": 4.26,
+        "diffCI95": [
+          0.01,
+          1.02
+        ],
+        "diffCI95Bonferroni": [
+          -0.15,
+          1.61
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 5.22,
+      "maeWith": 5.5,
+      "maeCategoryMean": 9.2,
+      "diff": 0.28,
+      "diffCI95": [
+        0.03,
+        0.71
+      ],
+      "diffCI95Bonferroni": [
+        -0.07,
+        1.06
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "hurts"
+    },
+    {
+      "input": "B: Tier-1-only earlier-production score vs v1: all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.59,
+        "diffCI95": [
+          -0.17,
+          0.18
+        ],
+        "diffCI95Bonferroni": [
+          -0.29,
+          0.24
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.62,
+        "diffCI95": [
+          0.05,
+          0.22
+        ],
+        "diffCI95Bonferroni": [
+          0.03,
+          0.28
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.24,
+        "diffCI95": [
+          -0.07,
+          0.42
+        ],
+        "diffCI95Bonferroni": [
+          -0.17,
+          0.58
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.85,
+      "maeCategoryMean": 8.55,
+      "diff": 0.13,
+      "diffCI95": [
+        0.04,
+        0.23
+      ],
+      "diffCI95Bonferroni": [
+        0,
+        0.3
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "B: Tier-1-only earlier-production score vs v1: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 16.72,
+        "maeWith": 16.74,
+        "diffCI95": [
+          -0.28,
+          0.25
+        ],
+        "diffCI95Bonferroni": [
+          -0.49,
+          0.33
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 6.25,
+        "maeWith": 6.44,
+        "diffCI95": [
+          0.07,
+          0.35
+        ],
+        "diffCI95Bonferroni": [
+          0.03,
+          0.47
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.56,
+        "maeWith": 7.8,
+        "diffCI95": [
+          -0.08,
+          0.51
+        ],
+        "diffCI95Bonferroni": [
+          -0.27,
+          0.65
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.34,
+      "maeWith": 7.52,
+      "maeCategoryMean": 8.96,
+      "diff": 0.19,
+      "diffCI95": [
+        0.06,
+        0.34
+      ],
+      "diffCI95Bonferroni": [
+        0.01,
+        0.46
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "B: Tier-1-only earlier-production score INCREMENT over landed v2: all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 14.96,
+        "maeWith": 15.01,
+        "diffCI95": [
+          -0.11,
+          0.24
+        ],
+        "diffCI95Bonferroni": [
+          -0.18,
+          0.33
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.32,
+        "maeWith": 6.41,
+        "diffCI95": [
+          0.02,
+          0.19
+        ],
+        "diffCI95Bonferroni": [
+          0,
+          0.25
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 8.45,
+        "maeWith": 8.63,
+        "diffCI95": [
+          -0.02,
+          0.4
+        ],
+        "diffCI95Bonferroni": [
+          -0.12,
+          0.56
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.3,
+      "maeWith": 7.4,
+      "maeCategoryMean": 8.55,
+      "diff": 0.1,
+      "diffCI95": [
+        0.02,
+        0.21
+      ],
+      "diffCI95Bonferroni": [
+        -0.02,
+        0.26
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "B: Tier-1-only earlier-production score INCREMENT over landed v2: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 13.38,
+        "maeWith": 13.46,
+        "diffCI95": [
+          -0.17,
+          0.33
+        ],
+        "diffCI95Bonferroni": [
+          -0.31,
+          0.44
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 5.94,
+        "maeWith": 6.08,
+        "diffCI95": [
+          0.03,
+          0.3
+        ],
+        "diffCI95Bonferroni": [
+          -0.01,
+          0.39
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.22,
+        "maeWith": 7.47,
+        "diffCI95": [
+          -0.02,
+          0.49
+        ],
+        "diffCI95Bonferroni": [
+          -0.17,
+          0.62
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 6.78,
+      "maeWith": 6.93,
+      "maeCategoryMean": 8.96,
+      "diff": 0.16,
+      "diffCI95": [
+        0.03,
+        0.31
+      ],
+      "diffCI95Bonferroni": [
+        -0.02,
+        0.4
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "B: Tier-1-only earlier-production score INCREMENT over landed v2: only shows that carry it",
+      "kind": "exploratory-subset",
+      "shows": 77,
+      "missUnder55": null,
+      "missMiddle55to82": {
+        "n": 57,
+        "maeWithout": 5.47,
+        "maeWith": 5.75,
+        "diffCI95": [
+          0.02,
+          0.76
+        ],
+        "diffCI95Bonferroni": [
+          -0.06,
+          1.24
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 19,
+        "maeWithout": 3.79,
+        "maeWith": 4.28,
+        "diffCI95": [
+          0.02,
+          1.07
+        ],
+        "diffCI95Bonferroni": [
+          -0.18,
+          1.66
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 5.26,
+      "maeWith": 5.57,
+      "maeCategoryMean": 9.14,
+      "diff": 0.31,
+      "diffCI95": [
+        0.03,
+        0.8
+      ],
+      "diffCI95Bonferroni": [
+        -0.09,
+        1.26
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "hurts"
+    },
+    {
+      "input": "C-gap: earlier-production audience minus earlier-production critics vs v1: all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 17.49,
+        "diffCI95": [
+          -0.23,
+          0.01
+        ],
+        "diffCI95Bonferroni": [
+          -0.35,
+          0.03
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.76,
+        "diffCI95": [
+          0,
+          0.69
+        ],
+        "diffCI95Bonferroni": [
+          -0.04,
+          0.98
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 9.37,
+        "diffCI95": [
+          -0.13,
+          0.84
+        ],
+        "diffCI95Bonferroni": [
+          -0.32,
+          1.19
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.96,
+      "maeCategoryMean": 8.55,
+      "diff": 0.24,
+      "diffCI95": [
+        0.02,
+        0.58
+      ],
+      "diffCI95Bonferroni": [
+        -0.05,
+        0.82
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "C-gap: earlier-production audience minus earlier-production critics vs v1: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 16.72,
+        "maeWith": 16.6,
+        "diffCI95": [
+          -0.31,
+          0.02
+        ],
+        "diffCI95Bonferroni": [
+          -0.42,
+          0.05
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 6.25,
+        "maeWith": 6.65,
+        "diffCI95": [
+          -0.01,
+          1.02
+        ],
+        "diffCI95Bonferroni": [
+          -0.09,
+          1.44
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.56,
+        "maeWith": 7.97,
+        "diffCI95": [
+          -0.17,
+          1.24
+        ],
+        "diffCI95Bonferroni": [
+          -0.47,
+          1.81
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.34,
+      "maeWith": 7.7,
+      "maeCategoryMean": 8.96,
+      "diff": 0.36,
+      "diffCI95": [
+        0.02,
+        0.86
+      ],
+      "diffCI95Bonferroni": [
+        -0.07,
+        1.3
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "C-gap: earlier-production audience minus earlier-production critics INCREMENT over landed v2: all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 14.96,
+        "maeWith": 14.89,
+        "diffCI95": [
+          -0.18,
+          0.02
+        ],
+        "diffCI95Bonferroni": [
+          -0.26,
+          0.03
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.32,
+        "maeWith": 6.52,
+        "diffCI95": [
+          0,
+          0.54
+        ],
+        "diffCI95Bonferroni": [
+          -0.03,
+          0.78
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 8.45,
+        "maeWith": 8.77,
+        "diffCI95": [
+          -0.01,
+          0.73
+        ],
+        "diffCI95Bonferroni": [
+          -0.14,
+          0.99
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.3,
+      "maeWith": 7.49,
+      "maeCategoryMean": 8.55,
+      "diff": 0.2,
+      "diffCI95": [
+        0.02,
+        0.48
+      ],
+      "diffCI95Bonferroni": [
+        -0.02,
+        0.67
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "C-gap: earlier-production audience minus earlier-production critics INCREMENT over landed v2: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 13.38,
+        "maeWith": 13.27,
+        "diffCI95": [
+          -0.27,
+          0.03
+        ],
+        "diffCI95Bonferroni": [
+          -0.39,
+          0.05
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 5.94,
+        "maeWith": 6.25,
+        "diffCI95": [
+          -0.01,
+          0.81
+        ],
+        "diffCI95Bonferroni": [
+          -0.05,
+          1.17
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.22,
+        "maeWith": 7.64,
+        "diffCI95": [
+          -0.01,
+          1.05
+        ],
+        "diffCI95Bonferroni": [
+          -0.19,
+          1.49
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 6.78,
+      "maeWith": 7.07,
+      "maeCategoryMean": 8.96,
+      "diff": 0.29,
+      "diffCI95": [
+        0.02,
+        0.71
+      ],
+      "diffCI95Bonferroni": [
+        -0.04,
+        1.06
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "C-gap: earlier-production audience minus earlier-production critics INCREMENT over landed v2: only shows that carry it",
+      "kind": "exploratory-subset",
+      "shows": 42,
+      "missUnder55": null,
+      "missMiddle55to82": {
+        "n": 27,
+        "maeWithout": 5.18,
+        "maeWith": 6.85,
+        "diffCI95": [
+          -0.14,
+          4.28
+        ],
+        "diffCI95Bonferroni": [
+          -0.48,
+          5.3
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 14,
+        "maeWithout": 4.7,
+        "maeWith": 5.93,
+        "diffCI95": [
+          0.14,
+          2.22
+        ],
+        "diffCI95Bonferroni": [
+          -0.45,
+          2.64
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 5.41,
+      "maeWith": 6.86,
+      "maeCategoryMean": 10.24,
+      "diff": 1.46,
+      "diffCI95": [
+        0.05,
+        3.43
+      ],
+      "diffCI95Bonferroni": [
+        -0.16,
+        4.51
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "hurts"
+    },
+    {
+      "input": "D: TRANSFER MODEL (v2 + A + earlier audience) INCREMENT over landed v2: all shows",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 14.96,
+        "maeWith": 15.26,
+        "diffCI95": [
+          -0.04,
+          0.76
+        ],
+        "diffCI95Bonferroni": [
+          -0.16,
+          1
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.32,
+        "maeWith": 6.37,
+        "diffCI95": [
+          -0.07,
+          0.17
+        ],
+        "diffCI95Bonferroni": [
+          -0.16,
+          0.28
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 8.45,
+        "maeWith": 8.72,
+        "diffCI95": [
+          0.03,
+          0.52
+        ],
+        "diffCI95Bonferroni": [
+          -0.09,
+          0.68
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.3,
+      "maeWith": 7.4,
+      "maeCategoryMean": 8.55,
+      "diff": 0.11,
+      "diffCI95": [
+        -0.03,
+        0.24
+      ],
+      "diffCI95Bonferroni": [
+        -0.11,
+        0.33
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "D: TRANSFER MODEL INCREMENT over landed v2: transfers only",
+      "kind": "primary-subset",
+      "shows": 221,
+      "missUnder55": {
+        "n": 18,
+        "maeWithout": 13.38,
+        "maeWith": 13.77,
+        "diffCI95": [
+          -0.06,
+          0.96
+        ],
+        "diffCI95Bonferroni": [
+          -0.26,
+          1.26
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 163,
+        "maeWithout": 5.94,
+        "maeWith": 6.04,
+        "diffCI95": [
+          -0.07,
+          0.28
+        ],
+        "diffCI95Bonferroni": [
+          -0.18,
+          0.43
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 40,
+        "maeWithout": 7.22,
+        "maeWith": 7.6,
+        "diffCI95": [
+          0.07,
+          0.69
+        ],
+        "diffCI95Bonferroni": [
+          -0.07,
+          0.88
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 6.78,
+      "maeWith": 6.95,
+      "maeCategoryMean": 8.96,
+      "diff": 0.18,
+      "diffCI95": [
+        0.01,
+        0.35
+      ],
+      "diffCI95Bonferroni": [
+        -0.1,
+        0.47
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "hurts"
+    },
+    {
+      "input": "D: TRANSFER MODEL vs v1: all shows",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.58,
+        "maeWith": 15.26,
+        "diffCI95": [
+          -4.45,
+          -0.54
+        ],
+        "diffCI95Bonferroni": [
+          -5.63,
+          0.14
+        ],
+        "survivesCorrection": false
+      },
+      "missMiddle55to82": {
+        "n": 261,
+        "maeWithout": 6.49,
+        "maeWith": 6.37,
+        "diffCI95": [
+          -0.39,
+          0.13
+        ],
+        "diffCI95Bonferroni": [
+          -0.57,
+          0.29
+        ],
+        "survivesCorrection": false
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.06,
+        "maeWith": 8.72,
+        "diffCI95": [
+          -1.2,
+          0.7
+        ],
+        "diffCI95Bonferroni": [
+          -1.53,
+          1.49
+        ],
+        "survivesCorrection": false
+      },
+      "maeWithout": 7.72,
+      "maeWith": 7.4,
+      "maeCategoryMean": 8.55,
+      "diff": -0.32,
+      "diffCI95": [
+        -0.72,
+        0.01
+      ],
+      "diffCI95Bonferroni": [
+        -0.92,
+        0.21
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": false,
+      "inCorrectionFamily": true,
+      "verdict": "no effect"
+    },
+    {
+      "input": "D: TRANSFER MODEL INCREMENT over v2, seasons after the selection set (clean test): all shows",
+      "kind": "exploratory-subset",
+      "shows": 186,
+      "missUnder55": {
+        "n": 13,
+        "maeWithout": 13.9,
+        "maeWith": 14.42,
+        "diffCI95": [
+          -0.17,
+          1.19
+        ],
+        "diffCI95Bonferroni": [
+          -0.26,
+          1.48
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 142,
+        "maeWithout": 6.72,
+        "maeWith": 6.8,
+        "diffCI95": [
+          0,
+          0.17
+        ],
+        "diffCI95Bonferroni": [
+          -0.07,
+          0.2
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 31,
+        "maeWithout": 7.98,
+        "maeWith": 8.17,
+        "diffCI95": [
+          -0.08,
+          0.48
+        ],
+        "diffCI95Bonferroni": [
+          -0.16,
+          0.65
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 7.43,
+      "maeWith": 7.56,
+      "maeCategoryMean": 9.07,
+      "diff": 0.14,
+      "diffCI95": [
+        0.01,
+        0.3
+      ],
+      "diffCI95Bonferroni": [
+        -0.05,
+        0.4
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "hurts"
+    },
+    {
+      "input": "D: TRANSFER MODEL INCREMENT over v2, seasons after the selection set: transfers only",
+      "kind": "exploratory-subset",
+      "shows": 120,
+      "missUnder55": {
+        "n": 10,
+        "maeWithout": 13.61,
+        "maeWith": 14.23,
+        "diffCI95": [
+          -0.27,
+          1.43
+        ],
+        "diffCI95Bonferroni": [
+          -0.46,
+          1.79
+        ],
+        "survivesCorrection": null
+      },
+      "missMiddle55to82": {
+        "n": 85,
+        "maeWithout": 6.24,
+        "maeWith": 6.34,
+        "diffCI95": [
+          -0.04,
+          0.2
+        ],
+        "diffCI95Bonferroni": [
+          -0.13,
+          0.23
+        ],
+        "survivesCorrection": null
+      },
+      "miss83Plus": {
+        "n": 25,
+        "maeWithout": 6.92,
+        "maeWith": 7.16,
+        "diffCI95": [
+          -0.07,
+          0.64
+        ],
+        "diffCI95Bonferroni": [
+          -0.16,
+          0.87
+        ],
+        "survivesCorrection": null
+      },
+      "maeWithout": 6.99,
+      "maeWith": 7.17,
+      "maeCategoryMean": 9.83,
+      "diff": 0.18,
+      "diffCI95": [
+        0.01,
+        0.37
+      ],
+      "diffCI95Bonferroni": [
+        -0.09,
+        0.48
+      ],
+      "bonferroniTests": 49,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
+      "verdict": "hurts"
+    }
+  ],
+  "notTestable": [
+    {
+      "input": "Show Score audience score (Wayback capture before opening)",
+      "verdict": "cannot be dated at usable coverage",
+      "why": "archive.org availability lookups found no pre-opening capture for 30 shows (one season). Unproven coverage, not proof of absence. Replaced by the dated member-review route, which is tested above on the full 341-show pull (coverage: none of the 2025 and 2026 shows has dated member reviews)."
+    },
+    {
+      "input": "Mezzanine (separate audience components)",
+      "verdict": "forward-only",
+      "why": "Stored Mezzanine data is production aggregates with no per-rating dates, so no pre-opening value can be rebuilt for past shows. It can only be recorded going forward. Theatr was not swept (no committed sampling): untested, not disproven."
+    },
+    {
+      "input": "Broadway.com audience score",
+      "verdict": "untested (no dated source found)",
+      "why": "Not swept (no committed sampling); the one paid fetch of the pilot found no audience rating field on the page read. Untested, not disproven."
+    },
+    {
+      "input": "BroadwayWorld board chatter before opening",
+      "verdict": "cannot be dated",
+      "why": "Wayback holds only board front pages and indexes. Thread URLs carry no show name, so per-show pre-opening thread counts cannot be rebuilt for a backtest."
+    },
+    {
+      "input": "Producer track record",
+      "verdict": "cannot be dated",
+      "why": "No producers field in data/commercial.json or any stored file; an IBDB scrape is a new paid source (owner call)."
+    },
+    {
+      "input": "Opening date pushed, discount and lottery presence",
+      "verdict": "cannot be dated",
+      "why": "No stored original opening date (5 openingDateNote entries in shows.json) and no dated discount or lottery history."
+    },
+    {
+      "input": "Google Trends in the preview window",
+      "verdict": "not attempted",
+      "why": "Trends serves a bot wall to fetchPage; bypass is ruled out by the card."
+    },
+    {
+      "input": "Out-of-town critic scores",
+      "verdict": "partly used, extension tested above",
+      "why": "priorRun uses an earlier production of the same title only when we hold its Critic Score (97 of 341 evaluated shows). The web earlier-run input extends coverage to 179 shows (123 with nothing of our own); see the earlier-run rows."
+    }
+  ],
+  "bestCombinedPrimary": {
+    "input": "Show Score PRIMARY: shrunk pre-opening member mean, full population",
+    "kind": "primary",
+    "shows": 341,
+    "missUnder55": {
+      "n": 25,
+      "maeWithout": 17.58,
+      "maeWith": 15.05,
+      "diffCI95": [
+        -4.82,
+        -0.59
+      ],
+      "diffCI95Bonferroni": [
+        -6.05,
+        0.16
+      ],
+      "survivesCorrection": false
+    },
+    "missMiddle55to82": {
+      "n": 261,
+      "maeWithout": 6.49,
+      "maeWith": 6.32,
+      "diffCI95": [
+        -0.35,
+        -0.01
+      ],
+      "diffCI95Bonferroni": [
+        -0.48,
+        0.09
+      ],
+      "survivesCorrection": false
+    },
+    "miss83Plus": {
+      "n": 55,
+      "maeWithout": 9.06,
+      "maeWith": 8.2,
+      "diffCI95": [
+        -1.26,
+        -0.4
+      ],
+      "diffCI95Bonferroni": [
+        -1.51,
+        -0.14
+      ],
+      "survivesCorrection": true
+    },
+    "maeWithout": 7.72,
+    "maeWith": 7.27,
+    "maeCategoryMean": 8.55,
+    "diff": -0.45,
+    "diffCI95": [
+      -0.74,
+      -0.22
+    ],
+    "diffCI95Bonferroni": [
+      -0.91,
+      -0.06
+    ],
+    "bonferroniTests": 49,
+    "survivesCorrection": true,
+    "inCorrectionFamily": true,
+    "verdict": "helps"
+  },
+  "earlierAudience": {
+    "evaluatedShows": 519,
+    "transfers": 311,
+    "withEarlierAudience": 110,
+    "transfersWithEarlierAudience": 92,
+    "withEarlierAudienceConfirmedPagesOnly": 52,
+    "bySourceType": {
+      "shared-page": 47,
+      "off-broadway": 93,
+      "london": 2
+    },
+    "medianRatingsPerCoveredShow": 64,
+    "outOfTownOrLondonDatedSource": "London Show Score pages are probed when mapped; out-of-town (regional) productions have no dated audience source in our data",
+    "decision": {
+      "rule": "add to the nightly pilot only if the increment over v2 (all shows) has a Bonferroni-corrected 95% interval entirely below zero",
+      "correctionFamilyTests": 49,
+      "incrementOverV2": {
+        "maeV2": 7.3,
+        "maeV2PlusEarlierAudience": 7.32,
+        "diff": 0.03,
+        "diffCI95": [
+          -0.04,
+          0.11
+        ],
+        "diffCI95Bonferroni": [
+          -0.09,
+          0.21
+        ]
+      },
+      "addToPilot": false,
+      "candidates": [
+        {
+          "input": "Earlier-production audience INCREMENT over landed v2 (v1 + Show Score mean and n): all shows",
+          "diff": 0.03,
+          "diffCI95Bonferroni": [
+            -0.09,
+            0.21
+          ],
+          "addToPilot": false
+        },
+        {
+          "input": "Earlier-production audience INCREMENT over landed v2, confirmed pages only (no guessed slugs): all shows",
+          "diff": 0,
+          "diffCI95Bonferroni": [
+            -0.03,
+            0.02
+          ],
+          "addToPilot": false
+        },
+        {
+          "input": "A: own earlier-production critic score (count-shrunk gap, opened before first preview) INCREMENT over landed v2: all shows",
+          "diff": 0.08,
+          "diffCI95Bonferroni": [
+            -0.03,
+            0.27
+          ],
+          "addToPilot": false
+        },
+        {
+          "input": "B: tier-weighted earlier-production score from reviews dated by the cutoff INCREMENT over landed v2: all shows",
+          "diff": 0.1,
+          "diffCI95Bonferroni": [
+            -0.03,
+            0.27
+          ],
+          "addToPilot": false
+        },
+        {
+          "input": "B: Tier-1-only earlier-production score INCREMENT over landed v2: all shows",
+          "diff": 0.1,
+          "diffCI95Bonferroni": [
+            -0.02,
+            0.26
+          ],
+          "addToPilot": false
+        },
+        {
+          "input": "C-gap: earlier-production audience minus earlier-production critics INCREMENT over landed v2: all shows",
+          "diff": 0.2,
+          "diffCI95Bonferroni": [
+            -0.02,
+            0.67
+          ],
+          "addToPilot": false
+        },
+        {
+          "input": "D: TRANSFER MODEL (v2 + A + earlier audience) INCREMENT over landed v2: all shows",
+          "diff": 0.11,
+          "diffCI95Bonferroni": [
+            -0.11,
+            0.33
+          ],
+          "addToPilot": false
+        }
+      ],
+      "addToPilotAny": false
+    },
+    "earlierCritics": {
+      "withEarlierProduction": 82,
+      "withTier1Reviews": 81,
+      "withEarlierAudienceAndCritics": 42,
+      "transfersWithEarlierProduction": 82,
+      "byMarket": {
+        "off-broadway": 19,
+        "west-end": 63,
+        "off-west-end": 0
+      },
+      "note": "v1 already carries the latest earlier production score as priorRun; these tests measure what that does not use (count shrinkage, before-first-preview filter, tier weighting, T1-only, audience-minus-critics gap)"
+    },
+    "transferModel": {
+      "selectionSeasonsThrough": 2019,
+      "picked": "A",
+      "selectionMae": [
+        {
+          "input": "A",
+          "mae": 7.25
+        },
+        {
+          "input": "B-weighted",
+          "mae": 7.26
+        },
+        {
+          "input": "B-T1",
+          "mae": 7.28
+        }
+      ],
+      "features": [
+        "dir",
+        "chor",
+        "writer",
+        "priorRun",
+        "venue",
+        "grossCap",
+        "grossAtp",
+        "srcFilm",
+        "srcTv",
+        "srcBook",
+        "srcMusic",
+        "srcPlay",
+        "pathLondon",
+        "pathOffB",
+        "pathRegional",
+        "audScore",
+        "audCount",
+        "ecHas",
+        "ecGap",
+        "eaScore"
+      ]
+    }
+  }
+}

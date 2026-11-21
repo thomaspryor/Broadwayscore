@@ -1,0 +1,128 @@
+{
+  "promptVersion": "v2-extended-adjudicator",
+  "timestamp": "2026-04-18T16:30:33.073Z",
+  "score": {
+    "composite": 57.2,
+    "sectionScore": 47,
+    "claimScore": 30.2,
+    "warningPenalty": 20
+  },
+  "totals": {
+    "theaters_total": 3,
+    "theaters_with_errors": 0,
+    "sections_total": 15,
+    "sections_by_support": {
+      "STRONG": 12,
+      "MODERATE": 3,
+      "WEAK": 0,
+      "UNSUPPORTED": 0,
+      "ERROR": 0
+    },
+    "claims_total": 68,
+    "claims_by_support": {
+      "STRONG": 29,
+      "MODERATE": 13,
+      "WEAK": 10,
+      "UNSUPPORTED": 16
+    },
+    "warnings_total": 47,
+    "urls_fetched_total": 75,
+    "urls_failed_total": 0,
+    "unsupported_claims_examples": [
+      {
+        "theater": "Majestic Theatre",
+        "section": "Orchestra Center",
+        "note": "No source explicitly identifies Row I as the best or sweetest row. Evidence 4 mentions 'B-J' as recommended center orchestra rows, and Evidence 6 mentions Row J overhang issue, but no source specifically singles out Row I as superior. This appears to be geometric inference (middle of F-L range) rather than sourced recommendation."
+      },
+      {
+        "theater": "Majestic Theatre",
+        "section": "Rear Mezzanine Center",
+        "note": "Evidence 1 states Rear Mezzanine has 'up to 12 rows in each' block, contradicting the claim that the section only spans rows A-C. Evidence 1 mentions rows A and B specifically for good value seats but does not limit the section to A-C. This appears to be a fabrication or confusion with 'Rear Mezzanine Center' as a subsection."
+      },
+      {
+        "theater": "Majestic Theatre",
+        "section": "Orchestra Sides",
+        "note": "Claim states 'rows outer seats' which is nonsensical. No evidence defines 'Orchestra Sides' as a distinct section or specifies which rows constitute it. Evidence mentions Left/Right Orchestra but not a specific row range for outer seats."
+      },
+      {
+        "theater": "Majestic Theatre",
+        "section": "Orchestra Sides",
+        "note": "No source discusses show-type suitability for Orchestra Sides seats. Evidence 2 mentions 'big musical or play' for mezzanine, but doesn't tie Orchestra Sides specifically to plays."
+      },
+      {
+        "theater": "Majestic Theatre",
+        "section": "Orchestra Sides",
+        "note": "No source discusses dance-heavy shows or choreography visibility from Orchestra Sides. This appears to be pattern-matched from generic knowledge about side-angle seats."
+      },
+      {
+        "theater": "Music Box Theatre",
+        "section": "Orchestra Center",
+        "note": "No source explicitly names Row H as the best or sweetest row. Evidence recommends ranges (E-L, K-O, AA-B) but never singles out Row H specifically. This appears to be geometric inference (middle of E-L range) rather than sourced recommendation."
+      },
+      {
+        "theater": "Music Box Theatre",
+        "section": "Orchestra Center",
+        "note": "No source discusses show-type suitability or genre characteristics for this section. Evidence focuses on sightlines, distance, and stage height issues but never mentions whether the section is better for plays vs. musicals vs. intimate drama. This appears to be generic pattern-matching."
+      },
+      {
+        "theater": "Music Box Theatre",
+        "section": "Front Mezzanine Center",
+        "note": "No source explicitly identifies Row A as the sweetest or best row within A-B. EVIDENCE 1 warns about 'far sides of rows A and B' but does not designate A as superior to B. This appears to be geometric inference (front row = best) without source support."
+      },
+      {
+        "theater": "Music Box Theatre",
+        "section": "Front Mezzanine Center",
+        "note": "No source discusses show-type suitability for this section. No evidence mentions that Front Mezzanine Center is better for musicals/spectacles versus other genres. This appears to be pattern-matched from general knowledge about elevated views, not supported by evidence."
+      },
+      {
+        "theater": "Music Box Theatre",
+        "section": "Front Mezzanine Center",
+        "note": "No source discusses show-type suitability. No evidence mentions that this section should be avoided for intimate dramas. This appears to be inferred from general theatrical conventions rather than source material."
+      }
+    ]
+  },
+  "perTheater": [
+    {
+      "theater": "Majestic Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 3,
+        "MODERATE": 2,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 19,
+      "unsupported_claims": 5
+    },
+    {
+      "theater": "Music Box Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 11,
+      "unsupported_claims": 8
+    },
+    {
+      "theater": "Gershwin Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 5,
+        "MODERATE": 0,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 17,
+      "unsupported_claims": 3
+    }
+  ]
+}

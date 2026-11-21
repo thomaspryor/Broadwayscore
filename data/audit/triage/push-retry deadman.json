@@ -1,0 +1,15 @@
+{
+  "system": "push-retry deadman",
+  "status": "error",
+  "lastChecked": "2026-11-21T09:56:54.809Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Push-retry deadman",
+      "status": "error",
+      "message": "35 push-retry failure(s) in the last 7d across Broadwayscore:main [Opening Night Poller x13, LLM Ensemble Score Reviews x9, Collect Review Texts x8, Rebuild Reviews (Fast) x1, Rebuild Reviews Data x1, Gather Review Data x1, Scrape New Aggregators x1, Land x1]. Most recent reason: retries-exhausted(deadline). 215 committed file(s) discarded across 35 run(s). 265 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+    }
+  ]
+}

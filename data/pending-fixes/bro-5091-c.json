@@ -1,0 +1,143 @@
+{
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "issueNumber": "bro-5091-c",
+  "planId": "ab6ddb62-a138-4d83-8bcd-19bd6cd94664",
+  "createdAt": "2026-10-12T00:40:00Z",
+  "plan": {
+    "summary": "Water for Elephants and Good Night, and Good Luck: hard-sourced weekly costs with cost basis (Broadway Journal)",
+    "steps": [
+      "Replace Water for Elephants' deep-research $875K with the $960K breakeven from its internal budget, tagged breakeven",
+      "Add Good Night, and Good Luck's $1.1M average weekly operating expenses plus royalties, tagged running"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "showId": "water-for-elephants",
+        "field": "weeklyRunningCost",
+        "oldValue": 875000,
+        "newValue": 960000,
+        "description": "Hard-sourced weekly figure (Broadway Journal)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "showId": "water-for-elephants",
+        "field": "weeklyRunningCostSource",
+        "oldValue": "GPT Deep Research: breakeven $960K gross, pure operating costs ~$850-900K. Benzini Bros internal budget showed $960K gross needed including credit card fees.",
+        "newValue": "Broadway Journal (Nov 6, 2023): \"it will need to sell at least $960,000 of tickets each week to cover operating expenses,\" per an internal budget; the sales figure is \"gross gross,\" which \"includes credit card commissions and other fees the production doesn't keep.\" https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases",
+        "description": "Cite the Broadway Journal quote"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "showId": "water-for-elephants",
+        "field": "costMethodology",
+        "oldValue": "deep-research",
+        "newValue": "trade-reported",
+        "description": "The figure is now trade-reported"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "showId": "water-for-elephants",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "breakeven",
+        "description": "Basis from the cited quote: \"to cover operating expenses\" in \"gross gross\" ticket sales is a breakeven"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-and-good-luck-2025",
+        "showId": "good-night-and-good-luck-2025",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 1100000,
+        "description": "Hard-sourced weekly figure (Broadway Journal)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-and-good-luck-2025",
+        "showId": "good-night-and-good-luck-2025",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Mar 31, 2026): \"Its weekly operating expenses averaged about $1.1 million plus royalties.\" https://www.broadwayjournal.com/p/clooneys-broadway-windfall",
+        "description": "Cite the Broadway Journal quote"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-and-good-luck-2025",
+        "showId": "good-night-and-good-luck-2025",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "trade-reported",
+        "description": "The figure is now trade-reported"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-and-good-luck-2025",
+        "showId": "good-night-and-good-luck-2025",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "Basis from the cited quote: \"averaged about $1.1 million plus royalties\" excludes royalties, so a running cost"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T01:30:21.052Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for good-night-and-good-luck-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for good-night-and-good-luck-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for good-night-and-good-luck-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for good-night-and-good-luck-2025"
+    }
+  ]
+}

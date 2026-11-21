@@ -1,0 +1,17 @@
+# Allowlist for the audience-buzz.json direct-write lint (test.yml / pre-push).
+#
+# Format: one line per script: filename followed by `--` and a one-line reason.
+# Lines starting with `#` are comments. Trailing whitespace is trimmed.
+#
+# Background: `data/audience-buzz.json` used to be written by 33 scripts each
+# doing their own fs.readFileSync/fs.writeFileSync pair with no coordination —
+# concurrent writers could silently clobber each other's changes (same class
+# of bug as shows.json — see the "generalize shows-write-guard.js" card).
+# All writers now route through scripts/lib/audience-buzz-write-guard.js,
+# which adds a file lock plus a re-read-and-merge-by-id step before writing.
+#
+# New scripts cannot join this list — the lint blocks them. Only add an
+# entry here for a script that genuinely writes a DIFFERENT audience-buzz.
+# json-shaped file (e.g. a scratch/checkout copy outside
+# data/audience-buzz.json) where the lock wouldn't apply anyway, with a
+# one-line reason.

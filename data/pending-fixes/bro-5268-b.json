@@ -1,0 +1,668 @@
+{
+  "issueNumber": "bro-5268-b",
+  "planId": "8ff258c8-ec0e-464e-a94b-eda4e86983cc",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5268 (b): cite trade/producer reports for recoupment outcomes on wonderland-2011, harmony, lempicka, how-to-dance-in-ohio, days-of-wine-and-roses, american-psycho-2016, bullets-over-broadway-2014, the-bridges-of-madison-county-2014, holler-if-ya-hear-me-2014",
+    "steps": [
+      "Apply each commercial.json data-edit (compare-and-set on oldValue)",
+      "Each citation was read on the article page; excerpts are at most 15 quoted words"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "wonderland-2011",
+        "showId": "wonderland-2011",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "wonderland-2011: Playbill: closed at a multimillion dollar loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "wonderland-2011",
+        "showId": "wonderland-2011",
+        "field": "recoupedSource",
+        "oldValue": "Show closed after only 28 performances (April 17 - May 15, 2011), making recoupment of $15 million investment impossible",
+        "newValue": "Playbill (May 15, 2011) reported the production closed at a loss: \"Despite this multimillion dollar loss, Wildhorn is not through with Broadway.\" https://playbill.com/article/broadways-wonderland-closes-may-15-tour-planned-com-179169",
+        "description": "wonderland-2011: Playbill: closed at a multimillion dollar loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "wonderland-2011",
+        "showId": "wonderland-2011",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2010/12/01/theater/01musical.html",
+            "date": "2010-12-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2010/12/01/theater/01musical.html",
+            "date": "2010-12-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/broadways-wonderland-closes-may-15-tour-planned-com-179169",
+            "date": "2011-05-15",
+            "excerpt": "Despite this multimillion dollar loss, Wildhorn is not through with Broadway."
+          }
+        ],
+        "description": "wonderland-2011: Playbill: closed at a multimillion dollar loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harmony",
+        "showId": "harmony",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "harmony: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harmony",
+        "showId": "harmony",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Deadline (Jun 17, 2024) listed this production, which closed Feb 4, 2024, among that season's shows that did not recoup: \"(None of those productions have recouped.)\" https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+        "description": "harmony: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harmony",
+        "showId": "harmony",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1934045/000193404522000002/primary_doc.xml",
+            "date": "2022-06-15"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1934045/000193404522000002/primary_doc.xml",
+            "date": "2022-06-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+            "date": "2024-06-17",
+            "excerpt": "(None of those productions have recouped.)"
+          }
+        ],
+        "description": "harmony: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lempicka",
+        "showId": "lempicka",
+        "field": "recoupedSource",
+        "oldValue": "Show closed after 5 weeks (April 14 - May 19, 2024) which is insufficient time to recoup a $20M investment",
+        "newValue": "Deadline (Jun 17, 2024) listed this production, which closed May 19, 2024, among that season's shows that did not recoup: \"(None of those productions have recouped.)\" https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+        "description": "lempicka: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lempicka",
+        "showId": "lempicka",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.npr.org/2024/05/17/1252233147/broadway-shows-are-more-expensive-than-ever-to-make-but-audiences-arent-showing-",
+            "date": "2024-05-17"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+            "date": "2025-09-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.bloomberg.com/news/features/2025-05-23/broadway-producer-greg-nobile-wants-to-improve-the-nyc-theater-experience",
+            "date": "2025-05-23"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.vulture.com/article/peak-theater-broadway-nyc-hits-vs-flops.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.newyorker.com/magazine/2024/06/03/behind-the-scenes-of-a-short-lived-broadway-musical",
+            "date": "2024-06-03"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.npr.org/2024/05/17/1252233147/broadway-shows-are-more-expensive-than-ever-to-make-but-audiences-arent-showing-",
+            "date": "2024-05-17"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+            "date": "2025-09-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.bloomberg.com/news/features/2025-05-23/broadway-producer-greg-nobile-wants-to-improve-the-nyc-theater-experience",
+            "date": "2025-05-23"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.vulture.com/article/peak-theater-broadway-nyc-hits-vs-flops.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.newyorker.com/magazine/2024/06/03/behind-the-scenes-of-a-short-lived-broadway-musical",
+            "date": "2024-06-03"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+            "date": "2024-06-17",
+            "excerpt": "(None of those productions have recouped.)"
+          }
+        ],
+        "description": "lempicka: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "showId": "how-to-dance-in-ohio",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "how-to-dance-in-ohio: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "showId": "how-to-dance-in-ohio",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Deadline (Jun 17, 2024) listed this production, which closed Feb 11, 2024, among that season's shows that did not recoup: \"(None of those productions have recouped.)\" https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+        "description": "how-to-dance-in-ohio: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "showId": "how-to-dance-in-ohio",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+            "date": "2025-01-06"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/18riyp3/sadly_it_looks_like_how_to_dance_in_ohio_is_not/",
+            "date": "2023-12-25"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/19chc3c/how_to_dance_in_ohio_closing_feb_11/",
+            "date": "2024-01-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+            "date": "2025-09-04"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+            "date": "2025-01-06"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/18riyp3/sadly_it_looks_like_how_to_dance_in_ohio_is_not/",
+            "date": "2023-12-25"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/19chc3c/how_to_dance_in_ohio_closing_feb_11/",
+            "date": "2024-01-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+            "date": "2025-09-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+            "date": "2024-06-17",
+            "excerpt": "(None of those productions have recouped.)"
+          }
+        ],
+        "description": "how-to-dance-in-ohio: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "days-of-wine-and-roses",
+        "showId": "days-of-wine-and-roses",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "days-of-wine-and-roses: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "days-of-wine-and-roses",
+        "showId": "days-of-wine-and-roses",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Deadline (Jun 17, 2024) listed this production, which closed Mar 31, 2024, among that season's shows that did not recoup: \"(None of those productions have recouped.)\" https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+        "description": "days-of-wine-and-roses: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "days-of-wine-and-roses",
+        "showId": "days-of-wine-and-roses",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2024/06/actors-equity-broadway-league-1235976325/",
+            "date": "2024-06-17",
+            "excerpt": "(None of those productions have recouped.)"
+          }
+        ],
+        "description": "days-of-wine-and-roses: Deadline: listed among 2023-24 productions that did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-psycho-2016",
+        "showId": "american-psycho-2016",
+        "field": "recoupedSource",
+        "oldValue": "NYTix reported show closed at $8.8 million loss, indicating no recoupment",
+        "newValue": "Deadline (May 27, 2016) reported the musical closed at a loss of its $8.8 million capitalization: \"Closing at a total loss of its capitalization\" https://deadline.com/2016/05/american-psycho-sets-early-broadway-closing-1201763561/",
+        "description": "american-psycho-2016: Deadline: closed at a total loss of its $8.8M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-psycho-2016",
+        "showId": "american-psycho-2016",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytix.com/news/american-psycho-closes-at-8-8-million-loss",
+            "date": "2016-06-05"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytix.com/news/american-psycho-closes-at-8-8-million-loss",
+            "date": "2016-06-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2016/05/american-psycho-sets-early-broadway-closing-1201763561/",
+            "date": "2016-05-27",
+            "excerpt": "Closing at a total loss of its capitalization"
+          }
+        ],
+        "description": "american-psycho-2016: Deadline: closed at a total loss of its $8.8M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bullets-over-broadway-2014",
+        "showId": "bullets-over-broadway-2014",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "bullets-over-broadway-2014: Deadline: closed at almost a complete loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bullets-over-broadway-2014",
+        "showId": "bullets-over-broadway-2014",
+        "field": "recoupedSource",
+        "oldValue": "Financing Broadway blog states it closed at a loss after 33 previews and 156 performances",
+        "newValue": "Deadline (Jul 22, 2014) reported it would close at a loss: \"Bullets Over Broadway will close at almost a complete loss of its $15 million-plus capitalization\" https://deadline.com/2014/07/bullets-over-broadway-musical-closing-august-026-808257/",
+        "description": "bullets-over-broadway-2014: Deadline: closed at almost a complete loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bullets-over-broadway-2014",
+        "showId": "bullets-over-broadway-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://financingbroadway.wordpress.com/history-of-recoups/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://financingbroadway.wordpress.com/history-of-recoups/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2014/07/bullets-over-broadway-musical-closing-august-026-808257/",
+            "date": "2014-07-22",
+            "excerpt": "Bullets Over Broadway will close at almost a complete loss of its $15 million-plus capitalization"
+          }
+        ],
+        "description": "bullets-over-broadway-2014: Deadline: closed at almost a complete loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "the-bridges-of-madison-county-2014: Deadline: closed at a loss of $8.5M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "recoupedSource",
+        "oldValue": "Show closed after just a few months despite being an audience favorite, indicating it did not recoup",
+        "newValue": "Deadline (May 25, 2014) reported the musical: \"closed last Sunday at a loss of $8.5 million\" https://deadline.com/2014/05/best-film-stories-of-the-week-x-men-days-of-future-past-cannes-quentin-tarantino-hells-angels-735867/",
+        "description": "the-bridges-of-madison-county-2014: Deadline: closed at a loss of $8.5M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2013/09/08/theater/for-big-fish-susan-stroman-lures-investors-too.html",
+            "date": "2013-09-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://online.barrons.com/articles/how-to-make-money-on-broadway-1417232812",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.jamesballardmusic.com/blog/where-are-all-the-original-musicals",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2013/09/08/theater/for-big-fish-susan-stroman-lures-investors-too.html",
+            "date": "2013-09-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://online.barrons.com/articles/how-to-make-money-on-broadway-1417232812",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.jamesballardmusic.com/blog/where-are-all-the-original-musicals",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2014/05/best-film-stories-of-the-week-x-men-days-of-future-past-cannes-quentin-tarantino-hells-angels-735867/",
+            "date": "2014-05-25",
+            "excerpt": "closed last Sunday at a loss of $8.5 million"
+          }
+        ],
+        "description": "the-bridges-of-madison-county-2014: Deadline: closed at a loss of $8.5M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holler-if-ya-hear-me-2014",
+        "showId": "holler-if-ya-hear-me-2014",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "holler-if-ya-hear-me-2014: Deadline: $10M among the season's losses"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holler-if-ya-hear-me-2014",
+        "showId": "holler-if-ya-hear-me-2014",
+        "field": "recoupedSource",
+        "oldValue": "Multiple sources describe the show as a 'flop' that 'tanked critically and commercially'",
+        "newValue": "Deadline (Apr 21, 2015) reported a loss of $10 million for Holler If Ya Hear Me among the season's losses: \"Side Show ($12 million) and Holler If Ya Hear me ($10 million)\" https://deadline.com/2015/04/doctor-zhivago-musical-broadway-review-1201413548/",
+        "description": "holler-if-ya-hear-me-2014: Deadline: $10M among the season's losses"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holler-if-ya-hear-me-2014",
+        "showId": "holler-if-ya-hear-me-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.yahoo.com/entertainment/tupac-shakur-musical-holler-ya-hear-flops-broadway-230218146.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2015/12/09/broadway-has-a-race-problem-can-the-wiz-solve-it/",
+            "date": "2015-12-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.rollingstone.com/music/music-news/saul-williams-why-broadways-tupac-musical-closed-early-232821/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://gordoncox.substack.com/p/chunsoo-shin-interview-the-great-gatsby-broadway",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.yahoo.com/entertainment/tupac-shakur-musical-holler-ya-hear-flops-broadway-230218146.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2015/12/09/broadway-has-a-race-problem-can-the-wiz-solve-it/",
+            "date": "2015-12-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.rollingstone.com/music/music-news/saul-williams-why-broadways-tupac-musical-closed-early-232821/",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://gordoncox.substack.com/p/chunsoo-shin-interview-the-great-gatsby-broadway",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2015/04/doctor-zhivago-musical-broadway-review-1201413548/",
+            "date": "2015-04-21",
+            "excerpt": "Side Show ($12 million) and Holler If Ya Hear me ($10 million)"
+          }
+        ],
+        "description": "holler-if-ya-hear-me-2014: Deadline: $10M among the season's losses"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T16:55:25.809Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for wonderland-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for wonderland-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for wonderland-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for harmony"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for harmony"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for harmony"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for lempicka"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for lempicka"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for days-of-wine-and-roses"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for days-of-wine-and-roses"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for days-of-wine-and-roses"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for american-psycho-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for american-psycho-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for bullets-over-broadway-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for bullets-over-broadway-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for bullets-over-broadway-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for holler-if-ya-hear-me-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for holler-if-ya-hear-me-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for holler-if-ya-hear-me-2014"
+    }
+  ]
+}

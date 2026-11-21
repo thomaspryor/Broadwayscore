@@ -1,0 +1,105 @@
+{
+  "promptVersion": "v2-5theater-clean",
+  "timestamp": "2026-04-18T21:32:06.587Z",
+  "score": {
+    "composite": 63.9,
+    "sectionScore": 45,
+    "claimScore": 38.9,
+    "warningPenalty": 20
+  },
+  "totals": {
+    "theaters_total": 5,
+    "theaters_with_errors": 0,
+    "sections_total": 22,
+    "sections_by_support": {
+      "STRONG": 16,
+      "MODERATE": 5,
+      "WEAK": 1,
+      "UNSUPPORTED": 0,
+      "ERROR": 0
+    },
+    "claims_total": 75,
+    "claims_by_support": {
+      "STRONG": 37,
+      "MODERATE": 25,
+      "WEAK": 13,
+      "UNSUPPORTED": 0
+    },
+    "warnings_total": 68,
+    "urls_fetched_total": 123,
+    "urls_failed_total": 0,
+    "unsupported_claims_examples": []
+  },
+  "perTheater": [
+    {
+      "theater": "Majestic Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 14,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Music Box Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 9,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Gershwin Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 19,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Helen Hayes Theater",
+      "sections_total": 3,
+      "sections_audited": 3,
+      "sections_by_support": {
+        "STRONG": 3,
+        "MODERATE": 0,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 10,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Imperial Theatre",
+      "sections_total": 4,
+      "sections_audited": 4,
+      "sections_by_support": {
+        "STRONG": 1,
+        "MODERATE": 2,
+        "WEAK": 1,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 16,
+      "unsupported_claims": 0
+    }
+  ]
+}

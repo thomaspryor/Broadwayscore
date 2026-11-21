@@ -1,0 +1,167 @@
+/**
+ * Multi-show feedback report handling.
+ *
+ * The feedback pipeline used to carry exactly one showId end-to-end. A report
+ * naming TWO shows with the same bug (issue #515: "3 Summers of Lincoln" +
+ * "The Family Album" both had a wrong venue city) got a single showId
+ * resolved by the diagnosis step, so relevantFiles/auto-fix only ever
+ * touched the first show and the second one silently stayed broken while the
+ * GitHub issue closed as COMPLETED.
+ *
+ * These are the pure decision functions the diagnosis step (which show IDs
+ * does this report reference?) and the auto-fix executor (did every
+ * referenced show get fixed, or only some?) both need — kept here and
+ * required by both scripts + their tests instead of re-implemented per file.
+ */
+
+const { normalizeTitleCore } = require('./resolve-show.js');
+
+/**
+ * Normalizes a diagnosis payload's show reference into a canonical showIds[]
+ * array. Prefers an already-set `showIds` (the canonical field once a
+ * DIAGNOSIS_JSON has been through process-feedback.yml's payload builder),
+ * falls back to `resolvedShowIds` (set by diagnoseBug from real catalog
+ * matches against the report's show field + message text), then falls back
+ * to the single legacy `showId` field for diagnoses created before either
+ * array existed.
+ */
+function normalizeDiagnosisShowIds(diagnosis) {
+  if (Array.isArray(diagnosis?.showIds) && diagnosis.showIds.length > 0) {
+    return [...new Set(diagnosis.showIds.filter(Boolean))];
+  }
+  if (Array.isArray(diagnosis?.resolvedShowIds) && diagnosis.resolvedShowIds.length > 0) {
+    return [...new Set(diagnosis.resolvedShowIds.filter(Boolean))];
+  }
+  if (diagnosis?.showId) return [diagnosis.showId];
+  return [];
+}
+
+/**
+ * Resolves a diagnosis's show references against the shows catalog and
+ * checks the ambiguous-show gate. The caller MUST call this — and check
+ * `.ambiguous` — before any decision based on `diagnosis.fixType` (not-a-bug,
+ * non-data fixType, low confidence). An ambiguous form-field match can
+ * itself be the reason a diagnosis reached a wrong verdict: #905 was
+ * diagnosed "not a bug" because the resolver only ever surfaced the LLM one
+ * (Broadway) production, hiding that West End/tour siblings also matched —
+ * the diagnosis never saw the ambiguity it was itself a symptom of. A gate
+ * that only runs on the `fixType === 'data'` path leaves every other
+ * verdict free to silently close over that same unresolved ambiguity, which
+ * reproduces the original bug under a different fixType. This function is
+ * fixType-agnostic by construction, so there is no fixType value for which
+ * a caller can safely skip it.
+ *
+ * @param {object} diagnosis - parsed DIAGNOSIS_JSON payload
+ * @param {Array<object>} shows - full shows.json catalog (array)
+ * @returns {{showIds: string[], resolvedShows: Array<{id:string,index:number,show:object}>, unresolvedShowIds: string[], ambiguous: boolean, narrowedFrom?: string[]}}
+ */
+function resolveShowsForDiagnosis(diagnosis, shows) {
+  const showIds = normalizeDiagnosisShowIds(diagnosis);
+  const resolvedShows = [];
+  const unresolvedShowIds = [];
+  for (const id of showIds) {
+    const idx = shows.findIndex((s) => s.id === id);
+    if (idx === -1) unresolvedShowIds.push(id);
+    else resolvedShows.push({ id, index: idx, show: shows[idx] });
+  }
+  const ambiguous = Boolean(diagnosis?.ambiguousShow) && resolvedShows.length > 1;
+  if (ambiguous) {
+    const narrowed = narrowToSingleLiveSibling(diagnosis, resolvedShows);
+    if (narrowed) {
+      return {
+        showIds: narrowed.kept.map((r) => r.id),
+        resolvedShows: narrowed.kept,
+        unresolvedShowIds,
+        ambiguous: false,
+        narrowedFrom: narrowed.setAside.map((r) => r.id),
+      };
+    }
+  }
+  return { showIds, resolvedShows, unresolvedShowIds, ambiguous };
+}
+
+/**
+ * BRO-7594 (issue #1187): the reader's "show" field "Awake and Sing!" matched
+ * the 1984, 2006 and 2026 productions, so the ambiguity gate parked the report
+ * although two were long closed. Rule: among the candidates whose title matches
+ * the reader's show field (same normalizeTitleCore), when exactly one is not
+ * closed and every one has a known status, that one is the target. The closed
+ * ones are set aside; candidates with a different title (picked up from the
+ * message text, the multi-show path from #515) are kept unchanged, so a
+ * two-title report can never collapse into one and close as fixed.
+ *
+ * Known risk, accepted: a reader writing about an old production's archive
+ * page gets the live production checked instead. auto-fix still compares each
+ * proposed edit's oldValue against the live record, and every posted comment
+ * names the productions that were set aside.
+ *
+ * diagnosis.showId is NOT an independent check: process-feedback fills it
+ * from resolveShow(), which already ranks open/previews first.
+ *
+ * @returns {{kept: Array<object>, setAside: Array<object>}|null}
+ */
+function narrowToSingleLiveSibling(diagnosis, resolvedShows) {
+  const core = normalizeTitleCore(diagnosis?.submitterShow);
+  if (!core) return null;
+  const siblings = resolvedShows.filter((r) => normalizeTitleCore(r.show?.title) === core);
+  if (siblings.length < 2) return null;
+  if (siblings.some((r) => !r.show.status)) return null;
+  const live = siblings.filter((r) => r.show.status !== 'closed');
+  if (live.length !== 1) return null;
+  const setAside = siblings.filter((r) => r !== live[0]);
+  return { kept: resolvedShows.filter((r) => !setAside.includes(r)), setAside };
+}
+
+/**
+ * Given per-show auto-fix outcomes, decides whether the bug report is fully
+ * resolved, partially resolved, or not resolved at all — and builds the
+ * comment body auto-fix-feedback-bug.js posts to the GitHub issue either way.
+ *
+ * A report naming N shows must NEVER report `action: 'fixed'` (which closes
+ * the issue as COMPLETED) unless every one of those N shows actually got a
+ * change applied. That is the bug this function exists to prevent.
+ *
+ * @param {Array<{show: {id: string, title?: string}, applied: string[], skipped?: string[], error?: string}>} perShowResults
+ * @param {string[]} [unresolvedShowIds] - show IDs referenced in the diagnosis that weren't found in shows.json at all
+ * @returns {{action: 'fixed'|'partial'|'skipped', comment: string}}
+ */
+function summarizeShowFixOutcomes(perShowResults, unresolvedShowIds = []) {
+  const anyApplied = perShowResults.some((r) => r.applied && r.applied.length > 0);
+  const totalShows = perShowResults.length + unresolvedShowIds.length;
+
+  const showLines = perShowResults.map((r) => {
+    const title = r.show?.title || r.show?.id || 'unknown show';
+    if (r.applied && r.applied.length > 0) {
+      return `**${title}** — Fixed\n${r.applied.map((a) => `  - ${a}`).join('\n')}`;
+    }
+    const reason = (r.skipped && r.skipped[0]) || r.error || 'no changes identified';
+    return `**${title}** — Not fixed (${reason})`;
+  });
+  for (const id of unresolvedShowIds) {
+    showLines.push(`**${id}** — Not fixed (show not found in shows.json)`);
+  }
+
+  if (!anyApplied) {
+    return {
+      action: 'skipped',
+      comment: `## Requires Manual Review\n\nNo edits could be applied.\n\n${showLines.join('\n\n')}\n\n---\n*Auto-processed by feedback pipeline*`,
+    };
+  }
+
+  const allFixed = unresolvedShowIds.length === 0 &&
+    perShowResults.every((r) => r.applied && r.applied.length > 0);
+
+  if (allFixed) {
+    return {
+      action: 'fixed',
+      comment: `## Fix Applied\n\n${showLines.join('\n\n')}\n\nThe fix will be live within a few minutes after deployment.\n\n---\n*Auto-fixed by feedback pipeline*`,
+    };
+  }
+
+  return {
+    action: 'partial',
+    comment: `## Partially Fixed\n\nThis report named ${totalShows} show(s). Not every show could be auto-fixed — leaving this issue open for manual review of the remainder.\n\n${showLines.join('\n\n')}\n\nThe applied fix(es) will be live within a few minutes after deployment.\n\n---\n*Auto-processed by feedback pipeline*`,
+  };
+}
+
+module.exports = { normalizeDiagnosisShowIds, resolveShowsForDiagnosis, summarizeShowFixOutcomes };

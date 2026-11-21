@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-5975-b",
+  "planId": "b742db02-31dc-422b-98e0-15a8c62e7c38",
+  "status": "applied",
+  "createdAt": "2026-10-22T17:27:29.267Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5975 follow-up to the landed bro-5975 and bro-5975-revivals plans; apply AFTER both (action 1 expects isRevival true, which bro-5975-revivals sets). All The Way Home (York NEW2NY, Theatre at St. Jean's, April 2027) is a new Ahrens/Flaherty/Galati musical (Playbill, TheaterMania), not a revival of the 1960 Mosel play IBDB matched, so isRevival goes back to false and the show is marked IBDB-checked. Miss Julie at The Space at Irondale (Nov 27 to Dec 19 2026, BroadwayWorld) stages Strindberg's play, which has earlier Broadway productions, so isRevival true (bro-5975-revivals only marked it checked). Speculations extended to 2027-01-17 (Theatre Weekly). Cat on a Hot Tin Roof 2027: Playbill exemption, the only Playbill page is the 2003 vault page.",
+    "steps": [
+      "shows.json: all-the-way-home-off-broadway-2027.isRevival",
+      "shows.json: all-the-way-home-off-broadway-2027.ibdbRevivalChecked",
+      "shows.json: miss-julie-off-broadway-2026.isRevival",
+      "shows.json: speculations-off-west-end-2026.closingDate",
+      "shows.json: cat-on-a-hot-tin-roof-2027.noPlaybillProductionPage",
+      "shows.json: cat-on-a-hot-tin-roof-2027.statusBackfillSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-way-home-off-broadway-2027",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false,
+        "description": "shows.json: all-the-way-home-off-broadway-2027.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-way-home-off-broadway-2027",
+        "field": "ibdbRevivalChecked",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: all-the-way-home-off-broadway-2027.ibdbRevivalChecked"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miss-julie-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: miss-julie-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "speculations-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": "2027-01-03",
+        "newValue": "2027-01-17",
+        "description": "shows.json: speculations-off-west-end-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cat-on-a-hot-tin-roof-2027",
+        "field": "noPlaybillProductionPage",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: cat-on-a-hot-tin-roof-2027.noPlaybillProductionPage"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cat-on-a-hot-tin-roof-2027",
+        "field": "statusBackfillSource",
+        "oldValue": null,
+        "newValue": "manual research 2026-10-22 (BRO-5975): Seaview spring 2027 Broadway revival directed by Sam Gold, announced 2026-04-21 (Broadway.com buzz 206996, New York Theatre Guide, Broadway News); theatre and dates not yet announced. Playbill has no /production/ page for it yet; the only match is the 2003 vault page. Clear this flag once Playbill lists the 2027 production.",
+        "description": "shows.json: cat-on-a-hot-tin-roof-2027.statusBackfillSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T18:37:56.239Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for all-the-way-home-off-broadway-2027 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ibdbRevivalChecked updated for all-the-way-home-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for miss-julie-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for speculations-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for cat-on-a-hot-tin-roof-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: statusBackfillSource updated for cat-on-a-hot-tin-roof-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

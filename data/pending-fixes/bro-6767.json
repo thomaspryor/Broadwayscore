@@ -1,0 +1,239 @@
+{
+  "issueNumber": "bro-6767",
+  "planId": "4f3ea2fb-9470-4991-990e-9f68fc20504d",
+  "status": "applied",
+  "createdAt": "2026-11-01T14:37:56.816Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6767: add the Met premiere run of seven staging-matched current revivals as separate closed past runs, linked from the revival",
+    "steps": [
+      "Append tosca-off-broadway-2017",
+      "Append samson-et-dalila-off-broadway-2018",
+      "Append medea-off-broadway-2022",
+      "Append maria-stuarda-off-broadway-2012",
+      "Append otello-off-broadway-2015",
+      "Append der-rosenkavalier-off-broadway-2017",
+      "Append parsifal-off-broadway-2013"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "Add the 2017 Met premiere run of Tosca as a closed past run and link it from the current revival",
+        "show": {
+          "id": "tosca-off-broadway-2017",
+          "title": "Tosca",
+          "slug": "tosca-off-broadway-2017",
+          "venue": "Metropolitan Opera House",
+          "openingDate": "2017-12-31",
+          "status": "closed",
+          "type": "opera",
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Puccini's thriller of a singer, a painter and a police chief in Rome, in the Met's staging by David McVicar that opened on New Year's Eve 2017.",
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "ibdbRevivalChecked": true
+        },
+        "crossLinkFrom": "tosca-off-broadway-2026"
+      },
+      {
+        "type": "add-show",
+        "description": "Add the 2018 Met premiere run of Samson et Dalila as a closed past run and link it from the current revival",
+        "show": {
+          "id": "samson-et-dalila-off-broadway-2018",
+          "title": "Samson et Dalila",
+          "slug": "samson-et-dalila-off-broadway-2018",
+          "venue": "Metropolitan Opera House",
+          "openingDate": "2018-09-24",
+          "status": "closed",
+          "type": "opera",
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Saint-Saens's biblical opera of Samson and Dalila, in Darko Tresnjak's production that opened the Met's 2018-19 season.",
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "ibdbRevivalChecked": true
+        },
+        "crossLinkFrom": "samson-et-dalila-off-broadway-2026"
+      },
+      {
+        "type": "add-show",
+        "description": "Add the 2022 Met premiere run of Medea as a closed past run and link it from the current revival",
+        "show": {
+          "id": "medea-off-broadway-2022",
+          "title": "Medea",
+          "slug": "medea-off-broadway-2022",
+          "venue": "Metropolitan Opera House",
+          "openingDate": "2022-09-27",
+          "status": "closed",
+          "type": "opera",
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Cherubini's retelling of the Euripides tragedy, in David McVicar's production that opened the Met's 2022-23 season.",
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "ibdbRevivalChecked": true
+        },
+        "crossLinkFrom": "medea-off-broadway-2026"
+      },
+      {
+        "type": "add-show",
+        "description": "Add the 2012 Met premiere run of Maria Stuarda as a closed past run and link it from the current revival",
+        "show": {
+          "id": "maria-stuarda-off-broadway-2012",
+          "title": "Maria Stuarda",
+          "slug": "maria-stuarda-off-broadway-2012",
+          "venue": "Metropolitan Opera House",
+          "openingDate": "2012-12-31",
+          "status": "closed",
+          "type": "opera",
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Donizetti's bel canto drama of the rival queens Mary and Elizabeth, in David McVicar's production, the Met's first staging of the opera.",
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "ibdbRevivalChecked": true
+        },
+        "crossLinkFrom": "maria-stuarda-off-broadway-2026"
+      },
+      {
+        "type": "add-show",
+        "description": "Add the 2015 Met premiere run of Otello as a closed past run and link it from the current revival",
+        "show": {
+          "id": "otello-off-broadway-2015",
+          "title": "Otello",
+          "slug": "otello-off-broadway-2015",
+          "venue": "Metropolitan Opera House",
+          "openingDate": "2015-09-21",
+          "status": "closed",
+          "type": "opera",
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Verdi's Shakespeare opera, in Bartlett Sher's production that opened the Met's 2015-16 season.",
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "ibdbRevivalChecked": true
+        },
+        "crossLinkFrom": "otello-off-broadway-2027"
+      },
+      {
+        "type": "add-show",
+        "description": "Add the 2017 Met premiere run of Der Rosenkavalier as a closed past run and link it from the current revival",
+        "show": {
+          "id": "der-rosenkavalier-off-broadway-2017",
+          "title": "Der Rosenkavalier",
+          "slug": "der-rosenkavalier-off-broadway-2017",
+          "venue": "Metropolitan Opera House",
+          "openingDate": "2017-04-13",
+          "status": "closed",
+          "type": "opera",
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Strauss's comedy of the Marschallin, Octavian and Sophie, in Robert Carsen's production, which opened with Renee Fleming and Elina Garanca.",
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "ibdbRevivalChecked": true
+        },
+        "crossLinkFrom": "der-rosenkavalier-off-broadway-2027"
+      },
+      {
+        "type": "add-show",
+        "description": "Add the 2013 Met premiere run of Parsifal as a closed past run and link it from the current revival",
+        "show": {
+          "id": "parsifal-off-broadway-2013",
+          "title": "Parsifal",
+          "slug": "parsifal-off-broadway-2013",
+          "venue": "Metropolitan Opera House",
+          "openingDate": "2013-02-15",
+          "status": "closed",
+          "type": "opera",
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Wagner's final opera about the knight Parsifal and the Grail, in Francois Girard's production, which opened with Jonas Kaufmann.",
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "ibdbRevivalChecked": true
+        },
+        "crossLinkFrom": "parsifal-off-broadway-2027"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T14:58:23.991Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added tosca-off-broadway-2017 (priorRuns link on tosca-off-broadway-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added samson-et-dalila-off-broadway-2018 (priorRuns link on samson-et-dalila-off-broadway-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added medea-off-broadway-2022 (priorRuns link on medea-off-broadway-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added maria-stuarda-off-broadway-2012 (priorRuns link on maria-stuarda-off-broadway-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added otello-off-broadway-2015 (priorRuns link on otello-off-broadway-2027)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added der-rosenkavalier-off-broadway-2017 (priorRuns link on der-rosenkavalier-off-broadway-2027)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added parsifal-off-broadway-2013 (priorRuns link on parsifal-off-broadway-2027)"
+    }
+  ],
+  "executedIn": "ci"
+}

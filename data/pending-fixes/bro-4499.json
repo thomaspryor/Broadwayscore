@@ -1,0 +1,61 @@
+{
+  "issueNumber": "bro-4499",
+  "planId": "3329ab76-b2ba-4e17-ba1e-646b6f68e307",
+  "status": "applied",
+  "createdAt": "2026-10-01T22:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Operation Mincemeat (Broadway) Chicago Tribune review by Chris Jones is scored 40 Negative, but its pull quote is a rave ('a lot of fun and very clever to boot') and 2 of 3 models voted Positive (needsReview, adjudicated). A reader flagged it via the feedback form and asked for 90. Override to 90 so the rebuild honours it.",
+    "steps": [
+      "Set humanReviewScore 90 (final) with a note"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/chicagotribune--chris-jones.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Reader-reported (BRO-4499): the Chicago Tribune review is a positive rave ('a lot of fun and very clever to boot'); the adjudicated 40 Negative contradicted 2/3 models voting Positive. Overridden to 90.",
+        "description": "Record why the score is overridden"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/chicagotribune--chris-jones.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": false,
+        "description": "Make the override final so the rebuild honours it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/chicagotribune--chris-jones.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 90,
+        "description": "Positive review scored 40 Negative"
+      }
+    ]
+  },
+  "executedAt": "2026-10-01T22:49:35.325Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/chicagotribune--chris-jones.json humanReviewNote: null -> \"Reader-reported (BRO-4499): the Chicago Tribune review is a positive rave ('a lot of fun and very clever to boot'); the adjudicated 40 Negative contradicted 2/3 models voting Positive. Overridden to 90.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/chicagotribune--chris-jones.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/chicagotribune--chris-jones.json humanReviewScore: null -> 90"
+    }
+  ]
+}

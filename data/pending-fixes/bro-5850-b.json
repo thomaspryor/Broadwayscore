@@ -1,0 +1,277 @@
+{
+  "issueNumber": "bro-5850-b",
+  "planId": "64fe8fdb-4418-4d62-a7a9-21562987da1a",
+  "status": "applied",
+  "createdAt": "2026-10-23T02:02:28.711Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5850: date 42 closed West End rows from Theatre Record press-night headers (guarded: previews/closing agree, press night within 45d of previews) (part 2 of 2)",
+    "steps": [
+      "red-pitch-west-end-2024: openingDate null -> 2024-03-21 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/3/14130-red-pitch)",
+      "instructions-for-a-teenage-armageddon-west-end-2024: openingDate null -> 2024-03-17 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/3/17203-instructions-for-a-teenage-armageddon)",
+      "player-kings-west-end-2024: openingDate null -> 2024-04-11 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/4/17720-player-kings)",
+      "two-strangers-carry-a-cake-across-new-york-west-end-2024: openingDate null -> 2024-04-23 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/4/16684-two-strangers-carry-a-cake)",
+      "spirited-away-west-end-2024: openingDate null -> 2024-05-07 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/5/8040-spirited-away)",
+      "dugsi-dayz-west-end-2024: openingDate null -> 2024-05-03 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/5/18807-dugsi-dayz)",
+      "people-places-and-things-west-end-2024: openingDate null -> 2024-05-14 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/5/18900-people-places-and-things)",
+      "bluets-west-end-2024: openingDate null -> 2024-05-24 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/5/18805-bluets)",
+      "kathy-and-stella-solve-a-murder-west-end-2024: openingDate null -> 2024-06-05 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/6/18272-kathy-and-stella-solve-a)",
+      "echo-every-cold-hearted-oxygen-west-end-2024: openingDate null -> 2024-07-14 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/7/18808-echo-every-cold-hearted-oxygen)",
+      "a-little-life-west-end-2023: openingDate null -> 2023-04-01 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/4/3908-a-little-life)",
+      "dixon-and-daughters-west-end-2023: openingDate null -> 2023-04-25 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/4/3919-dixon-and-daughters)",
+      "mrs-doubtfire-west-end-2023: openingDate null -> 2023-06-22 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/6/2805-mrs-doubtfire)",
+      "groundhog-day-west-end-2023: openingDate null -> 2023-06-08 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/6/6953-groundhog-day)",
+      "idiots-assemble-spitting-image-the-musical-west-end-2023: openingDate null -> 2023-06-14 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/6/5295-idiots-assemble-spitting-image-the)",
+      "the-crucible-west-end-2023: openingDate null -> 2023-06-15 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/6/4812-the-crucible)",
+      "the-way-old-friends-do-west-end-2023: openingDate null -> 2023-08-18 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/8/7595-the-way-old-friends-do)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "red-pitch-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-03-21",
+        "description": "red-pitch-west-end-2024: openingDate null -> 2024-03-21 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/3/14130-red-pitch)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "instructions-for-a-teenage-armageddon-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-03-17",
+        "description": "instructions-for-a-teenage-armageddon-west-end-2024: openingDate null -> 2024-03-17 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/3/17203-instructions-for-a-teenage-armageddon)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "player-kings-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-04-11",
+        "description": "player-kings-west-end-2024: openingDate null -> 2024-04-11 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/4/17720-player-kings)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-04-23",
+        "description": "two-strangers-carry-a-cake-across-new-york-west-end-2024: openingDate null -> 2024-04-23 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/4/16684-two-strangers-carry-a-cake)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spirited-away-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-05-07",
+        "description": "spirited-away-west-end-2024: openingDate null -> 2024-05-07 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/5/8040-spirited-away)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dugsi-dayz-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-05-03",
+        "description": "dugsi-dayz-west-end-2024: openingDate null -> 2024-05-03 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/5/18807-dugsi-dayz)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "people-places-and-things-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-05-14",
+        "description": "people-places-and-things-west-end-2024: openingDate null -> 2024-05-14 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/5/18900-people-places-and-things)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bluets-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-05-24",
+        "description": "bluets-west-end-2024: openingDate null -> 2024-05-24 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/5/18805-bluets)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-06-05",
+        "description": "kathy-and-stella-solve-a-murder-west-end-2024: openingDate null -> 2024-06-05 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/6/18272-kathy-and-stella-solve-a)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "echo-every-cold-hearted-oxygen-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-07-14",
+        "description": "echo-every-cold-hearted-oxygen-west-end-2024: openingDate null -> 2024-07-14 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2024/7/18808-echo-every-cold-hearted-oxygen)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-life-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-04-01",
+        "description": "a-little-life-west-end-2023: openingDate null -> 2023-04-01 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/4/3908-a-little-life)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dixon-and-daughters-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-04-25",
+        "description": "dixon-and-daughters-west-end-2023: openingDate null -> 2023-04-25 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/4/3919-dixon-and-daughters)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mrs-doubtfire-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-06-22",
+        "description": "mrs-doubtfire-west-end-2023: openingDate null -> 2023-06-22 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/6/2805-mrs-doubtfire)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "groundhog-day-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-06-08",
+        "description": "groundhog-day-west-end-2023: openingDate null -> 2023-06-08 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/6/6953-groundhog-day)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-06-14",
+        "description": "idiots-assemble-spitting-image-the-musical-west-end-2023: openingDate null -> 2023-06-14 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/6/5295-idiots-assemble-spitting-image-the)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-crucible-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-06-15",
+        "description": "the-crucible-west-end-2023: openingDate null -> 2023-06-15 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/6/4812-the-crucible)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-way-old-friends-do-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-08-18",
+        "description": "the-way-old-friends-do-west-end-2023: openingDate null -> 2023-08-18 (BRO-5850: Theatre Record press night, https://www.theatrerecord.com/archive/2023/8/7595-the-way-old-friends-do)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T03:30:36.714Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for red-pitch-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for instructions-for-a-teenage-armageddon-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for player-kings-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for two-strangers-carry-a-cake-across-new-york-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for spirited-away-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dugsi-dayz-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for people-places-and-things-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for bluets-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for kathy-and-stella-solve-a-murder-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for echo-every-cold-hearted-oxygen-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-little-life-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dixon-and-daughters-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for mrs-doubtfire-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for groundhog-day-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for idiots-assemble-spitting-image-the-musical-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-crucible-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-way-old-friends-do-west-end-2023"
+    }
+  ],
+  "executedIn": "ci"
+}

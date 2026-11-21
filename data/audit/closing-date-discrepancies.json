@@ -1,0 +1,116 @@
+{
+  "generatedAt": "2026-09-15T21:37:06.848Z",
+  "mode": "dry-run",
+  "summary": {
+    "audited": 13,
+    "extensions": 0,
+    "autoFixedTripleSignal": 0,
+    "newClosings": 2,
+    "ambiguous": 1,
+    "matches": 10,
+    "errors": 0,
+    "budgetExit": false,
+    "deferred": 0
+  },
+  "extensions": [],
+  "autoFixedTripleSignal": [],
+  "newClosings": [
+    {
+      "id": "two-strangers-bway-2025",
+      "stored": null,
+      "latestScheduled": "2026-11-29",
+      "url": "https://www.broadway.com/shows/two-strangers-carry-a-cake-across-new-york/schedule/",
+      "action": "NEW_CLOSING_NEEDS_REVIEW"
+    },
+    {
+      "id": "and-juliet-2022",
+      "stored": null,
+      "latestScheduled": "2027-01-03",
+      "url": "https://www.broadway.com/shows/juliet/schedule/",
+      "action": "NEW_CLOSING_NEEDS_REVIEW"
+    }
+  ],
+  "ambiguous": [
+    {
+      "id": "schmigadoon-2026",
+      "stored": "2027-04-04",
+      "latestScheduled": "2027-02-18",
+      "url": "https://www.broadway.com/shows/schmigadoon/schedule/",
+      "delta": -45,
+      "action": "NEEDS_HUMAN_REVIEW"
+    }
+  ],
+  "matches": [
+    {
+      "id": "the-rocky-horror-show-2026",
+      "stored": "2027-02-19",
+      "latestScheduled": "2027-02-19",
+      "url": "https://www.broadway.com/shows/the-rocky-horror-show/schedule/",
+      "delta": 0
+    },
+    {
+      "id": "titanique-2026",
+      "stored": "2026-09-20",
+      "latestScheduled": "2026-09-20",
+      "url": "https://www.broadway.com/shows/titanique/schedule/",
+      "delta": 0
+    },
+    {
+      "id": "just-in-time-2025",
+      "stored": "2027-02-07",
+      "latestScheduled": "2027-02-07",
+      "url": "https://www.broadway.com/shows/just-in-time/schedule/",
+      "delta": 0
+    },
+    {
+      "id": "stranger-things-2024",
+      "stored": "2027-01-03",
+      "latestScheduled": "2027-01-03",
+      "url": "https://www.broadway.com/shows/stranger-things-the-first-shadow/schedule/",
+      "delta": 0
+    },
+    {
+      "id": "operation-mincemeat-2025",
+      "stored": "2027-02-14",
+      "latestScheduled": "2027-02-14",
+      "url": "https://www.broadway.com/shows/operation-mincemeat/schedule/",
+      "delta": 0
+    },
+    {
+      "id": "buena-vista-social-club-2025",
+      "stored": "2027-01-17",
+      "latestScheduled": "2027-01-17",
+      "url": "https://www.broadway.com/shows/buena-vista-social-club/schedule/",
+      "delta": 0
+    },
+    {
+      "id": "oh-mary-2024",
+      "stored": "2027-02-19",
+      "latestScheduled": "2027-02-19",
+      "url": "https://www.broadway.com/shows/oh-mary/schedule/",
+      "delta": 0
+    },
+    {
+      "id": "the-great-gatsby-2024",
+      "stored": "2027-01-03",
+      "latestScheduled": "2027-01-03",
+      "url": "https://www.broadway.com/shows/the-great-gatsby/schedule/",
+      "delta": 0
+    },
+    {
+      "id": "the-outsiders-2024",
+      "stored": "2027-02-19",
+      "latestScheduled": "2027-02-19",
+      "url": "https://www.broadway.com/shows/the-outsiders/schedule/",
+      "delta": 0
+    },
+    {
+      "id": "paranormal-activity-2026",
+      "stored": "2027-01-03",
+      "latestScheduled": "2027-01-03",
+      "url": "https://www.broadway.com/shows/paranormal-activity/schedule/",
+      "delta": 0
+    }
+  ],
+  "errors": []
+}

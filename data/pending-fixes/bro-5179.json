@@ -1,0 +1,60 @@
+{
+  "issueNumber": "bro-5179",
+  "planId": "5a7c1e0e-5179-4c1d-9b0a-5179b0a51790",
+  "status": "applied",
+  "createdAt": "2026-10-17T00:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5179: re-file vulture rows whose url host is another publication. Liberation (New York Notebook substack) moves to new-york-notebook; La Cage aux Folles (theater.nytimes.com, duplicate of the nytimes copy) merges into nytimes; The Secret Circus (events.newyorkfamily.com event listing) is flagged isNonReview. Already fine: jersey-boys-2005 (newyorkmetro.com is a vulture domainAlias) and a-christmas-story-the-musical-2012 (no url). Left alone: motown-the-musical-2016/vulture--robert-kahn.json (nbcnewyork.com, a different, wrongProduction 2013 article than the live nbcny--robert-kahn.json; already excluded from scoring, migrating would conflict).",
+    "steps": [
+      "Apply the two new migration rules (dry run on the live corpus: 2 matched, 1 same-article duplicate resolved, 0 conflicts).",
+      "Flag the Secret Circus event listing isNonReview."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "migrate-outlet-ids.js",
+        "args": "--apply --rule=vulture-newyorknotebook-host-to-new-york-notebook --rule=vulture-theater-nytimes-host-to-nytimes",
+        "description": "BRO-5179: move liberation-2025 and la-cage-aux-folles-2010 vulture rows to their real outlets."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BRO-5179: New York Family event listing (events.newyorkfamily.com) filed under vulture",
+        "description": "Reason for the flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "events.newyorkfamily.com event listing, not a review."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T09:46:10.711Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran migrate-outlet-ids.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json isNonReviewReason: null -> \"manual (not a review): BRO-5179: New York Family event listing (events.newyorkfamily.com) filed under vulture\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json isNonReview: null -> true"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5342",
+  "planId": "54a6e11a-a25c-4623-8ba8-ab0d7a87501c",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5342: delete the stray _pending/__zzz-guard2-14366 test artifact committed to the review-texts corpus.",
+    "steps": [
+      "Test artifact (pid-suffixed name), no production data."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "_pending/__zzz-guard2-14366/guardian--2e7812db.json",
+        "description": "Stray test artifact written into the real corpus by the 2026-10-14 checkpoint."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T14:39:54.012Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted _pending/__zzz-guard2-14366/guardian--2e7812db.json"
+    }
+  ],
+  "executedIn": "ci"
+}

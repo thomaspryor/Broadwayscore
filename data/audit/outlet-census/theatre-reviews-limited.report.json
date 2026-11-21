@@ -1,0 +1,753 @@
+{
+  "outletId": "theatre-reviews-limited",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:33:40.485Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 305,
+    "inWindow": 305,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "gap": 11,
+      "held": 196,
+      "out-of-window": 12,
+      "not-review": 54,
+      "held-unmatched": 2,
+      "catalog-gap": 30
+    },
+    "viaTitleVariant": {
+      "held": 8,
+      "gap": 1
+    },
+    "recall": 0.947,
+    "recallWithCatalog": 0.827
+  },
+  "seasons": {
+    "2026-27": {
+      "gap": 1,
+      "held": 10
+    },
+    "2025-26": {
+      "held": 56,
+      "out-of-window": 3,
+      "not-review": 12,
+      "held-unmatched": 1,
+      "gap": 1,
+      "catalog-gap": 2
+    },
+    "2024-25": {
+      "not-review": 14,
+      "held": 53,
+      "catalog-gap": 3,
+      "out-of-window": 1,
+      "gap": 1
+    },
+    "2023-24": {
+      "not-review": 6,
+      "held": 23,
+      "held-unmatched": 1,
+      "catalog-gap": 3,
+      "gap": 3,
+      "out-of-window": 1
+    },
+    "2022-23": {
+      "held": 37,
+      "not-review": 11,
+      "catalog-gap": 8,
+      "gap": 3,
+      "out-of-window": 3
+    },
+    "2021-22": {
+      "held": 17,
+      "catalog-gap": 14,
+      "not-review": 10,
+      "out-of-window": 4,
+      "gap": 2
+    },
+    "2020-21": {
+      "not-review": 1
+    }
+  },
+  "corpusSide": {
+    "rowsInWindow": 300,
+    "notEnumerated": 13,
+    "noUrl": 0,
+    "samples": [
+      {
+        "showId": "farinelli-and-the-king-2017",
+        "url": "https://www.theatrereviews.com/broadway-review-farinelli-and-the-king-at-the-belasco-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "indecent-2017",
+        "url": "http://www.theatrereviews.com/broadway-review-indecent-shatters-the-comfort-of-safety-at-the-cort-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "my-fair-lady-2018",
+        "url": "https://www.theatrereviews.com/broadway-review-my-fair-lady-at-lincoln-center-theaters-vivian-beaumont-theater/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "url": "https://www.theatrereviews.com/broadway-review-natasha-pierre-the-great-comet-of-1812-sparkles-at-the-imperial-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "network-2018",
+        "url": "https://www.theatrereviews.com/broadway-review-network-at-the-belasco-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "oklahoma-2019",
+        "url": "https://www.theatrereviews.com/broadway-review-oklahoma-fails-to-measure-up-at-circle-in-the-square/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "on-your-feet-2015",
+        "url": "https://www.theatrereviews.com/review-on-your-feet-at-the-marquis-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "six-degrees-of-separation-2017",
+        "url": "http://www.theatrereviews.com/broadway-review-six-degrees-of-separation-at-the-ethel-barrymore-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-crucible-2016",
+        "url": "https://www.theatrereviews.com/review-the-crucible-relives-a-horrific-time-at-the-walter-kerr-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-father-2016",
+        "url": "https://www.theatrereviews.com/review-the-father-at-the-samuel-j-friedman-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-ferryman-2018",
+        "url": "https://www.theatrereviews.com/broadway-review-the-ferryman-at-the-bernard-b-jacobs-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-great-society-2019",
+        "url": "https://www.theatrereviews.com/broadway-review-the-great-society-at-the-vivian-beaumont-theater/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-sound-inside-2019",
+        "url": "https://www.theatrereviews.com/broadway-review-the-sound-inside-at-studio-54/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-degenerates-at-playwrights-horizons-peter-jay-sharp-theater-extended-through-sunday-january-24-2027/",
+      "headline": "Off-Broadway Review: “Degenerates” at Playwrights Horizons Peter Jay Sharp Theater (Extended through Sunday, January 24, 2027)",
+      "publishDate": "2026-11-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "degenerates-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "degenerates-dec-jan-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-the-monsters-at-new-york-city-center-stage-ii-through-sunday-march-22-2026/",
+      "headline": "Off-Broadway Review: “The Monsters” at New York City Center Stage II (Closed Sunday, March 22, 2026)",
+      "publishDate": "2026-02-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-monsters-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/broadway-review-cult-of-love-at-the-helen-hayes-currently-on/",
+      "headline": "Broadway Review: “Cult of Love” at the Helen Hayes (Closed Sunday, February 2, 2025)",
+      "publishDate": "2024-12-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cult-of-love-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/broadway-review-the-whos-tommy-at-the-nederlander-theatre-currently-on/",
+      "headline": "Broadway Review: The Who’s “Tommy” at the Nederlander Theatre (Closed on Sunday, July 21, 2024)",
+      "publishDate": "2024-04-07",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-whos-tommy-2024"
+      ],
+      "outOfWindow": [
+        "the-whos-tommy-1993"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/broadway-review-harmony-at-the-ethel-barrymore-theatre-currently-on/",
+      "headline": "Broadway Review: “Harmony” at the Ethel Barrymore Theatre (Closed Sunday, April 4, 2024)",
+      "publishDate": "2023-12-15",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "harmony-2023"
+      ],
+      "outOfWindow": [
+        "barrymore-1997",
+        "harmony-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/broadway-review-gutenberg-the-musical-at-the-james-earl-jones-theatre-through-sunday-january-28-2024/",
+      "headline": "Broadway Review: “Gutenberg! The Musical!” at the James Earl Jones Theatre (Closed Sunday, January 28, 2024)",
+      "publishDate": "2023-10-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "gutenberg-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/__trashed/",
+      "headline": "Broadway Review: “A Beautiful Noise” at the Broadhurst Theatre (Currently On)",
+      "publishDate": "2023-01-26",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-merrily-we-roll-along/",
+      "headline": "Off-Broadway Review: “Merrily We Roll Along” at New York Theatre Workshop (Closed Sunday, January 22, 2023)",
+      "publishDate": "2022-12-24",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "merrily-we-roll-along-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "merrily-we-roll-along-2023",
+        "merrily-we-roll-along-1981"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-you-will-get-sick-at-roundabout-theatre-companys-laura-pels-theatre-through-sunday-december-11-2022/",
+      "headline": "Off-Broadway Review: “You Will Get Sick” at Roundabout Theatre Company’s Laura Pels Theatre (Closed Sunday, December 11, 2022)",
+      "publishDate": "2022-11-15",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "you-will-get-sick-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/broadway-review-take-me-out-at-second-stages-helen-hayes-theatre-through-sunday-june-11-2022/",
+      "headline": "Broadway Review: “Take Me Out” at Second Stage’s Helen Hayes Theatre (Closed on Sunday, June 11, 2022)",
+      "publishDate": "2022-04-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "take-me-out-2022"
+      ],
+      "outOfWindow": [
+        "take-me-out-2003"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-the-new-groups-black-no-more-at-the-pershing-square-signature-center-through-sunday-february-27-2022/",
+      "headline": "Off-Broadway Review: The New Group’s “Black No More” at The Pershing Square Signature Center (Closed Sunday, February 27, 2022)",
+      "publishDate": "2022-02-15",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "black-no-more-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-about-time-at-the-marjorie-deane-little-theatre-through-sunday-april-5-2026/",
+      "headline": "Off-Broadway Review: “About Time” at the Marjorie Deane Little Theatre (Through Sunday, April 5, 2026)",
+      "publishDate": "2026-03-20",
+      "via": null,
+      "held": [
+        "maltby-and-shires-about-time-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/broadway-review-job-at-the-helen-hayes-theater-through-sunday-september-29-2024/",
+      "headline": "Broadway Review: “Job” at the Helen Hayes Theater (Closed on Sunday, October 27, 2024)",
+      "publishDate": "2024-08-03",
+      "via": null,
+      "held": [
+        "job-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-initiative-at-the-publics-luesther-hall-through-sunday-december-7-2025/",
+      "headline": "Off-Broadway Review: “Initiative” at the Public’s LuEsther Hall (Closed Sunday, December 7, 2025)",
+      "publishDate": "2025-12-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-are-the-bennett-girls-ok-at-the-west-end-theatre-through-sunday-november-9-2025/",
+      "headline": "Off-Broadway Review: “Are the Bennett Girls OK” at the West End Theatre (EXTENDED through Sunday, December 21, 2025)",
+      "publishDate": "2025-10-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-gene-gilda-at-59e59-theaters-through-sunday-september-7-2025/",
+      "headline": "Off-Broadway Review: “Gene & Gilda” at 59E59 Theaters (Closed Sunday, September 7, 2025)",
+      "publishDate": "2025-08-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-beau-the-musical-at-154-christopher-street-through-sunday-july-27-2025/",
+      "headline": "Off-Broadway Review: “Beau the Musical” at 154 Christopher Street (Through Sunday, July 27, 2025.",
+      "publishDate": "2025-06-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-vladimir-at-new-york-city-center-stage-i-through-sunday-november-10-2024/",
+      "headline": "Off-Broadway Review: “Vladimir” at New York City Center Stage I (Closed on Sunday, November 10, 2024)",
+      "publishDate": "2024-10-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-breaking-the-story-at-second-stages-tony-kiser-theater-through-sunday-june-23-2024/",
+      "headline": "Off-Broadway Review: “Breaking the Story” at Second Stage’s Tony Kiser Theater (Closed on Sunday, June 23, 2024)",
+      "publishDate": "2024-06-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-the-ally-at-the-publics-anspacher-theater-through-sunday-march-24-2024/",
+      "headline": "Off-Broadway Review: “The Ally” at the Public’s Anspacher Theater (Closed Sunday, March 24, 2024)",
+      "publishDate": "2024-03-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-primary-stages-dig-at-59e59-theaters-through-sunday-october-22-2023/",
+      "headline": "Off-Broadway Review: Primary Stage’s “Dig” at 59E59 Theaters (Closed Sunday, October 22, 2023)",
+      "publishDate": "2023-09-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-defibrillator-and-m-green-productions-foxes-at-59e59-theaters-through-sunday-july-2-2023/",
+      "headline": "Off-Broadway Review: Defibrillator and M. Green Productions “Foxes” at 59E59 Theaters (Closed Sunday, July 2, 2023)",
+      "publishDate": "2023-06-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-prospect-theater-companys-lizard-boy-at-theatre-row-through-saturday-july-1-2023/",
+      "headline": "Off-Broadway Review: Prospect Theater Company’s “Lizard Boy” at Theatre Row (Closed Saturday, July 1, 2023)",
+      "publishDate": "2023-06-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-eisenhower-this-piece-of-ground-at-theatre-at-st-clements-through-sunday-july-30-2023/",
+      "headline": "Off-Broadway Review: “Eisenhower: This Piece of Ground” at Theatre at St. Clements (Extended through Wednesday, August 30, 2023)",
+      "publishDate": "2023-06-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-camp-siegfried-at-second-stages-tony-kiser-theater-through-sunday-december-4-2022/",
+      "headline": "Off-Broadway Review: “Camp Siegfried” at Second Stage’s Tony Kiser Theater (Closed Sunday, December 4, 2022)",
+      "publishDate": "2022-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-catch-as-catch-can-at-playwrights-horizons-through-sunday-november-20-2022/",
+      "headline": "Off-Broadway Review: “Catch as Catch Can” at Playwrights Horizons (Closed Sunday, November 20, 2022)",
+      "publishDate": "2022-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-the-civilians-the-unbelieving-at-59e59-theaters-through-saturday-november-19-2022/",
+      "headline": "Off-Broadway Review: The Civilians “The Unbelieving” at 59E59 Theaters (Closed Saturday, November 19, 2022)",
+      "publishDate": "2022-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-american-televisions-co-produced-with-theatre-mitu-at-new-york-theatre-workshop-through-sunday-october-16-2022/",
+      "headline": "Off-Broadway Review: “american (tele)visions” Co-Produced with Theatre Mitu at New York Theatre Workshop (Closed Sunday, October 16, 2022)",
+      "publishDate": "2022-10-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-los-otros-at-a-r-t-new-york-theatres-mezzanine-theatre-through-saturday-october-8-2022/",
+      "headline": "Off-Broadway Review: “Los Otros” at A.R.T./New York Theatres – Mezzanine Theatre (Closed Saturday, October 8, 2022)",
+      "publishDate": "2022-09-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-primary-stages-on-that-day-in-amsterdam-at-59e59-theaters-through-sunday-september-4-2022/",
+      "headline": "Off-Broadway Review: Primary Stages’ “On That Day in Amsterdam at 59E59 Theaters (Through Sunday, September 4, 2022)",
+      "publishDate": "2022-08-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-the-butcher-boy-at-irish-repertory-theatre-through-sunday-september-11-2022/",
+      "headline": "Off-Broadway Review: “The Butcher Boy” at Irish Repertory Theatre (Through Sunday, September 11, 2022)",
+      "publishDate": "2022-08-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-between-the-lines-at-the-tony-kiser-theater-at-second-stage-through-sunday-october-2-2022/",
+      "headline": "Off-Broadway Review: “Between the Lines” at the Tony Kiser Theater at Second Stage (Through Sunday, October 2, 2022)",
+      "publishDate": "2022-07-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-epiphany-tackles-wonder-head-on-at-lincoln-centers-mitzi-e-newhouse-theater-through-sunday-july-31-2022/",
+      "headline": "Off-Broadway Review: “Epiphany” Tackles Wonder Head-On at Lincoln Center’s Mitzi E Newhouse Theater (Closed Sunday, July 31, 2022)",
+      "publishDate": "2022-07-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-exception-to-the-rule-at-the-black-box-theatre-at-the-harold-and-miriam-steinberg-center-through-sunday-june-26-2022/",
+      "headline": "Off-Broadway Review: “Exception to the Rule” at the Black Box Theatre at the Harold and Miriam Steinberg Center (Closed Sunday, June 26, 2022)",
+      "publishDate": "2022-06-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-romeo-bernadette-a-musical-tale-of-verona-and-brooklyn-at-theater-555-through-sunday-june-26-2022/",
+      "headline": "Off-Broadway Review: “Romeo & Bernadette: A Musical Tale of Verona and Brooklyn” at Theater 555 (Closed Sunday, July 31, 2022)",
+      "publishDate": "2022-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/broadway-review-six-at-the-brooks-atkinson-theatre-currently-on/",
+      "headline": "Broadway Review: “Six” at the Brooks Atkinson Theatre (Currently On)",
+      "publishDate": "2022-03-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-vineyard-theatre-and-wp-theaters-sandblasted-at-the-vineyard-theatre-extended-through-sunday-march-13-2022/",
+      "headline": "Off-Broadway Review: Vineyard Theatre and WP Theater’s “sandblasted” at the Vineyard Theatre (Closed Sunday, March 13, 2022)",
+      "publishDate": "2022-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-tambo-bones-at-playwrights-horizons-through-sunday-february-27-2022/",
+      "headline": "Off-Broadway Review: Tambo & Bones” at Playwrights Horizons (Closed Sunday, February 27, 2022)",
+      "publishDate": "2022-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-the-visitor-at-the-publics-newman-theater-through-sunday-december-5-2021/",
+      "headline": "Off-Broadway Review: “The Visitor” at the Public’s Newman Theater (Closed Sunday, December 5, 2021)",
+      "publishDate": "2021-11-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-morning-sun-at-manhattan-theatre-club-at-new-york-city-center-stage-i-extended-though-sunday-december-19-2021/",
+      "headline": "Off-Broadway Review: “Morning Sun” at Manhattan Theatre Club at New York City Center – Stage I (Closed Sunday December 19, 2021)",
+      "publishDate": "2021-11-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-a-commercial-jingle-for-regina-comet-at-the-dr2-theatre-through-sunday-november-21-2021/",
+      "headline": "Off-Broadway Review: “A Commercial Jingle for Regina Comet” at the DR2 Theatre (Closed Sunday November 21, 2021)",
+      "publishDate": "2021-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-bedlams-persuasion-at-the-connelly-theatre-through-sunday-october-31-2021/",
+      "headline": "Off-Broadway Review: Bedlam’s “Persuasion” at the Connelly Theatre (Closed Sunday October 31, 2021)",
+      "publishDate": "2021-10-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-new-york-theatre-workshops-sanctuary-city-at-the-lucille-lortel-theatre-through-sunday-october-10-2021/",
+      "headline": "Off-Broadway Review: New York Theatre Workshop’s “Sanctuary City” at the Lucille Lortel Theatre (Closed Sunday October 10, 2021)",
+      "publishDate": "2021-10-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://www.theatrereviews.com/cabaret-review-christine-andreas-swonderful-at-54-below-friday-july-31-at-700-p-m/",
+      "headline": "Cabaret Review: Christine Andreas “S’Wonderful” at 54 Below (Friday. July 31 at 7:00 p.m.)",
+      "publishDate": "2026-08-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/seattle-review-jesus-christ-superstar-at-seattles-5th-avenue-theatre-mirrors-the-modern-world-closed-saturday-may-30-2026/",
+      "headline": "Seattle Review: “Jesus Christ Superstar” at Seattle’s 5th Avenue Theatre Mirrors the Modern World (Closed Saturday, May 30, 2026)",
+      "publishDate": "2026-07-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jesus-christ-superstar-2012",
+        "jesus-christ-superstar-1977",
+        "jesus-christ-superstar-2000",
+        "jesus-christ-superstar-1971"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-mexodus-at-the-minetta-lane-theatre-through-saturday-october-18-2025/",
+      "headline": "Off-Broadway Review: “Mexodus” at the Minetta Lane Theatre (Closed Saturday, November 1, 2025)",
+      "publishDate": "2025-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/festival-review-julius-caesar-at-the-oregon-shakespeare-festival-examines-power-betrayal-and-gender-embodiment-through-october-26-2025/",
+      "headline": "Festival Review: “Julius Caesar” at the Oregon Shakespeare Festival Examines Power, Betrayal, and Gender Embodiment (Through October 26, 2025)",
+      "publishDate": "2025-03-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "betrayal-2019",
+        "betrayal-2013",
+        "betrayal-1980",
+        "julius-caesar-2005",
+        "betrayal-2000",
+        "julius-caesar-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-hells-kitchen-at-the-publics-newman-theater-through-sunday-january-7-2024/",
+      "headline": "Off-Broadway Review: “Hell’s Kitchen” at the Public’s Newman Theater (Closed Sunday, January 7, 2024 and Opens on Broadway Saturday, April 20, 2024)",
+      "publishDate": "2023-12-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/regional-theatre-news-preview-million-dollar-quartet-debuts-at-bucks-county-playhouse-through-sunday-january-1-2023/",
+      "headline": "Regional Theatre Review: “Million Dollar Quartet Christmas” at Bucks County Playhouse (Closed Sunday, January 1, 2023)",
+      "publishDate": "2022-12-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "million-dollar-quartet-2010"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-a-raisin-in-the-sun-at-the-public-theaters-newman-theater-extended-through-sunday-november-20-2022/",
+      "headline": "Off-Broadway Review: “A Raisin in the Sun” at the Public Theater’s Newman Theater (Closed on Sunday, November 20, 2022)",
+      "publishDate": "2022-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-raisin-in-the-sun-2014",
+        "a-raisin-in-the-sun-2004"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/regional-review-evita-at-bucks-county-playhouse-through-sunday-october-30-2022/",
+      "headline": "Regional Review: “Evita” at Bucks County Playhouse (Closed Sunday, October 30, 2022)",
+      "publishDate": "2022-09-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "evita-2012",
+        "evita-1979",
+        "evita-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-cat-on-a-hot-tin-roof-at-the-theater-at-st-clements-through-sunday-august-14-2022/",
+      "headline": "Off-Broadway Review: “Cat on a Hot Tin Roof” at The Theater at St. Clements (Closed Sunday, August 14, 2022)",
+      "publishDate": "2022-08-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cat-on-a-hot-tin-roof-2013",
+        "cat-on-a-hot-tin-roof-2008",
+        "cat-on-a-hot-tin-roof-1990",
+        "cat-on-a-hot-tin-roof-1974",
+        "cat-on-a-hot-tin-roof-2003",
+        "cat-on-a-hot-tin-roof-2027"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/pennsylvania-shakespeare-festival-shubert-theatre-review-much-ado-about-nothing-through-sunday-august-7-2022/",
+      "headline": "Pennsylvania Shakespeare Festival Shubert Theatre Review: “Much Ado About Nothing” (Closed Sunday, August 7, 2022)",
+      "publishDate": "2022-07-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "much-ado-about-nothing-1984",
+        "much-ado-about-nothing-1972",
+        "much-ado-about-nothing-2026"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/off-broadway-review-the-public-theater-and-national-black-theatre-nbt-production-of-fat-ham-at-the-publics-anspacher-theater-extended-through-sunday-july-17-2022/",
+      "headline": "Off-Broadway Review: The Public Theater and National Black Theatre (NBT) Production of “Fat Ham” at the Public’s Anspacher Theater (Closed Sunday, July 31, 2022)",
+      "publishDate": "2022-06-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023"
+      ]
+    },
+    {
+      "url": "https://www.theatrereviews.com/pennsylvania-shakespeare-festival-2022-main-stage-preview-one-singular-sensation-a-chorus-line-opens-at-pennsylvania-shakespeare-festival-at-the-labuda-center-for-the-performing-arts-on-the-campu/",
+      "headline": "Pennsylvania Shakespeare Festival 2022 Main Stage Review: One Singular Sensation “A Chorus Line” at Pennsylvania Shakespeare Festival at the Labuda Center for the Performing Arts on the Campus of DeSales University (Closed Sunday, July 10, 2022)",
+      "publishDate": "2022-06-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-chorus-line-2006",
+        "a-chorus-line-1975"
+      ]
+    }
+  ]
+}

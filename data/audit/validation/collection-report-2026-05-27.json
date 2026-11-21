@@ -1,0 +1,92 @@
+{
+  "runDate": "2026-05-27T18:49:50.861Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 1000,
+    "priority": "all",
+    "showFilter": "bedlams-othello-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 5,
+    "failed": 1,
+    "skipped": 0,
+    "successRate": "83.3%"
+  },
+  "tierBreakdown": {
+    "playwright": 2,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 2,
+    "brightdata": 1,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 4,
+    "tier1Success": 2,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 2,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.5,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "bedlams-othello-off-broadway-2026/nytimes--helen-shaw.json",
+    "bedlams-othello-off-broadway-2026/theatermania--pete-hempstead.json",
+    "bedlams-othello-off-broadway-2026/culturesauce--thom-geier.json",
+    "bedlams-othello-off-broadway-2026/exeunt-magazine--patrick-maley.json",
+    "bedlams-othello-off-broadway-2026/front-row-center--sarah-downs.json"
+  ],
+  "failed": [
+    "bedlams-othello-off-broadway-2026/nysr--david-finkle.json"
+  ],
+  "failed": [],
+  "tierDetails": {
+    "playwright": [
+      "bedlams-othello-off-broadway-2026/theatermania--pete-hempstead.json",
+      "bedlams-othello-off-broadway-2026/culturesauce--thom-geier.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [
+      "bedlams-othello-off-broadway-2026/exeunt-magazine--patrick-maley.json",
+      "bedlams-othello-off-broadway-2026/front-row-center--sarah-downs.json"
+    ],
+    "brightdata": [
+      "bedlams-othello-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}

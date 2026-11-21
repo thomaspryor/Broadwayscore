@@ -1,0 +1,146 @@
+{
+  "issueNumber": "bro-6488-b",
+  "planId": "b91201fb-fe3f-4114-b677-7d6386c524ff",
+  "status": "applied",
+  "createdAt": "2026-10-29T22:38:27.942Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6488 follow-up: clear stale wrong-production flags on the 6 moved reviews, fix one date, delete one duplicate",
+    "steps": [
+      "BRO-6488 follow-up: moved here from hadestown-west-end-2024 by plan bro-6488. The stale content-check flag said the review is of the National Theatre run, and this folder is that run (Olivier, opened 2018-11-13).",
+      "BRO-6488 follow-up: same stale content-check verdict as wrongProduction; the review is of this production.",
+      "BRO-6488 follow-up: the page byline date reads Wednesday, 14 November 2018 (theartsdesk.com, checked 2026-10-29); the stored 2024-02-22 was the 2024 Lyric opening date.",
+      "BRO-6488 follow-up: moved here from noises-off-west-end-2019. The stale flag said the review is of the Phoenix Theatre run, and this folder is that run (Phoenix, opened 2023-01-25, review dated 2023-01-25).",
+      "BRO-6488 follow-up: moved here from standing-at-the-skys-edge-west-end-2023. Review dated 2024-02-28, inside this Gillian Lynne run; the stale flag named the other production.",
+      "BRO-6488 follow-up: moved here from a-christmas-carol-west-end-2015. The stale flag said the review is of the Old Vic production, and this folder is the 2024 Old Vic season (review dated 2024-11-22).",
+      "BRO-6488 follow-up: moved here from a-christmas-carol-west-end-2020. The stale flag said the review is of the Old Vic production, and this folder is the 2022 Old Vic season (review dated 2022-11-24).",
+      "BRO-6488 follow-up: moved here from arcadia-west-end-2026. The stale flag said the review is of the transfer venue, and this folder is that run (Duke of Yorks, opened 2026-07-01, review dated 2026-07-01).",
+      "BRO-6488 follow-up: second copy of the same WhatsOnStage URL (first held as whatsonstage--unknown.json, renamed by byline enrichment at 13:39Z). The review is of the July 2026 Duke of Yorks run, after this Old Vic run closed 2026-03-21; the correct copy is held on arcadia-duke-of-yorks-west-end-2026."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-west-end-2018/artsdesk--marianka-swain.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6488 follow-up: moved here from hadestown-west-end-2024 by plan bro-6488. The stale content-check flag said the review is of the National Theatre run, and this folder is that run (Olivier, opened 2018-11-13)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-west-end-2018/artsdesk--marianka-swain.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6488 follow-up: same stale content-check verdict as wrongProduction; the review is of this production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-west-end-2018/artsdesk--marianka-swain.json",
+        "field": "publishDate",
+        "oldValue": "2024-02-22",
+        "newValue": "2018-11-14",
+        "description": "BRO-6488 follow-up: the page byline date reads Wednesday, 14 November 2018 (theartsdesk.com, checked 2026-10-29); the stored 2024-02-22 was the 2024 Lyric opening date."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "noises-off-west-end-2023/theatre-weekly--greg-stewart.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6488 follow-up: moved here from noises-off-west-end-2019. The stale flag said the review is of the Phoenix Theatre run, and this folder is that run (Phoenix, opened 2023-01-25, review dated 2023-01-25)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "standing-at-the-skys-edge-west-end-2024/theatre-weekly--greg-stewart.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6488 follow-up: moved here from standing-at-the-skys-edge-west-end-2023. Review dated 2024-02-28, inside this Gillian Lynne run; the stale flag named the other production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2024/thereviewshub--the-reviews-hub-london.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6488 follow-up: moved here from a-christmas-carol-west-end-2015. The stale flag said the review is of the Old Vic production, and this folder is the 2024 Old Vic season (review dated 2024-11-22)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2022/thereviewshub--the-reviews-hub-london.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6488 follow-up: moved here from a-christmas-carol-west-end-2020. The stale flag said the review is of the Old Vic production, and this folder is the 2022 Old Vic season (review dated 2022-11-24)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "arcadia-duke-of-yorks-west-end-2026/whatsonstage--alex-wood.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6488 follow-up: moved here from arcadia-west-end-2026. The stale flag said the review is of the transfer venue, and this folder is that run (Duke of Yorks, opened 2026-07-01, review dated 2026-07-01)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "arcadia-west-end-2026/whatsonstage--alex-wood.json",
+        "description": "BRO-6488 follow-up: second copy of the same WhatsOnStage URL (first held as whatsonstage--unknown.json, renamed by byline enrichment at 13:39Z). The review is of the July 2026 Duke of Yorks run, after this Old Vic run closed 2026-03-21; the correct copy is held on arcadia-duke-of-yorks-west-end-2026."
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T22:46:01.882Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-west-end-2018/artsdesk--marianka-swain.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-west-end-2018/artsdesk--marianka-swain.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-west-end-2018/artsdesk--marianka-swain.json publishDate: \"2024-02-22\" -> \"2018-11-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "noises-off-west-end-2023/theatre-weekly--greg-stewart.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "standing-at-the-skys-edge-west-end-2024/theatre-weekly--greg-stewart.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-west-end-2024/thereviewshub--the-reviews-hub-london.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-west-end-2022/thereviewshub--the-reviews-hub-london.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arcadia-duke-of-yorks-west-end-2026/whatsonstage--alex-wood.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted arcadia-west-end-2026/whatsonstage--alex-wood.json"
+    }
+  ],
+  "executedIn": "ci"
+}
