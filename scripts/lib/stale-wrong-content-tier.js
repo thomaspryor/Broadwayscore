@@ -41,9 +41,9 @@ function isGarbageOrRejected(record) {
  */
 function retierStaleWrongContentTier(record) {
   if (!record || record.contentTier !== 'invalid') return [];
-  // BRO-7944: a flag still set but neutralised by a permanent override is not in effect.
-  const eff = require('./content-quality').isEffectivelyWrongProductionOrShow(record);
-  if (eff.effectivelyWrongProduction || eff.effectivelyWrongShow) return [];
+  // BRO-7944: a still-set flag blocks, EXCEPT one neutralised by a permanent human override
+  // (wrongProductionOverride / wrongShowOverride). Other clear stamps do not lift a live flag (BRO-5367).
+  if ((record.wrongShow && !record.wrongShowOverride) || (record.wrongProduction && !record.wrongProductionOverride)) return [];
   if (!/^wrong (show|production)$/i.test(String(record.contentTierReason || record.tierReason || '').trim())) return [];
   if (!hasClearEvidence(record) || isGarbageOrRejected(record)) return [];
   const t = require('./content-quality').classifyContentTier({ ...record, contentTier: undefined });
