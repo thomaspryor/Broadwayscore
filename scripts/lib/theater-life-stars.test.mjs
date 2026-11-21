@@ -79,3 +79,18 @@ test('entities decode; a combined column never lends another show its footer', (
 test('accented show titles match their unaccented post title', () => {
   assert.equal(resolveTheaterLifeStars({ title: 'Therese Raquin ***', text: 'x\nTherese Raquin ***Venue', showTitles: ['Thérèse Raquin'] }).source, 'wp-api-footer');
 });
+
+// BRO-7928: the weekly recovery reads the footer star from the stored text,
+// because theaterlife.com's WP API times out from GitHub runners.
+test('footerRatingFromStoredText reads the footer star of a stored review file', () => {
+  const { footerRatingFromStoredText } = require('./theater-life-stars.js');
+  const fullText = "Daniel Fish's Elektra, on the other hand, has been drained of all its power.\n\nElektra **Theatre for a New Audience at Polonsky Shakespeare Center, 262 Ashland Place, Brooklyn.";
+  assert.deepEqual(
+    footerRatingFromStoredText({ outletId: 'theater-life', showTitle: 'Elektra', fullText }),
+    { originalScore: '2/5 stars', normalizedScore: 40, source: 'wp-api-footer' },
+  );
+  assert.equal(footerRatingFromStoredText({ outletId: 'theater-life', showTitle: 'Elektra', fullText: 'Elektra is a play.' }), null);
+  assert.equal(footerRatingFromStoredText({ outletId: 'guardian', showTitle: 'Elektra', fullText }), null, 'Theater Life only');
+  assert.equal(footerRatingFromStoredText({ outletId: 'theater-life', showTitle: 'Oedipus', fullText }), null, "another show's footer line");
+  assert.equal(footerRatingFromStoredText({ outletId: 'theater-life', fullText }), null, 'no title, no guess');
+});

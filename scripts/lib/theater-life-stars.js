@@ -107,4 +107,21 @@ function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
   return { cleanTitle, rating: null, source: null };
 }
 
-module.exports = { parseTitleStars, footerStars, resolveTheaterLifeStars, decodeEntities: (s) => decodeHtmlEntities(String(s || '')) };
+/**
+ * The footer-line rating of a stored Theater Life review file, shaped like a
+ * score-extractors result. recover-explicit-ratings.js phase 1 uses it: phase 2
+ * reads the same line from the WP API, but theaterlife.com times out from
+ * GitHub runners (BRO-7928: the Elektra recovery run got "timeout"), so the
+ * weekly cron never filled these. Footer only: a title-only star needs the WP
+ * post title, which the stored file does not keep.
+ * @param {{outletId?: string, fullText?: string, showTitle?: string}} data
+ */
+function footerRatingFromStoredText(data) {
+  if (!data || data.outletId !== 'theater-life' || !data.fullText || !data.showTitle) return null;
+  const rating = footerStars(decodeHtmlEntities(String(data.fullText)), [data.showTitle]);
+  if (!rating) return null;
+  const total = parseFloat(rating);
+  return { originalScore: `${total}/5 stars`, normalizedScore: Math.round((total / 5) * 100), source: 'wp-api-footer' };
+}
+
+module.exports = { parseTitleStars, footerStars, resolveTheaterLifeStars, footerRatingFromStoredText, decodeEntities: (s) => decodeHtmlEntities(String(s || '')) };

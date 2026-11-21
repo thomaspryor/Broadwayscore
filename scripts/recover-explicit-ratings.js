@@ -43,7 +43,7 @@ const { isMissingOriginalScore } = require('./lib/star-score-mismatch');
 const { parseTimeBudgetMin, createRunBudget, phaseDeadlineReached } = require('./lib/run-budget');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { persistReviewSnapshot } = require('./lib/persist-review-snapshot');
-const { resolveTheaterLifeStars } = require('./lib/theater-life-stars');
+const { resolveTheaterLifeStars, footerRatingFromStoredText } = require('./lib/theater-life-stars');
 
 // showId → shows.json record so isScoreable sees what the rebuild sees: the
 // wrongShow stale-flag override (Notion 34e637c5-416f-8121), the pre-opening
@@ -405,7 +405,10 @@ async function phase1ExtractLocal(reviews) {
     if (!text || text.length < 20) continue;
 
     // Try rule-based extraction first (free, no LLM)
-    let result = extractScoreRuleBased('', text, review.data.outletId || '', review.data.showTitle || '');
+    // Theater Life's footer star is in the stored text; phase 2's WP API times
+    // out from GitHub runners (BRO-7928), so read it locally first.
+    let result = footerRatingFromStoredText(review.data)
+      || extractScoreRuleBased('', text, review.data.outletId || '', review.data.showTitle || '');
     // Fall back to LLM if rule-based didn't find anything
     if (!result) {
       result = await extractExplicitScore({
@@ -429,6 +432,8 @@ async function phase1ExtractLocal(reviews) {
           source: result.source,
         });
         review.data.scoreExtractedFrom = 'local-text';
+        // Same label phase 2 stamps for a Theater Life footer star.
+        if (result.source === 'wp-api-footer') review.data.scoreSource = result.source;
         review.data.scoreRecoveredAt = new Date().toISOString();
         console.log(`  ✓ ${review.showId}/${review.file}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}] → ${routed.field}`);
         persistReviewSnapshot(review);
