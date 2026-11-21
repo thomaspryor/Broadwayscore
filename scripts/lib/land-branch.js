@@ -628,7 +628,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
       run('merged-tree-tests', ['node', 'scripts/lib/merge-post-merge-test-gate.js'], {
         input: `${mergedTreeGateInput(files, interveningTests).join('\n')}\n`,
         timeoutMs: MERGED_TREE_TIMEOUT_MS,
-        env: { ...env, MERGE_TEST_GATE_BASELINE_SHA: baseSha || '', ...(small ? { MERGE_TEST_GATE_ONLY_LISTED: '1' } : {}) },
+        env: { ...env, MERGE_TEST_GATE_BASELINE_SHA: baseSha || '', MERGE_TEST_GATE_NO_LOAD_SCALING: '1', ...(small ? { MERGE_TEST_GATE_ONLY_LISTED: '1' } : {}) },
         detail: tapDetail,
       });
     }

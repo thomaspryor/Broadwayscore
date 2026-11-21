@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS } = require('./merge-post-merge-test-gate.js');
+const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS, TEST_GATE_MAX_TIMEOUT_MS, computeTestGateTimeoutMs } = require('./merge-post-merge-test-gate.js');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 
 // --- baselineCheckoutOptions: pure, no I/O (BRO-3962) ---
@@ -1370,4 +1370,34 @@ test('runTestGate: stale data plus a NEW failure still blocks (the label never s
   assert.equal(r.passed, false);
   assert.match(r.output, /NEW since origin\/main/);
   assert.match(r.output, /ENV: likely stale local data/);
+});
+
+test('computeTestGateTimeoutMs (BRO-7947): scales with load, floors at 8 min, ceilings at 20 min', () => {
+  const MIN = 60 * 1000;
+  // measured failing case: 1551 files, load 23.3 on 14 cores -> must exceed the 8:22 the run took
+  const loaded = computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 23.3, cores: 14 });
+  assert.ok(loaded > 8.5 * MIN && loaded <= TEST_GATE_MAX_TIMEOUT_MS, `loaded cap ${loaded}`);
+  assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 0.5, cores: 14 }), 8 * MIN, 'idle machine keeps the 8 min floor');
+  assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 400, cores: 14 }), TEST_GATE_MAX_TIMEOUT_MS, 'ceiling');
+  assert.equal(computeTestGateTimeoutMs({ fileCount: 5, loadAvg: 99, cores: 1 }) >= 8 * MIN, true);
+  assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 40, cores: 14, env: { MERGE_TEST_GATE_NO_LOAD_SCALING: '1' } }), 8 * MIN, 'CI land opts out');
+  assert.equal(computeTestGateTimeoutMs({ fileCount: 1, loadAvg: 0, cores: 4, env: { MERGE_TEST_GATE_TIMEOUT_MS: '90000' } }), 90000, 'valid override wins');
+  for (const bad of ['abc', '0', '-5', '']) {
+    assert.equal(computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 0, cores: 4, env: { MERGE_TEST_GATE_TIMEOUT_MS: bad } }), 8 * MIN, `bad override ${bad} falls back`);
+  }
+});
+
+test('runTestGate passes ONE computed cap to every spawn and keeps the kill fail-safe (BRO-7947)', () => {
+  const caps = [];
+  const files = ['scripts/lib/x.js'];
+  const r = runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true, execFn: (cwd, tf, cap) => { caps.push(cap); return { status: 0, stdout: '', stderr: '' }; } });
+  if (r.ran) {
+    assert.equal(new Set(caps).size, 1);
+    assert.match(r.reason, /in \d+s \(cap \d+s\)/);
+  }
+});
+
+test('land-branch opts the CI land gate out of load scaling (BRO-7947)', () => {
+  const land = require('node:fs').readFileSync(new URL('./land-branch.js', import.meta.url), 'utf8');
+  assert.match(land, /MERGE_TEST_GATE_NO_LOAD_SCALING: '1'/);
 });
