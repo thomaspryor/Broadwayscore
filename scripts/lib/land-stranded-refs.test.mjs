@@ -68,6 +68,20 @@ test('landed or in flight -> none', () => {
   assert.equal(decideStrandedRef({ tip: TIP, latestRun: run({ status: 'in_progress', conclusion: null }), now: NOW }).action, 'none');
 });
 
+test('BRO-7324: only "Checks (shard 2/2)" red or cancelled, Land succeeded -> landed, never a rerun or escalation', () => {
+  const landOk = job('Land', 'success', [{ name: 'Land', conclusion: 'success' }]);
+  for (const [runC, bC] of [['failure', 'failure'], ['cancelled', 'cancelled']]) {
+    const d = decideStrandedRef({ tip: TIP, latestRun: run({ conclusion: runC, created_at: ago(120), updated_at: ago(90) }), jobs: [job('Checks (shard 2/2)', bC), checksOk, landOk], now: NOW });
+    assert.deepEqual(d, { action: 'none', reason: 'landed' }, runC);
+  }
+  // B is never read as Checks: B green + Checks red still escalates checks-red.
+  const red = decideStrandedRef({ tip: TIP, latestRun: run({ conclusion: 'failure' }), jobs: [job('Checks (shard 2/2)', 'success'), job('Checks', 'failure'), job('Land', 'skipped')], now: NOW });
+  assert.equal(red.reason, 'checks-red');
+  // B green does not stand in for a cancelled Checks.
+  const cancelled = decideStrandedRef({ tip: TIP, latestRun: run({ created_at: ago(60), updated_at: ago(50) }), jobs: [job('Checks (shard 2/2)', 'success'), job('Checks', 'cancelled')], now: NOW });
+  assert.notEqual(cancelled.reason, 'fast-retry-owns');
+});
+
 test('no run for the tip: wait out the grace period, then escalate (never silent)', () => {
   const stale = run({ head_sha: 'b'.repeat(40) });
   assert.deepEqual(decideStrandedRef({ tip: TIP, latestRun: stale, tipCommittedAt: ago(NO_RUN_GRACE_MINUTES - 5), now: NOW }), { action: 'wait', reason: 'no-run-yet' });

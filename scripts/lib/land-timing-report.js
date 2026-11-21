@@ -104,18 +104,25 @@ function causesFromAnnotations(annotations) {
 
 /**
  * A run plus its jobs (and the refusing job's annotations) -> one record:
- * { id, branch, started, outcome: 'landed'|'refused'|'other', minutes, refusedIn, causes, fast }
+ * { id, branch, started, outcome: 'landed'|'refused'|'other', minutes, refusedIn, causes, fast, shard }
  * 'other' = cancelled, still running, skipped gauntlet with no Land, superseded.
+ * Jobs match by EXACT name. "Checks (shard 2/2)" (BRO-7324 runner B) is advisory:
+ * Land never needs it, so a landing is judged by the Land job, not the run's
+ * conclusion (B failing or cancelled turns the run red while the change landed).
+ * B's own wall time is reported apart as `shard` ({ conclusion, minutes }), never
+ * as a refusal cause.
  */
 function summarizeRun(run, jobs, annotations = []) {
   const start = run.run_started_at || run.created_at;
   const byName = (re) => (jobs || []).find((j) => re.test(j.name));
   const checks = byName(/^Checks$/);
   const land = byName(/^Land$/);
+  const shardJob = byName(/^Checks \(shard 2\/2\)$/);
+  const shard = shardJob ? { conclusion: shardJob.conclusion || null, minutes: shardJob.started_at && shardJob.completed_at ? round1(minutes(shardJob.started_at, shardJob.completed_at)) : null } : null;
   const fast = !!(checks && (checks.steps || []).some((s) => FAST_STEP_RE.test(s.name)));
-  const rec = { id: run.id, branch: run.head_branch, started: start, outcome: 'other', minutes: null, refusedIn: null, causes: [], fast };
+  const rec = { id: run.id, branch: run.head_branch, started: start, outcome: 'other', minutes: null, refusedIn: null, causes: [], fast, shard };
   if (run.status !== 'completed') return rec;
-  if (run.conclusion === 'success' && land && land.conclusion === 'success' && land.completed_at) {
+  if (land && land.conclusion === 'success' && land.completed_at) {
     return { ...rec, outcome: 'landed', minutes: round1(minutes(start, land.completed_at)) };
   }
   if (run.conclusion !== 'failure') return rec;

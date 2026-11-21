@@ -47,6 +47,18 @@ function latestJobByName(jobs, name) {
   }, null) || undefined;
 }
 
+/**
+ * BRO-7324: the run's own conclusion is not the landing's. "Checks (shard 2/2)"
+ * (runner B) is advisory: Land never needs it, so B failing or being cancelled
+ * turns the RUN red/cancelled while the change landed. A landing succeeded iff
+ * the newest job named exactly "Land" succeeded (Land needs Checks, so Checks
+ * passed too). Exact names only: "Checks (shard 2/2)" is never Checks.
+ */
+function landJobSucceeded(jobs) {
+  const land = latestJobByName(jobs, 'Land');
+  return Boolean(land && land.conclusion === 'success');
+}
+
 function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX_ATTEMPTS } = {}) {
   const no = (reason) => ({ retry: false, reason });
   if (!run) return no('no-run');
@@ -149,4 +161,4 @@ function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
   return 'wait';
 }
 
-module.exports = { latestJobByName, isRerunRefused, ghApiArgs, decideLandRetry, MAX_ATTEMPTS, LAND_JOB_TIMEOUT_MINUTES, runGhWithFallback, isRefNotFound, decideCancelledWait };
+module.exports = { latestJobByName, landJobSucceeded, isRerunRefused, ghApiArgs, decideLandRetry, MAX_ATTEMPTS, LAND_JOB_TIMEOUT_MINUTES, runGhWithFallback, isRefNotFound, decideCancelledWait };

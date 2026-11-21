@@ -504,7 +504,14 @@ land_via_landing_branch() {
       fi
       local conclusion="failure" gate="unknown" checks_c="" land_c="" attempt_now="" run_status="completed"
       if [ -n "$run_id" ] && command -v gh >/dev/null 2>&1; then
-        read -r run_status conclusion checks_c land_c attempt_now gate < <(cd "$push_dir" && gh run view "$run_id" --json status,conclusion,jobs,attempt --jq '[.status, (.conclusion // "none"), ([.jobs[] | select(.name=="Checks") | .conclusion] | first // "none"), ([.jobs[] | select(.name=="Land") | .conclusion] | first // "none"), (.attempt // 1 | tostring), ([.jobs[] | select(.conclusion=="failure") | .steps[] | select(.conclusion=="failure") | .name] | first // "unknown")] | join(" ")' 2>/dev/null || echo "completed failure none none 1 unknown")
+        read -r run_status conclusion checks_c land_c attempt_now gate < <(cd "$push_dir" && gh run view "$run_id" --json status,conclusion,jobs,attempt --jq '[.status, (.conclusion // "none"), ([.jobs[] | select(.name=="Checks") | .conclusion] | first // "none"), ([.jobs[] | select(.name=="Land") | .conclusion] | first // "none"), (.attempt // 1 | tostring), ([.jobs[] | select(.conclusion=="failure" and (.name=="Checks" or .name=="Land")) | .steps[] | select(.conclusion=="failure") | .name] | first // "unknown")] | join(" ")' 2>/dev/null || echo "completed failure none none 1 unknown")
+      fi
+      # BRO-7324: jobs match by EXACT name ("Checks (shard 2/2)" is never Checks),
+      # and the red step is read from Checks/Land only: runner B is advisory, so
+      # its failure or cancel can turn the run red while Land succeeded.
+      if [ "$land_c" = "success" ]; then
+        log "land run is $conclusion but its Land job succeeded (only an advisory job was red); treating as landed"
+        prove_and_finish "$tip" "$fork" "$late_sha" "Land job green (run $conclusion from an advisory job)" "$land_name" "$run_url" "$t0"
       fi
       # The server re-trigger can make the run live again between wait-for-run's
       # verdict and this re-read: that is not a verdict at all, keep waiting.

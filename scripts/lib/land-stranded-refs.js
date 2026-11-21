@@ -22,7 +22,7 @@
  *              routes it to the card the ref names.
  */
 
-const { MAX_ATTEMPTS, latestJobByName } = require('./land-retry-on-cancel');
+const { MAX_ATTEMPTS, latestJobByName, landJobSucceeded } = require('./land-retry-on-cancel');
 const { PARKED_MAX_ATTEMPTS, isParkedLandJob, landWorkStarted } = require('./land-mutex');
 const { MAX_AGE_HOURS } = require('./land-queue-backoff');
 
@@ -90,6 +90,9 @@ function decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt,
   const checks = latestJobByName(jobs, 'Checks');
   const land = latestJobByName(jobs, 'Land');
   const attempt = latestRun.run_attempt || 1;
+  // BRO-7324: Land succeeded; only the advisory "Checks (shard 2/2)" job made
+  // the run red or cancelled. That is a landing: never re-run or escalate it.
+  if (landJobSucceeded(jobs)) return out('none', 'landed');
 
   if (latestRun.conclusion === 'cancelled' || RERUNNABLE_CONCLUSIONS.has(latestRun.conclusion)) {
     // BRO-5196: a job that parked itself behind a deep queue never started landing.

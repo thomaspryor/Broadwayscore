@@ -56,6 +56,32 @@ test('summarizeRun: landed, refused and other', () => {
   assert.equal(R.summarizeRun(run({ status: 'in_progress' }), []).outcome, 'other');
 });
 
+test('summarizeRun (BRO-7324): "Checks (shard 2/2)" is never Checks, never a refusal, and its time is reported apart', () => {
+  const B = (o) => ({ name: 'Checks (shard 2/2)', started_at: '2026-11-08T10:01:00Z', completed_at: '2026-11-08T10:13:00Z', steps: [{ name: 'Fast-fail — cheap tests first', conclusion: 'failure' }], ...o });
+  // B failed or was cancelled, Land succeeded: the run is red/cancelled, the change landed.
+  for (const conclusion of ['failure', 'cancelled']) {
+    const r = R.summarizeRun(run({ conclusion }), [
+      B({ conclusion: conclusion === 'failure' ? 'failure' : 'cancelled' }),
+      { name: 'Checks', conclusion: 'success', steps: [] },
+      { name: 'Land', conclusion: 'success', completed_at: '2026-11-08T10:20:00Z', steps: [] },
+    ]);
+    assert.equal(r.outcome, 'landed', conclusion);
+    assert.equal(r.minutes, 20);
+    assert.equal(r.fast, false, 'B listed first is not read as Checks');
+    assert.deepEqual(r.shard, { conclusion: conclusion === 'failure' ? 'failure' : 'cancelled', minutes: 12 });
+  }
+  // A real refusal still names Checks, not B.
+  const refused = R.summarizeRun(run({ conclusion: 'failure' }), [
+    B({ conclusion: 'failure' }),
+    { name: 'Checks', conclusion: 'failure', completed_at: '2026-11-08T10:09:00Z', steps: [{ name: 'Gate verdict', conclusion: 'failure' }] },
+  ]);
+  assert.equal(refused.refusedIn, 'Checks');
+  assert.deepEqual(refused.causes, ['Checks: step "Gate verdict"']);
+  // B alone failing with no Land job is not a refusal.
+  assert.equal(R.summarizeRun(run({ conclusion: 'failure' }), [B({ conclusion: 'failure' }), { name: 'Checks', conclusion: 'success', steps: [] }]).outcome, 'other');
+  assert.equal(R.summarizeRun(run(), [{ name: 'Checks', conclusion: 'success', steps: [] }]).shard, null);
+});
+
 test('report splits before/after by the fast-fail step or an explicit time', () => {
   const recs = [
     { outcome: 'refused', minutes: 30, causes: ['a'], fast: false, started: '2026-11-08T09:00:00Z' },

@@ -50,7 +50,7 @@
 
 const { execFileSync, spawnSync } = require('child_process');
 const path = require('path');
-const { runGhWithFallback, decideLandRetry, MAX_ATTEMPTS } = require('./land-retry-on-cancel');
+const { runGhWithFallback, decideLandRetry, landJobSucceeded, MAX_ATTEMPTS } = require('./land-retry-on-cancel');
 const { readLatestLandRun } = require('./land-run-identity');
 const { SITE_PATHS } = require('./should-deploy-gate');
 const { repoDepthArgs } = require('./shallow-fetch-args');
@@ -207,30 +207,52 @@ function readLatestRun(ref, { read = readGhJson, readText = readGhText, cache = 
   const r = readLatestLandRun(ref, { repo, read, readText, cache });
   if (!r) return null;
   let cancellation;
-  if (r.status === 'completed' && r.conclusion === 'cancelled') {
+  let conclusion = r.conclusion;
+  if (r.status === 'completed' && r.conclusion !== 'success') {
     const key = `${r.id}:${r.run_attempt}:${r.updated_at}`;
-    cancellation = cache.get(key);
-    if (!cancellation) {
+    let entry = cache.get(key);
+    if (!entry) {
       // Use this attempt's jobs: a re-run must not inherit a prior timeout.
-      const jobs = read(`repos/${repo}/actions/runs/${r.id}/attempts/${r.run_attempt}/jobs?per_page=50`).jobs;
-      if (!Array.isArray(jobs)) throw new Error(`run ${r.id}: unreadable jobs`);
-      const land = jobs.find((j) => j.name === 'Land');
-      let timedOut = land?.conclusion === 'timed_out';
-      if (land?.conclusion === 'cancelled') {
-        // GitHub reports a job deadline as "cancelled", even at job level.
-        // The runner's annotation is definitive; duration alone is not.
-        const annotations = read(`repos/${repo}/check-runs/${land.id}/annotations?per_page=100`);
-        if (!Array.isArray(annotations)) throw new Error(`run ${r.id}: unreadable Land annotations`);
-        timedOut = annotations.some((a) => /^The job has exceeded the maximum execution time of /.test(a.message || ''));
+      let jobs;
+      try {
+        jobs = read(`repos/${repo}/actions/runs/${r.id}/attempts/${r.run_attempt}/jobs?per_page=50`).jobs;
+        if (!Array.isArray(jobs)) throw new Error(`run ${r.id}: unreadable jobs`);
+      } catch (err) {
+        // A red run whose jobs cannot be read keeps its own (red) conclusion:
+        // never guess "landed". A cancelled run needs the jobs: retry the poll.
+        if (r.conclusion === 'cancelled') throw err;
+        jobs = null;
       }
-      const retry = decideLandRetry({ run: r, jobs, branchExists: true, branchTip: r.head_sha });
-      cancellation = timedOut
-        ? { kind: 'timeout', why: 'Land job exceeded its execution time limit; inspect the run before retrying' }
-        : { kind: retry.retry ? 'eviction' : 'other', why: retry.reason };
-      cache.set(key, cancellation);
+      if (jobs && landJobSucceeded(jobs)) {
+        // BRO-7324: Land succeeded; only an advisory job ("Checks (shard 2/2)")
+        // made the run red or cancelled. That is a landing, not a refusal.
+        entry = { landed: true };
+      } else if (r.conclusion === 'cancelled') {
+        const land = jobs.find((j) => j.name === 'Land');
+        let timedOut = land?.conclusion === 'timed_out';
+        if (land?.conclusion === 'cancelled') {
+          // GitHub reports a job deadline as "cancelled", even at job level.
+          // The runner's annotation is definitive; duration alone is not.
+          const annotations = read(`repos/${repo}/check-runs/${land.id}/annotations?per_page=100`);
+          if (!Array.isArray(annotations)) throw new Error(`run ${r.id}: unreadable Land annotations`);
+          timedOut = annotations.some((a) => /^The job has exceeded the maximum execution time of /.test(a.message || ''));
+        }
+        const retry = decideLandRetry({ run: r, jobs, branchExists: true, branchTip: r.head_sha });
+        entry = {
+          cancellation: timedOut
+            ? { kind: 'timeout', why: 'Land job exceeded its execution time limit; inspect the run before retrying' }
+            : { kind: retry.retry ? 'eviction' : 'other', why: retry.reason },
+        };
+      } else {
+        entry = {};
+      }
+      // An unread red run is not cached: the next poll may read its jobs.
+      if (jobs) cache.set(key, entry);
     }
+    if (entry.landed) conclusion = 'success';
+    cancellation = entry.cancellation;
   }
-  return { id: r.id, head_sha: r.head_sha, identityPending: r.identityPending, status: r.status, conclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, run_attempt: r.run_attempt, cancellation };
+  return { id: r.id, head_sha: r.head_sha, identityPending: r.identityPending, status: r.status, conclusion, runConclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, run_attempt: r.run_attempt, cancellation };
 }
 
 function remoteSha(ref) {

@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
-const { decideLandRetry, latestJobByName, isRerunRefused, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./land-retry-on-cancel.js');
+const { decideLandRetry, latestJobByName, landJobSucceeded, isRerunRefused, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./land-retry-on-cancel.js');
 
 const run = (o = {}) => ({ head_sha: 'aaa', conclusion: 'cancelled', head_branch: 'land/bro-4234-owner-banner', run_attempt: 1, ...o });
 const jobs = (land = {}, checks = {}) => [
@@ -18,6 +18,18 @@ const d = (o = {}) => decideLandRetry({ run: run(), jobs: jobs(), branchExists: 
 
 test('the 2026-09-28 case: Checks success, Land cancelled while queued → retry', () => {
   assert.deepEqual(d(), { retry: true, reason: 'land-cancelled-while-queued', attempt: 1 });
+});
+test('BRO-7324: "Checks (shard 2/2)" is never Checks; a cancelled B with Land green is a landing, never a retry', () => {
+  const B = (conclusion) => ({ name: 'Checks (shard 2/2)', conclusion });
+  // B listed before Checks, B green while Checks red: still no retry.
+  assert.equal(d({ jobs: [B('success'), ...jobs({}, { conclusion: 'failure' })] }).reason, 'checks-not-success');
+  // B cancelled made the run cancelled; Land succeeded: no retry, and it landed.
+  const landed = [B('cancelled'), ...jobs({ conclusion: 'success', steps: [{ conclusion: 'success' }] })];
+  assert.equal(d({ jobs: landed }).retry, false);
+  assert.equal(landJobSucceeded(landed), true);
+  assert.equal(landJobSucceeded([B('success'), ...jobs()]), false);
+  assert.equal(landJobSucceeded([{ name: 'Land (dry run)', conclusion: 'success' }]), false, 'exact name only');
+  assert.equal(landJobSucceeded(undefined), false);
 });
 test('Land cancelled mid-work (a step completed) is not replayed', () => {
   assert.equal(d({ jobs: jobs({ steps: [{ conclusion: 'success' }, { conclusion: 'cancelled' }] }) }).reason, 'land-started-work');

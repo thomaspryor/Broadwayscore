@@ -27,6 +27,17 @@ function readJson(p) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
 }
 
+/**
+ * Pure. A dir that is one part of a two-runner split (BRO-7324 step C), not a
+ * whole result: a part still running (`partial`), a finished part (`shard`), or
+ * a merge that has not finished (`mergeIncomplete`). Its time is already in the
+ * merged dir (partWallMs), so counting it would double the run. A merged dir
+ * drops `shard` and `mergeIncomplete`, keeping the parts only as partSha/partWallMs.
+ */
+function isSplitPart(meta) {
+  return Boolean(meta && (meta.partial || meta.shard || meta.mergeIncomplete));
+}
+
 /** Collect the runs under `roots` finished at or after t0Ms. Never throws. */
 function collectTiming({ roots = [], t0Ms = 0 } = {}) {
   const runs = {};
@@ -38,6 +49,7 @@ function collectTiming({ roots = [], t0Ms = 0 } = {}) {
       const dir = path.join(root, e.name);
       const meta = readJson(path.join(dir, 'meta.json'));
       if (!meta || typeof meta !== 'object') continue;
+      if (isSplitPart(meta)) continue;
       const fin = Date.parse(meta.finishedAt || '');
       if (!Number.isFinite(fin) || fin < t0Ms) continue;
       const gateSecs = {};
@@ -93,6 +105,6 @@ function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { collectTiming, summaryLines, parseArgs };
+module.exports = { collectTiming, summaryLines, parseArgs, isSplitPart };
 
 if (require.main === module) process.exitCode = main();
