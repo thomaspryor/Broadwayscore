@@ -135,7 +135,8 @@ async function main() {
     { name: `Anthropic / ${MODELS.CLAUDE_SONNET}`, fn: () => anthropicKey ? checkAnthropicModel(MODELS.CLAUDE_SONNET, anthropicKey) : Promise.resolve({ status: 'skip', message: 'ANTHROPIC_API_KEY not set' }) },
     { name: `Anthropic / ${MODELS.CLAUDE_HAIKU}`, fn: () => anthropicKey ? checkAnthropicModel(MODELS.CLAUDE_HAIKU, anthropicKey) : Promise.resolve({ status: 'skip', message: 'ANTHROPIC_API_KEY not set' }) },
     { name: `Anthropic / ${MODELS.CLAUDE_OPUS}`, fn: () => anthropicKey ? checkAnthropicModel(MODELS.CLAUDE_OPUS, anthropicKey) : Promise.resolve({ status: 'skip', message: 'ANTHROPIC_API_KEY not set' }) },
-    ...[MODELS.GEMINI_FLASH, MODELS.GEMINI_PRO].map((id) => (
+    // Every Gemini pin in models.js, so a new pin (BRO-8016 GEMINI_REVIEW) is probed without editing this list.
+    ...[...new Set(Object.values(MODELS).filter((v) => typeof v === 'string' && v.startsWith('gemini-')))].map((id) => (
       { name: `Gemini / ${id}`, fn: () => geminiKey ? checkGeminiModel(id, geminiKey) : Promise.resolve({ status: 'skip', message: 'GEMINI_API_KEY not set' }) }
     )),
     // Every distinct OpenAI chat pin (BRO-7341: several now share one id, so dedupe).

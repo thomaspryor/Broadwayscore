@@ -17,7 +17,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 // Model id in call position: a REST path, a --model flag, or a JSON/YAML model field.
-const CALL_PIN = /(?:models\/|--model[= ]|\bmodel["']?\s*[:=]\s*["']?)gemini-\d/;
+const CALL_PIN = /(?:models\/|--model[= ]\s*["']?|(?:^|\s)-m\s+["']?|\bmodel["']?\s*[:=]\s*["']?|GEMINI_\w*MODEL=["']?)gemini-\d/i;
 export const hasCallPin = (src) => src.split('\n').some((l) => CALL_PIN.test(l));
 
 function skillDocs() {
@@ -50,6 +50,9 @@ test('the detector catches the call forms and ignores prose (red-then-green)', (
   assert.equal(hasCallPin('curl -s "https://x/v1beta/models/gemini-2.5-flash:generateContent?key=$K"'), true);
   assert.equal(hasCallPin('node scripts/log-llm-call.js --provider=gemini --model=gemini-4-carbon'), true);
   assert.equal(hasCallPin('  model: "gemini-3.8-flash",'), true);
+  assert.equal(hasCallPin('node x.js --model "gemini-4-carbon"'), true);
+  assert.equal(hasCallPin('gemini -m gemini-4-carbon -p hi'), true);
+  assert.equal(hasCallPin('GEMINI_REVIEW_MODEL=gemini-4-carbon node scripts/gemini/review.js'), true);
   assert.equal(hasCallPin('curl -s "https://x/v1beta/models/$GM:generateContent"'), false);
   assert.equal(hasCallPin('about $0.02 a review on gemini-2.5-flash, which opened the files'), false);
   assert.equal(hasCallPin('--model="$(node -p "require(\'./scripts/lib/models\').GEMINI_REVIEW")"'), false);

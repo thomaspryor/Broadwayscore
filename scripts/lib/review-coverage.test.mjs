@@ -771,3 +771,18 @@ test('review.js still prints the success status line geminiReviewOk() parses', (
   assert.match(src, /done\(0, `GEMINI-REVIEW: \$\{parsed\.reads === 0 \? 'no-reads' : 'ok'\} model=\$\{model\} reads=\$\{parsed\.reads\}/,
     'review.js success line must stay `GEMINI-REVIEW: <ok|no-reads> <fields>` (update geminiReviewOk() with it)');
 });
+
+// BRO-8016 review P1: the plan-review Gemini fallback must stay a counted external review after it
+// started reading its model from models.js. Feed the block exactly as the doc has it.
+test('the plan-review Gemini curl block from the doc counts as the external reviewer', () => {
+  const doc = fs.readFileSync(new URL('../../.claude/commands/plan-review.md', import.meta.url), 'utf8').split('\n');
+  const start = doc.findIndex((l) => /^\s*GM=\$\(node -p/.test(l));
+  assert.ok(start > 0, 'the GM= line is in plan-review.md');
+  const end = doc.findIndex((l, i) => i > start && /^\s*```/.test(l));
+  const block = doc.slice(start, end).join('\n');
+  assert.match(block, /:generateContent/);
+  const t = tool('Bash', { command: block });
+  const body = '- Step 4 contradicts step 1: the pin is hardcoded again. '.repeat(6);
+  const res = evaluateCoverage([...ev(skill(), agent()), t, { kind: 'tool_result', tool_use_id: t.id, content: body, isError: false }]);
+  assert.equal(res.complete, true, `doc block not counted: ${JSON.stringify(res.evidence?.checks)}`);
+});

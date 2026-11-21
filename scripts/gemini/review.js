@@ -34,7 +34,7 @@ const PIN = '0.70.0';
 // Flash, not Pro (BRO-7987 probe). The point of this reviewer is that it opens the code, and on a
 // 600-line diff Pro opened no files in 3 of 4 runs (while writing "I have verified..."), even with
 // READ_NUDGE; Flash opened 6 files in 3 of 3. On a planted cross-file unit bug Flash caught it in
-// 6 of 7 runs, Pro 3 of 3. Flash is ~$0.02 a review, Pro ~$0.09. Override: GEMINI_REVIEW_MODEL.
+// 6 of 7 runs, Pro 3 of 3. Flash was ~$0.02 a review, Pro ~$0.09. Override: GEMINI_REVIEW_MODEL.
 // 2.5-flash shuts down 2026-12-01 (BRO-7511). On CLI 0.70.0, models.js GEMINI_FLASH (3.5-flash-lite,
 // same price) opened 2 and 3 files on two probes; gemini-3.8-flash opened 5 for ~5x the price.
 // BRO-8016: owner chose strength over price, so the default is models.js GEMINI_REVIEW (Gemini 4

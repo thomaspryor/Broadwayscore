@@ -27,8 +27,10 @@ function docs() {
   const out = [];
   const cmd = path.join(ROOT, '.claude/commands');
   for (const f of fs.readdirSync(cmd)) if (f.endsWith('.md')) out.push(path.join(cmd, f));
-  const sk = path.join(ROOT, '.claude/skills');
-  if (fs.existsSync(sk)) for (const d of fs.readdirSync(sk)) { const p = path.join(sk, d, 'SKILL.md'); if (fs.existsSync(p)) out.push(p); }
+  for (const base of ['.claude/skills', '.agents/skills']) {
+    const sk = path.join(ROOT, base);
+    if (fs.existsSync(sk)) for (const d of fs.readdirSync(sk)) { const p = path.join(sk, d, 'SKILL.md'); if (fs.existsSync(p)) out.push(p); }
+  }
   return out;
 }
 
@@ -36,6 +38,10 @@ test('every inline jq request program in a skill doc compiles', { skip: !HAVE_JQ
   const found = docs().flatMap((p) => jqPrograms(fs.readFileSync(p, 'utf8')).map((j) => ({ ...j, file: path.relative(ROOT, p) })));
   assert.ok(found.length >= 3, `expected the ship-check, right-problem and plan-review curls, found ${found.length}`);
   const bad = found.filter((j) => !compiles(j)).map((j) => j.file);
+  // A `jq -n` request in a form JQ_CALL does not parse (--arg x "$VAR", --argjson, --rawfile) fails
+  // loudly here instead of being skipped: extend JQ_CALL for it.
+  const unparsed = docs().filter((p) => { const t = fs.readFileSync(p, 'utf8'); return (t.match(/jq -n\b/g) || []).length !== jqPrograms(t).length; }).map((p) => path.relative(ROOT, p));
+  assert.deepEqual(unparsed, [], `jq -n call this guard cannot parse: ${unparsed.join(', ')}`);
   assert.deepEqual(bad, [], `jq program does not compile (an apostrophe in the prompt ends the shell quote?): ${bad.join(', ')}`);
 });
 
