@@ -124,25 +124,40 @@ function findUnprovenNewGates({ baseText, headText, changedFiles }) {
 
 // Validators test.yml runs blocking, and the hard-fail helpers each defines.
 const VALIDATORS = {
-  'scripts/validate-data.js': ['error', 'reviewFileError', 'reviewRowError'],
+  'scripts/validate-data.js': ['error', 'reviewFileError', 'reviewRowError', 'exitWithError'],
   'scripts/validate-market-expansion.js': ['error'],
 };
 
 // Blank out string/template literals and comments so `error(` inside a message
 // or a comment is not mistaken for a call. Line-local (good enough for diffs).
+function maskStrings(line) {
+  return line.replace(/'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`/g, '""');
+}
+// Strings first (so `"https://x"` is not read as a comment), then comments.
 function stripLiterals(line) {
-  let s = line.replace(/\/\/.*$/, '');
-  s = s.replace(/'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`/g, '""');
-  return s.replace(/\/\*.*?\*\//g, '');
+  return maskStrings(line).replace(/\/\/.*$/, '').replace(/\/\*.*?\*\//g, '');
 }
 
-function hardErrorCall(line, helpers) {
-  if (/^\s*(\/\/|\*|\/\*)/.test(line)) return false;
+// Number of `name(` calls on a line, for the given helper names.
+function countCalls(line, helpers) {
+  if (/^\s*(\/\/|\*|\/\*)/.test(line)) return 0;
   const code = stripLiterals(line);
-  if (/\bfunction\s+\w+\s*\(/.test(code)) return false; // definition, not a call
-  return helpers.some(h => new RegExp(`(?<![\\w.$])${h}\\s*\\(`).test(code));
+  if (/\bfunction\s+\w+\s*\(/.test(code)) return 0; // definition, not a call
+  let n = 0;
+  for (const h of helpers) n += (code.match(new RegExp(`(?<![\\w.$])${h}\\s*\\(`, 'g')) || []).length;
+  return n;
 }
 
+function hardErrorCall(line, helpers) { return countCalls(line, helpers) > 0; }
+
+// Real comment token only (a string literal containing the marker must not count).
+function hasProofMarker(line) {
+  return /(\/\/|#)\s*gate-arm-ok:\s*\S/.test(maskStrings(line));
+}
+
+// Text of a call line with the helper name erased, so warn(`x`) -> error(`x`)
+// (the sanctioned advisory -> blocking promotion) pairs with its removed twin.
+const HELPER_ANY = /(?<![\w.$])(error|warn|reviewFileError|reviewRowError|exitWithError)\s*\(/;
 const norm = l => l.trim().replace(/\s+/g, ' ');
 
 // Parse a unified diff of ONE file into hunks: { added:[], removed:[], all:[] }.
@@ -183,10 +198,19 @@ function findUnprovenNewValidatorErrors({ files, changedFiles, contextTexts }) {
     const added = [];
     const removed = [];
     hunks.forEach((h, i) => {
-      const marked = h.added.some(l => /(\/\/|#)\s*gate-arm-ok:\s*\S/.test(l));
-      for (const l of h.removed) if (hardErrorCall(l, helpers)) removed.push({ line: norm(l), hunk: i, used: false });
-      for (const l of h.added) if (hardErrorCall(l, helpers)) added.push({ line: norm(l), hunk: i, marked, paired: false });
+      const marked = h.added.some(hasProofMarker);
+      for (const l of h.removed) {
+        const n = countCalls(l, helpers);
+        for (let k = 0; k < n; k++) removed.push({ line: norm(l), hunk: i, used: false });
+      }
+      // removed warn() calls count for promotion pairing only (identical-text pass)
+      for (const l of h.removed) if (countCalls(l, ['warn']) > 0) removed.push({ line: norm(l), hunk: i, used: false, warnOnly: true });
+      for (const l of h.added) {
+        const n = countCalls(l, helpers);
+        for (let k = 0; k < n; k++) added.push({ line: norm(l), hunk: i, marked, paired: false });
+      }
     });
+    const key = (l) => l.replace(HELPER_ANY, '(');
     const pair = (match) => {
       for (const a of added) {
         if (a.paired) continue;
@@ -195,7 +219,8 @@ function findUnprovenNewValidatorErrors({ files, changedFiles, contextTexts }) {
       }
     };
     pair((a, r) => a.line === r.line);
-    pair((a, r) => a.hunk === r.hunk);
+    pair((a, r) => key(a.line) === key(r.line)); // warn -> error promotion
+    pair((a, r) => !r.warnOnly && a.hunk === r.hunk);
     const unmatched = added.filter(a => !a.paired);
     // A baseline exempts only if the diff itself, or a changed helper file, names it.
     const refText = [f.diff || '', ...(contextTexts || [])].join('\n');

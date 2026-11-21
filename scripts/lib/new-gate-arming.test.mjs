@@ -80,3 +80,13 @@ test('marker in unchanged context does not exempt a later added error()', () => 
 test('baseline named only in the validator head text (not the diff/helpers) does not exempt', () => {
   assert.equal(run(['+    error(`x`);'], { changed: [V, 'data/audit/x-baseline.json'], file: { headText: "require('x-baseline.json')" } }).length, 1);
 });
+
+test('two calls on one line: pairing one leaves the other flagged', () => {
+  assert.equal(run(['-    error(`old`);', '+    error(`old`); error(`new`);']).length, 1);
+});
+test('exitWithError helper counts', () => assert.equal(run(['+    exitWithError(`x`);']).length, 1));
+test('url string before a call does not hide it', () => assert.equal(run(['+    if (u === "https://x.com") error(`x`);']).length, 1));
+test('marker inside a string literal is not proof', () => assert.equal(run(['+    const m = "// gate-arm-ok: fake";', '+    error(`x`);']).length, 1));
+test('warn() promoted to error() with the same message is the sanctioned second commit', () => {
+  assert.deepEqual(run(['-    warn(`Show x has no date`);', '+    error(`Show x has no date`);']), []);
+});
