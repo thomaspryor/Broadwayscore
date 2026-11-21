@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-snowman-off-west-end-2026",
+  "night": "2026-11-21",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-21T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-21T20:30:03.916Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-21T22:55:10.165Z",
+    "lastOkSampleAt": "2026-11-21T22:55:10.165Z"
+  },
+  "firstLiveAt": "2026-11-21T20:30:03.916Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-21T20:30:03.916Z",
+  "liveCount": 2,
+  "liveCountAt": {
+    "1h": 2,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-21T22:00:07.904Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [
+    {
+      "key": "the stage|anya ryan",
+      "outlet": "The Stage",
+      "critic": "Anya Ryan",
+      "tier": 1,
+      "publishAt": "2026-10-30",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-21T20:30:03.916Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "whatsonstage|diane parkes",
+      "outlet": "WhatsOnStage",
+      "critic": "Diane Parkes",
+      "tier": 2,
+      "publishAt": "2026-10-30",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-21T20:30:03.916Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 2,
+      "fetchedAt": "2026-11-21T23:00:22.779Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-21T23:00:22.870Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-21T23:00:23.581Z",
+    "files": [
+      {
+        "file": "broadwayworld--christiana-rose.json",
+        "outletId": "broadwayworld",
+        "outlet": "BroadwayWorld",
+        "critic": "Christiana Rose",
+        "firstSeenAt": "2026-11-21T00:47:32.052Z",
+        "scoredAt": null,
+        "publishDate": "2023-11-20",
+        "url": "broadwayworld.com/westend/article/review-the-snowman-peacock-theatre-20231120",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "express-uk--neil-norman.json",
+        "outletId": "express-uk",
+        "outlet": "Express  (UK)",
+        "critic": "Neil Norman",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": "2009-12-04",
+        "url": "express.co.uk/entertainment/theatre/144094/the-snowman-peacock-theatre-london",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-theatre--marianka-swain.json",
+        "outletId": "london-theatre",
+        "outlet": "London Theatre",
+        "critic": "Marianka Swain",
+        "firstSeenAt": "2026-11-21T00:47:31.627Z",
+        "scoredAt": null,
+        "publishDate": "2023-11-26",
+        "url": "londontheatre.co.uk/reviews/the-snowman-review-peacock-theatre",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "manchester-evening-news--emma-gill.json",
+        "outletId": "manchester-evening-news",
+        "outlet": "Manchester Evening News",
+        "critic": "Emma Gill",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": "2017-11-08",
+        "url": "manchestereveningnews.co.uk/whats-on/theatre-news/review-snowman-manchester-opera-house-13872438",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thestage--anya-ryan.json",
+        "outletId": "thestage",
+        "outlet": "The Stage",
+        "critic": "Anya Ryan",
+        "firstSeenAt": null,
+        "scoredAt": "2026-11-21T17:20:10.330Z",
+        "publishDate": "2026-10-30",
+        "url": null,
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "timeout-london--caroline-mcginn.json",
+        "outletId": "timeout-london",
+        "outlet": "Time Out London",
+        "critic": "Caroline McGinn",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": "2025-09-10",
+        "url": "timeout.com/london/theatre/the-snowman-review",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "whatsonstage--diane-parkes.json",
+        "outletId": "whatsonstage",
+        "outlet": "WhatsOnStage",
+        "critic": "Diane Parkes",
+        "firstSeenAt": null,
+        "scoredAt": "2026-11-21T17:20:13.110Z",
+        "publishDate": "2026-10-30",
+        "url": null,
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
