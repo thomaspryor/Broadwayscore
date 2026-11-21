@@ -87,3 +87,15 @@ test('e2e: the real hook block message tells the session to say it could not rea
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /could not reach that session/);
 });
+
+test('receipt formats: the real tool result shape and loose variants are classified correctly (BRO-7924)', () => {
+  const mk = (result) => [{ idx: 1, name: 'mcp__claude-code-remote__send_message', input: { session_id: 'session_X' }, result }];
+  // Real shape captured from this session's own sends: a JSON string inside a text block.
+  const real = '[{"type":"text","text":"{\\"status\\":\\"delivered\\"}"}]';
+  for (const ok of [real, '{"status":"delivered"}', 'status: delivered', 'Status = Sent', '{"STATUS":"QUEUED"}', 'message delivered to session_X', '{"delivered": true, "failed_checks": 0}']) {
+    assert.deepEqual(undeliveredTargets(mk(ok)), [], 'delivered: ' + ok);
+  }
+  for (const bad of ['Permission denied: send_message needs approval', '{"status":"session_inactive"}', 'Error: session not found', '{"status":"Error"}', '{"error":"unreachable"}']) {
+    assert.deepEqual(undeliveredTargets(mk(bad)), ['session_X'], 'refused: ' + bad);
+  }
+});
