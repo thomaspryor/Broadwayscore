@@ -42,12 +42,13 @@ const specs = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 const SHOWS_FILE = process.env.SHOWS_FILE || path.join(os.homedir(), 'broadway-scorecard-data', 'shows.json');
 const guard = createShowsWriteGuard(SHOWS_FILE);
 
-function entryFrom(s) {
+function entryFrom(s, takenSlugs = new Set()) {
   const west = s.market === 'west-end';
   return {
     id: s.id,
     title: s.title,
-    slug: s.id.replace(/-\d{4}$/, ''),
+    // BRO-7959: a sibling run can already own the year-stripped slug (alice-in-wonderland-west-end); validate-data fails on dupes.
+    slug: takenSlugs.has(s.id.replace(/-\d{4}$/, '')) ? s.id : s.id.replace(/-\d{4}$/, ''),
     venue: sanitizeVenueForWrite(s.venue),
     openingDate: s.openingDate,
     closingDate: s.closingDate || null,
@@ -81,7 +82,7 @@ if (ARGV.includes('--add')) {
   let added = 0;
   for (const s of specs) {
     if (data.shows.some((x) => x.id === s.id)) { console.log(`exists: ${s.id}`); continue; }
-    data.shows.push(entryFrom(s));
+    data.shows.push(entryFrom(s, new Set(data.shows.map((x) => x.slug))));
     added++;
     console.log(`add: ${s.id} (${s.venue}, ${s.openingDate}..${s.closingDate})`);
   }
