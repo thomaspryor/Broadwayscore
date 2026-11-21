@@ -180,7 +180,11 @@ jobs:
     # ONLY when neither the cache nor an artifact has it for this base tree,
     # so a cold land needs ~35 min before any confirm re-run: 55 leaves room.
     # Re-measure from the live runs before changing.
-    timeout-minutes: 55
+    # BRO-7324 worst case with the node shard on: fast-fail + part 1 + the full
+    # 12-min wait for "Checks (shard 2/2)" + part 2 run here after all (B
+    # missing/late/mismatched) + a cold base for red gates can pass 55 min.
+    # 65 covers that; no gate is skipped to fit.
+    timeout-minutes: 65
     outputs:
       tip: ${{ steps.rebase.outputs.tip }}
       base: ${{ steps.rebase.outputs.base }}
@@ -238,6 +242,14 @@ jobs:
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           TIP=$(git rev-parse HEAD)
           git_net 180 fetch origin main
+          # "Re-run failed jobs" does not re-run dispatch-guard, so on attempt 2+
+          # its pin is the main of the FIRST attempt, possibly long stale. Judge
+          # live origin/main instead, as before the split; B's part (if any)
+          # then differs in tree and this job runs part 2 itself (fail closed).
+          if [ -n "$PINNED_BASE" ] && [ "${GITHUB_RUN_ATTEMPT:-1}" -gt 1 ]; then
+            echo "node shard: attempt $GITHUB_RUN_ATTEMPT re-run; ignoring the attempt-1 pin ${PINNED_BASE:0:10}, rebasing onto live origin/main"
+            PINNED_BASE=""
+          fi
           if [ -n "$PINNED_BASE" ]; then
             git cat-file -e "${PINNED_BASE}^{commit}" 2>/dev/null || git_net 180 fetch origin "$PINNED_BASE"
             BASE=$(git rev-parse --verify "${PINNED_BASE}^{commit}") || { echo "::error::pinned base ${PINNED_BASE:0:10} not fetchable"; exit 1; }
@@ -569,10 +581,14 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
+          # This runner's private core-data commit: B's part is merged only when
+          # B read the same one (empty = unreadable = run part 2 here).
+          DATA_REV=$(git -C /tmp/core-data-checkout rev-parse HEAD 2>/dev/null) || DATA_REV=""
+          echo "core data @ ${DATA_REV:-unknown}"
           node scripts/lib/land-shard.js collect --repo="$GITHUB_REPOSITORY" \
             --run-id="$GITHUB_RUN_ID" --attempt="$GITHUB_RUN_ATTEMPT" \
             --out="$RUNNER_TEMP/land-node-shard" --merge-into="$RUNNER_TEMP/land-gauntlet/branch" \
-            --harness="$RUNNER_TEMP/land-gauntlet.sh" --wait-min=12
+            --harness="$RUNNER_TEMP/land-gauntlet.sh" --data-rev="$DATA_REV" --wait-min=12
 
       # ── Lazy base (BRO-5670): a gate green on the branch passes whatever the
       # base says (land-gate-delta.js decideGateDelta), so the base is looked
@@ -1673,6 +1689,11 @@ jobs:
       # scripts/audit-workflow-concurrency.js.
       cancel-in-progress: true
     timeout-minutes: 40
+    # Like e2e-local: a red, cancelled or timed-out shard must never make the
+    # run's conclusion `failure`, which land-retry-on-cancel.js,
+    # land-stranded-refs.js and cloud-worker-pick.js read. Safe: land never
+    # depends on this job, and Checks runs part 2 itself when it is missing.
+    continue-on-error: true
     steps:
       # Checks may already be over (a fast-fail refusal, or a re-run of failed
       # jobs only): then this part is not needed. Needs only scripts/lib.
@@ -1861,6 +1882,13 @@ jobs:
           if [ -e "$MARKER" ]; then
             echo "stopped=true" >> "$GITHUB_OUTPUT"; echo "stopped: Checks already completed; nothing to upload"
           else
+            # The private core-data commit this part read (cloned at its own
+            # time; the tree check covers tracked files only). Checks merges
+            # the part only when its own clone is the same commit; an empty
+            # file (unreadable here) makes Checks run part 2 itself.
+            git -C /tmp/core-data-checkout rev-parse HEAD > "$RUNNER_TEMP/land-node-shard/data-rev.txt" 2>/dev/null \
+              || { echo "::warning::could not read the core-data revision; Checks will run part 2 itself"; : > "$RUNNER_TEMP/land-node-shard/data-rev.txt"; }
+            echo "core data @ $(cat "$RUNNER_TEMP/land-node-shard/data-rev.txt")"
             echo "stopped=false" >> "$GITHUB_OUTPUT"
           fi
 

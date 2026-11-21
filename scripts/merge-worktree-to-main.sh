@@ -511,6 +511,10 @@ land_via_landing_branch() {
       # its failure or cancel can turn the run red while Land succeeded.
       if [ "$land_c" = "success" ]; then
         log "land run is $conclusion but its Land job succeeded (only an advisory job was red); treating as landed"
+        # Same evidence bar as the success path: ancestry and patch-equivalence
+        # already failed above, so without a landings.jsonl row there is no
+        # proof the commits are on main.
+        [ -n "$late_sha" ] || die "land run reported success but ${tip:0:10}'s commits are on origin/$DEFAULT_BRANCH neither as ancestors nor as equivalent patches — inspect ${run_url:-the land.yml run} before assuming anything landed"
         prove_and_finish "$tip" "$fork" "$late_sha" "Land job green (run $conclusion from an advisory job)" "$land_name" "$run_url" "$t0"
       fi
       # The server re-trigger can make the run live again between wait-for-run's

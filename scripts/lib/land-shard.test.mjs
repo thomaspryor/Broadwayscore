@@ -10,14 +10,16 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { SHARD_PARTS, SHARD_JOB_NAME, CHECKS_JOB_NAME, decideShardPoll, decidePeerWatch, validateFetchedPart, decideChecksDone, collect, watch, checksDone, parseArgs, shardArtifactName } = require('./land-shard.js');
+const { SHARD_PARTS, SHARD_JOB_NAME, CHECKS_JOB_NAME, decideShardPoll, decidePeerWatch, validateFetchedPart, validateDataRev, DATA_REV_FILE, decideChecksDone, collect, watch, checksDone, parseArgs, shardArtifactName } = require('./land-shard.js');
 const { GATES } = require('./land-gate-delta.js');
 const { SHARDED_GATES } = require('./land-gauntlet-merge.js');
 
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'bro7324-shard-'));
 const TAP = (fail = 0) => `TAP version 13\n${fail ? 'not ok 1 - a.test.js\n' : 'ok 1 - a.test.js\n'}1..1\n# tests 3\n# pass ${3 - fail}\n# fail ${fail}\n`;
-function part(dir, shard, gates, { tree = 'T1', sha = 'S1', exits = {} } = {}) {
+const REV = 'a'.repeat(40);
+function part(dir, shard, gates, { tree = 'T1', sha = 'S1', exits = {}, dataRev = REV } = {}) {
   fs.mkdirSync(dir, { recursive: true });
+  if (dataRev !== null) fs.writeFileSync(path.join(dir, 'data-rev.txt'), `${dataRev}\n`);
   for (const g of gates) {
     const exit = exits[g] ?? 0;
     fs.writeFileSync(path.join(dir, `${g}.exit`), `${exit}\n`);
@@ -72,7 +74,7 @@ function fakeExec({ jobs, artifacts = [], partDir, failApi = false }) {
     throw new Error(`unexpected ${cmd} ${args.join(' ')}`);
   };
 }
-const opts = (d) => ({ repo: 'o/r', 'run-id': '9', attempt: '1', out: path.join(d, 'part2'), 'merge-into': part(path.join(d, 'branch'), '1/2', SHARD_PARTS[1]), harness: '/h.sh', 'interval-s': '0', 'wait-min': '1' });
+const opts = (d) => ({ repo: 'o/r', 'run-id': '9', attempt: '1', out: path.join(d, 'part2'), 'merge-into': part(path.join(d, 'branch'), '1/2', SHARD_PARTS[1]), harness: '/h.sh', 'data-rev': REV, 'interval-s': '0', 'wait-min': '1' });
 const quiet = { log: () => {}, sleep: () => {} };
 
 test('collect: B uploaded its part -> fetched and merged, no local run', () => {
@@ -106,6 +108,37 @@ test('collect fails closed: local part 2 crashed, or the parts are different tre
   assert.equal(rc, 1);
   const meta = JSON.parse(fs.readFileSync(path.join(o['merge-into'], 'meta.json'), 'utf8'));
   assert.equal(meta.mergeIncomplete, true, 'a refused merge leaves a dir the verdict refuses');
+});
+
+test('validateDataRev: same 40-hex core-data revision only; missing either side -> not merged', () => {
+  assert.equal(DATA_REV_FILE, 'data-rev.txt');
+  assert.equal(validateDataRev(REV, `${REV}\n`).ok, true);
+  assert.equal(validateDataRev(REV, 'b'.repeat(40)).ok, false);
+  for (const [a, b] of [[REV, null], [REV, ''], [null, REV], ['', REV], [undefined, undefined], [REV, 'not-a-sha']]) assert.equal(validateDataRev(a, b).ok, false, `${a} / ${b}`);
+});
+
+test('collect: core data differs between the runners, or a revision is missing -> part 2 runs here (never merged from B)', () => {
+  const name = shardArtifactName('9', '1');
+  const cases = [
+    { srcRev: 'b'.repeat(40), aRev: REV },  // B cloned a newer data main
+    { srcRev: null, aRev: REV },            // B's artifact has no data-rev.txt
+    { srcRev: REV, aRev: undefined },       // A could not read its own revision
+  ];
+  for (const c of cases) {
+    const d = tmp(); const o = opts(d);
+    if (c.aRev === undefined) delete o['data-rev'];
+    const src = part(path.join(d, 'src'), '2/2', SHARD_PARTS[2], { sha: 'S2', dataRev: c.srcRev });
+    let spawned = 0;
+    const r = withOutput(() => collect(o, { ...quiet, exec: fakeExec({ jobs: [doneJob], artifacts: [{ id: 5, name }], partDir: src }), spawn: (cmd, args) => { spawned++; part(args[1], '2/2', SHARD_PARTS[2]); return { status: 0 }; } }));
+    assert.equal(r.rc, 0, JSON.stringify(c)); assert.equal(spawned, 1, JSON.stringify(c));
+    assert.match(r.out, /node_shard=local/, JSON.stringify(c));
+  }
+  // Same revision on both sides -> merged from the artifact, no local run.
+  const d = tmp(); const o = opts(d);
+  const src = part(path.join(d, 'src'), '2/2', SHARD_PARTS[2], { sha: 'S2' });
+  let spawned = 0;
+  const r = withOutput(() => collect(o, { ...quiet, exec: fakeExec({ jobs: [doneJob], artifacts: [{ id: 5, name }], partDir: src }), spawn: () => { spawned++; return { status: 0 }; } }));
+  assert.equal(r.rc, 0); assert.equal(spawned, 0); assert.match(r.out, /node_shard=artifact/);
 });
 
 test('watch: B is stopped (exit 0, marker written) once A completed; otherwise B keeps its own exit code', async () => {
