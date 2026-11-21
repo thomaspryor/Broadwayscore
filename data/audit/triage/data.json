@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-20T10:11:00.931Z",
+  "lastChecked": "2026-11-21T09:56:54.808Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -74,7 +74,7 @@
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "2 discovered review URL(s) across 2 live show(s) were never fetched. First: stranger-things-the-first-shadow-west-end-2023 (1 stranded)"
+      "message": "1 discovered review URL(s) across 1 live show(s) were never fetched. First: stranger-things-the-first-shadow-west-end-2023 (1 stranded)"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -84,32 +84,32 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "25 of 416 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7842 Triage 153 baseline unhandled CV.wrongProduction reviews (lifetime sweep)"
+      "message": "24 of 411 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7899 Opening-night audit 2026-11-20"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-19"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-20"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "81 review(s) with no usable text, 66 rejected although verified as a review, 33 never scored, 38 with a blocked URL (0 published on the site), across 737 current shows"
+      "message": "84 review(s) with no usable text, 68 rejected although verified as a review, 29 never scored, 39 with a blocked URL (0 published on the site), across 739 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (49541 checked)"
+      "message": "No published review score contradicts the critic's rating (49959 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "8 early publish date(s) awaiting recheck (limit 40); 215 already attempted and not yet confirmed"
+      "message": "5 early publish date(s) awaiting recheck (limit 40); 219 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3831 files with approvals"
+      "message": "0 unexplained approved-fix drift(s) across 3835 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -119,12 +119,12 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 556 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 562 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "status": "pass",
-      "message": "No aggregator-reviewed show is missing from the catalogue"
+      "status": "warn",
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"THE GOOD THIEF at Irish Repertory Theatre\" (bww-roundup — missing 0d)"
     }
   ]
 }
