@@ -70,3 +70,14 @@ test('a long chrome paragraph far before the review is not pulled into the body'
   const t = extractArticleText(page(far + ps(BODY) + TRAIL), 'thestage.co.uk');
   assert.ok(t && t.includes('criss-crossing') && !t.includes('promotional'));
 });
+
+test('header chrome paragraph with "Login Register" above the review does not anchor or break extraction', () => {
+  const html = `<html><body><header><p>Login Register to see more of the best theatre writing on The Stage today.</p></header><h1>Cleansed review</h1>${ps(BODY)}${TRAIL}</body></html>`;
+  const t = extractArticleText(html, 'thestage.co.uk');
+  assert.ok(t && t.includes('criss-crossing') && !t.includes('Login Register'));
+});
+
+test('teaser listing ending in a "Related Articles" paragraph (no bio/subscribe/copyright) stays null', () => {
+  const teasers = Array.from({ length: 6 }, (_, i) => `Teaser ${i}: a short blurb about another production currently playing somewhere in London tonight.`);
+  assert.equal(extractArticleText(page(ps(teasers) + '<p>Related Articles and more from this author for you to read next.</p>'), 'thestage.co.uk'), null);
+});

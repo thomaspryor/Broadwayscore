@@ -308,7 +308,7 @@ function extractStageBody(html) {
   // article before "editor", so the bio shape below missed it; cut the region
   // at the card itself. Off under the page-furniture kill switch.
   const cardAt = region.search(/class="[^"]*aos-Contact(?:JobTitle|Biog)\b/);
-  if (cardAt > 0 && require('./page-furniture').pageFurnitureEnabled()) region = region.slice(0, cardAt);
+  if (startM && cardAt > 0 && require('./page-furniture').pageFurnitureEnabled()) region = region.slice(0, cardAt);
   const isTrailingNoise = (t) =>
     // Author bio: "Firstname [Lastname] is a (culture|theatre|freelance)? journalist/critic/..."
     // First-name-only bylines (e.g. "Holly is a culture journalist…") slipped the
@@ -337,11 +337,19 @@ function extractStageBody(html) {
     // heading is not reliably in front of it). Require a trailer (a listing, roundup or 404 page has none), then
     // take the contiguous run of paragraphs immediately before it, so far-away chrome and sidebar <p> stay out.
     const isPlainBio = (t) => t.length < 250 && /\bis\s+(?:[a-z]+\s+){0,3}(?:editor|critic|reporter|journalist|writer)\s+(?:for|at|of)\s+The Stage\b/.test(t);
-    const trailerAt = found.findIndex((x) => isTrailingNoise(x.t) || isPlainBio(x.t));
-    if (trailerAt < 0) return null;
-    let from = trailerAt;
-    while (from > 0 && found[from].at - found[from - 1].end <= 3000) from--;
-    paras = found.slice(from, trailerAt).map((x) => x.t);
+    // Only trailers that appear after a review count as anchors (bio, subscribe, copyright); "Login Register" or
+    // "Related Articles" can sit in page chrome above the review, so they never anchor here. Try each anchor in
+    // page order and take the first with a real run of prose before it.
+    const isAnchor = (t) => isPlainBio(t) || /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) || /^©\s*Copyright/.test(t);
+    paras = null;
+    for (let trailerAt = 0; trailerAt < found.length && !paras; trailerAt++) {
+      if (!isAnchor(found[trailerAt].t)) continue;
+      let from = trailerAt;
+      while (from > 0 && found[from].at - found[from - 1].end <= 5000 && !isAnchor(found[from - 1].t)) from--;
+      const run = found.slice(from, trailerAt).map((x) => x.t).filter((t) => !isTrailingNoise(t));
+      if (run.length >= 3 && run.join('\n\n').length >= 600) paras = run;
+    }
+    if (!paras) return null;
   }
   const body = paras.join('\n\n');
   // The IntroText-less fallback needs a real run of prose (page chrome rarely has 3+ long paragraphs).
