@@ -72,7 +72,7 @@ import {
 import { runCalibration, runEnsembleCalibration } from './calibration';
 import { runValidation } from './validation';
 import { findGroundTruthReviews, calculateGroundTruthCalibration, printGroundTruthReport } from './ground-truth';
-import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './types';
+import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary, OpenAIScoringModel } from './types';
 
 // Import content quality module for garbage detection
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -684,7 +684,7 @@ function parseArgs(): ScoringPipelineOptions & {
   ensembleCalibrateOnly: boolean;
   upgradeEnsemble: boolean;
   retryEmergency: boolean;
-  openaiModel: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
+  openaiModel: OpenAIScoringModel;
   checkpointInterval: number;
   shard?: number;
   totalShards?: number;
@@ -720,7 +720,7 @@ function parseArgs(): ScoringPipelineOptions & {
   const modelArg = args.find(a => a.startsWith('--model='));
   const modelChoice = modelArg ? modelArg.split('=')[1] : 'sonnet';
   const model = modelChoice === 'haiku'
-    ? 'claude-3-5-haiku-20241022' as const
+    ? 'claude-haiku-4-5-20251001' as const
     : (require('../lib/models').SCORING_SONNET as 'claude-sonnet-4-6' | 'claude-sonnet-5-5');
 
   const outdated = args.includes('--outdated');
@@ -738,7 +738,7 @@ function parseArgs(): ScoringPipelineOptions & {
     console.error(`--openai-model=${openaiModelRaw} is not a known OpenAI scoring model (known: ${openaiScoringModels().join(', ')})`);
     process.exit(2);
   }
-  const openaiModel = openaiModelRaw as 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
+  const openaiModel = openaiModelRaw as OpenAIScoringModel;
 
   const ensembleSourceArg = args.find(a => a.startsWith('--ensemble-source='));
   const ensembleSource = ensembleSourceArg ? ensembleSourceArg.split('=')[1] : undefined;

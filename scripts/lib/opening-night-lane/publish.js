@@ -22,7 +22,7 @@ const { execFileSync } = require('child_process');
 const ledger = require('./ledger');
 const { canonicalUrl } = require('./discovery');
 const { keyOf, urlKeyOf, resolveConflict } = require('../merge-reviews-json');
-const { isLaneReview } = require('./trust-model');
+const { isLaneReview, calendarDateIn } = require('./trust-model');
 const { criticFileSlug } = require('../syndication-pairs');
 
 const DEFAULT_POLL_MS = 15 * 1000;
@@ -38,7 +38,7 @@ const DEFAULT_TIMEOUT_MS = 30 * 60 * 1000;
  * URL that canonicalises: rows the generator would drop or verification could never see are refused up front.
  * @returns {{doc, added, replaced, kept, applied}} applied = the rows that actually landed (added or replaced)
  */
-function mergeShowRows(doc, showId, incoming, { openingDate, remove } = {}) {
+function mergeShowRows(doc, showId, incoming, { openingDate, remove, takedown } = {}) {
   if (!showId) throw new Error('publish: showId is required');
   const base = doc && typeof doc === 'object' ? doc : {};
   const reviews = Array.isArray(base.reviews) ? base.reviews.slice() : [];
@@ -58,6 +58,18 @@ function mergeShowRows(doc, showId, incoming, { openingDate, remove } = {}) {
       const r = reviews[i];
       if (!r || r.showId !== showId || !r.criticName || !gone.has(`${criticFileSlug(r.criticName)}|${r.outletId}`) || !isLaneReview(r, { openingDate })) continue;
       removed.push(r); reviews.splice(i, 1);
+    }
+  }
+  // BRO-7958: a take-down names the review by URL (a wrong show / wrong production / non-review the lane published, or the
+  // old byline row a rename replaces), not by critic + outlet. Only the lane's own rows for this show come down. Before
+  // the adds, so a rename's new row (same URL, new critic) lands in the same merge and never meets the old one.
+  const takedownRemoved = []; // canonical URLs actually removed
+  if (Array.isArray(takedown) && takedown.length) {
+    const urls = new Set(takedown.map((x) => canonicalUrl(x && x.url)).filter(Boolean));
+    for (let i = reviews.length - 1; i >= 0; i--) {
+      const r = reviews[i];
+      if (!r || r.showId !== showId || !isLaneReview(r, { openingDate }) || !urls.has(canonicalUrl(r.url))) continue;
+      removed.push(r); takedownRemoved.push(canonicalUrl(r.url)); reviews.splice(i, 1);
     }
   }
   const byPrimary = new Map();
@@ -82,7 +94,7 @@ function mergeShowRows(doc, showId, incoming, { openingDate, remove } = {}) {
       reviews[at] = row; replaced++; applied.push(row);
     } else kept++;
   }
-  return { doc: { ...base, reviews }, added, replaced, kept, applied, removed };
+  return { doc: { ...base, reviews }, added, replaced, kept, applied, removed, takedownRemoved };
 }
 
 const sha = (buf) => crypto.createHash('sha256').update(buf).digest('hex');
@@ -122,9 +134,27 @@ function createReviewsFilePort(file, { attempts = 5, beforeWrite = null, beforeR
  *   deploy(), fetchLiveShow(showId)}, now?(), sleep?(ms), pollMs, timeoutMs
  * @returns {{merge, verified, missing, dropped, timedOut, ms}}
  */
-async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS, openingDate, dryRun = false, remove } = {}) {
+/**
+ * BRO-7884: rows reach reviews.json without the rebuild's date normaliser, so a page's full timestamp
+ * ("2026-11-20T03:00:00.000Z") went out as-is and the iOS app showed "Invalid Date" (the site showed Nov 20 for a
+ * Nov 19 press night). The published copy carries the calendar day in the show's market time zone. Returns the same
+ * object when nothing changes; never mutates, so the lane's own row keeps the instant for later checks.
+ */
+function toCalendarDay(row, timeZone) {
+  if (!row || typeof row.publishDate !== 'string' || /^\d{4}-\d{2}-\d{2}$/.test(row.publishDate)) return row;
+  // A zoneless timestamp has no instant to convert: keep its written day.
+  const day = calendarDateIn(row.publishDate, timeZone || undefined)
+    || (/^\d{4}-\d{2}-\d{2}T/.test(row.publishDate) ? row.publishDate.slice(0, 10) : null);
+  return day ? { ...row, publishDate: day } : row;
+}
+
+async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS, openingDate, dryRun = false, remove, takedown = [], timeZone } = {}) {
   if (!show || !night || !ledgerDir || !ports) throw new Error('publish: show, night, ledgerDir and ports are required');
-  if (!Array.isArray(rows) || !rows.length) return { merge: { added: 0, replaced: 0, kept: 0 }, verified: [], missing: [], dropped: [], timedOut: false, ms: 0 };
+  const takedowns = Array.isArray(takedown) ? takedown.filter((x) => x && canonicalUrl(x.url)) : [];
+  if (!Array.isArray(rows)) rows = [];
+  // BRO-7958: a removal-only publish (no rows) is a real publish: the take-down itself has to merge, push, deploy and be
+  // seen gone. Without takedowns an empty batch has nothing to do.
+  if (!rows.length && !takedowns.length) return { merge: { added: 0, replaced: 0, kept: 0 }, verified: [], missing: [], dropped: [], gone: [], stillLive: [], notRemoved: [], timedOut: false, ms: 0 };
   for (const p of ['updateReviews', 'regenShow', 'deploy', 'fetchLiveShow']) if (typeof ports[p] !== 'function') throw new Error(`publish: port "${p}" is required`);
   // A real publish must push the data and must be for a show the lane holds the lease on (a full rebuild only carries
   // over leased shows, so an unleased publish would be dropped by the next rebuild). Dry-run (rehearsal) skips both.
@@ -136,8 +166,11 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
   const t0 = now();
   const log = (key, stage, meta) => ledger.appendEvent(ledgerDir, { show, night, reviewKey: key, stage, at: now(), ...(meta ? { meta } : {}) });
 
-  const merge = await ports.updateReviews((doc) => mergeShowRows(doc, show, rows.map((r) => r.row), { openingDate, remove }));
-  const landed = new Set(merge.applied);
+  const original = new Map(); // published copy -> the lane's row (merge.applied holds the copies)
+  const copyOf = new Map(); // lane row -> the copy that is published (calendar-day date)
+  const toPublish = rows.map((r) => { const c = toCalendarDay(r.row, timeZone); original.set(c, r.row); copyOf.set(r.row, c); return c; });
+  const merge = await ports.updateReviews((doc) => mergeShowRows(doc, show, toPublish, { openingDate, remove, takedown: takedowns }));
+  const landed = new Set((merge.applied || []).map((x) => original.get(x) || x));
   if (ports.pushData) {
     const pushed = await ports.pushData();
     if (pushed && pushed.ok === false) throw new Error(`publish: pushing core data failed: ${String(pushed.stderr || '').slice(0, 200)}`);
@@ -153,7 +186,13 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
     landed.delete(r.row); dropped.push(r.key);
   }
   for (const r of rows) if (landed.has(r.row)) log(r.key, 'rebuilt');
-  await ports.deploy({ show, night, expectedUrls: rows.filter((r) => landed.has(r.row)).map((r) => r.row.url) }); // real ports dispatch the press-night deploy without blocking; see deploy-port.js
+  // A take-down that really removed a row (verifyAbsent) is awaited gone; one that matched no lane row is reported, not awaited.
+  const removedNow = new Set((merge.takedownRemoved || []).map(canonicalUrl));
+  // Absence is always verified against the live site, whoever removed the row: a retry after a push that landed but a regen
+  // that threw finds nothing to remove and must still see the URL gone before it is called done.
+  const absentWanted = takedowns.filter((x) => x.verifyAbsent !== false);
+  const notRemoved = absentWanted.filter((x) => !removedNow.has(canonicalUrl(x.url))).map((x) => x.key); // informational: this merge had no lane row for it
+  await ports.deploy({ show, night, expectedUrls: rows.filter((r) => landed.has(r.row)).map((r) => r.row.url), ...(absentWanted.length ? { absentUrls: absentWanted.map((x) => x.url) } : {}) }); // real ports dispatch the press-night deploy without blocking; see deploy-port.js
   for (const r of rows) if (landed.has(r.row)) log(r.key, 'deployed');
 
   // Only rows that actually landed are awaited: a row the merge kept out (a manual correction won) will never show up.
@@ -161,6 +200,18 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
   // BRO-7283: a row re-published because its score moved (the comparative settle) is already live under its URL, so the
   // URL alone would verify it before the new score deployed. It is verified once the live entry carries the new score.
   const wantScore = new Map(rows.filter((r) => landed.has(r.row) && r.rescored === true && Number.isFinite(r.row.assignedScore)).map((r) => [canonicalUrl(r.row.url), r.row.assignedScore]));
+  // BRO-7958: a corrected field is verified when the live entry carries the new value, not when the URL shows up (it
+  // already did). rv keys: cn = critic, d = date, q = pull quote (generate-mobile-show-details).
+  const LIVE_KEY = { criticName: ['cn', (c) => c.criticName], publishDate: ['d', (c) => c.publishDate], llmPullQuote: ['q', (c) => c.pullQuote] };
+  const wantField = new Map(); // canonical url -> [[liveKey, value]]
+  for (const r of rows) {
+    if (!landed.has(r.row) || !Array.isArray(r.verifyFields)) continue;
+    const c = copyOf.get(r.row) || r.row;
+    const wants = r.verifyFields.filter((f) => LIVE_KEY[f]).map((f) => [LIVE_KEY[f][0], LIVE_KEY[f][1](c)]).filter(([, v]) => typeof v === 'string' && v);
+    if (wants.length) wantField.set(canonicalUrl(r.row.url), wants);
+  }
+  const pendingGone = new Map(absentWanted.map((x) => [canonicalUrl(x.url), x.key]));
+  const gone = [];
   const verified = [];
   let timedOut = false;
   for (;;) {
@@ -168,21 +219,25 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
     try { live = await ports.fetchLiveShow(show); } catch { live = null; } // a failed poll is a missed poll, not a failure
     const liveUrls = new Set(((live && live.rv) || []).map((x) => canonicalUrl(x && x.u)).filter(Boolean));
     const liveScore = new Map(((live && live.rv) || []).map((x) => [canonicalUrl(x && x.u), x && x.s]));
+    const liveEntry = new Map(((live && live.rv) || []).map((x) => [canonicalUrl(x && x.u), x]));
     for (const [url, key] of [...pending]) {
       if (!liveUrls.has(url)) continue;
       if (wantScore.has(url) && liveScore.get(url) !== wantScore.get(url)) continue; // live, but still the old score
+      if ((wantField.get(url) || []).some(([k, v]) => (liveEntry.get(url) || {})[k] !== v)) continue; // live, but still the old byline / date / quote
       log(key, 'verified-live'); verified.push(key); pending.delete(url);
     }
-    if (!pending.size) break;
+    // Absence needs a live document that answered: a failed poll (live === null) says nothing about the review.
+    if (live && typeof live === 'object') for (const [url, key] of [...pendingGone]) if (!liveUrls.has(url)) { gone.push(key); pendingGone.delete(url); }
+    if (!pending.size && !pendingGone.size) break;
     if (now() - t0 >= timeoutMs) {
       timedOut = true;
       // The lease stays held (the workflow releases it) and lane-runner re-queues the missing rows; a human hears about it.
-      if (typeof ports.pageLiveTimeout === 'function') { try { await ports.pageLiveTimeout({ show, night, missing: [...pending.keys()], ms: now() - t0 }); } catch { /* paging must not fail the batch */ } }
+      if (typeof ports.pageLiveTimeout === 'function') { try { await ports.pageLiveTimeout({ show, night, missing: [...pending.keys(), ...pendingGone.keys()], ms: now() - t0 }); } catch { /* paging must not fail the batch */ } }
       break;
     }
     await sleep(pollMs);
   }
-  return { merge: { added: merge.added, replaced: merge.replaced, kept: merge.kept, removed: (merge.removed || []).length }, verified, missing: [...pending.values()], dropped, timedOut, ms: now() - t0 };
+  return { merge: { added: merge.added, replaced: merge.replaced, kept: merge.kept, removed: (merge.removed || []).length }, verified, missing: [...pending.values()], dropped, gone, stillLive: [...pendingGone.values()], notRemoved, timedOut, ms: now() - t0 };
 }
 
 // ---- real-world ports (thin; CI wires the deploy) -----------------------------------------------------------------
@@ -228,6 +283,7 @@ function dryRunDeploy({ publicDir, liveDir, showId, delayMs = 0 }) {
 }
 
 module.exports = {
+  toCalendarDay,
   DEFAULT_POLL_MS, DEFAULT_TIMEOUT_MS, mergeShowRows, createReviewsFilePort, publishLaneReviews,
   regenShowViaScript, fetchLiveShowFrom, startStaticServer, dryRunDeploy,
 };

@@ -42,12 +42,13 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractWestEndClosingDateDetailed } = require('./lib/we-closing-date-extract');
-const { classifyWeClosingDelta } = require('./lib/we-closing-date-classify');
+const { classifyWeClosingDelta, routeWeAuditResult } = require('./lib/we-closing-date-classify');
 const { classifyMissingSchedule } = require('./lib/closing-audit-classify');
 const { discoverWestEndTheatreUrl } = require('./lib/westend-slug-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { notifyBoardAfterSave, assertBoardConfigured, missingKeyError } = require('./lib/audit-board-notify');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-we-closing-dates.js — Daily bidirectional audit of closingDate values for open West End shows.
@@ -137,6 +138,7 @@ async function auditOneShow(show) {
       minDays: POSSIBLY_CLOSED_MIN_DAYS,
       allowlisted: isAllowlisted(show.id, stored),
       kind,
+      openingDate: show.openingDate || null,
     });
     if (verdict.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
       return {
@@ -172,7 +174,7 @@ async function auditOneShow(show) {
 async function notifyLinear(ambiguous, todayStr) {
   if (ambiguous.length === 0) return;
   if (!process.env.LINEAR_API_KEY) {
-    throw new Error('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
+    throw missingKeyError('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
   }
   const { spawnSync } = require('child_process');
   const brain = path.join(__dirname, 'linear-brain.js');
@@ -235,6 +237,8 @@ async function notifyLinear(ambiguous, todayStr) {
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // BRO-7920: a missing board key must fail before any data is written, not after.
+  if (!DRY_RUN) assertBoardConfigured();
   console.log('='.repeat(60));
   console.log('WE CLOSING DATE AUDIT (bidirectional)');
   console.log('='.repeat(60));
@@ -276,46 +280,33 @@ async function main() {
       result = { id: show.id, name: show.name, action: 'ERROR', reason: `unhandled: ${e.message.slice(0, 120)}` };
     }
 
-    switch (result.action) {
-      case 'ERROR':
-        errors.push(result);
-        break;
-      case 'NEW_CLOSING_NEEDS_REVIEW':
-        newClosings.push(result);
-        break;
-      case 'EXTENSION':
-        if (!canWriteClosingDate(show)) {
-          extensions.push({ ...result, action: 'EXTENSION_HUMAN_PROTECTED', skipped: true });
-        } else {
-          extensions.push(result);
-          if (!DRY_RUN) {
-            writeClosingDate(show, result.extracted, `${result.urlSource} (WE audit ${TODAY})`, { todayStr: TODAY, recordExtension: false });
-          }
-        }
-        break;
-      case 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW':
-      case 'NEEDS_HUMAN_REVIEW':
-        ambiguous.push(result);
-        break;
-      case 'POSSIBLY_CLOSED_NEEDS_REVIEW': {
-        // Flood guard (mirrors audit-closing-dates.js's
-        // TITLE_MISMATCH_FLOOD_CAP): a wave of title_mismatch flags in one
-        // run is far more likely a pageMatchesShowTitle() regression or a
-        // WET template change than that many shows all closing on the same
-        // day. Route overflow to errors instead of spamming Linear with a
-        // parser-breakage storm.
-        const titleMismatchFlags = ambiguous.filter(x => x.missingKind === 'title_mismatch').length;
-        if (result.missingKind === 'title_mismatch' && titleMismatchFlags >= TITLE_MISMATCH_FLOOD_CAP) {
-          errors.push({ ...result, action: 'ERROR', reason: 'possibly_closed_flood_suspected_parser_breakage' });
-        } else {
-          ambiguous.push(result);
-        }
-        break;
+    // Extension-only write rule: routeWeAuditResult is the ONLY place that decides
+    // bucket and write permission (pinned in we-closing-date-classify.test.mjs).
+    // Nothing below may call writeClosingDate except through route.write.
+    const route = routeWeAuditResult(result.action, canWriteClosingDate(show));
+    if (result.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+      // Flood guard (mirrors audit-closing-dates.js's TITLE_MISMATCH_FLOOD_CAP):
+      // a wave of title_mismatch flags in one run is far more likely a
+      // pageMatchesShowTitle() regression or a WET template change than that many
+      // shows all closing on the same day. Route overflow to errors instead of
+      // spamming Linear with a parser-breakage storm.
+      const titleMismatchFlags = ambiguous.filter(x => x.missingKind === 'title_mismatch').length;
+      if (result.missingKind === 'title_mismatch' && titleMismatchFlags >= TITLE_MISMATCH_FLOOD_CAP) {
+        errors.push({ ...result, action: 'ERROR', reason: 'possibly_closed_flood_suspected_parser_breakage' });
+        continue;
       }
-      case 'MATCH':
-      default:
-        matches.push(result);
-        break;
+    }
+    if (route.bucket === 'extensions') {
+      if (!route.write) {
+        extensions.push({ ...result, action: 'EXTENSION_HUMAN_PROTECTED', skipped: true });
+      } else {
+        extensions.push(result);
+        if (!DRY_RUN) {
+          writeClosingDate(show, result.extracted, `${result.urlSource} (WE audit ${TODAY})`, { todayStr: TODAY, recordExtension: false });
+        }
+      }
+    } else {
+      ({ errors, newClosings, ambiguous, matches })[route.bucket].push(result);
     }
   }
 
@@ -352,13 +343,10 @@ async function main() {
 
   for (const e of extensions) console.log(`  EXT  ${e.id}: ${e.stored} → ${e.extracted} (+${e.delta}d) [${e.urlSource}]`);
   for (const n of newClosings) console.log(`  NEW  ${n.id}: null → ${n.extracted} [${n.urlSource}]`);
-  for (const a of ambiguous) {
-    if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
-      console.log(`  AMB  ${a.id}: stored ${a.stored || 'null'}, possibly closed (${a.missingKind}) — ${a.url}`);
-    } else {
-      console.log(`  AMB  ${a.id}: stored ${a.stored}, ${a.urlSource} says ${a.extracted} (${a.delta}d)`);
-    }
-  }
+  const describeAmbiguous = a => (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW'
+    ? `${a.id}: stored ${a.stored || 'null'}, possibly closed (${a.missingKind}) — ${a.url}`
+    : `${a.id}: stored ${a.stored}, ${a.urlSource} says ${a.extracted} (${a.delta}d)`);
+  for (const a of ambiguous) console.log(`  AMB  ${describeAmbiguous(a)}`);
   for (const e of errors) console.log(`  ERR  ${e.id}: ${e.reason}`);
 
   const changed = extensions.filter(e => !e.skipped).length;
@@ -368,7 +356,9 @@ async function main() {
   }
 
   if (ambiguous.length > 0) {
-    await notifyLinear(ambiguous, TODAY);
+    await notifyBoardAfterSave(() => notifyLinear(ambiguous, TODAY), 'audit-we-closing-dates', {
+      summary: ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n'),
+    });
   }
 
   await cleanup();

@@ -222,9 +222,28 @@ NON_REVIEW_PATH_PATTERNS.push(OFF_TOPIC_SECTION_RE);
 const TIMES_HOST_RE = /(^|\.)thetimes\.(co\.uk|com)$/i;
 const TIMES_NEWS_SECTION_RE = /^\/(?:(?:uk|world|us)\/[^/]+|money|business(?:-money)?|comment|life-style|sunday-times-rich-list|edition\/news)\/(?:[^/]+\/)*article\/(?![a-z0-9-]*(?:review|theat|stage|musical|opera|ballet|danc|play|comedy|panto|-at-|wc\d|se\d|sw\d|ec\d|nw\d|-w\d|-n\d))[a-z0-9-]+\/?$/i;
 
+// BRO-7078 (pending noise): title-word site search filed Hollywood Reporter
+// film/TV reviews (Outlander "Blood of My Blood", the In the Heights film,
+// "Girls Like Girls") and TheWrap film pieces as no-byline _pending stubs for
+// the plays of the same name: 55 of 690 no-byline stubs for in-window shows on
+// 2026-11-20, still arriving in November. Host-scoped: THR filed its 2009-2012
+// theater reviews under /movies/movie-reviews/<slug>-theater-review-<id>/ and a
+// real 2012 review under /tv/tv-news/, so a slug with a theatre cue is left
+// alone and /tv/tv-news/ is not covered. Over reviews.json: 0 rows match.
+const SCREEN_REVIEW_HOST_RE = /(^|\.)(hollywoodreporter\.com|thewrap\.com)$/i;
+const SCREEN_REVIEW_SECTION_RE = /^\/(?:movies|tv\/tv-reviews|creative-content\/(?:movies|tv))\//i;
+const THEATRE_SLUG_CUE_RE = /theat|stage|broadway|west-?end|musical|opera|ballet|danc|panto|(?:^|-)play(?:-|$)/i;
+
+function screenSectionHit(u) {
+  if (!SCREEN_REVIEW_HOST_RE.test(u.hostname) || !SCREEN_REVIEW_SECTION_RE.test(u.pathname)) return false;
+  const slug = u.pathname.split('/').filter(Boolean).pop() || '';
+  return !THEATRE_SLUG_CUE_RE.test(slug);
+}
+
 /**
  * 'off-topic-section' when the URL sits in a sport/obituary/film-news section
- * (any host) or a Times hard-news section (BRO-7027), else null.
+ * (any host), a Times hard-news section (BRO-7027), or a Hollywood Reporter /
+ * TheWrap film or TV section with no theatre cue in the slug (BRO-7078), else null.
  * @param {string} url
  * @returns {string|null}
  */
@@ -234,6 +253,7 @@ function offTopicSectionReason(url) {
     const u = new URL(url);
     if (OFF_TOPIC_SECTION_RE.test(u.pathname)) return 'off-topic-section';
     if (TIMES_HOST_RE.test(u.hostname) && TIMES_NEWS_SECTION_RE.test(u.pathname)) return 'off-topic-section';
+    if (screenSectionHit(u)) return 'off-topic-section';
     return null;
   } catch { return null; }
 }
@@ -874,6 +894,22 @@ function hostOf(u) {
   catch { return null; }
 }
 
+// BRO-7773: NON_REVIEW_HOST_PATTERNS holds subdomain-anchored entries
+// (/^stagemag\.broadwayworld\.com$/, /^tickets\./, /^boxoffice\./,
+// /^podcasts\.apple\.com$/ ...) but classifyReviewUrl only tested them against
+// hostOf(), which collapses to the registrable domain, so they never matched:
+// a BWW digital-program page (stagemag) was ingested as a review and sat in the
+// silent-gap row with no scorable text. Test the full host (cosmetic www./amp.
+// prefixes stripped) as well as the registrable one. The .org allow-list stays
+// keyed on the registrable host, as before.
+function nonReviewHostMatch(url) {
+  let full;
+  try { full = stripCosmeticPrefixes(new URL(url).hostname); } catch { return false; }
+  const reg = registrableHost(full);
+  if (!reg || ALLOWED_ORG_HOSTS.has(reg)) return false;
+  return NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(reg) || (!!full && rx.test(full)));
+}
+
 /**
  * The host a publication is registered under, for outlet-registry lookups
  * (BRO-6716). Two shared-host shapes name one publication under a host the
@@ -917,7 +953,7 @@ function classifyReviewUrl(url) {
   // BRO-6696: share discovery's film, book-shop and announcement policy with
   // ingest. A distinct reason lets the narrow write gate refuse these too.
   if (isNonReviewUrl(url)) return { ok: false, reason: 'non-stage-review' };
-  if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) {
+  if (nonReviewHostMatch(url)) {
     return { ok: false, reason: 'non-review-host' };
   }
   // Ticket sellers: read the WRITE PATH's list rather than keeping a parallel
@@ -1194,5 +1230,6 @@ module.exports = {
   listingPageUrlReason,
   registrableHost,
   hostOf,
+  nonReviewHostMatch,
   classifyReviewUrl,
 };

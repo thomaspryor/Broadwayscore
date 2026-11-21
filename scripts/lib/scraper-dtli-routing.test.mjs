@@ -155,6 +155,27 @@ for (const [label, response] of [
   });
 }
 
+// BRO-7532 recheck: DTLI answers an unopened show with its own "Page not found"
+// document, which the paid chain fetched (and returned as a success) every poll.
+const dtli404 = '<html><head><title>Page not found - Did They Like It?</title></head><body><h1>Page not found</h1>' + 'site chrome '.repeat(1200) + '</body></html>';
+
+test('DTLI genuine 404 document is answered directly, no paid call', async () => {
+  global.fetch = async () => new Response(dtli404, { status: 404 });
+  const result = await scraper.fetchPage('https://didtheylikeit.com/shows/hamilton/', { skipVerify: true });
+  assert.equal(result.source, 'direct');
+  assert.equal(result.content, dtli404);
+  assert.equal(calls.length, 0, 'no paid or quota calls for a page DTLI has not created');
+  assert.equal(extractReviewsFromDTLI(result.content, 'hamilton').length, 0);
+});
+
+test('DTLI_DIRECT_404_PAID=1 restores the paid chain after a direct 404', async (t) => {
+  process.env.DTLI_DIRECT_404_PAID = '1';
+  t.after(() => { delete process.env.DTLI_DIRECT_404_PAID; });
+  global.fetch = async () => new Response(dtli404, { status: 404 });
+  const result = await scraper.fetchPage('https://didtheylikeit.com/shows/hamilton/');
+  assert.equal(result.source, 'brightdata');
+});
+
 test('wrong canonical falls back even when direct HTML contains reviews', async () => {
   global.fetch = async () => new Response(page('wicked', 'Wicked'));
   const result = await scraper.fetchPage('https://didtheylikeit.com/shows/hamilton/');

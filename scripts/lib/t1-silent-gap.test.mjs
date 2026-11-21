@@ -317,6 +317,28 @@ test('non-review URL the scorer will never take (and no verdict ever recorded) i
   assert.equal(classify(bwwVideo, LATER), null);
 });
 
+// BRO-7773 incident shape (2026-11-19, nacho-ate-spiderman-regional-2026): a BWW
+// stagemag digital-program page (cast bios, credits for dozens of other shows)
+// ingested as a T2 broadwayworld review. The scorer refuses it (no_scorable_text),
+// so the T1/T2 silent-gap row warned on it for days. The stagemag host pattern
+// existed but never fired (registrable-host collapse); now it does.
+test('BRO-7773: stagemag digital-program page the scorer refuses is a correct absence', () => {
+  const credits = ['Violet', 'Twelfth Night', 'The Last Five Years', 'Hedwig and the Angry Inch', 'Memphis',
+    'The Little Mermaid', 'Wicked', 'Hamilton', 'Chicago', 'Rent', 'Cats', 'Evita', 'Into the Woods',
+    'Company', 'Les Miserables', 'Hadestown', 'Six', 'Annie', 'Oklahoma', 'Grease'];
+  const body = Array.from({ length: 6 }, (_, i) => `Bio ${i}: credits include ${credits.join(', ')}. Proud member of Actors Equity.`).join('\n\n');
+  const LATER = { tier: 2, now: new Date('2026-11-19T12:00:00Z'), show: { title: 'Nacho Ate Spiderman' } };
+  const program = {
+    showId: 'nacho-ate-spiderman-regional-2026', outletId: 'broadwayworld', criticName: 'Michelle Kholos Brooks',
+    url: 'https://stagemag.broadwayworld.com/modern/Nacho-Ate-Spiderman-New-Jersey-Repertory-Company-124231',
+    source: 'submit-review-form', fullText: body, contentTier: 'complete', textFetchedAt: '2026-11-17T15:36:42.304Z',
+  };
+  assert.equal(classify(program, LATER), null);
+  // Same refused text at a main-site BWW review URL is still reported.
+  const real = { ...program, url: 'https://www.broadwayworld.com/los-angeles/article/Review-NACHO-ATE-SPIDERMAN-20261110' };
+  assert.equal(classify(real, LATER)?.type, 'unscored');
+});
+
 test('BRO-5166: empty-body file at a listing page (BWW regional show page) is not a gap; a manual clear restores it', () => {
   const listing = {
     showId: 'the-humanities-regional-2026', outletId: 'broadwayworld', criticName: 'Unknown',
@@ -357,4 +379,26 @@ test('staleOpenGapKeys: only open keys whose file is gone from an existing show 
   const io = { dirExists: (s) => s === 'a', fileExists: (s, f) => f === 'here.json' };
   assert.deepEqual(staleOpenGapKeys(ledger, io), ['gap:a/gone.json', 'backstop:a/gone.json']);
   assert.deepEqual(staleOpenGapKeys(null, io), []);
+});
+
+// BRO-7773: a Talkin' Broadway forum stub whose forum-link budget is spent must read
+// recoverable=false. The generic same-URL check reads true for it (its own counter is 0),
+// which kept the real rope-off-broadway-2026 stub "recoverable" and the digest row firing.
+const FORUM_STUB_BASE = {
+  url: 'https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466',
+  outletId: 'talkinbroadway', fullText: null, contentTier: 'stub', contentTierReason: 'No text content',
+  incompleteReason: 'bot_blocked', fetchDiscoveryAbandoned: true, needsTextRetry: true,
+};
+test('BRO-7773: forum stub with spent forum budget is not recoverable', () => {
+  const g = classify({ ...FORUM_STUB_BASE, forumLinkRecoveryCount: 10, forumLinkRecoveryAt: '2026-07-18T02:00:00Z' }, { tier: 2 });
+  assert.equal(g.type, 'empty-body');
+  assert.equal(g.recoverable, false);
+});
+test('BRO-7773: forum stub with budget left stays recoverable', () => {
+  const g = classify({ ...FORUM_STUB_BASE, forumLinkRecoveryCount: 1, forumLinkRecoveryAt: '2026-07-18T02:00:00Z' }, { tier: 2 });
+  assert.equal(g.recoverable, true);
+});
+test('BRO-7773: non-forum empty stub keeps the generic recoverable rule', () => {
+  const g = classify({ url: 'https://www.thetimes.com/x-review', fullText: '', contentTier: 'stub' }, { tier: 2 });
+  assert.equal(g.recoverable, true);
 });

@@ -26,6 +26,7 @@
  */
 
 const fs = require('fs');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const { execFileSync, spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const m = require('./lib/land-mutex');
@@ -50,7 +51,7 @@ const output = (kv) => { if (env.GITHUB_OUTPUT) fs.appendFileSync(env.GITHUB_OUT
 const sleep = (ms) => execFileSync('sleep', [String(Math.max(0.2, ms / 1000))]);
 
 function git(args) {
-  const r = spawnSync('git', args, { encoding: 'utf8', timeout: 60000 });
+  const r = gitGuard.runGit('git', args, { encoding: 'utf8', timeout: 60000 });
   return { ok: r.status === 0, out: `${r.stdout || ''}${r.stderr || ''}`.trim() };
 }
 

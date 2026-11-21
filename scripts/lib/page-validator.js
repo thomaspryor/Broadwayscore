@@ -29,7 +29,9 @@ const cheerio = require('cheerio');
 const { titleWordsMatchWithConfidence } = require('./show-matching');
 const { findContainingTitleSibling } = require('./title-containment');
 const { titleVariantInfo, venueTokens } = require('./show-title-tokens');
+const { venueForms } = require('./outlet-listing-helpers');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
+const { openaiChatBody } = require('./llm-batch');
 
 // Confidence threshold below which the LLM tiebreaker fires
 const LLM_CONFIDENCE_THRESHOLD = 0.75;
@@ -82,12 +84,12 @@ function callOpenAI(prompt) {
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
   return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
+    const body = JSON.stringify(openaiChatBody({
       model: GPT4O_MINI,
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 20,
+      maxTokens: 20,
       temperature: 0.1
-    });
+    }));
 
     const req = https.request('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -446,14 +448,30 @@ function matchDerivedTitleVariant(showTitle, headingText, options = {}) {
   // clashIds only means no other shows.json row shares the short title, and a
   // single venue word ("classic", "performing", a city) proves nothing.
   const venueName = typeof show.venue === 'string' ? show.venue : show.venue && show.venue.name;
-  const venuePhrase = normalizePhrase(venueName);
-  if (!venuePhrase || venueTokens(show).length === 0) return null;
+  // BRO-7381: a house billed with its stage ("The Public Theater/Newman Theater", "The Other Palace
+  // - Main Theatre") is named by headings as the house only, so the whole string never matches.
+  // venueForms (the BRO-7372 fix) adds the house and stage forms. They are weaker proof ("public
+  // theater" sits inside "Pittsburgh Public Theater"), so they count only for a variant no other
+  // shows.json row shares (clashIds empty); a clashing variant still needs the whole venue name.
+  const wholePhrase = normalizePhrase(venueName);
+  // Only the HOUSE form (text before the "/" or " - " stage suffix), and only when a heading names it
+  // right after at/in/from/by or at its start: "Pittsburgh Public Theater" must not read as "The
+  // Public Theater". Stage-only forms ("Newman Theater") are too short to prove a venue.
+  const houseRaw = String(venueName || '').split(/\/|\s[-–—]\s|\(/)[0];
+  const housePhrase = normalizePhrase(houseRaw);
+  const houseOk = housePhrase && housePhrase !== wholePhrase && housePhrase.includes(' ')
+    && venueForms({ venue: venueName }).map(normalizePhrase).includes(housePhrase); // venue-write-guard-ok: read-only literal passed to venueForms, nothing is written
+  if (!wholePhrase || venueTokens(show).length === 0) return null;
   const headingPhrase = ` ${normalizePhrase(headingText)} `;
-  if (!headingPhrase.includes(` ${venuePhrase} `)) return null;
+  const wholeHit = headingPhrase.includes(` ${wholePhrase} `);
+  const formHit = !!houseOk && (new RegExp(` (at|in|from|by|presented by|returns to) (the )?${housePhrase} `).test(headingPhrase)
+    || headingPhrase.startsWith(` ${housePhrase} `));
+  if (!wholeHit && !formHit) return null;
   let variants;
-  try { variants = titleVariantInfo(show); } catch (_) { return null; }
+  try { variants = titleVariantInfo(show, { titles: options.titles }); } catch (_) { return null; }
   for (const v of variants) {
     if (v.kind !== 'derived' || v.labelHead) continue;
+    if (!wholeHit && v.clashIds.length > 0) continue;
     const m = titleWordsMatchWithConfidence(v.title, headingText);
     if (!m.matched || m.confidence < LLM_CONFIDENCE_THRESHOLD || m.matchCount < (m.words || []).length) continue;
     if (findContainingTitleSibling(headingText, v.title, { shows: options.shows })) continue;

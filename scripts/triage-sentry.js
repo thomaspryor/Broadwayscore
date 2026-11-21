@@ -19,8 +19,8 @@ const PROJECT = process.env.SENTRY_PROJECT || 'broadway-scorecard';
 const SENTRY_TOKEN = process.env.SENTRY_AUTH_TOKEN;
 const DRY_RUN = process.argv.includes('--dry-run');
 
-const { classifyIssue } = require('./lib/sentry-triage-classify');
-const { fileSentryIssue, MAX_NEW_CARDS_PER_RUN } = require('./lib/sentry-linear-filing');
+const { classifyIssue, NOISE_IGNORE_BODY } = require('./lib/sentry-triage-classify');
+const { fileSentryIssue, listSentryFamilyCards, MAX_NEW_CARDS_PER_RUN } = require('./lib/sentry-linear-filing');
 
 // --- Sentry API helpers ---
 
@@ -78,7 +78,22 @@ async function main() {
   const deps = hasLinearKey && !DRY_RUN ? {
     listIssuesByProvenance: require('./lib/linear-client').listIssuesByProvenance,
     createLinearIssue: require('./lib/linear-issue-create').createLinearIssue,
+    getIssue: require('./lib/linear-client').getIssue,
+    updateIssue: require('./lib/linear-client').updateIssue,
+    createComment: require('./lib/linear-client').createComment,
   } : null;
+
+  // BRO-7595: one read of the open sentry-triage cards per run, so one error
+  // that Sentry split into several ids lands on one card. A failed read only
+  // turns grouping off (fail open), it never blocks filing.
+  let familyCards = null;
+  if (deps) {
+    try {
+      familyCards = await listSentryFamilyCards(deps);
+    } catch (e) {
+      console.error(`Could not list Sentry cards for grouping (${e.message}); filing without it`);
+    }
+  }
 
   for (const issue of issues) {
     // Fetch latest event for stack trace analysis
@@ -98,7 +113,7 @@ async function main() {
 
       if (!DRY_RUN) {
         try {
-          await sentryPut(`/issues/${issue.id}/`, { status: 'ignored' });
+          await sentryPut(`/issues/${issue.id}/`, NOISE_IGNORE_BODY);
           console.log('  → Ignored in Sentry\n');
         } catch (e) {
           console.error(`  → Failed to ignore: ${e.message}\n`);
@@ -119,12 +134,15 @@ async function main() {
         console.error('  → LINEAR_API_KEY is not set; this real error is NOT on the board\n');
       } else {
         const r = await fileSentryIssue(
-          { issue, classification, org: ORG, canCreate: stats.newCards < MAX_NEW_CARDS_PER_RUN },
+          { issue, classification, org: ORG, canCreate: stats.newCards < MAX_NEW_CARDS_PER_RUN, familyCards },
           deps,
         );
         if (r.action === 'existing') {
           stats.existingCards++;
           console.log(`  → Linear card already exists: ${r.card.identifier || r.card.url}\n`);
+        } else if (r.action === 'grouped') {
+          stats.existingCards++;
+          console.log(`  → Same error as ${r.card.identifier}; added this Sentry id to that card\n`);
         } else if (r.action === 'filed') {
           stats.newCards++;
           console.log(`  → Filed Linear card: ${r.card.identifier} ${r.card.url || ''}\n`);

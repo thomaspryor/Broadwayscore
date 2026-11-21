@@ -46,13 +46,13 @@
  */
 'use strict';
 
-const { execFileSync } = require('child_process');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 
 const LEDGER_BRANCH = 'push-ledger';
 const LEDGER_FILE = 'recent-pushes.jsonl';
 
 function git(cwd, args, opts = {}) {
-  return execFileSync('git', args, { cwd, encoding: 'utf8', timeout: 20000, ...opts });
+  return gitGuard.runGitOrThrow(args, { cwd, encoding: 'utf8', timeout: 20000, ...opts });
 }
 
 /**

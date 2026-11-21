@@ -325,6 +325,14 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   if (cleaned.refused) return refuse('multi_show_no_section', 'multi-show post: no unique section for this show');
   const text = cleaned.text;
   if (text.length < MIN_TEXT_CHARS) return refuse('too_short', `too short after cleaning (${text.length})`);
+  // BRO-7963: a feature interview at a url the shape check cannot refuse (Times culture/tv-radio also
+  // holds real reviews) is caught by its prose: the Sunday Times Ian McKellen interview was accepted
+  // as a 12,877-char complete review of An Ark.
+  {
+    const sig = require('./serp-non-review-url').interviewTextSignals(text);
+    const humanSaysReview = existing.isNonReview === false || existing.nonReviewManualClear === true;
+    if (sig.interview && !humanSaysReview) return refuse('non_review_text', `text reads as an interview/feature, not a review (${sig.markers.join(', ')})`);
+  }
 
   // 3. Not a paywall / login / cookie wall / error page.
   const { isGarbageContent, validateShowMentioned, classifyContentTier } = require('./content-quality');

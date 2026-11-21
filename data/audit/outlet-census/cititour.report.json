@@ -1,12 +1,16 @@
 {
   "outletId": "cititour",
-  "generatedAt": "2026-10-28T20:45:32.744Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:50:10.361Z",
   "since": "2021-06-01",
   "source": {
     "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "no sitemap (robots.txt lists none, /sitemap.xml answers 404); show pages under /NYC_Broadway are reached only by following links",
     "notes": [
-      "unreadable: no WordPress API; sitemap enumeration not yet configured"
+      "unreadable: no sitemap (robots.txt lists none, /sitemap.xml answers 404); show pages under /NYC_Broadway are reached only by following links"
     ],
+    "incomplete": false,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,9 +23,10 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 333,
-    "notEnumerated": 284,
+    "rowsInWindow": 405,
+    "notEnumerated": 319,
     "noUrl": 0,
     "samples": [
       {
@@ -46,6 +51,18 @@
         "showId": "a-dolls-house-2023",
         "url": "https://cititour.com/NYC_Broadway/A-Dolls-House/1131",
         "publishDate": "2023-03-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-few-good-men-2026",
+        "url": "https://cititour.com/NYC_Broadway/A-Few-Good-Men/1406",
+        "publishDate": "2026-10-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-man-of-no-importance-off-broadway-2022",
+        "url": "https://cititour.com/NYC_Broadway/A-Man-of-No-Importance/1104",
+        "publishDate": "2022-10-30",
         "why": "not-enumerated"
       },
       {
@@ -93,6 +110,12 @@
       {
         "showId": "american-son-2018",
         "url": "https://cititour.com/NYC_Broadway/American-Son/491",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "anastasia-2017",
+        "url": "https://cititour.com/NYC_Broadway/Anastasia/476",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -236,32 +259,14 @@
       },
       {
         "showId": "call-me-izzy-2025",
-        "url": "https://cititour.com/NYC_News/Review-Jean-Smart-Talks-the-Talk-in-Call-Me-Izzy/9591",
-        "publishDate": "2025-06-12",
+        "url": "https://cititour.com/NYC_Broadway/Call-Me-Izzy/1312",
+        "publishDate": "2025-06-13",
         "why": "not-enumerated"
       },
       {
         "showId": "camelot-2023",
         "url": "https://cititour.com/NYC_Broadway/Camelot/1140",
         "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "caroline-or-change-2021",
-        "url": "https://cititour.com/NYC_Broadway/Caroline-or-Change/1023",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cats-the-jellicle-ball-2026",
-        "url": "https://cititour.com/NYC_Broadway/CATS-The-Jellicle-Ball/1367",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "cats-the-jellicle-ball-off-broadway-2024",
-        "url": "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
-        "publishDate": "2024-06-20",
         "why": "not-enumerated"
       }
     ]
@@ -272,5 +277,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

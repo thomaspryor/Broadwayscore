@@ -73,7 +73,7 @@ test('hookScope of this repo includes the Stop-check libs verify-edits.sh runs',
     assert.ok(s.hooks.includes(f), `${f} missing from ${s.hooks.join(', ')}`);
   }
   assert.ok(s.libs.includes('scripts/lib/land-preflight.mjs'), 'land-preflight.mjs is run by pre-push-land-preflight.sh');
-  assert.ok(s.libs.length < 90, `scope grew to ${s.libs.length} files; a lazy or Linear-side import is probably being followed`);
+  assert.ok(s.libs.length < 100, `scope grew to ${s.libs.length} files; a lazy or Linear-side import is probably being followed`);
 });
 
 test('stopPoints, recorded Stops: cut before the turn text, hook 1 errors are blocks, hook 2 errors are not', () => {

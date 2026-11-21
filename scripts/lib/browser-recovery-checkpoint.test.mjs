@@ -23,6 +23,10 @@ Object.assign(process.env, {
   PUSH_DEADLINE_SEC: '30',
   REVIEW_TEXTS_LOCK_PATH: path.join(ROOT, 'review-texts.lock'),
   REVIEW_TEXTS_PENDING_PATH: path.join(ROOT, 'pending.json'),
+  // BRO-7948: a landed checkpoint drops review-texts-pushed.marker into
+  // $RUNNER_TEMP. On an Actions runner that is the whole job's temp dir, and
+  // the marker made a later test in the same job see a push that never happened.
+  RUNNER_TEMP: ROOT,
 });
 
 const origin = path.join(ROOT, 'broadway-review-texts.git');

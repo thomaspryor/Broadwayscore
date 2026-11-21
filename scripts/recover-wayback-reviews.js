@@ -36,6 +36,7 @@ const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
 const { startPressNightScoring } = require('./lib/press-night-scoring-trigger'); // BRO-6886
 const { checkpointReviewTexts: checkpointRtWrites, retryPendingPushes, createWriteTracker } = require('./lib/review-texts-checkpoint'); // BRO-7171
+const WL = require('./lib/wayback-ledger'); // BRO-7944: attempts + landings go in the gap-recovery ledger
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
@@ -870,8 +871,12 @@ function checkpointReviewTexts(stats) {
     repoDir: RT_DIR,
     paths: RUN_WRITES,
     message: `data: Wayback recovery checkpoint - ${stats.recovered} recovered so far`,
+    expected: RUN_WRITES.expected, // landing key of OUR text: a concurrent overwrite is not recorded as our recovery
+    onLanded: (landed) => WL.onLanded(landed),
+    meta: { source: 'recover-wayback-reviews', attempts: WL.attemptsFor(RUN_WRITES) },
   });
   RUN_WRITES.clear();
+  RUN_WRITES.expected.clear();
   if (res.pushed) {
     markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
     // BRO-6886: score new press-night reviews now, not at job end.
@@ -923,7 +928,7 @@ async function main() {
   if (CONFIG.dryRun) console.log('*** DRY RUN — no files will be modified ***\n');
   if (CONFIG.sourceMode !== 'failed-fetches') console.log(`Source mode: ${CONFIG.sourceMode}\n`);
   // BRO-7171: land an earlier run's unpushed checkpoint before new work.
-  if (!CONFIG.dryRun && fs.existsSync(path.join(RT_DIR, '.git'))) retryPendingPushes({ repoDir: RT_DIR });
+  if (!CONFIG.dryRun && fs.existsSync(path.join(RT_DIR, '.git'))) retryPendingPushes({ repoDir: RT_DIR, onLanded: (landed) => WL.onLanded(landed) });
 
   const candidates = CONFIG.sourceMode === 'incomplete'
     ? loadIncompleteCandidates()
@@ -1015,7 +1020,7 @@ async function main() {
         await sleep(CONFIG.archiveTodayDelayMs);
         const atResult = await tryArchiveToday(c.url);
         if (atResult) {
-          const updateResult = await processRecoveredText(c, atResult.text, atResult.html, {
+          const updateResult = await recoverAndRecord(c, atResult.text, atResult.html, {
             archiveUrl: atResult.archiveUrl,
             source: 'archive.today',
           });
@@ -1038,6 +1043,7 @@ async function main() {
       }
 
       stats.notInArchive++;
+      if (!CONFIG.dryRun) WL.recordRefusal(c, { outcome: 'no_evidence', reason: 'archive_empty', bytesBefore: WL.snapshotBefore(c), error: 'no archive.org snapshots and no archive.today copy' });
       exhaustedUrls[c.url] = { reason: 'no_archive_coverage', lastAttempt: new Date().toISOString(), retryable: false };
 
       // Domain failure tracking
@@ -1079,7 +1085,7 @@ async function main() {
           continue;
         }
 
-        const updateResult = await processRecoveredText(c, text, response.data, {
+        const updateResult = await recoverAndRecord(c, text, response.data, {
           timestamp: snapshot.timestamp,
           archiveUrl: snapshot.archiveUrl,
           source: 'archive.org',
@@ -1117,7 +1123,7 @@ async function main() {
       await sleep(CONFIG.archiveTodayDelayMs);
       const atResult = await tryArchiveToday(c.url);
       if (atResult) {
-        const updateResult = await processRecoveredText(c, atResult.text, atResult.html, {
+        const updateResult = await recoverAndRecord(c, atResult.text, atResult.html, {
           archiveUrl: atResult.archiveUrl,
           source: 'archive.today',
         });
@@ -1143,6 +1149,7 @@ async function main() {
           }
         }
       } else {
+        if (!CONFIG.dryRun) WL.recordRefusal(c, { outcome: 'non_evidence', reason: 'snapshots_unusable', bytesBefore: WL.snapshotBefore(c), error: 'archive.org snapshots found but none usable; archive.today had no copy' });
         exhaustedUrls[c.url] = { reason: 'snapshots_paywalled', lastAttempt: new Date().toISOString(), retryable: false };
         domainFailures[c.domain] = (domainFailures[c.domain] || 0) + 1;
         if (circuitBreakerEnabled && domainFailures[c.domain] >= 5 && !skippedDomains.has(c.domain)) {
@@ -1270,6 +1277,18 @@ function showMetaFor(showId) {
     } catch { /* falls back to the slug title */ }
   }
   return _showsById.get(showId) || null;
+}
+
+/** processRecoveredText + the gap-recovery ledger row for its result (BRO-7944). */
+async function recoverAndRecord(candidate, text, html, archiveData) {
+  const bytesBefore = WL.snapshotBefore(candidate);
+  const ok = await processRecoveredText(candidate, text, html, archiveData);
+  if (CONFIG.dryRun) return ok;
+  if (ok) {
+    try { RUN_WRITES.expected.set(candidate.filePath, require('./lib/review-texts-checkpoint').landingKey(JSON.parse(fs.readFileSync(candidate.filePath, 'utf8')))); } catch { /* checkpoint falls back to content */ }
+    WL.recordAccepted(candidate, { bytesBefore, via: archiveData && archiveData.source });
+  } else WL.recordRefusal(candidate, { outcome: 'non_evidence', reason: 'wayback_text_refused', bytesBefore, error: `refused by processRecoveredText (${archiveData && archiveData.source || 'archive'}, ${String(text || '').length} chars fetched)` });
+  return ok;
 }
 
 async function processRecoveredText(candidate, text, html, archiveData) {

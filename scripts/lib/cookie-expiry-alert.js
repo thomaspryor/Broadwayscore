@@ -59,16 +59,20 @@ function findCookieFailures(results, authErrorDays) {
 /**
  * PURE. Watched outlets with positive evidence of health this run and no
  * failure: an auth expiry actually read (missing cookies, authDays null, prove
- * nothing) or a passing live check.
+ * nothing), a passing live check, or an outlet whose CI live route is declared
+ * unverifiable (BRO-7757: closes the card the old broken check opened).
  */
 function findCookieHealthy(results, authErrorDays) {
   const failing = new Set(findCookieFailures(results, authErrorDays).map(r => `${r.name}|${r.layer === 3}`));
+  // An unverifiable live route proves nothing by itself: it only retires the old broken-check card
+  // while the outlet has no expiry failure (BRO-7757 adversarial review).
+  const failingOutlets = new Set(findCookieFailures(results, authErrorDays).map(r => r.name));
   const healthy = new Map();
   for (const r of results || []) {
     if (!isWatched(r)) continue;
     const live = r.layer === 3;
     if (failing.has(`${r.name}|${live}`)) continue;
-    if ((r.layer === 2 && typeof r.authDays === 'number') || (live && r.status === 'pass' && !r.noCookiesRequired)) {
+    if ((r.layer === 2 && typeof r.authDays === 'number') || (live && r.status === 'pass' && !r.noCookiesRequired) || (live && r.unverifiable === true && r.status !== 'fail' && !failingOutlets.has(r.name))) {
       healthy.set(`${r.name}|${live}`, { name: r.name, live });
     }
   }
@@ -92,7 +96,12 @@ function buildAlert(result) {
       `Check detail: ${result.message}\n\n` +
       `Cookie renewal is Mac-only (BRO-6590); do not try to renew it from CI or a cloud session. ` +
       `After the owner refreshes it, re-score any ${result.name} review collected since the cookie died.`,
-    hint: 'Refresh on the Mac: python3 scripts/extract-safari-cookies.py --push (needs a fresh Safari login).',
+    // BRO-7705: outlets renew-cookies.js handles renew themselves every 6h
+    // (and email the owner when a login needs a human); the rest still need
+    // the Safari login + extractor.
+    hint: require('./cookie-renew').RENEW_OUTLETS[result.name]
+      ? `Renews itself on the Mac Studio every 6h; to force it now: node scripts/renew-cookies.js --outlet=${result.name} (a login it cannot do emails the owner).`
+      : 'Refresh on the Mac: python3 scripts/extract-safari-cookies.py --push (needs a fresh Safari login).',
     // A live check can fail on a site hiccup, so only a T1 cookie actually
     // read as expired pages at error level.
     severity: t1 && !live ? 'error' : 'warn',

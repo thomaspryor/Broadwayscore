@@ -2438,6 +2438,7 @@ const WRONG_PRODUCTION_OR_SHOW_FIELDS = [
   'wrongProduction', 'wrongShow', 'allowEarlyDate', 'allowCrossMarket',
   'wrongProductionManualClear', 'wrongProductionCleared', 'wrongProductionAutoCleared',
   'humanReviewedWrongProduction', 'wrongShowManualClear',
+  'wrongProductionOverride', 'wrongShowOverride', // BRO-7944
 ];
 
 /**
@@ -2467,8 +2468,10 @@ function isEffectivelyWrongProductionOrShow(review) {
     && !review.wrongProductionManualClear
     && !review.wrongProductionCleared
     && !review.wrongProductionAutoCleared
+    && !review.wrongProductionOverride // BRO-7944: permanent human override = flag not in effect
     && review.humanReviewedWrongProduction !== false);
-  const effectivelyWrongShow = !!(review.wrongShow && !review.wrongShowManualClear);
+  const effectivelyWrongShow = !!(review.wrongShow && !review.wrongShowManualClear
+    && !review.wrongShowOverride);
   return { effectivelyWrongProduction, effectivelyWrongShow };
 }
 
@@ -3419,11 +3422,21 @@ function isValidAuthorName(name) {
 
 function cleanAuthorName(name) {
   let cleaned = name.trim();
+  // ", Editor-in-Chief" / ", Chief Theatre Critic" ride along in meta authors
+  // (Theater Scene, BRO-7745): one implementation, byline-normalization's.
+  cleaned = require('./byline-normalization').stripBylineSuffixes(cleaned) || cleaned;
   // Strip any residual HTML tags (e.g., "Lisa Martland<br>")
   cleaned = cleaned.replace(/<[^>]+>/g, '').trim();
   // Strip HTML entities
   cleaned = cleaned.replace(/&[a-z]+;/gi, '').trim();
   cleaned = cleaned.replace(/^By\s+/i, '');
+  // A link label read as the name ("Read more articles by Loren Noveck", Exeunt; "View all
+  // posts by X", Jetpack) and a one-word CamelCase house name before the critic ("CurtainUp,
+  // Dan Rubins" in CurtainUp's meta author) are not part of the name (BRO-7780). The CamelCase
+  // word must be followed by a two-word name, and Mc/Mac/De/Van surnames are left alone, so an
+  // inverted "McDonald, John" is untouched.
+  cleaned = cleaned.replace(/^(?:read\s+more|view\s+all|see\s+all|more)\s+(?:articles|posts|stories|reviews)\s+by\s+/i, '');
+  cleaned = cleaned.replace(/^(?!(?:Mc|Mac|De|Di|Da|Du|La|Le|Van|Von|O)[A-Z])[A-Z][a-z]+[A-Z][A-Za-z]+,\s+(?=[A-Z][a-z'’-]+\s+[A-Z])/, '');
   // Strip sentence-start prefixes that leak into critic names from text extraction
   // (e.g., "Although Dominic Cavendish", "For Chris Omaweng", "Only Andrzej Lukowski")
   cleaned = cleaned.replace(/^(?:Although|For|Only|When|While|Since|Because|But|And|With|From|Despite|Unlike|After|Before|During|Reviews?)\s+/i, '');
@@ -3544,7 +3557,7 @@ function extractCultureSauceInlineAuthor(text) {
  * byline, which can still find the real critic.
  */
 function extractAuthorFromHtml(html, text, options = {}) {
-  const name = extractAuthorFromHtmlUnfiltered(html, text, options);
+  const name = withPrintedCredit(extractAuthorFromHtmlUnfiltered(html, text, options), text, options);
   const excluded = options && Array.isArray(options.excludeNames)
     ? new Set(options.excludeNames.map(normalizeName).filter(Boolean))
     : null;
@@ -3556,6 +3569,25 @@ function extractAuthorFromHtml(html, text, options = {}) {
     return cleanAuthorName(bylineResult.name);
   }
   return null;
+}
+
+/**
+ * BRO-7745: outlets in byline-from-text's PRINTED_BYLINE_OVERRIDES print the
+ * critic in the article ("Review by Ruth Sealey", "Written by Roby for Theatre
+ * and Tonic") while their meta/JSON-LD/CMS author is the account that posted it.
+ * The record writer already applies that credit on write, but this extractor is
+ * what ingest and the collector read first, and it returned the poster. Same
+ * rule as the writer: a credit naming the same person keeps the fuller name.
+ */
+function withPrintedCredit(name, text, options = {}) {
+  if (!text || !options) return name;
+  let outletId = options.outletId || null;
+  if (!outletId && options.url) {
+    try { outletId = (require('./review-normalization').resolveOutletFromUrl(options.url) || {}).outletId || null; } catch { outletId = null; }
+  }
+  if (!outletId) return name;
+  const printed = require('./byline-from-text').printedBylineOverride(outletId, text, options.url, name || undefined);
+  return printed ? (cleanAuthorName(printed) || printed) : name;
 }
 
 // Outlets whose only author markup is a site-wide account (BRO-6518); see the
@@ -3602,8 +3634,16 @@ function extractTheRecsByline(html) {
   }
   return { signed, name: null };
 }
-function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
-  if (!html) return null;
+/**
+ * BRO-7780: the outlet-specific byline rules, split out so the shared page reader
+ * (page-byline.js) runs them first and honours their verdict. Returns undefined when no rule
+ * applies to this page, a name when one does, and null when the rule says the page names
+ * nobody (site-wide account hosts, a TheaterMania page with an empty or missing author area).
+ * A null must END the read: falling through hands the page to the JSON-LD/meta readers, which
+ * credit the account that posted it (BRO-6518, BRO-7745).
+ */
+function outletBylineOverride(html, text, options = {}) {
+  if (!html) return undefined;
 
   // Outlet override: theaterlife.com's author vcard is the site owner "Barry
   // Gordin" on every post, so the generic byline-CSS strategy mis-attributes
@@ -3662,9 +3702,46 @@ function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
   // else is left unresolved rather than guessed — a wrong default critic
   // previously misattributed 30/31 Plays International reviews (2026-08-03).
   // BRO-171.
+  //
+  // BRO-7745: that JSON-LD author is whoever POSTED the article (often editor
+  // David Gordon), not the critic. The visible byline
+  // <a id="article-author-tag" href="/authors/<slug>">Name</a> names the critic,
+  // so it wins; it is TheaterMania's own markup, so it is read without a url.
+  // A current-template page whose author area is empty names nobody, and the
+  // slug is only trusted on the old template that has no author area at all.
+  {
+    const visible = require('./byline-extraction').extractTheaterManiaAuthorTag(html);
+    if (visible && isValidAuthorName(visible)) return cleanAuthorName(visible);
+  }
   if (options && options.url && /(^|\/\/|\.)theatermania\.com/i.test(String(options.url))) {
-    const tm = resolveTheaterManiaByline(html);
-    if (tm) return tm;
+    // Any name inside the author area (a markup variant the strict tag regex
+    // misses) is the byline; an empty area names nobody, never the poster slug.
+    const area = /<section\b[^>]*\bclass=["'][^"']*\bauthor-area\b[^>]*>([\s\S]*?)<\/section>/i.exec(html);
+    if (area) {
+      const p = /<p\b[^>]*\bclass=["'][^"']*\bauthor-name\b[^>]*>([\s\S]*?)<\/p>/i.exec(area[1]);
+      const name = p ? require('./text-cleaning').decodeHtmlEntities(p[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim() : '';
+      return name && isValidAuthorName(name) ? cleanAuthorName(name) : null;
+    }
+    // BRO-7777: a page with no author area (old template, or a dead "Nothing Found" page) names
+    // nobody. The JSON-LD @id slug is the POSTING account (David Gordon on 13+ reviews,
+    // BRO-7745), so it is never read here: a printed "By Name" opening line, else null.
+    return theaterManiaPrintedByline(text);
+  }
+
+  return undefined;
+}
+
+/** "By First Last" as the article text's opening line (TheaterMania's old template printed it there). */
+function theaterManiaPrintedByline(text) {
+  const m = /^\s*By:?\s+([A-Z][A-Za-z.'’-]+(?:\s+[A-Z][A-Za-z.'’-]+){1,3})\s*(?:\n|$)/.exec(String(text || '').slice(0, 200));
+  return m && isValidAuthorName(m[1]) ? cleanAuthorName(m[1]) : null;
+}
+
+function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
+  if (!html) return null;
+  {
+    const override = outletBylineOverride(html, text, options);
+    if (override !== undefined) return override;
   }
 
   // An explicit "Reviewer: Name" line under the headline beats a house-account
@@ -3696,9 +3773,9 @@ function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
   }
 
   const jsonLdPatterns = [
-    /"author"\s*:\s*\[\s*\{[^}]*"name"\s*:\s*"([^"]+)"/i,
+    /"author"\s*:\s*\[\s*\{[^}]*?"name"\s*:\s*"([^"]+)"/i,
     /"author"\s*:\s*\{\s*"@type"\s*:\s*"Person"[^}]*"name"\s*:\s*"([^"]+)"/i,
-    /"author"\s*:\s*\{[^}]*"name"\s*:\s*"([^"]+)"/i,
+    /"author"\s*:\s*\{[^}]*?"name"\s*:\s*"([^"]+)"/i,
     /"author"\s*:\s*"([A-Z][a-z]+ [A-Z][a-z]+[^"]*)"/,
     /"author"\s*:\s*\[\s*"([A-Z][a-z]+ [A-Z][a-z]+[^"]*)"\s*\]/,
   ];
@@ -3710,17 +3787,18 @@ function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
   // Name tokens allow accents, apostrophes and hyphens (José Solís, Sean O'Connor,
   // Mary-Louise Parker); the old [A-Z][a-z]+ tokens dropped those bylines (BRO-733).
   const bylinePatterns = [
-    /class="[^"]*byline[^"]*"[^>]*>(?:<[^>]+>)*\s*(?:By\s+)?([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
-    /class="article-byline"[^>]*>\s*(?:By\s+)?([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
-    /itemprop="author"[^>]*>(?:<[^>]+>)*\s*([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
-    /rel="author"[^>]*>([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
+    /class="[^"]*byline[^"]*"[^>]*>(?:<[^>]+>)*\s*(?:By\s+)?([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* (?:[A-Z]\. )?[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
+    /class="article-byline"[^>]*>\s*(?:By\s+)?([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* (?:[A-Z]\. )?[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
+    /itemprop="author"[^>]*>(?:<[^>]+>)*\s*([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* (?:[A-Z]\. )?[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
+    /rel="author"[^>]*>([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* (?:[A-Z]\. )?[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
     // class="author" or class="foo author" — matches Theatrely, other CMS sites
     // Does NOT match class="author-area" or class="authors-box" (hyphen/plural after "author")
-    /class="(?:[^"]*\s)?author"[^>]*>(?:\s*<[^>]+>)*\s*(?:By\s+)?([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
+    // "Written by <a>Name</a>" (Squarespace) used to capture "Written by" itself (BRO-7745).
+    /class="(?:[^"]*\s)?author"[^>]*>(?:\s*<[^>]+>)*\s*(?:(?:Written\s+)?By\s+(?:<[^>]+>\s*)*)?(?!Written\s+by\b)([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* (?:[A-Z]\. )?[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
     // class="author-name" — matches WhatsOnStage, DCTheatreScene
-    /class="[^"]*author-name[^"]*"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
+    /class="[^"]*author-name[^"]*"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* (?:[A-Z]\. )?[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
     // WordPress author vcard microformat
-    /class="author vcard"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* [A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
+    /class="author vcard"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})* (?:[A-Z]\. )?[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*(?:\s+[A-Z](?:[a-zÀ-ÿ]+|['’][A-Za-zÀ-ÿ]{2,})(?:['’\-][A-Za-zÀ-ÿ]{2,})*)?)/i,
     // Talkin' Broadway: "<p>Theatre Review by <a href="mailto:...">Name</a> - Date</p>"
     // The anchor typically wraps a mailto: link; tolerate bio links and the
     // no-anchor variant. Name charset allows hyphens (Mary-Louise), ASCII and
@@ -3852,13 +3930,14 @@ function resolveSingleCriticOutletByline(outletId) {
  * @param {string} html live-fetched article HTML
  * @returns {string | null}
  */
-function resolveTheaterManiaByline(html) {
+function resolveTheaterManiaByline(html, critics) {
   const idMatch = /"author"\s*:\s*\{\s*"@id"\s*:\s*"([^"]+)#author"\s*\}/.exec(html);
   if (!idMatch) return null;
   const authorUrl = idMatch[1].replace(/\\\//g, '/');
   const slugMatch = /\/author\/([a-z0-9-]+)\/?$/i.exec(authorUrl);
   if (!slugMatch) return null;
-  return matchTheaterManiaSlug(slugMatch[1].toLowerCase(), loadTheaterManiaCritics());
+  // `critics`: roster override (tests); defaults to data/critic-registry.json.
+  return matchTheaterManiaSlug(slugMatch[1].toLowerCase(), Array.isArray(critics) ? critics : loadTheaterManiaCritics());
 }
 
 /**
@@ -4325,7 +4404,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   };
 }
 
-module.exports = { extractTheRecsByline, isSiteWideAuthorSource, isSiteWideAuthorAccount,
+module.exports = { outletBylineOverride, withPrintedCredit, extractTheRecsByline, isSiteWideAuthorSource, isSiteWideAuthorAccount,
   PROMO_BOOKING_COPY_PATTERNS,
   PROMO_BOOKING_COPY_STRONG_PATTERNS,
   PROMO_BOOKING_COPY_WEAK_PATTERNS,

@@ -21,6 +21,7 @@ const VERDICT_BY_EXIT = { 0: 'clean', 1: 'new-failures', 3: 'not-ready', 4: 'ski
 const READ_TAIL_BYTES = 256 * 1024;
 
 function gitOut(cwd, args) {
+  // git-net-timeout-ok: local rev-parse only; this file is copied alone into a pushed tree (land-preflight), so it cannot require git-proc-guard (BRO-7458)
   const r = spawnSync('git', args, { cwd, encoding: 'utf8', timeout: 10_000 });
   return r.status === 0 ? String(r.stdout || '').trim() : '';
 }

@@ -26,7 +26,7 @@ function run(date, extra = [], envExtra = {}) {
   let out;
   try {
     out = execFileSync('node', ['-r', STUB, SCRIPT, `--show=${SHOW}`, '--url=https://www.denverpost.com/x/spamalot-review/',
-      '--outlet=denver-post', `--data-dir=${root}`, ...extra], { encoding: 'utf8', stdio: 'pipe', env, timeout: 60000 });
+      '--outlet=denver-post', `--data-dir=${root}`, '--caller=test', ...extra], { encoding: 'utf8', stdio: 'pipe', env, timeout: 60000 });
   } catch (e) {
     out = `${e.stdout || ''}${e.stderr || ''}`;
   }

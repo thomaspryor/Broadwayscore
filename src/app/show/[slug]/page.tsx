@@ -8,7 +8,7 @@ import { cache, Suspense } from 'react';
 import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import { isCategoryEnabled } from '@/lib/markets';
 import { HIDDEN_LONDON_IDS } from '../../../../scripts/lib/page-name-sources';
-import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
+import { getShowBySlug, getRecentShowSlugs, getDataFreshness, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
 import { getTourReviewYears } from '@/lib/tour-display';
 import { isLiveTour } from '@/lib/tour-listing';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
@@ -49,8 +49,11 @@ import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoa
 import { getVideoReviews } from '@/lib/data-video-reviews';
 import { showsMarketBadge } from '../../../../scripts/lib/market-badge';
 import { StatusBadge, ReviewsSyncingBadge, FormatPill, ProductionPill, CategoryBadge, ScoreBadge, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
-import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS, TOP_CRITICS } from '@/config/scoring';
+import { reviewsRemainingForScore } from '@/config/score-buckets';
+import { computeShowTBD } from '@/lib/show-score-tbd';
+import { selectHotShows } from '../../../../scripts/lib/live-score/core';
+import { LiveScoreProvider, LiveStickyScoreHeader, LiveReviewCount, LiveCallResultStrip, LiveBreakdownBar, LiveReviewsList, LiveReviewsSectionIfAbsent, LiveHideWhenOverlay } from '@/components/show-page/LiveScoreOverlay';
+import { scoreGateArg, TOP_CRITICS } from '@/config/scoring';
 import { getBroadwayDuration, formatShowDate } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, getReviewAgeNote, formatShowDate as formatDate } from '@/lib/show-date-line';
 import TicketLink from '@/components/TicketLink';
@@ -63,6 +66,7 @@ import { pickCompactRelated } from '../../../../scripts/lib/related-shows-ab';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
 import CallTheScore, { CallResultStrip } from '@/components/show-page/CallTheScore';
+import { nyToday } from '@/lib/score-call';
 import { shouldShowReviewsSyncing } from '../../../../scripts/lib/show-page-provisional-state';
 import ShowTrustLines from '@/components/show-page/ShowTrustLines';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -125,12 +129,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // exist; scored shows must clear the per-market minimum-reviews threshold.
   // Without this, a previews show with 2 high-T1 reviews would show "Rave
   // Reviews (84/100)" in OG/Twitter/title while the page itself shows TBD.
-  const isCuratedHistorical = CURATED_HISTORICAL_SHOWS.has(show.id);
-  const isTBD = applyCoverageFloor(
-    !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistorical)
-      || show.status === 'previews' || show.status === 'upcoming',
-    { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
-  );
+  const isCuratedHistorical = scoreGateArg(show.id);
+  const isTBD = computeShowTBD(show);
   const synopsisSnippet = show.synopsis
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
@@ -505,12 +505,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const reviewCount = show.criticScore?.reviewCount || 0;
   const tier1Count = show.criticScore?.tier1Count || 0;
   const tier2Count = show.criticScore?.tier2Count || 0;
-  const isCuratedHistoricalShow = CURATED_HISTORICAL_SHOWS.has(show.id);
-  const showTBD = applyCoverageFloor(
-    !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
-      || show.status === 'previews' || show.status === 'upcoming',
-    { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
-  );
+  const isCuratedHistoricalShow = scoreGateArg(show.id);
+  const showTBD = computeShowTBD(show);
   // Computed here from the full review list (showForHero strips publishDate)
   // and shared by both heroes, so they always agree on whether it shows.
   const reviewAgeNote = showTBD ? null : getReviewAgeNote(show, show.criticScore?.reviews);
@@ -519,6 +515,12 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // and which fallback fills the Critics' Take slot when there's no consensus.
   // One server-side verdict for every place on the page (see review-expectation.ts).
   const noReviewsExpected = noCriticReviewsExpected(show, reviewCount);
+  // Opened in the last few days with no review yet: reviews are on their way, not "archived" (BRO-7857).
+  const justOpened = (() => {
+    const o = show.openingDate ? Date.parse(`${show.openingDate.slice(0, 10)}T00:00:00Z`) : NaN;
+    const now = Date.parse(`${nyToday()}T00:00:00Z`);
+    return Number.isFinite(o) && o <= now && now - o <= 3 * 86400000;
+  })();
   const reviewsSyncing = shouldShowReviewsSyncing(show);
   // Opening-night status, decided once on the server so ISR HTML and the clock agree (BRO-7376).
   const reviewArrival = getReviewArrival(show, reviewCount, !showTBD);
@@ -539,8 +541,12 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
   const totalAudienceCount = audienceBuzz ? getTotalAudienceReviews(audienceBuzz) : 0;
 
+  const liveReviewDates: Record<string, string[]> = { [show.id]: (show.criticScore?.reviews ?? []).map(r => r.publishDate).filter(Boolean) };
+  const liveEligible = (show.status === 'open' || show.status === 'previews')
+    && selectHotShows({ shows: [show], reviewDatesByShow: liveReviewDates, now: Date.now() }).length > 0;
+  const liveStaticRev = Date.parse(getDataFreshness().reviewsLastUpdated) || 0;
   return (
-    <>
+    <LiveScoreProvider showId={show.id} staticRev={liveStaticRev} staticReviewCount={reviewCount} eligible={liveEligible}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify({
@@ -555,7 +561,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
       />
 
       {/* Sticky Score Header */}
-      <StickyScoreHeader title={show.title} score={score} category={show.category} backHref={homeHref} />
+      <LiveStickyScoreHeader title={show.title} score={score} category={show.category} backHref={homeHref} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         <Breadcrumb items={isOpera ? [
@@ -681,11 +687,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 const reviewCount = show.criticScore?.reviewCount || 0;
                 const tier1Count = show.criticScore?.tier1Count || 0;
                 const tier2Count = show.criticScore?.tier2Count || 0;
-                const showTBD = applyCoverageFloor(
-                  !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
-                    || show.status === 'previews' || show.status === 'upcoming',
-                  { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
-                );
+                const showTBD = computeShowTBD(show);
                 const sentiment = score ? getSentimentLabel(score, show.category) : null;
 
                 // The page has already applied the coverage floor. Rechecking
@@ -838,11 +840,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             const reviewCount = show.criticScore?.reviewCount || 0;
             const tier1Count = show.criticScore?.tier1Count || 0;
             const tier2Count = show.criticScore?.tier2Count || 0;
-            const showTBD = applyCoverageFloor(
-              !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
-                || show.status === 'previews' || show.status === 'upcoming',
-              { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
-            );
+            const showTBD = computeShowTBD(show);
             if (showTBD || !show.criticScore?.reviews || show.criticScore.reviews.length === 0) return null;
             return (
               <ScoreBreakdownBar
@@ -994,16 +992,17 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             <header className="flex items-center justify-between gap-3 mb-4">
               <h2 id="critic-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
               <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">
-                {show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}
+                <LiveReviewCount staticCount={show.criticScore.reviewCount} />
               </span>
             </header>
 
-            <CallResultStrip show={{ id: show.id, category: show.category }} critic={show.criticScore.score} />
+            <LiveCallResultStrip show={{ id: show.id, category: show.category }} critic={show.criticScore.score} />
 
             {/* Breakdown bar — shown when redesign moves it out of the header card */}
             {show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
               <RedesignOn>
-                <ScoreBreakdownBar
+                <LiveBreakdownBar
+                  staticTBD={showTBD}
                   reviews={show.criticScore.reviews}
                   category={show.category}
                   className="sm:hidden mb-4"
@@ -1012,7 +1011,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             )}
 
             {/* Only the cards in the server markup go inline; the rest load from reviews.json (BRO-6278). */}
-            <ReviewsList
+            <LiveReviewsList
               reviews={reviewItems.slice(0, REVIEWS_INLINE_COUNT)}
               more={reviewItems.length > REVIEWS_INLINE_COUNT ? {
                 url: `/show/${show.slug}/reviews.json`,
@@ -1038,6 +1037,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           // A live tour with no reviews yet (BRO-4931): the page is indexed for
           // its schedule, so say plainly that reviews are on the way instead of
           // the "archived reviews" or "opening night" copy.
+          <LiveHideWhenOverlay>
           <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-tour-pending" data-testid="tour-reviews-coming-in">
             <header className="flex items-center justify-between gap-3 mb-3">
               <h2 id="critic-scorecard-heading-tour-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
@@ -1047,7 +1047,9 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               The CriticScore appears once enough local critics have reviewed the tour.
             </p>
           </section>
+          </LiveHideWhenOverlay>
         ) : isPreOpeningStatus(show.status) ? (
+          <LiveHideWhenOverlay>
           <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-pending">
             <header className="flex items-center justify-between gap-3 mb-3">
               <h2 id="critic-scorecard-heading-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
@@ -1066,9 +1068,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 <>Reviews coming after {isWestEnd ? 'press night' : 'opening night'}.</>
               )}
             </p>
-            <CallTheScore show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate }} />
+            <CallTheScore show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount: show.criticScore?.reviewCount ?? 0 }} />
           </section>
+          </LiveHideWhenOverlay>
         ) : (
+          <LiveHideWhenOverlay>
           <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-archived">
             <header className="flex items-center justify-between gap-3 mb-3">
               <h2 id="critic-scorecard-heading-archived" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
@@ -1076,10 +1080,17 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             <p className="text-gray-400 text-sm">
               {noReviewsExpected
                 ? 'We found no critic reviews for this event.'
-                : <>Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.</>}
+                : justOpened
+                  ? <>Reviews come out after {isWestEnd ? 'press night' : 'opening night'}. They&apos;ll appear here as critics publish.</>
+                  : <>Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.</>}
             </p>
+            {/* Opening day, status already "open", no review live yet: predictions stay open (BRO-7857). Renders nothing otherwise. */}
+            {!noReviewsExpected && <CallTheScore show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount: show.criticScore?.reviewCount ?? 0 }} />}
           </section>
+          </LiveHideWhenOverlay>
         )}
+
+        <LiveReviewsSectionIfAbsent category={show.category ?? ''} showId={show.id} showTiers={!isOpera} staticHasReviews={!!(show.criticScore && show.criticScore.reviews.length > 0)} />
 
         <RelatedShowsCompactAB shows={compactRelated} sourceShowId={show.id} />
 
@@ -1178,6 +1189,6 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
       {show.status !== 'closed' && (
         <ShowFollowBanner showId={show.id} showTitle={show.title} city={show.city} />
       )}
-    </>
+    </LiveScoreProvider>
   );
 }

@@ -23,6 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { GPT4O } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 
 const RESEARCH_DIR = path.join(__dirname, '..', 'data', 'theater-research');
 const METADATA_PATH = path.join(__dirname, '..', 'data', 'theater-metadata.json');
@@ -108,15 +109,15 @@ async function callGPT4o(theaterName, sourceText) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`,
         },
-        body: JSON.stringify({
+        body: JSON.stringify(openaiChatBody({
           model: GPT4O,
           temperature: 0.3,
-          max_tokens: 500,
+          maxTokens: 500,
           messages: [
             { role: 'system', content: SYSTEM_PROMPT },
             { role: 'user', content: userPrompt },
           ],
-        }),
+        })),
       });
 
       if (response.status === 429) {

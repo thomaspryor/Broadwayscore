@@ -88,12 +88,14 @@ function decide({ tier, triggers = [], approved = false, now = Date.now(), mode 
   if (tier === 'moderate') {
     return { action: 'warn', message: `Planning tier: moderate (${why}). Run /second-opinion on the approach first, then: node scripts/lib/review-gate.mjs --query=record-plan --reviewer=second-opinion --result=pass --session-id=$CLAUDE_CODE_SESSION_ID` };
   }
-  const how = 'Run the plan through /plan-review, record it with node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review --result=pass --session-id=$CLAUDE_CODE_SESSION_ID, and get the owner\'s yes (quote it as "OWNER-PLAN-APPROVED: <quote>" on the card and in the turn). A substantial new system is a product decision: "decide technical calls yourself" does not cover it.';
+  // BRO-7881: say exactly what lifts this gate (isApproved: a plan-review/owner-override verdict OR an owner's own
+  // OWNER-PLAN-APPROVED line), and keep the owner's yes as what it is: the owner's 2026-10-25 rule, asked once.
+  const how = 'What lifts this gate: a /plan-review verdict recorded with node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review --result=pass --session-id=$CLAUDE_CODE_SESSION_ID, or the owner\'s own message containing "OWNER-PLAN-APPROVED: <their words>". The owner\'s yes on a substantial new system is still their rule (owner decision 2026-10-25, BRO-6246): ask it once, as one DECISION NEEDED with the plan summary and your recommendation, never step by step.';
   const enforcing = mode === 'block' || (mode === 'auto' && now >= enforceAfter); // 'warn' never enforces
   if (mode === 'off') return { action: 'allow', message: '' };
   return enforcing
-    ? { action: 'block', message: `Planning tier: SUBSTANTIAL (${why}) with no plan-review verdict or owner approval. ${how}` }
-    : { action: 'warn', message: `Planning tier: SUBSTANTIAL (${why}), no plan-review verdict or owner approval yet. Advisory now; it blocks from ${new Date(enforceAfter).toISOString().slice(0, 10)}. ${how}` };
+    ? { action: 'block', message: `Planning tier: SUBSTANTIAL (${why}) with no plan-review verdict or OWNER-PLAN-APPROVED line yet. ${how}` }
+    : { action: 'warn', message: `Planning tier: SUBSTANTIAL (${why}), no plan-review verdict or OWNER-PLAN-APPROVED line yet. Advisory now; it blocks from ${new Date(enforceAfter).toISOString().slice(0, 10)}. ${how}` };
 }
 
 module.exports = { hasOwnerApproval, classify, decide, isApproved, secretsIn, ENFORCE_AFTER_MS, APPROVAL_TOKEN, VERDICT_TTL_MS, SUBSTANTIAL_NEW_FILES_IN_NEW_DIR };

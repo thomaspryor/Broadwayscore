@@ -29,6 +29,7 @@
 
 const fs = require('fs');
 const { execFileSync } = require('child_process');
+const { runGitOrThrow } = require('./lib/git-proc-guard.js'); // BRO-7458: orphaned helpers killed on timeout
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { LANDINGS_REL, parseLandings, classifyDirectPush, buildDirectPushAlert } = require('./lib/landings-ledger.js');
 
@@ -59,7 +60,8 @@ function parseArgs(argv) {
 // push is committed by land.yml after the push event fires.
 function fetchOriginLandings(repoDir) {
   try {
-    execFileSync('git', ['fetch', '--depth=1', '-q', 'origin', 'main'], { cwd: repoDir, stdio: 'ignore', timeout: 90_000 });
+    // depth1-fetch-ok: CI-only (check-direct-push-to-main.yml, land.yml), a throwaway checkout (BRO-7789)
+    runGitOrThrow(['fetch', '--depth=1', '-q', 'origin', 'main'], { cwd: repoDir, stdio: 'ignore', timeout: 90_000 });
   } catch {
     return null;
   }

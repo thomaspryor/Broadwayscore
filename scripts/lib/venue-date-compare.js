@@ -12,6 +12,7 @@
 
 const { canonicalVenue } = require('./title-match');
 const { venuesMatch } = require('./deduplication');
+const { findCanonical, getVenueAliases, parentBuildingOf, stagesOfBuilding } = require('./venue-aliases');
 
 const DATE_DELTA_DAYS = 30;
 
@@ -22,17 +23,72 @@ const DATE_DELTA_DAYS = 30;
 // 19 modules import for dedup where room-level collapse would merge distinct productions.
 const INSTITUTION_PARENTS = [{ show: /^bam\b/i, page: /^brooklyn academy of music$/i }];
 
-function venueVariantMatch(showVenue, pageVenue) {
+// "59E59 Theaters" (the complex, plural house word) vs "59E59 Theater A" (a room).
+const PLURAL_HOUSE_RE = /\s+theat(?:er|re)s$/i;
+const ROOM_SUFFIX_RE = /\s+(stage|studio|theat(?:er|re)|room)\s+(?:\d+|[a-z]|one|two|three|four|five|six)$/i;
+// "YMCA" and "Y" name the same building; fold before comparing houses.
+const foldY = v => String(v).replace(/\bymca\b/gi, 'Y');
+// A house half that is only a generic room word cannot identify a house.
+const GENERIC_HOUSE_RE = /^(?:the\s+)?(?:main\s+stage|stage|studio|black\s+box|(?:little\s+|main\s+)?theat(?:er|re))$/i;
+
+// "<show or room> at|@ <house>": the HOUSE is the last half. Returns it, or null when the
+// label has no "at"/"@" split.
+function houseHalf(v) {
+  const parts = foldY(v).split(/\s+(?:@|at)\s+/i).map(x => x.trim()).filter(Boolean);
+  return parts.length > 1 ? parts[parts.length - 1] : null;
+}
+
+// Market a show's category plays in, for same-name houses (Broadway's Lyric vs London's).
+function aliasMarket(category) { return category || 'broadway'; }
+
+function venueVariantMatch(showVenue, pageVenue, category) {
   if (!showVenue || !pageVenue) return false;
   if (venuesMatch(showVenue, pageVenue)) return true;
   // A one-word label ("Studio") would match any house's room of that name.
   if (showVenue.trim().split(/\s+/).length < 2) return false;
   if (INSTITUTION_PARENTS.some(p => p.show.test(showVenue.trim()) && p.page.test(pageVenue.trim()))) return true;
-  // "Classic Stage Company/Lynn F. Angelson Theater": company, then house (BRO-6470). Only the
-  // company half counts: a room label after the slash ("Vineyard Theatre/Main Stage") is generic.
-  const parts = [...String(pageVenue).split(/\s+@\s+/), String(pageVenue).split(/\s*\/\s*/)[0]].map(x => x.trim()).filter(Boolean);
-  const roomless = String(pageVenue).replace(/\s+(stage|studio|theat(?:er|re)|room)\s+(?:\d+|[a-z]|one|two|three|four|five|six)$/i, '').trim();
-  return [...parts, roomless].some(c => c !== pageVenue && venuesMatch(showVenue, c));
+  // A renamed house: Playbill prints the CURRENT name, shows.json the name of the era
+  // ("Foxwoods Theatre" vs "Lyric Theatre", spider-man-turn-off-the-dark-2011). Same region
+  // only (getVenueAliases skips the other market's entry), so London's Lyric never matches.
+  const market = aliasMarket(category);
+  const canon = getVenueAliases(findCanonical(pageVenue), market) ? findCanonical(pageVenue) : null;
+  if (canon) {
+    const entry = getVenueAliases(canon, market);
+    if (venuesMatch(showVenue, canon) || entry.aliases.some(a => venuesMatch(showVenue, a))) return true;
+  }
+  // One stage of a multi-stage building vs the building (or a sibling-less label for it):
+  // "Young Vic" vs "The Maria Theatre". Only when the page's stage belongs to the building the
+  // show names, so another house's studio never matches.
+  const stageParent = parentBuildingOf(pageVenue, market);
+  if (stageParent && stageParent.parentNames.some(n => venuesMatch(showVenue, n))) return true;
+  const showStageParent = parentBuildingOf(showVenue, market);
+  if (showStageParent && showStageParent.parentNames.some(n => venuesMatch(pageVenue, n))) return true;
+  // "Company/House": company, then house (BRO-6470). Only the company half counts: a room
+  // label after the slash ("Vineyard Theatre/Main Stage") is generic. "Room @ House" pages
+  // also match on either half, as before.
+  const atParts = String(pageVenue).split(/\s+@\s+/).map(x => x.trim()).filter(Boolean);
+  const slashHead = String(pageVenue).split(/\s*\/\s*/)[0].trim();
+  const roomless = String(pageVenue).replace(ROOM_SUFFIX_RE, '').trim();
+  const roomlessOk = !/^(?:the\s+)?(?:studio|main|stage|black\s+box|little)$/i.test(roomless);
+  if ([...atParts, slashHead, ...(roomlessOk ? [roomless] : [])].some(c => c !== pageVenue && venuesMatch(showVenue, c))) return true;
+  // Either side may be "<x> at|@ <house>": compare the HOUSE halves (or a whole name against
+  // the other side's house half). Never the leading half, and never a generic one, so
+  // "Main Stage at Theatre Row" does not match "Main Stage at The Flea".
+  const showHouse = houseHalf(showVenue);
+  const pageHouse = houseHalf(pageVenue);
+  const nonGeneric = h => h && h.split(/\s+/).length >= 2 && !GENERIC_HOUSE_RE.test(h);
+  if (showHouse || pageHouse) {
+    const sh = showHouse || foldY(showVenue);
+    const ph = pageHouse || foldY(pageVenue);
+    if (nonGeneric(sh) && nonGeneric(ph) && venuesMatch(sh, ph)) return true;
+  }
+  // The complex vs one of its rooms: a plural house word on the show side, a lettered or
+  // numbered room on the page side, same name otherwise.
+  if (PLURAL_HOUSE_RE.test(showVenue.trim()) && roomless !== String(pageVenue).trim()) {
+    const a = showVenue.trim().replace(PLURAL_HOUSE_RE, '').toLowerCase();
+    if (a.length >= 2 && a === roomless.toLowerCase()) return true;
+  }
+  return false;
 }
 
 function daysBetween(a, b) {
@@ -169,7 +225,7 @@ function compareShow(show, parsed, playbillUrl) {
     venueCheck = 'not-applicable';
   } else if (!parsed.titleParse?.venue) {
     venueCheck = 'unverified';
-  } else if (venueVariantMatch(show.venue, parsed.titleParse.venue)) {
+  } else if (venueVariantMatch(show.venue, parsed.titleParse.venue, show.category)) {
     venueCheck = 'match';
   } else {
     venueCheck = 'different';
@@ -279,6 +335,31 @@ function compareShow(show, parsed, playbillUrl) {
     });
   }
   return { mismatches, explainedByPriorRun, venueCheck };
+}
+
+/**
+ * Is the Playbill page a DIFFERENT PRODUCTION of this title, not a page with errors in it?
+ * (BRO-7737.) findPlaybillUrl falls back to the nearest same-titled page, so an announced or
+ * regional stub with no page of its own gets another run's: cinderella-the-musical-off-
+ * broadway-2027 drew the Broadway Theatre vault page, animal-farm-leeds-regional-2025 a 2022
+ * California run, noises-off-stephen-joseph-regional-2025 a 2023 Michigan run. Each failed
+ * the audit every night on venue/market/year "mismatches" that describe the wrong page.
+ *
+ * True only when the venue differs AND the page is clearly another run: its market
+ * contradicts the show's category, or its year or opening date is more than a year away.
+ * A venue that agrees keeps the normal path (a wrong date on the right page is a data
+ * defect), and a corroborating priorRun already routed those fields to explainedByPriorRun.
+ */
+const WRONG_PAGE_YEAR_GAP = 2;
+const WRONG_PAGE_DATE_DAYS = 365;
+function wrongProductionPage({ mismatches, venueCheck }) {
+  if (venueCheck !== 'different' || !mismatches || !mismatches.some(m => m.field === 'venue')) return null;
+  if (mismatches.some(m => m.field === 'market')) return 'market';
+  const yr = mismatches.find(m => m.field === 'opening-year');
+  if (yr && Math.abs(Number(yr.playbill) - Number(yr.shows)) >= WRONG_PAGE_YEAR_GAP) return 'year';
+  const od = mismatches.find(m => m.field === 'openingDate');
+  if (od && od.deltaDays > WRONG_PAGE_DATE_DAYS) return 'date';
+  return null;
 }
 
 /**
@@ -746,6 +827,7 @@ module.exports = {
   findCorroboratingPriorRun,
   compareShow,
   classifyComparison,
+  wrongProductionPage,
   orderProvisionalTargets,
   provisionalPriorityTier,
   deferredHighPriorityShows,

@@ -23,14 +23,14 @@ const { passesGenericTitleIdentity } = require('./generic-title-guard');
 const { urlLooksLikeReview } = require('./review-guards');
 const { cleanSearchTitle } = require('./title-normalization');
 const { splitLabelledTitle } = require('./market-routing');
-const { namedNonReviewReason } = require('./non-review-url-patterns');
+const { namedNonReviewReason, offTopicSectionReason } = require('./non-review-url-patterns');
 const { hasNonMetOperaUrlMarker, operaHouseForVenue, isUrlYearOutsideWindow } = require('./content-filters');
 const { withOperaCache } = require('./opera-discovery-cache');
 const { recordSbCall } = require('./provider-telemetry');
 const {
   buildWpSearchUrl, parseWpSearchResults, decideFreeSearch, isCurrentProductionPost, buildWpPostDateUrl,
   buildWpBoundedSearchUrl, parseWpPostsResults, isCleanFreeNoMatch, trustCleanFreeNoMatch,
-  wpRawCount, buildWpCanaryUrl, shouldAuditCleanNoMatch, urlDatedBeforeProduction,
+  wpRawCount, buildWpCanaryUrl, shouldAuditCleanNoMatch, urlDatedBeforeProduction, freeSearchAnchorDate,
   WP_BOUNDED_PAGE_SIZE, WP_SEARCH_PAGE_SIZE,
 } = require('./free-first-fetch');
 
@@ -1658,7 +1658,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
       // every unclear answer, still gets the paid render.
       const freeInfo = { wantCleanCheck: trustCleanFreeNoMatch(show), cleanNoMatch: false };
       const freeResults = config.freeWp && config.requiresJs
-        ? await tryFreeWpSearch(config, outletId, searchTitle, showTitle, options._deps, verbose, { openingDate, market, info: freeInfo })
+        ? await tryFreeWpSearch(config, outletId, searchTitle, showTitle, options._deps, verbose, { openingDate: freeSearchAnchorDate(openingDate, show), market, info: freeInfo })
         : null;
       const cleanNoMatch = !freeResults && freeInfo.wantCleanCheck && freeInfo.cleanNoMatch === true;
       // Audit sample: a small share of clean no-matches still pays for the render,
@@ -1700,11 +1700,13 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
 
     // Both parsers can find news mentioning reviews. Apply the write path's
     // named exclusions before returning candidates, including skipUrlFilter feeds.
-    results = results.filter(result => !namedNonReviewReason(result.url));
+    // BRO-7078: plus the writer's off-topic-section rule (film/TV sections), so
+    // those hits stop before they become no-byline _pending stubs.
+    results = results.filter(result => !namedNonReviewReason(result.url) && !offTopicSectionReason(result.url));
     // The free search called this a clean no-match and the audit render disagrees:
     // always logged, so a blind spot in the free search is visible in the job log.
     if (auditedCleanNoMatch) {
-      const missed = results.filter(r => !urlDatedBeforeProduction(r.url, openingDate));
+      const missed = results.filter(r => !urlDatedBeforeProduction(r.url, freeSearchAnchorDate(openingDate, show)));
       if (missed.length) console.warn(`FREE-WP-CLEAN-MISS [${config.name}] "${showTitle}": paid render found ${missed.length} result(s) the free search did not: ${missed.slice(0, 3).map(r => r.url).join(' ')}`);
     }
 

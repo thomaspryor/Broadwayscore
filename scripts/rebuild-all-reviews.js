@@ -48,7 +48,8 @@ function parseReviewFileText(raw) {
     throw e;
   }
 }
-const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
+const { decodeHtmlEntities } = require('./lib/text-cleaning');
+const { createFingerprintMemo } = require('./lib/fingerprint-memo');
 const { resolveRelativeReviewUrl, reverseCrossMarketExclusion } = require('./lib/recovery-exclusions');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, urlPathOppositeMarketIndicator, urlPathGuardTreatsShowAsUk, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { computeContentFingerprint } = require('./lib/content-quality');
@@ -67,6 +68,7 @@ const {
   isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
   phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
   isClippedAggregatorBlurb, startsAsFragment, stripLeadingParenAside, PAREN_ASIDE_START_RE,
+  combinedColumnQuoteLacksOwnShow,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
 const emitExcludedStage = createExcludedStageEmitter();
@@ -77,6 +79,7 @@ const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
 const { regionalVenueMismatch } = require('./lib/regional-venue-mismatch');
+const { otherFitsReviewYearBetter, showRunYears } = require('./lib/url-cross-production');
 const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isRefusedSubmissionUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -858,6 +861,14 @@ function selectBestExcerpt(data, showTitle) {
     // "prefer a cleaner source" behaviour while guaranteeing a fallback.
     // BRO-7675: cut a closed leading aside/photo credit ("(Courtesy ...) The
     // stage musical..."); an aside that is the whole candidate is deferred last.
+    // Layer 0a (before the soft-defer layers below, which would otherwise ship it as a fallback) (BRO-7977): a combined multi-show column's quote must name this show.
+    if (combinedColumnQuoteLacksOwnShow(excerpt, data, showById[showId])) {
+      if (!stats.combinedColumnQuoteRejected) stats.combinedColumnQuoteRejected = [];
+      stats.combinedColumnQuoteRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [combined-column] ${showId}: "${source}" does not name this show`);
+      return null;
+    }
+
     excerpt = trimToCompleteSentence(stripLeadingParenAside(excerpt));
     if (PAREN_ASIDE_START_RE.test(excerpt)) {
       deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'parenthetical-aside', source });
@@ -1401,6 +1412,10 @@ module.exports = {
 };
 if (require.main !== module) return;
 
+// BRO-7766: resolve lazy relative require()s once per calling module (~14s of a
+// full rebuild). Below the guard so importers of this file keep the stock require.
+require('./lib/require-memo').installRequireMemo();
+
 // BRO-7296 grandfather set: built here, below the require guard, so importing this file for its
 // helpers stays cheap (BRO-7523: building it at import cost ~7s and timed out the BRO-5428 tests).
 // Still runs before anything in the pipeline rewrites reviews.json.
@@ -1450,6 +1465,7 @@ const showClosingDateMap = {};
 const showStatusMap = {};
 const showTitleMap = {};
 const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway')
+const showTimeZoneMap = {};  // BRO-7890: showId -> IANA zone of the show (market, or a regional show's city), for publishDate days
 const showLongRunWE = new Set();  // WE shows with openingDate before 2015 — skip pre-opening guard
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 const skipCrossShowDupeIds = new Set(showsData.shows.filter(s => s._skipCrossShowDupe).map(s => s.id));
@@ -1464,6 +1480,7 @@ for (const s of showsData.shows) {
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
   showCategoryMap[s.id] = s.category || 'broadway';
+  showTimeZoneMap[s.id] = require('./lib/local-date').tzForShow(s);
   // Long-run WE shows: decades of valid reviews → 90-day pre-opening guard
   // shouldn't apply and CV shouldn't flag wide publishDate ranges. The
   // classifier lives in scripts/lib/long-runner-registry.js so content-verifier
@@ -1546,7 +1563,7 @@ const leaseGuard = require('./lib/opening-night-lane/lease-guard');
 // named in trust-model LANE_BYPASSED_GUARDS. Every gate below calls this one predicate, never re-derives it.
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { laneRowSource } = require('./lib/opening-night-lane/trust-model'); // BRO-6623
-if (!SHOW_FILTER) leaseGuard.syncIfMissing(); // a CI job that skipped the lease-sync action must not read "nothing leased" (2026-11-17); --show= runs are diagnostic and never write
+if (!SHOW_FILTER) leaseGuard.syncIfMissing(); // a CI job that skipped the lease-sync action must not read "nothing leased" (2026-11-17); --show= runs are diagnostic and skip every aggregate write (per-file normalization pre-passes, BRO-7684 excerpt containment included, still write that show's files; see the --show= note above)
 const leasedShowIds = new Set(leaseGuard.leasedShowIds());
 if (leasedShowIds.size) console.log(`Opening-night lease: not rebuilding ${[...leasedShowIds].join(', ')}; existing rows carried over`);
 const showDirs = listShowDirs(reviewTextsDir)
@@ -2400,6 +2417,48 @@ const crossShowFingerprints = new Map();
   stats.staleOutletSkippedFlagged = skippedFlaggedCount;
 }
 
+// BRO-7684: a bylineless, url-less aggregator quote that sits inside another
+// outlet's fullText (>=85% trigram containment) is that review filed under the
+// wrong outlet. Flag it here, no LLM, so it never counts as a second review
+// while it waits for the weekly detect-cross-outlet-duplicates.js. Runs on every
+// rebuild, so a quote whose sibling fullText arrives later is caught then too.
+// Persisted (same fields as the detector) so explainExclusion and every other
+// reader agree; the main loop's crossOutletDuplicate gate then excludes it.
+{
+  const { excerptContainmentFlags, applyExcerptContainmentFlag } = require('./lib/cross-outlet-group');
+  let excerptContainmentFlagged = 0;
+  let excerptContainmentHeld = 0;
+  for (const sid of showDirs) {
+    const sDir = path.join(reviewTextsDir, sid);
+    let entries;
+    try {
+      entries = fs.readdirSync(sDir).filter(x => isReviewTextFile(x)).map((file) => {
+        try { return { file, data: JSON.parse(fs.readFileSync(path.join(sDir, file), 'utf8')) }; } catch { return null; }
+      }).filter(Boolean);
+    } catch { continue; }
+    if (entries.length < 2) continue;
+    // Same probe the crossOutletDuplicate gate's cycle check uses: a keeper the rebuild would drop never absorbs a quote.
+    const isKeeperIncludable = (d, f) => isIncludableForRebuild(d, showById[sid], path.join(sDir, f), { ignoreCrossOutletDuplicate: true });
+    const { flags, held } = excerptContainmentFlags(entries, { isKeeperIncludable });
+    for (const h of held) {
+      excerptContainmentHeld++;
+      console.log(`  [EXCERPT CONTAINMENT HELD] ${sid}/${h.primaryFile} holds quotes credited to ${h.outlets.length} outlets (${h.files.join(', ')})${h.alreadyFlagged.length ? `; already flagged: ${h.alreadyFlagged.join(', ')}` : ''} — roundup-shaped, new quotes not flagged; check isRoundupArticle`);
+    }
+    for (const flag of flags) {
+      const entry = entries.find(e => e.file === flag.file);
+      const r = safeWriteReview(path.join(sDir, flag.file), applyExcerptContainmentFlag({ ...entry.data }, sid, flag));
+      if (r && r.wrote !== false) {
+        excerptContainmentFlagged++;
+        console.log(`  [EXCERPT CONTAINMENT] ${sid}/${flag.file}: ${flag.containment}% inside ${flag.primaryFile} — flagged crossOutletDuplicate`);
+      }
+    }
+  }
+  if (excerptContainmentFlagged > 0) console.log(`Excerpt-containment pre-pass: flagged ${excerptContainmentFlagged} bylineless quote(s) as cross-outlet copies`);
+  if (excerptContainmentHeld > 0) console.log(`Excerpt-containment pre-pass: held ${excerptContainmentHeld} roundup-shaped keeper group(s) (not flagged)`);
+  stats.excerptContainmentFlagged = excerptContainmentFlagged;
+  stats.excerptContainmentHeld = excerptContainmentHeld;
+}
+
 // URL-domain mismatch guard: detect reviews where URL domain doesn't match outlet's registered domain.
 // Audit-only — logs mismatches but does NOT write wrongUrl to files. The wrongUrl flag should be
 // applied by a dedicated script (e.g., audit-wrong-urls.js) after human review, not during rebuild.
@@ -2622,11 +2681,15 @@ const crossShowFingerprints = new Map();
   if (cvPromoted > 0) console.log(`  CV pre-pass: promoted ${cvPromoted} contentVerification flags`);
 }
 
+const { wholeShowSkipReason } = require('./lib/scored-absent');
+const fpMemo = createFingerprintMemo();
 showDirs.forEach(showId => {
   // Skip Broadway shows in previews — they haven't opened yet, all reviews are wrong-production
   // Off-Broadway and West End shows commonly get reviewed during previews, so don't skip them
   const showCat = showCategoryMap[showId] || 'broadway';
-  if (showStatusMap[showId] === 'previews' && showCat === 'broadway') {
+  // BRO-7945: one decision shared with the scored-absent guard (wholeShowSkipReason), so the guard can name the skip.
+  const wholeShowSkip = wholeShowSkipReason({ status: showStatusMap[showId], category: showCategoryMap[showId] });
+  if (wholeShowSkip === 'skippedPreviewsShows') {
     logExclusion("skippedPreviewsShows", showId, "-", null, { reason: "Broadway show in previews — not yet opened" });
     stats.skippedPreviewsShows = (stats.skippedPreviewsShows || 0) + 1;
     return;
@@ -2634,7 +2697,7 @@ showDirs.forEach(showId => {
 
   // Skip shows in "upcoming" status across all markets — no valid reviews can exist yet
   // BUT: still promote contentVerification flags on upcoming shows so flags are ready when show opens
-  if (showStatusMap[showId] === 'upcoming') {
+  if (wholeShowSkip === 'skippedUpcomingShows') {
     const upcomingDir = path.join(reviewTextsDir, showId);
     try {
       const upcomingFiles = fs.readdirSync(upcomingDir).filter(f => f.endsWith('.json'));
@@ -4097,10 +4160,16 @@ showDirs.forEach(showId => {
             if (m) reviewYear = parseInt(m[1]);
           }
           if (reviewYear && myYear) {
-            const myDist = Math.abs(myYear - reviewYear);
+            // BRO-7815: a long run owns the reviews written while it played
+            // (Broadway Beautiful 2014-2019 keeps a 2018 revisit; the 2015 West
+            // End transfer does not). Opening-year distance breaks ties.
+            // A combined review or roundup legitimately sits under several
+            // shows; it keeps the opening-year rule, not the run comparison.
+            const multiShowArticle = data.isCombinedReview === true || data.isRoundupArticle === true;
+            const myFit = { openYear: myYear, run: multiShowArticle ? null : showRunYears(showById[showId]) };
             for (const other of allCopies) {
               if (other.showId === showId || !other.showYear) continue;
-              if (Math.abs(other.showYear - reviewYear) < myDist) {
+              if (otherFitsReviewYearBetter(reviewYear, myFit, { openYear: other.showYear, run: multiShowArticle ? null : showRunYears(showById[other.showId]) })) {
                 if (shouldSkipCrossShowUrlFlag(data)) continue; // [GUARD:CROSS-SHOW-URL-DATED] honors manual-clear + CV-verified-correct
                 console.log(`  [CROSS-SHOW URL] ${showId}/${file}: URL year ${reviewYear} closer to ${other.showId} (${other.showYear}) than ${showId} (${myYear})`);
                 logExclusion("skippedCrossShowUrl", showId, file, data);
@@ -4675,7 +4744,14 @@ showDirs.forEach(showId => {
             priorRuns: preWindowPriorRuns(showId),
             tourLegs: showById[showId]?.tourLegs,
           });
-          if (preWindow.exclude) {
+          // BRO-7945: the earlier pre-opening guard (above) already let a review through when contentVerification
+          // affirms THIS production ([PRE-OPENING-CV-OVERRIDE]); this second copy of the same predicate had no such
+          // carve-out and dropped it anyway (a-christmas-story timeout--david-cote). Same decision, one source.
+          const cvAffirmsPreWindow = preWindow.exclude && (() => {
+            const h = rebuildPreWindowHold({ review: data, show: showById[showId] });
+            return h.hold && h.corrob.signals.includes('cv-affirms-production');
+          })();
+          if (preWindow.exclude && !cvAffirmsPreWindow) {
             console.log(`  [DATE GUARD] ${showId}/${file}: published ${data.publishDate}, show opens ${showDateMap[showId].toISOString().split('T')[0]} (${preWindow.daysBefore}d before, threshold ${preWindow.threshold}d)`);
             if (!stats.suspectedWrongProduction) stats.suspectedWrongProduction = [];
             stats.suspectedWrongProduction.push({
@@ -5089,9 +5165,9 @@ showDirs.forEach(showId => {
       // fingerprint and the other show's identical, equally-legitimate copy is silently
       // dropped as "cross-show contamination" (2026-07-22, rebuild-regression.json).
       if (data.fullText && data.fullText.length > 200 && !skipCrossShowDupeIds.has(showId) && !data.allowCrossShowDuplicate) {
-        const cleanedForFp = (cleanText(data.fullText) || '').toLowerCase().replace(/\s+/g, '');
-        if (cleanedForFp.length > 200) {
-          const fp = crypto.createHash('sha256').update(cleanedForFp).digest('hex').substring(0, 16);
+        // BRO-7744: memoized across runs (scripts/lib/fingerprint-memo.js); null = too short to fingerprint.
+        const fp = fpMemo.fingerprint(data.fullText);
+        if (fp) {
           const existing = crossShowFingerprints.get(fp);
           if (existing && existing.showId !== showId && !skipCrossShowDupeIds.has(existing.showId)
             && !isJointCombinedCopy(data, showId, existing.copies || [existing], showById[showId])) { // BRO-4305: joint multi-show article copies all count
@@ -5799,8 +5875,9 @@ showDirs.forEach(showId => {
           return display;
         })(),
         // BRO-3366: a winner with no URL inherits its duplicateOf loser's URL.
-        url: data.url || inheritUrlFromDuplicateLosers(file, data, allJsonFiles, _loadDupCycleSibling) || null,
-        publishDate: normalizePublishDate(data.publishDate) || (() => {
+        // BRO-7841: an outlet-pulled review (url 404s) keeps its text and score but publishes no link.
+        url: require('./lib/review-url-dead').publishedUrl(data, inheritUrlFromDuplicateLosers(file, data, allJsonFiles, _loadDupCycleSibling)),
+        publishDate: normalizePublishDate(data.publishDate, { timeZone: showTimeZoneMap[showId], url: data.url }) || (() => {
           // Backfill when source file has no publishDate (BRO-4252: article-id URL digits lose to a later text date)
           const urlDate = resolveBackfillPublishDate(data);
           if (urlDate && urlDate.date) {
@@ -5944,6 +6021,8 @@ showDirs.forEach(showId => {
     }
   });
 });
+// A --show= run sees one show's reviews; saving would prune the memo to that subset.
+if (!SHOW_FILTER && fpMemo.save()) console.log(`  [fp-memo] cross-show fingerprints: ${fpMemo.stats.hits} reused, ${fpMemo.stats.misses} computed (${fpMemo.cachePath})`);
 
 // BRO-925: flush every show's buffered exclusions (populated by logExclusion
 // above) to its own data/audit/rebuild-exclusions-{showId}.json. Runs before
@@ -7786,3 +7865,14 @@ if (awaitingRefetchFlagSkipped > 0) {
   console.log(`\n#483 invariant: withheld ${awaitingRefetchFlagSkipped} exclusion-flag write(s) on records awaiting URL-correction refetch`);
 }
 console.log(`\nReviews saved to: ${reviewsJsonPath}`);
+
+// BRO-7945 class guard (advisory, never fails the rebuild): scored+includable files whose outlet is absent from
+// the reviews.json just written must each carry a recorded drop reason in this run's per-show exclusion ledger.
+// Full rebuilds only (a --show= run judges every show against a partial reviews.json). Log-only: the summary and
+// SILENT rows go to this job's log; no committed artifact, so no unaudited data/audit/ path joins the push.
+if (!SHOW_FILTER && process.env.SCORED_ABSENT_AUDIT_DISABLED !== 'true') {
+  // This run's own exclusions and corpus, so the audit never reads a stale ledger or another checkout.
+  const ledgers = new Map(Object.entries(stats.byShow).map(([sid, st]) => [sid, new Map((st.exclusions || []).map((e) => [e.file, e.reason]))]));
+  try { require('./audit-scored-absent').run({ argv: ['--grace-hours=48'], ledgers, textsDir: reviewTextsDir }); }
+  catch (e) { process.stderr.write(`[scored-absent] advisory audit failed: ${e.message}\n`); }
+}

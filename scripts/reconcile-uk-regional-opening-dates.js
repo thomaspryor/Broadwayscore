@@ -16,23 +16,20 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const root = path.join(__dirname, '..');
-const { reconcileOpeningDate } = require('./lib/uk-regional-opening-date');
+const { reconcileOpeningDate, regionalReconcileOptions, distinctOutletDates } = require('./lib/uk-regional-opening-date');
 const { isUkRegionalVenue } = require('./lib/market-label');
 const { isLocalOnlyShow } = require('./lib/local-market');
 
-// BRO-6697: theatreinchicago rows are localOnly regional rows seeded the same way
-// ('tic-first-review'); they stay in scope after a move re-stamps the source.
-const isTicRow = (s) => s.discoverySource === 'theatreinchicago' || s.discoverySource === 'theatreindc' || s.discoverySource === 'theatreinla';
-
 function plan(shows, reviews) {
   const by = {};
-  for (const r of reviews) (by[r.showId] = by[r.showId] || []).push(r.publishDate);
+  for (const r of reviews) (by[r.showId] = by[r.showId] || []).push(r);
   const moves = []; const manual = [];
   for (const s of shows) {
-    if (s.category !== 'regional' || !(isTicRow(s) || (isUkRegionalVenue(s.venue) && !isLocalOnlyShow(s)))) continue;
-    // A human-pinned date is restored by the shows write guard; never count it as moved.
-    if (s.humanCorrectedOpeningDate) continue;
-    const d = reconcileOpeningDate(s, by[s.id], { minReviews: isTicRow(s) ? 2 : 1 });
+    const options = regionalReconcileOptions(s, isUkRegionalVenue(s.venue), isLocalOnlyShow(s));
+    if (!options) continue;
+    const rows = by[s.id] || [];
+    const dates = s.discoverySource === 'bww-local-reviews' ? distinctOutletDates(rows) : rows.map(r => r.publishDate);
+    const d = reconcileOpeningDate(s, dates, options);
     if (d.action === 'move') moves.push({ show: s, ...d });
     else if (d.action === 'manual') manual.push({ show: s, ...d });
   }

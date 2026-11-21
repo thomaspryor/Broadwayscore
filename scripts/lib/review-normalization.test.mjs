@@ -158,3 +158,76 @@ test('BWW headline fragment starting with "Is" is junk, not a missing outlet (BR
   assert.equal(isJunkOutlet('Theater Pizzazz'), false);
   assert.equal(isJunkOutlet('Island Packet'), false);
 });
+
+// BRO-7769: a url swap onto a slot must not accept an article that never names the show.
+const { mergeReviews } = require('./review-normalization.js');
+const GT_TITLE = 'The Good Thief';
+const goodThiefText = (n) => `${'The Good Thief opens at the theater and the cast delivers. '.repeat(n)}`;
+const unrelatedText = 'Zach Grenier joins the cast of a new play this season, the company announced on Tuesday. '.repeat(12);
+const slot = () => ({
+  outlet: 'TheaterMania', outletId: 'theatermania', criticName: 'Linda Buchwald',
+  url: 'https://www.theatermania.com/news/irish-rep-season-casting_1850000/', fullText: '',
+});
+
+test('BRO-7769: same-outlet url swap to an article that never mentions the show is refused', () => {
+  const incoming = { ...slot(), url: 'https://www.theatermania.com/news/unknown-caller_1859996/', fullText: unrelatedText };
+  const merged = mergeReviews(slot(), incoming, {}, { show: { title: GT_TITLE }, showId: 'the-good-thief-off-broadway-2026', script: 'test' });
+  assert.equal(merged.url, slot().url);
+  assert.ok(!merged.fullText || !merged.fullText.includes('Zach Grenier'));
+});
+
+test('BRO-7769: url swap to an article that names the show still goes through', () => {
+  const incoming = { ...slot(), url: 'https://www.theatermania.com/off-broadway/reviews/the-good-thief_1861000/', fullText: goodThiefText(20) };
+  const merged = mergeReviews(slot(), incoming, {}, { show: { title: GT_TITLE }, showId: 'the-good-thief-off-broadway-2026', script: 'test' });
+  assert.equal(merged.url, incoming.url);
+});
+
+test('BRO-7769: guard fails open without a show title or with short incoming text', () => {
+  const unrelated = { ...slot(), url: 'https://www.theatermania.com/news/unknown-caller_1859996/', fullText: unrelatedText };
+  assert.equal(mergeReviews(slot(), unrelated, {}, { script: 'test' }).url, unrelated.url);
+  const short = { ...unrelated, fullText: 'Paywalled teaser.' };
+  assert.equal(mergeReviews(slot(), short, {}, { show: { title: GT_TITLE }, script: 'test' }).url, short.url);
+});
+
+test('BRO-7769: refused swap also refuses the unrelated article score, date and byline', () => {
+  const ex = { ...slot(), criticName: 'Unknown' };
+  const incoming = { ...ex, url: 'https://www.theatermania.com/news/unknown-caller_1859996/', fullText: unrelatedText, originalScore: 'B+', publishDate: '2026-01-05', criticName: 'Zed Q' };
+  const m = mergeReviews(ex, incoming, {}, { show: { title: GT_TITLE }, script: 'test' });
+  assert.equal(m.url, ex.url);
+  assert.ok(!m.originalScore && !m.publishDate);
+  assert.equal(m.criticName, 'Unknown');
+});
+
+test('BRO-7769: entity-encoded title and short titles do not trigger a false refusal', () => {
+  const enc = 'Hell&#8217;s Kitchen opens tonight and the cast delivers. '.repeat(15);
+  const a = { ...slot(), url: 'https://www.theatermania.com/news/some-headline_1_/', fullText: enc };
+  assert.equal(mergeReviews(slot(), a, {}, { show: { title: "Hell's Kitchen" }, script: 'test' }).url, a.url);
+  const b = { ...a, fullText: unrelatedText };
+  assert.equal(mergeReviews(slot(), b, {}, { show: { title: 'SIX' }, script: 'test' }).url, b.url);
+});
+
+test('BRO-7769: refusal is idempotent and text just under the cutoff fails open', () => {
+  const incoming = { ...slot(), url: 'https://www.theatermania.com/news/unknown-caller_1859996/', fullText: unrelatedText };
+  const ctx = { show: { title: GT_TITLE }, script: 'test' };
+  const once = mergeReviews(slot(), incoming, {}, ctx);
+  const twice = mergeReviews(once, incoming, {}, ctx);
+  assert.equal(twice.url, once.url);
+  assert.equal(twice.fullText || '', once.fullText || '');
+  const under = { ...incoming, fullText: 'Zach Grenier joins a cast. '.repeat(20).slice(0, 590) };
+  assert.equal(mergeReviews(slot(), under, {}, ctx).url, under.url);
+});
+
+test('BRO-7769: guard fails open with an empty show title or no incoming fullText', () => {
+  const noText = { ...slot(), url: 'https://www.theatermania.com/news/unknown-caller_1859996/' };
+  delete noText.fullText;
+  assert.equal(mergeReviews(slot(), noText, {}, { show: { title: GT_TITLE }, script: 'test' }).url, noText.url);
+  const withText = { ...noText, fullText: unrelatedText };
+  assert.equal(mergeReviews(slot(), withText, {}, { show: { title: '' }, script: 'test' }).url, withText.url);
+  assert.equal(mergeReviews(slot(), withText, {}, { show: {}, script: 'test' }).url, withText.url);
+});
+
+test('BRO-7769: a substantive existing review keeps its url-swap behaviour (guard only protects weak slots)', () => {
+  const ex = { ...slot(), fullText: 'A real review of the production. '.repeat(80) };
+  const incoming = { ...ex, url: 'https://www.theatermania.com/news/other_1859996/', fullText: unrelatedText };
+  assert.equal(mergeReviews(ex, incoming, {}, { show: { title: GT_TITLE }, script: 'test' }).url, incoming.url);
+});

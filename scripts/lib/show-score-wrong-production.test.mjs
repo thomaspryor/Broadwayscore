@@ -134,3 +134,79 @@ test('a lapsed record is reported as awaiting re-check; a fresh one is not', asy
   u._productionMismatchAt.x = 'garbage';
   assert.equal(isProductionMismatch(u, 'x', WRONG, t0), false);
 });
+
+// BRO-7655: the extractor recorded a wrong-production page in show-score.json
+// but left the mapping, so the strict URL audit failed until a hand purge.
+const { unmapRecordedWrongProduction } = require('./show-score-wrong-production.js');
+
+function recordedFixture() {
+  return {
+    urlData: { shows: { [show.id]: WRONG, 'other-show-2026': 'https://www.show-score.com/broadway-shows/other' } },
+    showScoreData: { _meta: { wrongProduction: {
+      [show.id]: { url: `${WRONG}/`, reason: 'wrong-production page: dates' },
+      'gone-show-2020': { url: null, reason: 'unmapped' },
+    } }, shows: {} },
+  };
+}
+
+test('unmapRecordedWrongProduction drops the rejected mapping and records the mismatch', () => {
+  const f = recordedFixture();
+  const healed = unmapRecordedWrongProduction({ ...f, showsById });
+  assert.deepEqual(healed.map((h) => h.showId), [show.id]);
+  assert.equal(f.urlData.shows[show.id], undefined);
+  assert.equal(f.urlData.shows['other-show-2026'], 'https://www.show-score.com/broadway-shows/other');
+  assert.equal(isProductionMismatch(f.urlData, show.id, WRONG), true, 'writers must not map it back');
+  // The strict audit's predicate now finds nothing for it.
+  assert.deepEqual(findWrongProductionMappings({ urlMap: f.urlData.shows, showScoreData: f.showScoreData, showsById }), []);
+});
+
+test('unmapRecordedWrongProduction leaves a show remapped to a different page alone', () => {
+  const f = recordedFixture();
+  f.urlData.shows[show.id] = 'https://www.show-score.com/off-broadway-shows/safe-house-theatre-row';
+  assert.deepEqual(unmapRecordedWrongProduction({ ...f, showsById }), []);
+  assert.equal(f.urlData.shows[show.id], 'https://www.show-score.com/off-broadway-shows/safe-house-theatre-row');
+  assert.equal(f.urlData._productionMismatch, undefined);
+});
+
+test('unmapRecordedWrongProduction skips a page named for this production\'s venue (exemption)', () => {
+  const venueUrl = 'https://www.show-score.com/off-broadway-shows/safe-house-theatre-row';
+  const f = { urlData: { shows: { [show.id]: venueUrl } }, showScoreData: { _meta: { wrongProduction: { [show.id]: { url: venueUrl, reason: 'r' } } } } };
+  assert.deepEqual(unmapRecordedWrongProduction({ ...f, showsById }), []);
+  assert.equal(f.urlData.shows[show.id], venueUrl);
+});
+
+test('extractor wiring: healUrlMap rewrites show-score-urls.json from the run\'s findings', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { healUrlMap } = require('../extract-show-score-reviews.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-7655-'));
+  const file = path.join(dir, 'show-score-urls.json');
+  const f = recordedFixture();
+  fs.writeFileSync(file, JSON.stringify(f.urlData));
+  const healed = healUrlMap(f.showScoreData, { file, byId: showsById });
+  assert.deepEqual(healed.map((h) => h.showId), [show.id]);
+  const written = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(written.shows[show.id], undefined);
+  assert.ok(written._productionMismatch[show.id]);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('extractor wiring: main() heals the url map right after writing show-score.json (not in --check)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../extract-show-score-reviews.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main()'));
+  const write = main.indexOf('fs.writeFileSync(outputPath');
+  const heal = main.indexOf('healUrlMap(showScoreData)');
+  assert.ok(write > 0 && heal > write, 'healUrlMap(showScoreData) must follow the show-score.json write in main()');
+  const checkBranch = main.indexOf('if (CHECK_MODE)');
+  const elseBranch = main.indexOf('} else {', checkBranch);
+  assert.ok(heal > elseBranch, 'the heal must sit in the non --check branch (--check is read-only)');
+});
+
+test('unmapRecordedWrongProduction heals a mapping even when Show Score redirects it (miles-for-mary shape: archive canonical differs from the mapped URL)', () => {
+  const f = recordedFixture();
+  f.showScoreData._meta.wrongProduction[show.id].archiveCanonical = 'https://www.show-score.com/off-broadway-shows/some-redirect-target';
+  assert.deepEqual(unmapRecordedWrongProduction({ ...f, showsById }).map((h) => h.showId), [show.id]);
+  assert.equal(f.urlData.shows[show.id], undefined);
+});

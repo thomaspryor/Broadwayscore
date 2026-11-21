@@ -97,6 +97,8 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         env:
           STORE_PUSH_OUTCOME: ${{ steps.store_push.outcome }}
+          # Kill switch for the owner proposal email (BRO-7847): repo variable
+          FEEDBACK_PROPOSAL_DISABLED: ${{ vars.FEEDBACK_PROPOSAL_DISABLED }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -256,6 +258,44 @@ jobs:
                 );
                 recordIssue(submission, issue.data.number);
                 recordLedgerIssue(submission, issue.data.number);
+
+                // BRO-7847: a needs-review issue nobody auto-fixes gets the
+                // owner proposal email via the auto-fix workflow's planner
+                // step (GITHUB_TOKEN events never trigger issues.opened, so
+                // the dispatch is explicit). The reader store was pushed
+                // before this step, same as the bug-diagnosis dispatch below.
+                // BRO-7919: asked-for show is already live: close with a comment
+                // (the reader reply draft is already queued to the owner) and
+                // skip the proposal flow, which would otherwise leave this open
+                // and later file a "root cause" card.
+                if (isContentRequest && issueText.isAlreadyInCatalog(contentActions)) {
+                  try {
+                    await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.data.number, body: issueText.buildAlreadyInCatalogComment(contentActions) });
+                    await github.rest.issues.update({ owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.data.number, state: 'closed', state_reason: 'completed' });
+                    console.log(`  Closed #${issue.data.number}: already in catalog`);
+                    continue;
+                  } catch (err) {
+                    // Close failed: fall through so the issue still gets the proposal flow.
+                    console.log(`  Failed to close already-in-catalog #${issue.data.number}: ${err.message}`);
+                  }
+                }
+                if (!willAutoDispatch && String(process.env.FEEDBACK_PROPOSAL_DISABLED || '').toLowerCase() !== 'true' && process.env.STORE_PUSH_OUTCOME !== 'failure') {
+                  try {
+                    await github.rest.actions.createWorkflowDispatch({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      workflow_id: 'auto-fix-feedback-bug.yml',
+                      ref: 'main',
+                      inputs: { issue_number: String(issue.data.number) },
+                    });
+                    console.log(`  Dispatched proposal run for needs-review #${issue.data.number}`);
+                    recordDispatch(submission, { workflow: 'auto-fix-feedback-bug.yml', kind: 'proposal', inputs: { issue_number: String(issue.data.number) } }, true, null);
+                  } catch (err) {
+                    console.log(`  Failed to dispatch proposal run for #${issue.data.number}: ${err.message}`);
+                    recordDispatch(submission, { workflow: 'auto-fix-feedback-bug.yml', kind: 'proposal', inputs: { issue_number: String(issue.data.number) } }, false, err.message);
+                  }
+                  await new Promise((r) => setTimeout(r, 10000));
+                }
 
                 // Dispatch each routable action. One failed dispatch must not
                 // sink the others or the issue itself — the issue (with its
@@ -509,6 +549,17 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/verify-feedback-requests-live.js
+
+      # Feedback #1192: a parked (needs-review) request was consumed by nothing.
+      # Each one now gets one dispatchable Linear card, then the `carded` label.
+      # Advisory (CLAUDE.md §19); at most 5 cards per run.
+      - name: File work cards for parked reader requests
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/card-parked-feedback.js
 
       # BRO-7693: for each feedback bug closed as completed (launch cutoff in
       # the script), email the owner ONE "it's fixed" draft reply to send by

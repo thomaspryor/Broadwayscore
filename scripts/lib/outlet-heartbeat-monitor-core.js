@@ -61,15 +61,15 @@ function evaluateOutletHeartbeat(opts = {}) {
     if (baselineDoc && Array.isArray(baselineDoc.keys)) baselineKeys = activeBaselineKeys(baselineDoc, nowMs);
   } catch { /* no baseline yet — everything is "new" */ }
   const expiryNote = baselineDoc ? describeExpiry(baselineDoc, nowMs, { renewCommand: '`node scripts/monitor-outlet-recency.js --renew-baseline`' }) : '';
-  const { actionable, baselinedCount } = getActionableOutletRows(rows, state, baselineKeys);
+  const { actionable, baselinedCount, dormantCount } = getActionableOutletRows(rows, state, baselineKeys);
   if (actionable.length === 0) {
-    return { name, status: 'pass', message: `${rows.length} outlet×market rows checked, none NEW silent 2+ consecutive weeks (${baselinedCount} known/baselined, ${formatAge(age)} ago)${expiryNote}` };
+    return { name, status: 'pass', message: `${rows.length} outlet×market rows checked, none NEW silent 2+ consecutive weeks (${baselinedCount} known/baselined, ${dormantCount} dormant 1y+, ${formatAge(age)} ago)${expiryNote}` };
   }
   const worst = actionable[0];
   return {
     name,
     status: 'warn',
-    message: `${actionable.length} NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold; ${baselinedCount} known/baselined)${expiryNote}`,
+    message: `${actionable.length} NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold; ${baselinedCount} known/baselined, ${dormantCount} dormant 1y+)${expiryNote}`,
     hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class). `--write-baseline` acks the ENTIRE current red backlog at once (not just the worst offender) — only run it once every currently-red outlet has been triaged. Acks expire after 90 days; --write-baseline keeps existing acks\' dates, `--renew-baseline=<outlet>::<market>` re-acks one pair, bare `--renew-baseline` everything listed (BRO-3364).',
     actionable,
   };

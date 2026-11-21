@@ -57,13 +57,57 @@ function messageNamesRef(message, ref) {
 // redispatch retries are exhausted (or a permanent guard refusal), with the
 // job process already dead, and nothing but a NEW launch clears it — exactly
 // the "owner lands the dead job's branch by hand" case this ack exists for
-// (linear:BRO-3866, 2026-09-20). job-abandoned is deliberately NOT here: the
-// ledger defines it as not dead-like (a lease-held abandon means a DIFFERENT
-// job for the task is healthy), so there is no dead job to ack.
+// (linear:BRO-3866, 2026-09-20). job-abandoned is NOT in the set: a
+// lease-held abandon means a DIFFERENT job for the task is healthy, so there
+// is no dead job to ack. But bsc-runner.js also writes job-abandoned when an
+// attempt never started for an infra reason with no live sibling
+// ("disk-pressure: …", "acquireLease threw: …"); nothing will ever follow
+// those rows, and Gate O counts them as bad, so refusing them left the task
+// impossible to close (BRO-7569, 34 tasks on 2026-11-19). Those reasons are
+// ackable; see isAckableAbandon.
 const ACKABLE_TERMINAL_EVENTS = new Set([
   'job-stopped-short', 'job-stranded', 'job-blocked', 'job-failed',
   'job-orphaned', 'prune-closed', 'dead', 'vanished', 'watchdog-park',
 ]);
+// Reasons bsc-runner.js writes on job-abandoned when THIS attempt never ran
+// for an infra reason. Anything else (a lease holder) stays unackable. The
+// disk check runs BEFORE the lease, so the reason alone does not prove no
+// sibling is live (review finding): every job-spawned jobId in the rows must
+// also have a later end row of its own.
+const NO_SIBLING_ABANDON_REASON = /^(?:disk-pressure:|acquireLease threw:)/;
+const JOB_LEG_END_EVENTS = new Set([...ACKABLE_TERMINAL_EVENTS, 'job-done', 'job-retried']);
+// A sibling writes job-spawned only after taking the lease and provisioning
+// its worktree, so a fresh abandon could precede a starting sibling's first
+// row. Once the abandon is this old with nothing after it, no sibling is
+// starting (it would have written job-spawned, making the abandon not newest).
+const ABANDON_SETTLE_MS = 30 * 60 * 1000;
+function isAckableAbandon(newest, rows, nowMs = Date.now()) {
+  if (!newest || newest.event !== 'job-abandoned') return false;
+  if (!NO_SIBLING_ABANDON_REASON.test(String(newest.reason || ''))) return false;
+  const abandonTs = Date.parse(newest.ts || '');
+  if (!Number.isFinite(abandonTs) || nowMs - abandonTs < ABANDON_SETTLE_MS) return false;
+  const open = new Set();
+  for (const r of rows || []) {
+    if (!r || !r.jobId) continue;
+    if (r.event === 'job-spawned') open.add(r.jobId);
+    else if (JOB_LEG_END_EVENTS.has(String(r.event))) open.delete(r.jobId);
+  }
+  if (open.size) return false;
+  // cmux attempts carry no jobId: an unended one (matched by workspaceRef,
+  // same identity rule as attemptWindows) is a live sibling too.
+  return !attemptWindows(rows).some((w) => w.endTs === null);
+}
+// The job that actually ran ends on the last leg-end row BEFORE the abandon;
+// the abandon's own ts must not widen the commit window (review finding).
+function workEndRow(newest, rows) {
+  if (!newest || newest.event !== 'job-abandoned') return newest;
+  let end = null;
+  for (const r of rows || []) {
+    if (r === newest) break;
+    if (r && JOB_LEG_END_EVENTS.has(String(r.event))) end = r;
+  }
+  return end || newest;
+}
 const NOTHING_TO_ACK_EVENTS = new Set(['job-done', 'landed-acked', 'landed-before-dispatch', 'landed-outside-dispatch']);
 const LAUNCH_EVENTS = new Set(['launch', 'job-spawned']);
 
@@ -205,7 +249,7 @@ function ledgerPrecondition(rows) {
     refusals.push(ev === 'job-done'
       ? 'newest ledger row is job-done — nothing to ack; Gate O already accepts it with a LANDED: line'
       : `newest ledger row is already ${ev} (${newest.ts || '?'}) — do not double-ack`);
-  } else if (!ACKABLE_TERMINAL_EVENTS.has(ev)) {
+  } else if (!ACKABLE_TERMINAL_EVENTS.has(ev) && !isAckableAbandon(newest, list)) {
     refusals.push(`newest ledger row is ${ev || '(no event)'} (${newest.ts || '?'}) — not a terminal event; the job is still open or a relaunch superseded the one you verified`);
   }
   let launch = null;
@@ -352,9 +396,10 @@ function decideAck(input) {
     if (Number.isFinite(launchTs) && workTs <= launchTs) {
       refusals.push(`the sha was authored at ${workTsRaw}, BEFORE this dispatch launched (${launch.ts}) — it cannot be this job's work`);
     }
-    const endTs = Date.parse((newest && newest.ts) || '');
+    const endRow = workEndRow(newest, scoped.rows) || newest;
+    const endTs = Date.parse((endRow && endRow.ts) || '');
     if (!strandedTieApplies && Number.isFinite(endTs) && workTs > endTs + COMMIT_AFTER_TERMINAL_GRACE_MS) {
-      refusals.push(`the sha was authored at ${workTsRaw}, AFTER the job's terminal ${newest.event} row (${newest.ts}) — the job had already exited, so this is not its work (only job-stranded may be acked with a later landing, via the stranded sha)`);
+      refusals.push(`the sha was authored at ${workTsRaw}, AFTER the job's terminal ${endRow.event} row (${endRow.ts}) — the job had already exited, so this is not its work (only job-stranded may be acked with a later landing, via the stranded sha)`);
     }
   }
   const namesRef = messageNamesRef(landing.message, ref);

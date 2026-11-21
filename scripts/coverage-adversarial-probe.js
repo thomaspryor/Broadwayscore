@@ -61,7 +61,7 @@ const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 const isReviewUrl = (u) => classifyReviewUrl(u).ok;
 const { isIncludableForRebuild, explainExclusion } = require('./lib/review-guards');
 const { classifySample } = require('./lib/census-recall.js');
-const { DEFAULT_SAMPLE, DEFAULT_DAYS, pickSample, classifyCandidate, summarizeShow, summarizeRun, evaluateAcceptance } = require('./lib/coverage-adversarial-probe.js');
+const { DEFAULT_SAMPLE, DEFAULT_DAYS, pickSample, classifyCandidate, demoteDeadGaps, httpStatusOf, summarizeShow, summarizeRun, evaluateAcceptance } = require('./lib/coverage-adversarial-probe.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { loadEnv } = require('./lib/load-env.js');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight.js');
@@ -199,12 +199,32 @@ async function probeOneShow(show, { pages, now, settlingHours }) {
   }
 
   const guards = { isIncludableForRebuild, explainExclusion };
-  row.candidates = [...found].map(url => classifyCandidate(url, show, onDiskByUrl, guards));
+  row.candidates = await demoteDeadGaps(
+    [...found].map(url => classifyCandidate(url, show, onDiskByUrl, guards)),
+    httpStatusOf,
+  );
   return row;
 }
 
 async function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return 0; }
+
+  // --reverify: re-check the stored run's gap URLs (no SERP spend) and
+  // rewrite the report/trend/status if any turned out dead (BRO-7975).
+  if (hasFlag('reverify')) {
+    const prev = JSON.parse(fs.readFileSync(OUT_PATH, 'utf8'));
+    for (const row of prev.shows || []) row.candidates = await demoteDeadGaps(row.candidates, httpStatusOf);
+    const summary = summarizeRun(prev.shows || []);
+    prev.summary = summary;
+    fs.writeFileSync(OUT_PATH, JSON.stringify(prev, null, 2) + '\n');
+    console.log(`reverified: ${summary.verdict}, ${summary.gapCount} gap(s)`);
+    // Deliberately does NOT touch the trend ledger or acceptance: a re-judged
+    // old report must not manufacture "2 consecutive clean weeks" (ship-check).
+    const status = JSON.parse(fs.readFileSync(STATUS_PATH, 'utf8'));
+    Object.assign(status, { verdict: summary.verdict, gapCount: summary.gapCount, gapShows: summary.gapShows, reverifiedAt: new Date().toISOString() });
+    fs.writeFileSync(STATUS_PATH, JSON.stringify(status, null, 2) + '\n');
+    return 0;
+  }
 
   for (const flag of ['ADVERSARIAL_PROBE_DISABLED', 'SERP_GAP_CENSUS_DISABLED']) {
     if (process.env[flag] === '1' || process.env[flag] === 'true') {

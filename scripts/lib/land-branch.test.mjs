@@ -1251,3 +1251,161 @@ test('BRO-6519: makeVerifiedBaseChecks checks the MERGED alert ledger in cwd bef
     fs.rmSync(wt, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+test('BRO-7715: a git timeout is classified and labelled git-timeout, a conflict is not', () => {
+  const { isGitTimeout, rebaseFailureReason } = require('./land-branch.js');
+  const timeout = Object.assign(new Error('spawnSync git ETIMEDOUT'), { code: 'ETIMEDOUT' });
+  const killed = Object.assign(new Error('Command failed'), { killed: true, signal: 'SIGTERM' });
+  const subject = new Error('Could not apply abc... fix spawnSync git ETIMEDOUT handling');
+  const conflict = Object.assign(new Error('Command failed: git rebase'), { status: 1, stderr: 'CONFLICT (content): Merge conflict in a.js' });
+  assert.equal(isGitTimeout(timeout), true);
+  assert.equal(isGitTimeout(killed), false, 'a bare SIGTERM is not an execFileSync timeout');
+  assert.equal(isGitTimeout(subject), false, 'git stderr mentioning ETIMEDOUT is not a timeout');
+  assert.equal(isGitTimeout(conflict), false);
+  assert.equal(isGitTimeout(null), false);
+  assert.match(rebaseFailureReason(timeout, 'origin/main', 'a'.repeat(40)), /^git-timeout:/);
+  assert.doesNotMatch(rebaseFailureReason(timeout, 'origin/main', 'a'.repeat(40)), /would not rebase cleanly/);
+  assert.match(rebaseFailureReason(conflict, 'origin/main', 'a'.repeat(40)), /would not rebase cleanly/);
+});
+
+// ── BRO-7715: real-git timeout behaviour (the unit test above covers the classifier) ──
+const { fatalRefusalLine } = require('./land-branch.js');
+
+/** An execGit seam that throws what execFileSync throws on timeout, for the first `times` matching calls. */
+function timeoutInjector(match, times) {
+  const state = { hits: 0 };
+  state.timeouts = [];
+  const exec = (cmd, args, opts) => {
+    if (match(args)) state.timeouts.push(opts && opts.timeout);
+    if (state.hits < times && match(args)) {
+      state.hits++;
+      const err = new Error('spawnSync git ETIMEDOUT');
+      err.code = 'ETIMEDOUT'; err.signal = 'SIGTERM'; err.killed = true;
+      throw err;
+    }
+    return execFileSync(cmd, args, opts);
+  };
+  return { exec, state };
+}
+const isRebase = (a) => a.includes('rebase') && !a.includes('--abort');
+const isFetchMain = (a) => a[0] === 'fetch' && a.includes('main');
+
+test('BRO-7715: a rebase that times out once is retried and the branch lands', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-timeout-once');
+    w.moveOrigin(); // forces a real rebase
+    const inj = timeoutInjector(isRebase, 1);
+    const sleeps = []; const logs = [];
+    const r = landBranch({
+      branch: 'feat-timeout-once', repoDir: w.repoDir, execGit: inj.exec, sleepMs: (ms) => sleeps.push(ms), log: (m) => logs.push(m),
+      checks: greenChecks, pushMain: plainPush,
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(inj.state.hits, 1);
+    assert.deepEqual(sleeps, [2000]);
+    assert.ok(inj.state.timeouts[1] > inj.state.timeouts[0], 'the retry gets a longer git timeout than the first try');
+    assert.ok(logs.some((l) => /rebase onto .* timed out/.test(l)), logs.join('\n'));
+    assert.equal(w.originMain(), r.sha);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7715: a rebase that keeps timing out is refused as git-timeout, never as a rebase conflict', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-timeout-always');
+    w.moveOrigin();
+    const inj = timeoutInjector(isRebase, 99);
+    const sleeps = [];
+    const r = landBranch({
+      branch: 'feat-timeout-always', repoDir: w.repoDir, execGit: inj.exec, sleepMs: (ms) => sleeps.push(ms),
+      checks: greenChecks, pushMain: () => assert.fail('must not push'),
+    });
+    assert.equal(r.landed, false);
+    assert.equal(r.failedCheck, 'git-timeout', JSON.stringify(r));
+    assert.match(r.reason, /no conflict detected/);
+    assert.equal(inj.state.hits, 3, 'first try + 2 retries');
+    assert.deepEqual(sleeps, [2000, 4000]);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7715: a killed rebase that leaves its state dir behind stays git-timeout, not a fake conflict', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-stale-rebase-dir');
+    w.moveOrigin();
+    const inj = timeoutInjector(isRebase, 99);
+    const exec = (cmd, args, opts) => {
+      try { return inj.exec(cmd, args, opts); } catch (e) {
+        // the kill left .git/rebase-merge behind and `rebase --abort` could not clear it
+        const gp = execFileSync('git', ['rev-parse', '--git-path', 'rebase-merge'], { cwd: opts.cwd, encoding: 'utf8' }).trim();
+        fs.mkdirSync(path.resolve(opts.cwd, gp), { recursive: true });
+        throw e;
+      }
+    };
+    const r = landBranch({
+      branch: 'feat-stale-rebase-dir', repoDir: w.repoDir, execGit: exec, sleepMs: () => {},
+      checks: greenChecks, pushMain: () => assert.fail('must not push'),
+    });
+    assert.equal(r.failedCheck, 'git-timeout', JSON.stringify(r));
+    assert.equal(inj.state.hits, 1, 'no retry into a dirty rebase state');
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7715: a real conflict is still a rebase refusal, with no retry', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-conflict', 'a.txt', 'branch edit\n');
+    w.commitOn(w.other, 'a.txt', 'main edit\n', 'conflicting main edit');
+    sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+    const sleeps = [];
+    const r = landBranch({
+      branch: 'feat-conflict', repoDir: w.repoDir, sleepMs: (ms) => sleeps.push(ms),
+      checks: greenChecks, pushMain: () => assert.fail('must not push'),
+    });
+    assert.equal(r.failedCheck, 'rebase', JSON.stringify(r));
+    assert.deepEqual(sleeps, []);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7715: a fetch that times out once is retried, a persistent one throws', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-fetch-timeout');
+    const once = timeoutInjector(isFetchMain, 1);
+    const r = landBranch({ branch: 'feat-fetch-timeout', repoDir: w.repoDir, execGit: once.exec, sleepMs: () => {}, checks: greenChecks, pushMain: plainPush });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(once.state.hits, 1);
+    const w2 = makeWorld();
+    try {
+      w2.makeBranch('feat-fetch-dead');
+      const dead = timeoutInjector(isFetchMain, 99);
+      assert.throws(() => landBranch({ branch: 'feat-fetch-dead', repoDir: w2.repoDir, execGit: dead.exec, sleepMs: () => {}, checks: greenChecks, pushMain: plainPush }), /ETIMEDOUT/);
+      assert.equal(dead.state.hits, 3);
+    } finally { w2.cleanup(); }
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7715: a conflict whose commit subject mentions ETIMEDOUT is still a rebase refusal, never retried', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-conflict-etimedout', 'a.txt', 'branch edit\n');
+    sh(w.repoDir, ['branch', '-q', '-f', 'feat-conflict-etimedout', 'feat-conflict-etimedout']);
+    const wt = path.join(w.root, 'wt-reword');
+    sh(w.repoDir, ['worktree', 'add', '-q', wt, 'feat-conflict-etimedout']);
+    sh(wt, ['config', 'user.email', 't@e.st']); sh(wt, ['config', 'user.name', 'test']);
+    sh(wt, ['commit', '-q', '--amend', '-m', 'fix: handle spawnSync git ETIMEDOUT']);
+    sh(w.repoDir, ['worktree', 'remove', '--force', wt]);
+    w.commitOn(w.other, 'a.txt', 'main edit\n', 'conflicting main edit');
+    sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+    const sleeps = [];
+    const r = landBranch({ branch: 'feat-conflict-etimedout', repoDir: w.repoDir, sleepMs: (ms) => sleeps.push(ms), checks: greenChecks, pushMain: () => assert.fail('must not push') });
+    assert.equal(r.failedCheck, 'rebase', JSON.stringify(r));
+    assert.deepEqual(sleeps, []);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7715: an error escaping landBranch is labelled git-timeout only for a real timeout', () => {
+  assert.match(fatalRefusalLine(Object.assign(new Error('spawnSync git ETIMEDOUT\nmore'), { code: 'ETIMEDOUT' })), /^REFUSED: git-timeout: spawnSync git ETIMEDOUT$/);
+  assert.match(fatalRefusalLine(new Error('boom')), /^REFUSED: fatal: boom$/);
+});

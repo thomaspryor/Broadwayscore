@@ -9,7 +9,7 @@
 // The fixture is the owner's ACTUAL submission text, verbatim from the
 // Formspree API, including the two-asks-in-one-message shape that the old
 // one-issue-per-submission path could not represent.
-import { test } from 'node:test';
+import { test, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
@@ -531,4 +531,128 @@ test('an unambiguous title still routes normally through resolveShowInMarket', (
   });
   assert.deepEqual(actions.map((a) => a.kind), ['missing-image']);
   assert.equal(actions[0].showId, 'book-of-mormon-2011');
+});
+
+describe('market named in the message breaks a title tie (feedback #1192)', () => {
+  const { inferMarketFromMessage, resolveShowUsingMessage } = require('../../scripts/lib/content-request-routing.js');
+  const dd = [
+    { id: 'dirty-dancing-2027', title: 'Dirty Dancing', category: 'broadway', openingDate: '2027-03-14' },
+    { id: 'dirty-dancing-tour-2026', title: 'Dirty Dancing', category: 'tour', openingDate: '2026-08-12' },
+    { id: 'dirty-dancing-west-end-2027', title: 'Dirty Dancing', category: 'west-end', openingDate: '2027-02-01' },
+    { id: 'dirty-dancing-west-end-2013', title: 'Dirty Dancing', category: 'west-end', openingDate: '2013-07-01' },
+  ];
+  const msg = 'I see you have the Dirty Dancing Bway show addded. Below is the cast list (same as the tour) submitted by IBDB.';
+  it('reads "Bway" next to the title as Broadway even when the tour is also mentioned', () => {
+    assert.equal(inferMarketFromMessage('Dirty Dancing', msg), 'broadway');
+  });
+  it('resolves the ambiguous title to the Broadway production', () => {
+    const r = resolveShowUsingMessage('Dirty Dancing', null, dd, msg);
+    assert.equal(r.ambiguous, false);
+    assert.equal(r.resolved.id, 'dirty-dancing-2027');
+  });
+  it('stays ambiguous when the named market still has two productions', () => {
+    const r = resolveShowUsingMessage('Dirty Dancing', null, dd, 'Please fix Dirty Dancing in the West End');
+    assert.equal(r.ambiguous, true);
+  });
+  it('stays ambiguous when the message names no market', () => {
+    assert.equal(resolveShowUsingMessage('Dirty Dancing', null, dd, 'Dirty Dancing needs a cast list').ambiguous, true);
+  });
+  it('does not read Off-Broadway as Broadway', () => {
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'the Dirty Dancing off-broadway run'), 'off-broadway');
+  });
+});
+
+describe('message market inference never guesses from the message at large (second-opinion)', () => {
+  const { inferMarketFromMessage } = require('../../scripts/lib/content-request-routing.js');
+  it('skips a sentence that contrasts two markets (skeptic review, BRO-7844)', () => {
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'I saw Dirty Dancing in the West End years ago, but the Broadway one needs a cast'), null);
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'I saw it in London. Dirty Dancing on Broadway needs a cast'), 'broadway');
+    // A title with its own ! or . must not end the sentence early (ship-check review).
+    assert.equal(inferMarketFromMessage('Mamma Mia!', 'I saw Mamma Mia! in the West End years ago, but the Broadway one needs a cast'), null);
+  });
+  it('ignores the site name', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'Thanks for Broadway Scorecard! Hamilton is missing a picture.'), null);
+  });
+  it('ignores a market word in another sentence', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'I took a backstage tour. Hamilton has no reviews.'), null);
+  });
+  it('still reads a market word right next to the title', () => {
+    assert.equal(inferMarketFromMessage('Dirty Dancing', 'the Dirty Dancing tour cast is wrong'), 'tour');
+  });
+});
+
+describe('message market inference: every mention must agree (ship-check review)', () => {
+  const { inferMarketFromMessage } = require('../../scripts/lib/content-request-routing.js');
+  it('two mentions in two markets -> no guess', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'I loved Hamilton on Broadway, but the West End Hamilton is missing a photo'), null);
+  });
+  it('negation near the mention -> no guess', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'The Hamilton, not the Broadway one, the London one'), null);
+  });
+  it('a site name like Broadway.com is not a market', () => {
+    assert.equal(inferMarketFromMessage('Hamilton', 'Saw Hamilton reviewed on Broadway.com'), null);
+  });
+});
+
+describe('a year next to the title picks one run in the market (BRO-7844 cousins)', () => {
+  const { inferMarketFromMessage, resolveShowUsingMessage } = require('../../scripts/lib/content-request-routing.js');
+  const shows = [
+    { id: 'dirty-dancing-2027', title: 'Dirty Dancing', category: 'broadway', previewsStartDate: '2027-03-01' },
+    { id: 'dirty-dancing-tour-2026', title: 'Dirty Dancing', category: 'tour', openingDate: '2026-09-01' },
+    { id: 'dirty-dancing-west-end-2013', title: 'Dirty Dancing', category: 'west-end', openingDate: '2013-07-01' },
+    { id: 'dirty-dancing-west-end-2027', title: 'Dirty Dancing', category: 'west-end' },
+    { id: 'death-of-a-salesman-1999', title: 'Death of a Salesman', category: 'broadway', openingDate: '1999-02-10' },
+    { id: 'death-of-a-salesman-2012', title: 'Death of a Salesman', category: 'broadway', openingDate: '2012-03-15' },
+    { id: 'art-1998', title: 'Art', category: 'broadway', openingDate: '1998-03-01' },
+    { id: 'art-2025', title: 'Art', category: 'broadway', openingDate: '2025-09-01' },
+    { id: 'stereophonic-2024', title: 'Stereophonic', category: 'broadway', openingDate: '2024-04-19' },
+    { id: 'stereophonic-west-end-2025', title: 'Stereophonic', category: 'west-end', openingDate: '2025-05-01' },
+  ];
+  const r = (t, m) => resolveShowUsingMessage(t, null, shows, m);
+  it('a year next to the title picks one of two West End runs', () => {
+    assert.equal(r('Dirty Dancing', 'Dirty Dancing in the West End 2013 has no cast').resolved.id, 'dirty-dancing-west-end-2013');
+  });
+  it('no year, a year matching none, or a year in another sentence stays parked', () => {
+    assert.equal(r('Dirty Dancing', 'Dirty Dancing in the West End has no cast').ambiguous, true);
+    assert.equal(r('Dirty Dancing', 'Dirty Dancing in the West End 1999 has no cast').ambiguous, true);
+    assert.equal(r('Dirty Dancing', 'I saw it in 2013. Dirty Dancing in the West End has no cast').ambiguous, true);
+  });
+  it('phone numbers, prices and dates are not years (review probes)', () => {
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway, call 212-555-1999').ambiguous, true);
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway tickets were $2012').ambiguous, true);
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway posted 01/2012').ambiguous, true);
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway in 2012 is missing a review').resolved.id, 'death-of-a-salesman-2012');
+  });
+  it('two different years near the title stay parked', () => {
+    assert.equal(r('Death of a Salesman', 'Death of a Salesman on Broadway 1999 or 2012 is missing a review').ambiguous, true);
+  });
+  it('the title must be a whole word ("Art" inside "started")', () => {
+    const { yearNearTitle } = require('../../scripts/lib/content-request-routing.js');
+    assert.equal(yearNearTitle('Art', 'The show restarted in 1998 on Broadway'), null);
+    assert.equal(yearNearTitle('Art', 'Art (1998) on Broadway'), 1998);
+  });
+  it('London is NOT read as a market: it often means where a show came from', () => {
+    assert.equal(inferMarketFromMessage('Stereophonic', 'Stereophonic transferred from London and is missing reviews'), null);
+    assert.equal(r('Stereophonic', 'Stereophonic transferred from London and is missing reviews').ambiguous, true);
+  });
+});
+
+// GH #552: "add <outlets> to <show>'s scorecard" parked as unroutable.
+test('an outlet-addition ask for a catalogued show routes to a review gather (GH #552)', () => {
+  const actions = planContentRequestActions({
+    message: 'Please add Stage West, Stage and Cinema, and Vanguard Culture\u2019s to 3 Summers of Lincoln\u2019s scorecard, please',
+    show: REVIEW_SHOW_FIELD,
+    shows: SHOWS_WITH_LINCOLN,
+  });
+  assert.deepEqual(actions.map((a) => a.kind), ['missing-reviews']);
+  assert.equal(actions[0].workflow, WORKFLOW_REVIEWS);
+});
+
+test('"add a show to the scorecard" style praise does not become a review gather without a catalogued show', () => {
+  const actions = planContentRequestActions({
+    message: 'Love the site, add dark mode to the scorecard page',
+    show: null,
+    shows: SHOWS_WITH_LINCOLN,
+  });
+  assert.equal(actions.some((a) => a.workflow === WORKFLOW_REVIEWS), false);
 });

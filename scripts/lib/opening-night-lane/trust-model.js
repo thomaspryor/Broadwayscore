@@ -25,7 +25,11 @@ const { EXCERPT_FIELDS } = require('../excerpt-fields');
 
 const PROVENANCE_KEY = 'openingNightLane';
 const PRODUCTION_VERIFIED = 'aggregator';
-const SOURCES = Object.freeze(['aggregator', 'outlet-index']);
+// 'manual' (BRO-7741): a URL a person put in the lane's manual inbox (manual-inbox.js). It publishes through the lane
+// like any lane row, but laneBypasses() never stands a guard down for it: a person's link is not an aggregator's
+// production check, so the rebuild judges it exactly as it judges an ingest-urls row.
+const MANUAL_SOURCE = 'manual';
+const SOURCES = Object.freeze(['aggregator', 'outlet-index', MANUAL_SOURCE]);
 // The guards that stand down for a lane review. laneBypasses() refuses any other name so a typo can never
 // silently read as "not bypassed" or, worse, widen the bypass.
 const LANE_BYPASSED_GUARDS = Object.freeze([
@@ -55,6 +59,7 @@ const SEEN_AFTER_DAYS = 3;
 
 /**
  * True only for a review carrying a well-formed provenance block AND the aggregator production stamp, for the show
+ * (manual-inbox rows carry the stamp too, so the lane can publish them; guards use isAggregatorVerifiedLaneReview)
  * the file belongs to (showId is required: a file with no showId cannot prove the stamp is for it).
  * ctx.openingDate (the show's openingDate from shows.json, YYYY-MM-DD) is optional but the guard-wiring callers
  * should always pass it: when given, the stamped night must be that opening night.
@@ -92,6 +97,16 @@ function laneBypasses(review, guard, ctx = {}) {
   // BRO-7593: the publisher's own "not a review" label (Guardian tone/features) is not the classifier verdict the
   // lane stands down for: Two Girls 2026 entered through a BWW roundup and was a Guardian feature.
   if (guard === 'nonReview' && require('../guardian-publication').isPublisherTaggedNonReview(review)) return false;
+  return isAggregatorVerifiedLaneReview(review, ctx);
+}
+
+/**
+ * A lane review whose show match came from an aggregator or the outlet's own index: the evidence the guards stand
+ * down for. A manual-inbox row (BRO-7741) is a lane row for publishing (isLaneReview) but a person picked its URL, so
+ * no guard trusts it. Every guard stand-down outside the lane's own publish path uses this, never isLaneReview.
+ */
+function isAggregatorVerifiedLaneReview(review, ctx = {}) {
+  if (review && review[PROVENANCE_KEY] && review[PROVENANCE_KEY].source === MANUAL_SOURCE) return false;
   return isLaneReview(review, ctx);
 }
 
@@ -112,7 +127,11 @@ function calendarDateIn(publishDate, timeZone = DEFAULT_TIME_ZONE) {
   if (!/(Z|[+-]\d{2}:?\d{2})$/i.test(raw)) return null;
   const t = Date.parse(raw);
   if (Number.isNaN(t)) return null;
-  return fmt(t);
+  // BRO-7890: one rule with the rebuild (date-utils.normalizeDate via local-date.js): an explicit local offset keeps
+  // its written day and exactly 00:00:00 UTC is a date-only value, else a lane-published day flips on the next rebuild.
+  const { publishedStampToLocalDate } = require('../local-date');
+  const local = publishedStampToLocalDate(raw, null, { tz: timeZone });
+  return local && isDay(local) ? local : fmt(t);
 }
 
 /**
@@ -121,7 +140,7 @@ function calendarDateIn(publishDate, timeZone = DEFAULT_TIME_ZONE) {
  * in the market's time zone (America/New_York for Broadway and Off-Broadway, Europe/London for the West End).
  * @returns {{admit: boolean, reason: string}}
  */
-function admitLaneCandidate({ source, aggregatorCited = false, publishDate = null, night, timeZone = DEFAULT_TIME_ZONE } = {}) {
+function admitLaneCandidate({ source, aggregatorCited = false, publishDate = null, night, timeZone = DEFAULT_TIME_ZONE, force = false } = {}) {
   if (!isDay(night)) throw new Error(`admitLaneCandidate: bad night "${night}"`);
   if (source === 'aggregator') {
     return aggregatorCited === true ? { admit: true, reason: 'aggregator-cited' } : { admit: false, reason: 'not-cited-by-an-aggregator' };
@@ -131,6 +150,15 @@ function admitLaneCandidate({ source, aggregatorCited = false, publishDate = nul
     if (!date) return { admit: false, reason: 'no-publish-date' };
     const day = Math.round((Date.parse(`${date}T00:00:00Z`) - Date.parse(`${night}T00:00:00Z`)) / DAY_MS);
     return day >= -1 && day <= 1 ? { admit: true, reason: 'outlet-index-on-night' } : { admit: false, reason: 'outside-night-window' };
+  }
+  // BRO-7741: a person vouched for the show; the date still has to be tonight's (+/- 1 day) unless they forced it.
+  // An undated page is admitted: the lane stamps the inbox entry's day as a provisional date (manualFallbackDate).
+  if (source === MANUAL_SOURCE) {
+    if (force === true || publishDate == null || publishDate === '') return { admit: true, reason: 'manual-inbox' };
+    const date = calendarDateIn(publishDate, timeZone);
+    if (!date) return { admit: true, reason: 'manual-inbox' };
+    const day = Math.round((Date.parse(`${date}T00:00:00Z`) - Date.parse(`${night}T00:00:00Z`)) / DAY_MS);
+    return day >= -1 && day <= 1 ? { admit: true, reason: 'manual-inbox' } : { admit: false, reason: `manual-outside-night-window (${date})` };
   }
   return { admit: false, reason: 'unknown-source' };
 }
@@ -196,7 +224,7 @@ function paywallFallbackScore({ thumb, stars } = {}) {
  */
 function buildLaneReview({
   showId, night, source, seenAt, outletId, outlet, criticName, url, publishDate = null, fullText = '',
-  aggregator = {}, excerpts = {},
+  aggregator = {}, excerpts = {}, bylineConflict = null,
 } = {}) {
   if (!url) throw new Error('buildLaneReview: url is required');
   if (!outletId) throw new Error('buildLaneReview: outletId is required');
@@ -208,6 +236,8 @@ function buildLaneReview({
     fullText: text, source: 'opening-night-lane',
     [PROVENANCE_KEY]: provenance, productionVerified: PRODUCTION_VERIFIED,
   };
+  // BRO-7780: the page's structured author is not the byline it prints (the regular pipeline's field, BRO-7745).
+  if (bylineConflict && bylineConflict.structured && bylineConflict.visible) review.bylineConflict = { structured: String(bylineConflict.structured), visible: String(bylineConflict.visible) };
   if (aggregator.excerpt) review.showScoreExcerpt = String(aggregator.excerpt);
   // Each aggregator's quote in its own review-file field (bwwExcerpt, dtliExcerpt ...): what the scorer reads for a
   // paywalled review, and what the regular pipeline keeps for one.
@@ -230,6 +260,6 @@ function buildLaneReview({
 }
 
 module.exports = {
-  PROVENANCE_KEY, PRODUCTION_VERIFIED, SOURCES, LANE_BYPASSED_GUARDS, MIN_FULL_TEXT_CHARS, SEEN_BEFORE_DAYS, SEEN_AFTER_DAYS,
-  buildLaneProvenance, isLaneReview, laneRowSource, laneBypasses, calendarDateIn, admitLaneCandidate, roundupFallbackDate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
+  PROVENANCE_KEY, PRODUCTION_VERIFIED, SOURCES, MANUAL_SOURCE, LANE_BYPASSED_GUARDS, MIN_FULL_TEXT_CHARS, SEEN_BEFORE_DAYS, SEEN_AFTER_DAYS,
+  buildLaneProvenance, isLaneReview, isAggregatorVerifiedLaneReview, laneRowSource, laneBypasses, calendarDateIn, admitLaneCandidate, roundupFallbackDate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
 };

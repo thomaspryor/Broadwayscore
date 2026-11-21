@@ -21,6 +21,7 @@ const { buildSiblingCategoriesFromShows } = require('./lib/show-matching');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { urlLooksLikeReview } = require('./lib/review-guards');
+const { dtliPagePredatesProduction } = require('./lib/dtli-ingest-guards');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -257,6 +258,10 @@ async function findDTLIPage(show) {
       if (result.html.includes('review-item') && result.html.includes('READ THE REVIEW')) {
         // Validate page is about the target show (LLM tiebreaker for edge cases)
         const validation = await validatePageMatchesShow(result.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
+        if (dtliPagePredatesProduction(result.html, show).skip) {
+          console.log('  [SKIP] DTLI review dates predate this production');
+          continue;
+        }
         if (!validation.valid) {
           console.log(`  [SKIP] DTLI page doesn't match "${show.title}": ${validation.reason}`);
           continue;
@@ -467,6 +472,7 @@ async function processShow(show) {
     // A prior version of this fix REPLACED the year/LLM check with the
     // category check instead of adding it — flagged in review as a real
     // regression (a stale-era cached page would no longer be caught).
+    const dateCheck = dtliPagePredatesProduction(archiveContent, show);
     const cacheValidation = await validatePageMatchesShow(archiveContent, show.title, { skipLlm: !!process.env.SKIP_LLM, openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
     const catCheck = checkArchiveCategory(archiveContent, show, siblingCategoriesByShowId()[show.id]);
     if (!cacheValidation.valid || !catCheck.ok) {
@@ -474,6 +480,9 @@ async function processShow(show) {
       console.log(`  [CACHE] Cached page is WRONG show — ${reason}. Deleting cache.`);
       fs.unlinkSync(archivePath);
       // Fall through to re-fetch below
+    } else if (dateCheck.skip) {
+      console.log(`  [CACHE] DTLI review dates predate production (${dateCheck.old}/${dateCheck.dated})`);
+      return { success: false, error: 'Cached DTLI page predates production' };
     } else {
       // Extract URL from archive header
       const urlMatch = archiveContent.match(/Source:\s*(https?:\/\/[^\n]+)/);

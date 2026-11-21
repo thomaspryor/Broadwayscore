@@ -106,7 +106,7 @@ function driftReport({ page, registry, referenced, today, warnDays = 60, baseIdF
     } else if (!viaSnapshot.has(alias) || row.shutdown > viaSnapshot.get(alias).shutdown
       || (row.shutdown === viaSnapshot.get(alias).shutdown && !viaSnapshot.get(alias).replacement && row.replacement)) viaSnapshot.set(alias, row);
   }
-  // Registry keys fold the same way, so 'claude-sonnet-4-5' covers the pinned snapshot (BRO-7342).
+  // Registry keys fold the same way, so the bare claude-sonnet-4-5 alias covers the pinned snapshot (BRO-7342).
   const reg = { ...registry };
   for (const k of Object.keys(registry)) if (!(baseId(k) in reg)) reg[baseId(k)] = registry[k];
   const pageDate = { get: (id) => exact.get(id) || viaSnapshot.get(id) };

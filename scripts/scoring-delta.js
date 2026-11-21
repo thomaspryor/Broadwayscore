@@ -1820,6 +1820,9 @@ function main() {
         // BRO-5333: which priorRuns the pre-window replay sees.
         && (baseline.__priorRunSiblingLib?.preWindowExemptPriorRuns?.toString() || '') === (working.__priorRunSiblingLib?.preWindowExemptPriorRuns?.toString() || '')
         && (baseline.__priorRunSiblingLib?.findPriorRunSiblings?.toString() || '') === (working.__priorRunSiblingLib?.findPriorRunSiblings?.toString() || '')
+        && (baseline.__priorRunSiblingLib?.windowRunFor?.toString() || '') === (working.__priorRunSiblingLib?.windowRunFor?.toString() || '')
+        && (baseline.__priorRunSiblingLib?.sameProductionTitle?.toString() || '') === (working.__priorRunSiblingLib?.sameProductionTitle?.toString() || '')
+        && (baseline.__priorRunSiblingLib?.titleWordSet?.toString() || '') === (working.__priorRunSiblingLib?.titleWordSet?.toString() || '')
         // BRO-5373: the director guard's map (ordering, earliest newer start).
         && (baseline.__priorRunSiblingLib?.buildMultiProdDirectorGuard?.toString() || '') === (working.__priorRunSiblingLib?.buildMultiProdDirectorGuard?.toString() || '')
         // BRO-5637: the prior-production director map the named-director bypass reads.

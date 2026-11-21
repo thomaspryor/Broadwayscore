@@ -30,6 +30,8 @@ import {
   PROMPT_VERSION,
   PROMPT_VERSION_CANDIDATE,
 } from './config';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { SCORING_OPENAI } = require('../lib/models'); // gpt-4o shuts down 2027-01-14 (BRO-7341)
 
 try {
   require('dotenv').config({ path: path.join(__dirname, '../../.env') });
@@ -113,7 +115,7 @@ async function main() {
 
   const scorers = {
     claude: new ReviewScorer(claudeKey, { model: 'claude-sonnet-4-6', verbose: false }),
-    openai: new OpenAIReviewScorer(openaiKey, { model: 'gpt-4o', verbose: false }),
+    openai: new OpenAIReviewScorer(openaiKey, { model: SCORING_OPENAI, verbose: false }),
     // gemini-2.5-flash for separate quota pool — see test-prompt-structural-ab.ts
     gemini: new GeminiScorer(geminiKey, { model: 'gemini-2.5-flash' as any, verbose: false }),
   };

@@ -91,6 +91,10 @@ const TESTS_UNIT_QUARANTINE = new Map([
     'BRO-7171 — DOES run at its own advisory test.yml step ("Page furniture class guard (BRO-7171, advisory)", continue-on-error: true). CLAUDE.md section 19: new gates land advisory first, so an extractor regression must not block the unit batch.',
   ],
   [
+    'tests/unit/audit-unguarded-git-network-timeout.test.mjs',
+    'BRO-7458 — DOES run at its own advisory test.yml step ("Unguarded git network timeout audit (BRO-7458, advisory)", continue-on-error: true). It asserts the live tree has no unguarded git network timeout; CLAUDE.md section 19: a new gate lands advisory first, so it must not block the unit batch.',
+  ],
+  [
     'tests/unit/rendered-copy-voice.test.mjs',
     'BRO-5812 \u2014 DOES run at its own advisory test.yml step ("Rendered copy voice guard (BRO-5812, advisory)", continue-on-error: true). CLAUDE.md section 19: new gates land advisory first, so a voice-rule regression must not block the unit batch.',
   ],

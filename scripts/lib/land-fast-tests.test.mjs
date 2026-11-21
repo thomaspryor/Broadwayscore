@@ -53,6 +53,11 @@ test('a changed test runs even when slow; a dir literal pulls in tests that scan
 
 test('broad dirs and the cap keep the set small, strongest matches first', () => {
   assert.equal(F.matchTier('scripts/lib/zz.js', 'q', "'scripts/lib'"), null);
+  // BRO-7729: a skill or command edit must pull in the parity test that compares the committed mirror.
+  assert.equal(F.matchTier('.claude/commands/wrap-up.md', 'tests/unit/codex-parity.test.mjs', "join(ROOT, '.claude', 'settings.json')")?.tier, 1);
+  assert.equal(F.matchTier('.claude/skills/x/SKILL.md', 'tests/unit/codex-parity.test.mjs', '')?.tier, 1);
+  assert.equal(F.matchTier('.claude/hooks/a.sh', 'tests/unit/codex-parity.test.mjs', ''), null);
+  for (const [, testFile] of F.MIRRORED_SOURCES) assert.ok(fs.existsSync(testFile), `${testFile} exists`);
   const r = sel(['scripts/lib/widget-maker.js'], { maxTargeted: 1 });
   // a names the full path (tier 1, never capped); the cap of 1 keeps one weaker match (x, basename) and drops t (stem).
   assert.deepEqual(r.files.map((f) => f.file), ['tests/unit/inv.test.mjs', 'tests/unit/a.test.mjs', 'scripts/lib/x.test.mjs']);
@@ -135,4 +140,61 @@ test('a very wide diff skips name matching: invariants plus the changed tests on
   assert.deepEqual(r.files.map((f) => f.file).sort(), ['tests/unit/c.test.mjs', 'tests/unit/inv.test.mjs']);
   assert.equal(r.skipped.wideDiff, 2);
   assert.equal(sel(['scripts/lib/widget-maker.js']).skipped.wideDiff, 0);
+});
+
+// BRO-7637: land run 39741371743 (land/bro-5887-probe) was refused by land.js colocated-tests on
+// scripts/verify-reddit-review-check.test.mjs, a changed test no CI gate collects, so name matching
+// never picked it. colocatedTests() is decideChecks' own list; selectFastTests runs those regardless.
+test('colocated tests outside every CI gate still run (land.js colocated-tests parity)', () => {
+  const colocated = [{ file: 'scripts/verify-probe.test.mjs', tsx: false }, { file: 'scripts/lib/q.test.ts', tsx: true }, { file: 'tests/unit/a.test.mjs', tsx: false }];
+  const r = sel(['scripts/verify-probe.test.mjs', 'scripts/lib/q.ts', 'scripts/lib/widget-maker.js'], { colocated });
+  const by = Object.fromEntries(r.files.map((f) => [f.file, f]));
+  assert.equal(by['scripts/verify-probe.test.mjs'].gate, 'unit-tests-node');
+  assert.equal(by['scripts/lib/q.test.ts'].gate, 'unit-tests-tsx');
+  assert.equal(by['tests/unit/a.test.mjs'].gate, 'unit-tests-node', 'a collected one keeps its own gate');
+  assert.ok(!sel(['scripts/lib/q.ts']).files.some((f) => f.file === 'scripts/lib/q.test.ts'), 'without the list it is missed');
+  const slow = sel(['scripts/lib/widget-maker.js'], { colocated: [{ file: 'tests/unit/slow.test.mjs', tsx: false }] });
+  assert.ok(!slow.files.some((f) => f.file === 'tests/unit/slow.test.mjs'), 'a slow colocated test of an unchanged test file stays with the full gauntlet');
+});
+
+test('colocatedTests reads the tree with autonomous-checks decideChecks', () => {
+  const dir = fs.mkdtempSync(path.join(fs.realpathSync(process.env.TMPDIR || '/tmp'), 'lft-colo-'));
+  try {
+    fs.mkdirSync(path.join(dir, 'scripts/lib'), { recursive: true });
+    fs.copyFileSync(path.join(ROOT, 'scripts/lib/autonomous-checks.js'), path.join(dir, 'scripts/lib/autonomous-checks.js'));
+    for (const f of ['scripts/lib/w.js', 'scripts/lib/w.test.mjs', 'scripts/verify-x.test.mjs']) fs.writeFileSync(path.join(dir, f), '');
+    const got = F.colocatedTests(dir, ['scripts/lib/w.js', 'scripts/verify-x.test.mjs', 'scripts/gone.test.mjs']).map((c) => c.file).sort();
+    assert.deepEqual(got, ['scripts/lib/w.test.mjs', 'scripts/verify-x.test.mjs']);
+    assert.deepEqual(F.colocatedTests(path.join(dir, 'nope'), ['scripts/lib/w.js']), [], 'an older tree without the module selects nothing extra');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
+});
+
+// BRO-7637 ship-check: a tsx-run colocated test must run under tsx even when its path also matches the
+// scripts/lib node gate; and colocatedTests must read the manifests land.js reads (readTsxRunTests).
+test('a tsx colocated test under scripts/lib runs in the tsx gate', () => {
+  const r = sel(['scripts/lib/q.ts'], { colocated: [{ file: 'scripts/lib/q.test.mjs', tsx: true }] });
+  assert.equal(r.files.find((f) => f.file === 'scripts/lib/q.test.mjs')?.gate, 'unit-tests-tsx');
+});
+test('colocatedTests uses the same tsx manifests as land.js', () => {
+  const src = fs.readFileSync(new URL('./land-fast-tests.js', import.meta.url), 'utf8');
+  assert.match(src, /readTsxRunTests\(root\)/);
+  assert.doesNotMatch(src, /readTsxManifest\(root\)/);
+});
+
+test('a change to scripts/lib/land-*.js or .github/ selects undriven-rebase-lint (BRO-7814)', () => {
+  const lintTest = 'scripts/lib/undriven-rebase-lint.test.mjs';
+  const u = { ...universe, libFiles: [...universe.libFiles, lintTest] };
+  const pick = (changed) => F.selectFastTests({ changed, universe: u, readText: () => 'unrelated', invariants: [], slow: new Set() }).files.map((f) => f.file);
+  assert.ok(pick(['scripts/lib/land-local-check.js']).includes(lintTest), 'land-local-check.js');
+  assert.ok(pick(['scripts/lib/land-rebase.sh']).includes(lintTest), 'land-rebase.sh');
+  assert.ok(pick(['.github/workflows/land.yml']).includes(lintTest), 'land.yml');
+  assert.ok(!pick(['scripts/lib/widget-maker.js']).includes(lintTest), 'unrelated file');
+});
+
+test('a .github change selects tests that scan .github through fs without naming the file (BRO-7814 cousins)', () => {
+  const u = { nodeSet: new Set(['tests/unit/scan.test.mjs', 'tests/unit/other.test.mjs']), tsxSet: new Set(), libFiles: [] };
+  const t = { 'tests/unit/scan.test.mjs': "const DIR = path.join(root, '.github', 'workflows');\nconst files = fs.readdirSync(DIR);", 'tests/unit/other.test.mjs': "const w = path.join(root, '.github', 'workflows'); // a path, never listed" };
+  const pick = (changed) => F.selectFastTests({ changed, universe: u, readText: (f) => t[f], invariants: [], slow: new Set() }).files.map((f) => f.file);
+  assert.deepEqual(pick(['.github/workflows/land.yml']), ['tests/unit/scan.test.mjs']);
+  assert.deepEqual(pick(['scripts/lib/widget-maker.js']), [], 'a non-.github change does not pull it in');
 });

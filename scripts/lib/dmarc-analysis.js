@@ -281,6 +281,24 @@ function daysBetween(aIso, bIso) {
 }
 
 /**
+ * A low-volume failing source whose every message the receiver REJECTED: the
+ * p=reject policy working, not a hole. Shared by evaluateFindings (new
+ * summaries) and dmarcHealthResult (summaries written before this rule, which
+ * the ingest deliberately does not rewrite while unchanged; BRO-7972).
+ */
+function isBlockedByPolicy(source, failCountForHigh, policyDomain) {
+  // A source signing with OUR domain is trying to be us (a misconfigured ESP
+  // or a replay), not a blind spoof: keep it a warn so lost mail stays visible.
+  // Fail closed: without the policy domain or the DKIM evidence we cannot tell a
+  // blind spoof from a misconfigured sender, so keep the warn.
+  if (!policyDomain || !Array.isArray(source.dkimDomains)) return false;
+  if ((source.dkimDomains || []).some((d) => isUnderDomain(d, policyDomain))) return false;
+  return source.fail > 0 && source.fail < failCountForHigh && !(source.pass > 0)
+    && Array.isArray(source.dispositions) && source.dispositions.length > 0
+    && source.dispositions.every((d) => d === 'reject');
+}
+
+/**
  * Derive actionable findings. Severity vocabulary matches the repo's alert
  * router: 'action' is owner-facing, 'warn' is log-only, 'info' is context.
  */
@@ -330,8 +348,13 @@ function evaluateFindings(summary, opts = DEFAULTS) {
   // sender someone added without configuring DKIM.
   const failing = summary.sources.filter((s) => s.fail > 0).sort((a, b) => b.fail - a.fail);
   for (const s of failing) {
+    // BRO-7972: a low-volume source whose every message the receiver REJECTED
+    // is the p=reject policy doing its job, not a hole to fix. It stays visible
+    // as 'info' (and in the summary sources) but must not hold a daily warn row
+    // for the whole 7-day report window.
+    const blockedByPolicy = isBlockedByPolicy(s, o.failCountForHigh, policy && policy.domain);
     findings.push({
-      severity: s.fail >= o.failCountForHigh ? 'action' : 'warn',
+      severity: s.fail >= o.failCountForHigh ? 'action' : (blockedByPolicy ? 'info' : 'warn'),
       code: 'unauthenticated-source',
       message: `${s.fail} message(s) from ${s.ip} used header From: ${s.headerFroms.join(', ') || '(unknown)'} without passing aligned DKIM or SPF.`,
       evidence: {
@@ -473,7 +496,13 @@ function dmarcHealthResult(summary, opts = {}) {
   if (actionable.length) {
     return { status: 'error', message: `${actionable.length} DMARC finding(s): ${actionable.map((f) => f.code).join(', ')}`, hint: actionable[0].message };
   }
-  const warnings = findings.filter((f) => f.severity === 'warn');
+  const sources = Array.isArray(summary.sources) ? summary.sources : [];
+  const warnings = findings.filter((f) => {
+    if (f.severity !== 'warn') return false;
+    if (f.code !== 'unauthenticated-source' || !f.evidence) return true;
+    const src = sources.find((x) => x.ip === f.evidence.ip);
+    return !(src && isBlockedByPolicy(src, DEFAULTS.failCountForHigh, summary.policy && summary.policy.domain));
+  });
   if (warnings.length) {
     return { status: 'warn', message: `${warnings.length} DMARC warning(s): ${warnings.map((f) => f.code).join(', ')}`, hint: warnings[0].message };
   }

@@ -29,7 +29,7 @@ import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
 import {
   mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync,
-  symlinkSync, realpathSync, appendFileSync,
+  symlinkSync, realpathSync, appendFileSync, utimesSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
@@ -212,4 +212,36 @@ test('BRO-5402 repro: renamed branch (verdict under the old name) is blocked', (
   git(fx.repo, 'branch', '-m', BRANCH, 'feat-ui-renamed');
   const r = runPush(fx, 'git push origin HEAD:refs/heads/land/bro-5402-x');
   assert.equal(r.status, 2, r.stderr);
+});
+
+// BRO-7873: the owner's reply goes through the real hook -> transcript-scan CLI -> (judge) path, not just the
+// unit functions. Under node --test the real network is refused, so a gray reply exercises the judge's
+// "no provider answered" fallback: the hook must ask (exit 2), never approve and never hang.
+function runReply(t, replyText) {
+  const fx = makeFixture(t);
+  assertGateLive(fx);
+  writeVerdict(fx, { schemaVersion: 2, contentHash: HASH, overallPass: true });
+  const old = new Date('2026-10-12T00:00:00Z'); // the verdict is older than the transcript's reply
+  utimesSync(join(fx.repo, '.claude', 'visual-qa', BRANCH, 'verdict.json'), old, old);
+  const started = Date.now();
+  const r = runHook(fx, writeTranscript(fx, replyText));
+  return { ...r, ms: Date.now() - started };
+}
+
+test('BRO-7873 e2e: a plain "yes ship it" reply clears the gate through the real hook', (t) => {
+  const r = runReply(t, 'yes ship it');
+  assert.equal(r.status, 0, r.stderr);
+});
+
+test('BRO-7873 e2e: a gray reply with no judge answer asks (exit 2) and does not hang', (t) => {
+  const r = runReply(t, 'ship it, also look at the footer');
+  assert.equal(r.status, 2, r.stderr);
+  assert.ok(r.ms < 20_000, `hook took ${r.ms}ms`);
+});
+
+test('BRO-7873 e2e: a hold or delay reply never clears the gate through the real hook', (t) => {
+  for (const text of ['yes ship it tomorrow', 'ship it if the footer looks right', 'not yet']) {
+    const r = runReply(t, text);
+    assert.equal(r.status, 2, `${text}: ${r.stderr}`);
+  }
 });

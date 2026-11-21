@@ -257,7 +257,45 @@ function hostMatchesSlot(m, host) {
   return (m.hosts || [m.domain]).some(d => h === d || h.endsWith('.' + d));
 }
 
+/**
+ * True when the last URL path segment names THIS production of the show. The Stage puts the title in the headline
+ * and URL, not in the review body, so the body-names-title guard cannot clear a real Stage review. Rules:
+ * roundup slugs never match; the title tokens must appear in order (or, for a title of 9+ letters, squeezed
+ * together, e.g. "Wonder.land" in damon-albarns-wonderland); a venue named after "-at-" must share a significant
+ * word with the show's venue (a same-titled production elsewhere is another production); a slug with no venue
+ * may carry at most two words beyond the title (and "review").
+ */
+function urlSlugNamesTitle(url, title, venue) {
+  let slug = '';
+  try { slug = decodeURIComponent(new URL(url).pathname.split('/').filter(Boolean).pop() || ''); } catch { return false; }
+  const toks = (x) => String(x || '').toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+  const t = toks(title);
+  const head = toks(slug.split('--')[0]);
+  if (!t.length || !head.length) return false;
+  if (/round-?up/.test(slug.toLowerCase()) || head.includes('roundup') || (head.includes('round') && head.includes('up'))) return false;
+  const named = ` ${head.join(' ')} `.includes(` ${t.join(' ')} `)
+    || (t.join('').length >= 9 && head.join('').includes(t.join('')));
+  if (!named) return false;
+  // Look for "-at-<venue>" only after the title, so a title containing "at" (Taken at Midnight) is not read as a venue.
+  let titleEnd = 0;
+  for (let i = 0; i + t.length <= head.length; i++) if (t.every((w, k) => head[i + k] === w)) { titleEnd = i + t.length; break; }
+  const atAt = head.indexOf('at', titleEnd);
+  if (atAt > 0 && atAt < head.length - 1) {
+    const SKIP = new Set(['theatre', 'theater', 'london', 'royal', 'the', 'national', 'west', 'end']);
+    const vt = toks(venue);
+    let sig = vt.filter((w) => w.length >= 3 && !SKIP.has(w));
+    // A venue made only of generic words ("National Theatre") must still be named: drop just the/theatre, and let
+    // the National's three houses count for it.
+    if (!sig.length) sig = vt.filter((w) => !['the', 'theatre', 'theater'].includes(w)).concat(vt.includes('national') ? ['olivier', 'lyttelton', 'dorfman', 'cottesloe'] : []);
+    const slugVenue = head.slice(atAt + 1);
+    return !sig.length || sig.some((w) => slugVenue.includes(w));
+  }
+  const extra = head.filter((w) => w !== 'review' && !t.includes(w)).length;
+  return extra <= 2;
+}
+
 module.exports = {
+  urlSlugNamesTitle,
   hostMatchesSlot, MAJOR, BY_SLOT, SLOT_OF, buildSlots, summarize, orderQueue, showWindow,
   norm, venueAgrees, matchWosPosts, matchGuardianResults, guardianItemIsReview, ledgerUsd, CostTally, addDays,
 };

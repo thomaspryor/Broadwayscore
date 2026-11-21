@@ -236,6 +236,10 @@ const ADAPTERS = Object.freeze({
     // Stage 4 live batch 2026-11-09: 1/20 accepted. 16 stored urls answer a
     // real 404 ("Page Not Found", confirmed in a fresh browser): wrong urls,
     // work for url rediscovery, not the session. Off for the nightly.
+    // BRO-7943 re-pilot 2026-11-21: 2/8 = 25% (3 not_longer + 1
+    // not_materially_longer: the stored text already is the whole review;
+    // 2 real 404s). Top-up run the same day: 3/16 = 19% overall. Still under
+    // the 30% bar: stays off.
     nightly: false,
     outletIds: ['wsj'],
     cookieDomain: 'wsj.com',
@@ -254,7 +258,11 @@ const ADAPTERS = Object.freeze({
     // of the listing footer + promo line (fixed in trailer-signatures
     // stripTimesFooter: 39 files flip to complete on the next rebuild); 6
     // extractor_null. Off for the nightly.
-    nightly: false,
+    // BRO-7943 re-pilot 2026-11-21 (after the stripTimesFooter fix): times-uk
+    // 5/8, sunday-times 4/8 -> 9/16 = 56% (one sunday-times accept was an
+    // interview at a wrong stored url, flagged isNonReview by hand: 8/16 = 50%).
+    // Over the 30% bar: ON for the nightly.
+    nightly: true,
     outletIds: ['times-uk', 'sunday-times'],
     cookieDomain: 'thetimes.co.uk',
     testUrl: 'https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb',
@@ -266,13 +274,34 @@ const ADAPTERS = Object.freeze({
       contentTierReasonFallback: 'Recovered via authenticated Times UK browser session (gap-recovery driver)',
     },
   }),
+  // BRO-7943: financialtimes had no adapter (67 gaps, "no_adapter"), though the
+  // ft profile + cookies are kept logged in by renew-cookies.js. Probed live
+  // 2026-11-21: a subscriber page renders the review in #article-body (3,416
+  // chars on the Rent review; <article> adds the standfirst/byline chrome).
+  // Live pilot 2026-11-21: 7/8 = 88% accepted (1 show_not_mentioned). FT
+  // columns often hold 2-3 reviews; scoring picks this show's own verdict
+  // (multi-verdict-sections.js, MULTI_VERDICT_OUTLETS).
+  ft: Object.freeze({
+    nightly: true,
+    outletIds: ['financialtimes'],
+    cookieDomain: 'ft.com',
+    testUrl: 'https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa',
+    minAuthChars: 2000,
+    extract: domExtractor({ selectors: ['#article-body', '[data-trackable="article-body"]', 'article'], waitForSelector: '#article-body', botRe: /verify you.re not a robot|access denied|unusual activity/ }),
+    labels: {
+      fetchMethod: 'ft-subscriber-browser-session',
+      sourceMethod: 'ft-subscriber-recovery-login',
+      contentTierReasonFallback: 'Recovered via authenticated FT browser session (gap-recovery driver)',
+    },
+  }),
   telegraph: Object.freeze({
     // BRO-7171: 96 open PAYWALL_TRUNCATED rows. The subscription was
     // cancelled but stays active to the end of the billing month; the owner
     // logs in by hand once (renew-cookies.js --outlet=telegraph --manual).
-    // No live yield measured yet and the session ends with the month, so the
-    // unattended nightly does not plan it; --outlet=telegraph runs do.
-    nightly: false,
+    // Re-subscribed 2026-11-11 and kept by the owner. BRO-7943 live pilot
+    // 2026-11-21: 4/8 = 50% accepted (2 not_longer, 2 navigation_error
+    // non-evidence). Over the 30% bar: ON for the nightly.
+    nightly: true,
     outletIds: ['telegraph', 'sunday-telegraph'],
     cookieDomain: 'telegraph.co.uk',
     // Walled for a browser with no session (168-char teaser + paywall,
@@ -346,4 +375,23 @@ async function openSession(adapter) {
   }
 }
 
-module.exports = { ADAPTERS, adapterFor, adapterUsable, openSession, extractThestage, extractTelegraphBody, gotoOrNotFound, htmlExtractor, resolveBrowserMiss, THESTAGE_WALL_RE, TELEGRAPH_WALL_RE };
+/**
+ * Close every open (not failed) session except `keepName` and drop it from the
+ * map, releasing the shared cookie-renew lock so another outlet can open.
+ * Failed entries stay, so a failed outlet is not retried in the same run.
+ * @param {Map<string, object>} sessions adapter name -> session | {failed}
+ * @param {string} keepName
+ * @returns {Promise<string[]>} names closed
+ */
+async function closeOtherSessions(sessions, keepName) {
+  const closed = [];
+  for (const [name, s] of [...sessions.entries()]) {
+    if (name === keepName || !s || s.failed || typeof s.close !== 'function') continue;
+    await s.close().catch(() => {});
+    sessions.delete(name);
+    closed.push(name);
+  }
+  return closed;
+}
+
+module.exports = { closeOtherSessions, ADAPTERS, adapterFor, adapterUsable, openSession, extractThestage, extractTelegraphBody, gotoOrNotFound, htmlExtractor, resolveBrowserMiss, THESTAGE_WALL_RE, TELEGRAPH_WALL_RE };

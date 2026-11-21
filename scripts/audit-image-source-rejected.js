@@ -9,6 +9,9 @@
  * then tells the archiver to re-download the rejected art if the file goes
  * missing). Fix: clear the field, or record the real source / "manual:<note>".
  *
+ * BRO-7846: also lists TodayTix catalogue art that cannot be the row's own
+ * (closed before TodayTix sold tickets, or beside a rejected TodayTix source).
+ *
  * Read-only.
  *
  * Usage:
@@ -35,8 +38,8 @@ async function main(args) {
   const rows = findRejectedSourcesInUse(shows, sources);
   if (args.includes('--json')) console.log(JSON.stringify(rows, null, 2));
   else {
-    console.log(`${rows.length} in-use image field(s) whose recorded source is a rejected URL`);
-    for (const r of rows) console.log(`  ${r.id}.${r.format}: ${r.path} <- ${r.source}`);
+    console.log(`${rows.length} in-use image field(s) whose recorded source is a rejected URL or another production's TodayTix art`);
+    for (const r of rows) console.log(`  ${r.id}.${r.format}: ${r.path} <- ${r.source} (${r.why})`);
   }
   if (args.includes('--alert')) {
     const { decideImageSourceRejectedAlert } = require('./lib/strict-audit-alerts');

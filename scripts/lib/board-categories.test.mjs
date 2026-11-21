@@ -46,6 +46,8 @@ const FIXTURES = {
   paused: () => card({ state: { name: 'Paused', type: 'backlog' } }),
   ready: () => card(),
   'cooling-off': () => card({ updatedAt: '2026-10-27T11:00:00Z' }),
+  // BRO-7880: a NOT-BEFORE hold still ahead.
+  scheduled: () => card({ description: `NOT-BEFORE: 2099-01-01T00:00:00Z\n${VERIFY}` }),
   'codex-bounced': () => card({ comments: { nodes: [{ body: '<!-- codex-runner-bounced -->\nCodex could not finish this.', createdAt: '2026-10-26T00:00:00Z' }] } }),
   'owner-gated-no-question': () => withDesc('Owner must decide whether to keep this.'),
   'app-repo': () => card({ title: 'iOS app: fix the share sheet' }),

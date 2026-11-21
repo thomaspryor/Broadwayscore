@@ -33,82 +33,17 @@ if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
   process.exit(0);
 }
 
-const { launchOtpBrowser, writeOtpCookies } = require('./lib/otp-login-helpers');
+// BRO-7705: the login steps live in lib/cookie-login-adapters.js, shared
+// with renew-cookies.js (which runs them with Keychain credentials inside the
+// same persistent profile, once, behind the device-limit guards). This
+// script is the manual entry point with env credentials.
+const { standaloneLogin } = require('./lib/cookie-login-adapters');
 
-// BRO-7171 plan item 8: the outlet's shared persistent profile (outside /tmp,
-// shared with renew-cookies.js and the recover scripts). claimProfile() takes
-// the renew lock and migrates the old /tmp profile once.
-const PROFILE_DIR = require('./lib/cookie-renew').profileDir('thetimes');
-const claimProfile = () => require('./lib/cookie-renew').claimOutletProfile('thetimes', { legacy: ['/tmp/thetimes-login-browser-profile', '/tmp/thetimes-recovery-browser-profile'] }).dir;
-const LOGIN_URL = 'https://login.thetimes.com/?gotoUrl=https://www.thetimes.com/';
-
-async function main() {
-  const email = process.env.THETIMES_EMAIL;
-  const password = process.env.THETIMES_PASSWORD;
-  if (!email || !password) {
-    console.error('ERROR: THETIMES_EMAIL and/or THETIMES_PASSWORD not set in environment.');
-    process.exit(1);
-  }
-
-  console.log(`Logging into The Times as ${email} via email + password...`);
-
-  const context = await launchOtpBrowser(claimProfile());
-  const page = context.pages()[0] || (await context.newPage());
-
-  try {
-    console.log('Navigating to The Times login...');
-    await page.goto(LOGIN_URL, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.waitForTimeout(2000);
-
-    const emailField = page.locator('input[name="email"]').first();
-    await page.waitForSelector('input[name="email"]', { timeout: 15000 });
-    await emailField.fill(email);
-
-    const passwordField = page.locator('input[name="password"]').first();
-    if (!(await passwordField.count())) {
-      throw new Error('Password field not found — The Times login page layout may have changed');
-    }
-    await passwordField.fill(password);
-
-    const loginButton = page.getByRole('button', { name: /^log in$/i });
-    if (await loginButton.count()) {
-      await loginButton.click();
-    } else {
-      await passwordField.press('Enter');
-    }
-
-    await page.waitForFunction(
-      () => !/\/login/i.test(window.location.pathname),
-      { timeout: 20000 }
-    );
-    console.log(`Login complete. Landed on: ${page.url()}`);
-
-    const allCookies = await context.cookies();
-    const timesCookies = allCookies.filter(
-      (c) => c.domain.includes('thetimes.co.uk') || c.domain.includes('thetimes.com')
-    );
-
-    if (timesCookies.length === 0) {
-      throw new Error('No thetimes cookies found after login — something went wrong');
-    }
-
-    const httpOnlyCount = timesCookies.filter((c) => c.httpOnly).length;
-    console.log(`Captured ${timesCookies.length} cookies (${httpOnlyCount} httpOnly).`);
-    if (httpOnlyCount === 0) {
-      console.log('WARNING: zero httpOnly cookies captured — login likely did not fully complete.');
-    }
-
-    const cookiePath = writeOtpCookies('thetimes', timesCookies);
-    console.log(`Wrote ${timesCookies.length} cookies to ${cookiePath}`);
-  } finally {
-    await context.close();
-  }
-}
-
-main()
-  .then(() => {
-    console.log('Done.');
-  })
+standaloneLogin('thetimes', { email: process.env.THETIMES_EMAIL, password: process.env.THETIMES_PASSWORD }, {
+  legacy: ['/tmp/thetimes-login-browser-profile', '/tmp/thetimes-recovery-browser-profile'],
+  method: 'password-login',
+})
+  .then(() => console.log('Done.'))
   .catch((err) => {
     console.error('\nFATAL ERROR:', err.message);
     process.exit(1);

@@ -1,38 +1,97 @@
 {
   "outletId": "variety",
-  "generatedAt": "2026-10-28T20:39:04.136Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:31:44.329Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
+    "status": "complete",
     "notes": [],
-    "enumerated": 292,
-    "inWindow": 292,
+    "incomplete": false,
+    "enumerated": 294,
+    "inWindow": 294,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "held": 135,
-      "held-other-market": 28,
+      "held": 154,
+      "held-other-market": 29,
       "not-review": 34,
-      "out-of-window": 45,
-      "held-unmatched": 18,
-      "held-alt-url": 18,
-      "gap": 3,
-      "catalog-gap": 11
+      "out-of-window": 41,
+      "held-alt-url": 20,
+      "held-unmatched": 5,
+      "catalog-gap": 10,
+      "gap": 1
     },
     "viaTitleVariant": {
-      "held": 1,
+      "held": 14,
+      "held-other-market": 1,
+      "held-alt-url": 3
+    },
+    "recall": 0.994,
+    "recallWithCatalog": 0.941
+  },
+  "seasons": {
+    "2026-27": {
+      "held": 4,
+      "held-other-market": 1
+    },
+    "2025-26": {
+      "held": 21,
+      "not-review": 1,
+      "out-of-window": 4,
+      "held-alt-url": 3,
+      "held-other-market": 4
+    },
+    "2024-25": {
+      "held": 32,
+      "held-other-market": 4,
+      "not-review": 1,
+      "held-alt-url": 5,
+      "held-unmatched": 1,
+      "out-of-window": 2
+    },
+    "2023-24": {
+      "held": 29,
+      "out-of-window": 7,
+      "held-unmatched": 3,
+      "held-other-market": 10,
+      "not-review": 10,
+      "catalog-gap": 1,
       "held-alt-url": 1
     },
-    "recall": 0.981,
-    "recallWithCatalog": 0.916
+    "2022-23": {
+      "held": 42,
+      "held-other-market": 5,
+      "not-review": 7,
+      "held-alt-url": 2,
+      "out-of-window": 7,
+      "gap": 1,
+      "catalog-gap": 3
+    },
+    "2021-22": {
+      "out-of-window": 20,
+      "catalog-gap": 4,
+      "held": 25,
+      "not-review": 11,
+      "held-alt-url": 9,
+      "held-unmatched": 1,
+      "held-other-market": 4
+    },
+    "2020-21": {
+      "held": 1,
+      "held-other-market": 1,
+      "not-review": 4,
+      "catalog-gap": 2,
+      "out-of-window": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 624,
-    "notEnumerated": 48,
-    "noUrl": 5,
+    "rowsInWindow": 702,
+    "notEnumerated": 51,
+    "noUrl": 4,
     "samples": [
       {
         "showId": "a-christmas-carol-1991",
@@ -65,6 +124,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "act-one-2014",
+        "url": "https://variety.com/2014/legit/reviews/broadway-review-act-one-starring-tony-shalhoub-1201159101/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "all-shook-up-2005",
         "url": "https://variety.com/2005/legit/reviews/all-shook-up-4-1200526943/",
         "publishDate": null,
@@ -89,12 +154,6 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "between-riverside-and-crazy-2022",
-        "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/",
-        "publishDate": "2022-12-20",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "big-fish-2013",
         "url": "https://variety.com/2013/legit/reviews/broadway-review-big-fish-1200700284/",
         "publishDate": null,
@@ -113,6 +172,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "cat-on-a-hot-tin-roof-2013",
+        "url": "https://variety.com/2013/legit/reviews/cat-on-a-hot-tin-roof-1117949007/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "chitty-chitty-bang-bang-2005",
         "url": "https://variety.com/2005/legit/reviews/chitty-chitty-bang-bang-3-1200526254/",
         "publishDate": null,
@@ -125,6 +190,18 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "danny-and-the-deep-blue-sea-off-broadway-2023",
+        "url": "https://variety.com/2023/theater/reviews/danny-and-the-deep-blue-sea-review-broadway-1235789316/",
+        "publishDate": "2023-11-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dear-evan-hansen-off-broadway-2016",
+        "url": "http://variety.com/2016/legit/reviews/dear-evan-hansen-review-broadway-1201933338/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "death-of-a-salesman-2026",
         "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-lead-disappointing-revival-1236711360/",
         "publishDate": "2026-04-07",
@@ -134,12 +211,6 @@
         "showId": "diana-the-musical-2021",
         "url": "https://variety.com/2021/music/reviews/diana-musical-review-broadway-1235114301/",
         "publishDate": "2021-11-17",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "exit-the-king-2009",
-        "url": "https://variety.com/2009/legit/reviews/exit-the-king-1200472357/",
-        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -233,10 +304,16 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "othello-1982",
-        "url": null,
+        "showId": "queen-versailles-2025",
+        "url": "https://variety.com/2025/theater/reviews/the-queen-of-versailles-broadway-review-kristin-chenoweth-1236571652/",
+        "publishDate": "2025-11-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "rain-2010",
+        "url": "https://www.variety.com/review/VE1117943936.html?categoryid=33&cs=1",
         "publishDate": null,
-        "why": "no-url"
+        "why": "not-enumerated"
       },
       {
         "showId": "silver-manhattan-off-broadway-2026",
@@ -255,41 +332,10 @@
         "url": "https://variety.com/2005/legit/reviews/steel-magnolias-3-1200526719/",
         "publishDate": null,
         "why": "not-enumerated"
-      },
-      {
-        "showId": "sweet-smell-of-success-2002",
-        "url": "https://variety.com/2002/legit/reviews/sweet-smell-of-success-4-1200551928/",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "swept-away-2024",
-        "url": "https://variety.com/2024/legit/reviews/swept-away-review-broadway-1236221067/",
-        "publishDate": "2024-11-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-balusters-2026",
-        "url": "https://variety.com/2026/legit/news/balusters-broadway-review-anika-noni-rose-richard-thomas-brilliant-comedy-1236726809/",
-        "publishDate": "2026-04-21",
-        "why": "not-enumerated"
       }
     ]
   },
   "gaps": [
-    {
-      "url": "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/",
-      "headline": "‘Midnight in the Garden of Good and Evil’ Review: Musical Adaptation is a Promising, Boldly Unconventional Retelling Anchored by Standout Performances",
-      "publishDate": "2024-07-09",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "midnight-in-the-garden-of-good-and-evil-2024"
-      ],
-      "outOfWindow": [
-        "midnight-off-broadway-2026"
-      ]
-    },
     {
       "url": "https://variety.com/2023/legit/reviews/dancin-review-broadway-1235559028/",
       "headline": "‘Bob Fosse’s Dancin” Review: A Rapturous Broadway Homage to a Great Choreographer",
@@ -298,19 +344,6 @@
       "held": [],
       "matched": [
         "bob-fosses-dancin-2023"
-      ],
-      "outOfWindow": [
-        "dancin-1978"
-      ]
-    },
-    {
-      "url": "https://variety.com/2022/legit/reviews/evanston-salt-costs-climbing-review-will-arbery-1235435465/",
-      "headline": "‘Evanston Salt Costs Climbing’ Review: There is Nothing Thrilling About Climate Change Except This Play",
-      "publishDate": "2022-11-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "evanston-salt-costs-climbing-off-broadway-2022"
       ],
       "outOfWindow": []
     }
@@ -339,6 +372,28 @@
       ]
     },
     {
+      "url": "https://variety.com/2025/legit/reviews/the-queen-of-versailles-broadway-review-kristin-chenoweth-1236571652/",
+      "headline": "‘The Queen of Versailles’ Broadway Review: Kristin Chenoweth’s Electric Performance Can’t Save This Overly Ambitious Slog",
+      "publishDate": "2025-11-09",
+      "matched": [
+        "queen-versailles-2025"
+      ],
+      "heldUrls": [
+        "https://variety.com/2025/theater/reviews/the-queen-of-versailles-broadway-review-kristin-chenoweth-1236571652/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/old-friends-review-broadway-stephen-sondheim-1236363218/",
+      "headline": "‘Stephen Sondheim’s Old Friends’ Review: Not Just  a Broadway Tribute but a Musical Feast",
+      "publishDate": "2025-04-08",
+      "matched": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "heldUrls": [
+        "https://variety.com/2025/music/reviews/old-friends-review-broadway-stephen-sondheim-1236363218/"
+      ]
+    },
+    {
       "url": "https://variety.com/2025/legit/reviews/stephen-sondheims-old-friends-revue-ahmanson-review-1236317150/",
       "headline": "‘Stephen Sondheim’s Old Friends’ L.A. Review: Songwriting Depth and Skilled Diva Turns Make the Broadway-Bound Revue a Retrospective Joy",
       "publishDate": "2025-02-23",
@@ -346,7 +401,7 @@
         "stephen-sondheims-old-friends-2025"
       ],
       "heldUrls": [
-        "https://variety.com/2025/legit/reviews/old-friends-review-broadway-stephen-sondheim-1236363218/"
+        "https://variety.com/2025/music/reviews/old-friends-review-broadway-stephen-sondheim-1236363218/"
       ]
     },
     {
@@ -383,14 +438,25 @@
       ]
     },
     {
-      "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-common-stephen-adly-guirgis-mckinley-henderson-1235465956/",
-      "headline": "‘Between Riverside and Crazy’ Review: Stephen Adly Guirgis’ Pulitzer-Winning Dark Comedy Makes Marvelous Broadway Premiere",
-      "publishDate": "2022-12-19",
+      "url": "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-tom-holland-1236014743/",
+      "headline": "‘Romeo and Juliet’ Review: Tom Holland-Led Production Is Hobbled by Director Jamie Lloyd’s Extreme Stylization",
+      "publishDate": "2024-05-23",
       "matched": [
-        "between-riverside-and-crazy-2022"
+        "and-juliet-2022"
       ],
       "heldUrls": [
-        "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/"
+        "https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-1235435481/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/romeo-and-juliet-review-toheeb-jimoh-ted-lasso-rebecca-frecknall-1235645790/",
+      "headline": "‘Romeo and Juliet’ Review: ‘Ted Lasso’ Star Toheeb Jimoh Is the Expressive Heart of Rebecca Frecknall’s Passionate Production",
+      "publishDate": "2023-06-15",
+      "matched": [
+        "and-juliet-2022"
+      ],
+      "heldUrls": [
+        "https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-1235435481/"
       ]
     },
     {
@@ -493,17 +559,6 @@
       ]
     },
     {
-      "url": "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235088743/",
-      "headline": "‘The Lehman Trilogy’ Review: A Dazzling Chronicle of the Rise and Fall of American Capitalism",
-      "publishDate": "2021-10-14",
-      "matched": [
-        "the-lehman-trilogy-2021"
-      ],
-      "heldUrls": [
-        "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235081462/"
-      ]
-    },
-    {
       "url": "https://variety.com/2021/legit/reviews/thoughts-of-a-colored-man-review-broadway-1235088174/",
       "headline": "‘Thoughts of a Colored Man’ Review: A Welcome if Uneven Excavation of Black Masculinity on Broadway",
       "publishDate": "2021-10-13",
@@ -518,39 +573,6 @@
   "misfiles": [],
   "heldUnmatched": [
     {
-      "url": "https://variety.com/2026/legit/reviews/beaches-broadway-review-awful-musical-remake-bette-midler-film-1236727693/",
-      "headline": "‘Beaches’ Broadway Review: Soulless and Uninspired Musical Remake of Beloved Film Washes Ashore",
-      "publishDate": "2026-04-22",
-      "via": null,
-      "held": [
-        "beaches-2026"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-dahl-1236696703/",
-      "headline": "‘Giant’ Broadway Review: John Lithgow as a Venomous Roald Dahl Animates a Staggering Production",
-      "publishDate": "2026-03-23",
-      "via": null,
-      "held": [
-        "giant-2026"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://variety.com/2025/legit/reviews/just-in-time-review-jonathan-groff-broadway-musical-1236379177/",
-      "headline": "‘Just in Time’ Review: Jonathan Groff Plays Bobby Darin in a Lackluster Bio-Jukebox on Broadway",
-      "publishDate": "2025-04-26",
-      "via": null,
-      "held": [
-        "just-in-time-2025"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
       "headline": "‘Boop!’ Review: This Cartoon of a Broadway Musical Is Stuck in Two Dimensions",
       "publishDate": "2025-04-07",
@@ -561,33 +583,6 @@
       "matched": [],
       "outOfWindow": [
         "a-broadway-musical-1978"
-      ]
-    },
-    {
-      "url": "https://variety.com/2025/legit/reviews/english-review-broadway-play-1236282770/",
-      "headline": "‘English’ Review: Pulitzer Winner Debuts on Broadway at the Top of the Class",
-      "publishDate": "2025-01-23",
-      "via": null,
-      "held": [
-        "english-2025"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-kit-connor-rachel-zegler-broadway-1236189568/",
-      "headline": "‘Romeo and Juliet’ Review: Kit Connor and Rachel Zegler Headline a Shakespeare Tragedy That’s More Fun Than It Should Be",
-      "publishDate": "2024-10-24",
-      "via": null,
-      "held": [
-        "romeo-juliet-2024"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "romeo-and-juliet-2013",
-        "romeo-and-juliet-1986",
-        "romeo-and-juliet-1977",
-        "romeo-and-juliet-off-broadway-2026"
       ]
     },
     {
@@ -616,17 +611,6 @@
       ]
     },
     {
-      "url": "https://variety.com/2024/legit/reviews/the-wiz-review-broadway-revival-1235973899/",
-      "headline": "‘The Wiz’ Review: In a New Broadway Revival, Dorothy and Friends Get Lost in a Hypercolor Whirligig",
-      "publishDate": "2024-04-17",
-      "via": null,
-      "held": [
-        "the-wiz-2024"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://variety.com/2024/legit/reviews/tommy-review-broadway-musical-2024-1235954615/",
       "headline": "‘Tommy’ Review: Broadway Musical Revival is Strictly for the Boomers",
       "publishDate": "2024-03-28",
@@ -636,78 +620,6 @@
       ],
       "matched": [],
       "outOfWindow": []
-    },
-    {
-      "url": "https://variety.com/2023/legit/reviews/purlie-victorious-review-broadway-1235734487/",
-      "headline": "‘Purlie Victorious’ Review: Broadway Revival of the Ossie Davis Satire Is a Delightful Romp Centering Black Joy and the Absurdity of Racism",
-      "publishDate": "2023-09-27",
-      "via": null,
-      "held": [
-        "purlie-victorious-2023"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "purlie-1972"
-      ]
-    },
-    {
-      "url": "https://variety.com/2023/legit/reviews/parade-review-ben-platt-broadway-musical-1235555503/",
-      "headline": "‘Parade’ Review: Ben Platt Stuns in a Powerful Broadway Production of an Essential American Musical",
-      "publishDate": "2023-03-16",
-      "via": null,
-      "held": [
-        "parade-2023"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-musical-broadway-1235449537/",
-      "headline": "‘A Beautiful Noise’ Review: Neil Diamond Musical Unpacks Hitmaker’s Life in Therapy and Song",
-      "publishDate": "2022-12-05",
-      "via": null,
-      "held": [
-        "a-beautiful-noise-the-neil-diamond-musical-2022"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://variety.com/2022/legit/reviews/kpop-review-south-broadway-musical-1235442833/",
-      "headline": "‘KPOP’ Review: South Korea’s Explosive Pop Export Hits Broadway With Authenticity and Flash",
-      "publishDate": "2022-11-27",
-      "via": null,
-      "held": [
-        "kpop-2022"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/",
-      "headline": "‘1776’ Review: Bold Choices Enliven Broadway Revival of Revolutionary Musical",
-      "publishDate": "2022-10-06",
-      "via": null,
-      "held": [
-        "1776-2022"
-      ],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://variety.com/2022/legit/reviews/potus-review-play-broadway-1235253436/",
-      "headline": "‘POTUS’ Review: A Rollicking New Broadway Farce About the Women Behind the Idiot in the White House",
-      "publishDate": "2022-04-28",
-      "via": null,
-      "held": [
-        "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
-      ],
-      "matched": [],
-      "outOfWindow": [
-        "the-women-2001",
-        "the-women-1973",
-        "potus-off-broadway-2026"
-      ]
     },
     {
       "url": "https://variety.com/2022/legit/reviews/for-colored-girls-review-broadway-ntozake-shange-1235236902/",
@@ -722,17 +634,6 @@
         "the-women-2001",
         "the-women-1973"
       ]
-    },
-    {
-      "url": "https://variety.com/2021/legit/reviews/company-review-broadway-patti-lupone-1235129438/",
-      "headline": "‘Company’ Review: A Sublime Revival of Stephen Sondheim’s Beloved Musical",
-      "publishDate": "2021-12-09",
-      "via": null,
-      "held": [
-        "company-2021"
-      ],
-      "matched": [],
-      "outOfWindow": []
     }
   ],
   "ambiguous": [],
@@ -777,15 +678,6 @@
       "url": "https://variety.com/2022/legit/reviews/devil-wears-prada-review-musical-1235335985/",
       "headline": "‘The Devil Wears Prada’ Review: Broadway-Bound Musical Needs to Take a Cue From Miranda Priestly and Get Meaner",
       "publishDate": "2022-08-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://variety.com/2022/legit/reviews/straight-line-crazy-review-ralph-fiennes-david-hare-1235214559/",
-      "headline": "‘Straight Line Crazy’ Review: Ralph Fiennes Plays Robert Moses in David Hare’s Talky New Play",
-      "publishDate": "2022-03-25",
       "via": null,
       "held": [],
       "matched": [],
@@ -837,6 +729,7 @@
       "outOfWindow": []
     }
   ],
+  "otherMarketReviews": [],
   "outOfWindow": [
     {
       "url": "https://variety.com/2026/legit/reviews/brigadoon-pasadena-playhouse-review-lerner-loe-1236760181/",
@@ -943,20 +836,6 @@
       ]
     },
     {
-      "url": "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-tom-holland-1236014743/",
-      "headline": "‘Romeo and Juliet’ Review: Tom Holland-Led Production Is Hobbled by Director Jamie Lloyd’s Extreme Stylization",
-      "publishDate": "2024-05-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "romeo-and-juliet-2013",
-        "romeo-and-juliet-1986",
-        "romeo-and-juliet-1977",
-        "romeo-and-juliet-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://variety.com/2024/legit/reviews/death-becomes-her-review-musical-chicago-1236010777/",
       "headline": "‘Death Becomes Her’ Review: Promising Pre-Broadway Musical Makes for a Campy Improvement on the Cult Film",
       "publishDate": "2024-05-20",
@@ -1000,21 +879,6 @@
       "matched": [],
       "outOfWindow": [
         "a-broadway-musical-1978"
-      ]
-    },
-    {
-      "url": "https://variety.com/2023/legit/reviews/romeo-and-juliet-review-toheeb-jimoh-ted-lasso-rebecca-frecknall-1235645790/",
-      "headline": "‘Romeo and Juliet’ Review: ‘Ted Lasso’ Star Toheeb Jimoh Is the Expressive Heart of Rebecca Frecknall’s Passionate Production",
-      "publishDate": "2023-06-15",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "romeo-and-juliet-2013",
-        "romeo-and-juliet-1986",
-        "romeo-and-juliet-1977",
-        "romeo-and-juliet-off-broadway-2026",
-        "the-heart-off-broadway-2026"
       ]
     },
     {
@@ -1218,26 +1082,14 @@
       ]
     },
     {
-      "url": "https://variety.com/2022/legit/reviews/harmony-review-barry-manilow-musical-new-york-1235232141/",
-      "headline": "‘Harmony’ Review: Barry Manilow Musical Tells Sensational True Story With Pop Prowess",
-      "publishDate": "2022-04-13",
+      "url": "https://variety.com/2022/legit/reviews/straight-line-crazy-review-ralph-fiennes-david-hare-1235214559/",
+      "headline": "‘Straight Line Crazy’ Review: Ralph Fiennes Plays Robert Moses in David Hare’s Talky New Play",
+      "publishDate": "2022-03-25",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "harmony-2023"
-      ]
-    },
-    {
-      "url": "https://variety.com/2022/legit/reviews/suffs-review-musical-shaina-taub-1235226941/",
-      "headline": "‘Suffs’ Review: Epic New Musical Portrays the Blood, Sweat and Tears Behind the Fight for Women’s Suffrage",
-      "publishDate": "2022-04-06",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "suffs-2024",
-        "sweat-2017"
+        "straight-off-broadway-2016"
       ]
     },
     {
@@ -1283,17 +1135,6 @@
       "matched": [],
       "outOfWindow": [
         "life-of-pi-2023"
-      ]
-    },
-    {
-      "url": "https://variety.com/2021/legit/reviews/assassins-review-classic-stage-company-sondheim-musical-1235111096/",
-      "headline": "‘Assassins’ Review: A Killer Revival of Stephen Sondheim’s Macabre Masterpiece",
-      "publishDate": "2021-11-14",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "assassins-2004"
       ]
     },
     {
@@ -1372,8 +1213,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "operation-mincemeat-2025",
-        "small-off-broadway-2026"
+        "operation-mincemeat-2025"
       ]
     },
     {

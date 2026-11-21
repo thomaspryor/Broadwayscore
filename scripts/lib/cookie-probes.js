@@ -42,9 +42,91 @@ const COOKIE_PROBES = {
     minBody: 1500,
     // In a class attribute only, never a script/CSS bundle mention.
     wallMarker: /class="[^"]*martech-paywall__blur/i,
-    gateMarker: /martech-paywall__blur|data-js="martech-paywall"|martech-regwall/i,
+    // is-subscriber--false: the site names the reader a non-subscriber (also
+    // on a metered free read, which has no paywall element).
+    // Only inside a rendered class attribute, never CSS/bundle text.
+    gateMarker: /martech-paywall__blur|data-js="martech-paywall"|martech-regwall|class="[^"]*\bis-subscriber--false\b/i,
+    // Evidence required before adopting cookies or spending a login: the
+    // rendered paywall itself, never the reader class alone (review
+    // 2026-11-19: a subscriber page captured before its class flips must not
+    // start a login).
+    loginWallMarker: /class="[^"]*martech-paywall__blur|data-js="martech-paywall"|class="[^"]*martech-regwall/i,
     browserOnly: true,
     extractBody: (html) => require('./browser-outlet-adapters').extractTelegraphBody(html),
+    // Metered: about 1 in 4 fresh anonymous loads read the full article
+    // (measured 2026-11-19: 2 of 7), which read 'vacuous' twice in a row on
+    // a live renewal. The page names the reader instead: subscriber page
+    // carries is-subscriber--true, every anonymous load (free read or
+    // walled) is-subscriber--false.
+    subscriberMarker: /class="[^"]*\bis-subscriber--true\b/,
+  },
+  // BRO-7705 probes. Every number below was measured live on 2026-11-17 on
+  // the SAME url with the subscriber session and with none (the control), so
+  // none of them is vacuous the way the old ones were:
+  //   nytimes   fetch 6170 vs anon 2904 (the old 1500 floor passed anon!)
+  //   wapo      fetch 6589 vs anon 309; browser 8067 vs 1314
+  //   newyorker fetch serves the full 8474 chars to anyone (paywall is
+  //             client-side), browser 8474 vs anon 645 -> browser probe
+  //   ft        plain fetch = 403 "Security Verification"; browser 3035 vs
+  //             a 2312-char "Subscribe to read" page (the old 1200 floor
+  //             passed it) -> browser probe + title wall marker
+  //   thetimes  plain fetch = "Verifying Device"; browser 2775 vs 0
+  //
+  // loginWallMarker: the wall as a real browser renders it for a visitor with
+  // no session (in the anonymous page, absent from the subscriber page;
+  // measured 2026-11-17). renew-cookies.js adopts cookies or logs in only
+  // when a slower re-load shows this marker, so a blank render, 404,
+  // consent overlay or redesign never starts a login (BRO-7705 ship-check).
+  nytimes: {
+    url: 'https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html',
+    minBody: 4500,
+    loginWallMarker: /gateway-content|regiwall|lready a subscriber/i,
+    // BRO-7765/7922: DataDome answers every cookie-less browser (headless or
+    // headed, throwaway profile) and plain fetch with HTTP 403 (2026-11-18,
+    // 2026-11-21), so the control is the persistent profile with only the
+    // session cookies removed (cookie-browser-probe.profileControlProbe).
+    // Only if that is blocked too is it 'control-blocked' (fails closed for
+    // write runs).
+    profileControl: true,
+  },
+  wapo: {
+    url: 'https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/',
+    minBody: 4000,
+    loginWallMarker: /paywall-overlay|subs-turnstile-hook-wall|lready a subscriber/i,
+  },
+  newyorker: {
+    // BRO-7922: the 2023 Doll's House review is now free to anonymous browsers
+    // (8474 chars, no bar), so it read 'vacuous'. Walled today (anon browser,
+    // 2026-11-21): Other Desert Cities 1081 chars + barrier; Downstate 10108
+    // chars + paywall-bar. Recent magazine reviews are metered, so older ones
+    // age out: classifyWithControl rotates through altUrls when this one reads
+    // vacuous. Add a fresh walled review to the front when one does.
+    url: 'https://www.newyorker.com/magazine/2026/11/02/other-desert-cities-theatre-review-a-bright-room-called-day',
+    altUrls: [
+      'https://www.newyorker.com/magazine/2026/11/30/downstate-theatre-review',
+    ],
+    minBody: 4000,
+    browserOnly: true,
+    // Since 2026-11-19 a fresh anonymous browser gets this article as a free
+    // metered read (full 8474 chars) with a thin "Subscribe" bar rendered as
+    // data-testid="paywall-bar-thin"; the subscriber page has no bar. The bare
+    // word InContentBarrier is in the strings bundle of BOTH pages, so it only
+    // counts inside a rendered attribute.
+    wallMarker: /data-testid="paywall-bar(?:-[a-z]+)?"/,
+    loginWallMarker: /data-testid="paywall-bar(?:-[a-z]+)?"|JOURNEY_PAYWALL|(?:class|data-testid)="[^"]*InContentBarrier/,
+  },
+  ft: {
+    url: 'https://www.ft.com/content/681beb68-5155-11df-bed9-00144feab49a',
+    minBody: 2000,
+    wallMarker: /<title>[^<]*Subscribe to (?:read|unlock)/i,
+    browserOnly: true,
+    loginWallMarker: /<title>[^<]*Subscribe to (?:read|unlock)/i,
+  },
+  thetimes: {
+    url: 'https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb',
+    minBody: 1500,
+    browserOnly: true,
+    loginWallMarker: /zephr-paywall/,
   },
 };
 
@@ -57,14 +139,21 @@ const COOKIE_PROBES = {
  * @param {RegExp} [p.wallMarker] - present => logged out
  * @param {RegExp} [p.gateMarker] - when given, a failing page must show it
  *   to count as 'logged-out'; otherwise the page is unrecognised => 'error'
+ * @param {RegExp} [p.subscriberMarker] - when given, a page passes only if it
+ *   shows it (the site names the reader a subscriber). Lets a metered free
+ *   read in the control count as walled instead of 'vacuous'.
  * @returns {'logged-in'|'logged-out'|'vacuous'|'error'}
  */
-function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker, gateMarker }) {
+function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker, gateMarker, subscriberMarker }) {
   const passes = (r) => !!r
     && (r.body || '').length >= minBody
-    && !(wallMarker && wallMarker.test(r.html || ''));
+    && !(wallMarker && wallMarker.test(r.html || ''))
+    && !(subscriberMarker && !subscriberMarker.test(r.html || ''));
   const recognisedGate = (r) => !gateMarker || gateMarker.test(r.html || '');
 
+  // A bot interstitial says nothing about the login on either side: never
+  // 'logged-out' (that would start a login), never 'vacuous' (BRO-7705).
+  if ((withCookies && isBotChallenge(withCookies.html)) || (withoutCookies && isBotChallenge(withoutCookies.html))) return 'error';
   if (withoutCookies && passes(withoutCookies)) return 'vacuous';
   if (withoutCookies && !recognisedGate(withoutCookies)) return 'error';
   if (!withCookies || typeof withCookies.html !== 'string' || withCookies.html.length === 0) return 'error';
@@ -76,10 +165,33 @@ function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker,
 // Device"). A page like this says nothing about the login: re-logging in
 // cannot clear it, so callers must not report it as logged-out (2026-10-18:
 // The Times and WSJ challenges were sending the owner to re-login in Safari).
-const BOT_CHALLENGE_RE = /captcha-delivery\.com|<title>\s*(?:Verifying Device|Just a moment\.\.\.)\s*<\/title>|Access is temporarily restricted|slide right to secure/i;
+const BOT_CHALLENGE_RE = /captcha-delivery\.com|<title>\s*(?:Verifying Device|Just a moment\.\.\.|Security Verification)\s*<\/title>|Access is temporarily restricted|slide right to secure/i;
 
-function isBotChallenge(html) {
-  return BOT_CHALLENGE_RE.test(String(html || ''));
+/**
+ * A WAF "Access Denied" page that some sites (newyorksocialdiary.com) serve
+ * as a ~20KB 200 to Playwright: bigger than the 10KB cap above, so it was
+ * stored as a 334-char "review" (BRO-5133). Title + phrase together, so an
+ * article quoting the phrase is not rejected.
+ *
+ * Akamai's wording differs ("You don't have permission to access ... on this
+ * server", reference link to errors.edgesuite.net). dailymail.co.uk serves it
+ * to Playwright once an IP is throttled, and the chain logged the 334-char
+ * denial as a success (BRO-716).
+ */
+function isRobotBlockPage(content) {
+  return !!content && content.length < 60000 &&
+    /<title>\s*Access Denied\s*<\/title>/i.test(content) &&
+    (content.includes('similar to malicious requests sent by robots') ||
+      /You don(?:'|&#39;|’)t have permission to access/i.test(content) ||
+      content.includes('errors.edgesuite.net'));
 }
 
-module.exports = { COOKIE_PROBES, classifyWalledProbe, isBotChallenge };
+// BRO-7962: an Akamai/WAF "Access Denied" page (Telegraph to every plain and
+// Playwright fetch, 2026-11-21) is a bot wall too; one definition with the
+// scraper chain's check (isRobotBlockPage), so the two cannot drift.
+function isBotChallenge(html) {
+  const s = String(html || '');
+  return BOT_CHALLENGE_RE.test(s) || isRobotBlockPage(s);
+}
+
+module.exports = { COOKIE_PROBES, classifyWalledProbe, isBotChallenge, isRobotBlockPage };

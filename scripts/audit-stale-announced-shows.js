@@ -60,7 +60,7 @@ const {
   findOrphanAcks,
   evaluateAnnouncedShow,
   isAuditedStatus,
-  hasEvidenceOfOpening,
+  hasInRunEvidenceOfOpening,
   describeOpeningEvidence,
   evidenceSinceFor,
   carryFirstFlagged,
@@ -103,7 +103,7 @@ function loadJSON(file, fallback = null) {
 }
 
 function hasPopulatedReviewTextsDir(showId, show, now = new Date()) {
-  return hasEvidenceOfOpening(REVIEW_TEXTS_DIR, showId, explainExclusion, show, { since: evidenceSinceFor(show, now) });
+  return hasInRunEvidenceOfOpening(REVIEW_TEXTS_DIR, showId, explainExclusion, show, now);
 }
 
 // Announced shows that have review files but ALL of them discounted as

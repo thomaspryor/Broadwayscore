@@ -22,6 +22,7 @@
 'use strict';
 
 const path = require('path');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const fs = require('fs');
@@ -89,7 +90,7 @@ function cwdRepo() {
 function trainMarkerVerdict({ tip, repoDir, remote = 'origin', git = null }) {
   const run = git || ((args) => {
     try {
-      return execFileSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 90000 }).trim();
+      return gitGuard.runGitOrThrow(args, { cwd: repoDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 90000 }).trim();
     } catch { return null; }
   });
   const ls = run(['ls-remote', remote, markerRef(tip)]);
@@ -218,7 +219,15 @@ if (require.main === module) {
   try {
     process.exit(main());
   } catch (err) {
-    console.log(`REFUSED: fatal: ${String(err.message).split('\n')[0]}`);
+    const line = require('./lib/land-branch.js').fatalRefusalLine(err);
+    console.log(line);
+    // land.yml reads failed_check from the result file; without one it reports 'fatal'. Keep the git-timeout label.
+    try {
+      const a = parseArgs(process.argv.slice(2));
+      if (a['result-file'] && a['result-file'] !== true && /^REFUSED: git-timeout:/.test(line)) {
+        fs.writeFileSync(String(a['result-file']), `${JSON.stringify({ branch: a.branch, landed: false, sha: null, attempts: 0, failedCheck: 'git-timeout', reason: line.replace(/^REFUSED: /, ''), pushed: false, files: [] }, null, 2)}\n`);
+      }
+    } catch { /* the log line above is the fallback */ }
     process.exit(1);
   }
 }

@@ -120,6 +120,8 @@ test('the production driver persists scored reviews before publishing and skips 
   const ledger = require('../../scripts/lib/opening-night-lane/ledger.js');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4835-driver-'));
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  // The temp repo has no git remote, so the BRO-7741 manual inbox read stays off here (lane-manual-inbox.test.mjs covers it).
+  // the inbox kill switch rides the env passed in (no inbox branch in this test's repo)
   const show = { ...SHOW, openingDate: NIGHT };
   const url = 'https://www.theguardian.com/stage/2026/oct/20/test-show-review';
   const text = 'The performances and staging make this production a delight. '.repeat(20);
@@ -161,7 +163,7 @@ test('the production driver persists scored reviews before publishing and skips 
   }
   const deps = driver.buildRealLaneDeps({
     show, night: NIGHT, openingDate: NIGHT, holder: 'test', repoDir: dir, coreDir: dir, ledgerDir,
-    env: { ANTHROPIC_API_KEY: 'test', OPENAI_API_KEY: 'test' }, routeAlert: async () => {}, ScorerClass: Scorer,
+    env: { ANTHROPIC_API_KEY: 'test', OPENAI_API_KEY: 'test', OPENING_NIGHT_LANE_INBOX_DISABLED: 'true' }, routeAlert: async () => {}, ScorerClass: Scorer,
   });
   const first = await deps.runNight({ shouldStop: () => false });
   assert.deepEqual(first.errors, []);
@@ -225,13 +227,12 @@ test('the lane folder does not pull the alert router into the arm hash', () => {
 });
 
 // BRO-4835: the live workflow caps the lane step at 280 min; the lane's own window must end before that.
-import fsWin from 'node:fs';
 test('live workflow sets a lane window shorter than the lane step timeout', () => {
-  const y = fsWin.readFileSync(new URL('../../.github/workflows/opening-night-lane-live.yml', import.meta.url), 'utf8');
+  const y = fs.readFileSync(new URL('../../.github/workflows/opening-night-lane-live.yml', import.meta.url), 'utf8');
   const win = Number(/OPENING_NIGHT_LANE_WINDOW_MIN:\s*'?(\d+)'?/.exec(y)[1]);
   const cap = Number(/id: lane\s+timeout-minutes:\s*(\d+)/.exec(y)[1]);
   assert.ok(win > 0 && win < cap, `window ${win} must be below the step cap ${cap}`);
-  assert.match(fsWin.readFileSync(new URL('../../scripts/lib/opening-night-lane/driver.js', import.meta.url), 'utf8'), /OPENING_NIGHT_LANE_WINDOW_MIN/);
+  assert.match(fs.readFileSync(new URL('../../scripts/lib/opening-night-lane/driver.js', import.meta.url), 'utf8'), /OPENING_NIGHT_LANE_WINDOW_MIN/);
 });
 
 test('BRO-5201 wireLaneNight: every port is required, dryRun cannot be passed, and the driver, shadow and rehearsal share one adapter list', async (t) => {

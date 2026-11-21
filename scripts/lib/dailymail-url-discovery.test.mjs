@@ -91,3 +91,51 @@ test('the rating lookback stops at the previous review\'s body (review finding)'
 test('normWords folds diacritics instead of shredding the word', () => {
   assert.deepEqual(L.normWords('Les Misérables'), ['les', 'miserables']);
 });
+
+// BRO-7869: real urls. Globe 2026 Tempest text (TR print date 2026-01-30) carried the
+// Drury Lane Tempest page (published 2024-12-20); American Psycho ran 2026-02-02.
+const DRURY_LANE = 'https://www.dailymail.co.uk/tvshowbiz/article-14212015/PATRICK-MARMION-reviews-Tempest-Sigourney-Weaver.html';
+const AMERICAN_PSYCHO = 'https://www.dailymail.com/tvshowbiz/article-15518223/PATRICK-MARMIONs-night-review-American-Psycho.html';
+
+test('a DM url whose article id predates the print date by over a year is proven wrong (BRO-7869)', () => {
+  const p = L.dailyMailUrlPredatesReview(DRURY_LANE, '2026-01-30');
+  assert.ok(p, 'Drury Lane 2024 url on a 2026 review must be proven wrong');
+  assert.equal(p.articleId, 14212015);
+  assert.equal(p.anchorDate, '2025-01-01');
+  assert.ok(p.gapDays > L.URL_PREDATES_REVIEW_DAYS);
+});
+
+test('a DM url from the review\'s own time, or the right review on its own date, is not flagged', () => {
+  assert.equal(L.dailyMailUrlPredatesReview(AMERICAN_PSYCHO, '2026-01-30'), null);
+  assert.equal(L.dailyMailUrlPredatesReview(DRURY_LANE, '2024-12-20'), null);
+  // An id newer than every anchor gives no proof either way.
+  assert.equal(L.dailyMailUrlPredatesReview('https://www.dailymail.co.uk/tvshowbiz/article-16300000/x.html', '2026-11-01'), null);
+});
+
+test('non-DM hosts, id-less paths and missing dates give no proof', () => {
+  assert.equal(L.dailyMailUrlPredatesReview('https://www.theguardian.com/stage/article-14212015/x.html', '2026-01-30'), null);
+  assert.equal(L.dailyMailUrlPredatesReview('https://www.dailymail.co.uk/tvshowbiz/index.html', '2026-01-30'), null);
+  assert.equal(L.dailyMailUrlPredatesReview(DRURY_LANE, null), null);
+  assert.equal(L.dailyMailUrlPredatesReview('not a url', '2026-01-30'), null);
+});
+
+test('DM id anchors are strictly increasing in date and id', () => {
+  for (let i = 1; i < L.DM_ID_ANCHORS.length; i++) {
+    assert.ok(L.DM_ID_ANCHORS[i][0] > L.DM_ID_ANCHORS[i - 1][0]);
+    assert.ok(L.DM_ID_ANCHORS[i][1] > L.DM_ID_ANCHORS[i - 1][1]);
+  }
+});
+
+test('review-field-edit accepts the url clear on the TR print row only (BRO-7869)', () => {
+  const { applyReviewFieldEdit } = require('./review-field-edit.js');
+  const stamp = { fixId: 'bro-7869', at: '2026-11-20T00:00:00.000Z' };
+  const base = { showId: 'the-tempest-globe-off-west-end-2026', outletId: 'daily-mail', criticName: 'Patrick Marmion', url: DRURY_LANE, publishDate: '2026-01-30' };
+  const action = { file: 'the-tempest-globe-off-west-end-2026/daily-mail--patrick-marmion.json', field: 'url', oldValue: DRURY_LANE, newValue: '' };
+  const tr = applyReviewFieldEdit({ ...base, source: 'theatre-record', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2026/1/37280-the-tempest' }, action, stamp, {});
+  assert.equal(tr.ok, true, tr.reason);
+  assert.equal(tr.record.url, '');
+  const web = applyReviewFieldEdit({ ...base, source: 'outlet-serp-discovery' }, action, stamp, {});
+  assert.equal(web.ok, false, 'a non-print row\'s date may come from the url, so no proof');
+  const sameTime = applyReviewFieldEdit({ ...base, source: 'theatre-record', url: AMERICAN_PSYCHO }, { ...action, oldValue: AMERICAN_PSYCHO }, stamp, {});
+  assert.equal(sameTime.ok, false);
+});

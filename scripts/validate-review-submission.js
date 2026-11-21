@@ -30,11 +30,13 @@ import submissionShowMatch from './lib/submission-show-match.js';
 import reviewSubmissionIssue from './lib/review-submission-issue.js';
 import nonReviewUrlPatterns from './lib/non-review-url-patterns.js';
 import submissionDecision from './lib/submission-decision.js';
+import urlDate from './lib/url-date.js';
 
 const { lookupOutletForHost } = outletCanonicalize;
 const { resolveOutletFromUrlIfPathInformed } = reviewNormalization;
 const { canonicalizeUrlForDedup } = reviewGuards;
-const { findMatchingShows: findMatchingShowsIn } = submissionShowMatch;
+const { findMatchingShows: findMatchingShowsIn, preferProductionByDate } = submissionShowMatch;
+const { extractDateFromUrl } = urlDate;
 const { parseIssueBody } = reviewSubmissionIssue;
 const { submissionNonReviewReason } = nonReviewUrlPatterns;
 const { alreadyListedResult, finalizeLlmRecommendation, rejectKind, ALREADY_LISTED } = submissionDecision;
@@ -371,8 +373,19 @@ async function validateSubmission(issueBody) {
       (matchedShowCandidates.length === 1 ? matchedShowCandidates[0].id : null) ||
       null;
     if (resolvedId) {
+      // Issue #1178: prefer the production whose run window contains the review's
+      // URL date over a same-title production from another year.
+      const resolvedShow = shows.find(s => s.id === resolvedId);
+      const byDate = preferProductionByDate({
+        show: resolvedShow, showName: submissionData.showName || resolvedShow?.title,
+        shows, reviewDate: extractDateFromUrl(submissionData.reviewUrl)?.date || null,
+      });
+      if (byDate && byDate.id !== resolvedId) {
+        console.log(`Show re-matched by review date: ${resolvedId} -> ${byDate.id}`);
+      }
       if (claudeValidation.extractedData) {
-        claudeValidation.extractedData.showId = resolvedId;
+        claudeValidation.extractedData.showId = byDate ? byDate.id : resolvedId;
+        if (byDate && byDate.id !== resolvedId) claudeValidation.extractedData.showTitle = byDate.title;
       }
     } else {
       claudeValidation.recommendation = 'needs-manual-review';

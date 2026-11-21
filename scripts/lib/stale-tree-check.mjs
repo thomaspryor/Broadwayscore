@@ -145,7 +145,8 @@ function main(argv) {
   return 0;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+let isMain = false; try { isMain = !!process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url); } catch { /* argv[1] is not a file (node -, node -e) */ }
+if (isMain) {
   try {
     process.exitCode = main(process.argv.slice(2));
   } catch (e) {

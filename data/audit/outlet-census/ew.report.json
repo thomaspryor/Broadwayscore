@@ -1,12 +1,27 @@
 {
   "outletId": "ew",
-  "generatedAt": "2026-10-28T20:45:32.692Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:49:49.052Z",
   "since": "2021-06-01",
   "source": {
-    "kind": "unreadable",
+    "kind": "sitemap",
+    "status": "incomplete",
     "notes": [
-      "unreadable: site and robots.txt return HTTP 403 to the census client"
+      "child https://ew.com/sitemap_1.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_2.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_3.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_4.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_5.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_6.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_7.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_8.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_9.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_10.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_11.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_12.xml: All scraping methods failed",
+      "child https://ew.com/sitemap_13.xml: All scraping methods failed"
     ],
+    "incomplete": true,
     "enumerated": 0,
     "inWindow": 0,
     "undated": 0,
@@ -19,21 +34,16 @@
     "recall": null,
     "recallWithCatalog": null
   },
+  "seasons": {},
   "corpusSide": {
-    "rowsInWindow": 459,
-    "notEnumerated": 177,
-    "noUrl": 9,
+    "rowsInWindow": 486,
+    "notEnumerated": 170,
+    "noUrl": 8,
     "samples": [
       {
         "showId": "1776-2022",
         "url": "https://ew.com/theater/theater-reviews/1776-review-broadway-musical-revival/",
         "publishDate": "2022-10-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "33-variations-2009",
-        "url": "http://www.ew.com/ew/article/0,,20264100,00.html",
-        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -67,6 +77,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "a-few-good-men-2026",
+        "url": "https://ew.com/a-few-good-men-broadway-review-tom-blyth-turns-up-charisma-tom-cruise-role-12197325",
+        "publishDate": "2026-10-29",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "a-free-man-of-color-2010",
         "url": "https://www.ew.com/ew/article/0,,20364394_20443244,00.html",
         "publishDate": null,
@@ -92,14 +108,8 @@
       },
       {
         "showId": "a-strange-loop-2022",
-        "url": "https://ew.com/theater/theater-reviews/a-strange-loop-review-michael-e-jackson/",
+        "url": "https://ew.com/theater/theater-reviews/a-strange-loop-review-michael-r-jackson/",
         "publishDate": "2022-04-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "act-one-2014",
-        "url": "https://www.ew.com/ew/article/0,,20364394_20807898,00.html",
-        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -112,12 +122,6 @@
         "showId": "american-buffalo-2022",
         "url": "https://ew.com/theater/theater-reviews/american-buffalo-review-sam-rockwell-laurence-fishburne-david-mamet/",
         "publishDate": "2022-04-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "american-idiot-2010",
-        "url": "https://www.ew.com/ew/article/0,,20362571,00.html",
-        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -176,7 +180,7 @@
       },
       {
         "showId": "betrayal-2013",
-        "url": "http://www.ew.com/ew/article/0,,20364394_20749744,00.html",
+        "url": "https://www.ew.com/ew/article/0,,20364394_20749744,00.html",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -217,12 +221,6 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "burn-the-floor-2009",
-        "url": "https://www.ew.com/ew/article/0,,20295500,00.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
         "showId": "cabaret-2024",
         "url": "https://ew.com/cabaret-kit-kat-club-review-broadway-8636569",
         "publishDate": "2024-04-21",
@@ -237,12 +235,6 @@
       {
         "showId": "cat-on-a-hot-tin-roof-2013",
         "url": "http://www.ew.com/ew/article/0,,20364394_20665293,00.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "catch-me-if-you-can-2011",
-        "url": "https://www.ew.com/ew/article/0,,20364394_20480885,00.html",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -263,6 +255,30 @@
         "url": "https://www.ew.com/ew/article/0,,20364394_20540774,00.html",
         "publishDate": null,
         "why": "not-enumerated"
+      },
+      {
+        "showId": "collected-stories-2010",
+        "url": "http://www.ew.com/ew/article/0,,20364798,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "constellations-2015",
+        "url": "http://www.ew.com/ew/article/0,,20364394_20891829,00.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cult-of-love-2024",
+        "url": "https://ew.com/cult-of-love-review-broadway-laugh-cry-harsh-family-truths-8759444",
+        "publishDate": "2024-12-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "url": "https://ew.com/days-of-wine-and-roses-broadway-review-kelli-ohara-brain-darcy-james-8550561",
+        "publishDate": "2024-01-29",
+        "why": "not-enumerated"
       }
     ]
   },
@@ -272,5 +288,6 @@
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

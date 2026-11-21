@@ -186,7 +186,9 @@ function selectDrainCandidates(issues, { limit = 6, alreadyAttempted = new Set()
   const { priorityRank, pausedHoldReason } = require('./linear-dispatch.js');
   return (Array.isArray(issues) ? issues : [])
     // BRO-6764: a card linear-next's pausedHoldGuard would refuse costs a slot and a day's dispatch for nothing.
-    .filter((iss) => iss && isDrainEligible(iss) && !alreadyAttempted.has(iss.identifier) && !pausedHoldReason(iss, nowMs))
+    // BRO-7880: a NOT-BEFORE card waits for its time.
+    .filter((iss) => iss && isDrainEligible(iss) && !alreadyAttempted.has(iss.identifier) && !pausedHoldReason(iss, nowMs)
+      && !require('./card-not-before.js').notBeforeHoldReason(iss, nowMs))
     .sort((a, b) => (priorityRank(a) - priorityRank(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)))
     .slice(0, Math.max(0, limit));
 }

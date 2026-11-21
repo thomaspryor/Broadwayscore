@@ -39,6 +39,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive, runShellCode } from './review-coverage.mjs';
+import { isMainModule } from './is-main-module.mjs';
 
 const require = createRequire(import.meta.url);
 const { parseRootCauseBlock, isFixCard, ROOT_CAUSE_CLOSE_BLOCKING_FROM, COUSINS_TAIL_RE } = require('./root-cause-close.js');
@@ -338,7 +339,7 @@ export function main(argv, { env = process.env, now = new Date() } = {}) {
   return 2;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   let code = 0;
   try {
     code = main(process.argv.slice(2));

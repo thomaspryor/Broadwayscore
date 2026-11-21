@@ -400,7 +400,27 @@ async function checkBudget(numShows, opts = {}) {
   };
 }
 
+/**
+ * Pure. Split checkBudget blockers into hard (fail readiness) and soft (warn).
+ * ScrapingBee is a fallback link in the fetch chain (Scrapingdog -> Bright Data
+ * -> SB -> Playwright); owner policy (memory/feedback_sb_quota_ride_out.md) is
+ * to ride out a thin SB balance, never fail on it. The 50k/show estimate is a
+ * worst-case default, so a balance under it must not mark a night NOT READY
+ * (BRO-7854). Every other resource stays a hard blocker.
+ */
+const SOFT_BLOCKER_RESOURCES = Object.freeze(['scrapingbee']);
+function splitBudgetBlockers(blockers) {
+  const hard = [];
+  const soft = [];
+  for (const b of blockers || []) {
+    (SOFT_BLOCKER_RESOURCES.includes(b.resource) ? soft : hard).push(b);
+  }
+  return { hard, soft };
+}
+
 module.exports = {
+  splitBudgetBlockers,
+  SOFT_BLOCKER_RESOURCES,
   estimateBudget,
   checkBudget,
   fetchLiveUsage,

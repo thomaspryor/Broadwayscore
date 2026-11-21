@@ -482,7 +482,27 @@ function summarizeMissedForHealth(snap) {
   return { uncovered: open.length, covered: snap.missed.length - open.length, alertable, agedOut: open.length - alertable };
 }
 
+/**
+ * BRO-7890: why a show with a completed tracker record is skipped, in words that match the real state. The send
+ * script printed "already broadcast (completed)" for a draft created and never sent (completed:true, draftStatus
+ * 'draft'), so a dry run told the owner the email was out when it sat unsent in Resend. Derived from
+ * classifyBroadcastState (draftStatus + draftId) and sentAt, never from `completed` alone.
+ */
+function skipReasonForRecord(record) {
+  const state = classifyBroadcastState(record);
+  const r = record || {};
+  const link = r.draftUrl ? `: ${r.draftUrl}` : '';
+  switch (state) {
+    case 'sent': return `already sent${r.sentAt ? ` at ${r.sentAt}` : ''}`;
+    case 'draft-stuck': return `draft created${r.draftCreatedAt ? ` ${r.draftCreatedAt}` : ''}, NOT sent yet (status ${r.draftStatus || 'draft'})${link}`;
+    case 'draft-unknown': return `draft ${r.draftId || ''} is gone from Resend and was never seen sent; check before re-drafting`.replace('  ', ' ');
+    case 'discarded': return `draft deliberately discarded unsent${r.discardedAt ? ` at ${r.discardedAt}` : ''}`;
+    default: return 'no draft on record';
+  }
+}
+
 module.exports = {
+  skipReasonForRecord,
   STALE_DRAFT_MAX_ALERT_AGE_DAYS,
   summarizeMissedForHealth,
   selectPageableStaleDrafts,

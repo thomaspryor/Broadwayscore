@@ -65,6 +65,8 @@ jobs:
             # BRO-5884: daily encrypted Supabase export (accounts, reviews, lists, watchlists, fantasy) to R2.
             # 36h = daily cadence + 12h cron-lag cushion.
             "supabase-backup.yml|36|Supabase Backup to R2"
+            # BRO-7708: image sweep failed on every scheduled run 2026-11-02..17 while exempt as "self-healing"; a missing sm/ variant is a user-visible 404 thumbnail. 36h = daily cadence + cushion.
+            "sweep-image-variants.yml|36|Sweep Image Variants"
             # BRO-5963: monthly restore drill (2nd of month). 756h = 31 days (744h) + 12h cushion;
             # the coverage audit only simulates 60 days so it would accept 684h, which would
             # false-alarm before most monthly runs.
@@ -268,6 +270,10 @@ jobs:
             # missing run after 0.75h (input + redispatch-after-hours in the workflow). 13h = 1/3h gap
             # cushion + 12h; a run with no cards exits 0, so a success always means the lander ran.
             "visual-approval-land.yml|13|Visual Approval Land"
+            # BRO-7934: */15 drop detector for the opening-night window. GitHub fired the schedule 52 of
+            # 1,344 times (2026-11-06..19); cron-redispatch replaces a missing run after 0.5h (input +
+            # redispatch-after-hours in the workflow). 13h = 15min gap + 12h cushion.
+            "opening-night-completeness-check.yml|13|Opening Night Completeness Check"
             # BRO-6351: one email per owner decision (cron 7,27,47). GitHub ran it 4 times in 17h on
             # 2026-10-26 and 5 decisions waited hours; cron-redispatch replaces a missing run after 0.75h
             # (input + redispatch-after-hours in the workflow; a redispatch is the tick, never the roundup).
@@ -699,6 +705,8 @@ jobs:
             echo "::warning::deploy-duration check SKIPPED — run-history query failed (auth/rate-limit/network). This is NOT a statement that deploy durations are healthy."
             exit 0
           fi
+          # BRO-7766: a pre-warm run's duration includes waiting on a rebuild, not deploy time.
+          RUNS=$(echo "$RUNS" | jq '[.[] | select((.displayTitle // "") | contains("pre-warm") | not)]')
           COUNT=$(echo "$RUNS" | jq 'length')
 
           if [ "$COUNT" -eq 0 ]; then

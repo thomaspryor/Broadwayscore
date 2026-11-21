@@ -754,7 +754,7 @@ function buildCardNotes(row) {
       '',
       '## Suggested approach',
       landing
-        ? `Read the branch's latest land.yml run for the failing gate, fix the cause on the branch (or on main if main itself is red), and push the same ref so land.yml retries. Fix the root cause (not the gate), and include prevention per CLAUDE.md.`
+        ? `Read the branch's latest land.yml run for the failing gate, fix the cause on the branch (or on main if main itself is red), and push the same ref so land.yml retries (a "does not rebase cleanly" refusal is the exception: squash onto fresh origin/main and push a NEW -v2 ref). Fix the root cause (not the gate), and include prevention per CLAUDE.md.`
         : `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js for the check that emits "${row.name}" to find the underlying data source or workflow. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
       '',
       '## Acceptance criteria',
@@ -789,7 +789,7 @@ function buildCardNotes(row) {
     '',
     '## Suggested approach',
     landing
-      ? `Each branch above is a land/ ref whose land.yml gate is red. Read that ref's latest land.yml run for the failing gate, fix the cause on the branch (or on main if main itself is red), and push the same ref so land.yml retries. Fix the root cause (not the gate), and include prevention per CLAUDE.md.`
+      ? `Each branch above is a land/ ref whose land.yml gate is red. Read that ref's latest land.yml run for the failing gate, fix the cause on the branch (or on main if main itself is red), and push the same ref so land.yml retries (a "does not rebase cleanly" refusal is the exception: squash onto fresh origin/main and push a NEW -v2 ref). Fix the root cause (not the gate), and include prevention per CLAUDE.md.`
       : `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js (or scripts/lib/opening-night-checks/) for the check that emits "${condition}" to find the underlying data source or workflow. Several of these checks self-document a BULK remediation command (one run, no --show=, fixes every affected show) in their message above — prefer that over fixing one show at a time. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
     '',
     '## Acceptance criteria',

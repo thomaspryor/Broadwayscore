@@ -139,6 +139,10 @@ function writeTranscript(dir, toolCalls, { card = true, userText = 'please do th
 // picks the verdict (0 healthy / 3 erroring / 4 unreachable).
 const STUB_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-stubroot-'));
 fs.mkdirSync(path.join(STUB_ROOT, 'scripts'));
+// BRO-7872: run each case from a host-neutral env. Inherited from a cloud session, CLAUDE_CODE_REMOTE and a real
+// OPENAI_API_KEY switched on the cloud-only gates and the live skeptic reviewer, so 30 cases failed in cloud only and
+// one made a paid LLM call. A case that wants cloud sets CLAUDE_CODE_REMOTE in its own env.
+const HOST_ENV = Object.fromEntries(Object.entries(process.env).filter(([k]) => !['CLAUDE_CODE_REMOTE', 'OPENAI_API_KEY'].includes(k)));
 fs.writeFileSync(path.join(STUB_ROOT, 'scripts', 'linear-brain.js'), 'process.exit(Number(process.env.STUB_PROBE_EXIT || 0));\n');
 
 function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive = false, { cwd, hook = REPO_HOOK } = {}) {
@@ -160,7 +164,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
       // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', ...env, HOME: fakeHomeDir },
+      env: { ...HOST_ENV, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CHILDJOBS_GATE_DISABLE: '1', CHILDWATCH_GATE_DISABLE: '1', DEADWAIT_GATE_DISABLE: '1', NEWSESSIONASK_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ROOT_CAUSE_STOP_DISABLE: '1', LANDREFUSED_GATE_MODE: 'off', LANDUNCHECKED_REMOTE_CHECK: '0', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -759,7 +763,8 @@ test('PR follow-through kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1 allows an u
 
 const LAND_PUSH = toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-x' });
 const LAND_CREATE_BRANCH = toolUse('mcp__github__create_branch', { owner: 'thomaspryor', repo: 'Broadwayscore', branch: 'land/fix-x' });
-const LAND_RUN_CHECK = toolUse('mcp__github__actions_list', { method: 'list_workflow_runs', owner: 'thomaspryor', repo: 'Broadwayscore', resource_id: 'land.yml' });
+const runResult = (ref) => `{"workflow_runs":[{"id":1,"head_branch":"${ref}","status":"completed","conclusion":"success"}]}`;
+const LAND_RUN_CHECK = toolUse('mcp__github__actions_list', { method: 'list_workflow_runs', owner: 'thomaspryor', repo: 'Broadwayscore', resource_id: 'land.yml' }, runResult('land/fix-x'));
 const LINEAR_CLOSEOUT_DONE = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-4187 --state Done --comment "landed"' });
 
 test('OWNERMERGE: "waiting on your merge" blocks even with KEEP OPEN', skipNoRepoHook, () => {
@@ -773,7 +778,7 @@ test('OWNERMERGE: "waiting on your merge" blocks even with KEEP OPEN', skipNoRep
 
 test('OWNERMERGE false-positive guard: describing or quoting the rule is not a merge ask', skipNoRepoHook, () => {
   const dir = makeTmpDir('ownermerge-describe');
-  const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }), toolUse('mcp__github__actions_get', { method: 'get_workflow_run' }), toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state Done' })]);
+  const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }), toolUse('mcp__github__actions_get', { method: 'get_workflow_run' }, runResult('land/x')), toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state Done' })]);
   const r = runHook(transcript, 'Landed. Sessions never ask the owner to merge, and the Stop hook now blocks "waiting on your merge" and `ready to merge`.\n\nSAFE TO ARCHIVE — landed and verified.');
   assertAllowed(r, 'a description or quotation of the rule must not trip OWNERMERGE');
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
@@ -886,6 +891,9 @@ const WFL_FG_LANDED = toolUse('Bash', { command: WFL_CMD }, '03:41:07Z LANDED: l
 const WFL_FG_REFUSED = { ...toolUse('Bash', { command: WFL_CMD }, '03:41:07Z REFUSED: land/fix-x run 1 failure\n  next: fix on top of the refused commit'), _isError: true };
 const WFL_BG = toolUse('Bash', { command: WFL_CMD, run_in_background: true }, 'Command running in background with ID: bwfl1234. Output is being written to: /tmp/x/bwfl1234.output.');
 const wflDone = (code) => notice(`<task-notification>\n<task-id>bwfl1234</task-id>\n<status>completed</status>\n<summary>Background command "Wait for land" completed (exit code ${code})</summary>\n</task-notification>`);
+const again = (c) => ({ ...c, id: `tu-${randomUUID()}` }); // a repeated call gets its own tool_use id
+const LAND_PUSH_B = toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-y' });
+const WFL_FG_B = toolUse('Bash', { command: 'node scripts/lib/wait-for-land.js land/fix-y 60' }, '03:41:07Z LANDED: land/fix-y is gone from origin');
 const WFL_LANDUNCHECKED_CASES = [
   ['foreground waiter printed LANDED', [LAND_PUSH, WFL_FG_LANDED], true],
   ['foreground waiter printed REFUSED (exit 1, an error result)', [LAND_PUSH, WFL_FG_REFUSED], true],
@@ -896,6 +904,30 @@ const WFL_LANDUNCHECKED_CASES = [
   ['background waiter started, never finished', [LAND_PUSH, WFL_BG], false],
   ['background waiter timed out (exit 2)', [LAND_PUSH, WFL_BG, wflDone(2)], false],
   ['waiter run before the push', [toolUse('Bash', { command: WFL_CMD }, '03:41:07Z LANDED: land/fix-x is gone from origin'), LAND_PUSH], false],
+  // BRO-7701: each land push needs its own finished check; one wait used to clear every later push.
+  ['push A, wait A, push B', [LAND_PUSH, WFL_FG_LANDED, LAND_PUSH_B], false],
+  ['push A, wait A, push B, wait A again', [LAND_PUSH, WFL_FG_LANDED, LAND_PUSH_B, again(WFL_FG_LANDED)], false],
+  ['push A, push B, wait B only', [LAND_PUSH, LAND_PUSH_B, WFL_FG_B], false],
+  ['push A, push B, wait both', [LAND_PUSH, LAND_PUSH_B, WFL_FG_B, WFL_FG_LANDED], true],
+  ['background wait A, push B, A finishes', [LAND_PUSH, WFL_BG, LAND_PUSH_B, wflDone(0)], false],
+  ['push A, refused wait, push A again, wait A', [LAND_PUSH, WFL_FG_REFUSED, again(LAND_PUSH), WFL_FG_LANDED], true],
+  ['push A, wait A, delete an old land ref', [LAND_PUSH, WFL_FG_LANDED, toolUse('Bash', { command: 'git push origin --delete land/old' })], true],
+  ['push A, wait A, delete via empty refspec', [LAND_PUSH, WFL_FG_LANDED, toolUse('Bash', { command: 'git push origin :refs/heads/land/old' })], true],
+  ['a rejected push starts no Land run', [{ ...toolUse('Bash', LAND_PUSH_B.input, ' ! [rejected]        HEAD -> land/fix-y (non-fast-forward)\nerror: failed to push some refs'), _isError: true }], true],
+  ['a push piped into a filter that exits 1 still pushed', [{ ...toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-y 2>&1 | grep -v Enumerating' }, ''), _isError: true }], false],
+  ['push and waiter in one command, waiter timed out', [{ ...toolUse('Bash', { command: `git push origin HEAD:refs/heads/land/fix-x && ${WFL_CMD}` }, '04:41:07Z TIMEOUT: land/fix-x still on origin'), _isError: true }], false],
+  ['newer run of the ref in progress, older one completed', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, '{"workflow_runs":[{"id":9,"head_branch":"land/fix-x","status":"in_progress"},{"id":8,"head_branch":"land/fix-x","status":"completed","conclusion":"failure"}]}')], false],
+  ['two waiters in one command clear both refs', [LAND_PUSH, LAND_PUSH_B, toolUse('Bash', { command: `${WFL_CMD}; node scripts/lib/wait-for-land.js land/fix-y 60` }, '03:41:07Z LANDED: land/fix-x is gone from origin\n03:42:07Z LANDED: land/fix-y is gone from origin')], true],
+  ['a Grep over fixtures is not a waiter read', [LAND_PUSH, WFL_BG, toolUse('Grep', { pattern: 'LANDED' }, '03:41:07Z LANDED: land/fix-x is gone from origin')], false],
+  ['run check that names a different ref', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, runResult('land/other'))], false],
+  ['run check still in progress', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, '{"workflow_runs":[{"head_branch":"land/fix-x","status":"in_progress"}]}')], false],
+  ['one push naming two land refs, only the first waited', [toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-x HEAD:refs/heads/land/fix-y' }), WFL_FG_LANDED], false],
+  ['run list: this ref in progress, another run completed', [LAND_PUSH, toolUse('mcp__github__actions_list', { method: 'list_workflow_runs' }, '{"workflow_runs":[{"head_branch":"land/fix-x","status":"in_progress"},{"head_branch":"land/other","status":"completed"}]}')], false],
+  ['background wait A, re-push A, old waiter output read', [LAND_PUSH, WFL_BG, again(LAND_PUSH), toolUse('Read', { file_path: '/tmp/x/bwfl1234.output' }, '03:41:07Z LANDED: land/fix-x is gone from origin')], false],
+  ['push inside $(...) then waited', [toolUse('Bash', { command: 'out=$(git push origin HEAD:refs/heads/land/fix-x)' }), WFL_FG_LANDED], true],
+  ['trailing -d deletes, not pushes', [LAND_PUSH, WFL_FG_LANDED, toolUse('Bash', { command: 'git push origin land/old -d' })], true],
+  ['re-push, then a run list still showing the previous completed run', [LAND_PUSH, WFL_FG_REFUSED, again(LAND_PUSH), again(LAND_RUN_CHECK)], false],
+  ['push failed with fatal: before reaching origin', [{ ...toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-y' }, 'fatal: unable to access remote'), _isError: true }], true],
   ['reading the waiter script is not running it', [LAND_PUSH, toolUse('Bash', { command: 'cat scripts/lib/wait-for-land.js' }, 'console.log(`LANDED: land/x`)')], false],
 ];
 for (const [label, calls, allowed] of WFL_LANDUNCHECKED_CASES) {
@@ -907,6 +939,60 @@ for (const [label, calls, allowed] of WFL_LANDUNCHECKED_CASES) {
     else { assertBlocked(r, label); assert.match(r.stderr, /wait-for-land\.js/, `got: ${r.stderr.slice(0, 300)}`); }
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
+}
+
+// BRO-7811: the gate re-fired every turn on refs that were never pushed (text inside fixtures/echo), already landed,
+// or already waived by a NO-VERIFY. Each case below fails with the matching hook change reverted.
+const sh = (command, result = '') => toolUse('Bash', { command }, result);
+const REMOTE_GONE = { LANDUNCHECKED_REMOTE_CHECK: '1', LANDUNCHECKED_LS_REMOTE_CMD: 'true' }; // ls-remote prints nothing: ref deleted by land.yml
+const REMOTE_HAS = { LANDUNCHECKED_REMOTE_CHECK: '1', LANDUNCHECKED_LS_REMOTE_CMD: 'echo abc123' }; // ref still on origin
+const REMOTE_ERR = { LANDUNCHECKED_REMOTE_CHECK: '1', LANDUNCHECKED_LS_REMOTE_CMD: 'false' }; // offline: unknown, stay unchecked
+const NO_VERIFY_EARLIER = { type: 'text', text: 'Not waiting on land.yml.\nNO-VERIFY: land check skipped, container restarts lose the waiter, run confirmed on main' };
+const B7811_CASES = [
+  ['heredoc fixture mentioning a land push is not a push', [sh("cat > /tmp/t.sh <<'EOF'\ngit push origin HEAD:refs/heads/land/x\nEOF")], {}, true],
+  ['node -e test string mentioning a land push is not a push', [sh('node -e "run(\'git push origin HEAD:refs/heads/land/fix-x\')"')], {}, true],
+  ['echo text mentioning a land push is not a push', [sh('echo "then git push origin HEAD:refs/heads/land/sweep-image-variants"')], {}, true],
+  ['land/$r template is not a ref', [sh('for r in a b; do git push origin HEAD:refs/heads/land/$r; done')], {}, true],
+  ['bash -c script that really pushes still counts', [sh("bash -c 'git push origin HEAD:refs/heads/land/fix-x'")], {}, false],
+  ['a plain real push still blocks (remote still has the ref)', [LAND_PUSH], REMOTE_HAS, false],
+  ['pushed ref already gone from origin counts as checked', [LAND_PUSH], REMOTE_GONE, true],
+  ['ls-remote failing keeps the ref unchecked', [LAND_PUSH], REMOTE_ERR, false],
+  ['a backgrounded push is never cleared by an empty ls-remote', [{ ...LAND_PUSH, input: { ...LAND_PUSH.input, run_in_background: true } }], REMOTE_GONE, false],
+  ['an unrelated NO-VERIFY does not waive a land push', [LAND_PUSH, { type: 'text', text: 'NO-VERIFY: docs only' }], {}, false],
+  ['an earlier NO-VERIFY covering the pending push suppresses the re-ask', [LAND_PUSH, NO_VERIFY_EARLIER], {}, true],
+  ['a NEW push after the earlier NO-VERIFY is asked about', [LAND_PUSH, NO_VERIFY_EARLIER, LAND_PUSH_B], {}, false],
+];
+for (const [label, calls, env, allowed] of B7811_CASES) {
+  test(`BRO-7811 LANDUNCHECKED: ${label} → ${allowed ? 'ALLOWED' : 'BLOCKED'}`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('land-7811');
+    const transcript = writeTranscript(dir, [...calls, LINEAR_CLOSEOUT_DONE]);
+    const r = runHook(transcript, 'Landed via land.yml.\n\nSAFE TO ARCHIVE — landed and verified.', env);
+    if (allowed) assertAllowed(r, label); else { assertBlocked(r, label); assert.match(r.stderr, /Unchecked land push|wait-for-land/, `got: ${r.stderr.slice(0, 300)}`); }
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  });
+}
+
+// BRO-7701: a REFUSED verdict is followed but not landed. Advisory until 2026-11-24 (CLAUDE.md 19).
+const REFUSED_CASES = [
+  ['refused, closing says nothing', [LAND_PUSH, WFL_FG_REFUSED], 'Landed via land.yml.', false],
+  ['refused, closing reports it', [LAND_PUSH, WFL_FG_REFUSED], 'land.yml refused it; dropping this change because main already has the fix.', true],
+  ['refused, fixed and landed under a new ref', [LAND_PUSH, WFL_FG_REFUSED, LAND_PUSH_B, WFL_FG_B], 'Landed via land.yml.', true],
+  ['refused then re-pushed same ref and landed', [LAND_PUSH, WFL_FG_REFUSED, again(LAND_PUSH), WFL_FG_LANDED], 'Landed via land.yml.', true],
+  ['refused, closing mentions refusal only in an unrelated sense', [LAND_PUSH, WFL_FG_REFUSED], 'The gate refuses bad input; retired the old flag.', false],
+  ['refused, closing says the landing was dropped', [LAND_PUSH, WFL_FG_REFUSED], 'Dropped this landing: main already has the fix.', true],
+  ['background waiter exit 1, closing says nothing', [LAND_PUSH, WFL_BG, wflDone(1)], 'Landed via land.yml.', false],
+];
+for (const [label, calls, prose, allowed] of REFUSED_CASES) {
+  for (const mode of ['block', 'advisory']) {
+    test(`BRO-7701 LANDREFUSED (${mode}): ${label} → ${allowed || mode === 'advisory' ? 'ALLOWED' : 'BLOCKED'}`, skipNoRepoHook, () => {
+      const dir = makeTmpDir('land-refused');
+      const transcript = writeTranscript(dir, [CREATE_PR, ...calls, LINEAR_CLOSEOUT_DONE]);
+      const r = runHook(transcript, `${prose}\n\nSAFE TO ARCHIVE — done.`, { LANDREFUSED_GATE_MODE: mode, LINEAR_API_KEY: '' }); // no advisory comment from tests
+      if (allowed || mode === 'advisory') assertAllowed(r, label);
+      else { assertBlocked(r, label); assert.match(r.stderr, /REFUSED/, `got: ${r.stderr.slice(0, 300)}`); }
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    });
+  }
 }
 
 test('land/** match is anchored: a branch named foo-land/x is not a landing', skipNoRepoHook, () => {
@@ -2201,6 +2287,106 @@ function assertUnclear(r, message, what) {
 }
 const CLEAR = 'The fix is live on the site.\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO ARCHIVE';
 
+// RULE21 BRO-7653: execute the shipped hook with all three reported gates enabled.
+const PAUSE = 'KEEP OPEN - the background check wakes this session when it finishes.';
+const PAUSE_GATES = { ...CC_ON, ...WK_ON, CLAUDE_CODE_REMOTE: 'true', SHIP_CHECK_COVERAGE_DISABLE: '0' };
+function pauseTranscript(dir, calls, ageMs = 0) {
+  const transcript = writeTranscript(dir, [GIT_PUSH, ...calls]);
+  const timestamp = new Date(Date.now() - ageMs).toISOString();
+  const rows = fs.readFileSync(transcript, 'utf8').trim().split('\n').map((line) => ({ ...JSON.parse(line), timestamp }));
+  fs.writeFileSync(transcript, rows.map((row) => JSON.stringify(row)).join('\n') + '\n');
+  return transcript;
+}
+const PAUSE_MONITOR = toolUse('Monitor', { command: 'node scripts/lib/wait-for-land.js land/x 60' },
+  'Monitor started (task bmon7k2q9, expires in 3600s).');
+const PAUSE_PROGRESS = notice('<task-notification><task-id>bmon7k2q9</task-id><event>still waiting</event></task-notification>');
+const pauseOutput = (status, extra = {}) => ({ ...toolUse('TaskOutput', { task_id: 'b1e9y745t', block: false },
+  `<retrieval_status>success</retrieval_status>\n<task_id>b1e9y745t</task_id>\n<status>${status}</status>\n<output>log mentions <status>completed</status></output>`), ...extra });
+
+test('BRO-7653: board-workers teaches a concise live-wait closing accepted by the Stop gates', skipNoRepoHook, () => {
+  const guide = fs.readFileSync(path.join(REPO_ROOT, 'docs/cloud-routines/board-workers.md'), 'utf8');
+  const turnEndRule = guide.slice(guide.indexOf('Turn-end rule'), guide.indexOf('Never sit idle'));
+  assert.match(turnEndRule, /no turn may end/, 'keep picking while the lane has available work');
+  const instruction = turnEndRule.match(/while a background waiter or test run is live,\s+use only `(KEEP OPEN - <what it waits on and what wakes it>)`/);
+  assert.ok(instruction, 'teach the short closing at the point where workers decide whether to end a turn');
+  for (const [label, call, reason] of [
+    ['land waiter', BG_WAIT, 'the landing is still running; its background waiter wakes this session when it finishes'],
+    ['test run', { ...BG_WAIT, input: { ...BG_WAIT.input, command: 'node --test scripts/lib/session-retro.test.mjs' } },
+      'the test run is still running; its completion wakes this session'],
+    ['Monitor', PAUSE_MONITOR, 'the landing is still running; the monitor wakes this session when it finishes'],
+  ]) {
+    const dir = makeTmpDir('pause-guide');
+    try {
+      const message = instruction[1].replace('<what it waits on and what wakes it>', reason);
+      assertAllowed(runHook(pauseTranscript(dir, [call]), message, {
+        ...PAUSE_GATES, OPENWORK_GATE_DISABLE: '0', LOOSEENDS_GATE_DISABLE: '0',
+        CHILDWAIT_GATE_DISABLE: '0', CHILDJOBS_GATE_DISABLE: '0', CHILDWATCH_GATE_DISABLE: '0',
+      }), label);
+    } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  }
+});
+
+for (const [label, calls] of [
+  ['Bash waiter', [BG_WAIT]],
+  ['Monitor', [PAUSE_MONITOR]],
+  ['Monitor progress', [PAUSE_MONITOR, PAUSE_PROGRESS]],
+  ['Monitor minute expiry', [{ ...PAUSE_MONITOR, _result: 'Monitor started (task bmon7k2q9, expires in 10m unless the source ends first)' }]],
+  ['running TaskOutput', [BG_WAIT, pauseOutput('running')]],
+  ['failed TaskOutput retrieval', [BG_WAIT, pauseOutput('completed', { _isError: true })]],
+  ['unfinished review during a wait', [SHIP_CHECK, BG_WAIT]],
+]) {
+  test(`BRO-7653: concise KEEP OPEN passes for ${label}`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('pause-live');
+    try { assertAllowed(runHook(pauseTranscript(dir, calls), PAUSE, PAUSE_GATES), label); }
+    finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  });
+}
+
+for (const [label, calls, ageMs = 0] of [
+  ['no task', []],
+  ['foreground Bash', [{ ...BG_WAIT, input: { ...BG_WAIT.input, run_in_background: false } }]],
+  ['failed launch', [{ ...BG_WAIT, _isError: true }]],
+  ['missing receipt', [{ ...BG_WAIT, _result: '' }]],
+  ['unrelated task ID', [{ ...BG_WAIT, _result: 'Previously completed task ID: b1e9y745t.' }]],
+  ['missing timestamp', [BG_WAIT], NaN],
+  ['expired Bash', [BG_WAIT], 3 * 60 * 60 * 1000],
+  ['expired Monitor seconds', [PAUSE_MONITOR], 2 * 60 * 60 * 1000],
+  ['expired Monitor minutes', [{ ...PAUSE_MONITOR, _result: 'Monitor started (task bmon7k2q9, expires in 10m unless the source ends first)' }], 11 * 60 * 1000],
+  ['completed Bash', [BG_WAIT, BG_DONE]],
+  ['completed Monitor', [PAUSE_MONITOR, notice('<task-notification><task-id>bmon7k2q9</task-id><status>completed</status></task-notification>')]],
+  ['stopped task', [BG_WAIT, toolUse('TaskStop', { task_id: 'b1e9y745t' })]],
+  ['later owner request', [BG_WAIT, notice('Please do another change now.')]],
+  ['completed TaskOutput', [BG_WAIT, pauseOutput('completed')]],
+  ['failed task in TaskOutput', [BG_WAIT, pauseOutput('failed')]],
+]) {
+  test(`BRO-7653: ${label} cannot waive the closing template`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('pause-inactive');
+    try {
+      const transcript = Number.isNaN(ageMs) ? writeTranscript(dir, [GIT_PUSH, ...calls]) : pauseTranscript(dir, calls, ageMs);
+      const result = runHook(transcript, PAUSE, PAUSE_GATES);
+      assertBlocked(result, label);
+      assert.match(result.stderr, /\[VE:(?:CLEARCLOSE|WAKELESS)\]/);
+    } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  });
+}
+
+test('BRO-7653: a live wait never waives status, owner-action, reason or review requirements', skipNoRepoHook, () => {
+  const dir = makeTmpDir('pause-gates');
+  try {
+    for (const [message, calls, tag] of [
+      ['The test will wake me.', [BG_WAIT], 'NOSTATUSLINE'],
+      ['KEEP OPEN', [BG_WAIT], 'CLEARCLOSE'],
+      ['DECISION NEEDED: choose the design.\n' + PAUSE, [BG_WAIT], 'VERDICTMISMATCH'],
+      ['You need to: choose the design.\nACTION NEEDED FROM YOU - choose the design.', [BG_WAIT], 'CLEARCLOSE'],
+      ['SAFE TO ARCHIVE - all done.', [SHIP_CHECK, BG_WAIT], 'RCOV'],
+    ]) {
+      const result = runHook(pauseTranscript(dir, calls), message, PAUSE_GATES);
+      assertBlocked(result, tag);
+      assert.ok(result.stderr.includes(`[VE:${tag}]`), result.stderr);
+    }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
 test('CLEARCLOSE: real unclear endings → BLOCKED, naming what is missing', skipNoRepoHook, () => {
   const dir = makeTmpDir('cc-block');
   const t = writeTranscript(dir, [GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
@@ -2612,4 +2798,61 @@ test('ENGINE_CRASH: a node pre-check that dies (not 0, not 2, not a timeout) blo
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
+});
+
+// ─── DEADWAIT + NEWSESSIONASK (BRO-7918): real Stop hook, real closing messages ─────────────
+const DEAD_FX = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'scripts/lib/fixtures/bro-7918-dead-keep-open/closings.json'), 'utf8'));
+// WAKELESS off isolates DEADWAIT (WAKELESS already blocks a plain KEEP OPEN with nothing live; DEADWAIT also
+// covers the paths WAKELESS passes). CHILDWAIT stays on, as in production.
+const DW_ON = { ...PAUSE_GATES, WAKELESS_GATE_DISABLE: '1', DEADWAIT_GATE_DISABLE: '0', DEADWAIT_GATE_MODE: 'block',
+  CHILDWAIT_GATE_DISABLE: '0', CHILDJOBS_GATE_DISABLE: '0', CHILDWATCH_GATE_DISABLE: '0', CLEARCLOSE_GATE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1' };
+
+for (const k of ['bro-7741-fresh-worker', 'bro-7816-follow-up-card', 'bro-7780-board-worker', 'bro-7817-recheck-date', 'bro-7817-card-paused', 'bro-7780-real-dead-keep-open']) {
+  test(`DEADWAIT: real dead KEEP OPEN (${k}) is blocked by the hook with nothing running`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('dw-block');
+    try {
+      const result = runHook(pauseTranscript(dir, []), DEAD_FX[k], DW_ON);
+      assertBlocked(result, k);
+      assert.match(result.stderr, /\[VE:(?:DEADWAIT|CHILDWAIT)\]/, result.stderr.slice(0, 300));
+    } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  });
+}
+test('DEADWAIT: the BRO-7741 wording is blocked as DEADWAIT, with a message that offers the working exit', skipNoRepoHook, () => {
+  const dir = makeTmpDir('dw-msg');
+  try {
+    const result = runHook(pauseTranscript(dir, []), DEAD_FX['bro-7741-fresh-worker'], DW_ON);
+    assertBlocked(result, 'bro-7741');
+    assert.ok(result.stderr.includes('[VE:DEADWAIT]'), result.stderr.slice(0, 300));
+    assert.match(result.stderr, /Nothing will wake this session/);
+    assert.match(result.stderr, /SAFE TO ARCHIVE/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+test('DEADWAIT: the same wording passes with a live background wait, and the SAFE TO ARCHIVE ending passes', skipNoRepoHook, () => {
+  const dir = makeTmpDir('dw-pass');
+  try {
+    assertAllowed(runHook(pauseTranscript(dir, [BG_WAIT]), DEAD_FX['bro-7817-live-wait'], DW_ON), 'real live-wait KEEP OPEN');
+    assertAllowed(runHook(writeTranscript(dir, []), DEAD_FX['bro-7816-safe'], DW_ON), 'real SAFE TO ARCHIVE');
+    for (const k of ['bro-7780-real-safe-after', 'bro-7780-real-safe-fix']) assertAllowed(runHook(writeTranscript(dir, []), DEAD_FX[k], DW_ON), `real SAFE TO ARCHIVE ${k}`);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+test('DEADWAIT: advisory mode and the kill switch let it through', skipNoRepoHook, () => {
+  const dir = makeTmpDir('dw-off');
+  try {
+    const t = pauseTranscript(dir, []);
+    assertAllowed(runHook(t, DEAD_FX['bro-7741-fresh-worker'], { ...DW_ON, DEADWAIT_GATE_MODE: 'advisory' }), 'advisory');
+    assertAllowed(runHook(t, DEAD_FX['bro-7741-fresh-worker'], { ...DW_ON, DEADWAIT_GATE_DISABLE: '1' }), 'kill switch');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+const NS_ON = { ...PAUSE_GATES, NEWSESSIONASK_GATE_DISABLE: '0', CLEARCLOSE_GATE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1' };
+test('NEWSESSIONASK: telling the owner to start a new session is blocked; rules and quotes pass', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ns');
+  try {
+    const t = writeTranscript(dir, []);
+    const bad = runHook(t, 'The fix is not live yet.\nYou need to: start a new session and tell it to finish and release BRO-7741.\n\nACTION NEEDED FROM YOU — start a new session.', NS_ON);
+    assertBlocked(bad, 'bro-7741 owner ask');
+    assert.ok(bad.stderr.includes('[VE:NEWSESSIONASK]'), bad.stderr.slice(0, 300));
+    assertAllowed(runHook(t, 'Nothing is still running.\nNothing needed from you. Never ask the owner to start a new session.\n\nSAFE TO ARCHIVE — all done.', NS_ON), 'negated rule');
+    assertAllowed(runHook(t, 'Nothing is still running.\nNothing needed from you. The gate now blocks "start a fresh session" in closings.\n\nSAFE TO ARCHIVE — all done.', NS_ON), 'quoted');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });

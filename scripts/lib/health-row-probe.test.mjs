@@ -71,11 +71,24 @@ async function withOfflineGh(fn) {
   const headroom = mock.method(ghApiCache, 'hasLowHeadroom', () => true);
   const fetchCalls = [];
   const fetch = mock.method(ghApiCache, 'cachedFetch', async (key) => { fetchCalls.push(key); return []; });
+  // BRO-7402: offline means Linear too. linear-client reads LINEAR_API_KEY from .env itself, so on a machine with a
+  // key the core checks called the live API and, on a 429, slept 60s per retry; that timed out the merge script's
+  // post-merge test floor. Every Linear request now gets an immediate non-retryable 400.
+  const linearCalls = [];
+  const realFetch = globalThis.fetch;
+  const fetchMock = mock.method(globalThis, 'fetch', async (url, ...rest) => {
+    if (String(url).includes('linear.app')) {
+      linearCalls.push(String(url));
+      return new Response(JSON.stringify({ errors: [{ message: 'offline test: Linear disabled' }] }), { status: 400, headers: { 'content-type': 'application/json' } });
+    }
+    return realFetch(url, ...rest);
+  });
   // health-check.js destructures these at load, so load it fresh under the mocks.
   delete require.cache[HEALTH_CHECK_PATH];
   try {
-    return { result: await fn(), shellCalls, fetchCalls };
+    return { result: await fn(), shellCalls, fetchCalls, linearCalls };
   } finally {
+    fetchMock.mock.restore();
     fetch.mock.restore();
     shell.mock.restore();
     headroom.mock.restore();

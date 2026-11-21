@@ -23,7 +23,7 @@
  * floor); every other hit was already a not_a_review rejection.
  */
 
-const { isLaneReview } = require('./opening-night-lane/trust-model');
+const { isAggregatorVerifiedLaneReview } = require('./opening-night-lane/trust-model');
 
 const MIN_BODY_CHARS = 1500;
 const MIN_ATTRIBUTIONS = 7;
@@ -56,8 +56,8 @@ function detectPreOpeningInterviewFeature(data, show) {
   if (!opening || !data.publishDate) return none('no_dates');
   // Plain string compare is only valid for ISO dates; anything else is inert.
   if (!/^\d{4}-\d{2}-\d{2}/.test(String(data.publishDate)) || !/^\d{4}-\d{2}-\d{2}/.test(String(opening))) return none('non_iso_date');
-  // Opening-night lane reviews are aggregator-verified: heuristics stand down.
-  if (isLaneReview(data, { openingDate: opening })) return none('lane_review');
+  // Opening-night lane reviews are aggregator-verified: heuristics stand down (never for a manual-inbox row, BRO-7741).
+  if (isAggregatorVerifiedLaneReview(data, { openingDate: opening })) return none('lane_review');
   if (String(data.publishDate).slice(0, 10) > String(opening).slice(0, 10)) return none('published_after_opening');
 
   const n = countNamedAttributions(data.fullText);

@@ -54,6 +54,7 @@ const { runGhWithFallback, decideLandRetry, MAX_ATTEMPTS } = require('./land-ret
 const { readLatestLandRun } = require('./land-run-identity');
 const { SITE_PATHS } = require('./should-deploy-gate');
 const { repoDepthArgs } = require('./shallow-fetch-args');
+const { runGitOrThrow } = require('./git-proc-guard');
 
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 // BRO-6015: past this, a parked run likely means the sweep itself is down.
@@ -71,6 +72,7 @@ const PROD_MAX_ERRORS = 3;
 const { firstLine } = require('./log-lines');
 const { landedOnMain } = require('./land-check-resources');
 const { LANDINGS_REL, parseLandings, landedShaForTip } = require('./landings-ledger');
+const { summarizeRun } = require('./land-timing-report');
 
 // check-prod-deploy prints its verdict last. Preserve that line without
 // splitting all of stdout/stderr, and bound unusually long verdicts too.
@@ -131,6 +133,18 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
   }
   if (RED_CONCLUSIONS.has(run.conclusion)) return { verdict: 'refused', why: `run ${run.id} ${run.conclusion}` };
   return { verdict: 'waiting', why: `run ${run.id} ${run.conclusion}, ref not deleted yet` };
+}
+
+/**
+ * BRO-7810: the cloud Stop gate [VE:RETROCOV] bounced about half of all landing sessions once at the very end
+ * (31 of 68 sessions, 36 blocks, data/audit/session-retro.jsonl). Printing the exact record command at LANDED
+ * lets the session do it in the same turn. Only in a cloud session (CLAUDE_CODE_REMOTE=true), where the gate runs.
+ * The Stop gate stays as the backstop. Returns '' outside cloud.
+ */
+function retroPrompt(env = process.env) {
+  if (env.CLAUDE_CODE_REMOTE !== 'true') return '';
+  return 'RETRO: before you close, record this session: node scripts/lib/session-retro.js --record --fixes=BRO-N,<sha> '
+    + '(or --no-action="<why no finding needs a fix>"). The Stop gate [VE:RETROCOV] blocks SAFE TO ARCHIVE without it.';
 }
 
 /**
@@ -216,7 +230,7 @@ function readLatestRun(ref, { read = readGhJson, readText = readGhText, cache = 
       cache.set(key, cancellation);
     }
   }
-  return { id: r.id, head_sha: r.head_sha, identityPending: r.identityPending, status: r.status, conclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, cancellation };
+  return { id: r.id, head_sha: r.head_sha, identityPending: r.identityPending, status: r.status, conclusion: r.conclusion, updated_at: r.updated_at, url: r.html_url, run_attempt: r.run_attempt, cancellation };
 }
 
 function remoteSha(ref) {
@@ -233,7 +247,8 @@ function fetchMain() {
   try {
     const depthArgs = repoDepthArgs({ repoRoot: process.cwd() });
     // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-    execFileSync('git', ['fetch', '-q', ...depthArgs, 'origin', 'main'], { stdio: ['ignore', 'ignore', 'pipe'], timeout: 120_000 });
+    // BRO-7458: runGitOrThrow kills the timed-out fetch's orphaned helpers.
+    runGitOrThrow(['fetch', '-q', ...depthArgs, 'origin', 'main'], { stdio: ['ignore', 'ignore', 'pipe'], timeout: 120_000 });
     return true;
   } catch (err) {
     console.error(`${stamp()} could not fetch origin/main: ${firstLine(err.message || err)}`);
@@ -319,9 +334,52 @@ async function waitForProd({ siteFiles, prodMin }) {
 // Rebasing a refused land/ branch makes the re-push non-fast-forward, and the
 // cloud git proxy refuses that (and refuses deleting the ref), which stranded
 // re-lands under new names. land.yml rebases onto main itself.
-function refusedMessage(ref, why, url) {
-  return `REFUSED: ${ref} ${why}${url ? ` ${url}` : ''}\n` +
+function refusedMessage(ref, why, url, { rebaseConflict = false } = {}) {
+  const head = `REFUSED: ${ref} ${why}${url ? ` ${url}` : ''}\n`;
+  if (rebaseConflict === 'unknown') {
+    return head +
+      `  next: could not read why Land refused. Read the run's failure annotation. If it says "does not rebase cleanly", merging main in will not help (land replays each commit and drops merges): squash onto fresh origin/main and push a NEW land ref (${nextRef(ref)}). Otherwise fix on top of the refused commit and push the same ref ${ref} (do not rebase, squash or reset).`;
+  }
+  if (rebaseConflict) {
+    // BRO-7755: land.yml replays each commit with a plain rebase and drops
+    // merge commits, so merging origin/main into the branch changes nothing
+    // when an early commit conflicts. Only one squashed commit on fresh main
+    // gets through, and it needs a NEW ref (the old one cannot be rewritten).
+    return head +
+      `  next: ${ref} does not rebase onto origin/main, and merging main into it will not help (land replays each commit and drops merges). ` +
+      `Make a worktree at fresh origin/main, \`git merge --squash\` the branch, resolve, commit once, and push to a NEW land ref (${nextRef(ref)}). ` +
+      `The old ref stays on origin (the cloud proxy refuses deleting it); it is not a second landing.`;
+  }
+  return head +
     `  next: fix on top of the refused commit (do not rebase, squash or reset: land.yml rebases, and a rewritten re-push is refused as non-fast-forward), then push the same ref ${ref}`;
+}
+
+// land/x -> land/x-v2, land/x-v2 -> land/x-v3.
+function nextRef(ref) {
+  const m = /^(.*)-v(\d+)$/.exec(ref);
+  return m ? `${m[1]}-v${Number(m[2]) + 1}` : `${ref}-v2`;
+}
+
+// Is a failed land run a rebase conflict? Reuses land-timing-report's
+// classifier on the failing job's annotations. Best effort: any read error
+// returns false and the caller keeps the default advice.
+function readRefusalCause(run, { read = readGhJson } = {}) {
+  if (!run || run.conclusion !== 'failure') return false;
+  try {
+    const attempt = run.run_attempt || 1;
+    const jobs = read(`repos/${repo}/actions/runs/${run.id}/attempts/${attempt}/jobs?per_page=50`).jobs;
+    if (!Array.isArray(jobs)) return 'unknown';
+    const failed = jobs.find((j) => /^(Checks|Land)$/.test(j.name) && j.conclusion === 'failure');
+    const annotations = failed ? read(`repos/${repo}/check-runs/${failed.id}/annotations?per_page=100`) : [];
+    if (!Array.isArray(annotations)) return 'unknown';
+    // land-rebase.sh exit 3 (partial-clone fetch failure) is infrastructure,
+    // not a conflict, even though its failing step is "Rebase onto ...".
+    if (annotations.some((a) => /NOT a merge conflict/.test(a.message || ''))) return false;
+    const rec = summarizeRun({ ...run, status: 'completed' }, jobs, annotations);
+    return rec.causes.some((c) => /^rebase conflict/.test(c));
+  } catch {
+    return 'unknown';
+  }
 }
 
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -418,6 +476,8 @@ async function waitLoop(args, deadline) {
         const before = v.before ? ` before this wait started; its last land run ${run.id} ${run.conclusion}` : '';
         console.log(`${stamp()} LANDED: ${args.ref} is gone from origin${before} (land.yml deletes it after the fast-forward)`);
         const tip = v.before ? (run && run.head_sha) || null : lastSha;
+        const retro = retroPrompt();
+        if (retro) console.log(`${stamp()} ${retro}`);
         if (!args.prodMin) {
           await reportLandedSha(tip);
           return 0;
@@ -433,6 +493,8 @@ async function waitLoop(args, deadline) {
         const found = findLandedOnMain(args.ref, run);
         if (found.landed) {
           console.log(`${stamp()} LANDED: ${args.ref} is gone from origin and ${found.sha} is on main (${found.via}) (${COMMIT_URL}${found.sha})`);
+          const retro = retroPrompt();
+          if (retro) console.log(`${stamp()} ${retro}`);
           if (args.prodMin) return waitForProd({ siteFiles: null, prodMin: args.prodMin });
           return 0;
         }
@@ -442,7 +504,7 @@ async function waitLoop(args, deadline) {
         return 3;
       }
       if (v.verdict === 'refused') {
-        console.log(`${stamp()} ${refusedMessage(args.ref, v.why, run && run.url)}`);
+        console.log(`${stamp()} ${refusedMessage(args.ref, v.why, run && run.url, { rebaseConflict: readRefusalCause(run) })}`);
         return 1;
       }
       const line = `waiting: ${v.why}`;
@@ -468,4 +530,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { refusedMessage, prodDetail, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };
+module.exports = { retroPrompt, refusedMessage, nextRef, readRefusalCause, prodDetail, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };

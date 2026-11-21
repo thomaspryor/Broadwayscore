@@ -27,6 +27,7 @@ const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const { checkWsjOtpFreshness } = require('./lib/wsj-otp-freshness');
 const { routeCookieAlerts } = require('./lib/cookie-expiry-alert');
 const { COOKIE_PROBES, classifyWalledProbe } = require('./lib/cookie-probes');
+const { RENEW_OUTLETS } = require('./lib/cookie-renew');
 const { recordSbCall, recordBdCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 // --- Outlet Configuration ---
@@ -35,11 +36,24 @@ const { recordSbCall, recordBdCall, sbBilledCredits } = require('./lib/provider-
 // Each has known auth cookie names (the short-lived tokens that prove subscriber status)
 // and a test URL for Layer 3 live access verification.
 const CRITICAL_OUTLETS = {
+  // BRO-7705: nytimes/wapo/ft use the shared probes (lib/cookie-probes.js)
+  // with a no-cookie control. Before, all three passed vacuously: NYT "OK
+  // (body 2359)" under a 1500 floor that the anonymous page (~2,900 chars)
+  // also clears; FT "OK (163419 chars)" on html size alone, which FT's
+  // anonymous "Subscribe to read" page (164,062 chars) also clears; WaPo on
+  // html size from a 404ing url.
   nytimes: {
     envVar: 'NYT_COOKIES',
-    testUrl: 'https://www.nytimes.com/2022/10/06/theater/1776-review-broadway.html',
+    testUrl: COOKIE_PROBES.nytimes.url,
     authCookies: ['NYT-S', 'nyt-a'],
-    minBodyChars: 1500,
+    minBodyChars: COOKIE_PROBES.nytimes.minBody,
+    vacuousControl: true,
+    // BRO-7757: ScrapingBee drops the subscriber session (anonymous page ~2.9k chars), so this live check failed
+    // every run while Layer 2 read the cookies healthy (2026-11-17 run 44185128282: nytimes 2579 chars,
+    // wapo 1168, ft 2312 = the anonymous page; BRO-7717/7718/7719, then again and again). The authoritative
+    // live probe is renew-cookies.js (in-browser profile, every 6h on the Mac, emails the owner when a login
+    // needs a human). Layer 1+2 stay the CI signal. Same call as thetimes.
+    ciLiveUnverifiable: 'no CI route authenticates a NYT session (ScrapingBee serves the logged-out page even with valid cookies). Layer 1+2 are the CI signal; the live probe is node scripts/renew-cookies.js --outlet=nytimes --probe-only',
   },
   wsj: {
     envVar: 'WSJ_COOKIES',
@@ -58,13 +72,33 @@ const CRITICAL_OUTLETS = {
   },
   wapo: {
     envVar: 'WAPO_COOKIES',
-    testUrl: 'https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/',
-    authCookies: ['wp_ak_subs', 'wp_ak_signinv2'],
+    testUrl: COOKIE_PROBES.wapo.url,
+    // wp_ak_signinv2 lapses within days while the session lives on (expired
+    // 0.7d on 2026-11-17, walled probe still 6589 vs 309 anon); it raised
+    // false "auth expires" warnings. Same names renew-cookies.js schedules on.
+    authCookies: RENEW_OUTLETS.wapo.authCookies,
+    minBodyChars: COOKIE_PROBES.wapo.minBody,
+    vacuousControl: true,
+    // BRO-7757: ScrapingBee drops the subscriber session (anonymous page ~1.3k chars), so this live check failed
+    // every run while Layer 2 read the cookies healthy (2026-11-17 run 44185128282: nytimes 2579 chars,
+    // wapo 1168, ft 2312 = the anonymous page; BRO-7717/7718/7719, then again and again). The authoritative
+    // live probe is renew-cookies.js (in-browser profile, every 6h on the Mac, emails the owner when a login
+    // needs a human). Layer 1+2 stay the CI signal. Same call as thetimes.
+    ciLiveUnverifiable: 'no CI route authenticates a WaPo session (ScrapingBee serves the logged-out page even with valid cookies). Layer 1+2 are the CI signal; the live probe is node scripts/renew-cookies.js --outlet=wapo --probe-only',
   },
   ft: {
     envVar: 'FT_COOKIES',
-    testUrl: 'https://www.ft.com/content/681beb68-5155-11df-bed9-00144feab49a',
+    testUrl: COOKIE_PROBES.ft.url,
     authCookies: ['FTSession', 'FTSession_s'],
+    minBodyChars: COOKIE_PROBES.ft.minBody,
+    wallMarker: COOKIE_PROBES.ft.wallMarker,
+    vacuousControl: true,
+    // BRO-7757: ScrapingBee drops the subscriber session (anonymous page, 2312 chars), so this live check failed
+    // every run while Layer 2 read the cookies healthy (2026-11-17 run 44185128282: nytimes 2579 chars,
+    // wapo 1168, ft 2312 = the anonymous page; BRO-7717/7718/7719, then again and again). The authoritative
+    // live probe is renew-cookies.js (in-browser profile, every 6h on the Mac, emails the owner when a login
+    // needs a human). Layer 1+2 stay the CI signal. Same call as thetimes.
+    ciLiveUnverifiable: 'no CI route authenticates a FT session (ScrapingBee serves the logged-out page even with valid cookies). Layer 1+2 are the CI signal; the live probe is node scripts/renew-cookies.js --outlet=ft --probe-only',
   },
   vulture: {
     envVar: 'VULTURE_COOKIES',
@@ -283,7 +317,14 @@ function checkStructure(fileKey) {
 
 // --- Layer 2: Auth Cookie Expiry (critical outlets only) ---
 
-function checkAuthExpiry(cookies, authCookieNames) {
+// BRO-7705: outlets renew-cookies.js renews get its command, not the
+// retired Safari re-login.
+function refreshHint(fileKey) {
+  if (fileKey && RENEW_OUTLETS[fileKey]) return `renews itself on the Mac Studio; to force it: node scripts/renew-cookies.js --outlet=${fileKey}`;
+  return 'login in Safari, then run: python3 scripts/extract-safari-cookies.py --push';
+}
+
+function checkAuthExpiry(cookies, authCookieNames, fileKey = null) {
   if (!cookies || cookies.length === 0 || authCookieNames.length === 0) {
     return { status: 'pass', message: 'No auth cookies to check', authDays: null };
   }
@@ -313,10 +354,10 @@ function checkAuthExpiry(cookies, authCookieNames) {
   const days = Math.round((earliest.expires - now) / 86400 * 10) / 10;
 
   if (days < AUTH_ERROR_DAYS) {
-    return { status: 'fail', message: `Auth expires in ${days}d (${earliest.name}) — login in Safari NOW, then run: python3 scripts/extract-safari-cookies.py --push`, authDays: days };
+    return { status: 'fail', message: `Auth expires in ${days}d (${earliest.name}) — ${refreshHint(fileKey)}`, authDays: days };
   }
   if (days < AUTH_WARN_DAYS) {
-    return { status: 'warn', message: `Auth expires in ${days}d (${earliest.name}) — login in Safari soon, then run: python3 scripts/extract-safari-cookies.py --push`, authDays: days };
+    return { status: 'warn', message: `Auth expires in ${days}d (${earliest.name}) — ${refreshHint(fileKey)}`, authDays: days };
   }
 
   return { status: 'pass', message: `Auth OK ${days}d (${earliest.name})`, authDays: days };
@@ -472,6 +513,11 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyCh
   } catch (err) {
     return { status: 'warn', message: `Error: ${err.message}` };
   }
+}
+
+/** Layer-3 result for an outlet whose CI live route cannot authenticate (BRO-7757). Pure; unit-tested. */
+function unverifiableLiveResult(fileKey, config) {
+  return { name: fileKey, layer: 3, status: 'warn', message: `Live check unverified: ${config.ciLiveUnverifiable}`, isCritical: true, unverifiable: true };
 }
 
 // --- Layer 3 (walled, production route): cookie-plain + zero-cookie control ---
@@ -734,7 +780,7 @@ async function main() {
       continue;
     }
 
-    const auth = checkAuthExpiry(structure.cookies, config.authCookies || []);
+    const auth = checkAuthExpiry(structure.cookies, config.authCookies || [], fileKey);
     const health = checkGeneralHealth(structure.cookies);
     const stale = checkStaleness(fileKey);
 
@@ -814,9 +860,9 @@ async function main() {
       }
 
       if (config.ciLiveUnverifiable) {
-        const live = { status: 'warn', message: `Live check unverified: ${config.ciLiveUnverifiable}` };
+        const live = unverifiableLiveResult(fileKey, config);
         console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
-        return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
+        return live;
       }
       if (config.liveRoute === 'cookie-plain') {
         const live = await checkLiveAccessWalledPlain(config.testUrl, config);
@@ -937,7 +983,7 @@ async function main() {
 
       fields.push({
         name: 'Action',
-        value: 'Refresh: `python3 scripts/extract-safari-cookies.py --push` (wsj: `node scripts/wsj-otp-login.js`; thestage renews itself on the Mac Studio via `node scripts/renew-cookies.js --outlet=thestage`)',
+        value: `Refresh: ${Object.keys(RENEW_OUTLETS).join(', ')} renew themselves on the Mac Studio (\`node scripts/renew-cookies.js --outlets=all\`; a login it cannot do emails you); wsj: \`node scripts/wsj-otp-login.js\`; others: \`python3 scripts/extract-safari-cookies.py --push\``,
         inline: false,
       });
 
@@ -991,4 +1037,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { CRITICAL_OUTLETS, checkAuthExpiry, walledVerdictToResult, checkLiveAccessWalledPlain, withBodyCheck };
+module.exports = { CRITICAL_OUTLETS, unverifiableLiveResult, checkAuthExpiry, walledVerdictToResult, checkLiveAccessWalledPlain, withBodyCheck };

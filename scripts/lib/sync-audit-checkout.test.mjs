@@ -714,8 +714,13 @@ test('ACCEPTANCE (BRO-3917): a dirty ledger holding duplicate rows still recover
       git(clone, 'rev-parse', 'origin/main').trim(),
     );
     const after = lines(path.join(clone, LEDGER));
-    for (const row of ['a', 'b', 'c', 'dup', 'local-only', 'origin-only']) {
+    for (const row of ['c', 'dup', 'local-only', 'origin-only']) {
       assert.equal(count(after, row), 1, `${row} kept exactly once`);
+    }
+    // BRO-7713: a and b were on the old HEAD and origin rotated them out.
+    // Putting them back is how stage-latency.jsonl grew to 196 MB locally.
+    for (const row of ['a', 'b']) {
+      assert.equal(count(after, row), 0, `${row} (rotated away by origin) not resurrected`);
     }
   });
 });

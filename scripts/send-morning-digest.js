@@ -1003,6 +1003,9 @@ function composeDigestEmail({
   if (dispatchSecret && sections.health && Array.isArray(sections.health.queued)) {
     try {
       const { buildDispatchUrl } = require('./lib/dispatch-link.js');
+      // BRO-7685: key on the router's own title, not the resurface/escalation-
+      // decorated line, so the card's acceptance check can find its ledger row.
+      const { undecoratedDigestTitle } = require('./check-alert-condition-absent.js');
       const cfg = (() => { try { return JSON.parse(fs.readFileSync(dispatchConfigPath, 'utf8')); } catch { return {}; } })();
       const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
       const exp = Math.floor(now.getTime() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
@@ -1010,7 +1013,7 @@ function composeDigestEmail({
         // Receipts (BRO-5481) get no Dispatch-a-fix button.
         if (!q || !q.title || q.actionUrl || (q.info === true && q.decision !== true)) continue;
         q.actionUrl = buildDispatchUrl({
-          conditionKey: `digest-needs-you:${q.title}`,
+          conditionKey: `digest-needs-you:${undecoratedDigestTitle(q.title) || q.title}`,
           title: `Fix: ${String(q.title).slice(0, 130)}`,
           description: q.description || '',
           exp, secret: dispatchSecret, baseUrl,
@@ -1630,6 +1633,32 @@ async function main() {
     improvementLine = improvementLine ? `${improvementLine} ${heldLine}` : heldLine;
   } catch (err) {
     console.error(`[digest] WARN done-claims-held line skipped: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // BRO-7790: landed-change proof audit, one plain line on the same internal line. Fail-soft.
+  try {
+    const ledger = path.join(REPO, 'data/audit/landed-change-proof.jsonl');
+    if (fs.existsSync(ledger)) {
+      const rows = fs.readFileSync(ledger, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      // BRO-7840: the audit cron can fire hours late (BRO-4800); run the audit in-memory when today's row is missing.
+      const runAudit = (day) => {
+        // stdout goes to a file, not a pipe: the audit ends with process.exit and a pipe truncates its JSON at 64KB.
+        const tmp = path.join(require('os').tmpdir(), `landed-proof-catchup-${process.pid}.json`);
+        const fd = fs.openSync(tmp, 'w');
+        try {
+          const r = require('child_process').spawnSync(process.execPath, [path.join(REPO, 'scripts/landed-change-proof-audit.js'),
+            `--date=${day}`, '--dry-run', '--json', '--no-safe-run', '--no-dispatch'], { cwd: REPO, stdio: ['ignore', fd, 'ignore'], timeout: 8 * 60 * 1000 });
+          if (r.status !== 0) return null;
+        } finally { fs.closeSync(fd); }
+        const out = fs.readFileSync(tmp, 'utf8');
+        fs.rmSync(tmp, { force: true });
+        return JSON.parse(out.slice(out.indexOf('{'))).rows;
+      };
+      const proofLine = (await import('./lib/landed-change-proof.mjs')).digestLineWithCatchUp(rows, { runAudit }).line;
+      if (proofLine) improvementLine = improvementLine ? `${improvementLine} ${proofLine}` : proofLine;
+    }
+  } catch (err) {
+    console.error(`[digest] WARN landed-change proof line skipped: ${String(err.message).slice(0, 120)}`);
   }
 
   const problemsNote = describeProblems(problems);

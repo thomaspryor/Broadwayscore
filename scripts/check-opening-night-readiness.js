@@ -130,6 +130,23 @@ async function runChecks() {
       `Confirm this is intentional (off-broadway / off-west-end shows don't get the broadcast pipeline).`);
   }
 
+  // 1c. BRO-7778: a review headlined with the short title ("Review: It's a Wonderful Life" for "It's A Wonderful Life:
+  // A Live Radio Play") must be matched, or at least raise the near-miss alert. Within 7 days of opening, a short title
+  // nothing catches fails: add shows.json akaTitles through a fix plan.
+  try {
+    const { shortTitleCoverage } = require('./lib/press-title-coverage');
+    const cov = shortTitleCoverage(show, showsData.shows);
+    const days = show.openingDate ? (Date.parse(show.openingDate) - Date.now()) / 86400000 : Infinity;
+    const addAka = `add "${cov.lead}" to akaTitles with a fix plan (node scripts/new-fix-plan.js)`;
+    if (cov.status === 'no-subtitle') report(PASS, 'Short-title matching', 'billed title has no subtitle');
+    else if (cov.status === 'matched') report(PASS, 'Short-title matching', `reviews titled "${cov.lead}" match on every path`);
+    else if (cov.akaPossible) report(days <= 7 ? FAIL : WARN, 'Short-title matching', `reviews titled only "${cov.lead}" are not admitted (${cov.status === 'near-miss' ? 'they raise the near-miss alert' : 'and raise no alert'}): ${addAka}`);
+    else if (cov.status === 'near-miss') report(WARN, 'Short-title matching', `reviews titled only "${cov.lead}" raise the near-miss alert but cannot be admitted (one word, or another show's name); watch the alert on press night`);
+    else report(days <= 7 ? FAIL : WARN, 'Short-title matching', `reviews titled "${cov.lead}" are not matched and raise no near-miss alert (${cov.missed.slice(0, 2).join('; ')})`);
+  } catch (e) {
+    report(WARN, 'Short-title matching', `could not check: ${e.message}`);
+  }
+
   // 2. Images
   // Trust shows.json's images field (what the site actually renders) rather
   // than hardcoding the .webp filename the standard pipeline produces — the
@@ -451,13 +468,18 @@ async function runChecks() {
   // 11b. Resource budget headroom (single-show pre-flight).
   // Soft-warns when any resource has less than 1.5× the per-show estimate
   // available — i.e. enough to cover this show plus ~half another. Failures
-  // block. See scripts/lib/opening-night-budget.js.
+  // block, except ScrapingBee-only shortfalls (fallback provider, WARN; BRO-7854).
+  // See scripts/lib/opening-night-budget.js.
   try {
-    const { checkBudget } = require('./lib/opening-night-budget');
+    const { checkBudget, splitBudgetBlockers } = require('./lib/opening-night-budget');
     const budget = await checkBudget(1);
-    if (!budget.ok) {
-      const lines = budget.blockers.map(b => `${b.resource}: need ${b.needed} ${b.unit || ''}, ${b.available} available`);
-      report(FAIL, 'Resource budget (1 show)', lines.join('; '));
+    const { hard, soft } = splitBudgetBlockers(budget.blockers);
+    const fmt = b => `${b.resource}: need ${b.needed} ${b.unit || ''}, ${b.available} available`;
+    if (hard.length > 0) {
+      report(FAIL, 'Resource budget (1 show)', hard.concat(soft).map(fmt).join('; '));
+    } else if (soft.length > 0) {
+      // SB is a fallback link; owner policy is ride-it-out (BRO-7854).
+      report(WARN, 'Resource budget (1 show)', `${soft.map(fmt).join('; ')} (fallback provider, riding it out per policy)`);
     } else {
       // Soft-warn at 1.5× per-show headroom (i.e. tight if we couldn't fit a second one)
       const tight = [];
@@ -526,6 +548,13 @@ async function runChecks() {
   const nowMs = Date.now();
   const night = show.openingDate;
   emit('Embargo (reviews open)', RL.embargoVerdict(show, nowMs));
+  // BRO-7808: embargo lifted days after the recorded openingDate; runs before any early return so it is never skipped.
+  try {
+    const allReviews = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'data', 'reviews.json'), 'utf8'));
+    const mine = (allReviews.reviews || allReviews).filter((r) => r.showId === SHOW_ID);
+    const late = RL.lateEmbargoVerdict(show, mine, nowMs);
+    if (late.status !== 'skip') emit('Late embargo (reviews after press night)', late);
+  } catch (e) { if (e.code !== 'ENOENT') throw e; /* no reviews file: nothing to compare */ }
 
   // The lane only publishes shows LANE_ONLY_MARKETS covers; for any other show a disarmed lane or a missing night run
   // is not a risk and must not exit 1 (West End, off-Broadway). Read from the lane-switch ledger (cloud gets 403 on
@@ -542,6 +571,8 @@ async function runChecks() {
     return;
   }
   report(PASS, 'Lane publishes this show', `${applies.reason} (per data/audit/lane-switch.jsonl)`);
+  // BRO-7741: the answer to "a review is missing" on a lane night, printed where the person checking readiness looks.
+  report(PASS, 'If a review is missing', `do not roll back the lane: node scripts/opening-night-lane-inbox.js add --show=${SHOW_ID} --url=URL (or dispatch ingest-urls.yml by hand); the lane publishes it on its next pass, about 2 min. Runbook: docs/cloud-overnight-watch-runbook.md`);
 
   let armed = null;
   try {
@@ -553,6 +584,12 @@ async function runChecks() {
   } catch (e) {
     emit('Lane armed', RL.armVerdict(null));
   }
+
+  // BRO-7781: the latest simulated opening night (lane-rehearsal.yml writes the record). Read, never run here: the night is
+  // synthetic and show-independent, and this script runs with live scraper and model keys in its env.
+  let simRecord = null;
+  try { simRecord = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'data', 'audit', 'simulated-opening-night.json'), 'utf8')); } catch { /* none yet */ }
+  emit('Simulated opening night', RL.simulatedNightVerdict(simRecord, nowMs));
 
   const emb = RL.embargoFor(show);
   if (!ghToken) {

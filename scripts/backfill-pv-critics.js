@@ -25,7 +25,9 @@ const outletFilter = outletArg ? outletArg.split('=')[1] : null;
 
 const reviewsDir = 'data/review-texts';
 const normalization = require('./lib/review-normalization');
-const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
+const { isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
+// BRO-7798: the shared byline reader (outlet rules first), never extractAuthorFromHtml directly.
+const { readPageBylineForShow } = require('./lib/page-byline-for-show');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -83,7 +85,7 @@ function extractCriticFromUrl(url) {
   return null;
 }
 
-// extractAuthorFromHtml, isValidAuthorName, cleanAuthorName imported from shared lib (content-quality.js)
+// isValidAuthorName, cleanAuthorName imported from shared lib (content-quality.js); bylines via page-byline-for-show
 
 // --- HTTP fetch with timeout ---
 async function fetchWithTimeout(url, timeoutMs = 8000) {
@@ -200,7 +202,7 @@ async function main() {
       }
 
       if (result.html) {
-        critic = extractAuthorFromHtml(result.html);
+        critic = readPageBylineForShow({ html: result.html, url: u.url, outletId: u.outletId }).criticName;
         if (critic) {
           method = 'http-fetch';
           httpExtracted++;

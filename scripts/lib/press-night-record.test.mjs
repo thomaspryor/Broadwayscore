@@ -549,6 +549,16 @@ test('same-night-completeness ignores preview-period (non-night) live rows as pr
   r.perReview[0].baseline = true;
   r.perReview[0].publishAt = '2026-10-05';
   assert.equal(sn(r).status, 'fail');
+  assert.match(sn(r).detail, /never live/);
+});
+
+test('same-night-completeness: grace edge, night-2 counts and night-3 does not', () => {
+  for (const [pub, want] of [['2026-10-20', 'pass'], ['2026-10-19', 'fail']]) {
+    const r = nightRec({ Vulture: 10 }, [file('vulture', 5, { publishDate: pub })]);
+    r.perReview[0].critic = null;
+    r.perReview[0].publishAt = pub;
+    assert.equal(sn(r).status, want, pub);
+  }
 });
 
 test('same-night-completeness is unknown when the snapshot predates embargo +3h +30 min, but a named miss still fails', () => {
@@ -651,7 +661,7 @@ test('reviewEmbargoAt: a valid override wins and is normalized to ISO UTC', () =
   assert.equal(lib.defaultEmbargoAt(show), '2026-10-30T02:00:00.000Z');
   assert.equal(lib.defaultEmbargoAt({ ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' }), '2026-10-30T03:00:00.000Z');
   assert.equal(lib.defaultEmbargoAt({ ...show, reviewEmbargoAt: '2026-10-29T23:00:00-04:00' }), '2026-10-30T03:00:00.000Z');
-  assert.deepEqual(lib.embargoInfo({ ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' }), { at: '2026-10-30T03:00:00.000Z', source: 'override', problem: null });
+  assert.deepEqual(lib.embargoInfo({ ...show, reviewEmbargoAt: '2026-10-30T03:00:00Z' }), { at: '2026-10-30T03:00:00.000Z', source: 'override', assumed: false, problem: null });
   // West End matinee-ish press release at 17:00 UK is still the opening night
   assert.equal(lib.defaultEmbargoAt({ id: 'w', category: 'west-end', openingDate: '2026-11-03', reviewEmbargoAt: '2026-11-03T17:00:00Z' }), '2026-11-03T17:00:00.000Z');
 });
@@ -973,4 +983,37 @@ test('probeIncompleteReason: full window is null; skipped or short probes get a 
   assert.match(lib.probeIncompleteReason(mk('2026-11-10T05:00:00.000Z')), /stopped at \+2\.0h of 6h/);
   assert.match(lib.probeIncompleteReason(mk(null)), /no samples/);
   assert.equal(lib.probeIncompleteReason(null), null);
+});
+
+// ---- BRO-7892: a review dated the day before the night, first seen inside the night window ----
+test('same-night-completeness: a day-before-dated review first seen in the window counts when live (Theatre Weekly case)', () => {
+  const r = nightRec({ Vulture: 10 }, [file('vulture', 5, { publishDate: '2026-10-21' })]);
+  r.perReview[0].baseline = true;
+  r.perReview[0].critic = null;
+  r.perReview[0].publishAt = '2026-10-21';
+  assert.equal(sn(r).status, 'pass', sn(r).detail);
+});
+
+test('same-night-completeness: a day-before-dated review that goes live late is "late", not "never live" (Operationlivetheatre case)', () => {
+  const r = nightRec({ Vulture: 150 }, [file('vulture', 100, { publishDate: '2026-10-21' })]);
+  r.perReview[0].critic = null;
+  r.perReview[0].publishAt = '2026-10-21';
+  const g = sn(r);
+  assert.equal(g.status, 'fail');
+  assert.match(g.detail, /after \+2h|more than|live at|min later/);
+  assert.doesNotMatch(g.detail, /never live/);
+});
+
+test('same-night-completeness: weeks-old publish dates stay preview-period even with a publishDate on the file', () => {
+  const r = nightRec({ singleticket: 10 }, [file('singleticket', 5, { publishDate: '2026-10-05' })]);
+  r.perReview[0].baseline = true;
+  r.perReview[0].publishAt = '2026-10-05';
+  assert.equal(sn(r).status, 'fail');
+});
+
+test('same-night-completeness: a named critic\'s earlier piece cannot vouch for a different critic\'s file (BRO-7892)', () => {
+  const r = nightRec({ Vulture: 10 }, [file('vulture', 5, { critic: 'Y', publishDate: '2026-10-21' })]);
+  r.perReview[0].critic = 'X';
+  r.perReview[0].publishAt = '2026-10-20';
+  assert.equal(sn(r).status, 'fail');
 });

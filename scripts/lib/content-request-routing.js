@@ -134,6 +134,9 @@ const REVIEW_ABSENCE_RE = new RegExp(
     /\b(?:finish|complete|update|missing|lacks?|lacking|without|incomplete|unfinished|needs?\s+(?:more\s+)?|there'?s\s+no|only\s+(?:one|two|1|2|a\s+few))\b[^.!?]{0,40}?\breviews?\b/.source,
     // noun first: "reviews are incomplete", "reviews aren't finished", "reviews missing"
     /\breviews?\b[^.!?]{0,30}?\b(?:missing|incomplete|unfinished|not\s+(?:yet\s+)?(?:done|finished|complete|up))\b/.source,
+    // outlet request (GH #552): "Please add Stage West, Stage and Cinema ... to X's scorecard".
+    // Needs the add/include verb AND the scorecard noun in one sentence.
+    /\b(?:add|include)\b[^.!?]{0,160}?\bscore\s?cards?\b/.source,
   ].join('|'),
   'i'
 );
@@ -202,6 +205,118 @@ const MARKET_WORD_TO_CATEGORY = {
  */
 const MARKET_TOKEN_RE =
   /\s*(?:\((regional|broadway|off[-\s]?broadway|west[-\s]?end|tryout|pre[-\s]?broadway)\)|\b(regional|broadway|off[-\s]?broadway|west[-\s]?end|pre[-\s]?broadway)\b)/gi;
+
+// Feedback #1192: "I see you have the Dirty Dancing Bway show added ... (same as
+// the tour)" named no market in the form's show field, matched four Dirty
+// Dancing productions, and was parked as ambiguous even though the reader said
+// which one. Readers name the market in the message, often as "Bway".
+const MESSAGE_MARKET_RE =
+  /\b(off[-\s]?broadway|off[-\s]?west[-\s]?end|pre[-\s]?broadway|broadway|b'?way|west[-\s]?end|national tour|tour(?:ing)?|regional|tryout)\b/gi;
+function messageMarketWord(w) {
+  const k = w.toLowerCase().replace(/\s+/g, '-');
+  if (k === 'bway' || k === "b'way") return 'broadway';
+  if (k === 'off-west-end') return 'off-west-end';
+  if (/^(national-tour|tour|touring)$/.test(k)) return 'tour';
+  return MARKET_WORD_TO_CATEGORY[k] || null;
+}
+function marketsIn(text) {
+  const out = [];
+  MESSAGE_MARKET_RE.lastIndex = 0;
+  let m;
+  while ((m = MESSAGE_MARKET_RE.exec(text)) !== null) {
+    const c = messageMarketWord(m[1]);
+    if (c) out.push(c);
+  }
+  return out;
+}
+/**
+ * The market a free-text message attaches to `title`: a market word within a
+ * few words of the title, in the same sentence ("the Dirty Dancing Bway show").
+ * Never the message at large: "Thanks for Broadway Scorecard! Hamilton has no
+ * picture" or "I took a backstage tour. Hamilton..." must stay ambiguous
+ * (second-opinion review, real shows.json). The site name is stripped first.
+ */
+function inferMarketFromMessage(title, message) {
+  const msg = String(message || '').replace(/broadway\s*scorecard|broadway\.com|broadwayworld/gi, ' ');
+  const t = String(title || '').trim();
+  if (!msg || !t) return null;
+  // Every mention of the title must point at the same single market, and a
+  // negation near a mention ("not the Broadway one") means skip: wrong is worse
+  // than unroutable (ship-check review of #1192).
+  const lower = msg.toLowerCase();
+  const needle = t.toLowerCase();
+  const found = new Set();
+  let mentions = 0;
+  for (let idx = lower.indexOf(needle); idx >= 0; idx = lower.indexOf(needle, idx + needle.length)) {
+    mentions += 1;
+    const before = msg.slice(Math.max(0, idx - 30), idx).split(/[.!?\n]/).pop();
+    const after = msg.slice(idx + t.length, idx + t.length + 30).split(/[.!?\n]/)[0];
+    const near = `${before} ${after}`;
+    if (/\b(not|isn'?t|wasn'?t)\b/i.test(near)) return null;
+    // A sentence naming two different markets ("saw it in the West End, but the
+    // Broadway one needs a cast") is a contrast the 30-char window can't read: skip.
+    const sStart = Math.max(...['.', '!', '?', '\n'].map((c) => msg.lastIndexOf(c, idx))) + 1;
+    // Search for the end after the title: "Mamma Mia!" or "Mr. Saturday Night" must not end it.
+    const sEndRaw = msg.slice(idx + t.length).search(/[.!?\n]/);
+    const sentence = msg.slice(sStart, sEndRaw < 0 ? msg.length : idx + t.length + sEndRaw);
+    if (new Set(marketsIn(sentence)).size > 1) return null;
+    for (const m of marketsIn(near)) found.add(m);
+  }
+  if (mentions === 0) return null;
+  return found.size === 1 ? [...found][0] : null;
+}
+
+// BRO-7919: wording that asks for a change to a show we already carry.
+const CHANGE_REQUEST_RE = /\b(missing|wrong|incorrect|outdated|out of date|updat\w*|fix\w*|error|mistake|closing|closed|cast|leads?|scores?|ratings?|reviews?|images?|photos?|pictures?|posters?|dates?|prices?|tickets?|runs?|production|tour|revival|remove|delete|duplicate|merge|add\w*)\b/i;
+
+/**
+ * resolveShowInMarket, but an ambiguous unscoped match gets one more try scoped
+ * to the market the message itself names (inferMarketFromMessage). Still "skip,
+ * don't guess": if that market does not narrow it to exactly one show, the
+ * original ambiguity stands.
+ */
+function resolveShowUsingMessage(title, market, shows, message) {
+  const first = resolveShowInMarket(title, market, shows);
+  if (!first.ambiguous || market) return first;
+  const inferred = inferMarketFromMessage(title, message);
+  if (!inferred) return first;
+  const scoped = resolveShowInMarket(title, inferred, shows);
+  if (scoped.resolved) return scoped;
+  // Two runs in the same market ("Dirty Dancing in the West End 2013"): a year
+  // written next to the title picks the one production with that year, else stay parked.
+  if (scoped.ambiguous) {
+    const year = yearNearTitle(title, message);
+    if (year) {
+      const hits = shows.filter((s) => s && scoped.candidateIds.includes(s.id) && showYear(s) === year);
+      if (hits.length === 1) return { resolved: hits[0], ambiguous: false, candidateIds: [], candidateTitles: [] };
+    }
+  }
+  return first;
+}
+
+/** The single 4-digit year within ~40 chars of a title mention, in the same sentence, or null. */
+function yearNearTitle(title, message) {
+  const msg = String(message || '');
+  const needle = String(title || '').toLowerCase();
+  if (!needle) return null;
+  const years = new Set();
+  const lower = msg.toLowerCase();
+  const isWordChar = (c) => !!c && /[a-z0-9]/i.test(c);
+  for (let idx = lower.indexOf(needle); idx >= 0; idx = lower.indexOf(needle, idx + needle.length)) {
+    // whole-title mentions only ("Art" must not match inside "started")
+    if (isWordChar(lower[idx - 1]) || isWordChar(lower[idx + needle.length])) continue;
+    const before = msg.slice(Math.max(0, idx - 40), idx).split(/[.!?\n]/).pop();
+    const after = msg.slice(idx + needle.length, idx + needle.length + 40).split(/[.!?\n]/)[0];
+    // A bare year only: not part of a phone number, price, date or longer number ("212-555-1999", "$2012", "01/2013").
+    for (const m of `${before} ${after}`.matchAll(/(?<![\d$£€/\-.,:])((?:19|20)\d{2})(?![\d/\-.,:%]|\.\d)/g)) years.add(Number(m[1]));
+  }
+  return years.size === 1 ? [...years][0] : null;
+}
+
+function showYear(show) {
+  const m = /^((?:19|20)\d{2})/.exec(show.openingDate || show.previewsStartDate || '') || /-((?:19|20)\d{2})$/.exec(show.id || '');
+  return m ? Number(m[1]) : null;
+}
 
 function parseRequestedTitles(raw) {
   const field = String(raw || '').trim();
@@ -426,7 +541,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!IMAGE_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowInMarket(title, null, allShows);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, sentence);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;
@@ -468,7 +583,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!REVIEW_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowInMarket(title, null, allShows);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowUsingMessage(title, null, allShows, sentence);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;
@@ -502,7 +617,7 @@ function planContentRequestActions({
     // Market-scoped: a Broadway entry does not satisfy a request for the
     // regional tryout of the same title. See resolveShowInMarket().
     const { resolved: existing, ambiguous, candidateIds, candidateTitles } =
-      resolveShowInMarket(requestedTitle, market, allShows);
+      resolveShowUsingMessage(requestedTitle, market, allShows, message);
     if (ambiguous) {
       // Shared with Ask 1/1b's seenAmbiguousTitles: the same candidate set can
       // surface here too (e.g. the show field repeats a title already flagged
@@ -562,6 +677,11 @@ function planContentRequestActions({
             `"${existing.title}" and is already live on the site (nothing to add); ` +
             `ask is not a recognised image or review-gap request`,
           showId: existing.id,
+          // BRO-7919: the workflow closes the issue on this (nothing left to do).
+          // Only for a bare "is X on here / please add X" ask: any wording that
+          // asks for a change to the existing entry, or names another market,
+          // is real work and stays parked for a human.
+          alreadyInCatalog: !CHANGE_REQUEST_RE.test(String(message || '')) && marketsIn(String(message || '')).length === 0,
         });
       }
     }
@@ -583,6 +703,9 @@ module.exports = {
   cleanRequestedTitle,
   parseRequestedTitles,
   resolveShowInMarket,
+  resolveShowUsingMessage,
+  yearNearTitle,
+  inferMarketFromMessage,
   extractVenueHint,
   extractVenueHintFor,
   splitSentences,

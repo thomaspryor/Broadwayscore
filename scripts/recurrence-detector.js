@@ -43,6 +43,7 @@ require('./lib/llm-usage-install'); // LLM spend meter: before any client is bui
 require('./lib/cli-help').exitOnHelp(module);
 
 const fs = require('fs');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const path = require('path');
 const rc = require('./lib/recurrence-classes.js');
 
@@ -132,8 +133,7 @@ async function fetchRootCards(known, lc = require('./lib/linear-client.js')) {
 // checks out depth 1, so deepen first (trees only, no blobs); any failure
 // just means no files signal this run, never a failed run.
 function loadFilesById(days, { cwd = ROOT, exec = null } = {}) {
-  const { execFileSync } = require('child_process');
-  const run = exec || ((args, timeout = 60000) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout, maxBuffer: 256 * 1024 * 1024 }));
+  const run = exec || ((args, timeout = 60000) => gitGuard.runGitOrThrow(args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout, maxBuffer: 256 * 1024 * 1024 }));
   const since = new Date(Date.now() - days * DAY).toISOString();
   try {
     if (run(['rev-parse', '--is-shallow-repository']).trim() === 'true') {

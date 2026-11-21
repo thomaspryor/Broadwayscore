@@ -10,9 +10,10 @@
 'use strict';
 
 const { stripBylineSuffixes } = require('./byline-normalization');
+const { parseJsonLd } = require('./jsonld');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { CMS_ADMIN_HANDLE_RE } = require('./byline-recovery');
-const { extractBylineFromText } = require('./byline-from-text');
+const { extractBylineFromText, printedOutletByline, sameCriticName } = require('./byline-from-text');
 
 function isCmsAccountName(name) {
   return CMS_ADMIN_HANDLE_RE.test(name) || /^(editor|staff|webmaster)$/i.test(name);
@@ -101,21 +102,21 @@ const DOMAIN_LIKE_RE = /\.(?:com|co\.uk|org|net)\b/i;
  * a URL, domain, organisation or house name (NOT_A_PERSON_RE).
  */
 function extractJsonLdAuthor(html) {
-  const blocks = String(html).match(/<script[^>]+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [];
+  // Unquoted type attribute too: USA Today prints <script type=application/ld+json> (BRO-7780).
+  const blocks = String(html).match(/<script[^>]+type=["']?application\/ld\+json["']?[^>]*>[\s\S]*?<\/script>/gi) || [];
   for (const block of blocks) {
-    let doc;
-    try {
-      doc = JSON.parse(block.replace(/^<script[^>]*>/i, '').replace(/<\/script>$/i, ''));
-    } catch { continue; }
+    // Shared parser (scripts/lib/jsonld.js, required by audit-jsonld-graph.test.mjs): top-level
+    // arrays AND @graph nodes, in document order. The walk below also descends into nested
+    // objects, so this is the same answer as the hand parse it replaced.
+    const items = parseJsonLd(block.replace(/^<script[^>]*>/i, '').replace(/<\/script>$/i, ''));
+    if (!items.length) continue;
     // BRO-3414: Yoast's @graph gives the article `"author": {"@id": ...}`
     // and the Person (with its name) as a separate node. Resolve the
     // reference so the article's own author wins over page chrome (a
     // theaterscene "authors" sidebar credited its editor on every review).
     const byId = new Map();
-    for (const n of [].concat(doc && doc['@graph'] ? doc['@graph'] : [])) {
-      if (n && typeof n === 'object' && n['@id']) byId.set(n['@id'], n);
-    }
-    const queue = [doc];
+    for (const n of items) if (n['@id']) byId.set(n['@id'], n);
+    const queue = [...items];
     while (queue.length) {
       const node = queue.shift();
       if (!node || typeof node !== 'object') continue;
@@ -128,7 +129,7 @@ function extractJsonLdAuthor(html) {
           if (typeof raw !== 'string') continue;
           const name = stripBylineSuffixes(decodeHtmlEntities(raw).trim());
           if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
-          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name) || PUBLISHER_RE.test(name) || isCmsAccountName(name)) continue;
+          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name) || PUBLISHER_RE.test(name) || isPublicationName(name) || isCmsAccountName(name)) continue;
           return name;
         }
       }
@@ -154,6 +155,10 @@ function extractByline(html, { outletId, text } = {}) {
   if (!html) return null;
   const reviewer = extractReviewerLine(html) || extractReviewedByLine(html) || extractSignOffBeforeShare(html);
   if (reviewer) return reviewer;
+  // TheaterMania's visible author tag beats its JSON-LD, which names the account that POSTED the
+  // article (editor David Gordon, BRO-7745/BRO-7780). Read without a url: the id is TM's own.
+  const tmTag = extractTheaterManiaAuthorTag(html);
+  if (tmTag) return tmTag;
   const jsonLd = extractJsonLdAuthor(html);
   if (jsonLd) return jsonLd;
   const candidates = [
@@ -208,7 +213,7 @@ function extractByline(html, { outletId, text } = {}) {
       let name = decodeHtmlEntities(m[1]).trim();
       // Strip Jetpack-style "View all posts by X" prefix that leaks through
       // some <a rel=author> matches.
-      name = name.replace(/^view\s+all\s+posts\s+by\s+/i, '');
+      name = name.replace(/^(?:view\s+all|see\s+all|read\s+more|more)\s+(?:posts|articles|stories|reviews)\s+by\s+/i, '');
       // Strip what rides along with the name at capture time — ", Chief
       // Theatre Critic", "(she/her)", "<br>" / a stray ">" — so the stored
       // criticName is the person (audit S7-T4). Shared with
@@ -221,7 +226,7 @@ function extractByline(html, { outletId, text } = {}) {
       if (URL_LIKE_RE.test(name)) continue;
       // A publisher or house byline is not a critic (New Yorker meta author
       // "Condé Nast", house byline "The New Yorker", BRO-3414); fall through.
-      if (PUBLISHER_RE.test(name)) continue;
+      if (PUBLISHER_RE.test(name) || isPublicationName(name)) continue;
       // A bare "By" preamble span read as the name (BRO-3414).
       if (/^by:?$/i.test(name)) continue;
       if (re === INLINE_BY_RE) {
@@ -242,5 +247,105 @@ function extractByline(html, { outletId, text } = {}) {
   return printed && printed.known ? printed.name : null;
 }
 
+// TheaterMania's visible byline: <a id="article-author-tag" href=".../authors/<slug>">Name</a>
+// inside <p class="author-name">. The id is TheaterMania's own, so this needs no url. Its JSON-LD
+// author is the account that POSTED the article (often editor David Gordon), BRO-7745.
+const TM_AUTHOR_TAG_RE = /<a\b[^>]*\bid=["']article-author-tag["'][^>]*>([^<]+)<\/a>/i;
+function extractTheaterManiaAuthorTag(html) {
+  if (!html) return null;
+  const m = TM_AUTHOR_TAG_RE.exec(String(html));
+  if (!m) return null;
+  const name = stripBylineSuffixes(decodeHtmlEntities(m[1]).replace(/\s+/g, ' ').trim());
+  return name && !NOT_A_PERSON_RE.test(name) ? name : null;
+}
+
+// The structured author the CMS declares: JSON-LD Person, meta author, or (TheaterMania) the
+// WordPress author slug in the JSON-LD @id, returned as "theatermania-slug:<slug>".
+function structuredAuthor(html) {
+  const s = String(html || '');
+  const ld = extractJsonLdAuthor(s);
+  if (ld) return ld;
+  const meta = /<meta\b[^>]*(?:name|property)=["'](?:author|article:author)["'][^>]*>/i.exec(s);
+  const content = meta && /\bcontent=["']([^"']+)["']/i.exec(meta[0]);
+  if (content) {
+    const name = stripBylineSuffixes(decodeHtmlEntities(content[1]).trim());
+    if (name && !URL_LIKE_RE.test(name) && !NOT_A_PERSON_RE.test(name) && !PUBLISHER_RE.test(name) && !isPublicationName(name) && !isCmsAccountName(name)) return name;
+  }
+  const slug = /"author"\s*:\s*\{\s*"@id"\s*:\s*"[^"]*?\\?\/author\\?\/([a-z0-9-]+)\\?\/?#author"/i.exec(s);
+  return slug ? `theatermania-slug:${slug[1].toLowerCase()}` : null;
+}
+
+function sameAsStructured(chosen, structured) {
+  if (!structured.startsWith('theatermania-slug:')) return sameCriticName(chosen, structured);
+  const slug = structured.slice('theatermania-slug:'.length);
+  const parts = require('./title-match').foldDiacritics(String(chosen)).toLowerCase().replace(/[^a-z ]/g, '').split(/\s+/).filter(Boolean);
+  return parts.length >= 2 && (slug === parts[0][0] + parts[parts.length - 1] || slug === parts[0]);
+}
+
+/**
+ * Ingest guard (BRO-7745): the chosen critic is the page's structured author (JSON-LD / meta /
+ * CMS slug) while the page prints a different per-article byline. That is the shape of the
+ * TheaterMania editor bug: the poster was credited instead of the critic. Returns
+ * {structured, visible} to flag, else null. House-account pages do not flag, because there the
+ * chosen name already differs from the structured one.
+ * @param {{html: string, text?: string, url?: string, outletId?: string, chosen?: string}} p
+ */
+function detectBylineConflict({ html, text, url, outletId, chosen } = {}) {
+  if (!html || !chosen || /^unknown$/i.test(String(chosen).trim())) return null;
+  const structured = structuredAuthor(html);
+  if (!structured || !sameAsStructured(chosen, structured)) return null;
+  let outlet = outletId;
+  if (!outlet && url) {
+    try { outlet = (require('./review-normalization').resolveOutletFromUrl(url) || {}).outletId; } catch { outlet = null; }
+  }
+  // Only the outlet's own printed-byline reader (BYLINE_EXTRACTORS), never the generic text-tail
+  // credit: a closing "Photos: Joan Marcus" / quoted-name line is not the byline (BRO-7777).
+  const printed = outlet && text ? printedOutletByline(outlet, text) : null;
+  const visible = extractTheaterManiaAuthorTag(html)
+    || (printed && printed.known ? printed.name : null)
+    || extractReviewerLine(html);
+  if (!visible) return null;
+  return sameCriticName(visible, chosen) ? null : { structured, visible };
+}
+
+/**
+ * True when a candidate byline is not a person: a URL or domain, a house / publisher / desk name,
+ * or a CMS uploader account. The one filter extractByline applies, exported so page-byline.js
+ * applies the same rules to the generic fallback (BRO-7780).
+ */
+function isNotACriticName(name) {
+  const n = String(name || '').trim();
+  return !n || URL_LIKE_RE.test(n) || DOMAIN_LIKE_RE.test(n) || NOT_A_PERSON_RE.test(n) || PUBLISHER_RE.test(n) || isCmsAccountName(n) || isPublicationName(n);
+}
+
+/**
+ * BRO-7780: a tier 1-2 outlet's own name ("USA TODAY", "Variety", "New York Post") is the
+ * publisher, never the critic. JSON-LD / meta author on wire and syndicated pages often names the
+ * paper. Only tier 1-2 displayNames (publications, never one-person blogs: lower-tier personal
+ * blogs are named after their critic, e.g. "Liam O'Dell") and never registry aliases (aliases list
+ * critic names). Names shorter than 3 letters ("i", the i paper) are ignored.
+ */
+let PUBLICATION_NAMES = null;
+const pubKey = (s) => String(s || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+function loadPublicationNames(registry) {
+  const set = new Set();
+  const outlets = (registry && (registry.outlets || registry)) || {};
+  for (const e of Object.values(outlets)) {
+    if (!e || typeof e !== 'object' || !(Number(e.tier) <= 2) || !e.displayName) continue;
+    const k = pubKey(e.displayName);
+    if (k.length >= 3) set.add(k);
+  }
+  return set;
+}
+function isPublicationName(name, registry) {
+  if (registry) return loadPublicationNames(registry).has(pubKey(name));
+  if (!PUBLICATION_NAMES) {
+    try { PUBLICATION_NAMES = loadPublicationNames(require('../../data/outlet-registry.json')); } catch { PUBLICATION_NAMES = new Set(); }
+  }
+  return PUBLICATION_NAMES.has(pubKey(name));
+}
+
 module.exports = {
-  extractReviewerLine, extractReviewedByLine, extractSignOffBeforeShare, extractByline, extractJsonLdAuthor, decodeEntities: (s) => decodeHtmlEntities(s || '') };
+  isNotACriticName, isPublicationName,
+  extractReviewerLine, extractReviewedByLine, extractSignOffBeforeShare, extractByline, extractJsonLdAuthor,
+  extractTheaterManiaAuthorTag, detectBylineConflict, decodeEntities: (s) => decodeHtmlEntities(s || '') };

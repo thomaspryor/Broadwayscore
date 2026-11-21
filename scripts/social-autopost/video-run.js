@@ -74,7 +74,7 @@ function duplicateMarker(title, score, fmt = 'reveal') {
 
 function run(cmd, cmdArgs, opts = {}) {
   const r = spawnSync(cmd, cmdArgs, { cwd: opts.cwd || PROTO, env: { ...process.env, ...(opts.env || {}) }, encoding: 'utf8', maxBuffer: 64 << 20, timeout: opts.timeout || 20 * 60e3 });
-  if (r.status !== 0) throw new Error(`${path.basename(cmdArgs[0])} failed (${r.status}${r.signal ? ' ' + r.signal : ''}): ${(r.stderr || r.stdout || '').trim().split('\n').slice(-4).join(' | ').slice(0, 500)}`);
+  if (r.status !== 0) throw new Error(`${path.basename(cmdArgs[0])} failed (${r.status}${r.signal ? ' ' + r.signal : ''}): ${(() => { const t = (r.stderr || r.stdout || '').trim(); const m = t.split('\n').find(l => /^\s*(\w*Error|Error):/.test(l)); return `${m ? m.trim() + ' | ' : ''}${t.split('\n').slice(-4).join(' | ')}`.slice(0, 500); })()}`);
   return r.stdout;
 }
 
@@ -301,6 +301,6 @@ async function postEventInner(ev, ledger, outDir, now, ctx) {
   writeLedger(ledger);
 }
 
-module.exports = { makeVideo, videoTitle, duplicateMarker, lookbackReport, verifySent, loadLedger, LEDGER_FILE };
+module.exports = { run, makeVideo, videoTitle, duplicateMarker, lookbackReport, verifySent, loadLedger, LEDGER_FILE };
 
 if (require.main === module) main().catch(e => { console.error(`[video] ${e.message}`); process.exit(1); });

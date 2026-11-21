@@ -54,6 +54,44 @@ const QUIET_WINDOW_H = 168;
 // the router (or this checkout) is stale and "quiet" cannot be trusted.
 const LEDGER_MAX_AGE_H = 48;
 
+// owner-alert-router.js decorates a condition's digest line title when it
+// resurfaces or escalates, and send-morning-digest.js used to build the
+// `digest-needs-you:<title>` dispatch key from that decorated title (BRO-7685).
+// `stem` is the decoration's fixed lead-in, for keys clamped mid-decoration.
+const DIGEST_TITLE_DECORATIONS = [
+  { re: /\s*\(still open [—–-]+ [A-Z]+-\d+\)\s*$/, stem: ' (still open — ' },
+  { re: /\s+[—–-]+\s+still happening after \d+ days?\s*$/, stem: ' — still happening after ' },
+  { re: /\s+[—–-]+\s+escalated after \d+ notifications?\s*$/, stem: ' — escalated after ' },
+];
+const DIGEST_PREFIX = 'digest-needs-you:';
+
+/** The router's own condition title, with any trailing digest decoration removed. */
+function undecoratedDigestTitle(title) {
+  let t = String(title == null ? '' : title);
+  for (const { re } of DIGEST_TITLE_DECORATIONS) t = t.replace(re, '');
+  return t.trim();
+}
+
+/**
+ * Does a (possibly clamped by rowMatchKey) `digest-needs-you:` key name the
+ * ledger row titled `title`? Matches the plain title, the title plus a whole
+ * decoration, and, when the key was clamped, the title plus a cut-off one.
+ */
+function digestKeyMatchesTitle(key, title) {
+  if (typeof title !== 'string' || !title.trim()) return false;
+  const target = rowMatchKey(key);
+  if (!target.startsWith(DIGEST_PREFIX)) return false;
+  const base = rowMatchKey(DIGEST_PREFIX + title.trim());
+  if (target === base) return true;
+  if (rowMatchKey(DIGEST_PREFIX + undecoratedDigestTitle(target.slice(DIGEST_PREFIX.length))) === base) return true;
+  // Clamped key (it cannot grow by more than the few spaces the clamp trimmed):
+  // the cut may land inside a decoration.
+  const clamped = rowMatchKey(target + 'x'.repeat(16)).length - target.length < 4;
+  if (!clamped || !target.startsWith(base)) return false;
+  const rest = target.slice(base.length);
+  return DIGEST_TITLE_DECORATIONS.some(({ stem }) => stem.startsWith(rest) || rest.startsWith(stem));
+}
+
 function ts(v) {
   const t = Date.parse(v || '');
   return Number.isFinite(t) ? t : NaN;
@@ -132,13 +170,13 @@ function decide(ledgers, key, nowMs = Date.now()) {
   // "Dispatch a fix" links from the morning digest carry a synthetic
   // `digest-needs-you:<title>` key that no router ever writes to the ledger, so
   // the check could never pass for them (BRO-6208). Such a key also matches
-  // every ledger row whose title is that digest line's title.
-  const DIGEST_PREFIX = 'digest-needs-you:';
-  const digestTitle = key.startsWith(DIGEST_PREFIX) ? rowMatchKey(key.slice(DIGEST_PREFIX.length)) : null;
+  // every ledger row whose title is that digest line's title, with or without
+  // the router's resurface/escalation decoration (BRO-7685).
+  const isDigestKey = key.startsWith(DIGEST_PREFIX);
   const byKey = new Map();
   for (const l of ledgers) {
     for (const [k, entry] of Object.entries(l.conditions)) {
-      const titleHit = digestTitle && entry && typeof entry.title === 'string' && rowMatchKey(entry.title) === digestTitle;
+      const titleHit = isDigestKey && entry && digestKeyMatchesTitle(key, entry.title);
       if (rowMatchKey(k) !== target && !titleHit) continue;
       const prev = byKey.get(k);
       if (!prev || activityOf(entry) > activityOf(prev.entry)) byKey.set(k, { entry, path: l.path });
@@ -196,4 +234,4 @@ if (require.main === module) {
     process.exit(3);
   }
 }
-module.exports = { main, decide, classifyEntry, QUIET_WINDOW_H, LEDGER_MAX_AGE_H };
+module.exports = { main, decide, classifyEntry, undecoratedDigestTitle, digestKeyMatchesTitle, QUIET_WINDOW_H, LEDGER_MAX_AGE_H };

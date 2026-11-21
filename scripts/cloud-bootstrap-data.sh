@@ -68,6 +68,7 @@ refresh_core_data() {
   local why
   if why="$(core_clone_local_work "$CORE_HOME")"; then
     log "not refreshing the core data clone: $why"
+  # depth1-fetch-ok: separate core-data clone, reset to FETCH_HEAD (BRO-7789)
   elif run_bounded 90 git -C "$CORE_HOME" fetch -q --depth 1 origin main 2>/dev/null \
        && git -C "$CORE_HOME" reset -q --hard FETCH_HEAD 2>/dev/null; then
     :

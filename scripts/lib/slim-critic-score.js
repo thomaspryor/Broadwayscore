@@ -13,7 +13,7 @@
 
 const { computeCriticScore } = require('./compute-critic-score');
 const { dedupByCritic } = require('./dedup-by-critic');
-const { shouldHideReviews, isCuratedHistoricalShow } = require('./should-hide-reviews');
+const { shouldHideReviews, scoreGateArg } = require('./should-hide-reviews');
 const { hasEnoughReviews } = require('./min-reviews');
 
 /**
@@ -31,7 +31,7 @@ function computeSlimCriticScore(show, rawShowReviews, outletRegistry) {
   const scoreResult = hideReviews ? null : computeCriticScore(showReviews, outletRegistry, show.category, show.type);
   // Same display gate as the website's score badges (min-reviews.js).
   const hasEnough = !!scoreResult && hasEnoughReviews(
-    scoreResult.rc, show.category, scoreResult.t1 + scoreResult.t2, isCuratedHistoricalShow(show.id),
+    scoreResult.rc, show.category, scoreResult.t1 + scoreResult.t2, scoreGateArg(show.id),
   );
   return {
     showReviews,

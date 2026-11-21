@@ -120,3 +120,62 @@ test('returns 502 when Formspree is unreachable', async () => {
     globalThis.fetch = realFetch;
   }
 });
+
+// BRO-7847: instant trigger. A good submission starts process-feedback.yml now
+// (the 10-minute cron stays as the backstop); a failed dispatch must never fail
+// the reader's submission; a bad submission starts nothing.
+test('successful submission dispatches process-feedback.yml when a token is set', async () => {
+  process.env.GH_DISPATCH_TOKEN = 'test-token';
+  const dispatched = [];
+  globalThis.fetch = async (url, init) => {
+    const u = String(url);
+    if (u.includes('formspree.io')) return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    dispatched.push({ u, body: init && init.body });
+    return new Response('', { status: 204 });
+  };
+  try {
+    const res = await post(feedbackFormData(), '10.0.2.1');
+    assert.equal(res.status, 200);
+    assert.equal(dispatched.length, 1);
+    assert.match(dispatched[0].u, /actions\/workflows\/process-feedback\.yml\/dispatches$/);
+    assert.deepEqual(JSON.parse(dispatched[0].body), { ref: 'main' });
+  } finally {
+    globalThis.fetch = realFetch;
+    delete process.env.GH_DISPATCH_TOKEN;
+  }
+});
+
+test('a failing dispatch still returns success to the reader', async () => {
+  process.env.GH_DISPATCH_TOKEN = 'test-token';
+  globalThis.fetch = async (url) => {
+    if (String(url).includes('formspree.io')) return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    throw new Error('github down');
+  };
+  try {
+    const res = await post(feedbackFormData(), '10.0.2.2');
+    assert.equal(res.status, 200);
+  } finally {
+    globalThis.fetch = realFetch;
+    delete process.env.GH_DISPATCH_TOKEN;
+  }
+});
+
+test('invalid submission and kill switch dispatch nothing', async () => {
+  process.env.GH_DISPATCH_TOKEN = 'test-token';
+  let other = 0;
+  globalThis.fetch = async (url) => {
+    if (String(url).includes('formspree.io')) return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    other++;
+    return new Response('', { status: 204 });
+  };
+  try {
+    assert.equal((await post(feedbackFormData({ message: '' }), '10.0.2.3')).status, 400);
+    process.env.FEEDBACK_PROPOSAL_DISABLED = 'true';
+    assert.equal((await post(feedbackFormData(), '10.0.2.4')).status, 200);
+    assert.equal(other, 0);
+  } finally {
+    globalThis.fetch = realFetch;
+    delete process.env.GH_DISPATCH_TOKEN;
+    delete process.env.FEEDBACK_PROPOSAL_DISABLED;
+  }
+});

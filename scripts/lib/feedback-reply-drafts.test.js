@@ -1,7 +1,7 @@
 // BRO-7693: no reader email goes out unless its kind is in FEEDBACK_AUTO_REPLY_KINDS.
 const assert = require('assert');
 const {
-  decideReplyMode, buildReplyText, buildOwnerDraftEmail, sendReplyOrDraft,
+  decideReplyMode, buildReplyText, buildOwnerDraftEmail, sendReplyOrDraft, draftReviewsAddedReplies,
 } = require('./feedback-reply-drafts');
 
 const READER = { name: 'Marianne', email: 'marianne@example.com', show: 'Gotta Dance' };
@@ -28,6 +28,50 @@ const OWNER = 'owner@example.com';
   }
   assert.ok(buildReplyText('fixed', null, null).text.startsWith('Hi there,'));
   assert.ok(buildReplyText('fixed', 'A', 'S', { url: 'https://x.test/s' }).text.includes('https://x.test/s'));
+
+  // BRO-7693 gap 2: missing-reviews entries going live get ONE owner draft.
+  {
+    const sent = [];
+    const transport = async (p) => { sent.push(p); };
+    const store = { s1: { name: 'Marianne', email: 'marianne@example.com', show: 'Gotta Dance', message: 'Where are the reviews?' }, s3: { name: null, email: null } };
+    const lookupReader = (id) => store[id] || null;
+    const env = { OWNER_EMAIL: OWNER }; // FEEDBACK_AUTO_REPLY_KINDS empty
+    const live = [
+      { entry: { key: 'k1', kind: 'missing-reviews', submissionId: 's1', title: 'Gotta Dance' }, url: 'https://broadwayscorecard.com/show/gotta-dance' },
+      { entry: { key: 'k2', kind: 'missing-show', submissionId: 's1' }, url: 'u' },
+      { entry: { key: 'k3', kind: 'missing-reviews', submissionId: 's3' }, url: 'u' },
+      { entry: { key: 'k4', kind: 'missing-reviews', submissionId: 's1', replyDraftedAt: '2026-11-17T00:00:00Z' }, url: 'u' },
+      { entry: { key: 'k5', kind: 'missing-reviews', submissionId: 'gone' }, url: 'u' },
+    ];
+    const res = await draftReviewsAddedReplies(live, { lookupReader, transport, env, now: () => 'NOW' });
+    assert.deepStrictEqual(res.map((r) => `${r.key}:${r.status}`), ['k1:drafted', 'k3:skipped', 'k4:skipped', 'k5:skipped']);
+    assert.strictEqual(sent.length, 1, 'exactly one email');
+    assert.deepStrictEqual(sent[0].to, [OWNER], 'draft goes to OWNER_EMAIL only, never the reader');
+    assert.strictEqual(sent[0].reply_to, 'marianne@example.com');
+    assert.ok(sent[0].text.includes('The reviews are now on the site') && sent[0].text.includes('/show/gotta-dance'));
+    assert.ok(sent[0].text.includes('Nothing has been sent to the reader'));
+    assert.strictEqual(live[0].entry.replyDraftedAt, 'NOW');
+    // Re-run: already drafted, no second email.
+    const again = await draftReviewsAddedReplies(live, { lookupReader, transport, env });
+    assert.strictEqual(again[0].reason, 'already-drafted');
+    assert.strictEqual(sent.length, 1);
+    // No owner address: nothing is sent, entry stays undrafted so it retries.
+    const l2 = [{ entry: { key: 'k6', kind: 'missing-reviews', submissionId: 's1' }, url: 'u' }];
+    const r2 = await draftReviewsAddedReplies(l2, { lookupReader, transport, env: {} });
+    assert.strictEqual(r2[0].reason, 'no-owner-email');
+    assert.strictEqual(l2[0].entry.replyDraftedAt, undefined);
+    assert.strictEqual(sent.length, 1);
+    // Transport failure is reported, not thrown, and not marked.
+    const l3 = [{ entry: { key: 'k7', kind: 'missing-reviews', submissionId: 's1' }, url: 'u' }];
+    const r3 = await draftReviewsAddedReplies(l3, { lookupReader, transport: async () => { throw new Error('boom'); }, env });
+    assert.strictEqual(r3[0].status, 'failed');
+    assert.strictEqual(l3[0].entry.replyDraftedAt, undefined);
+    assert.strictEqual(l3[0].entry.replyDraftRetry, true, 'failed draft is flagged for retry');
+    const r4 = await draftReviewsAddedReplies(l3, { lookupReader, transport, env, now: () => 'LATER' });
+    assert.strictEqual(r4[0].status, 'drafted');
+    assert.strictEqual(l3[0].entry.replyDraftRetry, undefined);
+    assert.strictEqual(sent.length, 2);
+  }
 
   // Owner draft carries to/subject/body, the mailto link and the quoted original.
   const reply = buildReplyText('fixed', READER.name, READER.show);

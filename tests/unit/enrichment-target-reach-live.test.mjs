@@ -57,7 +57,11 @@ test('daily synopsis passes reach every flagged open show within a month', (t) =
   const flagged = freshness.dataQuality.hasIssues
     .filter(s => s && s.id && (s.issues || []).some(i => i && i.severity === 'high' && i.type === 'missing_synopsis'))
     .map(s => byId.get(s.id))
-    .filter(s => s && candidateIds.has(s.id));
+    // The report is a snapshot (check-show-freshness.js flags open shows only); a show that has
+    // closed since it was written drops to the historical tail and is not owed a daily pass.
+    // Live data at land time hit this: ted-talks-and-talks-regional-2026 closed the day after
+    // the 15:00 report flagged it, and every land refused (BRO-7780).
+    .filter(s => s && candidateIds.has(s.id) && isLiveShow(s));
 
   if (flagged.length === 0) {
     t.skip('no candidate show is currently flagged missing_synopsis');

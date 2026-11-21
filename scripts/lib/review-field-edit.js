@@ -16,7 +16,7 @@
  *     range/verbatim checked (FIELD_VALUE_CHECKS).
  *   - compare-and-set: the current value must equal action.oldValue, so a plan
  *     never overwrites something CI changed after it was written.
- *   - _locked records are refused.
+ *   - _locked records allow only manual non-review exclusions.
  *   - every edit is stamped on the record (approvedFixes), so the provenance
  *     survives in the private repo.
  */
@@ -28,6 +28,9 @@ const { isReviewTextFile } = require('./review-text-sidecars');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
 
 const REVIEW_TEXT_EDITABLE_FIELDS = [
+  // BRO-7841: the outlet pulled the review (its url 404s). urlDead withholds the link only; the text and
+  // score stay. Reversible: a plan can clear it (false) when the outlet republishes. See review-url-dead.js.
+  'urlDead', 'urlDeadAt', 'urlDeadUrl', 'urlDeadStatus',
   // byline / metadata
   'criticName', 'publishDate', 'designation',
   // provenance of publishDate (BRO-5090): a date fix re-labels a provisional
@@ -253,6 +256,17 @@ const FIELD_VALUE_CHECKS = {
     }
     return storedLabelRelabelError(v, record);
   },
+  // BRO-7958: a real calendar day, never a timestamp or free text (the lane's date correction publishes it as written).
+  publishDate: (v) => {
+    if (v === null) return null; // a clear of a wrong date stays possible (BRO-5851); the lane refuses null on its own
+    if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return 'publishDate must be a YYYY-MM-DD calendar day';
+    const d = new Date(`${v}T00:00:00Z`);
+    return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v ? null : `publishDate ${v} is not a real calendar day`;
+  },
+  urlDead: (v) => (v === true || v === false ? null : 'urlDead must be true or false'),
+  urlDeadAt: (v) => (v === null || (typeof v === 'string' && !Number.isNaN(Date.parse(v))) ? null : 'urlDeadAt must be an ISO date or null'),
+  urlDeadUrl: (v, record) => (v === null || v === record.url ? null : 'urlDeadUrl must equal the record url (or null)'),
+  urlDeadStatus: (v) => (v === null || v === 404 || v === 410 ? null : 'urlDeadStatus must be 404, 410 or null'),
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
   allowCrossShowUrl: (v) => (v === true ? null : 'allowCrossShowUrl may only be set to true'),
   _auditAllowCrossMarket: (v) => (v === true ? null : '_auditAllowCrossMarket may only be set to true'),
@@ -321,8 +335,11 @@ const FIELD_VALUE_CHECKS = {
     }
     // The extractor's write guard (BRO-5796): a quote it refuses would be
     // re-extracted over this edit on its next run.
-    const reject = require('./pull-quote-guards').llmQuoteHardRejectReason(v, record.fullText);
+    const guards = require('./pull-quote-guards');
+    const reject = guards.llmQuoteHardRejectReason(v, record.fullText);
     if (reject) return `llmPullQuote rejected: ${reject}`;
+    // BRO-7346: in a multi-show column the quote must come from this show's section.
+    if (guards.quoteOutsideTargetSection(v, record)) return 'llmPullQuote must come from this show\'s section of the multi-show column';
     return null;
   },
   // A url edit is allowed only when the CURRENT url is provably wrong for this
@@ -356,7 +373,15 @@ const FIELD_VALUE_CHECKS = {
     // to the review's real url; the collector then refetches and verifies it.
     const { isUnverifiableWebSearchRow, isLegacyWebSearchOnly } = require('./review-guards');
     const unverifiedSearchUrl = isLegacyWebSearchOnly(record) && isUnverifiableWebSearchRow(record);
+    // BRO-7869: a Theatre Record print row (its publishDate is TR's, not read off
+    // the url) holding a Daily Mail url whose article id dates the page more than
+    // a year before that print date: the url is an older review of another
+    // production (Globe 2026 Tempest text on the Drury Lane Dec 2024 page).
+    const printRow = record.source === 'theatre-record' || !!record.theatreRecordUrl;
+    const dmUrlPredatesPrint = printRow && !!current
+      && !!require('./dailymail-url-discovery').dailyMailUrlPredatesReview(current, record.publishDate);
     const currentWrong = currentAggregator
+      || dmUrlPredatesPrint
       || (current && classifyReviewUrl(current).ok === false)
       // A tag / category / author index (theatermania.com/tags/<show>/): the
       // rebuild already drops a row on it (rebuild-all-reviews.js listingPageUrlReason),
@@ -377,7 +402,6 @@ const FIELD_VALUE_CHECKS = {
         return 'url: the current url carries a human lock (urlVerified/urlManualOverride)';
       }
       const garbage = current && ['not-http-url', 'unparseable-url'].includes(classifyReviewUrl(current).reason);
-      const printRow = record.source === 'theatre-record' || !!record.theatreRecordUrl;
       return currentAggregator || garbage || printRow
         ? null : 'url: clearing to "" is only for an aggregator url, a malformed url, or a wrong url on a Theatre Record print row';
     }
@@ -451,7 +475,11 @@ function isScalar(v) {
  */
 function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   if (!record || typeof record !== 'object') return { ok: false, reason: 'record is not an object' };
-  const { field, oldValue, newValue } = action || {};
+  const { field, oldValue, oldValueHash, newValue } = action || {};
+  const hashedExcerpt = oldValueHash !== undefined;
+  if (hashedExcerpt && (!EXCERPT_FIELDS.includes(field) || newValue !== null || oldValue !== undefined || !/^[a-f0-9]{64}$/.test(oldValueHash))) {
+    return { ok: false, reason: 'oldValueHash is only allowed for excerpt clears' };
+  }
   if (!REVIEW_TEXT_EDITABLE_FIELDS.includes(field)) {
     return { ok: false, reason: `Field "${field}" not allowed for review-field-edit` };
   }
@@ -461,10 +489,15 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   const valueCheck = FIELD_VALUE_CHECKS[field];
   const valueError = valueCheck ? valueCheck(newValue, record, ctx) : null;
   if (valueError) return { ok: false, reason: valueError };
-  if (record._locked === true) return { ok: false, reason: 'record is _locked' };
+  const lockedExclusion = (field === 'isNonReview' && newValue === true)
+    || (field === 'isNonReviewReason' && typeof newValue === 'string' && /^manual \(not a review\)/i.test(newValue));
+  if (record._locked === true && !lockedExclusion) return { ok: false, reason: 'record is _locked' };
   const current = record[field] === undefined ? null : record[field];
   const expected = oldValue === undefined ? null : oldValue;
-  if (JSON.stringify(current) !== JSON.stringify(expected)) {
+  const matches = hashedExcerpt
+    ? typeof current === 'string' && require('crypto').createHash('sha256').update(current).digest('hex') === oldValueHash
+    : JSON.stringify(current) === JSON.stringify(expected);
+  if (!matches) {
     return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
   }
   if (field === 'duplicateOf' && newValue === null && !record.duplicateClearReason) {
@@ -602,7 +635,7 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     if (retiered.length) sideEffectKeys = [...new Set([...sideEffectKeys, ...retiered])].sort();
   }
   const retractMsg = sideEffectKeys.length ? ` (retracted ${sideEffectKeys.join(', ')})` : '';
-  return { ok: true, record: next, sideEffectKeys, msg: `${field}: ${JSON.stringify(expected)} -> ${JSON.stringify(newValue)}${retractMsg}` };
+  return { ok: true, record: next, sideEffectKeys, msg: `${field}: ${hashedExcerpt ? '[sha256 matched]' : JSON.stringify(expected)} -> ${JSON.stringify(newValue)}${retractMsg}` };
 }
 
 // Moved to approved-fix-flag.js (write-free); re-exported below for callers.
@@ -788,6 +821,8 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   // attempt already stamped its breadcrumb. Only the requested field may
   // bypass that stale-payload check; collision and lock guards still run.
   const writeOptions = action.field === 'url' ? { approvedUrlRepair: true } : {};
+  if (action.field === 'aggregatorStars' && action.newValue === null) writeOptions.merge = false;
+  if (record._locked === true) writeOptions.approvedLockedNonReviewField = action.field;
   if (action.field === 'duplicateOf' && action.newValue === null) {
     writeOptions.approvedFieldClear = action.field;
   }
@@ -802,7 +837,7 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const after = JSON.parse(fs.readFileSync(abs, 'utf8'));
   const got = after[action.field] === undefined ? null : after[action.field];
   if (JSON.stringify(got) !== JSON.stringify(action.newValue)) {
-    return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${JSON.stringify(got)}` };
+    return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${EXCERPT_FIELDS.includes(action.field) ? "an excerpt" : JSON.stringify(got)}` };
   }
   // A flag the rebuild still reads as cleared changes nothing (BRO-4599).
   if (action.field === 'wrongShow' && action.newValue === true && require('./review-guards').wrongShowCleared(after)) {
@@ -830,4 +865,4 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
 }
 
 module.exports = {
-  retierAfterFlagClear, REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag, isSelfSyndicationPointer };
+  retierAfterFlagClear, REVIEW_TEXT_EDITABLE_FIELDS, FIELD_VALUE_CHECKS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn, hasApprovedFlag, isSelfSyndicationPointer };

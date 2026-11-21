@@ -32,7 +32,7 @@
 const fs = require('fs');
 const path = require('path');
 const { buildCadenceReport } = require('./lib/outlet-cadence');
-const { getActionableOutletRows } = require('./lib/outlet-heartbeat-state');
+const { getActionableOutletRows, isDormantRow } = require('./lib/outlet-heartbeat-state');
 const { buildBaseline, parseRenewArg, unknownRenewKeys } = require('./lib/baseline-ttl');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
@@ -130,7 +130,7 @@ function main() {
   }
 
   if (dryRun) process.exit(0);
-  process.exit(flagged.length ? 1 : 0);
+  process.exit(flagged.some((r) => !isDormantRow(r)) ? 1 : 0); // BRO-7758: dormant pairs never fail the run
 }
 
 if (require.main === module) main();

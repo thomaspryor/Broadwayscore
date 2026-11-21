@@ -48,6 +48,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { runGit } = require('./git-proc-guard.js'); // BRO-7458: a timed-out network git must not orphan its index-pack
 const { isReviewFilePath } = require('./review-texts-api-fallback.js');
 
 const RESCUE_PREFIX = 'push-rescue/';
@@ -328,7 +329,7 @@ function settleConflict(mainRaw, rescuedRaw) {
 }
 
 function git(args, opts = {}) {
-  const r = spawnSync('git', args, { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, ...opts });
+  const r = runGit('git', args, { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, ...opts });
   if (r.error) throw r.error;
   return r;
 }
@@ -503,6 +504,7 @@ function prunable(manifest, blobOnMain) {
 function cliPrune(args) {
   const manifestPath = (args.find((a) => a.startsWith('--manifest=')) || '').slice('--manifest='.length);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  // depth1-fetch-ok: CI-only (replay-push-rescue.yml), a throwaway checkout (BRO-7789)
   retryFetch(['--no-tags', '--depth=1', 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 2 });
   const ok = prunable(manifest, (p) => blobAt('origin/main', p));
   for (const r of ok) {

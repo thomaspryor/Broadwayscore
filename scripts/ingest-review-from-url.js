@@ -183,13 +183,22 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--caller=SLUG] [--land]');
+  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] --caller=SLUG [--land]');
   process.exit(0);
 }
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--caller=SLUG] [--land]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--require-publish-date] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] --caller=SLUG [--land]');
   process.exit(1);
+}
+
+// BRO-7934: every ingest names its caller. 6,283 of 8,412 'submit-review-form' files had no
+// pipeline recorded, so the weekly discovery-share report could not say which pipeline found
+// them (1,246 were the backstop gap audit catching what primary discovery missed). A dry run
+// writes nothing and is exempt. A person at a terminal passes --caller=manual.
+if (!callerArg && !dryRun) {
+  console.error('ingest-review-from-url: --caller=<slug> (or INGEST_CALLER) is required so the review file records which pipeline ingested it. Pipelines pass their own name; a manual run passes --caller=manual.');
+  process.exit(2);
 }
 
 // Verify show exists before doing any expensive work.
@@ -588,6 +597,18 @@ if (!show) {
     if (!d || d < dateWindow[0] || d > dateWindow[1]) {
       console.log(`⏭  Skipped: publish date ${d || 'unknown'} outside --date-window ${dateWindow[0]}..${dateWindow[1]} — ${url}`);
       require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'skipped', reason: 'outside-date-window' });
+      process.exit(0);
+    }
+  }
+
+  // BRO-7874: the same news-post guard as ingest-urls.js, before any write. A score-only page (no
+  // body, a rating recovered from the HTML) is a review by definition and is not asked.
+  if (hasBody) {
+    const news = require('./lib/news-post-guard').classifyNewsPost({ url, text });
+    if (news.news) {
+      // `Skipped: <reason>` is the ingest-skip-classify contract (expected rejection).
+      console.log(`⚠️  Skipped: news-post — ${news.reason} — ${url}`);
+      require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'skipped', reason: 'news-post' });
       process.exit(0);
     }
   }

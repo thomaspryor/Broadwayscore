@@ -22,7 +22,7 @@ test('planCounts: recent never needs a decision; historic with every try used up
     { recency: 'historic', strategy: null, skipped: [{ strategy: 'URL_REDISCOVER', reason: 'disabled' }] },
     { recency: 'historic', strategy: 'ARCHIVE', skipped: [] },
   ]);
-  assert.deepEqual(c, { openTotal: 6, openRecent: 2, needsDecision: 1 });
+  assert.deepEqual(c, { openTotal: 6, openRecent: 2, needsDecision: 1, excludedRecords: 0 });
 });
 
 test('pendingStuckCount: only a LATEST pending_push row older than 24h counts', () => {
@@ -157,5 +157,67 @@ test('planCounts: a historic review blocked by superseded_at_url reaches a decis
   const c = N.planCounts([
     { recency: 'historic', strategy: null, skipped: [{ strategy: 'REFETCH_FREE', reason: 'superseded_at_url' }, { strategy: 'ARCHIVE', reason: 'superseded_at_url' }] },
   ]);
-  assert.deepEqual(c, { openTotal: 1, openRecent: 0, needsDecision: 1 });
+  assert.deepEqual(c, { openTotal: 1, openRecent: 0, needsDecision: 1, excludedRecords: 0 });
+});
+
+// BRO-7942: excluded_record rows (wrongShow/wrongProduction) are not recoverable gaps.
+test('planCounts: excluded_record rows leave openTotal and are reported apart', () => {
+  const c = N.planCounts([
+    { recency: 'recent', strategy: 'REFETCH_FREE', skipped: [] },
+    { recency: 'recent', strategy: null, skipped: [{ strategy: 'ANY', reason: 'excluded_record' }] },
+    { recency: 'historic', strategy: null, skipped: [{ strategy: 'ANY', reason: 'excluded_record' }] },
+  ]);
+  assert.deepEqual(c, { openTotal: 1, openRecent: 1, needsDecision: 0, excludedRecords: 2 });
+});
+
+test('nightly row: recovered counts only tier-improving landings', () => {
+  const row = N.buildNightlyRow({ runId: 'r', status: 'ok', summary: { landed: 5, landedImproved: 2, accepted: 5, attempted: 9 }, counts: { openTotal: 1, openRecent: 1, needsDecision: 0, excludedRecords: 3 } });
+  assert.equal(row.recovered, 2);
+  assert.equal(row.landedNoTierGain, 3);
+  assert.equal(row.excludedRecords, 3);
+});
+
+// BRO-7944: missed-run alarm, zero-yield strategies, time-budget alert.
+test('missedRunAlert: no non-dry row in 26h alerts; fresh row, dry-run-only and never-ran do not', () => {
+  const ran = (h) => ({ ts: new Date(NOW - h * H).toISOString(), status: 'ran' });
+  assert.equal(N.missedRunAlert([ran(6)], NOW), null);
+  assert.equal(N.missedRunAlert([ran(25.9)], NOW), null);
+  const a = N.missedRunAlert([ran(27)], NOW);
+  assert.equal(a.key, 'missed_run');
+  assert.match(a.text, /26 hours/);
+  // a dry run does not count as the nightly row
+  assert.equal(N.missedRunAlert([ran(30), { ts: new Date(NOW - H).toISOString(), status: 'dry_run' }], NOW).key, 'missed_run');
+  assert.equal(N.missedRunAlert([], NOW), null);
+  // disabled/busy rows ARE nightly rows (the job ran)
+  assert.equal(N.missedRunAlert([{ ts: new Date(NOW - H).toISOString(), status: 'busy' }], NOW), null);
+});
+
+test('renderDigestLine: a missed night carries the missed_run alert in "Needs attention"', () => {
+  const line = N.renderDigestLine([{ ts: new Date(NOW - 30 * H).toISOString(), status: 'ran', openRecent: 1 }], NOW);
+  assert.match(line, /did not run last night/);
+  assert.match(line, /Needs attention: no nightly recovery run was recorded/);
+});
+
+test('zeroYieldStrategies: attempted on 3 ran nights with 0 accepted each; neutral when not attempted; broken by an accept', () => {
+  const night = (by) => ({ status: 'ran', ts: 'x', byStrategy: by });
+  const z = { attempted: 5, accepted: 0 };
+  const prev = [night({ ARCHIVE: z }), night({ ARCHIVE: z, URL_FIND: z }), night({ ARCHIVE: z })];
+  assert.deepEqual(N.zeroYieldStrategies(prev, { ARCHIVE: z, URL_FIND: z }), ['ARCHIVE']);
+  assert.deepEqual(N.zeroYieldStrategies(prev.slice(1), { ARCHIVE: z }), ['ARCHIVE']);
+  assert.deepEqual(N.zeroYieldStrategies(prev.slice(2), { ARCHIVE: z }), []);
+  assert.deepEqual(N.zeroYieldStrategies([...prev.slice(0, 2), night({ ARCHIVE: { attempted: 4, accepted: 1 } })], { ARCHIVE: z }), []);
+  assert.deepEqual(N.zeroYieldStrategies(prev, { ARCHIVE: { attempted: 3, accepted: 1 } }), []);
+  assert.deepEqual(N.zeroYieldStrategies(prev, { ARCHIVE: { attempted: 0, accepted: 0 } }), []);
+});
+
+test('buildNightlyRow: time-budget stop and a 3-night 0% strategy become alerts', () => {
+  const z = { attempted: 5, accepted: 0, outcomes: {} };
+  const prevRows = [1, 2].map((i) => ({ status: 'ran', ts: new Date(NOW - i * 24 * H).toISOString(), byStrategy: { URL_REDISCOVER: z } }));
+  const row = N.buildNightlyRow({ runId: 'r', status: 'ran', summary: { attempted: 5, accepted: 0, byStrategy: { URL_REDISCOVER: z }, timeBudgetHit: true }, prevRows, ceiling: 60, nowMs: NOW });
+  const keys = row.alerts.map((a) => a.key);
+  assert.ok(keys.includes('time_budget_hit'));
+  assert.ok(keys.includes('strategy_zero_yield'));
+  assert.deepEqual(row.zeroYieldStrategies, ['URL_REDISCOVER']);
+  assert.equal(row.timeBudgetHit, true);
+  assert.match(N.renderDigestLine([row], NOW), /time budget/);
 });

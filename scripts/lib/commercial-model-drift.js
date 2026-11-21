@@ -1,3 +1,6 @@
+const { MODEL_FALSE_NEGATIVE_EXPLANATIONS } = require('./model-false-negative-explanations');
+const { modelContradictsDesignation } = require('./commercial-designations');
+
 const COMMERCIAL_HISTORY_MAX_AGE_HOURS = 200;
 
 /** Pure check shared by the weekly writer (pre-write) and daily digest. */
@@ -56,6 +59,32 @@ function aiEstimatedShare(entry) {
   return ai / total;
 }
 
+/**
+ * Contradictions nobody has diagnosed yet (BRO-6755). A show listed in
+ * MODEL_FALSE_NEGATIVE_EXPLANATIONS is a known, explained model-vs-designation
+ * disagreement (an announced recoupment the Broadway-only model cannot see), so
+ * its flag appearing is not drift: Legally Blonde's owner-sourced recoup raised
+ * the weekly count 3 -> 4 and warned for a week. Entries without the per-show
+ * list fall back to the raw count.
+ */
+function unexplainedFlagCount(entry, explanations = MODEL_FALSE_NEGATIVE_EXPLANATIONS) {
+  if (Array.isArray(entry && entry.modelDesignationFlags)) {
+    // Only the diagnosed kind is excluded: a listed show whose flag says the model reads a
+    // WINNER label (Recouped, Easy Winner, Windfall, Miracle) below zero, the same rule that
+    // raised the flag (modelContradictsDesignation). A listed show flipping to any other
+    // contradiction (a failed label modelled high, a Trickle modelled very high) still counts.
+    const explainedKind = (f) => {
+      if (!(f && Object.prototype.hasOwnProperty.call(explanations, f.show))) return false;
+      const m = /^Model:\s*(-?\d+(?:\.\d+)?)%\s+vs designation:\s*(.+?)\s*$/i.exec(String(f.flag || ''));
+      if (!m) return false;
+      const pct = parseFloat(m[1]);
+      return pct < 0 && modelContradictsDesignation(pct, m[2]);
+    };
+    return entry.modelDesignationFlags.filter((f) => !explainedKind(f)).length;
+  }
+  return (entry && entry.modelDesignationFlagCount) || 0;
+}
+
 function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
   if (!Array.isArray(history) || history.length === 0) {
     return {
@@ -73,24 +102,24 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
   const latest = history[history.length - 1];
   const prior = history.length >= 2 ? history[history.length - 2] : null;
 
-  const latestFlagCount = latest.modelDesignationFlagCount || 0;
+  const latestFlagCount = unexplainedFlagCount(latest);
   const latestAiCount = latest.aiEstimatedCount || 0;
 
   if (!prior) {
     return {
       status: 'pass',
-      message: `${latestFlagCount} modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows (only 1 history entry — no prior week to compare)`,
+      message: `${latestFlagCount} unexplained modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows (only 1 history entry — no prior week to compare)`,
     };
   }
 
-  const priorFlagCount = prior.modelDesignationFlagCount || 0;
+  const priorFlagCount = unexplainedFlagCount(prior);
   const priorAiCount = prior.aiEstimatedCount || 0;
   const flagDelta = latestFlagCount - priorFlagCount;
   const aiDelta = latestAiCount - priorAiCount;
 
   const issues = [];
   if (flagDelta > 0) {
-    issues.push(`modelDesignationFlag contradictions up ${flagDelta} (${priorFlagCount} → ${latestFlagCount})`);
+    issues.push(`unexplained modelDesignationFlag contradictions up ${flagDelta} (${priorFlagCount} → ${latestFlagCount})`);
   }
   // BRO-5749: the modelled set keeps growing (230 → 476 shows, Sep-Oct 2026),
   // so the raw ai-estimated count rose most weeks while its SHARE fell
@@ -112,8 +141,8 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
 
   return {
     status: 'pass',
-    message: `${latestFlagCount} modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows${latestShare != null ? ` (${pct(latestShare)}% of modelled)` : ''} (no rise vs prior week)`,
+    message: `${latestFlagCount} unexplained modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows${latestShare != null ? ` (${pct(latestShare)}% of modelled)` : ''} (no rise vs prior week)`,
   };
 }
 
-module.exports = { computeCommercialModelDriftStatus, aiEstimatedShare, commercialHistoryIssue, COMMERCIAL_HISTORY_MAX_AGE_HOURS };
+module.exports = { computeCommercialModelDriftStatus, unexplainedFlagCount, aiEstimatedShare, commercialHistoryIssue, COMMERCIAL_HISTORY_MAX_AGE_HOURS };

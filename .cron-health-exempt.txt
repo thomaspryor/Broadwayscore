@@ -123,7 +123,6 @@ process-review-formspree.yml  # weekly safety net; /api/submit-review dispatches
 purge-archives-history.yml  # weekly history purge; a missed week leaves the purge one week later
 rebuild-fast.yml  # 4-hourly safety-net rebuild; rebuild-reviews.yml (paged) and deploy freshness checks cover it
 recollect-for-scores.yml  # weekly recollection; a stale week delays rescoring of a few reviews
-recover-wsj-subscriber.yml  # daily WSJ recovery; a missed day delays a few paywalled texts
 rediscover-urls.yml  # weekly URL rediscovery; a stale week delays fixes for moved review URLs
 regenerate-tier-configs.yml  # weekly tier config refresh; stale tiers stay valid until the next run
 review-refresh.yml  # daily extraction; rebuild-reviews.yml (paged) publishes the corpus regardless
@@ -157,7 +156,6 @@ update-critic-consensus.yml  # weekly consensus refresh; rebuild also dispatches
 update-lbo.yml  # weekly London Box Office data; a stale week leaves ticket data a week older
 update-ltd.yml  # weekly London Theatre Direct data; a stale week leaves ticket data a week older
 update-precursor-awards.yml  # seasonal awards data; awards freshness is audited by check-corpus-drift
-update-reddit-sentiment.yml  # twice-monthly sentiment refresh; stale sentiment stays valid
 update-seatplan.yml  # weekly SeatPlan data; a stale week leaves seat data a week older
 update-tony-odds.yml  # hourly in Tony season only (Apr-Jun); out of season it never fires
 ux-walkthrough.yml  # nightly UX walkthrough; a missed night delays UX findings only
@@ -327,7 +325,6 @@ money-monthly-draft.yml  # monthly owner-only [DRAFT] preview; nothing sends wit
 
 # BRO-6309: hourly welcome email for new Profitability Scorecard sign-ups; a missed run only delays the welcome. Failures go through notify-failure
 money-welcome.yml
-sweep-image-variants.yml  # BRO-6808: self-healing daily sweep; a missing sm/ variant is a perf-only defect
 # BRO-6841: weekly AI visibility tracker; advisory data snapshot, a missed week only delays the trend line. Failures go through notify-failure
 aeo-visibility-weekly.yml
 # BRO-6857: monthly report-only board hygiene dry run; a missed month only delays the report
@@ -337,3 +334,5 @@ board-hygiene-report.yml
 city-finder-daily.yml
 critic-reach.yml  # BRO-6984 owner-only reach count for claimed critic pages; low-stakes (stale data hides the line after 3 days), notify-failure on error
 social-video.yml  # BRO-7414 TikTok + YouTube Shorts lane; failure step alerts, one video per network per day so a missed run only delays a post
+landed-change-proof.yml  # BRO-7790 advisory daily proof audit; a missed run makes the digest line say "not measured this morning", notify-failure on error
+backfill-cast-web.yml  # BRO-7381 weekly cast fill, 25 shows; a missed week only delays cast data, no alert needed

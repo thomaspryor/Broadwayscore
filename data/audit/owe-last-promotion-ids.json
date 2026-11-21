@@ -1,35 +1,10 @@
 {
-  "generatedAt": "2026-11-16T23:48:17.064Z",
+  "generatedAt": "2026-11-20T22:17:56.986Z",
   "promoted": [
     {
-      "id": "the-matchgirl-passion-off-west-end-2026",
-      "source": "venue-page:marylebone-theatre",
-      "sourceUrl": "https://marylebonetheatre.com/"
-    },
-    {
-      "id": "dwelling-off-west-end-2027",
-      "source": "venue-page:arcola-theatre",
-      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
-    },
-    {
-      "id": "lilith-off-west-end-2027",
-      "source": "venue-page:arcola-theatre",
-      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
-    },
-    {
-      "id": "private-peaceful-off-west-end-2027",
-      "source": "venue-page:arcola-theatre",
-      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
-    },
-    {
-      "id": "sticky-off-west-end-2027",
-      "source": "venue-page:arcola-theatre",
-      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
-    },
-    {
-      "id": "the-shape-of-the-wave-off-west-end-2027",
-      "source": "venue-page:arcola-theatre",
-      "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
+      "id": "jack-and-the-beanstalk-off-west-end-2027",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": "https://www.stratfordeast.com/whats-on"
     }
   ],
   "rejected": [
@@ -40,6 +15,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as desire-under-the-elms-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Almeida For Free: Desire Under the Elms",
+      "venue": "Almeida Theatre",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as desire-under-the-elms-off-west-end-2026 (colon-segment-of: \"Desire Under the Elms\")"
     },
     {
       "title": "Angel to Olympus",
@@ -258,6 +241,14 @@
       "reason": "already in shows.json as jeremy-irons-reads-ts-eliots-masterpiece-four-quartets-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "The Matchgirl Passion",
+      "venue": "Marylebone Theatre",
+      "source": "venue-page:marylebone-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-matchgirl-passion-off-west-end-2026 (normalized-equal)"
+    },
+    {
       "title": "What We Talk About When We Talk About Anne Frank",
       "venue": "Marylebone Theatre",
       "source": "venue-page:marylebone-theatre",
@@ -442,6 +433,14 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Feeling Afraid",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as feeling-afraid-off-west-end-2026 (normalized-equal)"
+    },
+    {
       "title": "A Homo Alone 2 Yikes We Did It Again",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
@@ -456,14 +455,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
-    },
-    {
-      "title": "Feeling Afraid",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as feeling-afraid-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Ayla A New Musical",
@@ -794,6 +785,14 @@
       "reason": "already in shows.json as bedlam-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "Dwelling",
+      "venue": "Arcola Theatre",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as dwelling-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Incident at Vichy",
       "venue": "Arcola Theatre",
       "source": "venue-page:arcola-theatre",
@@ -802,12 +801,44 @@
       "reason": "already in shows.json as incident-at-vichy-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "Lilith",
+      "venue": "Arcola Theatre",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as lilith-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Private Peaceful",
+      "venue": "Arcola Theatre",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as private-peaceful-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Sticky",
+      "venue": "Arcola Theatre",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as sticky-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "The Reckoning",
       "venue": "Arcola Theatre",
       "source": "venue-page:arcola-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as the-reckoning-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "The Shape of The Wave",
+      "venue": "Arcola Theatre",
+      "source": "venue-page:arcola-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-shape-of-the-wave-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Counterminers",
@@ -874,12 +905,28 @@
       "reason": "already in shows.json as god-is-a-woman-the-musical-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Jellicile",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
+    },
+    {
       "title": "Saving Alan Turing",
       "venue": "King's Head Theatre",
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as saving-alan-turing-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Selina Mosinski: Puss in Boots - A Working Class Fairy Tale",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 3 performance(s) listed — a short booking, not a run"
     },
     {
       "title": "Stand Up If You're Here Tonight",
@@ -966,8 +1013,8 @@
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-14))"
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as liza-pulman-and-joestiloe-hooray-for-holly-off-west-end-2026 (typo-distance=2-of: \"Liza Pulman And JoeStiloe: Hooray For Holly\")"
     },
     {
       "title": "Not Now Bernard",
@@ -1400,14 +1447,6 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-27))"
-    },
-    {
-      "title": "High School Musical",
-      "venue": "Troubadour Wembley Park Theatre",
-      "source": "venue-page:troubadour-wembley-park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as high-school-musical-off-west-end-2026 (normalized-equal)"
     }
   ]
 }

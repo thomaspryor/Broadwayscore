@@ -96,6 +96,37 @@ test('refuses _locked records and non-scalar values', () => {
   assert.equal(applyReviewFieldEdit({}, { field: 'criticName', oldValue: null, newValue: { a: 1 } }, stamp).ok, false);
 });
 
+test('locked reviews allow only a manual non-review exclusion through the writer', (t) => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'locked-nonreview-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, 'show'));
+  const file = 'show/guardian--critic.json';
+  const rec = { showId: 'show', _locked: true, isNonReview: false, isNonReviewReason: 'old reason', assignedScore: 47 };
+  fs.writeFileSync(path.join(root, file), JSON.stringify(rec));
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const reason = 'manual (not a review): feature';
+  for (const action of [
+    { field: 'isNonReviewReason', oldValue: 'old reason', newValue: reason },
+    { field: 'isNonReview', oldValue: false, newValue: true },
+  ]) {
+    const res = executeReviewFieldEditIn(root, { file, ...action }, stamp);
+    assert.equal(res.ok, true, res.reason);
+  }
+  const after = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+  assert.equal(after._locked, true);
+  assert.equal(after.assignedScore, 47);
+  assert.equal(after.isNonReview, true);
+  assert.equal(after.isNonReviewReason, reason);
+  for (const action of [
+    { field: 'isNonReview', oldValue: true, newValue: false },
+    { field: 'isNonReviewReason', oldValue: reason, newValue: 'automatic' },
+    { field: 'criticName', oldValue: null, newValue: 'Other' },
+    { field: 'isNonReview', oldValue: null, newValue: true },
+  ]) assert.equal(applyReviewFieldEdit(after, action, stamp).ok, false);
+});
+
 test('clearing duplicateOf requires a clear reason first', () => {
   const res = applyReviewFieldEdit({ duplicateOf: 'a.json' }, { field: 'duplicateOf', oldValue: 'a.json', newValue: null }, stamp);
   assert.equal(res.ok, false);
@@ -791,7 +822,7 @@ test('aggregatorStars clear survives the real writer and leaves the file queued 
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   fs.mkdirSync(path.join(root, 'show'));
   const file = 'show/mail-on-sunday--critic.json';
-  fs.writeFileSync(path.join(root, file), JSON.stringify({ showId: 'show', outletId: 'mail-on-sunday', criticName: 'A Critic', assignedScore: 91, aggregatorStars: '5/5' }));
+  fs.writeFileSync(path.join(root, file), JSON.stringify({ showId: 'show', outletId: 'mail-on-sunday', criticName: 'A Critic', assignedScore: 91, aggregatorStars: '5/5', rescoreCompletedAt: '2026-09-05T08:58:39.929Z' }));
   const { executeReviewFieldEditIn } = require('./review-field-edit.js');
   const res = executeReviewFieldEditIn(root, { file, field: 'aggregatorStars', oldValue: '5/5', newValue: null }, stamp);
   assert.equal(res.ok, true, res.reason);
@@ -1110,4 +1141,18 @@ test('adjudicatedScore: clear only, on a stored rating, through the write guard'
   assert.equal(after.adjudicatedScoreInvalidated.score, 25, 'dropped score kept for audit');
   assert.equal(after.originalScore, 'C-', 'the star stands');
   assert.notEqual(getBestScore(after).source, 'adjudicated');
+});
+
+test('excerpt clear uses a digest compare-and-set without exposing the text', () => {
+  const { createHash } = require('node:crypto');
+  const excerpt = 'Private review text for a different show';
+  const oldValueHash = createHash('sha256').update(excerpt).digest('hex');
+  const action = { field: 'westEndTheatreExcerpt', oldValueHash, newValue: null };
+  const ok = applyReviewFieldEdit({ westEndTheatreExcerpt: excerpt }, action, stamp);
+  assert.equal(ok.ok, true, ok.reason);
+  assert.equal(ok.record.westEndTheatreExcerpt, null);
+  assert.equal(JSON.stringify(ok).includes(excerpt), false);
+  assert.equal(applyReviewFieldEdit({ westEndTheatreExcerpt: 'changed' }, action, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({ url: excerpt }, { ...action, field: 'url' }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({ westEndTheatreExcerpt: excerpt }, { ...action, newValue: 'replacement' }, stamp).ok, false);
 });

@@ -227,3 +227,13 @@ test('newest EFFECT per peer wins', () => {
   const events = [{ kind: 'user_text', text: REPORT_BACK, synthetic: true }, { kind: 'user_text', text: later, synthetic: true }];
   assert.equal(stopHookDecision({ lastMessage: CLOSE, events, env: ENV }).decision, 'allow');
 });
+
+test('BRO-7738: a SAFE TO ARCHIVE another Stop hook refused does not reset the chunk (retry still owes the spend check)', () => {
+  const fb = { kind: 'user_text', text: 'Stop hook feedback:\n[command hook 2]: BLOCKED: x\n[VE:ROOTCAUSE]', synthetic: true };
+  const first = 'Search chain change landed.\nSAFE TO ARCHIVE — landed';
+  const retry = 'NO-ROOT-CAUSE: spot change\nSAFE TO ARCHIVE — landed';
+  const events = [...edit('/repo/scripts/lib/url-discovery.js'), ...land(), text(first), fb];
+  assert.equal(stopHookDecision({ lastMessage: retry, events, env: ENV }).decision, 'block');
+  const accepted = [...edit('/repo/scripts/lib/url-discovery.js'), ...land(), text(first), { kind: 'user_text', text: 'ok, next thing' }];
+  assert.equal(stopHookDecision({ lastMessage: retry, events: accepted, env: ENV }).decision, 'allow', 'an accepted claim still closes the chunk');
+});

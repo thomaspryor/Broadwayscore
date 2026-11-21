@@ -3,11 +3,11 @@
 // stdin: hook JSON. stdout: hook JSON ({systemMessage}) on warn. exit 2 + stderr on block.
 // Fails OPEN on every error (a crashed PreToolUse hook would wedge Write for every session).
 const fs = require('fs');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const path = require('path');
-const { execFileSync } = require('child_process');
 
 function git(args, cwd) {
-  return execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 4000 });
+  return gitGuard.runGitOrThrow(args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 4000 });
 }
 
 // A dir is "new" if origin/main (not the index: staged/committed files must not hide it) has nothing under it.

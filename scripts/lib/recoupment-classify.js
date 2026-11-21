@@ -22,6 +22,7 @@
 require('./llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const https = require('https');
 const { GPT4O_MINI } = require('./models');
+const { openaiChatBody } = require('./llm-batch');
 const { applyProductionGuard, extractHeadlines, extractPublishedDate, productionStartDate } = require('./recoupment-production-guard');
 
 const ENDPOINT = { hostname: 'api.openai.com', path: '/v1/chat/completions' };
@@ -100,10 +101,7 @@ Respond with a single JSON object:
 function callOpenAI(prompt, apiKey) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: MODEL,
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0,
-      max_tokens: 400,
+      ...openaiChatBody({ model: MODEL, messages: [{ role: 'user', content: prompt }], temperature: 0, maxTokens: 400 }),
       response_format: { type: 'json_object' },
     });
     const req = https.request({

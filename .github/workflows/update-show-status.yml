@@ -1936,8 +1936,21 @@ jobs:
             opening.forEach(s => console.log(s.id + '|' + (s.category || 'broadway')));
           " 2>/dev/null)
 
+          # BRO-7808: a show whose embargo lifted days after its recorded openingDate gets no lane night; dispatch the
+          # readiness check for it so the late-embargo guard files the card.
+          LATE=$(node -e "
+            const RL = require('./scripts/lib/readiness-lane');
+            const shows = require('./data/shows.json').shows;
+            const rv = (require('./data/reviews.json').reviews || []);
+            const now = Date.now();
+            shows.filter(s => s.openingDate && s.openingDate < '$TOMORROW' && s.openingDate >= new Date(now - 21 * 864e5).toISOString().slice(0, 10))
+              .filter(s => RL.lateEmbargoVerdict(s, rv.filter(r => r.showId === s.id), now).status === 'fail')
+              .forEach(s => console.log(s.id + '|' + (s.category || 'broadway')));
+          " 2>/dev/null)
+          [ -n "$LATE" ] && SHOWS=$(printf '%s\n%s' "$SHOWS" "$LATE" | sed '/^$/d')
+
           if [ -z "$SHOWS" ]; then
-            echo "No shows opening tomorrow. Skipping readiness check."
+            echo "No shows opening tomorrow or with a late embargo. Skipping readiness check."
             exit 0
           fi
 

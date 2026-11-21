@@ -10,9 +10,9 @@
  */
 // diskReserveBytes (BRO-7088): disk the lane's machine needs for work that is not Codex. The cloud routine's
 // wrapper session works its own Claude-lane cards on the same volume, full checkouts of 1.77 GB each
-// (du measured 2026-11-07, BRO-7097), so the reserve is 3 of them: 3 x 1.77e9. The GitHub runner is Codex's alone.
+// (du measured 2026-11-07, BRO-7097), so the reserve is 3 of them: 3 x 1773 MiB. The GitHub runner is Codex's alone.
 const LANES = Object.freeze({
-  cloud: Object.freeze({ base: 0, max: 3, diskReserveBytes: 3 * 1.77e9 }),
+  cloud: Object.freeze({ base: 0, max: 3, diskReserveBytes: 3 * 1773 * 1048576 }),
   gha: Object.freeze({ base: 3, max: 2, diskReserveBytes: 0 }),
 });
 

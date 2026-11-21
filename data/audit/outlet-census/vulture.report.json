@@ -1,46 +1,108 @@
 {
   "outletId": "vulture",
-  "generatedAt": "2026-10-28T20:36:35.527Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:21:39.961Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap-years",
-    "notes": [
-      "2021: no URLs (blocked or empty; see log)",
-      "2022: no URLs (blocked or empty; see log)",
-      "2023: no URLs (blocked or empty; see log)",
-      "2024: no URLs (blocked or empty; see log)",
-      "2025: no URLs (blocked or empty; see log)",
-      "2026: no URLs (blocked or empty; see log)"
-    ],
-    "enumerated": 0,
-    "inWindow": 0,
+    "status": "complete",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 3188,
+    "inWindow": 2919,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
-    "counts": {},
-    "viaTitleVariant": {},
-    "recall": null,
-    "recallWithCatalog": null
+    "counts": {
+      "not-review": 2359,
+      "held": 315,
+      "catalog-gap": 27,
+      "held-unmatched": 35,
+      "out-of-window": 159,
+      "gap": 6,
+      "held-alt-url": 15,
+      "misfile": 2,
+      "ambiguous": 1
+    },
+    "viaTitleVariant": {
+      "held": 24,
+      "not-review": 3,
+      "held-alt-url": 2,
+      "misfile": 1
+    },
+    "recall": 0.976,
+    "recallWithCatalog": 0.904
+  },
+  "seasons": {
+    "2021-22": {
+      "not-review": 496,
+      "held": 43,
+      "catalog-gap": 9,
+      "held-unmatched": 5,
+      "out-of-window": 24
+    },
+    "2020-21": {
+      "not-review": 134,
+      "out-of-window": 11,
+      "held": 1,
+      "held-unmatched": 1,
+      "catalog-gap": 2
+    },
+    "2022-23": {
+      "not-review": 384,
+      "held-unmatched": 6,
+      "held": 50,
+      "gap": 2,
+      "out-of-window": 15,
+      "catalog-gap": 6,
+      "held-alt-url": 2
+    },
+    "2023-24": {
+      "not-review": 425,
+      "out-of-window": 31,
+      "held": 70,
+      "catalog-gap": 3,
+      "held-unmatched": 5,
+      "gap": 1,
+      "held-alt-url": 3,
+      "misfile": 1
+    },
+    "2024-25": {
+      "not-review": 466,
+      "held": 61,
+      "out-of-window": 52,
+      "gap": 2,
+      "held-unmatched": 9,
+      "held-alt-url": 3,
+      "catalog-gap": 4,
+      "misfile": 1,
+      "ambiguous": 1
+    },
+    "2025-26": {
+      "not-review": 351,
+      "out-of-window": 19,
+      "held": 71,
+      "held-alt-url": 6,
+      "catalog-gap": 2,
+      "held-unmatched": 2
+    },
+    "2026-27": {
+      "gap": 1,
+      "not-review": 103,
+      "held-unmatched": 7,
+      "held": 19,
+      "out-of-window": 7,
+      "catalog-gap": 1,
+      "held-alt-url": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 605,
-    "notEnumerated": 344,
-    "noUrl": 3,
+    "rowsInWindow": 748,
+    "notEnumerated": 43,
+    "noUrl": 4,
     "samples": [
-      {
-        "showId": "1776-2022",
-        "url": "https://www.vulture.com/2022/10/theater-review-1776-on-broadway.html",
-        "publishDate": "2022-09-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-        "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-broadway-neil-diamond-musical.html?utm_medium=s1&utm_source=tw&utm_campaign=vulture",
-        "publishDate": "2022-12-04",
-        "why": "not-enumerated"
-      },
       {
         "showId": "a-bronx-tale-the-musical-2016",
         "url": "http://www.vulture.com/2016/12/theater-review-a-bronx-tale-gets-up-to-sing.html",
@@ -54,141 +116,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "a-dolls-house-2023",
-        "url": "https://www.vulture.com/2023/03/theater-review-dolls-house-ibsen-herzog-chastain-broadway.html",
-        "publishDate": "2023-03-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-ghost-in-your-ear-off-broadway-2026",
-        "url": "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
-        "publishDate": "2026-10-15",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-strange-loop-2022",
-        "url": "https://www.vulture.com/2022/04/theater-review-a-strange-loop-broadway.html",
-        "publishDate": "2022-04-26",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
-        "url": "https://www.vulture.com/article/theater-review-a-wonderful-world-louis-armstrong-broadway-musical.html",
-        "publishDate": "2024-11-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "aint-no-mo-2022",
-        "url": "https://www.vulture.com/2022/12/theater-review-aint-no-mo-broadway.html",
-        "publishDate": "2022-12-04",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "all-in-comedy-about-love-2024",
-        "url": "https://www.vulture.com/article/theater-review-all-in-comedy-about-love-mulaney-rich.html",
-        "publishDate": "2024-12-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "all-nighter-off-broadway-2025",
-        "url": "https://www.vulture.com/article/theater-review-all-nighter-margolin.html",
-        "publishDate": "2025-03-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "almost-famous-2022",
-        "url": "https://www.vulture.com/2022/11/theater-review-almost-famous-broadway-musical.html",
-        "publishDate": "2022-11-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "america-who-hurt-you-off-broadway-2026",
-        "url": "https://www.vulture.com/article/theater-reviews-the-holes-friedrich-america-who-hurt-you-sarah-jones.html",
-        "publishDate": "2026-09-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "american-buffalo-2022",
-        "url": "https://www.vulture.com/2022/04/american-buffalo-laurence-fishburne-theater-review.html",
-        "publishDate": "2022-04-14",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "an-ark-off-broadway-2026",
         "url": "https://www.vulture.com/article/an-ark-shed-mckellen-mixed-virtual-reality.html",
         "publishDate": "2026-01-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "an-enemy-of-the-people-2024",
-        "url": "https://www.vulture.com/article/theater-review-an-enemy-of-the-people-strong-imperioli-gold-herzog-ibsen.html",
-        "publishDate": "2024-03-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "and-juliet-2022",
-        "url": "https://www.vulture.com/2022/11/theater-review-and-juliet-broadway.html",
-        "publishDate": "2022-11-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "animal-wisdom-off-broadway-2022",
-        "url": "https://www.vulture.com/article/theater-review-heather-christian-animal-wisdom-signature-kenita-miller.html",
-        "publishDate": "2026-05-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "anna-christie-off-broadway-2025",
-        "url": "https://www.vulture.com/article/theater-review-anna-christie-oneill-michelle-williams-tom-sturridge-thomas-kail.html",
-        "publishDate": "2025-12-14",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
-        "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html",
-        "publishDate": "2026-10-15",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
-        "url": "https://www.vulture.com/article/theater-review-antigone-this-play-i-read-in-high-school-ziegler.html",
-        "publishDate": "2026-03-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "appropriate-2023",
-        "url": "https://www.vulture.com/2023/12/theater-review-branden-jacobs-jenkinss-appropriate.html",
-        "publishDate": "2023-12-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "archduke-off-broadway-2025",
-        "url": "https://www.vulture.com/article/theater-review-archduke-rajiv-joseph-princip-roundabout.html",
-        "publishDate": "2025-11-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "arias-with-a-twist-off-broadway-2026",
-        "url": "https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
-        "publishDate": "2026-09-28",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "art-2025",
-        "url": "https://www.vulture.com/article/theater-review-yasmina-reza-art-revival-harris-corden-cannavale.html",
-        "publishDate": "2025-09-16",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "back-to-the-future-2023",
-        "url": "https://www.vulture.com/2023/08/theater-review-back-to-the-future-musical-broadway.html",
-        "publishDate": "2023-08-03",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bad-cinderella-2023",
-        "url": "https://www.vulture.com/2023/03/theater-review-bad-cinderella-lloyd-webber-broadway.html",
-        "publishDate": "2023-03-24",
         "why": "not-enumerated"
       },
       {
@@ -198,51 +128,9 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "becky-shaw-2026",
-        "url": "https://www.vulture.com/article/becky-shaw-broadway-play-review.html",
-        "publishDate": "2026-04-06",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "between-riverside-and-crazy-2022",
-        "url": "https://www.vulture.com/2022/12/theater-review-between-riverside-and-crazy-on-broadway.html",
-        "publishDate": "2022-12-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "billy-crystal-860-2026",
-        "url": "https://www.vulture.com/article/theater-broadway-review-billy-crystal-860.html",
-        "publishDate": "2026-10-21",
-        "why": "not-enumerated"
-      },
-      {
         "showId": "birthday-candles-2022",
         "url": "https://www.vulture.com/2022/04/birthday-candles-with-debra-messing-is-not-much-of-a-party.html",
         "publishDate": "2022-04-10",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "birthright-off-broadway-2026",
-        "url": "https://www.vulture.com/article/theater-reviews-birthright-camping-nyc.html",
-        "publishDate": "2026-07-02",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "blackout-songs-off-broadway-2026",
-        "url": "https://www.vulture.com/article/theater-review-blackout-songs-white-data-libby.html",
-        "publishDate": "2026-01-29",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "blood-of-the-lamb-off-broadway-2024",
-        "url": "https://www.vulture.com/article/theater-reviews-medea-reversed-blood-of-the-lamb.html",
-        "publishDate": "2024-09-23",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "bob-fosses-dancin-2023",
-        "url": "https://www.vulture.com/2023/03/theater-review-bob-fosse-dancin-revival.html",
-        "publishDate": "2023-03-19",
         "why": "not-enumerated"
       },
       {
@@ -252,30 +140,2965 @@
         "why": "not-enumerated"
       },
       {
-        "showId": "boop-2025",
-        "url": "https://www.vulture.com/article/theater-review-betty-boop-broadway-musical.html",
+        "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+        "url": "https://www.vulture.com/article/cat-cohen-broad-strokes-lucille-lortel.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cats-the-jellicle-ball-2026",
+        "url": "https://www.vulture.com/article/cats-the-jellicle-ball-is-the-real-thing.html",
+        "publishDate": "2026-04-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dad-dont-read-this-off-broadway-2026",
+        "url": "https://www.vulture.com/article/teen-angst-online-and-irl-in-dad-dont-read-this.html",
+        "publishDate": "2026-05-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dead-outlaw-2025",
+        "url": "https://www.vulture.com/article/theater-review-dead-outlaw-musical-broadway",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "delirium-off-broadway-2026",
+        "url": "https://www.vulture.com/article/lives-during-wartime-im-not-even-half-khoshnoudi-delirium-golyak.html",
+        "publishDate": "2026-10-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "english-2025",
+        "url": "https://www.vulture.com/article/freedom-in-speech-sanaz-toossis-english.html",
+        "publishDate": "2025-01-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "floyd-collins-2025",
+        "url": "https://www.vulture.com/article/floyd-collins-is-beautiful-but-cant-break-free.html",
+        "publishDate": "2025-04-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "indian-princesses-off-broadway-2025",
+        "url": "https://www.vulture.com/article/indian-princesses-at-the-corner-of-cringe-and-compassion.html",
+        "publishDate": "2026-05-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "ink-2019",
+        "url": "https://www.vulture.com/2019/04/theater-review-ink-on-broadway.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "jagged-little-pill-2019",
+        "url": "https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "jersey-boys-2005",
+        "url": "https://www.newyorkmetro.com/nymetro/arts/theater/reviews/15040/index.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "macbeth-off-broadway-2026",
+        "url": "https://www.vulture.com/article/the-mets-macbeth-is-a-bubbling-cauldron-of-operatic-fun.html",
+        "publishDate": "2026-09-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "marjorie-prime-2025",
+        "url": "https://www.vulture.com/article/return-of-the-replicants-marjorie-prime.html",
+        "publishDate": "2025-12-08",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026",
+        "url": "https://www.vulture.com/article/ayo-ogala-meat-suit-theater-review.html",
+        "publishDate": "2026-02-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
+        "url": "https://www.vulture.com/article/morgan-bassichis-can-i-be-frank.html",
+        "publishDate": "2026-05-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "new-york-new-york-2023",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "once-upon-a-mattress-1996",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "other-desert-cities-2026",
+        "url": "https://www.vulture.com/article/other-desert-cities-dreyfus-janney-harris-rabe.html",
+        "publishDate": "2026-10-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "patriots-2024",
+        "url": "https://www.vulture.com/article/patriots-peter-morgan-russia-putin.html",
+        "publishDate": "2024-04-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "pre-existing-condition-off-broadway-2026",
+        "url": "https://www.vulture.com/article/good-news-pre-existing-condition-has-recurred.html",
+        "publishDate": "2026-09-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "private-lives-2011",
+        "url": "http://nymag.com/daily/entertainment/2011/11/theater-review-private-lives.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "romeo-and-juliet-off-broadway-2026",
+        "url": "https://www.vulture.com/article/romeo-and-juliet-shakespeare-park-saheem-ali-public.html",
+        "publishDate": "2026-06-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "runaways-1978",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "that-championship-season-2011",
+        "url": "http://nymag.com/daily/entertainment/2011/03/stage_dive_the_faded_glory_of.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+        "url": "https://www.vulture.com/article/chekhov-cherry-orchard-armory-stone-korean.html",
+        "publishDate": "2026-09-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-gin-game-2015",
+        "url": "https://nymag.com/intelligencer/2015/10/theater-reviews-the-gin-game.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+        "url": "https://www.vulture.com/article/oneill-the-hairy-ape-irish-rep-oreilly.html",
+        "publishDate": "2026-10-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-house-of-blue-leaves-2011",
+        "url": "https://nymag.com/daily/entertainment/2011/04/theater_review_a_cramped_and_m.htmlA Cramped and Muted House of Blue Leaves",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-invention-of-love-off-broadway-2026",
+        "url": "https://www.vulture.com/article/how-much-did-i-love-the-invention-of-love.html",
+        "publishDate": "2026-09-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-last-five-years-2025",
+        "url": "https://www.vulture.com/article/theater-review-nick-jonas-adrienne-warren-last-five-years-jason-robert-brown.htmlhttps://www.vulture.com/article/theater-review-nick-jonas-adrienne-warren-last-five-years-jason-robert-brown.html",
         "publishDate": "2025-04-07",
         "why": "not-enumerated"
       },
       {
-        "showId": "brooklyn-laundry-off-broadway-2024",
-        "url": "https://www.vulture.com/article/theater-review-john-patrick-shanley-brooklyn-laundry-cecily-strong.html",
-        "publishDate": "2024-03-01",
+        "showId": "the-maids-off-broadway-2026",
+        "url": "https://www.vulture.com/article/video-killed-the-maids.html",
+        "publishDate": "2026-05-26",
         "why": "not-enumerated"
       },
       {
-        "showId": "buena-vista-social-club-2025",
-        "url": "https://www.vulture.com/article/buena-vista-social-club-broadway-marco-ramirez-theater-review.html",
-        "publishDate": "2025-03-19",
+        "showId": "the-pitmen-painters-2010",
+        "url": "http://nymag.com/daily/entertainment/2010/10/theater_review_the_art-appreci.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-robber-bridegroom-1976",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "the-verge-off-broadway-2026",
+        "url": "https://www.vulture.com/article/the-verge-needs-to-be-much-weirder-than-this.html",
+        "publishDate": "2026-11-05",
         "why": "not-enumerated"
       }
     ]
   },
-  "gaps": [],
-  "heldAltUrl": [],
-  "misfiles": [],
-  "heldUnmatched": [],
-  "ambiguous": [],
-  "catalogGaps": [],
-  "outOfWindow": []
+  "gaps": [
+    {
+      "url": "https://www.vulture.com/2022/12/theater-reviews-the-far-country-and-des-moines.html",
+      "headline": "theater reviews the far country and des moines",
+      "publishDate": "2022-12-16",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "des-moines-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/10/theater-review-cost-of-living-mtc-majok-broadway.html",
+      "headline": "theater review cost of living mtc majok broadway",
+      "publishDate": "2022-10-03",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cost-of-living-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/review-disneys-lifeless-bland-mufasa-the-lion-king.html",
+      "headline": "review disneys lifeless bland mufasa the lion king",
+      "publishDate": "2024-12-19",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-lion-king-1997"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/the-counter-dirty-laundry-theater-review.html",
+      "headline": "the counter dirty laundry theater review",
+      "publishDate": "2024-10-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-counter-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "dirty-laundry-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-once-upon-a-mattress-sutton-foster-theater-encores.html",
+      "headline": "review once upon a mattress sutton foster theater encores",
+      "publishDate": "2024-08-12",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "once-upon-a-mattress-2024"
+      ],
+      "outOfWindow": [
+        "once-upon-a-mattress-1996"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-the-charioteer-dan-giles.html",
+      "headline": "theater review the charioteer dan giles",
+      "publishDate": "2026-11-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-charioteer-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://www.vulture.com/2022/10/theater-review-lea-michele-funny-girl-broadway.html",
+      "headline": "theater review lea michele funny girl broadway",
+      "publishDate": "2022-10-02",
+      "matched": [
+        "funny-girl-2022"
+      ],
+      "heldUrls": [
+        "https://www.vulture.com/2022/04/theater-review-funny-girl-beanie-feldstein.html"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/09/lea-michele-funny-girl-review-glee-comparison.html",
+      "headline": "lea michele funny girl review glee comparison",
+      "publishDate": "2022-09-29",
+      "matched": [
+        "funny-girl-2022"
+      ],
+      "heldUrls": [
+        "https://www.vulture.com/2022/04/theater-review-funny-girl-beanie-feldstein.html"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-wicked-is-as-enchanting-as-it-is-exhausting.html",
+      "headline": "review wicked is as enchanting as it is exhausting",
+      "publishDate": "2024-11-19",
+      "matched": [
+        "wicked-2003"
+      ],
+      "heldUrls": [
+        "http://nymag.com/nymetro/arts/theater/reviews/n_9454/"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2024/06/theater-review-branden-jacobs-jenkinss-appropriate.html",
+      "headline": "theater review branden jacobs jenkinss appropriate",
+      "publishDate": "2024-06-16",
+      "matched": [
+        "appropriate-2023"
+      ],
+      "heldUrls": [
+        "https://www.vulture.com/2023/12/theater-review-branden-jacobs-jenkinss-appropriate.html"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2024/06/theater-review-merrily-we-roll-along-sondheim-radcliffe-groff-mendez.html",
+      "headline": "theater review merrily we roll along sondheim radcliffe groff mendez",
+      "publishDate": "2024-06-16",
+      "matched": [
+        "merrily-we-roll-along-2023"
+      ],
+      "heldUrls": [
+        "https://www.vulture.com/2023/10/theater-review-merrily-we-roll-along-sondheim-radcliffe-groff-mendez.html"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/wicked-little-letters-review-shouldve-been-naughtier.html",
+      "headline": "wicked little letters review shouldve been naughtier",
+      "publishDate": "2024-03-29",
+      "matched": [
+        "wicked-2003"
+      ],
+      "heldUrls": [
+        "http://nymag.com/nymetro/arts/theater/reviews/n_9454/"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/stranger-things-5-final-season-volume-one-review-netflix.html",
+      "headline": "stranger things 5 final season volume one review netflix",
+      "publishDate": "2025-11-26",
+      "matched": [
+        "stranger-things-2024"
+      ],
+      "heldUrls": [
+        "https://www.vulture.com/article/theater-review-stranger-things-first-shadow-grief-camp.html"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/wicked-for-good-regal-popcorn-bucket-review.html",
+      "headline": "wicked for good regal popcorn bucket review",
+      "publishDate": "2025-11-21",
+      "matched": [
+        "wicked-2003"
+      ],
+      "heldUrls": [
+        "http://nymag.com/nymetro/arts/theater/reviews/n_9454/"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/wicked-for-good-reviews.html",
+      "headline": "wicked for good reviews",
+      "publishDate": "2025-11-18",
+      "matched": [
+        "wicked-2003"
+      ],
+      "heldUrls": [
+        "http://nymag.com/nymetro/arts/theater/reviews/n_9454/"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-wicked-for-good-is-actually-better-than-the-first.html",
+      "headline": "review wicked for good is actually better than the first",
+      "publishDate": "2025-11-18",
+      "matched": [
+        "wicked-2003"
+      ],
+      "heldUrls": [
+        "http://nymag.com/nymetro/arts/theater/reviews/n_9454/"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/wicked-cereals-taste-test-review.html",
+      "headline": "wicked cereals taste test review",
+      "publishDate": "2025-09-03",
+      "matched": [
+        "wicked-2003"
+      ],
+      "heldUrls": [
+        "http://nymag.com/nymetro/arts/theater/reviews/n_9454/"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-dead-outlaw-musical-broadway.html",
+      "headline": "theater review dead outlaw musical broadway",
+      "publishDate": "2025-04-27",
+      "matched": [
+        "dead-outlaw-2025"
+      ],
+      "heldUrls": [
+        "https://www.vulture.com/article/theater-review-dead-outlaw-musical-broadway"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-nick-jonas-adrienne-warren-last-five-years-jason-robert-brown.html",
+      "headline": "theater review nick jonas adrienne warren last five years jason robert brown",
+      "publishDate": "2025-04-06",
+      "matched": [
+        "the-last-five-years-2025"
+      ],
+      "heldUrls": [
+        "https://www.vulture.com/article/theater-review-nick-jonas-adrienne-warren-last-five-years-jason-robert-brown.htmlhttps://www.vulture.com/article/theater-review-nick-jonas-adrienne-warren-last-five-years-jason-robert-brown.html"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-heart-of-the-beast-is-bland-troopaganda.html",
+      "headline": "review heart of the beast is bland troopaganda",
+      "publishDate": "2026-09-24",
+      "matched": [
+        "the-heart-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://www.vulture.com/article/new-musicals-reviewed-the-heart-midnight-and-i-became-we.html"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/aya-ogawa-meat-suit-theater-review.html",
+      "headline": "aya ogawa meat suit theater review",
+      "publishDate": "2026-02-25",
+      "matched": [
+        "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://www.vulture.com/article/ayo-ogala-meat-suit-theater-review.html"
+      ]
+    }
+  ],
+  "misfiles": [
+    {
+      "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+      "headline": "theater review cole escola oh mary lincoln",
+      "publishDate": "2024-02-08",
+      "via": "poller-matcher",
+      "held": [
+        "oh-mary-2024"
+      ],
+      "matched": [
+        "oh-mary-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "oh-mary-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-reviews-elizabeth-mcgovern-ava-gardner-frank-maya-morgan-bassichis.html",
+      "headline": "theater reviews elizabeth mcgovern ava gardner frank maya morgan bassichis",
+      "publishDate": "2025-08-08",
+      "via": "title-variant",
+      "held": [
+        "ava-the-secret-conversations-off-broadway-2025"
+      ],
+      "matched": [
+        "morgan-bassichis-can-i-be-frank-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldUnmatched": [
+    {
+      "url": "https://www.vulture.com/2021/11/the-alchemist-theater-review.html",
+      "headline": "the alchemist theater review",
+      "publishDate": "2021-11-22",
+      "via": null,
+      "held": [
+        "the-alchemist-off-broadway-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-alchemist-off-broadway-2021"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2021/10/theater-review-six-the-musical-at-the-brooks-atkinson.html",
+      "headline": "theater review six the musical at the brooks atkinson",
+      "publishDate": "2021-10-03",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/schmigadoon-series-review.html",
+      "headline": "schmigadoon series review",
+      "publishDate": "2021-07-15",
+      "via": null,
+      "held": [
+        "schmigadoon-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "schmigadoon-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/12/theater-review-ollaboration-warhol-basquiat-broadway.html",
+      "headline": "theater review ollaboration warhol basquiat broadway",
+      "publishDate": "2022-12-20",
+      "via": null,
+      "held": [
+        "the-collaboration-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/10/theater-review-man-of-no-importance-jim-parsons.html",
+      "headline": "theater review man of no importance jim parsons",
+      "publishDate": "2022-10-31",
+      "via": null,
+      "held": [
+        "a-man-of-no-importance-off-broadway-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
+      "headline": "theater review wendell pierce death salesman broadway",
+      "publishDate": "2022-10-09",
+      "via": null,
+      "held": [
+        "death-of-a-salesman-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/04/theater-review-skin-teeth-wilder-broadway-vivian-beaumont.html",
+      "headline": "theater review skin teeth wilder broadway vivian beaumont",
+      "publishDate": "2022-04-25",
+      "via": null,
+      "held": [
+        "the-skin-of-our-teeth-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "teeth-off-broadway-2024",
+        "teeth-playwrights-horizons-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/04/for-colored-girls-broadway-theater-review.html",
+      "headline": "for colored girls broadway theater review",
+      "publishDate": "2022-04-20",
+      "via": null,
+      "held": [
+        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/02/theater-review-mj-michael-jackson-bio-musical-broadway-nyc.html",
+      "headline": "theater review mj michael jackson bio musical broadway nyc",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2023/11/theater-review-danny-deep-blue-sea-abbott-plaza-shanley.html",
+      "headline": "theater review danny deep blue sea abbott plaza shanley",
+      "publishDate": "2023-11-14",
+      "via": null,
+      "held": [
+        "danny-and-the-deep-blue-sea-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2023/03/theater-review-bob-fosse-dancin-revival.html",
+      "headline": "theater review bob fosse dancin revival",
+      "publishDate": "2023-03-19",
+      "via": null,
+      "held": [
+        "bob-fosses-dancin-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "dancin-1978"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2023/03/theater-review-dolls-house-ibsen-herzog-chastain-broadway.html",
+      "headline": "theater review dolls house ibsen herzog chastain broadway",
+      "publishDate": "2023-03-09",
+      "via": null,
+      "held": [
+        "a-dolls-house-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2023/02/theater-review-bright-new-boise-signature-hunter.html",
+      "headline": "theater review bright new boise signature hunter",
+      "publishDate": "2023-02-21",
+      "via": null,
+      "held": [
+        "a-bright-new-boise-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-reviews-beautiful-land-i-seek-racecar-racecar-racecar.html",
+      "headline": "theater reviews beautiful land i seek racecar racecar racecar",
+      "publishDate": "2024-12-11",
+      "via": null,
+      "held": [
+        "the-beautiful-land-i-seek-la-linda-tierra-que-busco-yo-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-beautiful-land-i-seek-la-linda-tierra-que-busco-yo-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-elf-musical-broadway-return.html",
+      "headline": "theater review elf musical broadway return",
+      "publishDate": "2024-11-17",
+      "via": null,
+      "held": [
+        "elf-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-amazon-warehouse-parking-lot-hothouse.html",
+      "headline": "theater review amazon warehouse parking lot hothouse",
+      "publishDate": "2024-10-28",
+      "via": null,
+      "held": [
+        "in-the-amazon-warehouse-parking-lot-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-na-pelosi-aoc-lincoln-center.html",
+      "headline": "theater review na pelosi aoc lincoln center",
+      "publishDate": "2024-06-27",
+      "via": null,
+      "held": [
+        "n-a-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-encores-titanic-musical.html",
+      "headline": "theater review encores titanic musical",
+      "publishDate": "2024-06-12",
+      "via": null,
+      "held": [
+        "titanic-1997"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-the-who-tommy-broadway-revival.html",
+      "headline": "theater review the who tommy broadway revival",
+      "publishDate": "2024-03-28",
+      "via": null,
+      "held": [
+        "the-whos-tommy-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2024/01/theater-review-days-wine-roses-on-broadway.html",
+      "headline": "theater review days wine roses on broadway",
+      "publishDate": "2024-01-28",
+      "via": null,
+      "held": [
+        "days-of-wine-and-roses-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-dismaying-opera-of-kavalier-and-clay.html",
+      "headline": "review the dismaying opera of kavalier and clay",
+      "publishDate": "2025-09-30",
+      "via": null,
+      "held": [
+        "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-yasmina-reza-art-revival-harris-corden-cannavale.html",
+      "headline": "theater review yasmina reza art revival harris corden cannavale",
+      "publishDate": "2025-09-16",
+      "via": null,
+      "held": [
+        "art-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/new-show-review-ta-da-out-of-order-and-open.html",
+      "headline": "new show review ta da out of order and open",
+      "publishDate": "2025-07-22",
+      "via": null,
+      "held": [
+        "ta-da-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "ta-da-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/jean-smart-call-me-izzy-theater-review.html",
+      "headline": "jean smart call me izzy theater review",
+      "publishDate": "2025-06-12",
+      "via": null,
+      "held": [
+        "call-me-izzy-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "call-me-izzy-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-pirates-penzance-musical.html",
+      "headline": "theater review pirates penzance musical",
+      "publishDate": "2025-04-24",
+      "via": null,
+      "held": [
+        "pirates-the-penzance-musical-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html",
+      "headline": "theater review john proctor villain belflower",
+      "publishDate": "2025-04-14",
+      "via": null,
+      "held": [
+        "john-proctor-is-the-villain-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/old-friends-bernadette-peters-sondheim-revue-review.html",
+      "headline": "old friends bernadette peters sondheim revue review",
+      "publishDate": "2025-04-08",
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-betty-boop-broadway-musical.html",
+      "headline": "theater review betty boop broadway musical",
+      "publishDate": "2025-04-07",
+      "via": null,
+      "held": [
+        "boop-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-blue-man-group-new-holiday-surprise-broadway.html",
+      "headline": "theater review blue man group new holiday surprise broadway",
+      "publishDate": "2026-11-18",
+      "via": null,
+      "held": [
+        "blue-man-group-a-new-holiday-surprise-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-reviews-tristan-yseult-executrix-emma-rice-emma-horwitz.html",
+      "headline": "theater reviews tristan yseult executrix emma rice emma horwitz",
+      "publishDate": "2026-11-13",
+      "via": null,
+      "held": [
+        "tristan-and-yseult-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-reviews-waiting-for-lefty-odets-specky-clark-doherty.html",
+      "headline": "theater reviews waiting for lefty odets specky clark doherty",
+      "publishDate": "2026-11-02",
+      "via": null,
+      "held": [
+        "clifford-odets-waiting-for-lefty-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/review-few-good-men-broadway-revival-sorkin-whitford.html",
+      "headline": "review few good men broadway revival sorkin whitford",
+      "publishDate": "2026-10-29",
+      "via": null,
+      "held": [
+        "a-few-good-men-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-benjamin-button-musical-compton-public.html",
+      "headline": "theater review benjamin button musical compton public",
+      "publishDate": "2026-10-21",
+      "via": null,
+      "held": [
+        "the-curious-case-of-benjamin-button-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/yes-its-tough-to-be-a-playwright-creation-stories.html",
+      "headline": "yes its tough to be a playwright creation stories",
+      "publishDate": "2026-10-01",
+      "via": null,
+      "held": [
+        "creation-stories-and-all-the-important-importants-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html",
+      "headline": "broadway review jocelyn biohs school girls",
+      "publishDate": "2026-09-28",
+      "via": null,
+      "held": [
+        "school-girls-or-the-african-mean-girls-play-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://www.vulture.com/article/tina-landau-on-redwood-reviews-and-reviving-floyd-collins.html",
+      "headline": "tina landau on redwood reviews and reviving floyd collins",
+      "publishDate": "2025-04-18",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "floyd-collins-2025",
+        "redwood-2025"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "catalogGaps": [
+    {
+      "url": "https://www.vulture.com/2021/12/theater-review-selling-kabul-sylvia-khoury-playwrights-horizons.html",
+      "headline": "theater review selling kabul sylvia khoury playwrights horizons",
+      "publishDate": "2021-12-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2021/11/theater-review-while-you-were-partying-soho-rep.html",
+      "headline": "theater review while you were partying soho rep",
+      "publishDate": "2021-11-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2021/09/theater-review-martyna-majoks-sanctuary-city-at-nytw.html",
+      "headline": "theater review martyna majoks sanctuary city at nytw",
+      "publishDate": "2021-09-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2021/06/review-bruce-springsteen-new-broadway-shows.html",
+      "headline": "review bruce springsteen new broadway shows",
+      "publishDate": "2021-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/review-open-call-at-the-shed-at-hudson-yards.html",
+      "headline": "review open call at the shed at hudson yards",
+      "publishDate": "2021-06-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/10/theater-review-little-life-bam-van-hove-yanagihara.html",
+      "headline": "theater review little life bam van hove yanagihara",
+      "publishDate": "2022-10-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/05/theater-review-notes-on-killing-puerto-rico-mara-velez-meloendez-soho-rep.html",
+      "headline": "theater review notes on killing puerto rico mara velez meloendez soho rep",
+      "publishDate": "2022-05-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/hannah-gadsby-body-of-work-bam-comedy-review.html",
+      "headline": "hannah gadsby body of work bam comedy review",
+      "publishDate": "2022-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/03/theater-review-claudia-rankine-help-shed-nyc.html",
+      "headline": "theater review claudia rankine help shed nyc",
+      "publishDate": "2022-03-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/02/theater-review-sandblasted-vineyard-theatre-nyc.html",
+      "headline": "theater review sandblasted vineyard theatre nyc",
+      "publishDate": "2022-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/02/theater-review-tambo-and-bones-at-playwrights-horizons.html",
+      "headline": "theater review tambo and bones at playwrights horizons",
+      "publishDate": "2022-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2022/01/theater-review-whisper-house-duncan-sheik-59e59.html",
+      "headline": "theater review whisper house duncan sheik 59e59",
+      "publishDate": "2022-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/broadway-theater-2023-year-review.html",
+      "headline": "broadway theater 2023 year review",
+      "publishDate": "2023-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/whats-on-broadway-shows-musicals-plays-reviews.html",
+      "headline": "whats on broadway shows musicals plays reviews",
+      "publishDate": "2023-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2023/11/theater-review-food-sobelle-bam.html",
+      "headline": "theater review food sobelle bam",
+      "publishDate": "2023-11-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2023/05/new-york-times-audio-app-review.html",
+      "headline": "new york times audio app review",
+      "publishDate": "2023-05-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2023/05/theater-review-monsoon-wedding-musical-nyc.html",
+      "headline": "theater review monsoon wedding musical nyc",
+      "publishDate": "2023-05-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/sarah-sze-timelapse-guggenheim-nyc-review.html",
+      "headline": "sarah sze timelapse guggenheim nyc review",
+      "publishDate": "2023-04-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2023/03/theater-review-trees-playwrights-horizons.html",
+      "headline": "theater review trees playwrights horizons",
+      "publishDate": "2023-03-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/2023/01/theater-review-appointment-wp-theater-lightning-rod-special.html",
+      "headline": "theater review appointment wp theater lightning rod special",
+      "publishDate": "2023-01-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/hannah-gadsby-woof-off-broadway-comedy-theater-review.html",
+      "headline": "hannah gadsby woof off broadway comedy theater review",
+      "publishDate": "2024-10-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-safety-not-guaranteed-musical-bam-guster-ryan-miller.html",
+      "headline": "theater review safety not guaranteed musical bam guster ryan miller",
+      "publishDate": "2024-10-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/jimmy-fallons-tonightmares-nyc-haunted-house-reviewed.html",
+      "headline": "jimmy fallons tonightmares nyc haunted house reviewed",
+      "publishDate": "2024-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-initiative-else-went-public-theater.html",
+      "headline": "theater review initiative else went public theater",
+      "publishDate": "2025-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/jurassic-park-1993-new-york-magazine-review.html",
+      "headline": "jurassic park 1993 new york magazine review",
+      "publishDate": "2025-07-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/review-john-turturro-the-only-living-pickpocket-in-new-york.html",
+      "headline": "review john turturro the only living pickpocket in new york",
+      "publishDate": "2026-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-moby-dick-robert-wilson-bam.html",
+      "headline": "theater review moby dick robert wilson bam",
+      "publishDate": "2026-04-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "otherMarketReviews": [],
+  "outOfWindow": [
+    {
+      "url": "https://www.vulture.com/2021/11/review-anna-deveare-smiths-twilight-los-angeles-1992.html",
+      "headline": "review anna deveare smiths twilight los angeles 1992",
+      "publishDate": "2021-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twilight-los-angeles-1992-1994"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2021/10/megan-thee-stallion-popeyes-hot-sauce-review-details-price.html",
+      "headline": "megan thee stallion popeyes hot sauce review details price",
+      "publishDate": "2021-10-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999",
+        "the-price-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/dave-chappelle-the-closer-comedy-review.html",
+      "headline": "dave chappelle the closer comedy review",
+      "publishDate": "2021-10-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "closer-1999"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/midnight-mass-review.html",
+      "headline": "midnight mass review",
+      "publishDate": "2021-09-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "midnight-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/the-other-two-season-two-hbo-max-review.html",
+      "headline": "the other two season two hbo max review",
+      "publishDate": "2021-08-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/the-chair-netflix-series-review-sandra-oh.html",
+      "headline": "the chair netflix series review sandra oh",
+      "publishDate": "2021-08-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sandra-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/nine-perfect-strangers-hulu-series-review.html",
+      "headline": "nine perfect strangers hulu series review",
+      "publishDate": "2021-08-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "strangers-1979"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2021/08/saweetie-mcdonalds-meal-review-price-details-memes.html",
+      "headline": "saweetie mcdonalds meal review price details memes",
+      "publishDate": "2021-08-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999",
+        "the-price-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2021/08/song-review-lizzo-cardi-b-rumors-lyrics-analysis.html",
+      "headline": "song review lizzo cardi b rumors lyrics analysis",
+      "publishDate": "2021-08-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "rumors-1988"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2021/08/swan-song-review-udo-kier-will-break-your-heart.html",
+      "headline": "swan song review udo kier will break your heart",
+      "publishDate": "2021-08-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-suicide-squad-qith-idris-elba-and-john-cena.html",
+      "headline": "review the suicide squad qith idris elba and john cena",
+      "publishDate": "2021-08-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-suicide-1980"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-mr-corman-apple-tv-plus-series-joseph-gordon-levitt.html",
+      "headline": "review mr corman apple tv plus series joseph gordon levitt",
+      "publishDate": "2021-08-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "joseph-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2021/06/knockout-city-review-esport.html",
+      "headline": "knockout city review esport",
+      "publishDate": "2021-06-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "knockout-1979"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-kevin-can-f-k-himself-annie-murphy-series-amc.html",
+      "headline": "review kevin can f k himself annie murphy series amc",
+      "publishDate": "2021-06-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kevin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/in-the-heights-review-movie.html",
+      "headline": "in the heights review movie",
+      "publishDate": "2021-06-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "in-the-heights-2008",
+        "in-the-heights-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/empire-of-light-review-somber-static-and-shallow.html",
+      "headline": "empire of light review somber static and shallow",
+      "publishDate": "2022-12-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "empire-the-musical-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/11/theater-review-bruce-norris-downstate-playwrights-horizons.html",
+      "headline": "theater review bruce norris downstate playwrights horizons",
+      "publishDate": "2022-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/the-son-review-so-bad-youll-question-the-father.html",
+      "headline": "the son review so bad youll question the father",
+      "publishDate": "2022-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/netflix-basic-with-ads-plan-review-price.html",
+      "headline": "netflix basic with ads plan review price",
+      "publishDate": "2022-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999",
+        "the-price-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/10/theater-review-straight-line-crazy-david-hare-ralph-fiennes-nyc.html",
+      "headline": "theater review straight line crazy david hare ralph fiennes nyc",
+      "publishDate": "2022-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "straight-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/the-patient-series-review-steve-carell-domhnall-gleeson.html",
+      "headline": "the patient series review steve carell domhnall gleeson",
+      "publishDate": "2022-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "steve-off-broadway-2015"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-three-thousand-years-of-longing-starring-idris-elba.html",
+      "headline": "review three thousand years of longing starring idris elba",
+      "publishDate": "2022-08-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/07/theater-review-shakespeare-richard-iii-danai-gurira-park.html",
+      "headline": "theater review shakespeare richard iii danai gurira park",
+      "publishDate": "2022-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/06/theater-review-robert-icke-shakespeare-hamlet-nyc.html",
+      "headline": "theater review robert icke shakespeare hamlet nyc",
+      "publishDate": "2022-06-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/06/kfcs-jack-harlow-meal-review-price-merch-details.html",
+      "headline": "kfcs jack harlow meal review price merch details",
+      "publishDate": "2022-06-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999",
+        "the-price-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/players-review-esports-mockumentary.html",
+      "headline": "players review esports mockumentary",
+      "publishDate": "2022-06-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/05/theater-review-fat-ham-james-ijames-public-nyc.html",
+      "headline": "theater review fat ham james ijames public nyc",
+      "publishDate": "2022-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/05/theater-review-edouard-louis-who-killed-my-father.html",
+      "headline": "theater review edouard louis who killed my father",
+      "publishDate": "2022-05-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/05/theater-review-wilma-theaters-the-cherry-orchard.html",
+      "headline": "theater review wilma theaters the cherry orchard",
+      "publishDate": "2022-05-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/05/the-smile-a-light-for-attracting-attention-review.html",
+      "headline": "the smile a light for attracting attention review",
+      "publishDate": "2022-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "smile-1986"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/05/theater-review-ralph-fiennes-in-straight-line-crazy.html",
+      "headline": "theater review ralph fiennes in straight line crazy",
+      "publishDate": "2022-05-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "straight-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/04/theater-review-james-mcavoy-cyrano-bam.html",
+      "headline": "theater review james mcavoy cyrano bam",
+      "publishDate": "2022-04-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyrano-the-musical-1993",
+        "cyrano-1973"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/04/music-review-st-matthew-passion-at-carnegie-hall.html",
+      "headline": "music review st matthew passion at carnegie hall",
+      "publishDate": "2022-04-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "passion-1994",
+        "passion-2004",
+        "passion-1983"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/03/theater-review-oratorio-for-living-things.html",
+      "headline": "theater review oratorio for living things",
+      "publishDate": "2022-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oratorio-for-living-things-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/03/theater-reviews-hart-island-debate-baldwin-vs-buckley-man-cave-song-of-songs.html",
+      "headline": "theater reviews hart island debate baldwin vs buckley man cave song of songs",
+      "publishDate": "2022-03-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/the-endgame-morena-baccarin-series-review.html",
+      "headline": "the endgame morena baccarin series review",
+      "publishDate": "2022-02-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "endgame-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/02/theater-review-merchant-of-venice-tfana-john-douglas-thompson.html",
+      "headline": "theater review merchant of venice tfana john douglas thompson",
+      "publishDate": "2022-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-merchant-of-venice-2010",
+        "the-merchant-of-venice-1989",
+        "the-merchant-of-venice-1973"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/02/review-philadelphia-orchestra-plays-florence-price.html",
+      "headline": "review philadelphia orchestra plays florence price",
+      "publishDate": "2022-02-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999",
+        "the-price-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2022/01/theater-review-nyc-this-beautiful-future-ectoplasm.html",
+      "headline": "theater review nyc this beautiful future ectoplasm",
+      "publishDate": "2022-01-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ectoplasm-off-broadway-2026",
+        "this-beautiful-future-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/the-wonder-years-reboot-review.html",
+      "headline": "the wonder years reboot review",
+      "publishDate": "2022-01-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-color-purple-with-taraji-p-henson.html",
+      "headline": "review the color purple with taraji p henson",
+      "publishDate": "2023-12-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-color-purple-2015",
+        "the-color-purple-2005"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-all-of-us-strangers-is-two-movies-trying-to-be-one.html",
+      "headline": "review all of us strangers is two movies trying to be one",
+      "publishDate": "2023-12-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "strangers-1979"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/ava-duvernay-origin-review-devastates-audience.html",
+      "headline": "ava duvernay origin review devastates audience",
+      "publishDate": "2023-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-seductive-eileen-flirts-with-disaster.html",
+      "headline": "review the seductive eileen flirts with disaster",
+      "publishDate": "2023-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "disaster-2016"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2023/11/theater-review-alicia-keyss-hells-kitchen.html",
+      "headline": "theater review alicia keyss hells kitchen",
+      "publishDate": "2023-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/monarch-legacy-of-monsters-apple-godzilla-series-review.html",
+      "headline": "monarch legacy of monsters apple godzilla series review",
+      "publishDate": "2023-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-monsters-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/a-murder-at-the-end-of-the-world-series-review.html",
+      "headline": "a murder at the end of the world series review",
+      "publishDate": "2023-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "end-of-the-world-1984"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/comedians-you-should-know-2023-yearly-review-video.html",
+      "headline": "comedians you should know 2023 yearly review video",
+      "publishDate": "2023-11-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "comedians-1976"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/aggro-dr1ft-review-harmony-korine.html",
+      "headline": "aggro dr1ft review harmony korine",
+      "publishDate": "2023-09-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harmony-2023",
+        "harmony-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2023/08/theater-review-shakespeares-the-tempest-at-the-delacorte.html",
+      "headline": "theater review shakespeares the tempest at the delacorte",
+      "publishDate": "2023-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-1995"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/last-call-hbo-max-docuseries-review.html",
+      "headline": "last call hbo max docuseries review",
+      "publishDate": "2023-07-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "last-call-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/hamlet-kenny-leon-shakespeare-in-the-park-review.html",
+      "headline": "hamlet kenny leon shakespeare in the park review",
+      "publishDate": "2023-06-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2023/05/max-streaming-service-review-first-week.html",
+      "headline": "max streaming service review first week",
+      "publishDate": "2023-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/primo-freevee-comedy-series-review.html",
+      "headline": "primo freevee comedy series review",
+      "publishDate": "2023-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "primo-2005"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-queen-charlotte-bridgerton-story-netflix-series.html",
+      "headline": "review queen charlotte bridgerton story netflix series",
+      "publishDate": "2023-04-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "charlotte-1980"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-jake-gyllenhaal-shines-in-guy-ritchies-the-covenant.html",
+      "headline": "review jake gyllenhaal shines in guy ritchies the covenant",
+      "publishDate": "2023-04-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "covenant-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-lost-king-with-sally-hawkins-and-steve-coogan.html",
+      "headline": "review the lost king with sally hawkins and steve coogan",
+      "publishDate": "2023-03-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "steve-off-broadway-2015"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2023/02/cardi-b-offset-mcdonalds-meal-review-price-merch.html",
+      "headline": "cardi b offset mcdonalds meal review price merch",
+      "publishDate": "2023-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999",
+        "the-price-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2023/02/theater-review-erica-schmidt-lucy-beckett-endgame.html",
+      "headline": "theater review erica schmidt lucy beckett endgame",
+      "publishDate": "2023-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "endgame-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/rivals-hulu-review.html",
+      "headline": "rivals hulu review",
+      "publishDate": "2024-12-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-rivals-2004"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-count-of-monte-cristo-from-alexandre-dumas.html",
+      "headline": "review the count of monte cristo from alexandre dumas",
+      "publishDate": "2024-12-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "monte-cristo-the-york-theatre-company-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-a-complete-unknown-doesnt-try-to-solve-bob-dylan.html",
+      "headline": "review a complete unknown doesnt try to solve bob dylan",
+      "publishDate": "2024-12-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-unknown-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-nickel-boys-is-an-experience-unlike-any-other.html",
+      "headline": "review nickel boys is an experience unlike any other",
+      "publishDate": "2024-12-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/bob-dylan-a-complete-unknown-timothee-chalamet-review.html",
+      "headline": "bob dylan a complete unknown timothee chalamet review",
+      "publishDate": "2024-12-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-unknown-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/star-wars-skeleton-crew-premiere-review.html",
+      "headline": "star wars skeleton crew premiere review",
+      "publishDate": "2024-12-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "skeleton-crew-2022"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/new-network-tv-sitcoms-ranked-review.html",
+      "headline": "new network tv sitcoms ranked review",
+      "publishDate": "2024-11-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "network-2018"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-tad-williamss-the-navigators-children-is-a-comfort.html",
+      "headline": "review tad williamss the navigators children is a comfort",
+      "publishDate": "2024-11-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-children-2017"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-kenneth-branagh-king-lear-nyc-shed.html",
+      "headline": "theater review kenneth branagh king lear nyc shed",
+      "publishDate": "2024-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "king-lear-2019",
+        "king-lear-2004",
+        "king-lear-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/the-piano-lesson-review-cant-live-up-to-august-wilsons-play.html",
+      "headline": "the piano lesson review cant live up to august wilsons play",
+      "publishDate": "2024-11-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-piano-lesson-2022",
+        "the-piano-lesson-1990"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-reviews-walden-berryman-woman-among-women-jonas.html",
+      "headline": "theater reviews walden berryman woman among women jonas",
+      "publishDate": "2024-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/election-night-2024-news-coverage-review-nbc-steve-kornacki-prime-video-brian-williams.html",
+      "headline": "election night 2024 news coverage review nbc steve kornacki prime video brian williams",
+      "publishDate": "2024-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "steve-off-broadway-2015"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-will-no-other-land-make-it-to-theaters-in-america.html",
+      "headline": "review will no other land make it to theaters in america",
+      "publishDate": "2024-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-ragtime-musical-city-center-encores.html",
+      "headline": "theater review ragtime musical city center encores",
+      "publishDate": "2024-10-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ragtime-2025",
+        "ragtime-2009",
+        "ragtime-1998"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-here-is-the-years-biggest-pile-of-schmaltz.html",
+      "headline": "review here is the years biggest pile of schmaltz",
+      "publishDate": "2024-10-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-venom-the-last-dance-is-bad-on-purpose.html",
+      "headline": "review venom the last dance is bad on purpose",
+      "publishDate": "2024-10-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "purpose-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/warriors-review-lin-manuel-miranda-eisa-davis.html",
+      "headline": "warriors review lin manuel miranda eisa davis",
+      "publishDate": "2024-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "warriors-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-smile-2s-ideas-are-scarier-than-the-movie-itself.html",
+      "headline": "review smile 2s ideas are scarier than the movie itself",
+      "publishDate": "2024-10-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "smile-1986"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/new-network-tv-dramas-ranked-review.html",
+      "headline": "new network tv dramas ranked review",
+      "publishDate": "2024-10-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "network-2018"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-babygirl-might-just-be-the-years-hottest-movie.html",
+      "headline": "review babygirl might just be the years hottest movie",
+      "publishDate": "2024-09-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-monsters-sexualizes-the-menendez-bros-true-story.html",
+      "headline": "review monsters sexualizes the menendez bros true story",
+      "publishDate": "2024-09-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-monsters-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-civil-war-starring-kirsten-dunst-and-cailee-spaeny.html",
+      "headline": "review civil war starring kirsten dunst and cailee spaeny",
+      "publishDate": "2024-09-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-civil-war-1999"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-shakthidharan-counting-and-cracking.html",
+      "headline": "theater review shakthidharan counting and cracking",
+      "publishDate": "2024-09-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "counting-and-cracking-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-anthony-roth-costanzo-marriage-of-figaro-little-island.html",
+      "headline": "theater review anthony roth costanzo marriage of figaro little island",
+      "publishDate": "2024-09-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-marriage-of-figaro-1985",
+        "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/familiar-touch-review-infinitely-tender-dementia-film.html",
+      "headline": "familiar touch review infinitely tender dementia film",
+      "publishDate": "2024-09-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "touch-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-harmony-korines-baby-invasion-made-me-sick.html",
+      "headline": "review harmony korines baby invasion made me sick",
+      "publishDate": "2024-08-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harmony-2023",
+        "harmony-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-hemingways-across-the-river-and-into-the-trees.html",
+      "headline": "review hemingways across the river and into the trees",
+      "publishDate": "2024-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-river-2014"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/beetlejuice-beetlejuice-review-tim-burton-is-great-again.html",
+      "headline": "beetlejuice beetlejuice review tim burton is great again",
+      "publishDate": "2024-08-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "beetlejuice-2025",
+        "beetlejuice-2022",
+        "beetlejuice-2019"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-jackpot-hates-its-characters-and-its-audience.html",
+      "headline": "review jackpot hates its characters and its audience",
+      "publishDate": "2024-08-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/shogun-review-fx.html",
+      "headline": "shogun review fx",
+      "publishDate": "2024-07-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "shogun-the-musical-1990"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-sing-sing-doesnt-need-a-movie-stars-touch.html",
+      "headline": "review sing sing doesnt need a movie stars touch",
+      "publishDate": "2024-07-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "touch-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-elevator-repair-service-ulysses-joyce.html",
+      "headline": "theater review elevator repair service ulysses joyce",
+      "publishDate": "2024-06-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ulysses-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/ghost-in-the-shell-2-innocence-review.html",
+      "headline": "ghost in the shell 2 innocence review",
+      "publishDate": "2024-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghost-the-musical-2012",
+        "innocence-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2024/06/theater-review-purlie-victorious-leslie-odom-jr-kara-young-ossie-davis.html",
+      "headline": "theater review purlie victorious leslie odom jr kara young ossie davis",
+      "publishDate": "2024-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "purlie-1972"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-ghostlight-is-one-of-the-years-best-films.html",
+      "headline": "review ghostlight is one of the years best films",
+      "publishDate": "2024-06-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-first-omen-is-actually-a-good-omen-movie.html",
+      "headline": "review the first omen is actually a good omen movie",
+      "publishDate": "2024-05-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-here-there-are-blueberries.html",
+      "headline": "theater review here there are blueberries",
+      "publishDate": "2024-05-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/lisa-frankenstein-review-strictly-a-mall-goth-affair.html",
+      "headline": "lisa frankenstein review strictly a mall goth affair",
+      "publishDate": "2024-03-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frankenstein-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-sydney-sweeneys-immaculate-is-an-art-film-at-heart.html",
+      "headline": "review sydney sweeneys immaculate is an art film at heart",
+      "publishDate": "2024-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-do-not-expect-too-much-from-the-end-of-the-world.html",
+      "headline": "review do not expect too much from the end of the world",
+      "publishDate": "2024-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "end-of-the-world-1984"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/ghostbusters-frozen-empire-review-witless-joyless-dull.html",
+      "headline": "ghostbusters frozen empire review witless joyless dull",
+      "publishDate": "2024-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frozen-2018",
+        "frozen-2004",
+        "empire-the-musical-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-jellys-last-jam-encores.html",
+      "headline": "theater review jellys last jam encores",
+      "publishDate": "2024-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jellys-last-jam-1992"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-under-the-fig-trees-lets-its-women-talk-back.html",
+      "headline": "review under the fig trees lets its women talk back",
+      "publishDate": "2024-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/2024/01/love-me-review-kristen-stewart-and-steven-yeun.html",
+      "headline": "love me review kristen stewart and steven yeun",
+      "publishDate": "2024-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-me-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/ibelin-sundance-review-a-life-only-seemingly-half-lived.html",
+      "headline": "ibelin sundance review a life only seemingly half lived",
+      "publishDate": "2024-01-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-life-1980"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/mean-girls-review-reduced-reused-but-well-recycled.html",
+      "headline": "mean girls review reduced reused but well recycled",
+      "publishDate": "2024-01-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mean-girls-2018"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/still-a-michael-j-fox-movie-apple-tv-documentary-review.html",
+      "headline": "still a michael j fox movie apple tv documentary review",
+      "publishDate": "2024-01-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/father-mother-sister-brother-review-simple-quiet-jarmusch.html",
+      "headline": "father mother sister brother review simple quiet jarmusch",
+      "publishDate": "2025-12-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-jacob-elordi-is-the-soul-of-gdts-frankenstein.html",
+      "headline": "review jacob elordi is the soul of gdts frankenstein",
+      "publishDate": "2025-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frankenstein-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-black-phone-2-is-a-lot-weirder-than-the-first-one.html",
+      "headline": "review black phone 2 is a lot weirder than the first one",
+      "publishDate": "2025-10-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-lost-bus-is-an-instant-disaster-movie-classic.html",
+      "headline": "review the lost bus is an instant disaster movie classic",
+      "publishDate": "2025-09-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "disaster-2016"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-venice-loves-park-chan-wooks-no-other-choice.html",
+      "headline": "review venice loves park chan wooks no other choice",
+      "publishDate": "2025-08-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/hamnet-review-the-most-devastating-movie-ive-seen-in-years.html",
+      "headline": "hamnet review the most devastating movie ive seen in years",
+      "publishDate": "2025-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/twelfth-night-shakespeare-in-the-park-review.html",
+      "headline": "twelfth night shakespeare in the park review",
+      "publishDate": "2025-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-fantastic-four-first-steps-is-just-good-enough.html",
+      "headline": "review fantastic four first steps is just good enough",
+      "publishDate": "2025-07-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-benson-boone-album-american-heart.html",
+      "headline": "review benson boone album american heart",
+      "publishDate": "2025-06-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-the-counterfeit-opera-prosperous-fools-not-not-janes.html",
+      "headline": "theater review the counterfeit opera prosperous fools not not janes",
+      "publishDate": "2025-06-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fools-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/dogma-is-kevin-smiths-masterpiece-review.html",
+      "headline": "dogma is kevin smiths masterpiece review",
+      "publishDate": "2025-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kevin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-jane-austen-wrecked-my-life-a-new-romantic-comedy.html",
+      "headline": "review jane austen wrecked my life a new romantic comedy",
+      "publishDate": "2025-05-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romantic-comedy-1979"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-sister-midnight-comedy-drama-and-horror-in-mumbai.html",
+      "headline": "review sister midnight comedy drama and horror in mumbai",
+      "publishDate": "2025-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "midnight-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-encores-visits-a-muted-wonderful-town.html",
+      "headline": "theater review encores visits a muted wonderful town",
+      "publishDate": "2025-05-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wonderful-town-2003"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/the-legend-of-ochi-review-we-have-good-news-and-bad-news.html",
+      "headline": "the legend of ochi review we have good news and bad news",
+      "publishDate": "2025-04-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "good-news-1974"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-drop-belongs-in-the-bad-first-date-canon.html",
+      "headline": "review drop belongs in the bad first date canon",
+      "publishDate": "2025-04-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "first-date-2013"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-one-to-one-john-and-yoko-a-moving-new-lennon-movie.html",
+      "headline": "review one to one john and yoko a moving new lennon movie",
+      "publishDate": "2025-04-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "lennon-2005"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-chekhovs-cherry-orchard-at-st-anns.html",
+      "headline": "theater review chekhovs cherry orchard at st anns",
+      "publishDate": "2025-04-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-cherry-orchard-2016",
+        "the-cherry-orchard-1997",
+        "the-cherry-orchard-1977",
+        "the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/selena-gomez-i-said-i-love-you-first-review-benny-blanco.html",
+      "headline": "selena gomez i said i love you first review benny blanco",
+      "publishDate": "2025-03-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-rajiv-joseph-dakar-2000-city-center.html",
+      "headline": "theater review rajiv joseph dakar 2000 city center",
+      "publishDate": "2025-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "joseph-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-paddington-in-peru-bites-off-more-than-it-can-chew.html",
+      "headline": "review paddington in peru bites off more than it can chew",
+      "publishDate": "2025-02-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "paddington-the-musical-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-horizon-chapter-2-is-proof-of-kevin-costners-vision.html",
+      "headline": "review horizon chapter 2 is proof of kevin costners vision",
+      "publishDate": "2025-02-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "proof-2026",
+        "proof-2000",
+        "kevin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-at-encores-urinetown-is-still-potable.html",
+      "headline": "theater review at encores urinetown is still potable",
+      "publishDate": "2025-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "urinetown-2001",
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-heart-eyes-and-why-horror-comedy-is-the-genre-of-our-moment.html",
+      "headline": "review heart eyes and why horror comedy is the genre of our moment",
+      "publishDate": "2025-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-schmigadoon-onstage-at-the-kennedy-center.html",
+      "headline": "theater review schmigadoon onstage at the kennedy center",
+      "publishDate": "2025-02-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "schmigadoon-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-kiss-of-the-spider-woman-never-quite-comes-alive.html",
+      "headline": "review kiss of the spider woman never quite comes alive",
+      "publishDate": "2025-01-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kiss-of-the-spider-woman-1993",
+        "kiss-of-the-spider-woman-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-flight-risk-is-not-the-right-kind-of-dumb.html",
+      "headline": "review flight risk is not the right kind of dumb",
+      "publishDate": "2025-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "flight-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-fernanda-torres-is-a-subtle-marvel-in-im-still-here.html",
+      "headline": "review fernanda torres is a subtle marvel in im still here",
+      "publishDate": "2025-01-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/grand-theft-hamlet-review-a-delightful-documentary.html",
+      "headline": "grand theft hamlet review a delightful documentary",
+      "publishDate": "2025-01-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/one-of-them-days-review-sza-is-a-natural-in-her-first-film.html",
+      "headline": "one of them days review sza is a natural in her first film",
+      "publishDate": "2025-01-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/den-of-thieves-2-pantera-review-gerard-butler-lets-loose.html",
+      "headline": "den of thieves 2 pantera review gerard butler lets loose",
+      "publishDate": "2025-01-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "thieves-1974"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/a-court-of-splintered-harmony-review-sarah-j-maas-acotar-6.html",
+      "headline": "a court of splintered harmony review sarah j maas acotar 6",
+      "publishDate": "2026-10-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harmony-2023",
+        "harmony-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/fatherland-review-sandra-hller-is-having-one-hell-of-a-year.html",
+      "headline": "fatherland review sandra hller is having one hell of a year",
+      "publishDate": "2026-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fatherland-off-broadway-2024",
+        "sandra-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-world-is-still-not-ready-for-the-devils.html",
+      "headline": "review the world is still not ready for the devils",
+      "publishDate": "2026-10-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/taryn-simon-guggenheim-father-country-i-do-love-you-review.html",
+      "headline": "taryn simon guggenheim father country i do love you review",
+      "publishDate": "2026-10-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/prima-facie-review-cynthia-erivo-is-better-than-this.html",
+      "headline": "prima facie review cynthia erivo is better than this",
+      "publishDate": "2026-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prima-facie-2023"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-joie-de-vivre-and-the-passion-of-luca-guadagnino.html",
+      "headline": "review joie de vivre and the passion of luca guadagnino",
+      "publishDate": "2026-09-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "passion-1994",
+        "passion-2004",
+        "passion-1983"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-virginia-woolfs-night-and-day-starring-haley-bennett.html",
+      "headline": "review virginia woolfs night and day starring haley bennett",
+      "publishDate": "2026-09-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "night-and-day-1979"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-the-bend-in-the-river-a-deeply-moving-documentary.html",
+      "headline": "review the bend in the river a deeply moving documentary",
+      "publishDate": "2026-08-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-river-2014"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-ariana-grande-hate-that-i-made-you-love-me.html",
+      "headline": "review ariana grande hate that i made you love me",
+      "publishDate": "2026-05-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "love-me-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-drake-iceman-maid-of-honour-habibti.html",
+      "headline": "review drake iceman maid of honour habibti",
+      "publishDate": "2026-05-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "honour-1998"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/amadeus-review-paul-bettany-will-sharpe-starz-miniseries.html",
+      "headline": "amadeus review paul bettany will sharpe starz miniseries",
+      "publishDate": "2026-05-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "amadeus-1980",
+        "amadeus-1999"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/michael-got-bad-reviews-can-it-still-rule-the-box-office.html",
+      "headline": "michael got bad reviews can it still rule the box office",
+      "publishDate": "2026-04-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/malcolm-in-the-middle-lifes-still-unfair-review.html",
+      "headline": "malcolm in the middle lifes still unfair review",
+      "publishDate": "2026-04-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/last-five-years-rachel-zegler-ben-platt-review-essay.html",
+      "headline": "last five years rachel zegler ben platt review essay",
+      "publishDate": "2026-04-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-last-five-years-2025"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-chekhov-ivanov-defilippis-new-american-ensemble.html",
+      "headline": "theater review chekhov ivanov defilippis new american ensemble",
+      "publishDate": "2026-03-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ivanov-1997"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/imperfect-women-review.html",
+      "headline": "imperfect women review",
+      "publishDate": "2026-03-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/rose-review-sandra-huller-gets-her-greatest-role-yet.html",
+      "headline": "rose review sandra huller gets her greatest role yet",
+      "publishDate": "2026-02-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sandra-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/charli-xcx-wuthering-heights-album-soundtrack-review.html",
+      "headline": "charli xcx wuthering heights album soundtrack review",
+      "publishDate": "2026-02-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wuthering-heights-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-finally-a-smooth-brained-wuthering-heights.html",
+      "headline": "review finally a smooth brained wuthering heights",
+      "publishDate": "2026-02-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wuthering-heights-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-in-the-blink-of-an-eye-never-quite-feels-human.html",
+      "headline": "review in the blink of an eye never quite feels human",
+      "publishDate": "2026-01-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "human-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/review-28-years-later-the-bone-temple-is-glorious.html",
+      "headline": "review 28 years later the bone temple is glorious",
+      "publishDate": "2026-01-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.vulture.com/article/knight-of-the-seven-kingdoms-hbo-premiere-season-review.html",
+      "headline": "knight of the seven kingdoms hbo premiere season review",
+      "publishDate": "2026-01-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kingdoms-1981"
+      ]
+    }
+  ]
 }

@@ -32,12 +32,14 @@ async function main() {
   const hours = Number(arg('max-age-hours'));
   const deps = driver.buildRealLaneDeps({
     show, night, holder, repoDir, coreDir: path.resolve(coreDir),
-    openingDate: show.openingDate, timeZone: show.market === 'west-end' ? 'Europe/London' : 'America/New_York',
+    openingDate: show.openingDate, timeZone: require('./lib/local-date').tzForShow(show) || 'America/New_York', // BRO-7890: same zone the rebuild dates rows in
     ledgerDir: path.resolve(arg('ledger-dir') || path.join(repoDir, 'data', 'opening-night', 'ledger')),
     recordFile: require('./lib/opening-night-lane/rehearsal').rehearsalRecordFile(repoDir, 'recorded'), // BRO-6619: a synthetic pass never arms
     maxAgeMs: hours > 0 ? hours * 60 * 60 * 1000 : undefined,
     adaptersConfig: arg('adapters') ? JSON.parse(fs.readFileSync(arg('adapters'), 'utf8')) : {},
     routeAlert: require('./lib/owner-alert-router').routeAlert,
+    // BRO-7748: near-miss and found-not-live alerts during the night (Discord + coordinator card).
+    notifyPressSignals: require('./lib/press-night-signals-notify').createPressSignalsNotifier(),
     ScorerClass: require('./llm-scoring/ensemble-scorer.ts').EnsembleReviewScorer,
     // BRO-7283: the same within-band comparative pass the regular pipeline runs (comparative-core.ts), run at score time so the
     // published score is the settled one. <2 models = nothing moves, the isolated scores publish as they always did.

@@ -41,6 +41,14 @@ interface AuthContextValue {
   /** Sign in with the code from that email. */
   verifyEmailCode: (email: string, code: string, source: string, returnTo?: string) => Promise<{ error?: string }>;
   /**
+   * Sign in with the Google credential from the One Tap card (BRO-6917 Part 5).
+   * Stays on the page: no redirect. On a failure the normal sign-in box opens
+   * with a plain message, so the visitor is never left with nothing.
+   */
+  signInWithGoogleCredential: (credential: string) => Promise<{ error?: string }>;
+  /** True while the normal sign-in box is open (One Tap stays away then). */
+  signInModalOpen: boolean;
+  /**
    * Permanently delete the signed-in account and everything it saved (the
    * delete-account edge function), then sign out. Resolves 'deleted' on
    * success. On failure the user stays signed in and the error is reported;
@@ -379,6 +387,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return {};
   }, []);
 
+  // ─── Google One Tap (BRO-6917 Part 5) ────────────────────────────────
+  // The card hands back a Google ID token; Supabase verifies it (nonce check is
+  // off for Google). Not a redirect, so the page, scroll and anything half-done
+  // stay exactly as they were. Counted like every other sign-in: started on the
+  // tap, completed by the SIGNED_IN event (context 'one_tap').
+  const signInWithGoogleCredential = useCallback(async (credential: string): Promise<{ error?: string }> => {
+    const client = await getSupabaseClient();
+    if (!client) return { error: 'Sign-in is unavailable right now. Please try again.' };
+    // A leftover rating or bookmark marker must not stop the welcome setup.
+    recordSignInIntent('one_tap');
+    markSignInStarted('google', 'one_tap');
+    const { error } = await client.auth.signInWithIdToken({ provider: 'google', token: credential });
+    if (error) {
+      markSignInFailed('google', 'one_tap', error.message);
+      reportUgcError('auth.google_one_tap', { message: error.message, code: error.code || 'id_token', status: error.status });
+      // Same recovery as a failed Apple popup: the full box, with a reason.
+      setSignInError('Google sign-in could not finish. Please try again, or use another option.');
+      setModalContext('generic');
+      setModalSource('one_tap');
+      setModalReturnTo(null);
+      setModalOpen(true);
+      return { error: error.message };
+    }
+    clearReturnUrl();
+    return {};
+  }, []);
+
   const signOut = useCallback(async () => {
     const client = await getSupabaseClient();
     if (!client) return;
@@ -499,6 +534,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signOut,
         sendEmailCode: sendEmailCodeDirect,
         verifyEmailCode,
+        signInWithGoogleCredential,
+        signInModalOpen: modalOpen,
         deleteAccount,
         showSignIn,
       }}
@@ -527,6 +564,8 @@ const DEFAULT_AUTH: AuthContextValue = {
   signOut: async () => {},
   sendEmailCode: async () => ({ error: 'Sign-in is unavailable right now.' }),
   verifyEmailCode: async () => ({ error: 'Sign-in is unavailable right now.' }),
+  signInWithGoogleCredential: async () => ({ error: 'Sign-in is unavailable right now.' }),
+  signInModalOpen: false,
   deleteAccount: async () => 'failed',
   showSignIn: () => {},
 };

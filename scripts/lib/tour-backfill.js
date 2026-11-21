@@ -555,7 +555,7 @@ function applyIntegrityFlag(data, row, at = new Date().toISOString()) {
   // BRO-4807: an opening-night lane review is never flagged by the tour integrity pass.
   if (laneBypasses(data, 'tourCrossMarket')) return { ...data };
   const next = { ...data, wrongProduction: true, wrongProductionReason: row.reason,
-    wrongProductionDetectedBy: 'tour-integrity', wrongProductionDetectedAt: at };
+    wrongProductionDetectedBy: 'tour-integrity', wrongProductionKind: row.kind, wrongProductionDetectedAt: at };
   guard.invalidateWrongProductionAutoClear(next);
   return next;
 }

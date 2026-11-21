@@ -12,6 +12,10 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as fs from 'fs';
 import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+const { SCORING_OPENAI } = require('../lib/models'); // gpt-4o shuts down 2027-01-14 (BRO-7341)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { openaiChatBody } = require('../lib/llm-batch.js');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
 
 // ========================================
@@ -180,14 +184,15 @@ async function scoreWithOpenAI(
   reviewText: string
 ): Promise<{ bucket: string; score: number } | null> {
   try {
-    const response = await client.chat.completions.create({
-      model: 'gpt-4o',
-      max_tokens: 200,
+    const response = await client.chat.completions.create(openaiChatBody({
+      model: SCORING_OPENAI,
+      maxTokens: 200,
+      temperature: null,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: `Score this review:\n\n${reviewText}` }
       ]
-    });
+    }));
 
     const content = response.choices[0].message.content || '';
     const cleaned = content.replace(/```json\n?|\n?```/g, '').trim();

@@ -57,6 +57,7 @@ const INVARIANT_TESTS = [
   'scripts/lib/review-text-sidecars.test.mjs',
   'scripts/lib/run-push-audits.test.mjs',
   'scripts/lib/test-yml-manifest-paths.test.mjs',
+  'scripts/lib/workflow-queue-cap-coverage.test.mjs', // scans all of scripts/ for capped dispatches; refused BRO-7741 (land run 44241355564)
   'scripts/tests/global-instructions.test.mjs',
   'scripts/tests/help-flag-safety-guard.test.mjs',
   'scripts/validate-workflow-dependencies.test.mjs',
@@ -121,10 +122,26 @@ function gateFor(file, { nodeSet, tsxSet }) {
   return null;
 }
 
+// Sources a generator mirrors into a committed copy, and the test that compares the two. The test reads
+// its sources through the generator (path.join(root, '.claude', 'commands')), so name matching never
+// links them: BRO-7729's land was refused 20 minutes in for a wrap-up.md edit without the sync.
+const MIRRORED_SOURCES = [
+  [/^\.claude\/(?:commands|skills)\//, 'tests/unit/codex-parity.test.mjs', 'mirrored to .agents/skills (run scripts/codex/sync-skills.js)'],
+  // undriven-rebase-lint scans scripts/lib/land-*.{js,sh} (landScripts()) and .github/ through fs, not by name:
+  // BRO-7731's land was refused 25 minutes in because land-local-check.js printed 'git cherry-pick' advice (BRO-7814).
+  [/^scripts\/lib\/land-[^/]*\.(?:js|sh)$|^\.github\//, 'scripts/lib/undriven-rebase-lint.test.mjs', 'scanned by undriven-rebase-lint'],
+];
+
 /** Which tier a changed file pulls a test in at (lower is stronger), or null. */
 function matchTier(changedFile, testFile, text) {
   if (changedFile === testFile) return { tier: 0, why: 'changed test' };
+  const mirror = MIRRORED_SOURCES.find(([re, t]) => t === testFile && re.test(changedFile));
+  if (mirror) return { tier: 1, why: mirror[2] };
   if (text.includes(changedFile)) return { tier: 1, why: `names ${changedFile}` };
+  // Tests that read .github through fs never name the changed workflow: they build the path on one line
+  // (path.join(root, '.github', 'workflows')) and readdir/walk it on another. The quoted-dir rule below sees
+  // only the exact dir string (BRO-7814 cousins), and tier 2-3 would cap such a test at MAX_TARGETED.
+  if (changedFile.startsWith('.github/') && /['"`]\.github['"`/]/.test(text) && /\b(?:readdir(?:Sync)?|walk|glob(?:Sync)?)\(/.test(text)) return { tier: 1, why: 'reads .github/ through fs' };
   const bn = path.basename(changedFile);
   if (bn.length >= 6 && text.includes(bn)) return { tier: 2, why: `names ${bn}` };
   const stem = bn.replace(/\.[^.]+$/, '').replace(/\.test$/, '');
@@ -142,7 +159,7 @@ function matchTier(changedFile, testFile, text) {
 // cap would cut anyway: such a branch runs the invariants plus its own changed tests (BRO-7150).
 const MAX_CHANGED_FOR_TARGETING = 300;
 
-function selectFastTests({ changed, universe, readText, invariants = INVARIANT_TESTS, maxTargeted = MAX_TARGETED, maxStrong = MAX_STRONG, slow = SLOW_TESTS, skip = new Set(), maxChanged = MAX_CHANGED_FOR_TARGETING }) {
+function selectFastTests({ changed, universe, readText, invariants = INVARIANT_TESTS, maxTargeted = MAX_TARGETED, maxStrong = MAX_STRONG, slow = SLOW_TESTS, skip = new Set(), maxChanged = MAX_CHANGED_FOR_TARGETING, colocated = [] }) {
   const wide = changed.length > maxChanged;
   const all = [...new Set([...universe.nodeSet, ...universe.tsxSet, ...universe.libFiles])].sort();
   const picked = new Map();
@@ -150,6 +167,17 @@ function selectFastTests({ changed, universe, readText, invariants = INVARIANT_T
     if (skip.has(f) && !changed.includes(f)) continue;
     const gate = gateFor(f, universe);
     if (gate && all.includes(f)) picked.set(f, { file: f, gate, why: 'invariant', tier: -1 });
+  }
+  // BRO-7637: land.js's colocated-tests check runs every changed test and the x.test.mjs beside a changed
+  // x.js, collected by CI or not (verify-* probes, data tests). Those outside every CI gate are never
+  // name-matched below, and refused 2 of the 9 colocated-tests lands in 2026-10-18..11-17. Run them
+  // under the runner of the gate they would have (tsx for .test.ts), uncapped like a changed test;
+  // a known-slow one only when the branch changed the test itself (the budget is about a minute).
+  for (const c of colocated) {
+    if (picked.has(c.file) || ((slow.has(c.file) || skip.has(c.file)) && !changed.includes(c.file))) continue;
+    // c.tsx wins: land.js runs a tsx-manifest test under tsx even when it sits in scripts/lib/.
+    const gate = c.tsx ? GATE_TSX : (gateFor(c.file, universe) || GATE_NODE);
+    picked.set(c.file, { file: c.file, gate, why: 'colocated test (land.js colocated-tests)', tier: -1 });
   }
   const targeted = [];
   for (const f of all) {
@@ -211,7 +239,30 @@ function selectForTree(root, base, tip, { profile = 'ci' } = {}) {
   if (!changed) return null;
   const universe = universeFor(root);
   const skip = profile === 'local' ? LOCAL_SKIP : new Set();
-  return { changed, ...selectFastTests({ changed, universe, skip, readText: (f) => fs.readFileSync(path.join(root, f), 'utf8') }) };
+  // Local (pre-push) only: in land.yml the Land job's own colocated-tests check already runs these,
+  // and a scoped CI gate must not grow files its full gauntlet never runs.
+  const colocated = profile === 'local' ? colocatedTests(root, changed) : [];
+  return { changed, ...selectFastTests({ changed, universe, skip, colocated, readText: (f) => fs.readFileSync(path.join(root, f), 'utf8') }) };
+}
+
+/**
+ * The tests land.js's colocated-tests / colocated-tests-tsx checks run for this diff, from the
+ * tree's own autonomous-checks.js decideChecks (the function land.js calls). -> [{ file, tsx }]
+ * An older tree without it, or any error, gives [] (the selection is then what it was).
+ */
+function colocatedTests(root, changed) {
+  try {
+    const AC = require(path.join(root, 'scripts/lib/autonomous-checks.js'));
+    const checks = AC.decideChecks(changed, (f) => fs.existsSync(path.join(root, f)), { tier: 1, tsxManifest: AC.readTsxRunTests(root) });
+    const out = [];
+    for (const c of checks) {
+      if (c.name !== 'colocated-tests' && c.name !== 'colocated-tests-tsx') continue;
+      for (const a of c.argv) if (/\.test\.(mjs|ts)$/.test(a)) out.push({ file: a, tsx: c.name === 'colocated-tests-tsx' });
+    }
+    return out;
+  } catch {
+    return [];
+  }
 }
 
 /** Write <dir>/<gate>.files (land-gauntlet.sh GAUNTLET_SCOPE_DIR) -> the gates with any file. */
@@ -433,6 +484,6 @@ async function main(argv = process.argv.slice(2)) {
   return res.status === 'fail' ? 1 : res.status === 'skip' ? 3 : 0;
 }
 
-module.exports = { MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, MAX_STRONG, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
+module.exports = { MIRRORED_SOURCES, MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, MAX_STRONG, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, colocatedTests, writeScopeDir, runFast, changedFiles, parseArgs };
 
 if (require.main === module) { hookTerm(); main().then((code) => { process.exitCode = code; }); }

@@ -32,7 +32,7 @@
 #      wherever lexical comparison happens to put it, matching sortRunsNewestFirst()
 #      in scripts/health-check.js. Without this a null date sorts ahead of real ones
 #      under `sort_by | reverse` and becomes the "newest" run.
-GH_RUNS_JQ='[.workflow_runs[] | {databaseId: .id, headSha: .head_sha, createdAt: .created_at, updatedAt: .updated_at, conclusion: .conclusion, status: .status}] | sort_by(if (.createdAt | type) == "string" and (.createdAt | test("^[0-9]{4}-")) then .createdAt else "" end) | reverse'
+GH_RUNS_JQ='[.workflow_runs[] | {databaseId: .id, headSha: .head_sha, createdAt: .created_at, updatedAt: .updated_at, conclusion: .conclusion, status: .status, displayTitle: .display_title}] | sort_by(if (.createdAt | type) == "string" and (.createdAt | test("^[0-9]{4}-")) then .createdAt else "" end) | reverse'
 
 # gh_runs_query <repo> <workflow-file> <per-page> [key=value ...]
 #

@@ -28,9 +28,9 @@
  */
 
 const fs = require('fs');
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const os = require('os');
 const path = require('path');
-const { execFileSync } = require('child_process');
 
 const STATE_DIR = path.join(process.env.TMPDIR || os.tmpdir(), 'bsc-compact-state');
 const MAX_CHARS = 6000;          // keep the restored context small: it is re-read on every step
@@ -110,7 +110,7 @@ function parseTranscript(text) {
 
 function gitSnapshot(cwd) {
   const run = (args) => {
-    try { return execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000 }).trim(); }
+    try { return gitGuard.runGitOrThrow(args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000 }).trim(); }
     catch { return ''; }
   };
   const branch = run(['branch', '--show-current']);

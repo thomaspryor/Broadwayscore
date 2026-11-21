@@ -299,3 +299,11 @@ test('a slug naming one house beats an earlier house matched only by tag', () =>
   const r = ukFlagshipVenueFor({ tags: ['Liverpool Everyman and Playhouse'], slug: 'x-review-everyman-liverpool' });
   assert.equal(r && r.venue, 'Liverpool Everyman');
 });
+
+test('staged slug follows the shows.json slug rule: apostrophes dropped, & -> and (BRO-7929 cousin)', () => {
+  const rows = stageUkRegionalCandidates([
+    { market: 'uk-regional', source: 'guardian-review', title: 'Who’s Afraid of Virginia Woolf?', url: 'https://www.theguardian.com/stage/2026/a', venue: 'Royal Exchange Theatre, Manchester' },
+    { market: 'uk-regional', source: 'guardian-review', title: 'Marie & Rosetta', url: 'https://www.theguardian.com/stage/2026/b', venue: 'Royal Exchange Theatre, Manchester' },
+  ]);
+  assert.deepEqual(rows.map((r) => r.slug), ['whos-afraid-of-virginia-woolf-royal-exchange', 'marie-and-rosetta-royal-exchange']);
+});

@@ -127,21 +127,22 @@ jobs:
                   'Authorization': `Bearer ${apiKey}`,
                 },
                 body: JSON.stringify({
-                  model: 'gpt-4o',
-                  max_tokens: 1024,
+                  model: 'gpt-5.6-luna', // gpt-4o shuts down 2027-01-14 (BRO-7341); gpt-5.x needs max_completion_tokens
+                  reasoning_effort: 'none',
+                  max_completion_tokens: 1024,
                   messages: [{ role: 'user', content: prompt }],
                 }),
               });
 
               if (!response.ok) {
                 const error = await response.text();
-                return { model: 'GPT-4o', error };
+                return { model: 'OpenAI', error };
               }
 
               const data = await response.json();
-              return { model: 'GPT-4o', response: data.choices[0].message.content };
+              return { model: 'OpenAI', response: data.choices[0].message.content };
             } catch (e) {
-              return { model: 'GPT-4o', error: e.message };
+              return { model: 'OpenAI', error: e.message };
             }
           }
 
@@ -200,7 +201,7 @@ jobs:
             output += `---\n\n`;
 
             // GPT response
-            output += `## GPT-4o Feedback\n\n`;
+            output += `## OpenAI Feedback\n\n`;
             if (gpt.error) {
               output += `*Error: ${gpt.error}*\n\n`;
             } else {

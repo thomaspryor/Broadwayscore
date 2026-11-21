@@ -1,31 +1,69 @@
 {
   "outletId": "the-recs",
-  "generatedAt": "2026-10-28T20:42:39.269Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:34:27.058Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
+    "status": "complete",
     "notes": [],
-    "enumerated": 402,
-    "inWindow": 402,
+    "incomplete": false,
+    "enumerated": 419,
+    "inWindow": 419,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 378,
-      "held-other-market": 21,
-      "held": 3
+      "held-other-market": 30,
+      "not-review": 384,
+      "held-unmatched": 1,
+      "held": 4
     },
     "viaTitleVariant": {},
     "recall": 1,
     "recallWithCatalog": 1
   },
+  "seasons": {
+    "2026-27": {
+      "held-other-market": 18,
+      "not-review": 22,
+      "held-unmatched": 1
+    },
+    "2025-26": {
+      "not-review": 185,
+      "held-other-market": 11,
+      "held": 4
+    },
+    "2024-25": {
+      "not-review": 39,
+      "held-other-market": 1
+    },
+    "2023-24": {
+      "not-review": 33
+    },
+    "2022-23": {
+      "not-review": 73
+    },
+    "2021-22": {
+      "not-review": 31
+    },
+    "2020-21": {
+      "not-review": 1
+    }
+  },
   "corpusSide": {
-    "rowsInWindow": 46,
-    "notEnumerated": 43,
+    "rowsInWindow": 55,
+    "notEnumerated": 50,
     "noUrl": 0,
     "samples": [
+      {
+        "showId": "222-a-ghost-story-off-broadway-2026",
+        "url": "https://therecs.co.uk/222-a-ghost-story-lucille-lortel-theatre/",
+        "publishDate": "2026-11-18",
+        "why": "not-enumerated"
+      },
       {
         "showId": "a-ghost-in-your-ear-off-broadway-2026",
         "url": "https://therecs.co.uk/a-ghost-in-your-ear-audibles-minetta-lane-theatre/",
@@ -123,6 +161,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "in-the-heights-off-broadway-2026",
+        "url": "https://therecs.co.uk/in-the-heights-new-york-city-center/",
+        "publishDate": "2026-11-04",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "jerome-off-broadway-2025",
         "url": "https://therecs.co.uk/jerome/",
         "publishDate": "2026-06-03",
@@ -153,6 +197,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "msblackforpresident-off-broadway-2026",
+        "url": "https://therecs.co.uk/ms-blakk-for-president/",
+        "publishDate": "2026-11-09",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "no-singing-in-the-navy-off-broadway-2026",
         "url": "https://therecs.co.uk/no-singing-in-the-navy/",
         "publishDate": "2026-04-01",
@@ -162,6 +212,18 @@
         "showId": "picnic-at-hanging-rock-off-broadway-2025",
         "url": "https://therecs.co.uk/picnic-at-hanging-rock-the-musical/",
         "publishDate": "2025-12-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "proof-2026",
+        "url": "https://therecs.co.uk/proof/",
+        "publishDate": "2026-05-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "url": "https://therecs.co.uk/the-queen-of-versailles/",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -235,44 +297,27 @@
         "url": "https://therecs.co.uk/the-maids/",
         "publishDate": "2026-06-10",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "the-monsters-off-broadway-2026",
-        "url": "https://therecs.co.uk/the-monsters/",
-        "publishDate": "2026-02-12",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026",
-        "url": "https://therecs.co.uk/the-mystery-of-edwin-drood/",
-        "publishDate": "2026-05-25",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-people-versus-lenny-bruce-off-broadway-2026",
-        "url": "https://therecs.co.uk/the-people-versus-lenny-bruce/",
-        "publishDate": "2026-06-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-receptionist-off-broadway-2026",
-        "url": "https://therecs.co.uk/the-receptionist/",
-        "publishDate": "2026-05-19",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "the-winters-tale-off-broadway-2026",
-        "url": "https://therecs.co.uk/the-winters-tale-shakespeare-in-the-park/",
-        "publishDate": "2026-08-12",
-        "why": "not-enumerated"
       }
     ]
   },
   "gaps": [],
   "heldAltUrl": [],
   "misfiles": [],
-  "heldUnmatched": [],
+  "heldUnmatched": [
+    {
+      "url": "https://therecs.co.uk/waiting-for-lefty/",
+      "headline": "Waiting For Lefty ★★★★",
+      "publishDate": "2026-11-03",
+      "via": null,
+      "held": [
+        "clifford-odets-waiting-for-lefty-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

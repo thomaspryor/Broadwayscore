@@ -162,6 +162,17 @@ function hasTourTickets(show, tourTickets) {
   return Array.isArray(links) && links.some(l => l && l.onSale && l.url);
 }
 
+// BRO-7437: the site's buy-button predicate (TicketButtonsAB.tsx): with no
+// ticketLinks, a populated officialUrl still renders "Visit Official Site"
+// (BRO-166, owner decision 2026-08-04: an unmonetized official/venue link
+// beats no link). ob-discovery-ticket-links.js writes officialUrl precisely to
+// close this gap, so counting it as missing_tickets meant that producer's
+// output could never clear the health row. It stays visible as a medium
+// 'tickets_official_site_only' (no affiliate link yet), not a high gap.
+function hasOfficialSiteButton(show) {
+  return typeof show.officialUrl === 'string' && /^https?:\/\//i.test(show.officialUrl.trim());
+}
+
 function checkShowCompleteness(show, tourTickets = {}, tourSchedules = {}) {
   const issues = [];
   const isOpen = show.status === 'open';
@@ -194,7 +205,9 @@ function checkShowCompleteness(show, tourTickets = {}, tourSchedules = {}) {
 
   // Ticket links (only for open shows)
   if (isOpen && (!show.ticketLinks || show.ticketLinks.length === 0) && !hasTourTickets(show, tourTickets)) {
-    if (hasTourSchedule(show, tourSchedules)) {
+    if (hasOfficialSiteButton(show)) {
+      issues.push({ type: 'tickets_official_site_only', severity: 'medium' });
+    } else if (hasTourSchedule(show, tourSchedules)) {
       issues.push({ type: 'tour_tickets_not_on_sale', severity: 'medium' });
     } else {
       issues.push({ type: 'missing_tickets', severity: 'high' });
@@ -298,7 +311,11 @@ function checkFreshness() {
   // Check data completeness for open shows
   const tourTickets = loadTourTickets();
   const tourSchedules = loadTourSchedules();
+  // A show auto-closed above is no longer open (live mode flips its status;
+  // dry runs must report the same set), so its gaps are not open-show gaps.
+  const autoClosedIds = new Set(report.statusChanges.autoClosed.map(s => s.id));
   for (const show of openShows) {
+    if (autoClosedIds.has(show.id)) continue;
     const issues = checkShowCompleteness(show, tourTickets, tourSchedules);
     const significantIssues = issues.filter(i => i.severity !== 'info');
 
@@ -391,7 +408,7 @@ function printReport(report) {
     console.log('DATA QUALITY ISSUES (open shows):');
     console.log('-'.repeat(40));
 
-    const severityOrder = ['missing_poster', 'missing_synopsis', 'placeholder_synopsis', 'stale_synopsis', 'missing_tickets', 'tour_tickets_not_on_sale', 'missing_hero', 'missing_cast', 'missing_creative', 'missing_thumbnail', 'missing_runtime', 'missing_age_rec', 'no_closing_date'];
+    const severityOrder = ['missing_poster', 'missing_synopsis', 'placeholder_synopsis', 'stale_synopsis', 'missing_tickets', 'tour_tickets_not_on_sale', 'tickets_official_site_only', 'missing_hero', 'missing_cast', 'missing_creative', 'missing_thumbnail', 'missing_runtime', 'missing_age_rec', 'no_closing_date'];
     const sortedTypes = issueTypes.sort((a, b) => severityOrder.indexOf(a) - severityOrder.indexOf(b));
 
     for (const type of sortedTypes) {
@@ -423,7 +440,7 @@ function printReport(report) {
   console.log(`Open shows with issues: ${report.dataQuality.hasIssues.length}`);
 }
 
-module.exports = { checkShowCompleteness, hasTourTickets, hasTourSchedule };
+module.exports = { checkShowCompleteness, hasTourTickets, hasTourSchedule, hasOfficialSiteButton };
 
 // Run
 if (require.main === module) checkFreshness();

@@ -88,9 +88,10 @@
 'use strict';
 
 const fs = require('fs');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const path = require('path');
 const os = require('os');
-const { execFileSync, spawnSync } = require('child_process');
+const { spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const ledger = require('./lib/dispatch-ledger.js');
 const { checkLanded } = require('./lib/landing-verify.js');
@@ -219,7 +220,7 @@ function resolveDataRepo(name, env = process.env, opts = {}) {
 }
 
 function git(args, opts = {}) {
-  return execFileSync('git', args, { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts }).trim();
+  return gitGuard.runGitOrThrow(args, { cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts }).trim();
 }
 
 function gitOk(args) {

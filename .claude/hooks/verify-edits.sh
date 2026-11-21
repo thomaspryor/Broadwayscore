@@ -60,7 +60,7 @@ if [ "$stop_hook_active" = "true" ]; then
   # Unwritable ledger: nothing could be recorded, so blocking again could loop
   # forever. Fall back to the old let-it-through behavior.
   { : >> "$_ve_chain_file"; } 2>/dev/null || exit 0
-  [ "$({ wc -l < "$_ve_chain_file"; } 2>/dev/null || echo 0)" -ge "$VE_CHAIN_BLOCK_CAP" ] && exit 0
+  [ "$({ wc -l < "$_ve_chain_file"; } 2>/dev/null || echo 0)" -ge "$VE_CHAIN_BLOCK_CAP" ] && { if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${RETRO_COVERAGE_STOP_DISABLE:-0}" != "1" ] && [ -f "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)/scripts/lib/retro-coverage-stop.mjs" ] && command -v node >/dev/null 2>&1; then _rcv_err=$(printf '%s' "$input" | timeout 15 node "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/lib/retro-coverage-stop.mjs" --stop-hook 2>&1 >/dev/null); [ $? -eq 2 ] && { printf '%s\n[VE:RETROCOV]\n' "$_rcv_err" >&2; exit 2; } fi; exit 0; }
 else
   { : > "$_ve_chain_file"; } 2>/dev/null
 fi
@@ -116,8 +116,19 @@ fi
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${RETRO_COVERAGE_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/retro-coverage-stop.mjs" ] && command -v node >/dev/null 2>&1; then
   _rcv_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/retro-coverage-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:RETROCOV]\n' "$_rcv_err" >&2; exit 2; fi; _ve_pre_died retro-coverage-stop.mjs $_ve_s
 fi
+# BRO-7738: a landed edit to a script a workflow runs needs a real run (the script itself, or its workflow dispatched and read) before
+# SAFE TO ARCHIVE; logic in live-run-stop.mjs, one nudge per chunk until its blocking date, kill LIVE_RUN_STOP_DISABLE=1.
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${LIVE_RUN_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/live-run-stop.mjs" ] && command -v node >/dev/null 2>&1; then
+  _lrs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/live-run-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:LIVERUN]\n' "$_lrs_err" >&2; exit 2; fi; _ve_pre_died live-run-stop.mjs $_ve_s
+fi
+# BRO-7839: an independent reviewer asks the owner's "is this fully tested?" at SAFE TO ARCHIVE after code edits and the session must
+# close the gaps it names (skeptic-review-stop.mjs: cloud only, one LLM call capped at 25s, fails open, one block per chunk until its
+# blocking date, kill SKEPTIC_REVIEW_STOP_DISABLE=1). Last of the pre-gates so a chunk another gate refuses costs no reviewer call.
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SKEPTIC_REVIEW_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/skeptic-review-stop.mjs" ] && command -v node >/dev/null 2>&1; then
+  _skr_err=$(printf '%s' "$input" | timeout 35 node "$VE_REPO_ROOT/scripts/lib/skeptic-review-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:SKEPTIC]\n' "$_skr_err" >&2; exit 2; fi; _ve_pre_died skeptic-review-stop.mjs $_ve_s
+fi
 result=$(python3 - "$transcript" <<'PYEOF'
-import hashlib, json, sys, os, re, shlex
+import hashlib, json, sys, os, re, shlex, subprocess
 
 # Per-gate loop guard (BRO-4367): keys that already blocked in this
 # turn-chain (bash passes them in VE_SKIP_CODES) must not hide the gates
@@ -147,14 +158,14 @@ def _ve_allowed(code):
 # 'block' arms early. STALL_GATE_NOW is the test clock.
 _STALL_ARM_AFTER = '2026-11-16T00:00:00Z'
 
-def _stall_gate_blocks(envvar):
+def _stall_gate_blocks(envvar, arm_after=None):
     v = os.environ.get(envvar, '')
     if v in ('block', 'advisory', 'off'):
         return v == 'block'
     if v:
         return False  # unknown value: stay advisory, never silently arm
     import time
-    return (os.environ.get('STALL_GATE_NOW') or time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())) >= _STALL_ARM_AFTER
+    return (os.environ.get('STALL_GATE_NOW') or time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())) >= (arm_after or _STALL_ARM_AFTER)
 
 def _stall_advisory_post(kind, detail):
     # Cloud: ~/.claude/state dies with the container (BRO-7190), so the hit also goes to a
@@ -690,43 +701,24 @@ for i in range(len(events) - 1, -1, -1):
         continue
     if any(s in fp for s in EXEMPT_SUBSTRINGS):
         continue
-    # Skip test files — running them IS the verification, but we don't require running OTHER files when a test was edited
-    # (Actually no — even test edits should be run. Keep them in.)
     total_qualifying_edits += 1
     if last_edit_idx is None:
         last_edit_idx = i
         last_edit_file = fp
 
 # ─── Session status-line gate (added 2026-08-23) ─────────────────────────────
-# The local ~/.claude/hooks/exit-status-gate.sh enforces a "SAFE TO EXIT" /
-# "NOT SAFE TO EXIT" closing line (and refuses the SAFE claim when a DECISION
-# NEEDED block is still pending) — see .claude/commands/wrap-up.md. It is a
-# user-level hook that was never ported to cloud (named in CLOUD.md's list of
-# "12 other user-level hooks [that] DO NOT fire in cloud"), so cloud/iOS
-# sessions had zero enforcement of it — root cause of 8 iOS sessions in one
-# day never saying whether it was safe to end the conversation, and punting
-# decisions back to a non-technical owner instead of making the call.
-#
-# This is a deliberately smaller reimplementation, NOT a full port: the real
-# hook also runs Gate W/T (workspace/task-ref resolution against the local
-# ~/.claude/tasks store, which this sandbox doesn't have — see
-# scripts/lib/exit-status-gate-taskref.test.mjs for what that covers). Only
-# the two checks that explain today's actual failures are implemented here.
-#
-# Scope: only fires once the session did something worth reporting on (a
-# qualifying code edit, a push/commit, or a GitHub MCP write) — never gates
-# an ordinary conversational turn. Kill switch: SESSION_STATUS_GATE_DISABLE=1.
+# Require a closing verdict after code edits, commits, pushes or GitHub writes.
+# Ordinary conversation is exempt. This cloud subset omits the Mac task store
+# checks covered by scripts/lib/exit-status-gate-taskref.test.mjs.
+# Kill switch: SESSION_STATUS_GATE_DISABLE=1.
 if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
     try:
         did_substantial_work = total_qualifying_edits > 0 or any(
             _kind == 'tool' and _is_work_tool(_payload[0], _payload[1], _payload[2])
             for _kind, _payload in events
         )
-        # NOTE: deliberately does NOT require `_last_msg` to be non-empty (ship-check
-        # adversarial review, task a7d9c07f) — a turn whose last action is a tool call
-        # with no closing text has _last_msg == '' and genuinely has no status line.
-        # Treating empty as "skip" would silently defeat the whole gate on exactly the
-        # turn shape (tool-call-only ending) most likely to skip a wrap-up in practice.
+        # Empty final text still needs a verdict: ending on a tool call must
+        # not silently skip this gate (adversarial review a7d9c07f).
         if did_substantial_work and 'NO-VERIFY:' not in (_last_msg or ''):
             _stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
             _content_lines = [ln.strip() for ln in _stripped.strip().splitlines() if ln.strip()]
@@ -824,6 +816,8 @@ def _live_work():
     task_done = {}     # agent / background task id -> idx of its completion
     child = {}         # session id -> {'idx', 'label', 'done': idx, 'archived': bool}
     waits = {}         # background task id -> (idx, label)
+    confirmed_waits = {}  # successful, unexpired receipts eligible for a concise pause
+    observed_done = {}    # terminal TaskOutput evidence, only for confirmed_waits
     pr_watch = False
     last_owner = max([j for j, (k, _p) in enumerate(events) if k == 'user_human'] or [-1])
 
@@ -884,6 +878,14 @@ def _live_work():
                 stop = str(inp.get('task_id') or inp.get('taskId') or '').strip()
                 if stop:
                     task_done[stop] = i
+            elif name == 'TaskOutput' and ok:
+                # Command output is data: status-like text there is not task metadata.
+                meta = res.split('<output>', 1)[0]
+                task = str(inp.get('task_id') or '').strip()
+                if (task and '<retrieval_status>success</retrieval_status>' in meta
+                        and '<task_id>%s</task_id>' % task in meta
+                        and re.search(r'<status>\s*(?:completed|failed|killed|stopped|cancelled)\s*</status>', meta)):
+                    observed_done[task] = i
             elif (name == 'Bash' and inp.get('run_in_background')) or name == 'Monitor':
                 # Only waits started since the owner's latest message: one that
                 # finished earlier with no notice must not count forever.
@@ -896,6 +898,17 @@ def _live_work():
                     m = bg_id_re.search(res)
                     label = '%s "%s"' % (name, (inp.get('description') or inp.get('command') or '')[:50])
                     waits[(m.group(1) or m.group(2)) if m else 'call-%d' % i] = (i, label)
+                    # BRO-7653: WAKELESS keeps its existing fail-open reading above.
+                    # Waiving closing boilerplate needs positive evidence, including age.
+                    started = _parse_ts(result_ts_by_id.get(tid, ''))
+                    if name == 'Bash':
+                        receipt = re.match(r'Command running in background with ID: ([0-9A-Za-z_-]{4,})\.', res.strip())
+                        ttl = min(int(inp.get('timeout') or 1800000), 7200000) / 1000
+                    else:
+                        receipt = re.match(r'Monitor started \(task ([0-9A-Za-z_-]{4,}), expires in (\d+)([smh])\b', res.strip())
+                        ttl = int(receipt.group(2)) * {'s': 1, 'm': 60, 'h': 3600}[receipt.group(3)] if receipt else 0
+                    if receipt and started is not None and 0 <= now - started < ttl:
+                        confirmed_waits[receipt.group(1)] = (i, label)
             elif name == 'mcp__github__subscribe_pr_activity' or name.endswith('subscribe_pr_activity'):
                 if ok and not name.endswith('unsubscribe_pr_activity'):
                     pr_watch = True
@@ -928,7 +941,7 @@ def _live_work():
             for mh in re.finditer(r'<agent-message\s+from="([^"]+)"', payload or ''):
                 task_done[mh.group(1)] = i
 
-    out = {'triggers': [], 'agents': [], 'children': [], 'childCreatedAt': {}, 'waits': [], 'pr_watch': pr_watch}
+    out = {'triggers': [], 'agents': [], 'children': [], 'childCreatedAt': {}, 'waits': [], 'confirmed_waits': [], 'pr_watch': pr_watch}
     for k, t in trig.items():
         if t['done'] >= t['idx']:
             continue
@@ -947,22 +960,17 @@ def _live_work():
     for k, (idx, lab) in waits.items():
         if task_done.get(k, -1) < idx:
             out['waits'].append(lab)
+    for k, (idx, lab) in confirmed_waits.items():
+        if max(task_done.get(k, -1), observed_done.get(k, -1)) < idx:
+            out['confirmed_waits'].append(lab)
     _live_cache.append(out)
     return out
 
 # ─── In-flight-work gate (INFLIGHT, added 2026-09-28) ───────────────────────
-# Owner evidence (session 01JhF7pK, 2026-09-28): a session with ten background
-# agents running, a Land run in progress and two scheduled check-ins ended a
-# turn on "SAFE TO EXIT". The owner reads that line as "I may close or kill
-# this session now". This gate asks whether anything still running would die
-# with the session, from the transcript alone (_live_work): a self-bound
-# Routine still to fire, or a background Agent without a completion.
-# Background Bash is deliberately NOT counted here: two of four background
-# commands in a real transcript finished without any notice, a guaranteed
-# false positive. Sessions started with create_session are not counted
-# either: they run on their own and land their own work (BRO-5881).
-# Not gated on "did substantial work": a session that only spawned agents did
-# no edit yet still dies if closed. Kill switch: INFLIGHT_GATE_DISABLE=1.
+# Refuse archive claims with live Agents or self-bound Routines, even before edits.
+# Bash is excluded: real commands sometimes finish without a completion notice.
+# Child sessions run independently and are excluded too (BRO-5881).
+# Kill switch: INFLIGHT_GATE_DISABLE=1.
 if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
     try:
         if _SAFE_RE.match(_closing()[1]) and 'NO-VERIFY:' not in (_last_msg or ''):
@@ -1022,10 +1030,70 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         _opened_pr = False
         _merged_pr = False
         _landed_pushed = False     # pushed to land/** (git or MCP create_branch/dispatch)
-        _land_followed = False     # checked a workflow run after that push
+        # BRO-7701: per ref. One boolean let the first finished wait clear every later push
+        # (a worker waited on land/a, pushed land/b, claimed Done while b was in flight).
+        _land_unchecked = set()    # land refs pushed and not yet followed to a verdict
+        _land_nolookup = set()     # refs whose absence from origin proves nothing (BRO-7811)
+        _land_pushes = {}          # ref -> pushes this session; a re-pushed ref needs a waiter verdict
+        _land_refused = set()      # refs whose latest verdict is REFUSED: followed, but the work did not land
+        def _land_verdict(ref, refused):  # a later LANDED of any ref clears refusals: the fix lands under a new ref name
+            if refused:
+                _land_refused.add(ref)
+            else:
+                _land_refused.clear()
         # Anchored: `git push origin HEAD:refs/heads/land/x`, `... HEAD:land/x`,
         # `git push origin land/x` — not `foo-land/`.
         _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
+        # BRO-7811: only what the shell RUNS counts (mirror of runShellCode in review-coverage.mjs). Heredoc bodies and
+        # quoted text with spaces (echo, node -e, test fixtures) are data; a `bash -c '...'` / `bash <<EOF` script is code.
+        _hd_re = re.compile(r'(<<-?\s*([\'"]?)(\w+)\2[^\n]*)\n(.*?)\n[ \t]*\3(?=\n|$)', re.S)
+        def _land_code(cmd, _depth=0):
+            _inner = []
+            def _hd(m):
+                if re.search(r'(?:^|[\s;&|(])(?:ba|z)?sh\b[^\n<]*$', cmd[:m.start()].split('\n')[-1] + ' '):
+                    _inner.append(m.group(4))
+                return m.group(1)
+            _o = _hd_re.sub(_hd, cmd or '')
+            def _q(m):
+                if re.search(r'(?:^|[\s;&|(])(?:ba|z)?sh\s+-[a-z]*c\s+$', _o[max(0, m.start() - 64):m.start()]):
+                    _inner.append(m.group(0)[1:-1])
+                    return '""'
+                return '""' if re.search(r'\s', m.group(0)) else m.group(0)
+            _o = re.sub(r"'[^']*'|\"[^\"]*\"", _q, _o)
+            return '\n'.join([_o] + ([_land_code(i, _depth + 1) for i in _inner] if _depth < 3 else []))
+        _push_seg_re = re.compile(r'\bgit\s+push\b([^\n;&|]*)')
+        _refspec_re = re.compile(r'(?:^|\s)[\'"]?(\+?\S*?:)?(?:refs/heads/)?(land/[^\s;&|\'"<>)`]+)')
+        def _push_land_refs(cmd):  # (refs pushed, refs deleted), every refspec of every push in the command
+            _add, _del = set(), set()
+            for _seg in _push_seg_re.finditer(cmd):
+                _deleting = bool(re.search(r'(?:^|\s)(--delete|-d)(?=\s|$)', _seg.group(1)))
+                for _m in _refspec_re.finditer(_seg.group(1)):
+                    if re.search(r'[$`{*]', _m.group(2)): continue  # BRO-7811: land/$r is a template, not a ref
+                    (_del if _deleting or _m.group(1) == ':' else _add).add(_m.group(2).rstrip(',.'))
+            return _add, _del
+        def _newest_run_done(res, ref=None):  # the NEWEST run (of this ref, or any) in an actions_get/list result finished
+            _runs = []
+            def _walk(o):
+                if isinstance(o, dict):
+                    if 'status' in o and ('head_branch' in o or 'run_number' in o):
+                        _runs.append(o)
+                    for v in o.values(): _walk(v)
+                elif isinstance(o, list):
+                    for v in o: _walk(v)
+            try:
+                _walk(json.loads(res))
+            except Exception:  # not JSON: fall back to run-shaped {...} objects
+                for _ob in re.findall(r'\{[^{}]*"status"\s*:\s*"[^"]*"[^{}]*\}', res):
+                    _hb = re.search(r'"head_branch"\s*:\s*"([^"]*)"', _ob)
+                    _id = re.search(r'"(?:id|run_number)"\s*:\s*(\d+)', _ob)
+                    _runs.append({'head_branch': _hb.group(1) if _hb else None, 'id': int(_id.group(1)) if _id else 0,
+                                  'status': re.search(r'"status"\s*:\s*"([^"]*)"', _ob).group(1)})
+            _mine = [r for r in _runs if (r.get('head_branch') == ref if ref is not None
+                     else 'land' in str(r.get('path') or r.get('name') or ''))]
+            if not _mine:
+                return False
+            _key = lambda r: (r.get('id') if isinstance(r.get('id'), int) else 0, r.get('run_number') if isinstance(r.get('run_number'), int) else 0)
+            return max(_mine, key=_key).get('status') == 'completed'
         _pr_url_re = re.compile(r'github\.com/[^/\s"]+/[^/\s"]+/pull/\d+')
         def _gh_pr_create_cmd(cmd):  # gh pr create, or one segment POSTing to …/pulls itself
             return bool(re.search(r'\bgh\s+pr\s+create\b', cmd)) or any(
@@ -1035,16 +1103,21 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 for g in re.split(r'&&|\|\||[;|\n]', cmd))
         # BRO-7110: a FINISHED wait-for-land.js run also counts (CLOUD.md's land step): foreground verdict line,
         # background task-notification exit 0/1/4, or a later read of its stamped line. Exit 2/3 or unfinished: no.
-        _wfl_run_re = re.compile(r'\bnode\s+\S*wait-for-land\.js\s+(refs/heads/)?land/')
-        _wfl_verdict_re = re.compile(r'\b\d\d:\d\d:\d\dZ (?:LANDED|REFUSED): (?:refs/heads/)?land/')  # the waiter's own stamped line
-        _wfl_pending = set()
-        for _kind, _payload in events:
+        _wfl_run_re = re.compile(r'\bnode\s+\S*wait-for-land\.js\s+(?:refs/heads/)?(land/[^\s;&|\'"]+)')
+        _wfl_verdict_re = re.compile(r'\b\d\d:\d\d:\d\dZ (?:LANDED|REFUSED): (?:refs/heads/)?(land/[^\s;&|\'"]+)')  # the waiter's own stamped line
+        _wfl_pending = {}          # background waiter task id -> the land ref it waits on
+        for _ei, (_kind, _payload) in enumerate(events):
+            if _kind == 'text' and _ei < len(events) - 1 and re.search(r'^\s*NO-VERIFY:[^\n]*\bland', _payload or '', re.M | re.I):
+                _land_unchecked.clear()  # BRO-7811: an earlier NO-VERIFY already waived what was pending; do not re-ask the same set
             if _kind in ('user_notice', 'user_text'):
                 for _mn in re.finditer(r'<task-notification>(.*?)</task-notification>', (_payload or '') if _wfl_pending else '', flags=re.DOTALL):
                     _idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', _mn.group(1))
                     _exm = re.search(r'exit code (\d+)', _mn.group(1))
-                    if _idm and _idm.group(1) in _wfl_pending and _exm and _exm.group(1) in ('0', '1', '4'):
-                        _land_followed = True
+                    if _idm and _exm and _exm.group(1) in ('0', '1', '4'):
+                        for _k in [k for k in _wfl_pending if k.split('#', 1)[0] == _idm.group(1)]:
+                            _r = _wfl_pending.pop(_k)
+                            _land_unchecked.discard(_r)
+                            _land_verdict(_r, _exm.group(1) == '1')
                 continue
             if _kind != 'tool':
                 continue
@@ -1066,27 +1139,67 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 # "failed to merge …: 405 …" and denials carry no "error" word.
                 if re.search(r'"merged"\s*:\s*true', tool_results_by_id.get(_tid, '') or ''):
                     _merged_pr = True
-            elif _name == 'Bash' and _land_push_re.search(_inp.get('command') or ''):
-                _landed_pushed = True
+            elif _name == 'Bash' and _land_push_re.search(_land_code(_inp.get('command') or '')):
+                _add, _del = _push_land_refs(_land_code(_inp.get('command') or ''))
+                _land_unchecked -= _del
+                _land_refused -= _del | _add
+                if _add:
+                    _landed_pushed = True
+                    _pres = tool_results_by_id.get(_tid, '') or ''
+                    if _tid not in tool_refused_ids and not re.search(r'\[rejected\]|failed to push|src refspec .* does not match|^fatal:|RPC failed|Could not read from remote', _pres, re.M):  # a rejected push starts no Land run; a filtered pipe exiting 1 still pushed
+                        _land_unchecked |= _add
+                        if _inp.get('run_in_background') or re.search(r'\bgit\s+-C\b', _inp.get('command') or ''):
+                            _land_nolookup |= _add  # BRO-7811: a backgrounded or other-repo push says nothing about this origin
+                        for _r in _add:
+                            _land_pushes[_r] = _land_pushes.get(_r, 0) + 1
+                        for _k in [k for k, v in _wfl_pending.items() if v in _add]:
+                            del _wfl_pending[_k]  # a waiter started before this re-push does not cover it
             elif _name == 'mcp__github__create_branch' and str(_inp.get('branch') or '').startswith('land/'):
                 _landed_pushed = True
+                if _tid not in tool_error_ids:
+                    _land_unchecked.add(str(_inp.get('branch')))
             elif (_name == 'mcp__github__actions_run_trigger'
                   and 'land' in str(_inp.get('workflow_id') or '')):
                 _landed_pushed = True
-            elif _landed_pushed and _name in ('mcp__github__actions_get', 'mcp__github__actions_list'):
-                _land_followed = True
-            # Not in the elif chain: `git push ... land/x && node ...wait-for-land.js land/x` is both.
-            if _landed_pushed:  # no error filter: a refused foreground waiter exits 1
+                if _tid not in tool_error_ids:
+                    _land_unchecked.add('land.yml dispatch')  # its run's head_branch is not a land/ ref
+            elif _land_unchecked and _name in ('mcp__github__actions_get', 'mcp__github__actions_list'):
                 _res = tool_results_by_id.get(_tid, '') or ''
-                if _name == 'Bash' and _wfl_run_re.search(_inp.get('command') or ''):
+                for _r in list(_land_unchecked):
+                    if _land_pushes.get(_r, 1) == 1 and _newest_run_done(_res, None if _r == 'land.yml dispatch' else _r):
+                        _land_unchecked.discard(_r)
+            # Not in the elif chain: `git push ... land/x && node ...wait-for-land.js land/x` is both.
+            if _land_unchecked:  # no error filter: a refused foreground waiter exits 1
+                _res = tool_results_by_id.get(_tid, '') or ''
+                _wms = [m.group(1) for m in _wfl_run_re.finditer(_land_code(_inp.get('command') or ''))] if _name == 'Bash' else []
+                _mine = [r for r in _wms if r in _land_unchecked]
+                if _mine:
                     _bgm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', _res) if _inp.get('run_in_background') else None
                     if _bgm:
-                        _wfl_pending.add(_bgm.group(1))
-                    elif _wfl_verdict_re.search(_res):
-                        _land_followed = True
-                elif _wfl_pending and _wfl_verdict_re.search(_res):
-                    _land_followed = True
+                        for _r in _mine:
+                            _wfl_pending[_bgm.group(1) + '#' + _r] = _r
+                    else:
+                        for _vm in _wfl_verdict_re.finditer(_res):
+                            if _vm.group(1) in _mine:
+                                _land_unchecked.discard(_vm.group(1))
+                                _land_verdict(_vm.group(1), 'REFUSED' in _vm.group(0))
+                elif not _wms and _wfl_pending and (_name == 'Read' or (_name == 'Bash' and '.output' in (_inp.get('command') or ''))):
+                    for _vm in _wfl_verdict_re.finditer(_res):  # a later read of a background waiter's stamped line
+                        if _vm.group(1) in _wfl_pending.values():
+                            _land_unchecked.discard(_vm.group(1))
+                            _land_verdict(_vm.group(1), 'REFUSED' in _vm.group(0))
         _msg_ok = bool(_last_msg) and 'NO-VERIFY:' not in _last_msg
+        if _msg_ok and _land_unchecked and _SAFE_RE.match(_closing()[1]) and os.environ.get('LANDUNCHECKED_REMOTE_CHECK', '1') != '0':
+            # BRO-7811: land.yml deletes a land ref once it fast-forwards main, so a ref absent from origin has landed (or never
+            # existed). Only a clean empty ls-remote counts; any error keeps the ref unchecked.
+            for _r in [r for r in _land_unchecked if r.startswith('land/') and r not in _land_nolookup]:
+                try:
+                    _lr = subprocess.run(shlex.split(os.environ.get('LANDUNCHECKED_LS_REMOTE_CMD', 'git ls-remote --heads origin')) + ['refs/heads/' + _r],
+                                         capture_output=True, text=True, timeout=10)
+                    if _lr.returncode == 0 and not _lr.stdout.strip():
+                        _land_unchecked.discard(_r)
+                except Exception:
+                    pass
         _stripped_owner = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
         # OWNERMERGE (2026-09-27): the owner never merges — this repo lands via
         # land/** (land.yml). "NOT SAFE TO EXIT — waiting on your merge" used
@@ -1109,9 +1222,23 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             _ve_block("OWNERMERGE")
         # A land/** push is follow-through, but not proof it landed (land.yml
         # can refuse): SAFE TO EXIT additionally needs a later run check.
-        if (_msg_ok and _landed_pushed and not _land_followed and not _merged_pr
+        if (_msg_ok and _land_unchecked and not _merged_pr
                 and _SAFE_RE.match(_closing()[1])):
+            if not _ve_seen("LANDUNCHECKED") and _ve_allowed("LANDUNCHECKED"):
+                print("Unchecked land push(es): " + ", ".join(sorted(_land_unchecked)), file=sys.stderr)
             _ve_block("LANDUNCHECKED")
+        # BRO-7701: a REFUSED verdict is followed but not landed. 74 refused land refs sat on origin
+        # (prune job, 2026-11-17) while sessions closed SAFE; the closing must say it did not land.
+        if (_msg_ok and _land_refused and not _land_unchecked and not _merged_pr
+                and _SAFE_RE.match(_closing()[1])
+                and not re.search(r'\brefused\b|did not land|didn.t land|not landed|(?:abandon|drop|retir)\w*[^.\n]{0,60}\bland|\bland\w*[^.\n]{0,60}(?:abandon|drop|retir)', _stripped_owner, re.I)):
+            # New gate (CLAUDE.md 19): advisory until 2026-11-24, then blocks. LANDREFUSED_GATE_MODE=block|advisory|off.
+            if _stall_gate_blocks('LANDREFUSED_GATE_MODE', '2026-11-24T00:00:00Z'):
+                if not _ve_seen("LANDREFUSED") and _ve_allowed("LANDREFUSED"):
+                    print("Refused landing(s) not reported: " + ", ".join(sorted(_land_refused)), file=sys.stderr)
+                _ve_block("LANDREFUSED")
+            elif os.environ.get('LANDREFUSED_GATE_MODE') != 'off':
+                _stall_advisory_post('LANDREFUSED', ', '.join(sorted(_land_refused)))
         if _landed_pushed:
             _merged_pr = True
         if _opened_pr and not _merged_pr and _msg_ok:
@@ -1466,6 +1593,54 @@ if os.environ.get('PASSIVEOFFER_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
+# ─── Schedule-ask gate (SCHEDULEASK, BRO-7880, 2026-11-20) ──────────────────
+# Owner friction: sessions that want a check later end "ACTION NEEDED FROM YOU:
+# reply yes, schedule it" or ask the owner to approve a create_trigger prompt.
+# Asking the owner was also the cheapest way past WAKELESS (an owner ask needs no
+# wake). A NOT-BEFORE card (linear-brain.js create --dispatch --not-before) does
+# the same with no tap, so a closing that asks the owner to approve, allow, tap
+# or "yes" a schedule / trigger / reminder / check-in / wake is blocked, and
+# WAKELESS no longer counts it as an owner ask. Real DECISION NEEDED blocks
+# (money, irreversible, taste) do not name a schedule and still pass. Negated
+# mentions ("never ask the owner to approve a schedule") do not count.
+# Kill switch SCHEDULEASK_GATE_DISABLE=1. Fail-open.
+_SCHED_NOUN = r"(?:schedul\w*|scheduled task|(?:create_)?trigger|send_later|reminder|check-?in|wake-?up|routine|cron)"
+_SCHEDULE_ASK_RE = re.compile(
+    r"\b(?:approve|allow|tap|accept|confirm|authori[sz]e|ok(?:ay)?)\b[^.\n]{0,60}?\b" + _SCHED_NOUN + r"\b"
+    r"|\b(?:reply|say|answer|respond)(?:\s+with)?\s+[\"'\u201c]?yes\b[^.\n]{0,60}?\b" + _SCHED_NOUN + r"\b"
+    r"|\bschedule it\b"
+    r"|\b(?:want|should|shall)\s+(?:me|I)\s+(?:to\s+)?(?:set up|schedule|arm|create)\b[^.\n]{0,40}?\b" + _SCHED_NOUN + r"\b",
+    re.IGNORECASE)
+
+_SCHED_ASK_LINE_RE = re.compile(
+    r"^[ \t>*_-]*(?:you need to|action needed|keep open|decision needed|default|my recommendation|option [a-d]\b)",
+    re.IGNORECASE)
+
+def _schedule_ask(text):
+    """The closing asks the owner to approve/allow/"yes" a schedule (BRO-7880)."""
+    # Only lines that address the owner count: "You need to:", the verdict /
+    # DECISION lines, and questions. A report that quotes an old ask ("this
+    # session's 'reply yes to schedule it' is now blocked") is not an ask.
+    text = '\n'.join(l for l in (text or '').splitlines()
+                     if _SCHED_ASK_LINE_RE.match(l) or l.rstrip().endswith('?'))
+    text = _VERDICT_TOKEN_RE.sub(' ', text)
+    for m in _SCHEDULE_ASK_RE.finditer(text):
+        clause = re.split(r'[.;:!?\n\u2014\u2013]', text[max(0, m.start() - 40):m.start()])[-1]
+        if not _NEGATION_RE.search(clause) and not _NEGATION_RE.search(m.group(0)):
+            return True
+    return False
+
+if os.environ.get('SCHEDULEASK_GATE_DISABLE', '0') != '1':
+    try:
+        _sa_text, _sa_last = _closing()
+        if ('NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('SCHEDULEASK')
+                and _schedule_ask(_sa_text + '\n' + _sa_last)):
+            _ve_block("SCHEDULEASK")
+    except SystemExit:
+        raise
+    except Exception:
+        pass
+
 # ─── Wake gate (WAKELESS, BRO-5881, 2026-10-22) ─────────────────────────────
 # Owner: sessions end "NOT SAFE TO EXIT — waiting on X" and never come back;
 # a day later X is long done and nobody checked. Real case (session 014vS4Wn,
@@ -1486,7 +1661,7 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
         _wk_text, _wk_last = _closing()
         if (_KEEP_RE.match(_wk_last) and 'NO-VERIFY:' not in (_last_msg or '')
                 and not _ve_seen('WAKELESS')):
-            _wk_owner = _owner_must_act(_wk_text) or bool(re.search(r'\bfires into this session\b', _wk_last, re.I))  # routine host (BRO-6020)
+            _wk_owner = (_owner_must_act(_wk_text) and not _schedule_ask(_wk_text)) or bool(re.search(r'\bfires into this session\b', _wk_last, re.I))  # routine host (BRO-6020)
             _lw = _live_work()
             if not _wk_owner and not (_lw['triggers'] or _lw['agents'] or _lw['children']
                                       or _lw['waits'] or _lw['pr_watch']):
@@ -1522,7 +1697,7 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
 # advise --minutes 3 (BRO-7378). CHILDSTALL: a REPORT-BACK child needs live
 # work or a report/question to @parent since its last message (BRO-7183).
 # Decisions: scripts/lib/child-session-wait-guard.js; switches <CODE>_GATE_DISABLE=1.
-_CW_ALL = ('CHILDSTALL', 'CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH', 'OPENCLAIM')
+_CW_ALL = ('CHILDSTALL', 'CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH', 'DEADWAIT', 'OPENCLAIM')
 _CW_CODES = [c for c in _CW_ALL if os.environ.get(c + '_GATE_DISABLE', '0') != '1' and not _ve_seen(c)]
 if _CW_CODES:
     try:
@@ -1556,7 +1731,7 @@ if _CW_CODES:
                     _cw_ts = None
                 _cw_tools.append({'idx': _i, 'name': _nm, 'input': _inp, 'ok': _tid not in tool_error_ids,
                                   'taskId': (_bm.group(1) or _bm.group(2)) if _bm else None, 'startedAt': _cw_ts,
-                                  'result': (tool_results_by_id.get(_tid, '') or '')[:300] if _nm == 'Bash' else ''})
+                                  'result': (tool_results_by_id.get(_tid, '') or '')[:300] if (_nm == 'Bash' or re.search(r'(?:^|__)send_?message$', _nm or '', re.I)) else ''})
             # The parent's latest message (a cross-session delivery, also via
             # ReadNotifications) or the owner's prompt: a report must follow it.
             _cw_anchor = max([_j for _j, (_k, _p) in enumerate(events) if _k == 'user_human' or (
@@ -1569,12 +1744,12 @@ if _CW_CODES:
             _cw = subprocess.run(['node', _cw_js], capture_output=True, text=True, timeout=10, input=json.dumps({
                 'firstPrompt': '\n'.join(_user_prompts + [t for t in _report_back_prompt if t][:1]), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
                 'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
-                'all': True, 'now': time.time() * 1000, 'skip': [c for c in _CW_ALL if c not in _CW_CODES],
+                'all': True, 'now': time.time() * 1000, 'skip': [c for c in _CW_ALL if c not in _CW_CODES or (c == 'DEADWAIT' and not _stall_gate_blocks('DEADWAIT_GATE_MODE', '2026-11-21T00:00:00Z'))],
                 'liveChildren': _live_work()['children'] if _cw_keep else [], 'keepOpen': _cw_keep, 'stall': _cw_stall,
                 'childCreatedAt': _live_work()['childCreatedAt'] if _cw_keep else {},
                 'reportBack': True, 'anchor': _cw_anchor, 'parentIds': _cw_pids, 'openClaim': _oc_on,
                 'ocAnchor': max([_j for _j, (_k, _p) in enumerate(events) if _k == 'user_human' or (_k == 'user_text' and _OC_RT.search(_p or ''))] or [-1]),
-                'otherLive': bool((_cw_stall or _oc_on) and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
+                'otherLive': bool((_cw_stall or _oc_on or _cw_keep) and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
             for _cw_advisory in _cw_res.get('advisories', []):
@@ -1588,6 +1763,10 @@ if _CW_CODES:
                 os.makedirs(_pd, exist_ok=True)
                 with open(os.path.join(_pd, 'open-claim-advisory.jsonl'), 'a') as _pf:
                     _pf.write(json.dumps({'at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'session': os.environ.get('CLAUDE_CODE_SESSION_ID', ''), 'cards': _cw_res.get('cards')}) + '\n')
+            elif _cw_res.get('code') == 'DEADWAIT' and not _stall_gate_blocks('DEADWAIT_GATE_MODE', '2026-11-21T00:00:00Z'):
+                # advisory mode (DEADWAIT_GATE_MODE=advisory): ledger row only
+                if os.environ.get('DEADWAIT_GATE_MODE') != 'off':
+                    _stall_advisory_post('DEADWAIT', _cw_res.get('target'))
             elif _cw_res.get('block') and (_cw_res.get('code') or 'CHILDWAIT') in _CW_CODES:
                 if _cw_res.get('wrongTool'):
                     sys.stderr.write('   SendMessage was used for the report: it is the in-process teammate transport and never reaches the parent session.\n')
@@ -1595,15 +1774,32 @@ if _CW_CODES:
     except Exception:
         pass  # fail-open
 
+# ─── New-session-ask gate (NEWSESSIONASK, BRO-7918, 2026-11-21) ─────────────
+# A closing that tells the owner to "start a new session" / "open a fresh session and
+# tell it ..." is blocked: the owner never starts sessions. The matcher is
+# scripts/lib/new-session-ask.js (negations and quoted mentions do not count).
+# Kill switch NEWSESSIONASK_GATE_DISABLE=1. Fail-open.
+if os.environ.get('NEWSESSIONASK_GATE_DISABLE', '0') != '1':
+    try:
+        _ns_text, _ns_last = _closing()
+        if 'NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('NEWSESSIONASK'):
+            import subprocess
+            _ns_js = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'new-session-ask.js')
+            if os.path.isfile(_ns_js):
+                _ns = json.loads(subprocess.run(['node', _ns_js], capture_output=True, text=True, timeout=10,
+                                                input=json.dumps({'text': _ns_text + '\n' + _ns_last})).stdout or '{}')
+                if _ns.get('block'):
+                    _ve_block('NEWSESSIONASK')
+    except SystemExit:
+        raise
+    except Exception:
+        pass  # fail-open
+
 # ─── Clear-closing gate (CLEARCLOSE, BRO-5910, 2026-10-22) ──────────────────
-# Owner: "extremely clear communicators, especially at the end of their
-# messages". Replay of 38 real closings (2026-10-21): 19 had card ids or
-# commit hashes in the last lines, 7 never said what is still running, 7 never
-# said whether the owner must act, 4 ended on a bare "NOT SAFE TO EXIT".
-# After real work, the closing block must carry (CLOUD.md "Talking to the
-# owner", mirrored in .claude/commands/wrap-up.md): a Still running line, a You need to line, a reason on NOT SAFE,
-# and no ids, hashes, paths or code in its last lines (one URL is fine). Blocks once per turn
-# chain. Kill switch CLEARCLOSE_GATE_DISABLE=1. Fail-open.
+# After real work, say what is running, whether the owner must act, and why.
+# Keep technical ids/paths out of the closing (CLOUD.md and wrap-up.md).
+# A confirmed background pause can use a concise KEEP OPEN with its reason.
+# Blocks once per chain; fails open. Kill switch: CLEARCLOSE_GATE_DISABLE=1.
 _CC_ID_RE = re.compile(r'\bBRO-\d+\b|\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|`'
                        r'|\b[\w.-]*[A-Za-z][\w.-]*/[\w./-]+\.[A-Za-z]\w{0,4}\b|\bsession_[0-9A-Za-z]{10,}')
 # Gate tokens other hooks require in the closing; they are not prose for the owner.
@@ -1611,7 +1807,13 @@ _CC_TOKEN_RE = re.compile(r'^\W*(?:NO-[A-Z-]+|BACKLOG-OK|PR-BLOCKER|DISPATCHED)\
 if os.environ.get('CLEARCLOSE_GATE_DISABLE', '0') != '1':
     try:
         _cc_text, _cc_last = _closing()
+        # RULE21 BRO-7653: a live background pause needs a reason and a wake,
+        # while archive claims and owner decisions still need the full closing.
+        _cc_pause = (_KEEP_RE.match(_cc_last) and not _LEGACY_STATUS_RE.match(_cc_last)
+                     and len(re.findall(r'\w+', _KEEP_RE.sub('', _cc_last, count=1))) >= 2
+                     and not _owner_must_act(_cc_text) and bool(_live_work()['confirmed_waits']))
         if (_STATUS_RE.match(_cc_last) and 'NO-VERIFY:' not in (_last_msg or '')
+                and not _cc_pause
                 and not _ve_seen('CLEARCLOSE')
                 and (total_qualifying_edits > 0 or any(_k == 'tool' and _is_work_tool(_p[0], _p[1], _p[2])
                                                        for _k, _p in events))):
@@ -2554,7 +2756,11 @@ if [[ "$result" == "OWNERMERGE" ]]; then
   exit 2
 fi
 if [[ "$result" == "LANDUNCHECKED" ]]; then
-  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO ARCHIVE without checking the Land run. land.yml can refuse a branch. Wait for it: node scripts/lib/wait-for-land.js land/<name> 60 --prod as a background Bash (timeout 7200000), and report LANDED or the refusal once it finishes (or check the run with mcp__github__actions_list / actions_get on land.yml). Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO ARCHIVE without checking the Land run of every land push (named above; each push needs its own finished wait). land.yml can refuse a branch. Wait for it: node scripts/lib/wait-for-land.js land/<name> 60 --prod as a background Bash (timeout 7200000), and report LANDED or the refusal once it finishes (or check the run with mcp__github__actions_list / actions_get on land.yml). Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+if [[ "$result" == "LANDREFUSED" ]]; then
+  echo "🛑 BLOCKED: a land push above was REFUSED and never landed afterwards, but you claim SAFE TO ARCHIVE without saying so. Fix on top of the refused commit, push the land ref again, and wait for LANDED. If you are deliberately dropping it, say in the closing message that it was refused and why. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 if [[ "$result" == "PRUNMERGED" ]]; then
@@ -2592,13 +2798,18 @@ if [[ "$result" == "CLEARCLOSE" ]]; then
   exit 2
 fi
 
+if [[ "$result" == "SCHEDULEASK" ]]; then
+  echo "🛑 BLOCKED: your closing asks the owner to approve or say yes to a schedule (a scheduled task, trigger, reminder or check-in). Never do that: each one is a tap on the owner's phone (BRO-4236), and a check later needs no owner at all (BRO-7880). File a held card instead: node scripts/linear-brain.js create \"<title>\" --dispatch --priority 1 --not-before <ISO time, e.g. 2026-11-21T01:40:00Z> --notes \"<what to check, with a VERIFY: line>\" . Every board worker leaves it until that time and takes it after. Then say in plain words when the check will happen and end SAFE TO ARCHIVE (or KEEP OPEN if something in this turn is still running). For a wait inside this session, start a Bash with run_in_background: true or a Monitor. Bypass: NO-VERIFY: <reason>. Kill switch SCHEDULEASK_GATE_DISABLE=1." >&2
+  exit 2
+fi
+
 if [[ "$result" == "WAKELESS" ]]; then
-  echo "🛑 BLOCKED: KEEP OPEN says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on that run's own id (actions/runs/<id>), never on the newest run of the workflow, which another session may have started; a deploy: node scripts/check-prod-deploy.js <sha> --wait), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone). If you are waiting on the owner, end ACTION NEEDED FROM YOU with a DECISION NEEDED block or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO ARCHIVE. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: KEEP OPEN says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on that run's own id (actions/runs/<id>), never on the newest run of the workflow, which another session may have started; a deploy: node scripts/check-prod-deploy.js <sha> --wait), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone); for a check hours or days away, file a held card instead (linear-brain.js create ... --dispatch --not-before <ISO time>, BRO-7880) and end SAFE TO ARCHIVE, never asking the owner to approve a schedule. If you are waiting on the owner, end ACTION NEEDED FROM YOU with a DECISION NEEDED block or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO ARCHIVE. If the wait is on a reply to a send_message or SendMessage call that was refused or errored (BRO-7924), say plainly "could not reach that session" and end SAFE TO ARCHIVE or ACTION NEEDED FROM YOU. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
 if [[ "$result" == "WAKEPROMISE" ]]; then
-  echo "🛑 BLOCKED: your closing promises later action (\"I'll check back\", \"I'm continuing\") but nothing will wake this session to do it (BRO-7183: BRO-7074 sat 34h on a promise). Either do it now in this turn, or start the wait as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor whose exit wakes you, or drop the promise and say what is left for the owner. Bypass: NO-VERIFY: <reason>. Mode switch PROMISE_GATE_MODE (block|advisory|off; unset = advisory until 2026-11-16, then block)." >&2
+  echo "🛑 BLOCKED: your closing promises later action (\"I'll check back\", \"I'm continuing\") but nothing will wake this session to do it (BRO-7183: BRO-7074 sat 34h on a promise). Either do it now in this turn, or start the wait as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor whose exit wakes you; for a check hours or days away, file a held card (node scripts/linear-brain.js create \"<title>\" --dispatch --not-before <ISO time> --notes \"...\", BRO-7880: a board worker takes it then, no owner tap) and say so; never ask the owner to approve a schedule. Bypass: NO-VERIFY: <reason>. Mode switch PROMISE_GATE_MODE (block|advisory|off; unset = advisory until 2026-11-16, then block)." >&2
   exit 2
 fi
 
@@ -2608,6 +2819,16 @@ if [[ "$result" == "OPENCLAIM" ]]; then
 fi
 if [[ "$result" == "CHILDSTALL" ]]; then
   echo "🛑 BLOCKED: this is a child session with no human (its prompt has a REPORT-BACK: line). Ending a turn with nothing running and nothing sent to your parent stops the work for good (BRO-7183: BRO-6854 wrote 'I'm continuing with the Boston pipeline', ended the turn and sat idle 6 days). Pick one: keep working in this turn; or start what you wait on as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor, whose exit wakes you; or, if the card is finished, send the report: mcp__claude-code-remote__send_message with session_id \"@parent\" and a message starting \"REPORT-BACK BRO-N:\"; or, if you need an answer, send the question the same way (your parent's reply wakes you). SendMessage does NOT reach the parent, and text in your final message reaches nobody. Bypass: NO-VERIFY: <reason>. Kill switch CHILDSTALL_GATE_DISABLE=1." >&2
+  exit 2
+fi
+
+if [[ "$result" == "DEADWAIT" ]]; then
+  echo "🛑 BLOCKED: Nothing will wake this session. If the remaining work is owned by a card, a parent or another session, end SAFE TO ARCHIVE and name the owner; KEEP OPEN only with a running background wait. Your KEEP OPEN waits on a parent, another session, a fresh worker, a follow-up card, the board or a recheck date, and no background wait is running (four earlier workers each ended that way; the parent was often already ended, the board queue is weeks deep, a RECHECK-AFTER date wakes nobody, and every card was finished by someone else while the owner could not tell whether to archive). If the remaining work is owned by a card, a parent or another session, first check that card (node scripts/linear-brain.js show BRO-N, or its latest comment) and git log origin/main, hand the work to the card (node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=...; for a check on a date: linear-brain.js create ... --dispatch --not-before <ISO time>), send_message @parent a line starting REPORT-BACK BRO-N: if you have a parent, and end SAFE TO ARCHIVE naming the owner in plain words, for example: SAFE TO ARCHIVE — BRO-7820 owns the remaining reports and a board worker takes it, nothing here is left (that wording passes the LOOSEENDS gate). If a send_message or SendMessage call was refused or errored (BRO-7924), say plainly "could not reach that session" and end SAFE TO ARCHIVE or ACTION NEEDED FROM YOU: no reply will come. KEEP OPEN only with a running background wait: a Bash with run_in_background: true (timeout up to 7200000) or a Monitor whose exit wakes you. Never write that you are waiting on a parent, a fresh worker or a follow-up card without one. Bypass: NO-VERIFY: <reason>. Mode DEADWAIT_GATE_MODE (block|advisory|off). Kill switch DEADWAIT_GATE_DISABLE=1." >&2
+  exit 2
+fi
+
+if [[ "$result" == "NEWSESSIONASK" ]]; then
+  echo "🛑 BLOCKED: your closing tells the owner to start a new or fresh session (or to open one and tell it something). Never: the owner is not technical, never starts sessions, and cannot do it from a closing message (BRO-7918: the BRO-7741 session told the owner to 'start a new session and tell it to finish and release BRO-7741' while that card was already Done and its commits were on main). First read the card's current state and git log origin/main; if the work is finished, say so and end SAFE TO ARCHIVE. If work remains: a worker with create_session starts the worker itself; a worker without it hands the work to its card (node scripts/linear-brain.js create ... --dispatch, or report --status=paused with the summary), sends @parent a REPORT-BACK BRO-N: line, and ends SAFE TO ARCHIVE. Bypass: NO-VERIFY: <reason>. Kill switch NEWSESSIONASK_GATE_DISABLE=1." >&2
   exit 2
 fi
 

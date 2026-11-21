@@ -38,6 +38,7 @@ import { landPushTargets } from './push-command.mjs';
 import { hookReplayWarning } from './hook-replay.mjs';
 import { ruleTrialWarning } from './rule-trial.mjs';
 import { BOT_OWNED_RE, BOT_OWNED_MAX, checkBotOwnedRewrite, STALE_WINDOW, STALE_MIN_FILES, STALE_MIN_ABSENT_ONLY, checkStaleRevert, ciStaleTreeVerdict } from './stale-tree-check.mjs';
+import { isMainModule } from './is-main-module.mjs';
 // BRO-5359: the review-coverage gate is optional machinery. If any of these fail to load, the
 // rebase/test-registry preflight below must keep working, so load them tolerantly (checkReviewCoverage
 // fails open when `rc` is null).
@@ -210,14 +211,57 @@ export function retiredManifestWarnings({ base, src, cwd }) {
 }
 
 /**
+ * BRO-7706, advisory (rule 19). land.yml runs a plain `git rebase origin/main`,
+ * which drops merge commits. A merge that only brings main in is harmless, but
+ * one that carries edits of its own (a conflict resolved inside it, or hand
+ * changes) loses them silently, or conflicts again. Flags only those merges:
+ * a merge whose tree differs from the clean automatic merge of its parents.
+ * Fails open (any git error -> no warning).
+ * -> { count, carrying: string[] (short shas), warnings: string[] }
+ */
+const MAX_MERGES_JUDGED = 10;
+export function mergeCommitWarnings({ base, src, cwd }) {
+  const none = { count: 0, carrying: [], warnings: [] };
+  const l = git(cwd, ['rev-list', '--merges', `${base}..${src}`]);
+  if (!ok(l)) return none;
+  const merges = out(l).split('\n').filter(Boolean);
+  if (!merges.length) return none;
+  if (merges.length > MAX_MERGES_JUDGED) return { count: merges.length, carrying: [], warnings: [] }; // too many to judge in a hook: fail open
+  const carrying = [];
+  for (const m of merges) {
+    const pl = git(cwd, ['rev-list', '--parents', '-n', '1', m]);
+    if (!ok(pl)) continue; // cannot judge: fail open
+    const parents = out(pl).split(' ').slice(1);
+    if (parents.length !== 2) continue; // octopus: no automatic merge to compare with, fail open
+    const mt = git(cwd, ['merge-tree', '--write-tree', parents[0], parents[1]]);
+    if (mt.status === 1) { carrying.push(m); continue; } // conflicted: a resolution lives in the merge
+    if (mt.status !== 0) continue; // cannot judge: fail open
+    const auto = mt.stdout.split('\n')[0].trim();
+    const actual = git(cwd, ['rev-parse', `${m}^{tree}`]);
+    if (ok(actual) && out(actual) !== auto) carrying.push(m);
+  }
+  if (!carrying.length) return { count: merges.length, carrying: [], warnings: [] };
+  const shown = carrying.slice(0, 3).map((m) => m.slice(0, 9)).join(', ');
+  return {
+    count: merges.length,
+    carrying: carrying.map((m) => m.slice(0, 9)),
+    warnings: [
+      `${carrying.length} merge commit(s) on this branch (${shown}) carry edits of their own (a conflict resolved inside the merge, or hand changes). land.yml runs a plain \`git rebase origin/main\`, which drops merge commits, so those edits are lost or the land rebase conflicts later. Remove the merges before pushing. Either rebuild the branch as plain commits on current origin/main (git switch -c <name> origin/main && git cherry-pick <your non-merge commits>; resolve conflicts in the picked commits and re-apply any hand edit the merge held), or squash in this order: git merge origin/main, check git diff origin/main --stat lists only your files, then git reset --soft origin/main && git commit.`,
+    ],
+  };
+}
+
+/**
  * Extract the paths the registration audit reads (tests/, scripts/, .github/)
  * of `rev` into a temp dir, so a tree that is not checked out (the base, or
  * the simulated rebased tip) can be judged. -> dir, or null when it fails.
  */
-function materializeTree(cwd, rev) {
+export function materializeTree(cwd, rev, extra = []) {
   const top = git(cwd, ['ls-tree', '--name-only', rev]);
   if (!ok(top)) return null;
   const want = ['tests', 'scripts', '.github'].filter((p) => out(top).split('\n').includes(p));
+  // Single files a check reads outside those dirs (a baseline under data/audit), when the rev has them.
+  for (const f of [...new Set(extra)]) if (ok(git(cwd, ['cat-file', '-e', `${rev}:${f}`]))) want.push(f);
   if (want.length === 0) return null;
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'land-preflight-tree-'));
   const r = spawnSync('bash', ['-c', 'git archive --format=tar "$1" -- "${@:3}" | tar -x -C "$2"', '_', rev, dir, ...want], {
@@ -470,6 +514,22 @@ export const WORKFLOW_CHECKS = [
   { name: 'audit-push-core-data-audit-gap.js', cmd: 'node', args: ['scripts/audit-push-core-data-audit-gap.js'], fix: 'fix the lines it prints' },
   { name: 'audit-test-yml-manifest-paths.js', cmd: 'node', args: ['scripts/audit-test-yml-manifest-paths.js'], fix: 'fix the lines it prints' },
 ];
+// These lint-workflows gates scan scripts or tests, so a workflow-only path
+// trigger misses the ordinary code changes which caused BRO-7637 refusals.
+export const CODE_AUDIT_CHECKS = [
+  { name: 'audit-unsafe-show-dir-listing.js', cmd: 'node', args: ['scripts/audit-unsafe-show-dir-listing.js'], fix: 'use listShowDirs for show directories' },
+  { name: 'lint-resend-calls.js', cmd: 'node', args: ['scripts/lint-resend-calls.js'], fix: 'fix the direct Resend calls it prints' },
+  { name: 'audit-alert-senders.js --check', cmd: 'node', args: ['scripts/audit-alert-senders.js', '--check'], needs: ['data/audit/alert-sender-inventory.json'], fix: 'fix the alert sender findings it prints' },
+  // `needs`: without its baseline every baselined site reads as new, so the audit was red on base
+  // too and land run 41802620334's new site passed as pre-existing (BRO-7637 replay).
+  { name: 'audit-direct-provider-calls.js --strict', cmd: 'node', args: ['scripts/audit-direct-provider-calls.js', '--strict'], needs: ['data/audit/direct-provider-calls-baseline.json'], fix: 'fix the direct provider calls it prints' },
+  { name: 'audit-tests-vs-derived-data.js', cmd: 'node', args: ['scripts/audit-tests-vs-derived-data.js'], fix: 'fix the derived-data test findings it prints' },
+];
+export function selectWorkflowChecks(files) {
+  const workflow = files.some((f) => WORKFLOW_PATH_RE.test(f));
+  const code = files.some((f) => /^(src|scripts|tests)\//.test(f));
+  return [...(workflow ? WORKFLOW_CHECKS : []), ...(workflow || code ? CODE_AUDIT_CHECKS : [])];
+}
 /** Nearest node_modules at or above dir (a worktree under .claude/worktrees has none of its own). */
 function findNodeModules(dir) {
   for (let d = dir; ; d = path.dirname(d)) {
@@ -479,19 +539,24 @@ function findNodeModules(dir) {
   }
 }
 /** -> { status: 'clean' | 'fail' | 'skip', problems?, reason? }. Fails open: a check that cannot run is not a block. */
-export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = spawnSync }) {
+export const WORKFLOW_CHECK_TIMEOUT_SECONDS = 120;
+export const WORKFLOW_BATCH_TIMEOUT_MS = 123000;
+export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = spawnSync, deadline = Infinity }) {
   const diff = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`]);
   if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
-  if (!out(diff).split('\n').some((f) => WORKFLOW_PATH_RE.test(f))) return { status: 'clean', reason: 'no workflow files changed' };
+  const checks = selectWorkflowChecks(out(diff).split('\n'));
+  if (!checks.length) return { status: 'clean', reason: 'no workflow, source, script or test files changed' };
   const root = out(git(cwd, ['rev-parse', '--show-toplevel']));
   const nm = findNodeModules(root);
   // js-yaml, acorn and friends live in the checkout's node_modules, not in the exported tree.
   const env = { ...process.env, GH_TOKEN: '', GITHUB_TOKEN: '', GITHUB_EVENT_NAME: '', NODE_PATH: [nm, process.env.NODE_PATH].filter(Boolean).join(path.delimiter) };
 
-  // Runs `specs` concurrently inside `treeRoot` (the guard script alone takes ~45s, so
-  // one bash with `wait` keeps the total inside the hook's 90s budget).
+  // Run checks concurrently; the hook budgets the remaining time for fast tests.
   // -> [{ c, rc, text }]; rc is null when the check never finished.
   const runBatch = (treeRoot, specs) => {
+    const batchMs = Math.min(WORKFLOW_BATCH_TIMEOUT_MS, Math.max(0, deadline - Date.now()));
+    if (batchMs < 4000) return [];
+    const checkSeconds = Math.min(WORKFLOW_CHECK_TIMEOUT_SECONDS, Math.floor((batchMs - 3000) / 1000));
     try {
       if (nm) fs.symlinkSync(nm, path.join(treeRoot, 'node_modules'), 'dir');
     } catch { /* NODE_PATH still covers plain require() */ }
@@ -499,9 +564,9 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
     try {
       const runnable = specs.filter((c) => fs.existsSync(path.join(treeRoot, c.file || c.args[0])));
       const script = runnable
-        .map((c) => `( timeout 55 ${[c.cmd, ...c.args].join(' ')} >"${outDir}/${c.i}.out" 2>&1; echo $? >"${outDir}/${c.i}.rc" ) &`)
+        .map((c) => `( timeout ${checkSeconds} ${[c.cmd, ...c.args].join(' ')} >"${outDir}/${c.i}.out" 2>&1; echo $? >"${outDir}/${c.i}.rc" ) &`)
         .join('\n') + '\nwait\n';
-      run('bash', ['-c', script], { cwd: treeRoot, env, encoding: 'utf8', timeout: 58000 });
+      run('bash', ['-c', script], { cwd: treeRoot, env, encoding: 'utf8', timeout: batchMs });
       return runnable.map((c) => {
         let rc = null;
         let text = '';
@@ -514,15 +579,16 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
     }
   };
 
-  const judgeRoot = materializeTree(cwd, landedTip || tip);
+  const needs = checks.flatMap((c) => c.needs || []);
+  const judgeRoot = materializeTree(cwd, landedTip || tip, needs);
   if (!judgeRoot) return { status: 'skip', reason: 'could not materialize the landing tree' };
   try {
     // rc 0 = pass; anything but 1 (124 timeout, 127, crash, never finished) = could not judge: fail open.
-    const failed = runBatch(judgeRoot, WORKFLOW_CHECKS.map((c, i) => ({ ...c, i }))).filter((r) => r.rc === '1');
+    const failed = runBatch(judgeRoot, checks.map((c, i) => ({ ...c, i }))).filter((r) => r.rc === '1');
     if (failed.length === 0) return { status: 'clean' };
     // A check already red on base is not this branch's fault (land.yml judges new failures only).
     let newFailures = failed;
-    const baseRoot = materializeTree(cwd, base);
+    const baseRoot = materializeTree(cwd, base, needs);
     if (baseRoot) {
       try {
         const redOnBase = new Set(runBatch(baseRoot, failed.map((r) => r.c)).filter((r) => r.rc === '1').map((r) => r.c.i));
@@ -763,7 +829,7 @@ function logEvent(cwd, entry) {
  * Judge one land push. -> { decision: 'allow' | 'block' | 'skip', message?, detail }
  * seams: { fetch: (cwd) => errString|null, preview, checkTests } for tests.
  */
-export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true, checkTests = true, seams = {} }) {
+export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true, checkTests = true, seams = {}, deadline = Infinity }) {
   const detail = { target, src, base };
   if (fetch) {
     const fe = (seams.fetch || fetchBase)(cwd);
@@ -786,13 +852,16 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
     ? (seams.checkRebasedManifests || checkRebasedManifests)({ base, src, tip: rebase.tip, cwd })
     : { status: 'skip' };
   detail.manifests = manifests;
-  const workflows = (seams.checkWorkflowChecks || checkWorkflowChecks)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
+  const workflows = (seams.checkWorkflowChecks || checkWorkflowChecks)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null, deadline });
   detail.workflows = workflows;
   const pendingPlans = (seams.checkPendingPlans || checkPendingPlans)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
   detail.pendingPlans = pendingPlans;
   const toplevel = (seams.checkToplevelPushPaths || checkToplevelPushPaths)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
   detail.toplevel = toplevel;
-  const warnings = [...(tests.warnings || []), ...(workflows.warnings || []), ...(pendingPlans.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd })];
+  // A conflicting rebase already gets the merge explanation in blockMessage, so only judge merges when it did not.
+  const merges = rebase.status === 'conflict' ? { count: null, carrying: null, warnings: [] } : (seams.mergeCommitWarnings || mergeCommitWarnings)({ base, src, cwd });
+  detail.merges = { count: merges.count, carrying: merges.carrying };
+  const warnings = [...(tests.warnings || []), ...(workflows.warnings || []), ...(pendingPlans.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd }), ...merges.warnings];
   detail.warnings = warnings;
   if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status, pendingPlans.status, toplevel.status].some((x) => x === true || x === 'fail')) {
     const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans, toplevel });
@@ -938,9 +1007,13 @@ export function localCheckWarning({ root, src, base = 'origin/main', seams = {} 
  * LAND_FAST_TESTS_DISABLE=1 turns it off; LAND_FAST_TESTS_ADVISORY=1 turns a fail into a warning.
  */
 export const FAST_TESTS_PHASE_MS = 80000;
-export function fastTestsCheck({ root, base = 'origin/main', rebase, env = process.env, seams = {} }) {
+export function fastTestsPhaseBudget(elapsedMs) {
+  return Math.max(0, Math.min(FAST_TESTS_PHASE_MS, Math.floor((240000 - elapsedMs - 40000) / 2)));
+}
+export function fastTestsCheck({ root, base = 'origin/main', rebase, env = process.env, seams = {}, phaseMs = FAST_TESTS_PHASE_MS }) {
   if (env.LAND_FAST_TESTS_DISABLE === '1') return { status: 'off', reason: 'LAND_FAST_TESTS_DISABLE=1' };
   if (!rebase || rebase.status !== 'clean' || !rebase.tip) return { status: 'skip', reason: `rebase preview ${rebase ? rebase.status : 'missing'}` };
+  if (phaseMs < 15000) return { status: 'skip', reason: 'hook time budget exhausted', warning: 'Fast tests skipped: the preflight time budget is nearly exhausted.' };
   try {
     const codeRe = rc && rc.GATED_PATH_RE;
     const baseSha = out(git(root, ['rev-parse', '--verify', '--quiet', `${base}^{commit}`]));
@@ -949,9 +1022,9 @@ export function fastTestsCheck({ root, base = 'origin/main', rebase, env = proce
     if (codeRe && !changed.some((f) => codeRe.test(f))) return { status: 'skip', reason: 'no gated code in the diff' };
     const script = path.join(root, 'scripts', 'lib', 'land-fast-tests.js');
     if (!seams.run && !fs.existsSync(script)) return { status: 'skip', reason: 'land-fast-tests.js not in this tree' };
-    const args = [script, 'run', '--base', baseSha, '--tip', rebase.tip, '--json', '--worktree', '--timeout-ms', String(FAST_TESTS_PHASE_MS)];
+    const args = [script, 'run', '--base', baseSha, '--tip', rebase.tip, '--json', '--worktree', '--timeout-ms', String(phaseMs)];
     // Two phases (tip, then a base re-check of the red files) plus worktree setup; the CLI bounds each phase itself.
-    const r = (seams.run || spawnSync)(process.execPath, args, { cwd: root, encoding: 'utf8', timeout: 2 * FAST_TESTS_PHASE_MS + 40000, maxBuffer: 16 * 1024 * 1024 });
+    const r = (seams.run || spawnSync)(process.execPath, args, { cwd: root, encoding: 'utf8', timeout: 2 * phaseMs + 40000, maxBuffer: 16 * 1024 * 1024 });
     let res = null;
     try { res = JSON.parse(String(r.stdout || '').trim()); } catch { /* below */ }
     if (!res || !res.status) return { status: 'skip', reason: `land-fast-tests gave no verdict (exit ${r.status ?? r.signal ?? 'n/a'})` };
@@ -972,6 +1045,7 @@ export function fastTestsCheck({ root, base = 'origin/main', rebase, env = proce
 
 /** PreToolUse hook entry: command string + session cwd -> verdict. */
 export function runHook({ command, cwd, env = process.env, seams = {}, transcriptPath = null }) {
+  const started = Date.now();
   if (env.LAND_PREFLIGHT_DISABLE === '1') return { decision: 'skip', reason: 'LAND_PREFLIGHT_DISABLE=1' };
   const targets = landPushTargets(command);
   if (targets.length === 0) return { decision: 'skip', reason: 'not a land push' };
@@ -1025,7 +1099,7 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     const checkTests = srcIsHead && dirty.length === 0;
     // seams.base: replay a past push against the main it saw (tests, BRO-7150 replays); always origin/main live.
     const base = seams.base || 'origin/main';
-    const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, base, checkTests, seams });
+    const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, base, checkTests, seams, deadline: started + 220000 });
     if (!checkTests) v.detail.tests = { status: 'skip', reason: srcIsHead ? `uncommitted test files: ${dirty.slice(0, 3).join(', ')}` : 'pushed ref is not HEAD' };
     // BRO-7353: runHook only, never judgeLand (see checkSkipCiTip).
     const skipCi = v.decision === 'block' ? { status: 'skip', reason: 'already refused' } : (seams.checkSkipCiTip || checkSkipCiTip)({ tip: t.src || 'HEAD', cwd: root });
@@ -1035,11 +1109,11 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     // BRO-7150: only when nothing above refused (a refusal is the faster answer) and the land would apply cleanly.
     const ft = v.decision === 'block' ? { status: 'skip', reason: 'already refused' }
       : lc.status === 'clean' ? { status: 'skip', reason: 'land-local-check already passed this tip' }
-      : fastTestsCheck({ root, base, rebase: v.detail.rebase, env, seams: seams.fastTests || {} });
+      : fastTestsCheck({ root, base, rebase: v.detail.rebase, env, seams: seams.fastTests || {}, phaseMs: fastTestsPhaseBudget(Date.now() - started) });
     v.detail.fastTests = ft;
     if (ft.status === 'fail') { v.decision = 'block'; v.message = ft.message; }
     if (ft.warning) v.warnings = [...(v.warnings || []), ft.warning];
-    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status });
+    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status, mergesCarrying: v.detail.merges?.carrying?.length ?? null });
     if (v.decision !== 'block') {
       const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });
       if (cw.length) v.warnings = [...(v.warnings || []), ...cw];
@@ -1101,7 +1175,7 @@ function main(argv) {
   return v.decision === 'block' ? 3 : 0; // 3, not 1: a crash on load also exits 1
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   try {
     createRequire(import.meta.url)('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));
   } catch (e) {

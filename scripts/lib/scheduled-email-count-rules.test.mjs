@@ -7,6 +7,10 @@ import {
   decideDayViolation,
   decideDayMissing,
   recoveredMissingKeys,
+  countConditionKey,
+  countConditionKeys,
+  liveCountKeys,
+  openCountKeys,
 } from './scheduled-email-count-rules.js';
 
 test('classifySubject matches each known scheduled sender', () => {
@@ -303,4 +307,76 @@ test('recoveredMissingKeys never clears the day this run judges, resolved rows, 
   const days = new Map([['2026-11-04', dayWith('morning-digest', 'opening-digest')]]);
   assert.deepEqual(recoveredMissingKeys(conditions, days, { judgedDay: '2026-11-03' }), []);
   assert.deepEqual(recoveredMissingKeys(conditions, null), []);
+});
+
+test('countConditionKey builds the sorted per-sender key the router files (BRO-6918, BRO-7731)', () => {
+  assert.equal(countConditionKey('dup', 'opening-digest'), 'scheduled-email-count:dup-opening-digest');
+  assert.equal(countConditionKey('unexpected', 'x'), 'scheduled-email-count:unexpected-x');
+  // A day with several bad senders files one key per sender, never one combined key.
+  assert.deepEqual(
+    countConditionKeys({ unexpectedKeys: ['x'], duplicateKeys: ['reddit-post-ready', 'a'] }),
+    [
+      { key: 'scheduled-email-count:dup-a', kind: 'dup', sender: 'a' },
+      { key: 'scheduled-email-count:dup-reddit-post-ready', kind: 'dup', sender: 'reddit-post-ready' },
+      { key: 'scheduled-email-count:unexpected-x', kind: 'unexpected', sender: 'x' },
+    ]
+  );
+  assert.deepEqual(countConditionKeys({}), []);
+});
+
+test('day 1 dup a, day 2 dup a+b: the dup-a row stays live while a still duplicates (BRO-7731)', () => {
+  // The monitor's live set, built exactly as monitor-scheduled-email-count.js builds it.
+  const liveKeys = liveCountKeys;
+  const day2Only = [{ dayKey: '2026-11-17', decision: { unexpectedKeys: [], duplicateKeys: ['a', 'b'] } }];
+  // Day 1 has left the 2-day live window; only day 2 is judged.
+  assert.deepEqual(liveKeys(day2Only), ['scheduled-email-count:dup-a', 'scheduled-email-count:dup-b']);
+  const conditions = {
+    'scheduled-email-count:dup-a': { status: 'open' }, // filed on day 1
+    'scheduled-email-count:dup-b': { status: 'open' },
+  };
+  // Neither row is handed to the quiet sweep: a still duplicates, so dup-a must not resolve.
+  assert.deepEqual(openCountKeys(conditions, liveKeys(day2Only)), []);
+  // Once a stops, only its row goes to the sweep.
+  const day3 = [{ dayKey: '2026-11-18', decision: { unexpectedKeys: [], duplicateKeys: ['b'] } }];
+  assert.deepEqual(openCountKeys(conditions, liveKeys(day3)), ['scheduled-email-count:dup-a']);
+});
+
+test('a legacy combined count key (dup-a,dup-b) is no longer filed, so it goes to the quiet sweep (BRO-7731)', () => {
+  const conditions = { 'scheduled-email-count:dup-a,dup-b': { status: 'open' }, 'scheduled-email-count:dup-a': { status: 'open' } };
+  const live = countConditionKeys({ unexpectedKeys: [], duplicateKeys: ['a', 'b'] }).map((e) => e.key);
+  assert.deepEqual(openCountKeys(conditions, live), ['scheduled-email-count:dup-a,dup-b']);
+});
+
+test('openCountKeys lists open count keys that this run does not file again (BRO-6918)', () => {
+  const conditions = {
+    'scheduled-email-count:dup-a': { status: 'open' },
+    'scheduled-email-count:dup-b': { status: 'open' },
+    'scheduled-email-count:dup-c': { status: 'resolved' },
+    'scheduled-email-count:unexpected-d': { status: 'open' },
+    'scheduled-email-count:2026-11-01': { status: 'open' },
+    'scheduled-email-missing:opening-digest:2026-11-01': { status: 'open' },
+  };
+  assert.deepEqual(openCountKeys(conditions, ['scheduled-email-count:dup-a']), ['scheduled-email-count:dup-b', 'scheduled-email-count:unexpected-d']);
+  assert.deepEqual(openCountKeys(null), []);
+});
+
+test('count keys go through the router quiet window: stale resolves, recent and live stay open (BRO-6918)', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { createRequire } = await import('node:module');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'count-ledger-'));
+  const ledgerPath = path.join(dir, 'alert-ledger.json');
+  const now = Date.parse('2026-11-18T12:00:00Z');
+  const hoursAgo = (h) => new Date(now - h * 3600 * 1000).toISOString();
+  fs.writeFileSync(ledgerPath, JSON.stringify({ conditions: {
+    'scheduled-email-count:dup-stale': { status: 'open', lastSeen: hoursAgo(200) },
+    'scheduled-email-count:dup-recent': { status: 'open', lastSeen: hoursAgo(30) },
+    'scheduled-email-count:dup-live': { status: 'open', lastSeen: hoursAgo(200) },
+  } }));
+  process.env.ALERT_LEDGER_PATH = ledgerPath;
+  const router = createRequire(import.meta.url)('./owner-alert-router.js');
+  const keys = openCountKeys(router.loadLedger().conditions, ['scheduled-email-count:dup-live']);
+  assert.deepEqual(router.resolveQuietConditions(keys, { reason: 't', nowMs: now }), ['scheduled-email-count:dup-stale']);
+  delete process.env.ALERT_LEDGER_PATH;
 });

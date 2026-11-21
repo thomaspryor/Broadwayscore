@@ -28,6 +28,7 @@
 'use strict';
 
 const { isUnconfirmedDateSource } = require('./date-source-confidence');
+const { SEEDED_SOURCES } = require('./uk-regional-opening-date');
 const { MODE_INFERENCE_SOURCE, NO_PRESS_NIGHT_FOUND_SOURCE } = require('./we-historical-dates');
 const { normalizeDate } = require('./date-utils');
 const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
@@ -271,7 +272,7 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // night was on or before it). A later straggler wave must not move it
     // forward and stamp the confirmed 'inferred-from-reviews'.
     // BRO-6697: 'first-review-date' is the same bound after the earliest-review reconcile re-stamps it.
-    if (['guardian-review', 'tic-first-review', 'first-review-date'].includes(show.openingDateSource)) continue;
+    if (SEEDED_SOURCES.has(show.openingDateSource)) continue;
     // BRO-5851: a sourced search found no press night (a reopening or transfer
     // with none). A review wave must not invent one and stamp the confirmed
     // 'inferred-from-reviews'; only an authoritative source may replace it.

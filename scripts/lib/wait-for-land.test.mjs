@@ -9,6 +9,7 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine } = require('./wait-for-land.js');
+const { retroPrompt } = require('./wait-for-land.js');
 const waitForLand = require('./wait-for-land.js');
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
 
@@ -408,4 +409,53 @@ test('BRO-7110: an unsure prod check keeps its stderr reason; a sure one shows s
   assert.equal(prodDetail({ stdout: '✅ abc is LIVE\n', stderr: 'noise\n' }, 0), '✅ abc is LIVE');
   assert.equal(prodDetail({ stdout: '⏳ not live\n', stderr: 'noise\n' }, 1), '⏳ not live');
   assert.equal(prodDetail({ stdout: '', stderr: 'only stderr\n' }, 2), 'only stderr');
+});
+
+test('BRO-7755: a rebase-conflict refusal says squash onto fresh main and push a NEW ref', () => {
+  const msg = waitForLand.refusedMessage('land/x', 'run 1 failure', null, { rebaseConflict: true });
+  assert.match(msg, /merge --squash/);
+  assert.match(msg, /NEW land ref \(land\/x-v2\)/);
+  assert.match(msg, /drops merges/);
+  assert.doesNotMatch(msg, /push the same ref/);
+  assert.match(waitForLand.refusedMessage('land/x-v2', 'w', null, { rebaseConflict: true }), /land\/x-v3/);
+  // other refusals keep the fix-on-top advice
+  assert.match(waitForLand.refusedMessage('land/x', 'w', null, { rebaseConflict: false }), /fix on top of the refused commit/);
+  assert.match(waitForLand.refusedMessage('land/x', 'w', null), /push the same ref land\/x$/);
+});
+
+test('BRO-7755: readRefusalCause detects rebase conflicts from annotations, step names; else false', () => {
+  const run = { id: 9, conclusion: 'failure', run_attempt: 2, head_branch: 'land/x', created_at: '2026-01-01T00:00:00Z' };
+  const mk = (annotations, steps = []) => {
+    const calls = [];
+    const read = (ep) => {
+      calls.push(ep);
+      if (ep.includes('/jobs')) return { jobs: [{ id: 5, name: 'Checks', conclusion: 'failure', completed_at: '2026-01-01T00:05:00Z', steps }] };
+      return annotations;
+    };
+    return { read, calls };
+  };
+  const fail = (message) => [{ annotation_level: 'failure', message }];
+  let t = mk(fail('land/x does not rebase cleanly onto origin/main @ abc — resolve'));
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), true);
+  assert.ok(t.calls[0].includes('/attempts/2/jobs'), t.calls[0]);
+  t = mk(fail('x: was NOT landed — rebase: conflict'));
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), true);
+  t = mk([], [{ name: 'Rebase onto origin/main', conclusion: 'failure' }]);
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), true);
+  t = mk(fail('lint gate failed: foo'));
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), false);
+  t = mk(fail('land/x: rebase onto abc failed 3 retries with a partial-clone lazy-fetch error. This is NOT a merge conflict'), [{ name: 'Rebase onto origin/main', conclusion: 'failure' }]);
+  assert.equal(waitForLand.readRefusalCause(run, { read: t.read }), false);
+  assert.equal(waitForLand.readRefusalCause(run, { read: () => { throw new Error('api'); } }), 'unknown');
+  assert.match(waitForLand.refusedMessage('land/x', 'w', null, { rebaseConflict: 'unknown' }), /could not read why[\s\S]*land\/x-v2[\s\S]*same ref land\/x/);
+  assert.equal(waitForLand.readRefusalCause({ ...run, conclusion: 'cancelled' }, { read: t.read }), false);
+});
+
+test('BRO-7810: land-time prompt names the exact session-retro --record command in cloud only', () => {
+  const t = retroPrompt({ CLAUDE_CODE_REMOTE: 'true' });
+  assert.match(t, /node scripts\/lib\/session-retro\.js --record --fixes=BRO-N/);
+  assert.match(t, /--no-action=/);
+  assert.equal(retroPrompt({}), '');
+  const src = readFileSync(new URL('./wait-for-land.js', import.meta.url), 'utf8');
+  assert.ok((src.match(/retroPrompt\(\)/g) || []).length >= 2, 'both LANDED paths print the prompt');
 });

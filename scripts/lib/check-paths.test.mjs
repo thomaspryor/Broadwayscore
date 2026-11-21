@@ -57,3 +57,22 @@ test('the tsc llm-scoring CI step is a safe check form; look-alikes stay refused
   assert.equal(isSafeCheckCommand('npx tsc --noEmit -p ../evil/tsconfig.json'), false);
   assert.equal(isSafeCheckCommand('npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json && rm -rf x'), false);
 });
+
+// BRO-7622: probes built for a card must be registered, or the gate refuses the
+// real check and the recheck falls back to an older broken command (BRO-6794, BRO-6901).
+test('registered card probes arm; vacuous thresholds and extra flags do not', () => {
+  const { isSafeCheckCommand } = require('./check-paths.js');
+  for (const c of [
+    'node scripts/check-never-audited-backlog.js --max=100',
+    'node scripts/check-never-audited-backlog.js --max=0',
+    'node scripts/check-never-audited-backlog.js --max=200',
+    'node scripts/audit-imageless-scored-shows.js --check-regional',
+  ]) assert.equal(isSafeCheckCommand(c), true, c);
+  for (const c of [
+    'node scripts/check-never-audited-backlog.js --max=201',
+    'node scripts/check-never-audited-backlog.js --max=99999',
+    'node scripts/check-never-audited-backlog.js',
+    'node scripts/audit-imageless-scored-shows.js',
+    'node scripts/audit-imageless-scored-shows.js --check-regional --dry-run',
+  ]) assert.equal(isSafeCheckCommand(c), false, c);
+});

@@ -13,6 +13,7 @@
  */
 
 const SIGNATURE = 'Tom\nBroadway Scorecard™';
+const { READER_REPLY_CLOSING_LINE: CLOSING_LINE } = require('./reader-reply-closing');
 const FROM = 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>';
 const DRAFT_FROM = 'Broadway Scorecard Drafts <updates@broadwayscorecard.com>';
 const REPLY_KINDS_ENV = 'FEEDBACK_AUTO_REPLY_KINDS';
@@ -83,7 +84,7 @@ function buildReplyText(type, name, show, opts = {}) {
       body = `${hi}\n\nThank you for writing in${about}. I appreciate you taking the time to flag this.\n\nWe’ve noted it and will keep it in mind as we keep improving the site.`;
       break;
   }
-  return { subject, text: `${body}\n\n${SIGNATURE}` };
+  return { subject, text: `${body}\n\n${CLOSING_LINE}\n\n${SIGNATURE}` };
 }
 
 function plainTextToHtml(text) {
@@ -223,7 +224,54 @@ function markReplyDrafted(issueNumber, { token, repo = 'thomaspryor/Broadwayscor
   });
 }
 
+/**
+ * "The reviews are now on the site" drafts for requests that just went live
+ * (BRO-7693). Only missing-reviews entries; each gets ONE draft to the owner
+ * (never the reader unless the owner listed 'missing-reviews' in
+ * FEEDBACK_AUTO_REPLY_KINDS). Sets entry.replyDraftedAt so a re-run never
+ * drafts twice.
+ *
+ * @param {Array<{entry: object, url?: string}>} nowLive
+ * @param {{lookupReader: (submissionId: string) => ({name?: string, email?: string, show?: string, message?: string}|null), transport: Function, env?: object, now?: () => string}} deps
+ * @returns {Promise<Array<{key: string, status: 'drafted'|'skipped'|'failed', reason?: string}>>}
+ */
+async function draftReviewsAddedReplies(nowLive, { lookupReader, transport, env = process.env, now = () => new Date().toISOString() }) {
+  const out = [];
+  for (const r of nowLive || []) {
+    const entry = r && r.entry;
+    if (!entry || entry.kind !== 'missing-reviews') continue;
+    const key = entry.key || entry.submissionId || '?';
+    if (entry.replyDraftedAt) { out.push({ key, status: 'skipped', reason: 'already-drafted' }); continue; }
+    const stored = entry.submissionId ? lookupReader(entry.submissionId) : null;
+    if (!stored || !stored.email) { out.push({ key, status: 'skipped', reason: 'no-reader-email' }); continue; }
+    try {
+      const res = await sendReplyOrDraft({
+        kind: 'missing-reviews',
+        type: 'reviews-added',
+        reader: { name: stored.name, email: stored.email, show: stored.show || entry.title },
+        originalMessage: stored.message,
+        url: r.url,
+        env,
+        transport,
+      });
+      if (!res.sent) {
+        if (res.reason === 'no-owner-email') entry.replyDraftRetry = true;
+        out.push({ key, status: 'skipped', reason: res.reason });
+        continue;
+      }
+      entry.replyDraftedAt = now();
+      delete entry.replyDraftRetry;
+      out.push({ key, status: 'drafted' });
+    } catch (err) {
+      entry.replyDraftRetry = true; // verify-feedback-requests-live retries these next run
+      out.push({ key, status: 'failed', reason: err.message });
+    }
+  }
+  return out;
+}
+
 module.exports = {
+  draftReviewsAddedReplies,
   DRAFTED_LABEL,
   markReplyDrafted,
   REPLY_KINDS_ENV,

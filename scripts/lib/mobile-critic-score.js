@@ -28,7 +28,7 @@
  */
 
 const { computeCriticScore } = require('./compute-critic-score');
-const { isCuratedHistoricalShow } = require('./should-hide-reviews');
+const { scoreGateArg } = require('./should-hide-reviews');
 const { hasEnoughReviews } = require('./min-reviews');
 const { getScoreTierLabel } = require('./score-tiers');
 const { applyCoverageFloor } = require('./coverage-floor');
@@ -48,7 +48,7 @@ const { effectiveShowStatus, getMarketDate } = require('./effective-status');
 function buildMobileCriticScore(show, showReviews, outletRegistry, floorOpts = {}) {
   const result = computeCriticScore(showReviews, outletRegistry, show.category, show.type);
   if (!result) return null;
-  const enough = hasEnoughReviews(result.rc, show.category, result.t1 + result.t2, isCuratedHistoricalShow(show.id));
+  const enough = hasEnoughReviews(result.rc, show.category, result.t1 + result.t2, scoreGateArg(show.id));
   // Same expression as the website show page's showTBD (src/app/show/[slug]/page.tsx),
   // which reads ComputedShow.status: shows.json's status corrected for today.
   const today = getMarketDate(show.category, floorOpts.now != null ? new Date(floorOpts.now) : new Date());

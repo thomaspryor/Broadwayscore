@@ -41,17 +41,45 @@ function defaultDeps() {
 function outcomeForFetchError(message) {
   const { classifyFetchFailure, isNonEvidenceFailure } = require('./failed-fetch-policy');
   const reason = classifyFetchFailure({ message });
-  return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason };
+  // BRO-7944: keep the raw error + HTTP status so the ledger row says WHY (fetch_error rows were opaque).
+  return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason, error: String(message || '').slice(0, 200), httpStatus: require('./gap-recovery-ledger').httpStatusFrom(message) };
 }
 
 /** Turn fetched HTML into a candidate, or the right refusal. */
 function fromHtml(html, url, via, deps) {
-  if (!html || typeof html !== 'string') return { ok: false, outcome: 'no_evidence', reason: 'fetch_error' };
+  if (!html || typeof html !== 'string') return { ok: false, outcome: 'no_evidence', reason: 'fetch_error', error: `empty body via ${via || '?'} (${typeof html})` };
   // A 200 "page not found" template says nothing about the article: soft_404 is non-evidence.
   if (deps.isNotFoundHtml(html)) return { ok: false, outcome: 'non_evidence', reason: 'soft_404' };
   const text = deps.extractArticleText(html, hostOf(url));
-  if (!text) return { ok: false, outcome: 'rejected', reason: 'extractor_null' };
+  // BRO-7962: an unreadable page that is a bot check or a declared paywall still
+  // counts as "no access" on this route (rejected keeps the caps and the
+  // PAYWALL_NO_ACCESS write-off evidence), but it says nothing about whether the
+  // LINK is this review, so the reason names it (URL_FIND must not refuse it).
+  if (!text) return { ok: false, outcome: 'rejected', reason: walledReason(html) || 'extractor_null' };
   return { ok: true, rawText: text, url, html, via };
+}
+
+/**
+ * BRO-7962: every tier answered with a bot check or wall (fetchPage puts the
+ * page on err.challengeHtml). Same outcome as that page returned as content
+ * (fromHtml): no access on this route, the link itself unjudged. Null when
+ * the error carries no wall page. Pure.
+ */
+function walledFetchError(e) {
+  const reason = e && e.challengeHtml ? walledReason(e.challengeHtml) : null;
+  return reason ? { ok: false, outcome: 'rejected', reason, error: String(e.message || '').slice(0, 200) } : null;
+}
+
+// Unreadable-page reasons that describe the access, not the link (BRO-7962).
+const WALLED_REASONS = new Set(['bot_challenge', 'paywalled']);
+// schema.org paywall markup, also in its "isAccessibleForFree": "False" string form.
+const NOT_FREE_RE = /"isAccessibleForFree"\s*:\s*(?:false|"false")/i;
+
+/** 'bot_challenge' | 'paywalled' | null for an html page the extractor could not read. Pure. */
+function walledReason(html) {
+  if (require('./cookie-probes').isBotChallenge(html)) return 'bot_challenge';
+  if (NOT_FREE_RE.test(String(html || ''))) return 'paywalled';
+  return null;
 }
 
 /** Fetch `url` through the free fetchPage tiers only (no Bright Data / ScrapingBee). */
@@ -60,7 +88,7 @@ async function fetchFree(url, deps) {
   try {
     res = await deps.fetchPage(url, { tiers: FREE_TIERS });
   } catch (e) {
-    return outcomeForFetchError(e.message);
+    return walledFetchError(e) || outcomeForFetchError(e.message);
   }
   return fromHtml(res && res.content, url, `free:${(res && res.source) || '?'}`, deps);
 }
@@ -241,7 +269,7 @@ async function paidFetch(c, deps = defaultDeps()) {
     const capped = !!deps.bdBlockedCount && deps.bdBlockedCount() > blockedBefore;
     const { classifyFetchFailure, isNonEvidenceFailure } = require('./failed-fetch-policy');
     const reason = classifyFetchFailure({ message: e.message, bdWasCapped: capped });
-    return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason };
+    return { ok: false, outcome: isNonEvidenceFailure(reason) ? 'non_evidence' : 'no_evidence', reason, error: String(e.message || '').slice(0, 200), httpStatus: require('./gap-recovery-ledger').httpStatusFrom(e.message) };
   }
   const r = fromHtml(res && res.content, c.url, 'paid:brightdata', deps);
   return r.ok ? { ...r, url: c.url } : r;
@@ -258,7 +286,7 @@ let urlFindBdUsed = 0;
 const urlFindBdLeft = () => { const n = parseInt(process.env.GAP_URL_FIND_BD_MAX || '8', 10); return urlFindBdUsed < (Number.isFinite(n) ? n : 8); };
 const URL_FIND_CANDIDATES_PER_METHOD = 3;
 // Gate refusals that say the page is NOT this review (vs. "is it, but unreadable").
-const URL_IDENTITY_REFUSALS = new Set(['identity_unproven', 'url_change_refused', 'show_not_mentioned', 'wrong_article', 'byline_conflict', 'date_implausible', 'multi_show_no_section', 'blocklisted']);
+const URL_IDENTITY_REFUSALS = new Set(['identity_unproven', 'url_change_refused', 'show_not_mentioned', 'wrong_article', 'byline_conflict', 'date_implausible', 'multi_show_no_section', 'blocklisted', 'non_review_url', 'non_review_text']);
 
 /** Corpus index, shows and registry, built once per process. */
 function urlFindEnvironment({ dir, rootDir }) {
@@ -306,6 +334,9 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
   const tried = new Set([...refusedUrls].map((u) => u.replace(/\/$/, '')));
   const refusedCandidates = [];
   const foundUnreadable = [];
+  // BRO-7962 review: each method's status if its walled links turn out dead,
+  // so a browser 404 never marks a method done that had unread or errored links.
+  const methodsIfWalledRefused = {};
   for (const m of only || UF.METHODS) {
     if (m === 'SERP' && !serpLeft) { status[m] = 'skipped_paid'; continue; }
     if (m === 'COMMON_CRAWL') { try { await ensureCcCollections(UF); } catch { status[m] = 'error'; continue; } }
@@ -319,12 +350,17 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
     // Links refused on earlier nights do not use up this night's slots.
     const fresh = r.candidates.filter((x) => !tried.has(x.url.replace(/\/$/, '')));
     let st = fresh.length > URL_FIND_CANDIDATES_PER_METHOD ? 'more_candidates' : 'candidates_refused';
+    let walledSeen = false;
     for (const cand of fresh.slice(0, URL_FIND_CANDIDATES_PER_METHOD)) {
       tried.add(cand.url.replace(/\/$/, ''));
       const got = await UF.fetchCandidateText(cand.url, { allowBd: !freeOnly && urlFindBdLeft(), onPaid: () => { urlFindBdUsed++; } }, (ufDeps && ufDeps.fetchDeps) || null);
       if (!got.ok) {
         // Refused only when every route answered with evidence (404, no
         // capture, extractor null); a timeout or budget cap leaves it open.
+        const walled = UF.walledFetchReason(got.tried);
+        // BRO-7962: a link behind a paywall or bot check is found, not refused:
+        // keep it (the driver hands it to the logged-in browser when the outlet has one).
+        if (walled) { foundUnreadable.push({ url: cand.url, code: walled, method: m }); walledSeen = true; continue; }
         if (UF.fetchRefusedOnEvidence(got.tried)) refusedCandidates.push(cand.url); else if (st !== 'found_unreadable') st = 'error';
         continue;
       }
@@ -334,22 +370,22 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
       });
       if (d.ok || d.code === 'dry_run_needs_llm') {
         status[m] = 'found';
-        return { ok: true, rawText: got.rawText, url: cand.url, html: got.html, via: `url-find:${m}:${got.via}`, methods: status, foundBy: m, refusedCandidates, foundUnreadable };
+        return { ok: true, rawText: got.rawText, url: cand.url, html: got.html, via: `url-find:${m}:${got.via}`, methods: status, foundBy: m, refusedCandidates, foundUnreadable, methodsIfWalledRefused };
       }
       if (URL_IDENTITY_REFUSALS.has(d.code)) { refusedCandidates.push(cand.url); continue; }
       // The page may well be this review but cannot be taken (paywall, too
       // short, not longer, record locked): the link is found, never "not
       // findable". Keep it for the ledger; the method stays open.
-      foundUnreadable.push({ url: cand.url, code: d.code });
+      foundUnreadable.push({ url: cand.url, code: d.code, method: m });
       st = 'found_unreadable';
     }
     // A query that errored left part of the index unsearched: refusing what
     // the other queries found does not finish the method (ship-check P1).
     if (r.error && st === 'candidates_refused') st = 'error';
-    status[m] = st;
+    if (walledSeen) methodsIfWalledRefused[m] = st;
+    status[m] = walledSeen ? 'found_unreadable' : st;
   }
-  const complete = UF.METHODS.every((m) => UF.METHOD_DONE.has(status[m]));
-  return { ok: false, outcome: Object.values(status).some((s) => UF.METHOD_DONE.has(s)) ? 'no_evidence' : 'non_evidence', reason: complete ? 'url_not_found_all_methods' : (foundUnreadable.length ? 'url_found_unreadable' : 'url_not_found'), methods: status, refusedCandidates, foundUnreadable };
+  return { ok: false, ...UF.urlFindOutcome(status, foundUnreadable), methods: status, refusedCandidates, foundUnreadable, methodsIfWalledRefused };
 }
 
 async function ensureCcCollections(UF) {
@@ -362,4 +398,4 @@ async function ensureCcCollections(UF) {
   ensureCcCollections.done = true;
 }
 
-module.exports = { FREE_TIERS, refetchFree, archive, browserSession, urlRediscover, paidFetch, urlFind, outcomeForFetchError, fromHtml, defaultDeps, deadUrlStampPatch, DEAD_URL_REASONS };
+module.exports = { FREE_TIERS, WALLED_REASONS, URL_IDENTITY_REFUSALS, walledReason, walledFetchError, refetchFree, archive, browserSession, urlRediscover, paidFetch, urlFind, outcomeForFetchError, fromHtml, defaultDeps, deadUrlStampPatch, DEAD_URL_REASONS };

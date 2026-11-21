@@ -57,8 +57,8 @@ Add any conflicts found to the context block as **"Known conflicts"** so reviewe
 Launch ALL SIX simultaneously in a single message with parallel tool calls — the pre-mortem and the design reviewer run in parallel too, not after. Do not serialize them; latency matters and they're independent.
 
 1. **Codex (GPT-5.x with codebase access) — Production & Architecture focus** — Run via Bash.
-   **Codex check:** Run `command -v codex >/dev/null && { node scripts/codex/install.js >/dev/null 2>&1; echo READY; } || echo MISSING` (the install is idempotent and gives Codex the repo guards, BRO-4745) first.
-   - READY (local): **Step 1 — run Codex, writing its filtered output to a private per-run temp file:**
+   **Codex check:** Run `bash scripts/codex/ensure-cli.sh` (BRO-7927: it installs the pinned Codex CLI when the container has none, restores the owner's stored Codex login in cloud, and installs the repo guards, BRO-4745; idempotent, prints `READY` or `MISSING: <reason>`). Codex runs in cloud sessions too, so a fresh container is no reason to skip it first.
+   - READY: **Step 1 — run Codex, writing its filtered output to a private per-run temp file:**
      ```bash
      set -o pipefail
      [ -s "${PLAN_FILE:-/tmp/critique-plan.txt}" ] || { echo "ERROR: plan file is missing or empty — write the plan file before running this reviewer"; exit 1; }
@@ -99,9 +99,14 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    THE PLAN TO CRITIQUE:
    PROMPT_HEAD
      cat "${PLAN_FILE:-/tmp/critique-plan.txt}"
-   } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" 2>&1 \
-     | awk '/^codex$/{flag=1; next} /^tokens used$/{flag=0} flag' \
-     | tee "$PLAN_REVIEW_CODEX_OUT"
+   } | ${CLAUDE_CODE_REMOTE:+timeout 1500} codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$PLAN_REVIEW_CODEX_OUT" >/dev/null 2>"$PLAN_REVIEW_CODEX_OUT.log"
+   CODEX_RC=$?
+   # A failed exec is never a review, even if it left text behind: empty the file so Step 2 reports CODEX_EMPTY.
+   [ "$CODEX_RC" -eq 0 ] || { echo "codex exec exited $CODEX_RC:"; tail -5 "$PLAN_REVIEW_CODEX_OUT.log"; : > "$PLAN_REVIEW_CODEX_OUT"; }
+   cat "$PLAN_REVIEW_CODEX_OUT"
+   # BRO-7927: -o keeps only Codex's final answer; the old awk filter on its log kept every tool call it made (13k words on a 600-word review).
+   # On CODEX_EMPTY, read $PLAN_REVIEW_CODEX_OUT.log for the cause (auth, quota). Cloud: persist the login in case the exec rotated it.
+   bash scripts/codex/ensure-cli.sh --save >/dev/null || echo "WARN: Codex login save failed (scripts/codex/auth-store.js save)"
      ```
      Note: uses your local Codex CLI (counts against ChatGPT Codex quota). Defaults to whatever model `~/.codex/config.toml` is set to.
 
@@ -122,10 +127,10 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
      if [ "$CODEX_STATUS" -eq 0 ]; then echo CODEX_USABLE
      elif [ "$CODEX_KIND" = "refused" ]; then echo "CODEX_REFUSED: $CODEX_REASON"
      else echo "CODEX_EMPTY: $CODEX_REASON"; fi
-     rm -f "$PLAN_REVIEW_CODEX_OUT"
+     rm -f "$PLAN_REVIEW_CODEX_OUT" "$PLAN_REVIEW_CODEX_OUT.log"
      ```
      If `CODEX_EMPTY` or `CODEX_REFUSED`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner (Phase 3) that Codex was READY but returned unusable output — distinguish "empty" (CLI produced no text, task #1081) from "refused" (Codex explicitly declined, task #1320) using `$CODEX_REASON`, both distinct from "not installed".
-   - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"` piped through `tee >(node scripts/log-llm-call.js --provider=openai --caller=plan-review >/dev/null 2>&1)` so the spend ledger sees it, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran in the coverage banner (Phase 3).
+   - MISSING (NOT expected anywhere, cloud included, since BRO-7927; print `ensure-cli.sh`'s reason in the coverage banner as a degraded-review line, e.g. `Codex: MISSING (<reason>), gpt-5.4-mini ran instead`): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"` piped through `tee >(node scripts/log-llm-call.js --provider=openai --caller=plan-review >/dev/null 2>&1)` so the spend ledger sees it, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran in the coverage banner (Phase 3).
 
 2. **Independent Claude — Structure, Gaps & Devil's Advocate** — Use the Task tool with subagent_type "review-panelist" and this prompt:
 
@@ -327,7 +332,7 @@ If issues are found, fix them and note what was fixed.
 
 ### Phase 6: Plain-language summary
 
-Before asking the user to decide, present **the actual plan in plain English** — not just what changed, but what they're agreeing to:
+Present **the actual plan in plain English**, not just what changed:
 
 > **The plan:**
 > [2-4 sentences: what will be built, how it works from the user's perspective, what the end result looks like]
@@ -338,20 +343,22 @@ Before asking the user to decide, present **the actual plan in plain English** �
 >
 > **Size:** [S/M/L — how many sessions, roughly how many files]
 
-The user is approving THE PLAN, not a diff. They need to see the plan. No jargon, no task IDs. Describe it the way you'd explain it to someone who hasn't been in this conversation.
+This reports the plan to the owner; it is not an approval request unless Phase 7 says so. No jargon, no task IDs. Describe it the way you'd explain it to someone who hasn't been in this conversation.
 
 **Sprint-plan recommendation:** Based on the revised plan's scope, recommend whether `/plan-tasks` is needed:
 - **1 session / <5 files:** "This is small enough to implement directly from this plan. No need for `/plan-tasks`."
 - **2-4 sessions:** "Recommend running `/plan-tasks` to break this into atomic tasks with verify steps."
 - **5+ sessions / multiple workstreams:** "`/plan-tasks` is essential here — task ordering and parallelism matter."
 
-### Phase 7: Ask the user
+### Phase 7: Decide, or ask only when it is the owner's call
 
-Present the revised plan and ask: "Want to go with the revised plan, keep the original, or adjust further?"
+Go with the revised plan. Picking between the original and the revision is a technical call, so it is yours.
+
+Ask the owner only when the plan is a substantial new system (CLAUDE.md §20: the owner chose on 2026-10-25 that substantial efforts get a plan, /plan-review and their yes) or involves money, an irreversible step, a public post, an email to real people, or a product/taste choice. Ask once, as one DECISION NEEDED block with the plan summary and your recommendation, and do not start building it until the owner answers (the planning-tier hook lifts on your plan-review verdict alone, so it will not hold you).
 
 ### Record the plan-phase verdict (BWSC repo — MANDATORY)
 
-As soon as the critique is complete — before the user answers Phase 7, and whether or not the plan changes — record it:
+As soon as the critique is complete, before Phase 7 and whether or not the plan changes — record it:
 
 ```bash
 node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review \
@@ -360,10 +367,10 @@ node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review \
 
 `~/.claude/hooks/infra-plan-review-gate.sh` reads this before the session's first edit to shared infrastructure — the dispatch layer, spend guards, concurrency primitives, the review gates, CI workflows and hooks (task #1079, owner decision 2026-08-05, scope in `scripts/lib/infra-review-scope.js`). Without the record the session stays blocked no matter how thorough the review was.
 
-Use `--result=fail` when the reviewers found P0 blockers the plan does not resolve. A fail verdict does not unblock; overturning it is the owner's call, recorded as `--reviewer=owner-override`.
+Use `--result=fail` when the reviewers found P0 blockers the plan does not resolve. A fail verdict does not unblock: revise the plan, re-review it, and record the new pass with `--note="<what changed since the fail>"` (`review-gate.mjs` refuses a pass after a fail without one). `--reviewer=owner-override` is only for the owner overturning a fail without a revision.
 
 ### Linear Update (BWSC projects only)
 
-After the user approves a plan, comment on the session's Linear issue (`node scripts/linear-brain.js update BRO-N --comment "..."`):
-1. Comment: `### Plan approved\n[1-line summary of approach, scope (S/M/L), key changes from review]`
+Once the plan is settled (decided by you, or by the owner when Phase 7 asked them), comment on the session's Linear issue (`node scripts/linear-brain.js update BRO-N --comment "..."`):
+1. Comment: `### Plan settled\n[1-line summary of approach, scope (S/M/L), key changes from review]`
 2. If the plan was rejected or needs major rework, note that too — it's a decision worth recording.

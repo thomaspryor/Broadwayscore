@@ -57,8 +57,8 @@
         },
         {
           "url": "https://fringereview.co.uk/review/fringereview-uk/the-moth",
-          "state": "gap",
-          "reason": null
+          "state": "excluded",
+          "reason": "dead-url: HTTP 404 (stale search result, nothing to ingest)"
         }
       ],
       "queries": [
@@ -84,8 +84,8 @@
         },
         {
           "url": "https://www.theatreinla.com/the-feel-good-story-america-needs-right-now",
-          "state": "gap",
-          "reason": null
+          "state": "excluded",
+          "reason": "dead-url: HTTP 404 (stale search result, nothing to ingest)"
         }
       ],
       "queries": [
@@ -138,8 +138,8 @@
         },
         {
           "url": "https://www.theguardian.com/stage/oct/desire-under-the-elms-review",
-          "state": "gap",
-          "reason": null
+          "state": "excluded",
+          "reason": "dead-url: HTTP 404 (stale search result, nothing to ingest)"
         }
       ],
       "queries": [
@@ -152,13 +152,9 @@
     }
   ],
   "summary": {
-    "verdict": "gaps-found",
+    "verdict": "clean",
     "measured": 5,
-    "gapCount": 3,
-    "gapShows": [
-      "the-moth-off-west-end-2026",
-      "the-feel-good-story-america-needs-right-now-regional-2026",
-      "desire-under-the-elms-off-west-end-2026"
-    ]
+    "gapCount": 0,
+    "gapShows": []
   }
 }

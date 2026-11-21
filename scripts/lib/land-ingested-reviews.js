@@ -145,10 +145,14 @@ function dispatchDownstream({
   showId, newReviews, only, exec = execSync, log = console.log,
   capCheck = exec === execSync ? checkCap : null, urgent = isUrgentShowId,
 }) {
-  let workflows = downstreamWorkflows(showId, newReviews);
+  // BRO-7747: urgent is read once; a press-night show scores with
+  // fast_rebuild=true and skips the parallel slow rebuild.
+  let isUrgent = false;
+  try { isUrgent = Boolean(urgent(showId)); } catch { isUrgent = false; }
+  let workflows = downstreamWorkflows(showId, newReviews, { urgent: isUrgent });
   if (only) workflows = workflows.filter((w) => only.includes(w.file));
   return workflows.map((wf) => {
-    if (capCheck && CAPS[wf.file] && !urgent(showId)) {
+    if (capCheck && CAPS[wf.file] && !isUrgent) {
       const cap = capCheck({ workflow: wf.file, log });
       if (!cap.ok) {
         log(`::warning::${wf.name} deferred for ${showId}: ${cap.reason}. The next scheduled batch run will score it.`);

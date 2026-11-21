@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'scripts/check-prod-deploy.js'
       - 'scripts/bww-regional-coverage.js'
       - 'scripts/bww-regional-add-plan.js'
       - 'src/**'
@@ -11,6 +12,12 @@ on:
       - 'tests/**'
       # BRO-6639: orchestrator-pause-read.test.mjs shape-checks pause-variable token use.
       - '.github/workflows/opening-night-orchestrator.yml'
+      # BRO-7402: tests/unit/first-pass-redispatch.test.mjs and scripts/lib/re-dispatcher.test.mjs read these
+      # workflow files (re-dispatch opt-in, band, collect run title), so a workflow-only edit must run them.
+      - '.github/workflows/outlet-listing-poller-window.yml'
+      - '.github/workflows/collect-review-texts.yml'
+      - '.github/workflows/check-cron-health.yml'
+      - '.github/workflows/cron-redispatch.yml'
       # Project agent definitions and the commands that name them are covered by
       # tests/unit/claude-agent-models.test.mjs (spend review 2026-10-01).
       - '.claude/agents/**'
@@ -45,6 +52,11 @@ on:
       # BRO-7369: tests/unit/review-forecast-v2-earlier-audience.test.mjs runs these two scripts' --help guard.
       - 'scripts/backtest-review-forecast-v2.mjs'
       - 'scripts/review-forecast-v2-earlier-audience-sweep.js'
+      # BRO-7780: tests/unit/byline-outlet-fixtures.test.mjs requires it.
+      - 'scripts/check-byline-fixture-drift.js'
+      # BRO-7780: tests/unit/byline-outlet-fixtures.test.mjs pins their shared saved-page naming.
+      - 'scripts/build-byline-fixtures.js'
+      - 'scripts/sweep-stored-bylines.js'
       # BRO-7291: scripts/lib/hub-run-dates.test.mjs and manual-entry-provenance.test.mjs require these.
       - 'scripts/harvest-hub-run-dates.js'
       - 'scripts/check-manual-entry-provenance.js'
@@ -56,6 +68,9 @@ on:
       - 'scripts/lane-recording-import.js'
       # BRO-7167: tests/unit/wanted-method-check.test.mjs
       - 'scripts/wanted-method-check.js'
+      # BRO-7576: scripts/lib/scoring-chain-budget.test.mjs runs this CLI and pins its wiring in the scoring workflow's chain step.
+      - 'scripts/scoring-chain-budget.js'
+      - '.github/workflows/llm-ensemble-score.yml'
       # BRO-7199: tests/unit/opening-night-lane-sources.test.mjs requires its per-show coverage check.
       - 'scripts/lane-on-time-outlets.js'
       # BRO-6620: tests/unit/lane-only-markets.test.mjs runs these and pins the workflow wiring.
@@ -130,6 +145,7 @@ on:
       - 'scripts/video-proto/tts.js' # BRO-7414: tests/unit/social-video-tts.test.js
       - 'scripts/video-proto/compare-make.js' # BRO-7418: tests/unit/social-video-compare-make.test.js
       - 'scripts/video-proto/compare-script.js' # BRO-7418: tests/unit/social-video-compare-make.test.js
+      - 'scripts/video-proto/cue-match.js' # BRO-7909: tests/unit/social-video-run-errors.test.js
       # BRO-5499: top-level tests scripts/fix-utc-shifted-publish-dates.test.mjs and scripts/purge-uk-show-score-audience.test.mjs
       - 'scripts/fix-utc-shifted-publish-dates.js'
       - 'scripts/purge-uk-show-score-audience.js'
@@ -240,6 +256,11 @@ on:
       - 'scripts/backfill-wrongproduction-legacy-audit.js'
       # tests/unit/enrich-dtli-thumbs.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/enrich-dtli-thumbs.js'
+      # BRO-7790: landed-change proof audit CLI; scripts/lib/landed-change-proof.test.mjs smoke-runs it.
+      - 'scripts/landed-change-proof-audit.js'
+      # BRO-7802: scripts/lib/unproven-scripts-smoke.test.mjs requires/spawns these CLIs.
+      - 'scripts/file-feedback-card.js'
+      - 'scripts/verify-existing-reviews.js'
       # BRO-2410: blog-reviews generator + its manifest-registered test (resolver is under scripts/lib/**).
       - 'scripts/generate-blog-reviews-for-scoring.js'
       # scripts/cmux-auth-stall-watchdog.js (BRO-4056) is the I/O wrapper for
@@ -681,11 +702,15 @@ on:
       - 'scripts/collect-review-texts-v2.js'
       - 'scripts/detect-critic-typos.js'
       - 'scripts/detect-syndicated-duplicates.js'
+      - 'scripts/detect-cross-outlet-duplicates.js'
       - 'scripts/discard-stuck-broadcast-drafts.js'
       - 'scripts/discover-dtli-slugs.js'
       - 'scripts/discover-historical-shows.js'
+      - 'scripts/discover-author-page-slugs.js' # BRO-6867: serp-step-has-scrapingdog-key.test.mjs
       - 'scripts/discover-regional-serp-reviews.js'
       - 'scripts/uk-regional-coverage.js'
+      - 'scripts/drain-unknown-outlets.js' # BRO-7934: ingest-caller-guard.test.mjs
+      - 'scripts/uk-regional-census-match.js' # BRO-7934: ingest-caller-guard.test.mjs
       - 'scripts/uk-regional-census-productions.js'
       - 'scripts/eval-v52.js'
       - 'scripts/extract-bww-reviews.js'
@@ -2110,6 +2135,7 @@ on:
       - 'scripts/opening-night-checklist.js'
       # BRO-6619: lane entries tested by tests/unit/lane-arm-decision.test.mjs (it reads and hashes them).
       - 'scripts/opening-night-lane.js'
+      - 'scripts/opening-night-lane-inbox.js'
       - 'scripts/opening-night-lane-rehearse.js'
       - 'scripts/opening-night-lane-shadow.js'
       # BRO-6648: the lease CLI and its alert script, exercised by tests/unit/opening-night-lane-lease-wiring.test.mjs
@@ -2957,6 +2983,9 @@ on:
       - 'scripts/lib/gh-api-client.js'
       - 'data/audit/direct-github-api-baseline.json'
       - 'tests/unit/gh-api-wrapper.test.mjs'
+      # Unguarded git network timeout audit (BRO-7458), advisory; walker path-listed so a solo
+      # edit triggers CI (its scanner + test ride scripts/lib/** and tests/**).
+      - 'scripts/audit-unguarded-git-network-timeout.js'
       # Browserbase daily-cap constant (Scraping v2 T13). Its own doc comment
       # names it as THE single edit site for the 250->100->60 step-down, so a
       # solo edit must not get zero CI (feedback_test_yml_push_path_allowlist).
@@ -3328,6 +3357,7 @@ on:
       # clears it). New scripts/lib/ pure fn with colocated *.test.mjs
       # (auto-run by the lib-test glob step); path-listed here so a solo
       # edit still triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/rescore-batch-policy.js' # BRO-7807: bulk-rescore batch-only policy; pinned by scripts/rescore-batch-api.test.mjs
       - 'scripts/llm-scoring/index.ts'
       # Batch API infrastructure (task #505): pure assembly/parse/merge/resume
       # logic + vendor client wrappers for the future nightly --batch mode.
@@ -3817,6 +3847,8 @@ jobs:
         # Logic + bad-fixture test: scripts/lib/new-gate-arming.js,
         # tests/unit/lint-workflows.test.mjs.
         env:
+          # BRO-7949: new hard error() in a blocking validator lands ADVISORY (warning). Flip to '0' after one green main run.
+          GATE_ARM_VALIDATOR_ADVISORY: '1'
           GATE_ARM_BASE: ${{ github.event.before || github.event.pull_request.base.sha }}
         run: |
           # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
@@ -5110,6 +5142,16 @@ jobs:
           node scripts/audit-direct-github-api.js
           timeout -k 10 300 node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
 
+      - name: Unguarded git network timeout audit (BRO-7458, advisory)
+        # Flags a sync git fetch/pull/clone with a timeout that skips
+        # scripts/lib/git-proc-guard.js (runGit/runGitOrThrow): node kills only the
+        # direct child on timeout, and the orphaned index-pack filled the disk with a
+        # 3.4 GB tmp_pack. Advisory first (CLAUDE.md section 19).
+        continue-on-error: true
+        run: |
+          node scripts/audit-unguarded-git-network-timeout.js
+          timeout -k 10 300 node --test --test-timeout 120000 tests/unit/audit-unguarded-git-network-timeout.test.mjs
+
       - name: Page furniture class guard (BRO-7171, advisory)
         # Every outlet extractor, run on saved real pages
         # (tests/fixtures/page-furniture/), must hand the save path a body with
@@ -5177,6 +5219,25 @@ jobs:
         # Advisory first (CLAUDE.md section 19).
         continue-on-error: true
         run: node scripts/audit-cross-show-url.js --source=reviews.json --strict --max=92
+
+      - name: Simulated opening night (BRO-7781, advisory)
+        # A whole synthetic press night through the real lane code on a fake clock, local outlets only (~15s). Runs on
+        # every lane/rss-discovery/near-miss/byline/press-night change (scripts/lib/**) and on the daily 06:00 UTC run.
+        # Mutation proof that it still guards BRO-7739/7745/7748: node scripts/lib/game-day/mutants.js.
+        # Advisory first (CLAUDE.md section 19).
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        # Hermetic: the night's card comments go to its own report and alerts to a 127.0.0.1 capture endpoint, so no
+        # real key is ever passed. Pinned empty so nothing inherited can reach Linear (and the secret-gap audit sees it).
+        env:
+          LINEAR_API_KEY: ''
+        run: |
+          set +e
+          bash scripts/lib/run-test-batch-bounded.sh "simulated night" 180 /tmp/sim-night.log -- \
+            node --test --test-timeout 170000 tests/integration/simulated-opening-night.test.mjs
+          rc=$?
+          bash scripts/lib/summarize-failing-tests.sh "simulated night" /tmp/sim-night.log "$rc" warning
+          exit "$rc"
 
       - name: Repeat file-lock race test 20x (stale-break regression guard)
         # scripts/lib/file-lock.test.mjs's 'racing stale-lock breakers' test

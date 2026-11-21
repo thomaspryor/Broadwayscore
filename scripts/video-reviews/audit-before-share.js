@@ -25,6 +25,7 @@ require('../lib/llm-usage-install'); // LLM spend meter: before any client is bu
 const fs = require('fs');
 const path = require('path');
 const { GPT4O, CLAUDE_OPUS } = require('../lib/models');
+const { openaiChatBody } = require('../lib/llm-batch');
 const { describeProduction } = require('../lib/video-production-context');
 
 const ROOT = path.resolve(__dirname, '../..');
@@ -86,13 +87,16 @@ async function callOpenAI(user) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${OPENAI_API_KEY}` },
     body: JSON.stringify({
-      model: MODEL,
-      temperature: 0.1,
+      ...openaiChatBody({
+        model: MODEL,
+        temperature: 0.1,
+        maxTokens: null,
+        messages: [
+          { role: 'system', content: AUDIT_PROMPT },
+          { role: 'user', content: user },
+        ],
+      }),
       response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: AUDIT_PROMPT },
-        { role: 'user', content: user },
-      ],
     }),
   });
   if (!resp.ok) throw new Error(`OpenAI ${resp.status}: ${(await resp.text()).substring(0, 200)}`);

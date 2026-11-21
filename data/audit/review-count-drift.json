@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-11-17T18:14:44.365Z",
+  "generatedAt": "2026-11-20T17:37:03.084Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-11-17T17:56:45.064Z",
-    "reviewsJsonAgeHours": 0.3,
+    "reviewsJsonLastUpdated": "2026-11-20T17:23:36.548Z",
+    "reviewsJsonAgeHours": 0.2,
     "freshnessBreach": false,
-    "showsScanned": 32,
-    "allShowsScanned": 4846,
-    "filesScanned": 82415,
+    "showsScanned": 34,
+    "allShowsScanned": 4899,
+    "filesScanned": 83426,
     "showsOverThreshold": 0,
     "newOffenders": 1,
-    "blindShows": 27,
+    "blindShows": 30,
     "orphanReviews": 2
   },
   "thresholds": {
@@ -62,41 +62,48 @@
     {
       "showDir": "a-christmas-carol-west-end-2026",
       "actual": 1,
-      "scanned": 40,
+      "scanned": 45,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "act-of-god-off-west-end-2026",
-      "actual": 7,
-      "scanned": 12,
+      "showDir": "a-christmas-story-the-musical-tour-2026",
+      "actual": 1,
+      "scanned": 4,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "annie-regional-2026-drury-lane-oakbrook",
-      "actual": 5,
-      "scanned": 11,
+      "showDir": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+      "actual": 10,
+      "scanned": 18,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "barefoot-in-the-park-regional-2026",
-      "actual": 2,
-      "scanned": 5,
+      "showDir": "blue-man-group-a-new-holiday-surprise-2026",
+      "actual": 9,
+      "scanned": 13,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "desire-under-the-elms-off-west-end-2026",
-      "actual": 2,
-      "scanned": 7,
-      "suppressedCount": 1,
+      "actual": 21,
+      "scanned": 30,
+      "suppressedCount": 2,
       "suppressed": [
+        {
+          "file": "british-theatre--unknown.json",
+          "outletId": "british-theatre",
+          "criticName": "Unknown",
+          "publishDate": "2026-11-18",
+          "url": "https://www.britishtheatreguide.info/reviews/desire-under-th-almeida-theatre-26219"
+        },
         {
           "file": "rolandcat--unknown.json",
           "outletId": "rolandcat",
@@ -108,43 +115,75 @@
       "overThreshold": false
     },
     {
+      "showDir": "destiny-of-desire-regional-2026",
+      "actual": 7,
+      "scanned": 10,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
       "showDir": "downstate-2026",
-      "actual": 22,
-      "scanned": 31,
+      "actual": 24,
+      "scanned": 39,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "entre-dos-sombras-regional-2026",
-      "actual": 0,
-      "scanned": 1,
+      "actual": 1,
+      "scanned": 2,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "eurotrash-off-west-end-2026",
+      "actual": 14,
+      "scanned": 19,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "florence-off-west-end-2026",
+      "actual": 9,
+      "scanned": 23,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "goblin-off-west-end-2026",
+      "actual": 3,
+      "scanned": 6,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "its-a-wonderful-life-a-live-radio-play-2026",
+      "actual": 1,
+      "scanned": 9,
       "suppressedCount": 1,
       "suppressed": [
         {
-          "file": "broadwayworld--emily-berger.json",
-          "outletId": "broadwayworld",
-          "criticName": "Emily Berger",
-          "publishDate": "2026-11-16",
-          "url": "https://www.broadwayworld.com/washington-dc/article/Review-ENTRE-DOS-SOMBRAS-at-GALA-Hispanic-Theatre-20261116"
+          "file": "theater-scene--samuel-l-leiter--on-2026-11-18.json",
+          "outletId": "theater-scene",
+          "criticName": "Samuel L. Leiter",
+          "publishDate": "2026-11-19T04:59:00.000Z",
+          "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/"
         }
       ],
       "overThreshold": false
     },
     {
-      "showDir": "hamlet-hail-to-the-thief-off-west-end-2026",
-      "actual": 31,
-      "scanned": 42,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "london-box-office--shehrazade-zafar-arif.json",
-          "outletId": "london-box-office",
-          "criticName": "Shehrazade Zafar-Arif",
-          "publishDate": "2026-11-09",
-          "url": "https://www.londonboxoffice.co.uk/news/post/hamlet-hail-to-the-thief-photos"
-        }
-      ],
+      "showDir": "jenufa-off-broadway-2026",
+      "actual": 6,
+      "scanned": 9,
+      "suppressedCount": 0,
+      "suppressed": [],
       "overThreshold": false
     },
     {
@@ -164,38 +203,15 @@
       "overThreshold": false
     },
     {
-      "showDir": "madama-butterfly-regional-2026",
-      "actual": 0,
-      "scanned": 2,
-      "suppressedCount": 2,
-      "suppressed": [
-        {
-          "file": "broadwayworld--david-friscic.json",
-          "outletId": "broadwayworld",
-          "criticName": "David Friscic",
-          "publishDate": "2026-11-11",
-          "url": "https://www.broadwayworld.com/washington-dc/article/Review-MADAMA-BUTTERFLY-at-Washington-National-Opera-20261111"
-        },
-        {
-          "file": "operawire--francisco-salazar.json",
-          "outletId": "operawire",
-          "criticName": "Francisco Salazar",
-          "publishDate": "2026-11-08",
-          "url": "https://operawire.com/washington-national-opera-2026-27-review-madama-butterfly/"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "nacho-ate-spiderman-regional-2026",
-      "actual": 1,
-      "scanned": 5,
+      "showDir": "much-ado-about-nothing-2026",
+      "actual": 23,
+      "scanned": 66,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "now-you-see-me-live-2026",
+      "showDir": "my-english-persian-kitchen-regional-2026",
       "actual": 2,
       "scanned": 6,
       "suppressedCount": 0,
@@ -203,9 +219,25 @@
       "overThreshold": false
     },
     {
-      "showDir": "our-town-regional-2026",
-      "actual": 3,
+      "showDir": "nixon-in-china-regional-2026",
+      "actual": 4,
       "scanned": 4,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "now-you-see-me-live-2026",
+      "actual": 7,
+      "scanned": 17,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "our-town-regional-2026",
+      "actual": 7,
+      "scanned": 8,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -213,45 +245,13 @@
     {
       "showDir": "pride-bridge-theatre-off-west-end-2026",
       "actual": 25,
-      "scanned": 10,
+      "scanned": 11,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "radio-galaxy-regional-2026",
-      "actual": 2,
-      "scanned": 4,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-afronauts-west-end-2026",
-      "actual": 1,
-      "scanned": 1,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-elaborate-entrance-of-chad-deity-regional-2026",
-      "actual": 2,
-      "scanned": 3,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-fantasticks-2026",
-      "actual": 23,
-      "scanned": 33,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-kings-critique-off-broadway-2026",
       "actual": 6,
       "scanned": 8,
       "suppressedCount": 0,
@@ -259,17 +259,49 @@
       "overThreshold": false
     },
     {
-      "showDir": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+      "showDir": "takes-all-kinds-regional-2026",
       "actual": 2,
-      "scanned": 4,
+      "scanned": 2,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "year-one-regional-2026",
+      "showDir": "the-afronauts-west-end-2026",
+      "actual": 1,
+      "scanned": 2,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-fantasticks-2026",
+      "actual": 27,
+      "scanned": 38,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-good-thief-off-broadway-2026",
+      "actual": 8,
+      "scanned": 10,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-winters-tale-mrs-regional-2026",
+      "actual": 1,
+      "scanned": 2,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "top-gunchained-off-west-end-2026",
       "actual": 6,
-      "scanned": 7,
+      "scanned": 10,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false

@@ -7,7 +7,7 @@ import { formatShowDate } from '@/lib/date-utils';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getCriticConsensus } from '@/lib/data-guides';
 import { getAudienceBuzz } from '@/lib/data-audience';
-import { getAudienceGrade, getAudienceGradeClasses } from '@/lib/audience-grade-utils';
+import { getAudienceGrade, getAudienceGradeClasses, hasEnoughAudienceReviews } from '@/lib/audience-grade-utils';
 import { getShowAwards } from '@/lib/data-awards';
 import { getShowGrosses } from '@/lib/data-grosses';
 import { getAllComparisonSlugs, parseComparisonSlug } from '@/config/comparisons';
@@ -22,7 +22,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { showFormatTitle } from '@/lib/show-format';
 import { getBrowseSlug } from '@/lib/browse-slugs';
 import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { scoreGateArg } from '@/config/scoring';
 
 export function generateStaticParams() {
   return getAllComparisonSlugs().map((shows) => ({ shows }));
@@ -200,10 +200,13 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
   const scoreWinnerB = scoreA !== null && scoreB !== null && scoreB > scoreA;
 
   // Audience grades
-  const gradeA = buzzA ? getAudienceGrade(buzzA.combinedScore) : null;
-  const gradeB = buzzB ? getAudienceGrade(buzzB.combinedScore) : null;
-  const gradeClassesA = buzzA ? getAudienceGradeClasses(buzzA.combinedScore) : null;
-  const gradeClassesB = buzzB ? getAudienceGradeClasses(buzzB.combinedScore) : null;
+  // Same 10-review bar as the show page before a grade is shown (BRO-7805).
+  const gradedA = buzzA && hasEnoughAudienceReviews(buzzA) ? buzzA : null;
+  const gradedB = buzzB && hasEnoughAudienceReviews(buzzB) ? buzzB : null;
+  const gradeA = gradedA ? getAudienceGrade(gradedA.combinedScore) : null;
+  const gradeB = gradedB ? getAudienceGrade(gradedB.combinedScore) : null;
+  const gradeClassesA = gradedA ? getAudienceGradeClasses(gradedA.combinedScore) : null;
+  const gradeClassesB = gradedB ? getAudienceGradeClasses(gradedB.combinedScore) : null;
 
   // Ticket prices
   const minPriceA = getMinPrice(showA);
@@ -374,7 +377,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                     </h2>
                   </Link>
                   <div className="flex flex-col items-center mb-3">
-                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={show.category} tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)} isCuratedHistorical={CURATED_HISTORICAL_SHOWS.has(show.id)} />
+                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={show.category} tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)} isCuratedHistorical={scoreGateArg(show.id)} />
                     {(() => {
                       const tier = score != null ? getScoreTier(Math.round(score), show.category) : null;
                       return tier ? (

@@ -8,7 +8,7 @@ Decide and record (a card comment with the reasoning, the default taken and how 
 
 1. You have a recommended option.
 2. The no-change default is safe: if the owner never answers, nothing bad happens.
-3. No money (paid APIs, credits, subscriptions, a new schedule that spends), no irreversible step (delete, drop, force-push, rename that cannot be redirected), no outbound email to real people, no public-facing claim (site copy, social post, press).
+3. No money (paid APIs, credits, subscriptions, a new schedule that spends), no irreversible step (delete, drop, force-push, rename that cannot be redirected), no outbound email to real people, no public-facing claim (site copy, social post, press), and not a substantial new system (CLAUDE.md §20, owner decision 2026-10-25: plan, /plan-review, then the owner's yes, asked once).
 
 Anything else is a DECISION NEEDED. Before restating one, run `node scripts/lib/decision-restate.js BRO-N [BRO-M]`: a card with an owner-decision or visual-approval comment newer than the question prints `ALREADY ANSWERED`; act on that answer and do not restate it. The Stop hook runs the same check on the final message (advisory first; `DECISION_RESTATE_ENFORCE=1` makes it block).
 

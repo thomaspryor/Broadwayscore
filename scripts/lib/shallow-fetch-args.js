@@ -1,4 +1,5 @@
 'use strict';
+const gitGuard = require('./git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 /**
  * Depth-bounding arguments for push-with-retry.sh's post-conflict `git fetch`.
  * Task #466.
@@ -122,9 +123,8 @@ function shallowFetchArgs(opts = {}) {
  * @returns {string[]} args to splice into `git fetch <args> origin <ref>`
  */
 function repoDepthArgs({ repoRoot, timeoutMs = 10000 }) {
-  const { execFileSync } = require('child_process');
   const git = (args) =>
-    execFileSync('git', args, { cwd: repoRoot, encoding: 'utf8', timeout: timeoutMs }).trim();
+    gitGuard.runGitOrThrow(args, { cwd: repoRoot, encoding: 'utf8', timeout: timeoutMs }).trim();
   try {
     const isShallow = git(['rev-parse', '--is-shallow-repository']) === 'true';
     let oldestCommitEpoch = 0;

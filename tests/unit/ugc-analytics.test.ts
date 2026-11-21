@@ -86,6 +86,7 @@ test('Vercel selects useful properties per event, independent of input order', (
     { event: 'sign_in_completed', props: { is_new_user: true, seconds_to_complete: 5, context: 'rating', provider: 'google' }, expected: { provider: 'google', context: 'rating' } },
     { event: 'list_created', props: { list_count: 2, has_description: false, list_id: 'list-1', is_ranked: false }, expected: { list_id: 'list-1', is_ranked: false } },
     { event: 'import_completed', props: { imported: 4, skipped: 0, errors: 0, ratings_selected: 4, watchlist_selected: 0, context: 'my_shows', source: 'mezzanine' }, expected: { context: 'my_shows', source: 'mezzanine' } },
+    { event: 'one_tap_not_displayed', props: { reason: 'unregistered_origin', extra: 1 }, expected: { reason: 'unregistered_origin' } },
     { event: 'onboarding_completed', props: { shows_added: 3, want_added: 2, market: 'west-end' }, expected: { market: 'west-end', want_added: 2 } },
   ];
   for (const { event, props, expected } of cases) {

@@ -6,18 +6,23 @@
 // embed and badge. Same inputs and order as page.tsx generateMetadata.
 import type { ComputedShow } from './engine';
 import { hasEnoughReviews, applyCoverageFloor } from '../config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '../config/scoring';
+import { scoreGateArg } from '../config/scoring';
 
 type ShowTbdFields = Pick<ComputedShow, 'id' | 'category' | 'status' | 'criticScore' | 'scorePublicSince' | 'cov' | 'coverageAcked'>;
 
-export function isShowScoreTBD(show: ShowTbdFields, now?: number): boolean {
+/**
+ * The show page's own TBD verdict (min-review gate, previews/upcoming, then the
+ * coverage floor / BRO-7750 score exception). The page used to repeat this
+ * block four times; BRO-7803 makes the page, the live-score publisher and the
+ * overlay all call this one function.
+ */
+export function computeShowTBD(show: ShowTbdFields, now?: number): boolean {
   const cs = show.criticScore;
-  if (cs?.score == null) return true;
   const reviewCountTBD = !hasEnoughReviews(
-    cs.reviewCount ?? 0,
+    cs?.reviewCount ?? 0,
     show.category,
-    (cs.tier1Count ?? 0) + (cs.tier2Count ?? 0),
-    CURATED_HISTORICAL_SHOWS.has(show.id),
+    (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0),
+    scoreGateArg(show.id),
   ) || show.status === 'previews' || show.status === 'upcoming';
   return applyCoverageFloor(reviewCountTBD, {
     scorePublicSince: show.scorePublicSince,
@@ -25,4 +30,9 @@ export function isShowScoreTBD(show: ShowTbdFields, now?: number): boolean {
     coverageAcked: show.coverageAcked,
     now,
   });
+}
+
+export function isShowScoreTBD(show: ShowTbdFields, now?: number): boolean {
+  if (show.criticScore?.score == null) return true;
+  return computeShowTBD(show, now);
 }

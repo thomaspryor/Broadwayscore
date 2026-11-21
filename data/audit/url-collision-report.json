@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-17T18:57:05.886Z",
+  "generatedAt": "2026-11-21T14:34:58.622Z",
   "summary": {
-    "total": 16,
+    "total": 17,
     "high": 9,
-    "medium": 5,
+    "medium": 6,
     "low": 2
   },
   "collisions": [
@@ -33,6 +33,33 @@
       "suggestedWinner": "an-american-in-paris-tour-2022",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14694097/PATRICK-MARMION-reviews-National-Theatre-notch-cast-Sondheims-send-flimsy-forgettable.html",
+      "normalizedUrl": "https://dailymail.co.uk/tvshowbiz/article-14694097/patrick-marmion-reviews-national-theatre-notch-cast-sondheims-send-flimsy-forgettable.html",
+      "candidates": [
+        {
+          "showId": "an-oak-tree-west-end-2025",
+          "file": "daily-mail--veronica-lee.json",
+          "publishDate": "2025-05-07",
+          "openingDate": "2025-05-06",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "daily-mail"
+        },
+        {
+          "showId": "here-we-are-west-end-2025",
+          "file": "daily-mail--patrick-marmion.json",
+          "publishDate": "2025-05-09",
+          "openingDate": "2025-05-08",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "daily-mail"
+        }
+      ],
+      "suggestedWinner": "an-oak-tree-west-end-2025",
+      "reason": "publishDate 2025-05-07 is 1 days from an-oak-tree-west-end-2025 but also 1 days from here-we-are-west-end-2025",
+      "confidence": "medium"
     },
     {
       "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
@@ -107,7 +134,7 @@
           "publishDate": null,
           "openingDate": "2025-04-30",
           "hasScore": true,
-          "hasFullText": false,
+          "hasFullText": true,
           "outletId": "i-paper"
         }
       ],
@@ -359,30 +386,30 @@
       "confidence": "medium"
     },
     {
-      "url": "https://www.independent.co.uk/independentpremium/culture/the-crucible-review-national-theatre-erin-doherty-b2177953.html?r=17517",
-      "normalizedUrl": "https://independent.co.uk/independentpremium/culture/the-crucible-review-national-theatre-erin-doherty-b2177953.html",
+      "url": "https://www.timeout.com/london/theatre/till-the-stars-come-down-review-1",
+      "normalizedUrl": "https://timeout.com/london/theatre/till-the-stars-come-down-review-1",
       "candidates": [
         {
-          "showId": "the-crucible-crucible-regional-2024",
-          "file": "independent--alice-saville.json",
+          "showId": "till-the-stars-come-down-west-end-2024",
+          "file": "timeout-london--unknown.json",
           "publishDate": null,
-          "openingDate": "2024-03-08",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "independent"
-        },
-        {
-          "showId": "the-crucible-west-end-2022",
-          "file": "independent--alice-saville.json",
-          "publishDate": "2022-09-29",
-          "openingDate": "2022-09-28",
+          "openingDate": "2024-01-31",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "independent"
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "till-the-stars-come-down-west-end-2025",
+          "file": "timeout-london--isobel-lewis.json",
+          "publishDate": "2025-07-09",
+          "openingDate": "2025-07-09",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "timeout-london"
         }
       ],
-      "suggestedWinner": "the-crucible-west-end-2022",
-      "reason": "publishDate 2022-09-29 is 1 days from the-crucible-west-end-2022 opening (2022-09-28)",
+      "suggestedWinner": "till-the-stars-come-down-west-end-2025",
+      "reason": "publishDate 2025-07-09 is 0 days from till-the-stars-come-down-west-end-2025 opening (2025-07-09)",
       "confidence": "high"
     },
     {

@@ -392,6 +392,19 @@ const CORE_DATA_MERGE_REGISTRY = [
     note: 'liveness snapshot read by health-check.js\'s progressWatchResults() — was staged unregistered via git-add-existing.sh\'s broad `data/audit/` glob in the "Check for changes" step on every scheduled run, disqualifying that run\'s "Commit and push changes" step from the Git Data API fallback and forcing it onto the slow fetch+rebase+push path (root cause of the BRO-2722 repeat-failure alert — run 34818414035, 2026-09-14, "Commit and push changes" exhausted all 5 retry attempts under main-branch push contention with the fallback disqualified).',
   },
   {
+    // BRO-7820: outlet-first review census reports, one pair of files per outlet. Written by the "census" job of
+    // audit-census-recall.yml (weekly, concurrency group audit-census-recall) and by manual
+    // `node scripts/outlet-census.js` runs that reach main through land/*, not this push path.
+    // '/*.json' matches direct children only, so .cache/ and london/ stay out.
+    file: 'audit/outlet-census/*.json',
+    concurrencyGroup: 'audit-census-recall',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    verifiedBy: '2026-11-19 (BRO-7820): grepped .github/ for "outlet-census" before adding the census job; audit-census-recall.yml is the only workflow that runs scripts/outlet-census.js, and its census job shares concurrency group audit-census-recall (cancel-in-progress: false).',
+    note: 'weekly census reports. Unregistered, one staged path disqualifies the whole commit from the Git Data API fallback (BRO-2296 class).',
+  },
+  {
     // BRO-6615: a directory pattern, one file per show-night, so the claim is
     // per FILE: each file has exactly one writer run.
     file: 'audit/press-night/*.json',
@@ -485,6 +498,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-10-17 (BRO-4840): sole writer scripts/audit-star-band-drift.js --counts, invoked only by data-health-check.yml\'s "Published score star-band audit" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Counts only (no file names or text), regenerated each run — nothing to union.',
+  },
+  {
+    file: 'audit/byline-fixture-drift.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-18 (BRO-7780): sole writer scripts/check-byline-fixture-drift.js, invoked only by data-health-check.yml\'s "Byline fixture drift (monthly, advisory)" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Whole file regenerated each run (fixture results, critic names only, no review text): nothing to union.',
   },
   {
     file: 'audit/early-publish-dates.json',

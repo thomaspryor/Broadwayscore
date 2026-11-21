@@ -57,6 +57,7 @@ const { pageMatchesShowTitle } = require('./lib/show-title-match');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
+const { notifyBoardAfterSave, assertBoardConfigured, missingKeyError } = require('./lib/audit-board-notify');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-closing-dates.js — Daily bidirectional audit of closingDate values for open shows.
@@ -227,7 +228,7 @@ async function notifyLinear(ambiguous, todayStr) {
     // BRO-3430 fixed in the sibling audit-opening-dates.js: real findings
     // exist (ambiguous.length > 0 above) and nobody would be told. Fail
     // loudly instead.
-    throw new Error('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
+    throw missingKeyError('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
   }
 
   const { spawnSync } = require('child_process');
@@ -327,6 +328,8 @@ async function notifyLinear(ambiguous, todayStr) {
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // BRO-7920: a missing board key must fail before any data is written, not after.
+  if (!DRY_RUN) assertBoardConfigured();
   console.log('='.repeat(60));
   console.log('CLOSING DATE AUDIT (bidirectional)');
   console.log('='.repeat(60));
@@ -401,6 +404,7 @@ async function main() {
           minDays: POSSIBLY_CLOSED_MIN_DAYS,
           allowlisted: isAllowlisted(show.id, show.closingDate),
           kind,
+          openingDate: show.openingDate || null,
         });
         if (verdict.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
           const titleMismatchFlags = ambiguous.filter(x => x.missingScheduleKind === 'title_mismatch').length;
@@ -638,7 +642,9 @@ async function main() {
   if (ambiguous.length > 0) {
     const lines = ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n');
     await notifyDiscord(`⚠️ Closing-date audit found ${ambiguous.length} show(s) where stored closingDate is >30d after schedule end. Verify whether stored is correct (calendar window short) or stale.\n\n${lines}`);
-    await notifyLinear(ambiguous, TODAY);
+    await notifyBoardAfterSave(() => notifyLinear(ambiguous, TODAY), 'audit-closing-dates', {
+      summary: ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n'),
+    });
   }
 
   await cleanup();

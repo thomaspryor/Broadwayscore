@@ -12,11 +12,15 @@
 const STRATEGY_FLAGS = Object.freeze({
   REFETCH_FREE: Object.freeze({ enabled: true, cost: 'F', note: 'fetchPage free tiers only (cookies-plain, playwright)' }),
   BROWSER_SESSION: Object.freeze({ enabled: true, cost: 'B', note: 'headed subscriber Chrome via browser-outlet-adapters' }),
-  // Stage 3 live pilots 2026-11-09 (30% bar applied per recency band):
-  // recent shows 0/20 accepted (17 archive_empty: Wayback has no capture of a
-  // review this new; 3 not_longer) -> OFF for recent shows; historic shows
-  // (--historic-only) 9/20 = 45% accepted -> stays ON for historic shows.
-  ARCHIVE: Object.freeze({ enabled: true, historicOnly: true, cost: 'F', note: 'earliest non-teaser 200 Wayback capture (pre-paywall); historic shows only' }),
+  // Stage 3 live pilots 2026-11-09: shows opened within ~a month had 0/20
+  // accepted (17 archive_empty: Wayback has no capture of a review this new);
+  // historic shows 9/20 = 45%. BRO-7943: that pilot measured brand-new reviews
+  // but the flag switched ARCHIVE off for the whole 730-day "recent" window
+  // (604 gaps, disabled_recent). Now a minimum show age instead.
+  // Re-pilot 2026-11-21 (BRO-7943): 20 recent gaps from shows 193-673 days
+  // old, 8/20 = 40% accepted (8 archive_empty, 4 extractor_null) -> ON for
+  // shows opened >= 60 days ago.
+  ARCHIVE: Object.freeze({ enabled: true, minShowAgeDays: 60, cost: 'F', note: 'earliest non-teaser 200 Wayback capture (pre-paywall); shows opened >= minShowAgeDays ago' }),
   // DISABLED 2026-11-09 by the Stage 2 decision rule: the NO_URL pilot (20
   // daily-mail / mail-on-sunday files) accepted 0/20, and The Stage
   // URL_WRONG_PAGE run 0/14, all no_serp_match. Part of that is a provider
@@ -29,6 +33,9 @@ const STRATEGY_FLAGS = Object.freeze({
   // dropped, 0 reached the matcher; still 1 candidate / 0 fetched / 0 accepted,
   // under the 30% bar, so this stays off. The Mail pool is proven-zero for
   // another reason (serp-text-recovery-candidates.js: not indexed as reviews).
+  // RE-PILOT 2026-11-21 on non-Mail NO_URL gaps (BRO-7943; times-uk, wsj,
+  // washpost via GAP_PILOT_ENABLE=URL_REDISCOVER, 20 items): 0/20 accepted
+  // (15 no_serp_match, 5 extractor_null). Under the 30% bar: stays off.
   URL_REDISCOVER: Object.freeze({ enabled: false, cost: 'S', note: 'discoverCorrectUrl + identity proof; search budget enforced in url-discovery' }),
   AGG_LINK: Object.freeze({ enabled: false, cost: 'F', note: 'superseded by URL_FIND (its AGG_LINK method)' }),
   // BRO-7171 owner challenge 2026-11-09: free-first url finding for reviews we
@@ -52,7 +59,10 @@ const CLASS_STRATEGIES = Object.freeze({
   NEVER_FETCHED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
   BLOCKED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
   DEFERRED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
-  GARBAGE_PAGE: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'URL_REDISCOVER'],
+  // A garbage page whose stored url keeps returning garbage (refetch abandoned)
+  // is usually the wrong url (BRO-7702: variety a-few-good-men, washpost ha-ha),
+  // so URL_FIND looks for the real one last instead of leaving the row unrouted.
+  GARBAGE_PAGE: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'URL_REDISCOVER', 'URL_FIND'],
   // A dead url is often one an old web-search recovery invented (Stage 4: 56
   // of 64 dead links); URL_FIND looks for the real one.
   URL_DEAD: ['ARCHIVE', 'URL_FIND', 'URL_REDISCOVER'],
@@ -69,7 +79,12 @@ const CLASS_STRATEGIES = Object.freeze({
   UNCLASSIFIED: [],
 });
 
+// REFETCH_FREE skip reasons that mean the free route is done for this review (not a cooldown).
+const REFETCH_SPENT = /^(?:abandoned|max_retries_reached|superseded_at_url|lost_loop_at_url|no_free_tier)$/;
+
 const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'PAID_FETCH']);
+// Classes the blanket PAID_FETCH fallback must not reach (BRO-7943 review).
+const NO_PAID_CLASSES = new Set(['URL_DEAD']);
 
 /**
  * Pick the first usable strategy for one candidate.
@@ -86,7 +101,7 @@ const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'P
  * @param {string|null} [a.only] restrict to one strategy
  * @returns {{strategy: string|null, skipped: Array<{strategy:string, reason:string}>}}
  */
-function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidTierOk = true, recency = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
+function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidTierOk = true, recency = null, showAgeDays = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
   let order = CLASS_STRATEGIES[gapClass] || [];
   // Subscriber outlet (Stage 4): a free refetch of a hard-paywalled page
   // returns the teaser, so the browser goes first; the free refetch stays as
@@ -99,13 +114,33 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
   // free refetch makes zero requests and its "fetch_error" says nothing about
   // the page (BRO-7171, 31 such rows on 2026-11-16). Skip it, and keep the
   // capped paid fetch (BD_REQ_BUDGET) as this url's last route.
-  if (!freeTierOk && paidTierOk && order.includes('REFETCH_FREE') && !order.includes('PAID_FETCH')) order = [...order, 'PAID_FETCH'];
+  // BRO-7943: PAID_FETCH goes last in EVERY url-class order, not only for urls
+  // with no free tier (346 rows, 323 recent, dead-ended once REFETCH_FREE was
+  // abandoned). Spend stays capped by BD_REQ_BUDGET + the ledger cooldown.
+  // Never for a url already classified dead (URL_DEAD): paying to fetch a 404
+  // is no evidence (gap-url-find.js applies the same rule after a hard 404).
+  if (hasUrl && !NO_PAID_CLASSES.has(gapClass) && order.some((x) => URL_STRATEGIES.has(x)) && !order.includes('PAID_FETCH')) order = [...order, 'PAID_FETCH'];
+  // Free sites with no route (broadwayworld, timeout, chicago-reader, blogs):
+  // once the free refetch is spent for good, look for the real url (BRO-7943).
+  // After a free refetch that RAN and got nowhere, the free url search goes
+  // before the paid fetch. A url with no free tier at all (Talkin' Broadway,
+  // BroadwayWorld) is usually right but unreachable for free: paid goes first.
+  if (hasUrl && order.includes('REFETCH_FREE') && !order.includes('URL_FIND')) {
+    const iPaid = order.indexOf('PAID_FETCH');
+    order = freeTierOk && iPaid >= 0 ? [...order.slice(0, iPaid), 'URL_FIND', ...order.slice(iPaid)] : [...order, 'URL_FIND'];
+  }
+  // No stored url: every url-based route skips, so a row of any routed class
+  // would sit unattempted forever (BRO-7702: 2 floor gaps older than 7 days had
+  // no route at all). URL_FIND needs no url; it is the last route for such rows.
+  if (!hasUrl && order.length && !order.includes('URL_FIND')) order = [...order, 'URL_FIND'];
   const skipped = [];
   for (const s of order) {
     if (only && s !== only) continue;
     const f = flags[s];
     if (!f || !f.enabled) { skipped.push({ strategy: s, reason: 'disabled' }); continue; }
     if (f.historicOnly && recency === 'recent') { skipped.push({ strategy: s, reason: 'disabled_recent' }); continue; }
+    // A capture needs time to exist: waiting, not permanent (show_too_new is not in gap-terminal PERMANENT_SKIPS).
+    if (f.minShowAgeDays && showAgeDays != null && showAgeDays < f.minShowAgeDays) { skipped.push({ strategy: s, reason: 'show_too_new' }); continue; }
     if (URL_STRATEGIES.has(s) && !hasUrl) { skipped.push({ strategy: s, reason: 'no_url' }); continue; }
     if (gapClass === 'URL_WRONG_PAGE' && URL_STRATEGIES.has(s) && storedUrlOk && !storedUrlOk.ok) {
       skipped.push({ strategy: s, reason: storedUrlOk.reason }); continue;
@@ -114,6 +149,12 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
     if (s === 'REFETCH_FREE' && !freeTierOk) { skipped.push({ strategy: s, reason: 'no_free_tier' }); continue; }
     // same for the paid route: no token, or Bright Data tier-skipped for the host
     if (s === 'PAID_FETCH' && !paidTierOk) { skipped.push({ strategy: s, reason: 'no_paid_tier' }); continue; }
+    if (s === 'URL_FIND' && hasUrl && order.includes('REFETCH_FREE') && !CLASS_STRATEGIES[gapClass].includes('URL_FIND')) {
+      // Judged from REFETCH_FREE's own state, not the skipped list, so a
+      // --strategy=URL_FIND run (which never visits REFETCH_FREE) still sees it.
+      const rfReason = !freeTierOk ? 'no_free_tier' : eligible('REFETCH_FREE').reason;
+      if (!REFETCH_SPENT.test(String(rfReason))) { skipped.push({ strategy: s, reason: 'refetch_not_spent' }); continue; }
+    }
     const g = runGates[s];
     if (g && !g.ok) { skipped.push({ strategy: s, reason: g.reason }); continue; }
     const e = eligible(s);
@@ -123,6 +164,9 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
   return { strategy: null, skipped };
 }
 
+const { isMajorFulltextOutlet, isRecentProductionShow } = require('./outlet-fulltext');
+// A gap the full-text floor counts: a major outlet on a 2025/26 production (BRO-7702).
+const isFloorGap = (c) => isMajorFulltextOutlet(c.outletId) && isRecentProductionShow(String(c.showId || String(c.reviewKey || '').split('/')[0]));
 const ms = (v) => { const t = Date.parse(v || ''); return Number.isFinite(t) ? t : 0; };
 
 /**
@@ -169,18 +213,15 @@ function collectorRefetchGate(collectorDecision) {
 }
 
 /**
- * Candidate order: recent shows (<=2y) first, then newest show first, then
- * cheapest planned strategy first, then a stable key.
+ * Candidate order (BRO-7942, gap-plan-order.compareByBand): floor outlets on
+ * recent shows, other recent, floor outlets on historic shows, the rest by
+ * outlet tier; never-attempted before retries inside each band; then newest
+ * show, cheapest planned strategy, a stable key.
  */
 function compareCandidates(a, b) {
-  if ((a.recency === 'recent') !== (b.recency === 'recent')) return a.recency === 'recent' ? -1 : 1;
-  const da = ms(a.showDate); const db = ms(b.showDate);
-  if (da !== db) return db - da;
+  // BRO-7942: the full band order lives in gap-plan-order (one comparator for the driver and URL_FIND).
   const cost = { F: 0, B: 1, P: 2, S: 2 };
-  const ca = a.strategy ? cost[STRATEGY_FLAGS[a.strategy].cost] : 9;
-  const cb = b.strategy ? cost[STRATEGY_FLAGS[b.strategy].cost] : 9;
-  if (ca !== cb) return ca - cb;
-  return String(a.reviewKey).localeCompare(String(b.reviewKey));
+  return require('./gap-plan-order').compareByBand({ costOf: (st) => (st ? cost[STRATEGY_FLAGS[st].cost] : 9) })(a, b);
 }
 
 /**

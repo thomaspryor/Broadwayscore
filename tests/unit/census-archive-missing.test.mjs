@@ -19,6 +19,17 @@ test('roundup URL for a different show (cross-show misroute) is not a gap', () =
   assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: RU }], [], 'Hamilton').missing, false);
   assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: RU }], [], 'The Unbelievers').missing, true);
 });
+test('roundup URL on a file excluded as another production is not a gap (Bad Cinderella on Cinderella 2026)', () => {
+  const BC = 'https://www.broadwayworld.com/article/Review-Roundup-Critics-React-To-BAD-CINDERELLA-On-Broadway--Updating-Live-20230323';
+  assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: BC, wrongProduction: true }], [], 'Cinderella').missing, false);
+  assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: BC, wrongShow: true }], [], 'Cinderella').missing, false);
+  assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: BC, wrongUrl: true }], [], 'Cinderella').missing, false);
+  assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: BC }], [], 'Cinderella').missing, true);
+});
+test('a duplicateOf file is the same production: its roundup URL still counts (avenue-q-west-end-2026)', () => {
+  const AQ = 'https://www.broadwayworld.com/westend/article/Review-Roundup-AVENUE-Q-Returns-to-The-West-End-20260417';
+  assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: null }, { bwwRoundupUrl: AQ, duplicateOf: 'a.json' }], [], 'Avenue Q').missing, true);
+});
 test('audit wires the helper into the gap condition', async () => {
   const fs = require('node:fs');
   const src = fs.readFileSync(new URL('../../scripts/audit-opening-night-coverage.js', import.meta.url), 'utf8');

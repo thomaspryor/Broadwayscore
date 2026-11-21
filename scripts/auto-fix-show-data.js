@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isValidSynopsis, classifyBadSynopsis, cutToLastSentence } = require('./lib/synopsis-validation');
+const { isPlaceholderSynopsis } = require('./lib/opening-night-completeness');
 const { setSynopsis } = require('./lib/synopsis-source');
 const SYNOPSIS_SOURCE_BY_CALLER = { TodayTix: 'todaytix', LLM: 'llm' };
 const { isTourShow } = require('./lib/tour-family');
@@ -109,6 +110,19 @@ function loadTodayTixIds() {
   } catch {
     return { shows: {} };
   }
+}
+
+// The show's TodayTix id: data/todaytix-ids.json first, then the id the record
+// itself carries. Discovery writes show.todaytixId without always adding an
+// ids-file row, so a lookup in the file alone never fetched TodayTix for those
+// shows and their synopsis stayed empty (jenufa-off-broadway-2026 and 11 more,
+// BRO-5755). fetch-show-images-auto.js already reads show.todaytixId the same way.
+function resolveTodayTixInfo(show, todayTixIds) {
+  const shows = (todayTixIds && todayTixIds.shows) || {};
+  const fromFile = shows[show.id] || (show.slug && shows[show.slug]);
+  if (fromFile && fromFile.id) return fromFile;
+  if (show.todaytixId) return { id: show.todaytixId, slug: null };
+  return fromFile || null;
 }
 
 function sleep(ms) {
@@ -435,12 +449,16 @@ function callClaudeAPI(prompt, maxTokens, model = CLAUDE_HAIKU) {
   });
 }
 
+function needsSynopsis(show) {
+  return classifyBadSynopsis(show).bad || isPlaceholderSynopsis(show.synopsis);
+}
+
 // Fix synopsis - fetch from TodayTix or generate
-async function fixSynopsis(show, todayTixIds) {
+async function fixSynopsis(show, todayTixIds, { fetchTodayTix = fetchSynopsisFromTodayTix, generate = generateSynopsisWithLLM } = {}) {
   // Regenerate if the synopsis is missing OR bad (refusal / generic
   // production-history placeholder / stale future-tense / invalid). A 50-char
   // length check alone let the 1536 placeholder survive (2026-06-21).
-  if (!classifyBadSynopsis(show).bad) {
+  if (!needsSynopsis(show)) {
     return null; // Already has a good synopsis
   }
 
@@ -462,8 +480,8 @@ async function fixSynopsis(show, todayTixIds) {
     if (!text || !isValidSynopsis(text)) return false;
     // Same badness test that selected this row (stale future tense etc.), so a
     // saved candidate is not flagged bad again on the next run.
-    if (classifyBadSynopsis({ ...show, synopsis: text }).bad) {
-      console.log(`    ✗ rejected ${source} synopsis (fails classifyBadSynopsis)`);
+    if (needsSynopsis({ ...show, synopsis: text })) {
+      console.log(`    ✗ rejected ${source} synopsis (fails synopsis quality checks)`);
       return false;
     }
     // Award claims must agree with awards.json (LLMs and producer copy both invent them, BRO-4853).
@@ -494,8 +512,8 @@ async function fixSynopsis(show, todayTixIds) {
   };
 
   // Try TodayTix first
-  const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
-  const tt = await fetchSynopsisFromTodayTix(show, todayTixInfo);
+  const todayTixInfo = resolveTodayTixInfo(show, todayTixIds);
+  const tt = await fetchTodayTix(show, todayTixInfo);
   if (await accept(tt.text, 'TodayTix', { trusted: tt.trusted })) {
     return `Fetched synopsis from TodayTix for ${show.title}`;
   }
@@ -503,7 +521,7 @@ async function fixSynopsis(show, todayTixIds) {
   // Try LLM generation
   if (ANTHROPIC_API_KEY) {
     console.log(`    Generating via Claude...`);
-    if (await accept(await generateSynopsisWithLLM(show), 'LLM')) {
+    if (await accept(await generate(show), 'LLM')) {
       return `Generated synopsis via Claude for ${show.title}`;
     }
   }
@@ -613,7 +631,7 @@ async function fixCreativeTeam(show, todayTixIds) {
   console.log(`  🎬 Missing creative team, attempting to fetch...`);
 
   // Step 1: TodayTix JSON-LD
-  const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
+  const todayTixInfo = resolveTodayTixInfo(show, todayTixIds);
   let creativeTeam = await fetchCreativeTeamFromTodayTix(show, todayTixInfo);
 
   if (creativeTeam && creativeTeam.length >= 2) {
@@ -745,10 +763,10 @@ function isOpenOrPreviews(s) {
 
 function selectDailyTargets(shows) {
   const byId = new Map((shows || []).map(s => [s.id, s]));
-  const cannotInherit = s => !s.tourOf || !byId.has(s.tourOf) || classifyBadSynopsis(byId.get(s.tourOf)).bad;
+  const cannotInherit = s => !s.tourOf || !byId.has(s.tourOf) || needsSynopsis(byId.get(s.tourOf));
   return (shows || []).filter(s =>
     isOpenOrPreviews(s) ||
-    (isTourShow(s) && s.status !== 'closed' && classifyBadSynopsis(s).bad && cannotInherit(s)));
+    (isTourShow(s) && s.status !== 'closed' && needsSynopsis(s) && cannotInherit(s)));
 }
 
 /**
@@ -778,7 +796,7 @@ function dailyFixBudget(candidateCount, thresholds = STABILITY_THRESHOLDS, budge
 function prioritizeDailyTargets(targets) {
   const bad = [];
   const rest = [];
-  for (const s of targets || []) (classifyBadSynopsis(s).bad ? bad : rest).push(s);
+  for (const s of targets || []) (needsSynopsis(s) ? bad : rest).push(s);
   return bad.concat(rest);
 }
 
@@ -826,7 +844,7 @@ async function main() {
     console.log(`Targeting ${targetShows.length} show(s) by id...\n`);
   } else if (backfillHistorical) {
     // All shows with a missing OR bad synopsis, regardless of status
-    targetShows = data.shows.filter(s => classifyBadSynopsis(s).bad);
+    targetShows = data.shows.filter(needsSynopsis);
     if (limit > 0) {
       targetShows = targetShows.slice(0, limit);
     }
@@ -998,10 +1016,13 @@ if (require.main === module) {
 // show.creativeTeam; tests exercise that gate directly against a fake
 // serpQuery rather than re-implementing its decision logic.
 module.exports = {
+  fixSynopsis,
+  needsSynopsis,
   fixCreativeTeam,
   verifyCreativeTeamViaSerp,
   generateCreativeTeamWithSerpVerification,
   fetchSynopsisFromTodayTix,
+  resolveTodayTixInfo,
   extractSynopsisFromHtml,
   generateSynopsisWithLLM,
   buildSynopsisPrompt,

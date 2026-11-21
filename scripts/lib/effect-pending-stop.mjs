@@ -35,8 +35,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { walkTranscript } from './transcript-scan.mjs';
-import { landedPushIndices, claimsSafeToArchive, runShellCode } from './review-coverage.mjs';
+import { landedPushIndices, claimsSafeToArchive, runShellCode, lastAcceptedClaimIndex } from './review-coverage.mjs';
 import { answerTexts } from './root-cause-stop.mjs';
+import { isMainModule } from './is-main-module.mjs';
 
 const require = createRequire(import.meta.url);
 const { isPendingEffect } = require('./root-cause-close.js');
@@ -189,11 +190,8 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   // Chunk: after the previous accepted-looking SAFE TO ARCHIVE claim (the closing message itself is not in `events` yet, or is the same text).
-  let from = -1;
-  for (let i = events.length - 1; i >= 0; i--) {
-    const e = events[i];
-    if (e.kind === 'assistant_text' && e.text !== lastMessage && claimsSafeToArchive(e.text)) { from = i; break; }
-  }
+  // BRO-7738: a claim another Stop hook refused is not a boundary (lastAcceptedClaimIndex).
+  const from = lastAcceptedClaimIndex(events, lastMessage);
   const chunk = events.slice(from + 1);
   const claim = claimsVerified(lastMessage);
   const problems = [];
@@ -250,7 +248,7 @@ export function main(argv, { env = process.env, now = new Date() } = {}) {
   return 2;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   let code = 0;
   try { code = main(process.argv.slice(2)); } catch (e) { process.stderr.write(`effect-pending-stop: internal error (failing open): ${e && e.message}\n`); code = 0; }
   process.exitCode = code;

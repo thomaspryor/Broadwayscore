@@ -276,6 +276,8 @@ const PROTECTED_FIELDS = [
   // so it must survive a rebase alongside routedFromShowId (BRO-4656).
   'routedPriorVerdicts',
   'urlVerified',
+  // BRO-7841: outlet pulled the review; must survive rewrites by collectors or the dead link comes back.
+  'urlDead', 'urlDeadAt', 'urlDeadUrl', 'urlDeadStatus', 'urlRestoredAt',
   // Provenance marker (BRO-121): distinguishes an automated flip-flop pin
   // from a real human urlVerified decision. Must survive rebases alongside
   // urlVerified itself, or a restored file loses the marker and becomes
@@ -2023,6 +2025,14 @@ function safeWriteReview(filePath, newData, options = {}) {
       // Re-clearing such a file goes through a compare-and-set approved edit,
       // the canonical clear scripts (direct write), or force=true.
       const incomingSnapshot = { ...newData };
+      // Approved plans may only add a manual exclusion to a locked record.
+      // Validate the field and value here too; the rest of the lock stays in force.
+      const approvedLockedNonReviewField = options.approvedLockedNonReviewField;
+      const approvedLockedExclusion = approvedLockedNonReviewField === 'isNonReview'
+        ? incomingSnapshot.isNonReview === true && /^manual \(not a review\)/i.test(String(existing.isNonReviewReason || ''))
+        : approvedLockedNonReviewField === 'isNonReviewReason'
+          && typeof incomingSnapshot.isNonReviewReason === 'string'
+          && /^manual \(not a review\)/i.test(incomingSnapshot.isNonReviewReason);
       const clearHonored = (field) =>
         _isBreadcrumbClear(field, incomingSnapshot, existing)
         && (!_isBreadcrumbClear(field, existing, existing)
@@ -2060,7 +2070,7 @@ function safeWriteReview(filePath, newData, options = {}) {
         // resurrects the flag it just cleared (observed live: Traitors/Space
         // Dogs FP recovery, session 2026-08-02). A lock still wins: clearing
         // flags on a _locked file requires force=true.
-        if (existingIsReal && (incomingIsEmpty || lockedOverride)) {
+        if (existingIsReal && (incomingIsEmpty || (lockedOverride && !(approvedLockedExclusion && field === approvedLockedNonReviewField)))) {
           const intentionalClear = !lockedOverride && incomingIsEmpty
             && clearHonored(field);
           if (intentionalClear) {
@@ -2754,6 +2764,26 @@ function safeWriteReview(filePath, newData, options = {}) {
         // (rebuild-all-reviews.js "ALWAYS use directory showId"), but other
         // readers trust data.showId, so the two disagreeing is still a defect.
         console.warn(`[review-write-guard] showId mismatch in ${path.basename(filePath)}: field says "${newData.showId}" but file lives in "${dirName}"`);
+      }
+    }
+  }
+
+  // BRO-7498: gather-reviews, the shared aggregator writer and excerpt backfills
+  // all reach this point. Check after merging so an existing URL, publication
+  // date or human clearance cannot be hidden by a sparse incoming payload.
+  if (!force) {
+    const { isExcerptCandidate, rejectedShowScoreExcerptReason } = require('./rejected-show-score-excerpt');
+    if (isExcerptCandidate(newData)) {
+      const show = _getShowById(path.basename(path.dirname(filePath)));
+      if (show && !laneBypasses(newData, 'wrongProduction', { openingDate: show.openingDate })) {
+        const reason = rejectedShowScoreExcerptReason(
+          newData, show, [..._showsByIdCache.values()], path.dirname(path.dirname(filePath))
+        );
+        if (reason) {
+          newData.wrongProduction = true;
+          newData.wrongProductionNote = reason;
+          invalidateWrongProductionAutoClear(newData);
+        }
       }
     }
   }

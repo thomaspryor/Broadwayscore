@@ -6,18 +6,19 @@
  */
 
 import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
-import { LLMScoringResult, ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, Bucket } from './types';
+import { LLMScoringResult, ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, Bucket, OpenAIScoringModel } from './types';
 import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES } from './config';
 const { createReviewBudget } = require('../lib/llm-call-budget.js');
 // One builder for every OpenAI scoring request (sync, batch, comparative).
 const { openaiChatBody } = require('../lib/llm-batch.js');
+const { SCORING_OPENAI } = require('../lib/models');
 
 // ========================================
 // TYPES
 // ========================================
 
 interface OpenAIScoringOptions {
-  model: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini' | 'gpt-6-luna' | 'gpt-5.6-luna' | 'gpt-5.6-sol';
+  model: OpenAIScoringModel;
   maxRetries: number;
   verbose: boolean;
 }
@@ -141,7 +142,7 @@ export class OpenAIReviewScorer {
   constructor(apiKey: string, options: Partial<OpenAIScoringOptions> = {}) {
     this.apiKey = apiKey;
     this.options = {
-      model: options.model || 'gpt-4o-mini',
+      model: options.model || SCORING_OPENAI,
       maxRetries: options.maxRetries ?? 5,
       verbose: options.verbose ?? false
     };

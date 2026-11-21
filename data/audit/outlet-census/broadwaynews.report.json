@@ -1,40 +1,83 @@
 {
   "outletId": "broadwaynews",
-  "generatedAt": "2026-10-28T20:44:40.682Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:36:32.417Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
+    "status": "complete",
     "notes": [],
-    "enumerated": 296,
-    "inWindow": 174,
-    "undated": 2,
+    "incomplete": false,
+    "enumerated": 298,
+    "inWindow": 176,
+    "undated": 0,
     "meta": {
-      "fetched": 0,
+      "fetched": 298,
       "failed": 0
     }
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 39,
-      "out-of-window": 2,
-      "held": 58,
+      "not-review": 41,
+      "out-of-window": 1,
+      "held": 60,
       "held-alt-url": 52,
-      "gap": 14,
-      "held-unmatched": 4,
-      "catalog-gap": 5
+      "gap": 12,
+      "catalog-gap": 6,
+      "held-unmatched": 4
     },
     "viaTitleVariant": {
       "gap": 3,
       "held": 2,
       "held-alt-url": 3
     },
-    "recall": 0.887,
-    "recallWithCatalog": 0.853
+    "recall": 0.903,
+    "recallWithCatalog": 0.862
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 6
+    },
+    "2025-26": {
+      "out-of-window": 1,
+      "not-review": 4
+    },
+    "2024-25": {
+      "held": 25,
+      "gap": 10,
+      "catalog-gap": 1,
+      "not-review": 3,
+      "held-alt-url": 1
+    },
+    "2021-22": {
+      "held-alt-url": 32,
+      "catalog-gap": 2,
+      "held-unmatched": 1,
+      "not-review": 7
+    },
+    "2022-23": {
+      "not-review": 9,
+      "catalog-gap": 2,
+      "held": 7,
+      "held-alt-url": 18,
+      "gap": 1
+    },
+    "2023-24": {
+      "not-review": 11,
+      "held": 28,
+      "held-unmatched": 3,
+      "gap": 1,
+      "catalog-gap": 1
+    },
+    "2020-21": {
+      "held-alt-url": 1,
+      "not-review": 1
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 221,
-    "notEnumerated": 73,
+    "rowsInWindow": 228,
+    "notEnumerated": 76,
     "noUrl": 3,
     "samples": [
       {
@@ -80,6 +123,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "almost-famous-2022",
+        "url": "https://broadwaynews.com/2022/11/03/almost-famous-may-be-a-new-rock-musical-but-it-strikes-tired-notes/",
+        "publishDate": "2022-11-03",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "american-buffalo-2022",
         "url": "https://broadwaynews.com/2022/04/14/review-american-buffalo-proves-another-mans-trash-isnt-always-a-treasure/",
         "publishDate": "2022-04-15",
@@ -120,6 +169,12 @@
         "url": "https://broadwaynews.com/2023/03/19/review-bob-fosses-dancin-is-eight-counts-of-wonderful/",
         "publishDate": "2023-03-19",
         "why": "not-enumerated"
+      },
+      {
+        "showId": "camelot-2023",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
       },
       {
         "showId": "camelot-2023",
@@ -264,18 +319,6 @@
         "url": "https://broadwaynews.com/2022/10/01/review-leopoldstadt-is-a-slow-moving-family-portrait-that-packs-a-surprising-punch/",
         "publishDate": "2022-10-02",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "life-of-pi-2023",
-        "url": "https://broadwaynews.com/2023/03/30/review-life-of-pi-earns-its-stripes-as-a-complex-dramedy-balancing-the-real-and-surreal/",
-        "publishDate": "2023-03-30",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "macbeth-2022",
-        "url": "https://broadwaynews.com/2022/04/29/review-an-evasive-macbeth-strains-for-coherence/",
-        "publishDate": "2022-04-29",
-        "why": "not-enumerated"
       }
     ]
   },
@@ -349,8 +392,7 @@
       "outOfWindow": [
         "glengarry-glen-ross-2012",
         "glengarry-glen-ross-2005",
-        "glengarry-glen-ross-1984",
-        "the-first-1981"
+        "glengarry-glen-ross-1984"
       ]
     },
     {
@@ -378,15 +420,19 @@
       ]
     },
     {
-      "url": "https://www.broadwaynews.com/the-broadway-review-death-becomes-her-slays/",
-      "headline": "The Broadway Review: ‘Death Becomes Her’ slays",
-      "publishDate": "2024-11-22",
+      "url": "https://www.broadwaynews.com/the-broadway-review-our-town-measures-life-in-a-series-of-small-moments/",
+      "headline": "The Broadway Review: ‘Our Town’ measures life in a series of small moments",
+      "publishDate": "2024-10-11",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "death-becomes-her-2024"
+        "our-town-2024"
       ],
-      "outOfWindow": []
+      "outOfWindow": [
+        "our-town-2002",
+        "our-town-1988",
+        "small-off-broadway-2026"
+      ]
     },
     {
       "url": "https://www.broadwaynews.com/the-broadway-review-yellow-face-is-the-only-valid-reason-to-perform-race/",
@@ -409,30 +455,6 @@
         "home-2024"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://www.broadwaynews.com/review-just-for-us-is-an-incisive-comedy-for-everyone/",
-      "headline": "Review: ‘Just For Us’ is an incisive comedy for everyone",
-      "publishDate": "2023-06-27",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "just-for-us-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://www.broadwaynews.com/review-take-me-out-is-playing-in-the-wrong-ballpark/",
-      "headline": "Review: ‘Take Me Out’ is playing in the wrong ballpark",
-      "publishDate": "2022-04-05",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "take-me-out-2022"
-      ],
-      "outOfWindow": [
-        "take-me-out-2003"
-      ]
     },
     {
       "url": "https://www.broadwaynews.com/review/",
@@ -490,17 +512,6 @@
       "heldUrls": [
         "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
         "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/"
-      ]
-    },
-    {
-      "url": "https://www.broadwaynews.com/review-once-upon-a-one-more-time-thrillingly-weds-fairy-tale-princesses-and-pop/",
-      "headline": "Review: ‘Once Upon a One More Time’ thrillingly weds fairy-tale princesses and pop",
-      "publishDate": "2023-06-23",
-      "matched": [
-        "once-upon-a-one-more-time-2023"
-      ],
-      "heldUrls": [
-        "(no url)"
       ]
     },
     {
@@ -699,6 +710,17 @@
       ],
       "heldUrls": [
         "https://broadwaynews.com/2022/04/10/review-in-birthday-candles-the-cake-is-too-sweet/"
+      ]
+    },
+    {
+      "url": "https://www.broadwaynews.com/review-take-me-out-is-playing-in-the-wrong-ballpark/",
+      "headline": "Review: ‘Take Me Out’ is playing in the wrong ballpark",
+      "publishDate": "2022-04-05",
+      "matched": [
+        "take-me-out-2022"
+      ],
+      "heldUrls": [
+        "https://broadwaynews.com/2022/04/04/review-take-me-out-is-playing-in-the-wrong-ballpark/"
       ]
     },
     {
@@ -962,6 +984,7 @@
         "camelot-2023"
       ],
       "heldUrls": [
+        "(no url)",
         "https://www.broadwaynews.com/2023/04/13/review-aaron-sorkins-revival-of-camelot-trades-wizardly-magic-for-moralism/"
       ]
     },
@@ -1074,6 +1097,15 @@
   "ambiguous": [],
   "catalogGaps": [
     {
+      "url": "https://www.broadwaynews.com/the-broadway-review-old-friends-offers-new-memories-for-lifelong-sondheim-fans-and-first-timers-alike/",
+      "headline": "The Broadway Review: ‘Old Friends’ offers new memories for lifelong Sondheim fans and first-timers alike",
+      "publishDate": "2025-04-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
       "url": "https://www.broadwaynews.com/the-broadway-review-clearing-the-fog-from-melissa-etheridge-my-window/",
       "headline": "The Broadway Review: Clearing the fog from ‘Melissa Etheridge: My Window’",
       "publishDate": "2023-09-29",
@@ -1111,30 +1143,21 @@
     },
     {
       "url": "https://www.broadwaynews.com/tag/review/",
-      "headline": "Review - Broadway News",
-      "publishDate": null,
+      "headline": "Review",
+      "publishDate": "2022-10-05",
+      "dateSoft": true,
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": []
     }
   ],
+  "otherMarketReviews": [],
   "outOfWindow": [
     {
       "url": "https://www.broadwaynews.com/the-first-review-that-audiences-trust-isnt-the-one-you-think/",
       "headline": "The first review that audiences trust isn't the one you think",
       "publishDate": "2026-07-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "the-first-1981"
-      ]
-    },
-    {
-      "url": "https://www.broadwaynews.com/the-broadway-review-old-friends-offers-new-memories-for-lifelong-sondheim-fans-and-first-timers-alike/",
-      "headline": "The Broadway Review: ‘Old Friends’ offers new memories for lifelong Sondheim fans and first-timers alike",
-      "publishDate": "2025-04-09",
       "via": null,
       "held": [],
       "matched": [],

@@ -4,6 +4,10 @@
  * Usage: node scripts/lib/verify-data-backfill.js --show=ID[,ID] [--images] [--reviews=N] [--type=TYPE]
  * --type (BRO-6506): every listed show must carry that type (a type correction,
  * where "show found" alone passed before the fix landed).
+ * A city-hub slug from data/city-hubs.json (e.g. washington-dc) with --images checks that
+ * hub's dual-model image audit instead (BRO-7265): no confirmed `image:` item left open in
+ * data/audit/city-hub-dual/<hub>/triage.json or its scorecard.json, and every item marked
+ * fixed has a real poster on disk. Untriaged image flags print as warnings.
  * Exit: 0 expectations met, 1 unmet, 2 invalid arguments or unreadable data.
  * Live state belongs in this on-demand probe, never in blocking unit tests.
  */
@@ -11,7 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { hasRealImage } = require('./show-images.js');
+const { hasRealImage, imageOnDisk } = require('./show-images.js');
 const { hasHelpFlag } = require('./cli-help.js');
 
 // BRO-6716: a card filed `--show=all` meaning "every show". The id regex accepted it as
@@ -45,6 +49,31 @@ function verifyBackfill(shows, reviews, options, imageCheck = hasRealImage) {
   });
 }
 
+/** Image items of one city hub's dual-model audit (BRO-7265). Pure apart from the poster predicate. */
+function verifyHubImages(hub, triage, scorecard, shows, posterCheck = imageOnDisk) {
+  const problems = [];
+  const items = (triage && triage.items) || {};
+  const byId = new Map(shows.map((s) => [s.id, s]));
+  const triaged = new Set();
+  for (const [key, item] of Object.entries(items)) {
+    if (!key.startsWith('image:')) continue;
+    triaged.add(key);
+    if (!item || item.verdict !== 'confirmed') continue;
+    const id = key.slice('image:'.length);
+    if (item.status !== 'fixed') { problems.push(`${key} still open`); continue; }
+    const show = byId.get(id);
+    if (!show || !posterCheck(show.images && show.images.poster)) problems.push(`${key} marked fixed but no poster on disk`);
+  }
+  const listed = ((scorecard && scorecard.remaining) || []).filter((r) => String(r && r.item).startsWith('image:'));
+  if (listed.length && !problems.some((p) => p.endsWith('still open'))) problems.push(`scorecard.json still lists ${listed.length} open image item(s); rerun audit-city-hub-dual-model.js report --city=${hub} --write`);
+  const untriaged = [...new Set(((scorecard && scorecard.flags) || []).filter((f) => f && f.kind === 'image').map((f) => `image:${f.id}`))].filter((k) => !triaged.has(k));
+  return { id: hub, ok: problems.length === 0, problems, warnings: untriaged.map((k) => `${k} flagged, not triaged`) };
+}
+
+function loadHubSlugs(root) {
+  try { return new Set(Object.keys(JSON.parse(fs.readFileSync(path.join(root, 'data/city-hubs.json'), 'utf8')).hubs || {})); } catch { return new Set(); }
+}
+
 function main(args = process.argv.slice(2), root = path.join(__dirname, '..', '..')) {
   if (hasHelpFlag(args)) {
     console.log('Usage: node scripts/lib/verify-data-backfill.js --show=ID[,ID] [--images] [--reviews=N] [--type=TYPE]');
@@ -58,12 +87,24 @@ function main(args = process.argv.slice(2), root = path.join(__dirname, '..', '.
       ? JSON.parse(fs.readFileSync(path.join(root, 'data/reviews.json'), 'utf8')) : [];
     const reviews = Array.isArray(rawReviews) ? rawReviews : rawReviews.reviews;
     if (!Array.isArray(shows) || !Array.isArray(reviews)) throw new Error('Expected shows and reviews arrays');
-    const results = verifyBackfill(shows, reviews, options);
+    const hubSlugs = loadHubSlugs(root);
+    const hubs = options.showIds.filter((id) => hubSlugs.has(id));
+    if (hubs.length && (!options.images || options.minReviews || options.type)) throw new Error(`city hub ${hubs[0]} takes --images only (its dual-model image audit)`);
+    const hubResults = hubs.map((hub) => {
+      const dir = path.join(root, 'data/audit/city-hub-dual', hub);
+      const read = (f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+      return verifyHubImages(hub, read('triage.json'), read('scorecard.json'), shows, (p) => imageOnDisk(p, { publicDir: path.join(root, 'public') }));
+    });
+    for (const r of hubResults) {
+      console.log(`${r.ok ? 'PASS' : 'FAIL'} ${r.id}: ${r.ok ? 'no open image items in the hub audit' : r.problems.join('; ')}`);
+      for (const w of r.warnings) console.log(`  WARN ${w}`);
+    }
+    const results = verifyBackfill(shows, reviews, { ...options, showIds: options.showIds.filter((id) => !hubSlugs.has(id)) });
     for (const r of results) {
       const passed = options.minReviews ? `${r.scoredReviews} scored reviews` : 'show found';
       console.log(`${r.ok ? 'PASS' : 'FAIL'} ${r.id}: ${r.ok ? `${passed}${options.images ? ', usable image found' : ''}${options.type ? `, type ${options.type}` : ''}` : r.problems.join('; ')}`);
     }
-    return results.every(r => r.ok) ? 0 : 1;
+    return results.every(r => r.ok) && hubResults.every(r => r.ok) ? 0 : 1;
   } catch (error) {
     console.error(error.message);
     return 2;
@@ -71,4 +112,4 @@ function main(args = process.argv.slice(2), root = path.join(__dirname, '..', '.
 }
 
 if (require.main === module) process.exitCode = main();
-module.exports = { parseArgs, verifyBackfill, main, RESERVED_SELECTOR_IDS };
+module.exports = { parseArgs, verifyBackfill, verifyHubImages, main, RESERVED_SELECTOR_IDS };

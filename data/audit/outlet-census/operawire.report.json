@@ -1,41 +1,121 @@
 {
   "outletId": "operawire",
-  "generatedAt": "2026-10-28T20:44:37.892Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:36:22.060Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
+    "status": "complete",
     "notes": [],
-    "enumerated": 1465,
-    "inWindow": 1465,
+    "incomplete": false,
+    "enumerated": 1493,
+    "inWindow": 1493,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 1086,
-      "out-of-window": 302,
-      "held": 21,
-      "catalog-gap": 56
+      "not-review": 1148,
+      "out-of-window": 258,
+      "held": 26,
+      "catalog-gap": 59,
+      "held-other-market": 1,
+      "gap": 1
     },
     "viaTitleVariant": {
-      "not-review": 1
+      "not-review": 5
     },
-    "recall": 1,
-    "recallWithCatalog": 0.273
+    "recall": 0.963,
+    "recallWithCatalog": 0.302
+  },
+  "seasons": {
+    "2026-27": {
+      "not-review": 62,
+      "out-of-window": 17,
+      "held": 7,
+      "catalog-gap": 5,
+      "held-other-market": 1
+    },
+    "2025-26": {
+      "not-review": 286,
+      "out-of-window": 53,
+      "catalog-gap": 9,
+      "held": 16
+    },
+    "2024-25": {
+      "not-review": 229,
+      "out-of-window": 54,
+      "gap": 1,
+      "catalog-gap": 7,
+      "held": 1
+    },
+    "2023-24": {
+      "not-review": 198,
+      "out-of-window": 43,
+      "catalog-gap": 15
+    },
+    "2022-23": {
+      "not-review": 191,
+      "out-of-window": 52,
+      "catalog-gap": 11,
+      "held": 2
+    },
+    "2021-22": {
+      "out-of-window": 31,
+      "not-review": 151,
+      "catalog-gap": 10
+    },
+    "2020-21": {
+      "not-review": 31,
+      "out-of-window": 8,
+      "catalog-gap": 2
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 22,
+    "rowsInWindow": 31,
     "notEnumerated": 0,
     "noUrl": 0,
     "samples": []
   },
-  "gaps": [],
+  "gaps": [
+    {
+      "url": "https://operawire.com/bayreuth-festival-2025-review-parsifal/",
+      "headline": "Bayreuth Festival 2025 Review: Parsifal",
+      "publishDate": "2025-08-06",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "parsifal-off-broadway-2013"
+      ],
+      "outOfWindow": [
+        "parsifal-off-broadway-2027"
+      ]
+    }
+  ],
   "heldAltUrl": [],
   "misfiles": [],
   "heldUnmatched": [],
   "ambiguous": [],
   "catalogGaps": [
+    {
+      "url": "https://operawire.com/the-frick-collection-2026-review-outraimer-in-the-garden-court/",
+      "headline": "The Frick Collection 2026 Review: Music of Siena in the Garden Court",
+      "publishDate": "2026-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://operawire.com/opera-lafayette-2026-27-review-les-surprises-de-lamour/",
+      "headline": "Opera Lafayette 2026-27 Review: Les Surprises de l’Amour",
+      "publishDate": "2026-11-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
     {
       "url": "https://operawire.com/teatro-real-de-madrid-2026-27-review-fire-guitar-legend/",
       "headline": "Teatro Real de Madrid 2026-27 Review: Fire, Guitar, Legend",
@@ -193,6 +273,15 @@
       "url": "https://operawire.com/new-york-philharmonic-2024-25-review-also-sprach-zarathustra/",
       "headline": "New York Philharmonic 2024-25 Review: Also sprach Zarathustra",
       "publishDate": "2025-01-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://operawire.com/cal-performances-2024-review-asmik-grigorian-lukas-geniusas-in-recital/",
+      "headline": "Cal Performances 2024 Review: Asmik Grigorian & Lukas Geniušas in Recital",
+      "publishDate": "2025-01-05",
       "via": null,
       "held": [],
       "matched": [],
@@ -541,7 +630,43 @@
       "outOfWindow": []
     }
   ],
+  "otherMarketReviews": [],
   "outOfWindow": [
+    {
+      "url": "https://operawire.com/the-croatian-national-theatre-in-zagreb-2026-27-review-carmen/",
+      "headline": "The Croatian National Theatre in Zagreb 2026–27 Review: Carmen",
+      "publishDate": "2026-11-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/wexford-festival-opera-2026-review-the-first-festival/",
+      "headline": "Wexford Festival Opera 2026 Review: The First Festival",
+      "publishDate": "2026-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://operawire.com/dutch-national-opera-2026-27-review-st-john-passion/",
+      "headline": "Dutch National Opera 2026-27 Review: St. John Passion",
+      "publishDate": "2026-11-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "passion-1994",
+        "passion-2004",
+        "passion-1983"
+      ]
+    },
     {
       "url": "https://operawire.com/teatro-real-de-madrid-2026-27-review-riccardo-primo-re-dinghilterra/",
       "headline": "Teatro Real de Madrid 2026-27 Review: Riccardo Primo, Re d’Inghilterra",
@@ -606,28 +731,6 @@
       "matched": [],
       "outOfWindow": [
         "manon-off-broadway-2027"
-      ]
-    },
-    {
-      "url": "https://operawire.com/opera-national-de-nancy-lorraine-2026-27-review-otello/",
-      "headline": "Opéra National de Nancy-Lorraine 2026-27 Review: Otello",
-      "publishDate": "2026-10-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "otello-off-broadway-2027"
-      ]
-    },
-    {
-      "url": "https://operawire.com/royal-ballet-opera-2026-27-review-parsifal/",
-      "headline": "Royal Ballet & Opera 2026-27 Review: Parsifal",
-      "publishDate": "2026-10-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "parsifal-off-broadway-2027"
       ]
     },
     {
@@ -720,17 +823,6 @@
       ]
     },
     {
-      "url": "https://operawire.com/bayreuth-festival-2026-review-parsifal/",
-      "headline": "Bayreuth Festival 2026 Review: Parsifal",
-      "publishDate": "2026-08-25",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "parsifal-off-broadway-2027"
-      ]
-    },
-    {
       "url": "https://operawire.com/salzburg-festival-2026-review-cosi-fan-tutte/",
       "headline": "Salzburg Festival 2026 Review: Così fan tutte",
       "publishDate": "2026-08-21",
@@ -797,17 +889,6 @@
       ]
     },
     {
-      "url": "https://operawire.com/staatsoper-berlin-2025-26-review-samson-et-dalila/",
-      "headline": "Staatsoper Berlin 2025-26 Review: Samson et Dalila",
-      "publishDate": "2026-07-11",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "samson-et-dalila-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://operawire.com/royal-ballet-and-opera-2025-26-review-la-boheme/",
       "headline": "Royal Ballet & Opera 2025-26 Review: La Bohème",
       "publishDate": "2026-07-06",
@@ -860,6 +941,17 @@
       "matched": [],
       "outOfWindow": [
         "don-giovanni-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/highmark-mann-center-for-the-performing-arts-2026-review-a-hundred-years-on/",
+      "headline": "Highmark Mann Center for the Performing Arts 2026 Review: A Hundred Years On",
+      "publishDate": "2026-07-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
       ]
     },
     {
@@ -930,17 +1022,6 @@
       ]
     },
     {
-      "url": "https://operawire.com/royal-opera-house-2026-review-samson-et-dalila/",
-      "headline": "Royal Ballet & Opera 2025-26 Review: Samson et Dalila",
-      "publishDate": "2026-05-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "samson-et-dalila-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://operawire.com/opera-de-montreal-2026-review-carmen/",
       "headline": "Opéra de Montréal 2025-26 Review: Carmen",
       "publishDate": "2026-05-23",
@@ -974,20 +1055,8 @@
       "outOfWindow": [
         "a-midsummer-nights-dream-1996",
         "a-midsummer-nights-dream-1971",
-        "a-midsummer-nights-dream-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://operawire.com/elbphilharmonie-in-hamburg-2026-review-brockes-passion/",
-      "headline": "Elbphilharmonie in Hamburg 2025-26 Review: Brockes-Passion",
-      "publishDate": "2026-05-07",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "passion-1994",
-        "passion-2004",
-        "passion-1983"
+        "a-midsummer-nights-dream-off-broadway-2025",
+        "a-midsummer-nights-dream-off-broadway-2017"
       ]
     },
     {
@@ -1022,29 +1091,8 @@
       "outOfWindow": [
         "a-midsummer-nights-dream-1996",
         "a-midsummer-nights-dream-1971",
-        "a-midsummer-nights-dream-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://operawire.com/national-theatre-in-prague-2026-review-parsifal/",
-      "headline": "National Theatre in Prague 2025-26 Review: Parsifal",
-      "publishDate": "2026-04-02",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "parsifal-off-broadway-2027"
-      ]
-    },
-    {
-      "url": "https://operawire.com/amigos-canarios-de-la-opera-2025-26-review-otello/",
-      "headline": "Amigos Canarios de la Opera 2025-26 Review: Otello",
-      "publishDate": "2026-03-31",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "otello-off-broadway-2027"
+        "a-midsummer-nights-dream-off-broadway-2025",
+        "a-midsummer-nights-dream-off-broadway-2017"
       ]
     },
     {
@@ -1126,8 +1174,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "eugene-onegin-off-broadway-2026",
-        "onegin-off-broadway-2026"
+        "eugene-onegin-off-broadway-2026"
       ]
     },
     {
@@ -1213,8 +1260,7 @@
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "amahl-and-the-night-visitors-1970",
-        "the-visitors-off-broadway-2026"
+        "amahl-and-the-night-visitors-1970"
       ]
     },
     {
@@ -1274,25 +1320,14 @@
       ]
     },
     {
-      "url": "https://operawire.com/san-francisco-opera-2025-26-review-parsifal/",
-      "headline": "San Francisco Opera 2025-26 Review: Parsifal",
-      "publishDate": "2025-11-09",
+      "url": "https://operawire.com/elbphilharmonie-hamburg-2025-26-review-venus-adonis-dido-aeneas/",
+      "headline": "Elbphilharmonie Hamburg 2025-26 Review: Venus & Adonis / Dido & Aeneas",
+      "publishDate": "2025-11-12",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "parsifal-off-broadway-2027"
-      ]
-    },
-    {
-      "url": "https://operawire.com/opera-national-du-rhin-in-strasbourg-2025-26-review-otello/",
-      "headline": "Opéra national du Rhin in Strasbourg 2025-26 Review: Otello",
-      "publishDate": "2025-11-06",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "otello-off-broadway-2027"
+        "venus-off-broadway-2017"
       ]
     },
     {
@@ -1345,17 +1380,6 @@
       ]
     },
     {
-      "url": "https://operawire.com/royal-ballet-and-opera-2025-26-review-tosca-cast-b/",
-      "headline": "Royal Ballet & Opera 2025-26 Review: Tosca (Cast B)",
-      "publishDate": "2025-10-13",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "tosca-off-broadway-2026"
-      ]
-    },
-    {
       "url": "https://operawire.com/komische-oper-berlin-2025-review-jesus-christ-superstar/",
       "headline": "Komische Oper Berlin 2025 Review: Jesus Christ Superstar",
       "publishDate": "2025-10-06",
@@ -1401,50 +1425,6 @@
       "matched": [],
       "outOfWindow": [
         "tristan-und-isolde-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://operawire.com/opernhaus-zurich-2025-26-review-der-rosenkavalier/",
-      "headline": "Opernhaus Zürich 2025-26 Review: Der Rosenkavalier",
-      "publishDate": "2025-09-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "der-rosenkavalier-off-broadway-2027"
-      ]
-    },
-    {
-      "url": "https://operawire.com/canadas-national-arts-centre-orchestra-2025-26-review-tosca/",
-      "headline": "Canada’s National Arts Centre Orchestra 2025-26 Review: Tosca",
-      "publishDate": "2025-09-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "tosca-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://operawire.com/royal-ballet-opera-2025-26-review-tosca/",
-      "headline": "Royal Ballet & Opera 2025-26 Review: Tosca",
-      "publishDate": "2025-09-15",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "tosca-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://operawire.com/teatro-la-fenice-2025-review-tosca/",
-      "headline": "Teatro La Fenice 2024-25 Review: Tosca",
-      "publishDate": "2025-09-15",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "tosca-off-broadway-2026"
       ]
     },
     {
@@ -1519,17 +1499,6 @@
       ]
     },
     {
-      "url": "https://operawire.com/bayreuth-festival-2025-review-parsifal/",
-      "headline": "Bayreuth Festival 2025 Review: Parsifal",
-      "publishDate": "2025-08-06",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "parsifal-off-broadway-2027"
-      ]
-    },
-    {
       "url": "https://operawire.com/baltic-opera-festival-2025-review-the-monsters-voice/",
       "headline": "Baltic Opera Festival 2025 Review: The Monster’s Voice",
       "publishDate": "2025-08-02",
@@ -1538,17 +1507,6 @@
       "matched": [],
       "outOfWindow": [
         "the-monsters-off-broadway-2026"
-      ]
-    },
-    {
-      "url": "https://operawire.com/tanglewood-2025-review-tosca/",
-      "headline": "Tanglewood 2025 Review: Tosca",
-      "publishDate": "2025-07-29",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "tosca-off-broadway-2026"
       ]
     },
     {
@@ -1695,18 +1653,8 @@
       "outOfWindow": [
         "a-midsummer-nights-dream-1996",
         "a-midsummer-nights-dream-1971",
-        "a-midsummer-nights-dream-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://operawire.com/princeton-festival-2025-review-tosca/",
-      "headline": "Princeton Festival 2025 Review: Tosca",
-      "publishDate": "2025-06-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "tosca-off-broadway-2026"
+        "a-midsummer-nights-dream-off-broadway-2025",
+        "a-midsummer-nights-dream-off-broadway-2017"
       ]
     },
     {
@@ -1730,6 +1678,2051 @@
       "outOfWindow": [
         "salome-2003",
         "salome-1992"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-regio-di-torino-2025-26-review-hamlet/",
+      "headline": "Teatro Regio di Torino 2024-25 Review: Hamlet",
+      "publishDate": "2025-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-paris-2024-25-review-manon/",
+      "headline": "Opéra National de Paris 2024-25 Review: Manon",
+      "publishDate": "2025-06-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "manon-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://operawire.com/bayerische-staatsoper-2024-25-review-manon-lescaut/",
+      "headline": "Bayerische Staatsoper 2024-25 Review: Manon Lescaut",
+      "publishDate": "2025-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "manon-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-ballet-opera-2024-25-review-carmen/",
+      "headline": "Royal Ballet & Opera 2024-25 Review: Carmen",
+      "publishDate": "2025-04-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-du-rhin-in-strasbourg-2024-25-review-la-traviata/",
+      "headline": "Opéra national du Rhin in Strasbourg 2024-25 Review: La Traviata",
+      "publishDate": "2025-04-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-traviata-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/komische-oper-berlin-2024-25-review-akhnaten/",
+      "headline": "Komische Oper Berlin 2024-25 Review: Akhnaten",
+      "publishDate": "2025-04-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "akhnaten-off-broadway-2019",
+        "akhnaten-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2024-25-review-turandot/",
+      "headline": "Royal Opera House 2024-25 Review: Turandot",
+      "publishDate": "2025-03-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/the-atlanta-opera-2024-25-review-macbeth/",
+      "headline": "The Atlanta Opera 2024-25 Review: Macbeth",
+      "publishDate": "2025-03-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia2025-review-candide/",
+      "headline": "Opera Australia 2025 Review: Candide",
+      "publishDate": "2025-03-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "candide-1974"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-lorraine-2024-25-review-eugene-onegin/",
+      "headline": "Opéra National de Lorraine 2024-25 Review: Eugene Onegin",
+      "publishDate": "2025-03-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eugene-onegin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-alla-scala-2024-25-review-eugene-onegin/",
+      "headline": "Teatro alla Scala 2024-25 Review: Eugene Onegin",
+      "publishDate": "2025-03-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eugene-onegin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-de-monte-carlo-2025-review-tristan-und-isolde/",
+      "headline": "Opéra de Monte-Carlo 2025 Review: Tristan und Isolde",
+      "publishDate": "2025-03-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/slovak-national-opera-2025-review-carmen/",
+      "headline": "Slovak National Opera 2025 Review: Carmen",
+      "publishDate": "2025-02-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/deutsche-oper-berlin-2024-25-review-turandot/",
+      "headline": "Deutsche Oper Berlin 2024-25 Review: Turandot",
+      "publishDate": "2025-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-paris-2025-review-i-puritani/",
+      "headline": "Opéra National de Paris 2025 Review: I Puritani",
+      "publishDate": "2025-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "i-puritani-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opernhaus-zurich-2024-25-review-manon-lescaut/",
+      "headline": "Opernhaus Zürich 2024-25 Review: Manon Lescaut",
+      "publishDate": "2025-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "manon-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://operawire.com/latvian-national-opera-2025-review-salome/",
+      "headline": "Latvian National Opera 2025 Review: Salome",
+      "publishDate": "2025-02-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "salome-2003",
+        "salome-1992"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-ballet-and-opera-2024-25-review-festen/",
+      "headline": "Royal Ballet and Opera 2024-25 Review: Festen",
+      "publishDate": "2025-02-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "festen-2006"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-theatre-de-metz-2024-25-review-cosi-fan-tutte/",
+      "headline": "Opéra-Théâtre de Metz 2024-25 Review: Così fan tutte",
+      "publishDate": "2025-02-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cosi-fan-tutte-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-real-de-madrid-2024-25-review-eugene-onegin/",
+      "headline": "Teatro Real de Madrid 2024-25 Review: Eugene Onegin",
+      "publishDate": "2025-02-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eugene-onegin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-2025-review-la-traviata/",
+      "headline": "Opera Australia 2025 Review: La Traviata",
+      "publishDate": "2025-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-traviata-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/abao-bilbao-opera-2024-25-review-tristan-und-isolde/",
+      "headline": "ABAO Bilbao Opera 2024-25 Review: Tristan und Isolde",
+      "publishDate": "2025-01-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/estonian-national-opera-2024-25-review-carmen/",
+      "headline": "Estonian National Opera 2024-25 Review: Carmen",
+      "publishDate": "2025-01-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-ballet-opera-2024-25-review-jenufa/",
+      "headline": "Royal Ballet & Opera 2024–25 Review: Jenůfa",
+      "publishDate": "2025-01-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jenufa-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-muscat-2024-25-review-la-fille-du-regiment/",
+      "headline": "Royal Opera House Muscat 2024-25 Review: La Fille du Régiment",
+      "publishDate": "2024-12-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-fille-du-regiment-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/cape-town-opera-2024-review-porgy-and-bess/",
+      "headline": "Cape Town Opera 2024 Review: Porgy and Bess",
+      "publishDate": "2024-12-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "porgy-and-bess-1976",
+        "porgy-and-bess-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/janacek-brno-festival-2024-review-the-other-place/",
+      "headline": "Janáček Brno Festival 2024 Review: The Other Place",
+      "publishDate": "2024-12-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-other-place-2013",
+        "the-other-place-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/janacek-brno-festival-2024-review-jenufa/",
+      "headline": "Janáček Brno Festival 2024 Review: Jenůfa",
+      "publishDate": "2024-12-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jenufa-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/torontos-opera-revue-2024-review-ruckus-at-the-redwood/",
+      "headline": "Toronto’s Opera Revue 2024 Review: Ruckus! At The Redwood",
+      "publishDate": "2024-11-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "redwood-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/san-francisco-opera-2024-25-review-carmen/",
+      "headline": "San Francisco Opera 2024-25 Review: Carmen",
+      "publishDate": "2024-11-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/san-francisco-opera-2024-review-tristan-und-isolde/",
+      "headline": "San Francisco Opera 2024-25 Review: Tristan und Isolde",
+      "publishDate": "2024-10-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-ballet-and-opera-2024-25-review-eugene-onegin/",
+      "headline": "Royal Ballet and Opera 2024-25 Review: Eugene Onegin",
+      "publishDate": "2024-10-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eugene-onegin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/palau-de-les-arts-2024-25-review-manon/",
+      "headline": "Palau de Les Arts 2024-25 Review: Manon",
+      "publishDate": "2024-10-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "manon-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://operawire.com/northern-ireland-opera-2024-review-eugene-onegin/",
+      "headline": "Northern Ireland Opera 2024 Review: Eugene Onégin",
+      "publishDate": "2024-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eugene-onegin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/deutsche-oper-berlin-2024-25-review-carmen/",
+      "headline": "Deutsche Oper Berlin 2024-25 Review: Carmen",
+      "publishDate": "2024-09-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/goteborg-opera-2024-25-review-carmen/",
+      "headline": "Göteborg Opera 2024-25 Review: Carmen",
+      "publishDate": "2024-09-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2024-review-la-traviata/",
+      "headline": "Royal Opera House 2024-25 Review: La Traviata",
+      "publishDate": "2024-09-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-traviata-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/salzburg-festival-2024-review-don-giovanni/",
+      "headline": "Salzburg Festival 2024 Review: Don Giovanni",
+      "publishDate": "2024-08-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "don-giovanni-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/central-city-opera-2024-review-la-fanciulla-del-west/",
+      "headline": "Central City Opera 2024 Review: La Fanciulla del West",
+      "publishDate": "2024-08-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-fanciulla-del-west-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-theatre-saint-louis-2024-review-galileo-galilei/",
+      "headline": "Opera Theatre Saint Louis 2024 Review: Galileo Galilei",
+      "publishDate": "2024-08-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "galileo-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/baltic-opera-festival-2024-review-turandot/",
+      "headline": "Baltic Opera Festival 2024 Review: Turandot",
+      "publishDate": "2024-08-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/janiec-opera-company-of-the-brevard-music-center-review-2024-the-threepenny-opera/",
+      "headline": "Janiec Opera Company of the Brevard Music Center Review 2024: The Threepenny Opera",
+      "publishDate": "2024-08-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-threepenny-opera-2006",
+        "threepenny-opera-1976"
+      ]
+    },
+    {
+      "url": "https://operawire.com/glyndebourne-opera-festival-2024-review-tristan-und-isolde/",
+      "headline": "Glyndebourne Opera Festival 2024 Review: Tristan und Isolde",
+      "publishDate": "2024-08-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-theatre-saint-louis-2024-review-julius-caesar/",
+      "headline": "Opera Theatre Saint Louis 2024 Review: Julius Caesar",
+      "publishDate": "2024-07-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "julius-caesar-2005",
+        "julius-caesar-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-2024-review-hamlet/",
+      "headline": "Opera Australia 2024 Review: Hamlet",
+      "publishDate": "2024-07-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/festival-daix-en-provence-2024-review-madama-butterfly/",
+      "headline": "Festival d’Aix-en-Provence 2024 Review: Madama Butterfly",
+      "publishDate": "2024-07-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "madama-butterfly-off-broadway-2026",
+        "madama-butterfly-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-alla-scala-2023-2024-review-turandot/",
+      "headline": "Teatro alla Scala 2023-24 Review: Turandot",
+      "publishDate": "2024-07-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opernhaus-zurich-2023-24-review-andrea-chenier/",
+      "headline": "Opernhaus Zürich 2023-24 Review: Andrea Chénier",
+      "publishDate": "2024-07-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "andrea-chenier-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-real-2023-24-review-madama-butterfly-cast-c/",
+      "headline": "Teatro Real de Madrid 2023-24 Review: Madama Butterfly (Cast C)",
+      "publishDate": "2024-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "madama-butterfly-off-broadway-2026",
+        "madama-butterfly-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/noicattaro-lirica-2024-review-turandot/",
+      "headline": "Noicattaro Lirica 2024 Review: Turandot",
+      "publishDate": "2024-07-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2023-24-review-cosi-fan-tutte/",
+      "headline": "Royal Opera House 2023-24 Review: Così fan tutte",
+      "publishDate": "2024-07-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cosi-fan-tutte-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-theatre-saint-louis-2024-review-la-boheme/",
+      "headline": "Opera Theatre Saint Louis 2024 Review: La Bohème",
+      "publishDate": "2024-07-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-2024-review-watershed-the-death-of-doctor-duncan/",
+      "headline": "Opera Australia 2024, Review: Watershed: The Death of Doctor Duncan",
+      "publishDate": "2024-06-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-doctor-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://operawire.com/new-york-city-center-encores-2024-review-titanic/",
+      "headline": "New York City Center Encores! 2024 Review: Titanic",
+      "publishDate": "2024-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "titanic-1997"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-muscat-2023-24-review-la-boheme/",
+      "headline": "Royal Opera House Muscat 2023-24 Review: La Bohème",
+      "publishDate": "2024-06-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/bergen-festival-2024-review-edvard-griegs-peer-gynt/",
+      "headline": "Bergen Festival 2024 Review: Edvard Grieg’s ‘Peer Gynt’",
+      "publishDate": "2024-06-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peer-gynt-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2023-24-review-andrea-chenier/",
+      "headline": "Royal Opera House 2023-24 Review: Andrea Chénier",
+      "publishDate": "2024-05-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "andrea-chenier-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-de-paris-2024-review-salome/",
+      "headline": "Opéra de Paris 2024 Review: Salome",
+      "publishDate": "2024-05-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "salome-2003",
+        "salome-1992"
+      ]
+    },
+    {
+      "url": "https://operawire.com/glyndebourne-festival-opera-2024-review-carmen/",
+      "headline": "Glyndebourne Festival Opera 2024 Review: Carmen",
+      "publishDate": "2024-05-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2023-24-review-celebrating-22-years-of-sir-antonio-pappano/",
+      "headline": "Royal Opera House 2023-24 Review: Celebrating 22 Years of Sir Antonio Pappano",
+      "publishDate": "2024-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-de-jaren-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-la-fenice-2024-review-don-giovanni/",
+      "headline": "Teatro La Fenice 2024 Review: Don Giovanni",
+      "publishDate": "2024-05-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "don-giovanni-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2023-24-review-carmen/",
+      "headline": "Royal Opera House 2023-24 Review: Carmen",
+      "publishDate": "2024-04-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-dellopera-di-roma-2023-24-review-la-sonnambula/",
+      "headline": "Teatro dell’Opera di Roma 2023-24 Review: La Sonnambula",
+      "publishDate": "2024-04-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-sonnambula-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-forward-festival-2024-review-oedipus-rex-antigone/",
+      "headline": "Opera Forward Festival 2024 Review: Oedipus Rex & Antigone",
+      "publishDate": "2024-04-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "oedipus-rex-1984",
+        "antigone-1971",
+        "antigone-this-play-i-read-in-high-school-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/handa-opera-on-sydney-harbour-review-2024-west-side-story/",
+      "headline": "Handa Opera on Sydney Harbour 2024 Review: West Side Story",
+      "publishDate": "2024-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "west-side-story-2020",
+        "west-side-story-2009",
+        "west-side-story-1980"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-de-paris-review-2024-the-exterminating-angel/",
+      "headline": "Opéra National de Paris Review 2024: The Exterminating Angel",
+      "publishDate": "2024-03-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "angel-1978"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-paris-2023-24-review-la-traviata/",
+      "headline": "Opéra National de Paris 2023-24 Review: La Traviata",
+      "publishDate": "2024-03-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-traviata-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2023-24-review-la-boheme/",
+      "headline": "Royal Opera House 2023–24 Review: La bohème",
+      "publishDate": "2024-02-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/carnegie-hall-2023-24-review-lady-macbeth-of-mtsensk/",
+      "headline": "Carnegie Hall 2023-24 Review: Lady Macbeth of Mtsensk",
+      "publishDate": "2024-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/boston-symphony-orchestra-2024-review-lady-macbeth-of-mtsensk/",
+      "headline": "Boston Symphony Orchestra 2023-24 Review: Lady Macbeth of Mtsensk",
+      "publishDate": "2024-01-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-2024-review-orpheus-and-eurydice/",
+      "headline": "Opera Australia 2024 Review: Orpheus and Eurydice",
+      "publishDate": "2024-01-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eurydice-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2023-24-review-elektra/",
+      "headline": "Royal Opera House 2023-24 Review: Elektra",
+      "publishDate": "2024-01-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "elektra-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-de-oviedo-2023-24-review-la-traviata/",
+      "headline": "Ópera de Oviedo 2023-24 Review: La Traviata",
+      "publishDate": "2023-12-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-traviata-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/brno-national-theater-2023-24-review-salome/",
+      "headline": "Brno National Theater 2023-24 Review: Salome",
+      "publishDate": "2023-12-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "salome-2003",
+        "salome-1992"
+      ]
+    },
+    {
+      "url": "https://operawire.com/glyndebourne-opera-festival-2023-24-review-don-giovanni/",
+      "headline": "Glyndebourne Opera Festival 2023-24 Review: Don Giovanni",
+      "publishDate": "2023-11-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "don-giovanni-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/wexford-festival-opera-2023-review-la-fille-du-regiment/",
+      "headline": "Wexford Festival Opera 2023 Review: La Fille du régiment",
+      "publishDate": "2023-11-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-fille-du-regiment-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/san-francisco-opera-2023-review-the-revolution-of-steve-jobs/",
+      "headline": "San Francisco Opera 2023-24 Review: ‘The (R)evolution of Steve Jobs’",
+      "publishDate": "2023-09-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "steve-off-broadway-2015"
+      ]
+    },
+    {
+      "url": "https://operawire.com/new-york-philharmonic-2023-24-review-west-side-story-in-concert/",
+      "headline": "New York Philharmonic 2023-24 Review: ‘West Side Story in Concert’",
+      "publishDate": "2023-09-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "west-side-story-2020",
+        "west-side-story-2009",
+        "west-side-story-1980"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-de-oviedo-2023-24-review-manon/",
+      "headline": "Opera de Oviedo 2023-24 Review: Manon",
+      "publishDate": "2023-09-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "manon-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-swedish-opera-2023-review-madama-butterfly/",
+      "headline": "Royal Swedish Opera 2023 Review: Madama Butterfly",
+      "publishDate": "2023-09-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "madama-butterfly-off-broadway-2026",
+        "madama-butterfly-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/salzburg-festival-2023-review-the-greek-passion/",
+      "headline": "Salzburg Festival 2023 Review: The Greek Passion",
+      "publishDate": "2023-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "passion-1994",
+        "passion-2004",
+        "passion-1983"
+      ]
+    },
+    {
+      "url": "https://operawire.com/salzburg-festival-2023-review-macbeth/",
+      "headline": "Salzburg Festival 2023 Review: Macbeth",
+      "publishDate": "2023-08-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-holland-park-2023-review-la-boheme/",
+      "headline": "Opera Holland Park 2023 Review: La bohème",
+      "publishDate": "2023-07-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/festival-daix-en-provence-2023-review-cosi-fan-tutte/",
+      "headline": "Festival d’Aix-en-Provence 2023 Review: Così Fan Tutte",
+      "publishDate": "2023-07-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cosi-fan-tutte-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/festival-daix-en-provence-2023-review-the-threepenny-opera/",
+      "headline": "Festival d’Aix-en-Provence 2023 Review: The Threepenny Opera",
+      "publishDate": "2023-07-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-threepenny-opera-2006",
+        "threepenny-opera-1976"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-real-2022-23-review-turandot/",
+      "headline": "Teatro Real 2022-23 Review: Turandot",
+      "publishDate": "2023-07-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/glyndebourne-festival-opera-2023-review-a-midsummer-nights-dream/",
+      "headline": "Glyndebourne Festival Opera 2023 Review: A Midsummer Night’s Dream",
+      "publishDate": "2023-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-midsummer-nights-dream-1996",
+        "a-midsummer-nights-dream-1971",
+        "a-midsummer-nights-dream-off-broadway-2025",
+        "a-midsummer-nights-dream-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-grattacielo-2023-review-don-giovanni/",
+      "headline": "Teatro Grattacielo 2023 Review: Don Giovanni",
+      "publishDate": "2023-06-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "don-giovanni-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/theatre-des-champs-elysees-2023-review-la-boheme/",
+      "headline": "Théâtre des Champs-Elysées 2022-23 Review: La Bohème",
+      "publishDate": "2023-06-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-alla-scala-2022-23-review-macbeth/",
+      "headline": "Teatro alla Scala 2022-23 Review: Macbeth",
+      "publishDate": "2023-06-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/grange-park-opera-review-2023-tristan-und-isolde/",
+      "headline": "Grange Park Opera 2023 Review: Tristan und Isolde",
+      "publishDate": "2023-06-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/komische-oper-berlin-2022-23-review-hamlet/",
+      "headline": "Komische Oper Berlin 2022-23 Review: Hamlet",
+      "publishDate": "2023-05-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-paris-2022-23-review-la-boheme/",
+      "headline": "Opéra National de Paris 2022-23 Review: La Bohème",
+      "publishDate": "2023-05-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-comique-2022-23-review-carmen/",
+      "headline": "Opéra Comique 2022-23 Review: Carmen",
+      "publishDate": "2023-05-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/palau-de-les-arts-2022-23-review-tristan-und-isolde/",
+      "headline": "Palau de Les Arts 2022-23 review: Tristan und Isolde",
+      "publishDate": "2023-05-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-carolina-2022-23-review-la-traviata/",
+      "headline": "Opera Carolina 2022-23 Review: La Traviata",
+      "publishDate": "2023-05-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-traviata-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/vino-theater-review-2023-a-ghosts-endeavor/",
+      "headline": "Vino Theater Review 2023: ‘A Ghost’s Endeavor’",
+      "publishDate": "2023-04-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghosts-1982",
+        "ghosts-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-on-the-harbor-2023-review-madama-butterfly/",
+      "headline": "Opera Australia 2023 Review: Madama Butterfly",
+      "publishDate": "2023-04-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "madama-butterfly-off-broadway-2026",
+        "madama-butterfly-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/herbst-theater-2023-review-prosperos-island/",
+      "headline": "Herbst Theater 2023 Review: Prospero’s Island",
+      "publishDate": "2023-04-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://operawire.com/chamber-music-society-of-lincoln-center-2023-review-voices-of-the-americas/",
+      "headline": "Chamber Music Society of Lincoln Center 2023 Review: Voices of the Americas",
+      "publishDate": "2023-04-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "voices-1972"
+      ]
+    },
+    {
+      "url": "https://operawire.com/the-haydn-foundation-bolzano-2023-review-peter-pan-the-dark-side/",
+      "headline": "The Haydn Foundation, Bolzano 2023 Review: Peter Pan, The Dark Side",
+      "publishDate": "2023-04-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-1991",
+        "peter-pan-1998",
+        "peter-pan-1999",
+        "peter-pan-1979"
+      ]
+    },
+    {
+      "url": "https://operawire.com/theatre-des-champs-elysees-2022-23-review-cosi-fan-tutte/",
+      "headline": "Théâtre des Champs-Elysées 2022-23 Review: Così fan tutte",
+      "publishDate": "2023-03-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cosi-fan-tutte-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/turandot-royal-opera-house-2022-23-review-2/",
+      "headline": "Royal Opera House 2022-23 Review: Turandot",
+      "publishDate": "2023-03-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2022-23-review-turandot/",
+      "headline": "Royal Opera House 2022-23 Review: Turandot",
+      "publishDate": "2023-03-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/paris-opera-2022-23-review-hamlet/",
+      "headline": "Opera de Paris 2022-23 Review: Hamlet",
+      "publishDate": "2023-03-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/gran-teatre-del-liceu-2022-23-review-macbeth-cast-b/",
+      "headline": "Gran Teatre del Liceu 2022-23 Review: Macbeth (Cast B)",
+      "publishDate": "2023-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/gran-teatre-del-liceu-2022-23-review-macbeth-cast-a/",
+      "headline": "Gran Teatre del Liceu 2022-23 Review: Macbeth (Cast A)",
+      "publishDate": "2023-03-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/les-arts-florissants-2022-23-review-orphee-et-eurydice/",
+      "headline": "Les Arts Florissants 2022-23 Review: Orphée et Eurydice",
+      "publishDate": "2023-02-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eurydice-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/chamber-music-society-of-lincoln-center-2022-23-review-winterfest-joelle-harvey/",
+      "headline": "Chamber Music Society of Lincoln Center 2022-23 Review: WinterFest – Joélle Harvey",
+      "publishDate": "2023-02-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harvey-2012"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-lirico-di-cagliari-2023-review-gloria/",
+      "headline": "Teatro Lirico di Cagliari 2023 Review: Gloria",
+      "publishDate": "2023-02-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "gloria-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/theatre-lathenee-louis-jouvet-2023-review-orphee-et-eurydice/",
+      "headline": "Thêatre l’Athénée Louis Jouvet 2023 Review: Orphée et Eurydice",
+      "publishDate": "2023-02-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eurydice-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-paris-2022-23-review-carmen-cast-b/",
+      "headline": "Opéra National de Paris 2022-23 Review: Carmen (Cast B)",
+      "publishDate": "2023-02-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/beacon-theater-2023-review-maria-callas-letters-memoirs/",
+      "headline": "Beacon Theater 2023 Review: Maria Callas: Letters & Memoirs",
+      "publishDate": "2023-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-beacon-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/dutch-national-opera-academy-2023-review-lisola-disabitata-arianna-a-naxos-what-price-confidence/",
+      "headline": "Dutch National Opera Academy 2023 Review: L’Isola Disabitata, Arianna a Naxos & What Price Confidence?",
+      "publishDate": "2023-01-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-price-2017",
+        "the-price-1999",
+        "the-price-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-irish-national-opera-2023-review-least-like-the-other-searching-for-rosemary-kennedy/",
+      "headline": "Royal Opera House / Irish National Opera 2023 Review: Least Like The Other, Searching for Rosemary Kennedy",
+      "publishDate": "2023-01-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-review-2023-la-boheme/",
+      "headline": "Opera Australia Review 2023: La Bohème",
+      "publishDate": "2023-01-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-paris-2022-23-review-tristan-und-isolde/",
+      "headline": "Opéra National de Paris 2022-23 Review: Tristan und Isolde",
+      "publishDate": "2023-01-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-review-2023-don-giovanni/",
+      "headline": "Opera Australia Review 2023: Don Giovanni",
+      "publishDate": "2023-01-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "don-giovanni-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-real-de-madrid-2022-23-review-la-sonnambula-cast-a/",
+      "headline": "Teatro Real de Madrid 2022-23 Review: La Sonnambula (Cast A)",
+      "publishDate": "2023-01-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-sonnambula-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-real-de-madrid-2022-23-review-la-sonnambula-cast-b/",
+      "headline": "Teatro Real de Madrid 2022-23 Review: La Sonnambula (Cast B)",
+      "publishDate": "2022-12-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-sonnambula-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/san-francisco-opera-2022-23-review-orpheus-and-eurydice/",
+      "headline": "San Francisco Opera 2022-23 Review: Orpheus and Eurydice",
+      "publishDate": "2022-11-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eurydice-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-paris-2022-23-review-carmen/",
+      "headline": "Opéra National de Paris 2022-23 Review: Carmen",
+      "publishDate": "2022-11-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/san-francisco-opera-2022-23-review-la-traviata/",
+      "headline": "San Francisco Opera 2022-23 Review: La Traviata",
+      "publishDate": "2022-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-traviata-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/wexford-festival-opera-2022-review-cinderella/",
+      "headline": "Wexford Festival Opera 2022 Review: Cinderella",
+      "publishDate": "2022-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cinderella-the-musical-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-real-2022-23-review-aida-first-cast/",
+      "headline": "Teatro Real 2022-23 Review: Aida (First Cast)",
+      "publishDate": "2022-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2022-23-review-la-boheme/",
+      "headline": "Royal Opera House 2022-23 Review: La Bohème",
+      "publishDate": "2022-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-paris-2022-23-review-salome/",
+      "headline": "Opéra National de Paris 2022-23 Review: Salome",
+      "publishDate": "2022-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "salome-2003",
+        "salome-1992"
+      ]
+    },
+    {
+      "url": "https://operawire.com/mastervoices-2022-review-carmen/",
+      "headline": "MasterVoices 2022 Review: Carmen",
+      "publishDate": "2022-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/abao-2022-23-review-i-puritani/",
+      "headline": "ABAO 2022-23 Review: I Puritani",
+      "publishDate": "2022-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "i-puritani-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/san-francisco-opera-2022-23-review-eugene-onegin/",
+      "headline": "San Francisco Opera 2022-23 Review: Eugene Onegin",
+      "publishDate": "2022-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eugene-onegin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/seattle-opera-2022-23-review-tristan-und-isolde/",
+      "headline": "Seattle Opera 2022-23 Review: Tristan und Isolde",
+      "publishDate": "2022-10-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2022-23-review-salome/",
+      "headline": "Royal Opera House 2022-23 Review: Salome",
+      "publishDate": "2022-09-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "salome-2003",
+        "salome-1992"
+      ]
+    },
+    {
+      "url": "https://operawire.com/death-of-classical-2022-review-watching-birds-at-the-end-of-the-world/",
+      "headline": "Death of Classical 2022 Review: Watching Birds at the End of the World",
+      "publishDate": "2022-08-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "end-of-the-world-1984"
+      ]
+    },
+    {
+      "url": "https://operawire.com/bayreuth-festival-2022-review-tristan-und-isolde/",
+      "headline": "Bayreuth Festival 2022 Review: Tristan und Isolde",
+      "publishDate": "2022-08-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/festival-daix-en-provence-2022-review-salome/",
+      "headline": "Festival d’Aix-en-Provence 2022 Review: Salome",
+      "publishDate": "2022-07-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "salome-2003",
+        "salome-1992"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-holland-park-2021-22-review-little-women/",
+      "headline": "Opera Holland Park 2022 Review: Little Women",
+      "publishDate": "2022-07-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "little-women-2005",
+        "little-women-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-dellopera-di-roma-2021-22-review-carmen/",
+      "headline": "Teatro dell’Opera di Roma 2021-22 Review: Carmen",
+      "publishDate": "2022-07-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-2022-review-la-traviata/",
+      "headline": "Opera Australia 2022 Review: La Traviata",
+      "publishDate": "2022-07-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-traviata-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-2022-review-madama-butterfly/",
+      "headline": "Opera Australia 2022 Review: Madama Butterfly",
+      "publishDate": "2022-07-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "madama-butterfly-off-broadway-2026",
+        "madama-butterfly-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-college-of-music-2021-22-review-flight/",
+      "headline": "Royal College of Music 2021-22 Review: Flight",
+      "publishDate": "2022-07-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "flight-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2021-22-review-madama-butterfly/",
+      "headline": "Royal Opera House 2021-22 Review: Madama Butterfly",
+      "publishDate": "2022-07-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "madama-butterfly-off-broadway-2026",
+        "madama-butterfly-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/san-francisco-opera-2021-22-review-don-giovanni/",
+      "headline": "San Francisco Opera 2021-22 Review: Don Giovanni",
+      "publishDate": "2022-06-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "don-giovanni-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-holland-park-2022-review-eugene-onegin/",
+      "headline": "Opera Holland Park 2022 Review: Eugene Onegin",
+      "publishDate": "2022-06-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eugene-onegin-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-holland-park-2022-review-carmen/",
+      "headline": "Opera Holland Park 2022 Review: Carmen",
+      "publishDate": "2022-06-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/seattle-opera-2021-22-review-the-marriage-of-figaro/",
+      "headline": "Seattle Opera 2021-22 Review: The Marriage of Figaro",
+      "publishDate": "2022-05-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-marriage-of-figaro-1985"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-dellopera-di-roma-2021-22-review-turandot/",
+      "headline": "Teatro dell’Opera di Roma 2021-22 Review: Turandot",
+      "publishDate": "2022-04-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/accademia-nazionale-di-santa-cecilia-2021-22-review-turandot/",
+      "headline": "Accademia Nazionale di Santa Cecilia 2021-22 Review: Turandot",
+      "publishDate": "2022-03-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-in-a-box-2022-review-carmen/",
+      "headline": "Opera in a Box 2022 Review: Carmen",
+      "publishDate": "2022-03-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "carmen-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-national-de-paris-2021-22-review-don-giovanni/",
+      "headline": "Opéra National de Paris 2021-22 Review: Don Giovanni",
+      "publishDate": "2022-02-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "don-giovanni-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-2022-review-the-marriage-of-figaro/",
+      "headline": "Opera Australia 2022 Review: The Marriage of Figaro",
+      "publishDate": "2022-02-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-marriage-of-figaro-1985"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-australia-2022-review-turandot/",
+      "headline": "Opera Australia 2022 Review: Turandot",
+      "publishDate": "2022-01-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "turandot-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-real-2021-22-review-la-boheme-alternative-cast-performances/",
+      "headline": "Teatro Real 2021-22 Review: La Bohème (Alternative Cast Performances)",
+      "publishDate": "2022-01-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/teatro-real-2021-22-review-la-boheme/",
+      "headline": "Teatro Real 2021-22 Review: La Bohème",
+      "publishDate": "2022-01-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-royal-de-wallonie-liege-2021-22-review-otello-ossia-il-moro-di-venezia/",
+      "headline": "Opéra Royal de Wallonie-Liège 2021-22 Review: Otello Ossia il Moro di Venezia",
+      "publishDate": "2021-12-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "otello-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://operawire.com/palau-de-les-arts-2021-22-review-madama-butterfly/",
+      "headline": "Palau de les Arts 2021-22 Review: Madama Butterfly",
+      "publishDate": "2021-12-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "madama-butterfly-off-broadway-2026",
+        "madama-butterfly-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-roma-2021-22-review-julius-caesar/",
+      "headline": "Teatro dell’Opera di Roma 2021-22 Review: Julius Caesar",
+      "publishDate": "2021-12-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "julius-caesar-2005",
+        "julius-caesar-off-broadway-2017"
+      ]
+    },
+    {
+      "url": "https://operawire.com/donizetti-opera-festival-2021-review-medea-in-corinto/",
+      "headline": "Donizetti Opera Festival 2021 Review: Medea in Corinto",
+      "publishDate": "2021-12-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "medea-2002",
+        "medea-1994",
+        "medea-1973",
+        "medea-1982",
+        "medea-off-broadway-2026",
+        "medea-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://operawire.com/donizetti-opera-festival-2021-review-la-fille-du-regiment/",
+      "headline": "Donizetti Opera Festival 2021 Review: La Fille du Regiment",
+      "publishDate": "2021-11-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-fille-du-regiment-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://operawire.com/san-francisco-opera-2021-22-review-cosi-fan-tutte/",
+      "headline": "San Francisco Opera 2021-22 Review: Così Fan Tutte",
+      "publishDate": "2021-11-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cosi-fan-tutte-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-review-2021-macbeth/",
+      "headline": "Royal Opera House Review 2021: Macbeth",
+      "publishDate": "2021-11-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/seattle-opera-2021-22-review-la-boheme/",
+      "headline": "Seattle Opera 2021-22 Review: La Bohème",
+      "publishDate": "2021-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/royal-opera-house-2021-22-review-jenufa/",
+      "headline": "Royal Opera House 2021-22 Review: Jenůfa",
+      "publishDate": "2021-10-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jenufa-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/san-francisco-opera-2021-22-review-live-and-in-concert-the-homecoming/",
+      "headline": "San Francisco Opera 2021-22 Review: Live and In Concert: The Homecoming",
+      "publishDate": "2021-09-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-homecoming-2007"
+      ]
+    },
+    {
+      "url": "https://operawire.com/glyndebourne-festival-2021-review-tristan-und-isolde/",
+      "headline": "Glyndebourne Festival 2021 Review: Tristan und Isolde",
+      "publishDate": "2021-08-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-holland-park-2021-review-the-pirates-of-penzance/",
+      "headline": "Opera Holland Park 2021 Review: The Pirates of Penzance",
+      "publishDate": "2021-08-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-pirates-of-penzance-1981",
+        "the-pirates-of-penzance-1976"
+      ]
+    },
+    {
+      "url": "https://operawire.com/the-players-2021-review-madison-marie-mcintosh-keith-chambers-in-concert/",
+      "headline": "The Players 2021 Review: Madison Marie McIntosh & Keith Chambers in Concert",
+      "publishDate": "2021-07-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "players-1978"
+      ]
+    },
+    {
+      "url": "https://operawire.com/festival-daix-en-provence-2021-review-innocence/",
+      "headline": "Festival d’Aix-En-Provence 2021 Review: Innocence",
+      "publishDate": "2021-07-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "innocence-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/bayerische-staatsoper-2020-21-review-tristan-und-isolde/",
+      "headline": "Bayerische Staatsoper 2020-21 Review: Tristan und Isolde",
+      "publishDate": "2021-07-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tristan-und-isolde-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-holland-park-2021-review-wonderful-town/",
+      "headline": "Opera Holland Park 2021 Review: Wonderful Town",
+      "publishDate": "2021-07-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wonderful-town-2003"
+      ]
+    },
+    {
+      "url": "https://operawire.com/grange-park-opera-2021-review-la-boheme/",
+      "headline": "Grange Park Opera 2021 Review: La Bohème",
+      "publishDate": "2021-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "la-boheme-2002",
+        "la-boheme-off-broadway-2025",
+        "la-boheme-off-broadway-2026",
+        "la-boheme-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://operawire.com/opera-holland-park-2021-review-the-marriage-of-figaro/",
+      "headline": "Opera Holland Park 2021 Review: The Marriage of Figaro",
+      "publishDate": "2021-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-marriage-of-figaro-1985"
       ]
     }
   ]

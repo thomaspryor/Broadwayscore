@@ -1,6 +1,13 @@
 name: Backfill Cast Data (Web Search)
 
 on:
+  # BRO-7381: weekly, so Off-Broadway/West End shows without a cast file get one without a manual
+  # dispatch. Safe unattended: without --force the script skips every show that already has a cast
+  # file (including tombstones) and never touches hand-verified ones; scheduled runs cycle Off-Broadway / West End / Off-West End by week (regional shows are
+  # left to manual runs: their SERP casts are the likeliest wrong-production ones), cap at 40 shows,
+  # and a rotating window so persistently failing shows do not hold the same slots every week.
+  schedule:
+    - cron: '23 9 * * 1'
   workflow_dispatch:
     inputs:
       category:
@@ -12,6 +19,7 @@ on:
           - all
           - off-broadway
           - west-end
+          - off-west-end
       show_filter:
         description: 'Optional: show ID to process, or several as a comma-separated list with NO spaces'
         required: false
@@ -79,6 +87,14 @@ jobs:
           fi
           if [ -n "${INPUT_SHOW_FILTER}" ]; then
             FLAGS="$FLAGS --show-filter=${INPUT_SHOW_FILTER}"
+          fi
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            INPUT_LIMIT=40
+            # One category per week, cycling; the window shifts once per full cycle so each
+            # category advances through its list instead of re-trying the same shows.
+            WEEK=$(( $(date +%s) / 604800 ))
+            CATS=(off-broadway west-end off-west-end)
+            FLAGS="$FLAGS --category=${CATS[$(( WEEK % 3 ))]} --rotate=$(( WEEK / 3 ))"
           fi
           if [ "${INPUT_LIMIT}" != "0" ] && [ -n "${INPUT_LIMIT}" ]; then
             FLAGS="$FLAGS --limit=${INPUT_LIMIT}"

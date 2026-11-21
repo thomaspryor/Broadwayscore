@@ -110,6 +110,7 @@ function readLedger(file) {
  */
 const IMPACT = {
   outlet: 'The site may be missing new reviews from this outlet.',
+  pipeline: 'A discovery pipeline is running but has stopped producing review files.',
   workflow: 'A scheduled job that keeps the site up to date has stopped succeeding.',
 };
 

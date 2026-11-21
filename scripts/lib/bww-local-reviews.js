@@ -163,6 +163,10 @@ function classifyReview(review, ctx) {
   const text = `${review.title} ${review.venue}`;
   if (NOT_THEATRE_RE.test(`${text} ${review.headline || ''}`)) return { status: 'excluded', reason: 'not-theatre' };
   if (KIDS_VENUE_RE.test(review.venue)) return { status: 'excluded', reason: 'childrens-theatre' };
+  // A row added from this very review (bww-review-add cites it in evidenceUrls) covers it, wherever the row is filed
+  // (a Berkshires house gets its own city, so the hub/title match alone reports it missing every day).
+  const cited = review.url && shows.find((s) => Array.isArray(s.evidenceUrls) && s.evidenceUrls.includes(review.url));
+  if (cited) return { status: cited.category === 'tour' || cited.market === 'tour' ? 'covered-tour' : 'covered', showId: cited.id };
   const candidates = shows.filter((s) => runCovers(s, review.date) && titleMatches(s.title, review.title));
   // Local: a regional row in this hub, or in the metro its venue resolves to, or at the same house (BWW's LA page
   // reviews The Old Globe; Laguna Playhouse rows carry laguna-beach-ca).

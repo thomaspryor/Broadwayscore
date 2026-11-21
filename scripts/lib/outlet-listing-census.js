@@ -200,6 +200,14 @@ async function sitemapFileItems(url, src, cutoff, { fetchText, log, status }, de
       if (reviewKids.length < children.length && !src.sourceSaysReview) noteIncomplete(status, 'partial', `${children.length - reviewKids.length} non-review sitemap child(ren) skipped under ${url}`);
       children = reviewKids;
     }
+    // A source that opts in (Slant, BRO-7812) reads only the newest children here: its index lists them
+    // oldest first and a 7-day window never reaches the old ones, so a run costs a few proxy calls, not 34.
+    // The full archive is the census CLI's job (scripts/outlet-census.js), which ignores this option.
+    if (src.tailChildren > 0 && children.length > src.tailChildren) {
+      // Order by the number in the file name (post-sitemap.xml = 0), not by index position, so a reordered index cannot hide the newest.
+      const n = (c) => Number((/(\d+)\.xml(?:$|\?)/.exec(c) || [, 0])[1]);
+      children = [...children].sort((a, b) => n(a) - n(b)).slice(-src.tailChildren);
+    }
     if (children.length > MAX_SITEMAP_CHILDREN) noteIncomplete(status, 'capped', `${children.length - MAX_SITEMAP_CHILDREN} of ${children.length} sitemap children beyond the first ${MAX_SITEMAP_CHILDREN} unread under ${url}`);
     const out = [];
     for (const c of children.slice(0, MAX_SITEMAP_CHILDREN)) {
@@ -207,7 +215,11 @@ async function sitemapFileItems(url, src, cutoff, { fetchText, log, status }, de
     }
     return out;
   }
-  return parseSitemapXml(xml, cutoff, src.urlFilter);
+  const got = parseSitemapXml(xml, cutoff, src.urlFilter);
+  // ignoreLastmod (Slant, BRO-7812): its lastmod is touched in bulk (a whole archive on one day), so it is only
+  // good enough to drop stale entries. Never let it stand in for the publish date: undated items are dated from
+  // the page by confirmOnPage, so an old review cannot be filed as this week's.
+  return src.ignoreLastmod ? got.map((i) => ({ ...i, publishDate: null })) : got;
 }
 
 /**

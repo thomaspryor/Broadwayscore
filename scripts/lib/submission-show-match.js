@@ -58,6 +58,55 @@ function findMatchingShows(showName, shows) {
   });
 }
 
+// A review is plausible for a production from shortly before it opens (previews)
+// to a while after it closes (late reviews, retrospectives).
+const PREVIEW_LEAD_DAYS = 60;
+const POST_CLOSE_GRACE_DAYS = 120;
+const DAY_MS = 86400e3;
+
+function dayMs(iso) {
+  const t = Date.parse(`${String(iso || '').slice(0, 10)}T00:00:00Z`);
+  return Number.isNaN(t) ? null : t;
+}
+
+/** Does this review date fall in the production's run window? null when the show or date is undated. */
+function reviewDateFitsShow(show, reviewDate) {
+  const r = dayMs(reviewDate);
+  // Previews can start long before opening; use the earlier of the two.
+  const opens = [dayMs(show && show.previewsStartDate), dayMs(show && show.openingDate)].filter((x) => x != null);
+  const open = opens.length ? Math.min(...opens) : null;
+  if (r == null || open == null) return null;
+  if (r < open - PREVIEW_LEAD_DAYS * DAY_MS) return false;
+  const close = dayMs(show.closingDate);
+  // A closed show with no closing date is unknown, never "fits forever".
+  if (close == null) return show.status === 'closed' ? null : true;
+  return r <= close + POST_CLOSE_GRACE_DAYS * DAY_MS;
+}
+
+/**
+ * Issue #1178: "Waiting for Lefty" exact-matched only the closed 2024 regional
+ * production (the 2026 off-Broadway entry is titled "Clifford Odets' Waiting
+ * for Lefty"), so a Nov 2026 review was filed under the wrong show. When the
+ * resolved show's run window excludes the review date, look for the same title
+ * (whole-word, either direction) among the other shows and return the one whose
+ * window fits. Returns the original show when it fits, when its dates are
+ * unknown, or when zero or several alternatives fit (never guess between them).
+ * @param {{show: object, showName: string, shows: object[], reviewDate: string|null}} opts
+ */
+function preferProductionByDate({ show, showName, shows, reviewDate }) {
+  if (!show || !reviewDate || reviewDateFitsShow(show, reviewDate) !== false) return show;
+  const input = normalizeTitle(showName || show.title);
+  if (!input || !specificEnough(input)) return show;
+  const alternatives = shows.filter((s) => {
+    if (s.id === show.id) return false;
+    const title = normalizeTitle(s.title);
+    if (!title) return false;
+    const same = wordContains(title, input) || (specificEnough(title) && wordContains(input, title));
+    return same && reviewDateFitsShow(s, reviewDate) === true;
+  });
+  return alternatives.length === 1 ? alternatives[0] : show;
+}
+
 const HTML_ENTITIES = { amp: '&', '#38': '&', '#038': '&', '#x26': '&', nbsp: ' ', '#8217': "'", '#39': "'", rsquo: "'", quot: '"' };
 
 /**
@@ -100,4 +149,4 @@ function strictNorm(s) {
     .replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
-module.exports = { findMatchingShows, pageMentionsShowTitle };
+module.exports = { findMatchingShows, pageMentionsShowTitle, preferProductionByDate, reviewDateFitsShow };

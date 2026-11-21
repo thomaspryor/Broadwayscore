@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-17T19:06:42.247Z",
+  "generated": "2026-11-21T14:57:34.921Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 55,
+  "count": 46,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -22,20 +22,6 @@
       "loserFile": "whatsonstage--alun-hood.json",
       "targetFile": "whatsonstage--james-fitzgerald.json",
       "reason": "orphaned-duplicate-heal: whatsonstage--james-fitzgerald.json was flagged invalid after whatsonstage--alun-hood.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "all-my-sons-2019",
-      "loserFile": "vulture--jesse-green.json",
-      "targetFile": "vulture--sara-holdren.json",
-      "reason": "orphaned-duplicate-heal: vulture--sara-holdren.json was flagged invalid after vulture--jesse-green.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "american-psycho-off-west-end-2026",
-      "loserFile": "london-theatre--unknown.json",
-      "targetFile": "london-theatre--holly-omahony.json",
-      "reason": "orphaned-duplicate-heal: london-theatre--holly-omahony.json was flagged invalid after london-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -102,6 +88,27 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "florence-off-west-end-2026",
+      "loserFile": "daily-mail--unknown.json",
+      "targetFile": "daily-mail--laura-fox.json",
+      "reason": "orphaned-duplicate-heal: daily-mail--laura-fox.json was flagged invalid after daily-mail--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "loserFile": "guardian--unknown.json",
+      "targetFile": "guardian--sian-cain.json",
+      "reason": "orphaned-duplicate-heal: guardian--sian-cain.json was flagged invalid after guardian--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "florence-off-west-end-2026",
+      "loserFile": "times-uk--unknown.json",
+      "targetFile": "times-uk--nicola-jeal.json",
+      "reason": "orphaned-duplicate-heal: times-uk--nicola-jeal.json was flagged invalid after times-uk--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "girls-off-west-end-2026",
       "loserFile": "mail-on-sunday--ryan-hooper.json",
       "targetFile": "daily-mail--ryan-hooper.json",
@@ -151,38 +158,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "kimberly-akimbo-off-west-end-2026",
-      "loserFile": "londonlivinglarge--unknown.json",
-      "targetFile": "londonlivinglarge--london-living-large.json",
-      "reason": "orphaned-duplicate-heal: londonlivinglarge--london-living-large.json was flagged invalid after londonlivinglarge--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "la-traviata-off-broadway-2026",
       "loserFile": "times-uk--richard-morrison.json",
       "targetFile": "sunday-times--richard-morrison.json",
       "reason": "orphaned-duplicate-heal: sunday-times--richard-morrison.json was flagged invalid after times-uk--richard-morrison.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "lost-atoms-off-west-end-2026",
-      "loserFile": "standard--unknown.json",
-      "targetFile": "standard--nick-curtis.json",
-      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "love-letters-2014",
-      "loserFile": "huffpost--unknown.json",
-      "targetFile": "huffpost--steven-suskin.json",
-      "reason": "orphaned-duplicate-heal: huffpost--steven-suskin.json was flagged invalid after huffpost--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "man-to-man-west-end-2026",
-      "loserFile": "londontheatre1--unknown.json",
-      "targetFile": "londontheatre1--chris-omaweng.json",
-      "reason": "orphaned-duplicate-heal: londontheatre1--chris-omaweng.json was flagged invalid after londontheatre1--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -256,13 +235,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "seven-methods-of-killing-kylie-jenner-west-end-2021",
-      "loserFile": "i-paper--unknown.json",
-      "targetFile": "i-paper--sam-marlowe.json",
-      "reason": "orphaned-duplicate-heal: i-paper--sam-marlowe.json was flagged invalid after i-paper--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "sinatra-the-musical-west-end-2026",
       "loserFile": "mail-on-sunday--bethan-edwards.json",
       "targetFile": "daily-mail--bethan-edwards.json",
@@ -284,20 +256,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "that-is-not-who-i-am-west-end-2022",
-      "loserFile": "theatre-bee-uk--theatre-bee-uk.json",
-      "targetFile": "theatre-bee-uk--theatre-bee.json",
-      "reason": "orphaned-duplicate-heal: theatre-bee-uk--theatre-bee.json was flagged invalid after theatre-bee-uk--theatre-bee-uk.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-car-man-off-west-end-2026",
-      "loserFile": "financialtimes--unknown.json",
-      "targetFile": "financialtimes--louise-levene.json",
-      "reason": "orphaned-duplicate-heal: financialtimes--louise-levene.json was flagged invalid after financialtimes--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "the-devil-wears-prada-west-end-2024",
       "loserFile": "daily-mail--sonia-horon.json",
       "targetFile": "mail-on-sunday--sonia-horon.json",
@@ -309,20 +267,6 @@
       "loserFile": "standard--robert-dex.json",
       "targetFile": "standard--unknown.json",
       "reason": "orphaned-duplicate-heal: standard--unknown.json was flagged invalid after standard--robert-dex.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-hills-of-california-west-end-2024",
-      "loserFile": "independent--unknown.json",
-      "targetFile": "independent--alice-saville.json",
-      "reason": "orphaned-duplicate-heal: independent--alice-saville.json was flagged invalid after independent--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-hills-of-california-west-end-2024",
-      "loserFile": "whatsonstage--unknown.json",
-      "targetFile": "whatsonstage--sarah-crompton.json",
-      "reason": "orphaned-duplicate-heal: whatsonstage--sarah-crompton.json was flagged invalid after whatsonstage--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -372,13 +316,6 @@
       "loserFile": "rollingstone--unknown.json",
       "targetFile": "rollingstone--jonathan-bernstein.json",
       "reason": "orphaned-duplicate-heal: rollingstone--jonathan-bernstein.json was flagged invalid after rollingstone--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "true-west-2019",
-      "loserFile": "timeout--unknown.json",
-      "targetFile": "timeout--adam-feldman.json",
-      "reason": "orphaned-duplicate-heal: timeout--adam-feldman.json was flagged invalid after timeout--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

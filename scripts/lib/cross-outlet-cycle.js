@@ -106,6 +106,7 @@ function excludeAsCrossOutletCopy(data, filePath, excludedOtherwise, readSibling
   const read = readSibling || ((f) => {
     try { return JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')); } catch { return null; }
   });
+  if (isStaleExcerptContainmentFlag(data, showDir, showId, read)) return false;
   const partner = crossOutletCyclePartner(data, file, showId, read);
   if (!partner) return true;
   const partnerPath = path.join(showDir, partner.file);
@@ -114,6 +115,23 @@ function excludeAsCrossOutletCopy(data, filePath, excludedOtherwise, readSibling
     { file: partner.file, data: partner.data, excludedOtherwise: excludedOtherwise(partner.data, partnerPath) },
   );
   return keeper !== file;
+}
+
+/**
+ * BRO-7684: an 'excerpt-containment' flag (bylineless quote lifted from a
+ * sibling's fullText; set by the rebuild pre-pass and the weekly detector) is
+ * stale only when its keeper file is gone: then the quote is the last copy of
+ * that review and stays live. A keeper that is merely EXCLUDED (wrongAttribution,
+ * wrongProduction, personalRepost ...) does not revive the quote: it is the same
+ * text under a wrong outlet credit, so the same reason applies to it
+ * (dog-day-afternoon-2026 nytimes--unknown holds Theatrely's words).
+ * Scoped to that method only: the detector's other flags are unchanged.
+ */
+function isStaleExcerptContainmentFlag(data, showDir, showId, read) {
+  if (!data || data.crossOutletMethod !== 'excerpt-containment') return false;
+  const p = parsePointer(data.crossOutletPrimaryFile);
+  if (!p || (p.showId !== null && p.showId !== showId)) return false;
+  return !read(p.file);
 }
 
 /**
@@ -126,6 +144,7 @@ function wouldCloseCrossOutletCycle(primaryData, showId, secondaryFile) {
 
 module.exports = {
   parsePointer,
+  isStaleExcerptContainmentFlag,
   crossOutletCyclePartner,
   crossOutletCycleKeeper,
   textCarriesOwnByline,

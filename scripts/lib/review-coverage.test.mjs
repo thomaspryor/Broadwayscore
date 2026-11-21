@@ -9,10 +9,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { walkTranscript } from './transcript-scan.mjs';
-import { evaluateCoverage, evaluateChain, landGateDecision, stopHookDecision, findRuns, findSessionTranscript } from './review-coverage.mjs';
+import { evaluateCoverage, evaluateChain, stampReceipt, isSkepticReviewCall, landGateDecision, stopHookDecision, findRuns, findSessionTranscript } from './review-coverage.mjs';
 import { checkReviewCoverage } from './land-preflight.mjs';
 import { landPushTargets } from './push-command.mjs';
 
+// The fixtures below predate the skeptic reviewer (BRO-7839); keep them judging the two original reviewers.
+// The skeptic requirement has its own dated tests at the end of this file.
+process.env.REVIEW_COVERAGE_SKEPTIC_FROM = '9999-12-31';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const CLI = path.join(ROOT, 'scripts', 'lib', 'review-coverage.mjs');
 
@@ -563,4 +566,161 @@ test('findRuns ignores synthetic user_text that quotes a ship-check command wrap
   const typed = [...events.slice(0, -1), { kind: 'user_text', text: '<command-name>/ship-check</command-name>', synthetic: false }];
   assert.equal(findRuns(typed).length, 2);
   assert.equal(evaluateCoverage(typed).complete, false);
+});
+
+// BRO-7714: a wrapper (timeout, perl alarm, env, nice) before codex/curl still runs it.
+test('codex exec / curl behind a timeout, perl-alarm, env or nice wrapper counts; wrapper text alone does not', () => {
+  const covered = (command) => evaluateCoverage(ev(skill(), agent(), tool('Bash', { command }))).complete;
+  const CURL = 'curl -s https://api.openai.com/v1/chat/completions -d @/tmp/x';
+  for (const c of [
+    'cat p | timeout 600 codex exec --sandbox read-only',
+    'cat p | gtimeout -k 5 600 codex exec --sandbox read-only',
+    "cat p | perl -e 'alarm shift; exec @ARGV' 600 codex exec --sandbox read-only",
+    'cat p | env FOO=1 nice -n 5 codex exec -',
+    `timeout 120 ${CURL}`,
+    `R=$(perl -e 'alarm shift; exec @ARGV' 90 ${CURL})`,
+  ]) assert.equal(covered(c), true, c);
+  for (const c of [
+    'echo timeout 600 codex exec',
+    'grep -n "timeout 600 codex exec" notes.md',
+    'timeout 600 echo codex exec',
+    'timeout 120 curl -s https://api.openai.com/v1/models',
+  ]) assert.equal(covered(c), false, c);
+});
+
+// ---------------------------------------------------------------- BRO-7839: skeptic reviewer + automatic receipt
+const skepticCall = (cmd = 'node scripts/lib/skeptic-review-stop.mjs --ship-check') => tool('Bash', { command: cmd });
+const withFrom = (from, fn) => { const prev = process.env.REVIEW_COVERAGE_SKEPTIC_FROM; process.env.REVIEW_COVERAGE_SKEPTIC_FROM = from; try { return fn(); } finally { process.env.REVIEW_COVERAGE_SKEPTIC_FROM = prev; } };
+
+test('skeptic reviewer: advisory before the required date, missing after, counted only with its verdict line', () => {
+  const two = ev(skill(), agent(), curl());
+  const before = withFrom('2026-11-25', () => evaluateCoverage(two, { now: new Date('2026-11-20T00:00:00Z') }));
+  assert.equal(before.complete, true);
+  assert.equal(before.advisory.length, 1);
+  const after = withFrom('2026-11-25', () => evaluateCoverage(two, { now: new Date('2026-11-25T00:00:00Z') }));
+  assert.equal(after.complete, false);
+  assert.match(after.missing.join('\n'), /skeptic/);
+  const s = skepticCall();
+  const good = [...two, s, res(s, 'SKEPTIC REVIEW: 2 material gap(s)\n1. x\n   check: y')];
+  const ok = withFrom('2026-11-25', () => evaluateCoverage(good, { now: new Date('2026-11-26T00:00:00Z') }));
+  assert.equal(ok.complete, true);
+  assert.deepEqual(ok.evidence.checks, ['claude-subagent-review x1', 'external-review x1', 'skeptic-review x1']);
+  const noVerdict = [...two, s, res(s, 'node: cannot find module skeptic-review-stop.mjs, nothing ran here')];
+  assert.equal(withFrom('2026-11-25', () => evaluateCoverage(noVerdict, { now: new Date('2026-11-26T00:00:00Z') })).complete, false);
+});
+
+test('skeptic reviewer: command detection', () => {
+  assert.equal(isSkepticReviewCall('node scripts/lib/skeptic-review-stop.mjs --ship-check'), true);
+  assert.equal(isSkepticReviewCall('cd x && timeout 90 node /a/scripts/lib/skeptic-review-stop.mjs --ship-check 2>&1 | tail -40'), true);
+  assert.equal(isSkepticReviewCall('echo node scripts/lib/skeptic-review-stop.mjs --ship-check'), false);
+  assert.equal(isSkepticReviewCall('grep -n ship-check scripts/lib/skeptic-review-stop.mjs'), false);
+  assert.equal(isSkepticReviewCall('node scripts/lib/skeptic-review-stop.mjs --digest'), false);
+  assert.equal(isSkepticReviewCall('node /tmp/skeptic-review-stop.mjs --ship-check'), false, 'a stand-in script elsewhere does not count');
+  assert.equal(isSkepticReviewCall('node scripts/lib/skeptic-review-stop.mjs --transcript=/x/y.jsonl --ship-check'), true, 'flags before --ship-check');
+});
+
+test('stampReceipt: amends only the message, once, never a commit already on main', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'receipt-'));
+  const g = (...a) => spawnSync('git', a, { cwd: dir, encoding: 'utf8' });
+  g('init', '-q', '-b', 'main'); g('config', 'user.email', 't@t'); g('config', 'user.name', 't');
+  fs.writeFileSync(path.join(dir, 'a'), '1'); g('add', 'a'); g('commit', '-qm', 'base');
+  g('update-ref', 'refs/remotes/origin/main', 'HEAD');
+  const evidence = { outputsHash: 'a'.repeat(64), invocationId: 'toolu_1', checks: [] };
+  assert.equal(stampReceipt({ cwd: dir, evidence }).stamped, false, 'HEAD on origin/main is never amended');
+  fs.writeFileSync(path.join(dir, 'a'), '2'); g('add', 'a'); g('commit', '-qm', 'work');
+  fs.writeFileSync(path.join(dir, 'b'), 'staged'); g('add', 'b');
+  const r = stampReceipt({ cwd: dir, evidence });
+  assert.equal(r.stamped, true, r.reason);
+  const msg = g('log', '-1', '--format=%B').stdout;
+  assert.match(msg, /^work\n\nReview-Receipt: v1 a{64} toolu_1$/m);
+  assert.equal(g('show', '--name-only', '--format=', 'HEAD').stdout.trim(), 'a', 'the staged file stays out of the amended commit');
+  assert.equal(stampReceipt({ cwd: dir, evidence }).reason, 'HEAD already carries a receipt');
+  assert.match(stampReceipt({ cwd: dir, evidence, env: { REVIEW_RECEIPT_STAMP: '0' } }).reason, /opt-out/, 'opt-out never touches git');
+  assert.equal(stampReceipt({ cwd: dir, evidence: null }).stamped, false);
+  g('rm', '-q', '--cached', 'b');
+  g('commit', '-q', '--allow-empty', '-m', 'empty');
+  assert.equal(stampReceipt({ cwd: dir, evidence }).stamped, true, 'an empty HEAD commit (merge-only or marker commit) still takes the trailer');
+  g('commit', '-q', '--allow-empty', '-m', 'pushed');
+  g('update-ref', 'refs/remotes/origin/claude/x', 'HEAD');
+  const pushed = stampReceipt({ cwd: dir, evidence });
+  assert.equal(pushed.stamped, false, 'a commit a remote branch already holds is never rewritten');
+  assert.match(pushed.reason, /already pushed \(origin\/claude\/x\)/);
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+});
+
+// ---------------------------------------------------------------- BRO-7872: each skeptic gap needs an answer
+const GAPS2 = 'SKEPTIC REVIEW: 2 material gap(s). Run each check (or fix it) before landing.\n'
+  + '1. The archiver CLI never ran on a missing local file. (could fail)\n   check: node scripts/archive-show-images.js --force --show=x\n'
+  + '2. The full sweep never ran. (other shows)\n   check: node scripts/archive-show-images.js --force\n'
+  + 'Minor (optional):\n1. wording\n   check: read it';
+const covered = () => { const s = skepticCall(); return [...ev(skill(), agent(), curl()), s, res(s, GAPS2)]; };
+
+test('BRO-7872: listed skeptic gaps with no answer stop the pass; answers clear them', () => {
+  const none = evaluateCoverage(covered());
+  assert.equal(none.complete, true, 'reviewers ran: the reviewer list is complete');
+  assert.deepEqual(none.unansweredGaps.map((g) => g.n), [1, 2], 'the 3FKM shape: gaps listed, nothing answered');
+  const run = tool('Bash', { command: 'cd /w && node scripts/archive-show-images.js --force --show=x 2>&1 | tail -5' });
+  const answered = [...covered(), ...ev(run), text('GAP 1: ran node scripts/archive-show-images.js --force --show=x\nGAP 2: cannot run here: the full sweep downloads from paid image APIs and costs real money')];
+  assert.deepEqual(evaluateCoverage(answered).unansweredGaps, []);
+  // answer in the closing message only (not yet flushed to the transcript at Stop)
+  assert.deepEqual(evaluateCoverage([...covered(), ...ev(run)], { lastMessage: 'GAP 1: ran node scripts/archive-show-images.js --force --show=x\nGAP 2: not a gap: the sweep calls the same per-show function the --show run exercised' }).unansweredGaps, []);
+  assert.deepEqual(evaluateCoverage(covered(), { env: { SKEPTIC_GAP_ANSWERS_DISABLE: '1' } }).unansweredGaps, [], 'kill switch');
+});
+
+test('BRO-7872: weak answers are refused', () => {
+  const failed = tool('Bash', { command: 'node scripts/archive-show-images.js --force --show=x' });
+  const other = tool('Bash', { command: 'node scripts/other.js --show=x --force-everything-here' });
+  const evs = [...covered(), failed, res(failed, 'Error: boom', true), ...ev(other)];
+  const u = (t) => evaluateCoverage([...evs, text(t)]).unansweredGaps;
+  assert.match(u('GAP 1: ran node scripts/archive-show-images.js --force --show=x')[0].why, /no successful command/, 'a failed run is not an answer');
+  assert.match(u('GAP 1: ran node scripts/other.js --show=x')[0].why, /names none of the files/, 'a different script is not an answer');
+  assert.match(u('GAP 1: ran node')[0].why, /too short/);
+  assert.match(u('GAP 1: cannot run here: we will know after the next nightly run')[0].why, /reason not accepted/);
+  assert.match(u('GAP 1: not a gap: <why the reviewer is wrong>')[0].why, /reason not accepted/, 'the echoed template');
+  assert.match(u('GAP 1: fixed it')[0].why, /not one of the three answer forms/);
+  // an answer written BEFORE the report it answers does not count
+  const s = skepticCall();
+  const early = [...ev(skill(), agent(), curl()), text('GAP 1: not a gap: this was already covered by the unit tests'), s, res(s, GAPS2)];
+  assert.equal(evaluateCoverage(early).unansweredGaps.length, 2);
+});
+
+test('BRO-7872: count from the header when the list is cut; re-run credits commands since the first skeptic run', () => {
+  const s = skepticCall('node scripts/lib/skeptic-review-stop.mjs --ship-check 2>&1 | tail -3');
+  const cut = [...ev(skill(), agent(), curl()), s, res(s, 'SKEPTIC REVIEW: 3 material gap(s).\n1. a (b)\n   check: node scripts/a.js')];
+  assert.deepEqual(evaluateCoverage(cut).unansweredGaps.map((g) => g.n), [1, 2, 3]);
+  const s1 = skepticCall(); const run = tool('Bash', { command: 'node scripts/archive-show-images.js --force --show=x' }); const s2 = skepticCall();
+  const rerun = [...ev(skill(), agent(), curl()), s1, res(s1, GAPS2), ...ev(run), s2,
+    res(s2, 'SKEPTIC REVIEW: 1 material gap(s).\n1. Missing-file path still unproven.\n   check: node scripts/archive-show-images.js --force --show=x'),
+    text('GAP 1: ran node scripts/archive-show-images.js --force --show=x')];
+  assert.deepEqual(evaluateCoverage(rerun).unansweredGaps, [], 'the run between the two skeptic passes counts; the latest list is the one answered');
+  for (const clean of ['SKEPTIC REVIEW: no material gaps.', 'SKEPTIC REVIEW UNAVAILABLE (timeout); this does not count as a review.']) {
+    const sc = skepticCall();
+    assert.deepEqual(evaluateCoverage([...ev(skill(), agent(), curl()), sc, res(sc, clean)]).unansweredGaps, [], clean);
+  }
+});
+
+test('BRO-7872: land gate and Stop hook name the unanswered gaps (no "re-run ship-check" loop)', () => {
+  const land = landGateDecision({ command: 'git push origin HEAD:refs/heads/land/x', events: covered(), gatedLines: 200, env: CLOUD });
+  assert.equal(land.decision, 'block');
+  assert.match(land.message, /gap 1:[\s\S]*GAP <n>: ran/);
+  assert.match(land.message, /Do not re-run \/ship-check/);
+  const stop = stopHookDecision({ lastMessage: 'Done.\nNO-SHIP-CHECK: reviewers could not run here today\nSAFE TO ARCHIVE — landed', events: covered(), env: CLOUD });
+  assert.equal(stop.decision, 'block', 'NO-SHIP-CHECK waives reviewers, not the answers');
+  assert.match(stop.message, /skeptic reviewer's gaps have no answer/);
+});
+
+test('BRO-7872: --record CLI refuses with unanswered skeptic gaps (exit 3, nothing recorded)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-gaps-'));
+  const file = path.join(dir, 's.jsonl');
+  const rows = [];
+  for (const e of covered()) {
+    if (e.kind === 'assistant_tool_use') rows.push({ type: 'assistant', message: { content: [{ type: 'tool_use', name: e.name, id: e.id, input: e.input }] } });
+    else rows.push({ type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: e.tool_use_id, content: e.content }] } });
+  }
+  fs.writeFileSync(file, rows.map((r) => JSON.stringify(r)).join('\n') + '\n');
+  const rec = spawnSync('node', [CLI, '--record', `--transcript=${file}`], { encoding: 'utf8', env: { ...process.env, REVIEW_COVERAGE_SKEPTIC_FROM: '9999-12-31' } });
+  assert.equal(rec.status, 3);
+  assert.match(rec.stderr, /NOT recording a pass\. The skeptic reviewer listed 2 gap\(s\)/);
+  assert.doesNotMatch(rec.stdout, /"recorded":true/);
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });

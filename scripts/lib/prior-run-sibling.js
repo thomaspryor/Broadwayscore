@@ -64,6 +64,29 @@ function baseTitle(show) {
 }
 
 /**
+ * Same words, any order, punctuation and possessives ignored (BRO-5489):
+ * "Othello (Bedlam)" and "Bedlam's Othello" are one production, but baseTitle
+ * keeps "othello" vs "bedlam's othello", so the date/venue match never linked
+ * them and the earlier run's reviews stayed uncounted (a gap no ingest could close:
+ * the URLs belong to the sibling's folder).
+ */
+const TITLE_FILLER = new Set(['a', 'an', 'the', 'of', 'and']);
+function titleWordSet(show) {
+  const words = String((show && show.title) || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/['\u2019]s\b/g, '')
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w && !TITLE_FILLER.has(w));
+  return words.length ? [...new Set(words)].sort().join(' ') : '';
+}
+function sameProductionTitle(a, b) {
+  if (baseTitle(a) === baseTitle(b)) return true;
+  const wa = titleWordSet(a);
+  return wa !== '' && wa === titleWordSet(b);
+}
+
+/**
  * Does `newer` declare `older` (a separate show entry) as its prior run?
  *
  * 1. An explicit cross-link wins: a priorRuns entry carrying the older entry's id
@@ -274,28 +297,36 @@ function isExplicitLink(run, older) {
  * The window review dates are tested against: the declared run, or, for an
  * id-only link that carries no dates, the earlier entry's own run.
  */
-function windowRunFor(run, sibling) {
-  if (run && typeof run === 'object' && run.openingDate) return run;
-  return { openingDate: ymd(sibling.openingDate), closingDate: ymd(sibling.closingDate) || undefined };
+function windowRunFor(run, sibling, explicit) {
+  const own = { openingDate: ymd(sibling.openingDate), closingDate: ymd(sibling.closingDate) || undefined };
+  if (!(run && typeof run === 'object' && run.openingDate)) return own;
+  // BRO-5489: the declared run can start after the earlier entry's real opening (Bedlam's
+  // Othello: priorRuns says 05-10, the entry and its reviews run 05-03..05-07), so reviews
+  // of the first week fell outside the window and stayed uncounted. The carry window is the
+  // union of the declared run and the earlier entry's own run, only for a sibling that
+  // really is this run (date/venue or explicit link, which findPriorRunSiblings guarantees).
+  // An explicit id link may point at an entry holding several runs: never widen it (the
+  // window then stays the declared run, so one run's window cannot admit another's reviews).
+  if (explicit || !own.openingDate || ymd(run.openingDate) <= own.openingDate) return run;
+  return { ...run, openingDate: own.openingDate };
 }
 
 /**
  * Earlier-run entries a returning show declares via priorRuns. An explicit id
  * link holds whatever the titles say; a date/venue match also needs the same
- * base title.
+ * same production title (same words in any order, punctuation and possessives ignored).
  * @returns {Array<{sibling: object, run: object, window: object, explicit: boolean}>}
  */
 function findPriorRunSiblings(show, shows) {
   if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return [];
-  const base = baseTitle(show);
   const out = [];
   for (const other of shows) {
     const run = matchingPriorRunFor(show, other);
     if (!run) continue;
     const explicit = isExplicitLink(run, other);
-    if (!explicit && baseTitle(other) !== base) continue;
+    if (!explicit && !sameProductionTitle(show, other)) continue;
     out.push({
-      sibling: other, run, window: windowRunFor(run, other), explicit,
+      sibling: other, run, window: windowRunFor(run, other, explicit), explicit,
       // `inheritReviews: false` on a priorRuns entry keeps the link (director-guard exemption,
       // dedup cross-link) but stops that run's reviews being carried onto this entry.
       carryReviews: linkCarriesReviews(show, run),
@@ -672,6 +703,9 @@ function supersededPriorRunReviews(reviews, shows) {
 
 module.exports = {
   showMarketPool,
+  windowRunFor,
+  sameProductionTitle,
+  titleWordSet,
   priorRunWindows,
   priorRunClassifier,
   supersededPriorRunReviews,

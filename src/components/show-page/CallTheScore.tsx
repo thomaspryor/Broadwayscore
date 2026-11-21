@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import { ScoreBadge, getScoreTier } from '@/components/show-cards';
 import { useAuth } from '@/contexts/AuthContext';
 import { useScoreCall, useScoreCallReaders } from '@/hooks/useScoreCall';
-import { isCallableShow, gapSentence, readersSentence, rangeCaption, readersCaption, smallPrint, readersMissSentence, FIRST_READER_LINE, resultStrip, resultSentence, forecastMissSentence, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS } from '@/lib/score-call';
+import { isCallableShow, nyToday, gapSentence, readersSentence, rangeCaption, readersCaption, smallPrint, readersMissSentence, FIRST_READER_LINE, resultStrip, resultSentence, forecastMissSentence, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS } from '@/lib/score-call';
 
-interface ShowLike { id: string; category?: string; type?: string; status?: string; openingDate?: string | null; previewsStartDate?: string | null; previewDate?: string | null; cancelledBeforeOpening?: boolean }
+interface ShowLike { id: string; category?: string; type?: string; status?: string; openingDate?: string | null; previewsStartDate?: string | null; previewDate?: string | null; cancelledBeforeOpening?: boolean; /** Reviews live on this page. Any review closes predictions (BRO-7857). */ reviewCount?: number }
 
 const ls = (): Storage | null => { try { return window.localStorage; } catch { return null; } };
-const localToday = () => new Date().toISOString().slice(0, 10);
+// New York date: a UTC date flips at 7-8pm ET and closed predictions a day early (BRO-7857).
+const localToday = () => nyToday();
 const fmtDate = (iso?: string | null) => (iso ? new Date(iso.slice(0, 10) + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : '');
 
 /** predicted: dashed outline, the same cue /admin/forecasts uses, so a guess never reads as a real score. */
@@ -36,7 +37,7 @@ function Wrap({ children }: { children: React.ReactNode }) {
   return <div className="mt-4 pt-4 border-t border-white/10" data-testid="call-the-score" aria-live="polite">{children}</div>;
 }
 
-const lockMsg = (reason: string) => (reason === 'calls_closed' ? 'Predictions closed when opening day began.' : reason === 'not_open' ? 'Predictions open soon for this show.' : reason === 'already_called' ? null : 'Could not save your prediction. Try again.');
+const lockMsg = (reason: string) => (reason === 'calls_closed' ? 'Predictions are closed for this show.' : reason === 'not_open' ? 'Predictions open soon for this show.' : reason === 'already_called' ? null : 'Could not save your prediction. Try again.');
 
 /** Locked state. Readers load after the lock; sentences wait for them so the text does not change under the reader. */
 function LockedCard({ show, call }: { show: ShowLike; call: NonNullable<ReturnType<typeof useScoreCall>['call']> }) {
@@ -71,9 +72,11 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [saveAsk, setSaveAsk] = useState(false);
   const [callable, setCallable] = useState(false);
+  // The server said closed (a review went live after this page was built): keep the message, stop offering the button.
+  const [closed, setClosed] = useState(false);
   const autoRef = useRef(false);
   const tapRef = useRef(false);
-  useEffect(() => { setCallable(isCallableShow(show as never, localToday())); }, [show]);
+  useEffect(() => { setCallable(isCallableShow(show as never, localToday(), show.reviewCount ?? 0)); }, [show]);
   // Back from sign-up (or a fresh visit): restore the number they picked.
   useEffect(() => {
     const p = getPendingCall(show.id, ls());
@@ -90,7 +93,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
       setBusy(false);
       if (r.ok || r.reason === 'already_called' || r.reason === 'calls_closed') clearPendingCall(show.id, ls());
       else autoRef.current = false;
-      if (!r.ok) setMsg(lockMsg(r.reason));
+      if (!r.ok) { setMsg(lockMsg(r.reason)); if (r.reason === 'calls_closed') setClosed(true); }
     });
   }, [callable, signedIn, loaded, loadError, call, show.id, lock]);
   useEffect(() => { if (call) clearPendingCall(show.id, ls()); }, [call, show.id]);
@@ -110,7 +113,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
     tapRef.current = true; setBusy(true);
     const r = await lock(value);
     tapRef.current = false; setBusy(false);
-    if (!r.ok) setMsg(lockMsg(r.reason));
+    if (!r.ok) { setMsg(lockMsg(r.reason)); if (r.reason === 'calls_closed') setClosed(true); }
   };
 
   if (signedIn && !loaded) return <Wrap><div className="h-24" aria-hidden /></Wrap>;
@@ -142,7 +145,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
         </div>
       </div>
       <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-        <button type="button" className="btn-primary w-full sm:w-auto sm:px-6" disabled={busy} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
+        <button type="button" className="btn-primary w-full sm:w-auto sm:px-6" disabled={busy || closed} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
         <p className="text-xs text-fg-muted m-0">Free account. Locking shows our forecast, if we have one, and can&apos;t be undone.</p>
       </div>
       {!signedIn && saveAsk && <p className="text-sm text-gray-200 mt-2 mb-0" data-testid="save-prompt">Save your prediction: create a free account or sign in.</p>}
@@ -178,7 +181,7 @@ export function CallResultStrip({ show, critic }: { show: ShowLike; critic: numb
 export function CallTheScoreHeroLink({ show }: { show: ShowLike }) {
   const { call } = useScoreCall(show.id);
   const [callable, setCallable] = useState(false);
-  useEffect(() => { setCallable(isCallableShow(show as never, localToday())); }, [show]);
+  useEffect(() => { setCallable(isCallableShow(show as never, localToday(), show.reviewCount ?? 0)); }, [show]);
   if (!callable) return null;
   return <a href="#critic-reviews" className="inline-flex items-center min-h-[44px] mt-0.5 text-xs font-semibold text-brand hover:text-brand-hover transition-colors" data-testid="call-the-score-link">{call ? `You predicted ${call.called_score}` : 'Predict the score'}</a>;
 }
@@ -191,7 +194,7 @@ export function CallTheScoreHeroLink({ show }: { show: ShowLike }) {
 export function PreOpeningReviewStatus({ show, nightLabel }: { show: ShowLike; nightLabel: string }) {
   const { call } = useScoreCall(show.id);
   const [callable, setCallable] = useState(false);
-  useEffect(() => { setCallable(isCallableShow(show as never, localToday())); }, [show]);
+  useEffect(() => { setCallable(isCallableShow(show as never, localToday(), show.reviewCount ?? 0)); }, [show]);
   return (
     <a href="#critic-reviews" className="group flex items-center gap-3 pt-2 min-h-[44px] w-fit" data-testid="pre-opening-review-status">
       <ScoreBadge score={null} status="previews" size="xs" />

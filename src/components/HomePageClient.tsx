@@ -396,8 +396,10 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
 
   // Update state + URL without reload
   const updateParams = useCallback((updates: Record<string, string | null>) => {
-    startTransition(() => setFilters(prev => {
-      const next = { ...prev };
+    startTransition(() => {
+      // History writes belong to this event, not a replayable React updater.
+      // Read the live URL so batched actions preserve earlier filter changes.
+      const next = filtersFromParams(new URLSearchParams(window.location.search));
       for (const [key, value] of Object.entries(updates)) {
         if (value === null) {
           (next as Record<string, string>)[key] =
@@ -429,8 +431,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
       const paramString = urlParams.toString();
       replaceLocationSearch(paramString ? `/?${paramString}` : '/');
 
-      return next;
-    }));
+      setFilters(next);
+    });
   }, []);
 
   // Clear all filters

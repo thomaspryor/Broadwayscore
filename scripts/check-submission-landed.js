@@ -11,7 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { checkSubmissionLanded } = require('./lib/submission-landing');
+const { checkSubmissionLandedAnywhere } = require('./lib/submission-landing');
 
 const args = Object.fromEntries(process.argv.slice(2)
   .map((a) => a.match(/^--([a-z-]+)=(.*)$/)).filter(Boolean).map((m) => [m[1], m[2]]));
@@ -23,22 +23,27 @@ if (!args.show || !args.url) {
 const dataDir = path.join(__dirname, '..', 'data');
 const reviewsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'), 'utf8'));
 const showsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf8'));
-const show = (showsData.shows || showsData).find((s) => s.id === args.show) || null;
+const shows = showsData.shows || showsData;
+const show = shows.find((s) => s.id === args.show) || null;
 
-const result = checkSubmissionLanded({
+// Falls back to the show that actually holds the file when the validator named
+// the wrong production (issue #1178).
+const result = checkSubmissionLandedAnywhere({
   showId: args.show,
   url: args.url,
   reviews: reviewsData.reviews || reviewsData,
   reviewTextsDir: path.join(dataDir, 'review-texts'),
   show,
+  shows,
 });
+const realShow = result.actualShowId || args.show;
 
 console.log(result.landed
-  ? `✅ Landed: ${args.show} review is in reviews.json (${result.file})`
+  ? `✅ Landed: ${realShow} review is in reviews.json (${result.file})${result.actualShowId ? ` [submission named ${args.show}]` : ''}`
   : `❌ NOT on the site: ${result.reason}${result.file ? ` (${result.file})` : ''}`);
 
 if (process.env.GITHUB_OUTPUT) {
   const reason = String(result.reason || '').replace(/[\r\n]+/g, ' ');
   fs.appendFileSync(process.env.GITHUB_OUTPUT,
-    `landed=${result.landed}\npending_score=${!!result.pendingScore}\nexcluded_reason=${reason}\n`);
+    `landed=${result.landed}\npending_score=${!!result.pendingScore}\nexcluded_reason=${reason}\nactual_show_id=${result.actualShowId || ''}\nnote=${result.actualShowId ? `review found under ${result.actualShowId}, not the submitted ${args.show}` : ''}\n`);
 }

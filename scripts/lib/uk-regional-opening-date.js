@@ -15,11 +15,28 @@
  * A gap wider than MAX_GAP_DAYS is not trusted (a stray review of another run or a
  * mis-dated page) and is reported for a human instead of applied.
  */
-const SEEDED_SOURCES = new Set(['guardian-review', 'census-review', 'first-review-date', 'tic-first-review']);
+const SEEDED_SOURCES = new Set(['guardian-review', 'census-review', 'first-review-date', 'tic-first-review', 'bww-first-review']);
 const MAX_GAP_DAYS = 14;
 const FIRST_REVIEW_SOURCE = 'first-review-date';
 const isDay = (d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && Number.isFinite(Date.parse(d));
 const daysBetween = (a, b) => Math.round((Date.parse(a) - Date.parse(b)) / 864e5);
+
+function regionalReconcileOptions(show, isUkVenue, isLocalOnly) {
+  if (!show || show.category !== 'regional' || show.humanCorrectedOpeningDate) return null;
+  const localSeed = ['theatreinchicago', 'theatreindc', 'theatreinla', 'bww-local-reviews'].includes(show.discoverySource);
+  if (localSeed) return { minReviews: 2 };
+  return isUkVenue && !isLocalOnly ? { minReviews: 1 } : null;
+}
+
+function distinctOutletDates(reviews) {
+  const dates = new Map();
+  for (const review of reviews || []) {
+    const outlet = review.outletId || review.outlet;
+    if (!outlet || !isDay(review.publishDate)) continue;
+    if (!dates.has(outlet) || review.publishDate < dates.get(outlet)) dates.set(outlet, review.publishDate);
+  }
+  return [...dates.values()];
+}
 
 function earliestReviewDate(publishDates) {
   const days = (publishDates || []).filter(isDay).sort();
@@ -49,4 +66,4 @@ function reconcileOpeningDate(show, publishDates, { minReviews = 1 } = {}) {
   return { action: 'move', openingDate: first, openingDateSource: FIRST_REVIEW_SOURCE, gapDays: gap };
 }
 
-module.exports = { reconcileOpeningDate, earliestReviewDate, SEEDED_SOURCES, MAX_GAP_DAYS, FIRST_REVIEW_SOURCE };
+module.exports = { reconcileOpeningDate, regionalReconcileOptions, distinctOutletDates, earliestReviewDate, SEEDED_SOURCES, MAX_GAP_DAYS, FIRST_REVIEW_SOURCE };

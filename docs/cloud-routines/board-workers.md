@@ -52,21 +52,12 @@ unreadable): start it anyway, the runner re-checks and waits its turn.
    verdict always gets its fix round, past --card-max-minutes, or in the next
    firing when this one has no time left. Do not touch .claude/worktrees/codex-runner*.
 
-## 1b. Stalled-session sweep (a few minutes, before the Claude lane)
+## 1b. Stalled sessions
 
-Cloud sessions that promised later work and went quiet leave their card In
-Progress; nothing else wakes them (BRO-7183). Every firing:
-1. `node scripts/linear-reclaim-abandoned.js --stalled-sessions > /tmp/stall.json 2> /tmp/stall.err; tail -1 /tmp/stall.err`
-   (In Progress cards idle 12h+ held by a cloud session). If the list is `[]`, skip to section 2.
-2. For each entry call `get_session` with its `sessionId`. Write `/tmp/stall-rows.json` as
-   `[{"card": "...", "sessionId": "...", "session": <the get_session result>}]`, or
-   `"error": "<the error text>"` in place of `session` when the call failed. Add `"notFound": true`
-   only when get_session said that session does not exist; any other failure is retried next firing.
-3. `node scripts/linear-reclaim-abandoned.js --stall-act --from-json=/tmp/stall-rows.json`. It moves
-   cards whose session is gone back to Todo and records nudges (at most 5 of each per firing).
-4. For each result with `"action": "nudge"`, call `send_message` with its `sessionId` and its
-   `message`, exactly. Never send anything else to those sessions, and never interrupt one.
-Count the nudges and requeues in your final reply's first line.
+Routine sessions cannot look up other sessions. Do not run the 12h session-based
+sweep here. The scheduled reclaim job in `land-retry-cancelled.yml` uses Linear
+activity and reclaims eligible cards after 48h, with its existing exclusions and
+limits. It runs independently of this routine.
 
 ## 2. Claude lane (up to 4 cards, in your own worktrees)
 
@@ -83,6 +74,8 @@ the test run wakes this session" stops the lane with cards still eligible. Claim
 for 2026-10-20..23 show the lane averaging 2.69 claims per firing (cap 4).
 `node scripts/worker-firing-stats.js --min-avg 3.0` re-measures that. Section 3 is different: once this lane is done, waiting
 there means ending turns until woken.
+For an allowed turn end while a background waiter or test run is live,
+use only `KEEP OPEN - <what it waits on and what wakes it>`.
 
 Never sit idle while a landing is checked (about 15-30 minutes): push it, start
 its waiter in the background (timeout 4000000), and go straight to the next

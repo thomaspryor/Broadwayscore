@@ -69,3 +69,34 @@ test('empty input matches nothing', () => {
   assert.deepEqual(ids(''), []);
   assert.deepEqual(ids(null), []);
 });
+
+// Issue #1178: a Nov 2026 review of "Waiting for Lefty" must prefer the 2026
+// off-Broadway production over the closed 2024 regional one with the same title.
+{
+  const { preferProductionByDate } = require('./submission-show-match.js');
+  const regional = { id: 'waiting-for-lefty-regional-2024', title: 'Waiting for Lefty', openingDate: '2024-02-04', closingDate: '2024-02-24' };
+  const offB = { id: 'clifford-odets-waiting-for-lefty-off-broadway-2026', title: 'Clifford Odets’ Waiting for Lefty', openingDate: '2026-11-02', closingDate: '2026-12-06' };
+  const other = { id: 'unrelated-show', title: 'Hamilton', openingDate: '2026-10-01' };
+
+  test('preferProductionByDate: re-matches to the production whose run window fits the review date', () => {
+    const r = preferProductionByDate({ show: regional, showName: 'Waiting for Lefty', shows: [regional, offB, other], reviewDate: '2026-11-02' });
+    assert.equal(r.id, offB.id);
+  });
+  test('preferProductionByDate: keeps the show when its window fits, the date is unknown, or no alternative fits', () => {
+    assert.equal(preferProductionByDate({ show: regional, showName: 'Waiting for Lefty', shows: [regional, offB], reviewDate: '2024-02-10' }).id, regional.id);
+    assert.equal(preferProductionByDate({ show: regional, showName: 'Waiting for Lefty', shows: [regional, offB], reviewDate: null }).id, regional.id);
+    assert.equal(preferProductionByDate({ show: regional, showName: 'Waiting for Lefty', shows: [regional, other], reviewDate: '2026-11-02' }).id, regional.id);
+  });
+  test('preferProductionByDate: never guesses between two fitting alternatives', () => {
+    const offB2 = { ...offB, id: 'waiting-for-lefty-other-2026' };
+    assert.equal(preferProductionByDate({ show: regional, showName: 'Waiting for Lefty', shows: [regional, offB, offB2], reviewDate: '2026-11-02' }).id, regional.id);
+  });
+}
+
+test('reviewDateFitsShow: previews start counts, closed show without closingDate is unknown', () => {
+  const { reviewDateFitsShow } = require('./submission-show-match.js');
+  assert.equal(reviewDateFitsShow({ openingDate: '2026-06-01', previewsStartDate: '2026-02-01' }, '2026-03-01'), true);
+  assert.equal(reviewDateFitsShow({ openingDate: '2026-06-01' }, '2026-03-01'), false);
+  assert.equal(reviewDateFitsShow({ openingDate: '2024-01-01', status: 'closed' }, '2026-03-01'), null);
+  assert.equal(reviewDateFitsShow({ openingDate: '2024-01-01', status: 'open' }, '2026-03-01'), true);
+});

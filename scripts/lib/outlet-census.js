@@ -83,6 +83,36 @@ function inRunWindow(show, publishDate) {
   return y >= new Date().getUTCFullYear() || pub < Date.UTC(y + 2, 0, 1);
 }
 
+// A review of a run lands while it is on or just after it closes; the 60-day tail only catches
+// late cast-change re-reviews. Used to pick between same-title productions (BRO-7885).
+const LIVE_TAIL_DAYS = 14;
+function inLiveWindow(show, publishDate) {
+  const pub = toDateMs(publishDate);
+  const w = runWindowMs(show);
+  if (Number.isNaN(pub) || !w) return false;
+  const close = toDateMs(show.closingDate);
+  return pub >= w[0] && (Number.isNaN(close) || pub <= close + LIVE_TAIL_DAYS * DAY_MS);
+}
+
+/**
+ * Several in-window productions of ONE show (Illinoise at the Armory then St. James, Slant's
+ * Sweeney Todd across four revivals): when the publish date puts exactly one of them on stage,
+ * that is the production reviewed (BRO-7885). Different titles are a multi-show article, which a
+ * date cannot split, so they stay ambiguous. Returns the single show or null.
+ */
+function resolveSameTitleByDate(candidates, publishDate) {
+  if (!candidates || candidates.length < 2 || Number.isNaN(toDateMs(publishDate))) return null;
+  const titles = new Set(candidates.map((s) => normTitle(s.title)));
+  if (titles.size !== 1) return null;
+  const live = candidates.filter((s) => inLiveWindow(s, publishDate));
+  return live.length === 1 ? live[0] : null;
+}
+
+/** An undated item (or one dated only by sitemap lastmod) whose candidates are all one show: its page date would decide. */
+function dateWouldResolve(result) {
+  return result.bucket === 'ambiguous' && (!result.publishDate || result.dateSoft) && !!result.sameTitleCandidates;
+}
+
 /**
  * url -> Set(showId) for everything we hold. Each entry: {showId, url, altUrls?}.
  * Review files (flagged or not) and reviews.json both feed it; a URL filed under two
@@ -573,7 +603,23 @@ function bucketItem(item, ctx) {
     if (other && other.length) out.altUrls = other.slice(0, 3);
     return out;
   }
-  if (inIds.length > 1) { out.bucket = 'ambiguous'; return out; }
+  if (inIds.length > 1) {
+    const byId = new Map(ctx.shows.map((s) => [s.id, s]));
+    const cands = inIds.map((id) => byId.get(id)).filter(Boolean);
+    const pick = resolveSameTitleByDate(cands, item.publishDate);
+    if (pick && !item.dateSoft) {
+      out.matchedIds = [pick.id];
+      out.matchVia = 'date-resolved';
+      out.outOfWindowIds = [...out.outOfWindowIds, ...inIds.filter((id) => id !== pick.id)];
+      const other = ctx.outletShowUrls && ctx.outletShowUrls.get(`${item.outletId}|${pick.id}`);
+      out.bucket = other && other.length ? 'held-alt-url' : 'gap';
+      if (other && other.length) out.altUrls = other.slice(0, 3);
+      return out;
+    }
+    out.bucket = 'ambiguous';
+    if (cands.length === inIds.length && new Set(cands.map((s) => normTitle(s.title))).size === 1) out.sameTitleCandidates = true;
+    return out;
+  }
   // A London item naming a regional venue is an other-market review, whatever a same-titled
   // West End show's dates say ("Calendar Girls at New Wolsey Theatre").
   if (out.outOfWindowIds.length > 0 && !(market !== 'nyc' && sig === 'other-market')) { out.bucket = 'out-of-window'; return out; }
@@ -779,7 +825,66 @@ function catalogGapMarkdown(groups, topPlaces = 25) {
   return lines.join('\n');
 }
 
+/**
+ * Outlets the census cannot read: no listing was enumerated (unreadable, or a paid-search source that
+ * returns ~10 results a query) yet the corpus holds many of their reviews. A gap there is invisible: this
+ * is how Slant's Call Me Izzy review stayed missing (BRO-7812). Advisory: the --summary prints these.
+ * reports: parsed *.report.json objects. Returns [{ outletId, kind, rows, why }], biggest corpus first.
+ */
+function blindOutlets(reports, { minRows = 100 } = {}) {
+  const out = [];
+  for (const r of reports || []) {
+    const src = r.source || {};
+    const rows = (r.corpusSide && r.corpusSide.rowsInWindow) || 0;
+    if (rows < minRows) continue;
+    const unreadable = src.kind === 'unreadable' || src.status === 'unreadable';
+    const searchOnly = src.kind === 'serp';
+    if (!unreadable && !searchOnly) continue;
+    // The probed reason the config carries (BRO-7816): a blind outlet says why, so the next session knows what to try.
+    const reason = String(src.reason || (src.notes && src.notes[0]) || '').replace(/^unreadable:\s*/, '').trim();
+    out.push({ outletId: r.outletId, kind: src.kind, rows, why: unreadable ? (reason || 'no listing can be read') : 'search results only (~10 per query), cannot list an archive' });
+  }
+  return out.sort((a, b) => b.rows - a.rows || a.outletId.localeCompare(b.outletId));
+}
+
+/**
+ * PURE. A census item from one sitemap entry. ignoreLastmod sources (NYT, WSJ, Slant: lastmod is bulk-touched,
+ * a whole archive on one day) keep no lastmod and carry the child sitemap URL instead, so the item is dated by
+ * the month it was listed under, never by a re-touch day (BRO-7816: an old NYT review was filed in 2022).
+ */
+function itemFromSitemapEntry(g, src) {
+  if (src && src.ignoreLastmod) return { url: g.url, sitemap: g.sitemap || null, lastmod: null };
+  return { url: g.url, lastmod: g.publishDate || null };
+}
+
+/**
+ * BRO-7820: write a census JSON file unless the only difference from what is on disk is `generatedAt`.
+ * Every run stamps every file, so without this a weekly CI run would rewrite ~100 files for nothing.
+ * Returns true when the file was written.
+ */
+// BRO-7820: a report whose listing could not be read ('unreadable') must not replace a previous
+// report that did read it: the weekly job would otherwise trade real coverage numbers for zeros.
+function shouldKeepPreviousReport(prev, next) {
+  const ps = prev && prev.source && prev.source.status;
+  const ns = next && next.source && next.source.status;
+  return ps === 'complete' && ns === 'unreadable';
+}
+
+function writeJsonUnlessOnlyStampChanged(file, obj, indent) {
+  const nodeFs = require('fs');
+  try {
+    const old = JSON.parse(nodeFs.readFileSync(file, 'utf8'));
+    if (JSON.stringify({ ...old, generatedAt: null }) === JSON.stringify({ ...obj, generatedAt: null })) return false;
+  } catch { /* missing or unreadable: write it */ }
+  nodeFs.writeFileSync(file, JSON.stringify(obj, null, indent) + '\n');
+  return true;
+}
+
 module.exports = {
+  resolveSameTitleByDate, inLiveWindow, dateWouldResolve,
+  writeJsonUnlessOnlyStampChanged, shouldKeepPreviousReport,
+  itemFromSitemapEntry,
+  blindOutlets,
   LONDON_SIGNAL_RE,
   catalogGapMarkdown,
   groupCatalogGaps,

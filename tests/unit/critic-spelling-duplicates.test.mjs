@@ -20,7 +20,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { displayCriticName, displayFormForCanonical } = require('../../scripts/lib/critic-display-name.js');
-const { CRITIC_ALIASES, loadOutletRegistry, slugify } = require('../../scripts/lib/review-normalization.js');
+const { CRITIC_ALIASES, resetCriticAliasIndex, loadOutletRegistry, slugify } = require('../../scripts/lib/review-normalization.js');
 const { criticProfileKey } = require('../../scripts/lib/url-slug.js');
 const { buildPages, findSplitPairs, newSplitPairs } = require('../../scripts/audit-critic-splits.js');
 const AUTO_ALIASES = require('../../data/auto-critic-aliases.json').aliases;
@@ -117,10 +117,12 @@ test('the split gate fails on a NEW pair and passes once an alias fixes it', () 
   assert.equal(newSplitPairs(pairs, new Set([pairs[0].key])).length, 0);
   // once an alias resolves the variant, the gate passes (reviews.json catches up at rebuild)
   CRITIC_ALIASES['joseph-verlezza'].push('josehp verlezza');
+  resetCriticAliasIndex();
   try {
     assert.equal(newSplitPairs(pairs, new Set()).length, 0);
   } finally {
     CRITIC_ALIASES['joseph-verlezza'].pop();
+    resetCriticAliasIndex();
   }
 });
 

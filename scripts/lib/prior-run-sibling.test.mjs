@@ -514,3 +514,48 @@ test('collectSameTitleProductionFiles: UK regional earlier run (Leeds Fences) ho
   assert.equal(showMarketPool(CHICAGO), 'nyc');
   assert.deepEqual(collectSameTitleProductionFiles(LYRIC, [CHICAGO, LYRIC], { ...deps, loadFiles: () => files[LEEDS.id] }), []);
 });
+
+// BRO-5489: Othello (Bedlam)'s Nov 2026 encore never linked to its May 2026 entry because
+// the titles read "Othello (Bedlam)" vs "Bedlam's Othello"; the May reviews sat as an
+// unclosable review gap. Same words, any order, punctuation ignored, still needs date+venue.
+const BEDLAM_MAY = {
+  id: 'bedlams-othello-off-broadway-2026', title: "Bedlam's Othello", category: 'off-broadway',
+  venue: 'West End Theatre', openingDate: '2026-05-03', closingDate: '2026-05-31',
+};
+const BEDLAM_NOV = {
+  id: 'othello-bedlam-off-broadway-2026', title: 'Othello (Bedlam)', category: 'off-broadway',
+  venue: 'West End Theatre', openingDate: '2026-11-07', closingDate: '2026-11-29',
+  priorRuns: [{ openingDate: '2026-05-10', closingDate: '2026-05-31', venue: 'West End Theatre' }],
+};
+test('findPriorRunSiblings links a returning show whose title only reorders the same words (BRO-5489)', () => {
+  const found = findPriorRunSiblings(BEDLAM_NOV, [BEDLAM_MAY, BEDLAM_NOV]);
+  assert.deepEqual(found.map((f) => f.sibling.id), [BEDLAM_MAY.id]);
+});
+test('findPriorRunSiblings links punctuation-only title differences (My Son’s A Queer, BRO-5489)', () => {
+  const older = { id: 'q-2023', title: "My Son's a Queer but What Can You Do", category: 'west-end', venue: 'Ambassadors Theatre', openingDate: '2023-01-25', closingDate: '2023-04-01' };
+  const newer = { id: 'q-2026', title: 'My Son’s A Queer (But What Can You Do?)', category: 'west-end', venue: 'Apollo Theatre', openingDate: '2026-09-17',
+    priorRuns: [{ openingDate: '2023-01-25', closingDate: '2023-04-01', venue: 'Ambassadors Theatre' }] };
+  assert.deepEqual(findPriorRunSiblings(newer, [older, newer]).map((f) => f.sibling.id), ['q-2023']);
+});
+test('findPriorRunSiblings still ignores a different show at the same venue and date (BRO-5489 guard)', () => {
+  const butterfly = { id: 'mb-2024', title: 'Madama Butterfly', category: 'off-broadway', venue: 'West End Theatre', openingDate: '2026-05-03', closingDate: '2026-05-31' };
+  assert.deepEqual(findPriorRunSiblings(BEDLAM_NOV, [butterfly, BEDLAM_NOV]), []);
+});
+test('carry window reaches back to the earlier entry’s own opening when priorRuns starts later (BRO-5489)', () => {
+  const [link] = findPriorRunSiblings(BEDLAM_NOV, [BEDLAM_MAY, BEDLAM_NOV]);
+  assert.equal(link.window.openingDate, '2026-05-03');
+  const reviews = [
+    { showId: BEDLAM_MAY.id, url: 'https://x.test/a', outletId: 'theatermania', criticName: 'P H', publishDate: '2026-05-03' },
+    { showId: BEDLAM_MAY.id, url: 'https://x.test/b', outletId: 'nytimes', criticName: 'H S', publishDate: '2026-05-06' },
+    { showId: BEDLAM_MAY.id, url: 'https://x.test/c', outletId: 'late', criticName: 'L', publishDate: '2026-04-20' },
+  ];
+  const { inherited } = inheritPriorRunReviews(reviews, [BEDLAM_MAY, BEDLAM_NOV]);
+  assert.deepEqual(inherited.map((r) => r.outletId).sort(), ['nytimes', 'theatermania']);
+});
+test('an explicit id link never widens its window (multi-run entry guard, BRO-5489)', () => {
+  const multi = { id: 'multi-2019', title: 'Show', category: 'west-end', venue: 'V', openingDate: '2019-01-01', closingDate: '2023-12-31' };
+  const newer = { id: 'multi-2026', title: 'Show', category: 'west-end', venue: 'V', openingDate: '2026-01-01',
+    priorRuns: [{ id: 'multi-2019', openingDate: '2023-06-01', closingDate: '2023-12-31', venue: 'V' }] };
+  const [link] = findPriorRunSiblings(newer, [multi, newer]);
+  assert.equal(link.window.openingDate, '2023-06-01');
+});

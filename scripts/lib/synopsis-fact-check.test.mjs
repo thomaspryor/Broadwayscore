@@ -177,6 +177,11 @@ test('ledeTitleMismatch leaves the right lede, spelling variants and character o
   assert.equal(ledeTitleMismatch({ id: 'd', title: 'No synopsis' }), null);
 });
 
+test('ledeTitleMismatch handles a setting before the actual title', () => {
+  assert.equal(ledeTitleMismatch({ title: 'Redcliffe A New Musical', synopsis: 'Set against the backdrop of 18th Century England, Redcliffe is an extraordinary new musical inspired by a true story.' }), null);
+  assert.equal(ledeTitleMismatch({ title: 'Linda Vista', synopsis: 'Set in Cuba, Buena Vista Social Club is a stage musical about musicians.' }), 'Set in Cuba, Buena Vista Social Club');
+});
+
 test('wiki markup and disambiguation scraps are not valid synopses', () => {
   assert.equal(isValidSynopsis('Peter Pan commonly refers to: Peter Pan (character), a fictional boy who refuses to grow up, created by J. M. Barrie.'), false);
   assert.equal(isValidSynopsis('composer = Lawrence Shragge country = United States language = English executive_producer = Richard Welsh'), false);

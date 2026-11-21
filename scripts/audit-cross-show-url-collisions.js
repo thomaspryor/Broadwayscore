@@ -32,6 +32,7 @@ const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-cl
 const { parseDate } = require('./lib/date-utils');
 const { wrongShowSkipDecision } = require('./lib/cross-show-collision-skip');
 const { WRONG_SHOW_ORPHAN_DIR_PREFIX, showIdDirMismatchNote } = require('./lib/wrong-production-autoclear');
+const { staleFileShowId } = require('./lib/showid-dir-mismatch');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, wrongShowCleared } = require('./lib/review-guards');
 const { shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 
@@ -143,6 +144,8 @@ const showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 console.log('Pre-pass: checking showId-vs-directory mismatches...');
 let showIdMismatchFlagged = 0;
 let showIdMismatchSkipped = 0;
+let showIdStaleHealed = 0;
+const showsById = new Map(showsData.shows.map(s => [s.id, s]));
 
 function isIdMigration(dirId, fileId) {
   // OB/WE ID migrations: directory was renamed but file showId wasn't updated
@@ -165,6 +168,20 @@ for (const showId of showDirs) {
     if (data.wrongProduction || data.wrongShow) continue;
     if (shouldSkipWrongProductionAudit(data) || laneBypasses(data, 'tourCrossMarket')) continue; // BRO-4807: lane reviews are never flagged
     if (isIdMigration(showId, data.showId)) { showIdMismatchSkipped++; continue; }
+    // BRO-7579: the folder is right and the showId FIELD is stale (a same-title
+    // run's id on a review dated inside this folder's run). Flagging it flapped
+    // daily against the rebuild's auto-clear; heal the field instead.
+    if (staleFileShowId({ data, dirShow: showsById.get(showId), fileShow: showsById.get(data.showId) })) {
+      showIdStaleHealed++;
+      if (APPLY) {
+        log(`  [SHOWID STALE FIELD] ${showId}/${file}: showId=${data.showId} -> ${showId}`);
+        data.showId = showId;
+        atomicWriteJSON(filePath, data);
+      } else {
+        log(`  [SHOWID STALE FIELD] ${showId}/${file}: showId=${data.showId} (would heal to ${showId})`);
+      }
+      continue;
+    }
 
     if (APPLY) {
       data.wrongProduction = true;
@@ -178,7 +195,7 @@ for (const showId of showDirs) {
     }
   }
 }
-console.log(`ShowId mismatches: ${showIdMismatchFlagged} flagged, ${showIdMismatchSkipped} ID-migration skipped\n`);
+console.log(`ShowId mismatches: ${showIdMismatchFlagged} flagged, ${showIdMismatchSkipped} ID-migration skipped, ${showIdStaleHealed} stale showId field(s) ${APPLY ? 'healed' : 'would heal'}\n`);
 
 // --- Pre-pass 2: Orphaned generic directory detection ---
 // Directories like "aladdin/" that aren't in shows.json but have year-suffixed siblings

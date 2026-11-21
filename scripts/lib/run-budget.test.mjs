@@ -81,3 +81,56 @@ test('canStartItem never stops a disabled budget, and ignores a bad reserve', ()
   assert.equal(on.canStartItem(Infinity), false);
   assert.equal(off.canStartItem(Infinity), true, 'a disabled budget still never stops');
 });
+
+// BRO-7928: phase 0 used the whole weekly recover-explicit-ratings budget three
+// runs in a row, so phases 1-3 never ran. Cumulative deadlines cap each phase.
+test('phaseDeadlineReached caps a phase at its cumulative share of the budget', () => {
+  const { phaseDeadlineReached } = require('./run-budget.js');
+  let t = 0;
+  const budget = createRunBudget(100, () => t);
+  const shares = { 0: 0.30, 1: 0.55, 2: 0.80, 3: 1 };
+  t = 29 * 60_000;
+  assert.equal(phaseDeadlineReached(budget, shares, 0), false);
+  t = 30 * 60_000;
+  assert.equal(phaseDeadlineReached(budget, shares, 0), true, 'phase 0 stops at 30 of 100 min');
+  assert.equal(phaseDeadlineReached(budget, shares, 1), false, 'phase 1 still has time at 30 min');
+  assert.equal(budget.exceeded(), false, 'the run itself is not over');
+  t = 55 * 60_000;
+  assert.equal(phaseDeadlineReached(budget, shares, 1), true);
+  assert.equal(phaseDeadlineReached(budget, shares, 2), false);
+  t = 100 * 60_000;
+  assert.equal(phaseDeadlineReached(budget, shares, 3), true);
+});
+
+test('phaseDeadlineReached never fires on a disabled budget or an unknown phase', () => {
+  const { phaseDeadlineReached } = require('./run-budget.js');
+  let t = 0;
+  const off = createRunBudget(0, () => t);
+  t = 10 ** 12;
+  assert.equal(phaseDeadlineReached(off, { 0: 0.3 }, 0), false);
+  const on = createRunBudget(10, () => t);
+  t += 10 ** 9;
+  assert.equal(phaseDeadlineReached(on, { 0: 0.3 }, 7), false);
+  assert.equal(phaseDeadlineReached(on, null, 0), false);
+  assert.equal(phaseDeadlineReached(null, { 0: 0.3 }, 0), false);
+});
+
+test('recover-explicit-ratings passes its phase to every budget check (BRO-7928)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../recover-explicit-ratings.js', import.meta.url), 'utf8');
+  const calls = src.match(/budgetSpent\('[^']*',[^;]*?\)\) break;/g) || [];
+  assert.ok(calls.length >= 6, `expected the six phase loops, found ${calls.length}`);
+  for (const c of calls) assert.match(c, /,\s*[0-3]\)\) break;$/, `no phase argument: ${c}`);
+});
+
+test('createFailureBreaker trips only on a run of failures; a success resets it (BRO-7928)', () => {
+  const { createFailureBreaker } = require('./run-budget.js');
+  // Mixed batch: two timeouts, a good review, then two more: never tripped,
+  // so the good review and the ones after it are still tried.
+  const b = createFailureBreaker(3);
+  b.fail(); b.fail(); assert.equal(b.tripped(), false);
+  b.ok(); assert.equal(b.count, 0);
+  b.fail(); b.fail(); assert.equal(b.tripped(), false);
+  b.fail(); assert.equal(b.tripped(), true, 'three in a row');
+  assert.equal(b.count, 3);
+});

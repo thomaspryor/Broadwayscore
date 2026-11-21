@@ -410,6 +410,14 @@ const AUTO_FIX_PLAYBOOK = [
   // Coverage Verdict S1 (#872/#898). Without an explicit entry this would fall
   // through to the generic route and be described as a scored-review-percentage
   // problem, which is not what it measures.
+  // BRO-7779 items 4 and 8 (scripts/lib/press-night-readiness-gaps.js).
+  { match: /^Press night: openings not watched$/, urgency: 'this-week',
+    ownerText: "Some regional or touring shows open soon in places our opening-night watch does not cover, so their reviews will arrive through the daily sweeps instead of within minutes. Nothing is needed from you.",
+    workerInstruction: "The named shows have no embargo hour (scripts/lib/press-night-record.js EMBARGO_HOUR_LOCAL covers only Broadway, Off-Broadway, West End, Off-West End) and no reviewEmbargoAt. If a show is important enough to watch live, set its reviewEmbargoAt from a cited press release; otherwise confirm the daily sweeps (gather-reviews) pick it up the day after." },
+  { match: /^Press night: score gate undecided$/, urgency: 'this-week',
+    ownerText: "A special or short-run Broadway or West End show opens within a week and may get too few reviews to show a Critic Score. A decision on whether to show a score with fewer reviews is needed before opening night.",
+    workerInstruction: "For the shows named, put ONE plain-English DECISION NEEDED question to the owner covering the list (docs/owner-email-guidelines.md; run node scripts/lib/owner-decision-recall.js \"score gate\" first): lower the minimum (Blue Man Group got 3, BRO-7750) or keep the market minimum. Record the answer in data/score-gate-overrides.json (shows.<id> with minReviews N to lower it, or keptMarketMinimum.<id> to keep the market minimum) with approvedBy and reason." },
+
   { match: /^Coverage: SERP census recall$/, urgency: 'this-week',
     ownerText: "The review census is finding fewer published reviews than it recently did, so new shows may be going live with reviews missing. Nothing is needed from you.",
     workerInstruction: "Run `node scripts/audit-serp-census-recall.js`, find which census arm dropped, and fix it." },
@@ -2543,13 +2551,11 @@ function checkSEO() {
         }
         return { name: 'SEO: health', status: 'warn', message: `${anomalies.length} SEO warning(s): ${anomalies.map(describe).join('; ')}`, hint: 'Check data/audit/seo-health.json for details' };
       }
-      // Check index coverage — only warn if <50% (sample is 50 URLs from 700+ pages,
-      // skewed toward historical shows Google deprioritizes)
-      if (data.indexCoverage) {
-        const { indexed, total } = data.indexCoverage;
-        if (total > 0 && indexed / total < 0.5) {
-          return { name: 'SEO: health', status: 'warn', message: `${((indexed / total) * 100).toFixed(0)}% indexed (${indexed}/${total})` };
-        }
+      // Index coverage (BRO-7772): judged on the core Broadway/Off-Broadway sample only; regional and
+      // West End pages Google has not crawled yet stay in seo-health.json as information.
+      const cov = require('./lib/index-coverage-sample').indexCoverageVerdict(data.indexCoverage);
+      if (cov.warn) {
+        return { name: 'SEO: health', status: 'warn', message: cov.message };
       }
       return { name: 'SEO: health', status: 'pass', message: `Healthy (${formatAge(age)} ago)` };
     }),
@@ -3683,6 +3689,35 @@ function checkInfraReviewGate() {
   return [runCheck('Infra-review: gate telemetry', () => computeInfraReviewDigest({
     gateEvents, planVerdicts, now: Date.now(),
   }))];
+}
+
+// CI-ONLY-OK(checkSkepticReview): reads .cache/skeptic-review-stop.log, a gitignored per-machine log the
+// skeptic Stop gate (scripts/lib/skeptic-review-stop.mjs, BRO-7839) writes where it runs. The row is
+// computeSkepticReviewDigest() (scripts/lib/skeptic-review-digest.js), which returns only 'pass' or 'warn',
+// never 'error', so there is no unreachable error state. Non-paging gate telemetry (BRO-7843): where the log
+// is absent it says plainly that it cannot measure here, and the real counts show wherever the gate fires.
+function checkSkepticReview() {
+  const logPath = path.join(infraReviewLedgerRoot(), '.cache', 'skeptic-review-stop.log');
+  if (!fs.existsSync(logPath)) {
+    // CI and ephemeral cloud containers never have the log: count the gate's hits from the committed session-retro rows.
+    const retroPath = path.join(infraReviewLedgerRoot(), 'data', 'audit', 'session-retro.jsonl');
+    if (fs.existsSync(retroPath)) {
+      const { computeSkepticFromRetro } = require('./lib/skeptic-review-digest.js');
+      return [runCheck('Skeptic review: gate telemetry', () => computeSkepticFromRetro(readJsonlBestEffort(retroPath), Date.now()))];
+    }
+    return [{
+      name: 'Skeptic review: gate telemetry',
+      status: 'warn',
+      unmeasurable: true,
+      message: 'Skeptic review: neither .cache/skeptic-review-stop.log nor data/audit/session-retro.jsonl is visible from this environment, so the gate hit rate cannot be measured here.',
+      hint: 'Run `node scripts/lib/skeptic-review-stop.mjs --digest` where the Stop gate fires.',
+    }];
+  }
+  const { computeSkepticReviewDigest, skepticOutcomesFromRetro } = require('./lib/skeptic-review-digest.js');
+  // BRO-7872: also show whether ship-check skeptic gaps were answered (session-retro rows carry `skeptic`).
+  const retroPath = path.join(infraReviewLedgerRoot(), 'data', 'audit', 'session-retro.jsonl');
+  const outcomes = fs.existsSync(retroPath) ? skepticOutcomesFromRetro(readJsonlBestEffort(retroPath), Date.now()) : null;
+  return [runCheck('Skeptic review: gate telemetry', () => computeSkepticReviewDigest(readJsonlBestEffort(logPath), outcomes))];
 }
 
 // --- Category: Dispatch outcomes (did dispatched work actually land?) ---
@@ -5188,6 +5223,20 @@ function checkCardVerifiabilityBacklog() {
     ...ownerJudgmentLimboResults(cvLinear),
   ];
 }
+/** BRO-7779 items 4 and 8: openings with no press-night watch, and special/short runs with no score-gate decision. */
+function checkPressNightReadiness({ nowMs = Date.now() } = {}) {
+  try {
+    const { pressNightReadinessResults } = require('./lib/press-night-readiness-gaps');
+    const { embargoInfo } = require('./lib/press-night-record');
+    const raw = readJSON(path.join(DATA_DIR, 'shows.json'));
+    const shows = Array.isArray(raw) ? raw : (raw.shows || []);
+    const overrides = readJSON(path.join(DATA_DIR, 'score-gate-overrides.json'));
+    return pressNightReadinessResults({ shows, overrides, nowMs, embargoAt: (s) => embargoInfo(s).at });
+  } catch (err) {
+    return ['Press night: openings not watched', 'Press night: score gate undecided'].map((name) => ({ name, status: 'error', message: `Check crashed: ${err.message}` }));
+  }
+}
+
 function checkCoverageHoles() {
   const report = readAuditJsonOrNull('coverage-holes.json');
   return report ? coverageHolesResults(report) : [];
@@ -6410,6 +6459,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...(await checkCodexRunner()),
     ...checkPushRetryDeadman(dryRun),
     ...checkInfraReviewGate(),
+    ...checkSkepticReview(),
     ...checkSharedCheckoutShallow(),
     ...checkDispatchOutcomes(dryRun),
     ...checkDispatchHealth(),
@@ -6426,6 +6476,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkUncollectedStrands(),
     ...checkCardVerifiabilityBacklog(),
     ...checkCoverageHoles(),
+    ...checkPressNightReadiness(),
     ...checkStarBandDrift(),
     ...checkEarlyPublishDates(),
     ...checkCorpusAudits(),
@@ -6652,4 +6703,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkUncardedDigestRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };
+module.exports = { checkPressNightReadiness, invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkUncardedDigestRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth, checkSkepticReview };

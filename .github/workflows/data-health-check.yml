@@ -817,6 +817,28 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/guard-audit.js
 
+      # BRO-7780: once a month (the 3rd), read each tier-1/2 outlet's byline fixture page live
+      # with the shared byline reader; an outlet whose page no longer names the expected critic
+      # routes one owner alert (byline:fixture-drift). Direct fetch only (free). Advisory.
+      # Its output file is committed by "Commit provider spend ledger (apiFallbackSafe)" below
+      # (it runs before the reconciliation so nothing sits between that write and its
+      # commit, BRO-3317) and is registered apiFallbackSafe in core-data-merge-registry.js.
+      - name: Byline fixture drift (monthly, advisory)
+        # No continue-on-error: every later step is if: always(), so a crash blocks no commit;
+        # it turns the job red once a month instead of hiding (second-opinion BRO-7780).
+        if: always()
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          # The 3rd only: a manual dispatch or the cron redispatch on another day skips too
+          # (15 min of live fetches and a possible owner alert, ship-check BRO-7780).
+          if [ "$(date -u +%d)" != "03" ]; then
+            echo "Not the 3rd; skipping"; exit 0
+          fi
+          timeout 900 node scripts/check-byline-fixture-drift.js
+
       # Scraping Cost System v2 truth layer (owner-approved 2026-07-30):
       # daily billing-API reconciliation. continue-on-error because a crash
       # here must not block the health snapshot commit below — a stuck
@@ -904,6 +926,8 @@ jobs:
           git add data/audit/owner-email-log.jsonl 2>/dev/null || true
           # BRO-6947: corpus-derived outlet -> critics cache the collect pipeline reads (names only).
           git add data/audit/outlet-corpus-critics.json 2>/dev/null || true
+          # BRO-7780: monthly byline fixture drift result.
+          git add data/audit/byline-fixture-drift.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No provider spend ledger changes"
           else
@@ -2183,7 +2207,8 @@ jobs:
       # Score" can reveal it to a reader only after they save a prediction (the forecast is never in a public
       # file). A step here, not its own job: it reads tonight's local ledger rows and the core data already
       # checked out. Idempotent upserts. Counts only in the log (public): never print a row.
-      # Calls close at 00:00 Eastern on opening day, enforced server-side, so a reviews_live flip is only an early close.
+      # BRO-7857: calls stay open until the first review is live (scripts/close-score-calls-on-reviews.mjs in
+      # vercel-deploy.yml and rebuild-fast.yml flips reviews_live); server backstop 00:00 Eastern two days after opening.
       - name: Sync forecasts to Predict the Score (advisory)
         if: vars.SCORE_CALL_SYNC_DISABLED != 'true'
         # lint-allow-swallow: advisory (CLAUDE.md §19); a failed night leaves yesterday's forecast rows in place.

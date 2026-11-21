@@ -39,7 +39,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { unconfirmedArtReason } = require('./lib/unconfirmed-art-policy');
-const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
+const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, refusedSourceReason, freshSourceFor, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { findContentOwner } = require('./lib/duplicate-images');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
@@ -249,34 +249,8 @@ async function downloadImageDirect(url) {
 // /images/shows/<id>/ paths (the persist step keeps those verbatim).
 // ---------------------------------------------------------------------------
 
-/**
- * Portrait card (poster/thumbnail) from arbitrary key art. Venue og:images
- * are usually landscape title-art; a straight 2:3 attention-crop amputates
- * the title ("BLACK SWAN" → "BLAC SWA", user report 2026-07-12). Strategy:
- *   - trim uniform borders (white-background promo shoots read as whitespace
- *     in small cards otherwise);
- *   - portrait-ish source (w/h ≤ 0.85) → tight cover/attention crop;
- *   - landscape/square source → CONTAIN the full art over a blurred,
- *     darkened cover of itself (the standard letterbox-poster treatment) so
- *     no text is ever cut.
- */
-async function portraitCardFromKeyArt(sharpLib, buffer, w, h, quality) {
-  let src = buffer;
-  try {
-    const trimmed = await sharpLib(buffer).trim({ threshold: 25 }).toBuffer({ resolveWithObject: true });
-    // Only adopt the trim when it kept a meaningful image (guards against
-    // aggressive trims of low-contrast art collapsing to slivers).
-    if (trimmed.info.width > 200 && trimmed.info.height > 200) src = trimmed.data;
-  } catch { /* keep original */ }
-  const meta = await sharpLib(src).metadata();
-  const ratio = (meta.width || 1) / (meta.height || 1);
-  if (ratio <= 0.85) {
-    return sharpLib(src).resize(w, h, { fit: 'cover', position: 'attention' }).webp({ quality }).toBuffer();
-  }
-  const bg = await sharpLib(src).resize(w, h, { fit: 'cover' }).blur(30).modulate({ brightness: 0.5, saturation: 1.15 }).toBuffer();
-  const fg = await sharpLib(src).resize(w - 24, h - 24, { fit: 'inside' }).toBuffer();
-  return sharpLib(bg).composite([{ input: fg, gravity: 'centre' }]).webp({ quality }).toBuffer();
-}
+// portraitCardFromKeyArt / writeRegionalFormats live in scripts/lib/regional-key-art.js (BRO-7265).
+const { regionalLocalPaths, writeRegionalFormats } = require('./lib/regional-key-art');
 
 async function fetchFromRegionalVenue(show, verifyCtx) {
   let sharpLib;
@@ -284,11 +258,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
   const { REGIONAL_FEEDER_VENUES } = require('./lib/aggregator-candidate-extract');
   const venueEntry = REGIONAL_FEEDER_VENUES.find(v => v.re.test(show.venue || '')) || require('./lib/regional-image-venues').imageOnlyVenue(show.venue);
 
-  const localPaths = {
-    poster: `/images/shows/${show.id}/poster.webp`,
-    thumbnail: `/images/shows/${show.id}/thumbnail.webp`,
-    hero: `/images/shows/${show.id}/hero.webp`,
-  };
+  const localPaths = regionalLocalPaths(show.id);
 
   // Existing real files win unless --force: re-runs (default local run, manual
   // dispatch with only_missing=false, --show=<id>) must not silently replace
@@ -365,10 +335,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       // Honor --dry-run exactly like the other local-write paths. (ship-check P1)
       const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
       const dir = path.join(outputBase, show.id);
-      fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(path.join(dir, 'poster.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 480, 720, 82));
-      fs.writeFileSync(path.join(dir, 'thumbnail.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 300, 450, 80));
-      await sharpLib(buffer).resize(1600, 1000, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'hero.webp'));
+      await writeRegionalFormats(sharpLib, buffer, dir);
       console.log(`   ✓ regional images written (poster/thumbnail/hero) from ${src.label}${dryRunMode ? ' [dry-run dir]' : ''}`);
       const _fileSources = {};
       for (const format of ['poster', 'thumbnail', 'hero']) _fileSources[format] = { path: localPaths[format], source: ogImage };
@@ -2738,6 +2705,28 @@ function applyImages(show, images) {
     if (d.path && !wasStaged) {
       try { fs.unlinkSync(path.join(__dirname, '..', 'public', d.path)); } catch {}
     }
+  }
+  // BRO-7846 backstop for every tier (trusted tiers skip verifyAndCollect):
+  // a fresh candidate whose source is refused for this row (rejected, or
+  // TodayTix art on a row that closed before TodayTix sold tickets) is
+  // dropped. The prior file stays when intact and keepable.
+  for (const format of ['hero', 'poster', 'thumbnail']) {
+    const p = safe[format];
+    if (typeof p !== 'string' || !p) continue;
+    const st = staged && staged[format] && staged[format].local === p ? staged[format] : null;
+    const fe = fileSources && fileSources[format];
+    // Untouched unless staged, or this fetch wrote the file in place (regional tier).
+    if (!st && p === before[format] && !(fe && fe.path === p)) continue;
+    const src = freshSourceFor(format, p, fileSources);
+    const why = refusedSourceReason(show, src);
+    if (!why) continue;
+    console.log(`   ✗ Refusing ${format} for ${show.id}: ${why} (${String(src).slice(0, 90)})`);
+    const prior = before[format];
+    const wasStaged = discardStaged(staged, format);
+    if (wasStaged && fileSources) delete fileSources[format];
+    const priorIntact = typeof prior === 'string' && prior.startsWith('/images/') && (prior !== p || wasStaged);
+    safe[format] = priorIntact && keepExistingImage(show, format, sources) ? prior : null;
+    if (!wasStaged && p.startsWith('/images/')) { try { fs.unlinkSync(path.join(__dirname, '..', 'public', p)); } catch {} }
   }
   // BRO-7390 byte-level backstop: a fresh candidate whose bytes an unrelated
   // show already serves (same stock/venue photo fetched under another URL) is

@@ -32,12 +32,15 @@ test('the clock plans the sweep slots for a Broadway night at +4h15, +5h15, +6h1
   // Each slot has its own fired key; a fired sw1 never hides sw2, and the kick key is untouched.
   const fired = [kickKey(SHOW, NIGHT, 'sw1')];
   assert.equal(planKicks(shows, E + 260 * M, { fired }).find((x) => x.kind.startsWith('sw')).kind, 'sw2');
-  assert.equal(confirmKick(shows, E + 255 * M, { showId: SHOW, night: NIGHT, kind: 'sw1' }), 'kick');
+  // BRO-7779: the tail orchestrator run (tk, +1h50) is due first; once fired, sw1 confirms.
+  assert.equal(confirmKick(shows, E + 255 * M, { showId: SHOW, night: NIGHT, kind: 'sw1' }, { fired: [kickKey(SHOW, NIGHT, 'tk')] }), 'kick');
   // A late clock still sweeps: sw3 stays plannable to about +12h, then nothing.
   assert.ok(planKicks(shows, E + 700 * M).some((x) => x.kind === 'sw3'));
   assert.ok(!planKicks(shows, E + 725 * M).some((x) => x.kind.startsWith('sw')));
-  // Off-Broadway and West End nights get no sweep (the lane is Broadway only).
-  assert.ok(!planKicks([{ ...shows[0], category: 'off-broadway' }], E, { categories: ['off-broadway'] }).some((x) => x.kind.startsWith('sw')));
+  // BRO-7779: every lane market gets the sweeps (they were Broadway only, and the other markets had no collector after the lane).
+  for (const category of ['off-broadway', 'west-end', 'off-west-end']) {
+    assert.equal(planKicks([{ ...shows[0], category }], E - 24 * 60 * M).filter((x) => x.kind.startsWith('sw')).length, 4, category);
+  }
 });
 
 test('a sweep slot waits for the lane, dispatches once it releases, and fails toward collecting', () => {

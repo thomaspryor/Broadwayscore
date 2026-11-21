@@ -258,6 +258,10 @@ function ledeTitleMismatch(show) {
   if (!subject || !title) return null;
   if (subject.includes(title) || title.includes(subject)) return null;
   if (subject.slice(0, 6) === title.slice(0, 6)) return null;
+  // A setting can precede the work's name, e.g. "Set in England, Redcliffe
+  // is a musical". Compare the final clause without hiding unrelated titles.
+  const finalClause = key(m[1].split(',').pop());
+  if (finalClause.length >= 6 && title.startsWith(finalClause)) return null;
   return m[1].trim();
 }
 

@@ -8,18 +8,20 @@
  * For every dated show on a launched hub it reads the stored review texts (data/review-texts/<show>/, excluded
  * files skipped); for shows running or closed in the last 21 days it also reads
  *   - with --listing, the run end on the listing site's own production page (theatreinchicago / theatreindc /
- *     theatreinla detail page from evidenceUrls, fetched through fetchPage()), the source the hand fixes used.
+ *     theatreinla detail page from evidenceUrls, fetched through fetchPage()), the source the hand fixes used,
+ *     AND the producing theatre's own page (officialUrl / venue box-office link; runEndFromTheatrePage), which
+ *     moves first after an extension while the listing lags (BRO-7291, hayward-regional-2026 2026-W47).
  *   - with --fetch, review URLs for shows that have no stored text yet (the BRO-7239 harvest path).
  * laterAnnouncedRunEnd (scripts/lib/run-end-from-text.js) picks an announced end LATER than ours; --apply writes it
  * through writeClosingDate, which records the extension. A human pin (humanCorrectedClosingDate) is only moved by
- * the listing page or an "extended through" sentence (an extension supersedes the hand fix, it does not contradict
+ * the listing page or an "extended through" sentence (never the theatre page alone) (an extension supersedes the hand fix, it does not contradict
  * it); a plain review-text date never overrides a pin and is reported instead.
  * Writes the report to --out. Wired into scrape-new-aggregators.yml (advisory).
  */
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
-const { laterAnnouncedRunEnd } = require('./lib/run-end-from-text');
+const { laterAnnouncedRunEnd, runEndFromTheatrePage } = require('./lib/run-end-from-text');
 const { writeClosingDate, recordClosingExtension } = require('./lib/closing-date-guard');
 
 const ROOT = path.join(__dirname, '..');
@@ -30,6 +32,16 @@ const strip = (h) => String(h).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?
 const TIC_DETAIL = /^https?:\/\/(?:www\.)?theatrein(?:chicago|dc|la)\.com\/[^/]+\/\d+\/?$/i;
 const EXCLUDED = (f) => f.wrongProduction || f.wrongShow || f.isRoundupArticle || f.isNonReview || f.duplicateOf;
 const RECENT_CLOSED_DAYS = 21;
+
+/**
+ * The producing theatre's own page for this production (officialUrl, else a venue box-office link), or null.
+ * Ticket resellers and the theatreinX listing are not the theatre's page.
+ */
+const RESELLER = /(?:todaytix|eventbrite|ticketmaster|telecharge|broadway\.com|goldstar|stubhub|seatgeek|vividseats|theatrein(?:chicago|dc|la))\./i;
+function theatrePageUrl(show) {
+  const cands = [show.officialUrl, ...(show.ticketLinks || []).filter((t) => /venue|box office|official/i.test(t.platform || '')).map((t) => t.url)];
+  return cands.find((u) => /^https?:\/\//i.test(u || '') && !RESELLER.test(u)) || null;
+}
 
 /** Every dated launched-hub show: stored review texts are checked for all of them (no network). */
 function onHub(show, launchedCities) {
@@ -65,7 +77,8 @@ function storedTexts(showId, dir = path.join(ROOT, 'data', 'review-texts')) {
 function applyRunEnd(show, decision, todayStr, log = () => {}) {
   if (!decision) return 'unchanged';
   if (show.humanCorrectedClosingDate) {
-    if (decision.kind === 'text') return 'pinned';
+    // one scraped page never beats a hand fix: the theatre page alone is reported, like plain review text (BRO-7291 ship-check)
+    if (decision.kind === 'text' || decision.kind === 'theatre-page') return 'pinned';
     // An extension past a hand-fixed date: record it, move the date, keep the pin on the new value.
     recordClosingExtension(show, decision.date, decision.source, todayStr);
     writeClosingDate(show, decision.date, decision.source, { force: true, recordExtension: false, todayStr, log });
@@ -92,7 +105,7 @@ async function main() {
   const shows = snapshot.shows.filter((s) => (only ? s.id === only : onHub(s, launched)));
   const net = flag('listing') || flag('fetch') ? require('./lib/scraper') : null;
   const tic = require('./lib/theatreinchicago');
-  const report = { generatedAt: new Date().toISOString(), today, checked: shows.length, written: [], pinned: [], listings: {} };
+  const report = { generatedAt: new Date().toISOString(), today, checked: shows.length, written: [], pinned: [], listings: {}, theatrePages: {} };
   for (const s of shows) {
     const texts = storedTexts(s.id);
     let listing = null;
@@ -104,12 +117,21 @@ async function main() {
         if (listing) report.listings[s.id] = listing;
       } catch (e) { console.log(`::warning::listing fetch failed for ${s.id}: ${e.message}`); }
     }
+    let theatrePage = null;
+    const own = theatrePageUrl(s);
+    if (flag('listing') && own && (only || inScope(s, launched, today))) {
+      // BRO-7291: the theatre's own page moves first after an extension; the listing site can lag (hayward-regional-2026)
+      try {
+        const r = runEndFromTheatrePage((await net.fetchPage(own, { skipVerify: true })).content, { title: s.title, firstPerformance: s.previewsStartDate || s.openingDate });
+        if (r) { theatrePage = { date: r.date, url: own }; report.theatrePages[s.id] = { ...theatrePage, how: r.how }; }
+      } catch (e) { console.log(`::warning::theatre page fetch failed for ${s.id}: ${e.message}`); }
+    }
     if (flag('fetch') && !texts.length) {
       for (const url of (s.evidenceUrls || []).filter((u) => /^https?:/.test(u) && !TIC_DETAIL.test(u)).slice(0, 6)) {
         try { const p = await net.fetchPage(url, { skipVerify: true }); if (p && p.content) texts.push({ text: strip(p.content), url, articleDate: null }); } catch { /* skip */ }
       }
     }
-    const decision = laterAnnouncedRunEnd({ opening: s.openingDate, closing: s.closingDate }, { texts, listing });
+    const decision = laterAnnouncedRunEnd({ opening: s.openingDate, closing: s.closingDate }, { texts, listing, theatrePage });
     if (!decision) continue;
     const from = s.closingDate || null;
     const what = applyRunEnd(s, decision, today, console.log);
@@ -125,5 +147,5 @@ async function main() {
   if (net) await net.cleanup();
 }
 
-module.exports = { onHub, inScope, storedTexts, applyRunEnd };
+module.exports = { onHub, inScope, storedTexts, applyRunEnd, theatrePageUrl };
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

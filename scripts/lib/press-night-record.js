@@ -109,10 +109,17 @@ function embargoOverrideReachWarning(show) {
 function embargoInfo(show) {
   const problem = embargoOverrideProblem(show);
   if (show && show.reviewEmbargoAt != null && !problem) {
-    return { at: new Date(show.reviewEmbargoAt).toISOString(), source: 'override', problem: null };
+    return { at: new Date(show.reviewEmbargoAt).toISOString(), source: 'override', assumed: false, problem: null };
   }
   const at = show ? marketEmbargoAt(show) : null;
-  return { at, source: at ? 'market-default' : null, problem };
+  // BRO-7740: the market hour is a guess, never a fact. Every consumer that times anything off the embargo must
+  // check `assumed` and cover the plausible early-drop range (Blue Man Group's reviews came an hour early).
+  return { at, source: at ? 'market-default' : null, assumed: !!at, problem };
+}
+
+/** True when the show's embargo is only the market hour (nobody set or confirmed it). */
+function embargoAssumed(show) {
+  return !!embargoInfo(show).assumed;
 }
 
 function defaultEmbargoAt(show) {
@@ -259,13 +266,22 @@ function applySample(rec, sample) {
   const fresh = rec.perReview.filter((p) => p.firstLiveAt === at && !p.renamedFrom && p.liveNow && !p.pairChecked);
   for (const np of fresh) {
     np.pairChecked = true;
-    const outletKey = String(np.outlet || '').toLowerCase();
-    const gone = rec.perReview.filter((q) => q !== np && q.liveNow && !liveKeys.has(q.key) && String(q.outlet || '').toLowerCase() === outletKey);
-    const sameOutletNew = fresh.filter((f) => String(f.outlet || '').toLowerCase() === outletKey);
+    // BRO-7900: compare canonical outlet ids, so a display-name fix mid-night ("columbiaspectator" ->
+    // "Columbia Daily Spectator") pairs as a rename instead of reading as a drop plus a new review.
+    // Same label: old rule (any critic change, e.g. null -> name). Different label, same outlet id: the critics
+    // must agree or one side be unbylined, so two critics under an alias (NY Mag / Vulture) never merge.
+    const label = (x) => String(x || '').toLowerCase();
+    const unbylined = (c) => !c || label(c) === 'unknown';
+    const pairs = (q, n) => label(q.outlet) === label(n.outlet)
+      || (outletIdentity(q.outlet) === outletIdentity(n.outlet)
+        && (label(q.critic) === label(n.critic) || unbylined(q.critic) || unbylined(n.critic)));
+    const gone = rec.perReview.filter((q) => q !== np && q.liveNow && !liveKeys.has(q.key) && pairs(q, np));
+    const sameOutletNew = fresh.filter((f) => pairs(gone[0] || np, f));
     if (gone.length === 1 && sameOutletNew.length === 1) {
       const q = gone[0];
       q.renamedFrom = q.key;
       q.key = np.key;
+      q.outlet = np.outlet;
       q.critic = np.critic;
       q.liveNow = true;
       if (np.publishPrecision === 'exact' && q.publishPrecision !== 'exact') { q.publishAt = np.publishAt; q.publishPrecision = np.publishPrecision; }
@@ -340,11 +356,23 @@ function firstOutletPublish(rec) {
  * published 10-05, made every review "already live at the first sample")? A review with no
  * publish date counts only if the probe saw it go live (not at the first sample).
  */
-function isNightReview(p, night) {
+function isNightReview(p, night, graceDays = 0) {
   if (!night) return true;
-  if (p.publishAt) return String(p.publishAt).slice(0, 10) >= night;
+  if (p.publishAt) return String(p.publishAt).slice(0, 10) >= shiftDay(night, -graceDays);
   return !p.baseline;
 }
+
+/** YYYY-MM-DD shifted by whole days (UTC), for the publish-date grace window. */
+function shiftDay(day, delta) {
+  if (!delta) return String(day).slice(0, 10);
+  const ms = Date.parse(`${String(day).slice(0, 10)}T00:00:00Z`);
+  return Number.isNaN(ms) ? String(day).slice(0, 10) : new Date(ms + delta * 86400000).toISOString().slice(0, 10);
+}
+
+// BRO-7892: a review dated up to NEAR_PRIOR_GRACE_DAYS before the night (a UK outlet's evening-before post, a studio's final-preview
+// piece) that the pipeline first saw INSIDE the night window is still a press-night review. Its live time counts.
+// Anything older (BRO-6067: singleticket, published weeks before) stays preview-period and proves nothing.
+const NEAR_PRIOR_GRACE_DAYS = 2;
 
 // A review published more than a year before the press night cannot be this production's (BRO-6819: 2018 HuffPost/
 // Observer pages of an earlier Tosca were live at the first sample, then the rebuild purged them and deleted the
@@ -361,6 +389,28 @@ function outletIdOf(name) {
   const { normalizeOutlet } = require('./review-normalization');
   return normalizeOutlet(String(name)) || null;
 }
+
+/** Canonical outlet id, falling back to the lowercased label when the registry does not know it. */
+const OUTLET_IDENTITY_CACHE = new Map(); // normalizeOutlet is ~0.6 ms for labels the registry does not know
+function outletIdentity(name) {
+  const k = String(name || '');
+  if (!OUTLET_IDENTITY_CACHE.has(k)) OUTLET_IDENTITY_CACHE.set(k, outletIdOf(k) || k.toLowerCase());
+  return OUTLET_IDENTITY_CACHE.get(k);
+}
+
+/**
+ * BRO-7900: true when the drop is a relabel: in the same sample the review vanished, a review with the same
+ * canonical outlet and critic appeared under another key (and, for the gate, is still live).
+ */
+function isRelabelDrop(rec, d, { requireLiveNow = false } = {}) {
+  const critic = String(d.critic || '').toLowerCase();
+  const outlet = outletIdentity(d.outlet);
+  if (!critic || !outlet) return false; // no byline: two reviews from one outlet cannot be told apart
+  return (rec.perReview || []).some((p) => p.key !== d.key && p.firstLiveAt === d.droppedAt
+    && (!requireLiveNow || p.liveNow)
+    && String(p.critic || '').toLowerCase() === critic && outletIdentity(p.outlet) === outlet);
+}
+const isLiveUnderNewLabel = (rec, d) => isRelabelDrop(rec, d, { requireLiveNow: true });
 
 /**
  * Outlets whose only review files the rebuild excludes (wrong-show / wrong-production / syndicated copy),
@@ -539,7 +589,7 @@ function coverageAt(rec, census, asOfMs, { fetchedAt = null, excluded = [], defe
     const ms = toMs(p.firstLiveAt);
     if (ms == null || ms > asOfMs) continue;
     const oid = outletIdOf(p.outlet);
-    const gone = rec.dropped.find((d) => d.key === p.key && toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs));
+    const gone = rec.dropped.find((d) => d.key === p.key && toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs) && !isRelabelDrop(rec, d));
     if (gone) { if (oid) droppedNow.add(oid); continue; }
     if (oid) liveSet.add(oid);
   }
@@ -611,16 +661,19 @@ const critKey = (c) => foldDiacritics(String(c || '')).toLowerCase().replace(/[^
  * which also folds in the lane shadow's finer polls). Preview-period rows are skipped: a review live weeks
  * before the embargo is not proof that another critic's night review is live (BRO-6070 review).
  */
-function outletLiveMs(rec) {
+function outletLiveMs(rec, graceDays = 0) {
   const byCritic = new Map();
   const byOutlet = new Map();
   const min = (m, k, ms) => { if (!m.has(k) || ms < m.get(k)) m.set(k, ms); };
   for (const p of rec.perReview) {
-    if (!isNightReview(p, rec.night)) continue;
+    if (!isNightReview(p, rec.night, graceDays)) continue;
     const oid = outletIdOf(p.outlet); const ms = toMs(p.firstLiveAt);
     if (!oid || ms == null) continue;
     min(byCritic, `${oid}|${critKey(p.critic)}`, ms);
-    min(byOutlet, oid, ms);
+    // A grace-window row (dated before the night) may vouch for the outlet only when it names no critic: a named
+    // critic's earlier piece must not vouch for a different critic's file (BRO-7892 review).
+    const ck = critKey(p.critic);
+    if (isNightReview(p, rec.night) || !ck || ck === 'unknown') min(byOutlet, oid, ms);
   }
   const ls = rec.laneShadow;
   if (ls && Array.isArray(ls.liveFirstSeen)) {
@@ -652,8 +705,11 @@ function sameNightCheck(rec, g) {
   const fsnap = rec.fileState;
   if (embMs == null) return { status: 'unknown', detail: 'no embargo time' };
   if (!fsnap || !Array.isArray(fsnap.files)) return { status: 'unknown', detail: 'no review-file snapshot in the record (private review texts were not available at capture), so late or missing reviews cannot be named' };
-  const { byCritic, byOutlet } = outletLiveMs(rec);
+  const strict = outletLiveMs(rec);
+  const near = outletLiveMs(rec, NEAR_PRIOR_GRACE_DAYS);
   const t2 = embMs + 2 * HOUR;
+  const nearPrior = (f) => !!(f.publishDate && rec.night && String(f.publishDate).slice(0, 10) < rec.night
+    && String(f.publishDate).slice(0, 10) >= shiftDay(rec.night, -NEAR_PRIOR_GRACE_DAYS));
   const nightFiles = fsnap.files.filter((f) => f.includable && f.outletId && toMs(f.firstSeenAt) != null
     && toMs(f.firstSeenAt) >= embMs - g.nightStartH * HOUR && toMs(f.firstSeenAt) <= embMs + g.sameNightEndH * HOUR);
   const perOutletFiles = new Map();
@@ -661,6 +717,7 @@ function sameNightCheck(rec, g) {
   // Live time of this file's review. By critic when the file names one. The outlet-level time (which includes
   // the lane shadow) stands in only when the outlet has a single night file, so it cannot vouch for a second critic.
   const liveOf = (f) => {
+    const { byCritic, byOutlet } = nearPrior(f) ? near : strict;
     const ck = critKey(f.critic);
     const c = ck && ck !== 'unknown' ? byCritic.get(`${f.outletId}|${ck}`) : undefined;
     const o = (!ck || ck === 'unknown' || perOutletFiles.get(f.outletId) === 1) ? byOutlet.get(f.outletId) : undefined;
@@ -707,7 +764,7 @@ function sameNightCheck(rec, g) {
   for (const o of missA.keys()) {
     if (items.some((x) => x.outletId === o)) continue;
     const named = fsnap.files.find((f) => f.outletId === o && f.outlet) || rec.perReview.find((p) => outletIdOf(p.outlet) === o);
-    const liveAt = byOutlet.get(o);
+    const liveAt = strict.byOutlet.get(o);
     items.push({ outletId: o, outlet: named ? named.outlet : null, critic: null, seenAt: null, liveAt: iso(liveAt), status: liveAt == null ? 'missing' : 'late' });
   }
   // Night reviews live by +2h that no file row covers (no first-seen time in the snapshot, or seen before the
@@ -893,7 +950,9 @@ function gradeNight(rec, g) {
     // The date alone never excuses an outlet that has an includable file: that review is the current production's.
     const includableOutlets = new Set(((rec.fileState && rec.fileState.files) || []).filter((f) => f.includable && f.outletId).map((f) => f.outletId));
     const isExcluded = (d) => excl.has(outletIdOf(d.outlet)) || (priorRun.has(d.key) && !includableOutlets.has(outletIdOf(d.outlet)));
-    const open = rec.dropped.filter((d) => !d.restoredAt);
+    // BRO-7900: a drop whose review is live now under a relabelled key (same canonical outlet + critic) never
+    // left the site. Covers records written before the rename pairing compared canonical outlet ids.
+    const open = rec.dropped.filter((d) => !d.restoredAt && !isLiveUnderNewLabel(rec, d));
     const excused = open.filter(isExcluded);
     const stuck = open.filter((d) => !isExcluded(d));
     const flapped = rec.dropped.length - open.length;
@@ -1030,7 +1089,7 @@ function observedCoverage2h(rec, obsMs) {
   if (!ref2 || ref2.coverage == null || !Array.isArray(ref2.missing)) return null;
   const asOfMs = obsMs + 2 * HOUR;
   if (toMs(ref2.asOf || ref2.fetchedAt) == null || toMs(ref2.asOf || ref2.fetchedAt) > asOfMs) return null;
-  const openDrop = (rec.dropped || []).some((d) => toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs));
+  const openDrop = (rec.dropped || []).some((d) => toMs(d.droppedAt) <= asOfMs && (!d.restoredAt || toMs(d.restoredAt) > asOfMs) && !isRelabelDrop(rec, d));
   if (openDrop) return null;
   const ids = [...new Set([...ref2.missing, ...(ref2.suppressedMissing || []), ...(ref2.deferredToLateRule || [])])];
   const base = { ...ref2, asOf: new Date(asOfMs).toISOString(), method: 'timeline', derivedFrom: `the +2h census as of ${ref2.asOf || ref2.fetchedAt}` };
@@ -1072,7 +1131,7 @@ function probeIncompleteReason(rec) {
 module.exports = {
   probeIncompleteReason, PROBE_FULL_WINDOW_SLACK_MIN,
   SCHEMA_VERSION, OFFSET_HOURS, DEFAULT_GATES, EMBARGO_HOUR_LOCAL, PROBE_LEAD_MIN, LATE_RELEASE_MIN,
-  defaultEmbargoAt, marketEmbargoAt, embargoInfo, embargoOverrideProblem, embargoOverrideReachWarning, classifyEmbargo,
+  defaultEmbargoAt, marketEmbargoAt, embargoInfo, embargoAssumed, embargoOverrideProblem, embargoOverrideReachWarning, classifyEmbargo,
   observedRelease, releaseSourceLabel, observedRecord, observedCoverage2h, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
   runProbe, referenceFrom, evaluateCheck, isNightReview, firstNightLive, laneShadowFrom, coverageAt,
   filterCensus, sameNightCheck, outletLiveMs,

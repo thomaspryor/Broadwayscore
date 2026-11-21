@@ -629,3 +629,58 @@ test('Times: a body that never names the show is accepted on a "... review" head
   assert.equal(f.accept, false);
   assert.equal(f.code, 'show_not_mentioned');
 });
+
+// BRO-7963: Times culture/tv-radio holds real theatre reviews AND feature interviews, so the url cannot
+// be blocked; the Sunday Times Ian McKellen interview was accepted as a complete review of An Ark.
+// Synthetic prose below always runs; the real corpus files run too when the private repo is checked out
+// (review text is copyrighted and never committed here).
+const INTERVIEW = `Life, for Ian McKellen, has always been an adventure. “It’s true,” the actor says with a smile. “I do get excited about everything.” He is 86, with umpteen projects finished last year — significantly, I say, past the state-mandated retirement age. “I am not going to retire,” he says quietly, when I ask how the fall has affected him. “You can’t keep me away.” He laughs. `.repeat(8);
+const TIMES_REVIEW = `It’s never a fun-fest, this play, but this version seems even grimmer than usual. The huge stage is bare but for a piano, at which a woman in a slip is slumped. “As the good book says,” he says, in his false accent, “let us pray.” The leading man is marvellous, if a little stilted. She smiles at the audience as the lights fall. Four stars. Box office: 020 7452 3000, to March 7. `.repeat(8);
+const MCK_URL = 'https://www.thetimes.com/culture/tv-radio/article/ian-mckellen-an-ark-lowry-lord-of-the-rings-f9wc9nmdq';
+const HEDDA_URL = 'https://www.thetimes.com/culture/tv-radio/article/hedda-gabler-lyttelton-se1-rhpl9jxjl';
+
+test('a Times feature interview at a tv-radio url is refused by its prose (non_review_text), a tv-radio review passes (BRO-7963)', () => {
+  const rec = base({ url: MCK_URL });
+  const d = acceptRecoveredText(rec, { rawText: `${GOOD}\n${INTERVIEW}` }, ctx);
+  assert.equal(d.accept, false);
+  assert.equal(d.code, 'non_review_text');
+  // same section, same outlet, a real review: untouched
+  const ok = acceptRecoveredText(base({ url: HEDDA_URL }), { rawText: `${GOOD}\n${TIMES_REVIEW}` }, ctx);
+  assert.equal(ok.accept, true, ok.reason);
+  // a single stray marker in a review ("she smiles") never refuses
+  assert.equal(gate.acceptRecoveredText(base(), { rawText: `${GOOD} "Fine," she smiles.` }, ctx).accept, true);
+});
+
+test('interviewTextSignals: dialogue in a review (both tag markers, no interviewer voice) is not an interview; a human clear wins (BRO-7963 review)', () => {
+  const { interviewTextSignals } = require('./serp-non-review-url.js');
+  const dialogue = '“Let us pray,” he says with a smile. “Fine,” she laughs. I suggest you book early.';
+  const r = interviewTextSignals(dialogue);
+  assert.deepEqual(r.markers.sort(), ['manner_verb', 'says_with']);
+  assert.equal(r.interview, false);
+  // tags that recur through the whole page are an interview even without the interviewer's voice
+  assert.equal(interviewTextSignals(dialogue.repeat(3)).interview, true);
+  // one tag + one interviewer-voice marker is the minimum
+  assert.equal(interviewTextSignals('“No,” he laughs. I ask what he means.').interview, true);
+  assert.equal(interviewTextSignals('What can I say, it takes nerve. He grins. “Yeah,” he says.').interview, false);
+  // a person who cleared the flag by hand outranks the heuristic
+  const d = acceptRecoveredText(base({ url: MCK_URL, nonReviewManualClear: true }), { rawText: `${GOOD}\n${INTERVIEW}` }, ctx);
+  assert.notEqual(d.code, 'non_review_text');
+});
+
+test('URL_FIND treats non_review_text / non_review_url as "not this review", not "found but unreadable" (BRO-7963 review)', () => {
+  const src = fs.readFileSync(new URL('./gap-strategies.js', import.meta.url), 'utf8');
+  const set = src.match(/URL_IDENTITY_REFUSALS = new Set\(\[([^\]]*)\]/)[1];
+  assert.match(set, /'non_review_text'/);
+  assert.match(set, /'non_review_url'/);
+});
+
+const CORPUS = path.join(process.env.HOME || '', 'broadway-review-texts');
+const corpusText = (f) => { try { return JSON.parse(fs.readFileSync(path.join(CORPUS, f), 'utf8')).fullText; } catch { return null; } };
+test('real corpus: the An Ark interview is refused; two real tv-radio/life-style theatre reviews still pass (BRO-7963)', { skip: !corpusText('an-ark-off-broadway-2026/sunday-times--unknown.json') }, () => {
+  const { interviewTextSignals } = require('./serp-non-review-url.js');
+  assert.equal(interviewTextSignals(corpusText('an-ark-off-broadway-2026/sunday-times--unknown.json')).interview, true);
+  for (const f of ['hedda-gabler-west-end-2016/times-uk--ann-treneman.json', 'tartuffe-west-end-2019/times-uk--ann-treneman.json']) {
+    const t = corpusText(f);
+    if (t) assert.equal(interviewTextSignals(t).interview, false, f);
+  }
+});

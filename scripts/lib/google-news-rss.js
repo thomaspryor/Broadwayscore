@@ -26,18 +26,32 @@ function searchTitles(show) {
 
 // A headline that matches only a short press title ("860") must also carry a
 // word of the listing title that the press title lacks ("Billy", "Crystal"),
-// or "New Balance 860 v15 Review" passes for Billy Crystal 860.
+// or "New Balance 860 v15 Review" passes for Billy Crystal 860. A press title of
+// 2+ significant words ("It's a Wonderful Life" for "...: A Live Radio Play") is
+// identity on its own (BRO-7778: the extra-word rule dropped "Review: It's a
+// Wonderful Life"). Stopwords never count as the extra word ("The sacrifices we
+// make" passed for SACRIFICES: The Musical on "the").
+const LISTING_STOP = new Set(['the', 'and', 'for', 'with', 'from', 'musical', 'play', 'new']);
 const words = (t) => String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter((w) => w.length >= 3);
 function headlineNamesShow(headline, show) {
-  return titleMatchesShow(headline, show.title, { fuzzy: true }) || headlineNamesPressTitle(headline, show);
+  const { registryShowTitles } = require('./show-names');
+  // BRO-7785: the lane's one other-staging test, over every name (billed, main, press titles), so a headline the lane
+  // refuses ("...: A Live Radio Play at Stages Houston") is refused here too.
+  if (require('./rss-discovery').headlineNamesOtherStaging(headline, show.title, { akaTitles: searchTitles(show).slice(1) })) return false;
+  // akaTitles: [] here: press titles go through headlineNamesPressTitle's own rule below.
+  return titleMatchesShow(headline, show.title, { fuzzy: true, akaTitles: [], mainTitle: true, allShowTitles: registryShowTitles() })
+    || headlineNamesPressTitle(headline, show);
 }
 // The press-title half of headlineNamesShow on its own, for callers whose listing-title test is stricter than this
 // fuzzy one (playbill-verdict-discover.js, BRO-6872).
 function headlineNamesPressTitle(headline, show) {
-  const listing = words(show.title);
+  const { sigWords, otherProductionCue } = require('./show-names');
+  const listing = words(show.title).filter((w) => !LISTING_STOP.has(w));
   const head = new Set(words(headline));
   return searchTitles(show).slice(1).some((aka) => {
-    if (!titleMatchesShow(headline, aka, { fuzzy: true })) return false;
+    if (!titleMatchesShow(headline, aka, { fuzzy: true, akaTitles: [] })) return false;
+    if (otherProductionCue(headline, aka, show)) return false; // another staging or the film (BRO-7778)
+    if (sigWords(aka).filter((w) => w.length >= 3 && /[a-z]/.test(w)).length >= 2) return true;
     const extra = listing.filter((w) => !words(aka).includes(w));
     return extra.length === 0 || extra.some((w) => head.has(w));
   });
@@ -53,6 +67,60 @@ function googleNewsRssUrl(show) {
     ceid: london ? 'GB:en' : 'US:en',
   });
   return `https://news.google.com/rss/search?${params}`;
+}
+
+// Pun headlines name no show: The New York Sun headlined its Blue Man Group
+// review "A Blue Streak of Staleness" (2026-11-17), so the title-quoted query
+// never returned it and the headline test would have dropped it anyway. On
+// opening day and the 2 days after, a recency feed on the base title (before
+// any quoted or colon subtitle) surfaces such items; they are kept only for
+// tier-1/2 outlets and only when the fetched article names the show by its
+// full or aka title. An unreadable page (bot checkpoint, paywall stub) drops
+// the item: ingest has no wrong-show check strong enough to rely on.
+const HEADLINE_FREE_MAX_TIER = 2;
+// At most this many headline-free items are resolved per show per cycle, so
+// off-topic articles can never fill the 12-item batch ahead of real reviews.
+const HEADLINE_FREE_MAX_PER_CYCLE = 3;
+const QUOTE_CHARS = /[\u201C\u201D\u2018\u2019"]/g;
+/** The title before any quoted, colon, dash or paren subtitle, or null when
+ * that is too generic to search on ("August", "Art", "Life", "CATS"). */
+function baseSearchTitle(show) {
+  const title = String((show && show.title) || '').trim();
+  const base = title.split(/\s*[\u201C\u201D"\u00AB:\u2013\u2014(]\s*/)[0].replace(QUOTE_CHARS, '').trim();
+  return base.split(/\s+/).length >= 2 && base.length >= 6 ? base : null;
+}
+
+/** Recency feed URL, or null when the show has no distinctive base title. */
+function googleNewsRecencyUrl(show) {
+  const base = baseSearchTitle(show);
+  if (!base) return null;
+  const london = isLondonMarket(show.category);
+  const params = new URLSearchParams({
+    q: `"${base}" when:2d`,
+    hl: london ? 'en-GB' : 'en-US',
+    gl: london ? 'GB' : 'US',
+    ceid: london ? 'GB:en' : 'US:en',
+  });
+  return `https://news.google.com/rss/search?${params}`;
+}
+
+const foldPhrase = (t) => String(t || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  .replace(/[\u2018\u2019\u02BC']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+/** True when the article (body text, og:title, og:description; nav, aside,
+ * header and footer stripped) names the show by its FULL listing title or an
+ * aka title. A franchise base title ("Blue Man Group") is not enough: it also
+ * matches articles about other productions. */
+function articleNamesShow(content, show) {
+  if (!content) return false;
+  const $ = cheerio.load(content);
+  const meta = ['meta[property="og:title"]', 'meta[property="og:description"]', 'meta[name="description"]']
+    .map((sel) => $(sel).attr('content') || '').join(' ');
+  // Link text is dropped too: TheaterMania's casting news names other shows
+  // only in its "related articles" link cards (2026-11-18 dry run).
+  $('script, style, noscript, nav, aside, header, footer, a').remove();
+  const hay = ` ${foldPhrase(`${meta} ${$('title').text()} ${$.root().text()}`)} `;
+  return searchTitles(show).map(foldPhrase).filter((p) => p.length >= 6 && p.includes(' '))
+    .some((p) => hay.includes(` ${p} `));
 }
 
 function parseGoogleNewsItems(xml) {
@@ -83,6 +151,19 @@ function isReviewHeadline(item, show) {
   if (NON_REVIEW_HEADLINE.test(item.title)) return false;
   if (/\breview\b/i.test(item.title)) return true;
   return isWithinOpeningWindow(item.pubDate, show.openingDate, 0, REVIEW_FREE_POST_DAYS);
+}
+
+// A recency-feed item whose headline does not name the show: a review shape,
+// published opening day to +2 days. The article-body check happens after
+// the publisher URL resolves.
+// Feature, casting and photo shapes that a headline-free item must not have
+// (2026-11-18 dry run: "An Exclusive Look at ... Opening-Night Ensemble",
+// "Zach Grenier Will Star in ...", "... Hitting The Road With a Concert Tour").
+const HEADLINE_FREE_FEATURE = /\b(look at|opening[- ]night|red carpet|will star|to star|stars? in|joins?|cast|casting|tour|concert|announce[sd]?|exclusive|video|watch|listen|podcast|q&a|in conversation)\b/i;
+function isHeadlineFreeCandidate(item, show) {
+  return !headlineNamesShow(item.title, show) && !NON_REVIEW_HEADLINE.test(item.title)
+    && !HEADLINE_FREE_FEATURE.test(item.title)
+    && isWithinOpeningWindow(item.pubDate, show.openingDate, 0, REVIEW_FREE_POST_DAYS);
 }
 
 function outletMatchesMarket(info, show) {
@@ -138,16 +219,37 @@ async function discoverGoogleNewsReviews(show, options = {}) {
     const feedXml = await feedImpl(googleNewsRssUrl(show)).catch(() => null)
       || (await fetchPageImpl(googleNewsRssUrl(show), { skipVerify: true, preferPlaywright: true, fast: true }))?.content || '';
     if (verbose && !feedXml) console.log('  google-news-rss: feed fetch returned nothing');
-    let items = parseGoogleNewsItems(feedXml).filter(item =>
-      Number.isFinite(item.pubDate.getTime()) && item.pubDate.getTime() >= since
+    const inDate = item => Number.isFinite(item.pubDate.getTime()) && item.pubDate.getTime() >= since
       && item.pubDate.getTime() <= new Date(now).getTime()
+      && item.link && item.sourceName && resolveOutletFromUrl(item.sourceUrl);
+    let items = parseGoogleNewsItems(feedXml).filter(item => inDate(item)
       // fuzzy title match: the outlet may misspell the title (CATERINA, BRO-4001);
       // the feed is already scoped to this one show, so a near match can't steal another's.
-      && isReviewHeadline(item, show)
-      && item.link && item.sourceName && resolveOutletFromUrl(item.sourceUrl));
+      && isReviewHeadline(item, show));
+    const registry = require('../../data/outlet-registry.json').outlets;
+    // Headline-free reviews (see googleNewsRecencyUrl): only inside the review-free window.
+    // Kill switch without a code revert: GNEWS_HEADLINE_FREE_DISABLED=true.
+    const recencyUrl = googleNewsRecencyUrl(show);
+    if (recencyUrl && process.env.GNEWS_HEADLINE_FREE_DISABLED !== 'true'
+        && isWithinOpeningWindow(new Date(now), show.openingDate, 0, REVIEW_FREE_POST_DAYS)) {
+      // Plain HTTP only: this second feed is a supplement, so no browser fallback cost.
+      const recencyXml = await feedImpl(recencyUrl).catch(() => null) || '';
+      const links = new Set(items.map(item => item.link));
+      let added = 0;
+      for (const item of parseGoogleNewsItems(recencyXml)) {
+        if (added >= HEADLINE_FREE_MAX_PER_CYCLE) break;
+        // Headlines that name the show belong to the main "review" query; only
+        // headline-free items are taken from this feed.
+        if (links.has(item.link) || !inDate(item) || !isHeadlineFreeCandidate(item, show)) continue;
+        const tier = registry[resolveOutletFromUrl(item.sourceUrl).outletId]?.tier;
+        if (!tier || tier > HEADLINE_FREE_MAX_TIER) continue;
+        links.add(item.link);
+        items.push({ ...item, headlineFree: true });
+        added++;
+      }
+    }
     // Prioritize nationals and rotate bounded batches across poll cycles so
     // already-known links cannot permanently starve the remaining publishers.
-    const registry = require('../../data/outlet-registry.json').outlets;
     items.sort((a, b) => (registry[resolveOutletFromUrl(a.sourceUrl).outletId]?.tier || 3)
       - (registry[resolveOutletFromUrl(b.sourceUrl).outletId]?.tier || 3));
     const wrappers = new Set();
@@ -209,6 +311,10 @@ async function discoverGoogleNewsReviews(show, options = {}) {
           try { page = await fetchPageImpl(url, { preferPlaywright: true, fast: true }); }
           catch { page = null; } // Keep the resolved URL for the normal byline recovery path.
         }
+        if (item.headlineFree && !articleNamesShow(page?.content, show)) {
+          if (verbose) console.log(`  google-news-rss: headline-free item does not name the show (${item.sourceName})`);
+          return;
+        }
         found[i] = {
           showId: show.id, url, outletId: outlet.outletId,
           outlet: outlet.displayName || item.sourceName,
@@ -237,4 +343,4 @@ async function discoverGoogleNewsReviews(show, options = {}) {
   return results;
 }
 
-module.exports = { searchTitles, headlineNamesShow, headlineNamesPressTitle, discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };
+module.exports = { baseSearchTitle, googleNewsRecencyUrl, articleNamesShow, isHeadlineFreeCandidate, searchTitles, headlineNamesShow, headlineNamesPressTitle, discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };

@@ -72,4 +72,42 @@ function createRunBudget(minutes, now = Date.now) {
   };
 }
 
-module.exports = { parseTimeBudgetMin, createRunBudget };
+/**
+ * Cumulative per-phase deadlines for a multi-phase run (BRO-7928).
+ *
+ * recover-explicit-ratings.js runs phase 0 (SERP URL discovery, slow, one
+ * search per review) before phases 1-3 (local text, free APIs, scraping). On
+ * the weekly cron phase 0 used all 100 minutes three weeks running
+ * (2026-11-01/08/15) and every run recovered 0 ratings: the cheap phases never
+ * started. A deadline per phase caps the slow one without wasting time: each
+ * share is cumulative (phase 0 must stop by 30% of the budget, phase 1 by
+ * 55%, ...), so time a phase leaves unused rolls forward to the next.
+ *
+ * phaseDeadlineReached(budget, shares, phase) -> true once the run has spent
+ * shares[phase] of its budget. A disabled budget, or a phase with no share,
+ * never hits a deadline (the run-wide exceeded() still applies).
+ */
+function phaseDeadlineReached(budget, shares, phase) {
+  if (!budget || !budget.enabled) return false;
+  const share = shares && shares[phase];
+  if (!Number.isFinite(share) || share <= 0) return false;
+  // Rounded: 0.55 * 100 min in floating point is a hair over 55 min.
+  return budget.elapsedMs() >= Math.round(Math.min(1, share) * budget.minutes * 60_000);
+}
+
+/**
+ * Stop a per-item loop once `max` items in a row have failed (a host that
+ * times out from CI, BRO-7928). One success resets the count, so a flaky host
+ * that answers sometimes keeps being tried.
+ */
+function createFailureBreaker(max) {
+  let run = 0;
+  return {
+    fail() { run++; },
+    ok() { run = 0; },
+    tripped() { return run >= max; },
+    get count() { return run; },
+  };
+}
+
+module.exports = { parseTimeBudgetMin, createRunBudget, phaseDeadlineReached, createFailureBreaker };

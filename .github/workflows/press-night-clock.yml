@@ -29,7 +29,7 @@ on:
         description: 'Show categories the clock kicks (comma separated)'
         required: false
         type: string
-        default: 'broadway,off-broadway'
+        default: 'broadway,off-broadway,west-end,off-west-end'
       dry_run:
         description: 'Print what would be kicked and when; sleep, dispatch and chain nothing'
         required: false
@@ -72,6 +72,8 @@ jobs:
           retry() { local n; for n in 1 2 3; do "$@" && return 0; sleep 30; done; return 1; }
           [ -z "$FIRED" ] || printf '%s' "$FIRED" | grep -Eq '^[a-z0-9:,-]+$' || { echo "::error::fired must be show:night pairs"; exit 1; }
           printf '%s' "$CATEGORIES" | grep -Eq '^[a-z,-]+$' || { echo "::error::bad categories"; exit 1; }
+          # BRO-7779: a chain seeded before the lane markets were added carries the old default on every hop; upgrade it.
+          [ "$CATEGORIES" != "broadway,off-broadway" ] || CATEGORIES="broadway,off-broadway,west-end,off-west-end"
           END=$(( $(date +%s) + 330 * 60 ))   # stop acting 15 min before the job timeout
           REPLANS=0
           declare -A SWEEP_TRIES
@@ -157,7 +159,16 @@ jobs:
               fi
               continue ;;
             esac
-            if [ "$KIND" != "kick" ]; then
+            # BRO-7779: what this event does comes from the library (the coverage test reads the same rule).
+            ACTION=""; MARKET=""; DEDUPE=""; RUNMIN=""
+            read -r ACTION MARKET DEDUPE RUNMIN <<< "$(node scripts/lib/press-night-clock.js action --kind="$KIND" --category="$CATEGORY" --embargo-at="$EMBARGO")" || true
+            if [ -z "$ACTION" ] || [ -z "$DEDUPE" ] || [ -z "$RUNMIN" ]; then
+              # Fail safe, never silent: a Broadway kick still starts its orchestrator exactly as before BRO-7779.
+              echo "::error::press-night-clock.js action gave nothing for $KIND $SHOW ($CATEGORY)"
+              if [ "$KIND" = "kick" ] && [ "$CATEGORY" = "broadway" ]; then ACTION=orchestrator; MARKET=broadway; DEDUPE=30; RUNMIN=240
+              else FIRED="${FIRED:+$FIRED,}$KEY"; continue; fi  # never stop the clock: later events (the kick) must still fire
+            fi
+            if [ "$ACTION" = "preflight" ]; then
               # BRO-6858 preflight (-24h / -3h): credits, balances and secrets for the night. Dedupe on its run title.
               DONE=$(gh run list --workflow=press-night-preflight.yml --limit 50 --json displayTitle,createdAt \
                        --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle" 2>/dev/null || true)
@@ -171,36 +182,51 @@ jobs:
               FIRED="${FIRED:+$FIRED,}$KEY"
               continue
             fi
-            # Already started? State, not the `fired` input, decides (a fresh seed carries no fired list): any probe run
-            # for this show-night created since 30 min before the kick, in any status, means it was kicked.
-            STARTED=$(gh run list --workflow=press-night-probe.yml --limit 100 --json displayTitle,createdAt \
-                        --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle") \
-              || { echo "::warning::could not list probe runs; dispatching anyway (the probe's concurrency group absorbs a duplicate)"; STARTED=""; }
-            ORCH=$(gh run list --workflow=opening-night-orchestrator.yml --limit 100 --json displayTitle,createdAt \
-                     --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle") \
-              || { echo "::warning::could not list orchestrator runs"; ORCH=""; }
-            STARTED=$(printf '%s\n%s\n' "$STARTED" "$ORCH" | sed 's/^Opening Night Orchestrator targeted /Press night probe /;s/ (broadway)$/ '"$NIGHT"'/')
             if [ -z "$CATEGORY" ]; then
-              echo "::warning::$SHOW is not in shows.json any more; skipping its kick."
-            elif grep -qF "Press night probe $SHOW $NIGHT" <<<"$STARTED"; then
-              echo "A probe was already started for $SHOW $NIGHT; nothing to start."
-            elif [ "$CATEGORY" = "broadway" ]; then
-              echo "Kick: orchestrator for $SHOW"
-              retry gh workflow run opening-night-orchestrator.yml -f show_id="$SHOW" -f market=broadway \
-                || { echo "::error::could not dispatch the orchestrator for $SHOW"; exit 1; }
-            else
-              echo "Kick: press-night probe for $SHOW ($CATEGORY)"
-              retry gh workflow run press-night-probe.yml -f show_id="$SHOW" -f night="$NIGHT" -f market="$CATEGORY" -f embargo_at="$EMBARGO" \
-                || { echo "::error::could not dispatch the probe for $SHOW"; exit 1; }
+              echo "::warning::$SHOW is not in shows.json any more; skipping its $KIND."
+              FIRED="${FIRED:+$FIRED,}$KEY"
+              continue
+            fi
+            if [ "$ACTION" = "orchestrator" ]; then
+              # BRO-7779: one targeted orchestrator run per event (ek early, kick, tk tail), deduped on its own run title:
+              # any targeted run for this show created since (event time - DEDUPE min) already covers this stretch.
+              OSINCE=$(date -u -d "$KICK - $DEDUPE minutes" +%Y-%m-%dT%H:%M:%SZ)
+              ORCH=$(gh run list --workflow=opening-night-orchestrator.yml --limit 100 --json displayTitle,createdAt \
+                       --jq ".[] | select(.createdAt >= \"$OSINCE\") | .displayTitle") \
+                || { echo "::warning::could not list orchestrator runs; dispatching anyway"; ORCH=""; }
+              if grep -qF "Opening Night Orchestrator targeted $SHOW (" <<<"$ORCH"; then
+                echo "A targeted orchestrator run for $SHOW started since $OSINCE; $KIND has nothing to start."
+              else
+                echo "$KIND: orchestrator for $SHOW ($MARKET, ${RUNMIN} min)"
+                retry gh workflow run opening-night-orchestrator.yml -f show_id="$SHOW" -f market="$MARKET" -f role="$KIND" -f deadline_minutes="$RUNMIN" \
+                  || { echo "::error::could not dispatch the orchestrator for $SHOW"; exit 1; }
+              fi
+            fi
+            if [ "$KIND" != "kick" ]; then
+              FIRED="${FIRED:+$FIRED,}$KEY"
+              continue
+            fi
+            # The kick also starts the press-night probe for a non-Broadway show (the Broadway orchestrator starts its
+            # own). State, not the `fired` input, decides: any probe run for this show-night created since 30 min before
+            # the kick, in any status, means it was started.
+            if [ "$CATEGORY" != "broadway" ]; then
+              STARTED=$(gh run list --workflow=press-night-probe.yml --limit 100 --json displayTitle,createdAt \
+                          --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle") \
+                || { echo "::warning::could not list probe runs; dispatching anyway (the probe's concurrency group absorbs a duplicate)"; STARTED=""; }
+              if grep -qF "Press night probe $SHOW $NIGHT" <<<"$STARTED"; then
+                echo "A probe was already started for $SHOW $NIGHT."
+              else
+                echo "Kick: press-night probe for $SHOW ($CATEGORY)"
+                retry gh workflow run press-night-probe.yml -f show_id="$SHOW" -f night="$NIGHT" -f market="$CATEGORY" -f embargo_at="$EMBARGO" \
+                  || { echo "::error::could not dispatch the probe for $SHOW"; exit 1; }
+              fi
             fi
             # BRO-6858: the old-path watchdog for the night, whatever started the pipeline. A second start queues behind
-            # the first (concurrency per show-night) and, starting past +3h, ends after one tick; dispatches are
-            # claimed once per night either way. Off-Broadway only observes (dry run): BRO-6687 owns that path.
-            if [ -n "$CATEGORY" ]; then
-              WD_DRY=true; [ "$CATEGORY" = "broadway" ] && WD_DRY=false
-              retry gh workflow run press-night-watchdog.yml -f show_id="$SHOW" -f night="$NIGHT" -f embargo_at="$EMBARGO" -f dry_run="$WD_DRY" \
-                || echo "::warning::could not start the press-night watchdog for $SHOW (the pipeline itself is started)"
-            fi
+            # the first (concurrency per show-night); dispatches are claimed once per night either way. BRO-7779: live for
+            # every lane market (it was a dry run off Broadway), and it watches from the lane start, not the embargo.
+            WD_DRY=true; [ "$ACTION" = "orchestrator" ] && WD_DRY=false
+            retry gh workflow run press-night-watchdog.yml -f show_id="$SHOW" -f night="$NIGHT" -f embargo_at="$EMBARGO" -f dry_run="$WD_DRY" \
+              || echo "::warning::could not start the press-night watchdog for $SHOW (the pipeline itself is started)"
             FIRED="${FIRED:+$FIRED,}$KEY"
           done
 

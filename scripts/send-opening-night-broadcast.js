@@ -478,14 +478,15 @@ async function main() {
       return true;
     }
     if (individualSent.completed) {
-      console.log(`  Skipping ${s.title} — already broadcast (completed)`);
+      // BRO-7890: say the real state (an unsent draft is not "already broadcast").
+      console.log(`  Skipping ${s.title} — ${require('./lib/missed-broadcasts').skipReasonForRecord(individualSent)}`);
       return false;
     }
     return true;
   });
 
   if (pendingShows.length === 0) {
-    console.log('\nAll recently opened shows already broadcast — nothing to do');
+    console.log('\nNo recently opened show needs a new draft (each is sent, drafted and waiting, or discarded; see the lines above) — nothing to do');
     process.exit(0);
   }
 

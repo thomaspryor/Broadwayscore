@@ -29,6 +29,7 @@
 'use strict';
 
 const fs = require('fs');
+const gitGuard = require('./lib/git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const os = require('os');
 const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
@@ -118,7 +119,7 @@ function notionUpdate(id, flags) {
 }
 
 function git(cwd, args, opts = {}) {
-  return execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts });
+  return gitGuard.runGitOrThrow(args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts });
 }
 
 // Durable evidence for the CI merge path (Sprint 3): the ledger is

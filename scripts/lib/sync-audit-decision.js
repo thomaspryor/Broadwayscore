@@ -337,7 +337,72 @@ function unionIsSafe({ mergedCount = 0, baseCount = 0, extraCount = 0 } = {}) {
   return Number(mergedCount) >= Math.max(Number(baseCount), Number(extraCount));
 }
 
+/**
+ * The rows the LOCAL side actually appended (BRO-7713).
+ *
+ * The union-recovery stage used to union the WHOLE saved local file onto
+ * origin's version. That is only lossless for a ledger that never deletes a
+ * row. stage-latency.jsonl rotates (keeps its newest 20 MB once it passes 40
+ * MB), and CI commits the rotated copy; the Mac still held every rotated-away
+ * row, so each tick's union put them all back. The Mac copy only ever grew:
+ * 196 MB and 1,138,871 rows that existed nowhere on origin by 2026-11-17, and
+ * the ledger could never fast-forward again once anything else was dirty.
+ *
+ * A row the pre-fast-forward HEAD already had is ORIGIN's row, so origin's
+ * current version is authoritative for it (kept if origin kept it, gone if
+ * origin rotated or pruned it). Only rows HEAD never had are local appends
+ * that need restoring. Whole-line match, the same key unionLedgerLines uses.
+ *
+ * @param {string[]} savedLines  the dirty local copy, as saved before cleaning
+ * @param {string[]|null} headLines  that ledger at the pre-fast-forward HEAD;
+ *   null = unknown (no HEAD copy available), which keeps every saved row
+ * @returns {string[]} savedLines minus every row present in headLines, order kept
+ */
+function localDeltaLines(savedLines, headLines) {
+  const saved = Array.isArray(savedLines) ? savedLines : [];
+  if (!Array.isArray(headLines)) return saved.slice();
+  const head = new Set(headLines);
+  return saved.filter((l) => !head.has(l));
+}
+
+/**
+ * Dirty npm lockfiles the sync gate may restore to HEAD (BRO-7713).
+ *
+ * A package-lock.json rewritten by a local `npm install` (a different npm
+ * version drops `"dev": true` and the optional platform entries) is churn,
+ * not work: nobody commits from the shared main checkout, and origin moves
+ * the lockfile on every dependency bump, so the churn blocked every
+ * fast-forward for hours. It is regenerable ONLY when the sibling
+ * package.json is clean. A dirty package.json means someone changed the
+ * dependency set on purpose and the lockfile belongs to that change, so it
+ * is left alone and the ordinary refusal names it. Also only when origin/main
+ * actually moves the lockfile: otherwise it cannot be what blocks the
+ * fast-forward, and a lockfile-only edit (`npm update`, `npm audit fix`)
+ * has no reason to be touched (BRO-7713 review).
+ *
+ * @param {string[]} dirtyPaths  `git status --porcelain -uall` paths (staged + unstaged + untracked)
+ * @param {string[]} [untrackedPaths]  the untracked subset; an untracked lockfile has no HEAD copy
+ * @param {string[]} [originChangedPaths]  `git diff --name-only HEAD origin/main`; omitted = none
+ * @returns {string[]} lockfile paths safe to `git checkout HEAD --`
+ */
+function lockfileChurnPaths(dirtyPaths = [], untrackedPaths = [], originChangedPaths = []) {
+  const dirty = new Set(toList(dirtyPaths));
+  const untracked = new Set(toList(untrackedPaths));
+  const originChanged = new Set(toList(originChangedPaths));
+  const out = [];
+  for (const p of dirty) {
+    if (p !== 'package-lock.json' && !p.endsWith('/package-lock.json')) continue;
+    if (untracked.has(p) || !originChanged.has(p)) continue;
+    const pkg = p.slice(0, -'package-lock.json'.length) + 'package.json';
+    if (dirty.has(pkg)) continue;
+    out.push(p);
+  }
+  return out.sort();
+}
+
 module.exports = {
+  localDeltaLines,
+  lockfileChurnPaths,
   ffBlockingPaths,
   classifyBlock,
   unionLedgerCandidates,

@@ -51,8 +51,8 @@ function fetchOriginMain(repoDir, execFn = execFileSync, timeoutMs = FETCH_TIMEO
 }
 
 /**
- * How far HEAD is behind/ahead of remoteRef. 0 on any failure (detached HEAD,
- * remote-ref never fetched, not a git repo, etc.) — fail-open, matching
+ * How far HEAD is behind/ahead of remoteRef (a detached HEAD counts too). 0 on any failure
+ * (remote-ref never fetched, not a git repo, etc.) — fail-open, matching
  * fetchOriginMain.
  */
 function getBehindAheadCounts(repoDir, remoteRef = 'refs/remotes/origin/main', execFn = execFileSync) {
@@ -183,7 +183,13 @@ const SYNC_TIMEOUT_MS = 20000;
 const REMOTE_MAIN = 'refs/remotes/origin/main';
 // Already in the session's context, so a change to them needs a re-read.
 const SYNC_WATCHED_FILES = ['CLAUDE.md', '.claude/CLOUD.md', '.claude/settings.json'];
-const IN_PROGRESS_MARKERS = ['MERGE_HEAD', 'REBASE_HEAD', 'CHERRY_PICK_HEAD', 'REVERT_HEAD', 'rebase-merge', 'rebase-apply'];
+// BISECT_START (BRO-7789): a bisect checks out old commits detached with nothing local, which would otherwise read as
+// "detached, behind, safe to fast-forward" once sync also runs mid-session on compact.
+const IN_PROGRESS_MARKERS = ['MERGE_HEAD', 'REBASE_HEAD', 'CHERRY_PICK_HEAD', 'REVERT_HEAD', 'rebase-merge', 'rebase-apply', 'BISECT_START'];
+// BRO-7789: Claude Code snapshots hook REGISTRATION when its process starts (startup/resume); sync also runs on
+// compact, so several syncs can follow one snapshot. The snapshot's settings.json blob is kept here (git dir of the
+// checkout) so a later sync still refuses to delete a script that live snapshot registers.
+const HOOK_REGISTRATION_FILE = 'bsc-hook-registration';
 
 /** Pure: every .claude/hooks/*.sh a settings.json registers. */
 function registeredHookScripts(settingsText) {
@@ -192,6 +198,47 @@ function registeredHookScripts(settingsText) {
     out.add(`.claude/hooks/${m[1]}`);
   }
   return [...out];
+}
+
+function hookRegistrationPath(repoDir, git) {
+  const fs = require('fs');
+  const path = require('path');
+  const p = git(['rev-parse', '--git-path', HOOK_REGISTRATION_FILE]);
+  return { fs, file: path.isAbsolute(p) ? p : path.join(repoDir, p) };
+}
+
+/** The snapshot: line 1 the settings.json blob Claude loaded, line 2 the HEAD the session last saw or synced to. */
+function readHookRegistration(repoDir, git) {
+  try {
+    const { fs, file } = hookRegistrationPath(repoDir, git);
+    const [blob = '', head = ''] = fs.readFileSync(file, 'utf8').split('\n').map((l) => l.trim());
+    const sha = (v) => (/^[0-9a-f]{40,64}$/.test(v) ? v : '');
+    return { blob: sha(blob), head: sha(head) };
+  } catch { return { blob: '', head: '' }; }
+}
+function writeHookRegistration(repoDir, git, { blob, head }) {
+  try { const { fs, file } = hookRegistrationPath(repoDir, git); fs.writeFileSync(file, `${blob || ''}\n${head || ''}\n`); } catch { /* fail-open */ }
+}
+
+/** Record the settings.json Claude Code just loaded, and HEAD (call on startup/resume only). Fail-open; -> blob sha or null. */
+function recordHookRegistration(repoDir, event, execFn = execFileSync) {
+  if (event !== 'startup' && event !== 'resume') return null;
+  const git = (args) => String(execFn('git', ['-C', repoDir, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })).trim();
+  let blob = '';
+  let head = '';
+  try { blob = git(['rev-parse', 'HEAD:.claude/settings.json']); } catch { /* no settings.json: nothing registered */ }
+  try { head = git(['rev-parse', 'HEAD']); } catch { return null; }
+  writeHookRegistration(repoDir, git, { blob, head });
+  return blob || null;
+}
+
+/** Hook scripts the live session has registered: HEAD's settings.json plus the recorded startup snapshot. */
+function liveRegisteredHookScripts(repoDir, git) {
+  const texts = [];
+  try { texts.push(git(['show', 'HEAD:.claude/settings.json'])); } catch { /* none at HEAD */ }
+  const { blob } = readHookRegistration(repoDir, git);
+  try { if (blob) texts.push(git(['cat-file', 'blob', blob])); } catch { /* blob gone: HEAD alone, as before */ }
+  return [...new Set(texts.flatMap((t) => registeredHookScripts(t)))];
 }
 
 /**
@@ -309,18 +356,24 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
   if (env.CODE_SYNC_DISABLED === '1') return no('disabled (CODE_SYNC_DISABLED=1)');
   if (!(behind > 0)) return no('not behind origin/main');
   const alreadyLanded = ahead > 0;
-  let branch;
+  let branch = '';
   try {
     branch = git(['symbolic-ref', '-q', 'HEAD']);
   } catch {
-    return no('detached HEAD');
+    // BRO-7789: cloud main checkouts start detached. With nothing local (ahead 0) a fast-forward moves HEAD along
+    // main and loses nothing; a bisect is refused by its marker below. Local commits on a detached HEAD stay put.
+    if (alreadyLanded) return no('detached HEAD with commits not on origin/main');
+    // A detached HEAD someone moved by hand mid-session (`git checkout <old-sha>` to inspect old code) is left alone:
+    // only the HEAD recorded at startup/resume, or the one this sync last moved it to, is fast-forwarded.
+    try {
+      const rec = readHookRegistration(repoDir, git).head;
+      if (rec && git(['rev-parse', 'HEAD']) !== rec) return no('detached HEAD moved since the session started (checked out by hand?)');
+    } catch (err) { return no(`could not read git state: ${String(err.message).split('\n')[0]}`); }
   }
   // Hook registration is snapshotted at session start; only script CONTENTS
   // are re-read. If main deleted a script this session still has registered,
-  // its wrapper would exit 2 on every tool call after the sync.
-  let settings = '';
-  try { settings = git(['show', 'HEAD:.claude/settings.json']); } catch { /* none registered */ }
-  const missing = registeredHookScripts(settings).filter((p) => {
+  // its wrapper skips it ("Hook script missing") and that gate is off for the session.
+  const missing = liveRegisteredHookScripts(repoDir, git).filter((p) => {
     try { git(['cat-file', '-e', `${REMOTE_MAIN}:${p}`]); return false; } catch { return true; }
   });
   if (missing.length) return no(`origin/main removes registered hook script(s): ${missing.join(', ')}`);
@@ -393,6 +446,7 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
     const changed = new Set(git(['diff', '--name-only', from, to]).split('\n'));
     changedWatched = SYNC_WATCHED_FILES.filter((f) => changed.has(f));
   } catch { /* informational only */ }
+  if (!branch) { const rec = readHookRegistration(repoDir, git); if (rec.head) writeHookRegistration(repoDir, git, { ...rec, head: to }); }
   trackMainWhenNothingLocal(repoDir, execFn);
   return { synced: true, reason: alreadyLanded ? 'already landed; reset with --keep' : 'fast-forwarded', ...(alreadyLanded ? { alreadyLanded: true } : {}), from, to, count: behind, changedWatched, reconciled: healed ? (healed.reverted || 0) + (healed.removed || 0) : 0 };
 }
@@ -411,6 +465,17 @@ const BG_FETCH_TIMEOUT_MS = 300000;
 const BG_SYNC_TIMEOUT_MS = 300000;
 const BG_PAUSE_MS = 20000;
 const bgPath = (name, dflt) => process.env[name] || dflt;
+function bgLockPath(repoDir) {
+  const fs = require('fs');
+  // One job per checkout (keyed by its path), so a second repo's catch-up is not skipped by the first's lock.
+  const key = require('crypto').createHash('sha1').update((() => { try { return fs.realpathSync(String(repoDir)); } catch { return String(repoDir); } })()).digest('hex').slice(0, 8);
+  return bgPath('CODE_CHECKOUT_BG_LOCK', `/tmp/code-checkout-bg-sync-${key}.lock`);
+}
+const BG_LOCK_STALE_MS = 90 * 60 * 1000;
+/** BRO-7789: true while a background catch-up holds a fresh lock for this checkout; a compact sync then stays out of its way. */
+function backgroundSyncRunning(repoDir) {
+  try { return Date.now() - require('fs').statSync(bgLockPath(repoDir)).mtimeMs < BG_LOCK_STALE_MS; } catch { return false; }
+}
 
 function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, sleepFn = null, attempts = BG_ATTEMPTS,
   fetchTimeoutMs = BG_FETCH_TIMEOUT_MS, pauseMs = BG_PAUSE_MS, syncTimeoutMs = BG_SYNC_TIMEOUT_MS, env = process.env,
@@ -518,15 +583,13 @@ function startBackgroundSync(repoDir, { spawnFn = null, expectHead = null } = {}
 function runBackgroundSyncMain(argv) {
   const fs = require('fs');
   const logPath = bgPath('CODE_CHECKOUT_BG_LOG', '/tmp/code-checkout-bg-sync.log');
-  // One job per checkout (keyed by its path), so a second repo's catch-up is not skipped by the first's lock.
-  const key = require('crypto').createHash('sha1').update((() => { try { return fs.realpathSync(String(argv[0])); } catch { return String(argv[0]); } })()).digest('hex').slice(0, 8);
-  const lockPath = bgPath('CODE_CHECKOUT_BG_LOCK', `/tmp/code-checkout-bg-sync-${key}.lock`);
+  const lockPath = bgLockPath(argv[0]);
   const log = (m) => { try { fs.appendFileSync(logPath, `${new Date().toISOString()} ${m}\n`); } catch { /* ignore */ } };
   const take = () => { fs.mkdirSync(lockPath); };
   try {
     try { take(); } catch (e) {
       if (e.code !== 'EEXIST') throw e;
-      if (Date.now() - fs.statSync(lockPath).mtimeMs < 90 * 60 * 1000) { log('another catch-up is already running; exiting'); return { skipped: true }; }
+      if (Date.now() - fs.statSync(lockPath).mtimeMs < BG_LOCK_STALE_MS) { log('another catch-up is already running; exiting'); return { skipped: true }; }
       fs.rmSync(lockPath, { recursive: true, force: true });
       take();
     }
@@ -582,11 +645,13 @@ module.exports = {
   formatCodeCheckoutStaleMessage,
   runCodeCheckoutStalenessCheck,
   registeredHookScripts,
+  recordHookRegistration,
   reconcileInterruptedFastForward,
   trySyncCodeCheckout,
   trackMainWhenNothingLocal,
   formatCodeCheckoutSyncMessage,
   backgroundCatchUp,
   startBackgroundSync,
+  backgroundSyncRunning,
   runBackgroundSyncMain,
 };

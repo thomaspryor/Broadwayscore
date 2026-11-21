@@ -73,3 +73,34 @@ test(`live registry: at most ${MAX_SLUG_DISPLAY_NAMES} displayNames are the capi
       + 'Fix with node scripts/audit-registry-slug-displaynames.js --fetch --apply, or stamp displayNameReviewed:true on a genuine one-word masthead.',
   );
 });
+
+// BRO-7822: "Quality: outlet domain moves" was filed 3 times in 30 days (BRO-7335, BRO-7411, BRO-7761).
+// The health check only warned in the daily digest, a card was filed, and a worker hand-added one host.
+// Nothing failed in the data-health run that sees the registry and census together, so each new host
+// became a fresh card. This pins the same detector the health check uses to ZERO unresolved moves
+// against the committed census: resolve a flagged host with domainAliases (it moved) or notDomainMoves
+// (checked, different paper), see scripts/lib/outlet-registry-alias-action.js.
+describe('outlet domain moves (BRO-7822)', () => {
+  const { findProbableDomainMoves } = require(resolve(ROOT, 'scripts/lib/silent-exclusion-detectors.js'));
+  const censusPath = resolve(ROOT, 'data', 'audit', 'unknown-aggregator-outlets.json');
+
+  test('no census host is an unresolved probable move of a registered outlet', () => {
+    const census = JSON.parse(readFileSync(censusPath, 'utf8'));
+    const moves = findProbableDomainMoves(registry.outlets, census.outlets || []);
+    assert.deepEqual(
+      moves.map((m) => `${m.host} -> ${m.outletId}`),
+      [],
+      'unresolved domain move(s): add the host to that outlet\'s domainAliases (moved) or notDomainMoves (different paper)'
+    );
+  });
+
+  test('detector flags a host that name-matches a registered outlet domain (guard is live)', () => {
+    const outlets = { 'some-outlet': { domain: 'someoutlet.com' } };
+    const moves = findProbableDomainMoves(outlets, [{ host: 'someoutlet.co.uk' }]);
+    assert.equal(moves.length, 1);
+    assert.equal(moves[0].outletId, 'some-outlet');
+    // and resolving it clears it
+    outlets['some-outlet'].domainAliases = ['someoutlet.co.uk'];
+    assert.equal(findProbableDomainMoves(outlets, [{ host: 'someoutlet.co.uk' }]).length, 0);
+  });
+});

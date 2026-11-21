@@ -19,7 +19,7 @@ const INTERNAL_2026_09_24 = [
   'Autofix: throughput (dispatched/passed, daily)', 'Autofix: daily canary (dispatch pipeline proof)',
   'Infra: worktree GC log stale', 'Infra: notion-schedule-coupling audit',
   'Stuck work: paused P0/P1 cards', 'Stuck work: orphaned in-progress cards', 'Stuck work: paused P2/other cards',
-  'Infra-review: gate telemetry', 'Dispatch outcomes: abandoned',
+  'Infra-review: gate telemetry', 'Skeptic review: gate telemetry', 'Dispatch outcomes: abandoned',
   'Dispatch health: dead-launch rate (unmeasurable here)', 'Headless dispatch: success rate (unmeasurable here)',
   'cmux socket: reachability (unmeasurable here)', 'Digest: content-invariant check',
   'Cron failed: Test Suite',

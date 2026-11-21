@@ -183,6 +183,12 @@ function heldFiles(showId, outletIds) {
   return names.filter(n => outletIds.some(id => n.startsWith(`${id}--`)));
 }
 
+/** Fetch-route lines from an ingest run's stdout (which tier answered, whether a body was found), for the removal log. */
+function routeLines(stdout) {
+  return String(stdout || '').split('\n').map(l => l.trim())
+    .filter(l => /Success \(|→ Trying|No article-body|Cookie-plain|cookies-plain|Fetching:/.test(l)).slice(0, 6).join(' | ').slice(0, 300) || 'none';
+}
+
 function ingest(showId, m, url, show) {
   const win = lib.showWindow(show, m.outletId);
   if (!win) return { outcome: 'no-show-window' };
@@ -197,19 +203,21 @@ function ingest(showId, m, url, show) {
     return { outcome: r.status === 0 ? `skipped:${skip ? skip[1].trim() : 'no-file'}` : `refused:exit${r.status}`, detail: tail };
   }
   // Wrong-show guard: a full-body ingest checks the date window only, so require the show's title in every body written.
-  let kept = null, removed = 0, bodyChars = 0;
+  let kept = null, removed = 0, bodyChars = 0, lastBody = '';
   for (const name of added) {
     const f = path.join(reviewDir(showId), name);
     let body = '';
     try { body = String(JSON.parse(fs.readFileSync(f, 'utf8')).fullText || ''); } catch { /* unreadable file counts as no body */ }
-    if (body.length < 200 || !pageMentionsShowTitle(body, show.title)) { fs.unlinkSync(f); removed++; continue; }
+    if (body.length < 200 || !(pageMentionsShowTitle(body, show.title) || (m.outletId === 'thestage' && lib.urlSlugNamesTitle(url, show.title, show.venue)))) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
     // BRO-6487: sitemap slugs often carry no venue; a same-title production elsewhere must not pass on the title alone.
-    if (/standard/.test(m.outletId) && !require('./lib/we-sitemap-candidates.js').bodyNamesVenue(body, show.venue)) { fs.unlinkSync(f); removed++; continue; }
+    if (/standard/.test(m.outletId) && !require('./lib/we-sitemap-candidates.js').bodyNamesVenue(body, show.venue)) { lastBody = body; fs.unlinkSync(f); removed++; continue; }
     kept = kept || name; bodyChars = body.length;
   }
-  if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s)` };
+  if (!kept) return { outcome: 'removed:wrong-show', detail: `${removed} file(s), body ${lastBody.length} chars: ${lastBody.replace(/\s+/g, ' ').slice(0, 120)} | route: ${routeLines(r.stdout)}` };
   return { outcome: 'ingested', file: kept, bodyChars };
 }
+
+let stageDiagDone = false;
 
 async function cmdRun() {
   const capUsd = numArg('max-usd', 45);
@@ -273,7 +281,28 @@ async function cmdRun() {
     if (!done) { results.push({ ...rec, outcome: 'capped' }); continue; }
     results.push(done);
     refresh();
-    console.log(`${q.showId} [${q.slot}] ${done.outcome} ${done.url || ''}`);
+    console.log(`${q.showId} [${q.slot}] ${done.outcome} ${done.url || ''}${/^removed/.test(done.outcome) && done.detail ? ` (${done.detail})` : ''}`);
+    // BRO-6487 diagnostic, once per run: why a Stage page that fetched fine has no article body.
+    if (q.slot === 'stage' && /^removed/.test(done.outcome) && done.url && !stageDiagDone) {
+      stageDiagDone = true;
+      try {
+        const raw = await require('./lib/fetch-plain').fetchWithCookiesPlain(done.url);
+        if (!raw) { console.log('[stage-diag] no cookie loaded or fetch failed'); throw new Error('skip'); }
+        const h = raw.content || '';
+        console.log(`[stage-diag] ${h.length} chars, introText=${/aos-Article-IntroText/.test(h)}, gate=${/utm_source=Reggate/i.test(h)}, paras=${(h.match(/<p[ >]/g) || []).length}, title=${((/<title>([^<]{0,80})/.exec(h) || [])[1] || '').trim()}`);
+        // Structure only: class tokens and paragraph lengths with a 40-char head, to write an extractor for this layout.
+        const cls = [...new Set((h.match(/class="[^"]*(?:aos|article|review|content|body|story)[^"]*"/gi) || []).map(c => c.slice(7, -1).split(/\s+/).filter(t => /aos|article|review|content|body|story/i.test(t)).join('.')))].slice(0, 25);
+        const paras = (h.match(/<p[ >][\s\S]*?<\/p>/g) || []).map(x => x.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+        const ex = require('./lib/article-extractor').extractArticleText(h, 'thestage.co.uk');
+        const sb = require('./lib/article-extractor').extractStageBody(h);
+        const ps = [...h.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)].map(m => ({ at: m.index, end: m.index + m[0].length, len: require('./lib/article-extractor').stripHtml(m[1]).length }));
+        console.log(`[stage-diag] stageBody=${sb ? sb.length : 'null'} paras(at,len,gapBefore)=${ps.map((x, i) => `${x.at},${x.len},${i ? x.at - ps[i - 1].end : 0}`).join(' ')}`);
+        const h1At = h.search(/<h1[\s>]/);
+        console.log(`[stage-diag] extractor=${ex ? ex.length : 'null'} h1At=${h1At} introAt=${h.search(/aos-Article-IntroText/)} gateHits=${['utm_source=Reggate', 'create a free account', 'Subscribe to continue', 'THIS IS NOT A PAYWALL'].map(g => new RegExp(g, 'i').test(h) ? g : '').filter(Boolean).join('|') || 'none'}`);
+        console.log(`[stage-diag] classes: ${cls.join(' ')}`);
+        console.log(`[stage-diag] paras: ${paras.map(x => `${x.length}:${x.slice(0, 40)}`).join(' || ')}`);
+      } catch (e) { if (e.message !== 'skip') console.log(`[stage-diag] error ${String(e.message).slice(0, 80)}`); }
+    }
     if (results.length % 25 === 0) console.log(tally.line());
     await sleep(500);
   }

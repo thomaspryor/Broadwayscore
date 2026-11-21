@@ -40,10 +40,10 @@ const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors'
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { setExtractedScore } = require('./lib/score-routing');
 const { isMissingOriginalScore } = require('./lib/star-score-mismatch');
-const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { parseTimeBudgetMin, createRunBudget, phaseDeadlineReached, createFailureBreaker } = require('./lib/run-budget');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { persistReviewSnapshot } = require('./lib/persist-review-snapshot');
-const { resolveTheaterLifeStars } = require('./lib/theater-life-stars');
+const { resolveTheaterLifeStars, footerRatingFromStoredText } = require('./lib/theater-life-stars');
 
 // showId → shows.json record so isScoreable sees what the rebuild sees: the
 // wrongShow stale-flag override (Notion 34e637c5-416f-8121), the pre-opening
@@ -188,11 +188,30 @@ const stats = {
   errors: 0,
   timeBudgetMin: TIME_BUDGET_MIN,
   timeBudgetExhausted: false,
+  phaseDeadlinesHit: [],
 };
 
 // Returns true (and logs once) when the run budget is spent. Phase loops break
 // on this; main() skips any later phases.
-function budgetSpent(phaseLabel, remainingCount) {
+// Cumulative phase deadlines (share of the run budget each phase must finish
+// by). Phase 0's SERP discovery ate the whole weekly budget three runs in a row
+// and phases 1-3 never ran (BRO-7928); unused time rolls forward.
+const PHASE_DEADLINE_SHARES = { 0: 0.30, 1: 0.55, 2: 0.80, 3: 1 };
+const phaseDeadlineLogged = new Set();
+
+function budgetSpent(phaseLabel, remainingCount, phase) {
+  if (!(phase in PHASE_DEADLINE_SHARES)) throw new Error(`budgetSpent: unknown phase ${phase} (${phaseLabel})`);
+  // A slot only makes room for a later SELECTED phase; a phases=0 or phases=1,2
+  // dispatch keeps the whole budget for its last phase (ship-check finding).
+  const laterPhaseSelected = PHASES.some(p => p > phase);
+  if (laterPhaseSelected && !budget.exceeded() && phaseDeadlineReached(budget, PHASE_DEADLINE_SHARES, phase)) {
+    if (!phaseDeadlineLogged.has(phase)) {
+      phaseDeadlineLogged.add(phase);
+      stats.phaseDeadlinesHit = [...phaseDeadlineLogged];
+      console.log(`\n  ⏱ Phase ${phase} slot (${Math.round(PHASE_DEADLINE_SHARES[phase] * 100)}% of ${TIME_BUDGET_MIN} min) used in ${phaseLabel} — ${remainingCount} items deferred; moving to the next phase`);
+    }
+    return true;
+  }
   if (!budget.exceeded()) return false;
   if (!stats.timeBudgetExhausted) {
     stats.timeBudgetExhausted = true;
@@ -216,10 +235,16 @@ const attemptState = (() => {
   } catch { return { attempts: {} }; }
 })();
 const attemptKey = (r) => `${r.showId}/${r.file}`;
+// Phase 0 (paid SERP discovery) keeps its own rotation stamps. Phases 1-3 stamp
+// every review they walk, so with a shared stamp the cheap phase 1 pass re-dated
+// phase 0's no-URL backlog in last week's order and phase 0 restarted at the
+// same head every run once its slot capped it (BRO-7928 review).
+const PHASE0_KEY_PREFIX = 'p0:';
+const phase0AttemptKey = (r) => PHASE0_KEY_PREFIX + attemptKey(r);
 let attemptsSinceSave = 0;
 
-function recordAttempt(review) {
-  attemptState.attempts[attemptKey(review)] = new Date().toISOString();
+function recordAttempt(review, key = attemptKey(review)) {
+  attemptState.attempts[key] = new Date().toISOString();
   if (++attemptsSinceSave >= 25) saveAttemptState();
 }
 
@@ -230,7 +255,8 @@ function saveAttemptState(validKeys = null) {
   // everything outside the filter.
   if (validKeys) {
     for (const k of Object.keys(attemptState.attempts)) {
-      if (!validKeys.has(k)) delete attemptState.attempts[k];
+      const base = k.startsWith(PHASE0_KEY_PREFIX) ? k.slice(PHASE0_KEY_PREFIX.length) : k;
+      if (!validKeys.has(base)) delete attemptState.attempts[k];
     }
   }
   try {
@@ -248,7 +274,8 @@ function saveAttemptState(validKeys = null) {
 // Phase 0: URL discovery for reviews without URLs (e.g., Theatre Record)
 // ---------------------------------------------------------------------------
 async function phase0DiscoverUrls(reviews) {
-  const noUrl = reviews.filter(r => !r.data.url);
+  const noUrl = reviews.filter(r => !r.data.url)
+    .sort((a, b) => (attemptState.attempts[phase0AttemptKey(a)] || '').localeCompare(attemptState.attempts[phase0AttemptKey(b)] || ''));
   if (noUrl.length === 0) return reviews;
 
   console.log(`\n═══ PHASE 0: URL Discovery (${noUrl.length} reviews without URLs) ═══\n`);
@@ -284,8 +311,8 @@ async function phase0DiscoverUrls(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
-    if (budgetSpent('phase 0', toProcess.length - i)) break;
-    recordAttempt(review);
+    if (budgetSpent('phase 0', toProcess.length - i, 0)) break;
+    recordAttempt(review, phase0AttemptKey(review));
     try {
       console.log(`  [${i + 1}/${toProcess.length}] ${review.showId}: ${review.data.outletId} / ${review.data.criticName || 'Unknown'}`);
 
@@ -365,7 +392,7 @@ async function phase1ExtractLocal(reviews) {
   let idx = 0;
   for (const review of reviews) {
     // LLM-fallback extraction makes this loop slow at backlog scale
-    if (budgetSpent('phase 1', reviews.length - idx)) break;
+    if (budgetSpent('phase 1', reviews.length - idx, 1)) break;
     idx++;
     recordAttempt(review);
     const text = [
@@ -378,7 +405,11 @@ async function phase1ExtractLocal(reviews) {
     if (!text || text.length < 20) continue;
 
     // Try rule-based extraction first (free, no LLM)
-    let result = extractScoreRuleBased('', text, review.data.outletId || '', review.data.showTitle || '');
+    // Theater Life's footer star is in the stored text; phase 2's WP API times
+    // out from GitHub runners (BRO-7928), so read it locally first.
+    // No showTitle on the file (291 Theater Life files): use the shows.json title.
+    let result = footerRatingFromStoredText({ ...review.data, showTitle: review.data.showTitle || showFor(review.data)?.title })
+      || extractScoreRuleBased('', text, review.data.outletId || '', review.data.showTitle || '');
     // Fall back to LLM if rule-based didn't find anything
     if (!result) {
       result = await extractExplicitScore({
@@ -402,6 +433,8 @@ async function phase1ExtractLocal(reviews) {
           source: result.source,
         });
         review.data.scoreExtractedFrom = 'local-text';
+        // Same label phase 2 stamps for a Theater Life footer star.
+        if (result.source === 'wp-api-footer') review.data.scoreSource = result.source;
         review.data.scoreRecoveredAt = new Date().toISOString();
         console.log(`  ✓ ${review.showId}/${review.file}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}] → ${routed.field}`);
         persistReviewSnapshot(review);
@@ -474,7 +507,7 @@ async function fetchGuardianRatings(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
-    if (budgetSpent('phase 2 (Guardian)', toProcess.length - i)) break;
+    if (budgetSpent('phase 2 (Guardian)', toProcess.length - i, 2)) break;
     recordAttempt(review);
     try {
       const articleId = new URL(review.data.url).pathname.replace(/^\//, '');
@@ -533,19 +566,29 @@ async function fetchGuardianRatings(reviews) {
 
 // ---------------------------------------------------------------------------
 // Theater Life WP API helper
+const TL_MAX_CONSECUTIVE_FAILURES = 3;
 // ---------------------------------------------------------------------------
 async function fetchTheaterLifeRatings(reviews) {
   let recovered = 0;
   const toProcess = LIMIT > 0 ? reviews.slice(0, LIMIT) : reviews;
+  // theaterlife.com times out from GitHub runners: the 2026-11-21 run spent
+  // 70 minutes on 129 timeouts and recovered nothing (BRO-7928). Stop after a
+  // few in a row; phase 1 still reads the footer from stored text.
+  const breaker = createFailureBreaker(TL_MAX_CONSECUTIVE_FAILURES);
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
-    if (budgetSpent('phase 2 (Theater Life)', toProcess.length - i)) break;
+    if (budgetSpent('phase 2 (Theater Life)', toProcess.length - i, 2)) break;
+    if (breaker.tripped()) {
+      console.log(`    theaterlife.com unreachable (${breaker.count} failures in a row); skipping the other ${toProcess.length - i}`);
+      break;
+    }
     recordAttempt(review);
+    // Parsed outside the try: a malformed stored URL is not a host failure.
+    let slug = '';
+    try { slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, ''); } catch { /* skipped below */ }
+    if (!slug) continue;
     try {
-      // Extract slug from URL
-      const slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, '');
-      if (!slug) continue;
 
       // Try posts first, then pages (Theater Life uses WordPress pages, not posts)
       let posts = [];
@@ -565,7 +608,7 @@ async function fetchTheaterLifeRatings(reviews) {
         // naming this show beats the post title, and a title-only star keeps
         // the corroboration-gated 'wp-api-title' label.
         const bodyText = String(posts[0].content?.rendered || '').replace(/<[^>]+>/g, ' ');
-        const stars = resolveTheaterLifeStars({ title, text: bodyText, showTitles: [review.data.showTitle || ''] });
+        const stars = resolveTheaterLifeStars({ title, text: bodyText, showTitles: [review.data.showTitle || showFor(review.data)?.title || ''] });
         if (stars.rating) {
           const total = parseFloat(stars.rating);
 
@@ -589,9 +632,11 @@ async function fetchTheaterLifeRatings(reviews) {
           review.recovered = true;
         }
       }
+      breaker.ok();
     } catch (err) {
       console.log(`    [${i + 1}/${toProcess.length}] ✗ ${review.showId}: ${err.message}`);
       stats.errors++;
+      breaker.fail();
     }
 
     // Rate limit: 500ms (WP API is slower)
@@ -610,7 +655,7 @@ async function fetchNYSRRatings(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
-    if (budgetSpent('phase 2 (NYSR)', toProcess.length - i)) break;
+    if (budgetSpent('phase 2 (NYSR)', toProcess.length - i, 2)) break;
     recordAttempt(review);
     try {
       const slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, '');
@@ -747,7 +792,7 @@ async function phase3ScrapeURLs(reviews) {
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
     const url = review.data.url;
-    if (budgetSpent('phase 3', toProcess.length - i)) break;
+    if (budgetSpent('phase 3', toProcess.length - i, 3)) break;
     recordAttempt(review);
     try {
       console.log(`  [${i + 1}/${toProcess.length}] ${review.showId}: ${url}`);
@@ -1078,6 +1123,7 @@ async function main() {
   console.log(`Errors:                      ${stats.errors}`);
   if (TIME_BUDGET_MIN) {
     console.log(`Time budget:                 ${stats.timeBudgetExhausted ? `EXHAUSTED at ${TIME_BUDGET_MIN} min — backlog deferred to next run` : `ok (${budget.elapsedMin()}/${TIME_BUDGET_MIN} min used)`}`);
+    if (stats.phaseDeadlinesHit.length) console.log(`Phase slots used up:         phase ${stats.phaseDeadlinesHit.join(", ")} (items deferred to next run)`);
   }
 
   if (Object.keys(stats.byOutlet).length > 0) {

@@ -82,7 +82,7 @@ describe('cr.q, cr.pq and cr.l: app feed == website, every show', () => {
     // Imported lazily: data-core statically imports data/*.json.
     const { getAllShows } = await import('../../src/lib/data-core');
     const { hasEnoughReviews, applyCoverageFloor } = await import('../../src/config/score-buckets');
-    const { CURATED_HISTORICAL_SHOWS } = await import('../../src/config/scoring');
+    const { scoreGateArg } = await import('../../src/config/scoring');
 
     type RawShow = { id: string; category?: string; type?: string; status?: string; openingDate?: string };
     const rawShows: RawShow[] = JSON.parse(readFileSync(resolve('data/shows.json'), 'utf8')).shows;
@@ -115,7 +115,7 @@ describe('cr.q, cr.pq and cr.l: app feed == website, every show', () => {
       }
       compared++;
       const siteQ = hasEnoughReviews(
-        cs.reviewCount || 0, show.category, (cs.tier1Count || 0) + (cs.tier2Count || 0), CURATED_HISTORICAL_SHOWS.has(show.id),
+        cs.reviewCount || 0, show.category, (cs.tier1Count || 0) + (cs.tier2Count || 0), scoreGateArg(show.id),
       ) ? 1 : 0;
       if (siteQ === 0) gated++;
       const siteL = getScoreTier(Math.round(cs.score), show.category)?.label;
@@ -143,9 +143,14 @@ describe('the show page gate the feed mirrors has not moved', () => {
     // If the website's show-page rule changes, buildMobileCriticScore must
     // change with it (and the app's isShowPageScoreTBD reads the result).
     const page = readFileSync(resolve('src/app/show/[slug]/page.tsx'), 'utf8').replace(/\s+/g, ' ');
-    assert.ok(
-      page.includes("const showTBD = applyCoverageFloor( !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow) || show.status === 'previews' || show.status === 'upcoming', { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked }, );"),
-      'the show page TBD gate changed: update scripts/lib/mobile-critic-score.js (pq) to match',
-    );
+    // BRO-7803: the page, the live-score publisher and the overlay share one gate in src/lib/show-score-tbd.ts.
+    assert.ok(page.includes('const showTBD = computeShowTBD(show);'), 'the show page must take showTBD from computeShowTBD');
+    assert.ok(!page.includes('hasEnoughReviews('), 'the show page must not re-derive the gate inline');
+    const gate = readFileSync(resolve('src/lib/show-score-tbd.ts'), 'utf8').replace(/\s+/g, ' ');
+    for (const part of [
+      '!hasEnoughReviews( cs?.reviewCount ?? 0, show.category, (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0), scoreGateArg(show.id), )',
+      "show.status === 'previews' || show.status === 'upcoming'",
+      'scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked',
+    ]) assert.ok(gate.includes(part), 'the shared TBD gate changed (' + part.slice(0, 40) + '): update scripts/lib/mobile-critic-score.js (pq) to match');
   });
 });

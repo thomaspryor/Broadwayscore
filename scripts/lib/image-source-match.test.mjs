@@ -9,7 +9,7 @@ const {
   normalizeVenueName, venuesMatch, pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, buildVenueCityIndex,
   canReuseArchivedFile,
   mayServeDiskImage, thumbnailFallbackAction,
-  keepExistingImage, findRejectedSourcesInUse, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
+  keepExistingImage, findRejectedSourcesInUse, wrongEraTodayTixReason, refusedSourceReason, missingFileRedownload, freshSourceFor, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor, localImageAction,
 } = require('./image-source-match.js');
 
 const at = (iso) => ({ __type: 'Date', iso });
@@ -238,6 +238,78 @@ test('findRejectedSourcesInUse lists only in-use local fields mapped to a reject
   assert.deepEqual(findRejectedSourcesInUse([cleared], SOURCES), []);
 });
 
+// BRO-7846: the BRO-5089 sweep cleared follies-2011's TodayTix poster and
+// thumbnail (NT Live Follies, another production) and left the hero from the
+// same catalogue match. Rows that closed before TodayTix sold tickets carried
+// TodayTix heroes of unrelated shows (Grease 2007: an anti-vaping campaign).
+const TT = (name) => `https://images.ctfassets.net/6pezt69ih962/abc/def/${name}.png?fm=webp&q=90`;
+const follies = {
+  id: 'follies-2011', status: 'closed', closingDate: '2012-01-22',
+  images: { poster: null, thumbnail: null, hero: '/images/shows/follies-2011/hero.webp' },
+  rejectedImageUrls: [TT('TodayTix_NTLive_Follies_480x720')],
+};
+const company = {
+  id: 'company-2021', status: 'closed', closingDate: '2022-07-31',
+  images: { poster: null, thumbnail: null, hero: '/images/shows/company-2021/hero.webp' },
+  rejectedImageUrls: [TT('company_poster')],
+};
+const TT_SOURCES = {
+  'follies-2011': { hero: TT('TodayTix_NTLive_Follies_1600x1200') },
+  'company-2021': { hero: TT('header') },
+  'once-upon-a-mattress-2024': { poster: TT('OUAM-KeyArt'), hero: null },
+};
+
+test('findRejectedSourcesInUse lists TodayTix art that cannot be the row\'s own production', () => {
+  const rows = findRejectedSourcesInUse([follies, company], TT_SOURCES);
+  assert.deepEqual(rows.map(r => `${r.id}.${r.format}`), ['follies-2011.hero', 'company-2021.hero']);
+  assert.match(rows[0].why, /closed before TodayTix/);
+  assert.match(rows[1].why, /poster was rejected/);
+  // A row that kept its own poster rejected one stray file, not the match.
+  const ouam = { id: 'once-upon-a-mattress-2024', status: 'closed', closingDate: '2024-11-30',
+    images: { poster: '/images/shows/once-upon-a-mattress-2024/poster.webp' }, rejectedImageUrls: [TT('heart-portal-banner')] };
+  assert.deepEqual(findRejectedSourcesInUse([ouam], TT_SOURCES), []);
+  // Cleared hero: nothing to report.
+  assert.deepEqual(findRejectedSourcesInUse([{ ...follies, images: { hero: null } }], TT_SOURCES), []);
+});
+
+test('findRejectedSourcesInUse judges a borrowed file by the row that owns it', () => {
+  // legally-blonde-tour-2022 served the 2007 row's wrong TodayTix hero. The
+  // tour itself is recent and rejected nothing, so only the owner shows it.
+  const lb2007 = { id: 'legally-blonde-2007', status: 'closed', closingDate: '2008-10-19',
+    images: { hero: null }, rejectedImageUrls: [] };
+  const tour = { id: 'legally-blonde-tour-2022', status: 'closed', closingDate: '2023-06-30',
+    images: { hero: '/images/shows/legally-blonde-2007/hero.webp' }, rejectedImageUrls: [] };
+  const sources = { 'legally-blonde-2007': { hero: TT('LB-header') } };
+  const rows = findRejectedSourcesInUse([lb2007, tour], sources);
+  assert.deepEqual(rows.map(r => `${r.id}.${r.format}`), ['legally-blonde-tour-2022.hero']);
+  assert.match(rows[0].why, /closed before TodayTix/);
+  // Owner missing from the list: judged by the borrower alone (no crash).
+  assert.deepEqual(findRejectedSourcesInUse([tour], sources), []);
+});
+
+test('wrongEraTodayTixReason uses the London launch date for West End rows', () => {
+  // handbagged-west-end-2014 closed Aug 2014, before TodayTix sold West End
+  // tickets (June 2015); its TodayTix art was the 2019 Kiln revival's.
+  const we2014 = { id: 'handbagged-west-end-2014', market: 'west-end', status: 'closed', closingDate: '2014-08-02' };
+  assert.match(wrongEraTodayTixReason(we2014, TT('Handbagged')), /closed before TodayTix/);
+  assert.equal(wrongEraTodayTixReason({ ...we2014, closingDate: '2015-09-01' }, TT('x')), null);
+  // The same date on Broadway is after TodayTix's New York launch: kept.
+  assert.equal(wrongEraTodayTixReason({ ...we2014, market: 'broadway' }, TT('x')), null);
+});
+
+test('wrongEraTodayTixReason keeps running rows, post-2013 rows with no rejection, and non-TodayTix sources', () => {
+  const running = { id: 'x', status: 'open', closingDate: null, rejectedImageUrls: [TT('old')] };
+  assert.equal(wrongEraTodayTixReason(running, TT('new')), null, 'a running row may take by-id catalogue art');
+  const closed2019 = { id: 'y', status: 'closed', closingDate: '2019-06-30' };
+  assert.equal(wrongEraTodayTixReason(closed2019, TT('art')), null, 'art taken during the run is the row\'s own');
+  assert.equal(wrongEraTodayTixReason(follies, 'manual:checked by eye'), null);
+  assert.equal(wrongEraTodayTixReason(follies, 'https://www.theaterdiary.com/x.jpg'), null);
+  assert.ok(wrongEraTodayTixReason({ ...follies, rejectedImageUrls: [] }, TT('x')), 'closed in 2012: always another production');
+  // An image-search hit recorded as a todaytix.com show page is the catalogue too (the-effect-west-end-2012).
+  assert.ok(wrongEraTodayTixReason(follies, 'google-images:https://www.todaytix.com/london/shows/33425-the-effect'));
+  assert.equal(wrongEraTodayTixReason(follies, 'google-images:https://www.broadway.com/shows/follies/'), null);
+});
+
 test('recordFileSources writes only entries whose path is still the field value', () => {
   const sources = {};
   const images = {
@@ -267,4 +339,116 @@ test('thumbnailFallbackAction copies the poster over a rejected leftover thumbna
   assert.equal(thumbnailFallbackAction(row, { targetExists: true, targetRecordedSource: 'google-images:https://example.com/other.jpg' }), 'reuse');
   assert.equal(thumbnailFallbackAction({ id: 'x' }, { targetExists: true, targetRecordedSource: rejected }), 'reuse');
   assert.equal(thumbnailFallbackAction(row, { targetExists: true, targetRecordedSource: undefined }), 'reuse');
+});
+
+// BRO-7846 follow-up: the wrong-era rule lived only in the audit. The deploy
+// re-attach and the archiver's "file missing, re-download it" branch checked
+// only rejectedImageUrls, so a fetch run re-downloaded the cleared 2007-era
+// TodayTix art, and copied the deleted parent banners (an American in Paris
+// 2015's Matthew Scott concert art, Company 2021's COMPANY XIV photo) onto two
+// tours under their own folders with no recorded source.
+const TT_EFFECT = 'https://images.ctfassets.net/6pezt69ih962/4oIOdVMdvX8tsExMGD19Vr/5c482b411daf0d92e6625bac8/poster.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90';
+const TT_AIP_HERO = 'https://images.ctfassets.net/6pezt69ih962/4ShMEuhPqLq0cQcsZHx0zJ/d288044bd8b79c9e8d34039cdbdf795d/TT-production-matthew.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90';
+const TT_RACE_HERO = 'https://images.ctfassets.net/6pezt69ih962/3NU7KfZ6G2pdudGbtKS9AX/5934fb4beadef7ed6e9c632474b23ea2/West_TodayTix_1440x580.png?fm=webp&q=90';
+
+test('mayServeDiskImage refuses a wrong-era TodayTix file even when the rejected list misses it', () => {
+  // the-effect-west-end-2012 rejected only the todaytix.com page reference;
+  // its thumbnail file is recorded from the Contentful asset.
+  const effect = { id: 'the-effect-west-end-2012', market: 'west-end', status: 'closed', closingDate: '2013-02-23',
+    images: { thumbnail: null, poster: null, hero: null },
+    rejectedImageUrls: ['google-images:https://www.todaytix.com/london/shows/33425-the-effect'] };
+  assert.equal(mayServeDiskImage(effect, TT_EFFECT), false);
+  assert.match(refusedSourceReason(effect, TT_EFFECT), /closed before TodayTix/);
+  // A current row's TodayTix art, and a non-TodayTix file, are still served.
+  assert.equal(mayServeDiskImage({ id: 'x', status: 'open', images: {} }, TT_EFFECT), true);
+  assert.equal(mayServeDiskImage(effect, 'https://www.theaterdiary.com/parse/files/x/effect.jpg'), true);
+  assert.equal(mayServeDiskImage(effect, null), true);
+});
+
+test('missingFileRedownload refuses a borrowed parent file whose source is wrong for the parent', () => {
+  // At run time the parent still listed the hero (its plan applied later),
+  // with poster and thumbnail already cleared after a rejected TodayTix match.
+  const parent = { id: 'an-american-in-paris-2015', status: 'closed', closingDate: '2016-10-09',
+    images: { thumbnail: null, poster: null, hero: '/images/shows/an-american-in-paris-2015/hero.webp' },
+    rejectedImageUrls: ['https://images.ctfassets.net/6pezt69ih962/1Vwgyv3zE6cmCrT18t1ENL/c5/TT-poster-matthew.png?fm=webp&q=90'] };
+  // The tour had not yet recorded the rejection when the run read it.
+  const tour = { id: 'an-american-in-paris-tour-2022', status: 'closed', closingDate: '2023-06-11',
+    images: { hero: '/images/shows/an-american-in-paris-2015/hero.webp', thumbnail: null, poster: null } };
+  const sources = { 'an-american-in-paris-2015': { hero: TT_AIP_HERO } };
+  const byId = new Map([[parent.id, parent], [tour.id, tour]]);
+  const r = missingFileRedownload(tour, 'hero', tour.images.hero, sources, byId);
+  assert.ok(r.skip, 'must not re-download');
+  assert.match(r.skip, /refused/);
+  // Without the owner row it cannot judge the parent: it would download.
+  assert.equal(missingFileRedownload(tour, 'hero', tour.images.hero, sources, new Map()).sourceUrl, TT_AIP_HERO);
+  // Live case: the parent was refilled with its own poster after the cleanup,
+  // so the wrong-era rule no longer fires, but the parent no longer serves the
+  // hero the tour borrowed. Not re-downloaded either.
+  const refilled = { ...parent, rejectedImageUrls: [], images: { thumbnail: '/images/shows/an-american-in-paris-2015/thumbnail.jpg', poster: '/images/shows/an-american-in-paris-2015/poster.jpg', hero: null } };
+  assert.match(missingFileRedownload(tour, 'hero', tour.images.hero, sources, new Map([[refilled.id, refilled]])).skip, /no longer serves/);
+  // A parent still serving the file (lost from disk only) is re-downloaded.
+  const ok = 'https://www.theaterdiary.com/parse/files/x/aip.jpg';
+  const serving = { ...refilled, images: { ...refilled.images, hero: tour.images.hero } };
+  assert.deepEqual(missingFileRedownload(tour, 'hero', tour.images.hero, { [parent.id]: { hero: ok } }, new Map([[serving.id, serving]])), { sourceUrl: ok });
+});
+
+test('missingFileRedownload refuses a pre-TodayTix row and keeps the ordinary cases', () => {
+  const race = { id: 'race-2009', status: 'closed', closingDate: '2010-08-21', images: { hero: '/images/shows/race-2009/hero.webp' } };
+  assert.match(missingFileRedownload(race, 'hero', race.images.hero, { 'race-2009': { hero: TT_RACE_HERO } }, new Map()).skip, /closed before TodayTix/);
+  // A good recorded source is re-downloaded; manual and missing sources are skipped.
+  const ok = 'https://www.theaterdiary.com/parse/files/x/race.jpg';
+  assert.deepEqual(missingFileRedownload(race, 'hero', race.images.hero, { 'race-2009': { hero: ok } }, new Map()), { sourceUrl: ok });
+  assert.match(missingFileRedownload(race, 'hero', race.images.hero, { 'race-2009': { hero: 'manual:hand crop' } }, new Map()).skip, /not downloadable/);
+  assert.match(missingFileRedownload(race, 'hero', race.images.hero, {}, new Map()).skip, /no source/);
+  // A rejected source is refused as before (BRO-4901).
+  const rej = { ...race, rejectedImageUrls: [ok] };
+  assert.match(missingFileRedownload(rej, 'hero', race.images.hero, { 'race-2009': { hero: ok } }, new Map()).skip, /rejected/);
+});
+
+// BRO-7846: the 2026-11-19 finder run gave the-effect-west-end-2012 the 2023 NT
+// revival's TodayTix art through a trusted tier that skips verifyAndCollect.
+// applyImages must refuse a fresh candidate whose source refusedSourceReason flags.
+test('the finder refuses refused sources for every tier in applyImages', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../fetch-show-images-auto.js', import.meta.url), 'utf8');
+  const apply = src.slice(src.indexOf('function applyImages('));
+  const body = apply.slice(0, apply.indexOf('\nfunction ', 10));
+  assert.match(body, /refusedSourceReason\(show, src\)/);
+  assert.match(body, /const src = freshSourceFor\(format, p, fileSources\)/);
+  const effect = { id: 'the-effect-west-end-2012', market: 'west-end', status: 'closed', openingDate: '2012-11-13', closingDate: '2013-02-23', images: { thumbnail: null, poster: null, hero: null } };
+  const nt2023 = 'https://images.ctfassets.net/6pezt69ih962/4oIOdVMdvX8tsExMGD19Vr/5c482b411daf0d92e6625bac8f1059f8/NTGDS_CC_The_Effect_Digital_TodayTix_20.jpg';
+  assert.ok(refusedSourceReason(effect, nt2023));
+});
+
+test('freshSourceFor reads the served file source, or a CDN value', () => {
+  const tt = 'google-images:https://www.todaytix.com/london/shows/1-x';
+  const fs = { thumbnail: { path: '/images/shows/x/thumbnail.jpg', source: tt } };
+  assert.equal(freshSourceFor('thumbnail', '/images/shows/x/thumbnail.jpg', fs), tt);
+  assert.equal(freshSourceFor('thumbnail', '/images/shows/x/other.jpg', fs), null);
+  assert.equal(freshSourceFor('poster', 'https://cdn.example/p.jpg', fs), 'https://cdn.example/p.jpg');
+  assert.equal(freshSourceFor('poster', '/images/shows/x/poster.jpg', null), null);
+  const effect = { id: 'e', market: 'west-end', status: 'closed', openingDate: '2012-11-13', closingDate: '2013-02-23', images: {} };
+  assert.ok(refusedSourceReason(effect, freshSourceFor('thumbnail', '/images/shows/x/thumbnail.jpg', fs)));
+});
+
+// BRO-7871: --force sent local /images/ paths to fetch(), which cannot parse them,
+// so the workflow's force_redownload re-downloaded nothing.
+test('localImageAction: a local path is never fetched; --force re-downloads it from its source', () => {
+  const local = '/images/shows/company-tour-2023/hero.webp';
+  assert.equal(localImageAction(local, { force: true, fileExists: true }), 'redownload');
+  assert.equal(localImageAction(local, { force: true, fileExists: false }), 'redownload');
+  assert.equal(localImageAction(local, { force: false, fileExists: true }), 'check-existing');
+  assert.equal(localImageAction(local, { force: false, fileExists: false }), 'redownload');
+  // A file borrowed from another row is refreshed through its owner.
+  assert.equal(localImageAction(local, { force: true, fileExists: true, ownsFile: false }), 'check-existing');
+  assert.equal(localImageAction(local, { force: true, fileExists: false, ownsFile: false }), 'redownload');
+  assert.equal(localImageAction('https://cdn.example.com/a.jpg', { force: true, fileExists: false }), 'fetch');
+  assert.equal(localImageAction(null, { force: true }), 'fetch');
+});
+
+test('archive-show-images routes local paths through localImageAction (class guard for BRO-7871)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('../archive-show-images.js', import.meta.url), 'utf8');
+  assert.match(src, /localImageAction\(url, \{ force/);
+  assert.doesNotMatch(src, /url\.startsWith\('\/images\/'\) && !force/);
 });

@@ -78,6 +78,38 @@ jobs:
           # of main for this 45-min job's final ledger commit; depth-1 aborted when churn outran it.
           fetch-depth: 300
 
+      # BRO-7766: start the deploy now. Its setup (checkout, npm ci, vercel
+      # pull, guards, cache restore, ~2 min) overlaps this rebuild, then it
+      # waits for "Push core data to private repo" below and builds from the
+      # fresh main (vercel-deploy.yml "Wait for rebuild" step). Dispatch-only:
+      # the 4-hourly cron mostly changes nothing, so a pre-warm there would
+      # just cancel itself. If this dispatch fails, "Trigger deploy" below
+      # dispatches a normal deploy as before. Kill switch: repo variable
+      # DEPLOY_PREWARM_DISABLED=true (no pre-warm, so the old dispatch path runs).
+      - name: Pre-warm the deploy
+        if: github.event_name == 'workflow_dispatch' && vars.DEPLOY_PREWARM_DISABLED != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run vercel-deploy.yml -f wait_for_run="$GITHUB_RUN_ID" || echo "::warning::pre-warm dispatch failed; the post-push dispatch still runs"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # BRO-7766: start npm ci (~90s) now so it overlaps the core-data and
+      # review-texts checkouts and the lease sync below, which use only Node
+      # built-ins (same pattern as llm-ensemble-score.yml, BRO-7747).
+      # "Install dependencies" waits for it.
+      - name: Start npm ci in the background
+        run: |
+          # Exit code goes to a temp file and is renamed, so the waiter never reads it half-written.
+          nohup setsid bash -c 'npm ci > "$RUNNER_TEMP/npm-ci.log" 2>&1; echo $? > "$RUNNER_TEMP/npm-ci.exit.tmp"; mv "$RUNNER_TEMP/npm-ci.exit.tmp" "$RUNNER_TEMP/npm-ci.exit"' > /dev/null 2>&1 &
+          echo $! > "$RUNNER_TEMP/npm-ci.pid"
+          echo "npm ci started (pid $!)"
+
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
         with:
@@ -102,7 +134,23 @@ jobs:
         id: review_texts_checkout
         run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - uses: ./.github/actions/setup-node
+      # BRO-7766: wait for the background npm ci started after the repo checkout;
+      # on failure, run it once in the foreground.
+      - name: Install dependencies
+        run: |
+          EXIT_FILE="${RUNNER_TEMP}/npm-ci.exit"
+          for _ in $(seq 1 600); do [ -f "$EXIT_FILE" ] && break; sleep 1; done
+          CODE=$(cat "$EXIT_FILE" 2>/dev/null || echo missing)
+          echo "background npm ci exit: $CODE"
+          if [ "$CODE" != "0" ]; then
+            tail -40 "${RUNNER_TEMP}/npm-ci.log" 2>/dev/null || true
+            # setsid made the background job its own process group: kill all of it.
+            PGID=$(cat "${RUNNER_TEMP}/npm-ci.pid" 2>/dev/null || true)
+            if [ -n "$PGID" ]; then kill -- "-$PGID" 2>/dev/null || true; fi
+            sleep 2
+            echo "::warning::background npm ci did not succeed ($CODE); running it in the foreground"
+            npm ci
+          fi
 
       # Opening-night contamination guard (Notion 386637c5-416f-81b9): during
       # opening-night windows the rapid fast-rebuilds (and the post-scoring
@@ -152,6 +200,25 @@ jobs:
             # commit message does not report a false "+N reviews" from 0.
             echo "count=" >> $GITHUB_OUTPUT
           fi
+
+      # BRO-7744: cross-show fingerprint memo (scripts/lib/fingerprint-memo.js).
+      # Reusing the last run's fingerprints skips ~165s of cleanText work in the
+      # rebuild. The file validates itself (it is discarded unless the cleaning
+      # code, env switches and Node major match), so a stale restore only costs
+      # time, never correctness. Key = cleaning-code hash + review-texts SHA:
+      # no run id (rule m), and restore-keys picks up the newest entry for the
+      # current cleaning code. The hashed list is a coarse pre-filter only: the
+      # memo file itself versions every module cleanText really loads
+      # (fingerprint-memo.js versionedSources), so a missed dependency here
+      # means a cold run, never a stale fingerprint.
+      - name: Restore fingerprint memo
+        id: fp_memo_restore
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .cache/rebuild-fp-cache.json
+          key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-${{ steps.review_texts_checkout.outputs.sha }}
+          restore-keys: |
+            rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-
 
       - name: Rebuild reviews.json
         id: rebuild
@@ -204,6 +271,30 @@ jobs:
           git_net 300 clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
 
           node scripts/rebuild-all-reviews.js $FORCE_FLAG
+
+      # BRO-7744: upload the memo only when this run had to compute a lot of
+      # fingerprints (first run on new cleaning code, or a large text change).
+      # A typical run reuses all but a handful, and re-uploading a near-copy
+      # each time would pile up cache entries (BRO-3887 / BRO-7506 budget).
+      - name: Decide fingerprint memo save
+        id: fp_memo
+        if: always() && steps.rebuild.outcome == 'success'
+        run: |
+          computed=$(node -e "try{console.log(require('./.cache/rebuild-fp-cache.json').computed||0)}catch{console.log(0)}")
+          echo "computed=$computed"
+          # Nothing restored = this job started cold, so upload even if a
+          # retry attempt reused the first attempt's memo and computed little.
+          if [ -z "${{ steps.fp_memo_restore.outputs.cache-matched-key }}" ] || [ "$computed" -ge 2000 ]; then
+            echo "save=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Save fingerprint memo
+        if: always() && steps.rebuild.outcome == 'success' && steps.fp_memo.outputs.save == 'true'
+        continue-on-error: true
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .cache/rebuild-fp-cache.json
+          key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-${{ steps.review_texts_checkout.outputs.sha }}
 
       # BRO-3127: this step (and everything through "Verify all eligible
       # reviews scored" below) is gated on `always() && steps.rebuild.outcome
@@ -401,6 +492,7 @@ jobs:
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         env:
           GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/sweep-awaiting-score-submissions.js
         continue-on-error: true
 
@@ -584,6 +676,20 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from rebuild-fast'
 
+      # BRO-7857: close Predict the Score for any show whose first review this run pushed, before the deploy
+      # dispatch and the live overlay can show it. Gated only on the core-data push (not safe_to_publish):
+      # the dispatched deploy ships the reviews either way. Advisory; vercel-deploy.yml runs the same check
+      # before every production build, and the server backstop closes two days after opening.
+      - name: Close Predict the Score for shows with a review going live (advisory)
+        if: always() && steps.push-core-data.outcome == 'success' && vars.SCORE_CALL_SYNC_DISABLED != 'true'
+        # lint-allow-swallow: advisory (CLAUDE.md §19); vercel-deploy.yml repeats this before each build.
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/close-score-calls-on-reviews.mjs
+
       # A #21 (2026-04-26): Dispatch deploy directly after push-core-data so
       # post-push step failures don't strand fresh data. Workflow_run listener
       # gates on success-conclusion, which means a failed downstream step
@@ -594,20 +700,39 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
-          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
-            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
-            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
-            NOW_TS=$(date +%s)
-            DIFF=$((NOW_TS - RECENT_TS))
-            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
-              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
-              exit 0
-            fi
+          # BRO-7747: no caller-side dedup. The old skip ("a deploy started after this run
+          # started") dropped a deploy that began BEFORE this run pushed, so the new data
+          # never shipped (2026-11-18 drill). vercel-deploy.yml's should-deploy gate skips a
+          # build when HEAD and core data are already live, and its 5-min cron really fires
+          # every 6-9h, so this dispatch is what ships the data.
+          # BRO-7766: the pre-warm run dispatched at the start of this job ships this
+          # push itself when its "Wait for rebuild" step is live; any doubt (lookup
+          # error, run still in setup, too old) prints nothing and we dispatch.
+          PREWARM=$(node scripts/lib/deploy-prewarm-wait.js --find-prewarm "$GITHUB_RUN_ID" || true)
+          if [ -n "$PREWARM" ]; then
+            echo "Pre-warm deploy run $PREWARM is waiting on this push; not dispatching another."
+            exit 0
           fi
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
+
+      - name: Publish live score payloads (BRO-7803)
+        # BRO-7803: publish the hot shows' score payloads to the public live-scores
+        # bucket so show pages overlay them within ~a minute, ahead of the Next build +
+        # Vercel deploy (which still runs below and supersedes the overlay). Placed AFTER
+        # the push of core data and the deploy dispatch, so a payload is never public
+        # before its data is committed and the deploy dispatch is never delayed. Advisory
+        # (continue-on-error): a failure leaves the static pages exactly as the normal
+        # deploy will build them. Kill switch without a deploy:
+        #   npx tsx scripts/publish-live-scores.ts --kill   (writes kill.json)
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true' && steps.push-core-data.outcome == 'success'
+        timeout-minutes: 3
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          LIVE_SCORES_SAFE: ${{ steps.staleness.outputs.safe_to_publish }}
+        run: npx tsx scripts/publish-live-scores.ts --flagged-file="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
+        continue-on-error: true
 
       # BRO-7606: backfill a Linear card for any parked review submission
       # (needs-manual-review / scraping-failed) whose issue has no linear-card

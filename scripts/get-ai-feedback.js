@@ -12,6 +12,7 @@ require('./lib/llm-usage-install'); // LLM spend meter: before any client is bui
 const fs = require('fs');
 const path = require('path');
 const { CLAUDE_SONNET, GPT4O } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 
 const PLAN_PATH = path.join(__dirname, '../docs/biz-section-plan.md');
 
@@ -84,11 +85,12 @@ async function askGPT() {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${apiKey}`,
     },
-    body: JSON.stringify({
+    body: JSON.stringify(openaiChatBody({
       model: GPT4O,
-      max_tokens: 1024,
+      maxTokens: 1024,
+      temperature: null,
       messages: [{ role: 'user', content: PROMPT }],
-    }),
+    })),
   });
 
   if (!response.ok) {

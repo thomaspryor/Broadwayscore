@@ -16,7 +16,8 @@ const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot, renameReviewSnapshot } = require('./lib/persist-review-snapshot');
 const { safeUnlinkReview } = require('./lib/review-write-guard');
 const path = require('path');
-const { extractAuthorFromHtml } = require('./lib/content-quality');
+// BRO-7798: the shared byline reader (outlet rules first), never extractAuthorFromHtml directly.
+const { readPageBylineForShow } = require('./lib/page-byline-for-show');
 const { normalizeCritic, normalizeOutlet, generateReviewFilename } = require('./lib/review-normalization');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -100,7 +101,7 @@ async function processAll() {
       });
       if (!resp.ok) { failed++; continue; }
       const html = await resp.text();
-      const author = extractAuthorFromHtml(html);
+      const author = readPageBylineForShow({ html, url: c.data.url || c.archiveUrl, outletId: c.data.outletId }).criticName;
 
       if (!author || isRejectName(author)) {
         if (author) rejected++;

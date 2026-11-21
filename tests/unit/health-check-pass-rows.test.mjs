@@ -293,6 +293,7 @@ const NO_LITERAL_PASS_TWIN = {
   'Scoring: batch state': 'pass row built in batchStateResult() from `const name` (health-check-batch-state.test.mjs)',
   'Commercial model drift': 'pass comes from computeCommercialModelDriftStatus() via `status: result.status`',
   'Infra-review: gate telemetry': 'pass returned by computeInfraReviewDigest() in scripts/lib/infra-review-digest.js',
+  'Skeptic review: gate telemetry': 'pass returned by computeSkepticReviewDigest() in scripts/lib/skeptic-review-digest.js',
   'Credits: ScrapingDog': 'pass comes from evaluateScrapingdogCredits() via computed `status`',
   'Data: cards the drain cannot finish unattended': 'reads the untracked, Mac-local backlog-drain-metric.json; whether an empty humanGatedSkips means a fresh clean drain or a stale metric is not decidable here',
 };

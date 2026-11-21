@@ -460,6 +460,8 @@ data/audit/claude-session-cost.jsonl merge=keyed-jsonl keyed-jsonl=date,session
 # by checkpoint-keyed-merge.js instead of line by line. The line merge spliced
 # two runs' gap-audit-checkpoint.json in f8ee7b7d (2026-11-01).
 data/audit/gap-audit-checkpoint.json merge-keyed=entries
+# The proposal ledger is append-only by issue; merge whole entries on retries.
+data/audit/feedback-proposals.json merge=ours merge-keyed=proposal-ledger
 
 # autostash=regenerated (BRO-4688): a CUSTOM attribute read only by
 # push-with-retry.sh's autostash restore. In CI, when a caller's uncommitted
@@ -548,3 +550,5 @@ data/audit/gap-recovery-nightly.jsonl merge=union
 # can neither resurrect a pruned row nor disturb a reader. Landed without an attribute,
 # which failed audit-ledger-merge-attrs.test.mjs's repo-wide check (BRO-7263).
 data/audit/discovery-slot-collisions.jsonl merge=union
+# BRO-7790: append-only landed-change proof ledger (scripts/landed-change-proof-audit.js); union keeps both sides of a race.
+data/audit/landed-change-proof.jsonl merge=union

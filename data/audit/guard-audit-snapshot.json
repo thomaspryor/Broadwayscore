@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-17T10:53:12.008Z",
+  "generatedAt": "2026-11-21T10:24:35.323Z",
   "window": {
-    "since": "2026-11-11",
-    "until": "2026-11-17"
+    "since": "2026-11-15",
+    "until": "2026-11-21"
   },
   "bannerText": "Spend guard audit (last 7 days): 0 defect(s), 1 cap drift(s).",
   "items": [
@@ -12,7 +12,7 @@
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "OK: 1 trip day(s); rerouted spend on trip days $0.00 (28 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 1797"
+      "detail": "OK: 1 trip day(s); rerouted spend on trip days $0.00 (0 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 1797"
     },
     {
       "title": "sb-circuit-breaker",
@@ -50,10 +50,10 @@
       },
       "drift": {
         "ceiling": 1750,
-        "source": "opening-window-reserve",
-        "from": "trip-row",
+        "source": null,
+        "from": "state",
         "currentZero": false,
-        "median14d": 319,
+        "median14d": 235,
         "drift": false,
         "note": null
       }
@@ -66,12 +66,12 @@
       "verdict": "OK",
       "days": 1,
       "dayList": [
-        "2026-11-12"
+        "2026-11-19"
       ],
       "lowerBound": false,
       "spend": {
         "usd": 0,
-        "rows": 28,
+        "rows": 0,
         "unpriced": 0,
         "label": "bd-budget",
         "partialSince": null,
@@ -105,11 +105,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 23210,
+        "ceiling": 17063,
         "source": "plan+opening-window-reserve+median-floor",
         "from": "state",
         "currentZero": false,
-        "median14d": 15473,
+        "median14d": 11375,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -132,13 +132,13 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 32507,
-        "source": "plan+opening-window-reserve+median-floor",
-        "from": "trip-row",
+        "ceiling": null,
+        "source": null,
+        "from": null,
         "currentZero": false,
-        "median14d": 15473,
+        "median14d": 11375,
         "drift": false,
-        "note": null
+        "note": "n/a"
       }
     },
     {
@@ -159,45 +159,17 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 283078,
+        "ceiling": 355705,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 71882,
+        "median14d": 79849,
         "drift": false,
         "note": null
       }
     }
   ],
   "spendByDay": {
-    "2026-11-04": {
-      "partial": false,
-      "guards": {
-        "bd-circuit-breaker-web_unlocker2": {
-          "usd": 0.0344,
-          "rows": 335,
-          "unpriced": 0
-        }
-      }
-    },
-    "2026-11-05": {
-      "partial": false,
-      "guards": {
-        "bd-circuit-breaker-web_unlocker2": {
-          "usd": 0.0177,
-          "rows": 106,
-          "unpriced": 0
-        }
-      }
-    },
-    "2026-11-06": {
-      "partial": false,
-      "guards": {}
-    },
-    "2026-11-07": {
-      "partial": false,
-      "guards": {}
-    },
     "2026-11-08": {
       "partial": false,
       "guards": {}
@@ -247,21 +219,37 @@
       "guards": {}
     },
     "2026-11-17": {
+      "partial": false,
+      "guards": {}
+    },
+    "2026-11-18": {
+      "partial": false,
+      "guards": {}
+    },
+    "2026-11-19": {
+      "partial": false,
+      "guards": {}
+    },
+    "2026-11-20": {
+      "partial": false,
+      "guards": {}
+    },
+    "2026-11-21": {
       "partial": true,
       "guards": {}
     }
   },
   "dailyBreakerPattern": {
     "window": {
-      "sinceDay": "2026-11-11",
-      "untilDay": "2026-11-17",
+      "sinceDay": "2026-11-15",
+      "untilDay": "2026-11-21",
       "days": 7
     },
     "providers": {
       "web": {
         "days": 1,
         "dayList": [
-          "2026-11-12"
+          "2026-11-19"
         ],
         "lowerBound": false
       },

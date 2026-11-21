@@ -181,6 +181,73 @@ function recorderFromEnv(env) {
 }
 
 /**
+ * BRO-7741: the real inbox ports. The read is async (a slow fetch never stalls the publish timers); the status write is
+ * a compare-and-swap push, once a pass and only when something changed, and prints a notice per entry for the job log.
+ */
+/**
+ * BRO-7891 review: a failed or rejected inbox URL must reach someone the same night. The press-night channel (the
+ * signals notifier: Discord + the coordinator card, built by the CLI) carries it as an 'inbox-problem' line; routeAlert
+ * 'digest' would only surface it the next morning, and 'human' is downgraded to digest for any key off the page-worthy
+ * allowlist. With no notifier wired (replays), routeAlert digest is the fallback so it is still recorded.
+ */
+function inboxAlertRoute({ show, night, notifyPressSignals, routeAlert }) {
+  // One alert per status flush (`items` = [{p, u}]), never one post per URL.
+  const digest = (items) => {
+    const one = items.length === 1;
+    const key = one ? items[0].p.conditionKey
+      : `opening-night-lane-inbox:batch:${require('crypto').createHash('sha1').update(items.map((x) => x.p.conditionKey).sort().join('\n')).digest('hex').slice(0, 12)}`;
+    return routeAlert({ severity: 'warn', disposition: 'digest', cooldownHours: 12, conditionKey: key,
+      title: one ? items[0].p.title : `${items.length} lane inbox URLs not published for ${show.id}`,
+      description: items.slice(0, INBOX_ALERT_MAX_LINES).map((x) => x.p.description).join('\n') + (items.length > INBOX_ALERT_MAX_LINES ? `\n...and ${items.length - INBOX_ALERT_MAX_LINES} more (opening-night-lane-inbox.js list --show=${show.id})` : '') });
+  };
+  if (typeof notifyPressSignals !== 'function') return digest;
+  return async (items) => {
+    const out = await notifyPressSignals({ show, night, nearMisses: [], gaps: [], sourceHealth: items.map(({ p, u = {} }) => ({ kind: 'inbox-problem', key: p.conditionKey, url: u.url || null, status: u.status, reason: u.reason || null, description: p.description })) });
+    // PRESS_SIGNALS_OFF=1 (text null) or no channel reached: the router still records it, so it is never silent.
+    if (!out || !out.text || (!out.discord && !out.comment)) return digest(items);
+    return out;
+  };
+}
+const INBOX_ALERT_MAX_LINES = 10;
+
+// BRO-7891: how long one inbox alert may take before the lane stops waiting on it (it is never awaited by the pass).
+const INBOX_ALERT_TIMEOUT_MS = 20 * 1000;
+
+function realManualInbox({ repoDir, show, log = console.log, env = process.env, alert = null, store = null, alertTimeoutMs = INBOX_ALERT_TIMEOUT_MS }) {
+  // Kill switch (repo variable or env): the lane runs without reading the inbox.
+  if (env.OPENING_NIGHT_LANE_INBOX_DISABLED === 'true') { log('::notice::lane manual inbox disabled (OPENING_NIGHT_LANE_INBOX_DISABLED)'); return null; }
+  const inbox = require('./manual-inbox');
+  const io = store || inbox; // tests pass {readForShow, markSync}
+  // BRO-7891: a failed or rejected URL is alerted after its status is written, fire-and-forget and time-bounded. Its
+  // error is swallowed: a throw here would make flushInbox re-queue the batch and alert again on the next pass.
+  const fire = (items) => {
+    if (typeof alert !== 'function' || !items.length) return;
+    const what = items.map((x) => x.p.title).join('; ').slice(0, 200);
+    let timer;
+    const bounded = new Promise((resolve) => { timer = setTimeout(() => resolve('timeout'), alertTimeoutMs); if (timer.unref) timer.unref(); });
+    Promise.race([Promise.resolve().then(() => alert(items)), bounded])
+      .then((r) => { if (r === 'timeout') log(`opening-night lane: inbox alert timed out: ${what}`); })
+      .catch((e) => log(`opening-night lane: inbox alert failed (${String(e && e.message).slice(0, 160)}): ${what}`))
+      .finally(() => clearTimeout(timer));
+  };
+  return {
+    readInbox: () => io.readForShow({ repoDir, show: show.id }),
+    markInbox: async (updates) => {
+      const res = io.markSync({ repoDir }, updates);
+      if (!res.ok) throw new Error(`inbox status write ${res.reason}: ${res.detail || ''}`);
+      for (const u of updates) log(`::notice::lane inbox: ${u.id} ${u.status}${u.reason ? ` (${u.reason})` : ''}`);
+      // Only statuses the store took (markStatus `applied`): an update for an expired entry or an earlier generation
+      // changed nothing, so it alerts nothing.
+      const applied = new Set(res.applied || []);
+      try {
+        const items = updates.filter((u) => applied.has(u.id)).map((u) => ({ p: inbox.inboxAlertFor(u), u })).filter((x) => x.p);
+        fire(items); // one alert for the whole flush
+      } catch { /* an alert never fails the write */ }
+    },
+  };
+}
+
+/**
  * Real dependencies. Checks the scorer keys before anything claims a lease. `routeAlert` and `ScorerClass`
  * (EnsembleReviewScorer, TypeScript, hence `npx tsx`) are passed in by the CLI rather than required here: anything this
  * folder requires joins rehearsal.laneCodeHash, and the alert router alone would pull ~44 Linear/notify files into it,
@@ -188,7 +255,7 @@ function recorderFromEnv(env) {
  */
 function buildRealLaneDeps({
   show, night, openingDate, timeZone, holder, repoDir, coreDir, ledgerDir, recordFile, maxAgeMs, adaptersConfig = {}, env = process.env,
-  routeAlert, ScorerClass, settleFor = null,
+  routeAlert, ScorerClass, settleFor = null, notifyPressSignals = null,
 }) {
   const missing = ['ANTHROPIC_API_KEY', 'OPENAI_API_KEY'].filter((k) => !env[k]);
   if (missing.length) throw new Error(`driver: missing scorer keys ${missing.join(', ')}`);
@@ -211,7 +278,8 @@ function buildRealLaneDeps({
       const laneFetch = require('./browserbase-fetch').createLaneFetch({ env });
       const scorer = new ScorerClass(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY, env.OPENROUTER_API_KEY);
       const reviewsFile = path.join(repoDir, 'data', 'reviews.json');
-      const preembargo = (() => { const pw = require('./preembargo-window'); const on = pw.parseFlag(env[pw.VARIABLE]); const at = Date.parse(require('./lane-only-markets').embargoForNight(show, night) || ''); return on && Number.isFinite(at) ? { enabled: true, embargoMs: at } : null; })();
+      // BRO-7740: the guard is on for the owner variable OR a market-default (guessed) embargo (auto-fallback.laneGuardMode).
+      const preembargo = (() => { const pw = require('./preembargo-window'); const mode = require('./auto-fallback').laneGuardMode(show, night, pw.parseFlag(env[pw.VARIABLE])); const at = Date.parse(require('./lane-only-markets').embargoForNight(show, night) || ''); if (!(mode.enabled && Number.isFinite(at))) return null; const af = require('./auto-fallback'); const t = af.nightTimes(show, night, { preembargo: pw.parseFlag(env[pw.VARIABLE]) }); console.log(`::notice::lane guard for ${show.id} ${night}: ${af.guardStartText(t)}`); return { enabled: true, embargoMs: at, reason: mode.reason, startMs: t ? t.laneStartMs : undefined }; })();
       return wireLaneNight({
         show, night, openingDate, timeZone, ledgerDir, adaptersConfig, laneFetch,
         recorder: recorderFromEnv(env),
@@ -222,11 +290,18 @@ function buildRealLaneDeps({
         reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
         // BRO-7283: the comparative within-band pass, run at score time (built by the CLI: it is TypeScript).
         settleComparative: settleFor ? settleFor({ show, reviewTextsDir: path.join(repoDir, 'data', 'review-texts') }) : null,
+        // BRO-7748: built by the CLI (Discord + coordinator-card comment) so its Linear/notify files stay out of laneCodeHash.
+        onPressSignals: notifyPressSignals,
+        claimSourceAlarm: (url) => store.casTransition({ repoDir, branch: 'opening-night-source-alarms', message: `source health ${night}` },
+          (state) => require('./source-health').claimSource(state, { night, url, now: Date.now() })),
         onDiskUrls: onDiskUrlsFor(reviewsFile, show.id), onDiskRows: onDiskRowsFor(reviewsFile, show.id),
         showScoreGuards: showScoreGuards(repoDir),
         // BRO-7280: opt-in pre-embargo direct-only window (off unless LANE_PREEMBARGO_DIRECT_ONLY is on).
         preembargo,
         search: realSerpSearch(env), decodeImpl: require('../google-news-decode').decodeGoogleNewsLink,
+        // BRO-7741: the manual-URL inbox (ingest-urls.yml routes a leased show's URLs there), read every pass.
+        // BRO-7891: a failed/rejected inbox URL alerts through the CLI's router (kept out of laneCodeHash, see above).
+        manualInbox: realManualInbox({ repoDir, show, env, alert: inboxAlertRoute({ show, night, notifyPressSignals, routeAlert }) }),
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
         windowMs: (() => { const m = Number(preembargo && env.OPENING_NIGHT_LANE_WINDOW_PREEMBARGO_MIN) || Number(env.OPENING_NIGHT_LANE_WINDOW_MIN); return m > 0 ? m * 60 * 1000 : undefined; })(),
       })({ shouldStop, abandonPending });
@@ -247,12 +322,15 @@ const TUNING_KEYS = ['passIntervalMs', 'maxPasses', 'startedAt', 'latency', 'pol
  *   laneFetch {fetchPage(url, opts), close()}, recorder? (fetch-recording.js: wraps the discovery fetchText only), scoreText(text, meta), fetchPorts? {extractArticle, extractMeta}
  *   (default: the real extractors over laneFetch), publishPorts | makePublishPorts(clock) (+ forkClock), now, wait,
  *   reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards, search (SERP backend), decodeImpl (Google News; null = off),
- *   windowMs?, tuning? (TUNING_KEYS)
+ *   windowMs?, tuning? (TUNING_KEYS), onPressSignals? (BRO-7748 near-miss / found-not-live alert, built by the CLI)
+ *   manualInbox? {readInbox, markInbox} (BRO-7741; null = no inbox: replays, rehearsals)
  * @returns {({shouldStop?, abandonPending?}) => Promise<runLaneNight result>}
  */
 function wireLaneNight({
   show, night, openingDate, timeZone, ledgerDir, adaptersConfig = {}, laneFetch, recorder = null, scoreText, fetchPorts, publishPorts, makePublishPorts, forkClock,
   now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search: rawSearch, decodeImpl, windowMs, tuning = {}, preembargo = null, settleComparative = null,
+  onPressSignals = null, claimSourceAlarm = null,
+  manualInbox = null,
 } = {}) {
   const search = rawSearch;
   const required = { show, night, ledgerDir, laneFetch, scoreText, now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search };
@@ -265,7 +343,14 @@ function wireLaneNight({
   // BRO-7280: opt-in pre-embargo window. Whole-object wrap so discovery, inline fetch/score and the SERP all see it.
   const pw = require('./preembargo-window');
   const pe = preembargo && preembargo.enabled && Number.isFinite(preembargo.embargoMs) ? preembargo : null;
-  const isActive = () => !!pe && pw.windowActive({ enabled: true, embargoMs: pe.embargoMs, nowMs: now() });
+  // BRO-7740: the first admitted review that is provably tonight's lifts the guard at once (full fetch chain from then on).
+  let liftedAt = null;
+  const onAdmitted = (admitted, stampMs) => {
+    if (!pe || liftedAt != null) return;
+    const d = pw.dropEvidence({ admitted, night, floorMs: Math.min(pe.embargoMs - pw.MAX_LEAD_MIN * 60 * 1000, Number.isFinite(pe.startMs) ? pe.startMs : Infinity), onDiskUrls: onDiskUrls instanceof Set ? onDiskUrls : new Set(onDiskUrls || []) });
+    if (d.lifted) { liftedAt = stampMs; console.log(`::notice::embargo lifted for ${show.id} ${night} at ${new Date(stampMs).toISOString()} (assumed embargo ${new Date(pe.embargoMs).toISOString()}); first live review ${d.evidence.url || d.evidence.key}; pre-embargo guard closed`); }
+  };
+  const isActive = () => !!pe && liftedAt == null && pw.windowActive({ enabled: true, embargoMs: pe.embargoMs, nowMs: now() });
   const guarded = pw.guardPorts({ enabled: !!pe, fetchPage: laneFetch.fetchPage, search: rawSearch, isActive });
   const guardedFetch = pe ? { fetchPage: guarded.fetchPage, close: () => laneFetch.close() } : laneFetch;
   const adapterSearch = guarded.search;
@@ -281,10 +366,13 @@ function wireLaneNight({
     return Promise.resolve().then(() => runLaneNight({
       show, night, openingDate, timeZone, ledgerDir, fetchText: recorder ? recorder.wrapFetchText(discovery.fetchTextFrom(guardedFetch.fetchPage)) : discovery.fetchTextFrom(guardedFetch.fetchPage), shouldStop, abandonPending,
       ...(windowMs > 0 ? { windowMs } : {}),
-      ...(pe ? { serpClockStartMs: pe.embargoMs - pw.LANE_LEAD_MIN * 60 * 1000 } : {}),
+      ...(pe ? { serpClockStartMs: pe.embargoMs - pw.LANE_LEAD_MIN * 60 * 1000, onAdmitted } : {}),
       ...tuning,
       reviewTextsDir,
       ...(settleComparative ? { settleComparative } : {}),
+      ...(onPressSignals ? { onPressSignals } : {}),
+      claimSourceAlarm, allShows: guards.allShows, adaptersConfig: guardedAdaptersConfig,
+      ...(manualInbox ? { readInbox: manualInbox.readInbox, markInbox: manualInbox.markInbox } : {}),
       adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig: guardedAdaptersConfig, search: adapterSearch, decodeImpl, now, ledgerDir }),
       // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.
       missingOutlets: ({ seen }) => discovery.laneMissingOutlets({ show, seen, adaptersConfig }),
@@ -295,4 +383,4 @@ function wireLaneNight({
   };
 }
 
-module.exports = { recorderFromEnv, HEARTBEAT_MS, LEASE_TTL_MS, TUNING_KEYS, runProductionLane, buildRealLaneDeps, wireLaneNight, onDiskUrlsFor, onDiskRowsFor };
+module.exports = { realManualInbox, inboxAlertRoute, recorderFromEnv, HEARTBEAT_MS, LEASE_TTL_MS, TUNING_KEYS, runProductionLane, buildRealLaneDeps, wireLaneNight, onDiskUrlsFor, onDiskRowsFor };

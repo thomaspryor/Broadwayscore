@@ -120,7 +120,7 @@ jobs:
     # fix must not silently trade into.
     # BRO-7082 (2026-11-07): the press-night grade (180s) and the once-a-day
     # opening grade (90s fetch + 90s grader, measured ~13s + ~10s) add ~6min,
-    # so the worst case is ~22min; timeout-minutes raised 20 -> 25 to keep it. 20min is negligible against this
+    # so the worst case is ~22min (~23 with the 60 s lane inbox sweep, BRO-7741); timeout-minutes raised 20 -> 25 to keep it. 20min is negligible against this
     # workflow's 3h CRITICAL_CRONS staleness band in check-cron-health.yml,
     # and keeps this workflow's typical (uncontended) runtime — and thus its
     # exposure to the documented 3-deep concurrency-queue cancellation
@@ -274,6 +274,15 @@ jobs:
       # (or no worker started it), or the workflow is red again after the card
       # closed. It never files cards. Repo variable AUTO_FIX_FIRST_DISABLED=true
       # turns it off.
+      # BRO-7741: the lane inbox safety net. Sends on any inbox URL a lane night left behind (its drain skipped, a
+      # drained ingest-urls run cancelled or failed, an already-in that never reached the site). Bounded: 60 s.
+      - name: Lane inbox sweep (BRO-7741)
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: timeout -k 10 60 node scripts/opening-night-lane-inbox.js sweep --dispatch || echo "::warning::lane inbox sweep failed"
+
       - name: Auto-fix first sweep (BRO-5477)
         if: always() && inputs.dry_run != true
         continue-on-error: true

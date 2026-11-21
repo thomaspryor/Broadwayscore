@@ -233,4 +233,42 @@ function recoveredMissingKeys(conditions, days, { judgedDay = null } = {}) {
   return out;
 }
 
-module.exports = { SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
+// BRO-6918: a per-sender count condition (`scheduled-email-count:dup-x,unexpected-y`)
+// was only ever opened. When the violation stopped nothing resolved it, so its
+// card sat open for good and the alert-absent check read "quiet" as "cannot
+// tell". The monitor now hands the open count keys that this run does not file
+// again to router.resolveQuietConditions (default quiet window = the router's
+// incident gap, so a 3-day repeat never splits one incident).
+const COUNT_KEY_RE = /^scheduled-email-count:(?:unexpected|dup)-/;
+
+// The ONE place the per-sender count conditionKey is built: the monitor files
+// with it and builds its live set with it, so the two cannot drift.
+// BRO-7731: one key per sender. A combined key (`dup-a,dup-b`) left the `dup-a`
+// row unrefreshed once b joined, so the quiet sweep resolved it while a still
+// duplicated. Older combined rows still match COUNT_KEY_RE and quiet-resolve.
+function countConditionKey(kind, sender) {
+  return `scheduled-email-count:${kind}-${sender}`;
+}
+
+// -> [{ key, kind: 'unexpected'|'dup', sender }] for one day's decision, sorted by key
+function countConditionKeys(decision) {
+  return [
+    ...(decision.unexpectedKeys || []).map((sender) => ({ kind: 'unexpected', sender })),
+    ...(decision.duplicateKeys || []).map((sender) => ({ kind: 'dup', sender })),
+  ].map((e) => ({ key: countConditionKey(e.kind, e.sender), ...e })).sort((a, b) => a.key.localeCompare(b.key));
+}
+
+// Open count keys that are not in this run's live violation set.
+function openCountKeys(conditions, currentKeys = []) {
+  const live = new Set(currentKeys);
+  return Object.entries(conditions || {})
+    .filter(([key, row]) => row && row.status === 'open' && COUNT_KEY_RE.test(key) && !live.has(key))
+    .map(([key]) => key);
+}
+
+/** Keys of every violation still live, exactly as the monitor feeds them to the quiet sweep (BRO-7731). */
+function liveCountKeys(violations) {
+  return violations.flatMap(({ decision }) => countConditionKeys(decision)).map((e) => e.key);
+}
+
+module.exports = { countConditionKey, countConditionKeys, liveCountKeys, openCountKeys, SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };

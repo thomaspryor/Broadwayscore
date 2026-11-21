@@ -32,6 +32,22 @@ on:
         required: false
         default: ''
         type: string
+      redispatched:
+        # redispatch-after-hours: 2  (BRO-7402: GitHub fired this 3h cron about every 6-10h (2026-11-17/18: 03:54,
+        #   16:00, 00:57, 11:42). The Good Thief's Front Row Center review went up at 01:26 UTC and sat unread until
+        #   the hourly audit-aggregator-gap sweep (re-dispatched at 1h) found it at 10:27, so it counted as a
+        #   first-pass miss. With a 2h band the next read usually comes within about 2.5h of the last run (sweeps
+        #   ride Test Suite completions, at most one per 30 min, 5 dispatches per sweep). Cost: up to ~16 runs/day
+        #   (cron ticks plus re-dispatches) while a show is in the window, each capped at max_paid=8 paid fetches and
+        #   at most 3 collect-review-texts dispatches (failed fetches back off through the failed-fetches ledger);
+        #   outside the window a run exits before any fetch. Undo: delete this input (the guard test goes with it).
+        #   OPENING_WINDOW_DISABLED stops the poller altogether. Paging band stays 12h.
+        #   Guard: tests/unit/first-pass-redispatch.test.mjs.)
+        # Set by scripts/cron-redispatch.js when GitHub dropped the schedule. Nothing here branches on how the run
+        # started, and every other input keeps its default, so the run is the same as a scheduled one.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
 
 concurrency:
   group: outlet-listing-poller-window
@@ -112,7 +128,17 @@ jobs:
             echo "No in-window shows with uncollected stubs."
             exit 0
           fi
+          # BRO-7402: re-dispatched ticks can land close to a late cron tick; a show whose collection is still
+          # queued or running is left to that run instead of being fetched twice. A failed lookup skips nothing.
+          ACTIVE=$(gh run list --workflow=collect-review-texts.yml --limit 50 --json displayTitle,status 2>/dev/null \
+            | node -e "const ow=require('./scripts/lib/outlet-opening-window');let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{let r=[];try{r=JSON.parse(s)}catch{};console.log([...ow.activeCollectShowIds(r)].join(' '))})" || true)
           for ID in $(echo "$IDS" | tr ',' ' '); do
+            case " $ACTIVE " in
+              *" $ID "*)
+                echo "Skipping $ID: a collect-review-texts run for it is already queued or running"
+                continue
+                ;;
+            esac
             echo "Dispatching collect-review-texts for $ID"
             gh workflow run collect-review-texts.yml -f show_filter="$ID" -f aggressive=true -f max_reviews=60 -f browserbase_max_sessions=5 || echo "::warning::collect dispatch failed for $ID"
           done

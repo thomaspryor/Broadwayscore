@@ -578,7 +578,7 @@ test('BRO-5851: a sourced no-press-night-found row is never re-dated by a review
 });
 
 test('BRO-6697: review-seeded bounds (incl. reconciled first-review-date) never move forward', () => {
-  for (const src of ['guardian-review', 'tic-first-review', 'first-review-date']) {
+  for (const src of ['guardian-review', 'census-review', 'tic-first-review', 'bww-first-review', 'first-review-date']) {
     const show = {
       id: `seeded-${src}-2026`, title: 'Seeded', slug: `seeded-${src}-2026`, category: 'west-end',
       openingDate: '2026-03-01', previewsStartDate: '2026-03-01', openingDateSource: src,

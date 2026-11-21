@@ -83,6 +83,8 @@ function githubProdDeploy() {
   let best = null;
   let proofs = 0;
   for (const run of runs) {
+    // BRO-7766: a pre-warm run builds a newer main than its head_sha, so its sha proves nothing here.
+    if (String(run.display_title || '').includes('pre-warm')) continue;
     let proof = null;
     try {
       const job = (ghJson(`repos/${REPO}/actions/runs/${run.id}/jobs?per_page=50`).jobs || [])

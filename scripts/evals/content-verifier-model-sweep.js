@@ -12,7 +12,7 @@
  *
  * Usage:
  *   node scripts/evals/content-verifier-model-sweep.js
- *   node scripts/evals/content-verifier-model-sweep.js --models gemini,gpt-4o
+ *   node scripts/evals/content-verifier-model-sweep.js --models gemini-2-flash,gpt-5.6-luna
  *   node scripts/evals/content-verifier-model-sweep.js --concurrency 4 --json
  */
 
@@ -20,7 +20,9 @@ require('../lib/llm-usage-install'); // LLM spend meter: before any client is bu
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { GEMINI_FLASH, GPT4O_MINI, GPT4O, KIMI, CLAUDE_HAIKU, CLAUDE_SONNET, CLAUDE_OPUS } = require('../lib/models');
+const { GEMINI_FLASH, GPT4O_MINI, KIMI, CLAUDE_HAIKU, CLAUDE_SONNET, CLAUDE_OPUS } = require('../lib/models');
+const { openaiChatBody } = require('../lib/llm-batch');
+const { ratesFor } = require('../lib/research-cost');
 
 const FIXTURE = path.join(
   __dirname, '..', '..',
@@ -36,18 +38,12 @@ const MODELS = {
     priceIn: 0.10, priceOut: 0.40,
     envKey: 'GEMINI_API_KEY',
   },
-  'gpt-4o-mini': {
+  // gpt-4o / gpt-4o-mini shut down 2027-01-14; both pins now resolve to one model (BRO-7341).
+  [GPT4O_MINI]: {
     provider: 'openai',
     api: 'openai',
     model: GPT4O_MINI,
-    priceIn: 0.15, priceOut: 0.60,
-    envKey: 'OPENAI_API_KEY',
-  },
-  'gpt-4o': {
-    provider: 'openai',
-    api: 'openai',
-    model: GPT4O,
-    priceIn: 2.50, priceOut: 10.00,
+    priceIn: ratesFor(GPT4O_MINI).input, priceOut: ratesFor(GPT4O_MINI).output,
     envKey: 'OPENAI_API_KEY',
   },
   'kimi-k2.5': {
@@ -173,9 +169,10 @@ async function callOpenAIStyle(modelSpec, prompt, baseUrl = 'https://api.openai.
     baseUrl,
     { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env[modelSpec.envKey]}`, ...extraHeaders },
     JSON.stringify({
-      model: modelSpec.model,
-      temperature: 0.1,
-      messages: [{ role: 'user', content: prompt }],
+      // OpenAI models go through the shared builder (reasoning_effort, no max_tokens); OpenRouter keeps its plain body.
+      ...(modelSpec.api === 'openai'
+        ? openaiChatBody({ model: modelSpec.model, temperature: 0.1, maxTokens: null, messages: [{ role: 'user', content: prompt }] })
+        : { model: modelSpec.model, temperature: 0.1, messages: [{ role: 'user', content: prompt }] }),
       response_format: { type: 'json_object' },
     })
   );

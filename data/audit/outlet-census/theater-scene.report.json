@@ -1,31 +1,69 @@
 {
   "outletId": "theater-scene",
-  "generatedAt": "2026-10-28T20:37:32.171Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:28:21.607Z",
   "since": "2021-06-01",
   "source": {
     "kind": "wp-json",
+    "status": "complete",
     "notes": [],
-    "enumerated": 1451,
-    "inWindow": 1451,
+    "incomplete": false,
+    "enumerated": 1497,
+    "inWindow": 1497,
     "undated": 0,
     "meta": null
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "not-review": 1075,
-      "held": 365,
-      "held-unmatched": 11
+      "not-review": 1037,
+      "held": 445,
+      "held-unmatched": 15
     },
     "viaTitleVariant": {
-      "held": 13
+      "held": 19
     },
     "recall": 1,
     "recallWithCatalog": 1
   },
+  "seasons": {
+    "2026-27": {
+      "not-review": 26,
+      "held": 43,
+      "held-unmatched": 1
+    },
+    "2025-26": {
+      "held": 133,
+      "held-unmatched": 4,
+      "not-review": 162
+    },
+    "2024-25": {
+      "not-review": 190,
+      "held-unmatched": 5,
+      "held": 89
+    },
+    "2023-24": {
+      "not-review": 209,
+      "held": 76,
+      "held-unmatched": 2
+    },
+    "2022-23": {
+      "not-review": 211,
+      "held": 71,
+      "held-unmatched": 1
+    },
+    "2021-22": {
+      "not-review": 208,
+      "held": 33,
+      "held-unmatched": 2
+    },
+    "2020-21": {
+      "not-review": 31
+    }
+  },
   "corpusSide": {
-    "rowsInWindow": 589,
-    "notEnumerated": 101,
+    "rowsInWindow": 816,
+    "notEnumerated": 130,
     "noUrl": 0,
     "samples": [
       {
@@ -35,9 +73,27 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "222-a-ghost-story-off-broadway-2026",
+        "url": "https://theaterscene.com/reviews/222-a-ghost-story/",
+        "publishDate": "2026-11-08",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-case-for-the-existence-of-god-off-broadway-2022",
+        "url": "http://www.theaterscene.net/plays/offbway-plays/a-case-for-the-existence-of-god/darryl-reilly/",
+        "publishDate": "2022-05-10",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "a-dolls-house-2023",
         "url": "https://theaterscene.org/2023/03/a-dolls-house/",
         "publishDate": "2023-03-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-few-good-men-2026",
+        "url": "https://theaterscene.com/reviews/a-few-good-men/",
+        "publishDate": "2026-11-05",
         "why": "not-enumerated"
       },
       {
@@ -48,8 +104,32 @@
       },
       {
         "showId": "aftermath-art-new-york-off-broadway-2026",
+        "url": "https://theaterscene.com/reviews/aftermath/",
+        "publishDate": "2026-10-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "aftermath-art-new-york-off-broadway-2026",
         "url": "https://theaterscene.org/2026/10/aftermath/",
         "publishDate": "2026-10-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "an-ark-off-broadway-2026",
+        "url": "https://theaterscene.com/reviews/an-ark/",
+        "publishDate": "2026-02-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "url": "https://theaterscene.com/EnemyPeopleDD.html",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "anastasia-2017",
+        "url": "http://theaterscene.com/Anastasia.html",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -71,6 +151,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "babe-off-broadway-2024",
+        "url": "https://theaterscene.org/2024/11/babe/",
+        "publishDate": "2024-11-20",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "bandstand-2017",
         "url": "https://theaterscene.com/Bandstand-review.html",
         "publishDate": null,
@@ -86,6 +172,12 @@
         "showId": "bigfoot-off-broadway-2026",
         "url": "https://theaterscene.org/2026/03/bigfoot/",
         "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "billy-crystal-860-2026",
+        "url": "https://theaterscene.com/reviews/860/",
+        "publishDate": "2026-10-29",
         "why": "not-enumerated"
       },
       {
@@ -125,6 +217,12 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "circle-jerk-off-broadway-2022",
+        "url": "http://www.theaterscene.net/plays/offbway-plays/circle-jerk/darryl-reilly/",
+        "publishDate": "2022-06-22",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "dames-at-sea-2015",
         "url": "https://www.theaterscene.com/damesatsea.html",
         "publishDate": null,
@@ -149,9 +247,21 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "empire-the-musical-off-broadway-2024",
+        "url": "https://theaterscene.org/2024/07/empire-the-musical/",
+        "publishDate": "2024-07-11",
+        "why": "not-enumerated"
+      },
+      {
         "showId": "every-brilliant-thing-2026",
         "url": "https://theaterscene.org/2026/03/every-brilliant-thing/",
         "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "everythings-fine-off-broadway-2022",
+        "url": "https://theaterscene.org/2022/10/everythings-fine/",
+        "publishDate": "2022-10-14",
         "why": "not-enumerated"
       },
       {
@@ -195,78 +305,6 @@
         "url": "https://theaterscene.com/Gypsy-DD.html",
         "publishDate": "2025-02-10",
         "why": "not-enumerated"
-      },
-      {
-        "showId": "hamlet-off-broadway-2026",
-        "url": "https://theaterscene.com/reviews/hamlet/",
-        "publishDate": "2026-05-11",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
-        "url": "https://theaterscene.org/2026/02/hans-litten-the-jew-who-cross-examined-hitler/",
-        "publishDate": "2026-02-05",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "hells-kitchen-2024",
-        "url": "https://theaterscene.com/Hell-Kitchen-DD.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "house-of-mcqueen-off-broadway-2025",
-        "url": "https://theaterscene.org/2025/09/house-of-mcqueen/",
-        "publishDate": "2025-09-09",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "how-i-learned-to-drive-2022",
-        "url": "https://www.theaterscene.net/plays/broadway-plays/how-i-learned-to-drive/darryl-reilly/",
-        "publishDate": "2022-04-22",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "hughie-2016",
-        "url": "https://theaterscene.com/broadway-review-of-HUGHIE.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "human-things-off-broadway-2026",
-        "url": "https://theaterscene.com/reviews/human-things/",
-        "publishDate": "2026-09-30",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
-        "url": "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/",
-        "publishDate": "2026-09-18",
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "indecent-2017",
-        "url": "https://theaterscene.com/INDECENT.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "ink-2019",
-        "url": "https://theaterscene.com/Ink.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "jitney-2017",
-        "url": "https://theaterscene.com/Jitney.html",
-        "publishDate": null,
-        "why": "not-enumerated"
-      },
-      {
-        "showId": "job-off-broadway-2024",
-        "url": "https://theaterscene.org/2024/01/job/",
-        "publishDate": "2024-01-25",
-        "why": "not-enumerated"
       }
     ]
   },
@@ -274,6 +312,17 @@
   "heldAltUrl": [],
   "misfiles": [],
   "heldUnmatched": [
+    {
+      "url": "https://www.theaterscene.net/plays/broadway-plays/860/samuel-l-leiter/",
+      "headline": "860",
+      "publishDate": "2026-10-31",
+      "via": null,
+      "held": [
+        "billy-crystal-860-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
     {
       "url": "https://www.theaterscene.net/plays/solo-plays/broad-strokes/tony-marinelli/",
       "headline": "Broad Strokes",
@@ -286,31 +335,47 @@
       "outOfWindow": []
     },
     {
-      "url": "https://www.theaterscene.net/musicals/offbway/la-cage-aux-folles-new-york-city-center-encores/tony-marinelli/",
-      "headline": "La Cage aux Folles (New York City Center Encores!)",
-      "publishDate": "2026-06-24",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/specimen/tony-marinelli/",
+      "headline": "Specimen",
+      "publishDate": "2026-05-25",
       "via": null,
       "held": [
-        "encores-la-cage-aux-folles-off-broadway-2026"
+        "specimen-off-broadway-2026"
       ],
       "matched": [],
       "outOfWindow": [
-        "la-cage-aux-folles-2010",
-        "la-cage-aux-folles-2004",
-        "la-cage-aux-folles-1983"
+        "specimen-off-broadway-2026"
       ]
     },
     {
-      "url": "https://www.theaterscene.net/musicals/offbway/the-wild-party-encores/tony-marinelli/",
-      "headline": "The Wild Party (New York City Center Encores!)",
-      "publishDate": "2026-03-23",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/othello-bedlam/victor-gluck/",
+      "headline": "Othello (Bedlam)",
+      "publishDate": "2026-05-11",
       "via": null,
       "held": [
-        "encores-the-wild-party-off-broadway-2026"
+        "othello-bedlam-off-broadway-2026"
       ],
       "matched": [],
       "outOfWindow": [
-        "the-wild-party-2000"
+        "othello-2025",
+        "othello-1970",
+        "othello-1982",
+        "othello-bedlam-off-broadway-2026",
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
+      ]
+    },
+    {
+      "url": "https://www.theaterscene.net/musicals/offbway/44-the-musical/victor-gluck/",
+      "headline": "44 – The Musical",
+      "publishDate": "2025-11-19",
+      "via": null,
+      "held": [
+        "44-off-broadway-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "44-off-broadway-2025"
       ]
     },
     {
@@ -333,7 +398,9 @@
         "elf-2024"
       ],
       "matched": [],
-      "outOfWindow": []
+      "outOfWindow": [
+        "joseph-off-broadway-2027"
+      ]
     },
     {
       "url": "https://www.theaterscene.net/musicals/offbway/music-city/christopher-caz/",
@@ -346,6 +413,21 @@
       "matched": [],
       "outOfWindow": [
         "music-city-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.theaterscene.net/columns/world-of-drag/chip-deffaa/",
+      "headline": "ON THE TOWN WITH CHIP DEFFAA … STEPPING INTO THE WORLD OF DRAG…",
+      "publishDate": "2024-11-04",
+      "via": null,
+      "held": [
+        "drag-the-musical-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "on-the-town-2014",
+        "on-the-town-1998",
+        "on-the-town-1971"
       ]
     },
     {
@@ -370,7 +452,22 @@
         "job-2024"
       ],
       "matched": [],
-      "outOfWindow": []
+      "outOfWindow": [
+        "joseph-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.theaterscene.net/plays/offbway-plays/n-a/victor-gluck/",
+      "headline": "N/A",
+      "publishDate": "2024-07-04",
+      "via": null,
+      "held": [
+        "n-a-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
     },
     {
       "url": "https://www.theaterscene.net/musicals/offbway/singfeld/joseph-pisano/",
@@ -381,7 +478,9 @@
         "singfeld-a-musical-about-nothing-off-broadway-2023"
       ],
       "matched": [],
-      "outOfWindow": []
+      "outOfWindow": [
+        "joseph-off-broadway-2027"
+      ]
     },
     {
       "url": "https://www.theaterscene.net/musicals/broadway/mj-the-musical/joel-benjamin/",
@@ -403,10 +502,13 @@
         "six-2021"
       ],
       "matched": [],
-      "outOfWindow": []
+      "outOfWindow": [
+        "joseph-off-broadway-2027"
+      ]
     }
   ],
   "ambiguous": [],
   "catalogGaps": [],
+  "otherMarketReviews": [],
   "outOfWindow": []
 }

@@ -87,9 +87,11 @@ tests/unit/fantasy-validate-picks.test.ts
 tests/unit/filter-tier-labels.test.ts
 tests/unit/format-opening-date-epoch.test.ts
 tests/unit/format-original-rating.test.ts
+tests/unit/format-review-date.test.ts
 tests/unit/format-show-date-timezone.test.ts
 tests/unit/gate-logic.test.mjs
 tests/unit/getcity-unknown-category.test.mjs
+tests/unit/google-one-tap.test.ts
 tests/unit/homepage-notability.test.ts
 tests/unit/hub-menu-count.test.ts
 tests/unit/hub-pill.test.ts
@@ -146,11 +148,15 @@ tests/unit/row-click.test.ts
 tests/unit/run-age-label.test.mjs
 tests/unit/same-title-shows.test.mjs
 tests/unit/score-breakdown-tier.test.ts
+tests/unit/score-gate-overrides-parity.test.ts
 tests/unit/scoring-parity.test.ts
 tests/unit/search-intents.test.mjs
 tests/unit/season-profile.test.ts
 tests/unit/season-show-list.test.ts
 tests/unit/season-stats-enhancement-filter.test.mjs
+tests/unit/sentry-7812256534.test.mjs
+tests/unit/sentry-7815060800.test.mjs
+tests/unit/sentry-7835186801.test.mjs
 tests/unit/seo-cast-composers-itemlist.test.mjs
 tests/unit/seo-regional-country.test.mjs
 tests/unit/seo-review-snippet-policy.test.mjs
@@ -209,6 +215,7 @@ tests/unit/tour-links.test.ts
 tests/unit/tour-listing.test.ts
 tests/unit/tour-schedule-now-next.test.ts
 tests/unit/tour-seo.test.ts
+tests/unit/truncated-chunk-error.test.ts
 tests/unit/ugc-analytics.test.ts
 tests/unit/ugc-soft-launch-flags.test.mjs
 tests/unit/uk-hubs.test.ts

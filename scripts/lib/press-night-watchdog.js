@@ -134,12 +134,21 @@ function foundReviews({ files, coreRows, liveRows, runs, showId, embargoMs, nowM
 }
 
 /**
+ * BRO-7779: when the watchdog starts watching a show-night: the lane's start (auto-fallback nightTimes, so a guessed
+ * embargo starts it up to 90 min early), never later than the embargo. Null when the night has no embargo.
+ */
+function watchStartMs(show, night, { preembargo = false } = {}) {
+  const t = require('./opening-night-lane/auto-fallback').nightTimes(show, night, { preembargo });
+  return t ? Math.min(t.laneStartMs, t.embargoMs) : null;
+}
+
+/**
  * One tick. `state` carries across ticks ({retried:{stage:atMs}, orchestratorAt, paged:{key:true}}) and is returned
  * updated. Returns {actions:[{type:'dispatch',stage}|{type:'dispatch-orchestrator'}|{type:'page',key,reason,stalled}|
  * {type:'resolve'}], found, summary, state}.
  */
 function evaluateTick({ showId, embargoMs, nowMs, files, coreRows, liveRows, runs, broadcastDone = false,
-  laneOwnsNight = false, state = {}, normOutlet }) {
+  laneOwnsNight = false, state = {}, normOutlet, watchStartMs = null }) {
   const st = { retried: { ...(state.retried || {}) }, orchestratorAt: state.orchestratorAt || null, paged: { ...(state.paged || {}) } };
   const actions = [];
   const found = foundReviews({ files, coreRows, liveRows, runs, showId, embargoMs, nowMs, normOutlet });
@@ -153,7 +162,10 @@ function evaluateTick({ showId, embargoMs, nowMs, files, coreRows, liveRows, run
     dropped: found.filter((f) => f.stage === 'dropped').map((f) => f.outletId),
     stalled: stalled.map((f) => `${f.outletId}:${f.stage}`), pipelineActive, laneOwnsNight, broadcastDone,
   };
-  if (nowMs < embargoMs) return { actions, found, summary, state: st };
+  // BRO-7779: the watch starts at the lane start (watchStartMs), not the embargo, so an early drop with no pipeline up
+  // still gets one. Found reviews keep foundMs >= embargo, so nothing is retried or paged as stalled before it.
+  const startMs = Number.isFinite(watchStartMs) ? Math.min(watchStartMs, embargoMs) : embargoMs;
+  if (nowMs < startMs) return { actions, found, summary, state: st };
   if (laneOwnsNight) { summary.note = 'lane-only night: observing only'; return { actions, found, summary, state: st }; }
 
   // Retry each stalled stage once per night.
@@ -220,7 +232,9 @@ function findDispatchedRun(runs, { workflow, showId, sinceMs }) {
     if (workflow === 'opening-night-poller.yml') return r.displayTitle === `Opening Night Poller \u2014 ${showId}`;
     if (workflow === 'llm-ensemble-score.yml') return r.displayTitle === `LLM Ensemble Score Reviews \u2014 ${showId}`;
     if (workflow === 'opening-night-orchestrator.yml') return String(r.displayTitle || '').startsWith(`Opening Night Orchestrator targeted ${showId} (`);
-    return workflow === 'rebuild-fast.yml' || workflow === 'vercel-deploy.yml';
+    // BRO-7766: a pre-warm deploy (rebuild-fast dispatches it, it may self-cancel) is not our dispatch.
+    if (workflow === 'vercel-deploy.yml') return !String(r.displayTitle || '').includes('pre-warm');
+    return workflow === 'rebuild-fast.yml';
   };
   return (runs || []).find((r) => r.workflow === workflow && titleMatches(r)
     && Date.parse(r.createdAt) >= sinceMs);
@@ -301,4 +315,4 @@ function releaseClaim(state, { show, night, holder }) {
   return { ok: true, state: { ...state, leases } };
 }
 
-module.exports = { reconcileDispatchRun, findDispatchedRun, dispatchWithRecovery, laneOwnership, claimThenDispatch, releaseClaim, SPENT_CLAIM_REASONS, evaluateTick, undoUnsent, foundReviews, runIsForShow, activeFor, STAGES, MOVERS, STALL_MIN, NIGHT_START_H, PIPELINE_WINDOW_MIN };
+module.exports = { watchStartMs, reconcileDispatchRun, findDispatchedRun, dispatchWithRecovery, laneOwnership, claimThenDispatch, releaseClaim, SPENT_CLAIM_REASONS, evaluateTick, undoUnsent, foundReviews, runIsForShow, activeFor, STAGES, MOVERS, STALL_MIN, NIGHT_START_H, PIPELINE_WINDOW_MIN };

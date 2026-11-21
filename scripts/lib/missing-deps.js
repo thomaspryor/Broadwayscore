@@ -172,6 +172,11 @@ function auditWorkflow(raw, { root, cache = new Map() }) {
         || /^\s*defaults:\s*\n\s*run:\s*\n\s*working-directory:/m.test(raw);
       if (!toleratesFailure && /(?:^|\n)\s*(?:- )?uses:\s*['"]?\.\/\.github\/actions\/setup-node(?:['"\s]|$)/.test(text)) installs.push(condition);
       const run = runLineMatches(text, /./).map(hit => hit.text.replace(/^\s*(?:- )?run:\s*/, '').trim());
+      // BRO-7766: the background-install pattern (llm-ensemble-score.yml, rebuild-fast.yml)
+      // starts `npm ci` under nohup/setsid and a later step waits for its npm-ci.exit
+      // file, re-running npm ci in the foreground on failure. That waiter is the install.
+      const runText = text;
+      if (!toleratesFailure && /npm-ci\.exit/.test(runText) && /^\s*npm ci\s*$/m.test(runText) && !/\bnohup\b|\bsetsid\b/.test(runText)) installs.push(condition);
       const events = commandEvents(run.map(line => /^(['"]).*\1$/.test(line) ? line.slice(1, -1) : line).join('\n'));
       const changesDirectory = events.length && /(?:^|\n)\s*cd\s+/m.test(run.join('\n'));
       const installSource = run.join('\n').replace(/npm\s+ci\s*\|\|\s*npm\s+install\b/g, 'npm ci');

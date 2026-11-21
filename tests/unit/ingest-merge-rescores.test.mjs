@@ -38,7 +38,7 @@ function ingest(t, { outlet = 'thereviewshub', host = 'thereviewshub.com', ratin
     path.join(ROOT, 'scripts/ingest-review-from-url.js'),
     `--show=${SHOW}`, `--url=${url}`, `--outlet=${outlet}`, `--data-dir=${dir}`,
     ...(dryRun ? ['--dry-run'] : []),
-  ], { encoding: 'utf8', timeout: 60000, env: { ...process.env, INGEST_MERGE_PAGE: page, STAGE_LATENCY_LOG: audit } });
+  ], { encoding: 'utf8', timeout: 60000, env: { ...process.env, INGEST_MERGE_PAGE: page, STAGE_LATENCY_LOG: audit, INGEST_CALLER: 'test' } });
   assert.equal(run.status, 0, `${run.stdout}\n${run.stderr}`);
   return {
     data: JSON.parse(fs.readFileSync(path.join(showDir, filename))),

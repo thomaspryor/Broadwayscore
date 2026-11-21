@@ -17,14 +17,17 @@
 //     override-active-for-push     true iff last user msg contains "ship immediately for: <reason>"
 //                                  AND no consume marker exists for current session
 //                                  (caller writes marker via --consume after using)
+//                                  BRO-7851 advisory: logs would-block-override-not-owner-turn when the
+//                                  override is from a superseded turn or echoes the agent's own text
 //
 // Exit: 0 + JSON to stdout on success; 1 bad args; 2 transcript not found.
 
-import { readFileSync, existsSync, realpathSync, writeFileSync, statSync, openSync, writeSync, closeSync } from 'node:fs';
+import { readFileSync, existsSync, realpathSync, writeFileSync, appendFileSync, mkdirSync, statSync, openSync, writeSync, closeSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { tmpdir } from 'node:os';
+import { tmpdir, homedir } from 'node:os';
 import { isMainModule } from './is-main-module.mjs';
+import { classifyOwnerReply, classifyOwnerReplyTier } from './owner-reply-classifier.mjs';
 
 // This file lives at <root>/scripts/lib/, so the checkout root is two levels
 // up. Derived from THIS file rather than cwd on purpose: the gate hooks invoke
@@ -141,34 +144,31 @@ function approvalRe(hash) {
 // confirm after seeing the visual) is the real safety, the hash never was.
 // Negation-guarded so it stays a deliberate yes (fails toward asking again, not
 // toward shipping, on anything ambiguous).
-// Affirmative vocabulary. 2026-06-04: broadened after the user typed a perfectly
-// clear "Ship all four" and the gate didn't recognize it (only "ship it"/"ship
-// now" matched), forcing the painful hash fallback. The negation/conditional
-// guard below is what keeps this safe, so the verbs themselves can be bare:
-// "ship", "push", "send", "deploy", "publish", "merge", "go" all count, in any
-// phrasing ("ship all four", "push them", "send everything", "ship 'em").
-const PLAIN_APPROVAL_RE = /\b(?:approved?|ship|push|send|deploy|publish|merge|lgtm|looks good|looks great|great|perfect|awesome|beautiful|love it|nice|go ahead|go for it|good to go|all good|yep|yup|yeah|yes|do it)\b/i;
-// Reject on negation OR conditional/change-request words — "looks good but fix X
-// first", "yes, wait", "approved except…" are NOT a clean ship. Fails toward
-// asking again, never toward shipping.
-const APPROVAL_NEGATION_RE = /\b(?:don'?t|do not|not|never|hold|wait|stop|cancel|no|but|however|except|first|fix|change|instead|before|unless|although|though|hold on|revisit)\b/i;
-
-function isPlainApproval(text) {
-  if (!text || typeof text !== 'string') return false;
+// Word lists and clause rules live in owner-reply-classifier.mjs (BRO-7848): a negation word
+// now only blocks the clause it sits in, and a bare "go" counts. Still fails toward asking.
+// BRO-7873: the shape checks that run before ANY reading of the reply, rules or judge alike:
+// the explicit-hash form is per-hash scoped, and a question is never a yes.
+function rejectedByShape(text) {
+  if (!text || typeof text !== 'string') return true;
   // If the user used the explicit hash form (`APPROVED: <hash>`), honor it
   // STRICTLY via approvalRe — the bare word "approved" must not approve a
   // DIFFERENT verdict than the one named. Preserves per-hash scoping so a stale
   // approval of verdict A can't green-light verdict B.
-  if (/APPROVED:\s*[A-Za-z0-9]{6,}/.test(text)) return false;
-  if (APPROVAL_NEGATION_RE.test(text)) return false; // "don't ship", "not yet", etc.
-  if (!PLAIN_APPROVAL_RE.test(text)) return false;
+  if (/APPROVED:\s*[A-Za-z0-9]{6,}/.test(text)) return true;
   // BRO-7295: a question ("did you push it?", "should we deploy?") is not a
   // yes. Only a literal yes/approved inside it counts, which keeps the
   // frustrated "HOW MANY TIMES DO I HAVE TO SAY YES?!" working.
   // A question about approval is not approval: "did my yes get recorded?", "is it approved?".
-  if (/^\s*(?:did|is|was|does|do|has|have|can|will|should|are|what|why|when|where|which)\b[^]*\?\s*$/i.test(text)) return false;
-  if (/\?\s*$/.test(text.trim()) && !/\b(?:yes|yep|yup|yeah|approved?)\b/i.test(text)) return false;
-  return true;
+  if (/^\s*(?:did|is|was|does|do|has|have|can|will|should|are|what|why|when|where|which)\b[^]*\?\s*$/i.test(text)) return true;
+  if (/\?\s*$/.test(text.trim()) && !/\b(?:yes|yep|yup|yeah|approved?)\b/i.test(text)) return true;
+  return false;
+}
+
+function isPlainApproval(text) {
+  if (rejectedByShape(text)) return false;
+  // "don't ship", "not yet", "yes but wait" etc. stay stops. BRO-7873: a weak yes plus other content ("nice. one thing, ...") is
+  // gray, not a rules approval, so the judge (or the owner) reads the rest.
+  return classifyOwnerReply(text) === 'approve' && classifyOwnerReplyTier(text) === 'hard-approve';
 }
 
 // BRO-7295: who wrote this record? Only the owner's own typed text may approve.
@@ -184,6 +184,23 @@ export function isSyntheticRecord(r, text) {
   if (origin && !HUMAN_ORIGIN_KINDS.has(origin.kind)) return true;
   return SYNTHETIC_TEXT_RE.test(text || '');
 }
+
+/** BRO-7851: a synthetic record that STARTS a turn the owner did not start (a notification, peer or subagent
+ *  hand-back, wake, cross-session message, compaction). Mid-turn harness text (system reminders, skill bodies,
+ *  slash-command echoes, Stop hook feedback, interrupt markers) is synthetic but does not end the owner's turn. */
+const FOREIGN_TURN_TEXT_RE = /^\s*(?:This session is being continued from a previous conversation|<task-notification>|<wake\b|<agent-message\b|<cross-session-message\b|\[SYSTEM NOTIFICATION)/i;
+export function isForeignTurnRecord(r, text) {
+  if (!isSyntheticRecord(r, text)) return false;
+  if (r && r.isCompactSummary) return true;
+  const origin = r && (r.origin || r.attachment?.origin);
+  if (origin && !HUMAN_ORIGIN_KINDS.has(origin.kind)) return true;
+  return FOREIGN_TURN_TEXT_RE.test(text || '');
+}
+
+/** BRO-7738: the user turn a blocking Stop hook leaves after a closing message (walkTranscript marks it synthetic).
+ *  A compaction summary that quotes one starts with "This session is being continued", so it does not match. */
+const STOP_HOOK_FEEDBACK_RE = /^\s*Stop hook feedback:/;
+export const isStopHookFeedback = (e) => !!e && e.kind === 'user_text' && e.synthetic === true && STOP_HOOK_FEEDBACK_RE.test(String(e.text || ''));
 
 // Reference-attached detection — Claude Code surfaces user-attached images as:
 //   - tool_result content blocks with type=image
@@ -252,7 +269,7 @@ export function walkTranscript(transcriptPath) {
       for (const c of content) {
         if (!c || typeof c !== 'object') {
           // raw string content — treat as user text
-          if (typeof c === 'string') events.push({ kind: 'user_text', text: c, ts, messageId, synthetic: isSyntheticRecord(r, c) });
+          if (typeof c === 'string') events.push({ kind: 'user_text', text: c, ts, messageId, synthetic: isSyntheticRecord(r, c), foreignTurn: isForeignTurnRecord(r, c) });
           continue;
         }
         if (c.type === 'tool_result') {
@@ -263,7 +280,7 @@ export function walkTranscript(transcriptPath) {
             events.push({ kind: 'attachment', detail: 'tool_result_image', ts, messageId });
           }
         } else if (c.type === 'text') {
-          events.push({ kind: 'user_text', text: c.text || '', ts, messageId, synthetic: isSyntheticRecord(r, c.text || '') });
+          events.push({ kind: 'user_text', text: c.text || '', ts, messageId, synthetic: isSyntheticRecord(r, c.text || ''), foreignTurn: isForeignTurnRecord(r, c.text || '') });
           if (containsImageAttachment(c.text || '')) {
             events.push({ kind: 'attachment', detail: 'user_text_image_marker', ts, messageId });
           }
@@ -327,16 +344,45 @@ export function queryApprovalOf(events, hash, { after = null } = {}) {
         const a = Date.parse(after), t = Date.parse(e.ts || '');
         if (!(t >= a)) { approved = false; reason = 'owner reply is older than the verdict'; }
       }
+      // BRO-7873: a reply the rules did not approve MAY go to the judge, but only if it passed the
+      // shape checks and is newer than the verdict, and only when it is gray (never a hard stop).
+      const tier = rejectedByShape(e.text) ? 'hard-stop' : classifyOwnerReplyTier(e.text);
+      // Freshness applies to the judge too: no timestamp, or a reply older than the verdict, is never judged.
+      const fresh = after == null || Date.parse(e.ts || '') >= Date.parse(after);
+      const judgeCandidate = !approved && !reason && fresh && tier === 'gray';
       return {
         approved,
         via: approved ? (exact ? 'hash' : 'plain-affirmative') : null,
         lastUserText: e.text.slice(0, 200),
         matchedHash: hash,
+        tier,
+        ...(judgeCandidate ? { judgeCandidate: true, judgeText: e.text, judgeTs: e.ts || null } : {}),
         ...(reason ? { reason } : {}),
       };
     }
   }
   return { approved: false, reason: 'no user text in transcript' };
+}
+
+/**
+ * BRO-7873: queryApprovalOf plus the LLM judge for gray replies. The judge module is loaded lazily:
+ * this file is imported by many hooks that must not pay for it (or its spend meter) unless a gray
+ * reply actually shows up. Any judge failure leaves the rules' answer untouched (ask the owner).
+ * @param {object} [o] { judge, mode, logPath, fetchImpl, env, keys } test hooks, forwarded to judgeGrayReply
+ */
+export async function queryApprovalOfJudged(events, hash, opts = {}, o = {}) {
+  const base = queryApprovalOf(events, hash, opts);
+  const { judgeCandidate, judgeText, judgeTs, ...out } = base;
+  if (!judgeCandidate) return out;
+  try {
+    const { judgeGrayReply } = await import('./owner-reply-judge.mjs');
+    const r = await judgeGrayReply({ text: judgeText, ts: judgeTs, verdictHash: hash }, o);
+    const detail = { judge: { decision: r.decision, mode: r.mode, provider: r.verdict.provider, confidence: r.verdict.confidence, error: r.verdict.error || null } };
+    if (r.approved) return { ...out, approved: true, via: 'llm-judge', ...detail };
+    return { ...out, ...detail };
+  } catch (e) {
+    return { ...out, judge: { decision: 'ask', error: String(e?.message || e).slice(0, 80) } };
+  }
 }
 
 // Exempting a script from the push gate is an ASSERTION, and this is where it
@@ -544,6 +590,52 @@ export function queryBypassToken(events, { token, toolUseId } = {}) {
   };
 }
 
+/**
+ * BRO-7850 (advisory): did the OWNER, in their latest message, type "NO-VERIFY: <reason>"?
+ * Scoped to the last non-synthetic user_text so an old owner NO-VERIFY (for another gate)
+ * cannot excuse a later agent-typed bypass. Fenced code is stripped like queryBypassToken.
+ */
+export function queryOwnerNoVerify(events) {
+  let last = null, lastIdx = -1;
+  events.forEach((e, i) => { if (e.kind === 'user_text' && !e.synthetic) { last = e; lastIdx = i; } });
+  if (!last) return { ownerTyped: false, reason: 'no user text' };
+  const stripped = String(last.text || '').replace(/```[\s\S]*?```/g, '');
+  if (!/NO-VERIFY:\s+\S/.test(stripped)) return { ownerTyped: false };
+  // BRO-7851 cousin: an owner NO-VERIFY from a turn a notification/hand-back/compaction has since replaced
+  // does not cover a bypass typed in the later, agent-driven turn.
+  if (events.slice(lastIdx + 1).some(e => e.kind === 'user_text' && e.synthetic && e.foreignTurn)) {
+    return { ownerTyped: false, reason: 'owner NO-VERIFY is from a superseded turn' };
+  }
+  return { ownerTyped: true };
+}
+
+/**
+ * BRO-7851 (advisory, CLAUDE.md 19): did the override the gate is about to honor come from the owner's CURRENT
+ * turn, in their own words? queryOverrideActiveForPush reads only the last owner message, so an override from a turn
+ * that a notification, hand-back, wake or compaction has since replaced still passes, and so does a line the agent
+ * wrote for the owner to paste back. Never changes `.override`; the CLI logs a would-block row when not genuine.
+ * @param {Array} events walkTranscript output
+ * @param {number} ownerIdx index in `events` of the owner user_text that matched the override
+ * @returns {{genuine: boolean, reasons: string[]}}
+ */
+export function classifyOverrideProvenance(events, ownerIdx) {
+  const reasons = [];
+  if (!(ownerIdx >= 0) || !events[ownerIdx]) return { genuine: false, reasons: ['no-owner-message'] };
+  if (events.slice(ownerIdx + 1).some(e => e.kind === 'user_text' && e.synthetic && e.foreignTurn)) {
+    reasons.push('foreign-turn-after-override');
+  }
+  // The assistant turn just before the owner message (back to the previous turn start, owner or foreign).
+  for (let i = ownerIdx - 1; i >= 0; i--) {
+    const e = events[i];
+    if (e.kind === 'user_text' && (!e.synthetic || e.foreignTurn)) break;
+    if (e.kind === 'assistant_text' && /ship immediately for:\s*\S/i.test(e.text || '')) {
+      reasons.push('agent-suggested-phrase');
+      break;
+    }
+  }
+  return { genuine: reasons.length === 0, reasons };
+}
+
 export function queryOverrideActiveForPush(events, { sessionId, consume = false, markerNs = null } = {}) {
   // Find LAST user_text. Check for "ship immediately for: <reason>".
   // Per /ship-check round 2 P0-3, reject matches that are negated in the same
@@ -554,9 +646,11 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false,
   let preview = '';
   let text = '';
   let matchIndex = -1;
+  let ownerIdx = -1;
   for (let i = events.length - 1; i >= 0; i--) {
     const e = events[i];
     if (e.kind === 'user_text' && !e.synthetic) {
+      ownerIdx = i;
       text = e.text || '';
       const m = OVERRIDE_RE.exec(text);
       if (m) {
@@ -573,7 +667,8 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false,
     }
   }
   if (!matched) return { override: false, reason: 'no override phrase in last user text (or matched but negated)' };
-  if (!sessionId) return { override: true, reason: 'matched but no sessionId — caller must scope per-session' };
+  const provenance = classifyOverrideProvenance(events, ownerIdx);
+  if (!sessionId) return { override: true, reason: 'matched but no sessionId — caller must scope per-session', provenance };
   const marker = markerPath(sessionId, markerNs);
   if (existsSync(marker)) return { override: false, reason: 'override already consumed for this session', marker };
   if (consume) {
@@ -583,13 +678,13 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false,
       const fd = openSync(marker, 'wx');
       writeSync(fd, JSON.stringify({ ts: new Date().toISOString(), preview }));
       closeSync(fd);
-      return { override: true, consumed: true, marker };
+      return { override: true, consumed: true, marker, provenance };
     } catch (err) {
       // EEXIST: another process won the race
       return { override: false, reason: 'override race lost — another consumer claimed marker', marker };
     }
   }
-  return { override: true, consumed: false, marker, preview };
+  return { override: true, consumed: false, marker, preview, provenance };
 }
 
 // markerNs gives each gate its own one-shot consume marker: without it, the
@@ -639,10 +734,13 @@ Queries:
   bypass-token                      check in-flight turn for a "<TOKEN>: <reason ≥15 chars>" line
     --token=<TOKEN>                   e.g. NO-SHIP-CHECK
     --tool-use-id=<id>                scope to the in-flight turn containing this tool_use
+  owner-no-verify                   (advisory, BRO-7850) did the owner's latest message type NO-VERIFY: <reason>
   override-active-for-push          check for "ship immediately for: <reason>"
     --session-id=<id>                 required for override scoping
     --marker-ns=<ns>                  namespace the consume marker (one per gate)
     --consume                         write the consume marker if matched
+    --advisory-log=<path>             (BRO-7851) where the would-block row goes when the override is not from the
+                                       owner's current turn (default \$CLAUDE_LOG_DIR or ~/.claude/logs/visual-gate-bypass.log)
 
 All queries print JSON to stdout. Exit 0 success / 1 bad args / 2 transcript missing.`);
 }
@@ -674,7 +772,10 @@ async function main() {
       // --after-file: the verdict file's mtime (BRO-7295). An unreadable file means no freshness bound.
       let after = args.after || null;
       if (!after && args['after-file']) { try { after = statSync(args['after-file']).mtime.toISOString(); } catch { /* no bound */ } }
-      result = queryApprovalOf(events, hash, { after });
+      // BRO-7873: the judge may wait on an LLM call (each provider has its own timeout); cap the whole scan here, not in the hook.
+      // Empty output already means "not approved" to the push gate, so a stalled scan fails toward asking.
+      setTimeout(() => process.exit(0), 11000);
+      result = await queryApprovalOfJudged(events, hash, { after });
       break;
     }
     case 'reference-attached':
@@ -687,12 +788,29 @@ async function main() {
       if (!args.token) { console.error('ERROR: bypass-token needs --token='); process.exit(1); }
       result = queryBypassToken(events, { token: args.token, toolUseId: args['tool-use-id'] });
       break;
+    case 'owner-no-verify':
+      result = queryOwnerNoVerify(events);
+      // Advisory (BRO-7850): the push gate passes --advisory-log so the would-block row is written here
+      // (keeps the hook file at its line ceiling). Any failure here is swallowed; it never affects the push.
+      if (args['advisory-log'] && result.ownerTyped === false) {
+        try { appendFileSync(args['advisory-log'], `${Math.floor(Date.now() / 1000)}\twould-block-agent-typed-no-verify\t${String(args.note || '').slice(0, 160)}\n`); } catch { /* advisory only */ }
+      }
+      break;
     case 'override-active-for-push':
       result = queryOverrideActiveForPush(events, {
         sessionId: args['session-id'],
         markerNs: args['marker-ns'] || null,
         consume: args.consume === '' || args.consume === 'true' || (args.consume !== undefined && args.consume !== 'false'),
       });
+      // Advisory (BRO-7851): an override honored from a stale or agent-suggested turn gets a would-block row.
+      // Written here (default log beside the gate's bypass log) so no hook changes; never affects `.override`.
+      if (result.override === true && result.provenance && result.provenance.genuine === false) {
+        try {
+          const logPath = args['advisory-log'] || join(process.env.CLAUDE_LOG_DIR || join(homedir(), '.claude', 'logs'), 'visual-gate-bypass.log');
+          mkdirSync(dirname(logPath), { recursive: true });
+          appendFileSync(logPath, `${Math.floor(Date.now() / 1000)}\twould-block-override-not-owner-turn\t${args['marker-ns'] || 'visual-gate'}:${result.provenance.reasons.join(',')}\n`);
+        } catch { /* advisory only */ }
+      }
       break;
     default:
       console.error(`ERROR: unknown query "${args.query}"`);

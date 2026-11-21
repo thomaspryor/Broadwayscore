@@ -61,7 +61,7 @@ const UK_DATE_RE = /\b(?:until|to|from)\s+\d{1,2}\s+[A-Z][a-z]{2,8}\b|\buntil\s+
 // A finished listing ends on its date (or a "Then touring [to X]" tail), never on a
 // dangling word: "At the interval the cast play on until 7 June with" is a review
 // cut off mid-sentence and must stay truncated.
-const UK_BARE_END_RE = /(?:\d{1,2}\s+[A-Z][a-z]{2,8}|\b[A-Z][a-z]+day|[A-Z][a-z]{2,8}\s+\d{1,2}|\b[Tt]ouring(?:\s+(?:to|in)\s+[A-Z][\w'’-]*(?:,?\s+[A-Z][\w'’-]*){0,4})?)\.?$/;
+const UK_BARE_END_RE = /(?:\d{1,2}\s+[A-Z][a-z]{2,8}(?:,?\s+\d{4})?|\b[A-Z][a-z]+day|[A-Z][a-z]{2,8}\s+\d{1,2}|\b[Tt]ouring(?:\s+(?:to|in)\s+[A-Z][\w'’-]*(?:,?\s+[A-Z][\w'’-]*){0,4})?)\.?$/;
 
 function stripBareUkListing(t) {
   const base = Math.max(0, t.length - 300);
@@ -166,6 +166,63 @@ function stripGuardianTopicsFooter(text) {
   if (!text || typeof text !== 'string') return text;
   const m = GUARDIAN_TOPICS_FOOTER_RE.exec(text);
   return m ? text.slice(0, m.index) : text;
+}
+
+// ---------------------------------------------------------------------------
+// Independent + Evening Standard CMS footers (BRO-7943). The Wayback copies the
+// gap engine recovers keep the page's topic-tag and shopping/comment widgets
+// after the review's run line, so a complete review reads as truncated:
+//   Independent: "... tickets here More about Musicals Regent's Park Join our
+//     commenting forum Join thought-provoking conversations, follow other
+//     Independent readers and see their replies Comments"
+//   Standard: "... donmarwarehouse.com . MORE ABOUT The Maids Donmar Warehouse
+//     Shopping Best Buys What I'm buying from ... Best toy advent calendars"
+// Both widget strings are unique to those CMSs, so they are safe for any
+// outlet id (cross-posted rows). Corpus 2026-11-21: 57 Independent-shaped and
+// 116 Standard-shaped tails. Classifier-only, like the Guardian footer.
+// ---------------------------------------------------------------------------
+// The whole widget sentence, not just its first phrase, and nothing after it
+// but an optional "Comments" label, so a cut final sentence that happens to
+// open "Join our commenting forum" is never taken for the footer.
+// No leading \s*: that made the match O(k^3) on a long whitespace run (review);
+// the cut point is trimmed instead. The "More about <tag>" topic tag in front
+// of it is removed separately (INDEPENDENT_TOPIC_TAG_RE): a tag such as
+// "More about Oklahoma!" left behind would read as a finished sentence and
+// pass a cut review as complete (review).
+const INDEPENDENT_COMMENTS_FOOTER_RE = /Join our commenting forum\s*Join thought-provoking conversations, follow other Independent readers and see their replies(?:\s+Comments)?\s*$/;
+// Only the LAST "More about" run before the widget, so a cut sentence that
+// itself opens "More about ..." stays and still reads as truncated.
+const INDEPENDENT_TOPIC_TAG_RE = /More about\b(?:(?!More about\b)[^\n]){0,120}$/;
+// Matched at "Shopping Best Buys"; the "MORE ABOUT <tags>" block and a
+// "November's best theatre 1 / 10" gallery caption in front of it (72 corpus
+// files have the caption and no tag block) are removed separately, so a
+// punctuated tag left behind can never pass a cut review as complete.
+const STANDARD_SHOPPING_FOOTER_RE = /\bShopping\s+Best Buys\b[\s\S]{0,900}$/;
+const STANDARD_TAG_BLOCK_RE = /MORE ABOUT\b(?:(?!MORE ABOUT\b)[\s\S]){0,1000}$/;
+// Anchored to the caption's own words, never "any prose before N / M" (that ate a
+// short cut sentence and passed it as complete, review).
+const STANDARD_GALLERY_CAPTION_RE = /(?:\b[A-Z][a-z]+['\u2019]s best [a-z]+(?: [a-z]+){0,2}|\bLatest [a-z]+ reviews|\bBest [^.!?\n]{0,80}? - in pictures) \d{1,2} \/ \d{1,3}$/;
+// The Standard's ticket call to action that sits above the gallery.
+const STANDARD_TICKET_CTA_RE = /\bBuy tickets for [^.!?\n]{0,80}? with GO London$/;
+// The classifier counts words on the unstripped text, so a footer is only cut
+// from a body that is review-length on its own (shortest real flip: 1,901
+// chars); a short excerpt plus widget words must not read as complete.
+const CMS_FOOTER_MIN_BODY = 1500;
+
+function stripCmsWidgetFooters(text) {
+  if (!text || typeof text !== 'string') return text;
+  let out = text;
+  for (const re of [INDEPENDENT_COMMENTS_FOOTER_RE, STANDARD_SHOPPING_FOOTER_RE]) {
+    const m = re.exec(out);
+    // never leave less than a review-length body (a widget string near the top is not a footer)
+    if (m && m.index >= CMS_FOOTER_MIN_BODY) {
+      out = out.slice(0, m.index).trimEnd();
+      // no leading \s* in these: on a long whitespace run it went quadratic (review); trim instead
+      if (re === INDEPENDENT_COMMENTS_FOOTER_RE) out = out.replace(INDEPENDENT_TOPIC_TAG_RE, '').trimEnd();
+      if (re === STANDARD_SHOPPING_FOOTER_RE) out = out.replace(STANDARD_TAG_BLOCK_RE, '').trimEnd().replace(STANDARD_GALLERY_CAPTION_RE, '').trimEnd().replace(STANDARD_TICKET_CTA_RE, '').trimEnd();
+    }
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -437,6 +494,98 @@ function stripRunInfoTrailer(text) {
   return t;
 }
 
+// ---------------------------------------------------------------------------
+// BRO-7942: furniture tail. About 1,107 TRUNCATED_OTHER / SHORT_UNVERIFIED rows
+// were whole reviews ending in page furniture the chain above did not know:
+// "It runs until 25 January 2026. Tickets: here. Review: Oliver Popa Photos:
+// Mark Senior", "Until October 24 KilnTheatre.com", a Time Out social footer,
+// "CLICK HERE TO READ MORE ARTICLES BY ...", leftover template code
+// (`Δ document.getElementById("ak_js_1").setAttribute(...)`, gtag(...), mso css).
+// Classify-only (stripKnownTrailers), never applied to saved text. Pieces come
+// off the end one at a time; the prose that remains must end a sentence, keep
+// RELATED_MIN_REMAINING chars, and must not itself end on a listing.
+// Kill switch: FURNITURE_TAIL_DISABLED=true.
+// ---------------------------------------------------------------------------
+const FURN_DATE = `(?:\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${TELEGRAPH_MONTH}|${TELEGRAPH_MONTH}\\s+\\d{1,2}(?:st|nd|rd|th)?|(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\\.?\\s+\\d{1,2}(?:st|nd|rd|th)?)`;
+const FURN_NAMES = "((?:[\\p{Lu}][\\p{L}'’.-]{0,24}|&|and|de|van|von|la|le|du|da)(?:(?:\\s*,\\s*|\\s+)(?:[\\p{Lu}][\\p{L}'’.-]{0,24}|&|and|de|van|von|la|le|du|da)){0,7})";
+// Template / script residue: never prose, so the whole tail goes.
+const FURN_CODE_RES = [
+  /\s*Δ\s*document\.getElementById\([\s\S]*$/,
+  /\s*(?:window\.)?dataLayer\s*=\s*window\.dataLayer[\s\S]*$/,
+  /\s*@page\s+WordSection\d[\s\S]*$/,
+  /\s*(?:\/\*[\s\S]{0,40})?(?:mso-[a-z-]+\s*:[^;]{0,60};\s*){2,}[\s\S]{0,2500}$/,
+  /\s*css:\s*\{[\s\S]{0,300}$/,
+];
+// Boilerplate footers, whole tail.
+const FURN_FOOTER_RES = [
+  /\s*(?:Keep up with the latest news and reviews on our Time Out Theater Facebook page|Follow Time Out Theater on (?:Facebook|X|Twitter|Instagram))[\s\S]{0,300}$/,
+  /\s*(?:Editor['’]s Note:\s*)?Click here to read more Picture this Post (?:stories|articles) by [^.\n]{1,60}\.?$/i,
+  /\s*CLICK HERE TO READ MORE ARTICLES BY [A-Z][A-Z .'’-]{2,50}\.?$/,
+  /\s*For more shows visit Theatre in Chicago(?:\s*Facebook\s*-->)?(?:\s*Share on:)?$/,
+  /\s*\|\s*Image:\s*[^|\n]{1,80}$/,
+  /\s*To learn more about [\p{Lu}][\p{L} .'’-]{2,40} and his reviews, click here to go to his website\.?$/u,
+  /\s*(?:For further information or to book )?visit the theatre['’]s website here\s*\.?(?:\s*Related Items[^\n]{0,80})?$/i,
+  /\s*Watch (?:the trailer|some behind-the-scenes footage|the video)[^.!?\n]{0,120}? here\s*:?(?:\s*Related Items[^\n]{0,80})?$/i,
+  /\s*(?:For more reviews see TheatreInChicago\.com\s*)?Tags:\s[^\n]{0,300}$/,
+  /\s*(?:•|·)\s*(?:Did you catch this show|What have you been to see lately)[^\n]{0,200}$/,
+  /\s*Running time:\s*$/,
+];
+// One short piece at the very end. Names-only credits keep a cut sentence ("Photos by Weegee line ...") out.
+const FURN_TICKETS_RE = /(?:^|\s)Tickets?:\s*(?:here|click here|link|https?:\/\/\S+|www\.\S+)\.?$/i;
+const FURN_CREDIT_RE = new RegExp(`(?:^|\\s|\\||(?<=[\\p{L}\\d.!?]))(?:Review(?:ed)?(?:\\s+by)?\\s*:|(?:Review(?:ed)?\\s+)?by\\s*:|(?:Photos?|Photography|Photograph|Images?)(?:\\s+credits?)?\\s*(?::|\\bby\\b)|(?:Photo|Image)\\s+credits?\\s*:?)\\s*(?:courtesy\\s+of\\s+)?${FURN_NAMES}\\s*$`, 'iu');
+const FURN_RUNS_RE = new RegExp(`(?:^|\\s|\\||(?<=[.!?]))(?:(?:It|The\\s+(?:show|production|run))\\s+)?(?:runs|continues|plays|booking|books|bookings?)\\s+(?:until|through|thru|to)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?\\.?\\s*$`, 'iu');
+// "Until October 24 KilnTheatre.com", "Until Jan 31", "Details: Midnight, to January 3": a bare run line, only after a sentence end.
+const FURN_BARE_UNTIL_RE = new RegExp(`(?:^|[.!?]["'”’)]?\\s+)(?:Details:\\s*[^.!?\\n]{0,40}?,?\\s*)?(?:Until|To|Through|Runs until)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?(?:,?\\s*[\\p{Lu}][^.!?\\n]{1,60}?(?=\\s*\\([\\d ]{8,16}\\)\\.?\\s*$))?(?:,?\\s+[\\w.-]+\\.(?:com|org|net|co\\.uk|org\\.uk|uk)|\\s*\\([\\d ]{8,16}\\))?\\.?\\s*$`, 'u');
+// A Time Out capsule's credits: "Public Theater (Off Broadway). By X. Directed by Y. With ensemble cast. Running time:"
+const FURN_TIMEOUT_CREDITS_RE = /(?:^|[.!?]["'”’)]?\s+|\n)[\p{Lu}][^.!?\n]{2,70}\((?:Off[- ])?Broadway\)\.\s+By\s[^.!?\n]{1,80}\.\s+Directed by\s[^.!?\n]{1,80}\.(?:\s+(?:With|Starring)\s[^.!?\n]{1,200}\.)?(?:\s+Running time:[^.!?\n]{0,60}\.?)?(?:\s+(?:One|Two|No)\s+intermissions?\.?)?\s*$/u;
+
+// Time Out running-time line, optionally closed by its run date: "Running time: 1hr 25mins. No intermission. Through July 23."
+const FURN_RUNNING_TIME_RE = new RegExp(`(?:^|[.!?]["'”’)]?\\s+)Running time:\\s*[^.!?\\n]{1,40}\\.(?:\\s+(?:One|Two|No)\\s+intermissions?\\.)?(?:\\s+(?:Through|Until)\\s+(?:${FURN_DATE})(?:,?\\s*\\d{4})?\\.?)?\\s*$`, 'u');
+
+// A match may start on the sentence end it follows ([.!?] + space): the cut keeps that punctuation.
+const cutOf = (m) => m.index + ((m[0].match(/^[.!?]["'”’)]?/) || [''])[0].length);
+
+function furnitureMatch(t) {
+  for (const re of FURN_CODE_RES) { const m = re.exec(t); if (m) return { cut: cutOf(m), code: true }; }
+  for (const re of FURN_FOOTER_RES) { const m = re.exec(t); if (m) return { cut: cutOf(m), code: false }; }
+  const tk = FURN_TICKETS_RE.exec(t);
+  if (tk) return { cut: cutOf(tk), code: false };
+  const cr = FURN_CREDIT_RE.exec(t);
+  if (cr && !DANGLING_END_RE.test(cr[1]) && namesOnly(cr[1])) return { cut: cutOf(cr), code: false };
+  const rn = FURN_RUNS_RE.exec(t);
+  if (rn) return { cut: cutOf(rn), code: false };
+  const bu = FURN_BARE_UNTIL_RE.exec(t);
+  if (bu) return { cut: cutOf(bu), code: false };
+  const rt = FURN_RUNNING_TIME_RE.exec(t);
+  if (rt) return { cut: cutOf(rt), code: false };
+  const tc = FURN_TIMEOUT_CREDITS_RE.exec(t);
+  if (tc) return { cut: cutOf(tc), code: false };
+  return null;
+}
+
+function stripFurnitureTail(text) {
+  if (!text || typeof text !== 'string') return text;
+  if (process.env.FURNITURE_TAIL_DISABLED === 'true') return text;
+  let t = text.trimEnd();
+  const orig = t;
+  for (let i = 0; i < 10; i++) {
+    const m = furnitureMatch(t);
+    if (!m) break;
+    const next = t.slice(0, m.cut).trimEnd();
+    // a short piece only (code and footers may be longer, they are fenced by their own regexes)
+    if (!m.code && t.length - next.length > 400) break;
+    // template code is never prose: a tail holding a run of plain words is a review, not residue
+    if (m.code && (/(?:\b[a-z]{2,}\b\s+){12}/.test(t.slice(next.length)) || /[a-z]{3,}[.!?]["”’]?\s+[\p{Lu}][\p{L}'’]+\s+[\p{L}'’]+/u.test(t.slice(next.length)))) break;
+    if (next.length < RELATED_MIN_REMAINING) break;
+    t = next;
+  }
+  if (t === orig) return text;
+  if (!SENTENCE_END_RE.test(t)) return text;
+  const lastBare = t.split(/[.!?]["'”’)]?\s+|\n/).pop().trim().replace(/[.!?]["'”’)]?$/, '');
+  if (lastBare.length < 40 && new RegExp(TELEGRAPH_MONTH).test(lastBare)) return text;
+  return t;
+}
+
 // Words a listing line carries in lower case; every other word in a run line
 // is a title or venue (capitalised) or a number. Prose that happens to end
 // "... and the lead is at the Garrick until 7 June" is mostly lower case.
@@ -496,7 +645,7 @@ function trailerFixesEnabled() {
 /** Every known trailer, for the ending-punctuation check. */
 function stripKnownTrailers(text, outletId) {
   if (!trailerFixesEnabled()) return text;
-  return stripRunInfoTrailer(stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(text)), outletId, { forClassify: true }));
+  return stripFurnitureTail(stripRunInfoTrailer(stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(stripCmsWidgetFooters(text))), outletId, { forClassify: true })));
 }
 
 module.exports = {
@@ -508,7 +657,9 @@ module.exports = {
   stripTimesFooter,
   stripTelegraphFooter,
   stripRunInfoTrailer,
+  stripFurnitureTail,
   stripGuardianTopicsFooter,
+  stripCmsWidgetFooters,
   stripOutletTrailer,
   stripKnownTrailers,
   trailerFixesEnabled,

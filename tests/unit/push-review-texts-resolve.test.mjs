@@ -98,10 +98,13 @@ for (const committed of [false, true]) test(`e2e: stale writer rewriting a file 
 
     const out = path.join(tmp, 'gh-output');
     fs.writeFileSync(out, '');
+    // BRO-7948: keep this run out of the job's shared RUNNER_TEMP.
+    const runnerTemp = path.join(tmp, 'runner-temp');
+    fs.mkdirSync(runnerTemp);
     const r = spawnSync('bash', ['--noprofile', '--norc', '-eo', 'pipefail', '-c', SCRIPT], {
       cwd: rt, encoding: 'utf8', timeout: 170000,
       env: {
-        ...CLEAN_ENV, GITHUB_WORKSPACE: ws, GITHUB_OUTPUT: out, REVIEW_TEXTS_TOKEN: TOKEN, COMMIT_MSG: 'data: stale rewrite',
+        ...CLEAN_ENV, GITHUB_WORKSPACE: ws, GITHUB_OUTPUT: out, RUNNER_TEMP: runnerTemp, REVIEW_TEXTS_TOKEN: TOKEN, COMMIT_MSG: 'data: stale rewrite',
         GIT_CONFIG_COUNT: '1', GIT_CONFIG_KEY_0: `url.file://${origin}.insteadOf`,
         GIT_CONFIG_VALUE_0: `https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-review-texts.git`,
       },

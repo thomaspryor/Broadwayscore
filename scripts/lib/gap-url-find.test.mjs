@@ -73,7 +73,7 @@ test('index fetch retries 503 with backoff; a hard 404 is not retried', async ()
 test('WAYBACK_CDX: an index outage is an error (not "nothing found"), so it never counts as tried', async () => {
   const ctx = { review: { showId: 'julie-west-end-2018', outletId: 'telegraph', publishDate: '2018-06-08' }, show: null, title: 'Julie',
     profile: { hosts: ['telegraph.co.uk'], prefixes: ['telegraph.co.uk/theatre'] }, hosts: ['telegraph.co.uk'], titleDirs: [] };
-  const down = { fetchText: async () => { const e = new Error('HTTP 503'); e.status = 503; throw e; }, indexRetry: { baseMs: 0, sleep: async () => {} } };
+  const down = { fetchText: async () => { const e = new Error('HTTP 503'); e.status = 503; throw e; }, indexBreaker: {}, indexRetry: { baseMs: 0, sleep: async () => {} } };
   const r = await UF.runMethod('WAYBACK_CDX', ctx, down);
   assert.equal(r.candidates.length, 0);
   assert.match(r.error, /503/);
@@ -84,9 +84,35 @@ test('WAYBACK_CDX: an index outage is an error (not "nothing found"), so it neve
   assert.equal(r2.candidates[0].url, 'https://www.telegraph.co.uk/theatre/what-to-see/vanessa-kirby-crown-jewel-lacklustre-julie-national-theatre/');
 });
 
+test('index circuit breaker: a 503-everywhere index costs at most 3 fetches per method per run, then index_down_this_run', async () => {
+  const mk = (n) => ({ fetchText: async () => { n.c++; const e = new Error('HTTP 503'); e.status = 503; throw e; }, indexBreaker: {}, indexRetry: { baseMs: 0, sleep: async () => {} } });
+  const ctx = { review: { showId: 'julie-west-end-2018', outletId: 'telegraph', publishDate: '2018-06-08' }, show: null, title: 'Julie',
+    profile: { hosts: ['telegraph.co.uk'], prefixes: ['telegraph.co.uk/theatre'] }, hosts: ['telegraph.co.uk'], titleDirs: [] };
+  const n = { c: 0 }; const deps = mk(n);
+  const r1 = await UF.runMethod('WAYBACK_CDX', ctx, deps);
+  const after1 = n.c;
+  assert.ok(after1 <= UF.INDEX_BREAKER_LIMIT, `fetches ${after1}`);
+  assert.match(r1.error, /503|index_down_this_run/);
+  const r2 = await UF.runMethod('WAYBACK_CDX', ctx, deps);
+  assert.ok(n.c <= UF.INDEX_BREAKER_LIMIT, `fetches ${n.c}`);
+  assert.equal(r2.error, 'index_down_this_run');
+  // later gaps in the same run make no further fetches for that method
+  const after2 = n.c;
+  const r3 = await UF.runMethod('WAYBACK_CDX', ctx, deps);
+  assert.equal(n.c, after2);
+  assert.equal(r3.error, 'index_down_this_run');
+  // a success resets the count
+  const b = {}; let fail = true;
+  const d2 = { fetchText: async () => { if (fail) { const e = new Error('HTTP 503'); e.status = 503; throw e; } return 'ok'; }, indexBreaker: b };
+  await assert.rejects(UF.fetchIndexWithRetry('q', d2, { tries: 2, baseMs: 0, sleep: async () => {}, method: 'COMMON_CRAWL' }));
+  fail = false;
+  assert.equal(await UF.fetchIndexWithRetry('q', d2, { baseMs: 0, sleep: async () => {}, method: 'COMMON_CRAWL' }), 'ok');
+  assert.equal(b.COMMON_CRAWL, 0);
+});
+
 test('url-find progress: union of live rows, errors and paid skips do not count; eligibility cools down', () => {
   const all = Object.fromEntries(UF.METHODS.map((m) => [m, 'no_candidates']));
-  const row = (methods, ts, outcome = 'no_evidence') => ({ strategy: 'URL_FIND', outcome, ts, runId: 'r', detail: { policy: UF.URL_FIND_POLICY, methods } });
+  const row = (methods, ts, outcome = 'no_evidence') => ({ strategy: 'URL_FIND', outcome, ts, runId: 'r', detail: { policy: UF.URL_FIND_POLICY, refusalPolicy: UF.REFUSAL_POLICY, methods } });
   // a row written under older evidence rules (no policy) never counts as done
   assert.equal(UF.urlFindProgress([{ strategy: 'URL_FIND', outcome: 'no_evidence', ts: '2026-11-09T01:00:00Z', detail: { methods: Object.fromEntries(UF.METHODS.map((m) => [m, 'no_candidates'])) } }]).missing.length, UF.METHODS.length);
   const now = Date.parse('2026-11-10T12:00:00Z');
@@ -196,4 +222,26 @@ test('fallbackUrlFindSlot: a fallback-reached URL_FIND takes a paid slot only wh
   const lockAt = driver.indexOf("takeRunLock(OPTS.reconcile");
   const setAt = driver.indexOf('RUN_LEDGER = ledgerPath');
   assert.ok(lockAt > 0 && setAt > lockAt, 'RUN_LEDGER is set only after the run lock is held');
+});
+
+test('BRO-7962: a walled link the logged-in browser proves dead is refused, not left unreadable (real Telegraph slug guess, 2026-11-21)', () => {
+  const url = 'https://www.telegraph.co.uk/theatre/tickets/london/evening-all-afternoon/';
+  const methods = Object.fromEntries(UF.METHODS.map((m) => [m, 'no_candidates']));
+  methods.SLUG_GUESS = 'found_unreadable';
+  const got = { ok: false, outcome: 'no_evidence', reason: 'url_found_unreadable', methods, refusedCandidates: [], foundUnreadable: [{ url, code: 'bot_challenge', method: 'SLUG_GUESS' }], methodsIfWalledRefused: { SLUG_GUESS: 'candidates_refused' } };
+  const walled = got.foundUnreadable[0];
+  const dead = UF.applyWalledBrowserResult(got, walled, { ok: false, outcome: 'no_evidence', reason: 'url_not_found_404' });
+  assert.deepEqual(dead.refusedCandidates, [url]);
+  assert.deepEqual(dead.foundUnreadable, []);
+  assert.equal(dead.methods.SLUG_GUESS, 'candidates_refused');
+  assert.equal(dead.reason, 'url_not_found_all_methods');
+  assert.equal(dead.walledBrowser.reason, 'url_not_found_404');
+  // A lost login is not evidence about the link: it stays waiting.
+  const lost = UF.applyWalledBrowserResult(got, walled, { ok: false, outcome: 'auth_failed', reason: 'logged_out' });
+  assert.deepEqual(lost.foundUnreadable, got.foundUnreadable);
+  assert.equal(lost.reason, 'url_found_unreadable');
+  assert.deepEqual(lost.refusedCandidates, []);
+  // and the refused link is trusted next night
+  const row = { strategy: 'URL_FIND', outcome: dead.outcome, detail: { refusalPolicy: UF.REFUSAL_POLICY, refusedCandidates: dead.refusedCandidates } };
+  assert.ok(UF.refusedUrlsFromRows([row]).has(url));
 });

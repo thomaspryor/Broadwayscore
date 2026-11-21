@@ -54,6 +54,9 @@ const LANE_SECTION_INDEXES = {
   'the-100-word-review': 'https://www.the100wordreview.com/broadway',
   independent: 'https://www.the-independent.com/arts-entertainment/theatre-dance/reviews',
   chicagotribune: 'https://www.chicagotribune.com/entertainment/theater/',
+  // No usable feed (site RSS has no arts items, arts category feed empty; probed 2026-11-21). Section page: 200 with
+  // /arts-and-culture/2026/11/... review links (e.g. review-fish-story-..., 2026-11-11).
+  columbiaspectator: 'https://www.columbiaspectator.com/arts-and-culture/',
 };
 
 // Feeds for on-time outlets that rss-discovery.js does not read. The first block is the listing poller's; the second is
@@ -73,6 +76,8 @@ const LANE_FEEDS = [
   { url: 'https://www.thekomisarscoop.com/feed/', outletId: 'the-komisar-scoop', name: 'The Komisar Scoop' },
   { url: 'https://therecs.co.uk/feed/', outletId: 'the-recs', name: 'The Recs' },
   { url: 'https://www.stageandcinema.com/feed/', outletId: 'stageandcinema', name: 'Stage and Cinema' },
+  // Wix blog feed, probed 2026-11-21: 200 with /post/review-... items (much-ado-about-nothing-2026 reviewed on time).
+  { url: 'https://theverdictnyc.wixsite.com/theverdict/blog-feed.xml', outletId: 'theverdictnyc', name: 'The Verdict NYC' },
   { url: 'https://www.theaterscene.net/feed/', outletId: 'theater-scene', name: 'Theater Scene' },
   { url: 'https://thefrontrowcenter.com/feed', outletId: 'front-row-center', name: 'Front Row Center' },
   { url: 'https://thecontending.com/feed/', outletId: 'the-contending', name: 'The Contending' },
@@ -94,6 +99,11 @@ const LANE_FEEDS = [
   { url: 'https://w42st.com/feed', outletId: 'w42st', name: 'W42ST' },
   // Same check over 30 openings (older nights), probed 2026-11-09 through fetchPage directOnly: 200 with 20 items.
   { url: 'https://forward.com/culture/theater/feed/', outletId: 'forward', name: 'Forward Theater' },
+  // BRO-7779: Other Desert Cities (opened 2026-10-18) had reviews from both with no lane source (the Guide's on 10-19, Reclining
+  // Standards' on 10-25); both feeds answer 200 RSS (probed 2026-11-18).
+  // The Guide's headlines are the show title alone ("Other Desert Cities"), as Bob's are: titledReviews.
+  { url: 'https://recliningstandards.com/feed/', outletId: 'reclining-standards', name: 'Reclining Standards' },
+  { url: 'https://www.showmosexualsguide.com/feed', outletId: 'showmosexualsguide', name: "The Intelligent Showmosexual's Guide", titledReviews: true },
 ];
 
 // On-time outlets the lane cannot poll for free, and what finds them instead. A gap needs a reason a reader can check.
@@ -126,6 +136,7 @@ const LANE_SOURCE_GAPS = {
   // BRO-7415: soz6.com is a general news/dictionary site that reposts UK press reviews at /news/<slug>; its /feed lists /entry/N
   // posts with no theater reviews (checked 2026-11-12), so nothing there can find a review on the night.
   soz6: "general news site that reposts other outlets' reviews; its feed carries no theater reviews (2026-11-12); the original outlet's feed or SERP finds the review",
+  blogcritics: 'blogcritics.org/feed/ and its theatre category feed answer 301 to the home page (no feed, probed 2026-11-18); BWW roundup and SERP',
   nytimes: 'West End shows: the NYT Theater feed is read for Broadway only and nytimes.com/section/theater answers 403 (2026-11-04); Google News and SERP',
 };
 

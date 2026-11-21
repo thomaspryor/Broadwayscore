@@ -367,6 +367,16 @@ async function cmdReport(args, deps = {}) {
     sessionRef: lsr.claimSessionRef(),
   });
   if (pause.wouldRefuse) body += `\n\n${PAUSE_GUARD_MARKER}`;
+  // BRO-7622: a RECHECK-AFTER stamp names the command the nightly recheck will
+  // really run (advisory; a preview failure never blocks the report).
+  try {
+    const preview = require('./lib/recheck-report-preview').previewRecheckCommand({
+      issue, reportBody: body, launchEntries: (deps.readLaunchEntries || (() => require('./lib/dispatch-ledger').readEntries()))(),
+    });
+    if (preview) console.error(`\n${preview.warn ? '⚠️  recheck-command (advisory)' : 'ℹ️  recheck-command'} — ${issue.identifier}:\n${preview.message}\n`);
+  } catch (err) {
+    console.error(`⚠️  recheck-command preview skipped: ${String(err && err.message).slice(0, 160)}`);
+  }
   // BRO-4241: a Done-gate bypass is recorded in this outcome comment (the
   // only record in cloud sessions, where the ledger file is skipped). Same
   // validity rule as the gate below: a --force reason of 10+ characters, or

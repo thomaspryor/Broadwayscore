@@ -52,6 +52,34 @@ test('F13: review-named child preference reports skipped generic children unless
   assert.match(r.partial[0], /1 non-review/);
 });
 
+test('BRO-7812: tailChildren reads only the newest sitemap children (Slant poller arm), the full archive stays the CLI census job', async () => {
+  const kids = Array.from({ length: 34 }, (_, i) => `https://e.test/post-sitemap${i}.xml`).reverse(); // newest-first index: order must come from the file number
+  const idx = `<sitemapindex>${kids.map((k) => `<loc>${k}</loc>`).join('')}</sitemapindex>`;
+  const read = [];
+  const fetchText = async (u) => { read.push(u); return u.endsWith('sitemap_index.xml') ? idx : `<urlset><url><loc>https://e.test/p/${read.length}-review/</loc><lastmod>${day(1)}</lastmod></url></urlset>`; };
+  const tail = { sm: { ...sources.sm, childFilter: /post-sitemap\d*\.xml/, sourceSaysReview: true, tailChildren: 2 } };
+  const r = await census.enumerateCensusItemsDetailed('sm', cutoff, { sourceOverrides: { sources: tail, londonSources: {} }, log: () => {}, fetchText });
+  assert.deepEqual(read.slice(1), ['https://e.test/post-sitemap32.xml', 'https://e.test/post-sitemap33.xml']);
+  assert.equal(r.items.length, 2);
+  assert.equal(r.complete, true);
+  read.length = 0;
+  await census.enumerateCensusItemsDetailed('sm', cutoff, { sourceOverrides: { sources: { sm: { ...tail.sm, tailChildren: 0 } }, londonSources: {} }, log: () => {}, fetchText });
+  assert.equal(read.length, 1 + 34);
+});
+
+test('BRO-7812: ignoreLastmod keeps a bulk-touched lastmod from becoming the publish date (old Slant review cannot be filed as new)', async () => {
+  const idx = '<sitemapindex><loc>https://e.test/post-sitemap1.xml</loc></sitemapindex>';
+  const urlset = `<urlset><url><loc>https://e.test/p/old-show-review/</loc><lastmod>${day(1)}T10:00:00+00:00</lastmod></url><url><loc>https://e.test/p/stale-review/</loc><lastmod>${day(90)}T10:00:00+00:00</lastmod></url></urlset>`;
+  const fetchText = async (u) => (u.endsWith('sitemap_index.xml') ? idx : urlset);
+  const run = (extra) => census.enumerateCensusItemsDetailed('sm', cutoff, { sourceOverrides: { sources: { sm: { ...sources.sm, childFilter: /post-sitemap\d*\.xml/, ...extra } }, londonSources: {} }, log: () => {}, fetchText });
+  const plain = await run({});
+  assert.equal(plain.items.length, 1);
+  assert.equal(plain.items[0].publishDate, day(1)); // default: lastmod is trusted
+  const guarded = await run({ ignoreLastmod: true });
+  assert.equal(guarded.items.length, 1); // stale entries are still dropped
+  assert.equal(guarded.items[0].publishDate, null); // but the date is read from the page later
+});
+
 test('F03: a healthy, long-span feed is still reconciled against the listing on a rotation', () => {
   const fine = { newestFiltered: day(1), filteredCount: 10, newestAny: day(1), oldestAny: day(30) };
   const reasons = new Set();

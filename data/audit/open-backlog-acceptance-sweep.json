@@ -1,259 +1,224 @@
 {
-  "generatedAt": "2026-11-17T10:55:25.310Z",
+  "generatedAt": "2026-11-21T10:33:04.832Z",
   "shadow": true,
-  "checkoutSha": "58eeabd8d75374f8d0c632e0a555d731a7ef7b4e",
-  "totalCandidates": 386,
-  "eligibleCandidates": 121,
+  "checkoutSha": "8c5a6b50b487967691941cbebf72264e9481f044",
+  "totalCandidates": 412,
+  "eligibleCandidates": 150,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 14,
-    "fail": 13,
-    "unverifiable": 3
+    "pass": 13,
+    "fail": 9,
+    "unverifiable": 8
   },
   "alreadyDone": [
     {
-      "id": "BRO-7653",
-      "name": "Stop hooks block every mid-lane turn end in a board-workers firing (8 NOSTATUSLINE blocks in one 2.4h session)",
-      "verifyCmd": "node --test scripts/lib/session-retro.test.mjs",
+      "id": "BRO-7950",
+      "name": "Land run: surface tests that fail on both branch and base (pre-existing reds are only in the step summary, one stayed red for weeks)",
+      "verifyCmd": "node --test scripts/lib/land-gate-delta.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7652",
-      "name": "land-local-check leaves ~1.8 GB temp checkouts when killed, and never finishes its base comparison inside 30 min",
-      "verifyCmd": "node --test scripts/lib/land-local-check.test.mjs",
+      "id": "BRO-7936",
+      "name": "Account metrics: report Google One Tap skip reasons (unregistered_origin alert)",
+      "verifyCmd": "node --test scripts/lib/account-metrics.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7651",
-      "name": "BRO-4318 follow-up: 3 'sided with neither' adjudications and 1 possessive-stars extraction miss left over",
-      "verifyCmd": "node --test scripts/verify-adjudication-corrections.test.mjs scripts/lib/false-rating-extraction.test.mjs",
+      "id": "BRO-7924",
+      "name": "Sessions must message each other without a hidden approval",
+      "verifyCmd": "node --test scripts/tests/install-home-claude-config.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7637",
-      "name": "lint-workflows (14 runs) and colocated-tests (9 runs) land refusals in 30 days: classify and add local pre-checks",
-      "verifyCmd": "node --test scripts/lib/land-merge-drivers.test.mjs",
+      "id": "BRO-7907",
+      "name": "Tempest Globe 2026 Daily Mail file: clear westEndTheatreExcerpt and aggregatorStars copied from the Drury Lane 2024 review",
+      "verifyCmd": "node --test scripts/lib/dailymail-url-discovery.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7633",
-      "name": "Landings refused by the post-merge timing-backtest test (9 refusals) and scripts-lib-tests (65 runs)",
-      "verifyCmd": "node --test scripts/lib/land-merge-drivers.test.mjs",
+      "id": "BRO-7878",
+      "name": "Board-worker stall sweep cannot call the session lookup tool; add theatreWashington listing source for DC key art",
+      "verifyCmd": "node --test scripts/lib/regional-image-venues.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7627",
-      "name": "Codex first for helper sessions: route Codex-fit handoffs to the Codex runner before create_session",
-      "verifyCmd": "node --test scripts/lib/cloud-worker-pick.test.mjs",
+      "id": "BRO-7876",
+      "name": "Linear decision-reply drain reads owner replies with a whole-message yes list: reuse the hybrid reader",
+      "verifyCmd": "node --test scripts/lib/owner-decision-task.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7595",
-      "name": "Board falling behind: find and fix what floods the board with cards (385 added vs 348 closed in 7d)",
-      "verifyCmd": "node --test scripts/lib/board-summary.test.mjs scripts/lib/recheck-handoff.test.mjs scripts/lib/red-escalation.test.mjs scripts/lib/recheck-headless-receipt.test.mjs scripts/lib/alert-router-title-twin.test.mjs scripts/lib/stuck-card-closer-backlog.test.mjs",
+      "id": "BRO-7870",
+      "name": "Proposal ledger: merge-safe concurrent writes, and handle id-less legacy needs-review issues",
+      "verifyCmd": "npx tsc --noEmit",
       "detail": null
     },
     {
-      "id": "BRO-7579",
-      "name": "Recheck 2026-11-16: 10 done claims no longer hold on main",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 Z2FwOmFkaXJvbmRhY2stY2hhaXItY2lyY2xlLXJlZ2lvbmFsLTIwMjYvdGFsa2luYnJvYWR3YXktLXVua25vd24uanNvbg",
+      "id": "BRO-7856",
+      "name": "CHILDWATCH stop gate false-positive: any 'session' word in a KEEP OPEN clause counts as waiting on a child",
+      "verifyCmd": "node --test scripts/lib/child-session-wait-guard.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7554",
-      "name": "Audit Mac-routed work that stalls; move cloud-capable work to cloud",
-      "verifyCmd": "node --test scripts/lib/silent-dispatch-sweep.test.mjs",
+      "id": "BRO-7831",
+      "name": "BRO-7803 follow-ups: live-score low items (expiry, Critics' Take timing, eligibility at build, hub-closing-dates-live-data test)",
+      "verifyCmd": "node --test tests/unit/runtime-score-json.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7552",
-      "name": "Effect-measured gates: refuse 'verified' with pending EFFECT, spend-effect-check tool, Phase 3 skip guard (post-mortem of BRO-7531/7532)",
-      "verifyCmd": "node --test scripts/lib/effect-pending-stop.test.mjs",
+      "id": "BRO-7806",
+      "name": "mezzanine-search: upstream outages (200 upstream_unavailable) are now invisible; add a counter or sampled alert",
+      "verifyCmd": "npx tsx --test tests/unit/sentry-7815060800.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7534",
-      "name": "Linear comment/issue writes still prompt in cloud sessions: allow them by tool name, not server name",
-      "verifyCmd": "node --test scripts/tests/allow-linear-writes-hook.test.mjs",
+      "id": "BRO-7796",
+      "name": "Landed changes without run proof",
+      "verifyCmd": "node --test scripts/verify-landed-proof-saferun.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-7532",
-      "name": "Free-first fetches: WordPress search for Deadline/THR before the paid render, direct GET for DTLI/theatre.reviews before Bright Data",
-      "verifyCmd": "node --test scripts/lib/site-search-discovery.test.mjs",
+      "id": "BRO-7753",
+      "name": "Older-years audit residuals: unfetchable blocked-host rows and a-few-good-men-2026 TheaterMania stale-merge refusal",
+      "verifyCmd": "node scripts/check-never-audited-backlog.js --max=100",
       "detail": null
     },
     {
-      "id": "BRO-7490",
-      "name": "P1: scheduled scoring scores nothing while one vendor batch leg is slow (20h stall 2026-11-13/14)",
-      "verifyCmd": "node --test scripts/llm-scoring/batch-slot-fallback.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7443",
-      "name": "Opening-night targeted polls: rotate tied in-window shows so none is starved (King's Critique TB 3.5h late)",
-      "verifyCmd": "node --test tests/unit/poller-dispatch-plan.test.mjs",
+      "id": "BRO-7742",
+      "name": "HeaderSearch panel height on phones + MarketNav small a11y fixes (split from BRO-7708)",
+      "verifyCmd": "node --test tests/unit/market-nav-viewport.test.mjs",
       "detail": null
     }
   ],
   "failing": [
     {
-      "id": "BRO-7583",
-      "name": "Root cause: \"Landing blocked: scripts-lib-tests red\" keeps coming back (3 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class scripts-lib-tests-red --quiet",
-      "detail": "FAIL: last case 18d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-7576",
-      "name": "Root cause: \"LLM scoring daily spend over budget\" keeps coming back (3 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class llm-scoring-daily-spend-over-budget --quiet",
-      "detail": "FAIL: last case 16d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-7575",
-      "name": "Root cause: \"Corpus drift: review files with wrongProduction provenance but the flag dropped\" keeps coming back (3 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class review-files-wrongproduction-provenance-but-flag-dropped --quiet",
-      "detail": "FAIL: last case 12d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-7574",
-      "name": "Root cause: first pass keeps missing one-minute-critic reviews (Off-Broadway, 3 shows in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-broadway-one-minute-critic --quiet",
-      "detail": "FAIL: last case 7d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-7560",
-      "name": "Imageless-show alert keeps firing for shows whose poster files exist on disk but shows.json images is null",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 aW1hZ2VsZXNzLXNjb3JlZC1zaG93OnN0aWxsLWltYWdlbGVzczphbGw",
-      "detail": "[check-alert-condition-absent] FAIL: \"imageless-scored-show:still-imageless:all\" still firing — open, last fired 2026-11-17T00:16:10.287Z (10.7h ago, within 168h)"
-    },
-    {
-      "id": "BRO-7506",
-      "name": "Root cause: \"Live-data test failing: BRO-: repo Actions cache stays below the size that evicts the SERP\" keeps coming back (3 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class bro-repo-actions-cache-stays-below-size-evicts --quiet",
-      "detail": "FAIL: last case 12d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-7505",
-      "name": "Root cause: \"Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting un\" keeps coming back (3 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class review-missing-pullquote-recoverable-excerpt-sitting-unused-texts --quiet",
-      "detail": "FAIL: last case 11d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-7504",
-      "name": "Root cause: \"Sync: cast coverage\" keeps coming back (3 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class sync-cast-coverage --quiet",
+      "id": "BRO-7895",
+      "name": "Root cause: \"Quality: opening date vs review dates\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class opening-date-review-dates --quiet",
       "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
-      "id": "BRO-7472",
-      "name": "Root cause: \"Data: T1/T2 silent review gaps\" keeps coming back (3 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class silent-review-gaps --quiet",
+      "id": "BRO-7894",
+      "name": "Root cause: \"Data quality: cv-wrongproduction lifetime sweep\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class wrongproduction-lifetime-sweep --quiet",
+      "detail": "FAIL: last case 1d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7866",
+      "name": "Reader request #903: Feedback Needs Review (spam-flagged) - 2026-09-21",
+      "verifyCmd": "node scripts/check-review-item-resolved.js --issue-closed=903",
+      "detail": "OPEN: issue 903 is open\n"
+    },
+    {
+      "id": "BRO-7822",
+      "name": "Root cause: \"Quality: outlet domain moves\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class outlet-domain-moves --quiet",
       "detail": "FAIL: last case 3d ago, needs 21\n"
     },
     {
-      "id": "BRO-7470",
-      "name": "Root cause: first pass keeps missing london-theatre reviews (Off-West End, 3 shows in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-west-end-london-theatre --quiet",
-      "detail": "FAIL: last case 7d ago, needs 21\n"
+      "id": "BRO-7821",
+      "name": "Root cause: first pass keeps missing thereviewshub reviews (Off-West End, 3 shows in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-west-end-thereviewshub --quiet",
+      "detail": "FAIL: last case 3d ago, needs 21\n"
     },
     {
-      "id": "BRO-7437",
-      "name": "Root cause: \"Data freshness: shows missing poster/synopsis/tickets\" keeps coming back (3 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class shows-missing-poster-synopsis-tickets --quiet",
-      "detail": "FAIL: last case 4d ago, needs 21\n"
+      "id": "BRO-7759",
+      "name": "Root cause: \"Headless dispatch: success rate\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class headless-dispatch-success-rate --quiet",
+      "detail": "FAIL: last case 3d ago, needs 21\n"
     },
     {
-      "id": "BRO-7436",
-      "name": "Root cause: first pass keeps missing lighting-and-sound-america reviews (Off-Broadway, 3 shows in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-broadway-lighting-and-sound-america --quiet",
-      "detail": "FAIL: last case 8d ago, needs 21\n"
+      "id": "BRO-7758",
+      "name": "Root cause: \"Quality: outlet-heartbeat red flags\" keeps coming back (4 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class outlet-heartbeat-red-flags --quiet",
+      "detail": "FAIL: last case 3d ago, needs 21\n"
     },
     {
-      "id": "BRO-7435",
-      "name": "Root cause: first pass keeps missing theater-scene reviews (Off-Broadway, 4 shows in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-broadway-theater-scene --quiet",
-      "detail": "FAIL: last case 11d ago, needs 21\n"
+      "id": "BRO-7757",
+      "name": "Root cause: \"ft login cookies fail the live access check: reviews will score on paywall-truncated text\" keeps coming back (5 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class reviews-will-score-paywall-truncated-text --quiet",
+      "detail": "FAIL: last case 3d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7702",
+      "name": "Lift outlet full-text rates to 95%+ (WSJ/Times/Standard/WaPo ~100%): metric fix, dedupe, re-URL, nightly queue priority, floor guard",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=wsj,times-uk,standard,washpost",
+      "detail": "FAIL wsj: show missing\nFAIL times-uk: show missing\nFAIL standard: show missing\nFAIL washpost: show missing\n"
     }
   ],
   "unverifiable": [
     {
-      "id": "BRO-7596",
-      "name": "Overnight code check: switch to the subscription automatically once the owner's token is stored",
-      "verifyCmd": "node --test scripts/verify-codex-check-oauth-live.test.mjs",
-      "detail": "ran no passing tests (all skipped or none ran)"
+      "id": "BRO-7905",
+      "name": "P2: Opening night miss: Much Ado About Nothing (2026-11-19)",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 144853ms (timeout — no verdict)"
     },
     {
-      "id": "BRO-7517",
-      "name": "Investigate model API cost savings (OpenAI, Google, Anthropic)",
-      "verifyCmd": "test -f memory/api-cost-investigation.md",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/api-cost-investigation.md"
+      "id": "BRO-7877",
+      "name": "Multi-show column scores: Vulture Ava (scored on whole 3-show text) + Finkle columns not yet rescored",
+      "verifyCmd": "node --test tests/unit/multi-show-column-scores.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/multi-show-column-scores.test.mjs"
     },
     {
-      "id": "BRO-7459",
-      "name": "Orphaned git index-pack fills the container disk, crashing the Codex lane",
-      "verifyCmd": "node --test tests/unit/git-temp-pack-reap.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/git-temp-pack-reap.test.mjs"
+      "id": "BRO-7842",
+      "name": "Triage 153 baseline unhandled CV.wrongProduction reviews (lifetime sweep)",
+      "verifyCmd": "node --test tests/unit/cv-wrongproduction-triage.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/cv-wrongproduction-triage.test.mjs"
+    },
+    {
+      "id": "BRO-7800",
+      "name": "UX audit: Date for the same show is styled differently in grid vs. list view. For 'SIX', the date 'Dec 18' is yellow tex",
+      "verifyCmd": "node scripts/lib/ux-walkthrough-resolution.js --key=8fdd3bb449b1332f95c4b0ad77393b36",
+      "detail": "could not run here (credential-withheld): FAIL UX resolution: LINEAR_API_KEY not set in .env or environment"
+    },
+    {
+      "id": "BRO-7754",
+      "name": "Feedback autopilot requeues items already fixed on main forever",
+      "verifyCmd": "node --test scripts/feedback/requeue-logic.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/feedback/requeue-logic.test.mjs"
+    },
+    {
+      "id": "BRO-7725",
+      "name": "Sentry error: SecurityError: Attempt to use history.replaceState() more than 100 times per 10",
+      "verifyCmd": "npx tsx --test tests/unit/sentry-7834294511.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sentry-7834294511.test.mjs"
+    },
+    {
+      "id": "BRO-7704",
+      "name": "Money welcome email: send within ~5 min of sign-up (event trigger + hourly backstop)",
+      "verifyCmd": "node --test tests/unit/money-welcome-kick.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/money-welcome-kick.test.mjs"
+    },
+    {
+      "id": "BRO-7695",
+      "name": "Profitability Scorecard unlock: offer one-tap account sign-in alongside the email form",
+      "verifyCmd": "node --test tests/unit/biz-gate-unlock.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/biz-gate-unlock.test.mjs"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-7633",
-      "name": "Landings refused by the post-merge timing-backtest test (9 refusals) and scripts-lib-tests (65 runs)",
-      "branch": "land/codex-bro-7633",
-      "sha": "1f0aedc268d6dce8612246b0267eac34a4299e1d",
-      "landedAt": "2026-11-17T10:09:35.969Z"
+      "id": "BRO-7907",
+      "name": "Tempest Globe 2026 Daily Mail file: clear westEndTheatreExcerpt and aggregatorStars copied from the Drury Lane 2024 review",
+      "branch": "land/codex-bro-7907",
+      "sha": "2a1490bd1d7b79ae4f914424a4e55af567a607a6",
+      "landedAt": "2026-11-21T03:54:49.211Z"
     },
     {
-      "id": "BRO-7595",
-      "name": "Board falling behind: find and fix what floods the board with cards (385 added vs 348 closed in 7d)",
-      "branch": "land/bro-7595-recheck-ledger",
-      "sha": "8a6ec8e9bc478168deda10927351bb60b4bf0138",
-      "landedAt": "2026-11-16T18:44:08.376Z"
+      "id": "BRO-7831",
+      "name": "BRO-7803 follow-ups: live-score low items (expiry, Critics' Take timing, eligibility at build, hub-closing-dates-live-data test)",
+      "branch": "land/bro-7831-live-score-low",
+      "sha": "bfb309b8e5ed9b59a104c26313b77128bb6bb4b4",
+      "landedAt": "2026-11-20T10:11:02.276Z"
     },
     {
-      "id": "BRO-7579",
-      "name": "Recheck 2026-11-16: 10 done claims no longer hold on main",
-      "branch": "land/bro-7579-recheck-fixes",
-      "sha": "a0be55fe10dbc51c96ab8144a137dbdae69e01b4",
-      "landedAt": "2026-11-16T02:21:17.301Z"
-    },
-    {
-      "id": "BRO-7554",
-      "name": "Audit Mac-routed work that stalls; move cloud-capable work to cloud",
-      "branch": "land/bro-7554-session-cost",
-      "sha": "82ac8746ea5ccd4a4b06e9133ba8319482173c75",
-      "landedAt": "2026-11-15T23:59:49.148Z"
-    },
-    {
-      "id": "BRO-7552",
-      "name": "Effect-measured gates: refuse 'verified' with pending EFFECT, spend-effect-check tool, Phase 3 skip guard (post-mortem of BRO-7531/7532)",
-      "branch": "land/bro-7552-effect-gate",
-      "sha": "6465215de50a64808fd3580e6b7e3ae821a126a7",
-      "landedAt": "2026-11-15T23:38:06.843Z"
-    },
-    {
-      "id": "BRO-7534",
-      "name": "Linear comment/issue writes still prompt in cloud sessions: allow them by tool name, not server name",
-      "branch": "land/bro-7534-linear-redirect",
-      "sha": "c8f51ca5187b591e4deb455e3f146c1ef48abcf9",
-      "landedAt": "2026-11-15T19:06:29.964Z"
-    },
-    {
-      "id": "BRO-7532",
-      "name": "Free-first fetches: WordPress search for Deadline/THR before the paid render, direct GET for DTLI/theatre.reviews before Bright Data",
-      "branch": "land/bro-7532-tr-star-marker",
-      "sha": "175cd9d2cafc245e4d3430017c90b492ae1a22f5",
-      "landedAt": "2026-11-17T04:37:04.268Z"
-    },
-    {
-      "id": "BRO-7443",
-      "name": "Opening-night targeted polls: rotate tied in-window shows so none is starved (King's Critique TB 3.5h late)",
-      "branch": "land/bro-7443-rotate-targeted",
-      "sha": "027af01b1e38e65d6deaadcd91c05931463a693d",
-      "landedAt": "2026-11-13T12:43:30.879Z"
+      "id": "BRO-7796",
+      "name": "Landed changes without run proof",
+      "branch": "land/bro-7796-closeout",
+      "sha": "634304966150e77457d23c40c3b448efc399e505",
+      "landedAt": "2026-11-18T21:54:41.392Z"
     }
   ]
 }

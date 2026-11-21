@@ -95,6 +95,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { slugify } = require('./lib/deduplication');
 
 const { fetchPage, getScraperStats, cleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
@@ -106,7 +107,7 @@ const { venuesMatch } = require('./lib/deduplication');
 const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
 const {
-  DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow, classifyComparison,
+  DATE_DELTA_DAYS, daysBetween, urlYear, findCorroboratingPriorRun, compareShow, classifyComparison, wrongProductionPage,
   orderProvisionalTargets, deferredHighPriorityShows, buildAuditResults, buildPriorTierMap,
   missingUrlOutcome, serpQueryCompleted,
 } = require('./lib/venue-date-compare');
@@ -818,6 +819,18 @@ async function validatePlaybillShow(show, log) {
 
   const { mismatches, explainedByPriorRun, venueCheck } = compareShow(show, parsed, urlResult.url);
   const verdict = classifyComparison({ mismatches, venueCheck });
+  // BRO-7737: the nearest same-titled page was another run (other market, years away). That is
+  // "no page for this show", not a list of mismatches: no-playbill-url is the existing
+  // definitive, non-blocking outcome, and it can never clear a recorded mismatch.
+  const wrongPage = wrongProductionPage({ mismatches, venueCheck });
+  if (wrongPage) {
+    log(`  ⚠ page rejected: describes a different production (${wrongPage} far off): ${urlResult.url}`);
+    return {
+      id: show.id, title: show.title, venue: show.venue,
+      result: 'no-playbill-url', urlSource: urlResult.source, mismatches: [], playbillUrl: null, parsed: null,
+      rejectedWrongPage: { url: urlResult.url, reason: wrongPage, pageVenue: titleParse?.venue || null },
+    };
+  }
   if (explainedByPriorRun.length) {
     log(`  ℹ ${explainedByPriorRun.length} field(s) explained by priorRuns (Playbill page describes an earlier run):`);
     explainedByPriorRun.forEach(m => log(`    - ${m.field}: shows=${m.shows ?? m.showsCanonical} playbill=${m.playbill ?? m.playbillCanonical}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`));
@@ -891,7 +904,7 @@ async function main() {
     const data = JSON.parse(fs.readFileSync(candidatesFile, 'utf8'));
     const list = Array.isArray(data) ? data : (data.candidates || []);
     targets = list.map(c => ({
-      id: c.id || foldDiacritics(c.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-off-broadway-pending',
+      id: c.id || slugify(c.title || '') + '-off-broadway-pending', // shows.json slug rule (BRO-7929 cousin)
       title: c.title,
       venue: c.venue,
       category: 'off-broadway',
@@ -998,6 +1011,12 @@ async function main() {
   const rejectedTitle = results.filter(r => r.result === 'no-playbill-url' && r.rejectedTitleCandidates?.length);
   if (rejectedTitle.length) {
     console.log(`::warning::validate-show-venue: ${rejectedTitle.length} show(s) have no accepted Playbill page but search returned same/near-title pages that were rejected (check the title and category in shows.json): ${rejectedTitle.map(r => `${r.id} -> ${r.rejectedTitleCandidates.map(c => `${c.url} (${c.kind})`).join(' ')}`).join('; ')}`);
+  }
+  // BRO-7737: pages found but rejected as another run. Not gating, but never silent: a stub
+  // with a wrong venue AND wrong market/year looks the same as a show with no page.
+  const wrongPages = results.filter(r => r.rejectedWrongPage);
+  if (wrongPages.length) {
+    console.log(`::warning::validate-show-venue: ${wrongPages.length} show(s) had their nearest Playbill page rejected as a different production (confirm venue and year by hand): ${wrongPages.map(r => `${r.id} -> ${r.rejectedWrongPage.url} (${r.rejectedWrongPage.reason}, page venue "${r.rejectedWrongPage.pageVenue}")`).join('; ')}`);
   }
   if (venueUnverified.length) {
     console.log(`::warning::validate-show-venue: ${venueUnverified.length} show(s) are venue-unverified: the source page's venue could not be parsed, so the shows.json venue was NOT compared (other comparable fields agree): ${venueUnverified.map(r => `${r.id} (shows.json venue "${r.venue}", ${r.sourceUrl || r.playbillUrl})`).join(', ')}`);

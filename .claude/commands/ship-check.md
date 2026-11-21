@@ -15,10 +15,10 @@ Sessions kept invoking this skill and then running a reduced version (one cheap 
 
 1. **Run it BEFORE `git push … land/<name>`.** A land push of more than 30 gated lines is blocked until this skill's reviewers have run (`pre-push-land-preflight.sh`), and "SAFE TO ARCHIVE" is refused after a ship-check without them (the Stop hook, `verify-edits.sh`). A review of already-landed code can stop nothing.
 2. **It applies to every code change**, not only `src/`: `scripts/`, `.github/workflows/`, `.claude/hooks/`, `supabase/`, tests. "Nothing under src/" is not a reason to skip Phase 5.
-3. **Phase 5 is required in full.** Both of these must run AFTER you invoke the skill, or the hooks do not count it: (a) a Claude reviewer, an `Agent` call with `subagent_type: "review-panelist"` (some containers lack that type; `general-purpose` is accepted then, but the prompt must be a real review prompt of 200+ characters that says to review/audit the diff); (b) an external adversarial reviewer: a `curl -d` POST to `api.openai.com/v1/chat/completions` (the gpt-5.4-mini fallback below is the normal path in cloud, there is no Codex CLI), a Gemini `generateContent` call, or `codex exec`, with a real response (an `echo`, a `/v1/models` listing, an empty or error reply does not count). The Claude reviewer's prompt must be a real review prompt (200+ characters). The fresh-eyes UX reviewer is required only when the diff touches UI files.
+3. **Phase 5 is required in full.** Both of these must run AFTER you invoke the skill, or the hooks do not count it: (a) a Claude reviewer, an `Agent` call with `subagent_type: "review-panelist"` (some containers lack that type; `general-purpose` is accepted then, but the prompt must be a real review prompt of 200+ characters that says to review/audit the diff); (b) an external adversarial reviewer: a `curl -d` POST to `api.openai.com/v1/chat/completions` (Codex runs in cloud sessions too: `bash scripts/codex/ensure-cli.sh` installs it, BRO-7927; the gpt-5.4-mini fallback is for when that prints MISSING, and the coverage banner must say so), a Gemini `generateContent` call, or `codex exec`, with a real response (an `echo`, a `/v1/models` listing, an empty or error reply does not count). The Claude reviewer's prompt must be a real review prompt (200+ characters). The fresh-eyes UX reviewer is required only when the diff touches UI files. (c) the skeptic reviewer (reviewer 4 below, BRO-7839): `node scripts/lib/skeptic-review-stop.mjs --ship-check`. It asks the owner's question ("is this fully tested? what is untested or could still be broken?") over your diff and the commands you actually ran. Required from 2026-11-25; until then a missing run is reported as advisory.
 4. **Phase 2: `land.yml` runs `tsc` and `next lint` strictly on the rebased tree, so you may leave those to it (say so in the report). It does NOT run the build: when the diff touches `src/`, run `npm run build` yourself after invoking this skill, or the land gate blocks the push.** Phase 3 and Phase 4 may be skipped only when the diff has no data or UI effect, and the report must say that. **A diff that touches the fetch / SERP chain (`url-discovery.js`, `scraper.js`, `site-search-discovery.js`, `free-first-fetch.js`, `serp-*.js`, or any call to a paid vendor) always has a data effect: it moves spend. Phase 3 is then NOT skippable; run `node scripts/spend-effect-check.js --since=<ISO time it went live> --hosts=<hosts>` (add `--hosts=serp` for search) after it lands and put the table in the report (or `NO-EFFECT-CHECK: <reason>`). The cloud Stop check refuses `Phase 3: skipped: no data effect` for such a change (BRO-7552).**
 5. **Finish with a `COVERAGE:` block**, one line per phase 2 to 5: `ran: <the command or Agent>` or `skipped: <reason>`. A skipped Phase 5 reviewer is a failure, not an option.
-6. **Record the verdict with the coverage-checked command**, not a bare `--query=record`: `node scripts/lib/review-coverage.mjs --record`. It refuses to record a pass unless both reviewers ran, and attaches evidence when they did.
+6. **Record the verdict with the coverage-checked command**, not a bare `--query=record`: `node scripts/lib/review-coverage.mjs --record`. It refuses to record a pass unless both reviewers ran, and attaches evidence when they did. Commit first: on a pass it also stamps the `Review-Receipt` trailer on HEAD (message only), which land.yml checks.
 
 If a reviewer truly cannot run (no `OPENAI_API_KEY`, API down), do not fall back to a second Claude agent and call it done (that fallback below is for when Codex alone is missing). Say why instead: `# NO-SHIP-CHECK: <reason, 15+ chars>` inside the `git push … land/…` command (that is the only form the land gate reads), and a `NO-SHIP-CHECK: <reason, 10+ chars>` line in your closing message (the Stop hook and verify-edits read that). Both are logged; neither is a silent skip. `/code-review` is not coverage-checked: it has its own procedure.
 
@@ -233,8 +233,8 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
    - Any design choices that might be surprising
 
 3. **Codex (GPT-5.x with codebase access) — Adversarial design review** — Run via Bash.
-   **Codex check:** Run `command -v codex >/dev/null && { node scripts/codex/install.js >/dev/null 2>&1; echo READY; } || echo MISSING` (the install is idempotent and gives Codex the repo guards, BRO-4745).
-   - READY (local): **Step 1 — run Codex, writing its filtered output to a private per-run temp file** (never a shared fixed path — this machine routinely runs many parallel Claude Code sessions, and a shared `/tmp` path lets one session's stale or in-flight file be read as another session's result):
+   **Codex check:** Run `bash scripts/codex/ensure-cli.sh` (BRO-7927: it installs the pinned Codex CLI when the container has none, restores the owner's stored Codex login in cloud, and installs the repo guards, BRO-4745; idempotent, prints `READY` or `MISSING: <reason>`). Codex runs in cloud sessions too, so a fresh container is no reason to skip it.
+   - READY: **Step 1 — run Codex, writing its filtered output to a private per-run temp file** (never a shared fixed path — this machine routinely runs many parallel Claude Code sessions, and a shared `/tmp` path lets one session's stale or in-flight file be read as another session's result):
      ```bash
      set -o pipefail
      # No suffix after the X's — BSD mktemp (macOS) silently ignores a template
@@ -280,9 +280,14 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
        echo
        echo "=== UNCOMMITTED CHANGES ==="
        git diff HEAD -- src/ scripts/ public/ data/ 2>/dev/null | head -1000
-     } | codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" 2>&1 \
-       | awk '/^codex$/{flag=1; next} /^tokens used$/{flag=0} flag' \
-       | tee "$CODEX_OUT"
+     } | ${CLAUDE_CODE_REMOTE:+timeout 1500} codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$CODEX_OUT" >/dev/null 2>"$CODEX_OUT.log"
+     CODEX_RC=$?
+     # A failed exec is never a review, even if it left text behind: empty the file so Step 2 reports CODEX_EMPTY.
+     [ "$CODEX_RC" -eq 0 ] || { echo "codex exec exited $CODEX_RC:"; tail -5 "$CODEX_OUT.log"; : > "$CODEX_OUT"; }
+     cat "$CODEX_OUT"
+     # BRO-7927: -o keeps only Codex's final answer; the old awk filter on its log kept every tool call it made (13k words on a 600-word review).
+     # On CODEX_EMPTY, read $CODEX_OUT.log for the cause (auth, quota). Cloud: persist the login in case the exec rotated it.
+     bash scripts/codex/ensure-cli.sh --save >/dev/null || echo "WARN: Codex login save failed (scripts/codex/auth-store.js save)"
      ```
      Note: uses your local Codex CLI (counts against ChatGPT Codex quota). For very large diffs, raise the `head -2000` cap.
 
@@ -303,11 +308,19 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
      if [ "$CODEX_STATUS" -eq 0 ]; then echo CODEX_USABLE
      elif [ "$CODEX_KIND" = "refused" ]; then echo "CODEX_REFUSED: $CODEX_REASON"
      else echo "CODEX_EMPTY: $CODEX_REASON"; fi
-     rm -f "$CODEX_OUT"
+     rm -f "$CODEX_OUT" "$CODEX_OUT.log"
      ```
      If `CODEX_EMPTY` or `CODEX_REFUSED`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner that Codex was READY but returned unusable output — `CODEX_EMPTY` means the CLI produced no text (task #1081, flaky-empty-output, not a missing CLI); `CODEX_REFUSED` means Codex explicitly declined to review (task #1320, e.g. blocked by a failed data preflight) — print the `$CODEX_REASON` in the banner either way so it's clear WHY coverage degraded.
-   - MISSING (expected in cloud — there is no Codex CLI): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics, including its `log-llm-call.js` tee (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
+   - MISSING (NOT expected anywhere, cloud included, since BRO-7927; print `ensure-cli.sh`'s reason in the coverage banner as a degraded-review line, e.g. `Codex: MISSING (<reason>), gpt-5.4-mini ran instead`): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **gpt-5.4-mini via `api.openai.com`** — reuse reviewer 2's curl mechanics, including its `log-llm-call.js` tee (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-5.4-mini"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran (Codex / gpt-5.4-mini / Claude) in the coverage banner.
    **This reviewer challenges the design from a different model family. It reads the diff and the surrounding code, then questions whether the chosen approach is right — not whether it's correct.**
+
+4. **Skeptic: the owner's question (BRO-7839)** — Run via Bash, after your other checks so it sees them:
+
+   ```bash
+   node scripts/lib/skeptic-review-stop.mjs --ship-check
+   ```
+
+   It reads this session's transcript: the code edits since the last landed push and every command you ran (with pass/fail and an output tail), then asks gpt-5.4-mini "Is this fully tested? What is untested or could still be broken?". It prints `SKEPTIC REVIEW: N material gap(s)`, each with a check to run. Treat every gap as a finding: run its check and fix what it shows, or give a one-line reason it cannot run here (real email, bulk spend, the owner's device). "We will know after the next scheduled run" is not a reason. Then answer every gap on the record command (BRO-7872; it refuses a pass while one is unanswered, and so do the land gate and the Stop check): `node scripts/lib/review-coverage.mjs --record --answer='GAP 1: ran <the command that ran and passed>' --answer='GAP 2: cannot run here: <concrete reason>' --answer='GAP 3: not a gap: <why>'`. Pass the answers there, not only in chat: chat text can be missing from the transcript the gates read. Do not re-run the skeptic to escape a list; that only renumbers it. Owners asked this question at the end of most code sessions; this asks it before landing instead. If the close-time Stop check sees no run of this after your last code edit, it asks the same question then.
 
 ### Phase 6: Report
 

@@ -1,5 +1,5 @@
 // BRO-7527: no runtime call site may resolve to a retired/retiring Claude model.
-// Frozen eval pins in scripts/llm-scoring/ and test fixtures are exempt.
+// Test fixtures are exempt (scripts/llm-scoring is covered since BRO-7510: its --model=haiku pin was a dead 3.5 id).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -19,7 +19,7 @@ test('no runtime code hardcodes a retired claude id (comments/registries exempt)
   let out = '';
   try {
     out = execFileSync('git', ['grep', '-nE', RETIRED, '--', 'scripts', 'src', '.github/workflows',
-      ':!scripts/llm-scoring', ':!*.test.*', ':!scripts/tests', ':!scripts/lib/provider-deprecations.js',
+      ':!*.test.*', ':!scripts/tests', ':!scripts/lib/provider-deprecations.js',
       ':!scripts/lib/openai-deprecations.js', ':!scripts/lib/model-drift-guard.js'], { encoding: 'utf8' });
   } catch (e) { if (e.status !== 1) throw e; }
   const hits = out.split('\n').filter(Boolean).filter(l => {
@@ -27,4 +27,10 @@ test('no runtime code hardcodes a retired claude id (comments/registries exempt)
     return !/^(\/\/|\*|\/\*)/.test(code);
   });
   assert.deepEqual(hits, []);
+});
+
+test('retirement audit ignores quoted ids in whole-line comments (BRO-7510)', () => {
+  const { referencedAnthropicIds } = require('../lib/provider-deprecations.js');
+  const src = "// registry keys like 'claude-sonnet-4-5' fold\n * 'claude-3-5-haiku'\nconst m = 'claude-haiku-4-5-20251001';\n";
+  assert.deepEqual([...referencedAnthropicIds(src)], ['claude-haiku-4-5']);
 });

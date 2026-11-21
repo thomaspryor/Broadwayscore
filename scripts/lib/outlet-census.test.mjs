@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const census = require('./outlet-census.js');
+const { SOURCES, LONDON_SOURCES } = require('./outlet-census-sources.js');
 
 const beaches = { id: 'beaches-2026', title: 'Beaches, A New Musical', market: 'broadway', venue: 'Majestic Theatre', previewsStartDate: '2026-03-27', openingDate: '2026-04-22', closingDate: '2026-05-24', cast: [], creativeTeam: [] };
 const giant = { id: 'giant-2026', title: 'Giant', market: 'broadway', venue: 'Music Box Theatre', openingDate: '2026-03-23', closingDate: '2026-06-28', cast: [], creativeTeam: [] };
@@ -366,12 +367,95 @@ test('BRO-6514: a wp-json walk that stopped on a failed page is incomplete; only
   for (const s of [200, 400, 403, 404]) assert.equal(census.isTransientFetch(s), false, String(s));
 });
 
-test('BRO-6514: Slant Magazine (403 to every direct fetch) is enumerated through SERP', () => {
+test('BRO-7812: Slant Magazine (403 to direct fetches) is enumerated from its sitemap through the proxy chain, not paid search', () => {
   const { SOURCES } = require('./outlet-census-sources.js');
+  const { censusSourceFor } = require('./outlet-listing-census.js');
   const s = SOURCES.slantmagazine;
-  assert.equal(s.kind, 'serp');
-  assert.equal(s.urlFilter.test('https://www.slantmagazine.com/theater/review-oh-mary-cole-escola/'), true);
+  // Class guard: Google returns ~10 results a query, so a serp source cannot list a 14-year archive and
+  // Dan Rubins's Call Me Izzy review stayed missing. Reverting to serp must fail here.
+  assert.equal(s.kind, 'sitemap');
+  assert.equal(s.proxyRetry, true);
+  assert.ok(censusSourceFor('slantmagazine'), 'the poller census arm can read Slant');
+  assert.ok(s.tailChildren > 0, 'the poller arm must read only the newest sitemap children (proxy cost)');
+  assert.equal(s.urlFilter.test('https://www.slantmagazine.com/theater/call-me-izzy-review-jean-smart/'), true);
   assert.equal(s.urlFilter.test('https://www.slantmagazine.com/film/review-x/'), false);
+  assert.equal(s.childFilter.test('https://www.slantmagazine.com/post-sitemap12.xml'), true);
+  assert.equal(s.childFilter.test('https://www.slantmagazine.com/author-sitemap.xml'), false);
+});
+
+test('BRO-7812: blindOutlets flags big outlets whose listing cannot be read, and Slant on paid search would be one', () => {
+  const rep = (outletId, kind, rows, status) => ({ outletId, source: { kind, status }, corpusSide: { rowsInWindow: rows } });
+  const blind = census.blindOutlets([
+    rep('slantmagazine', 'serp', 300), rep('nytimes', 'unreadable', 995), rep('theatermania', 'wp-json', 679),
+    rep('tiny', 'unreadable', 10), rep('vulture', 'sitemap-years', 605, 'incomplete'),
+  ]);
+  assert.deepEqual(blind.map((b) => b.outletId), ['nytimes', 'slantmagazine']);
+  assert.equal(census.blindOutlets([rep('slantmagazine', 'sitemap', 300)]).length, 0);
+  assert.deepEqual(census.blindOutlets(undefined), []);
+});
+
+test('BRO-7820: writeJsonUnlessOnlyStampChanged skips timestamp-only rewrites and writes real changes', () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const dir = fs.mkdtempSync(`${os.tmpdir()}/census-stamp-`);
+  const f = `${dir}/x.report.json`;
+  assert.equal(census.writeJsonUnlessOnlyStampChanged(f, { a: 1, generatedAt: 't1' }, 2), true);
+  assert.equal(census.writeJsonUnlessOnlyStampChanged(f, { a: 1, generatedAt: 't2' }, 2), false);
+  assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).generatedAt, 't1');
+  assert.equal(census.writeJsonUnlessOnlyStampChanged(f, { a: 2, generatedAt: 't3' }, 2), true);
+  assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).a, 2);
+});
+
+test('BRO-7816: a blind outlet reports its probed reason, and no unreadable source ships a generic or missing one', () => {
+  const rep = { outletId: 'nypost', source: { kind: 'unreadable', reason: 'daily sitemaps, one paid fetch per day' }, corpusSide: { rowsInWindow: 413 } };
+  assert.equal(census.blindOutlets([rep])[0].why, 'daily sitemaps, one paid fetch per day');
+  const old = { outletId: 'ew', source: { kind: 'unreadable', notes: ['unreadable: site answers 403'] }, corpusSide: { rowsInWindow: 459 } };
+  assert.equal(census.blindOutlets([old])[0].why, 'site answers 403');
+  // Class guard: the stale placeholder that hid ten readable outlets (BRO-7816) must not come back.
+  for (const [id, src] of [...Object.entries(SOURCES), ...Object.entries(LONDON_SOURCES)]) {
+    if (src.kind !== 'unreadable') continue;
+    assert.ok(src.reason && src.reason.length > 25, `${id}: unreadable needs a specific probed reason`);
+    assert.ok(!/not yet configured/i.test(src.reason), `${id}: "not yet configured" is not a probed reason`);
+  }
+});
+
+test('BRO-7816: no committed NYC census report says "unreadable" for an outlet whose source is now readable', () => {
+  // The root cause of the 23-outlet blind spot: sources were configured (sitemap, wp-json) but the committed
+  // reports were never re-run, so --summary kept printing the old "not yet configured" row. serp outlets are
+  // paid and run with --no-serp, so an unreadable report may stand for them.
+  const dir = new URL('../../data/audit/outlet-census/', import.meta.url);
+  const fs = require('node:fs');
+  const stale = [];
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.report.json'))) {
+    const rep = JSON.parse(fs.readFileSync(new URL(f, dir), 'utf8'));
+    const src = SOURCES[rep.outletId];
+    if (src && rep.source.kind === 'unreadable' && !['unreadable', 'serp'].includes(src.kind) && !src.proxyRetry) stale.push(`${rep.outletId} (${src.kind})`);
+  }
+  // Lands advisory (CLAUDE.md rule 19): the regenerated reports for these outlets reach main in a later change,
+  // because one land may rewrite at most 10 bot-owned files. Set CENSUS_STALE_REPORT_STRICT=1 to fail; arm it
+  // by default once `stale` is empty on main.
+  const msg = `re-run: node scripts/outlet-census.js --outlet=${stale.map((x) => x.split(' ')[0]).join(',')}`;
+  // BRO-7820: armed by default now that the weekly census job keeps reports fresh. proxyRetry outlets are exempt:
+  // they need a paid proxy key the free job never holds, so their report can only be refreshed by a keyed run.
+  if (process.env.CENSUS_STALE_REPORT_STRICT !== '0') assert.deepEqual(stale, [], msg);
+  else if (stale.length) console.warn(`census stale-report guard (advisory): ${stale.length} stale, ${msg}`);
+  assert.ok(Array.isArray(stale));
+});
+
+test('BRO-7816: monthly-sitemap outlets list only the months in the census window', () => {
+  const nyt = SOURCES.nytimes;
+  assert.equal(nyt.childFilter('https://www.nytimes.com/sitemaps/new/sitemap-2025-03.xml.gz', '2021-06-01'), true);
+  assert.equal(nyt.childFilter('https://www.nytimes.com/sitemaps/new/sitemap-2021-05.xml.gz', '2021-06-01'), false);
+  assert.equal(nyt.childFilter('https://www.nytimes.com/sitemaps/new/news.xml.gz', '2021-06-01'), false);
+  assert.ok(nyt.urlFilter.test('https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html'));
+  assert.equal(nyt.urlFilter.test('https://www.nytimes.com/2025/03/19/us/politics/x.html'), false);
+  assert.equal(SOURCES.wsj.childFilter('https://www.wsj.com/sitemaps/web/wsj/en/sitemap_wsj_en_m3_2025.xml', '2021-06-01'), true);
+  assert.equal(SOURCES.wsj.childFilter('https://www.wsj.com/sitemaps/web/wsj/en/sitemap_wsj_en_m9_2021.xml', '2021-06-01'), true);
+  assert.equal(SOURCES.wsj.childFilter('https://www.wsj.com/sitemaps/web/wsj/en/sitemap_wsj_en_m3_2021.xml', '2021-06-01'), false);
+  assert.ok(SOURCES.newyorker.urlFilter.test('https://www.newyorker.com/magazine/2025/03/31/vanya-and-purpose-theatre-review'));
+  assert.equal(SOURCES.newyorker.urlFilter.test('https://www.newyorker.com/news/annals-of-immigration/x'), false);
+  assert.ok(SOURCES.ew.urlFilter.test('https://ew.com/real-women-have-curves-review-musical-broadway-11722804'));
+  assert.equal(SOURCES.ew.urlFilter.test('https://ew.com/the-masked-singer-season-13-finale-11730338'), false);
 });
 
 test('an archival film review naming an old year is not a gap; a show titled with a year still is (Vulture, BRO-6485)', () => {
@@ -415,4 +499,83 @@ test('a Los Angeles house in the headline marks a same-titled review as another 
   const r = census.bucketItem({ outletId: 'frontmezzjunkies', sourceSaysReview: true, url: 'https://frontmezzjunkies.com/2024/10/04/fountain-theatres-fatherland/', publishDate: '2024-10-04',
     headline: 'Fountain Theatre’s “Fatherland” Talks Its Way Through', description: '' }, ctx);
   assert.notEqual(r.bucket, 'gap');
+});
+
+test('BRO-7816: ignoreLastmod sources date by their child sitemap, never by a bulk-touched lastmod', () => {
+  const { itemFromSitemapEntry } = require('./outlet-census.js');
+  const g = { url: 'https://www.nytimes.com/2021/06/25/theater/x-review.html', publishDate: '2022-10-24', sitemap: 'https://www.nytimes.com/sitemaps/new/sitemap-2021-06.xml' };
+  assert.equal(itemFromSitemapEntry(g, SOURCES.nytimes).lastmod, null);
+  assert.equal(itemFromSitemapEntry(g, SOURCES.nytimes).sitemap, g.sitemap);
+  assert.equal(itemFromSitemapEntry(g, { kind: 'sitemap' }).lastmod, '2022-10-24');
+  for (const id of ['nytimes', 'washpost', 'wsj', 'newyorker', 'ew', 'usatoday']) {
+    if (SOURCES[id].ignoreLastmod) assert.equal(itemFromSitemapEntry(g, SOURCES[id]).lastmod, null, id);
+  }
+});
+
+test('BRO-7820: shouldKeepPreviousReport keeps a complete report over an unreadable one', () => {
+  const k = census.shouldKeepPreviousReport;
+  assert.equal(k({ source: { status: 'complete' } }, { source: { status: 'unreadable' } }), true);
+  assert.equal(k({ source: { status: 'complete' } }, { source: { status: 'incomplete' } }), false);
+  assert.equal(k({ source: { status: 'unreadable' } }, { source: { status: 'unreadable' } }), false);
+  assert.equal(k(null, { source: { status: 'unreadable' } }), false);
+});
+
+// BRO-7885: same-title productions were "ambiguous" forever (55 rows). Real Slant / Illinoise data.
+const wss = (id, open, close) => ({ id, title: 'West Side Story', market: 'broadway', openingDate: open, closingDate: close });
+const wssShows = [wss('west-side-story-2020', '2020-02-20', '2020-03-11'), wss('west-side-story-2009', '2009-03-19', '2011-01-02'), wss('west-side-story-1980', '1980-02-14', '1980-11-30')];
+const slantWss = { outletId: 'slantmagazine', url: 'https://www.slantmagazine.com/theater/west-side-story-review-ivo-van-hove/', headline: 'west side story review ivo van hove', sourceSaysReview: true };
+
+test('BRO-7885: an undated same-title item stays ambiguous and asks for its page date', () => {
+  const r = census.bucketItem(slantWss, ctxFor([], wssShows));
+  assert.equal(r.bucket, 'ambiguous');
+  assert.equal(r.sameTitleCandidates, true);
+  assert.equal(census.dateWouldResolve({ ...r, publishDate: undefined }), true);
+});
+
+test('BRO-7885: the page date picks the one production on stage', () => {
+  const r = census.bucketItem({ ...slantWss, publishDate: '2020-03-11' }, ctxFor([], wssShows));
+  assert.equal(r.bucket, 'gap');
+  assert.deepEqual(r.matchedIds, ['west-side-story-2020']);
+  assert.equal(r.matchVia, 'poller-matcher');
+});
+
+test('BRO-7885: two overlapping runs resolve by which is live, not by the 60-day tail', () => {
+  const arm = { id: 'illinoise-off-broadway-2024', title: 'Illinoise', market: 'broadway', previewsStartDate: '2024-03-02', openingDate: '2024-03-07', closingDate: '2024-03-23' };
+  const stj = { id: 'illinoise-2024', title: 'Illinoise', market: 'broadway', previewsStartDate: '2024-04-24', openingDate: '2024-04-24', closingDate: '2024-08-10' };
+  const item = { outletId: 'nytg', headline: "'Illinoise' review: Sufjan Stevens musical", url: 'https://example.com/illinoise-broadway-review', publishDate: '2024-04-29', sourceSaysReview: true };
+  assert.deepEqual(census.bucketItem(item, ctxFor([], [arm, stj])).matchedIds, ['illinoise-2024']);
+  // a review dated while the Armory run was on goes to the Armory
+  assert.deepEqual(census.bucketItem({ ...item, publishDate: '2024-03-10' }, ctxFor([], [arm, stj])).matchedIds, ['illinoise-off-broadway-2024']);
+});
+
+test('BRO-7885: different titles (a two-show roundup) are never split by date', () => {
+  const a = { id: 'eureka-day-2024', title: 'Eureka Day', market: 'broadway', openingDate: '2024-12-03', closingDate: '2025-03-02' };
+  const b = { id: 'cult-of-love-2024', title: 'Cult of Love', market: 'broadway', openingDate: '2024-12-05', closingDate: '2025-02-02' };
+  assert.equal(census.resolveSameTitleByDate([a, b], '2024-12-28'), null);
+  const r = census.bucketItem({ outletId: 'frontmezzjunkies', headline: 'Broadway: Cult of Love, Eureka Day', url: 'https://example.com/x', publishDate: '2024-12-28', sourceSaysReview: true }, ctxFor([], [a, b]));
+  assert.equal(r.bucket, 'ambiguous');
+  assert.notEqual(r.sameTitleCandidates, true);
+});
+
+test('BRO-7885: a lastmod-only (soft) date does not break a tie between overlapping runs', () => {
+  const arm = { id: 'illinoise-off-broadway-2024', title: 'Illinoise', market: 'broadway', openingDate: '2024-03-07', closingDate: '2024-03-23' };
+  const stj = { id: 'illinoise-2024', title: 'Illinoise', market: 'broadway', openingDate: '2024-04-24', closingDate: '2024-08-10' };
+  const item = { outletId: 'nytg', headline: "'Illinoise' review", url: 'https://example.com/illinoise-review', publishDate: '2024-04-29', sourceSaysReview: true };
+  assert.equal(census.bucketItem({ ...item, dateSoft: true }, ctxFor([], [arm, stj])).bucket, 'ambiguous');
+  assert.equal(census.bucketItem(item, ctxFor([], [arm, stj])).bucket, 'gap');
+});
+
+test('BRO-7885: date-resolved path is reached, tags matchVia, and honours held alt URLs', () => {
+  const arm = { id: 'illinoise-off-broadway-2024', title: 'Illinoise', market: 'broadway', previewsStartDate: '2024-03-02', openingDate: '2024-03-07', closingDate: '2024-03-23' };
+  const stj = { id: 'illinoise-2024', title: 'Illinoise', market: 'broadway', previewsStartDate: '2024-04-24', openingDate: '2024-04-24', closingDate: '2024-08-10' };
+  const item = { outletId: 'nytg', headline: "'Illinoise' review", url: 'https://example.com/illinoise-review', publishDate: '2024-04-29', sourceSaysReview: true };
+  const r = census.bucketItem(item, ctxFor([], [arm, stj]));
+  assert.equal(r.matchVia, 'date-resolved');
+  assert.equal(r.bucket, 'gap');
+  assert.deepEqual(r.matchedIds, ['illinoise-2024']);
+  const held = [{ showId: 'illinoise-2024', outletId: 'nytg', url: 'https://example.com/other-url', source: 'reviews.json' }];
+  assert.equal(census.bucketItem(item, ctxFor(held, [arm, stj])).bucket, 'held-alt-url');
+  // two open-ended runs: nothing is live alone, stays ambiguous
+  const a2 = { ...arm, closingDate: undefined }; const b2 = { ...stj, closingDate: undefined };
+  assert.equal(census.resolveSameTitleByDate([a2, b2], '2024-04-29'), null);
 });

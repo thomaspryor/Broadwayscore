@@ -237,3 +237,16 @@ test('settings.json routes exactly the five tools to this hook', () => {
     assert.ok(!re.test(tool), `${tool} should not match`);
   }
 });
+
+// BRO-7880: the denial must route "check later" to a held card, never to the owner.
+test('send_later / create_trigger denial points at a NOT-BEFORE card and never asks the owner to approve', () => {
+  for (const tool of ['send_later', 'create_trigger']) {
+    const res = spawnSyncStdinFile('bash', [HOOK], {
+      cwd: BSC, input: JSON.stringify(remote(tool, { initiation: 'own_followup' })), encoding: 'utf8',
+      env: { ...process.env, HOME: os.tmpdir(), CLAUDE_PROJECT_DIR: BSC, REMOTE_TOOL_BLOCKER_DISABLE: '' },
+    });
+    const reason = JSON.parse(res.stdout).hookSpecificOutput.permissionDecisionReason;
+    assert.match(reason, /linear-brain\.js create .*--dispatch .*--not-before/, tool);
+    assert.match(reason, /never ask the owner to approve a schedule/, tool);
+  }
+});

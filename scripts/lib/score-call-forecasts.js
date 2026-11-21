@@ -41,14 +41,29 @@ function clearTargets(rows) {
   return rows.filter((r) => r && r.p_reviews_live === false).map((r) => r.p_show_id);
 }
 
-/** Today's date (YYYY-MM-DD) in New York. Openings are NY calendar dates; UTC would flip the day at 7-8pm ET. */
-function nyToday(now = new Date()) {
-  // formatToParts, not format(): the assembled order must not depend on the runtime's locale data.
-  const parts = Object.fromEntries(
-    new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' })
-      .formatToParts(now).map((p) => [p.type, p.value]),
-  );
-  return `${parts.year}-${parts.month}-${parts.day}`;
+/**
+ * BRO-7857: shows whose predictions must close because a review is about to go live. Every Broadway play or
+ * musical with at least one review whose opening is no more than LOOKBACK_DAYS ago (older rows are past the
+ * server backstop already). A show with a review before opening (a stray row) closes too; to reopen it, remove the
+ * row, and the nightly sync's explicit clear (pre-opening shows only) then clears the flag. Ids only, sorted.
+ */
+// Past opening + grace + 1 the server backstop has closed the show anyway (src/lib/score-call.js CALL_GRACE_DAYS).
+const LIVE_LOOKBACK_DAYS = require('../../src/lib/score-call.js').CALL_GRACE_DAYS + 2;
+function reviewsLiveTargets({ shows, reviewCounts, today }) {
+  const t = Date.parse(`${today}T00:00:00Z`);
+  if (!Number.isFinite(t)) throw new Error(`bad today: ${today}`);
+  const out = [];
+  for (const s of shows) {
+    if (!s || s.category !== 'broadway' || (s.type !== 'play' && s.type !== 'musical')) continue;
+    if (!((reviewCounts[s.id] || 0) > 0)) continue;
+    const o = typeof s.openingDate === 'string' ? Date.parse(`${s.openingDate.slice(0, 10)}T00:00:00Z`) : NaN;
+    if (!Number.isFinite(o) || o < t - LIVE_LOOKBACK_DAYS * 86400000) continue;
+    out.push(s.id);
+  }
+  return out.sort();
 }
 
-module.exports = { buildSyncRows, countReviewsByShow, nyToday, clearTargets };
+/** Today's date (YYYY-MM-DD) in New York: one copy, shared with the site (src/lib/score-call.js). */
+const { nyToday } = require('../../src/lib/score-call.js');
+
+module.exports = { buildSyncRows, countReviewsByShow, nyToday, clearTargets, reviewsLiveTargets, LIVE_LOOKBACK_DAYS };

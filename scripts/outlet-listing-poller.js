@@ -1361,7 +1361,7 @@ if (require.main === module) {
 module.exports = {
   SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget, looksLikeWpPostList,
   // feed fetchers, reused by scripts/outlet-feed-reconcile.js (BRO-5358)
-  fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml, fetchViaListingConfig,
+  fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml, fetchViaListingConfig, fetchXmlWithProxyRetry,
   confirmOnPage, loadUnconfirmedCache, isUnconfirmedCached,
   buildFeedHealthReport,
 };

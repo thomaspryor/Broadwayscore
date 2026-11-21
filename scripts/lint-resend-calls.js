@@ -40,6 +40,7 @@ const ALLOWLIST = new Set([
   'scripts/fantasy-weekly-email.js',
   'scripts/predict-the-score-weekly.js', // owner-requested Friday product email, counts only (BRO-7463)
   'scripts/generate-remediation-plan.js',
+  'scripts/lib/owner-email-thread.js', // BRO-7847: owner-approved (2026-11-19) reader-feedback proposal email, OWNER_EMAIL only, no `to` parameter, one per issue, 10/day cap
   'scripts/lib/brand-mention-email.js',
   'scripts/autonomous-email.js',
   // Weekly traffic-source report to the owner (BRO-3419). Owner sign-off

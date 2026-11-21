@@ -142,8 +142,16 @@ test('source: the remaining writer entry points filter through the shared guard 
   const dropAt = col.indexOf('const kept = dropLeasedReviews(reviews)');
   assert.ok(dropAt > 0 && dropAt < col.indexOf('promoteAgedStubs(reviews)', col.indexOf('reviews.sort((a, b) => compareReviewPriority')), 'collect drops held reviews before the reserved slices and caps');
   const ing = read('scripts/ingest-urls.js');
-  const ingAt = ing.indexOf("writableShowIds([showId], { label: 'ingest-urls' })");
-  assert.ok(ingAt > ing.indexOf('Show not found') && ingAt < ing.indexOf('createOrMergeReviewFile(showId'), 'ingest-urls returns before writing a held show (it commits itself, so push-time enforce cannot undo it)');
+  // BRO-7741: the guard is leaseSkipReason + ingestRouteDecision; a held show either goes to the lane inbox or is refused,
+  // and both branches exit before the first review-file write.
+  const ingAt = ing.indexOf('lease-guard\').leaseSkipReason(showId)');
+  const writeAt = ing.indexOf('createOrMergeReviewFile(showId');
+  assert.ok(ingAt > ing.indexOf('Show not found') && ingAt < writeAt, 'ingest-urls returns before writing a held show (it commits itself, so push-time enforce cannot undo it)');
+  const guard = ing.slice(ingAt, writeAt);
+  const inboxAt = guard.indexOf("route.action === 'inbox'"); const refuseAt = guard.indexOf("route.action === 'refuse'");
+  assert.ok(inboxAt > 0 && refuseAt > inboxAt, 'both held-show branches are handled');
+  assert.match(guard.slice(inboxAt, refuseAt), /process\.exit\(0\);/, 'the inbox branch exits');
+  assert.match(guard.slice(refuseAt), /process\.exit\(0\);/, 'the refuse branch exits');
   const cp = col.slice(col.indexOf('function pushReviewTextsCheckpoint'));
   const cpEnforce = cp.indexOf('enforce --dir=');
   assert.ok(cpEnforce > 0 && cpEnforce < cp.indexOf('stageReviewTexts(rtDir)'), 'the mid-run checkpoint commit enforces the lease before staging (BRO-7171: scoped staging)');

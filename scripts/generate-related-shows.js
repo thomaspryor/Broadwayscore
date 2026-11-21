@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 const { isLocalOnlyShow } = require('./lib/local-market');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { buildScoreMap } = require('./lib/related-shows-scores');
@@ -230,12 +231,12 @@ function callOpenAI(prompt) {
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
   return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
+    const body = JSON.stringify(openaiChatBody({
       model: GPT4O_MINI,
       temperature: 0.3,
-      max_tokens: 2000,
+      maxTokens: 2000,
       messages: [{ role: 'user', content: prompt }]
-    });
+    }));
 
     const req = https.request('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

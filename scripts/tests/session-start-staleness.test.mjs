@@ -763,5 +763,168 @@ test('startBackgroundSync pins the checkout HEAD itself when the caller gives no
 
 test('session-start.sh starts the background catch-up when the startup fetch fails', () => {
   const src = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh'), 'utf8');
-  assert.match(src, /lib\.startBackgroundSync\(repoDir\)/);
+  // BRO-7789: startup/resume start it; compact swaps in a no-op (behavior covered by the BRO-7789 e2e test below).
+  assert.match(src, /bg = ev === "compact" \? \(\) => null : lib\.startBackgroundSync;/);
+  assert.match(src, /formatFetchFailedMessage\(repoDir, d, bg\(repoDir\)\)/);
+});
+
+// ── BRO-7789: sync on compact, detached checkouts, registration snapshot ─────
+// A 10-compaction cloud session kept running hooks from before a gate fix landed: the sync ran on startup/resume
+// only, and the main checkout was detached, which trySyncCodeCheckout refused outright.
+const { recordHookRegistration } = require('../lib/code-checkout-staleness.js');
+
+function runHook(cloneDir, source, extraEnv = {}) {
+  const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-7789-home-'));
+  try {
+    return execFileSyncStdinFile('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
+      cwd: cloneDir, input: JSON.stringify({ source }), encoding: 'utf8', timeout: 120000,
+      env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: 'true', CLAUDE_PROJECT_DIR: cloneDir, CODE_SYNC_DISABLED: '', ...extraEnv },
+      stdio: ['pipe', 'pipe', 'ignore'],
+    });
+  } finally {
+    fs.rmSync(fakeHome, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+}
+function seedLib(seedDir, cloneDir) {
+  commitIn(seedDir, 'scripts/lib/code-checkout-staleness.js',
+    fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'lib', 'code-checkout-staleness.js'), 'utf8'), 'lib');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['pull', '-q', '--ff-only', 'origin', 'main']);
+}
+
+test('BRO-7789 session-start.sh: a compact event fast-forwards a stale checkout on main', () => withTrio(({ seedDir, cloneDir }) => {
+  seedLib(seedDir, cloneDir);
+  pushMoreCommits(seedDir, 2);
+  const out = runHook(cloneDir, 'compact');
+  assert.match(out, /CODE CHECKOUT SYNCED: fast-forwarded .* by 2 commit\(s\)/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), git(cloneDir, ['rev-parse', 'origin/main']));
+}));
+
+test('BRO-7789 session-start.sh: compact fast-forwards a claude/* branch with no local commits (the incident shape)', () => withTrio(({ seedDir, cloneDir }) => {
+  seedLib(seedDir, cloneDir);
+  git(cloneDir, ['checkout', '-q', '-b', 'claude/self-improving-x']);
+  pushMoreCommits(seedDir, 3);
+  const out = runHook(cloneDir, 'compact');
+  assert.match(out, /CODE CHECKOUT SYNCED/);
+  assert.equal(git(cloneDir, ['symbolic-ref', '--short', 'HEAD']), 'claude/self-improving-x');
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), git(cloneDir, ['rev-parse', 'origin/main']));
+}));
+
+test('BRO-7789 session-start.sh: compact fast-forwards a detached checkout with nothing local, and stays detached', () => withTrio(({ seedDir, cloneDir }) => {
+  seedLib(seedDir, cloneDir);
+  git(cloneDir, ['checkout', '-q', '--detach', 'HEAD']);
+  pushMoreCommits(seedDir, 2);
+  const out = runHook(cloneDir, 'compact');
+  assert.match(out, /CODE CHECKOUT SYNCED/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), git(cloneDir, ['rev-parse', 'origin/main']));
+  assert.throws(() => git(cloneDir, ['symbolic-ref', '-q', 'HEAD']), 'HEAD stays detached');
+}));
+
+test('BRO-7789 session-start.sh: clear is still not a sync event', () => withTrio(({ seedDir, cloneDir }) => {
+  seedLib(seedDir, cloneDir);
+  pushMoreCommits(seedDir, 1);
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const out = runHook(cloneDir, 'clear');
+  assert.doesNotMatch(out, /SYNCED|STALE CODE/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('BRO-7789 session-start.sh: a failed fetch on compact warns but never starts the background catch-up', () => withTrio(({ seedDir, cloneDir }) => {
+  seedLib(seedDir, cloneDir);
+  git(cloneDir, ['remote', 'set-url', 'origin', path.join(os.tmpdir(), 'bro-7789-no-such-origin.git')]);
+  const out = runHook(cloneDir, 'compact');
+  assert.match(out, /HOOKS MAY BE STALE/);
+  assert.doesNotMatch(out, /background catch-up is already running/);
+}));
+
+test('BRO-7789 trySyncCodeCheckout: a detached HEAD with local commits is left alone', () => withTrio(({ seedDir, cloneDir }) => {
+  git(cloneDir, ['checkout', '-q', '--detach', 'HEAD']);
+  commitIn(cloneDir, 'local.txt', 'mine', 'local work');
+  pushMoreCommits(seedDir, 1);
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /detached HEAD with commits not on origin\/main/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('BRO-7789 trySyncCodeCheckout: a bisect in progress (detached, nothing local) is refused', () => withTrio(({ seedDir, cloneDir }) => {
+  pushMoreCommits(seedDir, 1);
+  git(cloneDir, ['checkout', '-q', '--detach', 'HEAD']);
+  fs.writeFileSync(path.join(cloneDir, '.git', 'BISECT_START'), 'main\n');
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /BISECT_START in progress/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('BRO-7789 trySyncCodeCheckout: a script registered at startup stays protected after an earlier sync unregistered it', () => withTrio(({ seedDir, cloneDir }) => {
+  const reg = JSON.stringify({ hooks: { Stop: [{ hooks: [{ type: 'command', command: 'bash "$R/.claude/hooks/gone.sh"' }] }] } });
+  commitIn(seedDir, '.claude/settings.json', reg, 'register gone.sh');
+  commitIn(seedDir, '.claude/hooks/gone.sh', 'exit 0\n', 'add gone.sh');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['pull', '-q', '--ff-only', 'origin', 'main']);
+  assert.ok(recordHookRegistration(cloneDir, 'startup'), 'startup records the loaded settings.json');
+  assert.equal(recordHookRegistration(cloneDir, 'compact'), null, 'compact never overwrites the snapshot');
+  // Compact #1 brings in a settings.json that no longer registers gone.sh (the script still exists).
+  commitIn(seedDir, '.claude/settings.json', '{}', 'unregister gone.sh');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  assert.equal(staleThenSync(cloneDir).synced, true);
+  // Compact #2 would delete the script the live process still runs.
+  git(seedDir, ['rm', '-q', '.claude/hooks/gone.sh']);
+  git(seedDir, ['commit', '-q', '-m', 'retire gone.sh']);
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /removes registered hook script\(s\): \.claude\/hooks\/gone\.sh/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+  // A restart (resume) reloads registration from HEAD, which no longer lists it: now the sync may proceed.
+  recordHookRegistration(cloneDir, 'resume');
+  assert.equal(staleThenSync(cloneDir).synced, true);
+}));
+
+test('BRO-7789 trySyncCodeCheckout: a detached HEAD moved by hand since startup is left alone', () => withTrio(({ seedDir, cloneDir }) => {
+  commitIn(seedDir, 'bro-7789-1.txt', '1', 'more 1'); git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['pull', '-q', '--ff-only', 'origin', 'main']);
+  git(cloneDir, ['checkout', '-q', '--detach', 'HEAD']);
+  recordHookRegistration(cloneDir, 'startup');
+  git(cloneDir, ['checkout', '-q', '--detach', 'HEAD~1']); // inspecting old code mid-session
+  commitIn(seedDir, 'bro-7789-2.txt', '2', 'more 2'); git(seedDir, ['push', '-q', 'origin', 'main']);
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /detached HEAD moved since the session started/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('BRO-7789 trySyncCodeCheckout: a detached checkout keeps syncing across compactions (the recorded HEAD follows each sync)', () => withTrio(({ seedDir, cloneDir }) => {
+  git(cloneDir, ['checkout', '-q', '--detach', 'HEAD']);
+  recordHookRegistration(cloneDir, 'startup');
+  commitIn(seedDir, 'bro-7789-3.txt', '3', 'more 3'); git(seedDir, ['push', '-q', 'origin', 'main']);
+  assert.equal(staleThenSync(cloneDir).synced, true);
+  commitIn(seedDir, 'bro-7789-4.txt', '4', 'more 4'); git(seedDir, ['push', '-q', 'origin', 'main']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, true, s.reason);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), git(cloneDir, ['rev-parse', 'origin/main']));
+}));
+
+test('BRO-7789 session-start.sh: compact stays out of the way of a background catch-up that holds its lock', () => withTrio(({ seedDir, cloneDir }) => {
+  seedLib(seedDir, cloneDir);
+  pushMoreCommits(seedDir, 1);
+  const lock = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-7789-bglock-'));
+  try {
+    const head = git(cloneDir, ['rev-parse', 'HEAD']);
+    const out = runHook(cloneDir, 'compact', { CODE_CHECKOUT_BG_LOCK: lock });
+    assert.match(out, /auto-sync skipped: a background catch-up is still running/);
+    assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+  } finally {
+    fs.rmSync(lock, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+}));
+
+test('BRO-7789 session-start.sh: the sync timeout path also gets the compact no-op background starter', () => {
+  const src = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh'), 'utf8');
+  assert.match(src, /lib\.trySyncCodeCheckout\(\{ repoDir, behind: r\.behind, ahead: r\.ahead, startBackground: bg \}\)/);
 });

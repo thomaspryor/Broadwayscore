@@ -18,6 +18,7 @@
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=thestage  # live
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=daily-mail,mail-on-sunday --class=NO_URL --strategy=URL_REDISCOVER
  *   node scripts/gap-recovery-driver.js --reconcile [--dry-run]        # reopen 'recovered' rows whose recovered text is no longer on disk
+ *   node scripts/gap-recovery-driver.js --retry-pending                 # push earlier checkpoints that could not be pushed, record their landings (BRO-7702)
  *
  * Options: --class=A,B  --show=ID  --strategy=X (only this strategy)  --recent-only  --historic-only
  *          --verbose (dry run: one line per candidate)  --json=PATH (dry run: plan to a file outside the repo)
@@ -44,6 +45,7 @@ const os = require('os');
 const path = require('path');
 
 const L = require('./lib/gap-recovery-ledger');
+const PO = require('./lib/gap-plan-order');
 const { STRATEGY_FLAGS, selectStrategy, compareCandidates, storedUrlWorthRetry, collectorRefetchGate } = require('./lib/gap-strategy-table');
 
 function arg(name, def = null) {
@@ -53,9 +55,15 @@ function arg(name, def = null) {
 const flag = (name) => process.argv.slice(2).includes(`--${name}`);
 const list = (v) => (v ? new Set(v.split(',').map((s) => s.trim()).filter(Boolean)) : null);
 
+// Pilot hook (BRO-7943): GAP_PILOT_ENABLE=URL_REDISCOVER turns a flagged-off
+// strategy on for ONE manual run, so its acceptance rate can be measured against
+// the 30% bar without editing the table. Never set by the nightly.
+const FLAGS = Object.fromEntries(Object.entries(STRATEGY_FLAGS).map(([k, v]) => [k, (process.env.GAP_PILOT_ENABLE || '').split(',').includes(k) ? { ...v, enabled: true } : v]));
+
 const OPTS = {
   dryRun: flag('dry-run'),
   reconcile: flag('reconcile'),
+  retryPending: flag('retry-pending'),
   verbose: flag('verbose'),
   limit: parseInt(arg('limit', '0'), 10) || 0,
   outlets: list(arg('outlet')),
@@ -87,6 +95,12 @@ const LABELS = {
   PAID_FETCH: { fetchMethod: 'gap-recovery-paid-fetch', sourceMethod: 'gap-recovery-paid-fetch', contentTierReasonFallback: 'Recovered by the gap-recovery driver (paid fetch)' },
 };
 
+/** Days since the show opened (previews if no opening date); null when undated. */
+function showAgeDays(show) {
+  const t = Date.parse((show && (show.openingDate || show.previewsStartDate)) || '');
+  return Number.isFinite(t) ? Math.floor((Date.now() - t) / 86400000) : null;
+}
+
 /** Build the candidate list with a strategy per review (no writes). */
 function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
   const { scanCorpus } = require('./lib/text-gap-metric');
@@ -107,18 +121,38 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     try { review = readJson(filePath); } catch { continue; }
     const show = shows.get(row.showId) || null;
     const ffEntry = ff.get(reviewKey) || null;
-    const eligible = (strategy) => {
+    const live = L.liveRows(ledgerIndex.get(reviewKey) || []);
+    const facts = PO.attemptFacts(live);
+    const baseEligible = (strategy) => {
       // URL_FIND: per-method progress across nights (gap-url-find.urlFindEligibility).
-      if (strategy === 'URL_FIND') return require('./lib/gap-url-find').urlFindEligibility(L.liveRows(ledgerIndex.get(reviewKey) || []), { cooldownH: Number(process.env.GAP_URL_FIND_COOLDOWN_H || 20) });
+      if (strategy === 'URL_FIND') return require('./lib/gap-url-find').urlFindEligibility(live, { cooldownH: Number(process.env.GAP_URL_FIND_COOLDOWN_H || 20), loginReader: adapterUsable(review.outletId, { explicitOutlets: OPTS.outlets }) });
       const e = L.strategyEligibility({ strategy, show, review, gapClass: row.gapClass, state: L.strategyState(ledgerIndex, reviewKey, strategy) });
       if (!e.ok) return e;
+      // BRO-7944: a non-evidence outcome (soft 404, timeout) is retried, but not minutes later by the next batch round.
+      const ne = L.recentNonEvidence(ledgerIndex.get(reviewKey) || [], strategy);
+      if (ne) return { ok: false, reason: 'non_evidence_cooldown' };
       if (strategy === 'REFETCH_FREE' && ffEntry) {
         const g = collectorRefetchGate(rg.shouldRetryFetch(show, review, ffEntry));
         if (!g.ok) return g;
       }
       return e;
     };
+    const eligible = (strategy) => {
+      // The permanent / policy reasons come first so backoff never hides them (BRO-7942).
+      const e = baseEligible(strategy);
+      if (!e.ok) return e;
+      // BRO-7942: per-review, per-strategy exponential backoff after no gain; two
+      // identical refetches prove the text is complete (no third one).
+      if (strategy === 'REFETCH_FREE') {
+        const proof = PO.identicalRefetchProof(live, { reviewUrl: review.url || null });
+        if (proof.ok) return { ok: false, reason: 'identical_refetch_complete' };
+      }
+      const bo = PO.backoffGate(live, strategy, { reviewUrl: review.url || null, baseH: Number(process.env.GAP_BACKOFF_BASE_H) || undefined });
+      if (!bo.ok) return { ok: false, reason: bo.reason };
+      return e;
+    };
     const owned = L.ownedRecordReason(review);
+    if (owned === 'manual_tier' && L.isStaleManualTierPin({ ...review, showId: row.showId }, require('./lib/content-quality').classifyContentTier)) STALE_PINS.push(reviewKey);
     // Re-selection with extra run gates: a browser session that fails at run
     // time falls through to the next strategy instead of starving it.
     const reselect = (extraGates = {}) => selectStrategy({
@@ -130,22 +164,33 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       // An unknown show date counts as 'recent' for ordering, but such shows
       // are often old: do not take ARCHIVE away from them.
       recency: row.dateKnown === false ? null : row.recency,
+      // ARCHIVE needs a show old enough to have a Wayback capture (BRO-7943: min age, not 'historic only').
+      showAgeDays: showAgeDays(show),
       storedUrlOk: row.gapClass === 'URL_WRONG_PAGE' ? storedUrlWorthRetry({ url: review.url, show }) : undefined,
       eligible,
       runGates: { ...runGates, ...extraGates },
       only: OPTS.only,
+      flags: FLAGS,
     });
     const sel = owned ? { strategy: null, skipped: [{ strategy: 'ANY', reason: owned }] } : reselect();
     out.push({
       reviewKey, filePath, showId: row.showId, file: row.file, outletId: review.outletId || row.outletId,
       outlet: review.outlet, criticName: review.criticName, source: review.source, url: review.url || null,
-      gapClass: row.gapClass, subclass: row.subclass, recency: row.recency,
+      gapClass: row.gapClass, subclass: row.subclass, recency: row.recency, contentTier: review.contentTier || null,
       showDate: (show && (show.openingDate || show.previewsStartDate)) || null,
+      tier: (outlets[review.outletId || row.outletId] && outlets[review.outletId || row.outletId].tier) || null,
+      attempts: facts.attempts, lastTryMs: facts.lastTryMs,
+      urlFindLastTryMs: L.liveRows(ledgerIndex.get(reviewKey) || []).filter((r) => r.strategy === 'URL_FIND').reduce((m, r) => Math.max(m, Date.parse(r.ts) || 0), 0),
       show, strategy: sel.strategy, skipped: sel.skipped, bytesBefore: (review.fullText || '').length, reselect: owned ? null : reselect,
     });
   }
   out.sort(compareCandidates);
   return out;
+}
+
+/** sha256 of the file's current fullText: lets a later round prove an uncommitted file is still OUR accepted text. */
+function acceptedHash(filePath) {
+  try { return require('crypto').createHash('sha256').update(String(readJson(filePath).fullText || '')).digest('hex'); } catch { return null; }
 }
 
 function bump(o, k, n = 1) { o[k] = (o[k] || 0) + n; }
@@ -174,17 +219,20 @@ function printPlan(cands) {
     console.log(`  ${k.padEnd(26)} ${String(byClass[k]).padStart(5)}  ${Object.entries(v).map(([s, n]) => `${s}=${n}`).join(' ')}`);
   }
   console.log('\nno strategy, by first skip reason chain:', JSON.stringify(skipReasons));
-  console.log('\nstrategy flags:', JSON.stringify(Object.fromEntries(Object.entries(STRATEGY_FLAGS).map(([k, v]) => [k, v.enabled]))));
+  if (STALE_PINS.length) console.log(`\nSTALE MANUAL TIER PINS (${STALE_PINS.length}): pinned below complete, but the text now classifies complete; clear manualContentTier so the gap can close (BRO-7943):\n  ${STALE_PINS.join('\n  ')}`);
+  console.log('\nstrategy flags:', JSON.stringify(Object.fromEntries(Object.entries(FLAGS).map(([k, v]) => [k, v.enabled]))));
   return { byClass, byStrategy, byClassStrategy, skipReasons };
 }
 
 /** Stats for --summary (nightly reads it; never a review file). */
+let DRY_WORK_ORDER = null;
+const STALE_PINS = [];
 let RUN_LEDGER = null; // set in main(); a live manual run publishes it at exit
-const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, superseded: 0, error: null };
+const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, timeBudgetHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, superseded: 0, error: null };
 function writeSummary() {
-  const p = arg('summary');
-  if (!p) return;
-  try { fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, JSON.stringify(SUMMARY, null, 2)); } catch (e) { console.error(`summary write failed: ${e.message}`); }
+  const summaryFile = arg('summary');
+  if (!summaryFile) return;
+  try { fs.mkdirSync(path.dirname(summaryFile), { recursive: true }); fs.writeFileSync(summaryFile, JSON.stringify(SUMMARY, null, 2)); } catch (e) { console.error(`summary write failed: ${e.message}`); }
 }
 
 /**
@@ -214,6 +262,39 @@ async function runReconcile({ dir, ledgerPath }) {
   return reopen;
 }
 
+/**
+ * BRO-7702: the nightly's second push attempt. A checkpoint push that fails
+ * (the shared clone can sit hundreds of commits behind origin, or another
+ * writer holds the push mutex) is journaled in the pending file and was only
+ * retried by the NEXT night, so the night ended 'failed' and its accepts
+ * landed a day late. This lands them now and records the recovered rows.
+ */
+async function runRetryPending({ dir, ledgerPath }) {
+  const { retryPendingPushes } = require('./lib/review-texts-checkpoint');
+  SUMMARY.mode = 'retry_pending';
+  const earlier = L.pendingPushInfo(L.readRows(ledgerPath));
+  let landedN = 0;
+  const onLanded = (landed) => {
+    const key = L.reviewKeyOf(landed.path);
+    const info = (landed.meta && landed.meta.source === 'gap-recovery-driver' && landed.meta.attempts && landed.meta.attempts[key]) || earlier.get(key);
+    if (!info) return;
+    L.appendRows([L.recoveredRowFromLanding(landed, info)], ledgerPath);
+    landedN++;
+  };
+  try {
+    const pend = retryPendingPushes({ repoDir: dir, onLanded });
+    console.log(`retry-pending: ${pend.entries} pending checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${pend.notLanded.length} not landed`);
+    SUMMARY.landed = landedN;
+    SUMMARY.pushFailed = pend.notLanded.length > 0;
+    return pend.notLanded.length ? 1 : 0;
+  } catch (e) {
+    SUMMARY.pushFailed = true;
+    SUMMARY.error = String(e.message).slice(0, 300);
+    if (e.output) console.error(`retry-pending push output (tail):\n${String(e.output).slice(-1500)}`);
+    throw e;
+  }
+}
+
 async function main() {
   // Manual runs get the same keys the nightly sources from .env (fills only unset vars; no .env in CI).
   require('./lib/load-env').loadEnv(ROOT);
@@ -227,6 +308,10 @@ async function main() {
   // Only a run that holds the lock publishes at exit (a refused run wrote nothing).
   RUN_LEDGER = ledgerPath;
   if (OPTS.reconcile) { await runReconcile({ dir, ledgerPath }); return 0; }
+  if (OPTS.retryPending) {
+    if (OPTS.dryRun) { console.error('--retry-pending pushes and writes the ledger; it has no --dry-run form'); return 2; }
+    return runRetryPending({ dir, ledgerPath });
+  }
 
   const showsRaw = readJson(showsPath());
   const shows = new Map((Array.isArray(showsRaw) ? showsRaw : showsRaw.shows || []).filter((s) => s && s.id).map((s) => [s.id, s]));
@@ -263,6 +348,15 @@ async function main() {
       const envN = (k, d) => { const n = parseInt(process.env[k] || String(d), 10); return Number.isFinite(n) && n >= 0 ? n : d; };
       const plan = planUrlFind(cands, envN('GAP_URL_FIND_MAX_PER_RUN', 12), envN('GAP_URL_FIND_FREE_MAX_PER_RUN', 24));
       const uf = plan.filter((c) => c.strategy === 'URL_FIND');
+      const withStrategy = plan.filter((c) => c.strategy);
+      const split = PO.slotSplit(withStrategy);
+      const bandCounts = {};
+      for (const c of withStrategy) bump(bandCounts, `band${PO.bandOf(c)}`);
+      console.log(`\nRun order: ${withStrategy.length} planned; slots: ${split.retry} retries + ${split.new} new items; bands ${JSON.stringify(bandCounts)}`);
+      console.log('first 50 planned (band, attempts, strategy, key):');
+      withStrategy.slice(0, 50).forEach((c, i) => console.log(`  ${String(i + 1).padStart(2)} b${PO.bandOf(c)} a${c.attempts || 0} ${c.strategy}${c.urlFindFreeOnly ? '(free)' : ''} ${c.reviewKey}`));
+      DRY_WORK_ORDER = withStrategy.map((c) => ({ i: 0, band: PO.bandOf(c), attempts: c.attempts || 0, strategy: c.strategy, reviewKey: c.reviewKey, recency: c.recency, outletId: c.outletId }));
+      DRY_WORK_ORDER.forEach((x, i) => { x.i = i + 1; });
       if (uf.length || plan.skippedUrlFind) {
         console.log(`\nURL_FIND tonight: ${uf.filter((c) => !c.urlFindFreeOnly).length} full + ${uf.filter((c) => c.urlFindFreeOnly).length} free-only; ${plan.skippedUrlFind} wait`);
         for (const c of uf.slice(0, 40)) console.log(`  ${c.urlFindFreeOnly ? 'free' : 'full'}  ${c.recency || '?'}  ${String(c.showDate || '').slice(0, 10)}  ${c.reviewKey}`);
@@ -272,12 +366,12 @@ async function main() {
       // A plan report from --json=, never a review file (read from argv
       // directly so review-write-safety's taint scan does not follow OPTS).
       const planReportPath = arg('json');
-      fs.writeFileSync(planReportPath, JSON.stringify({ runId: RUN_ID, summary, candidates: cands.map(({ show, ...c }) => c) }, null, 2));
+      fs.writeFileSync(planReportPath, JSON.stringify({ runId: RUN_ID, summary, workOrder: DRY_WORK_ORDER, candidates: cands.map(({ show, ...c }) => c) }, null, 2));
       console.log(`plan written to ${OPTS.jsonOut}`);
     }
     return 0;
   }
-  return runLive({ dir, cands, rows, ledgerPath, serpKeys, gui });
+  return runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates });
 }
 
 /** Tonight's URL_FIND slots over the planned candidates (gap-url-find.planUrlFindWork). */
@@ -285,16 +379,16 @@ function planUrlFind(cands, paidSlots, freeSlots) {
   const reg = readJson(path.join(ROOT, 'data', 'outlet-registry.json'));
   const outlets = reg.outlets || reg;
   return require('./lib/gap-url-find').planUrlFindWork(cands.filter((c) => c.strategy), {
-    paidSlots, freeSlots, tierOf: (id) => (outlets[id] && outlets[id].tier) || null,
+    paidSlots, freeSlots, freeInPlace: true, tierOf: (id) => (outlets[id] && outlets[id].tier) || null,
   });
 }
 
-async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
+async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates = {} }) {
   const { recoverReviewTextVerified } = require('./lib/gap-acceptance');
   const { checkpointReviewTexts, retryPendingPushes, createWriteTracker, ReviewTextsPushError } = require('./lib/review-texts-checkpoint');
   const { withReviewTextsLock } = require('./lib/review-texts-lock');
   const S = require('./lib/gap-strategies');
-  const { adapterFor, openSession } = require('./lib/browser-outlet-adapters');
+  const { adapterFor, adapterUsable, openSession, closeOtherSessions } = require('./lib/browser-outlet-adapters');
   // A per-run cap (the nightly job) replaces the per-UTC-day count, so manual
   // runs earlier in the same UTC day do not eat the night's budget.
   const runCeiling = L.runCeiling();
@@ -303,18 +397,22 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const pendingInfo = new Map(); // reviewKey -> attempt info for the recovered row
   const earlierPending = L.pendingPushInfo(rows); // accepted by an earlier run, not yet landed
   const landedKeys = new Set();
+  const improvedKeys = new Set(); // BRO-7942: recovered counts only when the tier went up
   const onLanded = (landed) => {
     const key = L.reviewKeyOf(landed.path);
     const info = pendingInfo.get(key)
       || (landed.meta && landed.meta.source === 'gap-recovery-driver' && landed.meta.attempts && landed.meta.attempts[key])
       || earlierPending.get(key);
     if (!info) return; // another script's pending entry
-    L.appendRows([L.recoveredRowFromLanding(landed, info)], ledgerPath);
+    const row = L.recoveredRowFromLanding(landed, info);
+    L.appendRows([row], ledgerPath);
     landedKeys.add(key);
+    if (row.detail && row.detail.tierImproved) improvedKeys.add(key);
   };
 
   // Land what an earlier run committed but could not push, before new work.
-  const pend = retryPendingPushes({ repoDir: dir, onLanded });
+  let pend;
+  try { pend = retryPendingPushes({ repoDir: dir, onLanded }); } catch (e) { SUMMARY.pushFailed = true; SUMMARY.error = String(e.message).slice(0, 300); throw e; } // BRO-7944: counts as a failed push for the batch runner
   if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${pend.notLanded.length} not landed`);
 
   let urlFindRuns = 0;
@@ -328,11 +426,44 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const URL_FIND_FREE_MAX_PER_RUN = envInt('GAP_URL_FIND_FREE_MAX_PER_RUN', 24);
   const todo = planUrlFind(cands, URL_FIND_MAX_PER_RUN, URL_FIND_FREE_MAX_PER_RUN);
   if (todo.skippedUrlFind) console.log(`  URL_FIND: ${URL_FIND_MAX_PER_RUN} full + ${URL_FIND_FREE_MAX_PER_RUN} free-only slots tonight; ${todo.skippedUrlFind} wait for a later night`);
-  const work = OPTS.limit ? todo.slice(0, OPTS.limit) : todo;
+  // Browser items grouped by adapter: one Chrome launch + auth probe per outlet, not per switch (BRO-7943).
+  const work = PO.groupBrowserSessions(OPTS.limit ? todo.slice(0, OPTS.limit) : todo, (c) => { const a = adapterFor(c.outletId); return a && a.name; });
+  const split = PO.slotSplit(work);
+  SUMMARY.slots = { retry: split.retry, new: split.new };
+  console.log(`  slots tonight: ${split.retry} retries + ${split.new} new items (of ${work.length}); URL_FIND time slice ${Math.round(PO.urlFindSliceMs() / 60000)} min`);
+  let urlFindSpentMs = 0;
+  let urlFindSliceSkipped = 0;
   console.log(`\n${todo.length} candidates with a strategy; running ${work.length}. ${runCeiling != null ? `Run ceiling ${ceiling}` : `Daily ceiling ${ceiling} (accepted today so far: ${L.acceptedToday(rows)})`}.`);
 
   const stats = { attempted: 0, accepted: 0, byStrategy: {} };
   const sessions = new Map(); // adapter name -> session | {failed}
+  // Logged in at the probe, lost mid-run: still a lost session tonight.
+  const markSessionLost = async (ad, s, got) => {
+    if (got.ok || got.outcome !== 'auth_failed' || s.failed) return;
+    await s.close().catch(() => {});
+    sessions.set(ad.name, { failed: got });
+    SUMMARY.authOkOutlets = SUMMARY.authOkOutlets.filter((n) => n !== ad.name);
+    if (!SUMMARY.authFailedOutlets.includes(ad.name)) SUMMARY.authFailedOutlets.push(ad.name);
+  };
+  // One logged-in browser per adapter per run (opened on first use).
+  const sessionFor = async (ad) => {
+    if (!sessions.has(ad.name)) {
+      // Every adapter session holds the one cookie-renew lock, so a second
+      // outlet could never open while the first stays open (BRO-7943: FT
+      // joined The Stage in the nightly). Close the others first; a closed
+      // outlet reopens later in the run if it has more work.
+      await closeOtherSessions(sessions, ad.name);
+      const o = gui.available ? await openSession(ad) : { ok: false, outcome: 'browser_unavailable', reason: 'gui' };
+      sessions.set(ad.name, o.ok ? o.session : { failed: o });
+      if (o.ok) { if (!SUMMARY.authOkOutlets.includes(ad.name)) SUMMARY.authOkOutlets.push(ad.name); }
+      else if (o.outcome === 'auth_failed') {
+        // A reopen (closeOtherSessions closed it earlier) that lost the login: not OK any more.
+        SUMMARY.authOkOutlets = SUMMARY.authOkOutlets.filter((n) => n !== ad.name);
+        if (!SUMMARY.authFailedOutlets.includes(ad.name)) SUMMARY.authFailedOutlets.push(ad.name);
+      }
+    }
+    return sessions.get(ad.name);
+  };
   const start = Date.now();
   let accepted = 0;
   let runError = null;
@@ -340,12 +471,14 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const record = (c, strategy, extra) => {
     const st = L.strategyState(L.indexRows(L.readRows(ledgerPath)), c.reviewKey, strategy);
     const stamp = L.evidenceStamp({ show: c.show, strategy, outcome: extra.outcome, reason: extra.reason, priorState: st });
-    L.appendRows([{ reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, runId: RUN_ID, bytesBefore: c.bytesBefore, url: extra.url || c.url, ...extra, ...stamp }], ledgerPath);
+    // BRO-7944: url last so an `extra.url: undefined` (strategy gave none) cannot blank the candidate's url.
+    L.appendRows([{ reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, runId: RUN_ID, bytesBefore: c.bytesBefore, tier: c.contentTier, ...extra, ...stamp, url: extra.url || c.url }], ledgerPath);
     const b = (stats.byStrategy[strategy] = stats.byStrategy[strategy] || { attempted: 0, accepted: 0, outcomes: {} });
     b.attempted++;
     bump(b.outcomes, `${extra.outcome}:${String(extra.reason || '').split(':')[0]}`);
   };
 
+  const CADENCE = require('./lib/gap-recovery-batch').checkpointCadence(); // BRO-7944: env-tunable, capped at 10 accepts / 10 min
   let lastFlushAt = Date.now();
   const flush = (label) => {
     lastFlushAt = Date.now();
@@ -365,19 +498,48 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     }
   };
 
+  // BRO-7944: a round killed between an accept and its checkpoint leaves the accepted text
+  // uncommitted in the clone with a pending_push row. Adopt and land it (no lost text, no refetch).
+  try {
+    const { orphanAccepts } = require('./lib/gap-recovery-batch');
+    const { execFileSync } = require('child_process');
+    const repo = fs.realpathSync(dir);
+    const { landingKey } = require('./lib/review-texts-checkpoint');
+    // Only this driver's accepts: recover-wayback-reviews (runId wayback-*) owns its own uncommitted files.
+    const stillPending = new Map([...L.pendingPushInfo(L.readRows(ledgerPath))].filter(([k, v]) => !landedKeys.has(k) && !String(v.runId || '').startsWith('wayback-')));
+    const o = orphanAccepts(stillPending, {
+      readText: (k) => { try { return readJson(path.join(dir, k)).fullText || ''; } catch { return null; } },
+      hashText: (t) => require('crypto').createHash('sha256').update(String(t)).digest('hex'),
+      isDirty: (k) => { try { return execFileSync('git', ['-C', repo, 'status', '--porcelain', '--', k], { encoding: 'utf8' }).trim().length > 0; } catch { return false; } },
+    });
+    for (const k of o.adopt) {
+      const abs = path.resolve(dir, k);
+      tracker.add(abs); tracker.expected.set(abs, landingKey(readJson(abs))); pendingInfo.set(k, stillPending.get(k));
+    }
+    SUMMARY.adopted = o.adopt.length; SUMMARY.orphansGone = o.gone.length;
+    if (o.adopt.length || o.gone.length) console.log(`  [adopt] ${o.adopt.length} uncommitted accepted review(s) from an earlier round; ${o.gone.length} pending with no text on disk`);
+    if (o.adopt.length) flush('adopt-orphans');
+  } catch (e) { console.error(`  [adopt] ${e.message}`); if (e && e.name === 'ReviewTextsPushError') SUMMARY.pushRetryFailed = true; }
+
   try {
     for (let i = 0; i < work.length; i++) {
       const c = work[i];
       let strategy = c.strategy;
       try {
-      if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); break; }
+      if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); SUMMARY.timeBudgetHit = true; break; }
       if (L.ceilingReachedNow({ file: ledgerPath, ceiling, runMode: runCeiling != null, acceptedThisRun: accepted })) { console.log(`\n${runCeiling != null ? 'Run' : 'Daily'} ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
       if (L.killSwitchActive().active) { console.log('\nKill switch turned on mid-run; stopping.'); break; }
+      // BRO-7944: the run lock belongs to the parent (nightly/batch). If it died we no longer own exclusivity: stop.
+      if (process.env.GAP_RECOVERY_RUN_LOCK_PARENT && String(process.ppid) !== process.env.GAP_RECOVERY_RUN_LOCK_PARENT) { console.log('\nParent (lock holder) is gone; stopping.'); SUMMARY.error = SUMMARY.error || 'parent_gone'; break; }
       // An accept must not wait uncommitted behind slow reviews that accept nothing (ship-check P1).
-      if (tracker.size && Date.now() - lastFlushAt > 2 * 60 * 1000) flush(`checkpoint ${accepted}`);
+      if (tracker.size && Date.now() - lastFlushAt > CADENCE.maxMs) flush(`checkpoint ${accepted}`);
       // Full (paid-capable) URL_FIND slots are planned above; this backstop
       // holds the cap for any URL_FIND the plan did not mark.
+      // BRO-7944: accepted by an earlier round and awaiting landing (or adopted above): nothing left to attempt.
+      if (earlierPending.has(c.reviewKey) || pendingInfo.has(c.reviewKey)) continue;
       if (c.strategy === 'URL_FIND' && !c.urlFindFreeOnly && urlFindRuns >= URL_FIND_MAX_PER_RUN) continue;
+      // BRO-7942: URL_FIND ran ~55 of the 85 nightly minutes for 0/96 accepted: it gets a time slice.
+      if (c.strategy === 'URL_FIND' && PO.urlFindSliceExhausted(urlFindSpentMs)) { urlFindSliceSkipped++; continue; }
       if (c.strategy === 'URL_FIND' && !c.urlFindFreeOnly) urlFindRuns++;
       // Browser preferred but no GUI: record the non-evidence row, then use the next strategy.
       for (const k of c.skipped) {
@@ -392,21 +554,9 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       let got;
       if (strategy === 'BROWSER_SESSION') {
         const ad = adapterFor(c.outletId);
-        if (!sessions.has(ad.name)) {
-          const o = gui.available ? await openSession(ad) : { ok: false, outcome: 'browser_unavailable', reason: 'gui' };
-          sessions.set(ad.name, o.ok ? o.session : { failed: o });
-          if (o.ok) SUMMARY.authOkOutlets.push(ad.name);
-          else if (o.outcome === 'auth_failed') SUMMARY.authFailedOutlets.push(ad.name);
-        }
-        const s = sessions.get(ad.name);
+        const s = await sessionFor(ad);
         got = s.failed ? { ok: false, outcome: s.failed.outcome, reason: s.failed.reason } : await S.browserSession(c, s);
-        if (!got.ok && got.outcome === 'auth_failed' && !s.failed) {
-          await s.close().catch(() => {});
-          sessions.set(ad.name, { failed: got });
-          // Logged in at the probe, lost mid-run: still a lost session tonight.
-          SUMMARY.authOkOutlets = SUMMARY.authOkOutlets.filter((n) => n !== ad.name);
-          if (!SUMMARY.authFailedOutlets.includes(ad.name)) SUMMARY.authFailedOutlets.push(ad.name);
-        }
+        await markSessionLost(ad, s, got);
         // A session-level failure (no session for the outlet this run) is
         // non-evidence: record it and fall through to the next eligible
         // strategy, so a broken login never starves ARCHIVE run after run.
@@ -426,10 +576,9 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       else if (strategy === 'URL_REDISCOVER') got = await S.urlRediscover(c, serpKeys);
       else if (strategy === 'PAID_FETCH') got = await S.paidFetch(c);
       else if (strategy === 'URL_FIND') {
+        if (PO.urlFindSliceExhausted(urlFindSpentMs)) { urlFindSliceSkipped++; stats.attempted--; continue; } // fallback-reached URL_FIND obeys the slice too
         // Links a past URL_FIND run found and the live gate refused are not fetched again.
-        const refusedUrls = new Set(L.liveRows(L.indexRows(L.readRows(ledgerPath)).get(c.reviewKey) || [])
-          .filter((r) => r.strategy === 'URL_FIND')
-          .flatMap((r) => [...(r.outcome === 'rejected' && r.url ? [r.url] : []), ...((r.detail && r.detail.refusedCandidates) || [])]));
+        const refusedUrls = require('./lib/gap-url-find').refusedUrlsFromRows(L.liveRows(L.indexRows(L.readRows(ledgerPath)).get(c.reviewKey) || []));
         // GAP_URL_FIND_METHODS narrows a bulk run to the methods with measured yield.
         const methods = process.env.GAP_URL_FIND_METHODS ? process.env.GAP_URL_FIND_METHODS.split(',').map((m) => m.trim()).filter(Boolean) : null;
         // A fallback-reached URL_FIND takes a paid slot only while one is left.
@@ -437,7 +586,27 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
           plannedStrategy: c.strategy, freeOnly: c.urlFindFreeOnly, paidUsed: urlFindRuns, paidMax: URL_FIND_MAX_PER_RUN,
         });
         urlFindRuns = slot.paidUsed;
-        got = await S.urlFind(c, { dir, rootDir: ROOT, serpKeys, refusedUrls, methods, freeOnly: slot.freeOnly });
+        const ufStart = Date.now();
+        try { got = await S.urlFind(c, { dir, rootDir: ROOT, serpKeys, refusedUrls, methods, freeOnly: slot.freeOnly }); } finally { urlFindSpentMs += Date.now() - ufStart; }
+        // BRO-7962: the link was found but sits behind a paywall or bot check. When this
+        // outlet has a logged-in browser tonight, read it there; the text then goes
+        // through the same acceptance gate (identity, byline, date) as any URL_FIND find.
+        const walled = require('./lib/gap-url-find').walledHandoffLink(got, {
+          browserGateOpen: !runGates.BROWSER_SESSION,
+          browserEnabled: require('./lib/gap-strategy-table').STRATEGY_FLAGS.BROWSER_SESSION.enabled,
+          hasAdapter: adapterUsable(c.outletId, { explicitOutlets: OPTS.outlets }),
+        });
+        if (walled) {
+          const ad = adapterFor(c.outletId);
+          const s = await sessionFor(ad);
+          const bStart = Date.now();
+          let b;
+          try { b = s.failed ? { ok: false, outcome: s.failed.outcome, reason: s.failed.reason } : await S.browserSession({ ...c, url: walled.url }, s); } finally { urlFindSpentMs += Date.now() - bStart; } // part of the URL_FIND slice
+          await markSessionLost(ad, s, b);
+          console.log(`  walled link ${walled.url} (${walled.code}) -> browser: ${b.ok ? `read ${b.rawText.length} chars` : `${b.outcome} (${b.reason})`}`);
+          if (b.ok) got = { ...b, url: walled.url, via: `url-find:${walled.method || '?'}:browser`, methods: { ...got.methods, [walled.method]: 'found' }, foundBy: walled.method || null, refusedCandidates: got.refusedCandidates, foundUnreadable: got.foundUnreadable };
+          else got = require('./lib/gap-url-find').applyWalledBrowserResult(got, walled, b);
+        }
       }
       else got = { ok: false, outcome: 'non_evidence', reason: `strategy_unbuilt:${strategy}` };
 
@@ -460,11 +629,11 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         });
       }
 
-      const urlFindDetail = got.methods ? { policy: require('./lib/gap-url-find').URL_FIND_POLICY, methods: got.methods, foundBy: got.foundBy || null,
-        refusedCandidates: got.refusedCandidates || [], foundUnreadable: got.foundUnreadable || [] } : undefined;
+      const urlFindDetail = got.methods ? { policy: require('./lib/gap-url-find').URL_FIND_POLICY, refusalPolicy: require('./lib/gap-url-find').REFUSAL_POLICY, methods: got.methods, foundBy: got.foundBy || null,
+        refusedCandidates: got.refusedCandidates || [], foundUnreadable: got.foundUnreadable || [], ...(got.walledBrowser ? { walledBrowser: got.walledBrowser } : {}) } : undefined;
       if (!got.ok) {
         console.log(`  ✗ ${got.outcome} (${got.reason})${got.methods ? ` ${JSON.stringify(got.methods)}` : ''}`);
-        record(c, strategy, { outcome: got.outcome, reason: got.reason, url: got.url, ...(urlFindDetail ? { detail: urlFindDetail } : {}) });
+        record(c, strategy, { outcome: got.outcome, reason: got.reason, ...L.refusalDiagnostics({ c, got }), ...(urlFindDetail ? { detail: urlFindDetail } : {}) });
         // A hard 404/410 on the stored url goes onto the record (httpStatus),
         // so the classifier routes it to URL_DEAD and url rediscovery ranks it.
         if (!got.url || got.url === c.url) {
@@ -514,24 +683,24 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         // URL_FIND: the found link was refused by the live gate (LLM identity
         // check included); its method stays un-done so the next night tries
         // the other links (this url is skipped from now on).
-        const detail = { via: got.via, llmAsked: !!r.llmAsked, ...(urlFindDetail ? { ...urlFindDetail, methods: { ...urlFindDetail.methods, [got.foundBy]: 'found_refused_live' } } : {}) };
-        record(c, strategy, { outcome, reason: r.code, url: got.url, bytesAfter: r.newLen, detail });
+        const detail = { via: got.via, llmAsked: !!r.llmAsked, ...(got.rawText ? { fetchedHash: require('crypto').createHash('sha1').update(String(got.rawText).replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 16) } : {}), ...(urlFindDetail ? { ...urlFindDetail, methods: { ...urlFindDetail.methods, [got.foundBy]: 'found_refused_live' } } : {}) };
+        record(c, strategy, { outcome, reason: r.code, ...L.refusalDiagnostics({ c, got, r }), detail });
         continue;
       }
       accepted++;
       stats.accepted++;
       let priorFullTextHash = null;
       try { priorFullTextHash = readJson(c.filePath).textRecoveryProvenance.priorFullTextHash; } catch { /* none */ }
-      const info = { reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, url: got.url, bytesBefore: c.bytesBefore, bytesAfter: r.newLen, priorFullTextHash, runId: RUN_ID };
+      const info = { reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, url: got.url, bytesBefore: c.bytesBefore, bytesAfter: r.newLen, priorFullTextHash, runId: RUN_ID, priorTier: r.decision.priorTier || null, newTier: r.decision.newTier || null };
       pendingInfo.set(c.reviewKey, info);
       console.log(`  ✓ accepted ${r.newLen} chars via ${got.via} (tier ${r.decision.priorTier} -> ${r.decision.newTier})`);
-      record(c, strategy, { outcome: 'pending_push', reason: 'accepted', url: got.url, bytesAfter: r.newLen, priorFullTextHash, detail: { via: got.via, newTier: r.decision.newTier, ...(urlFindDetail || {}) } });
+      record(c, strategy, { outcome: 'pending_push', reason: 'accepted', url: got.url, bytesAfter: r.newLen, priorFullTextHash, detail: { via: got.via, acceptedHash: acceptedHash(c.filePath), priorTier: r.decision.priorTier || null, newTier: r.decision.newTier, ...(urlFindDetail || {}) } });
       stats.byStrategy[strategy].accepted++;
       // Every 5 accepts, or once an accept has waited 2 minutes: an uncommitted
       // write in the shared review-texts clone is lost to any other job's
       // reset (BRO-7171 2026-11-10: a URL_FIND accept, ~6 min per review, was
       // wiped by a concurrent cleanup job's `git reset` before checkpoint 5).
-      if (accepted % 5 === 0 || strategy === 'URL_FIND' || Date.now() - lastFlushAt > 2 * 60 * 1000) flush(`checkpoint ${accepted}`);
+      if (accepted % CADENCE.everyAccepts === 0 || strategy === 'URL_FIND' || Date.now() - lastFlushAt > CADENCE.maxMs) flush(`checkpoint ${accepted}`);
       await new Promise((res) => setTimeout(res, 1500));
       } catch (e) {
         // Renamed/deleted under us: skip this review (non-evidence), keep the night going.
@@ -543,6 +712,10 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     flush('final');
   } catch (e) {
     runError = e;
+    // BRO-7702: only a bare push failure may be cleared by the nightly's push
+    // retry; a crash (or lost text, ReviewTextsLandingError) followed by a
+    // failed flush stays a failed night.
+    SUMMARY.pushOnlyFailure = e && e.name === 'ReviewTextsPushError';
     // Commit and push what was already accepted before stopping, so no text
     // sits uncommitted with a pending_push row nothing will resolve. (Not after
     // a push failure: that work is already committed and journaled.)
@@ -553,20 +726,31 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     for (const s of sessions.values()) if (s && s.close) await s.close().catch(() => {});
   }
 
-  Object.assign(SUMMARY, { mode: 'live', attempted: stats.attempted, accepted: stats.accepted, landed: landedKeys.size, byStrategy: stats.byStrategy, runId: RUN_ID });
-  if (runError) { SUMMARY.error = String(runError.message).slice(0, 300); SUMMARY.pushFailed = runError instanceof ReviewTextsPushError; }
+  try { SUMMARY.spend = { bd: require('./lib/scraper').getScraperStats().bdRequests || 0, serp: require('./lib/url-discovery').getSerpQueryCount() }; } catch { SUMMARY.spend = null; }
+  Object.assign(SUMMARY, { mode: 'live', attempted: stats.attempted, accepted: stats.accepted, landed: landedKeys.size, landedImproved: improvedKeys.size, urlFindSpentMin: Math.round(urlFindSpentMs / 6000) / 10, urlFindSliceSkipped, byStrategy: stats.byStrategy, runId: RUN_ID });
+  if (runError) {
+    SUMMARY.error = String(runError.message).slice(0, 300); SUMMARY.pushFailed = runError instanceof ReviewTextsPushError;
+    // BRO-7702: the git/push-with-retry output was captured and dropped, so a failed night said only "exit 1".
+    if (runError.output) { SUMMARY.pushOutputTail = String(runError.output).slice(-800); }
+  }
   console.log('\n' + '='.repeat(60));
-  console.log(`Run ${RUN_ID}: attempted ${stats.attempted}, accepted ${stats.accepted}, landed (recovered rows) ${landedKeys.size}`);
+  console.log(`Run ${RUN_ID}: attempted ${stats.attempted}, accepted ${stats.accepted}, landed (recovered rows) ${landedKeys.size}, tier improved ${improvedKeys.size}; URL_FIND ${Math.round(urlFindSpentMs / 60000)} min used, ${urlFindSliceSkipped} past the slice`);
   for (const [s, b] of Object.entries(stats.byStrategy)) {
     console.log(`  ${s.padEnd(16)} attempted ${b.attempted}  accepted ${b.accepted}  yield ${b.attempted ? Math.round((100 * b.accepted) / b.attempted) : 0}%  ${JSON.stringify(b.outcomes)}`);
   }
   try { console.log(`  live SERP queries this run: ${require('./lib/url-discovery').getSerpQueryCount()}`); } catch { /* not loaded */ }
   if (runError) {
-    if (runError instanceof ReviewTextsPushError) console.error(`PUSH FAILED: ${runError.message} (pending_push rows stay; next run retries before new work)`);
+    if (runError instanceof ReviewTextsPushError) {
+      console.error(`PUSH FAILED: ${runError.message} (pending_push rows stay; next run retries before new work)`);
+      if (runError.output) console.error(`push output (tail):\n${String(runError.output).slice(-1500)}`);
+    }
     throw runError;
   }
   return 0;
 }
+
+// BRO-7944: a timed-out/killed round (batch runner SIGTERM) still leaves its summary behind.
+process.on('SIGTERM', () => { SUMMARY.error = SUMMARY.error || 'terminated (SIGTERM)'; writeSummary(); process.exit(143); });
 
 main()
   .then((code) => { process.exitCode = code || 0; })

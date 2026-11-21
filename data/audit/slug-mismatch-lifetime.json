@@ -1,18 +1,19 @@
 {
-  "updatedAt": "2026-11-17T11:14:29.323Z",
-  "scanned": 4845,
-  "showsWithViolations": 200,
-  "totalViolations": 229,
-  "newSinceLastRun": 1,
-  "newViolationKeys": [
-    "les-miserables-regional-2024::https://www.talkinbroadway.com/page/regional/chicago/ch764.html"
-  ],
-  "actionableViolations": 3,
+  "updatedAt": "2026-11-21T10:46:15.986Z",
+  "scanned": 4910,
+  "showsWithViolations": 202,
+  "totalViolations": 231,
+  "newSinceLastRun": 0,
+  "newViolationKeys": [],
+  "actionableViolations": 4,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
-  "openActionableCount": 0,
-  "actionableOpen": {},
+  "openActionableCount": 1,
+  "actionableOpen": {
+    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html": "2026-11-18T11:09:17.947Z"
+  },
   "actionableKeys": [
+    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
     "translations-regional-2025::https://www.chicagotheatrereview.com/2025/04/the-go-between/",
     "44-the-obama-musical-regional-2025::https://chicago.splashmags.com/index.php/2025/08/44-the-musical-review-leaves-the-audience-in-stitches/",
     "the-christians-regional-2023::https://www.chicagotheatrereview.com/2023/03/no-such-thing-as-hell/"
@@ -107,7 +108,8 @@
     "all-my-sons-west-end-2025::https://www.telegraph.co.uk/theatre/what-to-see/breaking-bads-bryan-cranstonwest-end/",
     "are-you-watching-west-end-2026::https://www.britishtheatreguide.info/reviews/are-you-watchin-royal-court-the-25647",
     "man-and-boy-west-end-2026::https://www.standard.co.uk/culture/theatre/man-boy-review-rattigan-national-theatre-b1270541.html",
-    "cleansed-off-west-end-2026::https://www.telegraph.co.uk/theatre/what-to-see/incest-gore-mutilation-must-see-play-faint-hearted/",
+    "cabaret-at-the-kit-kat-club-west-end-2021::https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026::https://www.dailymail.co.uk/tvshowbiz/article-11733039/Alex-casts-spell-female-Prospero-PATRICK-MARMION-reviews-Tempest.html",
     "disruption-off-broadway-2026::https://lavocedinewyork.com/en/new-york/2026/08/29/three-off-broadway-plays-to-consider-for-end-of-summer-theater-experiences/",
     "dog-mom-off-west-end-2026::https://firstnightmagazine.com/2026/10/18/review-of-dog-mum-audiences-are-sold-a-pup-in-all-barking-and-no-biting-play/",
     "starstruck-regional-2026::https://www.theatermania.com/news/review-indigo-girl-emily-saliers-gives-cyrano-a-major-nose-job-in-starstuck_1826767/",
@@ -205,6 +207,7 @@
     "marry-harry-off-broadway-2017::https://www.wolfentertainmentguide.com/viewpage.aspx?record=7113&cat=theater",
     "ring-twice-for-miranda-off-broadway-2017::https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7042",
     "hadestown-off-broadway-2016::https://broadwayandme.blogspot.com/2016/06/is-helluva-fine-destination.html",
+    "invisible-thread-off-broadway-2015::http://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
     "cloud-nine-off-broadway-2015::http://letstalkoffbroadway.com/2015/09/churchill-macdonald-atlantic.html",
     "steve-off-broadway-2015::https://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
     "these-paper-bullets-off-broadway-2015::https://www.wolfentertainmentguide.com/viewpage.aspx?record=6701&cat=theater",
@@ -1409,16 +1412,31 @@
       ]
     },
     {
-      "showId": "cleansed-off-west-end-2026",
-      "title": "Cleansed",
-      "openingDate": "2026-07-30",
-      "message": "Review URL for telegraph/Dominic Cavendish does not mention show slug (checked: cleansed-off-west-end, cleansed): https://www.telegraph.co.uk/theatre/what-to-see/incest-gore-mutilation-must-see-play-faint-hearted/",
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
+      "openingDate": "2021-12-12",
+      "message": "Review URL for independent/Annabel Nugent does not mention show slug (checked: cabaret-at-the-kit-kat-club-west-end-2021, cabaret-at-the-kit-kat-club, cabaret-at-the-kit-kat-club-west-end, cabaret, club, cabaretclub, cabaretatthekitkatclub): https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
       "violations": [
         {
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/incest-gore-mutilation-must-see-play-faint-hearted/",
-          "urlSlug": "theatre what-to-see incest-gore-mutilation-must-see-play-faint-hearted",
+          "outletId": "independent",
+          "criticName": "Annabel Nugent",
+          "url": "https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
+          "urlSlug": "independentpremium culture romeo-juliet-winston-churchill-play-school-girls-b 2358284",
+          "namesOtherShow": "Romeo + Juliet"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "title": "My Son’s A Queer (But What Can You Do?)",
+      "openingDate": "2026-09-17",
+      "message": "Review URL for daily-mail/Libby Purves does not mention show slug (checked: my-sons-a-queer-but-what-can-you-do-west-end, my-sons-a-queer-but-what-can-you-do, my-son-s-a-queer-but-what-can-you-do, sons, queer, what, sonsqueerwhat, mysonsaqueerbutwhatcanyoudo): https://www.dailymail.co.uk/tvshowbiz/article-11733039/Alex-casts-spell-female-Prospero-PATRICK-MARMION-reviews-Tempest.html",
+      "violations": [
+        {
+          "outletId": "daily-mail",
+          "criticName": "Libby Purves",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-11733039/Alex-casts-spell-female-Prospero-PATRICK-MARMION-reviews-Tempest.html",
+          "urlSlug": "tvshowbiz article-11733039 alex-casts-spell-female-prospero-patrick-marmion-reviews-tempest",
           "namesOtherShow": null
         }
       ]
@@ -2818,6 +2836,21 @@
           "criticName": "Janice C. Simpson",
           "url": "https://broadwayandme.blogspot.com/2016/06/is-helluva-fine-destination.html",
           "urlSlug": "2016 06 is-helluva-fine-destination",
+          "namesOtherShow": null
+        }
+      ]
+    },
+    {
+      "showId": "invisible-thread-off-broadway-2015",
+      "title": "Invisible Thread",
+      "openingDate": "2015-12-02",
+      "message": "Review URL for as-her-world-turns/Erica Meyer does not mention show slug (checked: invisible-thread-off-broadway-2015, invisible-thread, invisible-thread-off-broadway, invisible, thread, invisiblethread): http://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
+      "violations": [
+        {
+          "outletId": "as-her-world-turns",
+          "criticName": "Erica Meyer",
+          "url": "http://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
+          "urlSlug": "winter-2015-16-nyc-theater-guide",
           "namesOtherShow": null
         }
       ]

@@ -14,7 +14,7 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
-const { parseLocalReviews, classifyReview, displayTitle } = require('./lib/bww-local-reviews');
+const { parseLocalReviews, classifyReview, displayTitle, sameHouse } = require('./lib/bww-local-reviews');
 const { normalizeTitle } = require('./lib/title-match');
 
 // Per-review verdicts from scripts/bww-regional-add-plan.js (community / not theatre / touring ...), so a review
@@ -54,8 +54,21 @@ async function auditHub(hub, { shows, fetchHtml, since, maxPages, decisions = {}
   const out = { metro: hub.metro, region: hub.region, since, reviews: reviews.size, covered: 0, coveredTour: 0, excluded: 0, declined: 0, tourHouse: 0, missing: [], fetchErrors };
   // One production can carry several reviews (two critics): report it once, keyed on title + venue.
   const seen = new Map();
+  const byId = new Map(shows.map((s) => [s.id, s]));
   for (const r of [...reviews.values()].sort((a, b) => String(a.date).localeCompare(String(b.date)))) {
-    const c = classifyReview(r, { shows, metro: hub.metro, tourHouses: hub.tourHouses, decisions });
+    let c = classifyReview(r, { shows, metro: hub.metro, tourHouses: hub.tourHouses, decisions });
+    // Same title, another company: the covering row was added from a different review on this listing that names a
+    // different theatre (Chicago Shakespeare's Winter's Tale "covered" Modern Archaic's). That is a second production.
+    // Flag it only when nothing ties it to the row: no earlier ruling on this URL, the row's own venue is another
+    // house, and every evidence review on the listing names another house (critics name one house differently).
+    const ruled = decisions && decisions[r.url] && decisions[r.url].decision && decisions[r.url].decision !== 'add';
+    if (c.status === 'covered' && r.venue && !ruled) {
+      const row = byId.get(c.showId);
+      const others = row ? (row.evidenceUrls || []).map((u) => reviews.get(u)).filter((o) => o && o.url !== r.url && o.venue) : [];
+      if (others.length && !(row.venue && sameHouse(r.venue, row.venue)) && others.every((o) => !sameHouse(o.venue, r.venue))) {
+        c = { status: 'missing' };
+      }
+    }
     if (c.status === 'covered') out.covered++;
     else if (c.status === 'covered-tour') out.coveredTour++;
     else if (c.status === 'excluded') out.excluded++;

@@ -26,6 +26,7 @@ const LOOKALIKE_CONTENT_FARM_DOMAINS = new Set([
   'nysepost.com',   // scraped NY Post copy; king-charles-iii-2015 was filed as outletId nypost
   'harunaenterprisesltd.com', // /pro/ mirror of Time Out's 860 review, ingested via submit-review-form as its own outlet (BRO-5823)
   'guardianlv.com', // Guardian Liberty Voice; grey-gardens-2006 was filed as outletId guardian
+  'globalnews2.xyz', // scraped copy of Deadline's A Few Good Men review (0.90 word overlap), ingested via submit-review-form as its own outlet (BRO-5823)
 ]);
 
 const MULTIPART_SLD = new Set(['co', 'com', 'org', 'net', 'ac', 'gov', 'me', 'ltd']);

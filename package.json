@@ -12,6 +12,7 @@
     "start": "NEXT_TELEMETRY_DISABLED=1 next start",
     "typecheck": "NODE_OPTIONS=\"$NODE_OPTIONS --max-old-space-size=8192\" tsc --noEmit",
     "cloud:visual-qa": "node scripts/cloud-visual-qa.mjs",
+    "land:ready": "node scripts/land-ready.mjs",
     "lint": "eslint src",
     "lint:design": "node scripts/lint-design-tokens.js",
     "test": "npm run test:data && npm run test:e2e",

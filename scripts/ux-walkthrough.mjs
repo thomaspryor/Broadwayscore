@@ -38,7 +38,9 @@
 
 import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import models from './lib/models.js';
-const { WALKTHROUGH_SONNET } = models;
+import llmBatch from './lib/llm-batch.js';
+const { WALKTHROUGH_SONNET, GPT4O } = models;
+const { openaiChatBody } = llmBatch;
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -1031,7 +1033,7 @@ async function reviewWithOpenAI(shots, apiKey) {
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-    body: JSON.stringify({ model: 'gpt-4o', temperature: 0.3, max_tokens: 1500, messages: [{ role: 'user', content }] }),
+    body: JSON.stringify(openaiChatBody({ model: GPT4O, temperature: 0.3, maxTokens: 1500, messages: [{ role: 'user', content }] })),
     signal: AbortSignal.timeout(90000),
   });
   if (!res.ok) throw new Error(`OpenAI HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
@@ -1106,7 +1108,7 @@ async function runReviewPanel(shots) {
   };
 
   const [openai, gemini, claude] = await Promise.all([
-    openaiKey ? runOne('gpt-4o', () => reviewWithOpenAI(shots, openaiKey)) : Promise.resolve({ model: 'gpt-4o', findings: [], error: 'OPENAI_API_KEY missing' }),
+    openaiKey ? runOne('openai', () => reviewWithOpenAI(shots, openaiKey)) : Promise.resolve({ model: 'openai', findings: [], error: 'OPENAI_API_KEY missing' }),
     geminiKey ? runOne('gemini', () => reviewWithGemini(shots, geminiKey)) : Promise.resolve({ model: 'gemini', findings: [], error: 'GEMINI_API_KEY missing' }),
     claudeKey ? runOne('claude', () => reviewWithClaude(shots, claudeKey)) : Promise.resolve({ model: 'claude', findings: [], error: 'ANTHROPIC_API_KEY missing' }),
   ]);

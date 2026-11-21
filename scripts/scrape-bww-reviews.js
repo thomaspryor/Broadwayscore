@@ -32,6 +32,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { foreignTitleEntriesFromHtml, isForeignTitleReview } = require('./lib/bww-foreign-title');
 const { shouldSkipPreviewsShow } = require('./lib/opening-signal');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { loadCursor, saveCursor, rotateAfter } = require('./lib/rotating-cursor');
 const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
@@ -1492,6 +1493,24 @@ async function main() {
     console.log(`Verify mode: processing ${targetShows.length} shows\n`);
   }
 
+  // BRO-7931 #2: rotate the start so successive budgeted runs cover the whole
+  // list; cursor lives in the aggregator-archive (pushed by the workflow).
+  const cursorFile = path.join(roundupArchiveDir, '_cursor.json');
+  // A --limit run is a manual spot-run: it must not read or wipe the cron's cursor.
+  const useCursor = !targetShowIds && !verify && !dryRun && !limit;
+  const startCursor = useCursor ? loadCursor(cursorFile) : {};
+  if (useCursor) targetShows = targetShows.slice().sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  if (useCursor && startCursor.lastShowId) {
+    const byId = new Map(targetShows.map(s => [s.id, s]));
+    targetShows = rotateAfter(targetShows.map(s => s.id), startCursor.lastShowId).map(id => byId.get(id));
+    console.log(`Cursor: resuming after ${startCursor.lastShowId}`);
+  }
+  const budget = createRunBudget(parseTimeBudgetMin(args));
+  // Worst case for one show (several fetchPage chains) ~ 4 min.
+  const MIN_REMAINING_MS_TO_START = 4 * 60 * 1000;
+  let lastProcessedId = null;
+  let budgetStopped = false;
+
   if (limit && targetShows.length > limit) {
     targetShows = targetShows.slice(0, limit);
   }
@@ -1504,8 +1523,14 @@ async function main() {
 
   for (const show of targetShows) {
     const showId = show.id;
+    if (!budget.canStartItem(MIN_REMAINING_MS_TO_START)) {
+      budgetStopped = true;
+      console.log(`::warning::⏱ BWW time budget reached after ${count}/${targetShows.length} shows; cursor saved, next run resumes after ${lastProcessedId}`);
+      break;
+    }
     count++;
     console.log(`[${count}/${targetShows.length}] ${showId} (${show.title})`);
+    lastProcessedId = showId;
 
     try {
       const results = await processShow(show, showId, options);
@@ -1522,6 +1547,15 @@ async function main() {
       console.error(`  [ERROR] ${showId}: ${err.message}`);
       stats.errors.push(`${showId}: ${err.message}`);
     }
+  }
+
+  if (useCursor && lastProcessedId) {
+    saveCursor(cursorFile, {
+      lastShowId: budgetStopped ? lastProcessedId : null, // full pass done -> restart from the top
+      updatedAt: new Date().toISOString(),
+      processed: count, total: targetShows.length, completedPass: !budgetStopped,
+    });
+    console.log(`Cursor saved: ${budgetStopped ? lastProcessedId : '(pass complete, reset)'}`);
   }
 
   // Final checkpoint

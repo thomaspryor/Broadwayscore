@@ -28,6 +28,8 @@
 const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
+const { buildShowTitleVariants, textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
+const SHOW_MENTION_SWAP_MIN_CHARS = 600;
 const { isUrlProvenanceWrongProduction } = require('./wrongproduction-provenance');
 const { logExclusion } = require('./exclusion-logger');
 const { AP_WIRE_URL } = require('./ap-wire-detect');
@@ -503,6 +505,25 @@ const JUNK_BYLINES = new Set([
   'guest', 'guest contributor', 'press release', 'newsdesk', 'news desk',
 ]);
 
+// BRO-7744: alias -> canonical index for normalizeCritic. The old per-call
+// Object.entries(CRITIC_ALIASES) scan cost ~34s of a full rebuild. The first
+// canonical (in key order) that lists an alias wins, matching the old scan.
+// CRITIC_ALIASES is only filled at module load; code that changes it later
+// (tests) must call resetCriticAliasIndex() afterwards.
+let _criticAliasIndex = null;
+function criticAliasIndex() {
+  if (!_criticAliasIndex) {
+    _criticAliasIndex = new Map();
+    for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
+      for (const alias of aliases) {
+        if (!_criticAliasIndex.has(alias)) _criticAliasIndex.set(alias, canonical);
+      }
+    }
+  }
+  return _criticAliasIndex;
+}
+function resetCriticAliasIndex() { _criticAliasIndex = null; }
+
 /**
  * Normalize a critic name to its canonical form.
  * Returns the canonical critic name (lowercase, hyphenated).
@@ -522,17 +543,10 @@ function normalizeCritic(criticName) {
 
   if (JUNK_BYLINES.has(lower.replace(/[:.]+$/, '').trim())) return 'unknown';
 
-  // Check against all aliases
-  for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
-    if (aliases.some(alias => {
-      // Exact match only - no partial/first-name matching
-      // (first-name matching was causing Jesse Oxfeld → jesse-green)
-      if (lower === alias) return true;
-      return false;
-    })) {
-      return canonical;
-    }
-  }
+  // Check against all aliases. Exact match only - no partial/first-name matching
+  // (first-name matching was causing Jesse Oxfeld → jesse-green).
+  const canonical = criticAliasIndex().get(lower);
+  if (canonical !== undefined) return canonical;
 
   // Not found in aliases - create a slug from the full name
   // But first, ensure we have a reasonable name (at least 2 chars)
@@ -848,6 +862,40 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     });
   }
 
+  // Show-mention swap guard (BRO-7769). A url swap whose incoming article text
+  // never names the show is another article, not a better copy of this review:
+  // the Good Thief TheaterMania slot was repointed from Irish Rep casting news
+  // to two more unrelated TheaterMania news pieces (show mentioned 0x). Soft
+  // refusal like the aggregator guard: the url and incoming fullText are
+  // refused, other fields still merge. Fails open without a show title or with
+  // incoming text too short to judge (paywall stubs), and passes when the
+  // incoming url slug names the show.
+  const _mentionTitle = (context.show && context.show.title) || context.showTitle || null;
+  // Fails open for titles with no 4+ char variant (SIX, Art, 13): textMentionsTitle cannot see them.
+  const _titleCheckable = !!_mentionTitle && buildShowTitleVariants(_mentionTitle).some((v) => v.length >= 4);
+  const _swapText = typeof incoming.fullText === 'string' ? decodeHtmlEntities(incoming.fullText) : '';
+  // Only weak slots (stub/empty/short text): a corpus check found ~0.5% of real, scored reviews
+  // fail the mention test (old url shapes, titles the variants miss), and their swaps must still work.
+  const _slotIsWeak = !(typeof existing.fullText === 'string' && existing.fullText.length >= 1500 && !existing.wrongProduction);
+  const urlIsUnrelatedToShow = !!incoming.url && !incomingUrlGarbage && urlChanged && _titleCheckable && _slotIsWeak
+    && _swapText.length >= SHOW_MENTION_SWAP_MIN_CHARS
+    && !textMentionsTitle(_swapText, _mentionTitle)
+    && !textMentionsShortTitle(_swapText, _mentionTitle)
+    && !urlSlugNamesShow(incoming.url, _mentionTitle);
+  if (urlIsUnrelatedToShow) {
+    console.warn(`[mergeReviews] refused url swap, incoming text never mentions "${_mentionTitle}" for ${existing.outletId || context.file || '?'}: ${incoming.url}`);
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedUnrelatedUrlSwap',
+      details: {
+        existingUrl: existing.url || null, incomingUrl: incoming.url, outletId: existing.outletId,
+        criticName: existing.criticName, showTitle: _mentionTitle,
+      },
+    });
+  }
+
   // Sibling URL-collision guard (BRO-3092). A urlChanged swap onto a URL that
   // a DIFFERENT file in this show already owns manufactures exactly the state
   // validate-data.js errors on ("One URL per outlet per show = one review"),
@@ -957,7 +1005,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // scraped from the sibling's URL, so taking it here would pair THIS file's
   // (retained) url with ANOTHER article's body — undetectable by url-dated
   // audits, exactly like the regressed-swap case.
-  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage) {
+  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage && !urlIsUnrelatedToShow) {
     const decodedFullText = decodeHtmlEntities(incoming.fullText);
     if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
       merged.fullText = decodedFullText;
@@ -982,7 +1030,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
 
   if (incoming.url && !incomingUrlGarbage
       && (!existing.url || existing.url.includes('undefined') || urlChanged)
-      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling && !urlIsAggregatorPage) {
+      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling && !urlIsAggregatorPage && !urlIsUnrelatedToShow) {
     merged.url = incoming.url;
     if (urlChanged) {
       // URL moved to a different canonical article. Refresh publishDate and
@@ -1046,10 +1094,10 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // copied. Its byline still fills an Unknown one: per-critic roundup rows
   // (WET, BWW RR) name this review's own critic, and gather-reviews renames
   // the file to that critic right after this merge (Unknown→named).
-  const incomingMetaRefused = incomingIsOtherArticle || urlIsAggregatorPage;
+  const incomingMetaRefused = incomingIsOtherArticle || urlIsAggregatorPage || urlIsUnrelatedToShow;
 
   // Upgrade Unknown critic name from incoming data
-  if (!incomingIsOtherArticle && incoming.criticName && incoming.criticName !== 'Unknown'
+  if (!incomingIsOtherArticle && !urlIsUnrelatedToShow && incoming.criticName && incoming.criticName !== 'Unknown'
       && (!existing.criticName || existing.criticName === 'Unknown')
       && !existing.criticNameManual) {
     merged.criticName = incoming.criticName;
@@ -1156,7 +1204,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // (no show record, no show dates or no date in the url => unchanged).
   let autoClearUrlDateVeto = false;
   if (context.show && merged.url && merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
-      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage && !urlIsUnrelatedToShow
       && !merged.wrongProductionManualClear && !cvSaysWrongProduction && isUrlBasedWrongProd) {
     const { isUrlSwapRegression: _urlOutsideRun } = require('./url-downgrade-guard');
     const veto = _urlOutsideRun({ newUrl: merged.url, show: context.show, outletId: existing.outletId });
@@ -1183,7 +1231,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     && canonicalReviewUrl(incoming.url) !== canonicalReviewUrl(existing.url);
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && urlActuallyChanged
-      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage && !urlIsUnrelatedToShow
       && !merged.wrongProductionManualClear
       && !cvSaysWrongProduction
       && !autoClearUrlDateVeto
@@ -2068,6 +2116,42 @@ function isExemptFlaggedMergeTarget(data, incomingCritic, fileCritic) {
 }
 
 /**
+ * BRO-7890 pass 0b: the same article URL filed under a DIFFERENT outlet id. The lane inbox drain sent the Columbia
+ * Spectator URL to ingest-urls under a host-derived outlet ("columbiaspectator-com"), pass 0 skipped the existing
+ * file (other outlet id) and the writer minted an empty columbiaspectator-com--light-dohrne.json beside it.
+ * Pass 0 is same-outlet on purpose (aggregator roundup URLs back several outlets' star-stubs), so this adopts the
+ * other file only when that cannot be a shared roundup: the URL is not a roundup, exactly ONE unflagged file holds
+ * it, and NEITHER outlet id is in the registry (two spellings of one unregistered site). A registered outlet on another
+ * outlet's URL keeps the pass-0 contract (never merges; see review-normalization-pass0.test.mjs). Reads the show dir only.
+ */
+function findCrossOutletUrlOwner(showDir, files, url, outletName) {
+  const { isRoundupUrl } = require('./review-guards');
+  const { sameArticleUrl } = require('./review-url-collision');
+  if ((isRoundupUrl(url) || {}).isRoundup) return null;
+  const incoming = normalizeOutlet(outletName);
+  if (!incoming || getOutletFromRegistry(incoming)) return null;
+  // Only a placeholder outlet minted from the URL's own host ("columbiaspectator-com") is adopted: that name says nothing
+  // the owner file contradicts. A real but unregistered outlet name stays a separate review (review P1, BRO-7890).
+  let hostSlug = '';
+  try { hostSlug = new URL(url).hostname.toLowerCase().replace(/^www\./, '').replace(/\./g, '-'); } catch { return null; }
+  if (incoming !== hostSlug && incoming !== hostSlug.replace(/-[a-z]+$/, '')) return null;
+  const owners = [];
+  for (const file of files) {
+    const filePath = path.join(showDir, file);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch { continue; }
+    if (!data || !data.url || !sameArticleUrl(data.url, url)) continue;
+    if (data.wrongProduction || data.duplicateOf) continue;
+    owners.push({ path: filePath, filename: file, data });
+  }
+  if (owners.length !== 1) return null;
+  const owner = owners[0];
+  const ownerOutlet = normalizeOutlet(owner.data.outletId || owner.filename.split('--')[0]);
+  if (ownerOutlet === incoming) return null; // pass 0 already decided same-outlet files
+  return getOutletFromRegistry(ownerOutlet) ? null : owner;
+}
+
+/**
  * Find an existing review file for the same outlet in a show directory.
  * Checks all filename variants: normalized outlet ID, raw slug, with/without critic.
  * Returns { path, data } if found, null if no existing file for this outlet.
@@ -2132,6 +2216,8 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
         } catch { /* unreadable — skip */ }
       }
       if (folded) return folded;
+      const crossOutlet = findCrossOutletUrlOwner(showDir, files, url, outletName);
+      if (crossOutlet) return crossOutlet;
     }
   }
 
@@ -2315,6 +2401,8 @@ const JUNK_OUTLETS = new Set([
   'buy-tickets', 'click-here',
   'lets-note', 'lets-go-to-the-theater',
   'is-simple', // BWW roundup parse of "...Eugene Pack and Dayle Rayfel, is simple:" (BRO-5823)
+  // BRO-5823: more BWW roundup parse garbage (no url; critic slots read "New York" / "David Bowie").
+  'new-york-review', 'broadways-summer',
   // BRO-3515: Rex Features photo-agency livefeed caption, not a critic
   // outlet — see domain-filters.js REFERENCE_DOMAINS for the write-time block.
   'rexfeatures',
@@ -3126,6 +3214,7 @@ module.exports = {
   isProfileUrl,
   isSuspiciousOutletId,
   CRITIC_ALIASES,
+  resetCriticAliasIndex,
   JUNK_BYLINES,
   CRITIC_JUNK_PREFIX_RE,
   AGGREGATOR_SCORE_SOURCES,

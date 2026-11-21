@@ -15,12 +15,17 @@
  * Scope: scraper credits (the ledger rows lane-spend-window.js counts). LLM scoring is a separate bill and is not
  * changed by the window.
  */
+const { toDateMs } = require('../date-utils');
 const MIN = 60 * 1000;
 const VARIABLE = 'LANE_PREEMBARGO_DIRECT_ONLY';
 const LANE_LEAD_MIN = 30;            // the window closes where the normal lane start is: embargo - 30 min
 const START_LOCAL = '19:30';         // the window opens at this wall-clock time in the show's market zone ...
-const MAX_LEAD_MIN = 90;             // ... but never earlier than embargo - 90 min, so the +240 min tail still fits the 355-min job cap
+const MAX_LEAD_MIN = 90;             // ... but never earlier than embargo - 90 min, so the tail (+185 min; +95 at the BRO-7786 observed-drop cap) still fits the 355-min job cap (BRO-7740: also the default for a market-default embargo)
 const DEFER_RETRY_MS = 30 * 1000;
+// BRO-7786: with an OBSERVED earliest drop (embargo-drop-profiles.js, >=5 recorded nights) the guard opens at that drop minus this margin ...
+const EARLY_DROP_MARGIN_MIN = 15;
+// ... but never earlier than embargo - 180 min (recorded Broadway nights dropped up to 120 min early). The lane's window length is fixed, so the tail after the embargo shrinks by the extra lead (still >= embargo + 95 min at the cap).
+const MAX_OBSERVED_LEAD_MIN = 180;
 
 /** 'on' (any case, also true/1/yes) -> true. Anything else, unset included, is off. Pure. */
 function parseFlag(v) {
@@ -57,7 +62,7 @@ function localHour(ms, timeZone) {
  * When the lane starts. Flag off: embargo - 30 min, as always. Flag on: 19:30 local on the embargo's local day, but no
  * earlier than embargo - 90 min and never later than embargo - 30 min. Pure.
  */
-function laneStartMs({ embargoMs, timeZone, enabled }) {
+function laneStartMs({ embargoMs, timeZone, enabled, earliestDropMs }) {
   const normal = embargoMs - LANE_LEAD_MIN * MIN;
   if (!enabled || !timeZone) return normal;
   let local;
@@ -65,7 +70,53 @@ function laneStartMs({ embargoMs, timeZone, enabled }) {
     local = localWallClockMs(embargoMs, timeZone);
     if (local >= embargoMs && new Date(embargoMs).getTime() && localHour(embargoMs, timeZone) < 12) local = localWallClockMs(embargoMs - 24 * 60 * MIN, timeZone); // a small-hours embargo: 19:30 the evening before
   } catch { return normal; }
-  return Math.min(normal, Math.max(local, embargoMs - MAX_LEAD_MIN * MIN));
+  const start = Math.min(normal, Math.max(local, embargoMs - MAX_LEAD_MIN * MIN));
+  return observedStartMs({ embargoMs, earliestDropMs, startMs: start });
+}
+
+/**
+ * BRO-7786: pull the guard's start back to the earliest drop seen on recorded nights (minus a margin), never earlier than
+ * embargo - 180 min and never later than `startMs`. No usable earliestDropMs (a guess basis, no profile) = startMs. Pure.
+ */
+function observedStartMs({ embargoMs, earliestDropMs, startMs }) {
+  if (!Number.isFinite(earliestDropMs) || !Number.isFinite(embargoMs)) return startMs;
+  const want = earliestDropMs - EARLY_DROP_MARGIN_MIN * MIN;
+  return Math.min(startMs, Math.max(want, embargoMs - MAX_OBSERVED_LEAD_MIN * MIN));
+}
+
+/**
+ * BRO-7740: is the pre-embargo guard on for this night? On when the owner's LANE_PREEMBARGO_DIRECT_ONLY is on, OR when the
+ * embargo is only the market-default guess. The guard is direct-only (no paid scraper tier, no SERP), so turning it on for
+ * a guessed embargo costs nothing; it exists so the lane is already running when an early release lands. The variable and
+ * its default are untouched (an owner money call). Pure.
+ * @returns {{enabled:boolean, reason:'flag'|'assumed-embargo'|'off'}}
+ */
+function guardMode({ flagOn, assumed }) {
+  if (flagOn) return { enabled: true, reason: 'flag' };
+  if (assumed) return { enabled: true, reason: 'assumed-embargo' };
+  return { enabled: false, reason: 'off' };
+}
+
+/**
+ * BRO-7740 detector. The first admitted review that is provably tonight's (a full publish timestamp at or after the
+ * guard's earliest start, and not already on disk) proves the embargo has lifted: the guard closes at once and the lane
+ * fetches with the full chain. An aggregator-cited preview link with no date, an older date or an on-disk URL never
+ * counts (a stale or date-only admit must not open the paid tiers early). Pure.
+ * @param {{admitted:Array<{url?:string,publishDate?:string,key?:string}>, night:string, onDiskUrls?:Set<string>|string[]}} i
+ * @returns {{lifted:boolean, evidence?:object}}
+ */
+function dropEvidence({ admitted = [], night, onDiskUrls = [], floorMs }) {
+  const disk = onDiskUrls instanceof Set ? onDiskUrls : new Set(onDiskUrls);
+  for (const a of admitted || []) {
+    // A full timestamp at or after floorMs (the guard's earliest start). A bare date, or a zoned date turned into UTC the
+    // evening before, proves nothing about tonight (outlet-index finds are admitted from the day before).
+    if (!a || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(String(a.publishDate || ''))) continue;
+    const ms = toDateMs(a.publishDate);
+    if (!Number.isFinite(ms) || (Number.isFinite(floorMs) ? ms < floorMs : String(a.publishDate).slice(0, 10) < night)) continue;
+    if (a.url && disk.has(a.url)) continue;
+    return { lifted: true, evidence: { key: a.key || null, url: a.url || null, publishDate: a.publishDate } };
+  }
+  return { lifted: false };
 }
 
 /** Tag an error as caused by the window withholding the paid tiers (not by the page). */
@@ -96,4 +147,4 @@ function guardPorts({ enabled, fetchPage, search, isActive }) {
   };
 }
 
-module.exports = { VARIABLE, LANE_LEAD_MIN, START_LOCAL, MAX_LEAD_MIN, DEFER_RETRY_MS, parseFlag, windowActive, localWallClockMs, laneStartMs, deferred, isDeferred, guardPorts };
+module.exports = { guardMode, dropEvidence, VARIABLE, LANE_LEAD_MIN, START_LOCAL, MAX_LEAD_MIN, EARLY_DROP_MARGIN_MIN, MAX_OBSERVED_LEAD_MIN, observedStartMs, DEFER_RETRY_MS, parseFlag, windowActive, localWallClockMs, laneStartMs, deferred, isDeferred, guardPorts };

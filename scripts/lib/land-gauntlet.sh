@@ -237,6 +237,10 @@ unit_tests_node_list() {
     grep -v -e '^[[:space:]]*#' -e '^[[:space:]]*$' tests/unit-test-manifest.txt 2>/dev/null
   fi
 }
+# BRO-7324 tried `--test-concurrency=6` on this batch (2026-11-21) and reverted it:
+# gate median 811s with it (n=6) vs 841s without (n=12), inside runner variance, and
+# two slow test files hit the 300s file timeout under the extra load, which refused a
+# landing as a "new failure". Measure on real land runs before trying it again.
 unit_tests_node() {
   local -a tests
   local src

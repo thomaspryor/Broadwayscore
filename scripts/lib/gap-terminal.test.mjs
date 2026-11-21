@@ -152,7 +152,7 @@ test('class guard: NOT_FINDABLE only after every url-finding method completed wi
   ];
   const UF = require('./gap-url-find.js');
   const allDone = Object.fromEntries(UF.METHODS.map((m) => [m, 'no_candidates']));
-  const row = (methods, ts = '2026-11-09T01:00:00Z') => ({ strategy: 'URL_FIND', outcome: 'no_evidence', reason: 'url_not_found', runId: 'r', ts, detail: { policy: 2, methods } });
+  const row = (methods, ts = '2026-11-09T01:00:00Z') => ({ strategy: 'URL_FIND', outcome: 'no_evidence', reason: 'url_not_found', runId: 'r', ts, detail: { policy: 2, refusalPolicy: UF.REFUSAL_POLICY, methods } });
   const att = new Map([
     ['part/x.json', [row({ AGG_LINK: 'no_candidates', WAYBACK_CDX: 'no_candidates' })]],
     ['err/x.json', [row({ ...allDone, WAYBACK_CDX: 'error' })]],

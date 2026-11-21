@@ -50,3 +50,35 @@ function isNonReviewSectionUrl(url) {
 }
 
 module.exports = { isNonReviewUrl, isNonReviewSectionUrl };
+
+// BRO-7963: the Sunday Times printed an Ian McKellen feature interview under
+// culture/tv-radio, a section that also holds real Times theatre reviews, so the
+// url cannot be blocked. The prose gives it away: the interviewer writes in the
+// first person ("I say", "when I ask"), tags quotes with a manner ("says with a
+// smile") and the page closes on a reader prompt. A review uses none of these.
+// Each marker is deliberately narrow (a review may say "he says" or "she smiles");
+// two DISTINCT markers are needed, so one stray phrase never refuses a review.
+const INTERVIEW_MARKERS = [
+  ['says_with', /\b(?:says|said|replies|laughs|admits|recalls)\s+with\s+(?:a|an)\s+(?:smile|laugh|grin|shrug|chuckle|sigh)\b/i],
+  ['manner_verb', /["”’]\s*(?:he|she|they|He|She|They)[ \t]+(?:laughs|smiles|grins|shrugs|chuckles|sighs|beams)\b/i],
+  ['interviewer_i', /(?:^|[,.;—–)]\s*)I (?:say|ask|point out|put it to (?:him|her|them))\b|\b(?:he|she|they) (?:tells|told) me\b|\bwhen I (?:ask|asked|meet|met)\b|\b(?:his|her|their) (?:agent|publicist|PR) (?:is|sits|hovers)\b/i],
+  ['qa', /(?:^|\n)\s*(?:Q|Question)\s*[:.]\s+\S[\s\S]{0,400}?\n\s*(?:A|Answer)\s*[:.]\s+\S/],
+];
+
+// Two families: how the interviewee's quotes are tagged, and the interviewer's own voice. A review that
+// quotes a line of dialogue can hit both tag markers ("Fine," he laughs ... says with a smile), so tags alone
+// need to recur (4+ occurrences); otherwise one marker from each family is required.
+const TAGS = new Set(['says_with', 'manner_verb']);
+
+/** @returns {{interview: boolean, markers: string[]}} */
+function interviewTextSignals(text) {
+  const s = String(text || '');
+  const markers = INTERVIEW_MARKERS.filter(([, re]) => re.test(s)).map(([name]) => name);
+  const voice = markers.some((m) => !TAGS.has(m));
+  const tagHits = INTERVIEW_MARKERS.filter(([n]) => TAGS.has(n))
+    .reduce((n, [, re]) => n + (s.match(new RegExp(re.source, re.flags.replace('g', '') + 'g')) || []).length, 0);
+  const tags = markers.some((m) => TAGS.has(m));
+  return { interview: (voice && tags) || tagHits >= 4 || markers.filter((m) => !TAGS.has(m)).length >= 2, markers, tagHits };
+}
+
+module.exports.interviewTextSignals = interviewTextSignals;

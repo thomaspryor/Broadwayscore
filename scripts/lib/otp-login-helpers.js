@@ -70,6 +70,29 @@ async function launchOtpBrowser(profileDir, { headless = false, userAgent } = {}
  * @param {number} [opts.intervalMs=5000]
  * @returns {Promise<string|null>}
  */
+/**
+ * The code from the NEWEST matching message. `gmail search` prints results
+ * oldest first ("newest last"), so taking the first match typed a stale,
+ * superseded code whenever two code emails (or an unrelated one from the same
+ * sender) sat in the window (review of BRO-7705, 2026-11-19). Lines are
+ * checked newest -> oldest: subject first, then that message's body.
+ * @param {string} searchOut  `gmail search` output
+ * @param {RegExp} codePattern  capture group 1 = the code
+ * @param {(uid: string) => string} readBody
+ * @returns {string|null}
+ */
+function pickNewestCode(searchOut, codePattern, readBody) {
+  const lines = String(searchOut).split('\n').filter((l) => /uid=\d+/.test(l)).reverse();
+  for (const line of lines) {
+    const s = line.match(codePattern);
+    if (s) return s[1];
+    const body = readBody(line.match(/uid=(\d+)/)[1]);
+    const b = body && body.match(codePattern);
+    if (b) return b[1];
+  }
+  return null;
+}
+
 async function pollGmailForOtpCode({ fromFilter, sinceEpochSeconds, codePattern, maxAttempts = 18, intervalMs = 5000 }) {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     await new Promise(r => setTimeout(r, intervalMs));
@@ -78,15 +101,9 @@ async function pollGmailForOtpCode({ fromFilter, sinceEpochSeconds, codePattern,
         `${process.env.HOME}/.claude/bin/gmail search "from:(${fromFilter}) after:${sinceEpochSeconds}" --days 1 --limit 3 --folder INBOX`,
         { encoding: 'utf8' }
       );
-      const subjectMatch = searchOut.match(codePattern);
-      if (subjectMatch) return subjectMatch[1];
-
-      const uidMatch = searchOut.match(/uid=(\d+)/);
-      if (uidMatch) {
-        const body = execSync(`${process.env.HOME}/.claude/bin/gmail read ${uidMatch[1]}`, { encoding: 'utf8' });
-        const bodyMatch = body.match(codePattern);
-        if (bodyMatch) return bodyMatch[1];
-      }
+      const picked = pickNewestCode(searchOut, codePattern, (uid) =>
+        execSync(`${process.env.HOME}/.claude/bin/gmail read ${uid}`, { encoding: 'utf8' }));
+      if (picked) return picked;
     } catch {
       // gmail helper transient error (e.g. pool saturated) — keep polling
     }
@@ -186,4 +203,4 @@ function pushCookieSecretWithMeta(envVarName, cookies, meta, opts = {}) {
   return result;
 }
 
-module.exports = { launchOtpBrowser, pollGmailForOtpCode, writeOtpCookies, pushCookieSecretWithMeta, COOKIE_DIR };
+module.exports = { launchOtpBrowser, pollGmailForOtpCode, pickNewestCode, writeOtpCookies, pushCookieSecretWithMeta, COOKIE_DIR };

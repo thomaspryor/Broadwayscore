@@ -90,6 +90,8 @@ const showsArg = args.find(a => a.startsWith('--shows='))?.split('=')[1];
 // Score record was written in the last N hours. The opening-night orchestrator
 // re-dispatches the same shows ~7x/day (~11% of ScrapingBee credits 9/21-9/27).
 const skipFreshArg = args.find(a => a.startsWith('--skip-fresh-hours='));
+// A clean no-ratings result only suppresses re-checks this long (opening-night ratings arrive within hours).
+const NO_DATA_RECHECK_HOURS = 4;
 const skipFreshHours = skipFreshArg ? parseFloat(skipFreshArg.split('=')[1]) : 0;
 const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
@@ -1001,7 +1003,7 @@ async function main() {
         process.exit(1);
       }
       if (skipFreshHours > 0) {
-        const fresh = shows.filter(s => isSourceFresh((audienceBuzz.shows || {})[s.id], 'showScore', skipFreshHours, { attemptField: 'showScoreLastAttempted' }));
+        const fresh = shows.filter(s => isSourceFresh((audienceBuzz.shows || {})[s.id], 'showScore', skipFreshHours, { attemptField: 'showScoreLastAttempted', attemptMaxHours: NO_DATA_RECHECK_HOURS }));
         if (fresh.length > 0) {
           console.log(`Skipping ${fresh.length} show(s) with Show Score updated in the last ${skipFreshHours}h: ${fresh.map(s => s.id).join(', ')}`);
           shows = shows.filter(s => !fresh.includes(s));

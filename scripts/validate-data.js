@@ -87,6 +87,8 @@ const { detectRefusalPattern, SCRAPED_PAGE_CHROME_RE } = require('./lib/synopsis
 const { synopsisSourceProblem } = require('./lib/synopsis-source');
 const { checkAwardClaims, findSharedSentences, loadAwardsByShow, ledeTitleMismatch } = require('./lib/synopsis-fact-check');
 const { openingDateSourceHint, venuePageDomainSourceProblem } = require('./lib/opening-date-sources');
+const { needsOpeningDate, loadBaselineIds } = require('./lib/opening-date-required');
+const MISSING_OPENING_BASELINE = loadBaselineIds();
 const { isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
 const { hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./lib/text-cleaning');
@@ -969,6 +971,16 @@ function validateDates(shows) {
     // want regardless of how it was discovered — doubly so if also provisional.
     if (show.status === 'open' && !show.openingDate) {
       warn(`Show "${show.title}" (${show.id}, ${show.category || 'no-category'}) is status:open with null openingDate — score shows but "Opened …" is blank and opening-night review discovery can't anchor. Backfill from ${openingDateSourceHint(show.category)}.`);
+    }
+
+    // BRO-7929: open/closed show with no openingDate. ADVISORY (warn) per CLAUDE.md §19: update-show-status.js
+    // Check 2d intentionally leaves openingDate null on a review-driven flip when every review is dateless, so an
+    // error here would turn test.yml and every core-data push red on a legitimate state. Arm as an error only once
+    // Check 2d always writes a date. Legacy ids frozen in data/audit/missing-opening-date-baseline.json.
+    if (needsOpeningDate(show)) {
+      if (!MISSING_OPENING_BASELINE.has(show.id)) {
+        warn(`Show "${show.title}" (${show.id}) is status:${show.status} with no openingDate — backfill from ${openingDateSourceHint(show.category)} (BRO-7929; reviews of a later same-title production get parked on it as wrongProduction).`);
+      }
     }
 
     // Previews with no opening date AND old previewsStartDate = likely stale/bogus entry
@@ -2752,13 +2764,17 @@ function validateReviewsJson() {
     info(`${needsReviewCount} reviews flagged needsReview`);
   }
 
-  // publishDate format check: all non-null dates should be ISO 8601
-  const nonIsoDates = reviews.filter(r => r.publishDate && !/^\d{4}-\d{2}-\d{2}$/.test(r.publishDate));
-  if (nonIsoDates.length) {
-    warn(`${nonIsoDates.length} reviews have non-ISO publishDate format:`);
-    nonIsoDates.slice(0, 5).forEach(r => warn(`  ${r.showId}: "${r.publishDate}"`));
+  // publishDate format check (BRO-7890): a calendar day (YYYY-MM-DD) or a deliberate month-only date (YYYY-MM).
+  // Anything else is a raw timestamp the app shows as "Invalid Date" and the rebuild mis-days. Advisory (CLAUDE.md
+  // §19) until the two Blue Man Group lane rows from 2026-11-18 are repaired; then make it error().
+  const { classifyPublishDateFormat } = require('./lib/date-utils');
+  const badDates = reviews.filter(r => r.publishDate && classifyPublishDateFormat(r.publishDate) === 'other');
+  const monthOnly = reviews.filter(r => r.publishDate && classifyPublishDateFormat(r.publishDate) === 'month');
+  if (badDates.length) {
+    warn(`[publishDate-format] ${badDates.length} review(s) have a publishDate that is not YYYY-MM-DD or YYYY-MM:`);
+    badDates.slice(0, 10).forEach(r => warn(`  ${r.showId}/${r.outletId}: "${r.publishDate}"`));
   } else {
-    ok('All publishDate values are ISO 8601 format');
+    ok(`All publishDate values are YYYY-MM-DD (or month-only YYYY-MM: ${monthOnly.length})`);
   }
 
   // Phase 1 quality flag validation: check that new flags exist on review-text files

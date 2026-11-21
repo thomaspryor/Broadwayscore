@@ -24,7 +24,7 @@
  */
 
 /** dateSource values that mark a stored publishDate as a placeholder a real page date may replace. */
-const PROVISIONAL_DATE_SOURCES = new Set(['llm-scoring', 'roundup-article', 'archive-first-capture']);
+const PROVISIONAL_DATE_SOURCES = new Set(['llm-scoring', 'roundup-article', 'archive-first-capture', 'manual-inbox']);
 // BRO-6762: 'aggregator-listing:<src>' (ingest fallback date) is provisional too.
 const PROVISIONAL_DATE_SOURCE_PREFIXES = ['aggregator-listing'];
 

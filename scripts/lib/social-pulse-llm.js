@@ -16,6 +16,7 @@
 require('./llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const OpenAI = require('openai');
 const { GPT4O_MINI } = require('./models');
+const { openaiChatBody } = require('./llm-batch');
 
 const MODEL = GPT4O_MINI;
 const BATCH_SIZE = 20;
@@ -65,13 +66,16 @@ async function classifyBatch({ openai, showTitle, marketLabel, batch, logger = c
   let response;
   try {
     response = await openai.chat.completions.create({
-      model: MODEL,
-      temperature: 0,
+      ...openaiChatBody({
+        model: MODEL,
+        temperature: 0,
+        maxTokens: null,
+        messages: [
+          { role: 'system', content: buildSystemPrompt(showTitle, marketLabel) },
+          { role: 'user', content: userContent },
+        ],
+      }),
       response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: buildSystemPrompt(showTitle, marketLabel) },
-        { role: 'user', content: userContent },
-      ],
     });
   } catch (err) {
     logger.warn(`[${showTitle}] LLM classify batch failed: ${err.message}`);

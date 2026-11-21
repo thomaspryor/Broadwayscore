@@ -449,6 +449,7 @@ if (require.main === module) {
   };
   const gitTry = (args) => {
     try {
+      // git-net-timeout-ok: local diff/rev-parse only; copied alone by merge-worktree-to-main tests, so it cannot require git-proc-guard (BRO-7458)
       return execFileSync('git', args, { encoding: 'utf8', timeout: 30_000 }).trim();
     } catch {
       return null;
@@ -480,6 +481,7 @@ if (require.main === module) {
     // fall out of an A-including filter (check-push-ledger passes ACMT).
     const diffArgs = ['diff', '--no-renames', '--name-only', `--diff-filter=${diffFilter}`, `${baseSha}..${beforeSha}`];
     if (pathPrefix) diffArgs.push('--', pathPrefix);
+    // git-net-timeout-ok: local git diff only (see above) (BRO-7458)
     modifiedFiles = execFileSync('git', diffArgs, { encoding: 'utf8', timeout: 30_000 })
       .split('\n')
       .map((s) => s.trim())

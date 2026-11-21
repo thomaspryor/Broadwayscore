@@ -22,8 +22,8 @@ function fakePage({ status = 200, evalResult = { text: 'x'.repeat(2000), title: 
 }
 
 test('every recover-*-browser.js outlet has an adapter, keyed by its persistent profile name', () => {
-  assert.deepEqual(Object.keys(A.ADAPTERS).sort(), ['newyorker', 'nyt', 'telegraph', 'thestage', 'thetimes', 'wapo', 'wsj']);
-  for (const id of ['thestage', 'nytimes', 'newyorker', 'washpost', 'wsj', 'times-uk', 'sunday-times', 'telegraph', 'sunday-telegraph']) {
+  assert.deepEqual(Object.keys(A.ADAPTERS).sort(), ['ft', 'newyorker', 'nyt', 'telegraph', 'thestage', 'thetimes', 'wapo', 'wsj']);
+  for (const id of ['thestage', 'nytimes', 'newyorker', 'washpost', 'wsj', 'times-uk', 'sunday-times', 'financialtimes', 'telegraph', 'sunday-telegraph']) {
     assert.ok(A.adapterFor(id), `no adapter for ${id}`);
   }
   assert.equal(A.adapterFor('guardian'), null);
@@ -35,18 +35,17 @@ test('every recover-*-browser.js outlet has an adapter, keyed by its persistent 
 test('30% rule per adapter: a nightly:false adapter is planned only when the run names its outlet', () => {
   assert.equal(A.ADAPTERS.nyt.nightly, false, 'NYT measured 4/20 live (20%)');
   assert.equal(A.ADAPTERS.wapo.nightly, false, 'WaPo measured 0/40 live');
-  assert.equal(A.ADAPTERS.thetimes.nightly, false, 'Times measured 0/20 live');
+  assert.equal(A.ADAPTERS.thetimes.nightly, true, 'Times re-measured 9/16 live after the footer fix (BRO-7943)');
   assert.equal(A.ADAPTERS.wsj.nightly, false, 'WSJ measured 1/20 live');
   assert.equal(A.ADAPTERS.newyorker.nightly, false, 'New Yorker measured 0/20 live');
   assert.equal(A.adapterUsable('nytimes'), false);
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['nytimes']) }), true);
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['thestage']) }), false);
   assert.equal(A.adapterUsable('thestage'), true, 'The Stage measured 18/20');
-  // Telegraph: unmeasured and the session ends with the month, so nightly off;
-  // a run that names --outlet=telegraph plans it (BRO-7171).
-  assert.equal(A.ADAPTERS.telegraph.nightly, false);
-  assert.equal(A.adapterUsable('telegraph'), false);
-  assert.equal(A.adapterUsable('telegraph', { explicitOutlets: new Set(['telegraph']) }), true);
+  // Telegraph: measured 4/8 live (BRO-7943), subscription kept: nightly on.
+  assert.equal(A.ADAPTERS.telegraph.nightly, true);
+  assert.equal(A.adapterUsable('telegraph'), true);
+  assert.equal(A.adapterUsable('wsj', { explicitOutlets: new Set(['wsj']) }), true);
   assert.equal(A.adapterUsable('guardian', { explicitOutlets: new Set(['guardian']) }), false);
 });
 
@@ -78,6 +77,16 @@ test('DOM adapters return text + html; WSJ waits for its client-rendered <articl
   assert.equal(bot.error, 'DataDome challenge detected');
   const empty = await A.ADAPTERS.wapo.extract(fakePage({ evalResult: { text: '', title: 'x' } }), 'https://www.washingtonpost.com/a');
   assert.match(empty.error, /No article body/);
+});
+
+test('FT adapter (BRO-7943): reads #article-body, waits for it, nightly-planned, profile keyed ft', async () => {
+  const page = fakePage();
+  const r = await A.ADAPTERS.ft.extract(page, 'https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa');
+  assert.equal(r.len, 2000);
+  assert.equal(page.calls.waitForSelector, 1);
+  assert.equal(A.adapterFor('financialtimes').name, 'ft');
+  assert.equal(A.adapterUsable('financialtimes'), true);
+  assert.equal(A.ADAPTERS.ft.cookieDomain, 'ft.com');
 });
 
 // BRO-7171 follow-up: The Stage's registration wall (markup copied from a
@@ -167,19 +176,25 @@ test('Telegraph adapter: subscriber page -> text; walled page -> authWall; Akama
   assert.equal((await A.resolveBrowserMiss(bot, { probe: probeWalled, minAuthChars: A.ADAPTERS.telegraph.minAuthChars })).action, 'skip');
 });
 
-test('renew-cookies: telegraph is manual-only and local-only, with a browser-only probe on the adapter testUrl', () => {
-  const { RENEW_OUTLETS } = require('./cookie-renew.js');
+// BRO-7705: re-subscribed 2026-11-11, so telegraph now has an automatic
+// (Keychain) login like the others; it stays local-only (Akamai blocks CI).
+test('renew-cookies: telegraph is local-only with an automatic login, and a browser-only probe on the adapter testUrl', () => {
+  const { RENEW_OUTLETS, loginAdapterFor } = require('./cookie-renew.js');
   const { COOKIE_PROBES, classifyWalledProbe } = require('./cookie-probes.js');
   const cfg = RENEW_OUTLETS.telegraph;
-  assert.equal(cfg.manualOnly, true);
+  assert.equal(cfg.manualOnly, undefined);
   assert.equal(cfg.localOnly, true);
-  assert.equal(cfg.selectors, undefined, 'no automatic credential flow');
+  assert.equal(loginAdapterFor('telegraph').kind, 'telegraph-otp'); // emailed code since 2026-11-19
   assert.match(cfg.loginUrl, /^https:\/\/secure\.telegraph\.co\.uk\/customer\/secure\/login\//);
   const p = COOKIE_PROBES.telegraph;
   assert.equal(p.url, A.ADAPTERS.telegraph.testUrl);
   assert.equal(p.browserOnly, true);
-  const cls = (html) => classifyWalledProbe({ withCookies: { html, body: p.extractBody(html) || '' }, minBody: p.minBody, wallMarker: p.wallMarker, gateMarker: p.gateMarker });
-  assert.equal(cls(fx('logged-in.html')), 'logged-in');
+  const cls = (html) => classifyWalledProbe({ withCookies: { html, body: p.extractBody(html) || '' }, minBody: p.minBody, wallMarker: p.wallMarker, gateMarker: p.gateMarker, subscriberMarker: p.subscriberMarker });
+  // The captured fixture predates the reader class; live subscriber pages
+  // carry it on the article renderer (measured 2026-11-19).
+  const sub = fx('logged-in.html').replace('<body', '<body><div class="articleRendererHTML logged-in--true is-subscriber--true"></div');
+  assert.equal(cls(sub), 'logged-in');
+  assert.equal(cls(fx('logged-in.html')), 'error', 'full body without the subscriber class is not proof of a login');
   assert.equal(cls(fx('walled.html')), 'logged-out');
   assert.equal(cls(fx('bot-block.html')), 'error', 'a bot page is never read as logged out');
 });

@@ -17,3 +17,20 @@ test('buildSyncRows: frozen pre-opening forecast, reviews_live from counts, no r
   assert.equal(r.p_forecast, 72); assert.equal(r.p_reviews_live, true);
   assert.equal(buildSyncRows({ shows, ledgerRows: [], today: '2098-12-25' }).length, 0);
 });
+
+test('BRO-7857 reviewsLiveTargets: Broadway shows with a review, opening no more than 3 days ago', () => {
+  const F = createRequire(import.meta.url)('../../scripts/lib/score-call-forecasts.js');
+  const shows = [
+    { id: 'today-rev', category: 'broadway', type: 'play', openingDate: '2026-11-19' },
+    { id: 'today-none', category: 'broadway', type: 'play', openingDate: '2026-11-19' },
+    { id: 'stray-pre', category: 'broadway', type: 'musical', openingDate: '2026-12-01' },
+    { id: 'three-ago', category: 'broadway', type: 'musical', openingDate: '2026-11-16' },
+    { id: 'old', category: 'broadway', type: 'musical', openingDate: '2026-11-15' },
+    { id: 'we', category: 'west-end', type: 'play', openingDate: '2026-11-19' },
+    { id: 'concert', category: 'broadway', type: 'special', openingDate: '2026-11-19' },
+    { id: 'nodate', category: 'broadway', type: 'play' },
+  ];
+  const counts = { 'today-rev': 1, 'stray-pre': 2, 'three-ago': 9, old: 30, we: 4, concert: 1, nodate: 1 };
+  assert.deepEqual(F.reviewsLiveTargets({ shows, reviewCounts: counts, today: '2026-11-19' }), ['stray-pre', 'three-ago', 'today-rev']);
+  assert.throws(() => F.reviewsLiveTargets({ shows, reviewCounts: counts, today: 'nope' }));
+});

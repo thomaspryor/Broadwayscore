@@ -98,12 +98,53 @@ function makeRow(r) {
     priorFullTextHash: r.priorFullTextHash || null,
     pushedBlob: r.pushedBlob || null,
   };
+  // BRO-7944 diagnostics: content tier at attempt time, HTTP status and error text (null when not applicable).
+  if (r.tier) row.tier = String(r.tier);
+  if (Number.isFinite(r.httpStatus)) row.httpStatus = r.httpStatus;
+  if (r.error) row.error = String(r.error).slice(0, 200);
   row.seq = Number.isFinite(r.seq) ? r.seq : ++_seq;
   if (r.retryAfter) row.retryAfter = r.retryAfter;
   if (r.abandoned) row.abandoned = true;
   if (r.runId) row.runId = r.runId;
   if (r.detail) row.detail = r.detail;
   return row;
+}
+
+/**
+ * BRO-7944: true when this review+strategy's latest live row is a non-evidence outcome
+ * newer than GAP_NON_EVIDENCE_COOLDOWN_MIN (default 60). Non-evidence never counts toward
+ * the retry caps, so without this a batch's next round redoes it straight away.
+ */
+function recentNonEvidence(rows, strategy, nowMs = Date.now(), env = process.env) {
+  const mins = Number(env.GAP_NON_EVIDENCE_COOLDOWN_MIN);
+  const ms = (Number.isFinite(mins) && mins >= 0 ? mins : 60) * 60000;
+  let last = null;
+  for (const r of rows || []) if (r.strategy === strategy && r.outcome !== 'reopened') last = (!last || tsMs(r) >= tsMs(last)) ? r : last;
+  return !!last && last.outcome === 'non_evidence' && nowMs - tsMs(last) < ms;
+}
+
+/** HTTP status embedded in an error message ("HTTP 403", "Bright Data HTTP 429: ..."), or null. */
+function httpStatusFrom(message) {
+  const m = /\bHTTP[ /]?(\d{3})\b/i.exec(String(message || '')) || /\b(?:status(?:Code)?|code)[ :=]+([1-5]\d{2})\b/i.exec(String(message || ''));
+  return m ? Number(m[1]) : null;
+}
+
+/**
+ * BRO-7944: diagnostics every refused attempt row must carry (the url the attempt
+ * used, how many bytes the candidate text had, the tier of the record, and the HTTP
+ * status or error). `got` = strategy result, `r` = acceptance result, `c` = candidate.
+ * Never returns an undefined key: `{...extra}` spreads must not blank the url.
+ */
+function refusalDiagnostics({ c = {}, got = {}, r = null }) {
+  const raw = typeof got.rawText === 'string' ? got.rawText.length : null;
+  const out = {
+    url: got.url || c.url || null,
+    bytesAfter: r && Number.isFinite(r.newLen) ? r.newLen : (raw !== null ? raw : (got.ok === false ? 0 : null)),
+    tier: (r && r.decision && r.decision.priorTier) || c.contentTier || null,
+    httpStatus: Number.isFinite(got.httpStatus) ? got.httpStatus : httpStatusFrom(got.error || got.reason),
+    error: got.error || (r && r.reason ? String(r.reason) : null) || (got.reason ? String(got.reason) : null),
+  };
+  return out;
 }
 
 /** One O_APPEND write per row (safe against concurrent appenders). */
@@ -165,6 +206,9 @@ function liveRows(list) {
 
 /** failed-fetch-policy reason an evidence row stands for. */
 function policyReasonOf(row) {
+  // BRO-7962 review: a bot check / paywall is no access on this route, not a page
+  // that serves the wrong content; it takes the 5-failure path, not the strict 3.
+  if (row.outcome === 'rejected' && require('./gap-strategies').WALLED_REASONS.has(row.reason)) return 'all_tiers_failed';
   if (row.outcome === 'rejected') return 'garbage_content'; // the page serves content, never this review
   return FF_REASONS.has(row.reason) ? row.reason : 'fetch_error';
 }
@@ -345,8 +389,26 @@ function recoveredRowFromLanding(landed, info = {}) {
     priorFullTextHash: info.priorFullTextHash,
     pushedBlob: landed.blob || null,
     runId: info.runId,
-    detail: landed.commit ? { commit: landed.commit } : undefined,
+    detail: tierDetail(landed, info),
   });
+}
+
+function tierDetail(landed, info) {
+  const d = {
+      ...(landed.commit ? { commit: landed.commit } : {}),
+      // BRO-7942: "recovered" counts only when the tier went up (143 of 464 recovered keys were still truncated).
+      ...(info.newTier ? { priorTier: info.priorTier || null, newTier: info.newTier, tierImproved: tierImproved(info.priorTier, info.newTier) } : {}),
+  };
+  return Object.keys(d).length ? d : undefined;
+}
+
+const TIER_ORDER = { invalid: 0, stub: 1, excerpt: 2, truncated: 3, complete: 4 };
+/** Did the accepted text raise the content tier? An unknown prior tier counts as the lowest. */
+function tierImproved(priorTier, newTier) {
+  const n = TIER_ORDER[newTier];
+  if (n === undefined) return false;
+  const p = TIER_ORDER[priorTier];
+  return p === undefined ? true : n > p;
 }
 
 // Reopen reason for a recovery another writer replaced by re-fetching the
@@ -462,6 +524,8 @@ function pendingPushInfo(rows) {
     out.set(key, {
       reviewKey: key, gapClass: last.gapClass, strategy: last.strategy, url: last.url,
       bytesBefore: last.bytesBefore, bytesAfter: last.bytesAfter, priorFullTextHash: last.priorFullTextHash, runId: last.runId,
+      priorTier: (last.detail && last.detail.priorTier) || null, newTier: (last.detail && last.detail.newTier) || null,
+      acceptedHash: (last.detail && last.detail.acceptedHash) || null,
     });
   }
   return out;
@@ -495,6 +559,24 @@ function ownedRecordReason(review) {
   return null;
 }
 
+/**
+ * BRO-7943: a manual tier pin judged on a paywalled or partial fetch outlives
+ * the text it was judged on. The full text arrives later (another collector),
+ * the pin keeps the review "truncated"/"stub", and ownedRecordReason keeps
+ * every recovery route away from it: the gap never closes and never shows as
+ * attempted (Paranormal Activity NYT, pinned on a 2,913-char JS wall, held
+ * 9,381 chars of full review three months later). True when the pin is not
+ * "complete" but the text, classified without the pin, is complete.
+ * @param {object} review
+ * @param {(r:object)=>{contentTier:string}} classify  content-quality classifyContentTier
+ */
+function isStaleManualTierPin(review, classify) {
+  if (!review || !review.manualContentTier || review.manualContentTier === 'complete') return false;
+  if (review.manualContentTier === 'invalid') return false; // a verdict on the record, not on text length
+  const { manualContentTier, ...rest } = review;
+  try { return classify(rest).contentTier === 'complete'; } catch { return false; }
+}
+
 // A review file another writer renamed or deleted after the plan was built
 // (byline fix artshub--unknown -> artshub--<critic>, dedup, merge). Only this
 // candidate's own file counts: any other missing file is a real fault and
@@ -506,6 +588,11 @@ function isVanishedReviewFile(err, filePath) {
 }
 
 module.exports = {
+  isStaleManualTierPin,
+  tierImproved,
+  recentNonEvidence,
+  httpStatusFrom,
+  refusalDiagnostics,
   isVanishedReviewFile,
   pendingPushInfo,
   outcomeForGateRefusal,

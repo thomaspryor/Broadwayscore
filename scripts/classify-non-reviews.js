@@ -54,6 +54,7 @@ const { shouldSkipNonReviewStamp, nonReviewStampBlockReason } = require('./lib/f
 const { hasBotStubTruncationSignal } = require('./lib/content-quality');
 const { buildClassifySample } = require('./lib/classify-sample');
 const { CLAUDE_SONNET, CLAUDE_OPUS, GEMINI_FLASH, GPT4O } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 const { finalResponseText, describeResponse, firstJsonObject } = require('./lib/anthropic-response-text');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -233,15 +234,15 @@ function callGemini(systemPrompt, userPrompt) {
 function callOpenAI(systemPrompt, userPrompt) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
-  const body = JSON.stringify({
+  const body = JSON.stringify(openaiChatBody({
     model: GPT4O,
     temperature: 0.1,
-    max_tokens: 200,
+    maxTokens: 200,
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt }
     ]
-  });
+  }));
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

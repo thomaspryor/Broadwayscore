@@ -42,7 +42,7 @@ test('validateRoundupPageTitle flags a Broadway-qualified archive filed under a 
   assert.equal(result.showCategory, 'regional');
 });
 
-test('validateRoundupPageTitle is a no-op for non-regional showCategory even with a qualifying sibling (scope is regional-only)', () => {
+test('validateRoundupPageTitle is a no-op when page and show share a category, even with a qualifying sibling (BRO-2551: widened beyond regional)', () => {
   // A page that legitimately says "(Broadway)" for an ACTUAL Broadway
   // showId must never be flagged just because a regional sibling exists —
   // the check only ever fires when THIS show's own category is 'regional'.

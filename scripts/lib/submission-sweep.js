@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const {
-  checkSubmissionLanded, decideAwaitingSubmission, findShowForSubmission, AWAITING_SCORE_MAX_HOURS,
+  checkSubmissionLandedAcrossShows, decideAwaitingSubmission, AWAITING_SCORE_MAX_HOURS,
 } = require('./submission-landing');
 
 // Every label that parks a submission waiting on its review to land.
@@ -19,7 +19,7 @@ function gh(args) {
   return execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 }
 
-function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirname, '..', '..', 'data') } = {}) {
+function sweepSubmissions({ runGh = gh, closeCard = null, dryRun = false, root = path.join(__dirname, '..', '..', 'data') } = {}) {
   let issues;
   try {
     const byNumber = new Map();
@@ -55,8 +55,10 @@ function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirna
     // Unlabeled issues get manualReview semantics: close if landed, never relabel/comment otherwise.
     const manualReview = !hasQueueLabel || issue.labels.some(l => MANUAL_LABELS.includes(l.name));
     const url = (String(issue.body).match(/### Review URL\s*\n+\s*(https?:\/\/\S+)/) || [])[1];
-    const show = url ? findShowForSubmission(url, shows, textsDir) : null;
-    const landed = !!(show && checkSubmissionLanded({ showId: show.id, url, reviews, reviewTextsDir: textsDir, show }).landed);
+    // Every show holding a copy is checked (a stale wrong-production copy may sort first, #1178).
+    const found = url ? checkSubmissionLandedAcrossShows({ url, reviews, reviewTextsDir: textsDir, shows }) : null;
+    const show = found ? { id: found.actualShowId } : null;
+    const landed = !!(found && found.landed);
     const action = decideAwaitingSubmission({ landed, ageHours, manualReview });
     if (!hasQueueLabel && !landed) console.log(`::notice::#${issue.number} has no queue label and is not live (age ${ageHours.toFixed(1)}h); left open`);
     console.log(`#${issue.number} ${show ? show.id : '(no review file found)'} age=${ageHours.toFixed(1)}h -> ${action}`);
@@ -67,6 +69,15 @@ function sweepSubmissions({ runGh = gh, dryRun = false, root = path.join(__dirna
         runGh(['issue', 'comment', n, '--body', 'This review is now live on the site. Thank you for your contribution to Broadway Scorecard! 🎭']);
         // Close before removing queue labels so a failed close is retried.
         runGh(['issue', 'close', n, '--reason', 'completed']);
+        // Card first, in its own try: a failed label edit below must not leave the
+        // parked-submission card open for good (the issue is no longer listed).
+        if (closeCard) {
+          try {
+            const res = closeCard({ issueNumber: n });
+            if (res.closed) console.log(`#${n} card ${res.identifier} closed`);
+            else if (res.reason !== 'no open card') console.log(`::warning::#${n} card not closed (${res.reason})`);
+          } catch (e) { console.log(`::warning::#${n} card close threw: ${e.message.split('\n')[0]}`); }
+        }
         const labels = issue.labels.filter(l => QUEUE_LABELS.includes(l.name));
         if (labels.length) runGh(['issue', 'edit', n, ...labels.flatMap(l => ['--remove-label', l.name])]);
       } else {

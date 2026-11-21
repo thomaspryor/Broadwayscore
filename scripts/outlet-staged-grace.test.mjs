@@ -18,4 +18,13 @@ test('staged ids inside the grace window are pending, older ones are not', () =>
 });
 test('Time Out mirror host is blocked', () => {
   assert.equal(isBlockedReviewUrl('https://harunaenterprisesltd.com/pro/broadway-review-billy-crystal-in-860-a1imdgxpg1'), true);
+  // Deadline mirror (BRO-5823, 2026-11-18).
+  assert.equal(isBlockedReviewUrl('https://globalnews2.xyz/a-few-good-men-broadway-review-bradley-whitford-and-tom-blyth-handle-the-truth/'), true);
+  const { isJunkOutlet } = require('./lib/review-normalization');
+  for (const id of ['new-york-review', 'broadways-summer']) assert.equal(isJunkOutlet(id), true, id);
+  // A substack.com/@<handle> profile link is the handle's publication, not an outlet named substack-com.
+  const { planOutletMigration } = require('./lib/outlet-id-migrations');
+  const moved = planOutletMigration({ outletId: 'substack-com', url: 'https://substack.com/@intelligentshowmosexual/p-221082570' }, 'substack-com--sloan-ciccone.json');
+  assert.equal(moved && moved.to, 'showmosexualsguide');
+  assert.equal(planOutletMigration({ outletId: 'substack-com', url: 'https://substack.com/@someoneelse/p-1' }, 'substack-com--x.json'), null);
 });

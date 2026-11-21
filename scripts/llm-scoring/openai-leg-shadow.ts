@@ -160,7 +160,7 @@ function legCost(u: any, sh: any, shadowOpenai: string, shadowClaude?: string) {
   const openaiC = (t: any, m: string) => { const r = OPENAI_RATES_PM[m] || [5, 30]; return t ? (t.input * r[0] + t.output * r[1]) / 1e6 : 0; };
   const out = {
     claudeControl: claudeC(u.claude, 'claude-sonnet-4-6'),
-    openaiControl: openaiC(u.openai, 'gpt-4o'),
+    openaiControl: openaiC(u.openai, SCORING_OPENAI), // the control leg runs the production pin (gpt-5.6-luna since BRO-7537)
     gemini: u.gemini ? (u.gemini.input * GEMINI_RATES[0] + u.gemini.output * GEMINI_RATES[1]) / 1e6 : 0,
     claudeShadow: shadowClaude ? claudeC(sh.claude, shadowClaude) : 0,
     openaiShadow: shadowOpenai !== 'none' ? openaiC(sh.openai, shadowOpenai) : 0,

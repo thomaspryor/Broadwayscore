@@ -147,19 +147,36 @@ case "$tool_name" in
     # Deliberately conservative -- false negatives (missed writes) fail open
     # per this hook's design; false positives would wedge an unrelated
     # command with no escape hatch beyond WORKTREE_ENFORCE_DISABLE.
+    # BRO-7723: scan a copy with heredoc bodies and multi-word quoted strings
+    # blanked, so prose that mentions a redirect (a --notes "... > scripts/x.js")
+    # is not read as a write. Single-token quotes keep their content: > "x.js".
+    # One left-to-right pass over both quote kinds, so an apostrophe inside "..."
+    # (or a " inside '...') never pairs with a later quote. Quoted code stays:
+    # a string after -c or eval, or one holding $( or a backtick, is kept whole.
+    # Known gap: a << inside quoted prose is read as a heredoc opener.
+    # perl missing or failing -> scan the raw command (old behaviour).
+    scan=$(printf '%s' "$command" | perl -0pe '
+      s/(<<-?[ \t]*["\x27]?(\w+)["\x27]?[^\n]*)\n(?:.*?\n)??[ \t]*\2[ \t]*(?=\n|$)/$1/gs;
+      s{((?<![\w-])(?:-c|eval)[ \t]+)?(?:"((?:[^"\\]|\\.)*)"|\x27([^\x27]*)\x27)}{
+        my ($all, $pre, $c) = ($&, $1, defined $2 ? $2 : $3);
+        (defined $pre || $c =~ m{\$\(|`}) ? $all : ($c =~ m{\s} ? "\"\"" : $c)
+      }ge;
+    ' 2>/dev/null) || scan="$command"
+    [ -z "$scan" ] && scan="$command"
     targets=$(
       {
-        printf '%s' "$command" | grep -oE '(^|[[:space:]])(>>?|tee)[[:space:]]+[^[:space:];&|]+' | awk '{print $NF}'
-        printf '%s' "$command" | grep -oE '(^|[;&|]|&&|\|\|)[[:space:]]*(cp|mv|sed[[:space:]]+-i[a-zA-Z0-9]*)[[:space:]]+[^;&|]+' | awk '{print $NF}'
+        printf '%s' "$scan" | grep -oE '(^|[[:space:]])(>>?|tee)[[:space:]]+[^[:space:];&|]+' | awk '{print $NF}'
+        printf '%s' "$scan" | grep -oE '(^|[;&|]|&&|\|\|)[[:space:]]*(cp|mv|sed[[:space:]]+-i[a-zA-Z0-9]*)[[:space:]]+[^;&|]+' | awk '{print $NF}'
       }
     )
     [ -z "$targets" ] && exit 0
+    # Relative targets resolve against a leading `cd DIR &&|;` (2026-11-18); dirs normalized so ./scripts/x cannot dodge the scope check.
+    base=$(pwd -P); d=$(printf '%s' "$scan" | sed -nE '1s/^[[:space:]]*cd[[:space:]]+([^[:space:];&|]+)[[:space:]]*(&&|;).*/\1/p' | tr -d "\"'")
+    case "$d" in "~"|"~/"*) d="$HOME${d#\~}" ;; esac
+    [ -n "$d" ] && { base=$(cd "$d" 2>/dev/null && pwd -P) || base=$(pwd -P); }
     while IFS= read -r t; do
-      [ -z "$t" ] && continue
-      case "$t" in
-        /*) abs="$t" ;;
-        *)  abs="$(pwd)/$t" ;;
-      esac
+      case "$t" in "") continue ;; /*) abs="$t" ;; *) abs="$base/$t" ;; esac
+      tdir=$(cd "$(dirname -- "$abs")" 2>/dev/null && pwd -P) && abs="$tdir/$(basename -- "$abs")"
       resolve_and_check "$abs"
       [ "$BLOCK" = "1" ] && break
     done <<EOF

@@ -64,13 +64,18 @@ function escapeRe(s) {
  * these titles counts. Two different ratings for the same titles -> null.
  */
 function footerStars(text, titles) {
-  const body = String(text || '');
+  // Theater Life sometimes leaves the last star outside the bold tags
+  // ("Disruption **</em></strong>*<br>"); tag stripping then leaves two spaces
+  // and STARS stops at the gap, reading 2 for 3 (BRO-7928 audit).
+  const body = String(text || '').replace(/([*★])[ \t\u00a0]{2,}(?=[*★])/g, '$1 ');
   if (!body) return null;
   const found = new Set();
   for (const raw of titles || []) {
     const title = String(raw || '').trim();
     if (title.length < 3) continue;
-    const pat = escapeRe(title).replace(/\s+/g, '\\s+');
+    // Straight and curly apostrophes are the same letter ("A Doll's House"
+    // in shows.json, "A Doll’s House" on the footer line, BRO-7928).
+    const pat = escapeRe(title).replace(/\s+/g, '\\s+').replace(/['’‘]/g, "['’‘]");
     const re = new RegExp(`(?:^|[\\s"“”'‘’(])${pat}\\s+${STARS}(?![*★])${FOOTER_FRACTION}`, 'gi');
     let m;
     while ((m = re.exec(body)) !== null) {
@@ -95,16 +100,67 @@ function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
   const titleIsThisShow = !/[*★]/.test(cleanTitle)
     && (shows.length === 0 || shows.some(t => sameTitle(t, cleanTitle)));
   const footer = footerStars(decodeHtmlEntities(String(text || '')), titleIsThisShow ? [cleanTitle, ...shows] : shows);
+  // A combined column's title carries one star group per show ("Time and the
+  // Conways ***1/2 – Measure for Measure**1/2 – A Clockwork Orange **"), and
+  // the end-of-title match reads the LAST show's group. Use only the segment
+  // naming this show (BRO-7928: the Conways review got A Clockwork Orange's 2).
+  const thisTitleRating = /[*★]/.test(cleanTitle) ? segmentTitleStars(title, shows) : titleRating;
   if (footer) {
-    // Same whole stars, half only in the title: the footer lost its fraction to
-    // a separate tag or a typo the pattern does not read, so keep the half.
+    // Same whole stars, half only in this show's title stars: the footer lost
+    // its fraction to a separate tag or a typo the pattern does not read, so
+    // keep the half. On a combined column that is this show's segment, not the
+    // last group (Sweat ***1/2 in the title, "Sweat ***" footer).
     const f = parseFloat(footer);
-    const t = titleRating ? parseFloat(titleRating) : NaN;
-    const rating = Number.isInteger(f) && Math.floor(t) === f && t > f ? titleRating : footer;
+    const t = thisTitleRating ? parseFloat(thisTitleRating) : NaN;
+    const rating = Number.isInteger(f) && Math.floor(t) === f && t > f ? thisTitleRating : footer;
     return { cleanTitle, rating, source: 'wp-api-footer' };
   }
-  if (titleRating) return { cleanTitle, rating: titleRating, source: 'wp-api-title' };
+  if (thisTitleRating) return { cleanTitle, rating: thisTitleRating, source: 'wp-api-title' };
   return { cleanTitle, rating: null, source: null };
 }
 
-module.exports = { parseTitleStars, footerStars, resolveTheaterLifeStars, decodeEntities: (s) => decodeHtmlEntities(String(s || '')) };
+/**
+ * The star group that follows this show's name in a title listing several
+ * shows, each with its own stars ("A ***1/2 – B**1/2 – C **", "Scotland, PA
+ * ***, The Lightning Thief: The Percy Jackson Musical **"). Each segment is
+ * the text before a star group; sameTitle lets a subtitle follow the name.
+ * Null when no segment names a show, or two named segments disagree.
+ */
+function segmentTitleStars(title, shows) {
+  const exact = new Set();
+  const loose = new Set();
+  const re = new RegExp(`([^*★]*?)\\s*${STARS}${FRACTION}`, 'g');
+  const t = decodeHtmlEntities(String(title || ''));
+  const bare = (x) => normTitle(x).replace(/^the /, '');
+  let m;
+  while ((m = re.exec(t)) !== null) {
+    // "The Elephant Man *** and A Delicate Balance ****": drop the joiner too.
+    const name = m[1].replace(/^[\s,;|–—-]+/, '').replace(/^(?:and|plus|&)\s+/i, '').replace(/[\s,;|–—:-]+$/, '');
+    if (!name) continue;
+    const rating = toRating(m[2], m[3]);
+    // An exact name beats a prefix one ("Fish ** – Fish in the Dark ****").
+    if (shows.some(s => bare(s) === bare(name))) exact.add(rating);
+    else if (shows.some(s => sameTitle(s, name))) loose.add(rating);
+  }
+  const found = exact.size ? exact : loose;
+  return found.size === 1 ? [...found][0] : null;
+}
+
+/**
+ * The footer-line rating of a stored Theater Life review file, shaped like a
+ * score-extractors result. recover-explicit-ratings.js phase 1 uses it: phase 2
+ * reads the same line from the WP API, but theaterlife.com times out from
+ * GitHub runners (BRO-7928: the Elektra recovery run got "timeout"), so the
+ * weekly cron never filled these. Footer only: a title-only star needs the WP
+ * post title, which the stored file does not keep.
+ * @param {{outletId?: string, fullText?: string, showTitle?: string}} data
+ */
+function footerRatingFromStoredText(data) {
+  if (!data || data.outletId !== 'theater-life' || !data.fullText || !data.showTitle) return null;
+  const rating = footerStars(decodeHtmlEntities(String(data.fullText)), [data.showTitle]);
+  if (!rating) return null;
+  const total = parseFloat(rating);
+  return { originalScore: `${total}/5 stars`, normalizedScore: Math.round((total / 5) * 100), source: 'wp-api-footer' };
+}
+
+module.exports = { parseTitleStars, segmentTitleStars, footerStars, resolveTheaterLifeStars, footerRatingFromStoredText, decodeEntities: (s) => decodeHtmlEntities(String(s || '')) };

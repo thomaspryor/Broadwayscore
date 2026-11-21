@@ -45,6 +45,17 @@ const { isForumLinkRecoverable, isForumThreadUrl, FORUM_RECOVERY_CAP, FORUM_RECO
 // DISPATCH_RETRY_HOURS=6). Same predicate verify-all-scored.js uses.
 const { unscoredSkipReason, UNSCORED_SKIP } = require('./scoring-queue-counts');
 
+// BRO-7773: is an empty-body file still recoverable by automation? A Talkin' Broadway
+// forum thread only holds a teaser and a "Link" anchor, so re-fetching the thread URL
+// itself can never yield the review (see talkinbroadway-forum-link.js); only the
+// forum-link recovery budget counts. The generic same-URL check reads true for such a
+// file (its own retry counter stays 0), which kept a budget-spent Rope stub "recoverable"
+// for days: the gap never moved to the manual FYI line and the digest row kept firing.
+function isEmptyBodyRecoverable(file) {
+  if (isForumThreadUrl(file.url)) return isForumLinkRecoverable(file);
+  return isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file);
+}
+
 // Tiers considered "cannot silently miss". 1 = NYT/Times/Guardian class,
 // 2 = TheaterMania/Standard/Telegraph class.
 const MAJOR_TIER_MAX = 2;
@@ -216,7 +227,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
     // Includable content (flags + context clean), but no valid score yet.
     if (isEmptyBodyFile(file)) {
       if (isEmptyBodyAtNonReviewUrl(file)) return null;
-      return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
+      return { type: 'empty-body', recoverable: isEmptyBodyRecoverable(file) };
     }
     const fetchedAt = Date.parse(file.textFetchedAt || '');
     if (!Number.isNaN(fetchedAt) && now instanceof Date
@@ -271,7 +282,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
   if (isListingPageFile(file)) return null;
   if (file.contentTier !== 'invalid' && isEmptyBodyFile(file) && !hasValidScore(file)) {
     if (isEmptyBodyAtNonReviewUrl(file)) return null;
-    return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
+    return { type: 'empty-body', recoverable: isEmptyBodyRecoverable(file) };
   }
 
   return null;

@@ -112,6 +112,20 @@ confirm the change shows. Only then tell the owner it is live.
 Rerun the other sessions' land runs you cancelled (`rerun_workflow_run`).
 Routine jobs (tests, mirror, demo, images, scoring) rerun on their schedule.
 
+## A missing review: the rebuild takes longer than the deploy wait
+A review that needs ingest + scoring reaches the site through
+`rebuild-fast.yml` before the deploy. Measured on 2026-11-18 (BRO-7744,
+5 runs): 15.5 min end to end. Where it goes: checkouts about 2 min,
+`npm ci` about 2 min, the rebuild itself about 8 min, onboarding data 1.3 min,
+commit and pushes about 1 min. After BRO-7744 (fingerprint memo, critic
+alias index, parallel poster scan), measured on main 2026-11-18: 9.7 min with
+a warm memo (run 44254894256: rebuild 4.1 min, onboarding 30s) and 12.7 min on
+a cold one (run 44253275098, the first run after a cleaning-code change). Add
+about 45s when there is something to commit. A queued run can also wait about
+10 min behind a running rebuild. The floor with no rebuild work at all is
+about 6 min (checkouts 2.3, npm ci 1.6, sweeps, onboarding, pushes), so never promise "2 minutes": tell
+the owner rebuild about 10 min, then the deploy build 10 to 15 min.
+
 ## Telling the owner
 Say what you did, with times ("cancelled 12 background jobs, the fix got a
 machine at 03:45"). Give the honest remaining time: the deploy build itself,

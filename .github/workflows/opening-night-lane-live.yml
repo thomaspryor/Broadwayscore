@@ -188,7 +188,9 @@ jobs:
           # BRO-7280: opt-in pre-embargo direct-only window (default off; opening-night-lane-switch.yml sets it).
           LANE_PREEMBARGO_DIRECT_ONLY: ${{ vars.LANE_PREEMBARGO_DIRECT_ONLY }}
         run: |
-          if node -e "process.exit(require('./scripts/lib/opening-night-lane/preembargo-window').parseFlag(process.env.LANE_PREEMBARGO_DIRECT_ONLY)?0:1)"; then echo "preembargo=on" >> "$GITHUB_OUTPUT"; else echo "preembargo=off" >> "$GITHUB_OUTPUT"; fi
+          # BRO-7740: guard on = the owner variable OR a market-default (guessed) embargo; one function (laneGuardMode) decides.
+          PRE=$(node scripts/lane-auto-fallback.js preembargo-mode "--show=${SHOW}" "--night=${NIGHT}") || { echo "::error::preembargo-mode failed"; exit 1; }
+          echo "preembargo=${PRE}" >> "$GITHUB_OUTPUT"
           read -r ACTION SLEEP_MIN <<< "$(node scripts/lane-auto-fallback.js night-wait "--show=${SHOW}" "--night=${NIGHT}")"
           echo "night-wait: ${ACTION} ${SLEEP_MIN} min"
           case "$ACTION" in
@@ -244,6 +246,7 @@ jobs:
       # `opening-night-lease.js enforce` reverts writes under leased shows unless the lease is this holder's, which it
       # still is: the lane keeps its lease until "Release night lease" runs after the push (BRO-6618).
       OPENING_NIGHT_LANE_HOLDER: gha-${{ github.run_id }}
+      OPENING_NIGHT_LANE_INBOX_DISABLED: ${{ vars.OPENING_NIGHT_LANE_INBOX_DISABLED }}  # BRO-7741 kill switch: true = lane ignores the manual inbox
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
@@ -344,6 +347,8 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-7748: near-miss / found-not-live alerts post here during the night (and comment on the coordinator card).
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           # LANE_STANDDOWN (BRO-6617): the owner's switch. The driver re-reads it live at every heartbeat with this token
           # (the PAT Express uses for ORCHESTRATOR_PAUSED); this job-start value is the fallback if that read fails.
           LANE_STANDDOWN: ${{ vars.LANE_STANDDOWN }}
@@ -445,6 +450,23 @@ jobs:
           node scripts/opening-night-lease.js release "--show=${SHOW}" "--night=${NIGHT}" "--holder=${OPENING_NIGHT_LANE_HOLDER}" || RC=$?
           if [ "$RC" -eq 3 ]; then echo "::notice::night lease is held by another run; left alone"
           elif [ "$RC" -ne 0 ]; then echo "::warning::night lease release exited ${RC}; the lease expires by TTL"; fi
+
+      # BRO-7741: inbox URLs the lane did not publish (failed, unfinished, added after its last pass) go to ingest-urls.yml,
+      # the regular path, now that the lease is released. Only after a successful release: with the lease still held,
+      # ingest-urls would route them straight back into the inbox.
+      - name: Drain the lane inbox to ingest-urls
+        if: always() && steps.lane.outcome != 'skipped' && steps.push.outcome == 'success' && github.ref == 'refs/heads/main'
+        env:
+          SHOW: ${{ inputs.show }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Exit 3 = the lease still reads as held (a slow or failed release): wait and try again before giving up.
+        run: |
+          for i in 1 2 3; do
+            rc=0; node scripts/opening-night-lane-inbox.js drain "--show=${SHOW}" --dispatch || rc=$?
+            [ "$rc" -ne 3 ] && break
+            [ "$i" -lt 3 ] && sleep 60
+          done
+          [ "$rc" -eq 0 ] || echo "::warning::lane inbox drain did not finish (exit $rc); run opening-night-lane-inbox.js drain --show=${SHOW} --dispatch once the lease is gone"
 
       # The driver pages through routeAlert( digest ) (owner-alert-router.js); its ledger and digest queue live on
       # this runner's disk, so commit them or the cooldown/dedup state resets every run.
@@ -556,6 +578,9 @@ jobs:
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           # BRO-6651: encrypted page recording lands in $RUNNER_TEMP/shadow/recording, uploaded with the report below.
           LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY }}
+          # BRO-7748: near-miss / found-not-live alerts on shadow nights too (Discord + coordinator card).
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           # BRO-6988: opt-in CPU profile for event-loop freeze hunting. npx, the tsx parent and the lane child each write
           # one; the lane's is the largest. Written on exit, including the SIGTERM handler's process.exit.

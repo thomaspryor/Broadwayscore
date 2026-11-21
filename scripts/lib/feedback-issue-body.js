@@ -84,6 +84,26 @@ function buildNeedsReviewBody({ item, submission, contentActions = [], dispatcha
   ].join('\n'));
 }
 
+// BRO-7919: true when every planned action says the asked-for show is already
+// live in the catalog. Such an issue has nothing left to do, so the workflow
+// closes it instead of leaving it open for the owner proposal flow.
+function isAlreadyInCatalog(contentActions) {
+  const a = Array.isArray(contentActions) ? contentActions : [];
+  return a.length > 0 && a.every((x) => x && x.alreadyInCatalog === true && x.showId && !x.workflow);
+}
+
+function buildAlreadyInCatalogComment(contentActions, siteUrl = 'https://broadwayscorecard.com') {
+  const urls = [...new Set((contentActions || []).map((a) => a && a.showId).filter(Boolean))]
+    .map((id) => `- ${siteUrl}/show/${id}`);
+  return [
+    '## Already in the catalog',
+    '',
+    'The show this reader asked for is already live on the site, so nothing needs adding. Closing. The reply draft goes to the owner.',
+    '',
+    ...urls,
+  ].join('\n');
+}
+
 function buildDuplicateComment({ submission, reason, date = new Date().toISOString().split('T')[0] }) {
   const id = submissionKey(submission);
   return [
@@ -98,5 +118,7 @@ module.exports = {
   buildPublicDiagnosisPayload,
   buildBugDiagnosisBody,
   buildNeedsReviewBody,
+  isAlreadyInCatalog,
+  buildAlreadyInCatalogComment,
   buildDuplicateComment,
 };

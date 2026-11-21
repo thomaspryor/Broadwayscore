@@ -145,6 +145,9 @@ async function main() {
         showScoreGuards, adaptersConfig, search: serpSearch, decodeImpl: require('./lib/google-news-decode').decodeGoogleNewsLink, now, ledgerDir,
       }),
       missingOutlets: ({ seen }) => discovery.laneMissingOutlets({ show, seen, adaptersConfig }),
+      // BRO-7748 review: a shadow night is still a press night, so its near-misses and found-not-live gaps alert too
+      // (never on a replay of a past night).
+      onPressSignals: replay ? null : require('./lib/press-night-signals-notify').createPressSignalsNotifier(),
       fetchReview: scoring.fetchReview, scoreReview: scores.wrapScore(scoring.scoreReview),
       // No reviewTextsDir and no onDiskUrls: the shadow must find every review itself, including ones the regular
       // pipeline already published, and must not write review files the regular pipeline also writes. onDiskRows

@@ -38,6 +38,19 @@ const IMAGE_ONLY_VENUES = [
   { re: /\bkeegan theat(?:re|er)\b/i, city: 'Washington, DC', domain: 'keegantheatre.com', sample: 'Keegan Theatre, Washington, DC' },
   { re: /\batlas performing arts\b/i, city: 'Washington, DC', domain: 'atlasarts.org', sample: 'Atlas Performing Arts Center, Washington, DC' },
   { re: /\bsilver spring stage\b/i, city: 'Silver Spring, MD', domain: 'ssstage.org', sample: 'Silver Spring Stage, Silver Spring, MD' },
+  // BRO-7265: DC/LA houses whose production page og:image was that production's key art
+  // when 36 thumbnail-only/venue-photo rows were sourced by hand (2026-11-19). Not listed:
+  // houses whose og:image is a favicon, logo or absent (Woolly Mammoth, Victory, Skylight) or whose producer
+  // is a renting company (Atlas, Gunston, El Portal, Madnani).
+  { re: /\bolney theat(?:re|er)\b/i, city: 'Olney, MD', domain: 'olneytheatre.org', sample: 'Olney Theatre Center, Olney, MD' },
+  { re: /\bround house theat(?:re|er)\b/i, city: 'Bethesda, MD', domain: 'roundhousetheatre.org', sample: 'Round House Theatre, Bethesda, MD' },
+  { re: /\bgala hispanic theat(?:re|er)\b/i, city: 'Washington, DC', domain: 'galatheatre.org', sample: 'GALA Hispanic Theatre, Washington, DC' },
+  { re: /^theat(?:re|er) 40\b/i, city: 'Beverly Hills, CA', domain: 'theatre40.org', sample: 'Theatre 40 at The Reuben Cordova Theatre, Beverly Hills, CA' },
+  { re: /\blong beach playhouse\b/i, city: 'Long Beach, CA', domain: 'lbplayhouse.org', sample: 'Long Beach Playhouse, Long Beach, CA' },
+  { re: /\bsouth coast repertory\b/i, city: 'Costa Mesa, CA', domain: 'scr.org', sample: 'South Coast Repertory, Costa Mesa, CA' },
+  { re: /^the road (?:on magnolia|theat(?:re|er))\b/i, city: 'North Hollywood, CA', domain: 'roadtheatre.org', sample: 'The Road on Magnolia, North Hollywood, CA' },
+  { re: /\bnocturne theat(?:re|er)\b/i, city: 'Glendale, CA', domain: 'thenocturnetheatre.com', sample: 'The Nocturne Theater, Glendale, CA' },
+  { re: /^antaeus\b/i, city: 'Glendale, CA', domain: 'antaeus.org', sample: 'Antaeus Theater, Glendale, CA' },
 ];
 
 function imageOnlyVenue(venue) {

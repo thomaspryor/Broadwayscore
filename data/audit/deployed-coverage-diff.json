@@ -1,39 +1,13 @@
 {
-  "generatedAt": "2026-11-17T19:10:50.435Z",
+  "generatedAt": "2026-11-21T14:33:41.060Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 352,
-  "clean": 351,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "title": "The Devil Wears Prada",
-      "openingDate": "2024-12-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: observer"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 58.55 vs local 58.11 (Δ0.44)"
-        }
-      ],
-      "missingFromProd": [
-        "observer"
-      ],
-      "localCount": 30,
-      "deployedCount": 29,
-      "firstDefectAt": "2026-11-17T19:10:43.536Z"
-    }
-  ],
+  "checked": 366,
+  "clean": 366,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

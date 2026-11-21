@@ -293,14 +293,22 @@ function extractByParagraphDensity(html) {
  */
 function extractStageBody(html) {
   const startM = html.match(/<div[^>]*class="[^"]*aos-Article-IntroText[^"]*"[^>]*>/);
-  if (!startM) return null;
-  let region = html.slice(startM.index);
+  // BRO-6487: older (2016-era) review pages have no IntroText block: the review is a run of plain
+  // <p> after the <h1>, then the author bio, subscribe line and copyright. Fall back to that shape,
+  // but only on a logged-in page (the registration gate marks a dead session, which must stay null).
+  const GATE = /utm_source=Reggate|create a free account|Subscribe to continue|THIS IS NOT A PAYWALL/i;
+  let region;
+  if (startM) region = html.slice(startM.index);
+  else {
+    if (html.search(/<h1[\s>]/) < 0 || GATE.test(html)) return null;
+    region = html;
+  }
   // BRO-7171 Stage 5: the author card (job title + biography) follows the
   // review. Its bio "Sam Marlowe is reviews editor for The Stage..." has no
   // article before "editor", so the bio shape below missed it; cut the region
   // at the card itself. Off under the page-furniture kill switch.
   const cardAt = region.search(/class="[^"]*aos-Contact(?:JobTitle|Biog)\b/);
-  if (cardAt > 0 && require('./page-furniture').pageFurnitureEnabled()) region = region.slice(0, cardAt);
+  if (startM && cardAt > 0 && require('./page-furniture').pageFurnitureEnabled()) region = region.slice(0, cardAt);
   const isTrailingNoise = (t) =>
     // Author bio: "Firstname [Lastname] is a (culture|theatre|freelance)? journalist/critic/..."
     // First-name-only bylines (e.g. "Holly is a culture journalist…") slipped the
@@ -318,10 +326,42 @@ function extractStageBody(html) {
     // misread a genuinely complete review as truncated (task #876, confirmed
     // live on archduke-west-end-2026 / burlesque-west-end-2026 recoveries).
     /sign up to The Stage.s weekly reviews newsletter/i.test(t);
-  const paras = [...region.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
-    .map((m) => stripHtml(m[1]))
-    .filter((t) => t.length > 40 && /[a-z]/.test(t) && !isTrailingNoise(t));
+  const found = [...region.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+    .map((m) => ({ at: m.index, end: m.index + m[0].length, t: stripHtml(m[1]) }))
+    .filter((x) => x.t.length > 40 && /[a-z]/.test(x.t));
+  let paras;
+  if (startM) paras = found.filter((x) => !isTrailingNoise(x.t)).map((x) => x.t);
+  else {
+    // BRO-6487: older pages end the review with the author bio ("Natasha is international editor for The Stage"),
+    // a subscribe line and a copyright line, and the review sits in one unbroken run of <p> just before them (the
+    // heading is not reliably in front of it). Require a trailer (a listing, roundup or 404 page has none), then
+    // take the contiguous run of paragraphs immediately before it, so far-away chrome and sidebar <p> stay out.
+    const isPlainBio = (t) => t.length < 250 && /\bis\s+(?:[a-z]+\s+){0,3}(?:editor|critic|reporter|journalist|writer)\s+(?:for|at|of)\s+The Stage\b/.test(t);
+    // Only trailers that appear after a review count as anchors (bio, subscribe, copyright); "Login Register" or
+    // "Related Articles" can sit in page chrome above the review, so they never anchor here. Try each anchor in
+    // page order and take the first with a real run of prose before it.
+    const isAnchor = (t) => isPlainBio(t) || /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) || /^©\s*Copyright/.test(t);
+    paras = null;
+    for (let trailerAt = 0; trailerAt < found.length && !paras; trailerAt++) {
+      if (!isAnchor(found[trailerAt].t)) continue;
+      if (trailerAt === 0) continue;
+      // The author-card markup between the review and its trailer can be tens of thousands of characters
+      // (live: 30k to the bio, 75k to the subscribe line on pages with no bio), so the gap rule applies inside the
+      // run of review paragraphs. A lone footer line (subscribe/copyright) is on every page, so it may only sit far
+      // from the run when the run is substantial prose (>=4 paragraphs, >=1200 chars); the bio may always.
+      const farGap = found[trailerAt].at - found[trailerAt - 1].end > 5000;
+      let from = trailerAt - 1;
+      while (from > 0 && found[from].at - found[from - 1].end <= 5000 && !isAnchor(found[from - 1].t)) from--;
+      const run = found.slice(from, trailerAt).map((x) => x.t).filter((t) => !isTrailingNoise(t));
+      const runLen = run.join('\n\n').length;
+      const farOk = !farGap || isPlainBio(found[trailerAt].t) || (run.length >= 4 && runLen >= 1200);
+      if (run.length >= 3 && runLen >= 600 && farOk) paras = run;
+    }
+    if (!paras) return null;
+  }
   const body = paras.join('\n\n');
+  // The IntroText-less fallback needs a real run of prose (page chrome rarely has 3+ long paragraphs).
+  if (!startM && (paras.length < 3 || body.length < 600)) return null;
   return body.length >= 300 ? body : null;
 }
 
@@ -893,6 +933,41 @@ function extractLondonTheatreBody(html) {
  * Each entry: [hostnameMatch, regex or text extractor function, minLength].
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
  */
+/**
+ * Arc XP (Fusion) sites that render the story client-side (columbiaspectator.com, BRO-7884):
+ * the served HTML has only page chrome, and the body lives in `Fusion.globalContent={...};`
+ * as content_elements[] of type "text". Join those paragraphs. Null when absent or short.
+ */
+const ARC_FURNITURE_RE = /(can be contacted at\s+\S+@|^Follow \S.{0,60} on (X|Twitter|Instagram|Facebook)\b|^Want to keep up with breaking news\?|Subscribe to our (email )?newsletter)/i;
+function extractArcFusionBody(html) {
+  const m = /Fusion\.globalContent\s*=\s*\{/.exec(html);
+  if (!m) return null;
+  const start = m.index + m[0].length - 1;
+  let depth = 0; let inStr = false; let esc = false; let end = -1;
+  for (let i = start; i < html.length; i++) {
+    const c = html[i];
+    if (inStr) {
+      if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false;
+      continue;
+    }
+    if (c === '"') inStr = true;
+    else if (c === '{') depth++;
+    else if (c === '}') { depth--; if (depth === 0) { end = i + 1; break; } }
+  }
+  if (end < 0) return null;
+  let content;
+  try { content = JSON.parse(html.slice(start, end)); } catch { return null; }
+  const els = Array.isArray(content && content.content_elements) ? content.content_elements : [];
+  const paras = els
+    .filter((e) => e && e.type === 'text' && typeof e.content === 'string')
+    .map((e) => stripHtml(e.content).trim())
+    .filter(Boolean)
+    // Trailing staff-contact and promo lines are text elements too (BRO-7884 review).
+    .filter((p) => !ARC_FURNITURE_RE.test(p));
+  const text = paras.join('\n\n');
+  return text.length >= 300 ? text : null;
+}
+
 const PATTERNS = [
   // LondonTheatre.co.uk: see extractLondonTheatreBody (BRO-5904).
   ['londontheatre.co.uk', extractLondonTheatreBody, 300],
@@ -1433,7 +1508,10 @@ function extractArticleTextUnchecked(html, hostname, criticHint, { outletOnly = 
   if (isDedicatedHost || matchedDedicatedPattern || outletOnly) return null;
   const commonClassText = extractByCommonClass(html);
   if (commonClassText) return commonClassText;
-  return extractByParagraphDensity(html);
+  const densityText = extractByParagraphDensity(html);
+  if (densityText) return densityText;
+  // Last resort (BRO-7884): only when the markup held no body at all.
+  return extractArcFusionBody(html);
 }
 
 /**
@@ -1708,4 +1786,4 @@ function isExclusiveExtractorHost(urlOrHost) {
   return /(?:^|\.)theartsdesk\.com$/i.test(h);
 }
 
-module.exports = { extractAllBalancedDivsByClass, hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, stripHtmlKeepParagraphs, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };
+module.exports = { extractAllBalancedDivsByClass, hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, stripHtmlKeepParagraphs, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues, extractArcFusionBody, extractStageBody };

@@ -33,7 +33,10 @@ const PENDING_STUCK_HOURS = 24;
 // node built-ins (the ledger pulls review-guards -> scraper -> playwright).
 const INERT = new Set(['URL_FIND_PROBE']);
 const AUTH_STREAK_ALERT = 2;
-const STALE_ROW_HOURS = 20; // run ~02:30 ET, digest ~08:00 ET: a missed night must not show yesterday as today
+// BRO-7944: 26h. Run ~02:30 ET, digest ~08:00 ET (normal age ~6h): no row in 26h means a night was missed
+// (2026-11-20 was missed silently; launchctl showed runs=0), and yesterday must not show as today.
+const STALE_ROW_HOURS = 26;
+const ZERO_YIELD_NIGHTS = 3;
 
 // Skip reasons that mean a strategy has used up its tries (review-guards
 // shouldRetryFetch / shouldRetryUrlDiscovery), as opposed to a cooldown.
@@ -75,15 +78,18 @@ function nightlyCeiling(env = process.env) {
  * close (revised plan item 7; recent shows are never in it).
  */
 function planCounts(candidates) {
-  let openTotal = 0; let openRecent = 0; let needsDecision = 0;
+  let openTotal = 0; let openRecent = 0; let needsDecision = 0; let excludedRecords = 0;
   for (const c of candidates || []) {
+    // BRO-7942: a wrongShow/wrongProduction record is not a recoverable gap (the gate refuses it
+    // before looking at text); 483 of them inflated openTotal. Reported on their own.
+    if ((c.skipped || []).some((k) => k.strategy === 'ANY' && k.reason === 'excluded_record')) { excludedRecords++; continue; }
     openTotal++;
     if (c.recency === 'recent') { openRecent++; continue; }
     if (c.strategy) continue;
     const reasons = (c.skipped || []).map((k) => String(k.reason));
     if (reasons.some((r) => EXHAUSTED_REASONS.has(r)) && !reasons.some((r) => r === 'cooldown' || r === 'collector_cooldown')) needsDecision++;
   }
-  return { openTotal, openRecent, needsDecision };
+  return { openTotal, openRecent, needsDecision, excludedRecords };
 }
 
 /** Reviews whose latest ledger row is pending_push and older than PENDING_STUCK_HOURS. */
@@ -141,12 +147,52 @@ function nextAuthStreaks(prevRow, failedOutlets = [], okOutlets = []) {
 }
 
 /**
+ * BRO-7944: a strategy that attempted work on each of the last N ran nights (tonight
+ * included) and got 0 accepted on every one. A strategy not attempted tonight does
+ * not extend or break the streak: only nights it was attempted count.
+ * @param {Array} prevRows earlier nightly rows (status 'ran')
+ * @param {object} byStrategy tonight's summary.byStrategy ({S: {attempted, accepted}})
+ * @returns {string[]} strategy names, sorted
+ */
+function zeroYieldStrategies(prevRows, byStrategy, nights = ZERO_YIELD_NIGHTS) {
+  const ran = (prevRows || []).filter((r) => r.status === 'ran');
+  const out = [];
+  for (const [name, b] of Object.entries(byStrategy || {})) {
+    if (!b || !(b.attempted > 0) || b.accepted > 0) continue;
+    if (INERT.has(name)) continue;
+    let streak = 1;
+    for (let i = ran.length - 1; i >= 0 && streak < nights; i--) {
+      const p = (ran[i].byStrategy || {})[name];
+      if (!p || !(p.attempted > 0)) continue; // not attempted that night: neutral
+      if (p.accepted > 0) break;
+      streak++;
+    }
+    if (streak >= nights) out.push(name);
+  }
+  return out.sort();
+}
+
+/**
+ * BRO-7944 missed-run alarm: no nightly row (dry runs do not count) in `hours`.
+ * Pure. Returns the alert, or null when a row is fresh or the job has never run.
+ */
+function missedRunAlert(rows, nowMs = Date.now(), hours = STALE_ROW_HOURS) {
+  const real = (rows || []).filter((r) => r.status !== 'dry_run');
+  if (!real.length) return null;
+  const last = real[real.length - 1];
+  const ageH = (nowMs - Date.parse(last.ts)) / 3600e3;
+  if (Number.isFinite(ageH) && ageH <= hours) return null;
+  const ran = lastRanRow(real);
+  return { key: 'missed_run', text: `no nightly recovery run was recorded in the last ${hours} hours${ran ? ` (last ran ${new Date(ran.ts).toISOString().slice(0, 10)})` : ''}; check the Mac's scheduled job` };
+}
+
+/**
  * ACTION alerts only (no per-outlet noise): lost browser session for 2+
  * nights, a pending push stuck past a day or failed tonight, reconcile
  * reopening recovered reviews, the nightly ceiling hit, the run failing.
  * @returns {Array<{key:string, text:string}>} plain-English, owner-readable
  */
-function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0, pushFailed = false, reopened = 0, ceilingHit = false, ceiling = DEFAULT_NIGHTLY_CEILING, runFailed = false, runError = '' }) {
+function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0, pushFailed = false, reopened = 0, ceilingHit = false, ceiling = DEFAULT_NIGHTLY_CEILING, runFailed = false, runError = '', timeBudgetHit = false, zeroStrategies = [] }) {
   const out = [];
   if (authFailedStreak >= AUTH_STREAK_ALERT) {
     const who = authOutlets.length ? authOutlets.join(', ') : 'a subscriber site';
@@ -159,6 +205,8 @@ function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0
   }
   if (reopened > 0) out.push({ key: 'reconcile_reopened', text: `${reopened} review${reopened === 1 ? '' : 's'} marked recovered had lost the recovered text and ${reopened === 1 ? 'was' : 'were'} reopened` });
   if (ceilingHit) out.push({ key: 'ceiling_hit', text: `the nightly limit of ${ceiling} recovered reviews was reached, so more are waiting for the next night` });
+  if (timeBudgetHit) out.push({ key: 'time_budget_hit', text: 'the nightly run stopped because it used up its time budget before finishing the plan' });
+  if (zeroStrategies.length) out.push({ key: 'strategy_zero_yield', text: `${zeroStrategies.join(', ')} recovered nothing for ${ZERO_YIELD_NIGHTS} nights in a row while being tried` });
   if (runFailed) out.push({ key: 'run_failed', text: `the nightly run stopped with an error${runError ? ` (${String(runError).slice(0, 80)})` : ''}` });
   return out;
 }
@@ -194,7 +242,12 @@ function buildNightlyRow({ runId, status, summary, counts, reopened = 0, superse
     needsDecision: counts ? counts.needsDecision : null,
     attempted: s.attempted || 0,
     accepted: s.accepted || 0,
-    recovered: s.landed || 0,
+    // BRO-7942: recovered = landed AND the tier went up; landed-without-gain is reported apart.
+    recovered: Number.isFinite(s.landedImproved) ? s.landedImproved : (s.landed || 0),
+    landedNoTierGain: Number.isFinite(s.landedImproved) ? Math.max(0, (s.landed || 0) - s.landedImproved) : null,
+    excludedRecords: counts ? counts.excludedRecords : null,
+    slots: s.slots || null,
+    urlFindSpentMin: Number.isFinite(s.urlFindSpentMin) ? s.urlFindSpentMin : null,
     byStrategy: s.byStrategy || {},
     reopened,
     // Of reopened: another writer re-fetched the same url and its newer text
@@ -206,13 +259,16 @@ function buildNightlyRow({ runId, status, summary, counts, reopened = 0, superse
     authFailedOutlets,
     ceiling,
     ceilingHit: !!s.ceilingHit,
+    timeBudgetHit: !!s.timeBudgetHit,
     pushFailed: !!s.pushFailed,
     // Stage 4: an unanswered owner batch (gap-terminal.js --owner-batch): count + file name only.
     ownerBatchPending: ownerBatch && Number.isFinite(Number(ownerBatch.count))
       ? { count: Number(ownerBatch.count), date: ownerBatch.date || null, file: ownerBatch.file ? path.basename(String(ownerBatch.file)) : null }
       : null,
   };
+  row.zeroYieldStrategies = status === 'ran' ? zeroYieldStrategies(prevRows, row.byStrategy) : [];
   row.alerts = status === 'dry_run' || status === 'disabled' ? [] : decideAlerts({
+    timeBudgetHit: row.timeBudgetHit, zeroStrategies: row.zeroYieldStrategies,
     authFailedStreak, authOutlets: authFailedOutlets, pendingStuck, pushFailed: row.pushFailed,
     reopened: Math.max(0, reopened - superseded), ceilingHit: row.ceilingHit, ceiling, runFailed, runError: s.error,
   });
@@ -234,7 +290,7 @@ function renderDigestLine(rows, nowMs = Date.now()) {
   const ageH = (nowMs - Date.parse(last.ts)) / 3600e3;
   if (!Number.isFinite(ageH) || ageH > STALE_ROW_HOURS) {
     const ran = lastRanRow(real);
-    return `Review texts: the nightly recovery did not run last night${ran ? ` (last ran ${new Date(ran.ts).toISOString().slice(0, 10)})` : ''}.`;
+    return `Review texts: the nightly recovery did not run last night${ran ? ` (last ran ${new Date(ran.ts).toISOString().slice(0, 10)})` : ''}. Needs attention: ${missedRunAlert(real, nowMs).text}.`;
   }
   if (last.status === 'disabled') return 'Review texts: the nightly recovery is switched off.';
   if (last.status === 'busy') return 'Review texts: the nightly recovery was skipped last night because a manual recovery was running.';
@@ -259,10 +315,37 @@ function renderDigestLine(rows, nowMs = Date.now()) {
   if (last.status === 'failed' && !(last.alerts || []).some((a) => a.key === 'run_failed')) line += ' The nightly run stopped with an error.';
   const alerts = (last.alerts || []).map((a) => a.text).filter(Boolean);
   if (alerts.length) line += ` Needs attention: ${alerts.join('; ')}.`;
+  const fl = outletFloorLine(last.outletFloors);
+  if (fl) line += ` ${fl}`;
   return line;
 }
 
+/** The counts-only slice of check-outlet-fulltext-floors.js --json kept on the nightly row (BRO-7702). Pure. */
+function outletFloorSummary(v) {
+  if (!v || typeof v !== 'object' || !Array.isArray(v.outlets)) return null;
+  return {
+    ok: !!v.ok,
+    below: v.outlets.filter((x) => x.below).map((x) => ({ outlet: x.outlet, pct: x.pct, floor: x.floor, unattempted: x.unattempted })),
+    failingOutlets: v.failingOutlets || [],
+    staleUnattempted: (v.staleUnattempted || []).length,
+  };
+}
+
+/** One plain-English digest sentence for the floor verdict; null when every outlet is at its floor. Pure. */
+function outletFloorLine(f) {
+  if (!f || (f.ok && !(f.below || []).length)) return null;
+  const parts = [];
+  if ((f.below || []).length) parts.push(`below the full-text target: ${f.below.map((b) => `${b.outlet} ${b.pct}% (target ${b.floor}%)`).join(', ')}`);
+  if (f.staleUnattempted) parts.push(`${fmt(f.staleUnattempted)} major-outlet review${f.staleUnattempted === 1 ? '' : 's'} missing text for over a week with no recovery attempt yet`);
+  return `Major outlets ${parts.join('; ')}.`;
+}
+
 module.exports = {
+  zeroYieldStrategies,
+  missedRunAlert,
+  ZERO_YIELD_NIGHTS,
+  outletFloorSummary,
+  outletFloorLine,
   INERT_STRATEGIES: INERT,
   NIGHTLY_REL,
   DEFAULT_NIGHTLY_CEILING,

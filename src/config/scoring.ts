@@ -23,6 +23,7 @@ import { ANCHORED_MARKETS_NYC_V6 } from './ANCHORED_MARKETS_NYC_V6';
 // verified opening-night reviews. Bypasses shouldHideReviews.
 // To add a new historical show: edit data/curated-historical-shows.json (no code change needed).
 import curatedHistoricalShowsData from '../../data/curated-historical-shows.json';
+import scoreGateOverridesData from '../../data/score-gate-overrides.json';
 import { getShowYear } from '../lib/date-utils';
 
 // Outlet ID → Tier mapping (keys are canonical lowercase registry IDs).
@@ -61,6 +62,20 @@ export const ANCHORED_MARKETS: ReadonlySet<string> = new Set([
   ...Array.from(ANCHORED_MARKETS_NYC_V6),
 ]);
 export const CURATED_HISTORICAL_SHOWS = new Set<string>(curatedHistoricalShowsData);
+
+const SCORE_GATE_OVERRIDES: Record<string, { minReviews?: number }> =
+  (scoreGateOverridesData as { shows?: Record<string, { minReviews?: number }> }).shows ?? {};
+
+/**
+ * The 4th argument for hasEnoughReviews / reviewsRemainingForScore (BRO-7750): an
+ * owner-approved per-show minimum from data/score-gate-overrides.json when one exists,
+ * else whether the show is curated historical. Mirrors scripts/lib/should-hide-reviews.js.
+ */
+export function scoreGateArg(showId: string | null | undefined): boolean | number {
+  const min = showId ? SCORE_GATE_OVERRIDES[showId]?.minReviews : undefined;
+  if (typeof min === 'number' && Number.isFinite(min) && min >= 1) return min;
+  return !!showId && CURATED_HISTORICAL_SHOWS.has(showId);
+}
 
 /** Returns true if a show's reviews should be completely hidden on the site. */
 export function shouldHideReviews(show: { id?: string | null; openingDate?: string | null; status?: string; category?: string }): boolean {

@@ -25,12 +25,45 @@ const SERP_ENTRY_RE = /\b(serpQuery|serpNewsQuery|serpImagesQuery|discoverCorrec
 // fetchPage/fetchJSON (a call, or passing it on as a callback). Several scripts
 // define their own plain-https fetchPage and never require scraper.js.
 const FETCH_ENTRY_RE = /\b(fetchPage|fetchJSON)\b/;
-const REQUIRES_SCRAPER_RE = /require\(\s*['"][./]*(?:lib\/)?scraper(?:\.js)?['"]\s*\)|from\s+['"][./]*(?:lib\/)?scraper(?:\.js)?['"]/;
+const REQUIRES_SCRAPER_RE = /require\(\s*['"][./]*(?:(?:scripts\/)?lib\/)?scraper(?:\.js)?['"]\s*\)|from\s+['"][./]*(?:(?:scripts\/)?lib\/)?scraper(?:\.js)?['"]|require\(\s*path\.(?:join|resolve)\(\s*__dirname\s*,[^)]*['"][^'"]*scraper(?:\.js)?['"]\s*\)\s*\)/;
+// require(path.join(__dirname, '<rel>')) is invisible to extractLocalDeps
+// (it needs a literal), so the guard follows it itself (author-pages/*.js).
+const PATH_JOIN_REQUIRE_RE = /require\(\s*path\.(?:join|resolve)\(\s*__dirname\s*,\s*((?:['"][^'"]+['"]\s*,?\s*)+)\)\s*\)/g;
 const SCRAPER = path.join('lib', 'scraper.js');
 const URL_DISCOVERY = path.join('lib', 'url-discovery.js');
 
+/** Drop line and block comments, leaving string and template literals intact
+ * (a naive regex treated an Accept header of star-slash-star as a comment opener). */
 function stripComments(src) {
+  let out = '';
+  for (let i = 0; i < src.length; i++) {
+    const c = src[i];
+    if (c === '"' || c === "'" || c === '`') {
+      let j = i + 1;
+      while (j < src.length && src[j] !== c) { if (src[j] === '\\') j++; else if (c !== '`' && src[j] === '\n') break; j++; }
+      out += src.slice(i, j + 1); i = j; continue;
+    }
+    if (c === '/' && src[i + 1] === '/') { while (i < src.length && src[i] !== '\n') i++; out += '\n'; continue; }
+    if (c === '/' && src[i + 1] === '*') { const e = src.indexOf('*/', i + 2); i = e < 0 ? src.length : e + 1; continue; }
+    out += c;
+  }
+  return out;
+}
+
+function stripCommentsNaive(src) {
   return src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"\\])\/\/.*$/gm, '$1');
+}
+
+function pathJoinDeps(src, fromAbs) {
+  const deps = [];
+  for (const m of src.matchAll(PATH_JOIN_REQUIRE_RE)) {
+    const parts = [...m[1].matchAll(/['"]([^'"]+)['"]/g)].map((x) => x[1]);
+    const base = path.resolve(path.dirname(fromAbs), ...parts);
+    for (const cand of [base, `${base}.js`, `${base}.mjs`, path.join(base, 'index.js')]) {
+      try { if (fs.statSync(cand).isFile()) { deps.push(cand); break; } } catch { /* next */ }
+    }
+  }
+  return deps;
 }
 
 /** True when the script, or anything it requires, calls a SERP entry point
@@ -50,20 +83,25 @@ function reachesSerpChain(entryAbs, cache = new Map()) {
     // url-discovery.js defines the entry points; loading it is not searching,
     // so neither it nor its own helpers count. Comments do not count either.
     if (cur.endsWith(URL_DISCOVERY) || cur.endsWith(SCRAPER)) continue;
-    const code = stripComments(src);
-    if (SERP_ENTRY_RE.test(code) || (FETCH_ENTRY_RE.test(code) && REQUIRES_SCRAPER_RE.test(code))) { hit = true; break; }
-    for (const dep of extractLocalDeps(src, cur)) if (!visited.has(dep)) queue.push(dep);
+    // Two strippers: the tokenizer can be thrown by a regex literal holding a
+    // quote, the naive regex by a '*/*' string. A hit in either counts.
+    const reaches = (code) => SERP_ENTRY_RE.test(code) || (FETCH_ENTRY_RE.test(code) && REQUIRES_SCRAPER_RE.test(code));
+    if (reaches(stripComments(src)) || reaches(stripCommentsNaive(src))) { hit = true; break; }
+    for (const dep of [...extractLocalDeps(src, cur), ...pathJoinDeps(src, cur)]) if (!visited.has(dep)) queue.push(dep);
   }
   cache.set(entryAbs, hit);
   return hit;
 }
 
-/** Replace `npm run <name>` with that package.json script's command. */
-function expandNpmRun(run, rootDir) {
-  if (!/\bnpm run\b/.test(run)) return run;
+/** Replace `npm run <name>` / `npm test` / `npm start` with that package.json
+ * script's command, recursively (a script that runs another npm script). */
+function expandNpmRun(run, rootDir, depth = 0) {
+  const re = /\bnpm (?:run(?:-script)?(?:\s+--?[\w-]+)*\s+([\w:.-]+)|(test|start))\b/g;
+  if (depth > 4 || !re.test(run)) return run;
   let scripts = {};
   try { scripts = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8')).scripts || {}; } catch { /* no package.json */ }
-  return run.replace(/\bnpm run(?:-script)?\s+([\w:.-]+)/g, (m, name) => scripts[name] || m);
+  const next = run.replace(re, (m, name, short) => scripts[name || short] || m);
+  return next === run ? run : expandNpmRun(next, rootDir, depth + 1);
 }
 
 /** Offending steps in one workflow file, as "wf > job > step (script)". */
@@ -91,4 +129,4 @@ function findAllSerpKeyGaps(rootDir) {
     .flatMap((f) => findSerpKeyGaps(fs.readFileSync(path.join(dir, f), 'utf8'), f, rootDir, cache));
 }
 
-module.exports = { reachesSerpChain, findSerpKeyGaps, findAllSerpKeyGaps, expandNpmRun, SERP_ENTRY_RE };
+module.exports = { reachesSerpChain, findSerpKeyGaps, findAllSerpKeyGaps, expandNpmRun, stripComments, SERP_ENTRY_RE };

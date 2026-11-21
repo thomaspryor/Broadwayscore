@@ -76,7 +76,7 @@ const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { shouldTakeUrlOwnership, existingCopyYieldsUrl } = require('./lib/url-cross-production');
+const { shouldTakeUrlOwnership, existingCopyYieldsUrl, extractYear, showRunYears, sameShowTitle } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { incomingCrossProductionReason, crossProductionMergeRefusal } = require('./lib/merge-date-guard');
@@ -340,6 +340,19 @@ function getShowYearMap() {
     }
   } catch {}
   return _showYearMap;
+}
+
+// showId → shows.json entry (title, openingDate, closingDate) for the
+// cross-production URL ownership check (BRO-7815).
+let _showByIdMap = null;
+function getShowByIdMap() {
+  if (_showByIdMap) return _showByIdMap;
+  _showByIdMap = {};
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    for (const s of (showsData.shows || showsData)) if (s && s.id) _showByIdMap[s.id] = s;
+  } catch {}
+  return _showByIdMap;
 }
 
 // Global URL index for cross-production duplicate prevention
@@ -3573,9 +3586,11 @@ function createReviewFile(showId, reviewData, options = {}) {
       // or is junk (invalid/wrongShow/wrongContent) that shouldn't block real reviews
       let allowCrossShow = false;
       let existingIsJunk = false;
+      let existingReviewYear = null;
       try {
         const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
         const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
+        existingReviewYear = extractYear(existingData.publishDate);
         allowCrossShow = existingData.isRoundupArticle === true || existingData.isCombinedReview === true
           // BRO-4431: this show is a split sibling of the existing file's
           // multi-show article, so sharing the URL is by design.
@@ -3615,9 +3630,25 @@ function createReviewFile(showId, reviewData, options = {}) {
         // tie) handed the URL to the *newer* production and flagged the older
         // copy wrongProduction — silently suppressing legitimate older reviews
         // when a same-title revival appeared. See scripts/lib/url-cross-production.js.
-        const thisShowIsCorrect = shouldTakeUrlOwnership({
+        // BRO-7815: also require the same title, compare against each
+        // production's run (a long run owns reviews written while it played),
+        // and let the incumbent copy's own publishDate veto the move.
+        const showById = getShowByIdMap();
+        const ownershipInput = {
           reviewYear, thisYear: myYear, existingYear,
+          thisRun: showRunYears(showById[showId]),
+          existingRun: showRunYears(showById[existing.showId]),
+        };
+        const sameTitle = sameShowTitle(showById[showId], showById[existing.showId]);
+        const thisShowIsCorrect = shouldTakeUrlOwnership({
+          ...ownershipInput, sameTitle: sameTitle ?? undefined, existingReviewYear,
         });
+        if (!thisShowIsCorrect && shouldTakeUrlOwnership(ownershipInput)) {
+          // A veto kept the incumbent. Say which one, so a wrong veto (both
+          // publishDates are often wrong) is visible in the run log.
+          const why = sameTitle === false ? 'different titles' : `incumbent's own date (${existingReviewYear}) fits ${existing.showId}`;
+          console.log(`    ⚖️  Keeping ${existing.showId}/${existing.file}: re-home to ${showId} vetoed (${why})`);
+        }
 
         if (thisShowIsCorrect) {
           // Flag the existing file as wrong production and save this one
@@ -4295,6 +4326,14 @@ function createReviewFile(showId, reviewData, options = {}) {
   // scripts/lib/review-guards.js → shouldRouteUnknownCriticToPending().
   // Tested at tests/unit/pending-strand-routing.test.mjs.
   if (shouldRouteUnknownCriticToPending({ criticName: normalizedCriticName, url: review.url, source: review.source })) {
+    // BRO-7078: the shared writer refuses off-topic sections (sport, obituary,
+    // film/TV review sections) for new files, but this raw _pending write never
+    // reaches it, so title-word hits became no-byline stubs (site-search noise).
+    const _offTopic = require('./lib/non-review-url-patterns').offTopicSectionReason(review.url);
+    if (_offTopic) {
+      console.log(`    ⊘ ${normalizedOutletId}: ${_offTopic} URL — not routed to _pending (BRO-7078): ${review.url}`);
+      return false;
+    }
     const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
     if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
     const urlHash = (() => {
@@ -4455,6 +4494,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   // 1a. Did They Like It - Has individual thumb ratings (Up/Meh/Down)
   console.log('\n  === Did They Like It ===');
   let dtliResult = await searchDTLI(show);
+  if (dtliResult && dtliResult.html) {
+    const dtliDateCheck = require('./lib/dtli-ingest-guards').dtliPagePredatesProduction(dtliResult.html, show);
+    if (dtliDateCheck.skip) {
+      console.log(`    ✗ DTLI review dates predate production (${dtliDateCheck.old}/${dtliDateCheck.dated})`);
+      dtliResult = null;
+    }
+  }
   if (dtliResult && dtliResult.html) {
     const dtliValidation = await validatePageMatchesShow(dtliResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
     // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow

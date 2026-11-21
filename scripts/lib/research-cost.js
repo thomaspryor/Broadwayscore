@@ -110,9 +110,11 @@ const MODEL_SHUTDOWNS = {
   // fails any script that still names them.
   'gpt-4.1': '2027-01-14',
   'gpt-4.1-mini': '2027-01-14',
-  // gpt-4o family (2027-01-14) is deliberately NOT listed yet: the scoring
-  // ensemble still runs on it (CLAUDE.md rule 13 A/B first), and listing it
-  // would fail the any-announced-shutdown guard in research-cost.test.mjs.
+  // BRO-7341: every pin moved to gpt-5.6-luna (SCORING_OPENAI and COMPARATIVE_OPENAI
+  // after rule-13 A/Bs), so the any-announced-shutdown guard now fails any script or
+  // workflow that still names them.
+  'gpt-4o': '2027-01-14',
+  'gpt-4o-mini': '2027-01-14',
 };
 
 // Models the repo knowingly still uses with an announced shutdown, each waiting on a
@@ -120,11 +122,6 @@ const MODEL_SHUTDOWNS = {
 // because that table feeds the any-announced-shutdown guard in research-cost.test.mjs;
 // The OpenAI and provider retirement audits read both, so the countdown is still tracked.
 const ACCEPTED_SHUTDOWNS = {
-  // BRO-7341: the review-scoring ensemble's OpenAI leg (models.js SCORING_OPENAI,
-  // COMPARATIVE_OPENAI, GPT4O, GPT4O_MINI). Moving it shifts scores corpus-wide, so it
-  // needs its own A/B (rule 13) and is not part of the BRO-7339 call-site sweep.
-  'gpt-4o': '2027-01-14',
-  'gpt-4o-mini': '2027-01-14',
   // BRO-7441: video-proto/tts.js uses audio/speech. OpenAI names
   // gpt-realtime-2.1-mini as the replacement, requiring a Realtime integration
   // and a voice/timing A/B before changing the social-video voiceover.

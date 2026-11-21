@@ -46,6 +46,20 @@ function tzForMarket(marketOrCategory) {
   return null;
 }
 
+/**
+ * BRO-7890: timezone of a show (a shows.json row): its market, or for a regional show its city's state/country suffix
+ * ("glasgow-uk", "chicago-il"). null when nothing says, so callers fall back to the publisher host (tzForUrl).
+ */
+const CITY_SUFFIX_TZ = { uk: LONDON, il: 'America/Chicago', tn: 'America/Chicago', ca: 'America/Los_Angeles', on: 'America/Toronto' };
+function tzForShow(show) {
+  if (!show) return null;
+  const byMarket = tzForMarket(show.category) || tzForMarket(show.market);
+  if (byMarket) return byMarket;
+  const suffix = String(show.city || '').toLowerCase().match(/-([a-z]{2})$/);
+  if (!suffix) return null;
+  return CITY_SUFFIX_TZ[suffix[1]] || NY; // the remaining US states and DC on file are all Eastern
+}
+
 function tzForUrl(url) {
   const host = hostOf(url);
   if (host && (UK_TLD_RE.test(host) || UK_HOSTNAMES.some((h) => !h.includes('/') && (host === h || host.endsWith('.' + h))))) return LONDON;
@@ -93,4 +107,4 @@ function localizeIsoStamp(raw, url, opts) {
   return publishedStampToLocalDate(raw, url, opts) || raw;
 }
 
-module.exports = { localDateString, publishedStampToLocalDate, localizeIsoStamp, tzForUrl, tzForMarket, NY, LONDON };
+module.exports = { localDateString, publishedStampToLocalDate, localizeIsoStamp, tzForUrl, tzForMarket, tzForShow, NY, LONDON };

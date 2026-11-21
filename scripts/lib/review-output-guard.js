@@ -39,11 +39,10 @@
 'use strict';
 
 // Lines that are pure CLI/session chrome with no reviewer content of their
-// own. ship-check.md's awk filter (`/^codex$/{flag=1;next} /^tokens used$/
-// {flag=0} flag`) already excludes these two exact lines from what reaches
-// this function on the Codex path — this set is defense-in-depth for callers
-// that don't go through that exact filter (e.g. a future fallback path with
-// different chrome, or a change to the awk pattern), not a case the current
+// own. Since BRO-7927 the skills read Codex's answer with `codex exec -o`
+// (final message only), so these lines no longer reach this function on the
+// Codex path; the set stays as defense-in-depth for callers that pass raw CLI
+// output (e.g. a future fallback path with different chrome), not a case the current
 // pipeline can trigger. Kept because a marker line slipping through a changed
 // filter is exactly the silent-degrade shape task #1081 exists to catch.
 const MARKER_ONLY_LINES = new Set([

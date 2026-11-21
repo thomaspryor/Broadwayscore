@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { parseArgs, verifyBackfill, main } = require('../../scripts/lib/verify-data-backfill.js');
+const { parseArgs, verifyBackfill, verifyHubImages, main } = require('../../scripts/lib/verify-data-backfill.js');
 const { isSafeCheckCommand } = require('../../scripts/lib/verify-gate.js');
 
 test('backfill probe requires explicit safe IDs and positive review minima', () => {
@@ -85,4 +85,46 @@ test('slow-market-grade fixed-window gap check is a safe form, only in its exact
     'node scripts/slow-market-grade.js --opened-from=2025-10-31 --opened-to=2026-10-31 --check-gaps --json; echo',
     'node scripts/slow-market-grade.js --show=a --check-gaps',
   ]) assert.equal(isSafeCheckCommand(c), false, c);
+});
+
+// BRO-7265: a city-hub slug with --images checks that hub's dual-model image audit.
+test('verifyHubImages fails open or unbacked image items and warns on untriaged flags', () => {
+  const shows = [{ id: 'a', images: { poster: '/p/a.webp' } }, { id: 'b', images: { poster: '/p/missing.webp' } }];
+  const has = (p) => p === '/p/a.webp';
+  const triage = (items) => ({ items });
+  const clean = verifyHubImages('hub', triage({ 'image:a': { verdict: 'confirmed', status: 'fixed' }, 'image:c': { verdict: 'false-positive' } }), { remaining: [] }, shows, has);
+  assert.equal(clean.ok, true);
+  const open = verifyHubImages('hub', triage({ 'image:a': { verdict: 'confirmed', status: 'open' } }), { remaining: [{ item: 'image:a' }] }, shows, has);
+  assert.deepEqual(open.problems, ['image:a still open']);
+  const unbacked = verifyHubImages('hub', triage({ 'image:b': { verdict: 'confirmed', status: 'fixed' } }), {}, shows, has);
+  assert.deepEqual(unbacked.problems, ['image:b marked fixed but no poster on disk']);
+  const stale = verifyHubImages('hub', triage({}), { remaining: [{ item: 'image:a' }, { item: 'review:x' }] }, shows, has);
+  assert.match(stale.problems[0], /scorecard\.json still lists 1 open image item/);
+  const warn = verifyHubImages('hub', triage({ 'image:a': { verdict: 'confirmed', status: 'fixed' } }), { flags: [{ kind: 'image', id: 'a' }, { kind: 'image', id: 'd' }, { kind: 'review', id: 'e' }] }, shows, has);
+  assert.equal(warn.ok, true);
+  assert.deepEqual(warn.warnings, ['image:d flagged, not triaged']);
+});
+
+test('backfill CLI treats a city-hub slug as its image audit, --images only', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-7265-'));
+  try {
+    const hubDir = path.join(root, 'data', 'audit', 'city-hub-dual', 'hub-x');
+    fs.mkdirSync(hubDir, { recursive: true });
+    fs.mkdirSync(path.join(root, 'public', 'images'), { recursive: true });
+    fs.writeFileSync(path.join(root, 'data', 'city-hubs.json'), JSON.stringify({ hubs: { 'hub-x': {} } }));
+    fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify({ shows: [{ id: 'one', images: { poster: '/images/one.webp' } }] }));
+    fs.writeFileSync(path.join(root, 'data', 'reviews.json'), JSON.stringify({ reviews: [] }));
+    fs.writeFileSync(path.join(hubDir, 'scorecard.json'), JSON.stringify({ remaining: [], flags: [] }));
+    const setTriage = (status) => fs.writeFileSync(path.join(hubDir, 'triage.json'), JSON.stringify({ items: { 'image:one': { verdict: 'confirmed', status } } }));
+    setTriage('open');
+    assert.equal(main(['--show=hub-x', '--images'], root), 1);
+    setTriage('fixed');
+    assert.equal(main(['--show=hub-x', '--images'], root), 1); // fixed, but no poster file under root/public
+    fs.copyFileSync(new URL('../../public/images/shows/kaiju-regional-2026/poster.webp', import.meta.url), path.join(root, 'public', 'images', 'one.webp'));
+    assert.equal(main(['--show=hub-x', '--images'], root), 0);
+    assert.equal(main(['--show=hub-x'], root), 2);
+    assert.equal(main(['--show=hub-x', '--images', '--reviews=1'], root), 2);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
 });

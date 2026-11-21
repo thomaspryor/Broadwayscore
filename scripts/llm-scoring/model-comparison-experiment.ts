@@ -16,6 +16,10 @@ import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { SCORING_OPENAI } = require('../lib/models'); // gpt-4o shuts down 2027-01-14 (BRO-7341)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { openaiChatBody } = require('../lib/llm-batch.js');
 const { MAIN_REPO_ROOT } = require('../lib/repo-root.js') as { MAIN_REPO_ROOT: string };
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
@@ -85,12 +89,12 @@ function convertToNumeric(originalScore: string | number): number | null {
 async function scoreWithOpenAI(client: OpenAI, text: string, maxRetries = 3): Promise<number | null> {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
-      const response = await client.chat.completions.create({
-        model: 'gpt-4o',  // UPDATED: Using GPT-4o (not mini) for production accuracy
-        max_tokens: 50,
+      const response = await client.chat.completions.create(openaiChatBody({
+        model: SCORING_OPENAI,
+        maxTokens: 50,
         temperature: 0.3,
         messages: [{ role: 'user', content: ANCHORED_PROMPT + text.slice(0, 4000) }]
-      });
+      }));
 
       const content = response.choices[0]?.message?.content || '';
       const match = content.match(/\{[^}]*"score"\s*:\s*(\d+)[^}]*\}/);

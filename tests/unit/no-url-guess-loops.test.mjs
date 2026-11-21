@@ -77,6 +77,9 @@ const EXEMPT_FILES = new Set([
   // BRO-4787: a SYNTHETIC rehearsal fixture for a fictional show; it builds fake aggregator pages for a replay and
   // never fetches or guesses a URL anywhere.
   'rehearsal-fixture.js',
+  // BRO-7781: the simulated opening night's synthetic fixture. Its BWW roundup URL is the key of a page served from
+  // 127.0.0.1 for fictional shows; nothing is fetched or guessed (any request off localhost fails the night).
+  'sim-night-fixture.js',
   'no-url-guess-loops.test.mjs',
 ]);
 

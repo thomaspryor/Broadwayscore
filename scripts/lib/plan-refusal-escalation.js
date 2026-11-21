@@ -201,7 +201,35 @@ function fileReviewSubmissionCard({ issueNumber, issueUrl, showId, reviewUrl, re
   return fileCardOnce({ card, issueNumber, prefixFor: reviewSubmissionTitlePrefix, source: 'workflow:process-review-submission', exactTitle: true }, run);
 }
 
+/**
+ * Closes the open card for a review submission once its GitHub issue is closed
+ * (the sweep found the review live). Nothing did this before, so every
+ * false-parked or later-landed submission (e.g. #1178) left a P1 card open on
+ * the board. Moves it to Done through linear-brain, whose Done gate runs the
+ * card's own `VERIFY: ... --issue-closed=N` line. Fail-soft: never throws,
+ * never logs argv. `run(args)` runs linear-brain.js (injected for tests).
+ * @returns {{closed: boolean, identifier?: string, reason?: string}}
+ */
+function closeReviewSubmissionCard({ issueNumber, note }, { run } = {}) {
+  const title = `${reviewSubmissionTitlePrefix(issueNumber)} needs a manual check`;
+  let identifier;
+  try {
+    const out = String(run(['find', title, '--exact-title']) || '').trim();
+    const start = out.indexOf('{');
+    const parsed = start >= 0 ? JSON.parse(out.slice(start)) : null;
+    if (!parsed || parsed.title !== title || !/^BRO-\d+$/.test(String(parsed.identifier))) return { closed: false, reason: 'no open card' };
+    identifier = parsed.identifier;
+  } catch { return { closed: false, reason: 'find failed' }; }
+  try {
+    run(['update', identifier, '--state', 'Done', '--comment', note || `GitHub issue #${issueNumber} was closed because the review is live on the site.`]);
+  } catch (err) {
+    return { closed: false, identifier, reason: `update exited ${err && err.status != null ? err.status : 'unknown'}` };
+  }
+  return { closed: true, identifier };
+}
+
 module.exports = {
+  closeReviewSubmissionCard,
   buildEscalationCard, feedbackTitlePrefix, isOpenTwin, fileFeedbackCard,
   buildReviewSubmissionCard, reviewSubmissionTitlePrefix, fileReviewSubmissionCard,
   reviewSubmissionsNeedingCard, CARD_FILED_LABEL,

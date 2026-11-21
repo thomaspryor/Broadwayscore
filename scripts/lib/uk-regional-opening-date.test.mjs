@@ -32,3 +32,18 @@ test('a gap over 14 days is reported, never moved', () => {
 test('the new source stays overwritable by press-night sources', () => {
   for (const s of ['first-review-date', 'census-review', 'guardian-review']) assert.equal(isUnconfirmedDateSource({ category: 'regional', openingDateSource: s }), true);
 });
+
+test('BRO-7895: BroadwayWorld regional review seeds are reconciled with two early reviews', () => {
+  const { regionalReconcileOptions } = require('./uk-regional-opening-date');
+  const bww = show({ category: 'regional', discoverySource: 'bww-local-reviews', openingDateSource: 'bww-first-review', localOnly: true });
+  const options = regionalReconcileOptions(bww, false, true);
+  assert.deepEqual(options, { minReviews: 2 });
+  assert.equal(reconcileOpeningDate(bww, ['2024-04-19', '2024-04-20'], options).openingDate, '2024-04-20');
+  assert.equal(reconcileOpeningDate(bww, ['2024-04-19'], options).action, 'none');
+  assert.equal(regionalReconcileOptions({ ...bww, humanCorrectedOpeningDate: true }, false, true), null);
+  assert.equal(regionalReconcileOptions({ ...bww, category: 'broadway' }, false, true), null);
+  assert.equal(isUnconfirmedDateSource(bww), true);
+  const { distinctOutletDates } = require('./uk-regional-opening-date');
+  const dates = distinctOutletDates([{ outletId: 'one', publishDate: '2024-04-19' }, { outletId: 'one', publishDate: '2024-04-20' }]);
+  assert.equal(reconcileOpeningDate(bww, dates, options).action, 'none');
+});

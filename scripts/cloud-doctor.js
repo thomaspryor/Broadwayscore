@@ -191,6 +191,7 @@ const FIXES = {
     sh('bash', [path.join(ROOT, 'scripts', 'cloud-bootstrap-data.sh')], { timeout: 6 * 60 * 1000, env: { BSC_SESSION_EVENT: 'startup' } });
     if (f.reviewClone) {
       const guard = path.join(ROOT, 'scripts', 'lib', 'core-data-clone-guard.sh');
+      // depth1-fetch-ok: separate data clone, reset to FETCH_HEAD (BRO-7789)
       sh('bash', ['-c', `. "${guard}"; if why="$(core_clone_local_work "$1")"; then echo "not refreshing $1: $why" >&2; exit 1; fi; git -C "$1" fetch -q --depth 1 origin main && git -C "$1" reset -q --hard FETCH_HEAD`, '_', f.reviewClone.dir], { timeout: 5 * 60 * 1000 });
     }
   },

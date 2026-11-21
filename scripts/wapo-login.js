@@ -37,90 +37,18 @@ if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
   process.exit(0);
 }
 
-const { launchOtpBrowser, writeOtpCookies } = require('./lib/otp-login-helpers');
+// BRO-7705: the login steps live in lib/cookie-login-adapters.js, shared
+// with renew-cookies.js (which runs them with Keychain credentials inside the
+// same persistent profile, once, behind the device-limit guards). This
+// script is the manual entry point with env credentials.
+const { standaloneLogin } = require('./lib/cookie-login-adapters');
 
-// BRO-7171 plan item 8: the outlet's shared persistent profile (outside /tmp,
-// shared with renew-cookies.js and the recover scripts). claimProfile() takes
-// the renew lock and migrates the old /tmp profile once.
-const PROFILE_DIR = require('./lib/cookie-renew').profileDir('wapo');
-const claimProfile = () => require('./lib/cookie-renew').claimOutletProfile('wapo', { legacy: ['/tmp/wapo-login-browser-profile', '/tmp/wapo-recovery-browser-profile'] }).dir;
-
-async function main() {
-  const email = process.env.WAPO_EMAIL;
-  const password = process.env.WASHPOST_PASSWORD;
-  if (!email || !password) {
-    console.error('ERROR: WAPO_EMAIL and/or WASHPOST_PASSWORD not set in environment.');
-    process.exit(1);
-  }
-
-  console.log(`Logging into WaPo as ${email} via email + password...`);
-
-  const context = await launchOtpBrowser(claimProfile());
-  const page = context.pages()[0] || (await context.newPage());
-
-  try {
-    console.log('Navigating to WaPo sign-in...');
-    await page.goto('https://www.washingtonpost.com/subscribe/signin/', { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.waitForTimeout(2000);
-
-    const emailField = page.locator('input[type="email"]').first();
-    if (!(await emailField.count())) {
-      throw new Error('Email field not found — WaPo login page layout may have changed');
-    }
-    await emailField.fill(email);
-
-    const nextButton = page.getByRole('button', { name: /^next$/i });
-    if (await nextButton.count()) {
-      await nextButton.click();
-    } else {
-      await emailField.press('Enter');
-    }
-    await page.waitForTimeout(2500);
-
-    const passwordField = page.locator('input[type="password"]').first();
-    if (!(await passwordField.count({ timeout: 10000 }).catch(() => 0))) {
-      await page.waitForSelector('input[type="password"]', { timeout: 10000 });
-    }
-    await passwordField.fill(password);
-
-    const signInButton = page.getByRole('button', { name: /^(sign in|log in|continue)$/i });
-    if (await signInButton.count()) {
-      await signInButton.click();
-    } else {
-      await passwordField.press('Enter');
-    }
-
-    await page.waitForFunction(
-      () => !/subscribe\/signin/i.test(window.location.pathname),
-      { timeout: 20000 }
-    );
-    console.log(`Login complete. Landed on: ${page.url()}`);
-
-    const allCookies = await context.cookies();
-    const wapoCookies = allCookies.filter(c => c.domain.includes('washingtonpost.com'));
-
-    if (wapoCookies.length === 0) {
-      throw new Error('No washingtonpost.com cookies found after login — something went wrong');
-    }
-
-    const httpOnlyCount = wapoCookies.filter(c => c.httpOnly).length;
-    console.log(`Captured ${wapoCookies.length} cookies (${httpOnlyCount} httpOnly).`);
-    if (httpOnlyCount === 0) {
-      console.log('WARNING: zero httpOnly cookies captured — login likely did not fully complete.');
-    }
-
-    const cookiePath = writeOtpCookies('wapo', wapoCookies);
-    console.log(`Wrote ${wapoCookies.length} cookies to ${cookiePath}`);
-  } finally {
-    await context.close();
-  }
-}
-
-main()
-  .then(() => {
-    console.log('Done.');
-  })
-  .catch(err => {
+standaloneLogin('wapo', { email: process.env.WAPO_EMAIL, password: process.env.WASHPOST_PASSWORD }, {
+  legacy: ['/tmp/wapo-login-browser-profile', '/tmp/wapo-recovery-browser-profile'],
+  method: 'password-login',
+})
+  .then(() => console.log('Done.'))
+  .catch((err) => {
     console.error('\nFATAL ERROR:', err.message);
     process.exit(1);
   });

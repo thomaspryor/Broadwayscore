@@ -1,0 +1,244 @@
+{
+  "issueNumber": "bro-7745-cousins",
+  "planId": "fc2f07f3-a9d4-483f-a136-55eabfba00ab",
+  "status": "applied",
+  "createdAt": "2026-11-18T05:08:58.134Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7745 cousins: reviews credited to the posting account (TheaterMania JSON-LD editor, All That Dazzles poster, Theatre and Tonic account holder); re-credit to the printed byline, drop one TheaterMania duplicate",
+    "steps": [
+      "bowl-ep-off-broadway-2025/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "clydes-2021/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "hamlet-greenwich-house-off-broadway-2024/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "isla-off-broadway-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "jitney-2017/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "the-pass-off-broadway-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "last-call-off-broadway-2025/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "the-white-chip-off-broadway-2024/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "night-of-january-16th-off-broadway-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "passing-strange-regional-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "the-lost-boys-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "wicked-2003/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)",
+      "duplicate of almost-famous-2022 Kenji Fujishima TheaterMania review (same article _94514), credited to the posting account",
+      "flamenc-oh-off-west-end-2026/all-that-dazzles-uk--sam-woodward.json: criticName (page prints \"Review by Patrick Shorrock\"; meta/JSON-LD is the poster)",
+      "memoriam-off-west-end-2026/all-that-dazzles-uk--sam-woodward.json: criticName (page prints \"Review by Ruth Sealey\"; meta/JSON-LD is the poster)",
+      "rent-west-end-2026/theatreandtonic--penny-walshe.json: criticName (page ends \"Written by Roby for Theatre and Tonic\"; Squarespace author is the account holder)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "bowl-ep-off-broadway-2025/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Zachary Stewart",
+        "description": "bowl-ep-off-broadway-2025/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Zachary Stewart",
+        "description": "clydes-2021/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamlet-greenwich-house-off-broadway-2024/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Zachary Stewart",
+        "description": "hamlet-greenwich-house-off-broadway-2024/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "isla-off-broadway-2026/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Zachary Stewart",
+        "description": "isla-off-broadway-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jitney-2017/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Zachary Stewart",
+        "description": "jitney-2017/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Zachary Stewart",
+        "description": "the-pass-off-broadway-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "last-call-off-broadway-2025/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Kenji Fujishima",
+        "description": "last-call-off-broadway-2025/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-white-chip-off-broadway-2024/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Kenji Fujishima",
+        "description": "the-white-chip-off-broadway-2024/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "night-of-january-16th-off-broadway-2026/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Francisco Mendoza",
+        "description": "night-of-january-16th-off-broadway-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-regional-2026/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Jonas Schwartz",
+        "description": "passing-strange-regional-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Pete Hempstead",
+        "description": "the-lost-boys-2026/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wicked-2003/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Peter Filichia",
+        "description": "wicked-2003/theatermania--david-gordon.json: criticName (TheaterMania visible byline; JSON-LD names the posting account)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "almost-famous-2022/theatermania--david-gordon.json",
+        "description": "duplicate of almost-famous-2022 Kenji Fujishima TheaterMania review (same article _94514), credited to the posting account"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flamenc-oh-off-west-end-2026/all-that-dazzles-uk--sam-woodward.json",
+        "field": "criticName",
+        "oldValue": "Sam Woodward",
+        "newValue": "Patrick Shorrock",
+        "description": "flamenc-oh-off-west-end-2026/all-that-dazzles-uk--sam-woodward.json: criticName (page prints \"Review by Patrick Shorrock\"; meta/JSON-LD is the poster)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoriam-off-west-end-2026/all-that-dazzles-uk--sam-woodward.json",
+        "field": "criticName",
+        "oldValue": "Sam Woodward",
+        "newValue": "Ruth Sealey",
+        "description": "memoriam-off-west-end-2026/all-that-dazzles-uk--sam-woodward.json: criticName (page prints \"Review by Ruth Sealey\"; meta/JSON-LD is the poster)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/theatreandtonic--penny-walshe.json",
+        "field": "criticName",
+        "oldValue": "Penny Walshe",
+        "newValue": "Roby",
+        "description": "rent-west-end-2026/theatreandtonic--penny-walshe.json: criticName (page ends \"Written by Roby for Theatre and Tonic\"; Squarespace author is the account holder)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-18T06:17:15.593Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bowl-ep-off-broadway-2025/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clydes-2021/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamlet-greenwich-house-off-broadway-2024/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "isla-off-broadway-2026/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jitney-2017/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "last-call-off-broadway-2025/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Kenji Fujishima\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-white-chip-off-broadway-2024/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Kenji Fujishima\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "night-of-january-16th-off-broadway-2026/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Francisco Mendoza\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "passing-strange-regional-2026/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Jonas Schwartz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Pete Hempstead\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wicked-2003/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Peter Filichia\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted almost-famous-2022/theatermania--david-gordon.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "flamenc-oh-off-west-end-2026/all-that-dazzles-uk--sam-woodward.json criticName: \"Sam Woodward\" -> \"Patrick Shorrock\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoriam-off-west-end-2026/all-that-dazzles-uk--sam-woodward.json criticName: \"Sam Woodward\" -> \"Ruth Sealey\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/theatreandtonic--penny-walshe.json criticName: \"Penny Walshe\" -> \"Roby\""
+    }
+  ],
+  "executedIn": "ci"
+}

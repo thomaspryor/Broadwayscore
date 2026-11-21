@@ -506,6 +506,7 @@ const HEAD_ONLY_MIN_SHARE = 0.25;
 function creditedNames(show) {
   const single = new Set();
   const given = new Map();
+  const first = new Map(); // BRO-7945: first name -> rest of the name ("kevin" -> "del aguila")
   for (const p of [...(show.cast || []), ...(show.creativeTeam || [])]) {
     const parts = normTitle((p && p.name) || '').split(' ').filter(Boolean);
     if (parts.length === 1) single.add(parts[0]);
@@ -513,8 +514,10 @@ function creditedNames(show) {
     const last = parts[parts.length - 1];
     if (!given.has(last)) given.set(last, new Set());
     given.get(last).add(parts.slice(0, -1).join(' '));
+    if (!first.has(parts[0])) first.set(parts[0], new Set());
+    first.get(parts[0]).add(parts.slice(1).join(' '));
   }
-  return { single, given };
+  return { single, given, first };
 }
 
 // A mention of a show titled after someone credited on the reviewed show
@@ -523,6 +526,14 @@ function isCreditedPersonMention(text, mn, givenNames) {
   if (/^['’]s\b/.test(text.slice(mn.end, mn.end + 3))) return true;
   const before = normTitle(text.slice(Math.max(0, mn.at - 40), mn.at));
   for (const g of givenNames) if (before === g || before.endsWith(' ' + g)) return true;
+  return false;
+}
+
+// A show titled after a credited person's FIRST name ("Kevin") read as that person: "Kevin del Aguila" (BRO-7945,
+// a Fantasticks cast list split the review onto Kevin).
+function isCreditedFirstNameMention(text, mn, rests) {
+  const after = ` ${normTitle(text.slice(mn.end, mn.end + 60))} `;
+  for (const r of rests) if (after.startsWith(` ${r} `)) return true;
   return false;
 }
 
@@ -643,6 +654,7 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     let ms = raw.filter((mn) => !isCaption(mn));
     captionMentions.push(...raw.filter(isCaption));
     if (people.given.has(key)) ms = ms.filter((mn) => !isCreditedPersonMention(text, mn, people.given.get(key)));
+    if (people.first.has(key)) ms = ms.filter((mn) => !isCreditedFirstNameMention(text, mn, people.first.get(key)));
     if (ms.length >= 2) byShow.set(show.id, { show, mentions: ms });
   }
   if (byShow.size < 2 || !byShow.has(ownShowId)) return [];

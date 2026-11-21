@@ -107,3 +107,15 @@ test('readiness market rule is shared by the check and the resolve path (BRO-526
 test('the filing-failure annotation escapes %, CR and LF (BRO-5261)', () => {
   assert.equal(escapeAnnotation('100% down\r\nnext'), '100%25 down%0D%0Anext');
 });
+
+// BRO-7808: the readiness script must run the late-embargo guard before any "press night is over" early return.
+test('late-embargo guard fails for Now You See Me Live shape and is wired into the readiness script', () => {
+  const RL = require('./lib/readiness-lane.js');
+  const show = { id: 'now-you-see-me-live-2026', category: 'broadway', openingDate: '2026-11-11' };
+  const rv = ['a', 'b', 'c'].map((o) => ({ outletId: o, publishDate: '2026-11-18' }));
+  assert.equal(RL.lateEmbargoVerdict(show, rv, Date.parse('2026-11-19T03:30:00Z')).status, 'fail');
+  const src = fs.readFileSync(path.join(root, 'scripts/check-opening-night-readiness.js'), 'utf8');
+  const guardAt = src.indexOf('RL.lateEmbargoVerdict');
+  assert.ok(guardAt > 0, 'guard not wired');
+  assert.ok(guardAt < src.indexOf('RL.nightOver'), 'guard must precede the nightOver skip');
+});

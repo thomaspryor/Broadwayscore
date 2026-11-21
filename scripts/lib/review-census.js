@@ -183,11 +183,29 @@ function parsePlaybillVerdict(content, showId) {
 // URLs that map to a registry outlet; a 0-row result is NORMAL here (softFail),
 // never a "broken extractor" alarm. Defensive because Show Score's own
 // show-score-discover.js documents the SSR-partial behavior.
-function parseShowScore(content, showId) { // eslint-disable-line no-unused-vars
+function parseShowScore(content, showId, show) { // eslint-disable-line no-unused-vars
   let fn = null;
-  try { ({ extractShowScoreReviewUrls: fn } = require('./show-score-discover')); } catch (_) { return []; }
+  let tilesFn = null;
+  try { ({ extractShowScoreReviewUrls: fn, extractShowScoreCriticTiles: tilesFn } = require('./show-score-discover')); } catch (_) { return []; }
   if (!fn) return [];
-  const urls = fn(content) || [];
+  // BRO-7965: a Show Score page for a title with a famous earlier staging lists that staging's critic tiles
+  // (Elektra 2026 off-Broadway listed the 2022 Met Opera NYT / Observer / OperaWire reviews, tiles dated April 2022),
+  // and every one counted as an owed review the night's grade then called missing. Judge each tile by its own
+  // date with the same gate the ingest path uses (isShowScoreTileDateOutOfRun); undated tiles fail open.
+  const outOfRun = new Set();
+  const norm = (u) => String(u).replace(/&amp;/g, '&').split('#')[0];
+  if (show && tilesFn) {
+    const { isShowScoreTileDateOutOfRun } = require('./gap-ingest-policy');
+    try {
+      // A page reviewed as THIS production (return engagement, remount: SAME_PRODUCTION) keeps its older tiles,
+      // the same exemption the page-level guard applies.
+      const { exemptionFor } = require('./show-score-production-window');
+      if (!exemptionFor(show, archiveCanonicalUrl(content))) {
+        for (const t of tilesFn(content) || []) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(norm(t.url));
+      }
+    } catch (_) { /* fail open */ }
+  }
+  const urls = (fn(content) || []).filter((u) => !outOfRun.has(norm(u)));
   const rows = [];
   const seen = new Set();
   for (const u of urls) {
@@ -219,7 +237,11 @@ function sourceExtractors(market = 'west-end') {
       { name: 'playbill-verdict', dir: 'playbill-verdict', fn: parsePlaybillVerdict, validate: true },
       // softFail: an archived Show Score page routinely captures 0 tiles (SPA
       // pagination) — that is not a broken parser, so it must not trip zeroExtract.
-      { name: 'show-score', dir: 'show-score', fn: parseShowScore, validate: false, softFail: true },
+      // productionWindow (BRO-7967): Show Score reuses one slug for every production of a title, so an
+      // archived page can be another production's (elektra-off-broadway-2026 archived the 2022 Met Opera
+      // page; its NYT/Observer/OperaWire rows failed the press-night record). The scraper rejects such a
+      // page on its next run, but the archive file stays and the census read it. Same date-window guard.
+      { name: 'show-score', dir: 'show-score', fn: parseShowScore, validate: false, softFail: true, productionWindow: true, takesShow: true },
     ];
   }
   const { extractReviews } = require('../scrape-theatre-reviews');
@@ -310,11 +332,19 @@ function unionCensus(perSource, opts = {}) {
  * Pure: pass the review-text JSON objects and the census' sourcesPresent.
  * @returns {{missing:boolean, url:string|null}}
  */
+// Flags meaning a review file is about ANOTHER production/show/article, so its roundup URL is that one's.
+const OTHER_PRODUCTION_FLAGS = ['wrongProduction', 'wrongShow', 'wrongUrl'];
+
 function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent, showTitle) {
   if ((sourcesPresent || []).includes('bww-roundup')) return { missing: false, url: null };
   for (const f of reviewFiles || []) {
     const u = f && typeof f.bwwRoundupUrl === 'string' ? f.bwwRoundupUrl : '';
     if (!/^https?:\/\/[^ ]*review-roundup/i.test(u)) continue;
+    // A file excluded as another production/show/URL carries THAT production's roundup, not this one's
+    // (2026-11-18: two 2023 Bad Cinderella reviews, wrongProduction on the Lyric Hammersmith "Cinderella",
+    // raised CENSUS ARCHIVE MISSING for a show that had not opened). duplicateOf is NOT in the list: a
+    // duplicate is the same production, and can be the only carrier (avenue-q-west-end-2026/times-uk--clive-davis).
+    if (OTHER_PRODUCTION_FLAGS.some((k) => f[k])) continue;
     // A roundup URL copied onto another show's file (cross-show misroute) must not raise a gap: the slug has to
     // carry a distinctive word of THIS show's title (e.g. "unbelievers"), when a title is known.
     if (showTitle) {
@@ -357,6 +387,7 @@ function buildCensusFromArchives(showId, opts = {}) {
   const archivesPresent = [];
   const zeroExtract = [];
   const wrongRoundup = [];
+  const wrongProductionPage = [];
   for (const s of allSources) {
     if (s.pseudo) {
       // No archive file, no network — computed directly from opts (e.g. the
@@ -386,18 +417,25 @@ function buildCensusFromArchives(showId, opts = {}) {
       // genuine roundup we simply can't verify.
       if (!v.isValid && v.rejectReason !== 'no-significant-title-tokens') { wrongRoundup.push(s.name); continue; }
     }
+    if (s.productionWindow && opts.show && (opts.show.openingDate || opts.show.previewsStartDate)) {
+      const { checkPageProductionWindow } = require('./show-score-production-window');
+      // Its own list, not wrongRoundup: the scraper already records the page as another production's and
+      // drops its mapping, so there is nothing to re-fetch. wrongRoundup raises a major coverage-audit alarm
+      // (80 NYC shows would alarm daily for a supplementary source).
+      if (!checkPageProductionWindow(html, opts.show, archiveCanonicalUrl(html)).ok) { wrongProductionPage.push(s.name); continue; }
+    }
     if (s.claim) {
       const { checkTrArchiveClaim, loadCoverageClaims } = require('./tr-archive-claim');
       if (!checkTrArchiveClaim(html, showId, opts.trClaims || loadCoverageClaims()).ok) { wrongRoundup.push(s.name); continue; }
     }
     let reviews = [];
-    try { reviews = s.fn(html, showId) || []; } catch (_) { reviews = []; }
+    try { reviews = (s.takesShow ? s.fn(html, showId, opts.show) : s.fn(html, showId)) || []; } catch (_) { reviews = []; }
     // softFail sources (e.g. Show Score SPA shells) legitimately extract 0 from a
     // present archive — that is NOT a broken parser, so don't flag zeroExtract.
     if ((!Array.isArray(reviews) || reviews.length === 0) && !s.softFail) zeroExtract.push(s.name);
     perSource.push({ source: s.name, reviews });
   }
-  return { ...unionCensus(perSource, { dropLegacyArchive: !!opts.dropLegacyArchive }), archivesPresent, zeroExtract, wrongRoundup };
+  return { ...unionCensus(perSource, { dropLegacyArchive: !!opts.dropLegacyArchive }), archivesPresent, zeroExtract, wrongRoundup, wrongProductionPage };
 }
 
 // Market-suffix tolerance: a roundup may label an outlet "Time Out"

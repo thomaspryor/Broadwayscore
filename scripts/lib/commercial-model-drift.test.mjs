@@ -22,7 +22,7 @@ describe('computeCommercialModelDriftStatus', () => {
     ];
     const result = computeCommercialModelDriftStatus(history, NOW);
     assert.equal(result.status, 'pass');
-    assert.match(result.message, /2 modelDesignationFlag/);
+    assert.match(result.message, /2 unexplained modelDesignationFlag/);
     assert.match(result.message, /100 ai-estimated/);
   });
 
@@ -118,5 +118,47 @@ describe('computeCommercialModelDriftStatus', () => {
     const history = [{ date: '2026-07-01T00:00:00.000Z' }, { date: '2026-07-08T00:00:00.000Z' }];
     const result = computeCommercialModelDriftStatus(history, NOW);
     assert.equal(result.status, 'pass');
+  });
+});
+
+// BRO-6755: an explained false negative (Legally Blonde's owner-sourced recoup) appearing in the
+// flag list is not drift; a new unexplained contradiction still is.
+describe('explained contradictions', () => {
+  const mk = (date, shows) => ({ date, modelDesignationFlagCount: shows.length,
+    modelDesignationFlags: shows.map((show) => ({ show, flag: 'Model: -59% vs designation: Recouped' })) });
+  it('does not warn when the new flag is an explained false negative', () => {
+    const h = [mk('2026-07-01T00:00:00.000Z', ['harry-potter', 'kimberly-akimbo-2022']),
+      mk('2026-07-08T00:00:00.000Z', ['harry-potter', 'kimberly-akimbo-2022', 'legally-blonde-2007'])];
+    assert.equal(computeCommercialModelDriftStatus(h, NOW).status, 'pass');
+  });
+  it('still warns when the new flag is unexplained', () => {
+    const h = [mk('2026-07-01T00:00:00.000Z', ['harry-potter']), mk('2026-07-08T00:00:00.000Z', ['harry-potter', 'some-new-show'])];
+    assert.equal(computeCommercialModelDriftStatus(h, NOW).status, 'warn');
+  });
+});
+describe('explained kind only (BRO-6755 review)', () => {
+  it('counts a listed show that flips to a different contradiction', () => {
+    const h = [{ date: '2026-07-01T00:00:00.000Z', modelDesignationFlags: [{ show: 'legally-blonde-2007', flag: 'Model: -59% vs designation: Recouped' }] },
+      { date: '2026-07-08T00:00:00.000Z', modelDesignationFlags: [{ show: 'legally-blonde-2007', flag: 'Model: 150% vs designation: Flop' }] }];
+    const r = computeCommercialModelDriftStatus(h, NOW);
+    assert.equal(r.status, 'warn');
+    assert.match(r.message, /unexplained modelDesignationFlag contradictions up 1/);
+  });
+});
+describe('explained winner labels (BRO-6755 ship-check)', () => {
+  const { unexplainedFlagCount } = require('./commercial-model-drift.js');
+  const f = (show, flag) => ({ modelDesignationFlags: [{ show, flag }] });
+  it('excludes explained shows under every winner label', () => {
+    assert.equal(unexplainedFlagCount(f('sea-wall-a-life-2019', 'Model: -3% vs designation: Easy Winner')), 0);
+    assert.equal(unexplainedFlagCount(f('next-to-normal-2009', 'Model: -218% vs designation: Windfall')), 0);
+    assert.equal(unexplainedFlagCount(f('legally-blonde-2007', 'Model: -59% vs designation: Recouped')), 0);
+  });
+  it('counts a listed show with a non-winner or non-negative contradiction, and unlisted shows', () => {
+    assert.equal(unexplainedFlagCount(f('legally-blonde-2007', 'Model: 417% vs designation: Trickle')), 1);
+    assert.equal(unexplainedFlagCount(f('legally-blonde-2007', 'Model: 150% vs designation: Flop')), 1);
+    assert.equal(unexplainedFlagCount(f('some-new-show', 'Model: -59% vs designation: Recouped')), 1);
+  });
+  it('falls back to the stored count without a per-show list', () => {
+    assert.equal(unexplainedFlagCount({ modelDesignationFlagCount: 4 }), 4);
   });
 });

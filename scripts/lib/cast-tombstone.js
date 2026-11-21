@@ -117,11 +117,23 @@ const CAST_NOT_APPLICABLE_SHOW_IDS = new Set([
 ]);
 const TOMBSTONE_RETRY_WINDOW_DAYS = 7;
 const TOMBSTONE_RETRY_MS = 20 * 60 * 60 * 1000;
+/** Empty tombstone written before the show had an IBDB page, which it has now (#1192). */
+function ibdbPageAppearedSinceTombstone(castFile, show) {
+  if (!castFile || !show) return false;
+  if (Array.isArray(castFile.openingNightCast) && castFile.openingNightCast.length > 0) return false;
+  return !castFile.ibdbUrl && !!show.ibdbUrl;
+}
+
 function shouldRetryTombstone(castFile, show, now = Date.now()) {
   if (!castFile || !show) return false;
   if (CAST_NOT_APPLICABLE_SHOW_IDS.has(show.id)) return false;
-  if (show.status !== 'open' && show.status !== 'previews') return false;
   if (Array.isArray(castFile.openingNightCast) && castFile.openingNightCast.length > 0) return false;
+  // A source appeared after the empty scrape: the tombstone was written with no IBDB page
+  // (ibdbUrl null) and the show has one now. Retry once regardless of status/opening date
+  // (IBDB sometimes posts the opening-night cast months early). One-shot: the rescrape
+  // stamps ibdbUrl into the file, so a still-empty page is not retried again.
+  if (ibdbPageAppearedSinceTombstone(castFile, show)) return true;
+  if (show.status !== 'open' && show.status !== 'previews') return false;
   // Bounded: only within TOMBSTONE_RETRY_WINDOW_DAYS after openingDate, so a show that is
   // genuinely empty on IBDB is not re-scraped (and the daily job not woken) forever. No
   // openingDate = weekly cadence only.
@@ -158,12 +170,18 @@ function classifyCastCoverage(show, castFile, now = Date.now()) {
   if (!(eligible && (show.status === 'open' || show.status === 'previews'))) return 'exhausted';
   // Grace only while the daily job is demonstrably retrying: a tombstone older than 48h that is
   // still empty means the job is failing/disabled or IBDB still has nothing, so report it.
+  // The 48h clock starts at the LATER of the scrape and the opening date: a tombstone written
+  // during previews (weeks old by opening night) is not retried until the show opens, so measuring
+  // from the scrape alone reported it as exhausted on opening day, before the daily retry had run
+  // even once (BRO-7665: Blue Man Group, tombstoned 2026-09-24, row fired on its 11-17 opening).
   const at = Date.parse(castFile.scrapedAt);
-  return Number.isFinite(at) && now - at > 48 * 3600e3 ? 'exhausted' : 'retrying';
+  if (!Number.isFinite(at)) return 'retrying';
+  const since = Math.max(at, Date.parse(show.openingDate));
+  return now - since > 48 * 3600e3 ? 'exhausted' : 'retrying';
 }
 
 module.exports = {
-  classifyCastCoverage, CAST_NOT_APPLICABLE_SHOW_IDS, shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
+  ibdbPageAppearedSinceTombstone, classifyCastCoverage, CAST_NOT_APPLICABLE_SHOW_IDS, shouldRetryTombstone, TOMBSTONE_RETRY_MS, TOMBSTONE_RETRY_WINDOW_DAYS,
   shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, MAX_WRONG_PRODUCTION_PURGES, parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch,
   expectedOpeningYear, castFileMismatchReason,
 };

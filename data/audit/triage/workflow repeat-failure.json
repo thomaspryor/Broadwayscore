@@ -1,15 +1,20 @@
 {
   "system": "workflow repeat-failure",
   "status": "warn",
-  "lastChecked": "2026-11-17T10:48:55.959Z",
+  "lastChecked": "2026-11-20T10:11:00.933Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Test Suite / E2E Tests / Run E2E tests",
+      "name": "Workflow repeat-failure: Test Suite / Data Validation / Run autoclear-vs-ensemble corpus test (needs review-texts)",
       "status": "warn",
-      "message": "Test Suite / E2E Tests / Run E2E tests failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Test Suite / Data Validation / Run autoclear-vs-ensemble corpus test (needs review-texts) failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite / Unit Test Shard (1) / Run unit tests (node batch shard)",
+      "status": "warn",
+      "message": "Test Suite / Unit Test Shard (1) / Run unit tests (node batch shard) failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     },
     {
       "name": "Workflow repeat-failure: Test Suite / Test Summary / Check results",

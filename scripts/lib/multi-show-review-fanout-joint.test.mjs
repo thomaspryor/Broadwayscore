@@ -277,6 +277,23 @@ test('a show titled after someone credited on the reviewed show: the person neve
   assert.equal(planMultiShowFanout(doc(single), credit('Ava Midnight'), { joint: true }), null);
 });
 
+test('a show titled after a credited first name: "Midnight Ross" in a cast list never splits (BRO-7945 Kevin del Aguila)', () => {
+  const BB = ID['The Curious Case of Benjamin Button'];
+  const credit = (name) => SHOWS.map((s) => (s.id === BB ? { ...s, cast: [{ name, role: 'Ensemble' }] } : s));
+  const doc = (fullText) => base({ showId: BB, publishDate: '2026-10-20', fullText });
+  // Deadline shape (mention offsets 1%, 18%, then the actor at 31%, a long title-free stretch, and a closing
+  // credits block naming the title and the actor again at 95%/97%).
+  const text = [
+    `Two trunks share the stage in the new production of The Curious Case of Benjamin Button tonight. ${filler('banjo', 8)}`,
+    `The Curious Case of Benjamin Button keeps its old charm. ${filler('lantern', 6)}`,
+    `The supporting cast includes Sam Diaz, Midnight Ross and Ava Lee. ${filler('river', 34)}`,
+    'Title: The Curious Case of Benjamin Button Venue: The Hayes Cast: Ava Lee, Midnight Ross, Sam Diaz Running time: 2 hr',
+  ].join(' ');
+  assert.equal(planMultiShowFanout(doc(text), credit('Midnight Ross'), { joint: true }), null);
+  // A real co-review of "Midnight" still splits when no first-name credit explains the mentions.
+  assert.deepEqual(ids(planMultiShowFanout(doc(NYT_TWO), credit('Midnight Ross'), { joint: true })), [ID['Midnight'], BB].sort());
+});
+
 test('a one-word title opening ordinary sentences is not a mention', () => {
   const text = [
     `“Midnight” is a long night out. ${filler('lantern', 6)} “Midnight” never rests.`,

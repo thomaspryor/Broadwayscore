@@ -188,10 +188,10 @@ jobs:
           export EMAIL
           export REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
           # Payload built in node so a quote in the URL cannot break the JSON.
-          PAYLOAD=$(node -e 'const e=process.env;process.stdout.write(JSON.stringify({
+          PAYLOAD=$(node -e 'const e=process.env;const d=require("./scripts/lib/submission-decision.js");process.stdout.write(JSON.stringify({
             from:"Broadway Scorecard <noreply@broadwayscorecard.com>",to:[e.EMAIL],reply_to:e.OWNER_EMAIL,
             subject:"Your review submission was approved",
-            text:"Great news! The review you submitted to Broadway Scorecard has been approved and will be added to our database shortly.\n\nURL: "+e.REVIEW_URL+"\n\nThank you for helping expand our database!"}))')
+            text:d.approvedEmailText(e.REVIEW_URL)}))')
           curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \

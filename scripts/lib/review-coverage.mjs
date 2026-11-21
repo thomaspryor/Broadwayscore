@@ -49,13 +49,16 @@
 
 import './llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import { walkTranscript } from './transcript-scan.mjs';
+import { walkTranscript, isStopHookFeedback } from './transcript-scan.mjs';
 import { linearCommands } from './linear-command.js';
+import { isMainModule } from './is-main-module.mjs';
+const { evaluateGapAnswers, answerInstructions, ranBeforeLastEditAdvice } = createRequire(import.meta.url)('./skeptic-gap-answers.js');
 
 const { stripHeredocBodies } = createRequire(import.meta.url)('./infra-review-scope.js');
 
@@ -69,7 +72,10 @@ const FALLBACK_FILES = {
 // in command position. Not `echo curl api.openai.com`, not `curl .../v1/models`, not a grep for the host.
 const MODEL_ENDPOINT_RE = /api\.openai\.com\/v1\/(?:chat\/completions|responses)|generativelanguage\.googleapis\.com\/\S*:generateContent/;
 const DATA_FLAG_RE = /\s(?:-d|--data(?:-[a-z]+)?|--json)\b/;
-const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:\\w+=\\S*\\s+)*${word}\\b`);
+// BRO-7714: wrapper prefixes before the word still run it: timeout/gtimeout [-flags] N, nice [-n N],
+// env [VAR=..], time, and `perl -e '...alarm...' N` (quotes are already blanked to "" in shellCode).
+const WRAPPER = String.raw`(?:\w+=\S*|(?:g?timeout|nice|env|time|nohup|exec)(?:\s+-\S+(?:\s+\d+)?)*(?:\s+\d+[smhd]?)?|perl\s+-e\s*(?:""|'')(?:\s+\d+)?)`;
+const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:${WRAPPER}\\s+)*${word}\\b`);
 const CURL_POS_RE = cmdPos('curl');
 const CODEX_POS_RE = cmdPos('codex\\s+exec');
 // The shell code a command runs, for "is X in command position" checks: heredoc bodies and quoted
@@ -84,7 +90,7 @@ const shellCode = (cmd) => stripHeredocBodies(cmd).replace(/'[^']*'|"[^"]*"/g, '
  * a sed expression); a space-free quote such as "HEAD:refs/heads/land/x" is kept. The script handed
  * to a shell (`bash -c "..."`, `bash <<'EOF' ... EOF`) is code, so it is unwrapped and judged the same way.
  */
-const SHELL_C_BEFORE_RE = /(?:^|[\s;&|(])(?:ba|z)?sh\s+-c\s+$/;
+const SHELL_C_BEFORE_RE = /(?:^|[\s;&|(])(?:ba|z)?sh\s+-[a-z]*c\s+$/; // bash -c, -lc, -ec (BRO-7701)
 const SHELL_HEREDOC_OPEN_RE = /(?:^|[\s;&|(])(?:ba|z)?sh\b[^\n<]*<<-?\s*(['"]?)(\w+)\1[^\n]*$/;
 export function runShellCode(command, depth = 0) {
   const raw = String(command || '');
@@ -92,7 +98,7 @@ export function runShellCode(command, depth = 0) {
   // Quotes are read left to right, so a `bash -c '...'` sitting inside a larger quoted string (a
   // `node -e "..."` fixture) is never seen as its own quote; heredoc bodies are already gone.
   const outer = stripHeredocBodies(raw).replace(/'[^']*'|"[^"]*"/g, (q, at, str) => {
-    if (SHELL_C_BEFORE_RE.test(str.slice(0, at))) { inner.push(q.slice(1, -1)); return '""'; }
+    if (SHELL_C_BEFORE_RE.test(str.slice(Math.max(0, at - 64), at)) /* a bounded look-back: the whole prefix per quote was quadratic (BRO-7701) */) { inner.push(q.slice(1, -1)); return '""'; }
     return /\s/.test(q) ? '""' : q;
   });
   // A heredoc fed to a shell: its opener survived stripping (so it is not itself inside data); take its body from raw.
@@ -107,7 +113,7 @@ export function runShellCode(command, depth = 0) {
   return [outer, ...(depth > 2 ? [] : inner.map((t) => runShellCode(t, depth + 1)))].join('\n');
 }
 const BUILD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+|time\s+|timeout\s+\S+\s+)*(?:npm\s+run\s+build|npx\s+next\s+build|next\s+build)\b/;
-const SHELL_C_BUILD_RE = /^\s*(?:ba)?sh\s+-l?c\s[\s\S]*\b(?:npm\s+run\s+build|next\s+build)\b/;
+const SHELL_C_BUILD_RE = /^\s*(?:ba)?sh\s+-[a-z]*c\s[\s\S]*\b(?:npm\s+run\s+build|next\s+build)\b/;
 const MIN_PANELIST_PROMPT = 200; // chars: "say ok" is not a review
 const MIN_RESULT_CHARS = 40;
 const isExternalReviewCall = (cmd) => {
@@ -116,6 +122,13 @@ const isExternalReviewCall = (cmd) => {
   const visible = stripHeredocBodies(cmd);
   return (CURL_POS_RE.test(code) && MODEL_ENDPOINT_RE.test(visible) && DATA_FLAG_RE.test(visible)) || CODEX_POS_RE.test(code);
 };
+// BRO-7839: the third ship-check reviewer asks the owner's question ("is this fully tested?") over the diff plus the
+// commands the session ran. It counts once its output carries the SKEPTIC REVIEW verdict line. Required from
+// SKEPTIC_REQUIRED_FROM (CLAUDE.md rule 19: advisory first); before that a missing run is only reported.
+export const SKEPTIC_CMD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+|timeout\s+\S+\s+)*node\s+(?:\S*\/)?scripts\/lib\/skeptic-review-stop\.mjs(?:\s+--[\w-]+(?:=\S+)?)*\s+--ship-check\b/;
+export const SKEPTIC_VERDICT_RE = /^SKEPTIC REVIEW: /m;
+export const SKEPTIC_REQUIRED_FROM = '2026-11-25';
+export const isSkepticReviewCall = (cmd) => SKEPTIC_CMD_RE.test(shellCode(cmd));
 const substantiveResult = (r) => !!r && !r.isError && String(r.content || '').trim().length >= MIN_RESULT_CHARS && !/"error"\s*:/.test(String(r.content));
 export const NO_SHIP_CHECK_RE = /#\s*NO-SHIP-CHECK:\s*(\S.{14,})/;
 
@@ -158,7 +171,7 @@ export function findRuns(events, skills = STRONG_SKILLS) {
  * Coverage after the last strong review run in the session.
  * -> { ran, complete, skill, missing: string[], evidence|null }
  */
-export function evaluateCoverage(events, { requireBuild = false } = {}) {
+export function evaluateCoverage(events, { requireBuild = false, now = new Date(), lastMessage = '', env = process.env, editIndices = null } = {}) {
   const runs = findRuns(events);
   if (runs.length === 0) {
     return { ran: false, complete: false, skill: null, missing: ['no /ship-check or /code-review run in this session'], evidence: null };
@@ -177,13 +190,27 @@ export function evaluateCoverage(events, { requireBuild = false } = {}) {
   const answeredWell = (id) => substantiveResult(results.get(id));
   const claude = [];
   const external = [];
+  const skeptic = [];
   for (const e of events.slice(last.i + 1)) {
     if (e.kind !== 'assistant_tool_use') continue;
     if (e.name === 'Agent' || e.name === 'Task') {
       if (String(e.input?.prompt || '').length >= MIN_PANELIST_PROMPT && /\b(?:review|audit|adversar\w*)\b/i.test(String(e.input?.prompt)) && answered(e.id)) claude.push(e);
     } else if (e.name === 'Bash' && isExternalReviewCall(String(e.input?.command || '')) && answeredWell(e.id)) {
       external.push(e);
+    } else if (e.name === 'Bash' && isSkepticReviewCall(String(e.input?.command || '')) && answered(e.id) && SKEPTIC_VERDICT_RE.test(String(results.get(e.id)?.content || ''))) {
+      skeptic.push(e);
     }
+  }
+  // BRO-7872: each material gap in the latest skeptic report needs an answer (a command that ran, or a concrete reason).
+  // Kept apart from `missing` so each caller can say what to do (re-running /ship-check would only renumber the gaps).
+  let unansweredGaps = [];
+  let ranBeforeLastEdit = null; // BRO-7887 advisory: only measured when the caller passes editIndices
+  if (skeptic.length && env.SKEPTIC_GAP_ANSWERS_DISABLE !== '1') {
+    const idx = (e) => events.indexOf(e);
+    const lastSk = skeptic[skeptic.length - 1];
+    const ga = evaluateGapAnswers(events, { firstIdx: idx(skeptic[0]), lastIdx: idx(lastSk), reportText: String(results.get(lastSk.id)?.content || ''), lastMessage, editIndices });
+    unansweredGaps = ga.unanswered;
+    ranBeforeLastEdit = ga.ranBeforeLastEdit;
   }
   // land.yml runs tsc + lint but NOT `next build`; a src/ change needs the build run by the session.
   // Any build in the session counts (did-it-work often builds before ship-check is invoked).
@@ -192,18 +219,23 @@ export function evaluateCoverage(events, { requireBuild = false } = {}) {
   if (requireBuild && !built) missing.push('the build (`npm run build`, Phase 2 of ship-check): land.yml does not run it and this diff touches src/');
   if (claude.length === 0) missing.push('Claude codebase review (an Agent call, subagent_type review-panelist, with a real review prompt of 200+ characters)');
   if (external.length === 0) missing.push('external adversarial review (curl -d to api.openai.com /v1/chat/completions, Gemini generateContent, or `codex exec`) with a real response');
+  const advisory = [];
+  if (skeptic.length === 0) {
+    const m = 'skeptic "is this fully tested?" review (`node scripts/lib/skeptic-review-stop.mjs --ship-check`, Phase 5 of ship-check) with its SKEPTIC REVIEW verdict';
+    (now.toISOString().slice(0, 10) >= (process.env.REVIEW_COVERAGE_SKEPTIC_FROM || SKEPTIC_REQUIRED_FROM) ? missing : advisory).push(m);
+  }
   const complete = missing.length === 0;
   let evidence = null;
   if (complete) {
     const h = createHash('sha256');
-    for (const e of [...claude, ...external]) h.update(`${e.id}\n${results.get(e.id)?.content || ''}\n`);
+    for (const e of [...claude, ...external, ...skeptic]) h.update(`${e.id}\n${results.get(e.id)?.content || ''}\n`);
     evidence = {
       outputsHash: h.digest('hex'),
       invocationId: String(last.id),
-      checks: [`claude-subagent-review x${claude.length}`, `external-review x${external.length}`],
+      checks: [`claude-subagent-review x${claude.length}`, `external-review x${external.length}`, ...(skeptic.length ? [`skeptic-review x${skeptic.length}`] : [])],
     };
   }
-  return { ran: true, complete, skill: last.skill, missing, evidence };
+  return { ran: true, complete, skill: last.skill, missing, advisory, evidence, unansweredGaps, ranBeforeLastEdit };
 }
 
 /**
@@ -217,7 +249,18 @@ export function landGateDecision({ command = '', events = null, gatedLines = 0, 
   if (bypass) return { decision: 'allow', reason: `NO-SHIP-CHECK bypass: ${bypass[1].trim()}` };
   if (!events || events.length === 0) return { decision: 'skip', reason: 'no transcript to judge (fails open)' };
   if (gatedLines <= budget) return { decision: 'skip', reason: `gated diff is ${gatedLines} lines (<= ${budget})` };
-  const cov = evaluateCoverage(events, { requireBuild: touchesSrc });
+  const cov = evaluateCoverage(events, { requireBuild: touchesSrc, env });
+  if (cov.complete && cov.unansweredGaps?.length) {
+    return {
+      decision: 'block',
+      reason: 'skeptic gaps unanswered',
+      message: [
+        `LAND BLOCKED (BRO-7872): the skeptic reviewer listed ${cov.unansweredGaps.length} gap(s) this session has not answered. Do not re-run /ship-check (that only renumbers them).`,
+        answerInstructions(cov.unansweredGaps),
+        'Then push again. Only if this truly cannot be answered: `# NO-SHIP-CHECK: <reason, 15+ chars>` in the push command (logged).',
+      ].join('\n'),
+    };
+  }
   if (cov.complete) return { decision: 'allow', reason: `${cov.skill} coverage complete` };
   return {
     decision: 'block',
@@ -317,6 +360,31 @@ export function claimsSafeToArchive(message) {
 }
 
 /**
+ * BRO-7738: index of the last SAFE TO ARCHIVE claim that actually ended a turn (no Stop-hook feedback after it before
+ * the next assistant event), or -1. A claim any Stop hook refused (e.g. [VE:ROOTCAUSE], which runs before
+ * [VE:LIVERUN] in verify-edits.sh) did not close the session, so it must not start a new chunk: otherwise every retry
+ * reads "nothing landed in this chunk" and the later gate never fires (live test, 2026-11-18). `lastMessage`, the claim
+ * being judged (it may already be flushed), is skipped, and so is an earlier claim with identical text.
+ * root-cause-stop deliberately differs (its chunkStart re-judges claims with its own gate): for it an answer stated
+ * before a refused claim still counts, and counting every refused claim out collapsed its chunk to the session start.
+ * Here a refused Stop means the owed live run is still owed. With no accepted claim the chunk is the whole session.
+ */
+export function lastAcceptedClaimIndex(events, lastMessage = '') {
+  for (let i = events.length - 1; i >= 0; i--) {
+    const e = events[i];
+    if (e.kind !== 'assistant_text' || e.text === lastMessage || !claimsSafeToArchive(e.text)) continue;
+    let refused = false;
+    for (let j = i + 1; j < events.length; j++) {
+      const f = events[j];
+      if (f.kind === 'assistant_text' || f.kind === 'assistant_tool_use') break;
+      if (isStopHookFeedback(f)) { refused = true; break; }
+    }
+    if (!refused) return i;
+  }
+  return -1;
+}
+
+/**
  * The rest of the finish chain, checked for substance (BRO-5359 /what-else): the same
  * "invoked but hollow" failure as /ship-check. Only called for a session that did code work
  * (a /ship-check or /code-review run exists). verify-edits.sh already asks for a MISSING
@@ -373,11 +441,13 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   // BRO-6020: SAFE TO ARCHIVE is the current claim; legacy SAFE TO EXIT stays an alias.
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
-  const cov = evaluateCoverage(events);
+  const cov = evaluateCoverage(events, { lastMessage, env });
   // Only a session that did reviewed code work is held to the rest of the chain.
   const problems = [];
   const noShipCheck = /^\s*NO-SHIP-CHECK:\s*(\S.{9,})/m.test(text);
   if (cov.ran && !cov.complete && !noShipCheck) problems.push(...cov.missing.map((m) => `/${cov.skill} did not run its reviewers: ${m}`));
+  // BRO-7872: NO-SHIP-CHECK waives the reviewers, not the answers to gaps a reviewer already listed.
+  if (cov.unansweredGaps?.length) problems.push(`the skeptic reviewer's gaps have no answer (BRO-7872):\n${answerInstructions(cov.unansweredGaps)}`);
   // The newest message is not flushed to the transcript when the Stop hook runs (verify-edits.sh
   // has the same note), so add it: a TESTED block in the closing message must count.
   // The chain checks apply to sessions that ran /ship-check; a pure /code-review (PR review) is not held to them.
@@ -433,6 +503,35 @@ function stopHookMain() {
   return 2;
 }
 
+/**
+ * Amend HEAD's message with the Review-Receipt trailer (BRO-5411) when it is safe:
+ * HEAD is not already on origin/main, does not already carry one, and only the message changes (--only keeps any
+ * staged files out). Never throws. -> { stamped, reason }
+ */
+export function stampReceipt({ cwd, evidence, run = execFileSync, env = process.env }) {
+  if (env.REVIEW_RECEIPT_STAMP === '0') return { stamped: false, reason: 'REVIEW_RECEIPT_STAMP=0 (opt-out)' };
+  const g = (args) => String(run('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
+  try {
+    const line = createRequire(import.meta.url)('./review-receipt.js').formatReceipt(evidence);
+    if (!line) return { stamped: false, reason: 'no evidence to stamp' };
+    const msg = g(['log', '-1', '--format=%B']).trimEnd();
+    if (/^Review-Receipt:/m.test(msg)) return { stamped: false, reason: 'HEAD already carries a receipt' };
+    try {
+      g(['merge-base', '--is-ancestor', 'HEAD', 'origin/main']);
+      return { stamped: false, reason: 'HEAD is already on origin/main (commit first, then record)' };
+    } catch { /* not on main */ }
+    // Never rewrite a commit any remote branch already holds (claude/*, land/*, a shared branch): the next push would
+    // be non-fast-forward. Fail closed if git can't answer.
+    let remotes = 'unknown';
+    try { remotes = g(['branch', '-r', '--contains', 'HEAD']).trim(); } catch { /* keep 'unknown' */ }
+    if (remotes) return { stamped: false, reason: `HEAD is already pushed (${remotes.split('\n')[0].trim()}); commit first, then record` };
+    g(['commit', '--amend', '--only', '--allow-empty', '--no-verify', '--cleanup=verbatim', '-m', `${msg}\n\n${line}`]);
+    return { stamped: true, reason: line };
+  } catch (e) {
+    return { stamped: false, reason: `git failed: ${String(e && e.message).split('\n')[0]}` };
+  }
+}
+
 /** Find this session's transcript (cloud keeps them under ~/.claude/projects/*). */
 export function findSessionTranscript(sessionId, home = os.homedir()) {
   if (!sessionId) return null;
@@ -459,26 +558,47 @@ async function main(argv) {
     process.stderr.write('review-coverage: transcript not found\n');
     return 2;
   }
-  const cov = evaluateCoverage(walkTranscript(transcript));
+  // BRO-7872: answers given on this command line count even before this call is written to the transcript.
+  const answers = argv.filter((a) => a.startsWith('--answer=')).map((a) => a.slice('--answer='.length)).join('\n');
+  const events = walkTranscript(transcript);
+  // BRO-7887: the Stop gate's edit matcher (dynamic import: skeptic-review-stop.mjs imports this module).
+  let editIndices = null;
+  try { editIndices = (await import('./skeptic-review-stop.mjs')).codeEditIndices(events, -1); } catch (e) { process.stderr.write(`review-coverage: ran-before-last-edit advisory not measured (${String(e && e.message).split('\n')[0]})\n`); }
+  const cov = evaluateCoverage(events, { lastMessage: answers, editIndices });
+  const staleAdvice = ranBeforeLastEditAdvice(cov.ranBeforeLastEdit);
+  if (staleAdvice) process.stderr.write(`review-coverage: ${staleAdvice}\n`);
   if (argv.includes('--json')) process.stdout.write(JSON.stringify(cov) + '\n');
   if (record) {
     if (!cov.complete) {
       process.stderr.write(`review-coverage: NOT recording a pass. Missing:\n${cov.missing.map((m) => `  - ${m}`).join('\n')}\n`);
       return 3;
     }
-    const { recordVerdict } = await import('./review-gate.mjs');
+    if (cov.unansweredGaps?.length) {
+      // BRO-7872: a session recorded a pass 23s after the skeptic listed 5 gaps, then landed without running any.
+      process.stderr.write(`review-coverage: NOT recording a pass. The skeptic reviewer listed ${cov.unansweredGaps.length} gap(s) with no answer:\n${answerInstructions(cov.unansweredGaps)}\nThen run --record again (kill switch: SKEPTIC_GAP_ANSWERS_DISABLE=1).\n`);
+      return 3;
+    }
+    if (cov.advisory?.length) process.stderr.write(`review-coverage: advisory (required from ${SKEPTIC_REQUIRED_FROM}):\n${cov.advisory.map((m) => `  - ${m}`).join('\n')}\n`);
     const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+    // BRO-7839: stamp the Review-Receipt trailer here, BEFORE the verdict records HEAD (amending after would leave the
+    // recorded head off HEAD's ancestry). Before this, `review-receipt.js stamp` was a separate step almost no session
+    // ran: 4 of 307 receipt-required landings since 2026-11-12 carried one.
+    const st = stampReceipt({ cwd: process.cwd(), evidence: cov.evidence });
+    process.stderr.write(`review-coverage: receipt ${st.stamped ? 'stamped on HEAD' : `not stamped (${st.reason})`}\n`);
+    const { recordVerdict } = await import('./review-gate.mjs');
     const r = recordVerdict({ repoRoot, reviewer: cov.skill, result: 'pass', sessionId: process.env.CLAUDE_CODE_SESSION_ID || null, evidence: cov.evidence });
     process.stdout.write(JSON.stringify(r) + '\n');
     return 0;
   }
+  if (!argv.includes('--json') && cov.advisory?.length) process.stdout.write(`advisory (required from ${SKEPTIC_REQUIRED_FROM}):\n${cov.advisory.map((m) => `  - ${m}`).join('\n')}\n`);
   if (!argv.includes('--json')) {
     process.stdout.write(cov.complete ? `coverage complete (${cov.skill})\n` : `coverage incomplete:\n${cov.missing.map((m) => `  - ${m}`).join('\n')}\n`);
+    if (cov.unansweredGaps?.length) process.stdout.write(`skeptic gaps unanswered:\n${answerInstructions(cov.unansweredGaps)}\n`);
   }
-  return cov.complete ? 0 : 3;
+  return cov.complete && !cov.unansweredGaps?.length ? 0 : 3;
 }
 
-if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   main(process.argv.slice(2)).then(
     (c) => createRequire(import.meta.url)('./exit-flushed.js').exitFlushed(c),
     (e) => {

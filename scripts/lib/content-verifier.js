@@ -17,6 +17,7 @@ const https = require('https');
 require('./gemini-usage-ledger').install(); // BRO-5043: record-only Gemini usage ledger
 const crypto = require('crypto');
 const { GEMINI_FLASH, GPT4O_MINI, VERIFIER_HAIKU, CLAUDE_SONNET } = require('./models');
+const { openaiChatBody } = require('./llm-batch');
 const { buildMessagesBody } = require('./anthropic-request');
 const { finalResponseText } = require('./anthropic-response-text');
 const { foldDiacritics } = require('./title-match');
@@ -236,12 +237,12 @@ function callOpenAI(prompt) {
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
   return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
+    const body = JSON.stringify(openaiChatBody({
       model: GPT4O_MINI,
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: 400,
+      maxTokens: 400,
       temperature: 0.1
-    });
+    }));
 
     const req = https.request('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

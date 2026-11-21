@@ -4,7 +4,8 @@
  * as completed (BRO-7693). The owner sends it by hand; nothing goes to a reader.
  *
  * Picks GitHub issues labelled bug-diagnosis, closed as completed on or after
- * LAUNCH_CUTOFF, without the reply-drafted label. After the draft is emailed the
+ * LAUNCH_CUTOFF by anyone (auto-fix, approved fix, or by hand), without the
+ * reply-drafted label. After the draft is emailed the
  * issue gets reply-drafted, which is the only dedupe state (no ledger).
  *
  * Usage: node scripts/draft-fixed-replies.js [--dry-run] [--cutoff=YYYY-MM-DD]
@@ -42,6 +43,7 @@ function ghGet(apiPath, token) {
 }
 
 /** Issues that still need a draft. Pure, so the test can pin the selection rules. */
+const SKIP_LABELS = new Set(['feedback-digest', 'auto-dispatched', 'duplicate', 'wontfix', 'invalid', 'not-a-bug', 'needs-manual-review']);
 const GRACE_MIN = 30; // auto-fix emails its own draft right after closing; do not race it
 
 function selectIssuesNeedingDraft(issues, cutoffIso, now = Date.now()) {
@@ -53,9 +55,11 @@ function selectIssuesNeedingDraft(issues, cutoffIso, now = Date.now()) {
     && i.closed_at && Date.parse(i.closed_at) >= cutoff
     && now - Date.parse(i.closed_at) >= GRACE_MIN * 60000
     && (i.labels || []).some((l) => (l.name || l) === 'bug-diagnosis')
-    // Only a real auto-fix earns a "pushed a fix" draft. Content requests and
-    // issues closed by hand also carry bug-diagnosis and must not get one.
-    && (i.labels || []).some((l) => (l.name || l) === 'auto-fixed')
+    // Whoever closed it (auto-fix, approved fix, or a session by hand), a bug
+    // the reader reported and we fixed deserves a draft. Content requests and
+    // duplicates are not "pushed a fix" stories: content requests have their
+    // own reviews-added draft (verify-feedback-requests-live.js).
+    && !(i.labels || []).some((l) => SKIP_LABELS.has(l.name || l))
     && !(i.labels || []).some((l) => (l.name || l) === DRAFTED_LABEL));
 }
 
@@ -103,6 +107,8 @@ async function main() {
         reader,
         originalMessage: reader.message,
         url: showLinkFor(reader.show, shows),
+        // Hard rule: this script only ever drafts to the owner, whatever the env says.
+        env: { ...process.env, FEEDBACK_AUTO_REPLY_KINDS: '' },
         transport,
       });
       if (!res.sent) { console.log(`  #${issue.number}: no draft (${res.reason})`); continue; }
@@ -118,5 +124,5 @@ async function main() {
   console.log(`Drafted ${drafted} reply(ies)`);
 }
 
-module.exports = { GRACE_MIN, selectIssuesNeedingDraft, showLinkFor, LAUNCH_CUTOFF };
+module.exports = { GRACE_MIN, SKIP_LABELS, selectIssuesNeedingDraft, showLinkFor, LAUNCH_CUTOFF };
 if (require.main === module) main().catch((e) => { console.error(e.message); process.exit(1); });

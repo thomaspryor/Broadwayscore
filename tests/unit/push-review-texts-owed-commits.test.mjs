@@ -20,6 +20,7 @@ const step = action.runs.steps.find((s) => s.id === 'push');
 // and are not what this test is about.
 const SCRIPT = step.run.split('\n').filter((l) => !l.includes('opening-night-lease.js')).join('\n');
 const TOKEN = 'test-token';
+const { MARKER_NAME } = require(path.join(ROOT, 'scripts/lib/review-texts-pushed-marker.js'));
 const URL_IN_ACTION = `https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-review-texts.git`;
 
 // Inside a git hook or land gate GIT_DIR/GIT_WORK_TREE/GIT_INDEX_FILE are set
@@ -45,18 +46,26 @@ function setup() {
   git(rt, 'config', 'user.email', 't@t'); git(rt, 'config', 'user.name', 't');
   const out = path.join(tmp, 'gh-output');
   fs.writeFileSync(out, '');
-  return { tmp, origin, ws, rt, out };
+  // BRO-7948: the action reports pushed=true when $RUNNER_TEMP holds the
+  // "earlier in-job push" marker. On an Actions runner the inherited
+  // RUNNER_TEMP is the whole job's temp dir, where other tests had left that
+  // marker, so every case gets its own.
+  const runnerTemp = path.join(tmp, 'runner-temp');
+  fs.mkdirSync(runnerTemp);
+  return { tmp, origin, ws, rt, out, runnerTemp };
 }
 
-function runAction({ ws, rt, out, origin }) {
+function runAction({ ws, rt, out, origin, runnerTemp }, inherited = {}) {
   return spawnSync('bash', ['--noprofile', '--norc', '-eo', 'pipefail', '-c', SCRIPT], {
     cwd: rt,
     encoding: 'utf8',
     timeout: 120000,
     env: {
       ...CLEAN_ENV,
+      ...inherited,
       GITHUB_WORKSPACE: ws,
       GITHUB_OUTPUT: out,
+      RUNNER_TEMP: runnerTemp,
       REVIEW_TEXTS_TOKEN: TOKEN,
       COMMIT_MSG: 'data: test',
       GIT_CONFIG_COUNT: '1',
@@ -95,6 +104,50 @@ test('a clean index with nothing owed exits 0 without pushing', () => {
   } finally {
     fs.rmSync(s.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
+});
+
+// BRO-7948: this file's "nothing owed" case was red on every land run for
+// weeks because it read the job's real RUNNER_TEMP. Seed the marker in the
+// inherited dir and show the action under test does not see it.
+test('a marker in the inherited RUNNER_TEMP does not leak into the action run', () => {
+  const s = setup();
+  const outer = fs.mkdtempSync(path.join(os.tmpdir(), 'push-rt-outer-'));
+  try {
+    fs.writeFileSync(path.join(outer, MARKER_NAME), '1\n');
+    const r = runAction(s, { RUNNER_TEMP: outer });
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+    assert.match(r.stdout, /No review-texts changes to push/);
+    assert.doesNotMatch(fs.readFileSync(s.out, 'utf8'), /pushed=true/);
+  } finally {
+    fs.rmSync(outer, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    fs.rmSync(s.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('a clean index after an earlier in-job push still reports pushed=true', () => {
+  const s = setup();
+  try {
+    fs.writeFileSync(path.join(s.runnerTemp, MARKER_NAME), '1\n');
+    const r = runAction(s);
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+    assert.match(fs.readFileSync(s.out, 'utf8'), /pushed=true/);
+  } finally {
+    fs.rmSync(s.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+// Class guard: every test that runs this action's script must hand it a
+// RUNNER_TEMP of its own. One that inherits the job's can be fed a stale
+// marker (a false pushed=true) and leaves its pushed-files list behind.
+test('every test that runs the push-review-texts script sets its own RUNNER_TEMP', () => {
+  const dir = path.join(ROOT, 'tests/unit');
+  const runners = fs.readdirSync(dir).filter((f) => /\.test\.(mjs|js)$/.test(f)).filter((f) => {
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    return src.includes('push-review-texts/action.yml') && /spawnSync\(\s*'bash'/.test(src);
+  });
+  assert.ok(runners.length >= 4, `expected the known runners, found ${runners.join(', ')}`);
+  const inheriting = runners.filter((f) => !/RUNNER_TEMP\s*:/.test(fs.readFileSync(path.join(dir, f), 'utf8')));
+  assert.deepEqual(inheriting, [], 'these tests run the action script with the inherited RUNNER_TEMP');
 });
 
 test('a staged change is committed and pushed as before', () => {

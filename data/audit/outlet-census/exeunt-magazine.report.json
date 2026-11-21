@@ -1,46 +1,105 @@
 {
   "outletId": "exeunt-magazine",
-  "generatedAt": "2026-10-28T20:38:40.321Z",
+  "market": "nyc",
+  "generatedAt": "2026-11-19T10:31:15.390Z",
   "since": "2021-06-01",
   "source": {
     "kind": "sitemap",
+    "status": "complete",
     "notes": [],
-    "enumerated": 2115,
-    "inWindow": 536,
+    "incomplete": false,
+    "enumerated": 560,
+    "inWindow": 549,
     "undated": 0,
     "meta": {
-      "fetched": 0,
+      "fetched": 560,
       "failed": 0
     }
   },
   "corpus": "reviews.json",
   "summary": {
     "counts": {
-      "catalog-gap": 194,
-      "gap": 101,
-      "held": 181,
-      "out-of-window": 49,
-      "not-review": 4,
-      "held-unmatched": 5,
-      "ambiguous": 1,
+      "not-review": 69,
+      "gap": 57,
+      "catalog-gap": 117,
+      "held": 250,
+      "out-of-window": 48,
+      "held-unmatched": 7,
       "held-alt-url": 1
     },
     "viaTitleVariant": {
-      "gap": 9,
-      "held": 8,
+      "held": 12,
+      "gap": 4,
       "held-alt-url": 1
     },
-    "recall": 0.643,
-    "recallWithCatalog": 0.382
+    "recall": 0.815,
+    "recallWithCatalog": 0.591
+  },
+  "seasons": {
+    "2020-21": {
+      "not-review": 5,
+      "gap": 1,
+      "catalog-gap": 1
+    },
+    "2021-22": {
+      "catalog-gap": 24,
+      "not-review": 14,
+      "gap": 9,
+      "held": 16,
+      "out-of-window": 11
+    },
+    "2022-23": {
+      "catalog-gap": 28,
+      "not-review": 6,
+      "out-of-window": 14,
+      "held": 38,
+      "gap": 2
+    },
+    "2023-24": {
+      "held": 43,
+      "not-review": 11,
+      "catalog-gap": 23,
+      "gap": 11,
+      "out-of-window": 4,
+      "held-unmatched": 1
+    },
+    "2024-25": {
+      "held": 58,
+      "catalog-gap": 25,
+      "out-of-window": 15,
+      "not-review": 12,
+      "gap": 12,
+      "held-unmatched": 2
+    },
+    "2025-26": {
+      "catalog-gap": 16,
+      "held": 62,
+      "not-review": 18,
+      "out-of-window": 4,
+      "gap": 22,
+      "held-alt-url": 1,
+      "held-unmatched": 3
+    },
+    "2026-27": {
+      "held": 33,
+      "held-unmatched": 1,
+      "not-review": 3
+    }
   },
   "corpusSide": {
-    "rowsInWindow": 239,
-    "notEnumerated": 13,
+    "rowsInWindow": 365,
+    "notEnumerated": 36,
     "noUrl": 0,
     "samples": [
       {
         "showId": "allegiance-2015",
         "url": "https://exeuntmagazine.com/reviews/allegiance/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "american-psycho-2016",
+        "url": "http://exeuntmagazine.com/reviews/review-american-psycho-at-gerald-schoenfeld-theatre/",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -54,6 +113,12 @@
         "showId": "beaches-2026",
         "url": "https://exeuntnyc.com/reviews/review-beaches-at-the-winter-garden-theatre/",
         "publishDate": "2026-04-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "betrayal-2019",
+        "url": "https://exeuntnyc.com/reviews/review-betrayal-at-bernard-b-jacobs-theatre/",
+        "publishDate": null,
         "why": "not-enumerated"
       },
       {
@@ -81,8 +146,26 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "network-2018",
+        "url": "https://exeuntnyc.com/reviews/review-network-belasco-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "pretty-woman-the-musical-2018",
+        "url": "https://exeuntnyc.com/reviews/review-pretty-woman-nederlander-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "prince-of-broadway-2017",
         "url": "https://exeuntmagazine.com/reviews/review-prince-broadway/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "saint-joan-2018",
+        "url": "https://exeuntnyc.com/reviews/review-saint-joan-manhattan-theatre-club/",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -93,8 +176,38 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "spongebob-squarepants-2017",
+        "url": "https://exeuntnyc.com/reviews/review-spongebob-squarepants-musical-palace-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "straight-white-men-2018",
+        "url": "https://exeuntnyc.com/reviews/review-straight-white-men/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "sweat-2017",
         "url": "https://exeuntmagazine.com/reviews/review-sweat-studio-54/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-cher-show-2018",
+        "url": "https://exeuntnyc.com/reviews/review-the-cher-show-at-neil-simon-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-cherry-orchard-2016",
+        "url": "https://exeuntnyc.com/reviews/review-cherry-orchard-american-airlines-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-children-2017",
+        "url": "https://exeuntnyc.com/reviews/review-children-samuel-j-friedman-theatre/",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -105,8 +218,80 @@
         "why": "not-enumerated"
       },
       {
+        "showId": "the-ferryman-2018",
+        "url": "https://exeuntnyc.com/reviews/review-the-ferryman-at-bernard-jacobs-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-heidi-chronicles-2015",
+        "url": "https://exeuntnyc.com/reviews/the-heidi-chronicles/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-lightning-thief-2019",
+        "url": "https://exeuntnyc.com/reviews/review-lightning-thief-percy-jackson-musical-longacre-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
         "showId": "the-little-foxes-2017",
         "url": "https://exeuntmagazine.com/reviews/review-little-foxes-samuel-j-friedman-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-nap-2018",
+        "url": "https://exeuntnyc.com/reviews/review-the-nap-at-samuel-j-friedman-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-normal-heart-2011",
+        "url": "https://exeuntnyc.com/reviews/the-normal-heart/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-rose-tattoo-2019",
+        "url": "https://exeuntnyc.com/reviews/review-rose-tattoo-american-airlines-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-sound-inside-2019",
+        "url": "https://exeuntnyc.com/reviews/sound-inside-studio-54/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-waverly-gallery-2018",
+        "url": "https://exeuntnyc.com/reviews/review-the-waverly-gallery-at-golden-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "three-tall-women-2018",
+        "url": "https://exeuntnyc.com/reviews/three-tall-women-at-golden-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "tootsie-2019",
+        "url": "https://exeuntnyc.com/reviews/review-tootsie-at-marquis-theatre/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "travesties-2018",
+        "url": "https://exeuntnyc.com/reviews/review-travesties/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "true-west-2019",
+        "url": "https://exeuntnyc.com/reviews/review-true-west-american-airlines-theatre/",
         "publishDate": null,
         "why": "not-enumerated"
       },
@@ -115,13 +300,19 @@
         "url": "https://exeuntmagazine.com/reviews/review-tuck-everlasting-at-broadhurst-theater/",
         "publishDate": null,
         "why": "not-enumerated"
+      },
+      {
+        "showId": "what-the-constitution-means-to-me-2019",
+        "url": "https://exeuntnyc.com/reviews/review-what-the-constitution-means-to-me-at-helen-hayes-theater/",
+        "publishDate": null,
+        "why": "not-enumerated"
       }
     ]
   },
   "gaps": [
     {
       "url": "https://exeuntnyc.com/reviews/review-pass-over-at-the-august-wilson-theatre/",
-      "headline": "Review: Pass Over at the August Wilson Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Pass Over at the August Wilson Theatre",
       "publishDate": "2021-08-31",
       "via": "poller-matcher",
       "held": [],
@@ -132,7 +323,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-is-this-a-room-at-the-lyceum-theatre/",
-      "headline": "Review: Is This A Room at the Lyceum Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Is This A Room at the Lyceum Theatre",
       "publishDate": "2021-10-12",
       "via": "poller-matcher",
       "held": [],
@@ -143,7 +334,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-lehman-trilogy-at-the-nederlander-theatre/",
-      "headline": "Review: The Lehman Trilogy at the Nederlander Theatre - Exeunt Magazine NYC",
+      "headline": "Review: The Lehman Trilogy at the Nederlander Theatre",
       "publishDate": "2021-10-15",
       "via": "poller-matcher",
       "held": [],
@@ -154,7 +345,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-chicken-biscuits-at-circle-in-the-square/",
-      "headline": "Review: Chicken & Biscuits at Circle in the Square - Exeunt Magazine NYC",
+      "headline": "Review: Chicken & Biscuits at Circle in the Square",
       "publishDate": "2021-10-19",
       "via": "poller-matcher",
       "held": [],
@@ -166,21 +357,8 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-assassins-at-classic-stage-company/",
-      "headline": "Review: Assassins at Classic Stage Company - Exeunt Magazine NYC",
-      "publishDate": "2021-11-15",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "company-2021"
-      ],
-      "outOfWindow": [
-        "assassins-2004"
-      ]
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-trouble-in-mind-at-the-american-airlines-theatre/",
-      "headline": "Review: Trouble in Mind at the American Airlines Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Trouble in Mind at the American Airlines Theatre",
       "publishDate": "2021-11-19",
       "via": "poller-matcher",
       "held": [],
@@ -191,7 +369,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-diana-the-musical-at-the-longacre-theatre/",
-      "headline": "Review: Diana, The Musical at the Longacre Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Diana, The Musical at the Longacre Theatre",
       "publishDate": "2021-11-18",
       "via": "poller-matcher",
       "held": [],
@@ -202,7 +380,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-flying-over-sunset-at-lincoln-center-theater/",
-      "headline": "Review: Flying Over Sunset at Lincoln Center Theater - Exeunt Magazine NYC",
+      "headline": "Review: Flying Over Sunset at Lincoln Center Theater",
       "publishDate": "2021-12-14",
       "via": "poller-matcher",
       "held": [],
@@ -212,19 +390,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-company-on-broadway/",
-      "headline": "Review: Company on Broadway - Exeunt Magazine NYC",
-      "publishDate": "2021-12-21",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "company-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-skeleton-crew-at-the-samuel-j-friedman-theatre/",
-      "headline": "Review: Skeleton Crew at the Samuel J. Friedman Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Skeleton Crew at the Samuel J. Friedman Theatre",
       "publishDate": "2022-02-14",
       "via": "poller-matcher",
       "held": [],
@@ -234,8 +401,19 @@
       "outOfWindow": []
     },
     {
+      "url": "https://exeuntnyc.com/reviews/review-the-chinese-lady-at-the-public-theater/",
+      "headline": "Review: The Chinese Lady at the Public Theater",
+      "publishDate": "2022-03-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-chinese-lady-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
       "url": "https://exeuntnyc.com/reviews/review-potus-at-the-shubert-theatre/",
-      "headline": "Review: POTUS at the Shubert Theatre - Exeunt Magazine NYC",
+      "headline": "Review: POTUS at the Shubert Theatre",
       "publishDate": "2022-04-30",
       "via": "title-variant",
       "held": [],
@@ -247,19 +425,8 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-snow-in-midsummer-at-classic-stage-company/",
-      "headline": "Review: Snow in Midsummer at Classic Stage Company - Exeunt Magazine NYC",
-      "publishDate": "2022-06-09",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "company-2021"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-some-like-it-hot-at-the-shubert-theatre/",
-      "headline": "Review: Some Like It Hot at the Shubert Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Some Like It Hot at the Shubert Theatre",
       "publishDate": "2022-12-12",
       "via": "poller-matcher",
       "held": [],
@@ -269,76 +436,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-des-moines-at-the-polonsky-shakespeare-center/",
-      "headline": "Review: Des Moines at the Polonsky Shakespeare Center - Exeunt Magazine NYC",
-      "publishDate": "2022-12-18",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "des-moines-off-broadway-2022"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-wanderers-at-the-laura-pels-theatre/",
-      "headline": "Review: The Wanderers at the Laura Pels Theatre - Exeunt Magazine NYC",
-      "publishDate": "2023-02-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-wanderers-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-a-bright-new-boise-at-signature-theatre/",
-      "headline": "Review: A Bright New Boise at Signature Theatre - Exeunt Magazine NYC",
-      "publishDate": "2023-02-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "a-bright-new-boise-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-love-at-park-avenue-armory/",
-      "headline": "Review: LOVE at Park Avenue Armory - Exeunt Magazine NYC",
-      "publishDate": "2023-03-02",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "love-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-good-john-proctor-at-the-connelly-theater/",
-      "headline": "Review: The Good John Proctor at the Connelly Theater - Exeunt Magazine NYC",
-      "publishDate": "2023-03-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-good-john-proctor-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-bob-fosses-dancin-at-the-music-box-theatre/",
-      "headline": "Review: Bob Fosse's Dancin' at the Music Box Theatre - Exeunt Magazine NYC",
-      "publishDate": "2023-04-03",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "bob-fosses-dancin-2023"
-      ],
-      "outOfWindow": [
-        "dancin-1978"
-      ]
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-parade-at-the-bernard-b-jacobs-theatre/",
-      "headline": "Review: Parade at the Bernard B. Jacobs Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Parade at the Bernard B. Jacobs Theatre",
       "publishDate": "2023-03-23",
       "via": "title-variant",
       "held": [],
@@ -348,109 +447,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-the-fears-at-the-pershing-square-signature-center/",
-      "headline": "Review: The Fears at the Pershing Square Signature Center - Exeunt Magazine NYC",
-      "publishDate": "2023-05-19",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-fears-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-doctor-at-park-avenue-armory/",
-      "headline": "Review: The Doctor at Park Avenue Armory - Exeunt Magazine NYC",
-      "publishDate": "2023-06-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-doctor-off-broadway-2023"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-purlie-victorious-a-non-confederate-romp-through-the-cotton-patch/",
-      "headline": "Review: Purlie Victorious: A Non-Confederate Romp Through the Cotton Patch - Exeunt Magazine NYC",
-      "publishDate": "2023-10-01",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "purlie-victorious-2023"
-      ],
-      "outOfWindow": [
-        "purlie-1972"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-translations-at-the-irish-repertory-theatre/",
-      "headline": "Review: Translations at the Irish Repertory Theatre - Exeunt Magazine NYC",
-      "publishDate": "2023-10-31",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "translations-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "translations-2007",
-        "translations-1995"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-harmony-at-the-ethel-barrymore-theatre/",
-      "headline": "Review: Harmony at the Ethel Barrymore Theatre - Exeunt Magazine NYC",
-      "publishDate": "2023-11-14",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "harmony-2023"
-      ],
-      "outOfWindow": [
-        "barrymore-1997"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-waiting-for-godot-at-polonsky-shakespeare-center/",
-      "headline": "Review: Waiting for Godot at Polonsky Shakespeare Center - Exeunt Magazine NYC",
-      "publishDate": "2023-11-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "waiting-for-godot-off-broadway-2023"
-      ],
-      "outOfWindow": [
-        "waiting-for-godot-2025",
-        "waiting-for-godot-2013",
-        "waiting-for-godot-2009"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-monty-pythons-spamalot-at-st-james-theatre/",
-      "headline": "Review: Monty Python's Spamalot at St. James Theatre - Exeunt Magazine NYC",
-      "publishDate": "2023-11-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "spamalot-2023"
-      ],
-      "outOfWindow": [
-        "spamalot-2005"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-aristocrats-at-irish-rep/",
-      "headline": "Review: Aristocrats at Irish Rep - Exeunt Magazine NYC",
-      "publishDate": "2024-01-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "aristocrats-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-white-chip-at-mcc/",
-      "headline": "Review: The White Chip at MCC - Exeunt Magazine NYC",
+      "headline": "Review: The White Chip at MCC",
       "publishDate": "2024-02-02",
       "via": "poller-matcher",
       "held": [],
@@ -460,43 +458,25 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-the-seven-year-disappear-at-the-new-group-at-pershing-square-signature-center/",
-      "headline": "Review: The Seven Year Disappear at The New Group at The Pershing Square Signature Center - Exeunt Magazine NYC",
-      "publishDate": "2024-02-27",
+      "url": "https://exeuntnyc.com/reviews/review-munich-medea-happy-family-at-wp-theater/",
+      "headline": "Review: Munich Medea: Happy Family at WP Theater",
+      "publishDate": "2024-02-13",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "the-seven-year-disappear-off-broadway-2024"
+        "medea-off-broadway-2022"
       ],
       "outOfWindow": [
-        "the-disappear-off-broadway-2026"
+        "medea-2002",
+        "medea-1994",
+        "medea-1973",
+        "medea-1982",
+        "medea-off-broadway-2026"
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/doubt-a-parable-at-todd-haimes-theatre/",
-      "headline": "Doubt: A Parable at Todd Haimes Theatre - Exeunt Magazine NYC",
-      "publishDate": "2024-03-08",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "doubt-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-corruption-at-lincoln-center/",
-      "headline": "Review: Corruption at Lincoln Center - Exeunt Magazine NYC",
-      "publishDate": "2024-03-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "corruption-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/an-enemy-of-the-people-at-circle-in-the-square/",
-      "headline": "An Enemy of the People at Circle in the Square - Exeunt Magazine NYC",
+      "headline": "An Enemy of the People at Circle in the Square",
       "publishDate": "2024-03-22",
       "via": "poller-matcher",
       "held": [],
@@ -510,32 +490,8 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-teeth-at-playwrights-horizons/",
-      "headline": "Review: Teeth at Playwrights Horizons - Exeunt Magazine NYC",
-      "publishDate": "2024-03-20",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "teeth-playwrights-horizons-off-broadway-2024"
-      ],
-      "outOfWindow": [
-        "teeth-off-broadway-2024"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-water-for-elephants-at-the-imperial-theatre/",
-      "headline": "Review: Water for Elephants at the Imperial Theatre - Exeunt Magazine NYC",
-      "publishDate": "2024-03-22",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "water-for-elephants-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-notebook-at-the-gerald-schoenfeld-theatre/",
-      "headline": "Review: The Notebook at the Gerald Schoenfeld Theatre - Exeunt Magazine NYC",
+      "headline": "Review: The Notebook at the Gerald Schoenfeld Theatre",
       "publishDate": "2024-03-21",
       "via": "poller-matcher",
       "held": [],
@@ -545,19 +501,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/brooklyn-laundry-at-mtc-ny-city-center/",
-      "headline": "Brooklyn Laundry at MTC NY City Center - Exeunt Magazine NYC",
-      "publishDate": "2024-03-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "brooklyn-laundry-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-lempicka-at-the-longacre-theatre/",
-      "headline": "Review: Lempicka at the Longacre Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Lempicka at the Longacre Theatre",
       "publishDate": "2024-04-15",
       "via": "poller-matcher",
       "held": [],
@@ -568,7 +513,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-orlando-at-signature-theatre/",
-      "headline": "Review: Orlando at Signature Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Orlando at Signature Theatre",
       "publishDate": "2024-04-22",
       "via": "poller-matcher",
       "held": [],
@@ -579,18 +524,20 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-suffs-at-the-music-box-theatre/",
-      "headline": "Review: Suffs at the Music Box Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Suffs at the Music Box Theatre",
       "publishDate": "2024-04-25",
       "via": "poller-matcher",
       "held": [],
       "matched": [
         "suffs-2024"
       ],
-      "outOfWindow": []
+      "outOfWindow": [
+        "suffs-off-broadway-2022"
+      ]
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-patriots-at-the-barrymore-theatre/",
-      "headline": "Review: Patriots at the Barrymore Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Patriots at the Barrymore Theatre",
       "publishDate": "2024-04-29",
       "via": "poller-matcher",
       "held": [],
@@ -602,30 +549,8 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-stargazers-at-the-connelly-theater/",
-      "headline": "Review: Stargazers at the Connelly Theater - Exeunt Magazine NYC",
-      "publishDate": "2024-05-02",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "stargazers-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-mother-play-at-the-helen-hayes-theater/",
-      "headline": "Review: Mother Play at the Helen Hayes Theater - Exeunt Magazine NYC",
-      "publishDate": "2024-05-05",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "mother-play-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-lonely-few-at-mcc-theater/",
-      "headline": "Review: The Lonely Few at MCC Theater - Exeunt Magazine NYC",
+      "headline": "Review: The Lonely Few at MCC Theater",
       "publishDate": "2024-05-20",
       "via": "poller-matcher",
       "held": [],
@@ -636,7 +561,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-three-houses-at-signature-theatre/",
-      "headline": "Review: Three Houses at Signature Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Three Houses at Signature Theatre",
       "publishDate": "2024-05-21",
       "via": "poller-matcher",
       "held": [],
@@ -647,7 +572,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-what-became-of-us-at-atlantic-stage-2/",
-      "headline": "Review: What Became of Us at Atlantic Stage 2 - Exeunt Magazine NYC",
+      "headline": "Review: What Became of Us at Atlantic Stage 2",
       "publishDate": "2024-06-05",
       "via": "poller-matcher",
       "held": [],
@@ -657,63 +582,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-n-a-at-the-mitzi-e-newhouse-theater/",
-      "headline": "Review: N/A at the Mitzi E. Newhouse Theater - Exeunt Magazine NYC",
-      "publishDate": "2024-06-28",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "n-a-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-someone-spectacular-at-the-pershing-square-signature-center/",
-      "headline": "Review: someone spectacular at The Pershing Square Signature Center - Exeunt Magazine NYC",
-      "publishDate": "2024-08-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "someone-spectacular-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/",
-      "headline": "Review: Table 17 at MCC Theater - Exeunt Magazine NYC",
-      "publishDate": "2024-09-09",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "table-17-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-counting-and-cracking-at-nyu-skirball-center/",
-      "headline": "Review: Counting and Cracking at NYU Skirball Center - Exeunt Magazine NYC",
-      "publishDate": "2024-09-15",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "counting-and-cracking-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-counter-at-the-laura-pels-theatre/",
-      "headline": "Review: The Counter at the Laura Pels Theatre - Exeunt Magazine NYC",
-      "publishDate": "2024-10-11",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-counter-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-sunset-blvd-at-the-st-james-theatre/",
-      "headline": "Review: Sunset Blvd. at the St. James Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Sunset Blvd. at the St. James Theatre",
       "publishDate": "2024-10-24",
       "via": "poller-matcher",
       "held": [],
@@ -726,74 +596,8 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-left-on-tenth-at-the-james-earl-jones-theatre/",
-      "headline": "Review: Left on Tenth at the James Earl Jones Theatre - Exeunt Magazine NYC",
-      "publishDate": "2024-10-28",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "left-on-tenth-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-swept-away-at-the-longacre-theatre/",
-      "headline": "Review: Swept Away at the Longacre Theatre - Exeunt Magazine NYC",
-      "publishDate": "2024-11-25",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "swept-away-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-blood-quilt-at-lincoln-center-theater/",
-      "headline": "Review: The Blood Quilt at Lincoln Center Theater - Exeunt Magazine NYC",
-      "publishDate": "2024-11-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-blood-quilt-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/the-beautiful-land-i-seek-la-linda-tierra-que-busco-yo-at-pregones-prtt/",
-      "headline": "the beautiful land i seek (la linda tierra que busco yo) at Pregones PRTT - Exeunt Magazine NYC",
-      "publishDate": "2024-12-12",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "the-beautiful-land-i-seek-la-linda-tierra-que-busco-yo-off-broadway-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-cult-of-love-at-helen-hayes-theater/",
-      "headline": "Review: Cult of Love at Helen Hayes Theater - Exeunt Magazine NYC",
-      "publishDate": "2024-12-13",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "cult-of-love-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-english-at-todd-haimes-theatre/",
-      "headline": "Review: English at Todd Haimes Theatre - Exeunt Magazine NYC",
-      "publishDate": "2025-02-02",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "english-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-henry-iv-at-polonsky-shakespeare-center/",
-      "headline": "Review: Henry IV at Polonsky Shakespeare Center - Exeunt Magazine NYC",
+      "headline": "Review: Henry IV at Polonsky Shakespeare Center",
       "publishDate": "2025-02-10",
       "via": "poller-matcher",
       "held": [],
@@ -801,12 +605,13 @@
         "henry-iv-off-broadway-2025"
       ],
       "outOfWindow": [
-        "henry-iv-2003"
+        "henry-iv-2003",
+        "henry-iv-off-broadway-2015"
       ]
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-redwood-at-nederlander-theatre/",
-      "headline": "Review: Redwood at Nederlander Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Redwood at Nederlander Theatre",
       "publishDate": "2025-02-22",
       "via": "poller-matcher",
       "held": [],
@@ -817,7 +622,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-curse-of-the-starving-class-at-the-new-group-at-the-pershing-square-signature-center/",
-      "headline": "Review: Curse of the Starving Class at The New Group at The Pershing Square Signature Center - Exeunt Magazine NYC",
+      "headline": "Review: Curse of the Starving Class at The New Group at The Pershing Square Signature Center",
       "publishDate": "2025-03-03",
       "via": "poller-matcher",
       "held": [],
@@ -828,7 +633,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-all-nighter-at-robert-w-wilson-mcc-theater-space/",
-      "headline": "Review: All Nighter at Robert W. Wilson MCC Theater Space - Exeunt Magazine NYC",
+      "headline": "Review: All Nighter at Robert W. Wilson MCC Theater Space",
       "publishDate": "2025-03-11",
       "via": "poller-matcher",
       "held": [],
@@ -838,19 +643,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-purpose-at-the-helen-hayes/",
-      "headline": "Review: Purpose at the Helen Hayes - Exeunt Magazine NYC",
-      "publishDate": "2025-03-23",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "purpose-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-vanya-at-the-lucille-lortel/",
-      "headline": "Review: Vanya at the Lucille Lortel - Exeunt Magazine NYC",
+      "headline": "Review: Vanya at the Lucille Lortel",
       "publishDate": "2025-03-30",
       "via": "poller-matcher",
       "held": [],
@@ -861,7 +655,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-picture-of-dorian-gray-at-the-music-box/",
-      "headline": "Review: The Picture of Dorian Gray at The Music Box - Exeunt Magazine NYC",
+      "headline": "Review: The Picture of Dorian Gray at The Music Box",
       "publishDate": "2025-04-06",
       "via": "poller-matcher",
       "held": [],
@@ -871,23 +665,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-glengarry-glen-ross-at-the-palace-theatre/",
-      "headline": "Review: Glengarry Glen Ross at the Palace Theatre - Exeunt Magazine NYC",
-      "publishDate": "2025-04-10",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "glengarry-glen-ross-2025"
-      ],
-      "outOfWindow": [
-        "glengarry-glen-ross-2012",
-        "glengarry-glen-ross-2005",
-        "glengarry-glen-ross-1984"
-      ]
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-last-five-years-at-the-hudson-theatre/",
-      "headline": "Review: The Last Five Years at the Hudson Theatre - Exeunt Magazine NYC",
+      "headline": "Review: The Last Five Years at the Hudson Theatre",
       "publishDate": "2025-04-13",
       "via": "poller-matcher",
       "held": [],
@@ -898,7 +677,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-john-proctor-is-the-villain-at-the-booth-theatre/",
-      "headline": "Review: John Proctor Is the Villain at the Booth Theatre - Exeunt Magazine NYC",
+      "headline": "Review: John Proctor Is the Villain at the Booth Theatre",
       "publishDate": "2025-04-15",
       "via": "poller-matcher",
       "held": [],
@@ -908,19 +687,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-smash-at-the-imperial-theatre/",
-      "headline": "Review: Smash at the Imperial Theatre - Exeunt Magazine NYC",
-      "publishDate": "2025-04-17",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "smash-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-pirates-the-penzance-musical-at-the-todd-haimes-theatre/",
-      "headline": "Review: Pirates! The Penzance Musical at the Todd Haimes Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Pirates! The Penzance Musical at the Todd Haimes Theatre",
       "publishDate": "2025-05-07",
       "via": "poller-matcher",
       "held": [],
@@ -930,30 +698,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-mcneal-at-lincoln-center-theater/",
-      "headline": "Review: McNeal at Lincoln Center Theater - Exeunt Magazine NYC",
-      "publishDate": "2024-10-05",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "mcneal-2024"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-stephen-sondheims-old-friends-at-the-samuel-j-friedman-theatre/",
-      "headline": "Review: Stephen Sondheim's Old Friends at the Samuel J. Friedman Theatre - Exeunt Magazine NYC",
-      "publishDate": "2025-05-21",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "stephen-sondheims-old-friends-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-eurydice-at-signature-theatre-center/",
-      "headline": "Review: Eurydice at Signature Theatre Center - Exeunt Magazine NYC",
+      "headline": "Review: Eurydice at Signature Theatre Center",
       "publishDate": "2025-06-08",
       "via": "poller-matcher",
       "held": [],
@@ -964,7 +710,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-lowcountry-at-atlantic-theater-company/",
-      "headline": "Review: Lowcountry at Atlantic Theater Company - Exeunt Magazine NYC",
+      "headline": "Review: Lowcountry at Atlantic Theater Company",
       "publishDate": "2025-06-26",
       "via": "poller-matcher",
       "held": [],
@@ -974,19 +720,19 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-ava-the-secret-conversations-at-new-york-city-center-stage-i/",
-      "headline": "Review: Ava: The Secret Conversations at New York City Center – Stage I - Exeunt Magazine NYC",
-      "publishDate": "2025-08-25",
+      "url": "https://exeuntnyc.com/reviews/review-the-other-americans-at-the-public-theater/",
+      "headline": "Review: The Other Americans at the Public Theater",
+      "publishDate": "2025-09-26",
       "via": "poller-matcher",
       "held": [],
       "matched": [
-        "ava-the-secret-conversations-off-broadway-2025"
+        "the-other-americans-off-broadway-2025"
       ],
       "outOfWindow": []
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-punch-at-the-samuel-j-friedman-theatre/",
-      "headline": "Review: Punch at the Samuel J. Friedman Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Punch at the Samuel J. Friedman Theatre",
       "publishDate": "2025-10-10",
       "via": "poller-matcher",
       "held": [],
@@ -997,7 +743,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-caroline-at-mcc/",
-      "headline": "Review: Caroline at MCC - Exeunt Magazine NYC",
+      "headline": "Review: Caroline at MCC",
       "publishDate": "2025-10-13",
       "via": "poller-matcher",
       "held": [],
@@ -1008,7 +754,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-pershing-square-signature-center/",
-      "headline": "Review: Oratorio for Living Things at Pershing Square Signature Center - Exeunt Magazine NYC",
+      "headline": "Review: Oratorio for Living Things at Pershing Square Signature Center",
       "publishDate": "2025-10-25",
       "via": "poller-matcher",
       "held": [],
@@ -1019,7 +765,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-liberation-at-james-earl-jones-theatre/",
-      "headline": "Review: Liberation at James Earl Jones Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Liberation at James Earl Jones Theatre",
       "publishDate": "2025-10-30",
       "via": "poller-matcher",
       "held": [],
@@ -1032,7 +778,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-chess-at-the-imperial-theatre/",
-      "headline": "Review: Chess at the Imperial Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Chess at the Imperial Theatre",
       "publishDate": "2025-11-20",
       "via": "poller-matcher",
       "held": [],
@@ -1045,30 +791,8 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-meet-the-cartozians-at-pershing-square-signature-center/",
-      "headline": "Review: Meet the Cartozians at Pershing Square Signature Center - Exeunt Magazine NYC",
-      "publishDate": "2025-11-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "meet-the-cartozians-off-broadway-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-marjorie-prime-at-the-helen-hayes-theater/",
-      "headline": "Review: Marjorie Prime at the Helen Hayes Theater - Exeunt Magazine NYC",
-      "publishDate": "2025-12-16",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "marjorie-prime-2025"
-      ],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-disappear-at-the-minetta-lane-theatre/",
-      "headline": "Review: The Disappear at the Minetta Lane Theatre - Exeunt Magazine NYC",
+      "headline": "Review: The Disappear at the Minetta Lane Theatre",
       "publishDate": "2026-01-29",
       "via": "poller-matcher",
       "held": [],
@@ -1079,7 +803,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-blackout-songs-at-robert-c-wilson-mcc-theater-space/",
-      "headline": "Review: Blackout Songs at Robert C. Wilson MCC Theater Space - Exeunt Magazine NYC",
+      "headline": "Review: Blackout Songs at Robert C. Wilson MCC Theater Space",
       "publishDate": "2026-01-30",
       "via": "poller-matcher",
       "held": [],
@@ -1090,7 +814,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-data-at-the-lucille-lortel-theatre/",
-      "headline": "Review: Data at the Lucille Lortel Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Data at the Lucille Lortel Theatre",
       "publishDate": "2026-02-02",
       "via": "title-variant",
       "held": [],
@@ -1101,7 +825,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-coriolanus-at-theatre-for-a-new-audience/",
-      "headline": "Review: The Tragedy of Coriolanus at Theatre for a New Audience - Exeunt Magazine NYC",
+      "headline": "Review: The Tragedy of Coriolanus at Theatre for a New Audience",
       "publishDate": "2026-02-14",
       "via": "poller-matcher",
       "held": [],
@@ -1114,7 +838,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-hate-radio-at-st-anns-warehouse/",
-      "headline": "Review: Hate Radio at St. Ann's Warehouse - Exeunt Magazine NYC",
+      "headline": "Review: Hate Radio at St. Ann's Warehouse",
       "publishDate": "2026-02-17",
       "via": "poller-matcher",
       "held": [],
@@ -1125,7 +849,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-reservoir-at-atlantic-theater-company/",
-      "headline": "Review: The Reservoir at Atlantic Theater Company - Exeunt Magazine NYC",
+      "headline": "Review: The Reservoir at Atlantic Theater Company",
       "publishDate": "2026-02-27",
       "via": "poller-matcher",
       "held": [],
@@ -1136,7 +860,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-night-side-songs-at-lct3/",
-      "headline": "Review: Night Side Songs at LCT3 - Exeunt Magazine NYC",
+      "headline": "Review: Night Side Songs at LCT3",
       "publishDate": "2026-03-05",
       "via": "poller-matcher",
       "held": [],
@@ -1147,7 +871,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-bigfoot-at-new-york-city-center-stage-i/",
-      "headline": "Review: Bigfoot! at New York City Center – Stage I - Exeunt Magazine NYC",
+      "headline": "Review: Bigfoot! at New York City Center – Stage I",
       "publishDate": "2026-03-06",
       "via": "poller-matcher",
       "held": [],
@@ -1158,7 +882,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-marcel-on-the-train/",
-      "headline": "Review: Marcel on the Train - Exeunt Magazine NYC",
+      "headline": "Review: Marcel on the Train",
       "publishDate": "2026-03-16",
       "via": "poller-matcher",
       "held": [],
@@ -1169,7 +893,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-public-charge-at-the-public-theater/",
-      "headline": "Review: Public Charge at the Public Theater - Exeunt Magazine NYC",
+      "headline": "Review: Public Charge at the Public Theater",
       "publishDate": "2026-04-01",
       "via": "poller-matcher",
       "held": [],
@@ -1180,7 +904,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-balusters-at-the-samuel-j-friedman-theatre/",
-      "headline": "Review: The Balusters at the Samuel J. Friedman Theatre - Exeunt Magazine NYC",
+      "headline": "Review: The Balusters at the Samuel J. Friedman Theatre",
       "publishDate": "2026-04-29",
       "via": "poller-matcher",
       "held": [],
@@ -1191,7 +915,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-adding-machine-at-the-theater-at-st-clements/",
-      "headline": "Review: The Adding Machine at the Theater at St. Clement's - Exeunt Magazine NYC",
+      "headline": "Review: The Adding Machine at the Theater at St. Clement's",
       "publishDate": "2026-04-15",
       "via": "poller-matcher",
       "held": [],
@@ -1202,7 +926,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-receptionist-at-pershing-square-signature-center/",
-      "headline": "Review: The Receptionist at Pershing Square Signature Center - Exeunt Magazine NYC",
+      "headline": "Review: The Receptionist at Pershing Square Signature Center",
       "publishDate": "2026-05-11",
       "via": "poller-matcher",
       "held": [],
@@ -1213,7 +937,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-becky-shaw-at-the-hayes-theater/",
-      "headline": "Review: Becky Shaw at the Hayes Theater - Exeunt Magazine NYC",
+      "headline": "Review: Becky Shaw at the Hayes Theater",
       "publishDate": "2026-04-11",
       "via": "poller-matcher",
       "held": [],
@@ -1224,7 +948,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-girlschancemusic-at-vineyard-theatre/",
-      "headline": "Review: ||:GIRLS:||:CHANCE:||:MUSIC:|| at Vineyard Theatre - Exeunt Magazine NYC",
+      "headline": "Review: ||:GIRLS:||:CHANCE:||:MUSIC:|| at Vineyard Theatre",
       "publishDate": "2026-06-21",
       "via": "poller-matcher",
       "held": [],
@@ -1235,7 +959,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-isla-at-wp-theater/",
-      "headline": "Review: Isla at WP Theater - Exeunt Magazine NYC",
+      "headline": "Review: Isla at WP Theater",
       "publishDate": "2026-08-14",
       "via": "title-variant",
       "held": [],
@@ -1243,48 +967,12 @@
         "isla-off-broadway-2026"
       ],
       "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-anon-at-robert-c-wilson-mcc-theater-space/",
-      "headline": "Review: ANON at Robert C. Wilson MCC Theater Space - Exeunt Magazine NYC",
-      "publishDate": "2026-10-25",
-      "via": "title-variant",
-      "held": [],
-      "matched": [
-        "anon-a-tempest-at-our-kitchen-table-off-broadway-2026"
-      ],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-other-desert-cities-at-the-hudson-theatre/",
-      "headline": "Review: Other Desert Cities at the Hudson Theatre - Exeunt Magazine NYC",
-      "publishDate": "2026-10-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "other-desert-cities-2026"
-      ],
-      "outOfWindow": [
-        "other-desert-cities-2011",
-        "other-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-memoirs-of-amorous-gentlemen-at-the-culture-club/",
-      "headline": "Review: Memoirs of Amorous Gentlemen at the Culture Club - Exeunt Magazine NYC",
-      "publishDate": "2026-10-28",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "memoirs-of-amorous-gentlemen-off-broadway-2026"
-      ],
-      "outOfWindow": []
     }
   ],
   "heldAltUrl": [
     {
       "url": "https://exeuntnyc.com/reviews/review-beaches-at-the-majestic-theatre/",
-      "headline": "Review: Beaches at the Majestic Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Beaches at the Majestic Theatre",
       "publishDate": "2026-04-23",
       "matched": [
         "beaches-2026"
@@ -1297,8 +985,21 @@
   "misfiles": [],
   "heldUnmatched": [
     {
+      "url": "https://exeuntnyc.com/reviews/review-n-a-at-the-mitzi-e-newhouse-theater/",
+      "headline": "Review: N/A at the Mitzi E. Newhouse Theater",
+      "publishDate": "2024-06-28",
+      "via": null,
+      "held": [
+        "n-a-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "n-a-off-broadway-2024"
+      ]
+    },
+    {
       "url": "https://exeuntnyc.com/reviews/review-rheology-at-the-bushwick-starr/",
-      "headline": "Review: Rheology at the Bushwick Starr - Exeunt Magazine NYC",
+      "headline": "Review: Rheology at the Bushwick Starr",
       "publishDate": "2025-04-26",
       "via": null,
       "held": [
@@ -1311,7 +1012,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-can-i-be-frank-at-soho-playhouse/",
-      "headline": "Review: Can I Be Frank? at Soho Playhouse - Exeunt Magazine NYC",
+      "headline": "Review: Can I Be Frank? at Soho Playhouse",
       "publishDate": "2025-08-05",
       "via": null,
       "held": [
@@ -1322,11 +1023,12 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-othello-at-west-end-theatre/",
-      "headline": "Review: Othello at West End Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Othello at West End Theatre",
       "publishDate": "2026-05-05",
       "via": null,
       "held": [
-        "bedlams-othello-off-broadway-2026"
+        "bedlams-othello-off-broadway-2026",
+        "othello-bedlam-off-broadway-2026"
       ],
       "matched": [],
       "outOfWindow": [
@@ -1334,12 +1036,13 @@
         "othello-1970",
         "othello-1982",
         "othello-bedlam-off-broadway-2026",
-        "othello-off-broadway-2026"
+        "othello-off-broadway-2026",
+        "othello-off-broadway-2016"
       ]
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
-      "headline": "Review: Dad Don't Read This at St. Luke's Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Dad Don't Read This at St. Luke's Theatre",
       "publishDate": "2026-05-14",
       "via": null,
       "held": [
@@ -1352,7 +1055,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-broad-strokes-at-the-lucille-lortel-theatre/",
-      "headline": "Review: Broad Strokes at the Lucille Lortel Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Broad Strokes at the Lucille Lortel Theatre",
       "publishDate": "2026-07-28",
       "via": null,
       "held": [
@@ -1360,62 +1063,24 @@
       ],
       "matched": [],
       "outOfWindow": []
-    }
-  ],
-  "ambiguous": [
+    },
     {
-      "url": "https://exeuntnyc.com/reviews/review-the-other-americans-at-the-public-theater/",
-      "headline": "Review: The Other Americans at the Public Theater - Exeunt Magazine NYC",
-      "publishDate": "2025-09-26",
-      "via": "poller-matcher",
-      "held": [],
-      "matched": [
-        "other-off-broadway-2025",
-        "the-other-americans-off-broadway-2025"
+      "url": "https://exeuntnyc.com/reviews/review-the-4th-witch-at-nyu-skirball-center/",
+      "headline": "Review: The 4th Witch at NYU Skirball Center",
+      "publishDate": "2026-10-17",
+      "via": null,
+      "held": [
+        "manual-cinema-the-4th-witch-off-broadway-2026"
       ],
+      "matched": [],
       "outOfWindow": []
     }
   ],
+  "ambiguous": [],
   "catalogGaps": [
     {
-      "url": "https://exeuntnyc.com/reviews/review-naatco-online/",
-      "headline": "Review: What If If Only at NAATCO (online) - Exeunt Magazine NYC",
-      "publishDate": "2021-06-11",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-current/",
-      "headline": "Review: Current at Arts Brookfield - Exeunt Magazine NYC",
-      "publishDate": "2021-06-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-romantic-songs-of-the-patriarchy-at-the-guggenheim-museum/",
-      "headline": "Review: Romantic Songs of the Patriarchy at the Guggenheim Museum - Exeunt Magazine NYC",
-      "publishDate": "2021-07-12",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-hymn-city-green-wood-cemetery/",
-      "headline": "Review: Hymn to the City at Green-Wood Cemetery - Exeunt Magazine NYC",
-      "publishDate": "2021-06-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-merry-wives-delacorte/",
-      "headline": "Review: Merry Wives at the Delacorte - Exeunt Magazine NYC",
+      "headline": "Review: Merry Wives at the Delacorte",
       "publishDate": "2021-08-10",
       "via": null,
       "held": [],
@@ -1424,7 +1089,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/sun-sea-at-bam-fisher/",
-      "headline": "Sun & Sea at BAM Fisher - Exeunt Magazine NYC",
+      "headline": "Sun & Sea at BAM Fisher",
       "publishDate": "2021-09-17",
       "via": null,
       "held": [],
@@ -1432,17 +1097,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-speak-softly-go-far-hannah-mamalis-at-dublin-fringe-festival/",
-      "headline": "Review: Speak Softly, Go Far: Hannah Mamalis at Dublin Fringe Festival - Exeunt Magazine NYC",
-      "publishDate": "2021-09-20",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-sanctuary-city-at-the-lucille-lortel/",
-      "headline": "Review: Sanctuary City at the Lucille Lortel - Exeunt Magazine NYC",
+      "headline": "Review: Sanctuary City at the Lucille Lortel",
       "publishDate": "2021-09-22",
       "via": null,
       "held": [],
@@ -1450,26 +1106,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-emily-skinner-broad-broad-broad-mind-feinsteins-54/",
-      "headline": "Review: Emily Skinner: A Broad with a Broad Broad Mind at Feinstein's/54 Below - Exeunt Magazine NYC",
-      "publishDate": "2021-08-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-kelli-ohara-at-feinsteins-54-below/",
-      "headline": "Review: Kelli O'Hara at Feinstein's/54 Below - Exeunt Magazine NYC",
-      "publishDate": "2021-09-29",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-six-at-the-brooks-atkinson-theatre/",
-      "headline": "Review: Six at the Brooks Atkinson Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Six at the Brooks Atkinson Theatre",
       "publishDate": "2021-10-04",
       "via": null,
       "held": [],
@@ -1477,35 +1115,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-laura-benanti-at-feinsteins-54-below/",
-      "headline": "Review: Laura Benanti at Feinstein's/54 Below - Exeunt Magazine NYC",
-      "publishDate": "2021-10-12",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-best-life-at-jack/",
-      "headline": "Review: Best Life at JACK - Exeunt Magazine NYC",
-      "publishDate": "2021-10-30",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-megan-hilty-at-feinsteins-54-below/",
-      "headline": "Review: Megan Hilty at Feinstein's/54 Below - Exeunt Magazine NYC",
-      "publishDate": "2021-11-03",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-gnit-at-polonsky-shakespeare-center/",
-      "headline": "Review: Gnit at Polonsky Shakespeare Center - Exeunt Magazine NYC",
+      "headline": "Review: Gnit at Polonsky Shakespeare Center",
       "publishDate": "2021-11-08",
       "via": null,
       "held": [],
@@ -1514,7 +1125,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-nollywood-dreams-at-mcc-theater/",
-      "headline": "Review: Nollywood Dreams at MCC Theater - Exeunt Magazine NYC",
+      "headline": "Review: Nollywood Dreams at MCC Theater",
       "publishDate": "2021-11-12",
       "via": null,
       "held": [],
@@ -1523,7 +1134,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-while-you-were-partying-at-soho-rep/",
-      "headline": "Review: while you were partying at Soho Rep - Exeunt Magazine NYC",
+      "headline": "Review: while you were partying at Soho Rep",
       "publishDate": "2021-11-11",
       "via": null,
       "held": [],
@@ -1532,7 +1143,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-preparedness-at-here/",
-      "headline": "Review: Preparedness at HERE - Exeunt Magazine NYC",
+      "headline": "Review: Preparedness at HERE",
       "publishDate": "2021-11-13",
       "via": null,
       "held": [],
@@ -1541,7 +1152,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-cullud-wattah-at-the-public-theater/",
-      "headline": "Review: Cullud Wattah at the Public Theater - Exeunt Magazine NYC",
+      "headline": "Review: Cullud Wattah at the Public Theater",
       "publishDate": "2021-11-18",
       "via": null,
       "held": [],
@@ -1550,7 +1161,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-morning-sun-at-new-york-city-center-stage-i/",
-      "headline": "Review: Morning Sun at New York City Center – Stage I - Exeunt Magazine NYC",
+      "headline": "Review: Morning Sun at New York City Center – Stage I",
       "publishDate": "2021-11-23",
       "via": null,
       "held": [],
@@ -1559,7 +1170,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-medicine-at-st-anns-warehouse/",
-      "headline": "Review: Medicine at St. Ann's Warehouse - Exeunt Magazine NYC",
+      "headline": "Review: Medicine at St. Ann's Warehouse",
       "publishDate": "2021-11-27",
       "via": null,
       "held": [],
@@ -1568,7 +1179,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-selling-kabul-at-playwrights-horizons/",
-      "headline": "Review: Selling Kabul at Playwrights Horizons - Exeunt Magazine NYC",
+      "headline": "Review: Selling Kabul at Playwrights Horizons",
       "publishDate": "2021-12-07",
       "via": null,
       "held": [],
@@ -1577,7 +1188,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-whisper-house-at-59e59/",
-      "headline": "Review: Whisper House at 59E59 - Exeunt Magazine NYC",
+      "headline": "Review: Whisper House at 59E59",
       "publishDate": "2022-01-21",
       "via": null,
       "held": [],
@@ -1585,17 +1196,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-this-beautiful-future-at-theaterlab/",
-      "headline": "Review: This Beautiful Future at Theaterlab - Exeunt Magazine NYC",
-      "publishDate": "2022-01-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-intimate-apparel-at-the-mitzi-e-newhouse-theater/",
-      "headline": "Review: Intimate Apparel at the Mitzi E. Newhouse Theater - Exeunt Magazine NYC",
+      "headline": "Review: Intimate Apparel at the Mitzi E. Newhouse Theater",
       "publishDate": "2022-02-13",
       "via": null,
       "held": [],
@@ -1604,7 +1206,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-four-quartets-at-bam/",
-      "headline": "Review: Four Quartets at BAM - Exeunt Magazine NYC",
+      "headline": "Review: Four Quartets at BAM",
       "publishDate": "2022-02-13",
       "via": null,
       "held": [],
@@ -1613,7 +1215,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-space-dogs-at-mcc/",
-      "headline": "Review: Space Dogs at MCC - Exeunt Magazine NYC",
+      "headline": "Review: Space Dogs at MCC",
       "publishDate": "2022-02-15",
       "via": null,
       "held": [],
@@ -1622,7 +1224,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-wolf-play-at-soho-rep/",
-      "headline": "Review: Wolf Play at Soho Rep - Exeunt Magazine NYC",
+      "headline": "Review: Wolf Play at Soho Rep",
       "publishDate": "2022-02-26",
       "via": null,
       "held": [],
@@ -1630,17 +1232,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-the-chinese-lady-at-the-public-theater/",
-      "headline": "Review: The Chinese Lady at the Public Theater - Exeunt Magazine NYC",
-      "publishDate": "2022-03-11",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-what-you-are-now-at-ensemble-studio-theatre/",
-      "headline": "Review: what you are now at Ensemble Studio Theatre - Exeunt Magazine NYC",
+      "headline": "Review: what you are now at Ensemble Studio Theatre",
       "publishDate": "2022-03-18",
       "via": null,
       "held": [],
@@ -1649,7 +1242,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-book-of-mountains-and-seas-at-st-anns-warehouse/",
-      "headline": "Review: Book of Mountains and Seas at St. Ann's Warehouse - Exeunt Magazine NYC",
+      "headline": "Review: Book of Mountains and Seas at St. Ann's Warehouse",
       "publishDate": "2022-03-19",
       "via": null,
       "held": [],
@@ -1658,7 +1251,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-life-at-new-york-city-center/",
-      "headline": "Review: The Life at New York City Center - Exeunt Magazine NYC",
+      "headline": "Review: The Life at New York City Center",
       "publishDate": "2022-03-21",
       "via": null,
       "held": [],
@@ -1666,35 +1259,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-a-song-of-songs-at-the-bushwick-starr/",
-      "headline": "Review: A Song of Songs at The Bushwick Starr - Exeunt Magazine NYC",
-      "publishDate": "2022-03-30",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-confederates-at-signature-theatre/",
-      "headline": "Review: Confederates at Signature Theatre - Exeunt Magazine NYC",
-      "publishDate": "2022-04-11",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-wedding-band-at-polonsky-shakespeare-center/",
-      "headline": "Review: Wedding Band at Polonsky Shakespeare Center - Exeunt Magazine NYC",
-      "publishDate": "2022-05-09",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-which-way-to-the-stage-at-mcc/",
-      "headline": "Review: Which Way to the Stage at MCC - Exeunt Magazine NYC",
+      "headline": "Review: Which Way to the Stage at MCC",
       "publishDate": "2022-05-11",
       "via": null,
       "held": [],
@@ -1702,17 +1268,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-will-you-come-with-me-at-mitu580/",
-      "headline": "Review: Will You Come With Me? at MITU580 - Exeunt Magazine NYC",
-      "publishDate": "2022-05-21",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-california-at-clubbed-thumbs-summerworks/",
-      "headline": "Review: California at Clubbed Thumb's Summerworks - Exeunt Magazine NYC",
+      "headline": "Review: California at Clubbed Thumb's Summerworks",
       "publishDate": "2022-05-25",
       "via": null,
       "held": [],
@@ -1720,44 +1277,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-quince-at-the-bushwick-starr/",
-      "headline": "Review: Quince at the Bushwick Starr - Exeunt Magazine NYC",
-      "publishDate": "2022-06-09",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-spindle-shuttle-needle-at-clubbed-thumbs-summerworks/",
-      "headline": "Review: Spindle Shuttle Needle at Clubbed Thumb's Summerworks - Exeunt Magazine NYC",
-      "publishDate": "2022-06-12",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-rachel-bay-jones-at-feinsteins-54-below/",
-      "headline": "Review: Rachel Bay Jones at Feinstein's/54 Below - Exeunt Magazine NYC",
-      "publishDate": "2022-06-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/the-bedwetter-at-atlantic-theater/",
-      "headline": "Review: The Bedwetter at Atlantic Theater - Exeunt Magazine NYC",
-      "publishDate": "2022-06-20",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-corsicana-at-playwrights-horizons/",
-      "headline": "Review: Corsicana at Playwrights Horizons - Exeunt Magazine NYC",
+      "headline": "Review: Corsicana at Playwrights Horizons",
       "publishDate": "2022-06-23",
       "via": null,
       "held": [],
@@ -1766,7 +1287,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-epiphany-at-the-mitzi-e-newhouse-theater/",
-      "headline": "Review: Epiphany at the Mitzi E. Newhouse Theater - Exeunt Magazine NYC",
+      "headline": "Review: Epiphany at the Mitzi E. Newhouse Theater",
       "publishDate": "2022-06-24",
       "via": null,
       "held": [],
@@ -1775,7 +1296,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-bodies-they-ritual-at-clubbed-thumbs-summerworks/",
-      "headline": "Review: Bodies They Ritual at Clubbed Thumb's Summerworks - Exeunt Magazine NYC",
+      "headline": "Review: Bodies They Ritual at Clubbed Thumb's Summerworks",
       "publishDate": "2022-06-26",
       "via": null,
       "held": [],
@@ -1783,35 +1304,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-leaves-songs-of-ourselves-at-feinsteins-54-below/",
-      "headline": "Review: Leaves: Songs of Ourselves at Feinstein's/54 Below - Exeunt Magazine NYC",
-      "publishDate": "2022-06-29",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/happy-life-at-walkerspace/",
-      "headline": "Happy Life at Walkerspace - Exeunt Magazine NYC",
-      "publishDate": "2022-07-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-kate-baldwin-aaron-lazar-all-for-you-at-54-below/",
-      "headline": "Review: Kate Baldwin & Aaron Lazar: All for You at 54 Below - Exeunt Magazine NYC",
-      "publishDate": "2022-07-27",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/once-upon-a-korean-time-at-la-mama/",
-      "headline": "ONCE UPON A (korean) TIME at La MaMa - Exeunt Magazine NYC",
+      "headline": "ONCE UPON A (korean) TIME at La MaMa",
       "publishDate": "2022-09-01",
       "via": null,
       "held": [],
@@ -1819,17 +1313,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-four-saints-in-three-acts-at-the-doxsee-at-target-margin-theater/",
-      "headline": "Review: Four Saints in Three Acts at The Doxsee at Target Margin Theater - Exeunt Magazine NYC",
-      "publishDate": "2022-09-21",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-marie-its-time-at-here/",
-      "headline": "Review: Marie It's Time at HERE - Exeunt Magazine NYC",
+      "headline": "Review: Marie It's Time at HERE",
       "publishDate": "2022-09-23",
       "via": null,
       "held": [],
@@ -1838,7 +1323,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-american-televisions-at-new-york-theatre-workshop/",
-      "headline": "Review: american (tele)visions at New York Theatre Workshop - Exeunt Magazine NYC",
+      "headline": "Review: american (tele)visions at New York Theatre Workshop",
       "publishDate": "2022-09-29",
       "via": null,
       "held": [],
@@ -1847,7 +1332,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-peerless-at-59e59/",
-      "headline": "Review: Peerless at 59E59 - Exeunt Magazine NYC",
+      "headline": "Review: Peerless at 59E59",
       "publishDate": "2022-10-12",
       "via": null,
       "held": [],
@@ -1856,7 +1341,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-a-little-life-at-bam/",
-      "headline": "Review: A Little Life at BAM - Exeunt Magazine NYC",
+      "headline": "Review: A Little Life at BAM",
       "publishDate": "2022-10-24",
       "via": null,
       "held": [],
@@ -1864,17 +1349,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-a-man-of-no-importance-at-classic-stage-company/",
-      "headline": "Review: A Man of No Importance at Classic Stage Company - Exeunt Magazine NYC",
-      "publishDate": "2022-10-30",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-parade-at-new-york-city-center/",
-      "headline": "Review: Parade at New York City Center - Exeunt Magazine NYC",
+      "headline": "Review: Parade at New York City Center",
       "publishDate": "2022-11-04",
       "via": null,
       "held": [],
@@ -1883,7 +1359,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-my-broken-language-at-signature-at-the-pershing-square-signature-center/",
-      "headline": "Review: My Broken Language at Signature at the Pershing Square Signature Center - Exeunt Magazine NYC",
+      "headline": "Review: My Broken Language at Signature at the Pershing Square Signature Center",
       "publishDate": "2022-11-07",
       "via": null,
       "held": [],
@@ -1892,7 +1368,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-only-gold-at-robert-w-wilson-mcc-theater-space/",
-      "headline": "Review: Only Gold at Robert W. Wilson MCC Theater Space - Exeunt Magazine NYC",
+      "headline": "Review: Only Gold at Robert W. Wilson MCC Theater Space",
       "publishDate": "2022-11-11",
       "via": null,
       "held": [],
@@ -1901,7 +1377,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-old-man-the-pool-at-the-vivian-beaumont-theater/",
-      "headline": "Review: The Old Man & the Pool at the Vivian Beaumont Theater - Exeunt Magazine NYC",
+      "headline": "Review: The Old Man & the Pool at the Vivian Beaumont Theater",
       "publishDate": "2022-11-14",
       "via": null,
       "held": [],
@@ -1910,7 +1386,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-catch-as-catch-can/",
-      "headline": "Review: Catch as Catch Can - Exeunt Magazine NYC",
+      "headline": "Review: Catch as Catch Can",
       "publishDate": "2022-11-15",
       "via": null,
       "held": [],
@@ -1919,7 +1395,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-becky-nurse-of-salem-at-lincoln-center-theater/",
-      "headline": "Review: Becky Nurse of Salem at Lincoln Center Theater - Exeunt Magazine NYC",
+      "headline": "Review: Becky Nurse of Salem at Lincoln Center Theater",
       "publishDate": "2022-12-05",
       "via": null,
       "held": [],
@@ -1928,7 +1404,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-ye-bear-ye-cubb-at-59e59/",
-      "headline": "Review: Ye Bear & Ye Cubb at 59E59 - Exeunt Magazine NYC",
+      "headline": "Review: Ye Bear & Ye Cubb at 59E59",
       "publishDate": "2022-12-19",
       "via": null,
       "held": [],
@@ -1937,7 +1413,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-are-we-not-drawn-onward-to-new-era-at-bam-fisher/",
-      "headline": "Review: Are we not drawn onward to new erA at BAM Fisher - Exeunt Magazine NYC",
+      "headline": "Review: Are we not drawn onward to new erA at BAM Fisher",
       "publishDate": "2023-01-07",
       "via": null,
       "held": [],
@@ -1946,7 +1422,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-seven-ways-of-killing-kylie-jenner-at-under-the-radar/",
-      "headline": "Review: Seven Methods of Killing Kylie Jenner at Under the Radar - Exeunt Magazine NYC",
+      "headline": "Review: Seven Methods of Killing Kylie Jenner at Under the Radar",
       "publishDate": "2023-01-14",
       "via": null,
       "held": [],
@@ -1954,17 +1430,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-jennifer-simard-can-i-get-your-number-at-54-below/",
-      "headline": "Review: Jennifer Simard: Can I Get Your Number? at 54 Below - Exeunt Magazine NYC",
-      "publishDate": "2023-01-24",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-letters-from-max-a-ritual-at-signature-theatre/",
-      "headline": "Review: Letters from Max, a ritual at Signature Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Letters from Max, a ritual at Signature Theatre",
       "publishDate": "2023-02-28",
       "via": null,
       "held": [],
@@ -1973,7 +1440,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-trees-at-playwrights-horizons/",
-      "headline": "Review: The Trees at Playwrights Horizons - Exeunt Magazine NYC",
+      "headline": "Review: The Trees at Playwrights Horizons",
       "publishDate": "2023-03-06",
       "via": null,
       "held": [],
@@ -1981,17 +1448,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-dark-disabled-stories-at-the-public-theater/",
-      "headline": "Review: Dark Disabled Stories at the Public Theater - Exeunt Magazine NYC",
-      "publishDate": "2023-03-10",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-best-we-could-at-new-york-city-center/",
-      "headline": "Review: The Best We Could at New York City Center - Exeunt Magazine NYC",
+      "headline": "Review: The Best We Could at New York City Center",
       "publishDate": "2023-03-11",
       "via": null,
       "held": [],
@@ -1999,26 +1457,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-the-coast-starlight-at-the-mitzi-e-newhouse-theater/",
-      "headline": "Review: The Coast Starlight at the Mitzi E. Newhouse Theater - Exeunt Magazine NYC",
-      "publishDate": "2023-03-14",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-harder-they-come-at-the-public-theater/",
-      "headline": "Review: The Harder They Come at the Public Theater - Exeunt Magazine NYC",
-      "publishDate": "2023-03-16",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-dear-world-at-new-york-city-center/",
-      "headline": "Review: Dear World at New York City Center - Exeunt Magazine NYC",
+      "headline": "Review: Dear World at New York City Center",
       "publishDate": "2023-03-19",
       "via": null,
       "held": [],
@@ -2027,7 +1467,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-sancocho-at-wp-theater/",
-      "headline": "Review: Sancocho at WP Theater - Exeunt Magazine NYC",
+      "headline": "Review: Sancocho at WP Theater",
       "publishDate": "2023-03-24",
       "via": null,
       "held": [],
@@ -2036,7 +1476,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-grief-a-one-man-shitshow-at-theatre-row/",
-      "headline": "Review: Grief, A One Man Shitshow at Theatre Row - Exeunt Magazine NYC",
+      "headline": "Review: Grief, A One Man Shitshow at Theatre Row",
       "publishDate": "2023-04-07",
       "via": null,
       "held": [],
@@ -2045,7 +1485,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-regretfully-so-the-birds-are-at-playwrights-horizons/",
-      "headline": "Review: Regretfully, So the Birds Are at Playwrights Horizons - Exeunt Magazine NYC",
+      "headline": "Review: Regretfully, So the Birds Are at Playwrights Horizons",
       "publishDate": "2023-04-12",
       "via": null,
       "held": [],
@@ -2053,17 +1493,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-a-gaga-guide-to-the-lower-east-side/",
-      "headline": "Review: A Gaga Guide to the Lower East Side - Exeunt Magazine NYC",
-      "publishDate": "2023-04-13",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-plays-for-the-plague-year-at-joes-pub/",
-      "headline": "Review: Plays for the Plague Year at Joe's Pub - Exeunt Magazine NYC",
+      "headline": "Review: Plays for the Plague Year at Joe's Pub",
       "publishDate": "2023-04-19",
       "via": null,
       "held": [],
@@ -2072,7 +1503,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-oliver-at-new-york-city-center/",
-      "headline": "Review: Oliver! at New York City Center - Exeunt Magazine NYC",
+      "headline": "Review: Oliver! at New York City Center",
       "publishDate": "2023-05-04",
       "via": null,
       "held": [],
@@ -2080,17 +1511,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-shadow-land-at-the-public-theater/",
-      "headline": "Review: shadow/land at the Public Theater - Exeunt Magazine NYC",
-      "publishDate": "2023-05-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-dimanche-at-bam-fisher/",
-      "headline": "Review: Dimanche at BAM Fisher - Exeunt Magazine NYC",
+      "headline": "Review: Dimanche at BAM Fisher",
       "publishDate": "2023-05-08",
       "via": null,
       "held": [],
@@ -2099,7 +1521,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-king-james-at-new-york-city-center-stage-i/",
-      "headline": "Review: King James at New York City Center Stage I - Exeunt Magazine NYC",
+      "headline": "Review: King James at New York City Center Stage I",
       "publishDate": "2023-05-17",
       "via": null,
       "held": [],
@@ -2107,17 +1529,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-demons-at-the-connelly-theater/",
-      "headline": "Review: demons. at the Connelly Theater - Exeunt Magazine NYC",
-      "publishDate": "2023-05-21",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-monsoon-wedding-at-st-anns-warehouse/",
-      "headline": "Review: Monsoon Wedding at St. Ann's Warehouse - Exeunt Magazine NYC",
+      "headline": "Review: Monsoon Wedding at St. Ann's Warehouse",
       "publishDate": "2023-05-23",
       "via": null,
       "held": [],
@@ -2125,17 +1538,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-work-hard-have-fun-make-history-at-clubbed-thumb-summerworks/",
-      "headline": "Review: Work Hard Have Fun Make History at Clubbed Thumb Summerworks - Exeunt Magazine NYC",
-      "publishDate": "2023-05-25",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-evelyn-brown-a-diary-at-la-mama/",
-      "headline": "Review: Evelyn Brown (A Diary) at La Mama - Exeunt Magazine NYC",
+      "headline": "Review: Evelyn Brown (A Diary) at La Mama",
       "publishDate": "2023-05-29",
       "via": null,
       "held": [],
@@ -2143,17 +1547,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-wet-brain-at-playwrights-horizons/",
-      "headline": "Review: Wet Brain at Playwrights Horizons - Exeunt Magazine NYC",
-      "publishDate": "2023-06-07",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-grief-hotel-at-clubbed-thumbs-summerworks/",
-      "headline": "Review: Grief Hotel at Clubbed Thumb's Summerworks - Exeunt Magazine NYC",
+      "headline": "Review: Grief Hotel at Clubbed Thumb's Summerworks",
       "publishDate": "2023-06-26",
       "via": null,
       "held": [],
@@ -2161,17 +1556,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-amber-gray-gray-matter-at-54-below/",
-      "headline": "Review: Amber Gray: Gray Matter at 54 Below - Exeunt Magazine NYC",
-      "publishDate": "2023-07-04",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-psychic-self-defense-at-here/",
-      "headline": "Review: Psychic Self Defense at HERE - Exeunt Magazine NYC",
+      "headline": "Review: Psychic Self Defense at HERE",
       "publishDate": "2023-09-16",
       "via": null,
       "held": [],
@@ -2180,7 +1566,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-dig-at-59e59-theaters/",
-      "headline": "Review: Dig at 59E59 Theaters - Exeunt Magazine NYC",
+      "headline": "Review: Dig at 59E59 Theaters",
       "publishDate": "2023-09-21",
       "via": null,
       "held": [],
@@ -2189,7 +1575,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-doppelganger-at-park-avenue-armory/",
-      "headline": "Review: Doppelganger at Park Avenue Armory - Exeunt Magazine NYC",
+      "headline": "Review: Doppelganger at Park Avenue Armory",
       "publishDate": "2023-09-24",
       "via": null,
       "held": [],
@@ -2198,7 +1584,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-druidocasey-at-nyu-skirball-center/",
-      "headline": "Review: DruidO'Casey at NYU Skirball Center - Exeunt Magazine NYC",
+      "headline": "Review: DruidO'Casey at NYU Skirball Center",
       "publishDate": "2023-10-11",
       "via": null,
       "held": [],
@@ -2206,26 +1592,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-salesman-at-connelly-theater/",
-      "headline": "Review: Salesman 之死 at Connelly Theater - Exeunt Magazine NYC",
-      "publishDate": "2023-10-17",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-to-the-ends-of-the-earth-%eb%95%85%eb%81%9d%ea%b9%8c%ec%a7%80-at-jack/",
-      "headline": "Review: To the Ends of the Earth 땅끝까지 at JACK - Exeunt Magazine NYC",
-      "publishDate": "2023-10-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-how-to-be-a-dancer-in-72000-easy-lessons-at-st-anns-warehouse/",
-      "headline": "Review: How to Be a Dancer in 72,000 Easy Lessons at St. Ann's Warehouse - Exeunt Magazine NYC",
+      "headline": "Review: How to Be a Dancer in 72,000 Easy Lessons at St. Ann's Warehouse",
       "publishDate": "2023-10-28",
       "via": null,
       "held": [],
@@ -2234,7 +1602,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-food-at-bam-fisher/",
-      "headline": "Review: FOOD at BAM Fisher - Exeunt Magazine NYC",
+      "headline": "Review: FOOD at BAM Fisher",
       "publishDate": "2023-11-09",
       "via": null,
       "held": [],
@@ -2242,26 +1610,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-united-states-v-gupta-at-jack/",
-      "headline": "Review: United States v. Gupta at JACK - Exeunt Magazine NYC",
-      "publishDate": "2023-11-17",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-spain-at-2nd-stage/",
-      "headline": "Review: Spain at 2nd Stage - Exeunt Magazine NYC",
-      "publishDate": "2023-12-01",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-manahatta-at-the-public-theater/",
-      "headline": "Review: Manahatta at the Public Theater - Exeunt Magazine NYC",
+      "headline": "Review: Manahatta at the Public Theater",
       "publishDate": "2023-12-10",
       "via": null,
       "held": [],
@@ -2269,17 +1619,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-the-whole-of-time-at-torn-page/",
-      "headline": "Review: The Whole of Time at Torn Page - Exeunt Magazine NYC",
-      "publishDate": "2024-01-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-open-mic-night-at-under-the-radar/",
-      "headline": "Review: Open Mic Night at Under the Radar - Exeunt Magazine NYC",
+      "headline": "Review: Open Mic Night at Under the Radar",
       "publishDate": "2024-01-12",
       "via": null,
       "held": [],
@@ -2288,7 +1629,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-our-class-at-bam-fisher/",
-      "headline": "Review: Our Class at BAM Fisher - Exeunt Magazine NYC",
+      "headline": "Review: Our Class at BAM Fisher",
       "publishDate": "2024-01-28",
       "via": null,
       "held": [],
@@ -2296,17 +1637,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-the-animal-kingdom-at-the-connelly-theater-upstairs/",
-      "headline": "Review: The Animal Kingdom at the Connelly Theater Upstairs - Exeunt Magazine NYC",
-      "publishDate": "2024-01-31",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-following-evening-at-perelman-performing-arts-center/",
-      "headline": "Review: The Following Evening at Perelman Performing Arts Center - Exeunt Magazine NYC",
+      "headline": "Review: The Following Evening at Perelman Performing Arts Center",
       "publishDate": "2024-02-07",
       "via": null,
       "held": [],
@@ -2315,7 +1647,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-hunt-at-st-anns-warehouse/",
-      "headline": "Review: The Hunt at St. Ann's Warehouse - Exeunt Magazine NYC",
+      "headline": "Review: The Hunt at St. Ann's Warehouse",
       "publishDate": "2024-02-26",
       "via": null,
       "held": [],
@@ -2324,7 +1656,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-existentialism-at-la-mama/",
-      "headline": "Review: Existentialism at La Mama - Exeunt Magazine NYC",
+      "headline": "Review: Existentialism at La Mama",
       "publishDate": "2024-02-29",
       "via": null,
       "held": [],
@@ -2333,7 +1665,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-grief-hotel-at-public-theater/",
-      "headline": "Review: Grief Hotel at Public Theater - Exeunt Magazine NYC",
+      "headline": "Review: Grief Hotel at Public Theater",
       "publishDate": "2024-03-28",
       "via": null,
       "held": [],
@@ -2342,7 +1674,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-sally-tom-at-the-public-theater/",
-      "headline": "Review: Sally & Tom at the Public Theater - Exeunt Magazine NYC",
+      "headline": "Review: Sally & Tom at the Public Theater",
       "publishDate": "2024-04-17",
       "via": null,
       "held": [],
@@ -2350,17 +1682,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-staff-meal-at-playwrights-horizons/",
-      "headline": "Review: Staff Meal at Playwrights Horizons - Exeunt Magazine NYC",
-      "publishDate": "2024-05-01",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-ally-at-the-public-theater/",
-      "headline": "Review: The Ally at the Public Theater - Exeunt Magazine NYC",
+      "headline": "Review: The Ally at the Public Theater",
       "publishDate": "2024-02-28",
       "via": null,
       "held": [],
@@ -2369,7 +1692,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-lorenzo-at-59e59-theaters/",
-      "headline": "Review: Lorenzo at 59E59 Theaters - Exeunt Magazine NYC",
+      "headline": "Review: Lorenzo at 59E59 Theaters",
       "publishDate": "2024-05-06",
       "via": null,
       "held": [],
@@ -2378,7 +1701,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-usus-at-clubbed-thumb-summerworks/",
-      "headline": "Review: Usus at Clubbed Thumb Summerworks - Exeunt Magazine NYC",
+      "headline": "Review: Usus at Clubbed Thumb Summerworks",
       "publishDate": "2024-05-23",
       "via": null,
       "held": [],
@@ -2387,7 +1710,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-breaking-the-story-at-second-stage/",
-      "headline": "Review: Breaking the Story at Second Stage - Exeunt Magazine NYC",
+      "headline": "Review: Breaking the Story at Second Stage",
       "publishDate": "2024-06-05",
       "via": null,
       "held": [],
@@ -2396,7 +1719,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-coach-coach-at-clubbed-thumb-summerworks/",
-      "headline": "Review: Coach Coach at Clubbed Thumb Summerworks - Exeunt Magazine NYC",
+      "headline": "Review: Coach Coach at Clubbed Thumb Summerworks",
       "publishDate": "2024-06-08",
       "via": null,
       "held": [],
@@ -2405,7 +1728,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-find-me-here-at-clubbed-thumb/",
-      "headline": "Review: Find Me Here at Clubbed Thumb - Exeunt Magazine NYC",
+      "headline": "Review: Find Me Here at Clubbed Thumb",
       "publishDate": "2024-06-23",
       "via": null,
       "held": [],
@@ -2413,17 +1736,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-cunnicularii-at-alchemical-studios/",
-      "headline": "Review: cunnicularii at Alchemical Studios - Exeunt Magazine NYC",
-      "publishDate": "2024-07-09",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-bills-44th-at-here/",
-      "headline": "Review: Bill's 44th at HERE - Exeunt Magazine NYC",
+      "headline": "Review: Bill's 44th at HERE",
       "publishDate": "2024-07-13",
       "via": null,
       "held": [],
@@ -2431,17 +1745,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-inspired-by-true-events-at-theatre-154/",
-      "headline": "Review: Inspired by True Events at Theatre 154 - Exeunt Magazine NYC",
-      "publishDate": "2024-07-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-cellino-v-barnes-at-asylum-nyc/",
-      "headline": "Review: Cellino v. Barnes at Asylum NYC - Exeunt Magazine NYC",
+      "headline": "Review: Cellino v. Barnes at Asylum NYC",
       "publishDate": "2024-08-02",
       "via": null,
       "held": [],
@@ -2450,7 +1755,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-hurricane-season-at-theatre-row/",
-      "headline": "Review: Hurricane Season at Theatre Row - Exeunt Magazine NYC",
+      "headline": "Review: Hurricane Season at Theatre Row",
       "publishDate": "2024-08-25",
       "via": null,
       "held": [],
@@ -2459,7 +1764,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/",
-      "headline": "Review: The Ask at the Wild Project - Exeunt Magazine NYC",
+      "headline": "Review: The Ask at the Wild Project",
       "publishDate": "2024-09-13",
       "via": null,
       "held": [],
@@ -2467,35 +1772,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-family-site-specific/",
-      "headline": "Review: Family (site-specific) - Exeunt Magazine NYC",
-      "publishDate": "2024-09-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-kara-emma-barbara-miranda-at-the-tank/",
-      "headline": "Review: Kara & Emma & Barbara & Miranda at The Tank - Exeunt Magazine NYC",
-      "publishDate": "2024-08-05",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-wind-and-the-rain-a-story-about-sunnys-bar-at-the-waterfront-museum/",
-      "headline": "Review: The Wind and the Rain: A Story About Sunny's Bar at the Waterfront Museum - Exeunt Magazine NYC",
-      "publishDate": "2024-10-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-vladimir-at-new-york-city-center-stage-i/",
-      "headline": "Review: Vladimir at New York City Center Stage I - Exeunt Magazine NYC",
+      "headline": "Review: Vladimir at New York City Center Stage I",
       "publishDate": "2024-10-17",
       "via": null,
       "held": [],
@@ -2503,17 +1781,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-in-the-amazon-warehouse-parking-lot-at-playwrights-horizons/",
-      "headline": "Review: In the Amazon Warehouse Parking Lot at Playwrights Horizons - Exeunt Magazine NYC",
-      "publishDate": "2024-10-29",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-give-me-carmelita-tropicana-at-soho-rep/",
-      "headline": "Review: Give Me Carmelita Tropicana at Soho Rep - Exeunt Magazine NYC",
+      "headline": "Review: Give Me Carmelita Tropicana at Soho Rep",
       "publishDate": "2024-11-11",
       "via": null,
       "held": [],
@@ -2522,7 +1791,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-tender-napalm-at-theaterlab/",
-      "headline": "Review: Tender Napalm at Theaterlab - Exeunt Magazine NYC",
+      "headline": "Review: Tender Napalm at Theaterlab",
       "publishDate": "2024-12-09",
       "via": null,
       "held": [],
@@ -2531,7 +1800,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-racecar-racecar-racecar-at-a-r-t-ny-theater/",
-      "headline": "Review: Racecar Racecar Racecar at A.R.T./NY Theater - Exeunt Magazine NYC",
+      "headline": "Review: Racecar Racecar Racecar at A.R.T./NY Theater",
       "publishDate": "2024-12-11",
       "via": null,
       "held": [],
@@ -2539,17 +1808,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/reviews-true-love-forever-at-art-x/",
-      "headline": "Reviews: True Love Forever at Art X - Exeunt Magazine NYC",
-      "publishDate": "2024-12-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-eat-the-document-at-here-arts-center/",
-      "headline": "Review: Eat the Document at HERE Arts Center - Exeunt Magazine NYC",
+      "headline": "Review: Eat the Document at HERE Arts Center",
       "publishDate": "2025-01-14",
       "via": null,
       "held": [],
@@ -2557,17 +1817,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-dead-as-a-dodo-at-baruch-pac/",
-      "headline": "Review: Dead as a Dodo at Baruch PAC - Exeunt Magazine NYC",
-      "publishDate": "2025-01-16",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-nina-at-theaterlab/",
-      "headline": "Review: Nina at Theaterlab - Exeunt Magazine NYC",
+      "headline": "Review: Nina at Theaterlab",
       "publishDate": "2025-02-01",
       "via": null,
       "held": [],
@@ -2576,7 +1827,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-light-and-the-dark-at-59e59/",
-      "headline": "Review: The Light and the Dark at 59E59 - Exeunt Magazine NYC",
+      "headline": "Review: The Light and the Dark at 59E59",
       "publishDate": "2024-11-19",
       "via": null,
       "held": [],
@@ -2585,7 +1836,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-my-man-kono-at-art-ny-theater/",
-      "headline": "Review: My Man Kono at ART/NY Theater - Exeunt Magazine NYC",
+      "headline": "Review: My Man Kono at ART/NY Theater",
       "publishDate": "2025-02-13",
       "via": null,
       "held": [],
@@ -2593,17 +1844,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-kate-baldwin-lets-not-talk-about-at-54-below/",
-      "headline": "Review: Kate Baldwin: Let's Not Talk About... at 54 Below - Exeunt Magazine NYC",
-      "publishDate": "2025-03-07",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-dakar-2000-at-city-center-stage-1/",
-      "headline": "Review: Dakar 2000 at City Center Stage 1 - Exeunt Magazine NYC",
+      "headline": "Review: Dakar 2000 at City Center Stage 1",
       "publishDate": "2025-03-10",
       "via": null,
       "held": [],
@@ -2612,7 +1854,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-amerikin-at-59e59/",
-      "headline": "Review: Amerikin at 59E59 - Exeunt Magazine NYC",
+      "headline": "Review: Amerikin at 59E59",
       "publishDate": "2025-03-19",
       "via": null,
       "held": [],
@@ -2621,7 +1863,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-trojans-at-the-cell/",
-      "headline": "Review: The Trojans at the Cell - Exeunt Magazine NYC",
+      "headline": "Review: The Trojans at the Cell",
       "publishDate": "2025-03-31",
       "via": null,
       "held": [],
@@ -2630,7 +1872,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-two-sisters-find-a-box-of-lesbian-erotica-in-the-woods-at-here/",
-      "headline": "Review: Two Sisters Find a Box of Lesbian Erotica in the Woods at HERE - Exeunt Magazine NYC",
+      "headline": "Review: Two Sisters Find a Box of Lesbian Erotica in the Woods at HERE",
       "publishDate": "2025-04-08",
       "via": null,
       "held": [],
@@ -2639,7 +1881,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-class-dismissed-at-la-mama/",
-      "headline": "Review: Class Dismissed at La Mama - Exeunt Magazine NYC",
+      "headline": "Review: Class Dismissed at La Mama",
       "publishDate": "2025-04-23",
       "via": null,
       "held": [],
@@ -2647,17 +1889,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-lobster-at-the-tank/",
-      "headline": "Review: Lobster at The Tank - Exeunt Magazine NYC",
-      "publishDate": "2025-05-01",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-glass-kill-what-if-if-only-imp-at-the-public-theater/",
-      "headline": "Review: Glass. Kill. What If If Only. Imp. at the Public Theater - Exeunt Magazine NYC",
+      "headline": "Review: Glass. Kill. What If If Only. Imp. at the Public Theater",
       "publishDate": "2025-04-17",
       "via": null,
       "held": [],
@@ -2666,7 +1899,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-we-had-a-world-at-new-york-city-center-stage-ii/",
-      "headline": "Review: We Had a World at New York City Center Stage II - Exeunt Magazine NYC",
+      "headline": "Review: We Had a World at New York City Center Stage II",
       "publishDate": "2025-05-07",
       "via": null,
       "held": [],
@@ -2675,7 +1908,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-hothouse-at-irish-arts-center/",
-      "headline": "Review: Hothouse at Irish Arts Center - Exeunt Magazine NYC",
+      "headline": "Review: Hothouse at Irish Arts Center",
       "publishDate": "2024-10-27",
       "via": null,
       "held": [],
@@ -2684,7 +1917,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-five-models-in-ruins-1981-at-the-claire-tow-theater/",
-      "headline": "Review: Five Models in Ruins, 1981 at the Claire Tow Theater - Exeunt Magazine NYC",
+      "headline": "Review: Five Models in Ruins, 1981 at the Claire Tow Theater",
       "publishDate": "2025-05-11",
       "via": null,
       "held": [],
@@ -2692,17 +1925,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-aunts-at-the-brick/",
-      "headline": "Review: A(u)nts! at The Brick - Exeunt Magazine NYC",
-      "publishDate": "2025-05-16",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-business-ideas-at-clubbed-thumbs-summerworks/",
-      "headline": "Review: Business Ideas at Clubbed Thumb's Summerworks - Exeunt Magazine NYC",
+      "headline": "Review: Business Ideas at Clubbed Thumb's Summerworks",
       "publishDate": "2025-05-24",
       "via": null,
       "held": [],
@@ -2711,16 +1935,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-o-k-at-intar-theatre/",
-      "headline": "Review: O.K.! at INTAR Theatre - Exeunt Magazine NYC",
-      "publishDate": "2025-05-31",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-joaquina-kalukango-at-54-below/",
-      "headline": "Review: Joaquina Kalukango at 54 Below - Exeunt Magazine NYC",
+      "headline": "Review: O.K.! at INTAR Theatre",
       "publishDate": "2025-05-31",
       "via": null,
       "held": [],
@@ -2729,7 +1944,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-lenis-last-lament-at-the-paradise-factory-theater/",
-      "headline": "Review: Leni's Last Lament at the Paradise Factory Theater - Exeunt Magazine NYC",
+      "headline": "Review: Leni's Last Lament at the Paradise Factory Theater",
       "publishDate": "2025-06-02",
       "via": null,
       "held": [],
@@ -2738,7 +1953,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-not-not-janes-at-clubbed-thumbs-summerworks/",
-      "headline": "Review: Not Not Jane's at Clubbed Thumb's Summerworks - Exeunt Magazine NYC",
+      "headline": "Review: Not Not Jane's at Clubbed Thumb's Summerworks",
       "publishDate": "2025-06-07",
       "via": null,
       "held": [],
@@ -2747,7 +1962,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-lunar-eclipse-at-the-pershing-square-signature-center/",
-      "headline": "Review: Lunar Eclipse at the Pershing Square Signature Center - Exeunt Magazine NYC",
+      "headline": "Review: Lunar Eclipse at the Pershing Square Signature Center",
       "publishDate": "2025-06-12",
       "via": null,
       "held": [],
@@ -2755,17 +1970,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-at-the-barricades-at-mitu580/",
-      "headline": "Review: At the Barricades at MITU580 - Exeunt Magazine NYC",
-      "publishDate": "2025-06-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-out-of-order-at-east-village-basement/",
-      "headline": "Review: Out of Order at East Village Basement - Exeunt Magazine NYC",
+      "headline": "Review: Out of Order at East Village Basement",
       "publishDate": "2025-07-05",
       "via": null,
       "held": [],
@@ -2774,7 +1980,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-open-at-wp-theater/",
-      "headline": "Review: Open at WP Theater - Exeunt Magazine NYC",
+      "headline": "Review: Open at WP Theater",
       "publishDate": "2025-07-13",
       "via": null,
       "held": [],
@@ -2782,35 +1988,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-winning-is-winning-at-jack/",
-      "headline": "Review: Winning Is Winning at JACK - Exeunt Magazine NYC",
-      "publishDate": "2025-07-16",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-road-kills-at-paradise-factory/",
-      "headline": "Review: Road Kills at Paradise Factory - Exeunt Magazine NYC",
-      "publishDate": "2025-08-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-royal-pyrate-at-the-waterfront-museum/",
-      "headline": "Review: The Royal Pyrate at the Waterfront Museum - Exeunt Magazine NYC",
-      "publishDate": "2025-08-28",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-matriarchs-at-theaterlab/",
-      "headline": "Review: The Matriarchs at TheaterLab - Exeunt Magazine NYC",
+      "headline": "Review: The Matriarchs at TheaterLab",
       "publishDate": "2025-09-16",
       "via": null,
       "held": [],
@@ -2819,7 +1998,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-wild-duck-at-tfana/",
-      "headline": "Review: The Wild Duck at TFANA - Exeunt Magazine NYC",
+      "headline": "Review: The Wild Duck at TFANA",
       "publishDate": "2025-09-14",
       "via": null,
       "held": [],
@@ -2828,7 +2007,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-essentialisnt-at-here/",
-      "headline": "Review: The Essentialisn't at HERE - Exeunt Magazine NYC",
+      "headline": "Review: The Essentialisn't at HERE",
       "publishDate": "2025-09-16",
       "via": null,
       "held": [],
@@ -2836,26 +2015,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-bull-at-jack/",
-      "headline": "Review: Bull at JACK - Exeunt Magazine NYC",
-      "publishDate": "2025-09-23",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-iranian-girlfriend-at-mitu580/",
-      "headline": "Review: Iranian Girlfriend at MITU580 - Exeunt Magazine NYC",
-      "publishDate": "2025-09-24",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-and-then-we-were-no-more-at-la-mama/",
-      "headline": "Review: And Then We Were No More at La MaMa - Exeunt Magazine NYC",
+      "headline": "Review: And Then We Were No More at La MaMa",
       "publishDate": "2025-10-06",
       "via": null,
       "held": [],
@@ -2864,7 +2025,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-slaughter-city-at-art-ny/",
-      "headline": "Review: Slaughter City at ART/NY - Exeunt Magazine NYC",
+      "headline": "Review: Slaughter City at ART/NY",
       "publishDate": "2025-10-11",
       "via": null,
       "held": [],
@@ -2872,17 +2033,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-triplicity-at-performance-space-new-york/",
-      "headline": "Review: Triplicity at Mabou Mines Theater@122CC - Exeunt Magazine NYC",
-      "publishDate": "2025-10-16",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-art-at-music-box-theatre/",
-      "headline": "Review: Art at Music Box Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Art at Music Box Theatre",
       "publishDate": "2025-10-18",
       "via": null,
       "held": [],
@@ -2890,26 +2042,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-blue-cowboy-at-the-bushwick-starr/",
-      "headline": "Review: Blue Cowboy at the Bushwick Starr - Exeunt Magazine NYC",
-      "publishDate": "2025-10-20",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-marilyn-maye-at-54-below/",
-      "headline": "Review: Marilyn Maye at 54 Below - Exeunt Magazine NYC",
-      "publishDate": "2025-10-28",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-did-you-eat-%eb%b0%a5-%eb%a8%b9%ec%97%88%eb%8b%88-at-the-public-theater/",
-      "headline": "Review: Did You Eat? (밥 먹었니?) at the Public Theater - Exeunt Magazine NYC",
+      "headline": "Review: Did You Eat? (밥 먹었니?) at the Public Theater",
       "publishDate": "2025-10-29",
       "via": null,
       "held": [],
@@ -2917,17 +2051,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-oh-honey-at-little-egg/",
-      "headline": "Review: Oh, Honey at Little Egg - Exeunt Magazine NYC",
-      "publishDate": "2025-10-31",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-beau-the-musical-at-st-lukes-theatre/",
-      "headline": "Review: Beau: The Musical at St. Luke's Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Beau: The Musical at St. Luke's Theatre",
       "publishDate": "2025-10-31",
       "via": null,
       "held": [],
@@ -2936,7 +2061,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-practice-at-playwrights-horizons/",
-      "headline": "Review: Practice at Playwrights Horizons - Exeunt Magazine NYC",
+      "headline": "Review: Practice at Playwrights Horizons",
       "publishDate": "2025-11-22",
       "via": null,
       "held": [],
@@ -2944,17 +2069,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-christine-ebersole-with-billy-stritch-ill-be-home-for-christmas-at-54-below/",
-      "headline": "Review: Christine Ebersole with Billy Stritch: I'll Be Home for Christmas at 54 Below - Exeunt Magazine NYC",
-      "publishDate": "2025-12-03",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-faggots-and-their-friends-between-revolutions-at-park-avenue-armory/",
-      "headline": "Review: The Faggots and Their Friends Between Revolutions at Park Avenue Armory - Exeunt Magazine NYC",
+      "headline": "Review: The Faggots and Their Friends Between Revolutions at Park Avenue Armory",
       "publishDate": "2025-12-06",
       "via": null,
       "held": [],
@@ -2963,7 +2079,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-they-are-all-gone-at-la-mama/",
-      "headline": "Review: They Are All Gone at La Mama - Exeunt Magazine NYC",
+      "headline": "Review: They Are All Gone at La Mama",
       "publishDate": "2025-12-08",
       "via": null,
       "held": [],
@@ -2972,7 +2088,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-everything-is-here-at-59e59/",
-      "headline": "Review: Everything Is Here at 59E59 - Exeunt Magazine NYC",
+      "headline": "Review: Everything Is Here at 59E59",
       "publishDate": "2025-12-13",
       "via": null,
       "held": [],
@@ -2980,27 +2096,9 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-kanjincho-at-japan-society/",
-      "headline": "Review: Kanjincho at Japan Society - Exeunt Magazine NYC",
-      "publishDate": "2026-01-15",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-rest-of-our-lives-at-la-mama/",
-      "headline": "Review: The Rest of Our Lives at La MaMa - Exeunt Magazine NYC",
+      "headline": "Review: The Rest of Our Lives at La MaMa",
       "publishDate": "2026-01-15",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-nothing-more-at-the-chocolate-factory-theater/",
-      "headline": "Review: NOTHING: more at The Chocolate Factory Theater - Exeunt Magazine NYC",
-      "publishDate": "2026-01-19",
       "via": null,
       "held": [],
       "matched": [],
@@ -3008,7 +2106,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-voyage-into-infinity-at-nyu-skirball/",
-      "headline": "Review: Voyage Into Infinity at NYU Skirball - Exeunt Magazine NYC",
+      "headline": "Review: Voyage Into Infinity at NYU Skirball",
       "publishDate": "2026-01-21",
       "via": null,
       "held": [],
@@ -3016,53 +2114,8 @@
       "outOfWindow": []
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-gooeys-toxic-aquatic-adventure-at-the-bushwick-starr/",
-      "headline": "Review: Gooey's Toxic Aquatic Adventure at the Bushwick Starr - Exeunt Magazine NYC",
-      "publishDate": "2026-02-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-midwest-porn-at-the-14y-theater/",
-      "headline": "Review: Midwest Porn at the 14Y Theater - Exeunt Magazine NYC",
-      "publishDate": "2026-02-12",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-without-mirrors-at-the-brick/",
-      "headline": "Review: without mirrors at The Brick - Exeunt Magazine NYC",
-      "publishDate": "2026-02-19",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-plan-c-at-the-tank/",
-      "headline": "Review: Plan C at The Tank - Exeunt Magazine NYC",
-      "publishDate": "2026-04-08",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-cumulo-at-mitu580/",
-      "headline": "Review: Cumulo at MITU580 - Exeunt Magazine NYC",
-      "publishDate": "2026-04-18",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-the-door-slams-a-glass-trembles-at-la-mama/",
-      "headline": "Review: The Door Slams, A Glass Trembles at La MaMa - Exeunt Magazine NYC",
+      "headline": "Review: The Door Slams, A Glass Trembles at La MaMa",
       "publishDate": "2026-04-30",
       "via": null,
       "held": [],
@@ -3071,63 +2124,19 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-moby-dick-at-bam/",
-      "headline": "Review: Moby Dick at BAM - Exeunt Magazine NYC",
+      "headline": "Review: Moby Dick at BAM",
       "publishDate": "2026-05-03",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-love-story-at-the-tank/",
-      "headline": "Review: Love Story at the Tank - Exeunt Magazine NYC",
-      "publishDate": "2026-05-09",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-building-at-pioneer-works/",
-      "headline": "Review: Building at Pioneer Works - Exeunt Magazine NYC",
-      "publishDate": "2026-07-10",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-foosball-at-arts-on-site/",
-      "headline": "Review: Foosball at Arts On Site - Exeunt Magazine NYC",
-      "publishDate": "2026-07-26",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-the-4th-witch-at-nyu-skirball-center/",
-      "headline": "Review: The 4th Witch at NYU Skirball Center - Exeunt Magazine NYC",
-      "publishDate": "2026-10-17",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": []
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-show-trial-at-the-tank/",
-      "headline": "Review: Show Trial at The Tank - Exeunt Magazine NYC",
-      "publishDate": "2026-10-24",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": []
     }
   ],
+  "otherMarketReviews": [],
   "outOfWindow": [
     {
       "url": "https://exeuntnyc.com/reviews/review-songs-for-a-new-world-at-paper-mill-playhouse/",
-      "headline": "Review: Songs for a New World at Paper Mill Playhouse - Exeunt Magazine NYC",
+      "headline": "Review: Songs for a New World at Paper Mill Playhouse",
       "publishDate": "2021-10-18",
       "via": null,
       "held": [],
@@ -3138,7 +2147,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-search-for-signs-of-intelligent-life-in-the-universe-at-the-shed/",
-      "headline": "Review: The Search for Signs of Intelligent Life in the Universe at The Shed - Exeunt Magazine NYC",
+      "headline": "Review: The Search for Signs of Intelligent Life in the Universe at The Shed",
       "publishDate": "2022-01-12",
       "via": null,
       "held": [],
@@ -3149,22 +2158,19 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-long-days-journey-into-night-at-the-minetta-lane-theatre/",
-      "headline": "Review: Long Day's Journey into Night at the Minetta Lane Theatre - Exeunt Magazine NYC",
-      "publishDate": "2022-01-26",
+      "url": "https://exeuntnyc.com/reviews/review-this-beautiful-future-at-theaterlab/",
+      "headline": "Review: This Beautiful Future at Theaterlab",
+      "publishDate": "2022-01-23",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "long-days-journey-into-night-2016",
-        "long-days-journey-into-night-2003",
-        "long-days-journey-into-night-1986",
-        "long-days-journey-into-night-1988"
+        "this-beautiful-future-off-broadway-2022"
       ]
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-prayer-for-the-french-republic-at-manhattan-theatre-club/",
-      "headline": "Review: Prayer for the French Republic at Manhattan Theatre Club - Exeunt Magazine NYC",
+      "headline": "Review: Prayer for the French Republic at Manhattan Theatre Club",
       "publishDate": "2022-02-02",
       "via": null,
       "held": [],
@@ -3175,7 +2181,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-merchant-of-venice-at-theatre-for-a-new-audience/",
-      "headline": "Review: The Merchant of Venice at Theatre for a New Audience - Exeunt Magazine NYC",
+      "headline": "Review: The Merchant of Venice at Theatre for a New Audience",
       "publishDate": "2022-02-21",
       "via": null,
       "held": [],
@@ -3184,13 +2190,12 @@
         "the-audience-2015",
         "the-merchant-of-venice-2010",
         "the-merchant-of-venice-1989",
-        "the-merchant-1977",
         "the-merchant-of-venice-1973"
       ]
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/",
-      "headline": "Review: Oratorio for Living Things at Ars Nova at Greenwich House - Exeunt Magazine NYC",
+      "headline": "Review: Oratorio for Living Things at Ars Nova at Greenwich House",
       "publishDate": "2022-03-31",
       "via": null,
       "held": [],
@@ -3200,19 +2205,8 @@
       ]
     },
     {
-      "url": "https://exeuntnyc.com/reviews/review-suffs-at-the-public-theater/",
-      "headline": "Review: Suffs at the Public Theater - Exeunt Magazine NYC",
-      "publishDate": "2022-04-07",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "suffs-2024"
-      ]
-    },
-    {
       "url": "https://exeuntnyc.com/reviews/review-cyrano-de-bergerac-at-the-bam-harvey-theatre/",
-      "headline": "Review: Cyrano de Bergerac at the BAM Harvey Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Cyrano de Bergerac at the BAM Harvey Theatre",
       "publishDate": "2022-04-18",
       "via": null,
       "held": [],
@@ -3221,14 +2215,12 @@
         "cyrano-de-bergerac-2012",
         "harvey-2012",
         "cyrano-de-bergerac-2007",
-        "cyrano-the-musical-1993",
-        "cyrano-1973",
         "cyrano-de-bergerac-1984"
       ]
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-into-the-woods-at-new-york-city-center/",
-      "headline": "Review: Into the Woods at New York City Center - Exeunt Magazine NYC",
+      "headline": "Review: Into the Woods at New York City Center",
       "publishDate": "2022-05-09",
       "via": null,
       "held": [],
@@ -3242,7 +2234,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-who-killed-my-father-at-st-anns-warehouse/",
-      "headline": "Review: Who Killed My Father at St. Ann's Warehouse - Exeunt Magazine NYC",
+      "headline": "Review: Who Killed My Father at St. Ann's Warehouse",
       "publishDate": "2022-05-25",
       "via": null,
       "held": [],
@@ -3254,7 +2246,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-fat-ham-at-the-public-theater/",
-      "headline": "Review: Fat Ham at the Public Theater - Exeunt Magazine NYC",
+      "headline": "Review: Fat Ham at the Public Theater",
       "publishDate": "2022-05-27",
       "via": null,
       "held": [],
@@ -3265,7 +2257,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-oresteia-and-hamlet-at-park-avenue-armory/",
-      "headline": "Review: Oresteia and Hamlet at Park Avenue Armory - Exeunt Magazine NYC",
+      "headline": "Review: Oresteia and Hamlet at Park Avenue Armory",
       "publishDate": "2022-08-09",
       "via": null,
       "held": [],
@@ -3281,7 +2273,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-300-el-x-50-el-x-30-el-at-the-bam-harvey-theater/",
-      "headline": "Review: 300 el x 50 el x 30 el at the BAM Harvey Theater - Exeunt Magazine NYC",
+      "headline": "Review: 300 el x 50 el x 30 el at the BAM Harvey Theater",
       "publishDate": "2022-09-29",
       "via": null,
       "held": [],
@@ -3292,7 +2284,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-hamlet-at-the-bam-harvey-theater/",
-      "headline": "Review: Hamlet at the BAM Harvey Theater - Exeunt Magazine NYC",
+      "headline": "Review: Hamlet at the BAM Harvey Theater",
       "publishDate": "2022-10-28",
       "via": null,
       "held": [],
@@ -3309,7 +2301,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-downstate-at-playwrights-horizons/",
-      "headline": "Review: Downstate at Playwrights Horizons - Exeunt Magazine NYC",
+      "headline": "Review: Downstate at Playwrights Horizons",
       "publishDate": "2022-11-16",
       "via": null,
       "held": [],
@@ -3320,7 +2312,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-trojan-women-at-bam/",
-      "headline": "Review: Trojan Women at BAM - Exeunt Magazine NYC",
+      "headline": "Review: Trojan Women at BAM",
       "publishDate": "2022-11-21",
       "via": null,
       "held": [],
@@ -3332,7 +2324,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-endgame-at-the-irish-repertory-theatre/",
-      "headline": "Review: Endgame at the Irish Repertory Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Endgame at the Irish Repertory Theatre",
       "publishDate": "2023-02-03",
       "via": null,
       "held": [],
@@ -3343,7 +2335,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-audience-at-la-mama/",
-      "headline": "Review: Audience at La Mama - Exeunt Magazine NYC",
+      "headline": "Review: Audience at La Mama",
       "publishDate": "2023-02-07",
       "via": null,
       "held": [],
@@ -3354,7 +2346,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-sign-in-sidney-brusteins-window-at-bam/",
-      "headline": "Review: The Sign in Sidney Brustein's Window at BAM - Exeunt Magazine NYC",
+      "headline": "Review: The Sign in Sidney Brustein's Window at BAM",
       "publishDate": "2023-02-28",
       "via": null,
       "held": [],
@@ -3366,7 +2358,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-fall-river-fishing-at-the-connelly-theater/",
-      "headline": "Review: Fall River Fishing at the Connelly Theater - Exeunt Magazine NYC",
+      "headline": "Review: Fall River Fishing at the Connelly Theater",
       "publishDate": "2023-03-03",
       "via": null,
       "held": [],
@@ -3377,7 +2369,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-seagull-woodstock-ny-at-the-pershing-square-signature-center/",
-      "headline": "Review: The Seagull/Woodstock, NY at the Pershing Square Signature Center - Exeunt Magazine NYC",
+      "headline": "Review: The Seagull/Woodstock, NY at the Pershing Square Signature Center",
       "publishDate": "2023-03-05",
       "via": null,
       "held": [],
@@ -3389,7 +2381,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-wife-of-willesden-at-bam-harvey/",
-      "headline": "Review: The Wife of Willesden at BAM Harvey - Exeunt Magazine NYC",
+      "headline": "Review: The Wife of Willesden at BAM Harvey",
       "publishDate": "2023-04-08",
       "via": null,
       "held": [],
@@ -3400,7 +2392,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-prometheus-firebringer-at-the-chocolate-factory-theater/",
-      "headline": "Review: Prometheus Firebringer at The Chocolate Factory Theater - Exeunt Magazine NYC",
+      "headline": "Review: Prometheus Firebringer at The Chocolate Factory Theater",
       "publishDate": "2023-05-13",
       "via": null,
       "held": [],
@@ -3411,7 +2403,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-deep-blue-sound-at-clubbed-thumb-summerworks/",
-      "headline": "Review: Deep Blue Sound at Clubbed Thumb Summerworks - Exeunt Magazine NYC",
+      "headline": "Review: Deep Blue Sound at Clubbed Thumb Summerworks",
       "publishDate": "2023-06-10",
       "via": null,
       "held": [],
@@ -3422,7 +2414,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-hamlet-at-the-delacorte-theater/",
-      "headline": "Review: Hamlet at the Delacorte Theater - Exeunt Magazine NYC",
+      "headline": "Review: Hamlet at the Delacorte Theater",
       "publishDate": "2023-06-29",
       "via": null,
       "held": [],
@@ -3438,7 +2430,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-uncle-vanya-in-a-flatiron-loft/",
-      "headline": "Review: Uncle Vanya in a Flatiron Loft - Exeunt Magazine NYC",
+      "headline": "Review: Uncle Vanya in a Flatiron Loft",
       "publishDate": "2023-07-07",
       "via": null,
       "held": [],
@@ -3447,28 +2439,12 @@
         "uncle-vanya-2024",
         "uncle-vanya-1995",
         "uncle-vanya-1973",
-        "uncle-vanya-2000",
-        "vanya-off-broadway-2025"
-      ]
-    },
-    {
-      "url": "https://exeuntnyc.com/reviews/review-munich-medea-happy-family-at-wp-theater/",
-      "headline": "Review: Munich Medea: Happy Family at WP Theater - Exeunt Magazine NYC",
-      "publishDate": "2024-02-13",
-      "via": null,
-      "held": [],
-      "matched": [],
-      "outOfWindow": [
-        "medea-2002",
-        "medea-1994",
-        "medea-1973",
-        "medea-1982",
-        "medea-off-broadway-2026"
+        "uncle-vanya-2000"
       ]
     },
     {
       "url": "https://exeuntnyc.com/reviews/ibsens-ghost-at-59e59-theaters/",
-      "headline": "Ibsen's Ghost at 59E59 Theaters - Exeunt Magazine NYC",
+      "headline": "Ibsen's Ghost at 59E59 Theaters",
       "publishDate": "2024-03-15",
       "via": null,
       "held": [],
@@ -3479,7 +2455,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-look-of-love-at-bam/",
-      "headline": "Review: The Look of Love at BAM - Exeunt Magazine NYC",
+      "headline": "Review: The Look of Love at BAM",
       "publishDate": "2024-03-22",
       "via": null,
       "held": [],
@@ -3490,7 +2466,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-small-acts-of-daring-invention-at-here/",
-      "headline": "Review: Small Acts of Daring Invention at HERE - Exeunt Magazine NYC",
+      "headline": "Review: Small Acts of Daring Invention at HERE",
       "publishDate": "2024-05-09",
       "via": null,
       "held": [],
@@ -3501,7 +2477,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-here-there-are-blueberries-at-new-york-theatre-workshop/",
-      "headline": "Review: Here There Are Blueberries at New York Theatre Workshop - Exeunt Magazine NYC",
+      "headline": "Review: Here There Are Blueberries at New York Theatre Workshop",
       "publishDate": "2024-05-16",
       "via": null,
       "held": [],
@@ -3512,7 +2488,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-voices-in-your-head-at-st-lydias/",
-      "headline": "Review: The Voices in Your Head at St. Lydia's - Exeunt Magazine NYC",
+      "headline": "Review: The Voices in Your Head at St. Lydia's",
       "publishDate": "2024-09-14",
       "via": null,
       "held": [],
@@ -3522,8 +2498,19 @@
       ]
     },
     {
+      "url": "https://exeuntnyc.com/reviews/review-counting-and-cracking-at-nyu-skirball-center/",
+      "headline": "Review: Counting and Cracking at NYU Skirball Center",
+      "publishDate": "2024-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "counting-and-cracking-off-broadway-2026"
+      ]
+    },
+    {
       "url": "https://exeuntnyc.com/reviews/review-safety-not-guaranteed-at-bam-harvey/",
-      "headline": "Review: Safety Not Guaranteed at BAM Harvey - Exeunt Magazine NYC",
+      "headline": "Review: Safety Not Guaranteed at BAM Harvey",
       "publishDate": "2024-10-04",
       "via": null,
       "held": [],
@@ -3534,7 +2521,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-music-city-at-the-west-end-theatre/",
-      "headline": "Review: Music City at the West End Theatre - Exeunt Magazine NYC",
+      "headline": "Review: Music City at the West End Theatre",
       "publishDate": "2024-11-25",
       "via": null,
       "held": [],
@@ -3545,7 +2532,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-macbeth-in-stride-at-bam-harvey/",
-      "headline": "Review: Macbeth in Stride at BAM Harvey - Exeunt Magazine NYC",
+      "headline": "Review: Macbeth in Stride at BAM Harvey",
       "publishDate": "2025-04-20",
       "via": null,
       "held": [],
@@ -3565,7 +2552,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-cherry-orchard-at-st-anns-warehouse/",
-      "headline": "Review: The Cherry Orchard at St. Ann's Warehouse - Exeunt Magazine NYC",
+      "headline": "Review: The Cherry Orchard at St. Ann's Warehouse",
       "publishDate": "2025-04-22",
       "via": null,
       "held": [],
@@ -3579,7 +2566,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-united-states-vs-ulysses-at-irish-arts-center/",
-      "headline": "Review: The United States vs. Ulysses at Irish Arts Center - Exeunt Magazine NYC",
+      "headline": "Review: The United States vs. Ulysses at Irish Arts Center",
       "publishDate": "2025-05-05",
       "via": null,
       "held": [],
@@ -3590,7 +2577,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-bus-stop-at-classic-stage-company/",
-      "headline": "Review: Bus Stop at Classic Stage Company - Exeunt Magazine NYC",
+      "headline": "Review: Bus Stop at Classic Stage Company",
       "publishDate": "2025-05-25",
       "via": null,
       "held": [],
@@ -3601,7 +2588,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-imaginary-invalid-at-new-world-stages/",
-      "headline": "Review: The Imaginary Invalid at New World Stages - Exeunt Magazine NYC",
+      "headline": "Review: The Imaginary Invalid at New World Stages",
       "publishDate": "2025-06-02",
       "via": null,
       "held": [],
@@ -3612,7 +2599,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-prosperous-fools-at-polonsky-shakespeare-center/",
-      "headline": "Review: Prosperous Fools at Polonsky Shakespeare Center - Exeunt Magazine NYC",
+      "headline": "Review: Prosperous Fools at Polonsky Shakespeare Center",
       "publishDate": "2025-06-13",
       "via": null,
       "held": [],
@@ -3623,7 +2610,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-cold-war-choir-practice-at-clubbed-thumb/",
-      "headline": "Review: Cold War Choir Practice at Clubbed Thumb - Exeunt Magazine NYC",
+      "headline": "Review: Cold War Choir Practice at Clubbed Thumb",
       "publishDate": "2025-06-26",
       "via": null,
       "held": [],
@@ -3634,7 +2621,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-steve-burns-alive-at-la-mama/",
-      "headline": "Review: Steve Burns Alive at La Mama - Exeunt Magazine NYC",
+      "headline": "Review: Steve Burns Alive at La Mama",
       "publishDate": "2025-07-27",
       "via": null,
       "held": [],
@@ -3645,7 +2632,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-well-ill-let-you-go-at-irondale-center/",
-      "headline": "Review: Well, I'll Let You Go at Irondale Center - Exeunt Magazine NYC",
+      "headline": "Review: Well, I'll Let You Go at Irondale Center",
       "publishDate": "2025-08-08",
       "via": null,
       "held": [],
@@ -3656,7 +2643,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-twelfth-night-at-the-delacorte-theater/",
-      "headline": "Review: Twelfth Night at The Delacorte Theater - Exeunt Magazine NYC",
+      "headline": "Review: Twelfth Night at The Delacorte Theater",
       "publishDate": "2025-08-22",
       "via": null,
       "held": [],
@@ -3669,7 +2656,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-last-call-a-play-with-cocktails-site-specific/",
-      "headline": "Review: Last Call: A Play with Cocktails (site-specific) - Exeunt Magazine NYC",
+      "headline": "Review: Last Call: A Play with Cocktails (site-specific)",
       "publishDate": "2025-09-26",
       "via": null,
       "held": [],
@@ -3680,7 +2667,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/the-ford-hill-project-at-la-mama/",
-      "headline": "The Ford/Hill Project at La MaMa - Exeunt Magazine NYC",
+      "headline": "The Ford/Hill Project at La MaMa",
       "publishDate": "2026-01-10",
       "via": null,
       "held": [],
@@ -3691,7 +2678,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-what-to-wear-at-bam-harvey/",
-      "headline": "Review: What to Wear at BAM Harvey - Exeunt Magazine NYC",
+      "headline": "Review: What to Wear at BAM Harvey",
       "publishDate": "2026-01-18",
       "via": null,
       "held": [],
@@ -3702,7 +2689,7 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-the-first-line-of-dantes-inferno-at-la-mama/",
-      "headline": "Review: The First Line of Dante's Inferno at La MaMa - Exeunt Magazine NYC",
+      "headline": "Review: The First Line of Dante's Inferno at La MaMa",
       "publishDate": "2026-02-11",
       "via": null,
       "held": [],
@@ -3713,14 +2700,12 @@
     },
     {
       "url": "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-the-bushwick-starr/",
-      "headline": "Review: A Woman Among Women at the Bushwick Starr - Exeunt Magazine NYC",
+      "headline": "Review: A Woman Among Women at the Bushwick Starr",
       "publishDate": "2024-10-21",
       "via": null,
       "held": [],
       "matched": [],
       "outOfWindow": [
-        "the-women-2001",
-        "the-women-1973",
         "a-woman-among-women-off-broadway-2026"
       ]
     }

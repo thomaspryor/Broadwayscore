@@ -193,7 +193,7 @@ function canReuseArchivedFile({ recordedSource, incomingUrl, fileExists, force }
  * other-production banners straight back (BRO-2242).
  */
 function mayServeDiskImage(show, recordedSource) {
-  return !isRejectedImage({ hero: recordedSource }, show);
+  return !refusedSourceReason(show, recordedSource);
 }
 
 /**
@@ -240,24 +240,124 @@ function keepExistingImage(show, format, sources) {
   const existing = show && show.images && show.images[format];
   if (!imagePathOwner(existing)) return false;
   const recorded = recordedSourceFor(show, format, sources);
-  return !recorded || !isRejectedImage({ [format]: recorded }, show);
+  return !recorded || !refusedSourceReason(show, recorded);
+}
+
+// TodayTix's catalogue images live in this Contentful space; an image search
+// hit can also be recorded as a todaytix.com show page. The catalogue lists
+// only productions on sale now (BRO-5080).
+const TODAYTIX_ASSET_RE = /^(?:https?:\/\/images\.ctfassets\.net\/6pezt69ih962\/|google-images:https?:\/\/(?:www\.)?todaytix\.com\/)/i;
+const isTodayTixAsset = (u) => typeof u === 'string' && TODAYTIX_ASSET_RE.test(u);
+// TodayTix began selling Broadway tickets in September 2013. A row that closed
+// before then was never in its catalogue, so TodayTix art on it is always
+// another production's (BRO-7846: Follies 2011 carried the 2017 NT Live
+// banner, Grease 2007 an anti-vaping campaign).
+const TODAYTIX_FIRST_SALE = '2013-09-01';
+// TodayTix reached London's West End on 2015-06-01 (BusinessWire release that
+// day). handbagged-west-end-2014 (closed Aug 2014) carried the 2019 Kiln
+// revival's "comedy returns" key art. Other markets keep the earlier date,
+// which flags less.
+const TODAYTIX_FIRST_SALE_BY_MARKET = { 'west-end': '2015-06-01' };
+const todayTixFirstSale = (show) => TODAYTIX_FIRST_SALE_BY_MARKET[show && show.market] || TODAYTIX_FIRST_SALE;
+
+/**
+ * Why a TodayTix catalogue file on this row is another production's, or null.
+ * - the row closed before TodayTix sold tickets;
+ * - the row is closed, rejected a TodayTix source, and its poster and
+ *   thumbnail are both cleared: the fetcher took poster, thumbnail and hero
+ *   from one catalogue match, and a cleanup removed only the first two. The
+ *   BRO-5089 sweep left 27 heroes this way (BRO-7846). A row that still has a
+ *   poster rejected a stray file only (once-upon-a-mattress-2024 rejected a
+ *   banner and kept its own key art), so it is not flagged.
+ * A file whose recorded source is "manual:<note>" is not TodayTix and is kept.
+ */
+function wrongEraTodayTixReason(show, source) {
+  if (!show || !isTodayTixAsset(source) || show.status !== 'closed') return null;
+  const closed = String(show.closingDate || '').slice(0, 10);
+  if (closed && closed < todayTixFirstSale(show)) return 'TodayTix art on a row that closed before TodayTix sold tickets';
+  const images = show.images || {};
+  if (!images.poster && !images.thumbnail && (show.rejectedImageUrls || []).some(isTodayTixAsset)) {
+    return 'TodayTix art left after the same catalogue match\'s poster was rejected';
+  }
+  return null;
+}
+
+/**
+ * Why this row must not serve a file recorded from `source`, or null: a person
+ * rejected the source for the row, or it is TodayTix art that cannot be the
+ * row's (judged by `owner` too, the row whose folder holds the file, when that
+ * is another row). One rule for the audit, the deploy re-attach, the
+ * archiver's re-download and the fetcher's keep: the archiver once checked
+ * only the rejected list and re-downloaded 2007-era rows' wrong TodayTix art
+ * the wrong-era audit had just cleared, and copied a parent's banner onto two
+ * tours with no recorded source (BRO-7846).
+ */
+function refusedSourceReason(show, source, owner = null) {
+  if (!show || typeof source !== 'string' || !source) return null;
+  if (isRejectedImage({ hero: source }, show)) return 'recorded from rejected';
+  return wrongEraTodayTixReason(show, source)
+    || (owner && owner !== show ? wrongEraTodayTixReason(owner, source) : null);
+}
+
+/**
+ * What the archiver does with a show's image field (BRO-7871).
+ * 'fetch': a remote URL, download it. 'check-existing': a local path whose file
+ * is on disk, keep it (after the aspect gate). 'redownload': a local path to
+ * re-fetch from its recorded source, because the file is missing or --force was
+ * given. A local path must never be 'fetch' (fetch('/images/...') cannot parse).
+ */
+function localImageAction(url, { force = false, fileExists = false, ownsFile = true } = {}) {
+  if (typeof url !== 'string' || !url.startsWith('/images/')) return 'fetch';
+  // --force refreshes a row's own files; a file borrowed from another row is
+  // refreshed through its owner, never copied into this row's folder.
+  if (force) return fileExists && !ownsFile ? 'check-existing' : 'redownload';
+  return fileExists ? 'check-existing' : 'redownload';
+}
+
+/**
+ * The archiver found shows.json pointing at a local file that is not on disk.
+ * Re-download it from the recorded source? The source is recorded under the
+ * file's owner (a row may serve another row's file, BRO-4901); the new file
+ * is written to this row's own folder, so the caller must record the source
+ * under this row's id. Returns { sourceUrl } to download or { skip: why }.
+ */
+function missingFileRedownload(show, format, localPath, sources, showsById) {
+  const ownerId = imagePathOwner(localPath) || show.id;
+  const sourceUrl = sources && sources[ownerId] ? sources[ownerId][format] : null;
+  if (!sourceUrl) return { skip: 'no source URL' };
+  if (!isDownloadableSource(sourceUrl)) return { skip: 'recorded source is not downloadable' };
+  const owner = ownerId !== show.id && showsById ? showsById.get(ownerId) : null;
+  // The owning row dropped this file (a cleanup nulled it and deleted it):
+  // a row that borrowed it must not bring it back under its own folder.
+  if (owner && (owner.images || {})[format] !== localPath) return { skip: `${ownerId} no longer serves this file` };
+  const why = refusedSourceReason(show, sourceUrl, owner);
+  return why ? { skip: `recorded source is refused for this show (${why})` } : { sourceUrl };
 }
 
 /**
  * Local image fields in use whose recorded source is in the row's
  * rejectedImageUrls: either the art is still the rejected production, or a
  * hand fix replaced the file without updating image-sources.json. Both need a
- * person (BRO-4901). Returns [{ id, format, path, source }].
+ * person (BRO-4901). Also fields whose recorded source is TodayTix catalogue
+ * art that cannot be this row's (wrongEraTodayTixReason, BRO-7846).
+ * Returns [{ id, format, path, source, why }].
  */
 function findRejectedSourcesInUse(shows, sources) {
   const out = [];
+  const byId = new Map((shows || []).filter(Boolean).map((s) => [s.id, s]));
   for (const show of shows || []) {
-    if (!show || !show.images || !Array.isArray(show.rejectedImageUrls) || !show.rejectedImageUrls.length) continue;
+    if (!show || !show.images) continue;
     for (const format of ['poster', 'thumbnail', 'hero']) {
       const p = show.images[format];
       if (!imagePathOwner(p)) continue;
       const source = recordedSourceFor(show, format, sources);
-      if (source && isRejectedImage({ [format]: source }, show)) out.push({ id: show.id, format, path: p, source });
+      if (!source) continue;
+      // A row can serve another row's file (a tour borrowing its parent's
+      // hero). Judge the art by the row that owns the file too: the borrower
+      // may be a recent tour, but the art is still the 2007 row's wrong
+      // TodayTix match (legally-blonde-tour-2022, BRO-7846).
+      const why = refusedSourceReason(show, source, byId.get(imagePathOwner(p)));
+      if (why) out.push({ id: show.id, format, path: p, source, why });
     }
   }
   return out;
@@ -295,6 +395,18 @@ function recordFileSources(sources, images) {
   return recorded;
 }
 
+/**
+ * The source of the candidate a fetch just produced for one format, or null.
+ * `value` is the candidate (a local /images/ path or a CDN URL); `fileSources`
+ * is images._fileSources, whose entries are { path, source } and count only for
+ * the file actually served (the rule recordFileSources uses).
+ */
+function freshSourceFor(format, value, fileSources) {
+  const e = fileSources && fileSources[format];
+  if (e && e.path === value && typeof e.source === 'string') return e.source;
+  return typeof value === 'string' && /^https?:/.test(value) ? value : null;
+}
+
 /** IBDB is a Broadway database: any hit for a London row is another production. */
 function ibdbEligible(show) {
   return todaytixMarket(show) !== 'london';
@@ -322,6 +434,7 @@ function buildMezzIndex(records) {
 }
 
 module.exports = {
+  freshSourceFor,
   normalizeMezzTitle,
   buildMezzIndex,
   sourceBase,
@@ -331,6 +444,13 @@ module.exports = {
   pickMezzanineCandidate,
   theatrEligible,
   isRejectedImage,
+  isTodayTixAsset,
+  wrongEraTodayTixReason,
+  refusedSourceReason,
+  missingFileRedownload,
+  localImageAction,
+  TODAYTIX_FIRST_SALE,
+  TODAYTIX_FIRST_SALE_BY_MARKET,
   canReuseArchivedFile,
   mayServeDiskImage,
   thumbnailFallbackAction,

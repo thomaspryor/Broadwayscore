@@ -26,6 +26,9 @@ Object.assign(process.env, {
   PUSH_API_FALLBACK_DISABLE: '1', PUSH_RESCUE_DISABLE: '1', PUSH_SKIP_STALL_DIAGNOSTICS: '1',
   PUSH_FAILURE_LOG: path.join(ROOT, 'push-failures.jsonl'),
   PUSH_DEADLINE_SEC: '60',
+  // BRO-7948: keep the pushed marker out of the job's real $RUNNER_TEMP (see
+  // browser-recovery-checkpoint.test.mjs).
+  RUNNER_TEMP: ROOT,
 });
 
 const { checkpointReviewTexts, retryPendingPushes, ReviewTextsPushError, ReviewTextsLandingError, readPending, contentKey, createWriteTracker } = require('./review-texts-checkpoint.js');

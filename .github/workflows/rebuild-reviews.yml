@@ -65,7 +65,8 @@ jobs:
     # old one.
     # 40->45 (BRO-2321): the advisory "Exclusion mirror vs rebuild census"
     # step adds its own 5-minute budget.
-    timeout-minutes: 45
+    # 45->52 (BRO-7841): the "Recheck recent review urls" step adds its own 6-minute budget.
+    timeout-minutes: 52
 
     steps:
       - name: Checkout repository
@@ -267,6 +268,33 @@ jobs:
         run: node scripts/sweep-tour-reviews.js --auto 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
+      # BRO-7841: an outlet can pull a review after we link it (TheaterScene / It's A Wonderful Life, 2026-11-19).
+      # Re-test the urls of reviews published in the last 3 days; a url that 404s/410s twice is marked urlDead so the
+      # rebuild below publishes the review without its link (text and score stay). A withheld review whose url is live
+      # again is restored. Pushed by "Push review-texts to private repo" with the rest of this run's edits.
+      # Kill switch: repo variable DEAD_LINK_RECHECK=off.
+      - name: Recheck recent review urls (withhold pulled links)
+        # lint-allow-swallow: best-effort probe; a failure must not block the rebuild, and a crash only means no marker this run (the next run retries)
+        if: inputs.skip_enrichment != 'true' && vars.DEAD_LINK_RECHECK != 'off'
+        shell: bash
+        run: node scripts/recheck-recent-review-urls.js --apply --days=3 --time-budget-sec=240 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 6
+
+      # BRO-7747 (cousin of BRO-7744): the same cross-show fingerprint memo
+      # rebuild-fast.yml uses (scripts/lib/fingerprint-memo.js). It skips
+      # ~165s of cleanText work per rebuild and validates itself, so a stale
+      # restore only costs time. Same key family as rebuild-fast.yml, so the
+      # two workflows warm each other.
+      - name: Restore fingerprint memo
+        id: fp_memo_restore
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .cache/rebuild-fp-cache.json
+          key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-${{ steps.review_texts_checkout.outputs.sha }}
+          restore-keys: |
+            rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-
+
       - name: Rebuild reviews.json
         id: rebuild
         env:
@@ -340,6 +368,26 @@ jobs:
 
           # Retry rebuild
           node scripts/rebuild-all-reviews.js $FORCE_FLAG
+
+      # BRO-7747: upload only after a cold or large run (rebuild-fast.yml's rule),
+      # so a typical warm run adds no cache entry (BRO-3887 / BRO-7506 budget).
+      - name: Decide fingerprint memo save
+        id: fp_memo
+        if: always() && steps.rebuild.outcome == 'success'
+        run: |
+          computed=$(node -e "try{console.log(require('./.cache/rebuild-fp-cache.json').computed||0)}catch{console.log(0)}")
+          echo "computed=$computed"
+          if [ -z "${{ steps.fp_memo_restore.outputs.cache-matched-key }}" ] || [ "$computed" -ge 2000 ]; then
+            echo "save=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Save fingerprint memo
+        if: always() && steps.rebuild.outcome == 'success' && steps.fp_memo.outputs.save == 'true'
+        continue-on-error: true
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .cache/rebuild-fp-cache.json
+          key: rebuild-fp-memo-v1-${{ hashFiles('scripts/lib/text-cleaning.js', 'scripts/lib/trailer-signatures.js', 'scripts/lib/page-furniture.js', 'scripts/lib/fingerprint-memo.js') }}-${{ steps.review_texts_checkout.outputs.sha }}
 
       # Stale-checkout race guard, part 3: even with the pre-emptive sync above,
       # scope this to a bounded assertion rather than trusting the sync alone —
@@ -900,18 +948,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
-          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
-            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
-            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
-            NOW_TS=$(date +%s)
-            DIFF=$((NOW_TS - RECENT_TS))
-            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
-              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
-              exit 0
-            fi
-          fi
+          # BRO-7747: no caller-side dedup. The old skip ("a deploy started after this run
+          # started") dropped a deploy that began BEFORE this run pushed, so the new data
+          # never shipped (2026-11-18 drill). vercel-deploy.yml's should-deploy gate skips a
+          # build when HEAD and core data are already live, and its 5-min cron really fires
+          # every 6-9h, so this dispatch is what ships the data.
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
 

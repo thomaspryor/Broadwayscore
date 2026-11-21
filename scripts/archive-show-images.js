@@ -39,7 +39,7 @@ const { checkFile: checkAspect } = require('./check-image-aspect');
 // archived here as if they were real key art (2026-07-31 review). Import it,
 // never re-declare it.
 const { isPlaceholderFile } = require('./lib/show-images');
-const { canReuseArchivedFile, isDownloadableSource, isRejectedImage, imagePathOwner } = require('./lib/image-source-match');
+const { canReuseArchivedFile, missingFileRedownload, localImageAction, imagePathOwner } = require('./lib/image-source-match');
 const { IMAGE_SOURCES_PATH: SOURCES_PATH, loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 const { buildSourceIndex, addToSourceIndex, sourceConflict } = require('./lib/shared-image-source');
 
@@ -162,6 +162,7 @@ async function main() {
   // Source URL -> show ids recording it: a CDN URL another unrelated show
   // already records is that show's art, never this one's (BRO-4996).
   const sourceIndex = buildSourceIndex(imageSources, showsData.shows);
+  const showsById = new Map(showsData.shows.filter(Boolean).map(s => [s.id, s]));
 
   let shows = showsData.shows;
   if (showFilter) {
@@ -215,11 +216,14 @@ async function main() {
         }
       }
 
-      // If URL is already local and we're not forcing, skip
-      if (url.startsWith('/images/') && !force) {
-        // Check that the local file actually exists
-        const localPath = path.join(__dirname, '..', 'public', url);
-        if (fs.existsSync(localPath)) {
+      // A local path: keep the file on disk, or re-download it (see below)
+      // Under --force a local path is re-downloaded from its recorded source
+      // (missingFileRedownload below); it must never reach the fetch code, where
+      // fetch('/images/...') fails with "Failed to parse URL" (BRO-7871).
+      const localPath = path.join(__dirname, '..', 'public', url);
+      const localAction = localImageAction(url, { force, fileExists: fs.existsSync(localPath), ownsFile: (imagePathOwner(url) || show.id) === show.id });
+      if (localAction !== 'fetch') {
+        if (localAction === 'check-existing') {
           // Always gate active posters; --check-aspect also checks other cached art.
           if (checkAspectFlag || (format === 'poster' && show.status !== 'closed')) {
             const aspect = await checkAspect(localPath, format);
@@ -238,46 +242,55 @@ async function main() {
             continue;
           }
         }
-        // Local path in shows.json but file is missing - try to re-download from source
-        // Keyed by the file's owner: a row may serve another show's file (BRO-4901).
-        const sourceUrl = imageSources[imagePathOwner(url) || show.id]?.[format];
-        if (!sourceUrl) {
-          console.warn(`  ⚠ ${show.title} ${format}: Local file missing and no source URL`);
+        // Local path in shows.json but file is missing - try to re-download from source.
+        // The source is keyed by the file's owner (a row may serve another show's
+        // file, BRO-4901). A hand-set file (manual:<note>) has nothing to
+        // re-download, and a rejected or wrong-era source would bring the wrong
+        // production's art back (BRO-4901, BRO-7846).
+        const redl = missingFileRedownload(show, format, url, imageSources, showsById);
+        if (redl.skip) {
+          console.warn(`  ⚠ ${show.title} ${format}: ${fs.existsSync(localPath) ? 'Local file kept' : 'Local file missing'}; ${redl.skip} — not re-downloading`);
           totalFailed++;
           continue;
         }
-        // A hand-set file (manual:<note>) has nothing to re-download, and a
-        // source a person rejected for this show would bring the wrong
-        // production's art back (BRO-4901).
-        if (!isDownloadableSource(sourceUrl) || isRejectedImage({ [format]: sourceUrl }, show)) {
-          console.warn(`  ⚠ ${show.title} ${format}: Local file missing; recorded source is ${isDownloadableSource(sourceUrl) ? 'rejected for this show' : 'not downloadable'} — not re-downloading`);
-          totalFailed++;
-          continue;
-        }
+        const sourceUrl = redl.sourceUrl;
         // Re-download from source
         const ext = getLocalExtension(sourceUrl);
         const filepath = path.join(OUTPUT_DIR, show.id, `${format}.${ext}`);
+        let tmpToClean = null;
         try {
           const dlUrl = getDownloadUrl(sourceUrl, format);
-          const size = await downloadImage(dlUrl, filepath, format);
+          const tmpPath = `${filepath}.incoming`;
+          tmpToClean = tmpPath;
+          const size = await downloadImage(dlUrl, tmpPath, format);
+          if (isPlaceholderFile(tmpPath)) throw new Error('re-downloaded image is a "Coming Soon" placeholder — rejected');
           // Aspect-check: reject wide-landscape posters / portrait heroes / etc.
           // The source URL can produce a wrong-shape file (Evita case) — fall through
           // to fetch-show-images-auto on the next run rather than persisting bad shape.
-          const aspect = await checkAspect(filepath, format);
+          const aspect = await checkAspect(tmpPath, format);
           if (!aspect.ok) {
-            console.warn(`  ⚠ ${show.title} ${format}: re-download failed aspect check (${aspect.reason}) — leaving null`);
-            try { fs.unlinkSync(filepath); } catch {}
-            show.images[format] = null;
-            showChanged = true;
+            console.warn(`  ⚠ ${show.title} ${format}: re-download failed aspect check (${aspect.reason}) — ${fs.existsSync(localPath) ? 'keeping the existing file' : 'leaving null'}`);
+            try { fs.unlinkSync(tmpPath); } catch {}
+            if (!fs.existsSync(localPath)) { show.images[format] = null; showChanged = true; }
             totalFailed++;
           } else {
+            fs.renameSync(tmpPath, filepath);
             show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
+            // The file now lives in this row's folder: record where it came
+            // from under this row, or every audit is blind to it (BRO-7846).
+            imageSources[show.id][format] = sourceUrl;
             showDownloaded++;
             totalDownloaded++;
             totalBytes += size;
             showChanged = true;
+            // --force over an existing file of another extension: drop the old one.
+            for (const oldExt of ['jpg', 'jpeg', 'png', 'webp'].filter(e => e !== ext)) {
+              const oldPath = path.join(OUTPUT_DIR, show.id, `${format}.${oldExt}`);
+              if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+            }
           }
         } catch (e) {
+          if (tmpToClean) { try { fs.unlinkSync(tmpToClean); } catch {} }
           console.error(`  ✗ ${show.title} ${format}: ${e.message}`);
           totalFailed++;
         }

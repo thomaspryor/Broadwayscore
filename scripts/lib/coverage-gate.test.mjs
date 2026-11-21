@@ -143,16 +143,9 @@ test('blastRadiusCheck: minChanged is configurable and 0 restores pure-percentag
   assert.strictEqual(r.ok, false, 'minChanged:0 must reproduce the old percentage-only gate');
 });
 
-// review-gap's actual isRiskyChange (audit-show-review-gap.js): states are
-// encoded 'verdict:liveCount:candidateCount' and a transition is risky iff
-// EITHER count went down. Mirrored here (not imported — it's a closure at
-// the call site) so these tests exercise the real decision rule.
-const countsRiskyChange = (prevState, nextState) => {
-  const counts = (s) => String(s).split(':').slice(1).map(Number);
-  const [prevLive, prevCandidates] = counts(prevState);
-  const [nextLive, nextCandidates] = counts(nextState);
-  return nextLive < prevLive || nextCandidates < prevCandidates;
-};
+// Use the audit's real predicate so rule changes cannot leave these tests
+// checking a stale copy of the coverage-loss policy (BRO-7497).
+const { isRiskyGapChange: countsRiskyChange } = require('./gap-audit-merge.js');
 
 test('blastRadiusCheck: isRiskyChange narrows which transitions count as changed (BRO-513)', () => {
   // The recurring false positive: a batch of shows genuinely goes

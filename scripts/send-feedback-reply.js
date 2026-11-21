@@ -42,7 +42,9 @@ async function main() {
       originalMessage: reader.message,
       transport,
     });
-    if (res.sent && !dryRun) {
+    // Only a "fixed" draft retires the issue: an acknowledgement must not stop
+    // the later "it's fixed" draft when someone closes the bug by hand.
+    if (res.sent && !dryRun && type === 'fixed') {
       if (!(await markReplyDrafted(process.env.ISSUE_NUMBER, { token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }))) {
         console.log('WARN: could not label the issue reply-drafted');
       }

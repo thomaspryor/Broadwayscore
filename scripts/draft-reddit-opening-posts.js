@@ -32,7 +32,8 @@
 'use strict';
 
 require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
-const { COPY_SONNET, REDDIT_SONNET } = require('./lib/models.js');
+const { COPY_SONNET, REDDIT_SONNET, GPT4O } = require('./lib/models.js');
+const { openaiChatBody } = require('./lib/llm-batch');
 const fs = require('fs');
 const path = require('path');
 const lib = require('./lib/reddit-opening-post');
@@ -128,15 +129,13 @@ async function callOpenAI(system, user) {
     signal: AbortSignal.timeout(60_000),
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
     body: JSON.stringify({
-      model: 'gpt-4o',
-      temperature: 0.7,
+      ...openaiChatBody({ model: GPT4O, temperature: 0.7, maxTokens: null, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
       response_format: { type: 'json_object' },
-      messages: [{ role: 'system', content: system }, { role: 'user', content: user }],
     }),
   });
   if (!res.ok) throw new Error(`OpenAI ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const j = await res.json();
-  return { model: 'gpt-4o', text: j.choices[0].message.content };
+  return { model: GPT4O, text: j.choices[0].message.content };
 }
 
 async function writeDraft(facts, examples = []) {

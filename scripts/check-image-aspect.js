@@ -56,11 +56,19 @@ Usage:
   --active-posters  Audit only posters belonging to non-closed shows
   node scripts/check-image-aspect.js --help, -h    print this usage and exit
 `;
+// Loaded on first use, never at startup: a broken sharp native binary dies with
+// SIGBUS (no try/catch can catch that), and a top-level require made every
+// commit fail in such a container, even one with no images staged.
 let sharp;
-try {
-  sharp = require('sharp');
-} catch {
-  sharp = null; // The daily digest runs without node_modules; inspect headers instead.
+function getSharp() {
+  if (sharp === undefined) {
+    try {
+      sharp = require('sharp');
+    } catch {
+      sharp = null; // The daily digest runs without node_modules; inspect headers instead.
+    }
+  }
+  return sharp;
 }
 
 const { related } = require('./lib/show-title-family');
@@ -150,7 +158,8 @@ async function checkFile(absPath, role = classify(absPath), opts = {}) {
 
   let meta;
   try {
-    meta = sharp ? await sharp(absPath).metadata() : getImageDimensions(fs.readFileSync(absPath));
+    const sh = getSharp();
+    meta = sh ? await sh(absPath).metadata() : getImageDimensions(fs.readFileSync(absPath));
   } catch (err) {
     return { role, absPath, ok: false, reason: `sharp failed to read: ${err.message}` };
   }

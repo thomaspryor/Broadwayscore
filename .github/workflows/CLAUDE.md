@@ -145,7 +145,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `rebuild-fast.yml`
 - **Runs:** Every 4 hours at :45 UTC (`45 */4 * * *` — safety-net cron) + manual trigger
-- **Does:** Lightweight rebuild: checkout → rebuild reviews.json → push → deploy. No backfill, classification, or flagging steps. ~5 min instead of ~30 min.
+- **Does:** Lightweight rebuild: checkout → rebuild reviews.json → push → deploy. No backfill, classification, or flagging steps. Measured 15.5 min before BRO-7744 (rebuild step ~8 min, npm ci ~2 min, checkouts ~2 min, onboarding ~1.3 min); BRO-7744 brings it to 9.7 min measured warm (12.7 cold) with a cross-show fingerprint memo restored via actions/cache (`rebuild-fp-memo-v1-*`, saved only when a run computes >=2000 fingerprints) and a parallel onboarding poster scan.
 - **Concurrency:** Shared depth-1 group `rebuild-fast` (BRO-5913): one running + one pending, a newer dispatch replaces the pending run (whole-tree idempotent rebuild, so the survivor covers it). `force_write=true` runs keep a per-run group.
 - **Safety-net role (Notion 362637c5-416f-81ce):** Vercel's static export only re-renders /opera, /broadway, /off-broadway, /west-end when a deploy fires. If `llm-ensemble-score.yml`'s rebuild dispatch silently 403s on GitHub API rate limits, reviews land but pages stay frozen at the last-build snapshot. The 4-hourly cron + dispatch-retry in `llm-ensemble-score.yml` close that gap. Cron runs are byte-identical no-ops via the change-gate commit/deploy step when there's nothing to do.
 - **When to use manually:** Opening-night corrections, manual data fixes, any time you need a fast rebuild without the full pipeline
@@ -290,7 +290,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Manual trigger:** `gh workflow run gather-reviews.yml -f shows=show-id-here`
 - **Job pipeline:** `prepare → gather-reviews → scrape-aggregators (non-blocking) → rebuild → deploy`
   - `scrape-aggregators`: Runs Playbill Verdict + NYC Theatre for the target shows (`--shows=`). Uses `continue-on-error: true` so rebuild always runs even if scrapers fail. 30-minute timeout.
-  - `rebuild` job: rebuilds reviews.json, pushes to both private repos, **dispatches Deploy to Vercel** (15-min dedup), then auto-triggers text collection if >20 reviews need it, and **auto-triggers LLM scoring** if any unscored reviews exist for the gathered shows.
+  - `rebuild` job: rebuilds reviews.json, pushes to both private repos, **dispatches Deploy to Vercel** (every time; vercel-deploy.yml's should-deploy gate dedupes, BRO-7747), then auto-triggers text collection if >20 reviews need it, and **auto-triggers LLM scoring** if any unscored reviews exist for the gathered shows.
 - **Technical notes:**
   - Installs Playwright Chromium for Show Score carousel scraping
   - Show Score extraction uses Playwright to scroll through ALL critic reviews (not just first 8)
@@ -556,7 +556,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   - **Graceful degradation:** 3→2→1 model fallback if any model fails
   - **2-model mode:** If GEMINI_API_KEY not set, uses Claude + gpt-4o only
   - **OpenAI leg model:** gpt-4o stays the default (task #504, 2026-07-26) — the gpt-5.4-mini A/B (n=24 real reviews) failed the rule-13 gate: Mixed bucket collapsed 29%->0%, max shift 29.2pp (limit 5pp). It polarizes scores away from the middle rather than being a like-for-like cheaper substitute. `--openai-model=gpt-5.4-mini` is wired for re-testing once the V5 prompt is recalibrated for it.
-- **Options:** `show`, `limit`, `run_calibration` (default true), `run_validation`, `dry_run`, `needs_rescore`
+- **Options:** `show`, `limit`, `run_calibration` (default true), `run_validation` (ignored when `show_id` is set, BRO-7767: the global validation pass delayed press-night score pushes ~4.5 min), `dry_run`, `needs_rescore`
 - **Script:** `scripts/llm-scoring/index.ts`
 - **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY
 - **Optional:** GEMINI_API_KEY (enables 3-model mode)
@@ -779,3 +779,8 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Does:** Regenerates and PATCHes the unsent Saturday Resend draft in place (never `/send`). Silent by default. With `sendPreview=1` (string input, same '1' convention as `allowGaps`, never `type: boolean`) it also emails the owner a transactional `[DRAFT] (Sunday refresh)` preview per edition via `send-test.mjs`, after the de-dup commit so a preview failure cannot skip the ledger.
 - **Sunday 9am ET email (BRO-6775):** driven by an EXTERNAL Claude scheduled task (`CRON_TZ=America/New_York 50 8 * * 0`) that dispatches this workflow with `sendPreview=1`; `workflow_dispatch` is punctual where the cron is not, and cron is UTC only so it cannot hold 9am through DST. If that task ever stops firing, the late cron sends the preview itself when no successful `(preview)` run (tagged in `run-name`) happened in the last 12h. If the owner stops getting 9am emails, check the scheduled task first.
 - **Pinned by:** `tests/unit/newsletter-refresh-preview.test.mjs`.
+
+## `audit-we-closing-dates.yml`
+- **Runs:** Daily 14:15 UTC (live since 2026-11-21, shadow mode removed) or manually (`dry_run=true` to preview).
+- **Does:** Reads the westendtheatre.com "Booking until" date for each open West End show and compares it with the stored `closingDate`. Applies EXTENSIONS only (later than stored, within 180 days, not human-corrected; written with `recordExtension:false` so the site does not label booking-window moves "Extended"). New-closing candidates (booking tranches for open-ended runs) are counted in the step summary only, never written. Over-cap extensions, shrinks and possibly-closed shows file a Linear card and are never written. The rule lives in `routeWeAuditResult` (`scripts/lib/we-closing-date-classify.js`), pinned by `we-closing-date-classify.test.mjs`.
+- **Safety:** validate-data runs before push and rolls shows.json back on failure; shares the `shows-json-writer` concurrency group.

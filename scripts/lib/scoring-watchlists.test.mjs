@@ -14,7 +14,10 @@ const W = require('./scoring-watchlists.js');
 const here = path.dirname(new URL(import.meta.url).pathname);
 
 // Required by content-quality.js but they only extract bylines / parse dates.
-const NOT_TIER_DECIDING = new Set(['byline-extraction', 'byline-recovery', 'date-utils']);
+// byline-* only resolve the critic's name (BRO-7745 added byline-from-text's
+// printed-credit override and byline-normalization's suffix strip to
+// extractAuthorFromHtml / cleanAuthorName); none decides tier or score.
+const NOT_TIER_DECIDING = new Set(['byline-extraction', 'byline-recovery', 'byline-from-text', 'byline-normalization', 'date-utils']);
 
 test('every local require of content-quality.js is watched or explicitly not tier-deciding', () => {
   const src = fs.readFileSync(path.join(here, 'content-quality.js'), 'utf8');

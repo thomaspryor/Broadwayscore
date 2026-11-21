@@ -244,16 +244,16 @@ const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8,
  * the writer: scripts/lib/run-end-from-text.js (BRO-7291; this used to be a second, looser regex).
  * `opening` defaults to 80 days before `closing` so a later date up to 120 days out is still in the window.
  */
-/** BRO-7291: per-show stale-closing finding, the writer's own rule (laterAnnouncedRunEnd over every text + the listing). */
-function showRunEndFinding(show, texts, listing) {
+/** BRO-7291: per-show stale-closing finding, the writer's own rule (laterAnnouncedRunEnd over every text + the listing + the theatre's own page). */
+function showRunEndFinding(show, texts, listing, theatrePage = null) {
   if (!show || !show.closingDate || !show.openingDate) return null;
   const rule = require('./run-end-from-text').laterAnnouncedRunEnd;
   const base = { opening: show.openingDate, closing: show.closingDate };
-  const r = rule(base, { texts, listing });
+  const r = rule(base, { texts, listing, theatrePage });
   if (r) return r;
   // BRO-7319: the writer needs two hosts (or the listing) before it moves a date. An explicit "extended through" from ONE
   // host is still a lead: report it, flagged unconfirmed, so a real extension is never invisible (no auto-fix is planned from it).
-  const one = rule(base, { texts, listing }, { minSites: 1 });
+  const one = rule(base, { texts, listing, theatrePage }, { minSites: 1 });
   return one && one.kind === 'extended' ? { ...one, unconfirmed: true } : null;
 }
 
@@ -272,6 +272,17 @@ function recordHash(rec, fields) {
   const o = {}; for (const f of fields) o[f] = rec && rec[f] !== undefined ? rec[f] : null;
   return require('crypto').createHash('sha1').update(JSON.stringify(o)).digest('hex').slice(0, 10);
 }
+/**
+ * BRO-7265: does the images check need to (re)ask the models for this show? A cached verdict
+ * judged the poster file that existed then; a replaced poster (new art, same path) kept being
+ * scored from the old verdict. Rows now carry posterHash; a row without one (older rows) is
+ * re-asked only when named in --recheck.
+ */
+function imageNeedsCheck(row, posterHash, recheck) {
+  if (!row || row.missing) return true;
+  if (recheck === true) return true;
+  return !!(row.posterHash && posterHash && row.posterHash !== posterHash);
+}
 const SHOW_RECORD_FIELDS = ['title', 'venue', 'openingDate', 'closingDate', 'previewsStartDate', 'closingDateSource', 'category', 'status', 'image', 'officialUrl'];
 const REVIEW_RECORD_FIELDS = ['criticName', 'publishDate', 'assignedScore', 'originalRating', 'outlet', 'isNonReview', 'wrongProduction', 'wrongShow'];
 
@@ -280,5 +291,5 @@ module.exports = { recordHash, SHOW_RECORD_FIELDS, REVIEW_RECORD_FIELDS,
   laterRunEnd, showRunEndFinding,
   addDays, daysBetween, hubPhase, sectionHubShows, fold, parseJson, starsFromRating, bandForStars,
   starBandProblem, verdictProblem, quoteInText, bylineMatches, dateDiffDays, reviewFlags, showFlags,
-  imageFlags, parseLiveHub, RECENT_DAYS, CLOSED_LIMIT,
+  imageFlags, imageNeedsCheck, parseLiveHub, RECENT_DAYS, CLOSED_LIMIT,
 };

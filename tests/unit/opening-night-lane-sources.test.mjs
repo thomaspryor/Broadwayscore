@@ -267,3 +267,31 @@ test('BRO-7601 review: a browser error falls through to the old chain; no cookie
   await Promise.all([f.fetch(tb + '?1'), f.fetch(tb + '?2')]);
   assert.equal(events[1], `end ${tb}?1`, events.join(' | '));
 });
+
+// BRO-7779 ship-check: a feed the lane reads every press night is a live outlet. The registry marked Reclining Standards
+// defunct while its feed was added, so text-gap-classify.js filed its missing texts as PRINT_OR_DEFUNCT.
+test('no lane feed or section index reads an outlet the registry calls defunct', () => {
+  const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
+  const reg = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, '../../data/outlet-registry.json'), 'utf8'));
+  const outlets = reg.outlets || reg;
+  const ids = [...ls.LANE_FEEDS.map((f) => f.outletId), ...Object.keys(ls.LANE_SECTION_INDEXES)];
+  const defunct = ids.filter((id) => outlets[id] && outlets[id].accessModel === 'defunct');
+  assert.deepEqual(defunct, [], 'set accessModel to free/metered/paywalled in data/outlet-registry.json, or drop the source');
+});
+
+// Cousins of the Reclining Standards case (2026-11-18): la-excites, next-magazine, popbytes and 12thnight were all marked
+// defunct while still publishing, so collect-review-texts.js skipped SERP discovery for their reviews. Live data.
+test('live history: no outlet the registry calls defunct published a review in the last 120 days', (t) => {
+  const p = path.join(import.meta.dirname, '../../data/reviews.json');
+  if (!fs.existsSync(p)) return t.skip('data/reviews.json not present');
+  const reg = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, '../../data/outlet-registry.json'), 'utf8'));
+  const outlets = reg.outlets || reg;
+  const r = JSON.parse(fs.readFileSync(p, 'utf8'));
+  const since = new Date(Date.now() - 120 * 86400000).toISOString().slice(0, 10);
+  const live = new Set();
+  for (const x of (Array.isArray(r) ? r : r.reviews)) {
+    const o = outlets[x.outletId];
+    if (o && o.accessModel === 'defunct' && String(x.publishDate || '') >= since) live.add(x.outletId);
+  }
+  assert.deepEqual([...live].sort(), [], 'still publishing: set accessModel to free/metered/paywalled in data/outlet-registry.json');
+});

@@ -71,6 +71,7 @@
 
 const { evaluateDoneTransition, isMergedDeployedChecked, VERDICTS } = require('./done-semantics-gate.js');
 const { extractPrRef } = require('./linear-pr-evidence.js');
+const { resolutionForIssue } = require('./ux-walkthrough-resolution.js');
 
 /**
  * A VERIFY_CMD_RECORDED verdict from evaluateDoneTransition only proves the
@@ -111,7 +112,7 @@ function applyCmdExecution(result, verifyCmdEvidence) {
     ...result,
     allowed: false,
     verdict: (execResult && execResult.verdict) || 'verify-cmd-failed',
-    reason: neverRan
+    reason: neverRan || (execResult && execResult.verdict && execResult.verdict.startsWith('ux-resolution-'))
       ? execResult.reason
       : `recorded acceptance command \`${result.cmd}\` was executed against a fresh origin/main checkout and did not pass: ` +
         `${(execResult && execResult.reason) || 'no result from the execution verifier'}`,
@@ -143,10 +144,22 @@ function applyCmdExecution(result, verifyCmdEvidence) {
  *   `verification` (the verifier's own result) when PR evidence was checked,
  *   and/or `cmdExecution` when a recorded command was actually run.
  */
-function checkDoneEvidence({ targetStateType, description = '', commentText = '', existingComments = [], verifyEvidence, verifyCmdEvidence } = {}) {
+function checkDoneEvidence({ targetStateType, title = '', description = '', commentText = '', existingComments = [], verifyEvidence, verifyCmdEvidence } = {}) {
   if (targetStateType !== 'completed') return { gated: false };
 
   const comments = [...(Array.isArray(existingComments) ? existingComments : []), commentText].filter(Boolean);
+  const verifyWithIssue = (cmd) => {
+    const match = /^node scripts\/lib\/ux-walkthrough-resolution\.js --key=([a-f0-9]{32})$/.exec(cmd);
+    if (!match) return typeof verifyCmdEvidence === 'function' ? verifyCmdEvidence(cmd) : null;
+    if (!/^UX audit:/.test(title) || !description.split('\n').includes(`UX-FINDING: ${match[1]}`)) {
+      return { allowed: false, verdict: 'ux-resolution-invalid-card', reason: 'the finding key is not on this UX walkthrough card' };
+    }
+    const resolution = resolutionForIssue({ description, comments: { nodes: comments.map((body, i) => ({ body, createdAt: new Date(i).toISOString() })) } });
+    return { allowed: resolution.ok, verdict: resolution.ok ? 'ux-resolution-passed' : 'ux-resolution-missing', reason: resolution.reason };
+  };
+  const execute = (result) => applyCmdExecution(result,
+    /^node scripts\/lib\/ux-walkthrough-resolution\.js --key=[a-f0-9]{32}$/.test(result.cmd || '')
+      ? verifyWithIssue : verifyCmdEvidence);
   const combinedText = [description, ...comments].filter(Boolean).join('\n');
   const prRef = extractPrRef(combinedText);
 
@@ -160,7 +173,7 @@ function checkDoneEvidence({ targetStateType, description = '', commentText = ''
       // fresh main), so evaluate that path with the rejected claim EXCLUDED —
       // otherwise the refusal below would tell the operator to add a VERIFY:
       // line that this same branch would then never look at.
-      const viaCmd = applyCmdExecution(evaluateDoneTransition({ prRef: null, notes: description, comments }), verifyCmdEvidence);
+      const viaCmd = execute(evaluateDoneTransition({ prRef: null, notes: description, comments }));
       if (viaCmd.allowed) {
         // Allowed on the command's strength — but a PROVEN-false PR claim
         // sitting next to it is worth saying out loud, not swallowing.
@@ -202,7 +215,7 @@ function checkDoneEvidence({ targetStateType, description = '', commentText = ''
     return { gated: true, ...result, verification };
   }
 
-  const result = applyCmdExecution(evaluateDoneTransition({ prRef, notes: description, comments }), verifyCmdEvidence);
+  const result = execute(evaluateDoneTransition({ prRef, notes: description, comments }));
   return { gated: true, ...result };
 }
 

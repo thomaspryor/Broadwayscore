@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-17T19:05:52.782Z",
+    "generatedAt": "2026-11-21T14:56:48.888Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 158,
-    "highConfidence": 9,
-    "mediumConfidence": 149,
+    "totalFlagged": 164,
+    "highConfidence": 7,
+    "mediumConfidence": 157,
     "lowConfidence": 0,
     "reassignable": 52
   },
@@ -43,9 +43,9 @@
       "showId": "wicked-2003",
       "showTitle": "Wicked",
       "showYear": 2003,
-      "file": "ew--unknown.json",
+      "file": "ew--joey-nolfi.json",
       "outlet": "Entertainment Weekly",
-      "criticName": "Unknown",
+      "criticName": "Joey Nolfi",
       "publishDate": "2026-11-03",
       "confidence": "medium",
       "suggestedShowId": null,
@@ -682,6 +682,24 @@
       "showId": "the-phantom-of-the-opera-1988",
       "showTitle": "The Phantom of the Opera",
       "showYear": 1988,
+      "file": "ap--unknown.json",
+      "outlet": "Associated Press",
+      "criticName": "Unknown",
+      "publishDate": "2023-04-16",
+      "confidence": "medium",
+      "suggestedShowId": "the-phantom-of-the-opera-west-end-1986",
+      "signals": [
+        "publishDate 2023 is 35 years after original opening 1988",
+        "year 1986 in text matches revival the-phantom-of-the-opera-west-end-1986",
+        "year 2024 in text matches revival the-phantom-of-the-opera-tour-2025",
+        "modern references: twitter, pandemic, covid, hamilton"
+      ],
+      "textSnippet": "NEW YORK (AP) — The final curtain came down Sunday on New York’s production of “The Phantom of the Opera,” ending Broadway’s longest-running show with thunderous standing ovations, champagne toasts an"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
       "file": "broadway-and-me--janice-c-simpson.json",
       "outlet": "Broadway & Me",
       "criticName": "Janice C. Simpson",
@@ -724,6 +742,22 @@
         "publishDate 2015 is 27 years after original opening 1988"
       ],
       "textSnippet": "By Tulis McCall\n\nJames Barbour as The Phantom; credit Joan Marcus\n\nJoin me for a little jaunt down memory lane to a magical place that is alive and well. Andrew Lloyd Webber’s THE PHANTOM OF THE OPERA"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
+      "file": "newsday--unknown.json",
+      "outlet": "Newsday",
+      "criticName": "Unknown",
+      "publishDate": "2023-04-13",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2023 is 35 years after original opening 1988",
+        "modern references: pandemic, covid, masks, hamilton"
+      ],
+      "textSnippet": "It’s the last call for “The Music of the Night” — and the last fall for a showstopping chandelier. Andrew Lloyd Webber’s musical phenomenon “The Phantom of the Opera” ends its historic 35-year run at "
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -789,6 +823,21 @@
       "showId": "the-phantom-of-the-opera-1988",
       "showTitle": "The Phantom of the Opera",
       "showYear": 1988,
+      "file": "nytimes--jason-zinoman.json",
+      "outlet": "The New York Times",
+      "criticName": "Jason Zinoman",
+      "publishDate": "July 1, 2005",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2005 is 17 years after original opening 1988"
+      ],
+      "textSnippet": "https://www.nytimes.com/2005/07/01/theater/reviews/old-and-ghostly-but-still-a-hoot.htmlShare full articleAdvertisement\n\nThe paint on the balconies of the Majestic Theater looks chipped and the electr"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
       "file": "talkinbroadway--matthew-murray.json",
       "outlet": "Talkin' Broadway",
       "criticName": "Matthew Murray",
@@ -799,6 +848,22 @@
         "publishDate 2002 is 14 years after original opening 1988"
       ],
       "textSnippet": "Musical play scriptsRegional theatre guidesTheater books and guidesActing & TheatermusicOff-Broadway PlaywrightsMusical theatre reviewsTheatre CD releasesMusic & AudioStudio Theatre tickets\n\n \n \n \n\n \n"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
+      "file": "theater-life--unknown.json",
+      "outlet": "Theater Life",
+      "criticName": "Unknown",
+      "publishDate": "2018-01-21",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2018 is 30 years after original opening 1988",
+        "revival text signals: revival, new production, current production"
+      ],
+      "textSnippet": "As Theatrical Phenomenon Phantom of the Opera Celebrates 30 Year Reign on Broadway Andrew Lloyd Webber Looks Back\n\nA gala performance on Wednesday [January 24] will celebrate Sir Andrew Lloyd Webber a"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -815,6 +880,21 @@
         "year 2026 in text matches revival the-phantom-of-the-opera-tour-2025"
       ],
       "textSnippet": "Andre Lloyd Webber’s musical continues its reign as Broadway’s longest-running musical. The Phantom of the Opera celebrates 29 years on Broadway today. The show celebrated with two performances of the"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
+      "file": "theatrely--unknown.json",
+      "outlet": "Theatrely",
+      "criticName": "Unknown",
+      "publishDate": "2022-11-29",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2022 is 34 years after original opening 1988"
+      ],
+      "textSnippet": "The Phantom of the Opera | Photo: Matthew Murphy\n\nThe music isn’t going quietly into the night. Andrew Lloyd Webber’s box office juggernaut, The Phantom of the Opera, will now close April 16, 2023 acc"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -1434,6 +1514,21 @@
       "textSnippet": "Theatre Review by Matthew Murray - April 14, 2002\n\nThe Elephant Man by Bernard Pomerance. Directed by Sean Mathias. Scenic and costume design by Santo Loquasto. Lighting design by James F. Ingalls. So"
     },
     {
+      "showId": "the-elephant-man-2002",
+      "showTitle": "The Elephant Man",
+      "showYear": 2002,
+      "file": "theatermania--unknown.json",
+      "outlet": "TheaterMania",
+      "criticName": "Unknown",
+      "publishDate": "2002-04-15",
+      "confidence": "medium",
+      "suggestedShowId": "the-elephant-man-1979",
+      "signals": [
+        "year 1979 in text matches revival the-elephant-man-1979"
+      ],
+      "textSnippet": "With Billy Crudup as the malformed title character John Merrick in The Elephant\nMan, the drama might just as well have been called The Elegant Man. Bernard Pomerance certainly had elegance of human th"
+    },
+    {
       "showId": "thoroughly-modern-millie-2002",
       "showTitle": "Thoroughly Modern Millie",
       "showYear": 2002,
@@ -1599,6 +1694,22 @@
         "year 2016 in text matches revival falsettos-2016"
       ],
       "textSnippet": "FALSETTOS Send This Review to a Friend\n\nThe musical gets off to a rousing start with the singing of the catchy “Four Jews in a Room Bitching,” a number that sets the tone for the work’s irreverence th"
+    },
+    {
+      "showId": "the-iceman-cometh-1985",
+      "showTitle": "The Iceman Cometh",
+      "showYear": 1985,
+      "file": "nytimes--jesse-green.json",
+      "outlet": "The New York Times",
+      "criticName": "Jesse Green",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "NOTHING glows when the lights rise on Harry Hope's waterfront gin-mill and flophouse in Jose Quintero's new production of ''The Iceman Cometh.'' What comes dimly into view is a moldering, black-and-br"
     },
     {
       "showId": "on-the-town-1998",
@@ -1782,6 +1893,21 @@
         "year 1976 in text matches revival pacific-overtures-1976"
       ],
       "textSnippet": "https://www.nytimes.com/2004/12/03/theater/reviews/repatriating-the-japanese-sondheim.htmlShare full articleAdvertisement\n\nBY rights, this should be the moment to announce that a Japanese director nam"
+    },
+    {
+      "showId": "700-sundays-2004",
+      "showTitle": "700 Sundays",
+      "showYear": 2004,
+      "file": "nytimes--maya-phillips.json",
+      "outlet": "The New York Times",
+      "criticName": "Maya Phillips",
+      "publishDate": "2005-01-21",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, revived"
+      ],
+      "textSnippet": "Billy Crystal may be a major Broadway star and one of its hottest tickets in years, but one thing he is not is a playwright, it seems. Or so said the Tony Awards administration committee yesterday aft"
     },
     {
       "showId": "gem-of-the-ocean-2004",
@@ -2363,23 +2489,6 @@
       "textSnippet": "Andrew Lloyd Webber and Tim Rice’s “Jesus Christ Superstar” is remembered with deep affection by a wide cross-section of Americans of a certain age, even many who’ve never been avid theatergoers. Fans"
     },
     {
-      "showId": "la-cage-aux-folles-1983",
-      "showTitle": "La Cage aux Folles",
-      "showYear": 1983,
-      "file": "talkinbroadway--matthew-murray.json",
-      "outlet": "Talkin' Broadway",
-      "criticName": "Matthew Murray",
-      "publishDate": null,
-      "confidence": "high",
-      "suggestedShowId": "la-cage-aux-folles-2004",
-      "signals": [
-        "revival cast/director match for la-cage-aux-folles-2004: Gary Beach, Daniel Davis, Marquis Theatre, director: Jerry Zaks",
-        "year 2004 in text matches revival la-cage-aux-folles-2004",
-        "year 2005 in text matches revival la-cage-aux-folles-2004"
-      ],
-      "textSnippet": "Theatre Review by Matthew Murray\n - December 9, 2004 \n\nLa Cage aux Folles Music and Lyrics by Jerry Herman. Book by Harvey Fierstein. Based on the play 'La Cage Aux Folles' by Jean Poiret. Directed by"
-    },
-    {
       "showId": "the-glass-menagerie-1983",
       "showTitle": "The Glass Menagerie",
       "showYear": 1983,
@@ -2409,23 +2518,6 @@
         "revival text signals: revival, back on broadway"
       ],
       "textSnippet": "**Bernadette Peters Shows Off Her Serious Side in the Broadway Hit \"Sunday in the Park with George\"**\n\nBy HOWARD KISSEL\n\nWhen Bernadette Peters last appeared on Broadway ten years ago, it was nearly a"
-    },
-    {
-      "showId": "jesus-christ-superstar-1971",
-      "showTitle": "Jesus Christ Superstar",
-      "showYear": 1971,
-      "file": "exeunt-magazine--unknown.json",
-      "outlet": "Exeunt Magazine",
-      "criticName": "Unknown",
-      "publishDate": null,
-      "confidence": "high",
-      "suggestedShowId": "jesus-christ-superstar-2012",
-      "signals": [
-        "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Chilina Kennedy, Stratford, director: Des McAnuff",
-        "revival text signals: back on broadway, this production",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "If Jesus Christ Superstar is one of the musicals with the most predictable endings, why have audiences remained in its thrall for so many years? Why, in fact, do audiences continue to hunger so for a "
     },
     {
       "showId": "on-the-town-1971",

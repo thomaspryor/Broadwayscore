@@ -51,6 +51,10 @@ function explainRecoveryExclusion(data, show, filePath, marketContext) {
   const reason = explainExclusion(data, show, filePath);
   if (reason) return reason;
   if (resolveRelativeReviewUrl(data.url).exclude) return 'invalidUrl';
+  // BRO-7945: rebuild also drops evergreen ticket/listing pages (isEvergreenListingUrl) that explainExclusion's
+  // host-scoped listing patterns miss (theatrereviews.com ticket page, nymag /listings/). Same gate, same exemptions.
+  if (data.url && !data.humanReviewScore && !data.manualContentTier
+      && require('./cross-production-guards').isEvergreenListingUrl(data.url)) return 'listingPageUrl';
   const { normalizeOutlet } = require('./review-normalization');
   const rawOutlet = (data.outletId || data.outlet || '').toLowerCase();
   if (reverseCrossMarketExclusion({

@@ -219,6 +219,29 @@ function namesShowVenue(combined, rawText, show, nowMs = Date.now()) {
   return true;
 }
 
+// BRO-7821: The Reviews Hub titles every review "<Show> – <Venue>, <City>" and carries no
+// "review" word, so a credit-less short title (Nero, 4 letters) at its own venue never passed
+// namesShowVenue's review-word rule and waited for a sweep. The headline shape itself (the
+// whole title, a dash, then this show's own house) is what a review of this production looks
+// like; news reads "X announced for Y". Needs the run window too, like headlineIsTitle.
+const HEADLINE_NEWS_TAIL_RE = /\b(?:extend[sed]*|announce[sd]?|interview|tickets?|trailer|photos?|cast|casting|news|win[s]?|returns?|transfer[s]?|first look)\b/i;
+function headlineIsTitleAtVenue(headline, show) {
+  const m = String(headline || '').trim().match(/^(.+?)\s+[-‐‑‒–—]\s+(.+)$/);
+  if (!m) return false;
+  const norm = hyphenSpaced(show && show.title);
+  if (!norm || hyphenSpaced(m[1].replace(/[_/]+/g, ' ')) !== norm) return false;
+  // After the house only a city may follow ("..., London"): ":" / "|" / "(" tails and news words
+  // ("extends run", "cast announced", "interview", "tickets") are not a review headline.
+  if (/[:|(]/.test(m[2]) || HEADLINE_NEWS_TAIL_RE.test(m[2])) return false;
+  const rest = ` ${hyphenSpaced(m[2].replace(/[_/]+/g, ' '))} `;
+  return venueForms(show).some((f) => {
+    // Short or one-word houses keep namesShowVenue's strictness: not a loose lowercase phrase.
+    if (f.split(/\s+/).length < 2 && f.length < 6) return false;
+    if (!rest.startsWith(` ${f} `)) return false;
+    return rest.slice(f.length + 2).trim().split(/\s+/).filter(Boolean).length <= 2;
+  });
+}
+
 // A book review names the musical's title or characters without being about
 // the stage show (1 Minute Critic's "'Galinda: A Charmed Childhood' book
 // review" landed on both Wicked entries, BRO-4656). Only the explicit "book
@@ -357,7 +380,7 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
     }
     if (ok && needsCredit && !namesShowCredit(creditHay, show, nowMs)) {
       if (namesShowVenue(creditHay, rawText, show, nowMs)) venueOnly.add(show);
-      else if (creditNames(show, nowMs).length === 0 && headlineIsTitle(headline, show) && publishedInRunWindow(show, publishDate)) venueOnly.add(show);
+      else if (creditNames(show, nowMs).length === 0 && (headlineIsTitle(headline, show) || headlineIsTitleAtVenue(headline, show)) && publishedInRunWindow(show, publishDate)) venueOnly.add(show);
       else ok = false;
     }
     if (ok) {

@@ -34,6 +34,7 @@ const fs = require('fs');
 const path = require('path');
 const { heuristicClassify } = require('./lib/non-review-patterns');
 const { GPT4O } = require('./lib/models');
+const { openaiChatBody } = require('./lib/llm-batch');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -352,10 +353,10 @@ async function gpt4oOcr(imgPath, showTitle, verbose) {
 Output the review body verbatim, starting with "BYLINE: <critic name>" on the first line if a byline is visible (else "BYLINE: unknown").
 
 Output exactly NONE if this slice has no such review — in particular, return NONE for: box-office/ticket/business stories, advance "buzz"/preview pieces published before opening, casting news, interviews, event listings, photo captions, or articles that merely mention "${showTitle}" without critically evaluating it.`;
-  const body = { model: GPT4O, max_tokens: 3000, messages: [{ role: 'user', content: [
+  const body = openaiChatBody({ model: GPT4O, maxTokens: 3000, temperature: null, messages: [{ role: 'user', content: [
     { type: 'text', text: prompt },
     { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + b64, detail: 'high' } },
-  ] }] };
+  ] }] });
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const r = await fetch('https://api.openai.com/v1/chat/completions', {

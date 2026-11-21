@@ -23,13 +23,14 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { applyDataEdit, dataEditAllowProblem } = require('./lib/data-edit-action');
+const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 const { MAX_PLAN_ACTIONS } = require('./lib/pending-fix-limits');
 const { preflight, pickReviewTextsTree, pickCoreDataDir } = require('./lib/preflight-review-fix-plan');
 const { refreshDataClone } = require('./lib/data-clone-refresh');
 
 const ROOT = path.join(__dirname, '..');
 const PLAN_DIR = path.join(ROOT, 'data', 'pending-fixes');
-const USAGE = 'Usage: node scripts/new-fix-plan.js --id=bro-N --summary="..." (--edit=<showId>.<field>=VALUE | --commercial-edit=... | --buzz-edit=... | --review-edit=<show>/<file>.json:<field>=VALUE | --actions=<file.json>)... [--risk=low] [--dry-run] [--force]';
+const USAGE = 'Usage: node scripts/new-fix-plan.js --id=bro-N --summary="..." (--edit=<showId>.<field>=VALUE | --commercial-edit=... | --buzz-edit=... | --review-edit=<show>/<file>.json:<field>=VALUE | --actions=<file.json>)... [--risk=low] [--dry-run] [--force] [--after-lane]';
 
 function parseValue(raw) {
   try { return JSON.parse(raw); } catch { return raw; }
@@ -120,6 +121,10 @@ function completeActions(actions, { loadData, readReview, loadImageSources = () 
       }
       const typeProblem = typeChangeProblem(a);
       if (typeProblem) { problems.push(`${where}: ${typeProblem}`); return a; }
+      if (EXCERPT_FIELDS.includes(a.field) && a.newValue === null && typeof a.oldValue === 'string') {
+        a.oldValueHash = crypto.createHash('sha256').update(a.oldValue).digest('hex');
+        delete a.oldValue;
+      }
       reviewNow.set(key, a.newValue);
       if (!a.description) a.description = `${a.file}: ${a.field}`;
     } else if (a.type === 'review-file-op') {
@@ -146,7 +151,7 @@ function completeActions(actions, { loadData, readReview, loadImageSources = () 
 }
 
 // Reviewers read oldValue next to newValue.
-const KEY_ORDER = ['type', 'file', 'showId', 'showSlug', 'operation', 'sourcePath', 'destPath', 'field', 'oldValue', 'newValue', 'description'];
+const KEY_ORDER = ['type', 'file', 'showId', 'showSlug', 'operation', 'sourcePath', 'destPath', 'field', 'oldValue', 'oldValueHash', 'newValue', 'description'];
 function ordered(a) {
   const out = {};
   for (const k of KEY_ORDER) if (k in a) out[k] = a[k];
@@ -249,6 +254,22 @@ function main(argv) {
   const readReview = (rel) => { try { return JSON.parse(fs.readFileSync(path.join(reviewTextsDir, rel), 'utf8')); } catch { return null; } };
   console.log(`core data: ${coreDataDir}\nreview texts: ${reviewTextsDir}`);
 
+  // BRO-7891 item 2: a review edit on a show an opening-night lane holds tonight goes through the lane's inbox instead.
+  if (!argv.includes('--after-lane')) {
+    const routing = require('./lib/lane-inbox-routing');
+    const leases = new Map();
+    let refused = false;
+    for (const a of raw.filter((x) => x.type === 'review-field-edit')) {
+      const show = String(a.file || '').replace(REVIEW_TEXTS_PREFIX, '').split('/')[0];
+      if (!leases.has(show)) leases.set(show, routing.liveLease(show, ROOT));
+      const rec = readReview(String(a.file || '').replace(REVIEW_TEXTS_PREFIX, ''));
+      const laneProblem = routing.laneHeldEditProblem({ ...a, file: String(a.file || '').replace(REVIEW_TEXTS_PREFIX, '') }, leases.get(show), { url: rec && rec.url });
+      if (!laneProblem) continue;
+      console.error(`  ${laneProblem.level === 'refuse' ? 'REFUSED' : 'warning:'} ${a.file}:${a.field}: ${laneProblem.message}`);
+      if (laneProblem.level === 'refuse') refused = true;
+    }
+    if (refused) return 1;
+  }
   const { actions, problems } = completeActions(raw, { loadData, readReview });
   if (problems.length) { for (const p of problems) console.error(`  REFUSED ${p}`); return 1; }
 

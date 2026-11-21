@@ -35,6 +35,7 @@ const { isBroadwayCategory } = require('./venue-classification');
 const { parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch } = require('./cast-tombstone');
 const { ibdbUrlRejectReason } = require('./ibdb-year-guard');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
+const { openaiChatBody } = require('./llm-batch');
 
 const RATE_LIMIT_MS = 1500;
 
@@ -298,12 +299,12 @@ Title 2: "${ibdbTitle}"`;
   if (process.env.OPENAI_API_KEY) {
     try {
       const result = await new Promise((resolve, reject) => {
-        const body = JSON.stringify({
+        const body = JSON.stringify(openaiChatBody({
           model: GPT4O_MINI,
           messages: [{ role: 'user', content: prompt }],
-          max_tokens: 10,
+          maxTokens: 10,
           temperature: 0
-        });
+        }));
         const req = https.request('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` }

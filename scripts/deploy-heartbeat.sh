@@ -71,7 +71,8 @@ PARSED=$(echo "$RUNS_JSON" | node -e "
   try {
     const d = JSON.parse(require('fs').readFileSync(0, 'utf8'));
     const runs = d.workflow_runs || [];
-    const active = runs.some(r => ['in_progress', 'queued', 'waiting'].includes(r.status));
+    // BRO-7766: a pre-warm run may only be waiting on a rebuild (and may cancel itself).
+    const active = runs.some(r => ['in_progress', 'queued', 'waiting'].includes(r.status) && !String(r.display_title || '').includes('pre-warm'));
     const last = runs.find(r => r.event === 'schedule');
     const ageMin = last ? Math.round((Date.now() - new Date(last.created_at).getTime()) / 60000) : 999;
     console.log((active ? 'yes' : 'no') + ' ' + ageMin);

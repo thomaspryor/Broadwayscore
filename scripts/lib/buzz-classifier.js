@@ -17,6 +17,7 @@
 const https = require('https');
 require('./gemini-usage-ledger').install(); // BRO-5043: record-only Gemini usage ledger
 const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_SONNET, KIMI } = require('./models');
+const { openaiChatBody } = require('./llm-batch');
 const { commentAnchorsToShow } = require('./reddit-post-filters');
 
 // Zod-like schema validation (inline to avoid dependency)
@@ -277,11 +278,12 @@ async function callOpenAI(prompt) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
-  const body = JSON.stringify({
+  const body = JSON.stringify(openaiChatBody({
     model: GPT4O_MINI,
     temperature: 0.1,
+    maxTokens: null,
     messages: [{ role: 'user', content: prompt }]
-  });
+  }));
 
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.openai.com/v1/chat/completions', {

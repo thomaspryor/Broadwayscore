@@ -102,6 +102,40 @@ function hasTerminalVerdict(review, siblings) {
   return duplicateHasCanonical(review, siblings);
 }
 
+function normUrl(u) {
+  return String(u || '').trim().toLowerCase().replace(/#.*$/, '').replace(/\/+$/, '');
+}
+
+/**
+ * BRO-7901: a never-attempted stub whose URL is already held by ANOTHER file in
+ * the same show folder that WAS attempted (fetched, judged, quarantined) is a
+ * leftover pointer, not an uncollected URL. The outlet-listing-poller re-seeds
+ * `chicago-reader--unknown.json` after the fetch renamed the first file to
+ * `chicago-reader--kelly-kleiman.json`, and the re-seeded stub carries no
+ * duplicateOf, so it read as stranded every hour although the URL was fetched.
+ * A sibling that is itself never-attempted does not count (the URL stays
+ * reported, exactly once per file as before).
+ */
+// Positive proof the URL was fetched: text, quarantined text, an archive copy or a fetch timestamp.
+// "Not never-attempted" is too loose (bot_blocked, awaiting-text-collection never fetched anything).
+function wasFetched(r) {
+  return (r.fullText || '').length > 200 || (r.wrongFullText || '').length > 0
+    || !!r.textFetchedAt || !!r.archivePath;
+}
+
+// Only assessShow/findAgedStubs call this, never hasTerminalVerdict: the opening-night
+// poller (poller-needs-collection.js) also uses hasTerminalVerdict on already-attempted files.
+function urlAlreadyHandledBySibling(review, siblings) {
+  const key = normUrl(review.url);
+  if (!key || !siblings) return false;
+  for (const other of siblings.values()) {
+    if (!other || other === review || !other.url) continue;
+    if (normUrl(other.url) !== key) continue;
+    if (wasFetched(other)) return true;
+  }
+  return false;
+}
+
 function duplicateHasCanonical(review, siblings) {
   const seen = new Set();
   let ptr = review.duplicateOf;
@@ -122,7 +156,7 @@ function duplicateHasCanonical(review, siblings) {
  * BRO-5077: a touring production (All the Devils Are Here, tour 2024) inherits
  * every Broadway-aggregator URL for the earlier NYC run; all were rejected as
  * wrongProduction (correctly) and the alarm paged for 0 usable of 5 discovered.
- * Two cases are safe to discount; the LLM-only verdict on a non-tour is NOT
+ * Three cases are safe to discount; the LLM-only verdict on a non-tour is NOT
  * (it is fallible, and a wrongly flagged real review set is exactly the
  * blackout this alarm exists to catch):
  *  - the deterministic date guards (pre-window / URL date before the show's
@@ -130,7 +164,8 @@ function duplicateHasCanonical(review, siblings) {
  *  - on a tour only, a wrongProduction file published >60d before the tour
  *    opened, or whose verdict says it reviews the earlier NYC run. A bare
  *    wrongProduction flag is NOT enough: real local tour reviews get that
- *    flag too and must still page when they are all that was discovered.
+ *    flag too and must still page when they are all that was discovered, and
+ *  - on a tour only, a file the tour-integrity pass flagged uk-on-tour (BRO-7825).
  *
  * @param {object} show
  * @param {object} review
@@ -142,6 +177,13 @@ function isOtherProductionEvidence(show, review) {
     .filter(Boolean).join(' ');
   if (/pre-window date|URL date .* days before show earliest date/i.test(note)) return true;
   if (!show || (show.market !== 'tour' && show.category !== 'tour')) return false;
+  // BRO-7825: the tour-integrity pass flags 'uk-on-tour' on a London/.uk
+  // outlet, an overseas host, or UK text naming no stop of this tour, never on
+  // an LLM verdict. Match the structured kind; the reason text covers flags
+  // written before wrongProductionKind existed.
+  if (review.wrongProductionDetectedBy === 'tour-integrity'
+    && (review.wrongProductionKind === 'uk-on-tour'
+      || /UK or overseas production reviewed/i.test(review.wrongProductionReason || ''))) return true;
   // Tour only. Local tour reviews are also LLM-flagged wrongProduction at times
   // (and-juliet-tour-2024, mrs-doubtfire-tour-2025), so a bare flag proves
   // nothing; require positive evidence the file is about the earlier run.
@@ -246,7 +288,7 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
     if (review && review.url && !isOtherProductionEvidence(show, review)) discovered++;
     if (review && (review.fullText || '').length > 200) usable++;
     if (!isNeverAttempted(review)) continue;
-    if (hasTerminalVerdict(review, siblings)) continue;
+    if (hasTerminalVerdict(review, siblings) || urlAlreadyHandledBySibling(review, siblings)) continue;
     const ageHours = strandAgeHours(review, nowMs);
     // An undatable strand still counts — a missing timestamp must not buy a
     // file an exemption, which is the same "null field silences the check"
@@ -306,7 +348,7 @@ function findAgedStubs(files, { nowMs, maxAgeHours = AGED_STUB_MAX_AGE_HOURS } =
   for (const { file, review } of files || []) {
     if (!isNeverAttempted(review)) continue;
     if (Array.isArray(review.fetchAttempts) && review.fetchAttempts.length > 0) continue;
-    if (hasTerminalVerdict(review, siblings)) continue;
+    if (hasTerminalVerdict(review, siblings) || urlAlreadyHandledBySibling(review, siblings)) continue;
     const ageHours = strandAgeHours(review, nowMs);
     if (ageHours === null || ageHours >= maxAgeHours) {
       out.push({ file, url: review.url, outlet: review.outlet || null, ageHours });

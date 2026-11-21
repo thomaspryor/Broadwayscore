@@ -2,32 +2,31 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- Automatic cookie renewal, The Stage only for now (BRO-4183).
+    <!-- Automatic cookie renewal for thestage, nytimes, newyorker, wapo,
+         thetimes, ft, telegraph (BRO-4183, BRO-7705).
 
-         Every 6h: scripts/renew-cookies.js probes a walled Stage review
-         (free, plain HTTPS from this residential IP, same probe as
-         check-cookie-health.yml Layer 3). Logged in: exits in seconds.
-         Logged out: reuses the persistent profile's session if it is still
-         alive, else logs in ONCE (password from the macOS Keychain), pushes
-         COOKIES_BUNDLE_* via extract-safari-cookies.py (from-local mode), and
-         confirms with a live check-cookie-health run. CAPTCHA, emailed
-         code, rejected password, or 2 logins in 7 days: stops, emails one
-         link, and stays stopped. Recover with
-         renew-cookies.js in manual mode (see its header for flags) (you log in
-         inside the same profile, so no extra device), or its reset flag after
-         fixing the cause some other way. Probe pages that aren't the known
-         registration gate (Cloudflare challenge, maintenance) never trigger
-         a login.
+         Every 6h: scripts/renew-cookies.js checks each outlet's walled
+         article (plain HTTPS for thestage/nytimes/wapo; inside the outlet's
+         persistent Chrome profile for newyorker/thetimes/ft/telegraph, always
+         against a no-session control). Logged in and no auth cookie lapsing
+         within 3 days: nothing happens. Otherwise it takes the profile's own
+         session, or adopts the saved cookies into the profile, and only then
+         logs in ONCE (password or Gmail one-time code, credentials from the
+         macOS Keychain). Renewed cookies are pushed to COOKIES_BUNDLE_* once
+         per run via extract-safari-cookies.py (from-local mode) and confirmed
+         with a live check-cookie-health run. Missing Keychain items, CAPTCHA,
+         emailed code, rejected password, or 2 logins in 7 days: stops, emails
+         one link, and stays stopped (see the renew-cookies.js header for the
+         manual and reset flags). Bot challenges never trigger a login.
 
-         MAC STUDIO ONLY. Never add Stage login to CI: per-runner logins
-         tripped the 2-device limit on 2026-03-30.
+         MAC STUDIO ONLY. Never add these logins to CI or cloud: per-runner
+         logins tripped The Stage's 2-device limit on 2026-03-30.
 
-         Do NOT install before the first supervised run:
-           security add-generic-password, service broadwayscorecard-cookie-renew, account thestage-email, value = your Stage login email
-           security add-generic-password, service broadwayscorecard-cookie-renew, account thestage-password, prompt for password
-           (exact commands: scripts/lib/cookie-renew.js readKeychain docstring)
-           node scripts/renew-cookies.js (outlet thestage, headed flag; exact flags in its header)
-         then confirm The Stage's account page shows a single active session.
+         Keychain items (service broadwayscorecard-cookie-renew), one pair per
+         outlet, account names <outlet>-email and <outlet>-password; nytimes and
+         newyorker need only the email (exact commands: scripts/lib/cookie-renew.js
+         readKeychain docstring). A missing-Keychain stop clears itself on the
+         next run after the items are added.
 
          .env is sourced for RESEND_API_KEY/OWNER_EMAIL (alert email) only;
          launchd does not inherit shell env. `gh` must be authenticated with
@@ -40,11 +39,15 @@
          Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.cookie-renew -->
     <key>Label</key>
     <string>com.broadwayscore.cookie-renew</string>
+    <!-- Both flags on purpose: renew-cookies.js reads outlets= first (all
+         outlets); a main checkout still on the pre-BRO-7705 script reads only
+         outlet= and keeps renewing The Stage instead of exiting on an unknown
+         flag (checkout-sync can lag main for hours). -->
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
         <string>-lc</string>
-        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/renew-cookies.js --outlet=thestage</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/renew-cookies.js --outlets=all --outlet=thestage</string>
     </array>
     <key>StartInterval</key>
     <integer>21600</integer>

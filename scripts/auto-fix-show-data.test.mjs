@@ -399,7 +399,7 @@ test('generateCreativeTeamWithSerpVerification anchors directors to the venue', 
 // inherit from tourOf; Wikipedia enrichment skips tours), so five sat empty.
 test('daily targets include a not-closed tour that cannot inherit a synopsis', () => {
   const { selectDailyTargets, isSynopsisOnlyTarget } = require('./auto-fix-show-data.js');
-  const synopsis = 'A bodyguard is hired to protect a superstar singer from a stalker, and the two fall in love.';
+  const synopsis = 'A bodyguard is hired to protect a superstar singer from a stalker, and the two fall in love as they face danger together and learn to trust each other.';
   const shows = [
     { id: 'open-show', status: 'open', category: 'broadway', synopsis },
     { id: 'upcoming-broadway', status: 'upcoming', category: 'broadway' },
@@ -459,4 +459,41 @@ test('prioritizeDailyTargets puts bad/missing synopsis first, keeping source ord
   const out = prioritizeDailyTargets([good('a'), bad('b'), good('c'), bad('d')]).map(s => s.id);
   assert.deepEqual(out, ['b', 'd', 'a', 'c']);
   assert.deepEqual(prioritizeDailyTargets(undefined), []);
+});
+
+test('resolveTodayTixInfo falls back to the id the show record carries (BRO-5755)', () => {
+  const { resolveTodayTixInfo } = require('./auto-fix-show-data.js');
+  const ids = { shows: { 'listed-2026': { id: 111, slug: 'listed', market: 'nyc' } } };
+  // In the ids file: the file row wins.
+  assert.deepEqual(resolveTodayTixInfo({ id: 'listed-2026', slug: 'listed', todaytixId: 999 }, ids), { id: 111, slug: 'listed', market: 'nyc' });
+  // Only on the record (jenufa-off-broadway-2026's shape): use it, so the cron fetches TodayTix.
+  assert.deepEqual(resolveTodayTixInfo({ id: 'jenufa-off-broadway-2026', slug: 'jenufa-off-broadway', todaytixId: 48540 }, ids), { id: 48540, slug: null });
+  // Neither: nothing to fetch.
+  assert.equal(resolveTodayTixInfo({ id: 'nothing-2026', slug: 'nothing' }, ids), null);
+  assert.equal(resolveTodayTixInfo({ id: 'nothing-2026' }, { shows: {} }), null);
+  assert.equal(resolveTodayTixInfo({ id: 'nothing-2026', todaytixId: 5 }, undefined).id, 5);
+});
+
+test('thin synopses are upgraded only with a complete candidate and healthy synopses are left alone', async () => {
+  const { fixSynopsis, prioritizeDailyTargets } = require('./auto-fix-show-data.js');
+  const thin = 'A new musical celebrating the life and music of Bobby Darin.';
+  const complete = 'A young musician finds his voice in a crowded city, building a career from small clubs to the stage. Along the way, he meets a singer who challenges his ambitions and changes the course of his life.';
+  const healthy = `${complete} As their lives unfold, the couple must decide what success means to them and the people they love.`;
+  const show = { id: 'just-in-time-2025', title: 'Just in Time', status: 'open', synopsis: thin, todaytixId: 123 };
+  let calls = 0;
+  const fetchTodayTix = async (_show, info) => { calls++; assert.equal(info.id, 123); return { text: complete, trusted: true }; };
+  await fixSynopsis(show, { shows: {} }, { fetchTodayTix });
+  assert.equal(calls, 1);
+  assert.equal(show.synopsis, complete);
+  assert.deepEqual(prioritizeDailyTargets([{ ...show, id: 'healthy', synopsis: healthy }, { ...show, synopsis: thin }]).map(s => s.id), [show.id, 'healthy']);
+  const unchanged = { ...show, synopsis: healthy };
+  await fixSynopsis(unchanged, {}, { fetchTodayTix });
+  assert.equal(calls, 1);
+  assert.equal(unchanged.synopsis, healthy);
+  const rejected = { ...show, synopsis: thin };
+  await fixSynopsis(rejected, {}, { fetchTodayTix: async () => ({ text: 'A singer finds his voice while building a career in the city.', trusted: true }), generate: async () => null });
+  assert.equal(rejected.synopsis, thin);
+  const missing = { ...show, synopsis: thin };
+  await fixSynopsis(missing, {}, { fetchTodayTix: async () => ({ text: null, trusted: false }), generate: async () => null });
+  assert.equal(missing.synopsis, thin);
 });

@@ -31,6 +31,11 @@ import { parseDemoFeatures, detectFlagGatedChangedFiles } from './lib/visual-qa-
 import { rolePromptHeader, parseVerdictJson } from './lib/visual-qa-prompt.mjs';
 import { OWNER_APPROVAL_INSTRUCTION } from './lib/visual-qa-agent-instructions.mjs';
 import { WIDTHS, AD_NETWORK_URL_RE, launchChromium } from './lib/visual-capture.mjs';
+import { devServerReachable } from './lib/dev-server-reachable.mjs';
+import { isMainModule } from './lib/is-main-module.mjs';
+
+// BRO-7849: cloud-visual-qa.mjs waits on this same check before it starts a capture.
+export { devServerReachable };
 
 // Load .env into process.env without external dotenv dependency.
 // Only sets keys not already in env (so explicit env overrides .env).
@@ -612,21 +617,6 @@ function isLocalhost(url) {
   }
 }
 
-async function devServerReachable(url) {
-  // Health check: dev server must respond with >1KB HTML. Catches the
-  // "Playwright happily captures a blank page as PASS" failure mode.
-  try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-    if (!res.ok) return { ok: false, reason: `HTTP ${res.status}` };
-    const body = await res.text();
-    if (body.length < 1024) return { ok: false, reason: `response too small (${body.length} bytes)` };
-    if (!/<html|<!doctype/i.test(body)) return { ok: false, reason: 'response not HTML' };
-    return { ok: true, bytes: body.length };
-  } catch (err) {
-    return { ok: false, reason: err?.message || String(err) };
-  }
-}
-
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) { printHelp(); process.exit(0); }
@@ -872,7 +862,9 @@ Then re-run this command.`);
   process.exit(overallPass ? 0 : 2);
 }
 
-main().catch(err => {
-  console.error(`[visual-qa] FATAL: ${err?.stack || err}`);
-  process.exit(2);
-});
+if (isMainModule(import.meta.url)) {
+  main().catch(err => {
+    console.error(`[visual-qa] FATAL: ${err?.stack || err}`);
+    process.exit(2);
+  });
+}

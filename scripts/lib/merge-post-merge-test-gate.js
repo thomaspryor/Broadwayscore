@@ -134,6 +134,7 @@
 
 const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 const { execErrorDetail } = require('./exec-error-detail.js');
@@ -145,6 +146,39 @@ const { nodeUnitTestsForTree, treeUsesCollector, NODE_MANIFEST_REL } = require('
 // runner before the baseline was consulted); the outer land cap (land-branch.js MERGED_TREE_TIMEOUT_MS) is 30 min, enough
 // for 3 spawns (merged + retry + baseline); the land.yml job budget is 125 min.
 const TEST_GATE_TIMEOUT_MS = 8 * 60 * 1000;
+
+// BRO-7947: the fixed 8 min cap killed the ~1550-file suite (7,500+ tests) on
+// the loaded Mac Studio (7+ headless workers): measured 8:22 wall at load avg
+// 23-34 on 14 cores, 7:13 and then a >8:00 kill at load avg ~7-10 (load BELOW the
+// core count, so the load factor alone never helped; the local floor is 12 min), ~22 CPU-min total, every test before the kill `ok`. A kill
+// is still a fail-safe BLOCK, so the cap must track the machine's load, not a
+// constant. Cap = max(8 min floor, files x 250 ms) x max(1, load1 / cores),
+// clamped to [8 min, 12 min]. The 12 min ceiling sits under push-mutex.sh's
+// PUSH_LOCK_TIMEOUT_SEC (900 s): the local floor runs while the push lock is held,
+// and waiters fail open past 15 min. Land's CI job opts out
+// (MERGE_TEST_GATE_NO_LOAD_SCALING=1): its outer cap (land-branch.js
+// MERGED_TREE_TIMEOUT_MS, 30 min) and the land.yml retry margin are sized for
+// three 8-min spawns, and a 4-vCPU runner's load is not other workers.
+const TEST_GATE_LOCAL_MIN_TIMEOUT_MS = 12 * 60 * 1000;
+const TEST_GATE_MAX_TIMEOUT_MS = 14 * 60 * 1000;
+const TEST_GATE_PER_FILE_MS = 250;
+
+function computeTestGateTimeoutMs({ fileCount = 0, loadAvg = 0, cores = 1, env = {} } = {}) {
+  if (env.MERGE_TEST_GATE_NO_LOAD_SCALING === '1') return TEST_GATE_TIMEOUT_MS;
+  // Operator override: validated (NaN/0/negative fall through; spawnSync treats
+  // timeout 0 as NO timeout, so the rounded value must be >= 1 s) and bounded.
+  const override = Math.round(Number(env.MERGE_TEST_GATE_TIMEOUT_MS));
+  if (Number.isFinite(override) && override >= 1000) return Math.min(override, 60 * 60 * 1000);
+  const base = Math.max(TEST_GATE_LOCAL_MIN_TIMEOUT_MS, fileCount * TEST_GATE_PER_FILE_MS);
+  const factor = Math.max(1, (Number(loadAvg) || 0) / Math.max(1, Number(cores) || 1));
+  return Math.round(Math.min(TEST_GATE_MAX_TIMEOUT_MS, Math.max(TEST_GATE_LOCAL_MIN_TIMEOUT_MS, base * factor)));
+}
+
+function currentTestGateTimeoutMs(fileCount, env = process.env) {
+  let cores = 1;
+  try { cores = typeof os.availableParallelism === 'function' ? os.availableParallelism() : os.cpus().length; } catch { /* keep 1 */ }
+  return computeTestGateTimeoutMs({ fileCount, loadAvg: os.loadavg()[0], cores, env });
+}
 
 // node's TAP `location:` line reports the REAL (symlink-resolved) path, but a
 // tmpdir root (e.g. acceptance-check-core.js's baseline checkout, always
@@ -480,7 +514,7 @@ function selectTestFiles(cwd, changedFiles, { onlyListed = false } = {}) {
   return [...new Set(files)].filter((rel) => !tsxManifest.has(rel)).sort();
 }
 
-function defaultExec(cwd, testFiles) {
+function defaultExec(cwd, testFiles, timeoutMs = TEST_GATE_TIMEOUT_MS) {
   // NODE_TEST_CONTEXT (set by node's own --test runner on itself) makes a
   // NESTED `node --test` child assume it's a subtest reporting results back
   // over an inherited IPC channel rather than a standalone run — it then
@@ -498,7 +532,7 @@ function defaultExec(cwd, testFiles) {
     cwd,
     encoding: 'utf8',
     env,
-    timeout: TEST_GATE_TIMEOUT_MS,
+    timeout: timeoutMs,
     maxBuffer: 64 * 1024 * 1024,
   });
 }
@@ -685,7 +719,12 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       reason: 'no test files found for changed paths (scripts/lib/*.test.mjs, tests/unit/<basename>.test.mjs)',
     };
   }
-  let result = execFn(cwd, testFiles);
+  // Computed ONCE so the merged, retry and baseline spawns share one cap (the
+  // 1-min load average would otherwise differ between them).
+  const timeoutMs = currentTestGateTimeoutMs(testFiles.length);
+  const startedAt = Date.now();
+  const wallSec = () => ((Date.now() - startedAt) / 1000).toFixed(0);
+  let result = execFn(cwd, testFiles, timeoutMs);
   let output = `${result.stdout || ''}${result.stderr || ''}`;
   // BRO-2874: a non-zero exit with ZERO parseable failures is a process-level
   // death (timeout, ENOBUFS, a flaky network retry loop in the full run), not
@@ -701,7 +740,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   if (retryUnparseable && !killedByTimeout && result.status !== 0 && parseTapOutput(output, safeRealpath(cwd)).failures.size === 0) {
     retriedUnparseable = true;
     const first = describeExit(result);
-    result = execFn(cwd, testFiles);
+    result = execFn(cwd, testFiles, timeoutMs);
     output = `${result.stdout || ''}${result.stderr || ''}`;
     output += `\n\n⚠ post-merge test floor: first merged run died unparseably (${first}); re-ran once, second run: ${describeExit(result)}`;
   }
@@ -733,7 +772,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: mergedPassed,
       output,
-      reason: `ran ${testFiles.length} file(s); ${describeExit(result)}${retriedUnparseable ? (mergedPassed ? ' (passed on re-run after an unparseable first run)' : ' (unparseable on both runs; baseline NOT consulted)') : ''}`,
+      reason: `ran ${testFiles.length} file(s) in ${wallSec()}s (cap ${Math.round(timeoutMs / 1000)}s); ${describeExit(result)}${retriedUnparseable ? (mergedPassed ? ' (passed on re-run after an unparseable first run)' : ' (unparseable on both runs; baseline NOT consulted)') : ''}`,
     };
   }
 
@@ -787,7 +826,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles, { onlyListed });
     let baselineFailures = new Map();
     if (baselineTestFiles.length > 0) {
-      const baselineResult = execFn(baselineRoot, baselineTestFiles);
+      const baselineResult = execFn(baselineRoot, baselineTestFiles, timeoutMs);
       const baselineParsed = parseTapOutput(`${baselineResult.stdout || ''}`, safeRealpath(baselineRoot));
       // Same fail-safe guard as the merged run above, mirrored for the
       // baseline: a baseline run that exited non-zero but parsed zero
@@ -884,6 +923,9 @@ function baselineCheckoutOptions(env) {
 
 module.exports = {
   TEST_GATE_TIMEOUT_MS,
+  TEST_GATE_MAX_TIMEOUT_MS,
+  TEST_GATE_LOCAL_MIN_TIMEOUT_MS,
+  computeTestGateTimeoutMs,
   REQUIRED_WORKFLOW_GUARDS,
   EXCLUDED_WORKFLOW_GUARDS,
   shouldRunTestGate,
@@ -946,6 +988,7 @@ if (require.main === module) {
   });
   if (ran) {
     process.stdout.write(output);
+    if (passed) console.log(`post-merge test floor: passed (${reason})`);
   } else {
     console.log(`post-merge test floor: skipped (${reason})`);
   }

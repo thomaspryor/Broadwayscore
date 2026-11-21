@@ -52,6 +52,7 @@ function ghDispatcher({ exec = execFileSync, sleep = (ms) => new Promise((r) => 
 function createDeployPort({ show, night, dispatch, page, now = () => Date.now(), ceilingMs = CEILING_MS, log = (m) => console.warn(m) } = {}) {
   if (!show || typeof dispatch !== 'function') throw new Error('deploy-port: show and dispatch are required');
   let open = null; // {at, urls:Set, pending:boolean}; pending = the dispatch call itself is still running
+  let queuedAbsent = new Set(); // BRO-7958: URLs a take-down removed that still must be seen gone (the mirror of `queued`)
   let queued = new Set(); // URLs from batches that arrived while a dispatch was open, or whose dispatch failed
   const attempts = new Map(); // url -> dispatches that covered it
   const dispatches = [];
@@ -63,19 +64,22 @@ function createDeployPort({ show, night, dispatch, page, now = () => Date.now(),
   };
 
   /** Start a dispatch for `urls`. `open` is set before the call so an overlapping batch queues instead of dispatching too. */
-  function fire(urls) {
+  function fire(urls, absentUrls = new Set()) {
     const cover = new Set([...urls].filter((u) => (attempts.get(u) || 0) < MAX_DISPATCHES_PER_URL));
-    if (!cover.size) return { dispatched: false, reason: urls.size ? 'dispatch cap per URL reached; the cron and the live-timeout page cover it' : 'nothing landed' };
+    const absent = new Set([...absentUrls].filter((u) => (attempts.get(`absent:${u}`) || 0) < MAX_DISPATCHES_PER_URL));
+    if (!cover.size && !absent.size) return { dispatched: false, reason: urls.size || absentUrls.size ? 'dispatch cap per URL reached; the cron and the live-timeout page cover it' : 'nothing landed' };
     for (const u of cover) attempts.set(u, (attempts.get(u) || 0) + 1);
-    const slot = { at: now(), urls: cover, pending: true };
+    for (const u of absent) attempts.set(`absent:${u}`, (attempts.get(`absent:${u}`) || 0) + 1);
+    const slot = { at: now(), urls: cover, absent, pending: true };
     open = slot;
     running = running.then(async () => {
       let res;
       try { res = await dispatch(); } catch (e) { res = { ok: false, error: String((e && e.message) || e) }; }
-      dispatches.push({ at: now(), urls: [...cover], ok: !!(res && res.ok) });
-      if (res && res.ok) { slot.pending = false; slot.at = now(); log(`deploy dispatched (${cover.size} url(s))`); return; }
+      dispatches.push({ at: now(), urls: [...cover], ...(absent.size ? { absent: [...absent] } : {}), ok: !!(res && res.ok) });
+      if (res && res.ok) { slot.pending = false; slot.at = now(); log(`deploy dispatched (${cover.size + absent.size} url(s))`); return; }
       if (open === slot) open = null;
-      for (const u of cover) queued.add(u); // a failed dispatch still counts toward the per-URL cap, so the retry on the next batch or poll is bounded
+      for (const u of cover) queued.add(u);
+      for (const u of absent) queuedAbsent.add(u); // a failed dispatch still counts toward the per-URL cap, so the retry on the next batch or poll is bounded
       await pageSafe(`Lane deploy dispatch failed for ${show}`, `gh workflow run ${WORKFLOW} failed: ${(res && res.error) || 'unknown'}. The 5-minute deploy cron still ships the data; the live poll keeps running.`);
     });
     return { dispatched: true };
@@ -86,30 +90,34 @@ function createDeployPort({ show, night, dispatch, page, now = () => Date.now(),
   function closeAndMaybeTrail(liveSet) {
     open = null;
     const rest = new Set([...queued].filter((u) => !(liveSet && liveSet.has(u))));
-    queued = new Set();
-    return rest.size ? fire(rest) : null;
+    const restAbsent = new Set([...queuedAbsent].filter((u) => !liveSet || liveSet.has(u))); // still live: the removal has not shipped
+    queued = new Set(); queuedAbsent = new Set();
+    return rest.size || restAbsent.size ? fire(rest, restAbsent) : null;
   }
 
   return {
     /** Never blocks on the dispatch or the build. */
-    deploy({ expectedUrls = [], night: n } = {}) {
+    deploy({ expectedUrls = [], absentUrls = [], night: n } = {}) {
       if (n) night = n;
       const urls = new Set(expectedUrls.map(canonicalUrl).filter(Boolean));
-      if (expired()) { for (const u of open.urls) queued.add(u); closeAndMaybeTrail(null); }
-      if (open) { for (const u of urls) queued.add(u); return { dispatched: false, coalesced: true }; }
+      const gone = new Set(absentUrls.map(canonicalUrl).filter(Boolean));
+      if (expired()) { for (const u of open.urls) queued.add(u); for (const u of open.absent || []) queuedAbsent.add(u); closeAndMaybeTrail(null); }
+      if (open) { for (const u of urls) queued.add(u); for (const u of gone) queuedAbsent.add(u); return { dispatched: false, coalesced: true }; }
       const all = new Set([...urls, ...queued]); queued = new Set();
-      return fire(all);
+      const allGone = new Set([...gone, ...queuedAbsent]); queuedAbsent = new Set();
+      return fire(all, allGone);
     },
     /** Called with the live show doc after every cache-busted fetch. */
     observe(doc) {
       const live = new Set(((doc && doc.rv) || []).map((x) => canonicalUrl(x && x.u)).filter(Boolean));
       if (!open) { // a failed dispatch left URLs queued: retry them on the next poll while they are still not live
-        if ([...queued].some((u) => !live.has(u))) closeAndMaybeTrail(live);
+        if ([...queued].some((u) => !live.has(u)) || [...queuedAbsent].some((u) => live.has(u))) closeAndMaybeTrail(live);
         return;
       }
       if (open.pending) return;
-      if ([...open.urls].every((u) => live.has(u)) || expired()) {
+      if (([...open.urls].every((u) => live.has(u)) && [...(open.absent || [])].every((u) => !live.has(u))) || expired()) {
         for (const u of open.urls) queued.add(u); // anything the open dispatch covered that is still not live goes round again
+        for (const u of open.absent || []) queuedAbsent.add(u);
         closeAndMaybeTrail(live);
       }
     },

@@ -1,137 +1,33 @@
 {
  "city": "washington-dc",
- "today": "2026-11-17",
+ "today": "2026-11-19",
  "models": {
   "gemini": "gemini-2.5-flash",
   "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
   "shows": 50,
-  "images": 20,
+  "images": 61,
   "publishedReviews": 196,
   "excludedFiles": 21,
   "reviewsWithoutText": 14,
   "tourStops": 12,
   "coverageShows": 36,
-  "totalShows": 50,
-  "totalPublished": 196
+  "totalShows": 64,
+  "totalPublished": 211
  },
  "flaggedByGemini": 68,
- "flaggedByOpenAI": 58,
- "flaggedLocalChecks": 34,
- "flaggedAny": 112,
+ "flaggedByOpenAI": 57,
+ "flaggedLocalChecks": 16,
+ "flaggedAny": 93,
  "flaggedByBoth": 44,
- "triagedItems": 124,
+ "triagedItems": 126,
  "confirmed": 41,
- "falsePositives": 83,
- "fixed": 2,
+ "falsePositives": 85,
+ "fixed": 28,
  "remaining": [
   {
-   "item": "image:a-fine-madness-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:get-down-tonight-classic-funk-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
    "item": "image:the-motion-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:the-play-that-goes-wrong-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:a-gentlemans-guide-to-love-and-murder-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:ghost-limb-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:or-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:precarious-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:sally-and-tom-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:aguardiente-where-magic-transcends-borders-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:somewhere-over-the-border-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:ma-raineys-black-bottom-regional-2026-round-house-theatre",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:adrift-a-medieval-wayward-folly-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:the-roaring-girl-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:the-mannequin-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:stonewalls-bust-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:venus-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:richard-obriens-the-rocky-horror-show-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:no-exit-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:the-colored-museum-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:garbo-the-actor-who-saved-the-world-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:bronte-sister-house-party-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:all-the-worlds-a-stage-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:some-like-it-hot-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:where-dead-women-go-to-dance-regional-2026",
-   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "image:the-legend-of-sleepy-hollow-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
   {
@@ -183,7 +79,7 @@
    "reason": "Official tour page lists the National Theatre stop Nov 24 to Dec 6; ours ends Nov 29. tour-schedules.json is rewritten by fetch-tour-schedules.js so a manual edit would not hold. Remaining item: needs a tour-stop override layer."
   }
  ],
- "untriaged": 12,
+ "untriaged": 18,
  "flags": [
   {
    "kind": "show",
@@ -200,22 +96,6 @@
    "model": "openai",
    "code": "closing-date",
    "detail": "ours 2026-06-28 / page 2026-06-21"
-  },
-  {
-   "kind": "image",
-   "id": "a-fine-madness-regional-2026",
-   "label": "A Fine Madness",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
-   "kind": "image",
-   "id": "get-down-tonight-classic-funk-regional-2026",
-   "label": "Get Down Tonight: Classic Funk",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
   },
   {
    "kind": "show",
@@ -314,14 +194,6 @@
    "detail": "ours 2026-07-19 / page 2026-09-08"
   },
   {
-   "kind": "image",
-   "id": "the-play-that-goes-wrong-regional-2026",
-   "label": "The Play That Goes Wrong",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "carla-hall-please-underestimate-me-regional-2026",
    "label": "Carla Hall - Please Underestimate Me",
@@ -394,14 +266,6 @@
    "detail": "page 2026-07-02, ours empty"
   },
   {
-   "kind": "image",
-   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
-   "label": "A Gentleman's Guide to Love and Murder",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "ghost-limb-regional-2026",
    "label": "Ghost Limb",
@@ -432,30 +296,6 @@
    "model": "openai",
    "code": "preview-date-missing",
    "detail": "page 2026-04-30, ours empty"
-  },
-  {
-   "kind": "image",
-   "id": "ghost-limb-regional-2026",
-   "label": "Ghost Limb",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
-   "kind": "image",
-   "id": "or-regional-2026",
-   "label": "Or,",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
-   "kind": "image",
-   "id": "precarious-regional-2026",
-   "label": "Precarious",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
   },
   {
    "kind": "show",
@@ -480,14 +320,6 @@
    "model": "openai",
    "code": "opening-date",
    "detail": "ours 2026-06-08 / page 2026-05-27"
-  },
-  {
-   "kind": "image",
-   "id": "sally-and-tom-regional-2026",
-   "label": "Sally & Tom",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
   },
   {
    "kind": "show",
@@ -522,22 +354,6 @@
    "detail": "page says touring production"
   },
   {
-   "kind": "image",
-   "id": "aguardiente-where-magic-transcends-borders-regional-2026",
-   "label": "Aguardiente: Where Magic Transcends Borders",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
-   "kind": "image",
-   "id": "somewhere-over-the-border-regional-2026",
-   "label": "Somewhere Over the Border",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
    "label": "Ma Rainey's Black Bottom",
@@ -562,28 +378,12 @@
    "detail": "ours 2026-09-21 / page 2026-09-09"
   },
   {
-   "kind": "image",
-   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
-   "label": "Ma Rainey's Black Bottom",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "adrift-a-medieval-wayward-folly-regional-2026",
    "label": "Adrift: A Medieval Wayward Folly",
    "model": "openai",
    "code": "category",
    "detail": "page says touring production"
-  },
-  {
-   "kind": "image",
-   "id": "adrift-a-medieval-wayward-folly-regional-2026",
-   "label": "Adrift: A Medieval Wayward Folly",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
   },
   {
    "kind": "show",
@@ -626,44 +426,12 @@
    "detail": "page 2026-10-20, ours empty"
   },
   {
-   "kind": "image",
-   "id": "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
-   "label": "The Effect of Gamma Rays on Man-in-the-Moon Marigolds",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "the-roaring-girl-regional-2026",
    "label": "The Roaring Girl",
    "model": "openai",
    "code": "page-not-this-production",
    "detail": ""
-  },
-  {
-   "kind": "image",
-   "id": "the-roaring-girl-regional-2026",
-   "label": "The Roaring Girl",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
-   "kind": "image",
-   "id": "the-mannequin-regional-2026",
-   "label": "The Mannequin",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
-   "kind": "image",
-   "id": "stonewalls-bust-regional-2026",
-   "label": "Stonewall's Bust",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
   },
   {
    "kind": "show",
@@ -682,36 +450,12 @@
    "detail": "page 2026-09-09, ours empty"
   },
   {
-   "kind": "image",
-   "id": "venus-regional-2026",
-   "label": "Venus",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "richard-obriens-the-rocky-horror-show-regional-2026",
    "label": "Richard O'Brien's The Rocky Horror Show",
    "model": "openai",
    "code": "preview-date-missing",
    "detail": "page 2026-08-22, ours empty"
-  },
-  {
-   "kind": "image",
-   "id": "richard-obriens-the-rocky-horror-show-regional-2026",
-   "label": "Richard O'Brien's The Rocky Horror Show",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
-   "kind": "image",
-   "id": "no-exit-regional-2026",
-   "label": "No Exit",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
   },
   {
    "kind": "show",
@@ -744,22 +488,6 @@
    "model": "gemini",
    "code": "opening-date",
    "detail": "ours 2026-07-17 / page 2026-06-26"
-  },
-  {
-   "kind": "image",
-   "id": "the-colored-museum-regional-2026",
-   "label": "The Colored Museum",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
-   "kind": "image",
-   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
-   "label": "Garbo: The Actor Who Saved the World",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
   },
   {
    "kind": "show",
@@ -810,14 +538,6 @@
    "detail": "ours \"Theater Alliance, Washington, DC\" / page \"Waterfront Park at The Wharf\""
   },
   {
-   "kind": "image",
-   "id": "bronte-sister-house-party-regional-2026",
-   "label": "Bronte Sister House Party",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "all-the-worlds-a-stage-regional-2026",
    "label": "All The World's A Stage",
@@ -834,14 +554,6 @@
    "detail": "All the World’s a Stage runs October 20 – December 20, 2026, in the ARK Theatre at Signatu"
   },
   {
-   "kind": "image",
-   "id": "all-the-worlds-a-stage-regional-2026",
-   "label": "All The World's A Stage",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
    "kind": "show",
    "id": "all-the-worlds-a-stage-regional-2026",
    "label": "All The World's A Stage",
@@ -856,22 +568,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-09-18, ours empty"
-  },
-  {
-   "kind": "image",
-   "id": "some-like-it-hot-regional-2026",
-   "label": "Some Like It Hot",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
-  },
-  {
-   "kind": "image",
-   "id": "where-dead-women-go-to-dance-regional-2026",
-   "label": "Where Dead Women Go to Dance",
-   "model": "local",
-   "code": "no-poster",
-   "detail": "show has no images.poster"
   },
   {
    "kind": "show",
@@ -907,8 +603,8 @@
   },
   {
    "kind": "image",
-   "id": "the-legend-of-sleepy-hollow-regional-2026",
-   "label": "The Legend of Sleepy Hollow",
+   "id": "metamorphosis-regional-2026",
+   "label": "Metamorphosis",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
@@ -962,9 +658,41 @@
    "detail": "ours 2026-11-10 / page 2026-10-30"
   },
   {
+   "kind": "image",
+   "id": "les-miserables-regional-2026",
+   "label": "Les Miserables",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
    "kind": "show",
    "id": "les-miserables-regional-2026",
    "label": "Les Miserables",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "body-language-regional-2026",
+   "label": "Body Language",
+   "model": "local",
+   "code": "no-closing-date",
+   "detail": "open show without closingDate"
+  },
+  {
+   "kind": "show",
+   "id": "not-exactly-a-nun-regional-2026",
+   "label": "Not Exactly a Nun",
+   "model": "local",
+   "code": "no-closing-date",
+   "detail": "open show without closingDate"
+  },
+  {
+   "kind": "show",
+   "id": "my-english-persian-kitchen-regional-2026",
+   "label": "My English Persian Kitchen",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
@@ -1224,6 +952,30 @@
    "model": "openai",
    "code": "excluded-looks-valid",
    "detail": "“Directed by Robert McNamara and staged by Scena Theatre, it proceeds over a brisk 90 minutes at the DC Arts Center” | flags on file: "
+  },
+  {
+   "kind": "review",
+   "id": "madama-butterfly-regional-2026|https://www.metroweekly.com/2026/11/madama-butterfly-review-washington-national-opera|kate wingfield",
+   "label": "madama-butterfly-regional-2026 | Metro Weekly",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metroweekly.com/2026/11/madama-butterfly-review-washington-national-opera/"
+  },
+  {
+   "kind": "review",
+   "id": "the-war-of-the-worlds-regional-2026|https://aroundthetownchicago.com/theatre-reviews/a-war-of-the-worlds-reviewed-by-julia-w-rath|",
+   "label": "the-war-of-the-worlds-regional-2026 | Around the Town Chicago",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://aroundthetownchicago.com/theatre-reviews/a-war-of-the-worlds-reviewed-by-julia-w-rath/"
+  },
+  {
+   "kind": "review",
+   "id": "the-war-of-the-worlds-regional-2026|https://dc.citycast.fm/theater-reviews/war-worlds-orson-welles-dc|chris klimek",
+   "label": "the-war-of-the-worlds-regional-2026 | City Cast DC",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://dc.citycast.fm/theater-reviews/war-worlds-orson-welles-dc"
   },
   {
    "kind": "tour",
@@ -2195,14 +1947,6 @@
   },
   {
    "kind": "coverage",
-   "id": "are-you-now-or-have-you-ever-been-regional-2026",
-   "label": "Are You Now or Have You Ever Been?",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Maryland Theatre Guide / MDTGmarketing 2026-10-17 https://mdtheatreguide.com/shows/are-you-now-or-have-you-ever-been/"
-  },
-  {
-   "kind": "coverage",
    "id": "the-legend-of-sleepy-hollow-regional-2026",
    "label": "The Legend of Sleepy Hollow",
    "model": "gemini",
@@ -2269,14 +2013,6 @@
    "kind": "coverage",
    "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
    "label": "The Elaborate Entrance of Chad Deity",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "Morris Theatre DC /  2026-11-15 https://morristheatredc.com/"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
-   "label": "The Elaborate Entrance of Chad Deity",
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "DC Theater Arts / Zoe Winsky 2026-11-11 https://dctheaterarts.org/2026/11/11/brilliant-elaborate-entrance-of-chad-deity-at-nextstop-body-slams-stereotyping/"
@@ -2313,5 +2049,37 @@
    "code": "missing-review-candidate",
    "detail": "Talkin' Broadway / Susan Berlin 2026-11-13 https://talkinbroadway.com/page/regional/dc/dc1407.html"
   }
- ]
+ ],
+ "pages": {
+  "hub": {
+   "problems": [],
+   "status": 200,
+   "counts": {
+    "now": 13,
+    "soon": 12,
+    "closed": 23
+   },
+   "expectedLocal": {
+    "now": 13,
+    "soon": 0,
+    "closedRecent": 12,
+    "archive": 39
+   }
+  },
+  "app": {
+   "feedStatus": 200,
+   "feedCount": 59,
+   "webCount": 64,
+   "problems": [],
+   "byDesignUnscoredClosed": [
+    "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
+    "a-beautiful-blue-morning-sky-regional-2026",
+    "come-from-away-fords-regional-2026",
+    "the-second-best-school-shooting-regional-2026",
+    "hakawatis-women-of-the-arabian-nights-regional-2026",
+    "handle-with-care-regional-2026",
+    "sparked-the-vanishing-at-buzzard-point-regional-2026"
+   ]
+  }
+ }
 }

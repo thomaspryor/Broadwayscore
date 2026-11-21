@@ -137,3 +137,32 @@ describe('BRO-7665 backfill does not re-scrape cast-not-applicable shows', () =>
     assert.equal(shouldRetryTombstone({ openingNightCast: [], scrapedAt: '2026-09-24T00:00:00Z' }, show, Date.parse('2026-11-18')), false);
   });
 });
+
+describe('shouldRetryTombstone: IBDB page appeared after an empty scrape (Dirty Dancing 2027, feedback #1192)', () => {
+  const { shouldRetryTombstone } = require('../../scripts/lib/cast-tombstone.js');
+  const now = Date.parse('2026-11-19');
+  const upcoming = { id: 'dirty-dancing-2027', status: 'upcoming', openingDate: '2027-03-14', ibdbUrl: 'https://www.ibdb.com/broadway-production/dirty-dancing-the-musical-548291' };
+  it('retries an upcoming show whose empty tombstone predates its IBDB url', () => {
+    assert.equal(shouldRetryTombstone({ ibdbUrl: null, openingNightCast: [], scrapedAt: '2026-10-07T13:50:30Z' }, upcoming, now), true);
+  });
+  it('is one-shot: once the tombstone carries the url, an upcoming show is not retried', () => {
+    assert.equal(shouldRetryTombstone({ ibdbUrl: upcoming.ibdbUrl, openingNightCast: [], scrapedAt: '2026-11-19T00:00:00Z' }, upcoming, now), false);
+  });
+  it('does not retry when the show still has no IBDB url', () => {
+    assert.equal(shouldRetryTombstone({ ibdbUrl: null, openingNightCast: [], scrapedAt: '2026-10-07T13:50:30Z' }, { ...upcoming, ibdbUrl: null }, now), false);
+  });
+  it('never retries a populated cast file', () => {
+    assert.equal(shouldRetryTombstone({ ibdbUrl: null, openingNightCast: [{ name: 'X' }], scrapedAt: '2026-10-07T13:50:30Z' }, upcoming, now), false);
+  });
+});
+
+describe('ibdbPageAppearedSinceTombstone (daily --open-only pass must include it)', () => {
+  const { ibdbPageAppearedSinceTombstone } = require('../../scripts/lib/cast-tombstone.js');
+  it('true for an empty tombstone without url when the show now has one', () => {
+    assert.equal(ibdbPageAppearedSinceTombstone({ ibdbUrl: null, openingNightCast: [] }, { ibdbUrl: 'https://www.ibdb.com/x' }), true);
+  });
+  it('false once stamped, or when populated', () => {
+    assert.equal(ibdbPageAppearedSinceTombstone({ ibdbUrl: 'https://www.ibdb.com/x', openingNightCast: [] }, { ibdbUrl: 'https://www.ibdb.com/x' }), false);
+    assert.equal(ibdbPageAppearedSinceTombstone({ ibdbUrl: null, openingNightCast: [{ name: 'A' }] }, { ibdbUrl: 'https://www.ibdb.com/x' }), false);
+  });
+});

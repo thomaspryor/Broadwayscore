@@ -1,26 +1,31 @@
 {
-  "generatedAt": "2026-11-17T18:16:49.925Z",
-  "night": "2026-11-16",
+  "generatedAt": "2026-11-21T11:14:34.786Z",
+  "night": "2026-11-20",
   "counts": {
     "total": 2,
-    "passed": 1,
-    "failed": 0,
+    "passed": 0,
+    "failed": 1,
     "notGraded": 1
   },
   "lines": [
     {
-      "verdict": "UNKNOWN",
-      "line": "Jenůfa: not graded, no reviews were published overnight."
+      "verdict": "FAIL",
+      "line": "Elektra: published by the regular pipeline; 6 of 10 reviews live by 12:00am; Exeunt Magazine went live at 12:54am (late); The New York Times not live by 3:59am; Observer not live by 3:59am; OperaWire not live by 3:59am; emails ready. Failed."
     },
     {
-      "verdict": "PASS",
-      "line": "The Fantasticks: published by the new lane; 19 of 21 reviews live by 12:00am; USA Today came out later and went live at 1:03am, on time; Vulture came out later and went live at 12:03am, on time; emails ready, passed."
+      "verdict": "UNKNOWN",
+      "line": "Bigfoot Ripped My Dog In Half I Saw It: not graded, no reviews were published overnight."
     }
   ],
   "scoreboard": {
-    "graded": 21,
-    "passed": 3,
-    "passedOnOwn": 2
+    "graded": 25,
+    "passed": 4,
+    "passedOnOwn": 3
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "elektra-off-broadway-2026|2026-11-20|review:exeunt-magazine:Loren Noveck": "2026-11-21T11:14:34.786Z",
+    "elektra-off-broadway-2026|2026-11-20|review:nytimes:": "2026-11-21T11:14:34.786Z",
+    "elektra-off-broadway-2026|2026-11-20|review:observer:": "2026-11-21T11:14:34.786Z",
+    "elektra-off-broadway-2026|2026-11-20|review:operawire:": "2026-11-21T11:14:34.786Z"
+  }
 }

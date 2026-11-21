@@ -461,3 +461,144 @@ test('run-info stripper: price/link mid-sentence is not a ticket line end (BRO-7
     assert.equal(T.stripRunInfoTrailer(lead + tail), lead, JSON.stringify(tail));
   }
 });
+
+// ---------------------------------------------------------------------------
+// BRO-7942: furniture tail. Fixtures are the real endings of corpus files
+// (gap-recovery TRUNCATED_OTHER / SHORT_UNVERIFIED rows) behind enough prose.
+// ---------------------------------------------------------------------------
+const FT_PROSE = 'The staging is confident and the second act lands every beat it reaches for, with an ensemble that never lets the pace slip. '.repeat(8) + 'This is a revival worth seeing.';
+const FT = require('./trailer-signatures.js');
+const stripped = (tail, outlet = 'unknown-outlet') => FT.stripKnownTrailers(`${FT_PROSE} ${tail}`, outlet);
+
+test('furniture tail: real corpus endings are removed, prose stays', () => {
+  const cases = [
+    'It runs until 25 January 2026. Tickets: here. Review: Oliver Popa Photos: Mark Senior',
+    'Runs until 28th November Photo credit: Anthony Leary-White',
+    'Runs until 8th NovemberPhoto credit: Alex Brenner',
+    'Photo credit Johan Persson',
+    'Photo Credit: Adrian O. Walker Review by Rachel Weinberg',
+    'Running time: 1hr 25mins. No intermission. Through July 23.',
+    'Running time:',
+    'Until October 24 KilnTheatre.com',
+    'Until January 13 nationaltheatre.org.uk',
+    'To 7 Aug, nationaltheatre.org.uk',
+    'Until March 5, Wyndham\'s Theatre (0844 482 5120)',
+    'Keep up with the latest news and reviews on our Time Out Theater Facebook page Jonah | Photograph: Joan Marcus',
+    'Follow Time Out Theater on X: @TimeOutTheaterFollow Time Out Theater on Facebook: Time Out Theater The Beacon | Photograph: Courtesy Carol Rosegg',
+    'To learn more about Robert Tanitch and his reviews, click here to go to his website',
+    'For further information or to book visit the theatre\'s website here . Related Items featured review',
+    'For more shows visit Theatre in Chicago',
+    'CLICK HERE TO READ MORE ARTICLES BY AMY MUNICE.',
+    '• Did you catch this show – or any other recently? Tell us about it using #gdnreview',
+    'Δ document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );',
+    "window.dataLayer = window.dataLayer || []; gtag('js', new Date());</p> <p> gtag('config', 'G-J2EENS4G51');",
+    '@page WordSection1 {size:8.5in 11.0in; margin:1.0in 1.25in 1.0in 1.25in;',
+  ];
+  for (const tail of cases) {
+    const out = stripped(tail);
+    assert.equal(out, FT_PROSE, `not stripped: ${tail}`);
+  }
+});
+
+test('furniture tail: Guardian bullet listing that ends on a dated year is a trailer', () => {
+  assert.equal(stripped('• At Shoreditch town hall, London, until 13 November, then touring until 7 March 2027', 'guardian'), FT_PROSE);
+});
+
+test('furniture tail: a review cut off mid-sentence stays truncated (no strip)', () => {
+  const cut = `${FT_PROSE.slice(0, -1)} and the lead is at the Garrick until 7 June`;
+  assert.equal(FT.stripFurnitureTail(cut), cut, 'run date inside a cut sentence');
+  const cut2 = `${FT_PROSE} Photos by Weegee line the walls of the set, and the`;
+  assert.equal(FT.stripKnownTrailers(cut2, 'x'), cut2, 'a dangling sentence is not a credit');
+  const cut3 = `${FT_PROSE.slice(0, -1)}, but the second act`;
+  assert.equal(FT.stripKnownTrailers(`${cut3} Tickets: here`, 'x'), `${cut3} Tickets: here`, 'prose before the trailer must end a sentence');
+});
+
+test('furniture tail: a short text is never reduced below the prose floor, and the kill switch restores old behaviour', () => {
+  const short = 'A good night out. Runs until 28th November Photo credit: Anthony Leary-White';
+  assert.equal(FT.stripKnownTrailers(short, 'x'), short);
+  process.env.FURNITURE_TAIL_DISABLED = 'true';
+  try { assert.equal(stripped('Runs until 28th November Photo credit: Anthony Leary-White'), `${FT_PROSE} Runs until 28th November Photo credit: Anthony Leary-White`); } finally { delete process.env.FURNITURE_TAIL_DISABLED; }
+});
+
+test('furniture tail is classify-only: the save-path stripper leaves saved text alone', () => {
+  const TC = require('./text-cleaning.js');
+  const text = `${FT_PROSE} Runs until 28th November Photo credit: Anthony Leary-White`;
+  assert.equal(TC.stripTrailingJunk(text, 'jonathan-baz'), text);
+});
+
+test('furniture tail: ship-check cases, a cut sentence that starts with a date or follows a <p> tag is not stripped', () => {
+  for (const tail of ['Through May 3, Hamlet broods in a way that feels', 'Until 7 June, Rhys Ifans and Ruth Wilson play', '</p><p>The second act falls apart and the', 'Until March 5 and the whole thing sags under']) {
+    const t = `${FT_PROSE} ${tail}`;
+    assert.equal(FT.stripKnownTrailers(t, 'x'), t, tail);
+  }
+});
+
+test('Independent / Standard CMS widget footers are stripped for the tier check (BRO-7943)', () => {
+  const indy = BODY + ' To 7 December (0207 400 1257) More about Musicals Regent\'s Park Join our commenting forum Join thought-provoking conversations, follow other Independent readers and see their replies Comments';
+  assert.ok(!/commenting forum/.test(T.stripCmsWidgetFooters(indy)));
+  assert.equal(tier(indy, 'independent').contentTier, 'complete');
+  const std = BODY + ' To 29 Nov, donmarwarehouse.com . MORE ABOUT The Maids Donmar Warehouse Solange Murder sisters Shopping Best Buys What I\'m buying from the 2025 Marks & Spencer x Bella Freud drop Best toy advent calendars for Christmas 2025';
+  assert.ok(!/Shopping Best Buys/.test(T.stripCmsWidgetFooters(std)));
+  assert.equal(tier(std, 'standard').contentTier, 'complete');
+  // a review cut mid-sentence before the widget stays truncated
+  const cut = BODY.slice(0, -40) + ' MORE ABOUT The Maids Shopping Best Buys Best toy advent calendars';
+  assert.equal(tier(cut, 'standard').contentTier, 'truncated');
+  // no widget: unchanged
+  assert.equal(T.stripCmsWidgetFooters(BODY), BODY);
+  // review fixes: a cut sentence opening with the widget phrase is not a footer
+  const fake = BODY + ' Join our commenting forum members were asked to rate the production and many of them said that';
+  assert.equal(T.stripCmsWidgetFooters(fake), fake);
+  // a short excerpt plus widget words is not stripped (word count would be manufactured)
+  const shortStd = BODY.slice(0, 700) + ' MORE ABOUT The Maids Shopping Best Buys Best toy advent calendars for Christmas 2025';
+  assert.equal(T.stripCmsWidgetFooters(shortStd), shortStd);
+  // the Standard widget split across lines is still the widget
+  const nl = BODY + ' To 29 Nov, donmarwarehouse.com .\nMORE ABOUT The Maids Donmar Warehouse\nShopping Best Buys\nBest toy advent calendars for Christmas 2025';
+  assert.ok(!/Shopping/.test(T.stripCmsWidgetFooters(nl)));
+  // review fixes: an earlier "More about ..." sentence in the review is kept
+  const early = BODY + ' More about that later. The cast is superb throughout. To 7 December More about Musicals Join our commenting forum Join thought-provoking conversations, follow other Independent readers and see their replies Comments';
+  assert.ok(T.stripCmsWidgetFooters(early).endsWith('To 7 December'));
+  // a long whitespace run stays fast (was cubic)
+  const ws = BODY + ' '.repeat(20000) + 'x';
+  const t0 = Date.now(); T.stripCmsWidgetFooters(ws); assert.ok(Date.now() - t0 < 200, 'whitespace run must stay fast');
+});
+
+test('CMS footer review fix: a punctuated topic tag never makes a cut review complete (BRO-7943)', () => {
+  const W = ' Join our commenting forum Join thought-provoking conversations, follow other Independent readers and see their replies Comments';
+  for (const tag of ['Oklahoma!', 'Hello, Dolly!', 'Mamma Mia!', 'Mrs. Doubtfire', 'Musicals']) {
+    assert.equal(tier(BODY.slice(0, -40) + ' More about ' + tag + W, 'independent').contentTier, 'truncated', tag);
+    assert.equal(tier(BODY + ' More about ' + tag + W, 'independent').contentTier, 'complete', tag);
+  }
+  // a cut sentence that itself opens "More about" stays in and stays truncated
+  const cutMore = BODY + ' More about the supporting cast, whose performances never quite More about Musicals' + W;
+  assert.ok(T.stripCmsWidgetFooters(cutMore).endsWith('never quite'));
+  assert.equal(tier(cutMore, 'independent').contentTier, 'truncated');
+});
+
+test('CMS footer: Standard widget with a gallery caption and no MORE ABOUT block (72 corpus files, BRO-7943)', () => {
+  const W = " November's best theatre 1 / 10 Shopping Best Buys Best heat-protectant leave-ins for fine hair The nicest lunchboxes for your return to the office";
+  assert.equal(tier(BODY + ' Until January 4 ( 08544 871 7623, thepiccadillytheatre.com )' + W, 'standard').contentTier, 'complete');
+  assert.equal(tier(BODY.slice(0, -40) + W, 'standard').contentTier, 'truncated');
+  for (const tag of ['Oklahoma!', 'Hello, Dolly!']) {
+    assert.equal(tier(BODY.slice(0, -40) + ' MORE ABOUT ' + tag + ' Shopping Best Buys Best toy advent calendars', 'standard').contentTier, 'truncated', tag);
+  }
+});
+
+test('CMS footer review fixes: the caption strip never eats a cut sentence; long whitespace before a widget stays fast (BRO-7943)', () => {
+  const W = " November's best theatre 1 / 10 Shopping Best Buys Best heat-protectant leave-ins for fine hair";
+  assert.equal(tier(BODY + ' But the lead never quite' + W, 'standard').contentTier, 'truncated');
+  assert.equal(tier(BODY.slice(0, -40) + ' Hello, Dolly! 1 / 10 Shopping Best Buys offers', 'standard').contentTier, 'truncated');
+  // a long tag block ending on a punctuated tag is still removed
+  assert.equal(tier(BODY.slice(0, -40) + ' MORE ABOUT ' + 'Theatre '.repeat(60) + 'Hello, Dolly! Shopping Best Buys offers', 'standard').contentTier, 'truncated');
+  for (const tail of [' '.repeat(10000) + 'x Shopping Best Buys suffix', ' '.repeat(10000) + 'x Join our commenting forum Join thought-provoking conversations, follow other Independent readers and see their replies']) {
+    const t0 = Date.now(); T.stripCmsWidgetFooters(BODY + tail); assert.ok(Date.now() - t0 < 200, `slow: ${Date.now() - t0}ms`);
+  }
+});
+
+test('CMS footer: Standard "in pictures" caption and GO London ticket line (real corpus tails, BRO-7943)', () => {
+  const tails = [
+    ' Until Jan 4 (020 7927 0900, whitechristmasthemusical.co.uk ) Best pantos to see this Christmas in London - in pictures 1 / 7 Shopping Best Buys Best mirrors to make a statement',
+    ' Submit to it. Until September 8 Buy tickets for Joseph with GO London Latest theatre reviews 1 / 50 Shopping Best Buys Best mirrors to make a statement',
+  ];
+  for (const t of tails) assert.equal(tier(BODY + t, 'standard').contentTier, 'complete', t.slice(0, 40));
+  assert.equal(tier(BODY.slice(0, -40) + ' Buy tickets for Joseph with GO London Latest theatre reviews 1 / 50 Shopping Best Buys x', 'standard').contentTier, 'truncated');
+});

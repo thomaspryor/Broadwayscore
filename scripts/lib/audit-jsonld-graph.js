@@ -39,6 +39,7 @@ const IMPORTS_HELPER_RE = /from\s+['"][^'"]*\/?jsonld(?:\.js)?['"]/;
 const EXEMPT = new Map([
   ['scripts/lib/jsonld.js', 'is the helper'],
   ['scripts/lib/audit-jsonld-graph.js', 'is this guard (names the pattern it forbids)'],
+  ['scripts/lib/byline-fixture-strip.js', 'copies a block verbatim (long strings blanked) into a test fixture; it reads no node, so @graph needs no handling'],
 ]);
 
 /**

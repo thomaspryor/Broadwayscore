@@ -52,6 +52,9 @@ const LEDGER_PATH = path.join(__dirname, '../data/audit/feedback-request-ledger.
 const REPO = 'thomaspryor/Broadwayscore';
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { draftReviewsAddedReplies, makeResendTransport } = require('./lib/feedback-reply-drafts.js');
+const { loadStore, lookupSubmitter } = require('./lib/feedback-submitter-store.js');
+const { maskEmail } = require('./lib/pii-scan.js');
 
 const USAGE = `verify-feedback-requests-live.js — confirm open content requests are LIVE on the site
 
@@ -510,9 +513,14 @@ async function main() {
     nowLive.push({ entry, showId, evidence, reviews, url: showUrl(entry, showId, shows) });
   }
 
+  // A draft that failed to send last run: the entry is already live, so retry here.
+  const retries = ledger.entries
+    .filter((e) => e.status === 'live' && e.replyDraftRetry && !e.replyDraftedAt && e.showId)
+    .map((e) => ({ entry: e, showId: e.showId, url: showUrl(e, e.showId, shows) }));
+
   const stale = staleEntries(ledger);
 
-  if (nowLive.length === 0 && stale.length === 0) {
+  if (nowLive.length === 0 && retries.length === 0 && stale.length === 0) {
     console.log('Nothing newly live, nothing stuck.');
     saveLedger(ledger);
     return;
@@ -542,6 +550,16 @@ async function main() {
       console.log(a.description);
     }
     console.log(`[dry-run] ${nowLive.length} live, ${stale.length} stale`);
+    // Preview the owner drafts through the same code path with a logging
+    // transport: nothing is emailed and the ledger is not touched.
+    const store = loadStore();
+    const preview = nowLive.map((r) => ({ ...r, entry: { ...r.entry } }));
+    const drafts = await draftReviewsAddedReplies(preview, {
+      lookupReader: (id) => lookupSubmitter(store, id),
+      env: { ...process.env, OWNER_EMAIL: process.env.OWNER_EMAIL || 'owner@example.invalid' },
+      transport: async (p) => console.log(`[dry-run] would email owner draft to ${p.to.map(maskEmail).join(', ')}\nSubject: ${p.subject}`),
+    });
+    for (const d of drafts) console.log(`[dry-run] reviews-added draft ${d.key}: ${d.status}${d.reason ? ` (${d.reason})` : ''}`);
     return; // deliberately does NOT persist — a dry run must not mark things notified
   }
 
@@ -569,6 +587,28 @@ async function main() {
         ? `Already reported, not repeating: "${alert.title}"`
         : `Owner notified (${result.action}): "${alert.title}"`
     );
+  }
+
+  // BRO-7693: the reader who asked for reviews gets a DRAFT reply, emailed to
+  // OWNER_EMAIL only (FEEDBACK_AUTO_REPLY_KINDS stays empty). Best effort: a
+  // failure must not block closing the issue or saving the ledger.
+  if (process.env.RESEND_API_KEY && process.env.OWNER_EMAIL) {
+    try {
+      const store = loadStore();
+      const drafts = await draftReviewsAddedReplies([...nowLive, ...retries], {
+        lookupReader: (id) => lookupSubmitter(store, id),
+        // Hard rule: owner drafts only, whatever FEEDBACK_AUTO_REPLY_KINDS says.
+        env: { ...process.env, FEEDBACK_AUTO_REPLY_KINDS: '' },
+        transport: makeResendTransport(process.env.RESEND_API_KEY),
+      });
+      for (const d of drafts) console.log(`  reviews-added draft ${d.key}: ${d.status}${d.reason ? ` (${d.reason})` : ''}`);
+    } catch (err) {
+      console.log(`  reviews-added drafts failed: ${err.message}`);
+      for (const r of nowLive) if (r.entry.kind === 'missing-reviews' && !r.entry.replyDraftedAt) r.entry.replyDraftRetry = true;
+    }
+  } else {
+    // No Resend key or owner address this run: keep the draft owed, not lost.
+    for (const r of nowLive) if (r.entry.kind === 'missing-reviews' && !r.entry.replyDraftedAt) r.entry.replyDraftRetry = true;
   }
 
   for (const r of nowLive) await closeIssue(r.entry.issueNumber, r.evidence, r.url);

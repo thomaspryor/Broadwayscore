@@ -18,9 +18,9 @@
  * ride along with a code merge and main's "no direct push" rule is not involved.
  */
 const fs = require('fs');
+const gitGuard = require('../git-proc-guard.js'); // BRO-7458: network git timeouts kill orphaned helpers
 const os = require('os');
 const path = require('path');
-const { execFileSync } = require('child_process');
 const lease = require('./lease');
 
 const DEFAULT_BRANCH = 'opening-night-leases';
@@ -37,7 +37,7 @@ function writeAtomic(file, text) {
 
 function git(repoDir, args, { env, input, allowFail } = {}) {
   try {
-    return execFileSync('git', args, {
+    return gitGuard.runGitOrThrow(args, {
       cwd: repoDir, encoding: 'utf8', input, stdio: ['pipe', 'pipe', 'pipe'], timeout: GIT_TIMEOUT_MS, // a hung git must fail, not stall the job
       env: { ...process.env, GIT_TERMINAL_PROMPT: '0', ...(env || {}) },
     }).trim();

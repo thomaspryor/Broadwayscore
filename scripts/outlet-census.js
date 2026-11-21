@@ -27,10 +27,10 @@ const path = require('path');
 const zlib = require('zlib');
 const { SOURCES, LONDON_SOURCES, sourceFromJson } = require('./lib/outlet-census-sources');
 const census = require('./lib/outlet-census');
-const { parseSitemapXml } = require('./lib/outlet-listing-helpers');
+const { parseSitemapXml, looksLikeSitemap } = require('./lib/outlet-listing-helpers');
 const { guardianItemIsReview } = require('./lib/we-major-recovery');
 const { urlKey } = require('./lib/outlet-feed-reconcile');
-const { fetchViaSitemap } = require('./outlet-listing-poller');
+const { fetchViaSitemap, fetchXmlWithProxyRetry } = require('./outlet-listing-poller');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const ROOT = path.join(__dirname, '..');
@@ -173,8 +173,16 @@ async function enumerateGuardian(src, since, until) {
 const SOURCE_LABEL = 'outlet-census';
 
 async function fetchSitemapUrls(url, urlFilter, opts = {}) {
-  const { status, body: raw } = await get(url, 60000);
-  if (status !== 200) throw new Error(`HTTP ${status} for ${url}`);
+  let raw;
+  if (opts.proxyRetry) {
+    // A source that opts in (Slant, BRO-7812) reads through the poller's fetcher: direct first, then the
+    // shared proxy chain when the site 403s or answers with a challenge page. Throws on a block page.
+    raw = await fetchXmlWithProxyRetry(url, 'sitemap', looksLikeSitemap, { proxyRetry: true, timeoutMs: 60000 });
+  } else {
+    const { status, body } = await get(url, 60000);
+    if (status !== 200) throw new Error(`HTTP ${status} for ${url}`);
+    raw = body;
+  }
   // CDATA-wrapped and entity-escaped <loc>s (Yoast, Arc) parse like plain ones.
   const body = raw.replace(/<!\[CDATA\[\s*([^\]]*?)\s*\]\]>/g, '$1').replace(/&amp;/g, '&');
   if (/<sitemapindex/i.test(body)) {
@@ -185,7 +193,7 @@ async function fetchSitemapUrls(url, urlFilter, opts = {}) {
       .filter((c) => !cf || (typeof cf === 'function' ? cf(c, opts.since) : cf.test(c)));
     const out = [];
     await pool(children, opts.childConcurrency || 1, async (c) => {
-      try { out.push(...await fetchSitemapUrls(c, urlFilter, opts)); } catch (e) { console.log(`  child ${c}: ${e.message}`); (opts.notes || []).push(`child ${c}: ${e.message}`); }
+      try { out.push(...(await fetchSitemapUrls(c, urlFilter, opts)).map((g) => ({ sitemap: c, ...g }))); } catch (e) { console.log(`  child ${c}: ${e.message}`); (opts.notes || []).push(`child ${c}: ${e.message}`); }
     });
     return out;
   }
@@ -270,10 +278,10 @@ async function enumerateSitemap(src, since) {
   } else {
     const got = [];
     for (const u of [].concat(src.url)) {
-      got.push(...await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter, since, notes, childConcurrency: src.childConcurrency }));
+      got.push(...await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter, since, notes, childConcurrency: src.childConcurrency, proxyRetry: !!src.proxyRetry }));
     }
     const seen = new Set();
-    return { items: got.filter((i) => !seen.has(i.url) && seen.add(i.url)).map((g) => ({ url: g.url, lastmod: g.publishDate || null })), notes };
+    return { items: got.filter((i) => !seen.has(i.url) && seen.add(i.url)).map((g) => census.itemFromSitemapEntry(g, src)), notes };
   }
 }
 
@@ -534,6 +542,24 @@ async function runOutlet(outletId, o, shared) {
     const full = { ...it, aliasKey, outletId, sourceSaysReview, requireNycSignal: !!src.requireNycSignal };
     return { ...full, ...census.bucketItem(full, ctx) };
   });
+  // Sitemap-only outlets (Slant) carry no page date, so every revival of a title matched. Read the
+  // page date for just those items and bucket them again (BRO-7885).
+  const needDate = results.filter(census.dateWouldResolve);
+  if (needDate.length && !o.fromCache) {
+    // refresh:false keeps the outlet's full meta cache instead of truncating it to these items.
+    await fillMeta(outletId, needDate, { ...o, refresh: false });
+    const KEEP = ['bucket', 'classifyReason', 'matchVia', 'held', 'matchedIds', 'outOfWindowIds', 'venueMismatchIds', 'altUrls', 'itemMarket', 'venueHint', 'nycSignal', 'sameTitleCandidates'];
+    let resolved = 0; let outOfPeriod = 0;
+    for (const r of needDate) {
+      KEEP.forEach((k) => delete r[k]);
+      Object.assign(r, census.bucketItem(r, ctx));
+      // A page date older than the census period leaves the period, like any dated item.
+      if (r.publishDate && !r.dateSoft && Date.parse(r.publishDate) < sinceMs) { r.dropped = true; outOfPeriod++; continue; }
+      if (r.bucket !== 'ambiguous') resolved++;
+    }
+    for (let i = results.length - 1; i >= 0; i--) if (results[i].dropped) results.splice(i, 1);
+    console.log(`  ambiguous undated: ${needDate.length} read for a publish date, ${resolved} resolved, ${outOfPeriod} before --since`);
+  }
 
   const enumeratedKeys = new Set(enumerated.items.map((i) => urlKey(i.url)));
   for (const r of results) if (r.aliasKey) enumeratedKeys.add(r.aliasKey);
@@ -583,8 +609,16 @@ async function runOutlet(outletId, o, shared) {
   const manifest = { outletId, market: o.market, generatedAt: report.generatedAt, since: o.since, source: src.kind,
     items: results.map((r) => ({ url: r.url, publishDate: r.publishDate || null, dateSoft: r.dateSoft || undefined, headline: r.headline || null, bucket: r.bucket,
       matched: r.matchedIds && r.matchedIds.length ? r.matchedIds : undefined, itemMarket: r.itemMarket, venueHint: r.venueHint || undefined })) };
-  fs.writeFileSync(path.join(OUT_DIR, `${outletId}.manifest.json`), JSON.stringify(manifest, null, 1) + '\n');
-  fs.writeFileSync(path.join(OUT_DIR, `${outletId}.report.json`), JSON.stringify(report, null, 2) + '\n');
+  // BRO-7820: a timestamp-only difference leaves the file alone, so the weekly CI run commits only real changes.
+  const reportPath = path.join(OUT_DIR, `${outletId}.report.json`);
+  let prevReport = null;
+  try { prevReport = JSON.parse(fs.readFileSync(reportPath, 'utf8')); } catch { /* first run */ }
+  if (census.shouldKeepPreviousReport(prevReport, report)) {
+    console.log(`  KEEP previous report: this run could not read the listing (${report.source.reason || 'unreadable'})`);
+  } else {
+    census.writeJsonUnlessOnlyStampChanged(path.join(OUT_DIR, `${outletId}.manifest.json`), manifest, 1);
+    census.writeJsonUnlessOnlyStampChanged(reportPath, report, 2);
+  }
   console.log(`  buckets ${JSON.stringify(summary.counts)} recall=${summary.recall}${report.source.incomplete ? ' (INCOMPLETE: ' + enumerated.notes.join('; ') + ')' : ''}`);
   console.log(`  corpus-side: ${uniqRows.length} held rows in window, ${report.corpusSide.notEnumerated} not enumerated, ${report.corpusSide.noUrl} without URL`);
   return report;
@@ -624,6 +658,15 @@ function summaryTable(market = 'nyc') {
     lines.push(`| ${cells.join(' | ')} |`);
   }
   return lines.join('\n');
+}
+
+/** Outlets with many corpus reviews and no readable listing (BRO-7812). Empty string when none. */
+function blindOutletTable() {
+  const files = fs.readdirSync(OUT_DIR).filter((f) => f.endsWith('.report.json'));
+  const blind = census.blindOutlets(files.flatMap((f) => { try { return [JSON.parse(fs.readFileSync(path.join(OUT_DIR, f), 'utf8'))]; } catch { return []; } }));
+  if (!blind.length) return '';
+  return ['Blind outlets (the census cannot see a gap here):', '', '| Outlet | Source | Corpus rows | Why |', '|---|---|---|---|',
+    ...blind.map((b) => `| ${b.outletId} | ${b.kind} | ${b.rows} | ${b.why.replace(/\|/g, '/')} |`)].join('\n');
 }
 
 /** Per outlet and season: published (every review item), held, gap, misfile, catalog gap, ambiguous. */
@@ -672,6 +715,8 @@ async function main() {
   if (o.probe) { await probe(o.probe); return 0; }
   if (o.summary) {
     console.log(summaryTable(o.market));
+    const blind = blindOutletTable();
+    if (blind) console.log(`\n${blind}`);
     if (o.market === 'london') {
       console.log(`\n${seasonTable()}`);
       const g = catalogGapSummary();
