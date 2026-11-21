@@ -221,7 +221,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
 function main() {
   const args = process.argv.slice(2);
   const season = args.find(a => a.startsWith('--season='))?.split('=')[1];
-  if (!season) { console.error('Usage: node scripts/audit-we-historical-season.js --season=YYYY-YYYY'); process.exit(2); }
+  if (!season || !/^\d{4}-\d{4}$/.test(season)) { console.error('Usage: node scripts/audit-we-historical-season.js --season=YYYY-YYYY (got ' + JSON.stringify(season) + ')'); process.exit(2); }
   const ids = new Set((args.find(a => a.startsWith('--ids='))?.split('=')[1] || '').split(',').filter(Boolean));
   const root = path.join(__dirname, '..');
   const showsRaw = JSON.parse(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8'));
