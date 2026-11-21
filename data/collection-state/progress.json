@@ -312,10 +312,10 @@
     "the-story-west-end-2026/london-box-office--stuart-king.json",
     "the-story-west-end-2026/theatrecat--unknown.json",
     "a-month-in-the-country-off-west-end-2026/ents24--unknown.json",
-    "a-month-in-the-country-off-west-end-2026/sueterryvoices--unknown.json"
+    "a-month-in-the-country-off-west-end-2026/sueterryvoices--unknown.json",
+    "florence-off-west-end-2026/daily-mail--joanna-crawley.json"
   ],
   "failed": [
-    "florence-off-west-end-2026/daily-mail--joanna-crawley.json",
     "one-day-the-musical-west-end-2026/london-box-office--stuart-king.json",
     "the-ugly-one-off-west-end-2026/thestage--dave-fargnoli.json",
     "radio-galaxy-regional-2026/la-drama-critics-circle--ladcc-critics.json",
@@ -653,7 +653,8 @@
       "holy-fool-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
       "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
       "come-from-away-regional-2026/chicagotheaterandarts--jodie-jacobs.json",
-      "the-story-west-end-2026/london-box-office--stuart-king.json"
+      "the-story-west-end-2026/london-box-office--stuart-king.json",
+      "florence-off-west-end-2026/daily-mail--joanna-crawley.json"
     ],
     "amp": [
       "data/review-texts/33-variations-2009/variety--david-rooney.json"
@@ -804,7 +805,7 @@
     ]
   },
   "startTime": "2026-11-20T21:57:04.948Z",
-  "lastProcessed": "a-month-in-the-country-off-west-end-2026/sueterryvoices--unknown.json",
+  "lastProcessed": "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
   "log": [
     {
       "t": "2026-11-21T00:27:00.760Z",
@@ -908,6 +909,20 @@
       "event": "bb-session",
       "session": "33e03a4c",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-11-21T02:03:15.101Z",
+      "event": "bb-session",
+      "session": "0267ed6e",
+      "url": "https://thestage.co.uk/reviews/eurotrash-review-young-vic-theatre-london-kathryn"
+    },
+    {
+      "t": "2026-11-21T02:03:15.937Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
+  ],
+  "recoveredAfterFailure": [
+    "florence-off-west-end-2026/daily-mail--joanna-crawley.json"
   ]
 }
