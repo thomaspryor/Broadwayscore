@@ -220,7 +220,6 @@ with `--counts=data/audit/<name>.json` (adding supported counts output where abs
 Remove each baseline entry when wired, as enforced by the stale-entry test. Preserve
 the recorded star-band-drift overlap check and shadow-mode observation period.
 No new cron, fetch, LLM request or API call is introduced by this classification change.
-| `audit-excluded-with-own-show-evidence.js` | BRO-5805 read-only sweep of excluded review files whose text names the show's own cast; needs the private review-texts corpus, so run it through cloud-run-script. Gate mode exists but is unwired. Promote to (a) once a run finds real hits. |
 | `audit-malformed-review-urls.js` | BRO-5162 read-only sweep of review-text files whose url is not an absolute http(s) url with a dotted host, and which of them ship in reviews.json; needs the private review-texts corpus, so run it through cloud-run-script. Standing prevention is the write-time guard in review-write-guard. |
 | `audit-route-alert.js` | BRO-2454 read-only sweep of routeAlert() call sites for write-before-notify ordering; standing prevention is the real-tree gate in scripts/lib/audit-route-alert-core.test.mjs, which CI runs. The CLI is for manual review. |
 | `audit-pending-promotion-latency.js` | BRO-7032 read-only measure of how long press-night no-byline stubs sat in _pending before replay promotion; needs the private review-texts corpus. Used as the card's recheck command after a press night; logic is covered by scripts/lib/pending-promotion-latency.test.mjs, which CI runs. |

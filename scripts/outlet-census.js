@@ -416,7 +416,11 @@ async function fillMeta(outletId, items, { refresh, concurrency }) {
 
 // ── corpus ─────────────────────────────────────────────────────────────────────
 
-function loadCorpus() {
+// BRO-7999 R2: URLs and filenames only excluded files hold; set by main, checked against every file written.
+const EXCLUDED_STRINGS = new Set();
+
+function loadCorpus(showsById = {}) {
+  const { explainExclusion } = require('./lib/review-guards');
   const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8')).reviews;
   const rows = reviews.map((r) => ({ showId: r.showId, outletId: r.outletId, url: r.url, publishDate: r.publishDate, source: 'reviews.json' }));
   let kind = 'reviews.json';
@@ -430,8 +434,11 @@ function loadCorpus() {
         if (!f.endsWith('.json')) continue;
         try {
           const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+          // BRO-7999 R2: the rule keeping this file off the site (null = live). Private: never written to a report.
+          let excludedRule = null;
+          if (showsById[showId]) { try { excludedRule = explainExclusion(d, showsById[showId], path.join(dir, f)) || null; } catch { excludedRule = 'explain-error'; } } // fail closed: an unreadable verdict hides the row
           rows.push({ showId, outletId: d.outletId, url: d.url, altUrls: d.altUrls, publishDate: d.publishDate, source: 'review-texts', file: `${showId}/${f}`,
-            flags: ['wrongProduction', 'wrongShow', 'isRoundupArticle'].filter((k) => d[k]) });
+            flags: ['wrongProduction', 'wrongShow', 'isRoundupArticle'].filter((k) => d[k]), excludedRule });
         } catch { /* unreadable file vouches for nothing */ }
       }
     }
@@ -565,7 +572,9 @@ async function runOutlet(outletId, o, shared) {
   for (const r of results) if (r.aliasKey) enumeratedKeys.add(r.aliasKey);
   const seenRow = new Set();
   const uniqRows = outletRows.filter((r) => { const k = `${r.showId}|${r.url}`; if (seenRow.has(k)) return false; seenRow.add(k); return true; });
-  const misses = census.corpusSideMisses(uniqRows, enumeratedKeys, { sinceMs, untilMs: o.until ? Date.parse(o.until) + 86400000 : Infinity });
+  const liveRows = uniqRows.filter((r) => !r.excludedRule);
+  const heldExcludedRows = uniqRows.length - liveRows.length;
+  const misses = census.corpusSideMisses(liveRows, enumeratedKeys, { sinceMs, untilMs: o.until ? Date.parse(o.until) + 86400000 : Infinity });
 
   const summary = census.summarize(results);
   // Per season (September to August): the coverage table the card asks for.
@@ -588,7 +597,7 @@ async function runOutlet(outletId, o, shared) {
     corpus: shared.corpus.kind,
     summary,
     seasons,
-    corpusSide: { rowsInWindow: uniqRows.length, notEnumerated: misses.filter((m) => m.why === 'not-enumerated').length, noUrl: misses.filter((m) => m.why === 'no-url').length, samples: misses.slice(0, 40) },
+    corpusSide: { rowsInWindow: liveRows.length, heldExcludedRows, notEnumerated: misses.filter((m) => m.why === 'not-enumerated').length, noUrl: misses.filter((m) => m.why === 'no-url').length, samples: misses.slice(0, 40) },
     gaps: sample('gap', 2000),
     heldAltUrl: results.filter((r) => r.bucket === 'held-alt-url').slice(0, 60).map((r) => ({ url: r.url, headline: r.headline, publishDate: r.publishDate, matched: r.matchedIds, heldUrls: r.altUrls })),
     misfiles: sample('misfile', 300),
@@ -605,11 +614,15 @@ async function runOutlet(outletId, o, shared) {
     console.log(`  MISFILE ${m.url} matched=${(m.matched || []).join(',')} files=${files.join(',') || '(reviews.json only)'}`);
   }
   if (o.printGaps) for (const g of report.gaps) console.log(`  GAP ${(g.matched || []).join(',')} ${g.url}`);
+  // Only the count is public: held-excluded URLs name reviews a person has not cleared for the site.
+  report.heldExcluded = { count: summary.counts['held-excluded'] || 0, note: 'Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed.' };
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const manifest = { outletId, market: o.market, generatedAt: report.generatedAt, since: o.since, source: src.kind,
-    items: results.map((r) => ({ url: r.url, publishDate: r.publishDate || null, dateSoft: r.dateSoft || undefined, headline: r.headline || null, bucket: r.bucket,
+    items: census.publicResults(results).map((r) => ({ url: r.url, publishDate: r.publishDate || null, dateSoft: r.dateSoft || undefined, headline: r.headline || null, bucket: r.bucket,
       matched: r.matchedIds && r.matchedIds.length ? r.matchedIds : undefined, itemMarket: r.itemMarket, venueHint: r.venueHint || undefined })) };
   // BRO-7820: a timestamp-only difference leaves the file alone, so the weekly CI run commits only real changes.
+  census.assertNoHeldExcludedRows(report, EXCLUDED_STRINGS);
+  census.assertNoHeldExcludedRows(manifest, EXCLUDED_STRINGS);
   const reportPath = path.join(OUT_DIR, `${outletId}.report.json`);
   let prevReport = null;
   try { prevReport = JSON.parse(fs.readFileSync(reportPath, 'utf8')); } catch { /* first run */ }
@@ -620,7 +633,7 @@ async function runOutlet(outletId, o, shared) {
     census.writeJsonUnlessOnlyStampChanged(reportPath, report, 2);
   }
   console.log(`  buckets ${JSON.stringify(summary.counts)} recall=${summary.recall}${report.source.incomplete ? ' (INCOMPLETE: ' + enumerated.notes.join('; ') + ')' : ''}`);
-  console.log(`  corpus-side: ${uniqRows.length} held rows in window, ${report.corpusSide.notEnumerated} not enumerated, ${report.corpusSide.noUrl} without URL`);
+  console.log(`  corpus-side: ${liveRows.length} live held rows in window (+${heldExcludedRows} held-excluded), ${report.corpusSide.notEnumerated} not enumerated, ${report.corpusSide.noUrl} without URL`);
   return report;
 }
 
@@ -644,7 +657,7 @@ async function probe(urls) {
 /** Markdown table of every report on disk (for docs/specs/outlet-census.md). */
 function summaryTable(market = 'nyc') {
   const london = market === 'london';
-  const head = ['Outlet', 'Source', 'Corpus rows', 'Enumerated', 'Held', 'Held (other URL)', 'Gap', 'Misfile', 'Ambiguous', 'Catalog gap', ...(london ? ['Other market'] : []), 'Recall'];
+  const head = ['Outlet', 'Source', 'Corpus rows', 'Enumerated', 'Held', 'Held (other URL)', 'Held, excluded', 'Gap', 'Misfile', 'Ambiguous', 'Catalog gap', ...(london ? ['Other market'] : []), 'Recall'];
   const lines = [`| ${head.join(' | ')} |`, `|${head.map(() => '---').join('|')}|`];
   const files = fs.readdirSync(OUT_DIR).filter((f) => f.endsWith('.report.json')).sort();
   const rows = files.map((f) => JSON.parse(fs.readFileSync(path.join(OUT_DIR, f), 'utf8')));
@@ -653,7 +666,7 @@ function summaryTable(market = 'nyc') {
     const c = r.summary.counts || {};
     const src = (r.source.kind === 'unreadable' ? r.source.notes[0] : r.source.enumerated ? r.source.kind : `${r.source.kind}: ${(r.source.notes || [])[0] || 'nothing listed'}`)
       + (r.source.incomplete ? ' (incomplete)' : '');
-    const cells = [r.outletId, src.replace(/\|/g, '/'), r.corpusSide.rowsInWindow, r.source.enumerated, c.held || 0, c['held-alt-url'] || 0, c.gap || 0, c.misfile || 0, c.ambiguous || 0, c['catalog-gap'] || 0,
+    const cells = [r.outletId, src.replace(/\|/g, '/'), r.corpusSide.rowsInWindow, r.source.enumerated, c.held || 0, c['held-alt-url'] || 0, c['held-excluded'] || 0, c.gap || 0, c.misfile || 0, c.ambiguous || 0, c['catalog-gap'] || 0,
       ...(london ? [c['other-market-review'] || 0] : []), r.summary.recall ?? 'n/a'];
     lines.push(`| ${cells.join(' | ')} |`);
   }
@@ -737,8 +750,14 @@ async function main() {
     const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
     const allShows = Array.isArray(showsRaw) ? showsRaw : showsRaw.shows;
     const shows = allShows.filter((s) => census.isMarketShow(s, o.market));
-    corpus = loadCorpus();
-    ctx = { market: o.market, shows, nycIds: new Set(shows.map((s) => s.id)), corpus: census.buildCorpusIndex(corpus.rows), outletShowUrls: census.buildOutletShowIndex(corpus.rows), nycVenues: census.nycVenuePhrases(allShows, o.market) };
+    corpus = loadCorpus(Object.fromEntries(allShows.map((s) => [s.id, s])));
+    const idx = census.buildCorpusIndexes(corpus.rows);
+    for (const r of corpus.rows) {
+      if (!r.excludedRule) continue;
+      for (const u of [r.url, ...(r.altUrls || [])]) if (u && !idx.live.has(census.urlKey(u))) EXCLUDED_STRINGS.add(u);
+      if (r.file) EXCLUDED_STRINGS.add(r.file);
+    }
+    ctx = { market: o.market, shows, nycIds: new Set(shows.map((s) => s.id)), corpus: idx.live, corpusExcluded: idx.excludedOnly, outletShowUrls: census.buildOutletShowIndex(corpus.rows.filter((r) => !r.excludedRule)), nycVenues: census.nycVenuePhrases(allShows, o.market) };
     console.log(`corpus: ${corpus.kind} (${corpus.rows.length} rows), ${shows.length} ${o.market} shows`);
   }
   let failed = 0;
