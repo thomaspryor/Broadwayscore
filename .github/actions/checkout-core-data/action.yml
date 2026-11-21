@@ -195,8 +195,10 @@ runs:
       run: |
         . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
         NET_SEC="${CHECKOUT_CORE_DATA_NET_TIMEOUT_SEC:-150}"
-        if ! printf '%s' "$CORE_DATA_REF" | grep -Eq '^[0-9a-f]{40}$'; then
-          echo "::warning::checkout-core-data: ref '${CORE_DATA_REF:0:60}' is not a 40-hex sha; staying on main @ $(git -C /tmp/core-data-checkout rev-parse --short HEAD 2>/dev/null || echo unknown)"
+        # Whole-value match (a grep would pass any one 40-hex line of a
+        # multiline value); never echo the raw value into the log.
+        if ! [[ "$CORE_DATA_REF" =~ ^[0-9a-f]{40}$ ]]; then
+          echo "::warning::checkout-core-data: ref input is not a 40-hex sha; staying on main @ $(git -C /tmp/core-data-checkout rev-parse --short HEAD 2>/dev/null || echo unknown)"
           exit 0
         fi
         HEAD_NOW=$(git -C /tmp/core-data-checkout rev-parse HEAD 2>/dev/null || echo "")
@@ -204,12 +206,17 @@ runs:
           echo "core data already at the pinned ${CORE_DATA_REF:0:10}"
           exit 0
         fi
-        if git_net "$NET_SEC" -C /tmp/core-data-checkout fetch -q --depth 1 origin "$CORE_DATA_REF" \
+        # Fetch stderr dropped: origin's URL carries the token.
+        if git_net "$NET_SEC" -C /tmp/core-data-checkout fetch -q --depth 1 origin "$CORE_DATA_REF" 2>/dev/null \
           && git -C /tmp/core-data-checkout checkout -q --detach "$CORE_DATA_REF"; then
           echo "core data pinned to ${CORE_DATA_REF:0:10} (main was @ ${HEAD_NOW:0:10})"
         else
           # A half-done checkout could leave a mixed tree: put main's back.
-          git -C /tmp/core-data-checkout checkout -q -f main 2>/dev/null || true
+          # If even that fails the tree is unknown: fail loudly, never test on it.
+          if ! git -C /tmp/core-data-checkout checkout -q -f main 2>/dev/null; then
+            echo "::error::checkout-core-data: pinned checkout failed and main could not be restored"
+            exit 1
+          fi
           echo "::warning::checkout-core-data: could not fetch/checkout pinned ${CORE_DATA_REF:0:10}; staying on main @ ${HEAD_NOW:0:10}"
         fi
 

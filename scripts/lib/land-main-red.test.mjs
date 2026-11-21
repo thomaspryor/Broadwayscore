@@ -59,7 +59,7 @@ test('workflow wiring: no sleep-poll admit job; Land needs checks (+dispatch-gua
   const checksJob = y.slice(y.indexOf('\n  checks:\n'), y.indexOf('\n  e2e-local:\n'));
   assert.match(checksJob.slice(0, checksJob.indexOf('\n    steps:\n')), /\n    needs: dispatch-guard\n/);
   assert.deepEqual(coreDataRefs(checksJob), ["${{ needs.dispatch-guard.outputs.shard == 'true' && github.run_attempt == '1' && needs.dispatch-guard.outputs.data_rev || '' }}"]);
-  assert.deepEqual(coreDataRefs(shardJob), ["${{ needs.dispatch-guard.outputs.shard == 'true' && needs.dispatch-guard.outputs.data_rev || '' }}"]);
+  assert.deepEqual(coreDataRefs(shardJob), ["${{ needs.dispatch-guard.outputs.shard == 'true' && github.run_attempt == '1' && needs.dispatch-guard.outputs.data_rev || '' }}"]);
   assert.deepEqual(coreDataRefs(landJob), [null], 'Land checks out live core-data main');
   assert.deepEqual(coreDataRefs(y.slice(y.indexOf('\n  e2e-local:\n'), y.indexOf('\n  land:\n'))), [null], 'e2e-local checks out live core-data main');
   const { ticketName } = require('./land-mutex.js');

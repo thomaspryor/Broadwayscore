@@ -1850,8 +1850,9 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          # BRO-7324: same core-data rev as Checks (dispatch-guard's pin).
-          ref: ${{ needs.dispatch-guard.outputs.shard == 'true' && needs.dispatch-guard.outputs.data_rev || '' }}
+          # BRO-7324: same core-data rev as Checks (dispatch-guard's pin), and
+          # the same attempt-1-only rule, so a re-run never pins one side only.
+          ref: ${{ needs.dispatch-guard.outputs.shard == 'true' && github.run_attempt == '1' && needs.dispatch-guard.outputs.data_rev || '' }}
 
       - name: Generate gitignored manifests
         if: steps.early.outputs.done != 'true' && steps.plan.outputs.skip_gauntlet != 'true'
