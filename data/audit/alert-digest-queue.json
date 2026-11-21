@@ -474,5 +474,19 @@
       }
     ],
     "queuedAt": "2026-11-21T15:35:05.766Z"
+  },
+  {
+    "conditionKey": "ugc:one-tap-unregistered-origin",
+    "title": "Google sign-in corner card is blocked by a Google setting",
+    "description": "In the last 24 hours 15 of 16 desktop visitors' Google sign-in cards were refused by Google (reason: unregistered_origin), across 15 devices. Fix: in Google Cloud Console, Credentials, open the web client and add https://broadwayscorecard.com and https://www.broadwayscorecard.com under Authorized JavaScript origins, then save.",
+    "severity": "error",
+    "url": "https://broadwayscorecard.com/admin/accounts",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T15:38:34.125Z"
   }
 ]
