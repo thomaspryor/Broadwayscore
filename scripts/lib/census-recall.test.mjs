@@ -458,3 +458,23 @@ test('summarizeRun carries combinedRecall into the trend entry', () => {
   });
   assert.equal(e.combinedRecall, 0.5);
 });
+
+test('BRO-7970: a dip inside a noisy family\'s own run-to-run sd is not a regression (real trend)', async () => {
+  const fs = await import('node:fs');
+  const url = new URL('../../data/audit/census-recall-trend.jsonl', import.meta.url);
+  if (!fs.existsSync(url)) return; // sparse checkouts omit audit data
+  const all = parseTrendJsonl(fs.readFileSync(url, 'utf8'));
+  const i = all.findIndex(e => e.date === '2026-11-19');
+  if (i < 0) return;
+  const r = detectRecallRegression(all.slice(0, i + 1));
+  assert.equal(r.verdict, 'ok', r.reason);
+});
+
+test('BRO-7970: noisy history raises the bar, but a collapse past it still fires', () => {
+  const wk = (date, naive, y) => ({ date, families: { naive }, shows: 5, truthUrls: 50, familyYield: { naive: y } });
+  const hist = [0.55, 0.17, 0.3, 0.46, 0.78, 0.3, 0.37, 0.34, 0.38, 0.33].map((v, k) => wk(`2026-06-${10 + k}`, v, v * 10));
+  const dip = detectRecallRegression([...hist, wk('2026-07-01', 0.2, 2)]);
+  assert.equal(dip.verdict, 'ok', dip.reason);
+  const collapse = detectRecallRegression([...hist, wk('2026-07-01', 0.02, 0.2)]);
+  assert.equal(collapse.verdict, 'regressed');
+});

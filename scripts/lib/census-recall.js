@@ -102,6 +102,20 @@ const REGRESSION_DEFAULTS = {
    * nothing; a further "drop" there is noise, not news.
    */
   minBaselineRecall: 0.1,
+  /**
+   * Noise-aware week-on-week threshold (BRO-7970). Each run samples only ~5
+   * shows, so a family's recall swings run to run: the naive family's sd over
+   * 12 judgeable runs is 0.154 (0.17-0.78), the same size as the flat 0.15
+   * threshold, so "regressed" fired on a 0.157 dip while on-disk and combined
+   * recall were steady. The week-on-week threshold is now
+   * max(dropThreshold, noiseSigmas x sd of up to noiseLookbackRuns prior
+   * judgeable runs); a quiet arm (scoped, sd 0.07) keeps the flat floor, a
+   * noisy one needs a drop beyond its own noise. Slow-drift and dead-arm rules
+   * are untouched. Needs minNoiseRuns samples, else the flat floor applies.
+   */
+  noiseSigmas: 1.5,
+  noiseLookbackRuns: 12,
+  minNoiseRuns: 6,
 };
 
 /**
@@ -432,11 +446,16 @@ function detectRecallRegression(entries, opts = {}) {
       const yieldNote = yieldKnown ? `${round3(curYield)} vs ${round3(baseYield)} URLs/show` : 'yield unknown';
 
       const drop = baseline - current;
-      if (drop >= cfg.dropThreshold && yieldFell) {
+      const noiseSamples = history.slice(-cfg.noiseLookbackRuns)
+        .map(e => (e[level] || {})[arm])
+        .filter(v => typeof v === 'number' && Number.isFinite(v));
+      const noiseSd = noiseSamples.length >= cfg.minNoiseRuns ? sampleSd(noiseSamples) : 0;
+      const dropThreshold = Math.max(cfg.dropThreshold, cfg.noiseSigmas * noiseSd);
+      if (drop >= dropThreshold && yieldFell) {
         regressions.push({
           level, arm, baseline: round3(baseline), current: round3(current), drop: round3(drop),
           rule: 'week-on-week',
-          reason: `recall ${round3(current)} vs ${round3(baseline)} median over ${samples.length} prior run(s) — down ${round3(drop)} (threshold ${cfg.dropThreshold}), yield ${yieldNote}`,
+          reason: `recall ${round3(current)} vs ${round3(baseline)} median over ${samples.length} prior run(s) — down ${round3(drop)} (threshold ${round3(dropThreshold)}), yield ${yieldNote}`,
         });
         continue;
       }
@@ -561,6 +580,12 @@ function parseTrendJsonl(text) {
     } catch { /* a torn line must not blind the whole detector */ }
   }
   return out;
+}
+
+function sampleSd(nums) {
+  if (nums.length < 2) return 0;
+  const m = nums.reduce((a, b) => a + b, 0) / nums.length;
+  return Math.sqrt(nums.reduce((a, b) => a + (b - m) ** 2, 0) / (nums.length - 1));
 }
 
 function median(nums) {

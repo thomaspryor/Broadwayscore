@@ -1,18 +1,8 @@
 {
   "generatedAt": "2026-11-19T12:03:05.562Z",
-  "verdict": "regressed",
-  "reason": "naive: recall 0.196 vs 0.353 median over 4 prior run(s) — down 0.157 (threshold 0.15), yield 1.8 vs 4 URLs/show",
-  "regressions": [
-    {
-      "level": "families",
-      "arm": "naive",
-      "baseline": 0.353,
-      "current": 0.196,
-      "drop": 0.157,
-      "rule": "week-on-week",
-      "reason": "recall 0.196 vs 0.353 median over 4 prior run(s) — down 0.157 (threshold 0.15), yield 1.8 vs 4 URLs/show"
-    }
-  ],
+  "verdict": "ok",
+  "reason": "3 search method(s) within 0.15 of their 4-run median",
+  "regressions": [],
   "comparedArms": 3,
   "trendEntries": 14,
   "latest": {
@@ -117,5 +107,6 @@
       "the-good-thief-off-broadway-2026",
       "destiny-of-desire-regional-2026"
     ]
-  }
+  },
+  "skipped": []
 }
