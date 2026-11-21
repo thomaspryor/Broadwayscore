@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T21:53:14.835Z",
+  "timestamp": "2026-11-21T23:27:35.561Z",
   "stats": {
-    "totalReviews": 83805,
-    "alreadyFlagged": 22419,
-    "dateGuardCatches": 235,
-    "directorMismatch": 3866,
-    "tvFilmSignals": 2401,
-    "londonSignals": 3947,
-    "offBroadwaySignals": 781,
+    "totalReviews": 83817,
+    "alreadyFlagged": 22423,
+    "dateGuardCatches": 239,
+    "directorMismatch": 3868,
+    "tvFilmSignals": 2405,
+    "londonSignals": 3949,
+    "offBroadwaySignals": 782,
     "yearMismatch": 394,
-    "noPublishDate": 8244
+    "noPublishDate": 8239
   },
   "findings": [
     {
@@ -9449,6 +9449,7 @@
     {
       "showId": "blithe-spirit-west-end-2014",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 78,
       "publishDate": "2014-03-19",
       "url": "https://www.ft.com/content/68ac329c-af55-11e3-bea5-00144feab7de?syn-25a6b1a6=1",
       "findings": [
@@ -9481,6 +9482,7 @@
     {
       "showId": "blithe-spirit-west-end-2014",
       "file": "observer--susannah-clapp.json",
+      "score": 83,
       "publishDate": "2014-03-23",
       "url": "https://www.theguardian.com/stage/2014/mar/23/blithe-spirit-review-angela-lansbury-happy-medium",
       "findings": [
@@ -9494,7 +9496,7 @@
     {
       "showId": "blithe-spirit-west-end-2014",
       "file": "standard--unknown.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2014-03-20",
       "url": "https://www.standard.co.uk/culture/theatre/blithe-spirit-gielgud-theatre-angela-lansbury-is-vivacious-in-defiance-of-her-age-review-9201298.html",
       "findings": [
@@ -10720,6 +10722,19 @@
       "score": 55,
       "publishDate": "2024-05-30",
       "url": "https://www.thetimes.co.uk/article/boys-from-the-blackstuff-national-theatre-review-nz5pnb9tb",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "boys-from-the-blackstuff-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.co.uk/article/boys-from-the-blackstuff-review-biting-scouse-wit-brings-a-tender-tribute-to-life-j0kfj769n",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -12494,7 +12509,7 @@
     {
       "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2024-12-18",
       "url": "https://www.theguardian.com/stage/2024/dec/18/cat-on-a-hot-tin-roof-review-daisy-edgar-jones-kingsley-ben-adir-almeida-london",
       "findings": [
@@ -57233,6 +57248,30 @@
       ]
     },
     {
+      "showId": "prince-faggot-off-broadway-2025",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "2025-06-17",
+      "url": "https://www.thewrap.com/prince-faggot-review-off-broadway/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 85d before show (2025-06-17 vs 2025-09-10)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "prince-faggot-playwrights-horizons-off-broadway-2025",
       "file": "nysr--michael-sommers.json",
       "score": 57,
@@ -57891,6 +57930,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"adam penford\" from punch-2025"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "2025-03-07",
+      "url": "https://www.whatsonstage.com/news/punch-at-the-young-vic-review_1668215/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leanne pinder\" from punch-2025"
         }
       ]
     },
@@ -64424,6 +64487,20 @@
     },
     {
       "showId": "stories-the-tap-dance-sensation-off-west-end-2026",
+      "file": "thestage--siobhan-murphy.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/rb-dance-company-stories-review-peacock-theatre-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-off-west-end-2026",
       "file": "theupcoming--scarlett-bruin.json",
       "score": 78,
       "publishDate": "2024-10-30",
@@ -67854,6 +67931,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "tammy-faye-2024",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.co.uk/article/tammy-faye-review-not-much-to-praise-the-lord-about-in-eltons-show-vttv3fj07",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -82606,6 +82696,7 @@
     {
       "showId": "the-weir-west-end-2014",
       "file": "financialtimes--unknown.json",
+      "score": 93,
       "publishDate": "2014-01-22",
       "url": "https://www.ft.com/content/09fec87c-8359-11e3-aa65-00144feab7de",
       "findings": [
@@ -92555,7 +92646,7 @@
     {
       "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 85,
+      "score": 88,
       "publishDate": "June 26th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/a-moon-for-the-misbegotten-at-almeida-theatre-b1235001.html",
       "findings": [
@@ -97184,6 +97275,7 @@
     {
       "showId": "birdland-west-end-2014",
       "file": "observer--susannah-clapp.json",
+      "score": 73,
       "publishDate": "2014-04-13",
       "url": "https://www.theguardian.com/stage/2014/apr/13/charles-iii-birdland-small-family-business-review",
       "findings": [
@@ -121317,6 +121409,7 @@
     {
       "showId": "medea-west-end-2014",
       "file": "financialtimes--unknown.json",
+      "score": 71,
       "publishDate": "2014-07-22",
       "url": "https://www.ft.com/content/0bc57680-1182-11e4-b356-00144feabdc0?syn-25a6b1a6=1",
       "findings": [
@@ -122735,7 +122828,7 @@
     },
     {
       "showId": "my-english-persian-kitchen-regional-2026",
-      "file": "metro-weekly--unknown.json",
+      "file": "metro-weekly--andre-hereford.json",
       "score": 88,
       "publishDate": "2026-11-20",
       "url": "https://www.metroweekly.com/2026/11/my-english-persian-kitchen-review-solas-nua/",
@@ -128605,6 +128698,18 @@
       "file": "telegraph--lindsay-johns.json",
       "publishDate": "2025-03-07",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/punch-young-vic-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -140310,6 +140415,20 @@
       ]
     },
     {
+      "showId": "the-jungle-book-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "score": 77,
+      "publishDate": "2026-11-21",
+      "url": "https://monstagigz.com/2026/11/21/theatre-review-the-jungle-book-starring-tony-jayawardena-and-ankur-bahl-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-jungle-west-end-2018",
       "file": "britishtheatrecom--mark-ludmon.json",
       "score": 91,
@@ -146509,6 +146628,18 @@
     },
     {
       "showId": "the-years-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
       "file": "times-uk--unknown.json",
       "score": 76,
       "publishDate": null,
@@ -146532,6 +146663,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "2025-02-10",
+      "url": "https://www.whatsonstage.com/news/the-years-west-end-review-this-play-cannot-be-missed_1663948/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
