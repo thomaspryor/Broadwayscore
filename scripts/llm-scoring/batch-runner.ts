@@ -171,7 +171,7 @@ const GEMINI_INLINE_MAX_BYTES = 15 * 1024 * 1024;
  */
 export function assembleRequests(
   items: PendingBatchItem[],
-  config: { geminiEnabled: boolean; claudeModel: string; openaiModel: string; geminiTemperature?: number; geminiModel?: string }
+  config: { geminiEnabled: boolean; claudeModel: string; openaiModel: string; geminiTemperature?: number; geminiModel: string }
 ): VendorRequests {
   const anthropic: any[] = [];
   const openai: any[] = [];

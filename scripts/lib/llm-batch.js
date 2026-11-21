@@ -59,7 +59,8 @@ function parseCustomIdIndex(customId) {
  * JSON reply). Google routes gemini-2.5-flash to 3.5-flash-lite on 2026-12-01.
  */
 function geminiThinkingOff(model) {
-  return /^gemini-[3-9]/.test(String(model)) ? { thinkingLevel: 'minimal' } : { thinkingBudget: 0 };
+  const id = String(model).replace(/^models\//, '');
+  return /^gemini-([3-9]|[1-9]\d)/.test(id) ? { thinkingLevel: 'minimal' } : { thinkingBudget: 0 };
 }
 
 function claudeSamplingParams(model, temperature = 0.3) {
@@ -234,9 +235,11 @@ function parseOpenAIBatchResult(line) {
 // constructor options. A future caller that builds a GeminiScorer with a
 // non-default temperature MUST pass that same value here explicitly, or
 // batch mode will silently score at a different temperature than sync.
-function buildGeminiBatchRequest({ customId, systemPrompt, userPrompt, temperature = 0.3, maxOutputTokens = 500, model = 'gemini-2.5-flash' }) {
-  if (!customId || !systemPrompt || !userPrompt) {
-    throw new Error('buildGeminiBatchRequest: customId, systemPrompt, userPrompt are required');
+function buildGeminiBatchRequest({ customId, systemPrompt, userPrompt, temperature = 0.3, maxOutputTokens = 500, model }) {
+  // model is required: the line's thinking config must match the batch job's model, or a
+  // Gemini 3.x job gets 2.x lines and every item 400s (BRO-7511 ship-check).
+  if (!customId || !systemPrompt || !userPrompt || !model) {
+    throw new Error('buildGeminiBatchRequest: customId, systemPrompt, userPrompt, model are required');
   }
   const fullPrompt = `${systemPrompt}\n\n${userPrompt}`;
   return {

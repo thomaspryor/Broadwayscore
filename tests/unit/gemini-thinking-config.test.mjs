@@ -26,7 +26,7 @@ const PENDING = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'tests/fixtur
 
 // The helper itself returns the 2.x literal; its batch builder is checked functionally below.
 const HELPER_HOME = 'scripts/lib/llm-batch.js';
-const LITERAL = /thinkingBudget\s*:\s*0/;
+const LITERAL = /["']?thinkingBudget["']?\s*:\s*0\b/;
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     if (e.name === 'node_modules' || e.name.startsWith('.')) continue;
@@ -37,15 +37,19 @@ function walk(dir, out = []) {
   return out;
 }
 // Lines that are only comments do not count.
-const offends = (src) => src.split('\n').some((l) => LITERAL.test(l) && !/^\s*(\/\/|\*)/.test(l));
+const hits = (src) => src.split('\n').filter((l) => LITERAL.test(l) && !/^\s*(\/\/|\*)/.test(l)).length;
+// The helper's home may hold exactly ONE literal: the helper's own 2.x return.
+const offends = (src, rel) => hits(src) > (rel === HELPER_HOME ? 1 : 0);
 const offenders = ['scripts', 'src'].flatMap((d) => walk(path.join(ROOT, d)))
   .map((abs) => path.relative(ROOT, abs).split(path.sep).join('/'))
-  .filter((rel) => rel !== HELPER_HOME && offends(fs.readFileSync(path.join(ROOT, rel), 'utf8')));
+  .filter((rel) => offends(fs.readFileSync(path.join(ROOT, rel), 'utf8'), rel));
 
 test('geminiThinkingOff: 2.x keeps thinkingBudget 0, 3.x gets thinkingLevel minimal', () => {
   assert.deepEqual(geminiThinkingOff('gemini-2.5-flash'), { thinkingBudget: 0 });
   assert.deepEqual(geminiThinkingOff('gemini-3.5-flash-lite'), { thinkingLevel: 'minimal' });
   assert.deepEqual(geminiThinkingOff('gemini-3.8-flash'), { thinkingLevel: 'minimal' });
+  assert.deepEqual(geminiThinkingOff('models/gemini-3.5-flash-lite'), { thinkingLevel: 'minimal' });
+  assert.deepEqual(geminiThinkingOff('gemini-10-flash'), { thinkingLevel: 'minimal' });
 });
 
 test('no NEW file sends a literal thinkingBudget:0 (use geminiThinkingOff(model))', () => {
@@ -62,8 +66,10 @@ test('scoring paths are fixed: sync scorer, batch builder, comparative (red-then
   for (const f of ['scripts/llm-scoring/gemini-scorer.ts', 'scripts/lib/llm-batch.js', 'scripts/lib/comparative-batch.js', 'scripts/llm-scoring/comparative-core.ts']) {
     assert.equal(offenders.includes(f), false, f);
   }
-  assert.equal(offends("generationConfig: { thinkingConfig: { thinkingBudget: 0 } }"), true);
-  assert.equal(offends("  // thinkingBudget: 0 was the old form"), false);
+  assert.equal(offends("generationConfig: { thinkingConfig: { thinkingBudget: 0 } }", 'x.js'), true);
+  assert.equal(offends('generationConfig: { "thinkingBudget": 0 }', 'x.js'), true);
+  assert.equal(offends("  // thinkingBudget: 0 was the old form", 'x.js'), false);
+  assert.equal(offends("a = { thinkingBudget: 0 };\nb = { thinkingBudget: 0 };", HELPER_HOME), true, 'a 2nd literal in the helper home is caught');
   const line = buildGeminiBatchRequest({ customId: 'c', systemPrompt: 's', userPrompt: 'u', model: 'gemini-3.5-flash-lite' });
   assert.equal('thinkingBudget' in line.request.generationConfig.thinkingConfig, false);
 });

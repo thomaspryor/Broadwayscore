@@ -128,7 +128,7 @@ describe('buildOpenAIBatchLine', () => {
 
 describe('buildGeminiBatchRequest', () => {
   test('concatenates system+user exactly like gemini-scorer.ts:85-87', () => {
-    const req = buildGeminiBatchRequest({ customId: 'req-2', ...SAMPLE });
+    const req = buildGeminiBatchRequest({ customId: 'req-2', ...SAMPLE, model: 'gemini-2.5-flash' });
     assert.strictEqual(req.metadata.key, 'req-2');
     assert.strictEqual(
       req.request.contents[0].parts[0].text,
@@ -688,6 +688,7 @@ describe('assembleRequests — batch prompts match the sync prompts byte for byt
       geminiEnabled: true,
       claudeModel: 'claude-sonnet-4-6',
       openaiModel: 'gpt-4o',
+      geminiModel: 'gemini-2.5-flash',
     });
 
     assert.strictEqual(reqs.anthropic.length, 1);
@@ -707,6 +708,17 @@ describe('assembleRequests — batch prompts match the sync prompts byte for byt
     );
   });
 
+  test('BRO-7511: the batch lines follow the job model (3.x lines never carry thinkingBudget)', () => {
+    const scorer = makeScorer();
+    const items = itemsFor(scorer, reviewFileFixture());
+    const cfg = { geminiEnabled: true, claudeModel: 'claude-sonnet-4-6', openaiModel: 'gpt-4o' };
+    const g3 = assembleRequests(items, { ...cfg, geminiModel: 'gemini-3.5-flash-lite' }).gemini[0].request.generationConfig.thinkingConfig;
+    assert.deepStrictEqual(g3, { thinkingLevel: 'minimal' });
+    const g2 = assembleRequests(items, { ...cfg, geminiModel: 'gemini-2.5-flash' }).gemini[0].request.generationConfig.thinkingConfig;
+    assert.deepStrictEqual(g2, { thinkingBudget: 0 }, '2.5 lines unchanged');
+    assert.throws(() => assembleRequests(items, cfg), /model are required/, 'no silent 2.5 default');
+  });
+
   test('geminiEnabled:false emits no Gemini requests', () => {
     const scorer = makeScorer();
     const items = itemsFor(scorer, reviewFileFixture());
@@ -714,6 +726,7 @@ describe('assembleRequests — batch prompts match the sync prompts byte for byt
       geminiEnabled: false,
       claudeModel: 'claude-sonnet-4-6',
       openaiModel: 'gpt-4o',
+      geminiModel: 'gemini-2.5-flash',
     });
     assert.strictEqual(reqs.gemini.length, 0);
     assert.strictEqual(reqs.anthropic.length, 1);
@@ -727,6 +740,7 @@ describe('assembleRequests — batch prompts match the sync prompts byte for byt
       geminiEnabled: true,
       claudeModel: 'claude-sonnet-4-6',
       openaiModel: 'gpt-4o',
+      geminiModel: 'gemini-2.5-flash',
     });
     const usage = estimateBatchUsage(reqs);
     assert.ok(usage.claude.input > 0);
