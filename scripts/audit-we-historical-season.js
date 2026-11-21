@@ -91,12 +91,12 @@ function synopsisNeedsLook(text) {
 
 const MIN_SCORED = 5;
 const MIN_DISPLAYABLE_SHARE = 0.7;
-// Owner decisions (BRO-6487): some seasons have too few surviving reviews to reach
-// 0.70 because The Stage, The Times and other outlets are unreachable for those years,
-// so they are held to documented lower floors. 2012-13: 0.25 (2026-11-03, about 2.8
-// reviews per show). 2014-15 and 2015-16: 0.55 (2026-11-21, "Option B is fine").
-// Every other season keeps 0.70.
-const SEASON_DISPLAYABLE_FLOOR = { '2012-2013': 0.25, '2014-2015': 0.55, '2015-2016': 0.55 };
+// Owner decisions (BRO-6487): 2012-13 has too few surviving reviews (about 2.8 per
+// show; The Stage and The Times unreachable) to reach 0.70, so it is held to a
+// documented lower floor of 0.25 (2026-11-03). 2014-15 and 2015-16 briefly had a 0.55
+// floor (2026-11-21) but BRO-7998 (Observer recovery) lifted both to 0.71, so they
+// are back on the default 0.70. Every other season keeps 0.70.
+const SEASON_DISPLAYABLE_FLOOR = { '2012-2013': 0.25 };
 
 const USAGE = `audit-we-historical-season.js — pass/fail quality gate for a West End historical season.
 
