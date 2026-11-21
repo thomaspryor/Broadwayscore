@@ -22,6 +22,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { listShowDirs, corpusDirProblem } = require('./lib/list-show-dirs');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const L = require('./lib/orphan-production-clusters');
 
 const ROOT = path.join(__dirname, '..');
@@ -46,6 +47,7 @@ function collect() {
   const dir = resolveReviewTextsDir();
   const problem = corpusDirProblem(dir);
   if (problem) { console.error(`SKIP: ${problem}`); process.exit(2); }
+  try { assertReviewTextCorpus(dir); } catch (err) { exitIfCorpusNotScanned(err); } // BRO-7193 shared guard: exit 2
   const now = Date.now();
   const ctx = { byTitle: L.indexShows(shows), cutoffMs: now - 2 * 365 * L.DAY, now };
   const showById = new Map(shows.map((s) => [s.id, s]));

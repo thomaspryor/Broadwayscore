@@ -97,6 +97,8 @@ describe('BRO-3535: gates moved from test.yml', () => {
     'orphaned-wrongprod-provenance',
     // BRO-4317: NEW digest-routed corpus audit (review-text folders with no shows.json id).
     'orphan-review-folders',
+    // BRO-7929: digest-routed baseline-diff audit (wrongProduction reviews of a production missing from shows.json).
+    'orphan-production-clusters',
   ];
 
   test('every moved audit is present, marked healPathRequired, and either has healExempt or is baseline-diff/scheduled-fix', () => {
