@@ -41436,18 +41436,19 @@
     },
     "test-yml:data-validation-red:run-autoclear-vs-ensemble-corpus-test-needs-review-texts": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.264Z",
       "incidentOpenedAt": "2026-11-19T17:00:14.718Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-21T16:39:20.672Z",
-      "lastNotifiedAt": "2026-11-20T17:01:52.989Z",
+      "lastSeen": "2026-11-21T17:09:39.506Z",
+      "lastNotifiedAt": "2026-11-21T17:09:39.506Z",
       "lastSurfacedAt": "2026-11-20T17:01:52.989Z",
-      "notifyCount": 3,
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-7906",
-      "silentRefires": 56
+      "escalatedAt": "2026-11-21T17:09:40.044Z",
+      "escalationLane": "cloud-start-now"
     },
     "test-yml:data-validation-red:run-aggregator-domain-tld-parity-corpus-scan-needs-review-texts": {
       "status": "resolved",
