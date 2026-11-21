@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-21T03:16:38.314Z",
+  "timestamp": "2026-11-21T03:40:26.012Z",
   "stats": {
-    "totalReviews": 83557,
+    "totalReviews": 83573,
     "alreadyFlagged": 22615,
     "dateGuardCatches": 222,
-    "directorMismatch": 3802,
+    "directorMismatch": 3803,
     "tvFilmSignals": 2380,
     "londonSignals": 3858,
     "offBroadwaySignals": 775,
@@ -19404,6 +19404,7 @@
     {
       "showId": "dirty-dancing-tour-2026",
       "file": "boston-globe--garrett-m-graff.json",
+      "score": 79,
       "publishDate": "2026-11-19",
       "url": "https://www.bostonglobe.com/2026/11/19/arts/dirty-dancing-musical",
       "findings": [
@@ -49544,6 +49545,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "latheatrix--anthony-gutierrez.json",
+      "score": 90,
       "publishDate": "2026-11-19",
       "url": "https://www.latheatrix.com/post/review-oh-mary-at-the-ahmanson-theatre",
       "findings": [
@@ -49660,6 +49662,19 @@
       "score": 81,
       "publishDate": "2026-10-16",
       "url": "https://sfist.com/2026/10/16/oh-mary-just-as-subversively-hilarious-on-tour-at-sfs-curran-as-it-was-on-broadway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "showsiveseen--unknown.json",
+      "publishDate": "2026-11-04",
+      "url": "https://www.showsiveseen.com/oh-mary-play-review-paramount-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -112083,6 +112098,7 @@
     {
       "showId": "ilford-boy-off-west-end-2026",
       "file": "rolandcat--unknown.json",
+      "score": 80,
       "publishDate": "2026-11-20",
       "url": "https://rolandcat.substack.com/p/review-ilford-boy-donmar-warehouse",
       "findings": [
