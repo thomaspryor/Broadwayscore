@@ -366,18 +366,21 @@ async function runLaneNight({
           name = trust.laneReviewFilename({ outletId: plan.record.outletId, criticName: plan.record.criticName, night, url: plan.record.url, existing }).filename;
           file = require('path').join(dir, name);
         }
+        // The old byline's file goes first: with both on disk the write guard marks the new one a duplicate of the old (same URL).
+        if (file !== found.file) fs.rmSync(found.file, { force: true });
+        const restore = () => { if (file !== found.file) { fs.rmSync(file, { force: true }); safeWriteReview(found.file, found.record, { force: true }); } else safeWriteReview(found.file, found.record, { force: true }); };
         const w = safeWriteReview(file, plan.record);
-        if (!w.wrote) { noteInbox(e, 'failed', `review file write refused (${w.skipped || 'unknown'})`); continue; }
+        if (!w.wrote) { restore(); noteInbox(e, 'failed', `review file write refused (${w.skipped || 'unknown'})`); continue; }
         record = JSON.parse(fs.readFileSync(file, 'utf8'));
         const kept = JSON.stringify(record[e.field]) === JSON.stringify(e.value);
         // The write guard can answer a date with its own wrongProduction flag, or a byline with Unknown. Put the old file back.
         const sideFlag = e.field === 'publishDate' && record.wrongProduction === true && found.record.wrongProduction !== true;
-        if (!kept || sideFlag) {
-          if (file !== found.file) fs.rmSync(file, { force: true }); else safeWriteReview(found.file, found.record, { force: true });
-          noteInbox(e, 'failed', sideFlag ? 'the write guard flagged the review wrongProduction for that date; the file is back as it was' : `the write guard kept ${e.field} at ${JSON.stringify(record[e.field])}`);
+        const dup = record.duplicateOf && !found.record.duplicateOf;
+        if (!kept || sideFlag || dup) {
+          restore();
+          noteInbox(e, 'failed', sideFlag ? 'the write guard flagged the review wrongProduction for that date; the file is back as it was' : dup ? 'the write guard marked the changed file a duplicate; the file is back as it was' : `the write guard kept ${e.field} at ${JSON.stringify(record[e.field])}`);
           continue;
         }
-        if (file !== found.file) fs.rmSync(found.file, { force: true });
       }
       fileToKey.set(name, key);
       if (TAKEDOWN_FIELDS.includes(e.field)) {
@@ -414,7 +417,7 @@ async function runLaneNight({
     // its old row down in the same merge that adds the new one (same URL: nothing to wait for gone).
     const takedowns = stagedTakedowns.filter((t) => !t.inflight);
     for (const t of takedowns) t.inflight = true;
-    const takedownArg = [...takedowns.map((t) => ({ url: t.url, key: t.key, verifyAbsent: true })),
+    const takedownArg = [...takedowns.map((t) => ({ url: t.url, key: t.key, verifyAbsent: true, removedBefore: t.removedBefore === true })),
       ...batch.filter((r) => r.replacesUrl).map((r) => ({ url: r.row.url, key: r.key, verifyAbsent: false }))];
     for (const k of batchKeys) inflightKeys.add(k);
     try {
@@ -438,6 +441,7 @@ async function runLaneNight({
           noteInbox(t.entry, 'failed', 'the review file is flagged, but the live site still showed the review after the publish; the first rebuild after the lane removes it');
         }
       }
+      for (const t of takedowns) if ((res.stillLive || []).includes(t.key)) t.removedBefore = true; // the merge took it out; the site has not caught up
       const notLive = new Set([...(res.missing || [])]);
       for (const x of remove) { // the merge landed: the copies are off the site (unless their original is still not live: retry with it)
         if (notLive.has(x.primaryKey)) continue;

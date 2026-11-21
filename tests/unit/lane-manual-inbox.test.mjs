@@ -562,7 +562,7 @@ const { planCorrection, laneCardRow } = require('../../scripts/lib/opening-night
 
 test('BRO-7891 item 2: addCorrections takes only lane-correctable fields with valid values; a re-add replaces the first', () => {
   const bad = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [
-    { url: URL1, field: 'criticName', value: 'X' }, { url: URL1, field: 'humanReviewScore', value: 150 }, { url: 'ftp://x', field: 'humanReviewScore', value: 80 }] });
+    { url: URL1, field: 'urlDead', value: true }, { url: URL1, field: 'humanReviewScore', value: 150 }, { url: 'ftp://x', field: 'humanReviewScore', value: 80 }] });
   assert.equal(bad.ok, false);
   assert.equal(bad.invalid.length, 3, JSON.stringify(bad.invalid));
   const a = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1, field: 'humanReviewScore', value: 80 }], now: T0 });
@@ -596,7 +596,11 @@ test('BRO-7891 item 2: new-fix-plan refuses a lane-correctable edit on a held sh
   const p = laneHeldEditProblem(act, { holder: 'opening-night-lane' }, { url: URL1 });
   assert.equal(p.level, 'refuse');
   assert.match(p.message, /opening-night-lane-inbox\.js correct --show=test-show-2026 --url='https:\/\/www\.theatermania\.com[^']*' --field=humanReviewScore --value='85'/);
-  assert.equal(laneHeldEditProblem({ ...act, field: 'criticName' }, { holder: 'x' }).level, 'warn');
+  // BRO-7958: a byline is lane-correctable now, with a valid name; a field the lane still cannot change, or a value it
+  // would refuse (a take-down only ever goes true), stays a warning that the edit lands after the lane.
+  assert.equal(laneHeldEditProblem({ ...act, field: 'criticName', newValue: 'Jesse Green' }, { holder: 'x' }).level, 'refuse');
+  assert.equal(laneHeldEditProblem({ ...act, field: 'urlDead', newValue: true }, { holder: 'x' }).level, 'warn');
+  assert.equal(laneHeldEditProblem({ ...act, field: 'wrongShow', newValue: false }, { holder: 'x' }).level, 'warn');
   assert.equal(laneHeldEditProblem(act, null), null, 'no lease: the regular plan');
 });
 
@@ -665,11 +669,6 @@ test('BRO-7891 item 2: a correction for a review the lane did not publish tonigh
   assert.match(marks[0].reason, /not a review the lane published tonight/);
 });
 
-test('BRO-7891 item 2 ship-check: pull-quote corrections are not offered (unverifiable live, and the CLI has no text to check)', () => {
-  assert.deepEqual(inbox.LANE_CORRECTION_FIELDS, ['humanReviewScore']);
-  assert.equal(inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1, field: 'llmPullQuote', value: 'A quote that is long enough to pass the length rule.' }] }).ok, false);
-});
-
 test('BRO-7891 item 2 ship-check: a correction on a syndicated copy the lane keeps off the site is rejected, never re-published', async () => {
   const fix = { id: `${SHOW.id}|fix|dn`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: DN, field: 'humanReviewScore', value: 85, addedAt: new Date().toISOString(), addedBy: 'test' };
   let reads = 0;
@@ -691,4 +690,173 @@ test('BRO-7891 item 2 ship-check: a correction added after the last pass is reje
   const state = { leases: { [fix.id]: fix, [`${SHOW.id}|fix|done`]: { ...fix, status: 'published' } } };
   assert.deepEqual(strandedCorrections(state, { held: () => false }).map((e) => e.id), [fix.id]);
   assert.equal(strandedCorrections(state, { held: () => true }).length, 0, 'a held show is the lane\'s');
+});
+
+// ---- BRO-7958: corrections v2 (take-downs, date, byline, pull quote) ---------------------------------------------------
+const { mergeShowRows, publishLaneReviews } = require('../../scripts/lib/opening-night-lane/publish.js');
+const { createDeployPort } = require('../../scripts/lib/opening-night-lane/deploy-port.js');
+const { FIELD_VALUE_CHECKS } = require('../../scripts/lib/review-field-edit.js');
+const QUOTE = 'Nothing prepares you for the stunning second act, a thrilling piece of storytelling that earns every standing ovation.';
+const FULL = `${QUOTE} The production is directed with confidence and the cast delivers throughout the evening. `.repeat(6);
+const mkFix = (field, value, extra = {}) => ({ id: `${SHOW.id}|fix|${field}`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: URL1, field, value, addedAt: new Date().toISOString(), addedBy: 'test', ...extra });
+
+test('BRO-7958: addCorrections takes the v2 fields; a take-down only goes true; bad values are refused at the CLI', () => {
+  const ok = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [
+    { url: URL1, field: 'wrongShow', value: true }, { url: URL1, field: 'wrongProduction', value: true }, { url: URL1, field: 'isNonReview', value: true },
+    { url: URL1, field: 'publishDate', value: NIGHT }, { url: URL1, field: 'criticName', value: 'Jesse Green' }, { url: URL1, field: 'llmPullQuote', value: QUOTE }], now: T0 });
+  assert.equal(ok.ok, true); assert.equal(ok.added.length, 6, JSON.stringify(ok.invalid));
+  const bad = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [
+    { url: URL1, field: 'wrongShow', value: false }, { url: URL1, field: 'isNonReview', value: 'yes' }, { url: URL1, field: 'publishDate', value: `${NIGHT}T03:00:00Z` },
+    { url: URL1, field: 'publishDate', value: '2026-02-30' }, { url: URL1, field: 'criticName', value: 'Unknown' }, { url: URL1, field: 'llmPullQuote', value: 'Too short.' }] });
+  assert.equal(bad.ok, false); assert.equal(bad.invalid.length, 6, JSON.stringify(bad.invalid));
+  assert.equal(FIELD_VALUE_CHECKS.publishDate('2026-11-19'), null);
+  assert.match(FIELD_VALUE_CHECKS.publishDate('Nov 19'), /YYYY-MM-DD/);
+});
+
+test('BRO-7958: planCorrection: date relabels the provisional source and refuses an implausible date; byline and quote are checked against the record; isNonReview carries its manual reason', () => {
+  const rec = { url: URL1, assignedScore: 72, criticName: 'A Critic', outletId: 'theatermania', publishDate: NIGHT, dateSource: 'manual-inbox', fullText: FULL, showId: SHOW.id };
+  const d = planCorrection(rec, { id: 'x', field: 'publishDate', value: '2026-11-18' }, 't', { show: { ...SHOW, openingDate: '2026-11-19' } });
+  assert.equal(d.record.publishDate, '2026-11-18'); assert.equal(d.record.dateSource, 'manual-correction', 'no longer provisional, so the next fetch keeps it');
+  const old = planCorrection(rec, { id: 'x', field: 'publishDate', value: '2019-03-01' }, 't', { show: { ...SHOW, openingDate: '2026-11-19', previewsStartDate: '2026-10-20' } });
+  assert.match(old.reject, /wrongProduction/, 'a date the write guard would flag is refused in words');
+  assert.equal(planCorrection(rec, { id: 'x', field: 'criticName', value: 'Jesse Green' }, 't').record.criticName, 'Jesse Green');
+  const q = planCorrection(rec, { id: 'x', field: 'llmPullQuote', value: QUOTE }, 't', { show: SHOW });
+  assert.ok(q.record && q.record.llmPullQuote === QUOTE, JSON.stringify(q.reject));
+  assert.match(planCorrection(rec, { id: 'x', field: 'llmPullQuote', value: 'A line that is long enough but appears nowhere in the review text at all.' }, 't', { show: SHOW }).reject, /verbatim/);
+  const n = planCorrection(rec, { id: 'x', field: 'isNonReview', value: true }, 't');
+  assert.equal(n.record.isNonReview, true); assert.match(n.record.isNonReviewReason, /^manual \(not a review\)/i);
+  assert.equal(planCorrection(rec, { id: 'x', field: 'wrongShow', value: true }, 't').record.wrongShow, true);
+});
+
+// Real-world shaped end to end: a lane night that publishes URL1, then a correction read on pass 2.
+function laneNightV2({ fix, maxPasses = 3, stuckLive = false, fullText = FULL, publishDate = NIGHT }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7958-'));
+  const rt = path.join(dir, 'review-texts'); fs.mkdirSync(rt);
+  let doc = { reviews: [] };
+  const marks = []; const merges = []; const fetchedLive = [];
+  const urlEntry = entry();
+  let reads = 0;
+  const run = runLaneNight({
+    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses, passIntervalMs: 0, publishTimeoutMs: 150, pollMs: 1,
+    reviewTextsDir: rt,
+    adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => [] }],
+    fetchText: async () => '',
+    fetchReview: async () => ({ outletId: 'theatermania', outlet: 'TheaterMania', criticName: 'A Critic', fullText, publishDate }),
+    scoreReview: async () => 72,
+    readInbox: async () => { reads += 1; return reads === 1 ? [urlEntry] : [{ ...urlEntry, status: 'published' }, fix]; },
+    markInbox: async (updates) => { marks.push(...updates); },
+    publishPorts: {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; merges.push(out); return out; },
+      regenShow: async () => ({}),
+      deploy: async () => {},
+      // generate-mobile-show-details' rv shape: u url, s score, cn critic, d date, q pull quote
+      fetchLiveShow: async () => { const rv = doc.reviews.map((r) => ({ u: r.url, s: r.assignedScore, cn: r.criticName, d: r.publishDate, q: r.pullQuote })); fetchedLive.push(rv.length); return { rv: stuckLive ? [...rv, { u: URL1, s: 72 }].filter((x, i, a) => a.findIndex((y) => y.u === x.u) === i) : rv }; },
+    },
+    now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+  });
+  const files = () => (fs.existsSync(path.join(rt, SHOW.id)) ? fs.readdirSync(path.join(rt, SHOW.id)) : []).map((f) => ({ f, d: JSON.parse(fs.readFileSync(path.join(rt, SHOW.id, f), 'utf8')) }));
+  return run.then((res) => ({ res, doc, marks, merges, fetchedLive, files: files() })).finally(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+}
+
+for (const field of ['wrongShow', 'wrongProduction', 'isNonReview']) {
+  test(`BRO-7958: ${field} = true takes a published lane review off the site, verified gone live, and keeps it off`, async () => {
+    const fix = mkFix(field, true);
+    const { doc, marks, files, res } = await laneNightV2({ fix });
+    assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+    assert.ok(!doc.reviews.some((r) => r.url === URL1), 'the row is off reviews.json');
+    assert.equal(files.length, 1); assert.equal(files[0].d[field], true, 'the review file carries the flag, so the rebuild after the lane keeps it off');
+    assert.ok(res.takedownDone.some((t) => /verified gone/.test(t.reason)), JSON.stringify(res.takedownDone));
+  });
+}
+
+test('BRO-7958: a take-down the live site still shows is not claimed done: failed after the retries, row stays flagged on file', async () => {
+  const fix = mkFix('wrongShow', true);
+  const { marks } = await laneNightV2({ fix, stuckLive: true, maxPasses: 4 });
+  const st = marks.filter((m) => m.id === fix.id).map((m) => m.status);
+  assert.deepEqual(st, ['queued', 'failed'], JSON.stringify(marks));
+  assert.match(marks.find((m) => m.id === fix.id && m.status === 'failed').reason, /still showed the review/);
+});
+
+test('BRO-7958: a date correction is republished and verified once the live entry carries the new date', async () => {
+  const fix = mkFix('publishDate', '2026-11-18');
+  const { doc, marks, files } = await laneNightV2({ fix });
+  assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+  assert.equal(doc.reviews.find((r) => r.url === URL1).publishDate, '2026-11-18');
+  assert.equal(files[0].d.publishDate, '2026-11-18'); assert.equal(files[0].d.dateSource, 'manual-correction');
+  assert.notEqual(files[0].d.wrongProduction, true, 'the republish is not silently dropped by a date-guard flag');
+});
+
+test('BRO-7958: a byline correction replaces the old row in one merge and moves the review file', async () => {
+  const fix = mkFix('criticName', 'Jesse Green');
+  const { doc, marks, files } = await laneNightV2({ fix });
+  assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+  const rows = doc.reviews.filter((r) => r.url === URL1);
+  assert.equal(rows.length, 1, 'the old byline row is gone, not left beside the new one');
+  assert.equal(rows[0].criticName, 'Jesse Green');
+  assert.equal(files.length, 1, 'one review file, under the new byline');
+  assert.match(files[0].f, /jesse-green/); assert.equal(files[0].d.criticName, 'Jesse Green');
+  assert.ok(!files[0].d.duplicateOf, 'the new file is not marked a duplicate of the old byline file (both on disk at once would)');
+});
+
+test('BRO-7958: a pull-quote correction is applied from the review text and verified live', async () => {
+  const fix = mkFix('llmPullQuote', QUOTE);
+  const { doc, marks, files } = await laneNightV2({ fix });
+  assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+  assert.equal(doc.reviews.find((r) => r.url === URL1).pullQuote, QUOTE);
+  assert.equal(files[0].d.llmPullQuote, QUOTE);
+});
+
+test('BRO-7958: a quote that is not in the review text is rejected, nothing republished', async () => {
+  const fix = mkFix('llmPullQuote', 'A line that is long enough but appears nowhere in the review text at all.');
+  const { marks } = await laneNightV2({ fix });
+  const m = marks.filter((x) => x.id === fix.id);
+  assert.deepEqual(m.map((x) => x.status), ['rejected']); assert.match(m[0].reason, /verbatim/);
+});
+
+const laneDocRow = (extra = {}) => ({ showId: SHOW.id, url: URL1, criticName: 'A Critic', outletId: 'theatermania', assignedScore: 70, productionVerified: 'aggregator',
+  openingNightLane: trust.buildLaneProvenance({ show: SHOW.id, night: NIGHT, source: trust.MANUAL_SOURCE, seenAt: new Date().toISOString() }), ...extra });
+
+test('BRO-7958: mergeShowRows takes a lane row down by URL (and only a lane row of this show)', () => {
+  const lane = laneDocRow();
+  assert.ok(trust.isLaneReview(lane, { openingDate: NIGHT }), 'fixture is a real lane row');
+  const pipeline = { showId: SHOW.id, url: URL1, criticName: 'B Critic', outletId: 'theatermania', assignedScore: 70 };
+  const other = { ...lane, showId: 'other-show', openingNightLane: { ...lane.openingNightLane, show: 'other-show' } };
+  const out = mergeShowRows({ reviews: [lane, pipeline, other] }, SHOW.id, [], { openingDate: NIGHT, takedown: [{ url: `${URL1}#frag` }] });
+  assert.equal(out.takedownRemoved.length, 1);
+  assert.deepEqual(out.doc.reviews, [pipeline, other], 'the pipeline row and the other show\'s row stay');
+});
+
+test('BRO-7958: publish: a removal-only batch merges, deploys, and waits for the URL to leave the live site; a failed poll is not "gone"', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7958-pub-'));
+  try {
+    let doc = { reviews: [laneDocRow()] }; let polls = 0; const deployed = [];
+    const ports = {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; return out; }, regenShow: async () => ({}),
+      deploy: async (a) => { deployed.push(a); },
+      fetchLiveShow: async () => { polls += 1; if (polls === 1) throw new Error('503'); return { rv: polls < 4 ? [{ u: URL1 }] : [] }; },
+    };
+    const res = await publishLaneReviews({ show: SHOW.id, night: NIGHT, rows: [], takedown: [{ url: URL1, key: 'k1', verifyAbsent: true }], ledgerDir: dir, ports, dryRun: true, pollMs: 1, timeoutMs: 2000, openingDate: NIGHT });
+    assert.deepEqual(res.gone, ['k1']); assert.equal(res.timedOut, false);
+    assert.ok(polls >= 4, `kept polling while the site still showed it (${polls})`);
+    assert.equal(doc.reviews.length, 0);
+    assert.equal(deployed.length, 1, 'a removal-only publish is a real publish');
+    assert.deepEqual(deployed[0].absentUrls, [URL1]);
+    // never gone live inside the timeout: stillLive, not gone
+    doc = { reviews: [laneDocRow()] };
+    const stuck = await publishLaneReviews({ show: SHOW.id, night: NIGHT, rows: [], takedown: [{ url: URL1, key: 'k2', verifyAbsent: true }], ledgerDir: dir, dryRun: true, pollMs: 1, timeoutMs: 30, openingDate: NIGHT,
+      ports: { ...ports, fetchLiveShow: async () => ({ rv: [{ u: URL1 }] }) } });
+    assert.deepEqual(stuck.stillLive, ['k2']); assert.deepEqual(stuck.gone, []); assert.equal(stuck.timedOut, true);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('BRO-7958: deploy port: an absent URL keeps the dispatch open until the live site stops showing it, then closes', async () => {
+  let t = 0; const sent = [];
+  const port = createDeployPort({ show: SHOW.id, dispatch: async () => { sent.push(t); return { ok: true }; }, now: () => t, log: () => {} });
+  port.deploy({ expectedUrls: [], absentUrls: [URL1] });
+  await port.idle();
+  assert.equal(sent.length, 1, 'a removal-only publish dispatches a deploy (before: "nothing landed")');
+  port.observe({ rv: [{ u: URL1 }] });
+  assert.equal(port.isOpen(), true, 'still live: the deploy has not shipped the removal');
+  port.observe({ rv: [] });
+  assert.equal(port.isOpen(), false, 'gone live: closed');
 });

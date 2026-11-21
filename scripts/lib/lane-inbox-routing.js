@@ -79,8 +79,9 @@ function laneHeldEditProblem(action, lease, { url } = {}) {
   if (!action || action.type !== 'review-field-edit' || !lease) return null;
   const show = String(action.file || '').split('/')[0];
   if (lease.unknown) return { level: 'warn', message: `could not read the opening-night lease store for ${show}; if a lane holds it tonight this edit reaches the site only after the lane ends` };
-  const { LANE_CORRECTION_FIELDS } = require('./opening-night-lane/manual-inbox');
-  if (LANE_CORRECTION_FIELDS.includes(action.field)) {
+  const { LANE_CORRECTION_FIELDS, laneValueError } = require('./opening-night-lane/manual-inbox');
+  // BRO-7958: only a value the lane would accept (a take-down only ever goes true); anything else lands after the lane.
+  if (LANE_CORRECTION_FIELDS.includes(action.field) && !laneValueError(action.field, action.newValue)) {
     const q = (v) => `'${String(v).replace(/'/g, `'\\''`)}'`;
     return { level: 'refuse', message: `the opening-night lane holds ${show} (${lease.holder || 'lane'}): this plan would reach the site only after the lane ends. `
       + `Correct it in the lane tonight: node scripts/opening-night-lane-inbox.js correct --show=${show} --url=${q(url || '<review URL>')} --field=${action.field} --value=${q(JSON.stringify(action.newValue))} `
