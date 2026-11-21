@@ -119,6 +119,25 @@ const ARMS = [
   // pages on this arm's normal rhythm is mis-tuned, and having it registered
   // means that mis-tuning shows up immediately instead of in the owner's inbox.
   { id: 'outlet:nysr', label: 'New York Stage Review (reviews collected)', kind: 'outlet', outletIds: ['nysr'] },
+
+  // ── BRO-7934 pipeline arms: "ok-but-zero". A workflow can succeed every run and its pipeline
+  // still produce no review files (the workflow arms above only count successful runs). Output is
+  // counted by the file's ingestSource (the caller) or collector `source`. Only pipelines with a
+  // steady record are listed; the detector learns each one's own cadence.
+  ...[
+    ['outlet-listing-poller', 'Outlet listing poller'],
+    ['opening-night-discovery', 'Opening-night discovery'],
+    ['serp-discovery', 'SERP discovery'],
+    ['outlet-serp-discovery', 'Outlet SERP discovery'],
+    ['bww-reviews', 'BroadwayWorld review pages'],
+    ['bww-roundup', 'BroadwayWorld roundups'],
+    ['dtli', 'Did They Like It'],
+    ['playbill-verdict', 'Playbill Verdict'],
+    ['show-score', 'Show Score'],
+    ['westendtheatre', 'West End Theatre'],
+    ['audit-show-review-gap', 'Aggregator gap audit (backstop)'],
+    ['discover-tour-stop-reviews', 'Tour-stop discovery'],
+  ].map(([key, label]) => ({ id: `pipeline:${key}`, label: `${label} (review files produced)`, kind: 'pipeline', pipelineKeys: [key] })),
 ];
 
 // BRO-7934: every discovery/collection workflow gets a yield arm (the registry

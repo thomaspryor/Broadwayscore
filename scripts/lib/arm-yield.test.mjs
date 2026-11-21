@@ -314,7 +314,13 @@ test('registry ids are unique and every arm is well-formed', () => {
     assert.ok(arm.label, `${arm.id} needs a label for the alert text`);
     if (arm.kind === 'workflow') {
       assert.match(arm.workflow, /\.yml$/, `${arm.id} needs a workflow filename`);
-      assert.equal(arm.cadence, 'steady', 'workflow arms must opt into the collapse rule');
+      // BRO-7934: generated discovery arms are 'sparse' when their cron fires less than daily (a weekly
+      // cron's volume drop proves nothing), 'steady' otherwise; the three original arms stay 'steady'.
+      assert.ok(['steady', 'sparse'].includes(arm.cadence), `${arm.id}: workflow arms declare cadence steady|sparse`);
+      if (!arm.id.startsWith('workflow:') || ['workflow:opening-night-orchestrator', 'workflow:sweep-we-aggregators', 'workflow:scoring-audit'].includes(arm.id)) assert.equal(arm.cadence, 'steady');
+    } else if (arm.kind === 'pipeline') {
+      assert.ok(Array.isArray(arm.pipelineKeys) && arm.pipelineKeys.length, `${arm.id} needs pipelineKeys`);
+      assert.notEqual(arm.cadence, 'steady', 'pipeline arms are event-driven: no collapse rule');
     } else {
       assert.ok(Array.isArray(arm.outletIds) && arm.outletIds.length, `${arm.id} needs outletIds`);
       assert.notEqual(arm.cadence, 'steady', 'bursty outlet arms must not use the collapse rule');
