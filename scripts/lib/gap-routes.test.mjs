@@ -61,6 +61,14 @@ test('class guard: every paywalled major outlet we hold a login for has a browse
   assert.equal(A.adapterUsable('financialtimes'), true);
 });
 
+test('class guard: every login renew-cookies keeps alive has a recovery adapter (a login with no adapter = no_adapter forever)', () => {
+  const { RENEW_OUTLETS, profileNameFor } = require('./cookie-renew.js');
+  for (const outlet of Object.keys(RENEW_OUTLETS)) {
+    const profile = profileNameFor(outlet);
+    assert.ok(A.ADAPTERS[profile], `renew-cookies keeps a "${outlet}" login (profile ${profile}) but browser-outlet-adapters has no adapter for it`);
+  }
+});
+
 test('terminal records re-evaluate when routes change (BRO-7943 item 6)', () => {
   const review = { outletId: 'financialtimes', url: 'https://www.ft.com/content/x' };
   const rec = (extra) => ({ reason: 'PAYWALL_NO_ACCESS', decidedAt: '2026-01-01T00:00:00Z', decidedBy: 'owner', approvedBy: 'owner: ok', evidence: ['REFETCH_FREE: rejected (x)'], urlAtDecision: review.url, policyVersion: G.TERMINAL_POLICY_VERSION, ...extra });
