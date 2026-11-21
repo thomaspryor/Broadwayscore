@@ -205,6 +205,7 @@ function waitLines(closing) {
     .filter(Boolean);
 }
 
+const { undeliveredDecision } = require('./undelivered-message.js');
 const DEAD_NOTHING_RE = /^(?:nothing|no\b)/i;
 
 /**
@@ -217,6 +218,9 @@ function deadWaitDecision(input) {
   const no = (reason) => ({ block: false, reason });
   if (noVerify) return no('NO-VERIFY bypass');
   if (!verdictKeepOpen(closing)) return no('closing verdict is not KEEP OPEN');
+  // BRO-7924: an errored/refused send_message and a KEEP OPEN that still waits on that session.
+  const und = undeliveredDecision({ closing, tools, liveWake: !!otherLive || liveBackground(tools, done, { now }).length > 0 });
+  if (und.block) return { block: true, target: 'undelivered message to ' + und.target, reason: und.reason };
   const hit = waitLines(closing).filter((l) => !DEAD_NOTHING_RE.test(l)).find((l) => DEAD_TARGET_RE.test(l));
   if (!hit) return no('KEEP OPEN does not wait on a parent, session, card or date');
   if (OWNER_WAIT_RE.test(hit)) return no('waiting on the owner next message, which wakes the session');
