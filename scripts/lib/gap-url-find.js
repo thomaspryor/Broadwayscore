@@ -715,13 +715,14 @@ function urlFindMethodErrorRates(rows, { nowMs = Date.now(), hours = 24, thresho
     const errs = (r.detail && r.detail.methodErrors) || {};
     for (const [m, st] of Object.entries(ms)) {
       if (st === 'skipped_paid' || st === 'not_run') continue;
-      const b = by[m] || (by[m] = { method: m, runs: 0, errored: 0, lastError: null });
+      const b = by[m] || (by[m] = { method: m, runs: 0, errored: 0, blocked: 0, lastError: null });
       b.runs++;
-      if (METHOD_FAIL_STATUS.has(st)) { b.errored++; b.lastError = errs[m] || st; }
+      if (METHOD_FAIL_STATUS.has(st)) { b.errored++; if (st === 'archive_auth_required') b.blocked = (b.blocked || 0) + 1; b.lastError = errs[m] || st; }
     }
   }
   return Object.values(by).map((b) => ({ ...b, rate: b.runs ? b.errored / b.runs : 0 }))
-    .filter((b) => b.runs >= minRuns && b.rate > threshold).sort((a, b) => b.rate - a.rate);
+    // The 403 is per publisher, so a typed block can sit under 50% across all hosts: any 5+ typed blocks a day alert too.
+    .filter((b) => b.runs >= minRuns && (b.rate > threshold || b.blocked >= minRuns)).sort((a, b) => b.rate - a.rate);
 }
 
 const DEAD_FREE_RE = /^free:no_evidence\/url_dead/;

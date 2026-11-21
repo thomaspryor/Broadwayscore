@@ -105,7 +105,7 @@ async function main() {
     const rec = { reviewKey: row.reviewKey, outletId: review.outletId, year: row.year, category: show && show.category, source: review.source, methods: {} };
     for (const m of methods) {
       const r = await UF.runMethod(m, ctx);
-      const mr = { found: r.candidates.length, tried: r.tried.slice(0, 4), error: r.error, verified: null, candidates: [] };
+      const mr = { found: r.candidates.length, tried: r.tried.slice(0, 4), error: r.error, blocked: r.blocked || null, verified: null, candidates: [] };
       for (const c of r.candidates.slice(0, maxCands)) {
         let v = fetched.get(`${row.reviewKey}|${c.url}`);
         if (!v) {

@@ -289,3 +289,12 @@ test('BRO-8000: urlFindMethodErrorRates flags a method erroring on >50% of a day
   assert.deepEqual(UF.urlFindMethodErrorRates(bad.slice(0, 3), { nowMs: now }), []);
   assert.deepEqual(UF.urlFindMethodErrorRates(bad, { nowMs: now + 3 * 86400000 }), []);
 });
+
+test('BRO-8000: 5+ typed blocks in a day alert even when under 50% of all lookups (the 403 is per publisher)', () => {
+  const now = Date.parse('2026-11-21T12:00:00Z');
+  const rows = [];
+  for (let i = 0; i < 20; i++) rows.push({ strategy: 'URL_FIND', ts: '2026-11-21T01:00:00Z', detail: { methods: { WAYBACK_CDX: i < 6 ? 'archive_auth_required' : 'no_candidates' } } });
+  const out = UF.urlFindMethodErrorRates(rows, { nowMs: now });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].blocked, 6);
+});
