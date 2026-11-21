@@ -28,6 +28,8 @@
 const fs = require('fs');
 const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
+const { textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
+const SHOW_MENTION_SWAP_MIN_CHARS = 600;
 const { isUrlProvenanceWrongProduction } = require('./wrongproduction-provenance');
 const { logExclusion } = require('./exclusion-logger');
 const { AP_WIRE_URL } = require('./ap-wire-detect');
@@ -860,6 +862,34 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     });
   }
 
+  // Show-mention swap guard (BRO-7769). A url swap whose incoming article text
+  // never names the show is another article, not a better copy of this review:
+  // the Good Thief TheaterMania slot was repointed from Irish Rep casting news
+  // to two more unrelated TheaterMania news pieces (show mentioned 0x). Soft
+  // refusal like the aggregator guard: the url and incoming fullText are
+  // refused, other fields still merge. Fails open without a show title or with
+  // incoming text too short to judge (paywall stubs), and passes when the
+  // incoming url slug names the show.
+  const _mentionTitle = (context.show && context.show.title) || context.showTitle || null;
+  const urlIsUnrelatedToShow = !!incoming.url && !incomingUrlGarbage && urlChanged && !!_mentionTitle
+    && typeof incoming.fullText === 'string' && incoming.fullText.length >= SHOW_MENTION_SWAP_MIN_CHARS
+    && !textMentionsTitle(incoming.fullText, _mentionTitle)
+    && !textMentionsShortTitle(incoming.fullText, _mentionTitle)
+    && !urlSlugNamesShow(incoming.url, _mentionTitle);
+  if (urlIsUnrelatedToShow) {
+    console.warn(`[mergeReviews] refused url swap, incoming text never mentions "${_mentionTitle}" for ${existing.outletId || context.file || '?'}: ${incoming.url}`);
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedUnrelatedUrlSwap',
+      details: {
+        existingUrl: existing.url || null, incomingUrl: incoming.url, outletId: existing.outletId,
+        criticName: existing.criticName, showTitle: _mentionTitle,
+      },
+    });
+  }
+
   // Sibling URL-collision guard (BRO-3092). A urlChanged swap onto a URL that
   // a DIFFERENT file in this show already owns manufactures exactly the state
   // validate-data.js errors on ("One URL per outlet per show = one review"),
@@ -969,7 +999,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // scraped from the sibling's URL, so taking it here would pair THIS file's
   // (retained) url with ANOTHER article's body — undetectable by url-dated
   // audits, exactly like the regressed-swap case.
-  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage) {
+  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage && !urlIsUnrelatedToShow) {
     const decodedFullText = decodeHtmlEntities(incoming.fullText);
     if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
       merged.fullText = decodedFullText;
@@ -994,7 +1024,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
 
   if (incoming.url && !incomingUrlGarbage
       && (!existing.url || existing.url.includes('undefined') || urlChanged)
-      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling && !urlIsAggregatorPage) {
+      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling && !urlIsAggregatorPage && !urlIsUnrelatedToShow) {
     merged.url = incoming.url;
     if (urlChanged) {
       // URL moved to a different canonical article. Refresh publishDate and
@@ -1168,7 +1198,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // (no show record, no show dates or no date in the url => unchanged).
   let autoClearUrlDateVeto = false;
   if (context.show && merged.url && merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
-      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage && !urlIsUnrelatedToShow
       && !merged.wrongProductionManualClear && !cvSaysWrongProduction && isUrlBasedWrongProd) {
     const { isUrlSwapRegression: _urlOutsideRun } = require('./url-downgrade-guard');
     const veto = _urlOutsideRun({ newUrl: merged.url, show: context.show, outletId: existing.outletId });
@@ -1195,7 +1225,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     && canonicalReviewUrl(incoming.url) !== canonicalReviewUrl(existing.url);
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && urlActuallyChanged
-      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage && !urlIsUnrelatedToShow
       && !merged.wrongProductionManualClear
       && !cvSaysWrongProduction
       && !autoClearUrlDateVeto
