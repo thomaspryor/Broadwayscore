@@ -221,6 +221,9 @@ function cmdApply() {
   if (!res.length) throw new Error('no results for this snapshot; run `run` first');
   const unknown = res.filter((r) => r.sections.some((s) => !s || s.status === 'UNKNOWN')).map((r) => r.theater);
   if (unknown.length) throw new Error(`refusing: UNKNOWN sections remain for ${unknown.join(', ')}`);
+  const { validateSeatingSections } = require('./lib/seating-sections-validators');
+  const bad = res.filter((r) => r.theaterKept).flatMap((r) => validateSeatingSections(r.theater, r.sections.filter((s) => s.status === 'KEPT').map((s) => s.section), { forbiddenTitles: showTitleRules(r.theater).forbidden }));
+  if (bad.length) throw new Error(`refusing: kept sections fail validation:\n  ${bad.join('\n  ')}`);
   const meta = JSON.parse(fs.readFileSync(META, 'utf8'));
   const byTheater = new Map(res.map((r) => [r.theater, r]));
   const summary = { set: [], cleared: [], untouched: [] };

@@ -1,9 +1,9 @@
 'use strict';
 /**
  * Shape and copy rules for structuredTips.seating.sections (BRO-8018). Pure.
- * Shared by tests/unit/seating-data-coverage.test.mjs and the quarterly merge
- * (scripts/lib/theater-tips-validators.js validateMergedMetadata), so a section
- * that loses its sources or picks up an em dash fails in both places.
+ * Used by tests/unit/seating-data-coverage.test.mjs (live-data lane) and by
+ * scripts/reverify-seat-sections.js apply, which refuses to write sections that fail.
+ * The quarterly merge cannot change sections at all (validateMergedMetadata).
  */
 
 const { VERDICTS, PRICE_TIERS, SHOW_TAGS, HAZARD_TYPES, copyProblems, theaterKeepProblems } = require('./seat-adjudication');

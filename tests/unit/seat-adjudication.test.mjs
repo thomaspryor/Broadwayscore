@@ -139,3 +139,14 @@ describe('passage selection', () => {
     assert.ok(p.includes('rows F to L'));
   });
 });
+
+describe('quarterly tips prompt carries the verified sections (BRO-8018)', () => {
+  test('buildPrompt includes section verdicts so bestSeats/avoidSeats cannot contradict them', () => {
+    process.env.GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'test-dummy';
+    const { buildPrompt } = require('../../scripts/generate-theater-tips.js');
+    const p = buildPrompt('Gershwin Theatre', { structuredTips: { seating: { sections: [{ name: 'Orchestra Center', rowRange: 'F-L', verdict: 'sweet-spot', rationale: 'Best views.' }] } } }, {});
+    assert.match(p, /Verified seating sections/);
+    assert.match(p, /Orchestra Center \(rows F-L\): sweet-spot\. Best views\./);
+    assert.doesNotMatch(buildPrompt('X Theatre', {}, {}), /Verified seating sections/);
+  });
+});

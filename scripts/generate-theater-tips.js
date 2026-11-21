@@ -148,6 +148,13 @@ function buildPrompt(theaterName, metadata, scraped) {
     metadata.tips ? `Current tips: ${metadata.tips}` : null,
   ].filter(Boolean).join('\n');
 
+  // BRO-8018: sourced seating sections are ground truth. Without this the quarterly
+  // bestSeats/avoidSeats prose can contradict the verified section cards on the same page.
+  const sections = metadata.structuredTips?.seating?.sections || [];
+  const sectionData = sections.length > 0
+    ? `Verified seating sections for this theater (checked against cited audience sources; bestSeats and avoidSeats must agree with these and must not add seat claims beyond them):\n${sections.map((s) => `- ${s.name}${s.rowRange ? ` (rows ${s.rowRange})` : ''}: ${s.verdict}. ${s.rationale || ''}`).join('\n')}`
+    : '';
+
   // Sort dining by distance so LLM sees closest first
   const sortedDining = (scraped?.dining || [])
     .slice(0, 20)
@@ -169,7 +176,7 @@ function buildPrompt(theaterName, metadata, scraped) {
   return `Generate structured tips for this Broadway theater.
 
 ${theaterInfo}
-
+${sectionData ? `\n${sectionData}\n` : ''}
 ${diningData}
 
 ${parkingData}
@@ -443,7 +450,12 @@ function saveDraft(drafts) {
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2));
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+// Guarded so tests can require buildPrompt without starting a paid Gemini run (BRO-8018).
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = { buildPrompt };
