@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T19:45:33.213Z",
+  "generatedAt": "2026-11-21T20:19:09.440Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -171,15 +171,35 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "stagebuddy",
-      "error": "HTTP 500 for https://stagebuddy.com/feed"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "this-week-in-new-york",
+      "error": "Timeout fetching https://twi-ny.com/feed/"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 921,
+  "itemsScanned": 878,
   "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [
