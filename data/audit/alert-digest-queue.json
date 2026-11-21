@@ -1344,5 +1344,33 @@
       }
     ],
     "queuedAt": "2026-11-21T20:46:07.057Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-the-ugly-one-off-west-end-2026",
+    "title": "Unverified revival on The Ugly One",
+    "description": "the-ugly-one-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T21:08:30.715Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-the-beauty-queen-of-leenane-regional-2026",
+    "title": "Placeholder synopsis on The Beauty Queen of Leenane",
+    "description": "synopsis for the-beauty-queen-of-leenane-regional-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-21T21:08:31.370Z"
   }
 ]
