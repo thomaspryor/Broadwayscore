@@ -1579,7 +1579,7 @@ function freeTiersForUrl(url) {
   // fetch_error (Talkin' Broadway: 107 rows, 59 fetch_errors). No free tier
   // means the gap planner goes straight to the capped paid route.
   const cfManaged = CF_MANAGED_HOSTS.some((h) => hostMatches(url, h));
-  return chain.filter((t) => FREE.has(t) && !(cfManaged && t.startsWith('playwright')));
+  return cfManaged ? [] : chain.filter((t) => FREE.has(t));
 }
 
 /**

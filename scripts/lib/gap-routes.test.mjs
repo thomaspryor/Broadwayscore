@@ -47,7 +47,7 @@ test('free sites with a spent free refetch go on to URL_FIND; a cooldown does no
 });
 
 test('Talkin Broadway (Cloudflare managed) has no free tier, so it routes to the paid fetch', () => {
-  assert.deepEqual(S.freeTiersForUrl('https://www.talkinbroadway.com/page/2026/x.html').filter((t) => t.startsWith('playwright')), []);
+  assert.deepEqual(S.freeTiersForUrl('https://www.talkinbroadway.com/page/2026/x.html'), []);
   assert.ok(S.freeTiersForUrl('https://www.timeout.com/x').some((t) => t.startsWith('playwright')), 'other hosts keep their free tiers');
   const r = T.selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, freeTierOk: false, showAgeDays: 400, eligible: (s) => (s === 'PAID_FETCH' ? ok : no('x')) });
   assert.equal(r.strategy, 'PAID_FETCH');
@@ -67,6 +67,7 @@ test('terminal records re-evaluate when routes change (BRO-7943 item 6)', () => 
   // fresh record built now is valid for a historic show
   const built = G.buildTerminalRecord({ review, reason: 'PAYWALL_NO_ACCESS', evidence: ['BROWSER_SESSION: rejected (x)'], decidedBy: 'owner', approvedBy: 'owner: ok' });
   assert.equal(G.validateTerminal({ ...review, textUnrecoverable: built }, { recency: 'historic' }).valid, true);
+  assert.equal(G.buildTerminalRecord({ review, reason: 'OUTLET_DEFUNCT', evidence: ['dns'], decidedBy: 'gap-terminal-auto' }).routeFingerprint, undefined);
   // config changed under it
   const stale = { ...built, routeFingerprint: 'adapter=none;flags=REFETCH_FREE' };
   assert.deepEqual(G.validateTerminal({ ...review, textUnrecoverable: stale }, { recency: 'historic' }), { valid: false, reason: 'routes_changed' });

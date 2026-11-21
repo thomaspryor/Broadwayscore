@@ -51,7 +51,7 @@ function routeFingerprint(outletId) {
   const { adapterFor, adapterUsable } = require('./browser-outlet-adapters');
   const ad = outletId ? adapterFor(outletId) : null;
   const flags = Object.entries(STRATEGY_FLAGS)
-    .filter(([, f]) => f.enabled)
+    .filter(([k, f]) => f.enabled && (k === 'BROWSER_SESSION' || PAYWALL_ACCESS_ROUTES.includes(k))) // only routes a record's evidence depends on
     .map(([k, f]) => `${k}${f.minShowAgeDays ? `@${f.minShowAgeDays}d` : ''}${f.historicOnly ? '@historic' : ''}`)
     .sort().join(',');
   return `adapter=${ad ? `${ad.name}:${adapterUsable(outletId) ? 'nightly' : 'manual'}` : 'none'};flags=${flags}`;
@@ -91,8 +91,8 @@ function buildTerminalRecord({ review, reason, evidence, decidedBy, approvedBy =
   const rec = {
     reason, decidedAt: nowIso, decidedBy, evidence: [...evidence],
     urlAtDecision: (review && review.url) || null, policyVersion: TERMINAL_POLICY_VERSION,
-    routeFingerprint: routeFingerprint(review && review.outletId),
   };
+  if (!AUTO_REASONS.includes(reason)) rec.routeFingerprint = routeFingerprint(review && review.outletId); // defunct/print-only outlets do not depend on routes
   if (approvedBy) rec.approvedBy = approvedBy;
   return rec;
 }
