@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-21T05:28:25.446Z",
+    "generatedAt": "2026-11-21T06:11:27.182Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -9,32 +9,17 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 1,
-    "coveredCount": 3,
-    "highChurnTracked": 4
+    "exemptCount": 0,
+    "coveredCount": 1,
+    "highChurnTracked": 1
   },
   "flagged": [],
-  "exempt": [
-    {
-      "path": "data/audit/alert-ledger.json",
-      "churn": 35
-    }
-  ],
+  "exempt": [],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 95,
+      "churn": 102,
       "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/stage-latency.jsonl",
-      "churn": 31,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 30,
-      "mergeAttr": "ours"
     }
   ]
 }
