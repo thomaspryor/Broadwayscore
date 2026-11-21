@@ -164,6 +164,17 @@ jobs:
         with:
           workflow-name: scrape-bww-reviews
 
+      # BRO-7931 #2: the scrape job is where the 360-min timeout kill lands, and
+      # `rebuild` is skipped then, so alert here (cancelled runs skip failure()).
+      - name: Notify on failure or cancel
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'BWW Reviews Scraper Failed or Cancelled (scrape job)'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
   rebuild:
     needs: [scrape]
     if: always() && needs.scrape.result == 'success'
@@ -321,7 +332,7 @@ jobs:
           fi
 
       - name: Notify on failure
-        if: failure() || cancelled()  # BRO-7931: cancelled runs (timeout kill) were silent
+        if: failure()
         uses: ./.github/actions/notify-failure
         with:
           title: 'BWW Reviews Scraper Failed'

@@ -730,7 +730,10 @@ async function main() {
       let skippedMarket = 0;
       let fetchCount = 0;
 
-      for (const showId of showIds) {
+      // Missing archives first, so stale-archive refetches (which may repeatedly
+      // time out) can never starve first-time fetches of the run budget.
+      const orderedIds = force ? showIds : [...showIds].sort((a, b) => Number(archiveExists(aggregator, a)) - Number(archiveExists(aggregator, b)));
+      for (const showId of orderedIds) {
         if (budget.exceeded()) {
           console.log(`Run budget reached; remaining ${aggregator} pages deferred. Completed archives and not-found cache will be saved.`);
           break;

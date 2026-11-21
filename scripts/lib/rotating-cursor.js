@@ -13,9 +13,12 @@ function saveCursor(file, obj) {
   fs.writeFileSync(file, JSON.stringify(obj, null, 2) + '\n');
 }
 // Rotate `ids` so iteration starts AFTER lastId. Unknown/absent lastId = no rotation.
+// `ids` must be in a stable order independent of list membership (callers sort),
+// so a cursor whose show later left the list still resumes at the next id.
 function rotateAfter(ids, lastId) {
-  const i = lastId ? ids.indexOf(lastId) : -1;
-  if (i < 0) return ids.slice();
-  return ids.slice(i + 1).concat(ids.slice(0, i + 1));
+  if (!lastId) return ids.slice();
+  const i = ids.findIndex(id => id > lastId);
+  if (i < 0) return ids.slice();      // cursor past the end: pass complete, restart
+  return ids.slice(i).concat(ids.slice(0, i));
 }
 module.exports = { loadCursor, saveCursor, rotateAfter };

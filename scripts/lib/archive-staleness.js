@@ -6,7 +6,9 @@ const REFRESH_AFTER_OPENING_DAYS = 7;
 const RECENT_WINDOW_DAYS = 730; // owner rule: no gaps in the last 2 years
 
 function parseFetchedDate(head) {
-  const m = /^Fetched:\s*(\d{4}-\d{2}-\d{2})/m.exec(String(head || ''));
+  // Two header styles exist: "Fetched: YYYY-MM-DD" (fetch-aggregator-pages.ts)
+  // and "  Archived: <ISO>" (gather/download scripts). Most archives use the latter.
+  const m = /^\s*(?:Fetched|Archived):\s*(\d{4}-\d{2}-\d{2})/m.exec(String(head || ''));
   return m ? m[1] : null;
 }
 

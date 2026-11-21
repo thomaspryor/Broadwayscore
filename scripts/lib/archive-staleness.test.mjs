@@ -5,6 +5,7 @@ const { parseFetchedDate, isStalePreOpeningArchive: stale } = createRequire(impo
 const now = new Date('2026-11-20');
 test('parses Fetched header', () => {
   assert.equal(parseFetchedDate('<!--\nArchive: x\nFetched: 2026-03-01\n-->'), '2026-03-01');
+  assert.equal(parseFetchedDate('<!--\n  Archived: 2026-03-01T10:00:00.000Z\n  Source: x\n-->'), '2026-03-01');
   assert.equal(parseFetchedDate('nothing'), null);
 });
 test('pre-opening archive of closed-window recent show is stale', () => {

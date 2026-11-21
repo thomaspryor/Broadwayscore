@@ -4,9 +4,12 @@ import fs from 'node:fs'; import os from 'node:os'; import path from 'node:path'
 import { createRequire } from 'node:module';
 const { loadCursor, saveCursor, rotateAfter } = createRequire(import.meta.url)('./rotating-cursor.js');
 test('rotates after last processed id', () => assert.deepEqual(rotateAfter(['a','b','c','d'], 'b'), ['c','d','a','b']));
-test('unknown/null cursor leaves order', () => {
+test('null cursor / cursor past end leaves order', () => {
   assert.deepEqual(rotateAfter(['a','b'], 'zz'), ['a','b']);
   assert.deepEqual(rotateAfter(['a','b'], null), ['a','b']);
+});
+test('cursor whose show left the list resumes at next id (no restart from top)', () => {
+  assert.deepEqual(rotateAfter(['a','c','d','e'], 'b'), ['c','d','e','a']);
 });
 test('successive budgeted runs cover every show (no starvation)', () => {
   const all = Array.from({ length: 10 }, (_, i) => 's' + i);

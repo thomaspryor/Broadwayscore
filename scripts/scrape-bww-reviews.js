@@ -1496,8 +1496,10 @@ async function main() {
   // BRO-7931 #2: rotate the start so successive budgeted runs cover the whole
   // list; cursor lives in the aggregator-archive (pushed by the workflow).
   const cursorFile = path.join(roundupArchiveDir, '_cursor.json');
-  const useCursor = !targetShowIds && !verify && !dryRun;
+  // A --limit run is a manual spot-run: it must not read or wipe the cron's cursor.
+  const useCursor = !targetShowIds && !verify && !dryRun && !limit;
   const startCursor = useCursor ? loadCursor(cursorFile) : {};
+  if (useCursor) targetShows = targetShows.slice().sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   if (useCursor && startCursor.lastShowId) {
     const byId = new Map(targetShows.map(s => [s.id, s]));
     targetShows = rotateAfter(targetShows.map(s => s.id), startCursor.lastShowId).map(id => byId.get(id));

@@ -738,7 +738,7 @@ async function main() {
     console.log(`  Errors:         ${stats.errors.length}`);
     stats.errors.forEach(e => console.log(`    ⚠️  ${e}`));
   }
-  const zero = require('./lib/wet-zero-match').wetZeroMatchProblem({ totalPosts: stats.totalPosts, titleMatched: stats.titleMatched, showFilter });
+  const zero = require('./lib/wet-zero-match').wetZeroMatchProblem({ totalPosts: Math.max(0, (stats.totalPosts || 0) - (stats.unprocessedPosts || 0)), titleMatched: stats.titleMatched, showFilter });
   if (zero) {
     console.error(`::error::${zero}`);
     process.exitCode = 1;
@@ -750,7 +750,7 @@ module.exports = { wetCandidateShows, wetPostOtherProduction, extractStarRatings
 if (require.main === module) {
   main()
     .then(() => cleanup())
-    .then(() => process.exit(0))  // fetchPage() uses Playwright which hangs node
+    .then(() => process.exit(process.exitCode || 0))  // BRO-7931: keep zero-match failure; fetchPage() uses Playwright which hangs node
     .catch(e => {
       console.error('Fatal error:', e);
       cleanup().finally(() => process.exit(1));
