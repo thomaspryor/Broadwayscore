@@ -259,7 +259,7 @@ let urlFindBdUsed = 0;
 const urlFindBdLeft = () => { const n = parseInt(process.env.GAP_URL_FIND_BD_MAX || '8', 10); return urlFindBdUsed < (Number.isFinite(n) ? n : 8); };
 const URL_FIND_CANDIDATES_PER_METHOD = 3;
 // Gate refusals that say the page is NOT this review (vs. "is it, but unreadable").
-const URL_IDENTITY_REFUSALS = new Set(['identity_unproven', 'url_change_refused', 'show_not_mentioned', 'wrong_article', 'byline_conflict', 'date_implausible', 'multi_show_no_section', 'blocklisted']);
+const URL_IDENTITY_REFUSALS = new Set(['identity_unproven', 'url_change_refused', 'show_not_mentioned', 'wrong_article', 'byline_conflict', 'date_implausible', 'multi_show_no_section', 'blocklisted', 'non_review_url', 'non_review_text']);
 
 /** Corpus index, shows and registry, built once per process. */
 function urlFindEnvironment({ dir, rootDir }) {

@@ -330,7 +330,8 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   // as a 12,877-char complete review of An Ark.
   {
     const sig = require('./serp-non-review-url').interviewTextSignals(text);
-    if (sig.interview) return refuse('non_review_text', `text reads as an interview/feature, not a review (${sig.markers.join(', ')})`);
+    const humanSaysReview = existing.isNonReview === false || existing.nonReviewManualClear === true;
+    if (sig.interview && !humanSaysReview) return refuse('non_review_text', `text reads as an interview/feature, not a review (${sig.markers.join(', ')})`);
   }
 
   // 3. Not a paywall / login / cookie wall / error page.

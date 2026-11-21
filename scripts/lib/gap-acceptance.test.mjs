@@ -651,6 +651,29 @@ test('a Times feature interview at a tv-radio url is refused by its prose (non_r
   assert.equal(gate.acceptRecoveredText(base(), { rawText: `${GOOD} "Fine," she smiles.` }, ctx).accept, true);
 });
 
+test('interviewTextSignals: dialogue in a review (both tag markers, no interviewer voice) is not an interview; a human clear wins (BRO-7963 review)', () => {
+  const { interviewTextSignals } = require('./serp-non-review-url.js');
+  const dialogue = '“Let us pray,” he says with a smile. “Fine,” she laughs. I suggest you book early.';
+  const r = interviewTextSignals(dialogue);
+  assert.deepEqual(r.markers.sort(), ['manner_verb', 'says_with']);
+  assert.equal(r.interview, false);
+  // tags that recur through the whole page are an interview even without the interviewer's voice
+  assert.equal(interviewTextSignals(dialogue.repeat(3)).interview, true);
+  // one tag + one interviewer-voice marker is the minimum
+  assert.equal(interviewTextSignals('“No,” he laughs. I ask what he means.').interview, true);
+  assert.equal(interviewTextSignals('What can I say, it takes nerve. He grins. “Yeah,” he says.').interview, false);
+  // a person who cleared the flag by hand outranks the heuristic
+  const d = acceptRecoveredText(base({ url: MCK_URL, nonReviewManualClear: true }), { rawText: `${GOOD}\n${INTERVIEW}` }, ctx);
+  assert.notEqual(d.code, 'non_review_text');
+});
+
+test('URL_FIND treats non_review_text / non_review_url as "not this review", not "found but unreadable" (BRO-7963 review)', () => {
+  const src = fs.readFileSync(new URL('./gap-strategies.js', import.meta.url), 'utf8');
+  const set = src.match(/URL_IDENTITY_REFUSALS = new Set\(\[([^\]]*)\]/)[1];
+  assert.match(set, /'non_review_text'/);
+  assert.match(set, /'non_review_url'/);
+});
+
 const CORPUS = path.join(process.env.HOME || '', 'broadway-review-texts');
 const corpusText = (f) => { try { return JSON.parse(fs.readFileSync(path.join(CORPUS, f), 'utf8')).fullText; } catch { return null; } };
 test('real corpus: the An Ark interview is refused; two real tv-radio/life-style theatre reviews still pass (BRO-7963)', { skip: !corpusText('an-ark-off-broadway-2026/sunday-times--unknown.json') }, () => {
