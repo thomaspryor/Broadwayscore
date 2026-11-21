@@ -119,7 +119,7 @@ test('a marker in the inherited RUNNER_TEMP does not leak into the action run', 
     assert.match(r.stdout, /No review-texts changes to push/);
     assert.doesNotMatch(fs.readFileSync(s.out, 'utf8'), /pushed=true/);
   } finally {
-    fs.rmSync(outer, { recursive: true, force: true });
+    fs.rmSync(outer, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     fs.rmSync(s.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
