@@ -89,6 +89,7 @@ on:
       # BRO-6886: tests/unit/press-night-scoring-dispatch.test.mjs and
       # push-review-texts-scoring-file-list.test.mjs cover these.
       - 'scripts/score-new-press-night-reviews.js'
+      - 'scripts/sd-parity-test.js'  # BRO-7984: read by scripts/lib/bare-node-test-guard.test.mjs
       - '.github/actions/push-review-texts/**'
       # BRO-6941: tests/unit/push-review-texts-resolve.test.mjs covers this resolver.
       - 'scripts/lib/resolve-modify-delete.js'
