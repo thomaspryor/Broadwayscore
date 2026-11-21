@@ -1,8 +1,10 @@
 /** Word-trigram Jaccard similarity (0-100). Extracted from detect-syndicated-duplicates.js (BRO-7957) so the migration shares it. */
+const { foldDiacritics } = require('./title-match');
+
 function trigramSimilarity(text1, text2) {
   if (!text1 || !text2) return 0;
-  const words1 = text1.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
-  const words2 = text2.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+  const words1 = foldDiacritics(text1).toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+  const words2 = foldDiacritics(text2).toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
   if (words1.length < 10 || words2.length < 10) return 0;
 
   const trigrams1 = new Set();
