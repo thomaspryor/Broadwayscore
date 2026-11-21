@@ -44,4 +44,19 @@ function classifyTargetCollision(stub, existing) {
   return urlsSameArticle(stub && stub.url, existing && existing.url) ? 'same-article' : 'different-article';
 }
 
-module.exports = { urlsSameArticle, classifyTargetCollision, editDistance };
+/**
+ * BRO-7930: the rule (if any) by which the rebuild would exclude a stub we are about to promote under a byline.
+ * A stub with no text yet is promoted on purpose (the collector fetches the body), so the no-text/no-score rules do
+ * not block. Any other rule (wrongProduction, blockedReviewUrl, namedNonReviewUrl, listingPageUrl, ...) means the
+ * promoted file would be dead on arrival: leave it tagged in _pending instead of adding a file nothing can score.
+ * `guards` / `noSignalRules` are injectable for tests.
+ */
+function promotionBlockRule(candidate, show, filePath, { guards, noSignalRules } = {}) {
+  guards = guards || require('./review-guards');
+  noSignalRules = noSignalRules || require('./coverage-holes').NO_SIGNAL_RULES;
+  let rule = null;
+  try { rule = guards.explainExclusion(candidate, show, filePath); } catch { rule = null; }
+  return rule && !noSignalRules.includes(rule) ? rule : null;
+}
+
+module.exports = { promotionBlockRule, urlsSameArticle, classifyTargetCollision, editDistance };

@@ -178,7 +178,7 @@ const REVIEW_TEXTS_ROOT = resolveReviewTextsDir();
 const PENDING_ROOT = path.join(REVIEW_TEXTS_ROOT, '_pending');
 const { pendingFileTimestamp, orderPendingWork, rotateTiered, pathKey } = require('./lib/pending-drain-order');
 const drainState = require('./lib/pending-drain-state');
-const { classifyTargetCollision } = require('./lib/pending-drain-collision');
+const { classifyTargetCollision, promotionBlockRule } = require('./lib/pending-drain-collision');
 
 // Newest strands first (BRO-4408), so a budget-limited run reaches a fresh
 // opening-night review before re-fetching old no-byline strands.
@@ -693,6 +693,19 @@ async function processShow(showId, deps = {}) {
       continue;
     }
 
+    // BRO-7930: do not promote a file the rebuild would exclude on arrival (blocked/listing/non-review url, wrong production).
+    const blockRule = promotionBlockRule({ ...data, criticName: byline, publishDate: data.publishDate || publishDate }, show, newPath);
+    if (blockRule) {
+      console.log(`  [${file}] ${dry ? 'DRY → would not promote' : 'not promoted'}: rebuild would exclude it (${blockRule}) — tagged`);
+      if (!dry) {
+        data.promoteSkippedReason = `rebuild would exclude the promoted file (${blockRule}) (BRO-7930)`;
+        data.promoteSkippedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      tagged++;
+      kept++;
+      continue;
+    }
     data.criticName = byline;
     data.bylineSource = 'replay-pending-bylines';
     data.bylineExtractedAt = new Date().toISOString();

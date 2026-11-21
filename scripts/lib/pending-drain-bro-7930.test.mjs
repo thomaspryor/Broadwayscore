@@ -8,10 +8,10 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { pendingFileTimestamp, orderPendingWork, rotateTiered, pathKey } = require('./pending-drain-order.js');
-const { urlsSameArticle, classifyTargetCollision } = require('./pending-drain-collision.js');
+const { urlsSameArticle, classifyTargetCollision, promotionBlockRule } = require('./pending-drain-collision.js');
 const { evaluateDrainHealth, loadState, saveState } = require('./pending-drain-state.js');
 const { genericSingleWordTitle, passesGenericTitleIdentity } = require('./generic-title-guard.js');
-const { classifyLimbo, shortTitleEvidence, applyDecision } = require('./limbo-gate.js');
+const { classifyLimbo, shortTitleEvidence, applyDecision, misattributedWetRoundup } = require('./limbo-gate.js');
 const { routeLimbo } = require('../route-limbo-reviews.js');
 
 test('a file with no firstSeenAt/publishDate falls back to its mtime, not 0', () => {
@@ -106,16 +106,6 @@ test('limbo: inside the grace window waits; past it every file gets exactly one 
   assert.equal(c({}, g, null).route, 'scoring');
 });
 
-test('limbo: a WestEndTheatre roundup filed under another outlet is flagged isRoundupArticle', () => {
-  const g = guardsStub({ isRoundupUrl: () => ({ isRoundup: true }) });
-  const d = { ...base, url: 'https://www.westendtheatre.com/1/news/x-reviews/', criticName: 'Ghenet Pinderhughes Randall' };
-  const r = classifyLimbo(d, show, '/x/y.json', { nowMs: NOW, guards: g, scoringQueue: queueStub() });
-  assert.equal(r.rule, 'wet-roundup-misattributed');
-  assert.equal(applyDecision(d, r, '2026-11-21T00:00:00Z').isRoundupArticle, true);
-  // the real WET outlet's own page is not touched by this rule
-  assert.notEqual(classifyLimbo({ ...d, outletId: 'westendtheatre' }, show, '/x/y.json', { nowMs: NOW, guards: g, scoringQueue: queueStub() }).rule, 'wet-roundup-misattributed');
-});
-
 test('short-title evidence: quoted or numeric-dash only, case-sensitive', () => {
   assert.ok(shortTitleEvidence({ fullText: "Big tech in tense 'Job' at Writers Theatre" }, { title: 'Job' }));
   assert.ok(shortTitleEvidence({ fullText: 'Reviews 44—The Musical Deirdre' }, { title: '44' }));
@@ -187,4 +177,21 @@ test('END-TO-END on a temp _pending tree: planPendingWork(raw) feeds rotateTiere
   const t = rotateTiered(raw, { cursors: {}, tierOf: () => 'recent', recentFirst: true });
   assert.deepEqual(t.work, [{ showId: 'new-show', files: ['a--1.json'] }]);
   delete process.env.REVIEW_TEXTS_DIR;
+});
+
+test('promotion guard: a rebuild-excluded candidate is blocked; a textless stub (no-signal rule) is still promoted', () => {
+  const show = { id: 's', title: 'S' };
+  const g = r => ({ explainExclusion: () => r });
+  assert.equal(promotionBlockRule({}, show, '/x', { guards: g('blockedReviewUrl'), noSignalRules: ['noTextOrScoreSignal'] }), 'blockedReviewUrl');
+  assert.equal(promotionBlockRule({}, show, '/x', { guards: g('noTextOrScoreSignal'), noSignalRules: ['noTextOrScoreSignal'] }), null);
+  assert.equal(promotionBlockRule({}, show, '/x', { guards: g(null), noSignalRules: [] }), null);
+  assert.equal(promotionBlockRule({ url: 'https://www.broadwayworld.com/shows/show.php?showid=1' }, { id: 's', title: 'S' }, '/x'), 'listingPageUrl'); // the real guard, real rule
+});
+
+test('WET roundup under another outlet is flagged even when it carries the roundup star (so it never looks scored)', () => {
+  const g = guardsStub({ isRoundupUrl: () => ({ isRoundup: true }) });
+  const d = { ...base, outletId: 'times-uk', url: 'https://www.westendtheatre.com/9/news/x-reviews/', aggregatorStars: '4/5', assignedScore: 80 };
+  assert.equal(misattributedWetRoundup(d, g).flag.isRoundupArticle, true);
+  assert.equal(misattributedWetRoundup({ ...d, outletId: 'westendtheatre' }, g), null);
+  assert.equal(misattributedWetRoundup({ ...d, isRoundupArticle: true }, g), null);
 });

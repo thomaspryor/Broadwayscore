@@ -13,7 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { GRACE_DAYS, classifyLimbo, applyDecision } = require('./lib/limbo-gate');
+const { GRACE_DAYS, classifyLimbo, applyDecision, misattributedWetRoundup } = require('./lib/limbo-gate');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 
@@ -44,7 +44,7 @@ function routeLimbo({ apply = false, allShows = false, days = 760, only = null, 
       let d, mtimeMs = 0;
       try { d = JSON.parse(fs.readFileSync(filePath, 'utf8')); mtimeMs = fs.statSync(filePath).mtimeMs; } catch { continue; }
       counts.scanned++;
-      const dec = classifyLimbo(d, show, filePath, { nowMs, mtimeMs, graceDays, guards });
+      const dec = misattributedWetRoundup(d, guards) || classifyLimbo(d, show, filePath, { nowMs, mtimeMs, graceDays, guards });
       if (!dec) continue;
       if (dec.route === 'grace') { counts.grace++; continue; }
       rows.push({ showId: show.id, file: f, route: dec.route, rule: dec.rule, url: d.url });

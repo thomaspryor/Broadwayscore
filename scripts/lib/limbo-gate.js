@@ -51,6 +51,24 @@ function shortTitleEvidence(d, show) {
   return /^\d+$/.test(title) && new RegExp(`(?:^|[^\\d])${t}\\s*(?:[\u2014\u2013:\\-]|the musical\\b|musical\\b|play\\b)`, 'i').test(text);
 }
 
+/**
+ * A WestEndTheatre roundup page (a compiler's article quoting many outlets) filed under ANOTHER outlet, usually
+ * with the compiler as critic (times-uk--ghenet-pinderhughes-randall): a fabricated outlet review. These carry the
+ * roundup's star as aggregatorStars, so they look SCORED and never reach limbo; judged on the URL alone, with no
+ * grace window. 27 unflagged on 2026-11-20. Returns a 'reject' decision (isRoundupArticle flag) or null.
+ */
+function misattributedWetRoundup(d, guards = require('./review-guards')) {
+  if (!d || typeof d !== 'object') return null;
+  if (DECIDED_FLAGS.some(k => !!d[k])) return null;
+  const url = d.url || '';
+  if (!/westendtheatre\.com/i.test(url) || WET_OUTLETS.includes(d.outletId)) return null;
+  let isRoundup = false;
+  try { isRoundup = !!guards.isRoundupUrl(url).isRoundup; } catch { /* not a roundup */ }
+  return isRoundup
+    ? { route: 'reject', rule: 'wet-roundup-misattributed', flag: { isRoundupArticle: true, roundupReason: 'WestEndTheatre.com roundup page filed under another outlet (BRO-7930)' } }
+    : null;
+}
+
 /** True when this is a limbo CANDIDATE (before the grace window): usable text, no decision, no score. */
 function isLimboCandidate(d, show, filePath, guards = require('./review-guards')) {
   if (!d || typeof d !== 'object') return false;
@@ -70,14 +88,6 @@ function classifyLimbo(d, show, filePath, { nowMs = Date.now(), mtimeMs = 0, gra
   const age = ageDays(d, mtimeMs, nowMs);
   if (age != null && age < graceDays) return { route: 'grace' };
 
-  // WestEndTheatre roundup page (a compiler's article quoting many outlets) filed under ANOTHER outlet with the
-  // roundup writer as critic: a fabricated outlet review. Flag it for real so it is no longer limbo.
-  const url = d.url || '';
-  if (/westendtheatre\.com/i.test(url) && !WET_OUTLETS.includes(d.outletId)) {
-    let isRoundup = false;
-    try { isRoundup = !!guards.isRoundupUrl(url).isRoundup; } catch { /* fall through to generic rules */ }
-    if (isRoundup) return { route: 'reject', rule: 'wet-roundup-misattributed', flag: { isRoundupArticle: true, roundupReason: 'WestEndTheatre.com roundup page filed under another outlet (BRO-7930)' } };
-  }
   let excl = null;
   try { excl = guards.explainExclusion(d, show, filePath); } catch { excl = null; }
   if (excl) return { route: 'reject', rule: excl };
@@ -115,4 +125,4 @@ function applyDecision(d, decision, nowIso) {
   return out;
 }
 
-module.exports = { GRACE_DAYS, SCOREABLE_TIERS, DECIDED_FLAGS, isLimboCandidate, classifyLimbo, limboStamp, applyDecision, shortTitleEvidence };
+module.exports = { GRACE_DAYS, SCOREABLE_TIERS, DECIDED_FLAGS, isLimboCandidate, classifyLimbo, misattributedWetRoundup, limboStamp, applyDecision, shortTitleEvidence };
