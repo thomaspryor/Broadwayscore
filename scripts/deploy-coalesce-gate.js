@@ -5,6 +5,7 @@
 // Env: GH_TOKEN, GITHUB_REPOSITORY, GITHUB_RUN_ID, GITHUB_REF_NAME, COALESCE_DRY_RUN=1 (log only).
 const { execFileSync } = require('child_process');
 const { decide } = require('./lib/deploy-coalesce.js');
+require('./lib/cli-help').exitOnHelp(module);
 
 const gh = (args) => execFileSync('gh', args, { encoding: 'utf8', timeout: 30000 });
 const api = (p) => JSON.parse(gh(['api', p]));
