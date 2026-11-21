@@ -13,7 +13,8 @@ function newOutcomeFile() {
 }
 
 /** Called by the ingest; a no-op unless the caller asked for the outcome. */
-// One ingest per action: the last write wins and a success writes nothing, so a script that ran the
+// One ingest per action: the last write wins and a success writes nothing (BRO-7999: except
+// { outcome: 'held-out' }, a success whose record an exclusion rule keeps off the site), so a script that ran the
 // ingest several times under one env would let one stub fail the whole action.
 function writeIngestOutcome(outcome, env = process.env) {
   const file = env[ENV];
@@ -37,4 +38,10 @@ function stubProblem(outcome, script = 'ingest-review-from-url.js') {
   return null;
 }
 
-module.exports = { ENV, newOutcomeFile, writeIngestOutcome, readIngestOutcome, removeOutcomeFile, stubProblem };
+/** BRO-7999: { outcome: 'held-out', rule } = the review is on file but an exclusion rule keeps it off the site. */
+function heldOutNote(outcome) {
+  if (!outcome || outcome.outcome !== 'held-out') return null;
+  return `review is on file but held out of the site by ${outcome.rule || 'an exclusion rule'}`;
+}
+
+module.exports = { ENV, newOutcomeFile, writeIngestOutcome, readIngestOutcome, removeOutcomeFile, stubProblem, heldOutNote };

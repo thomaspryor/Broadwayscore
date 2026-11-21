@@ -59,7 +59,7 @@ const { INGEST_REFUSED_URL_REASONS } = require('./lib/non-review-url-patterns');
 const { stripTrailingJunk } = require('./lib/text-cleaning');
 const { resolveCanonicalOutletId, resolveOutletForIngest, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost, lookupOutletForHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName, findExistingReviewFile, normalizeCritic, resolveOutletFromUrlIfPathInformed } = require('./lib/review-normalization');
-const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
+const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS, classifyHeldOut } = require('./lib/review-file-writer');
 const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -867,6 +867,9 @@ if (!show) {
     try {
       const fan = applyMultiShowFanoutToFile(result.filepath, { reviewTextsDir });
       if (fan.applied) {
+        // The fan-out rewrote the parent: classify what is on disk now (BRO-7999).
+        const after = classifyHeldOut(showId, result.filepath);
+        if (after !== undefined) result.heldOutRule = after;
         // Only a child this run wrote: a skipped, held or refused one is not ours to push or score.
         const WROTE_CHILD = new Set(['create', 'fill', 'held-trim']);
         for (const c of fan.children) {
@@ -899,6 +902,12 @@ if (!show) {
       console.error(`\n❌ Write-guard refused the write — nothing changed on disk (${result.reason})${result.quarantinedPath ? `\n   quarantined to: ${result.quarantinedPath}` : ''}`);
       process.exit(1);
     }
+  }
+  // BRO-7999 R1: on file is not on the site. Name the rule that holds it out, and tell a
+  // caller that asked for the outcome (execute-approved-fix.js) so it never logs "recovered".
+  if (result.heldOutRule) {
+    console.log(`⊘ On file but NOT on the site, held out by: ${result.heldOutRule}`);
+    require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'held-out', rule: result.heldOutRule });
   }
 
   if (!dryRun && result.filepath && (result.action === 'new' || result.action === 'updated')) {

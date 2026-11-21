@@ -367,6 +367,36 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   if (result && result.action === 'skipped' && result.durable === undefined) {
     result.durable = require('./ingest-skip-classify').isDurableRejection(result.reason);
   }
+  // BRO-7999 R1: say WHY a held record is not on the site. Before this, a URL we
+  // already held but excluded (wrongProduction, wrongShow, CV wrong-article, ...)
+  // printed as a bare "Skipped: no-changes" and read as "already live".
+  if (result && result.filepath && (result.action !== 'skipped' || result.reason === 'no-changes')) {
+    const rule = classifyHeldOut(showId, result.filepath, result.record);
+    if (rule !== undefined) result.heldOutRule = rule;
+  }
+  return result;
+}
+
+/**
+ * BRO-7999 R1: the per-file includability rule holding a review file out of the site,
+ * or null when the per-file chain includes it (the rebuild can still drop a
+ * cross-file duplicate; that pass is not visible per file). undefined = could not tell.
+ * Uses the in-memory record when given (dry runs never write), else the file on disk.
+ */
+function classifyHeldOut(showId, filepath, record) {
+  try {
+    const data = record || JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    const rule = require('./review-guards').explainExclusion(data, _getShowById(showId), filepath);
+    return rule || null;
+  } catch {
+    return undefined;
+  }
+}
+
+// The record a result describes, for classifyHeldOut. Non-enumerable so it never
+// leaks into a caller that serialises the result (ingest-outcome, logs).
+function _withRecord(result, record) {
+  Object.defineProperty(result, 'record', { value: record, enumerable: false });
   return result;
 }
 
@@ -1693,7 +1723,7 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     emitReviewFirstSeen(showId, { outletId, criticName, url: newReview.url });
   }
 
-  return { action: 'new', filepath };
+  return _withRecord({ action: 'new', filepath }, newReview);
 }
 
 /**
@@ -2396,7 +2426,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   }
 
   if (!changed) {
-    return { action: 'skipped', reason: 'no-changes', filepath };
+    return _withRecord({ action: 'skipped', reason: 'no-changes', filepath }, existing);
   }
 
   if (!dryRun) {
@@ -2427,7 +2457,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
         console.log(`  ↑ Byline from page: ${path.basename(filepath)} → ${path.basename(named)}`);
         // renamedFrom: callers that stage paths must stage the deletion too,
         // and safeRenameReview may have rewritten sibling pointers in this dir.
-        return { action: 'updated', filepath: named, renamedFrom: filepath };
+        return _withRecord({ action: 'updated', filepath: named, renamedFrom: filepath }, existing);
       }
       // Never leave a named --unknown file behind (the rebuild's rename/merge
       // is the #27 drop path): put the byline back and keep the rest.
@@ -2440,7 +2470,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     }
   }
 
-  return { action: 'updated', filepath };
+  return _withRecord({ action: 'updated', filepath }, existing);
 }
 
 // Skip reasons from createOrMergeReviewFile that mean the requested write
@@ -2460,4 +2490,4 @@ const WRITE_GUARD_REFUSED_REASONS = new Set([
   'unknown-show-id',
 ]);
 
-module.exports = { createOrMergeReviewFile, unknownShowFolderRefused, warnIfStampedCopy, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline, revertBodyFromRefusedUrl };
+module.exports = { createOrMergeReviewFile, classifyHeldOut, unknownShowFolderRefused, warnIfStampedCopy, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline, revertBodyFromRefusedUrl };
