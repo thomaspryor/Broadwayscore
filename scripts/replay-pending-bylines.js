@@ -357,10 +357,13 @@ function unrecoverableAlertPayload(showId, entries) {
  * and the stub itself holds nothing a primary could lack: no byline, no text
  * (BRO-4271). Pure; `landedFile` is findExistingFileForUrl's result.
  */
-function isRedundantPendingStub(data, landedFile) {
+function isRedundantPendingStub(data, landedFile, primary = null) {
   if (!landedFile || !data) return false;
   const hasByline = data.criticName && String(data.criticName).toLowerCase() !== 'unknown';
-  const hasText = typeof data.fullText === 'string' && data.fullText.trim().length > 0;
+  // BRO-8023: a body is only "extra" when the primary's own body is shorter (40 same-url stubs with a fetched copy of
+  // the primary's text sat in _pending forever: the-heart thewrap--536994cc vs thewrap--robert-hofler).
+  const len = (t) => (typeof t === 'string' ? t.trim().length : 0);
+  const hasText = len(data.fullText) > 0 && (!primary || len(data.fullText) > len(primary.fullText));
   // Anything a primary might lack keeps the stub: a score or an excerpt.
   const hasScore = data.originalScore != null && data.originalScore !== '';
   const hasExcerpt = Object.keys(data).some((k) => /Excerpt$/.test(k)
@@ -604,7 +607,9 @@ async function processShow(showId, deps = {}) {
     // roundup created nysr--steven-suskin / nysr--frank-scheck from the same
     // urls; they had to be deleted by hand. A stub with text is kept.
     const landed = findExistingFileForUrl(showId, data.outletId, url, root);
-    if (isRedundantPendingStub(data, landed)) {
+    let landedData = null;
+    if (landed) { try { landedData = JSON.parse(fs.readFileSync(path.join(root, showId, landed), 'utf8')); } catch { landedData = null; } }
+    if (isRedundantPendingStub(data, landed, landedData)) {
       console.log(`  [${file}] url already filed as ${landed} — dropping textless pending stub`);
       if (!dry) fs.unlinkSync(filepath);
       droppedRedundant++;
@@ -763,7 +768,7 @@ async function processShow(showId, deps = {}) {
       try { existing = JSON.parse(fs.readFileSync(newPath, 'utf8')); } catch { /* unreadable primary: fall through to keep */ }
       const verdict = existing ? classifyTargetCollision(data, existing) : null;
       // Only drop a stub that carries nothing the primary lacks (no score / excerpt / longer body).
-      if (verdict === 'same-article' && isRedundantPendingStub(data, newFilename)) {
+      if (verdict === 'same-article' && isRedundantPendingStub(data, newFilename, existing)) {
         console.log(`  [${file}] ${dry ? 'DRY → would drop' : 'dropping'}: ${newFilename} already carries this article`);
         if (!dry) fs.unlinkSync(filepath);
         droppedRedundant++;

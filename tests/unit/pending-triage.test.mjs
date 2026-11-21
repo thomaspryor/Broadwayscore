@@ -174,3 +174,22 @@ describe('replay-pending-bylines processShow --triage-only (BRO-8023)', () => {
     assert.ok(!JSON.parse(fs.readFileSync(path.join(dir, 'times-uk--b2.json'), 'utf8')).promoteSkippedReason);
   });
 });
+
+describe('BRO-8023: a same-url stub with a copy of the primary body is redundant', () => {
+  const { isRedundantPendingStub } = require('../../scripts/replay-pending-bylines.js');
+  const body = 'x'.repeat(4000);
+  const stub = { criticName: 'Unknown', url: 'https://www.thewrap.com/creative-content/theater/the-heart-off-broadway-review-organ-transplant-musical/', fullText: body };
+  test('primary body as long or longer → redundant (dropped)', () => {
+    assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json', { fullText: body + 'more' }), true);
+    assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json', { fullText: body }), true);
+  });
+  test('stub body longer than the primary → kept (it carries something)', () => {
+    assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json', { fullText: 'short' }), false);
+  });
+  test('no primary data passed → old rule (text keeps it)', () => {
+    assert.equal(isRedundantPendingStub(stub, 'thewrap--robert-hofler.json'), false);
+  });
+  test('a score still keeps it', () => {
+    assert.equal(isRedundantPendingStub({ ...stub, originalScore: '4/5' }, 'thewrap--robert-hofler.json', { fullText: body }), false);
+  });
+});
