@@ -300,9 +300,8 @@ function extractStageBody(html) {
   let region;
   if (startM) region = html.slice(startM.index);
   else {
-    const h1 = html.search(/<h1[\s>]/);
-    if (h1 < 0 || GATE.test(html)) return null;
-    region = html.slice(h1);
+    if (html.search(/<h1[\s>]/) < 0 || GATE.test(html)) return null;
+    region = html;
   }
   // BRO-7171 Stage 5: the author card (job title + biography) follows the
   // review. Its bio "Sam Marlowe is reviews editor for The Stage..." has no
@@ -327,19 +326,22 @@ function extractStageBody(html) {
     // misread a genuinely complete review as truncated (task #876, confirmed
     // live on archduke-west-end-2026 / burlesque-west-end-2026 recoveries).
     /sign up to The Stage.s weekly reviews newsletter/i.test(t);
-  const all = [...region.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
-    .map((m) => stripHtml(m[1]))
-    .filter((t) => t.length > 40 && /[a-z]/.test(t));
+  const found = [...region.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+    .map((m) => ({ at: m.index, end: m.index + m[0].length, t: stripHtml(m[1]) }))
+    .filter((x) => x.t.length > 40 && /[a-z]/.test(x.t));
   let paras;
-  if (startM) paras = all.filter((t) => !isTrailingNoise(t));
+  if (startM) paras = found.filter((x) => !isTrailingNoise(x.t)).map((x) => x.t);
   else {
     // BRO-6487: older pages end the review with the author bio ("Natasha is international editor for The Stage"),
-    // a subscribe line and a copyright line. Require one of them after the prose (a listing, roundup or 404
-    // page has none) and keep only what comes before it, which also leaves sidebar paragraphs out.
+    // a subscribe line and a copyright line, and the review sits in one unbroken run of <p> just before them (the
+    // heading is not reliably in front of it). Require a trailer (a listing, roundup or 404 page has none), then
+    // take the contiguous run of paragraphs immediately before it, so far-away chrome and sidebar <p> stay out.
     const isPlainBio = (t) => t.length < 250 && /\bis\s+(?:[a-z]+\s+){0,3}(?:editor|critic|reporter|journalist|writer)\s+(?:for|at|of)\s+The Stage\b/.test(t);
-    const trailerAt = all.findIndex((t) => isTrailingNoise(t) || isPlainBio(t));
+    const trailerAt = found.findIndex((x) => isTrailingNoise(x.t) || isPlainBio(x.t));
     if (trailerAt < 0) return null;
-    paras = all.slice(0, trailerAt);
+    let from = trailerAt;
+    while (from > 0 && found[from].at - found[from - 1].end <= 3000) from--;
+    paras = found.slice(from, trailerAt).map((x) => x.t);
   }
   const body = paras.join('\n\n');
   // The IntroText-less fallback needs a real run of prose (page chrome rarely has 3+ long paragraphs).

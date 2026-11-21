@@ -58,3 +58,15 @@ test('modern IntroText layout is unchanged and still drops the bio', () => {
   const t = extractArticleText(html, 'thestage.co.uk');
   assert.ok(t && t.includes('criss-crossing'));
 });
+
+test('heading after the review paragraphs (real 2016 layout) still extracts', () => {
+  const html = `<html><body><div>chrome</div>${ps(BODY)}${TRAIL}<footer><h1>Cleansed review</h1></footer></body></html>`;
+  const t = extractArticleText(html, 'thestage.co.uk');
+  assert.ok(t && t.includes('criss-crossing') && !/international editor/.test(t));
+});
+
+test('a long chrome paragraph far before the review is not pulled into the body', () => {
+  const far = '<p>This is a long unrelated promotional paragraph about booking tickets that sits well away from the review text.</p>' + '<div>' + 'x'.repeat(8000) + '</div>';
+  const t = extractArticleText(page(far + ps(BODY) + TRAIL), 'thestage.co.uk');
+  assert.ok(t && t.includes('criss-crossing') && !t.includes('promotional'));
+});
