@@ -78,10 +78,13 @@ test('the prompt hands the model the record venue and market for London records'
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
 const dataRoot = process.env.DATA_ROOT || path.join(root, 'data');
 const haveData = fs.existsSync(path.join(dataRoot, 'review-texts')) && fs.existsSync(path.join(dataRoot, 'shows.json'));
-test('no unhealed own-venue London wrongProduction flags in the corpus', { skip: !haveData && 'review-texts not present' }, () => {
+test('no unhealed own-venue London wrongProduction flags in the corpus', { skip: !haveData && 'review-texts not present' }, (t) => {
   let out;
   try {
     out = execFileSync('node', [path.join(root, 'scripts', 'lib', 'recheck-london-wrongprod.js'), '--stored-audit', '--strict'], { encoding: 'utf8', env: { ...process.env, DATA_ROOT: dataRoot } });
-  } catch (e) { assert.fail(`unhealed own-venue flags:\n${e.stdout}`); }
+  } catch (e) {
+    // Exit 2 = the corpus holds no London collector flags at all (public CI checkout): nothing to audit.
+    if (e.status === 2) return t.skip('review-texts corpus empty here');
+    assert.fail(`unhealed own-venue flags:\n${e.stdout}`); }
   assert.match(out, /"unhealedOwnVenueFlags":0/);
 });
