@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-21T10:56:54.070Z",
+  "timestamp": "2026-11-21T11:32:33.291Z",
   "stats": {
     "totalReviews": 83613,
-    "alreadyFlagged": 22414,
+    "alreadyFlagged": 22413,
     "dateGuardCatches": 235,
-    "directorMismatch": 3841,
-    "tvFilmSignals": 2391,
-    "londonSignals": 3891,
+    "directorMismatch": 3842,
+    "tvFilmSignals": 2393,
+    "londonSignals": 3900,
     "offBroadwaySignals": 776,
     "yearMismatch": 392,
     "noPublishDate": 8250
@@ -33078,6 +33078,20 @@
     },
     {
       "showId": "house-of-mcqueen-off-broadway-2025",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 56,
+      "publishDate": "September 9th, 2025",
+      "url": "https://newyorktheater.me/2025/09/09/house-of-mcqueen-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "house-of-mcqueen-off-broadway-2025",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 25,
       "publishDate": "2025-09-10",
@@ -60072,6 +60086,20 @@
     },
     {
       "showId": "shifters-west-end-2024",
+      "file": "times-uk--donald-hutera.json",
+      "score": 89,
+      "publishDate": "2024-08-22",
+      "url": "https://www.thetimes.co.uk/article/shifters-review-a-love-story-easy-to-fall-in-love-with-dvwbs7jxf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lynette linton\" from shifters-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "shifters-west-end-2024",
       "file": "times-uk--rachel-halliburton.json",
       "score": 82,
       "publishDate": "2024-08-22",
@@ -75762,6 +75790,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-little-foxes-off-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 56,
+      "publishDate": "2024-12-12",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-little-foxes-young-vic-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -94013,10 +94055,37 @@
     },
     {
       "showId": "an-oak-tree-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": null,
+      "publishDate": "May 7th, 2025",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/an-oak-tree-young-vic-review-tim-crouch-jessie-buckley-b2746376.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "an-oak-tree-west-end-2025",
       "file": "london-box-office--stuart-king.json",
       "score": 59,
       "publishDate": "2025-05-07",
       "url": "https://www.londonboxoffice.co.uk/news/post/an-oak-tree-young-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "an-oak-tree-west-end-2025",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2025-05-07",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/an-oak-tree-review-young-vic-london-x6ggkgldn",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -98192,6 +98261,20 @@
       "file": "standard--nick-curtis.json",
       "publishDate": "2026-03-04",
       "url": "https://www.standard.co.uk/culture/theatre/broken-glass-young-vic-review-b1273400.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-off-west-end-2026",
+      "file": "sunday-times--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/broken-glass-theatre-review-llvjbwntg?eafs_enabled=false",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -105121,6 +105204,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eurotrash-off-west-end-2026",
+      "file": "revstanstheatreblog--rightrevstan.json",
+      "score": 78,
+      "publishDate": "2026-11-21",
+      "url": "https://revstanstheatreblog.co.uk/2026/11/21/review-eurotrash-young-vic-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -128565,6 +128662,19 @@
       ]
     },
     {
+      "showId": "romeo-and-juliet-west-end-2024",
+      "file": "sunday-times--dominic-maxwell.json",
+      "publishDate": "2024-05-24",
+      "url": "https://www.thetimes.com/article/5fb9d615-f545-4255-83e5-da97487305fe",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "britishtheatrecom--susan-novak.json",
       "score": 94,
@@ -140572,6 +140682,34 @@
       ]
     },
     {
+      "showId": "the-maids-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": null,
+      "publishDate": "2025-10-22",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-maids-donmar-warehouse-kip-williams-b2849938.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-maids-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": "2025-10-22",
+      "url": "https://www.standard.co.uk/culture/theatre/the-maids-at-donmar-warehouse-review-b1254221.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "the-majority-west-end-2017",
       "file": "artsdesk--unknown.json",
       "score": 64,
@@ -143415,6 +143553,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2025-03-07",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-seagull-review-cate-blanchett-barbican-32nz73mjv",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -147598,6 +147749,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "under-the-shadow-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/under-the-shadow-review-almeida-london-t7pc8jxc0",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
