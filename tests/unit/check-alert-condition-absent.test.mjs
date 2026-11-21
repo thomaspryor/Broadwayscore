@@ -156,8 +156,15 @@ test('digest-needs-you key matches its row through router decorations, clamped o
   assert.equal(digestKeyMatchesTitle('digest-needs-you:Foo', 'Foo bar'), false);
 });
 
-// The digest now keys the dispatch link on the undecorated title (send-morning-digest.js).
+// The digest keys the dispatch link on the undecorated title: call the real
+// composer and decode the conditionKey it put into the link (CLAUDE.md §15).
 test('send-morning-digest builds digest-needs-you keys from the undecorated title', () => {
-  const src = fs.readFileSync(path.join(path.dirname(SCRIPT), 'send-morning-digest.js'), 'utf8');
-  assert.match(src, /conditionKey: `digest-needs-you:\$\{undecoratedDigestTitle\(q\.title\)/);
+  const { composeDigestEmail } = require('../../scripts/send-morning-digest.js');
+  const noCfg = path.join(dir, 'no-dispatch-config.json');
+  const q = { title: 'LLM scoring daily spend over budget (still open — BRO-6732)', description: 'x', severity: 'warning', conditionKey: 'llm-scoring:daily-cost-breach' };
+  try { composeDigestEmail({ sections: { health: { queued: [q] } }, dispatchSecret: 'test-secret', dispatchConfigPath: noCfg, reportOnly: true, skipMacLocal: true }); } catch { /* links are attached before rendering */ }
+  assert.ok(q.actionUrl, 'dispatch link attached');
+  const u = new URL(q.actionUrl);
+  assert.equal(u.searchParams.get('conditionKey'), 'digest-needs-you:LLM scoring daily spend over budget');
+  assert.match(u.searchParams.get('title'), /still open — BRO-6732/, 'card title keeps the decoration');
 });
