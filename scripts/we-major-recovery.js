@@ -293,6 +293,9 @@ async function cmdRun() {
         // Structure only: class tokens and paragraph lengths with a 40-char head, to write an extractor for this layout.
         const cls = [...new Set((h.match(/class="[^"]*(?:aos|article|review|content|body|story)[^"]*"/gi) || []).map(c => c.slice(7, -1).split(/\s+/).filter(t => /aos|article|review|content|body|story/i.test(t)).join('.')))].slice(0, 25);
         const paras = (h.match(/<p[ >][\s\S]*?<\/p>/g) || []).map(x => x.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+        const ex = require('./lib/article-extractor').extractArticleText(h, 'thestage.co.uk');
+        const h1At = h.search(/<h1[\s>]/);
+        console.log(`[stage-diag] extractor=${ex ? ex.length : 'null'} h1At=${h1At} introAt=${h.search(/aos-Article-IntroText/)} gateHits=${['utm_source=Reggate', 'create a free account', 'Subscribe to continue', 'THIS IS NOT A PAYWALL'].map(g => new RegExp(g, 'i').test(h) ? g : '').filter(Boolean).join('|') || 'none'}`);
         console.log(`[stage-diag] classes: ${cls.join(' ')}`);
         console.log(`[stage-diag] paras: ${paras.map(x => `${x.length}:${x.slice(0, 40)}`).join(' || ')}`);
       } catch (e) { if (e.message !== 'skip') console.log(`[stage-diag] error ${String(e.message).slice(0, 80)}`); }
