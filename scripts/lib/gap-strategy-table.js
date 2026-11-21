@@ -78,6 +78,8 @@ const CLASS_STRATEGIES = Object.freeze({
 const REFETCH_SPENT = /^(?:abandoned|max_retries_reached|superseded_at_url|lost_loop_at_url|no_free_tier)$/;
 
 const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'PAID_FETCH']);
+// Classes the blanket PAID_FETCH fallback must not reach (BRO-7943 review).
+const NO_PAID_CLASSES = new Set(['URL_DEAD']);
 
 /**
  * Pick the first usable strategy for one candidate.
@@ -110,10 +112,18 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
   // BRO-7943: PAID_FETCH goes last in EVERY url-class order, not only for urls
   // with no free tier (346 rows, 323 recent, dead-ended once REFETCH_FREE was
   // abandoned). Spend stays capped by BD_REQ_BUDGET + the ledger cooldown.
-  if (hasUrl && order.some((x) => URL_STRATEGIES.has(x)) && !order.includes('PAID_FETCH')) order = [...order, 'PAID_FETCH'];
+  // Never for a url already classified dead (URL_DEAD): paying to fetch a 404
+  // is no evidence (gap-url-find.js applies the same rule after a hard 404).
+  if (hasUrl && !NO_PAID_CLASSES.has(gapClass) && order.some((x) => URL_STRATEGIES.has(x)) && !order.includes('PAID_FETCH')) order = [...order, 'PAID_FETCH'];
   // Free sites with no route (broadwayworld, timeout, chicago-reader, blogs):
   // once the free refetch is spent for good, look for the real url (BRO-7943).
-  if (hasUrl && order.includes('REFETCH_FREE') && !order.includes('URL_FIND')) order = [...order, 'URL_FIND'];
+  // After a free refetch that RAN and got nowhere, the free url search goes
+  // before the paid fetch. A url with no free tier at all (Talkin' Broadway,
+  // BroadwayWorld) is usually right but unreachable for free: paid goes first.
+  if (hasUrl && order.includes('REFETCH_FREE') && !order.includes('URL_FIND')) {
+    const iPaid = order.indexOf('PAID_FETCH');
+    order = freeTierOk && iPaid >= 0 ? [...order.slice(0, iPaid), 'URL_FIND', ...order.slice(iPaid)] : [...order, 'URL_FIND'];
+  }
   // No stored url: every url-based route skips, so a row of any routed class
   // would sit unattempted forever (BRO-7702: 2 floor gaps older than 7 days had
   // no route at all). URL_FIND needs no url; it is the last route for such rows.
@@ -135,8 +145,10 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, freeTierOk = true, paidT
     // same for the paid route: no token, or Bright Data tier-skipped for the host
     if (s === 'PAID_FETCH' && !paidTierOk) { skipped.push({ strategy: s, reason: 'no_paid_tier' }); continue; }
     if (s === 'URL_FIND' && hasUrl && order.includes('REFETCH_FREE') && !CLASS_STRATEGIES[gapClass].includes('URL_FIND')) {
-      const rf = skipped.find((k) => k.strategy === 'REFETCH_FREE');
-      if (!rf || !REFETCH_SPENT.test(rf.reason)) { skipped.push({ strategy: s, reason: 'refetch_not_spent' }); continue; }
+      // Judged from REFETCH_FREE's own state, not the skipped list, so a
+      // --strategy=URL_FIND run (which never visits REFETCH_FREE) still sees it.
+      const rfReason = !freeTierOk ? 'no_free_tier' : eligible('REFETCH_FREE').reason;
+      if (!REFETCH_SPENT.test(String(rfReason))) { skipped.push({ strategy: s, reason: 'refetch_not_spent' }); continue; }
     }
     const g = runGates[s];
     if (g && !g.ok) { skipped.push({ strategy: s, reason: g.reason }); continue; }
