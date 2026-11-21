@@ -23,6 +23,8 @@ src/config/feature-flags.ts merge=ours
 # go here; they need real 3-way merges.
 data/audit/stage-latency.jsonl merge=union
 data/audit/session-retro.jsonl merge=union
+# Bot-only daily append log (scripts/report-discovery-share.js via check-arm-yield.yml).
+data/audit/pending-growth-ledger.jsonl merge=union
 # Bot-only append log, written by scripts/lib/owner-alert-router.js. 5+
 # workflows call routeAlert(disposition='auto') from separate jobs, not just
 # data-health-check.yml's concurrency-guarded run (card #374 /what-else
