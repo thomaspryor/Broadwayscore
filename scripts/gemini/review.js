@@ -2,7 +2,7 @@
 /**
  * scripts/gemini/review.js: run Gemini as a repo-reading, read-only code reviewer (BRO-7987).
  *
- * Before this, /plan-review's Gemini leg was a bare generateContent curl with only the
+ * Before this, /plan-review's Gemini leg was a bare REST curl with only the
  * plan text, so Gemini could not open a single file, and /ship-check had no Gemini leg.
  * The Gemini CLI can read the repository with its own file tools. This wrapper:
  *   1. makes the CLI available (cloud: installs the pinned @google/gemini-cli; Mac: uses
