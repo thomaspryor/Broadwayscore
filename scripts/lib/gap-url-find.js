@@ -629,14 +629,16 @@ function probeLedgerRow(rec, { runId = null, ts = null } = {}) {
  * best; unknown last), then the newest show, then a stable key. Pure.
  */
 const { isMajorFulltextOutlet, isRecentProductionShow } = require('./outlet-fulltext');
+const { bandOf } = require('./gap-plan-order');
 // A gap the full-text floor counts: a major outlet on a 2025/26 production (BRO-7702).
 const isFloorGap = (c) => isMajorFulltextOutlet(c.outletId) && isRecentProductionShow(String(c.showId || String(c.reviewKey || '').split('/')[0]));
 function urlFindPriority(tierOf) {
   const t = (c) => { const n = Number(tierOf(c.outletId)); return Number.isFinite(n) && n > 0 ? n : 9; };
   const d = (c) => { const x = Date.parse(c.showDate || ''); return Number.isFinite(x) ? x : 0; };
   return (a, b) => {
-    if ((a.recency === 'recent') !== (b.recency === 'recent')) return a.recency === 'recent' ? -1 : 1;
-    // BRO-7702: the major outlets under a full-text floor take the paid slots first.
+    // BRO-7942: the shared band order (floor+recent, other recent, floor+historic, rest).
+    const ba = bandOf(a); const bb = bandOf(b);
+    if (ba !== bb) return ba - bb;
     const ma = isFloorGap(a); const mb = isFloorGap(b);
     if (ma !== mb) return ma ? -1 : 1;
     // BRO-7922: never-tried (0) before tried, least recently tried first. Without
@@ -660,11 +662,24 @@ function urlFindPriority(tierOf) {
  * the END of the run, after everything else. The rest wait. Pure: returns a
  * new array (with .skippedUrlFind), never mutates the input.
  */
-function planUrlFindWork(work, { paidSlots, freeSlots = 0, tierOf }) {
+function planUrlFindWork(work, { paidSlots, freeSlots = 0, tierOf, freeInPlace = false }) {
   const uf = work.filter((c) => c.strategy === 'URL_FIND').sort(urlFindPriority(tierOf));
   const paid = uf.slice(0, Math.max(0, paidSlots));
   const free = uf.slice(paid.length, paid.length + Math.max(0, freeSlots));
   const out = [];
+  if (freeInPlace) {
+    // BRO-7942: free-only slots keep their own place in the run order (the end of the
+    // night was never reached, so floor gaps in free slots starved); the URL_FIND time
+    // slice, not the position, bounds what they cost.
+    const paidSet = new Set(paid); const freeSet = new Set(free);
+    for (const c of work) {
+      if (c.strategy !== 'URL_FIND') out.push(c);
+      else if (paidSet.has(c)) out.push({ ...c, urlFindFreeOnly: false });
+      else if (freeSet.has(c)) out.push({ ...c, urlFindFreeOnly: true });
+    }
+    out.skippedUrlFind = uf.length - paid.length - free.length;
+    return out;
+  }
   let k = 0;
   for (const c of work) {
     if (c.strategy !== 'URL_FIND') { out.push(c); continue; }

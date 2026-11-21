@@ -75,15 +75,18 @@ function nightlyCeiling(env = process.env) {
  * close (revised plan item 7; recent shows are never in it).
  */
 function planCounts(candidates) {
-  let openTotal = 0; let openRecent = 0; let needsDecision = 0;
+  let openTotal = 0; let openRecent = 0; let needsDecision = 0; let excludedRecords = 0;
   for (const c of candidates || []) {
+    // BRO-7942: a wrongShow/wrongProduction record is not a recoverable gap (the gate refuses it
+    // before looking at text); 483 of them inflated openTotal. Reported on their own.
+    if ((c.skipped || []).some((k) => k.strategy === 'ANY' && k.reason === 'excluded_record')) { excludedRecords++; continue; }
     openTotal++;
     if (c.recency === 'recent') { openRecent++; continue; }
     if (c.strategy) continue;
     const reasons = (c.skipped || []).map((k) => String(k.reason));
     if (reasons.some((r) => EXHAUSTED_REASONS.has(r)) && !reasons.some((r) => r === 'cooldown' || r === 'collector_cooldown')) needsDecision++;
   }
-  return { openTotal, openRecent, needsDecision };
+  return { openTotal, openRecent, needsDecision, excludedRecords };
 }
 
 /** Reviews whose latest ledger row is pending_push and older than PENDING_STUCK_HOURS. */
@@ -194,7 +197,12 @@ function buildNightlyRow({ runId, status, summary, counts, reopened = 0, superse
     needsDecision: counts ? counts.needsDecision : null,
     attempted: s.attempted || 0,
     accepted: s.accepted || 0,
-    recovered: s.landed || 0,
+    // BRO-7942: recovered = landed AND the tier went up; landed-without-gain is reported apart.
+    recovered: Number.isFinite(s.landedImproved) ? s.landedImproved : (s.landed || 0),
+    landedNoTierGain: Number.isFinite(s.landedImproved) ? Math.max(0, (s.landed || 0) - s.landedImproved) : null,
+    excludedRecords: counts ? counts.excludedRecords : null,
+    slots: s.slots || null,
+    urlFindSpentMin: Number.isFinite(s.urlFindSpentMin) ? s.urlFindSpentMin : null,
     byStrategy: s.byStrategy || {},
     reopened,
     // Of reopened: another writer re-fetched the same url and its newer text

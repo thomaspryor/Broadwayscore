@@ -345,8 +345,26 @@ function recoveredRowFromLanding(landed, info = {}) {
     priorFullTextHash: info.priorFullTextHash,
     pushedBlob: landed.blob || null,
     runId: info.runId,
-    detail: landed.commit ? { commit: landed.commit } : undefined,
+    detail: tierDetail(landed, info),
   });
+}
+
+function tierDetail(landed, info) {
+  const d = {
+      ...(landed.commit ? { commit: landed.commit } : {}),
+      // BRO-7942: "recovered" counts only when the tier went up (143 of 464 recovered keys were still truncated).
+      ...(info.newTier ? { priorTier: info.priorTier || null, newTier: info.newTier, tierImproved: tierImproved(info.priorTier, info.newTier) } : {}),
+  };
+  return Object.keys(d).length ? d : undefined;
+}
+
+const TIER_ORDER = { invalid: 0, stub: 1, excerpt: 2, truncated: 3, complete: 4 };
+/** Did the accepted text raise the content tier? An unknown prior tier counts as the lowest. */
+function tierImproved(priorTier, newTier) {
+  const n = TIER_ORDER[newTier];
+  if (n === undefined) return false;
+  const p = TIER_ORDER[priorTier];
+  return p === undefined ? true : n > p;
 }
 
 // Reopen reason for a recovery another writer replaced by re-fetching the
@@ -462,6 +480,7 @@ function pendingPushInfo(rows) {
     out.set(key, {
       reviewKey: key, gapClass: last.gapClass, strategy: last.strategy, url: last.url,
       bytesBefore: last.bytesBefore, bytesAfter: last.bytesAfter, priorFullTextHash: last.priorFullTextHash, runId: last.runId,
+      priorTier: (last.detail && last.detail.priorTier) || null, newTier: (last.detail && last.detail.newTier) || null,
     });
   }
   return out;
@@ -506,6 +525,7 @@ function isVanishedReviewFile(err, filePath) {
 }
 
 module.exports = {
+  tierImproved,
   isVanishedReviewFile,
   pendingPushInfo,
   outcomeForGateRefusal,

@@ -179,22 +179,15 @@ function collectorRefetchGate(collectorDecision) {
 }
 
 /**
- * Candidate order: recent shows (<=2y) first, then the major outlets the
- * full-text floors cover (outlet-fulltext.MAJOR_FULLTEXT_OUTLETS, BRO-7702:
- * their gaps sat at queue positions ~700-1250 of 7090 and were never reached),
- * then newest show first, then cheapest planned strategy first, then a stable key.
+ * Candidate order (BRO-7942, gap-plan-order.compareByBand): floor outlets on
+ * recent shows, other recent, floor outlets on historic shows, the rest by
+ * outlet tier; never-attempted before retries inside each band; then newest
+ * show, cheapest planned strategy, a stable key.
  */
 function compareCandidates(a, b) {
-  if ((a.recency === 'recent') !== (b.recency === 'recent')) return a.recency === 'recent' ? -1 : 1;
-  const ma = isFloorGap(a); const mb = isFloorGap(b);
-  if (ma !== mb) return ma ? -1 : 1;
-  const da = ms(a.showDate); const db = ms(b.showDate);
-  if (da !== db) return db - da;
+  // BRO-7942: the full band order lives in gap-plan-order (one comparator for the driver and URL_FIND).
   const cost = { F: 0, B: 1, P: 2, S: 2 };
-  const ca = a.strategy ? cost[STRATEGY_FLAGS[a.strategy].cost] : 9;
-  const cb = b.strategy ? cost[STRATEGY_FLAGS[b.strategy].cost] : 9;
-  if (ca !== cb) return ca - cb;
-  return String(a.reviewKey).localeCompare(String(b.reviewKey));
+  return require('./gap-plan-order').compareByBand({ costOf: (st) => (st ? cost[STRATEGY_FLAGS[st].cost] : 9) })(a, b);
 }
 
 /**
