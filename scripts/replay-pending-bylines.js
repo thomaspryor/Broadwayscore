@@ -244,6 +244,19 @@ function loadShow(showId) {
   return (data.shows || data).find(s => s.id === showId);
 }
 
+// BRO-7945 Part B: one paid fetch per URL per run, shared by every show's copy of the article
+// (1,006 basenames sit under 2+ shows; the same ew article was fetched 4x at 4 credits each).
+const { makeFetchCache, siblingForArticle } = require('./lib/pending-sibling-productions');
+const runFetchCache = makeFetchCache((u) => fetchPage(u));
+let _allShowsMemo = null;
+function loadAllShows() {
+  if (!_allShowsMemo) {
+    const data = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+    _allShowsMemo = data.shows || data;
+  }
+  return _allShowsMemo;
+}
+
 const { NON_MET_OPERA_URL_MARKERS, hasNonMetOperaUrlMarker, operaHouseForVenue } = require('./lib/content-filters');
 
 // The byline extractor is non-deterministic on outlets whose article pages carry
@@ -347,7 +360,7 @@ function isDescriptiveNonReviewSlug(url) {
  */
 async function processShow(showId, deps = {}) {
   const root = deps.root || REVIEW_TEXTS_ROOT;
-  const fetchPageImpl = deps.fetch || fetchPage;
+  const fetchPageImpl = deps.fetch || runFetchCache;
   const alert = deps.alert || defaultRouteAlert;
   const emit = deps.emit || emitStage;
   const dry = deps.dryRun !== undefined ? deps.dryRun : dryRun;
@@ -368,6 +381,7 @@ async function processShow(showId, deps = {}) {
   // BRO-7930: stubs newly settled (tagged junk, skipped-with-reason) this run, the files looked at, and the
   // last file reached (the rotation cursor). A run that inspects files and settles none is a "zero run".
   let tagged = 0, inspected = 0, lastFile = null;
+  const redundantCopies = {}; // BRO-7945: settled out-of-window copies by kind (sibling | outside-all)
   // Zero-text + no-byline stubs replay could not recover (BRO-2735). Reported
   // after the loop — never a silent "keep".
   const unrecoverable = [];
@@ -405,7 +419,7 @@ async function processShow(showId, deps = {}) {
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
   };
-  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, tagged, inspected, lastFile, redundantCopies, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
   const reportUnrecoverable = (scanComplete = false) => {
     if (unrecoverable.length === 0) {
       // BRO-6338: a full scan with nothing unrecoverable closes the show's alert
@@ -593,8 +607,23 @@ async function processShow(showId, deps = {}) {
         // slugs). Deleting was irreversible data loss (ship-check 2026-06-05). Annotate so
         // future cron runs skip it without re-fetching, and leave it in _pending for a
         // human / better tooling — promotion just doesn't happen.
-        console.log(`  [${file}] SKIP (kept in _pending): ${rejectReason}`);
-        data.promoteSkippedReason = rejectReason;
+        // BRO-7945: an out-of-window copy whose date sits inside a same-title sibling's window belongs to that
+        // sibling's copy (processed on its own turn from the cached fetch); settle this one so it is never
+        // re-judged. Outside every same-title window = settled junk. Both stay on disk (never delete).
+        let settle = null;
+        if (/is outside this production's window|date-out-of-window/.test(rejectReason)) {
+          const sib = siblingForArticle(show, deps.allShows || loadAllShows(), publishDate,
+            { hasCopy: (sid) => { // the sibling's copy exists and has not itself been settled
+              try { return !JSON.parse(fs.readFileSync(path.join(root, '_pending', sid, file), 'utf8')).promoteSkippedReason; } catch { return false; }
+            } });
+          settle = sib
+            ? { kind: 'sibling', reason: `${rejectReason}; belongs to same-title production ${sib.id}, whose _pending copy carries it (BRO-7945)`, sibling: sib.id }
+            : { kind: 'outside-all', reason: rejectReason };
+          redundantCopies[settle.kind] = (redundantCopies[settle.kind] || 0) + 1;
+        }
+        console.log(`  [${file}] SKIP (kept in _pending): ${settle ? settle.reason : rejectReason}`);
+        data.promoteSkippedReason = settle ? settle.reason : rejectReason;
+        if (settle) { data.promoteSettled = settle.kind; if (settle.sibling) data.promoteSettledSibling = settle.sibling; }
         data.promoteSkippedAt = new Date().toISOString();
         if (!dry) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
         tagged++;
@@ -821,6 +850,7 @@ if (require.main === module) {
 
     let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0, totalUnrecoverable = 0, totalRefetched = 0, totalTagged = 0, totalInspected = 0;
     const alertPromises = [];
+    const settledTotals = {}; // BRO-7945: out-of-window copies settled this run (sibling | outside-all)
     // BRO-7930: sweeps rotate from a persisted cursor; the poller / --show runs stay newest-first.
     const sweep = allOpen || allPending;
     const state = sweep ? drainState.loadState(REVIEW_TEXTS_ROOT) : null;
@@ -840,7 +870,8 @@ if (require.main === module) {
     const reached = { recent: null, other: null };
     let completedPass = true;
     for (const { showId: id, files } of plan) {
-      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, alertPromise } = await processShow(id, { files });
+      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, redundantCopies, alertPromise } = await processShow(id, { files });
+      for (const [k, n] of Object.entries(redundantCopies || {})) settledTotals[k] = (settledTotals[k] || 0) + n;
       totalPromoted += promoted;
       totalKept += kept;
       totalRejected += rejected || 0;
@@ -862,6 +893,7 @@ if (require.main === module) {
     console.log(`Tagged as settled junk (skipped from now on): ${totalTagged}`);
     console.log(`Kept in _pending: ${totalKept}`);
     console.log(`  of which re-fetched body rebuilt: ${totalRefetched}`);
+    console.log(`  out-of-window copies settled (BRO-7945): ${JSON.stringify(settledTotals)}; fetch requests ${runFetchCache.stats().calls}, unique URLs fetched ${runFetchCache.stats().unique} (cache hits ${runFetchCache.stats().cacheHits})`);
     console.log(`  of which UNRECOVERABLE (no text, no byline — see alerts above): ${totalUnrecoverable}`);
 
     if (sweep) {

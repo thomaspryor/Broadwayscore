@@ -2672,12 +2672,15 @@ const crossShowFingerprints = new Map();
   if (cvPromoted > 0) console.log(`  CV pre-pass: promoted ${cvPromoted} contentVerification flags`);
 }
 
+const { wholeShowSkipReason } = require('./lib/scored-absent');
 const fpMemo = createFingerprintMemo();
 showDirs.forEach(showId => {
   // Skip Broadway shows in previews — they haven't opened yet, all reviews are wrong-production
   // Off-Broadway and West End shows commonly get reviewed during previews, so don't skip them
   const showCat = showCategoryMap[showId] || 'broadway';
-  if (showStatusMap[showId] === 'previews' && showCat === 'broadway') {
+  // BRO-7945: one decision shared with the scored-absent guard (wholeShowSkipReason), so the guard can name the skip.
+  const wholeShowSkip = wholeShowSkipReason({ status: showStatusMap[showId], category: showCategoryMap[showId] });
+  if (wholeShowSkip === 'skippedPreviewsShows') {
     logExclusion("skippedPreviewsShows", showId, "-", null, { reason: "Broadway show in previews — not yet opened" });
     stats.skippedPreviewsShows = (stats.skippedPreviewsShows || 0) + 1;
     return;
@@ -2685,7 +2688,7 @@ showDirs.forEach(showId => {
 
   // Skip shows in "upcoming" status across all markets — no valid reviews can exist yet
   // BUT: still promote contentVerification flags on upcoming shows so flags are ready when show opens
-  if (showStatusMap[showId] === 'upcoming') {
+  if (wholeShowSkip === 'skippedUpcomingShows') {
     const upcomingDir = path.join(reviewTextsDir, showId);
     try {
       const upcomingFiles = fs.readdirSync(upcomingDir).filter(f => f.endsWith('.json'));
@@ -4732,7 +4735,14 @@ showDirs.forEach(showId => {
             priorRuns: preWindowPriorRuns(showId),
             tourLegs: showById[showId]?.tourLegs,
           });
-          if (preWindow.exclude) {
+          // BRO-7945: the earlier pre-opening guard (above) already let a review through when contentVerification
+          // affirms THIS production ([PRE-OPENING-CV-OVERRIDE]); this second copy of the same predicate had no such
+          // carve-out and dropped it anyway (a-christmas-story timeout--david-cote). Same decision, one source.
+          const cvAffirmsPreWindow = preWindow.exclude && (() => {
+            const h = rebuildPreWindowHold({ review: data, show: showById[showId] });
+            return h.hold && h.corrob.signals.includes('cv-affirms-production');
+          })();
+          if (preWindow.exclude && !cvAffirmsPreWindow) {
             console.log(`  [DATE GUARD] ${showId}/${file}: published ${data.publishDate}, show opens ${showDateMap[showId].toISOString().split('T')[0]} (${preWindow.daysBefore}d before, threshold ${preWindow.threshold}d)`);
             if (!stats.suspectedWrongProduction) stats.suspectedWrongProduction = [];
             stats.suspectedWrongProduction.push({
@@ -7846,3 +7856,14 @@ if (awaitingRefetchFlagSkipped > 0) {
   console.log(`\n#483 invariant: withheld ${awaitingRefetchFlagSkipped} exclusion-flag write(s) on records awaiting URL-correction refetch`);
 }
 console.log(`\nReviews saved to: ${reviewsJsonPath}`);
+
+// BRO-7945 class guard (advisory, never fails the rebuild): scored+includable files whose outlet is absent from
+// the reviews.json just written must each carry a recorded drop reason in this run's per-show exclusion ledger.
+// Full rebuilds only (a --show= run judges every show against a partial reviews.json). Log-only: the summary and
+// SILENT rows go to this job's log; no committed artifact, so no unaudited data/audit/ path joins the push.
+if (!SHOW_FILTER && process.env.SCORED_ABSENT_AUDIT_DISABLED !== 'true') {
+  // This run's own exclusions and corpus, so the audit never reads a stale ledger or another checkout.
+  const ledgers = new Map(Object.entries(stats.byShow).map(([sid, st]) => [sid, new Map((st.exclusions || []).map((e) => [e.file, e.reason]))]));
+  try { require('./audit-scored-absent').run({ argv: ['--grace-hours=48'], ledgers, textsDir: reviewTextsDir }); }
+  catch (e) { process.stderr.write(`[scored-absent] advisory audit failed: ${e.message}\n`); }
+}
