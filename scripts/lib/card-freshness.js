@@ -80,8 +80,8 @@ async function freshnessNotice({ input = {}, env = process.env, title = '', bran
   // Title and branch first-class (counted 3x): they name the session's own card, the transcript only mentions others.
   const ids = extractCardIds([title, title, title, branch, branch, branch, text]);
   if (!ids.length) return '';
-  const fetch = fetchIssue || require('./linear-client.js').getIssue;
-  const settled = await Promise.all(ids.map((id) => Promise.resolve().then(() => fetch(id)).catch(() => null)));
+  const getCard = fetchIssue || require('./linear-client.js').getIssue;
+  const settled = await Promise.all(ids.map((id) => Promise.resolve().then(() => getCard(id)).catch(() => null)));
   return buildFreshnessNotice(settled);
 }
 
