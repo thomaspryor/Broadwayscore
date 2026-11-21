@@ -240,6 +240,8 @@ function ingest(showId, m, url, show) {
   return { outcome: 'ingested', file: kept, bodyChars };
 }
 
+let stageDiagN = 0;
+
 async function cmdRun() {
   const capUsd = numArg('max-usd', 45);
   const state0 = readState();
@@ -303,6 +305,18 @@ async function cmdRun() {
     results.push(done);
     refresh();
     console.log(`${q.showId} [${q.slot}] ${done.outcome} ${done.url || ''}${/^removed/.test(done.outcome) && done.detail ? ` (${done.detail})` : ''}`);
+    // BRO-6487 temporary diagnostic (first 3 per run): layout of a fetched Stage page that has no extractable body.
+    if (q.slot === 'stage' && /^removed/.test(done.outcome) && /body 0 chars/.test(done.detail || '') && done.url && stageDiagN < 3) {
+      stageDiagN++;
+      try {
+        const raw = await require('./lib/fetch-plain').fetchWithCookiesPlain(done.url);
+        const h = (raw && raw.content) || '';
+        const ae = require('./lib/article-extractor');
+        const ps = [...h.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)].map(m => ({ at: m.index, end: m.index + m[0].length, t: ae.stripHtml(m[1]) }));
+        console.log(`[stage-diag] ${q.showId} ${h.length} chars h1At=${h.search(/<h1[\s>]/)} introAt=${h.search(/aos-Article-IntroText/)} gate=${/utm_source=Reggate|create a free account|Subscribe to continue|THIS IS NOT A PAYWALL/i.test(h)} extractor=${ae.extractStageBody(h) ? 'ok' : 'null'}`);
+        console.log(`[stage-diag] ${q.showId} paras(at,len,gap,head): ${ps.map((x, i) => `${x.at},${x.t.length},${i ? x.at - ps[i - 1].end : 0},${x.t.slice(0, 32).replace(/\s+/g, ' ')}`).join(' || ')}`);
+      } catch (e) { console.log(`[stage-diag] error ${String(e.message).slice(0, 80)}`); }
+    }
     if (results.length % 25 === 0) console.log(tally.line());
     await sleep(500);
   }
