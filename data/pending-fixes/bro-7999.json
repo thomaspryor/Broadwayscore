@@ -1,0 +1,126 @@
+{
+  "issueNumber": "bro-7999",
+  "planId": "c26babe7-66bb-476a-85b0-9825452f2e9f",
+  "status": "pending",
+  "createdAt": "2026-11-21T17:19:35.056Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7999: clear held-out flags on 7 hand-read real reviews (per file, human-clear fields, no bulk)",
+    "steps": [
+      "rent-west-end-2026/camdennewjournal--lucy-popescu.json: nonReviewManualClear",
+      "rent-west-end-2026/camdennewjournal--lucy-popescu.json: nonReviewFlag",
+      "rope-off-broadway-2026/theater-life--samuel-l-leiter.json: nonReviewManualClear",
+      "rope-off-broadway-2026/theater-life--samuel-l-leiter.json: nonReviewFlag",
+      "well-see-off-broadway-2026/washington-square-news--ethan-li.json: isNonReview",
+      "well-see-off-broadway-2026/washington-square-news--ethan-li.json: nonReviewManualClear",
+      "well-see-off-broadway-2026/washington-square-news--ethan-li.json: wrongArticleManualClear",
+      "the-thanksgiving-play-2023/amny--matt-windman.json: wrongArticleManualClear",
+      "antigone-regional-2022/chicago-reader--albert-williams.json: wrongArticleManualClear",
+      "yellow-face-2024/joysauce--janvi-sai.json: wrongArticleManualClear",
+      "the-music-man-2022/ap--mark-kennedy.json: wrongShow",
+      "the-music-man-2022/ap--mark-kennedy.json: wrongShowManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/camdennewjournal--lucy-popescu.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "rent-west-end-2026/camdennewjournal--lucy-popescu.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/camdennewjournal--lucy-popescu.json",
+        "field": "nonReviewFlag",
+        "oldValue": true,
+        "newValue": false,
+        "description": "rent-west-end-2026/camdennewjournal--lucy-popescu.json: nonReviewFlag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rope-off-broadway-2026/theater-life--samuel-l-leiter.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "rope-off-broadway-2026/theater-life--samuel-l-leiter.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rope-off-broadway-2026/theater-life--samuel-l-leiter.json",
+        "field": "nonReviewFlag",
+        "oldValue": true,
+        "newValue": false,
+        "description": "rope-off-broadway-2026/theater-life--samuel-l-leiter.json: nonReviewFlag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "well-see-off-broadway-2026/washington-square-news--ethan-li.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "well-see-off-broadway-2026/washington-square-news--ethan-li.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "well-see-off-broadway-2026/washington-square-news--ethan-li.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "well-see-off-broadway-2026/washington-square-news--ethan-li.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "well-see-off-broadway-2026/washington-square-news--ethan-li.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "well-see-off-broadway-2026/washington-square-news--ethan-li.json: wrongArticleManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-thanksgiving-play-2023/amny--matt-windman.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-thanksgiving-play-2023/amny--matt-windman.json: wrongArticleManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "antigone-regional-2022/chicago-reader--albert-williams.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "antigone-regional-2022/chicago-reader--albert-williams.json: wrongArticleManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "yellow-face-2024/joysauce--janvi-sai.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "yellow-face-2024/joysauce--janvi-sai.json: wrongArticleManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-music-man-2022/ap--mark-kennedy.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "the-music-man-2022/ap--mark-kennedy.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-music-man-2022/ap--mark-kennedy.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-music-man-2022/ap--mark-kennedy.json: wrongShowManualClear"
+      }
+    ]
+  }
+}
