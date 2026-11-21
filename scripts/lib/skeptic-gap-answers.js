@@ -103,7 +103,7 @@ function segments(cmd) { return norm(cmd).split(/&&|\|\||;|\|/).map((s) => s.tri
 /**
  * PURE. Does `claimed` name a command that ran? It must start one segment of a successful Bash command after `from`,
  * be at least MIN_RAN_CMD chars, and (when the gap's check names files) name one of those files.
- * -> { ok: true } | { ok: false, why }
+ * -> { ok: true, at: <index of the latest qualifying run> } | { ok: false, why }
  */
 // Reading a file is not running its check (ship-check review: `ran cat scripts/x.test.mjs` was accepted).
 const READ_ONLY_RE = /^(?:cat|less|more|head|tail|grep|rg|sed|awk|wc|ls|echo|printf|jq|diff|git\s+(?:diff|log|show|status|grep|blame)|node\s+(?:--check|-c)\b|npx\s+tsc)\b/;
@@ -146,26 +146,26 @@ function verifyRan(claimed, gap, events, from) {
  * @param lastMessage the closing message (not yet in the transcript when a Stop hook runs)
  * @param editIndices (BRO-7887, optional) indices of code edits: skeptic-review-stop.mjs codeEditIndices(events, -1),
  *   the one edit matcher the Stop gate uses. With it, `ranBeforeLastEdit` lists accepted "ran" answers whose latest
- *   crediting run is older than a code edit made before that answer was given (the proof is stale: the code it tested
- *   changed after). ADVISORY (CLAUDE.md rule 19): it never moves a gap to `unanswered`. Edits after the answer are the
- *   skeptic Stop gate's job (it re-reviews new edits), not this check's. Without editIndices it is null (not measured).
+ *   crediting run is older than a later code edit anywhere in `events` (the proof predates the code it covers; the
+ *   owner's audit test: "ran before the session's last edit"). Any code edit counts, not only files the gap names: the
+ *   gap names a test, the edit is to the code under it. ADVISORY (CLAUDE.md rule 19): it never moves a gap to
+ *   `unanswered`. Without editIndices it is null (not measured).
  * -> { report, answered: number[], unanswered: [{ n, what, check, why }], ranBeforeLastEdit: number[]|null }
  */
 function evaluateGapAnswers(events, { firstIdx, lastIdx, reportText, lastMessage = '', editIndices = null }) {
   const report = parseSkepticReport(reportText);
   const measured = Array.isArray(editIndices);
   if (report.verdict !== 'gaps') return { report, answered: [], unanswered: [], ranBeforeLastEdit: measured ? [] : null };
-  // Each answer keeps the index of the event it came from, so "before the answer" is per gap (last answer wins).
-  const answers = new Map();
-  const take = (texts, at) => { for (const [n, a] of answerLines(texts)) answers.set(n, { ...a, at }); };
-  events.forEach((e, i) => {
-    if (i <= lastIdx) return;
-    if (e.kind === 'assistant_text') take([e.text], i);
+  const texts = [];
+  for (const e of events.slice(lastIdx + 1)) {
+    if (e.kind === 'assistant_text') texts.push(e.text);
     // Answers passed to `review-coverage.mjs --record --answer='GAP n: ...'`. Chat text can be missing from the session
     // transcript (BRO-7872's own answers never reached it); a tool command always does.
-    else if (e.kind === 'assistant_tool_use' && e.name === 'Bash') take(answerArgs(e.input?.command), i);
-  });
-  take([String(lastMessage || '')], events.length);
+    else if (e.kind === 'assistant_tool_use' && e.name === 'Bash') texts.push(...answerArgs(e.input?.command));
+  }
+  texts.push(String(lastMessage || ''));
+  const answers = answerLines(texts);
+  const lastEdit = measured && editIndices.length ? Math.max(...editIndices) : -1;
   const answered = [];
   const unanswered = [];
   const ranBeforeLastEdit = [];
@@ -176,7 +176,7 @@ function evaluateGapAnswers(events, { firstIdx, lastIdx, reportText, lastMessage
     else if (a.kind === 'ran') {
       const v = verifyRan(a.body, g, events, firstIdx);
       if (!v.ok) why = `"ran" not accepted: ${v.why}`;
-      else if (measured && editIndices.some((x) => x > v.at && x < a.at)) ranBeforeLastEdit.push(g.n);
+      else if (measured && lastEdit > v.at) ranBeforeLastEdit.push(g.n);
     }
     else if (a.kind === 'cannot' || a.kind === 'not-a-gap') { if (!concreteReason(a.body)) why = `reason not accepted (15+ chars, concrete; a schedule-only reason like "next cron run" is not one): "${a.body.slice(0, 80)}"`; }
     else why = `"${a.raw.slice(0, 60)}" is not one of the three answer forms`;
@@ -188,7 +188,7 @@ function evaluateGapAnswers(events, { firstIdx, lastIdx, reportText, lastMessage
 /** PURE (BRO-7887). The advisory line for ranBeforeLastEdit, '' when there is nothing to say. */
 function ranBeforeLastEditAdvice(ns) {
   if (!ns || !ns.length) return '';
-  return `advisory: gap(s) ${ns.join(', ')} were answered "ran ..." with a run older than a later code edit, so the proof predates the code it covers. Re-run that command now and answer again.`;
+  return `advisory: gap(s) ${ns.join(', ')} were answered "ran ..." with a run older than the last code edit, so the proof predates the code it covers. Re-run that command now and answer again.`;
 }
 
 /** PURE. The instruction block shown wherever unanswered gaps stop a pass. */
@@ -214,7 +214,7 @@ function answerInstructions(unanswered) {
  * -> { runs, gapsFound, gapsAnswered, gapsRanBeforeLastEdit, errors }
  *    runs = every skeptic --ship-check invocation (errors = those with no verdict); gapsFound = material gaps in the LAST report;
  *    gapsAnswered = how many of those have an accepted answer; gapsRanBeforeLastEdit = accepted "ran" answers whose run
- *    is older than a code edit made before the answer (advisory); errors = UNAVAILABLE reports.
+ *    is older than the session's last code edit (advisory); errors = UNAVAILABLE reports.
  */
 function skepticStats(events, { isSkepticCall, codeEditIndices, lastMessage = '' } = {}) {
   if (typeof isSkepticCall !== 'function') throw new TypeError('skepticStats: pass isSkepticCall (review-coverage.mjs isSkepticReviewCall)');

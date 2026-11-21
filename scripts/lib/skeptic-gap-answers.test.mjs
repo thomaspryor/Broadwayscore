@@ -125,8 +125,14 @@ test('ranBeforeLastEdit: a run older than a code edit made before the answer is 
   assert.deepEqual(judge([...sk, edit('e'), ...run, answer]).ranBeforeLastEdit, []);
   // run -> edit -> run again -> answer: the LATEST run is credited, so fresh
   assert.deepEqual(judge([...sk, ...run, edit('e'), call('t2', 'node --test scripts/lib/q.test.mjs'), out('t2', '# pass 3'), answer]).ranBeforeLastEdit, []);
-  // skeptic -> run -> answer -> edit: an edit after the answer is the Stop gate's job, not stale here
-  assert.deepEqual(judge([...sk, ...run, answer, edit('e')]).ranBeforeLastEdit, []);
+  // skeptic -> run -> chat answer -> edit -> --record: still stale (ship-check review: the record must not stamp a
+  // receipt on proof that predates the edit just because the answer was written before it)
+  assert.deepEqual(judge([...sk, ...run, answer, edit('e')]).ranBeforeLastEdit, [1]);
+  // answer given on the record command (lastMessage, not yet in the transcript)
+  const viaRecord = [...sk, ...run, edit('e')];
+  assert.deepEqual(evaluateGapAnswers(viaRecord, { firstIdx: 0, lastIdx: 0, reportText: report, lastMessage: 'GAP 1: ran node --test scripts/lib/q.test.mjs', editIndices: codeEditIndices(viaRecord, -1) }).ranBeforeLastEdit, [1]);
+  // edits only BEFORE the skeptic run never make an answer stale
+  assert.deepEqual(judge([edit('e0'), ...sk, ...run, answer]).ranBeforeLastEdit, []);
   // a shell write (sed -i) counts as an edit, same matcher as the Stop gate
   assert.deepEqual(judge([...sk, ...run, call('w', "sed -i '' 's/a/b/' scripts/lib/q.js"), out('w', ''), answer]).ranBeforeLastEdit, [1]);
   // not measured without editIndices
@@ -134,4 +140,20 @@ test('ranBeforeLastEdit: a run older than a code edit made before the answer is 
   assert.equal(ranBeforeLastEditAdvice(null), '');
   // skepticStats carries the count into the retro row
   assert.equal(skepticStats([...sk, ...run, edit('e'), answer], { isSkepticCall: isSkepticReviewCall, codeEditIndices }).gapsRanBeforeLastEdit, 1);
+});
+
+test('evaluateCoverage passes editIndices through (review-coverage --record prints the advisory from this)', async () => {
+  const { evaluateCoverage } = await import('./review-coverage.mjs');
+  const report = 'SKEPTIC REVIEW: 1 material gap(s).\n1. sweep untested (b)\n   check: node --test scripts/lib/q.test.mjs';
+  const call = (id, command) => ({ kind: 'assistant_tool_use', name: 'Bash', id, input: { command } });
+  const out = (id, content) => ({ kind: 'tool_result', tool_use_id: id, content, isError: false });
+  const events = [
+    { kind: 'assistant_tool_use', name: 'Skill', id: 'k', input: { skill: 'ship-check' } }, out('k', 'Launching skill: ship-check'),
+    call('s', 'node scripts/lib/skeptic-review-stop.mjs --ship-check'), out('s', report),
+    call('t', 'node --test scripts/lib/q.test.mjs'), out('t', '# pass 3\n# fail 0'),
+    { kind: 'assistant_tool_use', name: 'Write', id: 'w', input: { file_path: 'scripts/lib/q.js' } }, out('w', 'ok'),
+  ];
+  const lastMessage = 'GAP 1: ran node --test scripts/lib/q.test.mjs';
+  assert.deepEqual(evaluateCoverage(events, { lastMessage, editIndices: codeEditIndices(events, -1) }).ranBeforeLastEdit, [1]);
+  assert.equal(evaluateCoverage(events, { lastMessage }).ranBeforeLastEdit, null, 'not measured without editIndices (land-ready, Stop)');
 });

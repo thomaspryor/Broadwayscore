@@ -563,7 +563,7 @@ async function main(argv) {
   const events = walkTranscript(transcript);
   // BRO-7887: the Stop gate's edit matcher (dynamic import: skeptic-review-stop.mjs imports this module).
   let editIndices = null;
-  try { editIndices = (await import('./skeptic-review-stop.mjs')).codeEditIndices(events, -1); } catch { /* advisory only */ }
+  try { editIndices = (await import('./skeptic-review-stop.mjs')).codeEditIndices(events, -1); } catch (e) { process.stderr.write(`review-coverage: ran-before-last-edit advisory not measured (${String(e && e.message).split('\n')[0]})\n`); }
   const cov = evaluateCoverage(events, { lastMessage: answers, editIndices });
   const staleAdvice = ranBeforeLastEditAdvice(cov.ranBeforeLastEdit);
   if (staleAdvice) process.stderr.write(`review-coverage: ${staleAdvice}\n`);

@@ -105,10 +105,13 @@ async function skepticOutcome(transcriptPath) {
   try {
     // The coverage gate's own matcher, so the retro counts exactly the runs review-coverage counts (BRO-7872).
     const { isSkepticReviewCall } = await import('./review-coverage.mjs');
-    // BRO-7887: the Stop gate's edit matcher, so "ran before the last edit" counts edits the way the gate does.
-    const { codeEditIndices } = await import('./skeptic-review-stop.mjs');
     const events = (await import('./transcript-scan.mjs')).walkTranscript(transcriptPath);
-    return require('./skeptic-gap-answers.js').skepticStats(events, { isSkepticCall: isSkepticReviewCall, codeEditIndices });
+    // BRO-7887: the Stop gate's edit matcher, so "ran before the last edit" counts edits the way the gate does. If it
+    // cannot load, keep the rest of the row and record the advisory count as null (not measured), never a false 0.
+    let codeEditIndices = null;
+    try { ({ codeEditIndices } = await import('./skeptic-review-stop.mjs')); } catch { /* measured as null below */ }
+    const stats = require('./skeptic-gap-answers.js').skepticStats(events, { isSkepticCall: isSkepticReviewCall, codeEditIndices: codeEditIndices || (() => []) });
+    return codeEditIndices ? stats : { ...stats, gapsRanBeforeLastEdit: null };
   } catch { return null; }
 }
 
