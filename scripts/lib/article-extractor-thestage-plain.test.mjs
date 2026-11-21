@@ -88,3 +88,10 @@ test('live layout: review paragraphs tight together, then ~30k chars of author-c
   const tx = extractArticleText(html, 'thestage.co.uk');
   assert.ok(tx && tx.includes('criss-crossing') && !/international editor|Invest in The Stage/.test(tx));
 });
+
+test('listing page: teaser paragraphs, then a far-away lone subscribe or copyright footer, stays null', () => {
+  const teasers = Array.from({ length: 6 }, (_, i) => `Teaser ${i}: a longer blurb about another production currently playing somewhere in London tonight, with enough words to count.`);
+  const far = '<div>' + '<span>x</span>'.repeat(5000) + '</div>';
+  assert.equal(extractArticleText(page(ps(teasers) + far + '<p>Invest in The Stage today with a subscription starting at £1.</p>'), 'thestage.co.uk'), null);
+  assert.equal(extractArticleText(page(ps(teasers) + far + '<p>© Copyright Playbook Media Trading Company Limited</p>'), 'thestage.co.uk'), null);
+});

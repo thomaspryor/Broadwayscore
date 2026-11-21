@@ -345,6 +345,9 @@ function extractStageBody(html) {
     for (let trailerAt = 0; trailerAt < found.length && !paras; trailerAt++) {
       if (!isAnchor(found[trailerAt].t)) continue;
       if (trailerAt === 0) continue;
+      // Only the author bio may sit far (author-card markup) from the review; a lone subscribe/copyright footer
+      // line is on every page, so it must follow the prose closely.
+      if (found[trailerAt].at - found[trailerAt - 1].end > (isPlainBio(found[trailerAt].t) ? 60000 : 5000)) continue;
       // The author-card markup between the review and its trailer can be tens of thousands of characters
       // (live: 30k), so the gap rule applies inside the run of review paragraphs, not before the trailer.
       let from = trailerAt - 1;
