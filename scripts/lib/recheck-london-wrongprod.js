@@ -2,7 +2,9 @@
 /**
  * BRO-7932: re-run the collector's content verifier over every review stamped
  * "Collector LLM: wrong production" on a West End / Off-West End record, and
- * report how many flags survive. READ-ONLY on review files (writes only --out).
+ * report how many flags survive. Re-run mode is READ-ONLY on review files (writes
+ * only --out); only `--stored-audit --apply` heals review files.
+ * venue-write-guard-ok: show.venue is copied into a /tmp results row and the verifier prompt, never written to shows.json
  *
  *   node scripts/lib/recheck-london-wrongprod.js --out=/tmp/x.json [--since=2024-11-20] [--limit=N] [--concurrency=4]
  *   node scripts/lib/recheck-london-wrongprod.js --summarize=/tmp/x.json   # before/after counts
