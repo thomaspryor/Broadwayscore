@@ -115,4 +115,84 @@ function findUnprovenNewGates({ baseText, headText, changedFiles }) {
   return { violations };
 }
 
-module.exports = { parseSteps, stepArmsGate, isBaselineFile, findUnprovenNewGates };
+// ---------------------------------------------------------------------------
+// BRO-7949: new hard-fail checks ADDED INSIDE a validator that test.yml runs
+// blocking. A new `error(...)` in validate-data.js turns test.yml red and writes
+// the .skip-push-core-data sentinel (BRO-7929 near-miss 2026-11-21), exactly like
+// a new --strict step, but the step-level audit above never sees it.
+// ---------------------------------------------------------------------------
+
+// Validators test.yml runs blocking, and the hard-fail helpers each defines.
+const VALIDATORS = {
+  'scripts/validate-data.js': ['error', 'reviewFileError', 'reviewRowError'],
+  'scripts/validate-market-expansion.js': ['error'],
+};
+
+// Blank out string/template literals and comments so `error(` inside a message
+// or a comment is not mistaken for a call. Line-local (good enough for diffs).
+function stripLiterals(line) {
+  let s = line.replace(/\/\/.*$/, '');
+  s = s.replace(/'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`/g, '""');
+  return s.replace(/\/\*.*?\*\//g, '');
+}
+
+function hardErrorCall(line, helpers) {
+  if (/^\s*(\/\/|\*|\/\*)/.test(line)) return false;
+  const code = stripLiterals(line);
+  if (/\bfunction\s+\w+\s*\(/.test(code)) return false; // definition, not a call
+  return helpers.some(h => new RegExp(`(?<![\\w.$])${h}\\s*\\(`).test(code));
+}
+
+const norm = l => l.trim().replace(/\s+/g, ' ');
+
+// Parse a unified diff of ONE file into hunks: { added:[], removed:[], all:[] }.
+function parseHunks(diff) {
+  const hunks = [];
+  let cur = null;
+  for (const line of String(diff || '').split('\n')) {
+    if (line.startsWith('@@')) { cur = { added: [], removed: [], all: [] }; hunks.push(cur); continue; }
+    if (!cur || line.startsWith('+++') || line.startsWith('---')) continue;
+    if (line[0] === '+') { cur.added.push(line.slice(1)); cur.all.push(line.slice(1)); }
+    else if (line[0] === '-') cur.removed.push(line.slice(1));
+    else if (line[0] === ' ') cur.all.push(line.slice(1));
+  }
+  return hunks;
+}
+
+/**
+ * @param {{files:{path:string, diff:string, headText?:string}[], changedFiles:string[], contextTexts?:string[]}} input
+ *   contextTexts: head text of other changed scripts/ files (a baseline loaded by a helper lib).
+ * @returns {{violations:{file:string, line:string}[]}}
+ *
+ * A violation = an added hard-fail call that is NET new in its file (rewording or
+ * moving an existing call pairs with its removed twin and is not flagged), with
+ * no `gate-arm-ok: <proof>` marker in the same hunk and no changed baseline file
+ * that the validator (or a changed helper) actually references.
+ */
+function findUnprovenNewValidatorErrors({ files, changedFiles, contextTexts }) {
+  const baselines = (changedFiles || []).filter(isBaselineFile);
+  const violations = [];
+  for (const f of files || []) {
+    const helpers = VALIDATORS[f.path];
+    if (!helpers) continue;
+    const hunks = parseHunks(f.diff);
+    const added = [];
+    let removedCalls = 0;
+    for (const h of hunks) {
+      const marked = h.all.some(l => /(\/\/|#)\s*gate-arm-ok:\s*\S/.test(l));
+      removedCalls += h.removed.filter(l => hardErrorCall(l, helpers)).length;
+      for (const l of h.added) if (hardErrorCall(l, helpers)) added.push({ line: norm(l), marked });
+    }
+    const net = Math.max(0, added.length - removedCalls);
+    const unmatched = added.slice(added.length - net);
+    const refText = [f.headText || '', f.diff || '', ...(contextTexts || [])].join('\n');
+    const baselined = baselines.some(b => refText.includes(b.split('/').pop()));
+    for (const a of unmatched) {
+      if (a.marked || baselined) continue;
+      violations.push({ file: f.path, line: a.line });
+    }
+  }
+  return { violations };
+}
+
+module.exports = { parseSteps, stepArmsGate, isBaselineFile, findUnprovenNewGates, findUnprovenNewValidatorErrors, VALIDATORS };

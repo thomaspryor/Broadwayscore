@@ -3847,6 +3847,8 @@ jobs:
         # Logic + bad-fixture test: scripts/lib/new-gate-arming.js,
         # tests/unit/lint-workflows.test.mjs.
         env:
+          # BRO-7949: new hard error() in a blocking validator lands ADVISORY (warning). Flip to '0' after one green main run.
+          GATE_ARM_VALIDATOR_ADVISORY: '1'
           GATE_ARM_BASE: ${{ github.event.before || github.event.pull_request.base.sha }}
         run: |
           # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.

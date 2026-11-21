@@ -4,6 +4,11 @@
  * NEW blocking `--strict`/`--gate` step with no advisory mode, baseline file or
  * `# gate-arm-ok:` proof. Decision logic: scripts/lib/new-gate-arming.js.
  *
+ * BRO-7949: also fails on a NET-new hard error() added inside a blocking validator
+ * (scripts/validate-data.js, validate-market-expansion.js) with no `// gate-arm-ok:`
+ * marker in the hunk and no referenced baseline file. GATE_ARM_VALIDATOR_ADVISORY=1
+ * downgrades that part to a warning (test.yml lands it advisory first, per §19).
+ *
  * Usage: node scripts/audit-new-gate-arming.js [--base=<ref>]
  *   base defaults to $GATE_ARM_BASE, else origin/main (or HEAD~1 when HEAD is
  *   origin/main). Unresolvable base => loud warning, exit 0 (infra gap, not a
@@ -12,7 +17,7 @@
 'use strict';
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { findUnprovenNewGates } = require('./lib/new-gate-arming.js');
+const { findUnprovenNewGates, findUnprovenNewValidatorErrors, VALIDATORS } = require('./lib/new-gate-arming.js');
 
 const USAGE = `audit-new-gate-arming.js — new --strict/--gate test.yml steps must land advisory or baselined.
 
@@ -37,17 +42,38 @@ if (tryGit('rev-parse', '--verify', `${base}^{commit}`) === null) {
   console.log(`::warning::new-gate-arming: base '${base}' not resolvable (shallow clone?) — check SKIPPED`);
   process.exit(0);
 }
+// BRO-7949: validator hard-fail check. Runs BEFORE the test.yml early-exits so a
+// missing workflow at base cannot skip it.
+const changed = (tryGit('diff', '--name-only', base, 'HEAD') || '').split('\n').filter(Boolean);
+const vFiles = Object.keys(VALIDATORS).filter(p => changed.includes(p)).map(p => ({
+  path: p,
+  diff: tryGit('diff', '-U10', base, 'HEAD', '--', p) || '',
+  headText: tryGit('show', `HEAD:${p}`) || '',
+}));
+const contextTexts = changed.filter(p => /^scripts\/.*\.(js|mjs)$/.test(p) && !VALIDATORS[p] && !/\.test\./.test(p)).map(p => tryGit('show', `HEAD:${p}`) || '');
+const vv = findUnprovenNewValidatorErrors({ files: vFiles, changedFiles: changed, contextTexts }).violations;
+let vFail = false;
+if (vv.length) {
+  const advisory = process.env.GATE_ARM_VALIDATOR_ADVISORY === '1';
+  for (const v of vv) {
+    console.log(`::${advisory ? 'warning' : 'error'} file=${v.file}::New hard-fail check in a blocking validator (BRO-7949): ${v.line}`);
+  }
+  console.log('Fix (BRO-7949/BRO-2123): land the new check as warn() (promote to error() after one green run on main),');
+  console.log('OR freeze existing offenders in a baseline file the validator reads and include it in the same change,');
+  console.log('OR annotate the hunk `// gate-arm-ok: <run/command proving it passes on the live tree>`.');
+  if (advisory) console.log('(advisory mode: GATE_ARM_VALIDATOR_ADVISORY=1, not failing)');
+  else vFail = true;
+}
 const baseText = tryGit('show', `${base}:${WF}`);
 if (baseText === null) {
-  console.log(`::warning::new-gate-arming: ${WF} missing at base '${base}' — check SKIPPED`);
-  process.exit(0);
+  console.log(`::warning::new-gate-arming: ${WF} missing at base '${base}' — workflow check SKIPPED`);
+  process.exit(vFail ? 1 : 0);
 }
 const headText = tryGit('show', `HEAD:${WF}`) || '';
-const changed = (tryGit('diff', '--name-only', base, 'HEAD') || '').split('\n').filter(Boolean);
 const { violations } = findUnprovenNewGates({ baseText, headText, changedFiles: changed });
 if (!violations.length) {
-  console.log(`new-gate-arming: OK (no unproven new blocking gate in ${base}..HEAD)`);
-  process.exit(0);
+  console.log(`new-gate-arming: ${vFail ? 'workflow check OK' : 'OK'} (no unproven new blocking gate in ${base}..HEAD)`);
+  process.exit(vFail ? 1 : 0);
 }
 for (const v of violations) {
   console.log(`::error file=${WF}::New blocking gate "${v.name}" has no advisory mode or baseline.`);
