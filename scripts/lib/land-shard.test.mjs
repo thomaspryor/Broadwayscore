@@ -10,7 +10,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { SHARD_PARTS, SHARD_JOB_NAME, CHECKS_JOB_NAME, decideShardPoll, decidePeerWatch, collect, watch, parseArgs, shardArtifactName } = require('./land-shard.js');
+const { SHARD_PARTS, SHARD_JOB_NAME, CHECKS_JOB_NAME, decideShardPoll, decidePeerWatch, validateFetchedPart, decideChecksDone, collect, watch, checksDone, parseArgs, shardArtifactName } = require('./land-shard.js');
 const { GATES } = require('./land-gate-delta.js');
 const { SHARDED_GATES } = require('./land-gauntlet-merge.js');
 
@@ -122,4 +122,74 @@ test('watch: B is stopped (exit 0, marker written) once A completed; otherwise B
 
 test('parseArgs keeps everything after -- as the command', () => {
   assert.deepEqual(parseArgs(['--repo=o/r', '--', 'bash', '--x=1']), { repo: 'o/r', _: ['bash', '--x=1'] });
+});
+
+// $GITHUB_OUTPUT is process-wide: point it at a temp file for one call.
+function withOutput(fn) {
+  const f = path.join(tmp(), 'gho'); fs.writeFileSync(f, '');
+  const prev = process.env.GITHUB_OUTPUT; process.env.GITHUB_OUTPUT = f;
+  try { const rc = fn(); return { rc, out: fs.readFileSync(f, 'utf8') }; } finally { if (prev === undefined) delete process.env.GITHUB_OUTPUT; else process.env.GITHUB_OUTPUT = prev; }
+}
+const doneJob = { name: SHARD_JOB_NAME, status: 'completed', conclusion: 'success' };
+
+test('collect writes node_shard (and source) only after a successful merge', () => {
+  let d = tmp(); let o = opts(d);
+  const src = part(path.join(d, 'src'), '2/2', SHARD_PARTS[2], { sha: 'S2' });
+  let r = withOutput(() => collect(o, { ...quiet, exec: fakeExec({ jobs: [doneJob], artifacts: [{ id: 5, name: shardArtifactName('9', '1') }], partDir: src }), spawn: () => ({ status: 0 }) }));
+  assert.equal(r.rc, 0); assert.match(r.out, /^source=artifact\nnode_shard=artifact\n$/);
+  r = withOutput(() => collect(opts(tmp()), { ...quiet, exec: fakeExec({ jobs: [] }), spawn: (c, a) => { part(a[1], '2/2', SHARD_PARTS[2]); return { status: 0 }; } }));
+  assert.equal(r.rc, 0); assert.match(r.out, /node_shard=local\n/);
+  // Failure paths: local crash, merge refusal. Neither writes node_shard.
+  r = withOutput(() => collect(opts(tmp()), { ...quiet, exec: fakeExec({ jobs: [] }), spawn: () => ({ status: 1 }) }));
+  assert.equal(r.rc, 1); assert.doesNotMatch(r.out, /node_shard/);
+  r = withOutput(() => collect(opts(tmp()), { ...quiet, exec: fakeExec({ jobs: [] }), spawn: (c, a) => { part(a[1], '2/2', SHARD_PARTS[2], { tree: 'OTHER' }); return { status: 0 }; } }));
+  assert.equal(r.rc, 1); assert.doesNotMatch(r.out, /node_shard/);
+});
+
+test('validateFetchedPart: only a finished part 2/2 of the same root and tree', () => {
+  const A = { root: '/r', tree: 'T1', shard: '1/2' };
+  assert.equal(validateFetchedPart(A, { root: '/r', tree: 'T1', shard: '2/2' }).ok, true);
+  for (const B of [null, { root: '/r', tree: 'T1', shard: '2/2', partial: true }, { root: '/r', tree: 'T1', shard: '1/2' }, { root: '/r', tree: 'T1' },
+    { root: '/r', tree: 'T2', shard: '2/2' }, { root: '/x', tree: 'T1', shard: '2/2' }, { root: '/r', shard: '2/2' }]) {
+    assert.equal(validateFetchedPart(A, B).ok, false, JSON.stringify(B));
+  }
+  assert.equal(validateFetchedPart(null, { root: '/r', tree: 'T1', shard: '2/2' }).ok, false);
+});
+
+test('collect: a fetched artifact that fails validation is not merged; part 2 runs here instead', () => {
+  const bad = [
+    (dir) => part(dir, '2/2', SHARD_PARTS[2], { tree: 'OTHER' }),
+    (dir) => part(dir, '1/2', SHARD_PARTS[2]),
+    (dir) => { fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, 'meta.json'), JSON.stringify({ shard: '2/2', partial: true })); return dir; },
+  ];
+  for (const make of bad) {
+    const d = tmp(); const o = opts(d); const src = make(path.join(d, 'src')); let spawned = 0;
+    const r = withOutput(() => collect(o, { ...quiet, exec: fakeExec({ jobs: [doneJob], artifacts: [{ id: 5, name: shardArtifactName('9', '1') }], partDir: src }),
+      spawn: (c, a) => { spawned++; part(a[1], '2/2', SHARD_PARTS[2]); return { status: 0 }; } }));
+    assert.equal(r.rc, 0); assert.equal(spawned, 1); assert.match(r.out, /node_shard=local/);
+    const meta = JSON.parse(fs.readFileSync(path.join(o['merge-into'], 'meta.json'), 'utf8'));
+    assert.equal(meta.mergeIncomplete, undefined); assert.equal(meta.partSha['2/2'], 'S1');
+  }
+});
+
+test('checks-done: done=true only when the job named exactly "Checks" completed; API error -> done=false', () => {
+  assert.equal(decideChecksDone({ jobs: [{ name: CHECKS_JOB_NAME, status: 'completed', conclusion: 'failure' }] }), true);
+  assert.equal(decideChecksDone({ jobs: [{ name: CHECKS_JOB_NAME, status: 'in_progress' }] }), false);
+  assert.equal(decideChecksDone({ jobs: [{ name: SHARD_JOB_NAME, status: 'completed' }, { name: 'Checks / x', status: 'completed' }] }), false, 'never a prefix match');
+  assert.equal(decideChecksDone({ jobs: undefined }), false);
+  const base = { repo: 'o/r', 'run-id': '9', attempt: '1' };
+  let r = withOutput(() => checksDone(base, { log: () => {}, exec: fakeExec({ jobs: [{ name: CHECKS_JOB_NAME, status: 'completed', conclusion: 'success' }] }) }));
+  assert.equal(r.rc, 0); assert.equal(r.out, 'done=true\n');
+  r = withOutput(() => checksDone(base, { log: () => {}, exec: fakeExec({ jobs: [{ name: SHARD_JOB_NAME, status: 'completed' }] }) }));
+  assert.equal(r.out, 'done=false\n');
+  r = withOutput(() => checksDone(base, { log: () => {}, exec: fakeExec({ jobs: [], failApi: true }) }));
+  assert.equal(r.rc, 0); assert.equal(r.out, 'done=false\n');
+  r = withOutput(() => checksDone({ repo: 'o/r' }, { log: () => {} }));
+  assert.equal(r.rc, 2); assert.equal(r.out, 'done=false\n');
+});
+
+test('watch: an API that keeps failing never hangs B; it ends when the command exits', async () => {
+  const marker = path.join(tmp(), 'stopped');
+  const rc = await watch({ repo: 'o/r', 'run-id': '9', attempt: '1', 'stopped-marker': marker, _: ['bash', '-c', 'sleep 0.3; exit 4'] }, { exec: fakeExec({ jobs: [], failApi: true }), log: () => {}, intervalMs: 20 });
+  assert.equal(rc, 4); assert.equal(fs.existsSync(marker), false);
 });

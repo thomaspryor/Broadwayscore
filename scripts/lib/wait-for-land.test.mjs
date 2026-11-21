@@ -203,6 +203,44 @@ test('readLatestRun uses the timeout annotation, not elapsed time, and caches by
   assert.equal(calls.length - before, 2, 'ordinary polls list push and dispatch runs');
 });
 
+test('BRO-7324: only "Checks (shard 2/2)" red or cancelled while Land succeeded reads as landed, not refused', () => {
+  const B = (conclusion) => ({ name: 'Checks (shard 2/2)', conclusion });
+  const landOk = { id: 1, name: 'Land', conclusion: 'success', steps: [{ conclusion: 'success' }] };
+  for (const conclusion of ['failure', 'cancelled']) {
+    const r = run({ id: 4242, head_branch: 'land/bro-7324-x', run_attempt: 1, conclusion });
+    const calls = [];
+    const read = (endpoint) => {
+      calls.push(endpoint);
+      if (endpoint.includes('event=workflow_dispatch')) return { workflow_runs: [] };
+      if (endpoint.includes('/workflows/land.yml/runs?')) return { workflow_runs: [r] };
+      if (endpoint.includes('/jobs?')) return { jobs: [B(conclusion), { name: 'Checks', conclusion: 'success' }, landOk] };
+      assert.fail(`unexpected endpoint: ${endpoint}`);
+    };
+    const opts = { read, cache: new Map() };
+    const got = readLatestRun(r.head_branch, opts);
+    assert.equal(got.conclusion, 'success', conclusion);
+    assert.equal(got.runConclusion, conclusion);
+    // Ref deleted by Land after a poll saw it: landed, not "deleted by hand".
+    assert.equal(verdict({ refSha: null, lastSha: TIP, run: got }).verdict, 'landed', conclusion);
+    readLatestRun(r.head_branch, opts);
+    assert.equal(calls.filter((c) => c.includes('/jobs?')).length, 1, 'cached per attempt');
+  }
+  // A real refusal is untouched: Land failed, B green.
+  const r = run({ id: 4243, head_branch: 'land/bro-7324-y', run_attempt: 1, conclusion: 'failure' });
+  const read = (endpoint) => {
+    if (endpoint.includes('event=workflow_dispatch')) return { workflow_runs: [] };
+    if (endpoint.includes('/workflows/land.yml/runs?')) return { workflow_runs: [r] };
+    if (endpoint.includes('/jobs?')) return { jobs: [B('success'), { name: 'Checks', conclusion: 'success' }, { ...landOk, conclusion: 'failure' }] };
+    assert.fail(`unexpected endpoint: ${endpoint}`);
+  };
+  const got = readLatestRun(r.head_branch, { read, cache: new Map() });
+  assert.equal(got.conclusion, 'failure');
+  assert.equal(verdict({ refSha: TIP, run: got }).verdict, 'refused');
+  // Jobs unreadable on a red run: stays red, never guessed landed.
+  const unread = readLatestRun(r.head_branch, { read: (e) => (e.includes('/jobs?') ? (() => { throw new Error('HTTP 502'); })() : read(e)), cache: new Map() });
+  assert.equal(unread.conclusion, 'failure');
+});
+
 test('a red run for an OLDER tip says nothing about a fresh push', () => {
   const v = verdict({ refSha: TIP, run: run({ head_sha: 'f'.repeat(40), conclusion: 'failure' }) });
   assert.equal(v.verdict, 'waiting');

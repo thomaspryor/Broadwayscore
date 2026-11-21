@@ -58,3 +58,25 @@ test('emit writes one timing= line that round-trips as JSON, and exits 0 on bad 
   // unwritable output file: still exit 0
   execFileSync('node', [CLI, 'emit', `--t0=${T0}`, `--root=${root}`, '--github-output=/nonexistent/dir/x']);
 });
+
+test('split parts are skipped; the merged dir is kept (BRO-7324 step C)', () => {
+  const { mergeGauntletDirs } = require('./land-gauntlet-merge.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'gt-'));
+  const fin = '2026-11-21T12:20:00Z';
+  const part = (name, shard, gates) => {
+    const d = outDir(root, name, { sha: `S-${shard}`, root: '/r', tree: 'T', shard, finishedAt: fin, wallMs: 500000, gates, gateSecs: Object.fromEntries(gates.map((g) => [g, 5])) });
+    for (const g of gates) { fs.writeFileSync(path.join(d, `${g}.exit`), '0\n'); fs.writeFileSync(path.join(d, `${g}.log`), 'ok\n'); fs.writeFileSync(path.join(d, `${g}.secs`), '5\n'); }
+    return d;
+  };
+  const a = part('branch', '1/2', ['tsc']);
+  const b = part('part2', '2/2', ['scripts-lib-tests']);
+  outDir(root, 'running', { shard: '2/2', partial: true });
+  outDir(root, 'half-merged', { finishedAt: fin, wallMs: 1, gates: ['tsc'], gateSecs: { tsc: 1 }, sharded: true, mergeIncomplete: true });
+  const k = path.basename(root);
+  // Before the merge, both dirs are parts: neither is a run.
+  assert.deepEqual(Object.keys(collectTiming({ roots: [root], t0Ms: T0 }).runs), []);
+  assert.equal(mergeGauntletDirs(a, b, { gates: ['tsc', 'scripts-lib-tests'] }).ok, true);
+  const t = collectTiming({ roots: [root], t0Ms: T0 });
+  assert.deepEqual(Object.keys(t.runs), [`${k}/branch`], 'merged dir kept, part 2 and the incomplete merge skipped');
+  assert.equal(t.runs[`${k}/branch`].gateCount, 2);
+});

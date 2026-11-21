@@ -27,6 +27,13 @@
  *   land-shard.js collect --repo=o/r --run-id=N --attempt=N --out=DIR --merge-into=DIR
  *                         --harness=PATH [--wait-min=12] [--interval-s=20]
  *   land-shard.js watch --repo=o/r --run-id=N --attempt=N --stopped-marker=FILE -- <cmd> [args...]
+ *   land-shard.js checks-done --repo=o/r --run-id=N --attempt=N
+ *
+ * $GITHUB_OUTPUT (when set):
+ *   collect      source=artifact|local and node_shard=artifact|local, written only
+ *                after a successful merge (never on a failure path).
+ *   checks-done  done=true when the job named exactly "Checks" in this attempt has
+ *                completed, else done=false (also on any API error: B then just runs).
  */
 'use strict';
 
@@ -68,6 +75,29 @@ function decideShardPoll({ job, artifactId, elapsedMs, waitMs, recheck = false }
   return { action: 'wait', reason: 'shard job running' };
 }
 
+/**
+ * Pure. Is the fetched part 2/2 really B's half of THIS split? metaA is A's
+ * part 1 (the merge-into dir), metaB the artifact's meta.json. A part that is
+ * unfinished, another part, or another tree is not merged: A runs part 2 itself.
+ * -> { ok, reason }
+ */
+function validateFetchedPart(metaA, metaB) {
+  if (!metaB || typeof metaB !== 'object') return { ok: false, reason: 'meta.json unreadable' };
+  if (metaB.partial) return { ok: false, reason: 'the part never finished (partial)' };
+  if (metaB.shard !== '2/2') return { ok: false, reason: `shard is ${JSON.stringify(metaB.shard)}, not "2/2"` };
+  if (!metaA || typeof metaA !== 'object') return { ok: false, reason: 'this runner\'s part 1 meta.json is unreadable' };
+  for (const k of ['root', 'tree']) {
+    if (!metaA[k] || metaA[k] !== metaB[k]) return { ok: false, reason: `${k} differs (${metaA[k]} here vs ${metaB[k]} in the artifact)` };
+  }
+  return { ok: true, reason: 'part 2/2 of the same tree' };
+}
+
+/** Pure. B's first step: is A's "Checks" job already over? Exact name only. */
+function decideChecksDone({ jobs }) {
+  const j = lastNamed(Array.isArray(jobs) ? jobs : [], CHECKS_JOB_NAME);
+  return Boolean(j && j.status === 'completed');
+}
+
 /** Pure. One poll of B's watcher: stop once A's job is over. */
 function decidePeerWatch({ peerJob }) {
   if (peerJob && peerJob.status === 'completed') return { action: 'stop', reason: `"${CHECKS_JOB_NAME}" already completed (${peerJob.conclusion}); its result no longer needs this part` };
@@ -88,10 +118,16 @@ function gh(args, exec, extra = {}) {
   const { runGhWithFallback } = require('./land-retry-on-cancel.js');
   return runGhWithFallback(args, { exec, fallbackToken: process.env.GH_FALLBACK_TOKEN, ...extra });
 }
+// A hung gh would block watch's event loop (and with it the child's exit), so
+// every jobs listing is bounded; a timeout is just one more API error.
+const GH_TIMEOUT_MS = 60000;
 function jobsOfAttempt(o, exec) {
-  return JSON.parse(gh([`repos/${o.repo}/actions/runs/${o['run-id']}/attempts/${o.attempt}/jobs?per_page=100`], exec)).jobs || [];
+  const bounded = (cmd, args, opts) => exec(cmd, args, { ...opts, timeout: GH_TIMEOUT_MS });
+  return JSON.parse(gh([`repos/${o.repo}/actions/runs/${o['run-id']}/attempts/${o.attempt}/jobs?per_page=100`], bounded)).jobs || [];
 }
-function lastNamed(jobs, name) { return jobs.filter((j) => j.name === name).pop(); }
+function lastNamed(jobs, name) { return jobs.filter((j) => j && j.name === name).pop(); }
+function readJson(file) { try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return null; } }
+function appendOutput(line) { if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `${line}\n`); }
 
 function sleepMs(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
 function firstLine(err) { return String((err && err.message) || err).split('\n')[0]; }
@@ -143,6 +179,10 @@ function collect(o, { exec = require('child_process').execFileSync, spawn = requ
     log(`node-shard: ${d.action}, ${d.reason}`);
     if (d.action === 'fetch') {
       try { fetchPart(o, artifactId, name, { exec }); source = 'artifact'; } catch (err) { log(`node-shard: could not download or unpack ${name}: ${firstLine(err)}; running part 2 here`); source = 'local'; }
+      if (source === 'artifact') {
+        const v = validateFetchedPart(readJson(path.join(o['merge-into'], 'meta.json')), readJson(path.join(o.out, 'meta.json')));
+        if (!v.ok) { log(`node-shard: not merging ${name}: ${v.reason}; running part 2 here`); source = 'local'; }
+      }
       break;
     }
     if (d.action === 'local') { source = 'local'; break; }
@@ -157,7 +197,8 @@ function collect(o, { exec = require('child_process').execFileSync, spawn = requ
   const r = mergeGauntletDirs(o['merge-into'], o.out);
   if (!r.ok) { for (const p of r.problems) console.error(`::error::split merge refused: ${p}`); return 1; }
   log(`node-shard: merged part 2/2 (${source}) into ${o['merge-into']}: ${r.gates.length} gate(s)`);
-  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `source=${source}\n`);
+  appendOutput(`source=${source}`);
+  appendOutput(`node_shard=${source}`);
   return 0;
 }
 
@@ -187,6 +228,16 @@ function watch(o, { exec = require('child_process').execFileSync, spawnAsync = r
   });
 }
 
+/** B's first step: done=true|false on $GITHUB_OUTPUT. Never blocks B on an API error. */
+function checksDone(o, { exec = require('child_process').execFileSync, log = console.log } = {}) {
+  for (const k of ['repo', 'run-id', 'attempt']) if (!o[k]) { console.error(`::error::checks-done needs --${k}`); appendOutput('done=false'); return 2; }
+  let done = false;
+  try { done = decideChecksDone({ jobs: jobsOfAttempt(o, exec) }); } catch (err) { log(`node-shard checks-done: API error, running anyway: ${firstLine(err)}`); }
+  log(`node-shard checks-done: "${CHECKS_JOB_NAME}" ${done ? 'already completed' : 'not completed'}`);
+  appendOutput(`done=${done}`);
+  return 0;
+}
+
 async function main(argv) {
   const [cmd, ...rest] = argv;
   if (cmd === 'gates') {
@@ -197,10 +248,11 @@ async function main(argv) {
   }
   if (cmd === 'collect') return collect(parseArgs(rest));
   if (cmd === 'watch') return watch(parseArgs(rest));
-  console.error('usage: land-shard.js gates <k> | collect ... | watch ... -- <cmd>');
+  if (cmd === 'checks-done') return checksDone(parseArgs(rest));
+  console.error('usage: land-shard.js gates <k> | collect ... | watch ... -- <cmd> | checks-done ...');
   return 2;
 }
 
-module.exports = { CHECKS_JOB_NAME, SHARD_JOB_NAME, SHARD_PARTS, shardArtifactName, decideShardPoll, decidePeerWatch, collect, watch, parseArgs };
+module.exports = { CHECKS_JOB_NAME, SHARD_JOB_NAME, SHARD_PARTS, shardArtifactName, decideShardPoll, decidePeerWatch, validateFetchedPart, decideChecksDone, collect, watch, checksDone, parseArgs };
 
 if (require.main === module) main(process.argv.slice(2)).then((c) => { process.exitCode = c; });
