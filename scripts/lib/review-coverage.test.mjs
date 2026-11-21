@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { walkTranscript } from './transcript-scan.mjs';
 import { evaluateCoverage, evaluateChain, stampReceipt, isSkepticReviewCall, landGateDecision, stopHookDecision, findRuns, findSessionTranscript } from './review-coverage.mjs';
@@ -723,4 +724,32 @@ test('BRO-7872: --record CLI refuses with unanswered skeptic gaps (exit 3, nothi
   assert.match(rec.stderr, /NOT recording a pass\. The skeptic reviewer listed 2 gap\(s\)/);
   assert.doesNotMatch(rec.stdout, /"recorded":true/);
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+// BRO-7987: the repo-reading Gemini wrapper counts as the external reviewer only when its final status line is ok.
+test('the Gemini review wrapper counts only when its last status line is GEMINI-REVIEW: ok', () => {
+  const { NO_READS_HEADER } = createRequire(import.meta.url)('../gemini/review.js');
+  const block = "GEMINI_OUT=$(mktemp)\n{\ncat <<'PROMPT_HEAD'\nwhat's in this diff\nPROMPT_HEAD\ngit diff\n} | node scripts/gemini/review.js --caller=ship-check > \"$GEMINI_OUT\"\ncat \"$GEMINI_OUT\"";
+  const run = (command, content, isError = false) => {
+    const t = tool('Bash', { command });
+    return [t, { kind: 'tool_result', tool_use_id: t.id, content, isError }];
+  };
+  const withRun = (command, content, isError) => {
+    const [t, r] = run(command, content, isError);
+    return evaluateCoverage([...ev(skill(), agent()), t, r]);
+  };
+  const okLine = 'GEMINI-REVIEW: ok model=gemini-2.5-flash reads=2';
+  const res = withRun(block, `Finding: review.js:40 misses a guard.\n${okLine}`);
+  assert.equal(res.complete, true, 'the real ship-check block with an ok status counts');
+  assert.ok(res.evidence.checks.includes('gemini-review x1'), 'labelled apart from the other external reviewers');
+  assert.equal(withRun(`timeout 600 node scripts/gemini/review.js < p`, `${okLine} retried=1`).complete, true, 'behind timeout, retried suffix');
+  assert.equal(withRun(block, `${okLine} tree-check=skipped(not a git repo)`).complete, true, 'tree-check suffix');
+  assert.equal(withRun(block, `${NO_READS_HEADER}\n\nquoted: \n${okLine}\nGEMINI-REVIEW: no-reads model=x reads=0`).complete, false, 'no-reads with a quoted ok line in the body');
+  assert.equal(withRun(block, `body quotes\n${okLine}\nFAILED: gemini exited 1`).complete, false, 'quoted ok then FAILED');
+  assert.equal(withRun(block, 'MISSING: gemini CLI is 0.69.0, not the pinned 0.70.0').complete, false, 'MISSING');
+  assert.equal(withRun(block, 'UNSAFE: the working tree changed during the Gemini run').complete, false, 'UNSAFE');
+  assert.equal(withRun(block, okLine, true).complete, false, 'an errored tool result');
+  assert.equal(withRun('echo node scripts/gemini/review.js', okLine).complete, false, 'echo of the command');
+  assert.equal(withRun('grep -n caller scripts/gemini/review.js', okLine).complete, false, 'grep of the path');
+  assert.equal(withRun('node --check scripts/gemini/review.js', okLine).complete, false, 'node --check');
 });
