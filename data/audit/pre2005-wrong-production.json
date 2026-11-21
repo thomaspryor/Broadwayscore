@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-21T04:59:26.499Z",
+    "generatedAt": "2026-11-21T05:16:06.075Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 167,
+    "totalFlagged": 168,
     "highConfidence": 7,
-    "mediumConfidence": 160,
+    "mediumConfidence": 161,
     "lowConfidence": 0,
-    "reassignable": 53
+    "reassignable": 54
   },
   "results": [
     {
@@ -1545,6 +1545,21 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Theatre Review by Matthew Murray - April 14, 2002\n\nThe Elephant Man by Bernard Pomerance. Directed by Sean Mathias. Scenic and costume design by Santo Loquasto. Lighting design by James F. Ingalls. So"
+    },
+    {
+      "showId": "the-elephant-man-2002",
+      "showTitle": "The Elephant Man",
+      "showYear": 2002,
+      "file": "theatermania--unknown.json",
+      "outlet": "TheaterMania",
+      "criticName": "Unknown",
+      "publishDate": "2002-04-15",
+      "confidence": "medium",
+      "suggestedShowId": "the-elephant-man-1979",
+      "signals": [
+        "year 1979 in text matches revival the-elephant-man-1979"
+      ],
+      "textSnippet": "With Billy Crudup as the malformed title character John Merrick in The Elephant\nMan, the drama might just as well have been called The Elegant Man. Bernard Pomerance certainly had elegance of human th"
     },
     {
       "showId": "thoroughly-modern-millie-2002",

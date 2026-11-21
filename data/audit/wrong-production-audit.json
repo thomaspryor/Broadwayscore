@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T05:07:58.707Z",
+  "timestamp": "2026-11-21T05:25:00.229Z",
   "stats": {
-    "totalReviews": 83576,
+    "totalReviews": 83577,
     "alreadyFlagged": 22530,
-    "dateGuardCatches": 237,
-    "directorMismatch": 3825,
+    "dateGuardCatches": 235,
+    "directorMismatch": 3824,
     "tvFilmSignals": 2389,
-    "londonSignals": 3876,
+    "londonSignals": 3877,
     "offBroadwaySignals": 778,
     "yearMismatch": 390,
-    "noPublishDate": 8250
+    "noPublishDate": 8252
   },
   "findings": [
     {
@@ -71655,25 +71655,6 @@
       ]
     },
     {
-      "showId": "the-front-page-2016",
-      "file": "theatermania--unknown.json",
-      "score": null,
-      "publishDate": "2016-03-24",
-      "url": "https://www.theatermania.com/news/ben-hecht-and-charles-macarthurs-the-front-page-may-get-another-broadway-revival_76466/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 180d before show (2016-03-24 vs 2016-09-20)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry zaks\" from the-front-page-1986"
-        }
-      ]
-    },
-    {
       "showId": "the-full-monty-west-end-2014",
       "file": "financialtimes--suzi-feay.json",
       "score": 74,
@@ -114421,20 +114402,6 @@
     },
     {
       "showId": "jekyll-and-hyde-2013",
-      "file": "theatermania--unknown.json",
-      "score": null,
-      "publishDate": "2012-11-29",
-      "url": "https://www.theatermania.com/news/jekyll-hyde_63858/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 127d before show (2012-11-29 vs 2013-04-05)"
-        }
-      ]
-    },
-    {
-      "showId": "jekyll-and-hyde-2013",
       "file": "timeout--adam-feldman.json",
       "score": 22,
       "publishDate": "2013-04-18",
@@ -134360,6 +134327,20 @@
       "score": 71,
       "publishDate": "2024-06-18",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-bounds-west-end-2024",
+      "file": "partially-obstructed-view--view-my-complete.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://partially-obstructed-view.blogspot.com/2024/06/theatre-review-bounds.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
