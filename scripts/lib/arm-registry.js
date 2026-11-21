@@ -121,6 +121,28 @@ const ARMS = [
   { id: 'outlet:nysr', label: 'New York Stage Review (reviews collected)', kind: 'outlet', outletIds: ['nysr'] },
 ];
 
+// BRO-7934: every discovery/collection workflow gets a yield arm (the registry
+// covered 7 workflows when 35 find or collect reviews). Hand-written entries
+// above win; the rest are generated from the one shared list.
+const { DISCOVERY_WORKFLOWS, armIdForWorkflow } = require('./discovery-workflows');
+// 'steady' (collapse rule applies) only for crons that fire at least daily; a
+// weekly/seasonal cron's volume drop is not evidence of anything.
+function cadenceFor(file) {
+  try {
+    const { extractCrons, worstGapHours } = require('./cron-coverage');
+    const yml = require('fs').readFileSync(require('path').join(__dirname, '..', '..', '.github', 'workflows', file), 'utf8');
+    const gap = worstGapHours(extractCrons(yml));
+    return gap !== null && gap <= 26 ? 'steady' : 'sparse';
+  } catch {
+    return 'sparse';
+  }
+}
+for (const file of DISCOVERY_WORKFLOWS) {
+  const id = armIdForWorkflow(file);
+  if (ARMS.some((a) => a.id === id || (a.kind === 'workflow' && a.workflow === file))) continue;
+  ARMS.push({ id, label: file.replace(/\.yml$/, ''), kind: 'workflow', cadence: cadenceFor(file), workflow: file });
+}
+
 const ARMS_BY_ID = new Map(ARMS.map((a) => [a.id, a]));
 
 /** @returns {Array<object>} arms of the given kind ('workflow' | 'outlet'). */
