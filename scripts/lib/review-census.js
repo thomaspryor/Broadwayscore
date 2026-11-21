@@ -193,13 +193,19 @@ function parseShowScore(content, showId, show) { // eslint-disable-line no-unuse
   // and every one counted as an owed review the night's grade then called missing. Judge each tile by its own
   // date with the same gate the ingest path uses (isShowScoreTileDateOutOfRun); undated tiles fail open.
   const outOfRun = new Set();
+  const norm = (u) => String(u).replace(/&amp;/g, '&').split('#')[0];
   if (show && tilesFn) {
     const { isShowScoreTileDateOutOfRun } = require('./gap-ingest-policy');
     try {
-      for (const t of tilesFn(content) || []) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(t.url);
+      // A page reviewed as THIS production (return engagement, remount: SAME_PRODUCTION) keeps its older tiles,
+      // the same exemption the page-level guard applies.
+      const { exemptionFor } = require('./show-score-production-window');
+      if (!exemptionFor(show, archiveCanonicalUrl(content))) {
+        for (const t of tilesFn(content) || []) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(norm(t.url));
+      }
     } catch (_) { /* fail open */ }
   }
-  const urls = (fn(content) || []).filter((u) => !outOfRun.has(u.split('#')[0]));
+  const urls = (fn(content) || []).filter((u) => !outOfRun.has(norm(u)));
   const rows = [];
   const seen = new Set();
   for (const u of urls) {
@@ -235,7 +241,7 @@ function sourceExtractors(market = 'west-end') {
       // archived page can be another production's (elektra-off-broadway-2026 archived the 2022 Met Opera
       // page; its NYT/Observer/OperaWire rows failed the press-night record). The scraper rejects such a
       // page on its next run, but the archive file stays and the census read it. Same date-window guard.
-      { name: 'show-score', dir: 'show-score', fn: parseShowScore, validate: false, softFail: true, productionWindow: true },
+      { name: 'show-score', dir: 'show-score', fn: parseShowScore, validate: false, softFail: true, productionWindow: true, takesShow: true },
     ];
   }
   const { extractReviews } = require('../scrape-theatre-reviews');
@@ -423,7 +429,7 @@ function buildCensusFromArchives(showId, opts = {}) {
       if (!checkTrArchiveClaim(html, showId, opts.trClaims || loadCoverageClaims()).ok) { wrongRoundup.push(s.name); continue; }
     }
     let reviews = [];
-    try { reviews = s.fn(html, showId, opts.show) || []; } catch (_) { reviews = []; }
+    try { reviews = (s.takesShow ? s.fn(html, showId, opts.show) : s.fn(html, showId)) || []; } catch (_) { reviews = []; }
     // softFail sources (e.g. Show Score SPA shells) legitimately extract 0 from a
     // present archive — that is NOT a broken parser, so don't flag zeroExtract.
     if ((!Array.isArray(reviews) || reviews.length === 0) && !s.softFail) zeroExtract.push(s.name);
