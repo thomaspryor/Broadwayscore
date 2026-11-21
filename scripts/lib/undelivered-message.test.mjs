@@ -45,6 +45,12 @@ test('a live child session keeps a KEEP OPEN legitimate (wired)', () => {
   const r = deadWaitDecision({ closing: KEEP, tools: [send(1, false)], done: [], now: Date.now(), liveChildren: ['session_C'] });
   assert.notEqual(r.target && /undelivered/.test(r.target), true);
 });
+test('BRO-7856: self references do not turn an unrelated wait into an undelivered wait', () => {
+  for (const closing of ['KEEP OPEN: this session waits for the IAWL reviews', 'KEEP OPEN: the session waits for reviews']) {
+    assert.equal(undeliveredDecision({ closing, tools: [send(1, false)] }).block, false, closing);
+  }
+  assert.equal(undeliveredDecision({ closing: 'KEEP OPEN: waiting for the session', tools: [send(1, false)] }).block, true);
+});
 test('KEEP OPEN on something else (a landing) is not this gate', () => {
   assert.equal(undeliveredDecision({ closing: 'KEEP OPEN — the landing run finishes', tools: [send(1, false)] }).block, false);
 });

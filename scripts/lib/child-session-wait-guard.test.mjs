@@ -86,6 +86,20 @@ const firstWatch = (flags = '--minutes 25', id = INIT_FAILED.id) => ({
   taskId: 'first-watch', startedAt: createdAt,
 });
 
+test('BRO-7856: CHILDWATCH distinguishes the parent session from child waits', () => {
+  for (const closing of [
+    'KEEP OPEN: this session waits for the IAWL reviews... the page watch wakes it',
+    'KEEP OPEN: the session waits for reviews',
+    'KEEP OPEN: waiting for a report back from the page watch',
+  ]) assert.equal(parentWatchDecision({ ...freshParent, closing }).block, false, closing);
+  for (const closing of [
+    'KEEP OPEN: waiting for the child worker',
+    'KEEP OPEN: waiting for the helper',
+    `KEEP OPEN: waiting for ${INIT_FAILED.id}`,
+    'KEEP OPEN: this session waits for the child',
+  ]) assert.equal(parentWatchDecision({ ...freshParent, closing }).block, true, closing);
+});
+
 test('BRO-7378: 25-minute first watch advises three minutes; three-minute watch passes silently', () => {
   const slow = parentWatchDecision({ ...freshParent, tools: [firstWatch()] });
   assert.equal(slow.block, false, 'advisory only');

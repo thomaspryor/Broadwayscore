@@ -244,7 +244,7 @@ function deadWaitDecision(input) {
 // `child-idle-watch.js watch --session <that child>` background task (it
 // wakes the parent within 30 min to check get_session).
 const WATCH_CMD_RE = /child-idle-watch(?:\.js)?\s+watch\b/;
-const CHILD_WAIT_RE = /\b(?:sessions?|child(?:ren)?|workers?|report[- ]?backs?|reports? back|sub-?sessions?)\b/i;
+const CHILD_WAIT_RE = /\b(?:child(?:ren)?|workers?|helpers?|sub-?sessions?|session's report[- ]?back|(?:session|cse)_[0-9A-Za-z]{10,})\b/i;
 const { SAFE_WATCH_MINUTES } = require('./child-idle-watch.js');
 
 /** BRO-7378: log-only first-look advice; unknown ages/durations stay silent. */

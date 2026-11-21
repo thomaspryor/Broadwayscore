@@ -40,7 +40,8 @@ function undeliveredDecision({ closing = '', tools = [], liveWake = false, paren
   if (liveWake) return no('a background wait, live child or agent will wake it');
   const wait = verdict.replace(/^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT)\s*[—–:,-]?\s*/i, '');
   if (/\b(?:once|until|when|after) (?:you|the owner)\b|\byou (?:reply|answer|respond|message|say|decide)\b/i.test(wait)) return no('waiting on the owner');
-  if (!WAIT_ON_RE.test(wait)) return no('KEEP OPEN does not wait on a reply, report or session');
+  const targetWait = wait.replace(/\bthis session\b|\bthe session\b(?=\s+(?:waits?|is waiting)\b)/gi, '');
+  if (!WAIT_ON_RE.test(targetWait)) return no('KEEP OPEN does not wait on a reply, report or session');
   const allTargets = new Set(tools.filter((t) => t && SEND_RE.test(String(t.name || ''))).map((t) => targetOf(t, parentIds)));
   // The wait must be on a session we failed to reach: it names the target, or the parent, or there was only one target.
   const hit = bad.find((b) => (b && wait.includes(b)) || (b === '@parent' && /\bparent\b/i.test(wait)) || allTargets.size === 1);
