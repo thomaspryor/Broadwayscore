@@ -115,6 +115,9 @@ if (ARGV.includes('--rehome')) {
     const target = showById.get(s.id);
     if (!target) { console.error(`target missing from shows.json: ${s.id} (run --add)`); process.exit(1); }
     const tKey = L.normTitle(s.title);
+    // BRO-7959: a production listed under a different title (Pirates! The Penzance Musical vs The Pirates of Penzance)
+    // has its reviews parked on older same-title hosts; titleAliases names those host titles.
+    const hostKeys = new Set([tKey, ...(s.titleAliases || []).map(L.normTitle)]);
     const lo = L.parseDate(s.previewsStartDate || s.openingDate) - L.COVER_SLACK_DAYS * L.DAY;
     const hi = (L.parseDate(s.closingDate) || Date.now()) + L.COVER_SLACK_DAYS * L.DAY;
     if (Number.isNaN(lo) || Number.isNaN(hi)) { console.error(`${s.id}: spec has no usable openingDate/previewsStartDate; refusing to rehome`); process.exit(1); }
@@ -124,7 +127,7 @@ if (ARGV.includes('--rehome')) {
     if (!DRY) fs.mkdirSync(path.join(dir, s.id), { recursive: true });
     for (const host of listShowDirs(dir, { silent: true, skipHolding: true })) {
       const hs = showById.get(host);
-      if (!hs || host === s.id || L.normTitle(hs.title) !== tKey) continue;
+      if (!hs || host === s.id || !hostKeys.has(L.normTitle(hs.title))) continue;
       for (const f of fs.readdirSync(path.join(dir, host)).filter((x) => x.endsWith('.json'))) {
         const p = path.join(dir, host, f);
         let j; try { j = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { continue; }
@@ -132,7 +135,7 @@ if (ARGV.includes('--rehome')) {
         const ms = L.reviewDateMs(j);
         if (!ms || ms < lo || ms > hi) continue;
         if (L.isCrossMarketNote(j)) continue; // tour / fringe / cross-market: not this run
-        if (L.isCovered(byTitle, tKey, ms, Date.now())) continue; // another existing production owns this date
+        if ([...hostKeys].some((k) => L.isCovered(byTitle, k, ms, Date.now()))) continue; // another existing production owns this date
         // Corroboration: a UK-region outlet, a dual-market outlet, or text naming the venue.
         // (Date window + same title + no other same-title show covering it is already the orphan definition.)
         const hay = `${j.fullText || ''} ${j.excerpt || ''}`.toLowerCase();

@@ -52,17 +52,27 @@ function collect() {
   const ctx = { byTitle: L.indexShows(shows), cutoffMs: now - 2 * 365 * L.DAY, now };
   const showById = new Map(shows.map((s) => [s.id, s]));
   const orphans = [];
+  // BRO-7959: a flagged copy whose URL is already held UNFLAGGED on another show is a duplicate of a review that is
+  // live, not a hidden one. Counting it inflated clusters (Pirates! The Penzance Musical: 16 "hidden" copies, all live).
+  const live = new Set();
+  const all = [];
   for (const id of listShowDirs(dir, { silent: true, skipHolding: true })) {
-    const show = showById.get(id);
-    if (!show) continue;
     let files;
     try { files = fs.readdirSync(path.join(dir, id)).filter((f) => f.endsWith('.json')); } catch { continue; }
     for (const f of files) {
       let j;
       try { j = JSON.parse(fs.readFileSync(path.join(dir, id, f), 'utf8')); } catch { continue; }
-      const c = L.orphanCandidate(j, show, ctx);
-      if (c) orphans.push({ hostId: id, title: show.title, file: f, ms: c.ms, outletId: j.outletId, market: L.reviewMarket(j, outlets) });
+      all.push([id, f, j]);
+      if (!j.wrongProduction && !j.wrongShow && !j.duplicateOf && j.url) live.add(L.urlKey(j.url));
     }
+  }
+  for (const [id, f, j] of all) {
+    const show = showById.get(id);
+    if (!show) continue;
+    const c = L.orphanCandidate(j, show, ctx);
+    if (!c) continue;
+    if (j.url && live.has(L.urlKey(j.url))) continue; // duplicate of a live review
+    orphans.push({ hostId: id, title: show.title, file: f, ms: c.ms, outletId: j.outletId, market: L.reviewMarket(j, outlets) });
   }
   return orphans;
 }

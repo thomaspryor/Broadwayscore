@@ -82,6 +82,14 @@ function orphanCandidate(j, show, { byTitle, cutoffMs, now }) {
   return { ms };
 }
 
+/** Canonical URL key for duplicate detection: host sans www, path sans trailing slash, no query/hash. */
+function urlKey(u) {
+  try {
+    const x = new URL(u);
+    return x.hostname.replace(/^www\./, '').toLowerCase() + x.pathname.replace(/\/+$/, '').toLowerCase();
+  } catch { return String(u || '').toLowerCase(); }
+}
+
 /** Market of a review from its outlet registry entry (london region => west-end). */
 function reviewMarket(j, outlets) {
   const o = outlets && outlets[j.outletId];
@@ -155,6 +163,7 @@ function proposeEntry(c, existingIds) {
 }
 
 module.exports = {
+  urlKey,
   DAY, COVER_SLACK_DAYS, CLUSTER_GAP_DAYS,
   parseDate, normTitle, reviewDateMs, isCrossMarketNote, indexShows, isCovered,
   orphanCandidate, reviewMarket, clusterOrphans, proposeEntry,

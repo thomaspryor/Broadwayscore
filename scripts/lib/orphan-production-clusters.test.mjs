@@ -47,3 +47,10 @@ test('a proposed id never reuses an existing show id (second same-year productio
   assert.equal(L.proposeEntry(c, new Set(['whos-afraid-of-virginia-woolf-west-end-2026'])).proposedId, 'whos-afraid-of-virginia-woolf-west-end-2026-2');
   assert.equal(L.proposeEntry(c, new Set(['whos-afraid-of-virginia-woolf-west-end-2026', 'whos-afraid-of-virginia-woolf-west-end-2026-2'])).proposedId, 'whos-afraid-of-virginia-woolf-west-end-2026-3');
 });
+
+test('urlKey folds www, query, hash, trailing slash and case so duplicate copies match (BRO-7959)', () => {
+  const a = L.urlKey('https://www.NYTimes.com/2025/04/24/theater/pirates.html?smid=x#top');
+  assert.equal(a, L.urlKey('http://nytimes.com/2025/04/24/theater/pirates.html'));
+  assert.equal(L.urlKey('https://a.com/x/'), L.urlKey('https://a.com/x'));
+  assert.notEqual(L.urlKey('https://a.com/x'), L.urlKey('https://a.com/y'));
+});
