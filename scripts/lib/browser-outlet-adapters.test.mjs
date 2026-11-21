@@ -22,8 +22,8 @@ function fakePage({ status = 200, evalResult = { text: 'x'.repeat(2000), title: 
 }
 
 test('every recover-*-browser.js outlet has an adapter, keyed by its persistent profile name', () => {
-  assert.deepEqual(Object.keys(A.ADAPTERS).sort(), ['newyorker', 'nyt', 'telegraph', 'thestage', 'thetimes', 'wapo', 'wsj']);
-  for (const id of ['thestage', 'nytimes', 'newyorker', 'washpost', 'wsj', 'times-uk', 'sunday-times', 'telegraph', 'sunday-telegraph']) {
+  assert.deepEqual(Object.keys(A.ADAPTERS).sort(), ['ft', 'newyorker', 'nyt', 'telegraph', 'thestage', 'thetimes', 'wapo', 'wsj']);
+  for (const id of ['thestage', 'nytimes', 'newyorker', 'washpost', 'wsj', 'times-uk', 'sunday-times', 'financialtimes', 'telegraph', 'sunday-telegraph']) {
     assert.ok(A.adapterFor(id), `no adapter for ${id}`);
   }
   assert.equal(A.adapterFor('guardian'), null);
@@ -78,6 +78,16 @@ test('DOM adapters return text + html; WSJ waits for its client-rendered <articl
   assert.equal(bot.error, 'DataDome challenge detected');
   const empty = await A.ADAPTERS.wapo.extract(fakePage({ evalResult: { text: '', title: 'x' } }), 'https://www.washingtonpost.com/a');
   assert.match(empty.error, /No article body/);
+});
+
+test('FT adapter (BRO-7943): reads #article-body, waits for it, nightly-planned, profile keyed ft', async () => {
+  const page = fakePage();
+  const r = await A.ADAPTERS.ft.extract(page, 'https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa');
+  assert.equal(r.len, 2000);
+  assert.equal(page.calls.waitForSelector, 1);
+  assert.equal(A.adapterFor('financialtimes').name, 'ft');
+  assert.equal(A.adapterUsable('financialtimes'), true);
+  assert.equal(A.ADAPTERS.ft.cookieDomain, 'ft.com');
 });
 
 // BRO-7171 follow-up: The Stage's registration wall (markup copied from a

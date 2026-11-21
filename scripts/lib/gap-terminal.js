@@ -37,7 +37,28 @@ const OWNER_REASONS = Object.freeze(['PAYWALL_NO_ACCESS', 'URL_DEAD_NO_ARCHIVE',
 const TERMINAL_REASONS = Object.freeze([...AUTO_REASONS, ...OWNER_REASONS]);
 
 /**
- * Is this review's terminal record valid right now? Pure.
+ * BRO-7943: PERMANENT_SKIPS (disabled, disabled_recent, no_adapter) are only
+ * permanent while the config that produced them holds. A terminal record
+ * written under "no adapter for this outlet" / "ARCHIVE off" must stop being
+ * valid the moment a flag or adapter changes, or a config fix leaves reviews
+ * stuck as terminal. The fingerprint is the part of the route config a skip
+ * reason depends on, for this outlet.
+ * @param {string|null} outletId
+ * @returns {string}
+ */
+function routeFingerprint(outletId) {
+  const { STRATEGY_FLAGS } = require('./gap-strategy-table');
+  const { adapterFor, adapterUsable } = require('./browser-outlet-adapters');
+  const ad = outletId ? adapterFor(outletId) : null;
+  const flags = Object.entries(STRATEGY_FLAGS)
+    .filter(([k, f]) => f.enabled && (k === 'BROWSER_SESSION' || PAYWALL_ACCESS_ROUTES.includes(k))) // only routes a record's evidence depends on
+    .map(([k, f]) => `${k}${f.minShowAgeDays ? `@${f.minShowAgeDays}d` : ''}${f.historicOnly ? '@historic' : ''}`)
+    .sort().join(',');
+  return `adapter=${ad ? `${ad.name}:${adapterUsable(outletId) ? 'nightly' : 'manual'}` : 'none'};flags=${flags}`;
+}
+
+/**
+ * Is this review's terminal record valid right now? Pure (config reads only).
  * @param {object} review
  * @param {{recency?: 'recent'|'historic'|null}} [ctx] recency from the show dates when known
  * @returns {{valid:boolean, reason:string}}
@@ -53,6 +74,14 @@ function validateTerminal(review, { recency = null } = {}) {
     return { valid: false, reason: 'owner_approval_missing' };
   }
   if ((t.urlAtDecision || null) !== (review.url || null)) return { valid: false, reason: 'url_changed' };
+  // Routes changed since the decision (a flag flipped, an adapter added).
+  if (t.routeFingerprint) {
+    if (t.routeFingerprint !== routeFingerprint(review.outletId)) return { valid: false, reason: 'routes_changed' };
+  } else if (t.reason === 'PAYWALL_NO_ACCESS' && require('./browser-outlet-adapters').adapterUsable(review.outletId)
+    && !t.evidence.some((e) => /^BROWSER_SESSION/.test(String(e)))) {
+    // legacy record, written before this outlet had a browser adapter: the route was never tried
+    return { valid: false, reason: 'routes_changed' };
+  }
   if (recency === 'recent') return { valid: false, reason: 'recent_show' };
   return { valid: true, reason: t.reason };
 }
@@ -63,6 +92,7 @@ function buildTerminalRecord({ review, reason, evidence, decidedBy, approvedBy =
     reason, decidedAt: nowIso, decidedBy, evidence: [...evidence],
     urlAtDecision: (review && review.url) || null, policyVersion: TERMINAL_POLICY_VERSION,
   };
+  if (!AUTO_REASONS.includes(reason)) rec.routeFingerprint = routeFingerprint(review && review.outletId); // defunct/print-only outlets do not depend on routes
   if (approvedBy) rec.approvedBy = approvedBy;
   return rec;
 }
@@ -159,4 +189,4 @@ function groupTerminalCandidates(planRows, attemptsByKey, { deadHosts = new Map(
   return { auto, owner, open };
 }
 
-module.exports = { PAYWALL_ACCESS_ROUTES, paywallRouteEvidence, groupTerminalCandidates, TERMINAL_POLICY_VERSION, AUTO_REASONS, OWNER_REASONS, TERMINAL_REASONS, validateTerminal, buildTerminalRecord };
+module.exports = { routeFingerprint, PAYWALL_ACCESS_ROUTES, paywallRouteEvidence, groupTerminalCandidates, TERMINAL_POLICY_VERSION, AUTO_REASONS, OWNER_REASONS, TERMINAL_REASONS, validateTerminal, buildTerminalRecord };

@@ -55,6 +55,11 @@ function arg(name, def = null) {
 const flag = (name) => process.argv.slice(2).includes(`--${name}`);
 const list = (v) => (v ? new Set(v.split(',').map((s) => s.trim()).filter(Boolean)) : null);
 
+// Pilot hook (BRO-7943): GAP_PILOT_ENABLE=URL_REDISCOVER turns a flagged-off
+// strategy on for ONE manual run, so its acceptance rate can be measured against
+// the 30% bar without editing the table. Never set by the nightly.
+const FLAGS = Object.fromEntries(Object.entries(STRATEGY_FLAGS).map(([k, v]) => [k, (process.env.GAP_PILOT_ENABLE || '').split(',').includes(k) ? { ...v, enabled: true } : v]));
+
 const OPTS = {
   dryRun: flag('dry-run'),
   reconcile: flag('reconcile'),
@@ -89,6 +94,12 @@ const LABELS = {
   URL_FIND: { fetchMethod: 'gap-recovery-url-find', sourceMethod: 'gap-recovery-url-find', contentTierReasonFallback: 'Recovered by the gap-recovery driver (original url found)', urlDiscoveryMethod: 'gap-url-find' },
   PAID_FETCH: { fetchMethod: 'gap-recovery-paid-fetch', sourceMethod: 'gap-recovery-paid-fetch', contentTierReasonFallback: 'Recovered by the gap-recovery driver (paid fetch)' },
 };
+
+/** Days since the show opened (previews if no opening date); null when undated. */
+function showAgeDays(show) {
+  const t = Date.parse((show && (show.openingDate || show.previewsStartDate)) || '');
+  return Number.isFinite(t) ? Math.floor((Date.now() - t) / 86400000) : null;
+}
 
 /** Build the candidate list with a strategy per review (no writes). */
 function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
@@ -152,10 +163,13 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       // An unknown show date counts as 'recent' for ordering, but such shows
       // are often old: do not take ARCHIVE away from them.
       recency: row.dateKnown === false ? null : row.recency,
+      // ARCHIVE needs a show old enough to have a Wayback capture (BRO-7943: min age, not 'historic only').
+      showAgeDays: showAgeDays(show),
       storedUrlOk: row.gapClass === 'URL_WRONG_PAGE' ? storedUrlWorthRetry({ url: review.url, show }) : undefined,
       eligible,
       runGates: { ...runGates, ...extraGates },
       only: OPTS.only,
+      flags: FLAGS,
     });
     const sel = owned ? { strategy: null, skipped: [{ strategy: 'ANY', reason: owned }] } : reselect();
     out.push({

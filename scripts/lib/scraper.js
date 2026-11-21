@@ -1540,6 +1540,12 @@ function pageChainOrder(flags) {
   return order;
 }
 
+// Hosts behind a Cloudflare managed challenge that no free tier solves.
+const CF_MANAGED_HOSTS = ['talkinbroadway.com'];
+function hostMatches(url, host) {
+  try { const h = new URL(url).hostname.toLowerCase(); return h === host || h.endsWith('.' + host); } catch { return false; }
+}
+
 /**
  * The FREE tiers fetchPage would run for `url` (cookies-plain, playwright-*),
  * from the same flags and domain-tier-skip config fetchPage reads, without
@@ -1568,7 +1574,12 @@ function freeTiersForUrl(url) {
       sbAllowed: false,
     });
   } catch { return []; }
-  return chain.filter((t) => FREE.has(t));
+  // BRO-7943: Cloudflare managed-challenge hosts defeat every free tier (the
+  // chain still lists playwright-last), so a "free" refetch is a guaranteed
+  // fetch_error (Talkin' Broadway: 107 rows, 59 fetch_errors). No free tier
+  // means the gap planner goes straight to the capped paid route.
+  const cfManaged = CF_MANAGED_HOSTS.some((h) => hostMatches(url, h));
+  return cfManaged ? [] : chain.filter((t) => FREE.has(t));
 }
 
 /**
@@ -2503,6 +2514,7 @@ module.exports = {
   fetchPage,
   pageChainOrder,
   freeTiersForUrl,
+  CF_MANAGED_HOSTS,
   paidTierAvailable,
   _providerPassthroughParams,
   fetchJSON,
