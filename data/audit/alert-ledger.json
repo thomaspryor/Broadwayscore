@@ -37945,7 +37945,7 @@
       "resolveReason": "absent"
     },
     "scheduled-email-count:dup-reddit-post-ready": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Scheduled sender delivered MORE THAN ONCE in a day: reddit-post-ready",
       "firstSeen": "2026-11-05T21:19:38.500Z",
@@ -37956,7 +37956,9 @@
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": "BRO-7026",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-21T20:45:01.287Z",
+      "resolveReason": "BRO-6918: no repeat of this scheduled-email count violation"
     },
     "backstop:the-bridge-off-west-end-2026/sunday-times--unknown.json": {
       "status": "resolved",
