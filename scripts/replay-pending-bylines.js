@@ -874,6 +874,11 @@ if (require.main === module) {
         try {
           const { routeLimbo } = require('./route-limbo-reviews');
           const r = routeLimbo({ apply: true, log: console.log });
+          const stuck = r.counts.stuckRefetch || 0;
+          try {
+            if (stuck > 0) await defaultRouteAlert({ conditionKey: 'limbo-refetch-stuck', title: `${stuck} review file(s) routed to refetch 14+ days ago still have no scorable text`, description: 'route-limbo-reviews.js routed these files to refetch and the collector did not recover a scorable body. Run: node scripts/route-limbo-reviews.js --all-shows --list | grep refetch', hint: 'Open each URL; fix the extractor or mark the file rejected.', disposition: 'human', severity: 'warning', cooldownHours: 72 });
+            else defaultResolveCondition('limbo-refetch-stuck', { reason: 'no stuck refetch-routed limbo files' });
+          } catch (e) { console.log(`  limbo alert failed: ${e.message}`); }
           console.log(`Limbo gate: ${r.counts.routed} routed (${JSON.stringify(r.counts.byRoute)}), ${r.counts.grace} still inside the ${r.graceDays}-day grace window`);
         } catch (e) { console.log(`Limbo gate failed: ${e.message}`); }
       }

@@ -199,3 +199,13 @@ test('WET roundup under another outlet is flagged even when it carries the round
   assert.equal(misattributedWetRoundup({ ...d, outletId: 'westendtheatre' }, g), null);
   assert.equal(misattributedWetRoundup({ ...d, isRoundupArticle: true }, g), null);
 });
+
+test('raiseDrainHealthAlerts fires the zero-promote alert and resolves the growth one (real function, injected router)', async () => {
+  const { raiseDrainHealthAlerts } = require('../replay-pending-bylines.js');
+  const z = (pending = 100) => ({ scope: 'all-open', inspected: 20, promoted: 0, dropped: 0, rejected: 0, tagged: 0, pending });
+  const fired = [], resolved = [];
+  const h = await raiseDrainHealthAlerts([z(), z(), z(), z()], { alert: async o => { fired.push(o.conditionKey); }, resolve: async k => { resolved.push(k); } });
+  assert.equal(h.zeroPromote, true);
+  assert.deepEqual(fired, ['pending-drain-zero-promote']);
+  assert.deepEqual(resolved, ['pending-drain-growth']);
+});

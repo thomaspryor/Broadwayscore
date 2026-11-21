@@ -83,8 +83,9 @@ function misattributedWetRoundup(d, guards = require('./review-guards')) {
 function isLimboCandidate(d, show, filePath, guards = require('./review-guards')) {
   if (!d || typeof d !== 'object') return false;
   if (!SCOREABLE_TIERS.includes(d.contentTier)) return false;
-  // A previous 'show-not-mentioned' rejection is re-judged each run, so an improved rescue rule can undo it.
-  const reopen = d.limboRoute === 'reject' && d.limboRule === 'show-not-mentioned';
+  // A previous 'show-not-mentioned' rejection or a 'refetch' route is re-judged each run: an improved rescue rule can
+  // undo the first, and a refetch that recovered text moves to scoring.
+  const reopen = (d.limboRoute === 'reject' && d.limboRule === 'show-not-mentioned') || d.limboRoute === 'refetch';
   if (DECIDED_FLAGS.some(k => !!d[k] && !(reopen && k === 'limboRoutedAt'))) return false;
   if (d.incompleteReason) return false; // owned by the recovery pipeline (url_content_mismatch, scraper_garbage, ...)
   return !isScored(d, guards);
