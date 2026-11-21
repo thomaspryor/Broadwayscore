@@ -72,6 +72,19 @@ function showTitleRules(theaterName) {
   return { allowed: [...allowed], forbidden };
 }
 
+/** Title, post body and every comment body from a Reddit thread's JSON listing. */
+function redditText(raw) {
+  const out = [];
+  const walk = (v) => {
+    if (Array.isArray(v)) return v.forEach(walk);
+    if (!v || typeof v !== 'object') return;
+    for (const k of ['title', 'selftext', 'body']) if (typeof v[k] === 'string' && v[k].trim()) out.push(v[k]);
+    for (const [k, x] of Object.entries(v)) if (k !== 'body_html' && k !== 'selftext_html' && typeof x === 'object') walk(x);
+  };
+  walk(JSON.parse(String(raw).replace(/^[^[{]*/, '').replace(/<\/pre>[\s\S]*$/, '')));
+  return out.join('\n');
+}
+
 async function cmdFetch() {
   const { fetchPage } = require('./lib/scraper');
   const { data } = loadSnapshot();
@@ -84,8 +97,11 @@ async function cmdFetch() {
   await require('./lib/dual-model-client').pool(todo, Number(arg('concurrency', 6)), async (url) => {
     let rec;
     try {
-      const r = await fetchPage(url, {});
-      const text = r.format === 'html' || /<html|<body|<div/i.test(r.content || '') ? A.htmlToText(r.content) : String(r.content || '');
+      const reddit = /(^|\.)reddit\.com$/.test(new URL(url).hostname);
+      // Reddit serves a script shell to scrapers; the thread's .json form carries the post and comments.
+      const r = await fetchPage(reddit ? `${url.replace(/[?#].*$/, '').replace(/\/$/, '')}.json` : url, {});
+      const text = reddit ? redditText(r.content)
+        : r.format === 'html' || /<html|<body|<div/i.test(r.content || '') ? A.htmlToText(r.content) : String(r.content || '');
       rec = { url, ok: text.length > 200, text, source: r.source, finalUrl: r.finalUrl || url, fetchedAt: new Date().toISOString() };
       if (!rec.ok) rec.error = 'page text under 200 chars';
     } catch (e) {
