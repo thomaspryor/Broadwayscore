@@ -29,7 +29,8 @@ const crypto = require('crypto');
 const os = require('os');
 const { spawnSync } = require('child_process');
 
-const PIN = process.env.GEMINI_CLI_VERSION || '0.70.0';
+// Not overridable from the environment: the policy is verified on this version only (Codex review).
+const PIN = '0.70.0';
 // Flash, not Pro (BRO-7987 probe). The point of this reviewer is that it opens the code, and on a
 // 600-line diff Pro opened no files in 3 of 4 runs (while writing "I have verified..."), even with
 // READ_NUDGE; Flash opened 6 files in 3 of 3. On a planted cross-file unit bug Flash caught it in
@@ -39,9 +40,9 @@ const READ_NUDGE = 'Before you answer, open with read_file every file the diff o
 const RETRY_NUDGE = 'Your previous answer was rejected because you opened no files. ' + READ_NUDGE;
 const POLICY = path.join(__dirname, 'review-policy.toml');
 // Tools the policy allows. Only CONTENT_TOOLS count as "read the code": a glob or a directory
-// listing shows names, not code (Codex review, BRO-7987).
+// listing shows names, and one grep hit anywhere is not opening the changed code (Codex review, BRO-7987).
 const READ_TOOLS = ['read_file', 'read_many_files', 'grep_search', 'glob', 'list_directory'];
-const CONTENT_TOOLS = ['read_file', 'read_many_files', 'grep_search'];
+const CONTENT_TOOLS = ['read_file', 'read_many_files'];
 const NO_READS_HEADER = 'NOTE: Gemini opened no repository files in this review; treat every file:line claim below as unverified.';
 
 /**
@@ -197,7 +198,11 @@ function main() {
       if (parsed.usage && parsed.usage.length) for (const u of parsed.usage) logSessionCall({ provider: 'gemini', model: u.model, response: { usageMetadata: u.usageMetadata }, caller });
       else logSessionCall({ provider: 'gemini', model, response: {}, caller });
     } catch { /* record only */ }
-    if (before === null) treeChecked = false;
+    if (before === null) {
+      // Inside a repo a failed git status is a broken check, not a skipped one (Codex review).
+      if (top.status === 0) done(1, 'FAILED: git status failed before the Gemini run, so the working tree could not be checked; not trusting a review without it');
+      treeChecked = false;
+    }
     else {
       const after = snapshot(cwd);
       if (after === null) done(1, 'FAILED: git status failed after the Gemini run, so the working tree could not be re-checked; do not trust this review');

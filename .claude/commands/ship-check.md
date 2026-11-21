@@ -255,6 +255,10 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
        BASE="$DEFAULT_BRANCH"
      fi
      if [ -z "$BASE" ]; then echo "ERROR: could not determine base ref"; exit 1; fi
+     # A failed diff (no merge base, shallow clone) or an empty one must stop here: the reviewer would get only the prompt and still answer.
+     git diff --quiet "$BASE"...HEAD -- . ; D1=$?; git diff --quiet HEAD -- . ; D2=$?
+     if [ "$D1" -gt 1 ]; then echo "ERROR: git diff against $BASE failed (missing merge base or shallow clone? git fetch origin $DEFAULT_BRANCH)"; exit 1; fi
+     if [ "$D1" -eq 0 ] && [ "$D2" -eq 0 ]; then echo "ERROR: no changes against $BASE; nothing to review"; exit 1; fi
      {
        cat <<'PROMPT_HEAD'
      You are a senior engineer doing an adversarial pre-ship review. The diff below is about to be deployed. Your job is to find what's brittle, what's premature, and what assumptions are wrong — NOT to validate that it works.
@@ -280,10 +284,10 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
 
      THE DIFF TO REVIEW:
      PROMPT_HEAD
-       git diff "$BASE"...HEAD -- src/ scripts/ public/ data/ 2>/dev/null | awk 'NR<=2000; NR==2001{print "=== DIFF CUT AT 2000 LINES ==="}'
+       git diff "$BASE"...HEAD -- src/ scripts/ public/ data/ tests/ .github/ .claude/ package.json CLAUDE.md 2>/dev/null | awk 'NR<=2000; NR==2001{print "=== DIFF CUT AT 2000 LINES ==="}'
        echo
        echo "=== UNCOMMITTED CHANGES ==="
-       git diff HEAD -- src/ scripts/ public/ data/ 2>/dev/null | awk 'NR<=1000; NR==1001{print "=== DIFF CUT AT 1000 LINES ==="}'
+       git diff HEAD -- src/ scripts/ public/ data/ tests/ .github/ .claude/ package.json CLAUDE.md 2>/dev/null | awk 'NR<=1000; NR==1001{print "=== DIFF CUT AT 1000 LINES ==="}'
      } | ${CLAUDE_CODE_REMOTE:+timeout 1500} codex exec --sandbox read-only --skip-git-repo-check --color never -C "$PWD" -o "$CODEX_OUT" >/dev/null 2>"$CODEX_OUT.log"
      CODEX_RC=$?
      # A failed exec is never a review, even if it left text behind: empty the file so Step 2 reports CODEX_EMPTY.
@@ -324,6 +328,10 @@ Launch reviewers 1 to 4 simultaneously. Save the screenshots to files that can b
    DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'); [ -z "$DEFAULT_BRANCH" ] && DEFAULT_BRANCH=main
    CURRENT=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
    if [ "$CURRENT" = "$DEFAULT_BRANCH" ] || [ "$CURRENT" = "HEAD" ]; then BASE=$(git rev-parse HEAD~5 2>/dev/null) || BASE=$(git rev-list --max-parents=0 HEAD | head -1); elif git rev-parse -q --verify "origin/$DEFAULT_BRANCH" >/dev/null; then BASE="origin/$DEFAULT_BRANCH"; else BASE="$DEFAULT_BRANCH"; fi
+   # A failed diff (no merge base, shallow clone) or an empty one must stop here: the reviewer would get only the prompt and still answer.
+   git diff --quiet "$BASE"...HEAD -- . ; D1=$?; git diff --quiet HEAD -- . ; D2=$?
+   if [ "$D1" -gt 1 ]; then echo "ERROR: git diff against $BASE failed (missing merge base or shallow clone? git fetch origin $DEFAULT_BRANCH)"; exit 1; fi
+   if [ "$D1" -eq 0 ] && [ "$D2" -eq 0 ]; then echo "ERROR: no changes against $BASE; nothing to review"; exit 1; fi
    {
    cat <<'PROMPT_HEAD'
    You are a senior code reviewer. You can READ this repository with your file tools (read_file, grep_search, glob, list_directory). Use them: open every file the diff touches and the code it calls or is called by, and check each claim against the real code before you make it. Every finding must cite file:line. No generic advice. Do not run setup or preflight commands; you cannot, and none are needed.
