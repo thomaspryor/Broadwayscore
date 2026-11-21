@@ -82,3 +82,52 @@ test('an excluded review keeps its exclusion reason even when unscored', () => {
   assert.equal(r.landed, false);
   assert.ok(!r.pendingScore, `expected a real exclusion, got: ${r.reason}`);
 });
+
+// Issue #1178: submitted against show A (regional 2024), the review file and
+// the reviews.json row live under show B. Must count as landed, naming B.
+test('review filed under a different show than the submission named: landed, with the real show id', () => {
+  const { checkSubmissionLandedAnywhere } = require('./submission-landing.js');
+  const dir = fixture({ llmScore: { score: 39 } }); // file lives under SHOW (show B)
+  const showA = { id: 'waiting-for-lefty-regional-2024', status: 'closed', market: 'regional' };
+  const r = checkSubmissionLandedAnywhere({
+    showId: showA.id, url: URL, reviews: [{ showId: SHOW.id, url: URL }],
+    reviewTextsDir: dir, show: showA, shows: [showA, SHOW],
+  });
+  assert.equal(r.landed, true);
+  assert.equal(r.actualShowId, SHOW.id);
+});
+
+test('named show has the file: its verdict stands and no fallback happens', () => {
+  const { checkSubmissionLandedAnywhere } = require('./submission-landing.js');
+  const dir = fixture({ llmScore: { score: 78 } });
+  const r = checkSubmissionLandedAnywhere({
+    showId: SHOW.id, url: URL, reviews: [], reviewTextsDir: dir, show: SHOW, shows: [SHOW],
+  });
+  assert.equal(r.landed, false);
+  assert.equal(r.actualShowId, undefined);
+});
+
+test('no show holds a file for the URL: still not landed, original reason kept', () => {
+  const { checkSubmissionLandedAnywhere } = require('./submission-landing.js');
+  const dir = fixture({});
+  const r = checkSubmissionLandedAnywhere({
+    showId: 'nonexistent-show', url: 'https://example.com/nope', reviews: [], reviewTextsDir: dir,
+    show: null, shows: [SHOW],
+  });
+  assert.equal(r.landed, false);
+  assert.match(r.reason, /no review file was written/);
+});
+
+test('URL filed under two other shows: the one live in reviews.json wins', () => {
+  const { checkSubmissionLandedAnywhere } = require('./submission-landing.js');
+  const dir = fixture({ llmScore: { score: 50 } }); // under SHOW
+  const stale = { id: 'a-stale-copy' };
+  fs.mkdirSync(path.join(dir, stale.id));
+  fs.copyFileSync(path.join(dir, SHOW.id, 'thereviewshub--the-reviews-hub.json'), path.join(dir, stale.id, 'x.json'));
+  const named = { id: 'named-show' };
+  const r = checkSubmissionLandedAnywhere({
+    showId: named.id, url: URL, reviews: [{ showId: SHOW.id, url: URL }], reviewTextsDir: dir, show: named, shows: [named, stale, SHOW],
+  });
+  assert.equal(r.landed, true);
+  assert.equal(r.actualShowId, SHOW.id);
+});

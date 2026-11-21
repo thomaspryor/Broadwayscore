@@ -27,7 +27,14 @@ const USAGE = `Usage: node scripts/sweep-awaiting-score-submissions.js [--dry-ru
 
 function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  sweepSubmissions({ dryRun: process.argv.includes('--dry-run') });
+  const { execFileSync } = require('child_process');
+  const { closeReviewSubmissionCard } = require('./lib/plan-refusal-escalation');
+  const run = (args) => execFileSync('node', [require('path').join(__dirname, 'linear-brain.js'), ...args], {
+    cwd: require('path').join(__dirname, '..'), encoding: 'utf8', timeout: 60000, stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  // Fail-soft and skipped without a Linear key (local dry runs, forks).
+  const closeCard = process.env.LINEAR_API_KEY ? ({ issueNumber }) => closeReviewSubmissionCard({ issueNumber }, { run }) : null;
+  sweepSubmissions({ dryRun: process.argv.includes('--dry-run'), closeCard });
 }
 
 if (require.main === module) main();
