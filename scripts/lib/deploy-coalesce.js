@@ -7,21 +7,20 @@
  * (poller fast_path, rebuild-fast, express, lane-live), each building in parallel and
  * taking 20-40 min, so a review ingested at 05:25Z went live at 05:54Z.
  *
- * Rule (run by a NEWER run whose should-deploy gate already said proceed=true): cancel
- * every OLDER in-flight run that is still pre-"Checkout core data" in its deploy job.
- * Main only moves forward and core data is pulled at that step, so the newer run ships
- * a superset of what the older would. Why supersede and not "skip self": the older
- * run may itself end up not deploying (gate said already-live); a run that is
- * cancelled by a newer one always has a live successor. Different head SHAs are fine
- * because newer main contains older main.
+ * Rule (run by a NEWER run that has finished its BUILD and is about to deploy): cancel
+ * every OLDER in-flight run still before its "Deploy to Production" step.
+ * Main only moves forward and core data is pulled at build time, so the newer run ships
+ * a superset of what the older would. The cancel happens only after the canceller's own
+ * Build succeeded (ship-check 2026-11-21: cancelling at start left nothing deploying when
+ * the newer run failed). Only main runs are touched, both sides.
  *
  * Never cancelled: pre-warm runs (they own their own wait/handoff), runs whose
  * should-deploy job has not finished with success (unknown fate), runs at or past
- * "Checkout core data" (data pulled; Build may be underway), and anything with
+ * "Deploy to Production" (it may already be deploying), and anything with
  * missing or unexpected job/step data (fail open = leave it alone).
  */
 
-const PASSED_STEP = 'Checkout core data';
+const PASSED_STEP = 'Deploy to Production';
 
 const isPrewarm = (r) => String(r.display_title || r.name || '').includes('pre-warm');
 
@@ -37,11 +36,12 @@ function pendingBeforeCoreData(jobs) {
 }
 
 /** @returns {{cancel:number[], kept:Array<{id:number,reason:string}>}} */
-function decide({ selfRunId, runs, jobsByRun }) {
+function decide({ selfRunId, selfBranch = 'main', runs, jobsByRun }) {
   const out = { cancel: [], kept: [] };
-  if (!selfRunId || !Array.isArray(runs)) return out;
+  if (!selfRunId || selfBranch !== 'main' || !Array.isArray(runs)) return out;
   for (const r of runs) {
     if (!r || r.id >= selfRunId) continue;
+    if (r.head_branch !== 'main') continue;
     if (r.status !== 'queued' && r.status !== 'in_progress') continue;
     if (isPrewarm(r)) { out.kept.push({ id: r.id, reason: 'prewarm' }); continue; }
     if (pendingBeforeCoreData((jobsByRun || {})[r.id])) out.cancel.push(r.id);

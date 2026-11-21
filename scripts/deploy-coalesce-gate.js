@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 'use strict';
-// BRO-7983: runs in the deploy job (after its gate said proceed). Cancels older pending
-// deploy runs this run supersedes. Fail-open: any error => cancel nothing, exit 0.
-// Env: GH_TOKEN, GITHUB_REPOSITORY, GITHUB_RUN_ID, COALESCE_DRY_RUN=1 (log only).
+// BRO-7983: runs in the deploy job right before 'Deploy to Production' (own Build succeeded).
+// Cancels older deploy runs still before their deploy step; this run supersedes them. Fail-open: any error => cancel nothing, exit 0.
+// Env: GH_TOKEN, GITHUB_REPOSITORY, GITHUB_RUN_ID, GITHUB_REF_NAME, COALESCE_DRY_RUN=1 (log only).
 const { execFileSync } = require('child_process');
 const { decide } = require('./lib/deploy-coalesce.js');
 
@@ -21,7 +21,7 @@ function main() {
     const older = runs.filter((r) => r.id < selfRunId && !String(r.display_title || '').includes('pre-warm')).slice(0, MAX_JOB_LOOKUPS);
     const jobsByRun = {};
     for (const r of older) jobsByRun[r.id] = api(`repos/${repo}/actions/runs/${r.id}/jobs?per_page=30`).jobs;
-    const d = decide({ selfRunId, runs, jobsByRun });
+    const d = decide({ selfRunId, selfBranch: process.env.GITHUB_REF_NAME, runs, jobsByRun });
     console.log(`[coalesce] self=${selfRunId} cancel=[${d.cancel}] kept=${JSON.stringify(d.kept)}`);
     for (const id of d.cancel) {
       if (process.env.COALESCE_DRY_RUN) continue;

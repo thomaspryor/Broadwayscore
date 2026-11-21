@@ -5,13 +5,13 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { decide } = require('./deploy-coalesce.js');
 
-const run = (id, o = {}) => ({ id, status: 'in_progress', display_title: 'Deploy to Vercel', ...o });
+const run = (id, o = {}) => ({ id, status: 'in_progress', head_branch: 'main', display_title: 'Deploy to Vercel', ...o });
 const jobs = (coreStatus, { deployStatus = 'in_progress', gate = 'success' } = {}) => [
   { name: 'should-deploy', status: 'completed', conclusion: gate },
-  { name: 'deploy', status: deployStatus, steps: [{ name: 'Checkout core data', status: coreStatus }] },
+  { name: 'deploy', status: deployStatus, steps: [{ name: 'Deploy to Production', status: coreStatus }] },
 ];
 
-test('cancels older run still before Checkout core data', () => {
+test('cancels older run still before Deploy to Production', () => {
   assert.deepEqual(decide({ selfRunId: 20, runs: [run(10)], jobsByRun: { 10: jobs('pending') } }).cancel, [10]);
 });
 test('cancels older run whose deploy job is still queued', () => {
@@ -32,6 +32,10 @@ test('keeps pre-warm, completed, gate-not-success, and unknown-shape runs', () =
   };
   assert.deepEqual(decide({ selfRunId: 20, runs, jobsByRun }).cancel, []);
 });
+test('only main: non-main targets kept, non-main canceller cancels nothing', () => {
+  assert.deepEqual(decide({ selfRunId: 20, runs: [run(10, { head_branch: 'feature' })], jobsByRun: { 10: jobs('pending') } }).cancel, []);
+  assert.deepEqual(decide({ selfRunId: 20, selfBranch: 'feature', runs: [run(10)], jobsByRun: { 10: jobs('pending') } }).cancel, []);
+});
 test('fails open on missing inputs / jobs', () => {
   assert.deepEqual(decide({}).cancel, []);
   assert.deepEqual(decide({ selfRunId: 20, runs: [run(10)], jobsByRun: {} }).cancel, []);
@@ -48,6 +52,7 @@ test('workflow wiring: step runs in deploy job before the build, fail-open, gate
   const y = readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
   assert.match(y, /node scripts\/deploy-coalesce-gate\.js/);
   const at = y.indexOf('deploy-coalesce-gate.js');
-  assert.ok(at > y.indexOf('  deploy:\n') && at < y.indexOf('name: Checkout core data'), 'must run before core data checkout');
+  assert.ok(at > y.indexOf('      - name: Build\n') && at < y.indexOf('      - name: Deploy to Production\n'), 'must run after Build, before Deploy');
   assert.match(y.slice(at - 900, at), /continue-on-error: true/);
+  assert.match(y.slice(at - 900, at), /DEPLOY_COALESCE_DISABLED/);
 });
