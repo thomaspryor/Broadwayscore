@@ -556,6 +556,24 @@ function ownedRecordReason(review) {
   return null;
 }
 
+/**
+ * BRO-7943: a manual tier pin judged on a paywalled or partial fetch outlives
+ * the text it was judged on. The full text arrives later (another collector),
+ * the pin keeps the review "truncated"/"stub", and ownedRecordReason keeps
+ * every recovery route away from it: the gap never closes and never shows as
+ * attempted (Paranormal Activity NYT, pinned on a 2,913-char JS wall, held
+ * 9,381 chars of full review three months later). True when the pin is not
+ * "complete" but the text, classified without the pin, is complete.
+ * @param {object} review
+ * @param {(r:object)=>{contentTier:string}} classify  content-quality classifyContentTier
+ */
+function isStaleManualTierPin(review, classify) {
+  if (!review || !review.manualContentTier || review.manualContentTier === 'complete') return false;
+  if (review.manualContentTier === 'invalid') return false; // a verdict on the record, not on text length
+  const { manualContentTier, ...rest } = review;
+  try { return classify(rest).contentTier === 'complete'; } catch { return false; }
+}
+
 // A review file another writer renamed or deleted after the plan was built
 // (byline fix artshub--unknown -> artshub--<critic>, dedup, merge). Only this
 // candidate's own file counts: any other missing file is a real fault and
@@ -567,6 +585,7 @@ function isVanishedReviewFile(err, filePath) {
 }
 
 module.exports = {
+  isStaleManualTierPin,
   tierImproved,
   recentNonEvidence,
   httpStatusFrom,
