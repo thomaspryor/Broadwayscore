@@ -1372,7 +1372,7 @@ test('runTestGate: stale data plus a NEW failure still blocks (the label never s
   assert.match(r.output, /ENV: likely stale local data/);
 });
 
-test('computeTestGateTimeoutMs (BRO-7947): scales with load, floors at 8 min, ceilings at 20 min', () => {
+test('computeTestGateTimeoutMs (BRO-7947): scales with load, floors at 8 min, ceilings at 12 min', () => {
   const MIN = 60 * 1000;
   // measured failing case: 1551 files, load 23.3 on 14 cores -> must exceed the 8:22 the run took
   const loaded = computeTestGateTimeoutMs({ fileCount: 1551, loadAvg: 23.3, cores: 14 });
@@ -1389,12 +1389,29 @@ test('computeTestGateTimeoutMs (BRO-7947): scales with load, floors at 8 min, ce
 
 test('runTestGate passes ONE computed cap to every spawn and keeps the kill fail-safe (BRO-7947)', () => {
   const caps = [];
-  const files = ['scripts/lib/x.js'];
-  const r = runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true, execFn: (cwd, tf, cap) => { caps.push(cap); return { status: 0, stdout: '', stderr: '' }; } });
-  if (r.ran) {
-    assert.equal(new Set(caps).size, 1);
-    assert.match(r.reason, /in \d+s \(cap \d+s\)/);
-  }
+  const files = ['scripts/lib/merge-post-merge-test-gate.test.mjs'];
+  const pass = runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true, execFn: (cwd, tf, cap) => { caps.push(cap); return { status: 0, stdout: '', stderr: '' }; } });
+  assert.equal(pass.ran, true);
+  assert.equal(caps.length, 1);
+  assert.ok(Number.isInteger(caps[0]) && caps[0] >= TEST_GATE_TIMEOUT_MS && caps[0] <= TEST_GATE_MAX_TIMEOUT_MS);
+  assert.match(pass.reason, new RegExp(`in \\d+s \\(cap ${Math.round(caps[0] / 1000)}s\\)`));
+  // a kill still blocks, is not retried, and never consults the baseline
+  let spawns = 0;
+  const killed = runTestGate({ cwd: process.cwd(), changedFiles: files, onlyListed: true,
+    makeBaselineCheckout: () => { throw new Error('baseline must not be consulted'); },
+    execFn: () => { spawns++; return { status: null, signal: 'SIGTERM', error: { code: 'ETIMEDOUT' }, stdout: '', stderr: '' }; } });
+  assert.equal(spawns, 1);
+  assert.equal(killed.passed, false);
+});
+
+test('MERGE_TEST_GATE_TIMEOUT_MS override: bad/zero values never disable the timeout; opt-out wins (BRO-7947)', () => {
+  const c = (env) => computeTestGateTimeoutMs({ fileCount: 1, loadAvg: 0, cores: 4, env });
+  assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '0.1' }), 8 * 60 * 1000);
+  assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '999999999999' }), 60 * 60 * 1000);
+  assert.equal(c({ MERGE_TEST_GATE_TIMEOUT_MS: '90000', MERGE_TEST_GATE_NO_LOAD_SCALING: '1' }), 8 * 60 * 1000);
+  const mutex = require('node:fs').readFileSync(new URL('./push-mutex.sh', import.meta.url), 'utf8');
+  const lockSec = Number(/PUSH_LOCK_TIMEOUT_SEC:-(\d+)/.exec(mutex)[1]);
+  assert.ok(TEST_GATE_MAX_TIMEOUT_MS < lockSec * 1000, 'one spawn must finish before push-lock waiters fail open');
 });
 
 test('land-branch opts the CI land gate out of load scaling (BRO-7947)', () => {

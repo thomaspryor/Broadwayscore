@@ -152,17 +152,21 @@ const TEST_GATE_TIMEOUT_MS = 8 * 60 * 1000;
 // 23-34 on 14 cores, ~22 CPU-min total, every test before the kill `ok`. A kill
 // is still a fail-safe BLOCK, so the cap must track the machine's load, not a
 // constant. Cap = max(8 min floor, files x 250 ms) x max(1, load1 / cores),
-// clamped to [8 min, 20 min]. Land's CI job opts out
+// clamped to [8 min, 12 min]. The 12 min ceiling sits under push-mutex.sh's
+// PUSH_LOCK_TIMEOUT_SEC (900 s): the local floor runs while the push lock is held,
+// and waiters fail open past 15 min. Land's CI job opts out
 // (MERGE_TEST_GATE_NO_LOAD_SCALING=1): its outer cap (land-branch.js
 // MERGED_TREE_TIMEOUT_MS, 30 min) and the land.yml retry margin are sized for
 // three 8-min spawns, and a 4-vCPU runner's load is not other workers.
-const TEST_GATE_MAX_TIMEOUT_MS = 20 * 60 * 1000;
+const TEST_GATE_MAX_TIMEOUT_MS = 12 * 60 * 1000;
 const TEST_GATE_PER_FILE_MS = 250;
 
 function computeTestGateTimeoutMs({ fileCount = 0, loadAvg = 0, cores = 1, env = {} } = {}) {
-  const override = Number(env.MERGE_TEST_GATE_TIMEOUT_MS);
-  if (Number.isFinite(override) && override > 0) return Math.round(override);
   if (env.MERGE_TEST_GATE_NO_LOAD_SCALING === '1') return TEST_GATE_TIMEOUT_MS;
+  // Operator override: validated (NaN/0/negative fall through; spawnSync treats
+  // timeout 0 as NO timeout, so the rounded value must be >= 1 s) and bounded.
+  const override = Math.round(Number(env.MERGE_TEST_GATE_TIMEOUT_MS));
+  if (Number.isFinite(override) && override >= 1000) return Math.min(override, 60 * 60 * 1000);
   const base = Math.max(TEST_GATE_TIMEOUT_MS, fileCount * TEST_GATE_PER_FILE_MS);
   const factor = Math.max(1, (Number(loadAvg) || 0) / Math.max(1, Number(cores) || 1));
   return Math.round(Math.min(TEST_GATE_MAX_TIMEOUT_MS, Math.max(TEST_GATE_TIMEOUT_MS, base * factor)));
