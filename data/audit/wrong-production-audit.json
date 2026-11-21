@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-21T15:47:51.012Z",
+  "timestamp": "2026-11-21T16:04:30.629Z",
   "stats": {
-    "totalReviews": 83640,
-    "alreadyFlagged": 22415,
-    "dateGuardCatches": 236,
+    "totalReviews": 83641,
+    "alreadyFlagged": 22418,
+    "dateGuardCatches": 235,
     "directorMismatch": 3850,
     "tvFilmSignals": 2398,
     "londonSignals": 3914,
     "offBroadwaySignals": 779,
     "yearMismatch": 394,
-    "noPublishDate": 8247
+    "noPublishDate": 8248
   },
   "findings": [
     {
@@ -2991,6 +2991,7 @@
     {
       "showId": "a-view-from-the-bridge-west-end-2015",
       "file": "financialtimes--unknown.json",
+      "score": 92,
       "publishDate": "2015-02-17",
       "url": "https://www.ft.com/content/ae5845a6-b698-11e4-95dc-00144feab7de?syn-25a6b1a6=1",
       "findings": [
@@ -22630,6 +22631,7 @@
     {
       "showId": "farinelli-and-the-king-west-end-2015",
       "file": "artsdesk--david-nice.json",
+      "score": 57,
       "publishDate": "2015-10-02",
       "url": "https://theartsdesk.com/opera/farinelli-and-king-duke-yorks-theatre",
       "findings": [
@@ -22643,6 +22645,7 @@
     {
       "showId": "farinelli-and-the-king-west-end-2015",
       "file": "financialtimes--unknown.json",
+      "score": 86,
       "publishDate": "2015-09-30",
       "url": "https://www.ft.com/content/72b255e4-6761-11e5-97d0-1456a776a4f5?syn-25a6b1a6=1",
       "findings": [
@@ -111153,19 +111156,6 @@
       ]
     },
     {
-      "showId": "harvey-west-end-2015",
-      "file": "financialtimes--unknown.json",
-      "publishDate": "2015-02-18",
-      "url": "https://www.ft.com/content/8f5927c0-b764-11e4-981d-00144feab7de?syn-25a6b1a6=1",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 33d before show (2015-02-18 vs 2015-03-23)"
-        }
-      ]
-    },
-    {
       "showId": "hay-fever-west-end-2012",
       "file": "artsdesk--unknown.json",
       "score": 80,
@@ -113043,6 +113033,7 @@
     {
       "showId": "how-to-hold-your-breath-west-end-2015",
       "file": "artsdesk--aleks-sierz.json",
+      "score": 86,
       "publishDate": "2015-02-12",
       "url": "https://theartsdesk.com/theatre/how-hold-your-breath-royal-court-theatre",
       "findings": [
@@ -148396,6 +148387,7 @@
     {
       "showId": "violence-and-son-west-end-2015",
       "file": "artsdesk--aleks-sierz.json",
+      "score": 83,
       "publishDate": "2015-06-11",
       "url": "https://theartsdesk.com/theatre/violence-and-son-royal-court-theatre",
       "findings": [
