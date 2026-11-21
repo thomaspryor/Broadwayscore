@@ -192,14 +192,18 @@ function stripGuardianTopicsFooter(text) {
 const INDEPENDENT_COMMENTS_FOOTER_RE = /Join our commenting forum\s*Join thought-provoking conversations, follow other Independent readers and see their replies(?:\s+Comments)?\s*$/;
 // Only the LAST "More about" run before the widget, so a cut sentence that
 // itself opens "More about ..." stays and still reads as truncated.
-const INDEPENDENT_TOPIC_TAG_RE = /\s*More about\b(?:(?!More about\b)[^\n]){0,120}$/;
+const INDEPENDENT_TOPIC_TAG_RE = /More about\b(?:(?!More about\b)[^\n]){0,120}$/;
 // Matched at "Shopping Best Buys"; the "MORE ABOUT <tags>" block and a
 // "November's best theatre 1 / 10" gallery caption in front of it (72 corpus
 // files have the caption and no tag block) are removed separately, so a
 // punctuated tag left behind can never pass a cut review as complete.
 const STANDARD_SHOPPING_FOOTER_RE = /\bShopping\s+Best Buys\b[\s\S]{0,900}$/;
-const STANDARD_TAG_BLOCK_RE = /\s*MORE ABOUT\b(?:(?!MORE ABOUT\b)[\s\S]){0,300}$/;
-const STANDARD_GALLERY_CAPTION_RE = /\s*[^.!?\n]{0,80}?\b\d{1,2} \/ \d{1,2}$/;
+const STANDARD_TAG_BLOCK_RE = /MORE ABOUT\b(?:(?!MORE ABOUT\b)[\s\S]){0,1000}$/;
+// Anchored to the caption's own words, never "any prose before N / M" (that ate a
+// short cut sentence and passed it as complete, review).
+const STANDARD_GALLERY_CAPTION_RE = /(?:\b[A-Z][a-z]+['\u2019]s best [a-z]+(?: [a-z]+){0,2}|\bLatest [a-z]+ reviews|\bBest [^.!?\n]{0,80}? - in pictures) \d{1,2} \/ \d{1,3}$/;
+// The Standard's ticket call to action that sits above the gallery.
+const STANDARD_TICKET_CTA_RE = /\bBuy tickets for [^.!?\n]{0,80}? with GO London$/;
 // The classifier counts words on the unstripped text, so a footer is only cut
 // from a body that is review-length on its own (shortest real flip: 1,901
 // chars); a short excerpt plus widget words must not read as complete.
@@ -213,8 +217,9 @@ function stripCmsWidgetFooters(text) {
     // never leave less than a review-length body (a widget string near the top is not a footer)
     if (m && m.index >= CMS_FOOTER_MIN_BODY) {
       out = out.slice(0, m.index).trimEnd();
-      if (re === INDEPENDENT_COMMENTS_FOOTER_RE) out = out.replace(INDEPENDENT_TOPIC_TAG_RE, '');
-      if (re === STANDARD_SHOPPING_FOOTER_RE) out = out.replace(STANDARD_TAG_BLOCK_RE, '').replace(STANDARD_GALLERY_CAPTION_RE, '');
+      // no leading \s* in these: on a long whitespace run it went quadratic (review); trim instead
+      if (re === INDEPENDENT_COMMENTS_FOOTER_RE) out = out.replace(INDEPENDENT_TOPIC_TAG_RE, '').trimEnd();
+      if (re === STANDARD_SHOPPING_FOOTER_RE) out = out.replace(STANDARD_TAG_BLOCK_RE, '').trimEnd().replace(STANDARD_GALLERY_CAPTION_RE, '').trimEnd().replace(STANDARD_TICKET_CTA_RE, '').trimEnd();
     }
   }
   return out;
