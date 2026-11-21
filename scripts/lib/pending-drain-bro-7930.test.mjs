@@ -176,3 +176,15 @@ test('tiered rotation: recent-show files first on even turns, older first on odd
   }
   assert.equal(seen.size, total);
 });
+
+test('END-TO-END on a temp _pending tree: planPendingWork(raw) feeds rotateTiered without losing file names', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'pend-'));
+  process.env.REVIEW_TEXTS_DIR = root;
+  fs.mkdirSync(path.join(root, '_pending', 'new-show'), { recursive: true });
+  fs.writeFileSync(path.join(root, '_pending', 'new-show', 'a--1.json'), '{}');
+  const replay = require('../replay-pending-bylines.js');
+  const raw = replay.planPendingWork(['new-show'], { raw: true });
+  const t = rotateTiered(raw, { cursors: {}, tierOf: () => 'recent', recentFirst: true });
+  assert.deepEqual(t.work, [{ showId: 'new-show', files: ['a--1.json'] }]);
+  delete process.env.REVIEW_TEXTS_DIR;
+});

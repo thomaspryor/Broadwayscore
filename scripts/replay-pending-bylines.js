@@ -198,7 +198,7 @@ function planPendingWork(ids, opts = {}) {
     });
     return { showId, files };
   });
-  return orderPendingWork(shows, opts);
+  return opts.raw ? shows : orderPendingWork(shows, opts);
 }
 
 function listOperaShowIds() {
@@ -811,7 +811,7 @@ if (require.main === module) {
     let plan, tierEnds = {};
     if (sweep) {
       const recentFirst = state.turn % 2 === 0;
-      const t = rotateTiered(planPendingWork(ids), { cursors: state.cursors, tierOf, recentFirst });
+      const t = rotateTiered(planPendingWork(ids, { raw: true }), { cursors: state.cursors, tierOf, recentFirst });
       plan = t.work; tierEnds = t.tierEnds;
       console.log(`Rotation: ${plan.reduce((n, p) => n + p.files.length, 0)} file(s) queued (${recentFirst ? 'recent-show files first' : 'older-show files first'}), cursors recent=${state.cursors.recent || '(top)'} other=${state.cursors.other || '(top)'}`);
     } else plan = planPendingWork(ids);
