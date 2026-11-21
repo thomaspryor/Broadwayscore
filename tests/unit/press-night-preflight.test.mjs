@@ -53,3 +53,16 @@ test('unreadable credit status: no page, but flagged so the run does not clear e
   assert.match(preflightVerdict({ results: all(), sb: { ok: false, reason: 'api-error', message: 'timeout' } }).sbNote, /Could not read/);
   assert.equal(preflightVerdict({ results: all(), sb: { ok: true, pctUsed: 10, usedCredits: 1, maxCredits: 10, remaining: 9 } }).sbUnknown, false);
 });
+
+test('live-shaped ScrapingBee replies (captured 2026-11-21 from fetchSBCreditStatus)', () => {
+  const live401 = { ok: false, reason: 'api-error', status: 401, message: 'usage endpoint returned 401' };
+  const noKey = { ok: false, reason: 'no-key', message: 'SCRAPINGBEE_API_KEY not set' };
+  const missingCount = { ok: true, maxCredits: 250000, usedCredits: 250000, pctUsed: 100, pctRemaining: 0 };
+  for (const sb of [live401, noKey]) {
+    const v = preflightVerdict({ results: all(), sb });
+    assert.deepEqual([v.ok, v.problems.length, v.sbUnknown], [true, 0, true]);
+    assert.ok(v.sbNote);
+  }
+  const m = preflightVerdict({ results: all(), sb: missingCount });
+  assert.deepEqual(m.problems.map((p) => p.key), ['ScrapingBee credits']);
+});
