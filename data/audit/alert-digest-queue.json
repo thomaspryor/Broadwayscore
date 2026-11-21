@@ -583,7 +583,7 @@
     "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts)",
     "description": "The \"Run autoclear-vs-ensemble corpus test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44930429941",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/44930723668",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -600,10 +600,10 @@
       },
       {
         "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44930429941)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/44930723668)"
       }
     ],
-    "queuedAt": "2026-11-21T17:47:57.832Z"
+    "queuedAt": "2026-11-21T17:50:45.570Z"
   },
   {
     "conditionKey": "broadcast-gate:checklist:cloud-9-west-end-2026",
