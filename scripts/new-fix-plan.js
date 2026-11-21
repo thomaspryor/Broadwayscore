@@ -23,6 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { applyDataEdit, dataEditAllowProblem } = require('./lib/data-edit-action');
+const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 const { MAX_PLAN_ACTIONS } = require('./lib/pending-fix-limits');
 const { preflight, pickReviewTextsTree, pickCoreDataDir } = require('./lib/preflight-review-fix-plan');
 const { refreshDataClone } = require('./lib/data-clone-refresh');
@@ -120,6 +121,10 @@ function completeActions(actions, { loadData, readReview, loadImageSources = () 
       }
       const typeProblem = typeChangeProblem(a);
       if (typeProblem) { problems.push(`${where}: ${typeProblem}`); return a; }
+      if (EXCERPT_FIELDS.includes(a.field) && a.newValue === null && typeof a.oldValue === 'string') {
+        a.oldValueHash = crypto.createHash('sha256').update(a.oldValue).digest('hex');
+        delete a.oldValue;
+      }
       reviewNow.set(key, a.newValue);
       if (!a.description) a.description = `${a.file}: ${a.field}`;
     } else if (a.type === 'review-file-op') {
@@ -146,7 +151,7 @@ function completeActions(actions, { loadData, readReview, loadImageSources = () 
 }
 
 // Reviewers read oldValue next to newValue.
-const KEY_ORDER = ['type', 'file', 'showId', 'showSlug', 'operation', 'sourcePath', 'destPath', 'field', 'oldValue', 'newValue', 'description'];
+const KEY_ORDER = ['type', 'file', 'showId', 'showSlug', 'operation', 'sourcePath', 'destPath', 'field', 'oldValue', 'oldValueHash', 'newValue', 'description'];
 function ordered(a) {
   const out = {};
   for (const k of KEY_ORDER) if (k in a) out[k] = a[k];
