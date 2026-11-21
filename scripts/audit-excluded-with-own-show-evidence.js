@@ -15,6 +15,12 @@
  * Usage:
  *   node scripts/audit-excluded-with-own-show-evidence.js [--json] [--show=ID]
  *     [--gate --max=N] [--review-texts-dir=PATH] [--shows-path=PATH]
+ *   node scripts/audit-excluded-with-own-show-evidence.js --queue [--recent-days=45]
+ *     [--min-signals=3] [--json] [--alert]
+ *       BRO-7999 R3: recent reviews held out by an automated rule (cvWrongArticleHighConfidence,
+ *       wrongShow, wrongProduction, nonReview, rejectionReason) that no person ruled on and whose
+ *       text looks like a finished review (complete tier, names the cast, has a score).
+ *       Advisory, exit 0. --alert files one worker card (ids and rule names only).
  */
 
 'use strict';
@@ -35,6 +41,42 @@ function flagged(data) {
   if (data.wrongProduction === true) out.push('wrongProduction');
   if (data.wrongShow === true) out.push('wrongShow');
   return out;
+}
+
+function runQueue({ argv, val, showsById, showDirs, reviewDir, only, json }) {
+  const { queueCandidate, sortQueue } = require('./lib/held-out-queue.js');
+  const { explainExclusion } = require('./lib/review-guards.js');
+  const recentDays = Number(val('recent-days') || 45);
+  const minSignals = Number(val('min-signals') || 3);
+  const today = new Date();
+  const rows = [];
+  for (const showId of showDirs) {
+    if (only && showId !== only) continue;
+    const show = showsById[showId];
+    if (!show) continue;
+    const dir = path.join(reviewDir, showId);
+    let files = [];
+    try { files = fs.readdirSync(dir).filter((f) => f.endsWith('.json')); } catch { continue; }
+    for (const file of files) {
+      let data;
+      try { data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }
+      const c = queueCandidate(data, show, path.join(dir, file), { today, recentDays, minSignals, explain: explainExclusion });
+      if (c) rows.push({ showId, file, rule: c.rule, signals: c.signals, signalCount: c.signalCount });
+    }
+  }
+  const sorted = sortQueue(rows);
+  if (json) console.log(JSON.stringify({ scanned: showDirs.length, count: sorted.length, rows: sorted }, null, 2));
+  else {
+    console.log(`Held-out review queue: ${showDirs.length} shows scanned, ${sorted.length} row(s) (recent ${recentDays}d, >=${minSignals} signals).`);
+    for (const r of sorted) console.log(`  [${r.rule}] ${r.showId}/${r.file}  ${r.signals.join('+')}`);
+    if (sorted.length) console.log('Read each text. Wrong flag: node scripts/new-fix-plan.js --review-edit=<file>:<field>=false, then scoring-delta and execute-approved-fix.yml.');
+  }
+  if (argv.includes('--alert') && !only) {
+    const { decideHeldOutQueueAlert } = require('./lib/strict-audit-alerts.js');
+    const { routeAuditDecisions } = require('./lib/audit-alert.js');
+    return routeAuditDecisions(decideHeldOutQueueAlert({ scanned: showDirs.length, rows: sorted }), 'audit-excluded-with-own-show-evidence')
+      .catch((e) => { console.error(`alert routing failed: ${e && e.message}`); });
+  }
 }
 
 function main() {
@@ -67,6 +109,8 @@ function main() {
     console.error(`FAIL: ${e.message}`);
     process.exit(gate ? 1 : 3);
   }
+
+  if (argv.includes('--queue')) return runQueue({ argv, val, showsById, showDirs, reviewDir, only, json });
 
   const hits = [];
   for (const showId of showDirs) {
